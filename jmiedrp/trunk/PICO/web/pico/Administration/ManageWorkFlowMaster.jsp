@@ -2,6 +2,8 @@
     Document   : ManageCommitteeMaster
     Created on : 13 Oct, 2011, 07:47 AM
     Author     : sknaqvi
+    I18n By    : Mohd. Manauwar Alam
+               : Jan 2014
 --%>
 
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
@@ -48,7 +50,7 @@
 
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">WORKFLOW MASTER</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.WorkFlowMast')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -57,7 +59,7 @@
                 <s:form name="frmWorkFlowMaster" action="SaveWorkFlowMasterAction" theme="qxhtml">
                         <s:hidden name="wfm.wfmId" />
                         <br>
-                        <s:select label="Institution" name="wfm.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName"
+                        <s:select key="Administration.InstitutionName" name="wfm.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName"
                                   required = "true" requiredposition="right" 
                                   onchange="getSubinstitutionList('SaveWorkFlowMasterAction_wfm_institutionmaster_imId', 'SaveWorkFlowMasterAction_wfm_subinstitutionmaster_simId');" cssClass="textInput" >
                             <s:param name="labelcolspan" value="%{2}" />
@@ -67,25 +69,25 @@
                         <s:label/>
                         <s:label value="................." cssClass="tdSpace" />
                         
-                        <s:select label="College/Faculty/School" name="wfm.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput" required = "true" requiredposition="right"
+                        <s:select key="Administration.SubinstitutionName" name="wfm.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput" required = "true" requiredposition="right"
                                   onchange="getAllDepartmentList('SaveWorkFlowMasterAction_wfm_subinstitutionmaster_simId', 'SaveWorkFlowMasterAction_wfm_departmentmaster_dmId');">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{1}" />
                         </s:select>
                                                 
-                        <s:select label="Department" name="wfm.departmentmaster.dmId" headerKey="0" headerValue="All Departments" list="dmList" listKey="dmId" listValue="dmName" cssClass="textInput">
+                        <s:select key="Administration.DepartmentName" name="wfm.departmentmaster.dmId" headerKey="0" headerValue="All Departments" list="dmList" listKey="dmId" listValue="dmName" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{4}" />
                         </s:select>
                             
-                        <s:select label="Workflow Type" name="wfm.erpmGenMaster.erpmgmEgmId" headerKey="0" 
+                        <s:select key="Administration.WorkflowType" name="wfm.erpmGenMaster.erpmgmEgmId" headerKey="0" 
                                   headerValue="-- Please Select --" list="egmList" listKey="erpmgmEgmId" 
                                   listValue="erpmgmEgmDesc" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{1}" />
                         </s:select>
 
-                        <s:textfield label="Name of the Workflow" name="wfm.wfmName" title="Enter Name of the Committee/Authority"
+                        <s:textfield key="Administration.NameOfWorkflow" name="wfm.wfmName" title="Enter Name of the Committee/Authority"
                                      required="true" requiredposition="left" maxLength="100" size="100"  cssClass="textInput">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{6}" />
@@ -95,17 +97,17 @@
                             <s:label value="..." cssClass="tdSpace"/>
                         </s:iterator>
 
-                        <s:submit value="Save Workflow" >
+                        <s:submit key="Administration.Save" >
                             <s:param name="colspan" value="%{2}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
 
-                        <s:submit value="Fetch Workflow Entries" action="FetchWorkFlowMaster">
+                        <s:submit key="Administration.Browse" action="FetchWorkFlowMaster">
                             <s:param name="colspan" value="%{2}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
 
-                        <s:submit value="Clear Form" action="ClearWorkFlowMasterAction">
+                        <s:submit key="Administration.Clear" action="ClearWorkFlowMasterAction">
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>

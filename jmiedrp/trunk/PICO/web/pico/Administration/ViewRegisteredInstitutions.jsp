@@ -1,5 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -18,7 +19,7 @@
         <meta name="email" content="sknaqvi@jmi.ac.in">
         <meta name="copyright" content="NMEICT, MHRD, Govt. of India">
     </head>
-    <body class="twoColElsLtHdr">
+    <body class="oneColElsLtHdr">
         <div id="container">
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
@@ -26,11 +27,18 @@
 
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
-                <br><br>
-                <p align="center">REGISTERED INSTITUTIONS LIST</p>
                 <br>
+                <div align="right" style="margin-right: 10px">
+                    <a href="Index" >HOME</a>
+                </div>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">REGISTERED INSTITUTIONS LIST</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+                <div style="border: solid 1px #000000; background: gainsboro">
             <s:form name="frmInstitutionsBrowse">                                                     
                  <s:property value="message" />
+                
                  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                     <display:table name="imIdList" pagesize="15"
                                excludedParams="*"  cellpadding="0"
@@ -65,8 +73,10 @@
                 </display:table>
                 </table>
              </s:form>
-             <br><br><br>
+             <br>
+                </div>
             </div>
+                <br>
              <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
             </div>

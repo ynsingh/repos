@@ -33,12 +33,19 @@
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
                 <br><br>
-                <p align="center">ISSUE ITEMS LIST</p>
+               
 
-                <br><p align="center"><s:property value="message" /></p>
+               <div style ="background-color: #215dc6;">
+                    <p align="center"  class="pageHeading" style="color: #ffffff"><s:label value="ISSUE ITEMS LIST" /></p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+
+                <%--------------------this is a issue serial detail  form --------------------%>
+                <div style="border: solid 1px #000000; background:  gainsboro">
                 <s:form name="frmIssueItemsBrowse" >
-
-                    <table width="100%" border="0" cellspacing="1" cellpadding="5" align="center">
+                    <br>
+                    <table width="100%">
+                        <tr><td>
                         <display:table name="eimList" pagesize="" decorator="Inventory.InventoryDecorator"
                                        excludedParams="*" export="false" cellpadding="2"
                                        cellspacing="0" id="doc"
@@ -54,12 +61,12 @@
                                                 maxLength="10" headerClass="gridheader" style="width:10%"
                                                 class="griddata" sortable="true"/>
                                 <display:column property="ismIssueDesc" title="Issue Desc:"
-                                                maxLength="45" headerClass="gridheader" style="width:20%"
+                                                maxLength="45" headerClass="gridheader" style="width:25%"
                                                 class="griddata" sortable="true"/>
 
                                <display:column property="erpmIndentMaster.indtTitle" title="Against Indent Title"
                                                 maxLength="30" headerClass="gridheader"
-                                                class="griddata" sortable="true" style="width:20%"/>
+                                                class="griddata" sortable="true" style="width:30%"/>
 
 
                                 <display:column paramId="EIMID" paramProperty="ismId" sortable="true"
@@ -74,12 +81,15 @@
                                 </display:column>
                                     <display:column paramId="EIMID" paramProperty="ismId" style="width:10%"
                                                     href="/pico/Inventory/EmailIssueItems" sortable="true"
-                                                headerClass="gridheader" class="griddata" media="html" title="SendEmail" >
+                                                headerClass="gridheader" class="griddata" media="html" >
                                     SendEmail
                                 </display:column>
                             </display:table>
+                                </td></tr>
                     </table>
+                    <br>
                 </s:form>
+                </div>
                 <br><br><br>
             </div>
             <div id="footer">

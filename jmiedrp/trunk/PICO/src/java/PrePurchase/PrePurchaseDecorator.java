@@ -299,5 +299,31 @@ public class PrePurchaseDecorator extends TableDecorator{
     }
 
 }
+
+
+    public String getDynamicNoticeLink() {
+      ErpmTenderMaster tenMaster = (ErpmTenderMaster)getCurrentRowObject();
+
+       try {
+       String noticeLink = "<a href=\"http://"+tenMaster.getTmNoticeLink()+"\" target=\"_blank\">"+tenMaster.getTmNoticeLink()+ "</a>";
+       return noticeLink;
+       }
+       catch (Exception e) {
+        return "Error in date formatting";
+    }
+
+}
+public String getDynamicDocumentLink() {
+      ErpmTenderMaster tenMaster = (ErpmTenderMaster)getCurrentRowObject();
+
+       try {
+       String docLink = "<a href=\"http://"+tenMaster.getTmDocumentLink()+"\" target=\"_blank\">"+tenMaster.getTmDocumentLink()+ "</a>";
+       return docLink;
+       }
+       catch (Exception e) {
+        return "Error in date formatting";
+    }
+
+}
 }
     

@@ -31,17 +31,21 @@
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="left">
                  <br><br>
-                 <p align="center" class="pageHeading"><s:label value="Indent Items" /></p>
-                 <p  align="center" Class="mymessage" ><s:property value="message"  /> </p>
+<%--                 <p align="center" class="pageHeading"><s:label value="Indent Items" /></p>
+                 <p  align="center" Class="mymessage" ><s:property value="message"  /> </p> --%>
+                 <div style="background-color: #215dc6;  " >
+                 <p align="center" class="pageHeading" style="color:  #ffffff"><s:label value="Step 2 of 3 (Populate Indent)" /></p>
+                 <p  align="center" Class="mymessage" style="color:  #ffff99"><s:property value="message"  /> </p>
+                 </div>
                  <s:actionerror />
 
                  <s:bean name="java.util.HashMap" id="qTableLayout">
                     <s:param name="tablecolspan" value="%{8}" />
                  </s:bean>
 
-                 <p align="left" class="pageHeading">Step 2 of 3 (Populate Indent)</p>
+<%--                 <p align="left" class="pageHeading">Step 2 of 3 (Populate Indent)</p>
 
-
+--%>
                  <s:form name="FrmIndentitems" action="SaveIndentItems" theme="qxhtml">
                     <s:hidden name ="erpmindtmast.indtIndentId" />
                     <s:hidden name ="erpmindtdet.indtDetailId" />

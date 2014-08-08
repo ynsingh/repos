@@ -2,9 +2,9 @@
     Document   : PurchaseInvoiceDetails
     Created on : 6 Aug, 2012, 1:13:28 PM
     Author     : Tanvir Ahmed & Saeed-uz-Zama & mkhan
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
 --%>
-
-
 
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -41,7 +41,9 @@
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
                 <div style ="background-color: #215dc6;" align="center">
-                    <p align="center" class="pageHeading" style="color: #ffffff">PURCHASE INVOICE/BILL</p>
+<%--                    <p align="center" class="pageHeading" style="color: #ffffff">PURCHASE INVOICE/BILL</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff">PURCHASE INVOICE DETAIL</p>
+                    
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -104,6 +106,7 @@
             <div id="footer">
                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
             </div>
+        </div>
         </div>
     </body>
 </html>

@@ -74,11 +74,6 @@ Session session = HibernateUtil.getSession();
     }
 
 }
-
-
-
-
-
 //package pojo.hibernate;
 //
 //import utils.BaseDAO;

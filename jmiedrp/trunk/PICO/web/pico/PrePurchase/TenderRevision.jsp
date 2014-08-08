@@ -1,7 +1,9 @@
 <%--
     Document   : TenderRevision
     Created on : 06 May, 2013, 10:29:11 AM
-    Author     : Manauwar
+    Author     : Mohd. Manauwar Alam
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
 --%>
 
 
@@ -40,7 +42,7 @@
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
                 <div style ="background-color: #215dc6;" align="center">
-                    <p align="center" class="pageHeading" style="color: #ffffff">TENDER REVISION</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('PrePurchase.TenderRevision')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -65,7 +67,7 @@
                        <table border="0" cellpadding="4" cellspacing="0" align="center">
 
 
-                            <s:select label="Institution"  required="true"  requiredposition="" name="etr.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
+                            <s:select key="PrePurchase.Institution"  required="true"  requiredposition="" name="etr.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
                                       onchange="getSubinstitutionList('TenderRevision_etr_institutionmaster_imId', 'TenderRevision_etr_subinstitutionmaster_simId');">
                                       <s:param name="labelcolspan" value="%{1}" />
                                       <s:param name="inputcolspan" value="%{3}" />
@@ -73,13 +75,13 @@
 
                             <s:label value="" cssClass="tdSpace"/>
 
-                            <s:select  label="College/Faculty/School"  required="true" requiredposition="" name="etr.subinstitutionmaster.simId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName"
+                            <s:select  key="PrePurchase.SubInstitution"  required="true" requiredposition="" name="etr.subinstitutionmaster.simId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName"
                                       onchange="getDepartmentList('TenderRevision_etr_subinstitutionmaster_simId','TenderRevision_etr_departmentmaster_dmId');" >
                                       <s:param name="labelcolspan" value="%{1}" />
                                       <s:param name="inputcolspan" value="%{3}" />
                             </s:select>
 
-                            <s:select  label="Department Name" required="true" requiredposition="" name="etr.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --"
+                            <s:select  key="PrePurchase.Department" required="true" requiredposition="" name="etr.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --"
                                        list="dmList" listKey="dmId" listValue="dmName" >
                                       <s:param name="labelcolspan" value="%{1}" />
                                       <s:param name="inputcolspan" value="%{3}" />
@@ -87,7 +89,7 @@
 
                            <s:label value="" cssClass="tdSpace"/>
                            
-                            <s:select required="true" label="Tender No " requiredposition="left" name="etr.erpmTenderMaster.tmTmId"
+                            <s:select required="true" key="PrePurchase.TenderNo" requiredposition="left" name="etr.erpmTenderMaster.tmTmId"
                                         headerKey="" headerValue="-- Please Select --" list="tmList" listKey="tmTmId" listValue="tmTenderNo"
                                         onchange="getTenderName('TenderRevision_etr_erpmTenderMaster_tmTmId','TenderRevision_TenderName');">
                                        <s:param name="labelcolspan" value="%{1}" />
@@ -95,7 +97,7 @@
                            </s:select>
 
                             <s:textfield  maxLength="50" size="30" readonly="true" 
-                                          label="Tender Name" name = "TenderName"  >
+                                          key="PrePurchase.TenderName" name = "TenderName"  >
                                          <s:param name="labelcolspan" value="%{1}" />
                                          <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
@@ -103,12 +105,12 @@
                              <s:label value="" cssClass="tdSpace"/>
                              
                             <s:textfield   required="true" requiredposition="left" maxLength="10" size="30"
-                                          label="Revision No" name="etr.trRevisionNo" onkeypress="return isNumberKey(event)">
+                                          key="PrePurchase.RevisionNo" name="etr.trRevisionNo" onkeypress="return isNumberKey(event)">
                                          <s:param name="labelcolspan" value="%{1}" />
                                          <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>  
                             
-                             <s:select label="Revision Type"  required="true"  requiredposition="left" name = "etr.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --"
+                             <s:select key="PrePurchase.RevisionType"  required="true"  requiredposition="left" name = "etr.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --"
                                       list = "revTypeList" listKey = "erpmgmEgmId" listValue = "erpmgmEgmDesc">
                                       <s:param name="labelcolspan" value="%{1}" />
                                       <s:param name="inputcolspan" value="%{3}" />
@@ -116,24 +118,24 @@
 
                             <s:label value="" cssClass="tdSpace"/>
 
-                            <s:textfield   size="30"  label="Date(dd-mm-yyyy)" name="revisionDate"  title="Enter the date " >
+                            <s:textfield   size="30"  key="PrePurchase.Date" name="revisionDate"  title="Enter the date " >
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
                             
-                            <s:textarea name="etr.trRevisionDescription" label="Revision Decscription" cols="80" maxLength="200" >
+                            <s:textarea name="etr.trRevisionDescription" key="PrePurchase.RevisionDecscription" cols="80" maxLength="200" >
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{7}" />
                             </s:textarea>
 
-                            <s:textfield   size="60" maxLength="100" label="Revision Document Link" name="etr.trRevisionLink"  >
+                            <s:textfield   size="60" maxLength="100" key="PrePurchase.RevisionDocumentLink" name="etr.trRevisionLink"  >
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{7}" />
                             </s:textfield> 
                             
-                            <s:submit value="Save" action="SaveTenderRevision"/>
-                            <s:submit value="Browse" action="BrowseTenderRevision"/>
-                            <s:submit value="Clear" action="clearTenderRevision"/>
+                            <s:submit key="PrePurchase.Save" action="SaveTenderRevision"/>
+                            <s:submit key="PrePurchase.Browse" action="BrowseTenderRevision"/>
+                            <s:submit key="PrePurchase.Clear" action="clearTenderRevision"/>
                         </table>
                     </s:form>
                 </div>

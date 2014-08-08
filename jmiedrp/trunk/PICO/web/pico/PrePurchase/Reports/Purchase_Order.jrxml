@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Purchase_Order" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7463f2bb-30e8-4192-b727-7b69124c1550">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="341"/>
-	<property name="ireport.y" value="92"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["PO_Terms.jasper"]]></defaultValueExpression>
 	</parameter>
@@ -14,19 +14,22 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     if(erpm_po_taxes.`POT_Tax_Percent` is null or erpm_po_taxes.`POT_Tax_Percent`=0," ",concat(CAST(erpm_po_taxes.`POT_Tax_Percent` as char),"% ",erpm_po_taxes.`POT_Tax_Name`," on ",CAST(erpm_po_taxes.`POT_Tax_on_Value_Percent` as char),"% of value",if(erpm_po_taxes.`POT_Surcharge_Percent` is null or erpm_po_taxes.`POT_Surcharge_Percent`=0," ",", with "),if(erpm_po_taxes.`POT_Surcharge_Percent` is null or erpm_po_taxes.`POT_Surcharge_Percent`=0," ",CAST(erpm_po_taxes.`POT_Surcharge_Percent` as char)),if(erpm_po_taxes.`POT_Surcharge_Percent` is null or erpm_po_taxes.`POT_Surcharge_Percent`=0," ","% Surcharge."))) AS Tax_Description,
-     if(erpm_po_taxes.`POT_Tax_Name` is null,' ',erpm_po_taxes.`POT_Tax_Name`) AS erpm_po_taxes_POT_Tax_Name,
-     if(erpm_po_taxes.`POT_Tax_Percent` is null,0,erpm_po_taxes.`POT_Tax_Percent`) AS erpm_po_taxes_POT_Tax_Percent,
-     if(erpm_po_taxes.`POT_Tax_on_Value_Percent` is null,0,erpm_po_taxes.`POT_Tax_on_Value_Percent`) AS erpm_po_taxes_POT_Tax_on_Value_Percent,
-     if(erpm_po_taxes.`POT_Surcharge_Percent` is null,0,erpm_po_taxes.`POT_Surcharge_Percent`) AS erpm_po_taxes_POT_Surcharge_Percent,
+     if(erpm_item_rate_taxes.`IRT_Tax_Percent` is null or erpm_item_rate_taxes.`IRT_Tax_Percent`=0," ",concat(CAST(erpm_item_rate_taxes.`IRT_Tax_Percent` as char),"% ",erpm_gen_master.`ERPMGM_EGM_DESC`," on ",CAST(erpm_item_rate_taxes.`IRT_Tax_on_Value_Percent` as char),"% of value",if(erpm_item_rate_taxes.`IRT_Surcharge_Percent` is null or erpm_item_rate_taxes.`IRT_Surcharge_Percent`=0," ",", with "),if(erpm_item_rate_taxes.`IRT_Surcharge_Percent` is null or erpm_item_rate_taxes.`IRT_Surcharge_Percent`=0," ",CAST(erpm_item_rate_taxes.`IRT_Surcharge_Percent` as char)),if(erpm_item_rate_taxes.`IRT_Surcharge_Percent` is null or erpm_item_rate_taxes.`IRT_Surcharge_Percent`=0," ","% Surcharge."))) AS Tax_Description,
+     if(erpm_gen_master.`ERPMGM_EGM_DESC` is null,' ',erpm_gen_master.`ERPMGM_EGM_DESC`) AS erpm_item_rate_taxes_IRT_Tax_Name,
+     if(erpm_item_rate_taxes.`IRT_Tax_Percent` is null,0,erpm_item_rate_taxes.`IRT_Tax_Percent`) AS erpm_item_rate_taxes_IRT_Tax_Percent,
+     if(erpm_item_rate_taxes.`IRT_Tax_on_Value_Percent` is null,0,erpm_item_rate_taxes.`IRT_Tax_on_Value_Percent`) AS erpm_item_rate_taxes_IRT_Tax_on_Value_Percent,
+     if(erpm_item_rate_taxes.`IRT_Surcharge_Percent` is null,0,erpm_item_rate_taxes.`IRT_Surcharge_Percent`) AS erpm_item_rate_taxes_IRT_Surcharge_Percent,
      if(erpm_po_details.`POD_Warranty_Terms` is null,'',erpm_po_details.`POD_Warranty_Terms`) AS erpm_po_details_POD_Warranty_Terms,
+     concat(departmentmaster.`DM_Short_Name`,'/',cast(year(erpm_po_master.`POM_PO_Date`) as char),'/',cast(erpm_po_master.`POM_PO_No` as char)) AS Full_PO_No,
+     if(erpm_po_master.`POM_Discount` is null,0,erpm_po_master.`POM_Discount`) AS erpm_po_master_POM_Discount,
+     if(erpm_po_details.`POD_Discount` is null,0,erpm_po_details.`POD_Discount`) AS erpm_po_details_POD_Discount,
      erpm_po_master.`POM_PO_Master_ID` AS erpm_po_master_POM_PO_Master_ID,
      erpm_po_master.`POM_IM_ID` AS erpm_po_master_POM_IM_ID,
      erpm_po_master.`POM_DM_ID` AS erpm_po_master_POM_DM_ID,
      erpm_po_master.`POM_PO_No` AS erpm_po_master_POM_PO_No,
      erpm_po_master.`POM_PO_Date` AS erpm_po_master_POM_PO_Date,
      departmentmaster.`DM_Short_Name` AS DM_Short_Name,
-	 concat(departmentmaster.`DM_Short_Name`, '/', cast(year(erpm_po_master.`POM_PO_Date`) as char), '/', cast(erpm_po_master.`POM_PO_No` as char)) as Full_PO_No,     erpm_po_master.`POM_Purchase_Mode` AS erpm_po_master_POM_Purchase_Mode,
+     erpm_po_master.`POM_Purchase_Mode` AS erpm_po_master_POM_Purchase_Mode,
      erpm_po_master.`POM_Payment_Mode_ID` AS erpm_po_master_POM_Payment_Mode_ID,
      erpm_po_master.`POM_Supplier_ID` AS erpm_po_master_POM_Supplier_ID,
      erpm_po_master.`POM_Form_ID` AS erpm_po_master_POM_Form_ID,
@@ -34,7 +37,6 @@
      erpm_po_master.`POM_Terms_Days` AS erpm_po_master_POM_Terms_Days,
      erpm_po_master.`POM_Delivery_Date` AS erpm_po_master_POM_Delivery_Date,
      erpm_po_master.`POM_Remarks` AS erpm_po_master_POM_Remarks,
-     if(erpm_po_master.`POM_Discount` is null, 0, erpm_po_master.`POM_Discount`) AS erpm_po_master_POM_Discount,
      erpm_po_master.`POM_Currency_ID` AS erpm_po_master_POM_Currency_ID,
      erpm_po_master.`POM_Approved_By_ID` AS erpm_po_master_POM_Approved_By_ID,
      erpm_po_master.`POM_Approved_By_Designation` AS erpm_po_master_POM_Approved_By_Designation,
@@ -48,7 +50,6 @@
      erpm_po_details.`POD_POMaster_ID` AS erpm_po_details_POD_POMaster_ID,
      erpm_po_details.`POD_Item_ID` AS erpm_po_details_POD_Item_ID,
      erpm_po_details.`POD_Quantity` AS erpm_po_details_POD_Quantity,
-     if(erpm_po_details.`POD_Discount` is null, 0 , erpm_po_details.`POD_Discount`) AS erpm_po_details_POD_Discount,
      erpm_po_details.`POD_Schedule` AS erpm_po_details_POD_Schedule,
      erpm_po_details.`POD_RATE` AS erpm_po_details_POD_RATE,
      erpm_po_details.`POD_INDTL_ID` AS erpm_po_details_POD_INDTL_ID,
@@ -96,15 +97,20 @@ FROM
      LEFT OUTER JOIN `supplier_address` supplier_address ON erpm_po_master.`POM_Supplier_Address_ID` = supplier_address.`sup_ad_id`
      INNER JOIN `departmentmaster` departmentmaster ON erpm_po_master.`POM_DM_ID` = departmentmaster.`DM_ID`
      INNER JOIN `erpm_item_master` erpm_item_master ON erpm_po_details.`POD_Item_ID` = erpm_item_master.`ERPMIM_ID`
-     LEFT OUTER JOIN `erpm_po_taxes` erpm_po_taxes ON erpm_po_details.`POD_PODetails_ID` = erpm_po_taxes.`POT_PODetail_ID`
+     LEFT OUTER JOIN `erpm_item_rate` erpm_item_rate ON erpm_po_details.`POD_Item_Rate_ID` = erpm_item_rate.`IR_Item_Rate_Id`
+     LEFT OUTER JOIN `erpm_item_rate_taxes` erpm_item_rate_taxes ON erpm_item_rate.`IR_Item_Rate_Id` = erpm_item_rate_taxes.`IRT_Item_Rate_ID`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_rate_taxes.`IRT_Tax_Name_ID` = erpm_gen_master.`ERPMGM_EGM_ID`
 WHERE $P!{condition}]]>
 	</queryString>
 	<field name="Tax_Description" class="java.lang.String"/>
-	<field name="erpm_po_taxes_POT_Tax_Name" class="java.lang.String"/>
-	<field name="erpm_po_taxes_POT_Tax_Percent" class="java.math.BigDecimal"/>
-	<field name="erpm_po_taxes_POT_Tax_on_Value_Percent" class="java.math.BigDecimal"/>
-	<field name="erpm_po_taxes_POT_Surcharge_Percent" class="java.math.BigDecimal"/>
+	<field name="erpm_item_rate_taxes_IRT_Tax_Name" class="java.lang.String"/>
+	<field name="erpm_item_rate_taxes_IRT_Tax_Percent" class="java.math.BigDecimal"/>
+	<field name="erpm_item_rate_taxes_IRT_Tax_on_Value_Percent" class="java.math.BigDecimal"/>
+	<field name="erpm_item_rate_taxes_IRT_Surcharge_Percent" class="java.math.BigDecimal"/>
 	<field name="erpm_po_details_POD_Warranty_Terms" class="java.lang.String"/>
+	<field name="Full_PO_No" class="java.lang.String"/>
+	<field name="erpm_po_master_POM_Discount" class="java.math.BigDecimal"/>
+	<field name="erpm_po_details_POD_Discount" class="java.math.BigDecimal"/>
 	<field name="erpm_po_master_POM_PO_Master_ID" class="java.lang.Long"/>
 	<field name="erpm_po_master_POM_IM_ID" class="java.lang.Integer"/>
 	<field name="erpm_po_master_POM_DM_ID" class="java.lang.Integer"/>
@@ -113,7 +119,6 @@ WHERE $P!{condition}]]>
 	<field name="DM_Short_Name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="Full_PO_No" class="java.lang.String"/>
 	<field name="erpm_po_master_POM_Purchase_Mode" class="java.lang.String"/>
 	<field name="erpm_po_master_POM_Payment_Mode_ID" class="java.lang.Long"/>
 	<field name="erpm_po_master_POM_Supplier_ID" class="java.lang.Long"/>
@@ -122,7 +127,6 @@ WHERE $P!{condition}]]>
 	<field name="erpm_po_master_POM_Terms_Days" class="java.lang.Integer"/>
 	<field name="erpm_po_master_POM_Delivery_Date" class="java.sql.Date"/>
 	<field name="erpm_po_master_POM_Remarks" class="java.lang.String"/>
-	<field name="erpm_po_master_POM_Discount" class="java.math.BigDecimal"/>
 	<field name="erpm_po_master_POM_Currency_ID" class="java.lang.Long"/>
 	<field name="erpm_po_master_POM_Approved_By_ID" class="java.lang.Integer"/>
 	<field name="erpm_po_master_POM_Approved_By_Designation" class="java.lang.String"/>
@@ -136,7 +140,6 @@ WHERE $P!{condition}]]>
 	<field name="erpm_po_details_POD_POMaster_ID" class="java.lang.Long"/>
 	<field name="erpm_po_details_POD_Item_ID" class="java.lang.Long"/>
 	<field name="erpm_po_details_POD_Quantity" class="java.math.BigDecimal"/>
-	<field name="erpm_po_details_POD_Discount" class="java.math.BigDecimal"/>
 	<field name="erpm_po_details_POD_Schedule" class="java.lang.String"/>
 	<field name="erpm_po_details_POD_RATE" class="java.math.BigDecimal"/>
 	<field name="erpm_po_details_POD_INDTL_ID" class="java.lang.Integer"/>
@@ -179,47 +182,30 @@ WHERE $P!{condition}]]>
 	<variable name="SumQty" class="java.lang.Integer" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{erpm_po_details_POD_Quantity}]]></variableExpression>
 	</variable>
-	<variable name="TotalAmount" class="java.lang.Double" resetType="Column" calculation="Sum">
-		<variableExpression><![CDATA[($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})-($F{erpm_po_details_POD_Discount}*($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})/100)]]></variableExpression>
-	</variable>
 	<variable name="Tax_Desc" class="java.lang.String">
-		<variableExpression><![CDATA[$F{erpm_po_taxes_POT_Tax_Percent} + "% " + $F{erpm_po_taxes_POT_Tax_Name} + " on " + $F{erpm_po_taxes_POT_Tax_on_Value_Percent} + "% value" + " with " + $F{erpm_po_taxes_POT_Surcharge_Percent} + " Surcharge "]]></variableExpression>
+		<variableExpression><![CDATA[$F{erpm_item_rate_taxes_IRT_Tax_Percent} + "% " + $F{erpm_item_rate_taxes_IRT_Tax_Name} + " on " + $F{erpm_item_rate_taxes_IRT_Tax_on_Value_Percent} + "% value" + " with " + $F{erpm_item_rate_taxes_IRT_Surcharge_Percent} + " Surcharge "]]></variableExpression>
 	</variable>
 	<variable name="Tax_Amount" class="java.lang.Double">
-		<variableExpression><![CDATA[($F{erpm_po_taxes_POT_Tax_Percent}*$F{erpm_po_taxes_POT_Tax_on_Value_Percent}*(($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})-($F{erpm_po_details_POD_Discount}*($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})/100))/10000)*(1+$F{erpm_po_taxes_POT_Surcharge_Percent}/100)]]></variableExpression>
+		<variableExpression><![CDATA[($F{erpm_item_rate_taxes_IRT_Tax_Percent}*$F{erpm_item_rate_taxes_IRT_Tax_on_Value_Percent}*($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})/10000)*(1+$F{erpm_item_rate_taxes_IRT_Surcharge_Percent}/100)]]></variableExpression>
+	</variable>
+	<variable name="Tax_Amount_Sum" class="java.lang.Number" resetType="Group" resetGroup="erpm_item_master_ERPMIM_Item_Brief_Desc" calculation="Sum">
+		<variableExpression><![CDATA[$V{Tax_Amount}]]></variableExpression>
 	</variable>
 	<variable name="Amt_post_Discount" class="java.lang.Double">
-		<variableExpression><![CDATA[($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})-($F{erpm_po_details_POD_Discount}*$F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE}/100)]]></variableExpression>
+		<variableExpression><![CDATA[$F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE}]]></variableExpression>
 	</variable>
-	<variable name="Final_Amount" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{Amt_post_Discount}+$V{Tax_Amount}]]></variableExpression>
+	<variable name="Final_Amount" class="java.lang.Number" resetType="None">
+		<variableExpression><![CDATA[($F{erpm_po_details_POD_Quantity}*$F{erpm_po_details_POD_RATE})+$V{Tax_Amount_Sum}]]></variableExpression>
+	</variable>
+	<variable name="Net_PO_Total" class="java.lang.Number" resetType="Group" resetGroup="erpm_po_master_POM_PO_No" calculation="Sum">
+		<variableExpression><![CDATA[$V{Final_Amount}]]></variableExpression>
 	</variable>
 	<group name="Location Band">
 		<groupExpression><![CDATA[$F{erpm_po_master_POM_PO_Master_ID}]]></groupExpression>
 		<groupFooter>
-			<band height="47">
-				<textField>
-					<reportElement uuid="98f83b51-8fc4-448b-adab-c2b8a15edd2b" x="252" y="3" width="59" height="18"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Right">
-						<font size="9" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{SumQty}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00">
-					<reportElement uuid="2e870556-122b-4fec-854c-72faa8e25c22" x="476" y="0" width="77" height="20"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Right">
-						<font size="9" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{TotalAmount}]]></textFieldExpression>
-				</textField>
+			<band height="36">
 				<subreport>
-					<reportElement uuid="9603ac22-a804-4e2c-b1ba-9c449a95e36e" stretchType="RelativeToTallestObject" x="3" y="21" width="550" height="20"/>
+					<reportElement uuid="9603ac22-a804-4e2c-b1ba-9c449a95e36e" stretchType="RelativeToTallestObject" x="3" y="12" width="550" height="20"/>
 					<subreportParameter name="erpm_po_master_POM_PO_Master_ID">
 						<subreportParameterExpression><![CDATA[$F{erpm_po_master_POM_PO_Master_ID}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -231,9 +217,77 @@ WHERE $P!{condition}]]>
 	</group>
 	<group name="erpm_po_master_POM_PO_No">
 		<groupExpression><![CDATA[$F{erpm_po_master_POM_PO_No}]]></groupExpression>
+		<groupFooter>
+			<band height="4"/>
+		</groupFooter>
 	</group>
 	<group name="erpm_item_master_ERPMIM_Item_Brief_Desc">
 		<groupExpression><![CDATA[$F{erpm_item_master_ERPMIM_Item_Brief_Desc}]]></groupExpression>
+		<groupHeader>
+			<band height="14">
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="26b7a20b-f780-4743-bad4-76a79e6e2fe2" x="29" y="1" width="133" height="12"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{erpm_item_master_ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0">
+					<reportElement uuid="543fb673-c5f1-45cc-894e-796e8f522da7" x="297" y="1" width="40" height="12"/>
+					<textElement textAlignment="Right">
+						<font size="9" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{erpm_po_details_POD_Quantity}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="ac60887a-6a20-4776-8e63-d6e4ba7a04a5" x="357" y="1" width="49" height="12"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{erpm_po_details_POD_RATE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="994ae98e-0501-4c3f-9716-81767f1f9964" x="0" y="2" width="25" height="12"/>
+					<textElement>
+						<font size="9"/>
+						<paragraph tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{erpm_po_master_POM_PO_No_COUNT}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<textField pattern="#,##0.00">
+					<reportElement uuid="f12c2dc0-3bfb-48cc-9306-7f7c555b1aa9" x="419" y="0" width="58" height="12"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Tax_Amount_Sum}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="79ef83ef-0288-44b9-bf38-0f518a1ad0d1" x="479" y="0" width="72" height="12"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Final_Amount}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="33f5b4b6-c5b3-4820-8e54-a44711b9650f" x="164" y="0" width="105" height="12"/>
+					<textElement textAlignment="Left">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Item Totals :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="4c493f82-6b0e-410c-be3b-47f91c334352" x="29" y="0" width="133" height="12"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{erpm_po_details_POD_Warranty_Terms}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
@@ -280,7 +334,7 @@ WHERE $P!{condition}]]>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[(A Central University by an act of Parliament)]]></text>
+				<text><![CDATA[(A Central University by an Act of Parliament)]]></text>
 			</staticText>
 			<textField>
 				<reportElement uuid="49d5e499-3b7d-42a6-afe6-c36a32a5d4a8" x="134" y="0" width="328" height="20"/>
@@ -353,25 +407,18 @@ WHERE $P!{condition}]]>
 				<text><![CDATA[Item Description            Warranty Terms]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="86966894-e9ef-4202-8567-42d37aba47b3" x="267" y="2" width="45" height="25"/>
+				<reportElement uuid="86966894-e9ef-4202-8567-42d37aba47b3" x="293" y="2" width="45" height="25"/>
 				<textElement textAlignment="Right">
 					<font size="9" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Quantity]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0784e932-78d1-426c-b9dd-707c0760a7b3" x="318" y="2" width="49" height="25"/>
+				<reportElement uuid="0784e932-78d1-426c-b9dd-707c0760a7b3" x="359" y="2" width="49" height="25"/>
 				<textElement textAlignment="Right">
 					<font size="9" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Rate]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="c19334f5-79c7-46d3-825a-f867b330bbf1" x="371" y="2" width="47" height="25"/>
-				<textElement textAlignment="Center">
-					<font size="9" isBold="true" isUnderline="false"/>
-				</textElement>
-				<text><![CDATA[Discount (%age)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="512e8315-8b67-451c-bfc1-123d3b4c6063" x="479" y="2" width="72" height="25"/>
@@ -396,7 +443,7 @@ WHERE $P!{condition}]]>
 				<text><![CDATA[Tax Description]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ab0e3f9b-b6eb-4168-94c5-fca5a6bd88e8" x="418" y="2" width="60" height="25"/>
+				<reportElement uuid="ab0e3f9b-b6eb-4168-94c5-fca5a6bd88e8" x="417" y="2" width="60" height="25"/>
 				<textElement textAlignment="Right">
 					<font size="9" isBold="true" isUnderline="false"/>
 				</textElement>
@@ -408,75 +455,25 @@ WHERE $P!{condition}]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="24" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement uuid="26b7a20b-f780-4743-bad4-76a79e6e2fe2" x="31" y="0" width="133" height="12"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{erpm_item_master_ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0">
-				<reportElement uuid="543fb673-c5f1-45cc-894e-796e8f522da7" x="273" y="0" width="40" height="12"/>
-				<textElement textAlignment="Right">
-					<font size="9" isStrikeThrough="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{erpm_po_details_POD_Quantity}]]></textFieldExpression>
-			</textField>
+		<band height="15" splitType="Stretch">
 			<textField pattern="#,##0.00">
-				<reportElement uuid="ac60887a-6a20-4776-8e63-d6e4ba7a04a5" x="318" y="0" width="49" height="12"/>
+				<reportElement uuid="2e0f8804-594e-4465-8632-9ba168f9eff1" x="423" y="0" width="54" height="12"/>
 				<textElement textAlignment="Right">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{erpm_po_details_POD_RATE}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement uuid="43454847-cdd9-43c4-a669-ec5edec72772" x="373" y="0" width="43" height="12"/>
-				<textElement textAlignment="Right">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{erpm_po_details_POD_Discount}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement uuid="4c493f82-6b0e-410c-be3b-47f91c334352" x="31" y="12" width="133" height="12"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{erpm_po_details_POD_Warranty_Terms}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="994ae98e-0501-4c3f-9716-81767f1f9964" x="2" y="1" width="25" height="12"/>
-				<textElement>
-					<font size="9"/>
-					<paragraph tabStopWidth="40"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{erpm_po_master_POM_PO_No_COUNT}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement uuid="cc6996c2-d7b3-4da9-8c77-d66e0cbb05e6" x="164" y="1" width="104" height="12"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Tax_Description}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement uuid="2e0f8804-594e-4465-8632-9ba168f9eff1" x="423" y="-1" width="54" height="12"/>
-				<textElement textAlignment="Right">
-					<font size="9"/>
+					<font size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{Tax_Amount}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement uuid="942f3a58-4df4-4692-9050-156cb8dce094" x="479" y="1" width="72" height="12"/>
-				<textElement textAlignment="Right">
-					<font size="9" isBold="false"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="cc6996c2-d7b3-4da9-8c77-d66e0cbb05e6" x="162" y="2" width="256" height="12"/>
+				<textElement>
+					<font size="8" isItalic="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{Final_Amount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Tax_Description}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="5" splitType="Stretch"/>
+		<band height="4" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="4" splitType="Stretch"/>
@@ -485,15 +482,57 @@ WHERE $P!{condition}]]>
 		<band height="4"/>
 	</lastPageFooter>
 	<summary>
-		<band height="30" splitType="Stretch">
+		<band height="82" splitType="Stretch">
 			<subreport>
-				<reportElement uuid="bc0199e0-b8d2-4825-a114-9146a58e26a9" stretchType="RelativeToTallestObject" x="3" y="5" width="550" height="20"/>
+				<reportElement uuid="bc0199e0-b8d2-4825-a114-9146a58e26a9" stretchType="RelativeToTallestObject" x="3" y="70" width="550" height="8"/>
 				<subreportParameter name="erpm_po_master_POM_PO_Master_ID">
 					<subreportParameterExpression><![CDATA[$F{erpm_po_master_POM_PO_Master_ID}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
 			</subreport>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="9847f26d-cd11-4cfc-87db-37b239d2403c" x="84" y="31" width="466" height="34"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_po_master_POM_Remarks}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMM yyyy">
+				<reportElement uuid="b39d8c64-8e89-4997-a2cd-127faf181bb7" x="84" y="2" width="131" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_po_master_POM_Delivery_Date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="fd422e95-9d85-4181-a934-c594694d6001" x="3" y="2" width="76" height="15"/>
+				<textElement>
+					<font size="9" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Delivery Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fd422e95-9d85-4181-a934-c594694d6001" x="3" y="31" width="76" height="15"/>
+				<textElement>
+					<font size="9" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Remarks :]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="daded692-c99c-4571-9260-4388bd68358b" x="449" y="2" width="101" height="15"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Net_PO_Total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="fd422e95-9d85-4181-a934-c594694d6001" x="337" y="2" width="96" height="15"/>
+				<textElement>
+					<font size="9" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Total PO Amount :]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>

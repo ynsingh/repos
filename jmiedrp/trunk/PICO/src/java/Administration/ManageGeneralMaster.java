@@ -179,7 +179,7 @@ public String Edit() throws Exception {
              erpmgm = null;
             return SUCCESS;
         } catch (Exception e) {
-            if (e.getCause().toString().contains("FOREIGN KEY"))
+            if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row"))
                     message = "Cannot delete record as related record(s) exist(s). Reported cause is         :" + e.getCause();
             else
                     message = "Exception in Delete method -> ManageGeneralMasterAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();

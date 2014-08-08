@@ -9,14 +9,15 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Hibernate;
-import utils.BaseDAO;
+//import utils.BaseDAO;
 
 
 /**
  *
  * @author dell
  */
-public class ErpmPoTermsDAO extends BaseDAO {
+//public class ErpmPoTermsDAO extends BaseDAO {
+public class ErpmPoTermsDAO {
 
     public void save(ErpmPoTerms epoterms) {
         Session session = HibernateUtil.getSession();
@@ -90,7 +91,8 @@ public class ErpmPoTermsDAO extends BaseDAO {
         try {
             
             session.beginTransaction();
-           List<ErpmPoTerms> epoterms  = getSession().createQuery("Select u from ErpmPoTerms u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId", pomPoMasterId ).list();
+//           List<ErpmPoTerms> epoterms  = getSession().createQuery("Select u from ErpmPoTerms u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId", pomPoMasterId ).list();
+             List<ErpmPoTerms> epoterms  = session.createQuery("Select u from ErpmPoTerms u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId", pomPoMasterId ).list();           
             for(int index = 0; index < epoterms.size(); ++index) {
                 Hibernate.initialize(epoterms.get(index).getErpmGenMaster());
                 Hibernate.initialize(epoterms.get(index).getPotTermsDescription());

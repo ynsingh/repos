@@ -1,3 +1,8 @@
+<%--
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
@@ -10,7 +15,7 @@
         <script language="JavaScript"  type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/PrePurchase/country.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/Administration/Admin.js"></script>
-        <link href="../css/pico.css" rel="stylesheet" type="text/css" />
+        <link href = "../css/pico.css" rel="stylesheet" type="text/css" />
         <meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
         <meta name="description" content="ERP for Universities">
         <meta name="keywords" content="ERP">
@@ -30,12 +35,13 @@
             </div>
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="left">
+                <br><br> 
                  <s:bean name="java.util.HashMap" id="qTableLayout">
                     <s:param name="tablecolspan" value="%{11}" />
                  </s:bean>
 
                  <div style="background-color: #215dc6;">
-                             <p align="left" class="pageHeading" style="color:  #ffffff"> &nbsp;Step 5 of 5 (Add Delivery Locations)</p>
+                             <p align="left" class="pageHeading" style="color:  #ffffff"> &nbsp;<s:property value="getText('PrePurchase.Step5of5AddDeliveryLocations')" /></p>
                              <p align="center" class="mymessage" style="color:  #ffff99 "><s:property value="message"/> </p>
                  </div>
                  <div style="border: solid 1px #000000; background:  gainsboro">
@@ -43,49 +49,26 @@
                  <s:form name="frmPOLocations" action="saveLocationsToPO" theme="qxhtml">
                     <s:hidden name ="poLocation.poLocationsId"/>
                     <s:hidden name ="podetail.podPodetailsId" />
-                    <s:hidden name="poN" />
+                    <s:hidden name = "poN" />
                     <s:hidden name="poTerm.potPotId"/>
 
 
                     <s:textfield cssClass="textInputRO"  maxLength="20" size="20"
-                                 label="PO No" name="poNumber" title="Purchase Order Number" readonly="true" >
+                                 key="PrePurchase.PurchaseOrderNo" name="poNumber" title="Purchase Order Number" readonly="true" >
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
 
                     <s:label value="..." cssClass="tdSpace"/>
 
-                    <s:textfield  cssClass="textInputRO"  maxLength="10" size="10" label="PO Date" name="poDate" title="" readonly="true">
+                    <s:textfield  cssClass="textInputRO"  maxLength="10" size="10" key="PrePurchase.PODate" name="poDate" title="" readonly="true">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
 
                     <s:label value="..." cssClass="tdSpace"/>
 
-                    <s:textfield  cssClass="textInputRO"  maxLength="50" size="25" label="Supplier" name="pomaster.suppliermaster.smName" title="" readonly="true">
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
-                    </s:textfield>
-
-                    <s:label value="..." cssClass="tdSpace"/>
-                    <s:label value="..." cssClass="tdSpace"/>
-                    <s:label value="..." cssClass="tdSpace"/>
-
-                    <s:textfield  cssClass="textInputRO"  label="Institution  " name="pomaster.institutionmaster.imName" title="" readonly="true" maxLength="30" size="30">
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
-                    </s:textfield>
-
-                    <s:label value="..." cssClass="tdSpace"/>
-
-                    <s:textfield  cssClass="textInputRO"  label="College/Faculty" name="pomaster.subinstitutionmaster.simName" title="" readonly="true" maxLength="30" size="30">
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
-                    </s:textfield>
-
-                    <s:label value="..." cssClass="tdSpace"/>
-
-                    <s:textfield  cssClass="textInputRO"  label="Department" name="pomaster.departmentmaster.dmName" title="" readonly="true" maxLength="30" size="30">
+                    <s:textfield  cssClass="textInputRO"  maxLength="50" size="25" key="PrePurchase.SupplierName" name="pomaster.suppliermaster.smName" title="" readonly="true">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
@@ -94,7 +77,30 @@
                     <s:label value="..." cssClass="tdSpace"/>
                     <s:label value="..." cssClass="tdSpace"/>
 
-                    <s:textfield  cssClass="textInputRO"  maxLength="25" size="20" label="Apprvd By" name="pomaster.erpmusersByPomApprovedById.erpmuFullName" title="Purchase Order approved by" readonly="true" >
+                    <s:textfield  cssClass="textInputRO"  key="PrePurchase.Institution" name="pomaster.institutionmaster.imName" title="" readonly="true" maxLength="30" size="30">
+                                <s:param name="labelcolspan" value="%{1}" />
+                                <s:param name="inputcolspan" value="%{1}" />
+                    </s:textfield>
+
+                    <s:label value="..." cssClass="tdSpace"/>
+
+                    <s:textfield  cssClass="textInputRO"  key="PrePurchase.SubInstitution" name="pomaster.subinstitutionmaster.simName" title="" readonly="true" maxLength="30" size="30">
+                                <s:param name="labelcolspan" value="%{1}" />
+                                <s:param name="inputcolspan" value="%{1}" />
+                    </s:textfield>
+
+                    <s:label value="..." cssClass="tdSpace"/>
+
+                    <s:textfield  cssClass="textInputRO"  key="PrePurchase.Department" name="pomaster.departmentmaster.dmName" title="" readonly="true" maxLength="30" size="30">
+                                <s:param name="labelcolspan" value="%{1}" />
+                                <s:param name="inputcolspan" value="%{1}" />
+                    </s:textfield>
+
+                    <s:label value="..." cssClass="tdSpace"/>
+                    <s:label value="..." cssClass="tdSpace"/>
+                    <s:label value="..." cssClass="tdSpace"/>
+
+                    <s:textfield  cssClass="textInputRO"  maxLength="25" size="20" key="PrePurchase.ApprovedBY" name="pomaster.erpmusersByPomApprovedById.erpmuFullName" title="Purchase Order approved by" readonly="true" >
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
@@ -102,7 +108,7 @@
                     <s:label value="..." cssClass="tdSpace"/>
 
                     <s:textfield cssClass="textInputRO"  maxLength="10" size="10"
-                                label="Currency" name="pomaster.erpmGenMasterByPomCurrencyId.erpmgmEgmDesc" title="" readonly="true">
+                                key="PrePurchase.Currency" name="pomaster.erpmGenMasterByPomCurrencyId.erpmgmEgmDesc" title="" readonly="true">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
@@ -111,12 +117,12 @@
                         <s:label value="..." cssClass="tdSpace"/>
                     </s:iterator>
 
-                    <s:label value="In the following section, please select delivery locations for Items in the PO" cssClass= "pageSubHeadingBlue">
+                    <s:label value="%{getText('PrePurchase.ps_DeliveryLocation')}" cssClass= "pageSubHeading">
                                 <s:param name="labelcolspan" value="%{0}" />
                                 <s:param name="inputcolspan" value="%{11}" />
                     </s:label>
 
-                    <s:select   cssClass="textInput" label="Item" name="poLocation.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --"
+                    <s:select   cssClass="textInput" key="PrePurchase.ItemName" name="poLocation.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --"
                                 required="true" list="PODetailList" listKey="erpmItemMaster.erpmimId" listValue="erpmItemMaster.erpmimItemBriefDesc">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
@@ -126,7 +132,7 @@
                     <s:label value="..." cssClass="tdSpace"/>
 
                     <s:textfield cssClass="textInput"  maxLength="10" size="5"
-                                label="Quantity" name="poLocation.qty" title="" readonly="false"
+                                key="PrePurchase.Quantity" name="poLocation.qty" title="" readonly="false"
                                 onChange="checkQtyDistribution( 'saveLocationsToPO_poN',
                                                                 'saveLocationsToPO_poLocation_erpmItemMaster_erpmimId',
                                                                 'saveLocationsToPO_poLocation_qty',
@@ -141,7 +147,7 @@
 
                      <s:label value="..." cssClass="tdSpace"/>
                      
-                    <s:select   cssClass="textInput" label="Department" name="poLocation.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --"
+                    <s:select   cssClass="textInput" key="PrePurchase.Department" name="poLocation.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --"
                                 required="true" list="departmentList" listKey="dmId" listValue="dmName"  >
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
@@ -151,14 +157,14 @@
                    <s:label value="..." cssClass="tdSpace"/>
 
                    <s:textfield cssClass="textInput"  maxLength="40" size="40"
-                                label="Location" name="poLocation.location" title="" readonly="false">
+                                key="PrePurchase.Location" name="poLocation.location" title="" >
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                     </s:textfield>
 
                     <s:label value="..." cssClass="tdSpace"/>
                     
-                    <s:submit value="Add Location" action="saveLocationToPO">
+                    <s:submit key="PrePurchase.AddLocation" action="saveLocationToPO">
                         <s:param name="labelcolspan" value="%{1}" />
                     </s:submit>
 
@@ -166,32 +172,32 @@
                         <s:label value="..." cssClass="tdSpace"/>
                    </s:iterator>
 
-                   <s:submit name="btnBrowsePO" value="Browse Purchase Orders" action="browsePOs" >
+                   <s:submit name="btnBrowsePO" key="PrePurchase.Browse" action="browsePOs" >
                       <s:param name="colspan" value="%{1}" />
                    </s:submit>
 
                    <s:label value="..." cssClass="tdSpace"/>
                    
-                   <s:submit value="Indented Items (2)" action="prepareIndentedItemsForPO">
+                   <s:submit key="PrePurchase.IndentedItems2" action="prepareIndentedItemsForPO">
                       <s:param name="colspan" value="%{1}" />
                    </s:submit>
 
-                   <s:submit value="Non Indented Items (3)"  action="prepareNonIndentedItemsForPO">
+                   <s:submit key="PrePurchase.NonIndentedItems3"  action="prepareNonIndentedItemsForPO">
                       <s:param name="colspan" value="%{1}" />
                    </s:submit>
 
                    <s:label value="..." cssClass="tdSpace"/>
 
-                   <s:submit value="Terms & Conditions (4)"  action="prepareTermsForPO">
+                   <s:submit key="PrePurchase.TermsAndConditions4"  action="prepareTermsForPO">
                       <s:param name="colspan" value="%{1}" />
                    </s:submit>
 
-                    <s:submit name="btnPrintPO" value="Print Purchase Order" action="PrintPO">
+                    <s:submit name="btnPrintPO" key="PrePurchase.Print" action="PrintPO">
                       <s:param name="colspan" value="%{1}" />
                     </s:submit>
                 </s:form>
                 <s:if test="poLocationList.size() > 0">
-                <s:label value="Locations wise Distribution of Items in the Purchase Order" cssClass= "pageSubHeadingBlue">
+                <s:label value="%{getText('PrePurchase.ps_LocWiseDistribution')}" cssClass= "pageSubHeading">
                         <s:param name="labelcolspan" value="%{0}" />
                         <s:param name="inputcolspan" value="%{11}" />
                 </s:label>
@@ -242,7 +248,7 @@
 
                 <hr>
                 <s:if test="poTermList.size() > 0">
-                <s:label value="Terms in Purchase Order" cssClass= "pageSubHeadingBlue">
+                <s:label value="%{getText('PrePurchase.ps_TermsInPO')}" cssClass= "pageSubHeading">
                         <s:param name="labelcolspan" value="%{0}" />
                         <s:param name="inputcolspan" value="%{11}" />
                 </s:label>
@@ -286,7 +292,7 @@
 
              <s:if test="PODetailList.size() > 0">
                  <hr>
-                    <s:label value="Items in Purchase Order" cssClass= "pageSubHeadingBlue">
+                    <s:label value="%{getText('PrePurchase.ps_ItemsInPO')}" cssClass= "pageSubHeading">
                         <s:param name="labelcolspan" value="%{0}" />
                         <s:param name="inputcolspan" value="%{11}" />
                     </s:label>
@@ -347,6 +353,7 @@
 
                  <br>
             </div>
+                 <br><br>
             </div>
             <div id="footer">
                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>

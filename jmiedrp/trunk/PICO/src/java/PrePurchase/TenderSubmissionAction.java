@@ -883,7 +883,8 @@ public class TenderSubmissionAction extends DevelopmentSupport {
         imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
         simList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
         dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
-        tmList = tmDao.findAll();
+        //tmList = tmDao.findAll();
+        tmList = tmDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
         emdtypeList = emdtypedao.findByErpmGmType(s);
         DefaultInsitute1 = Short.valueOf(getSession().getAttribute("imId").toString());
         DefaultSubInsitute = Integer.valueOf(getSession().getAttribute("simId").toString());

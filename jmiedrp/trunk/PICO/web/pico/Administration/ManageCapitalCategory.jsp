@@ -1,5 +1,12 @@
+<%--
+I18n By    : Mohd. Manauwar Alam
+           : Jan 2014
+--%>
+
+
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -40,7 +47,8 @@
             <br><br>
                 <div id ="mainContent">
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">CAPITAL ITEM CATEGORIES MANAGEMENT</p>
+<%--                    <p align="center" class="pageHeading" style="color: #ffffff">CAPITAL ITEM CATEGORIES MANAGEMENT</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.CapitalItemCatMgmt')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -51,7 +59,7 @@
                     <table border="0" cellpadding="4" cellspacing="0" align="center" >
                         <tbody>                        
                             <tr>
-                                <td><br>
+                       <%--         <td><br>
                                     <s:select label="Institution" required="true" requiredposition=""  name="erpmcc.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput"/>
                                     <s:textfield required="true" requiredposition="left" maxLength="100" size="50"
                                                  label="Capital Item Category Name" name="erpmcc.ermccDesc" title="Enter Capital Item Category Name"  cssClass="textInput"/>
@@ -64,7 +72,22 @@
                                     <s:submit theme="simple" name="bthReset" value="Fetch Capital Item Entries" action="FetchCCEntries" cssClass="textInput"/>
                                 </td>
                                 <td>
-                                    <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearCapitalCategory" cssClass="textInput"/>
+                                    <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearCapitalCategory" cssClass="textInput"/> --%>
+                                <td>
+                                    <s:select  required="true" requiredposition="left"  name="erpmcc.institutionmaster.imId" key="Administration.InstitutionName"
+                                               headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput"/>
+                                    <s:textfield required="true" requiredposition="left" maxLength="100" size="50"
+                                                 key = "Administration.CapitalItemCategoryName" name="erpmcc.ermccDesc" title="Enter Capital Item Category Name"  cssClass="textInput"/>
+                                </td>
+                            </tr> <tr>
+                                <td>
+                                    <s:submit theme="simple" name="btnSubmit" key="Administration.Save"   cssClass="textInput"/>
+                                </td>
+                                <td>
+                                    <s:submit theme="simple" name="bthReset" key="Administration.Browse" action="FetchCCEntries" cssClass="textInput"/>
+                                </td>
+                                <td>
+                                    <s:submit theme="simple" name="bthReset" key="Administration.Clear"  action="ClearCapitalCategory" cssClass="textInput"/>
                                 </td>
                             </tr>
                             <tr><td><br></td><td><br></td></tr>

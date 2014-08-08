@@ -5,10 +5,20 @@
 package PrePurchase;
 
 import java.io.*;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+//import java.io.ByteArrayInputStream;
+//import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import org.apache.struts2.ServletActionContext;
 import pojo.hibernate.Departmentmaster;
 import pojo.hibernate.DepartmentmasterDAO;
 import pojo.hibernate.ErpmItemCategoryMaster;
@@ -21,8 +31,9 @@ import pojo.hibernate.Subinstitutionmaster;
 import pojo.hibernate.SubinstitutionmasterDAO;
 import pojo.hibernate.Suppliermaster;
 import pojo.hibernate.SuppliermasterDAO;
+import utils.DateUtilities;
 import utils.DevelopmentSupport;
-import org.apache.struts2.interceptor.validation.SkipValidation;
+/*import org.apache.struts2.interceptor.validation.SkipValidation;
 import net.sf.jasperreports.engine.*;
 import java.text.*;
 import java.sql.Connection;
@@ -33,11 +44,11 @@ import java.util.HashMap;
 import java.util.Properties;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
-import utils.DateUtilities;
+import utils.DateUtilities;*/
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 /**
  *
@@ -67,6 +78,8 @@ public class PrePurchaseReportAction extends DevelopmentSupport {
     private Short k = 3;
     private String message;
     private InputStream inputStream;
+
+    static String dataSourceURL=null;
 
     public InputStream getInputStream() {
         return inputStream;
@@ -316,9 +329,16 @@ public class PrePurchaseReportAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -464,9 +484,16 @@ InitializeLOVs();
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");

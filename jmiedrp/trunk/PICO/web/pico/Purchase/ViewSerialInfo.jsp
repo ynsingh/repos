@@ -59,14 +59,14 @@
                     <table border="0" cellpadding="4" cellspacing="0" align="center" >
                         <tbody>
 
-                            <s:textfield label="Item" required="" name="pid.erpmItemMaster.erpmimItemBriefDesc" headerKey="" cssClass="textInput" 
+                            <s:textfield key="Purchase.ItemName" required="" name="pid.erpmItemMaster.erpmimItemBriefDesc" headerKey="" cssClass="textInput" 
                                          readonly="PrdNoReadOnly">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{7}" />
                             </s:textfield>
 
 
-                            <s:textfield label="Product No" name="productNo"  cssClass="textInput" size="40" readonly="PrdNoReadOnly" maxLength="30" >
+                            <s:textfield key="Purchase.ProductNo" name="productNo"  cssClass="textInput" size="40" readonly="PrdNoReadOnly" maxLength="30" >
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
@@ -74,13 +74,13 @@
 
                                 <tr><td align="left">
 
-                                    <s:submit theme="simple"  value="Save"   action="SavePOStokInfo" disabled="PrdNoReadOnly">
+                                    <s:submit theme="simple"  key="Purchase.Save"   action="SavePOStokInfo" disabled="PrdNoReadOnly">
                                     </s:submit>
 
-                                    <s:submit theme="simple"  value="Back"   action="BackPOStokInfo" >
+                                    <s:submit theme="simple"  key="Purchase.PreviousPage"   action="BackPOStokInfo" >
                                     </s:submit>
 
-                                    <s:submit theme="simple"  value="Add"   action="AddPOStokInfo" disabled="PrdNoReadOnly" >
+                                    <s:submit theme="simple"  key="Purchase.Add"   action="AddPOStokInfo" disabled="PrdNoReadOnly" >
                                     </s:submit>
 
                                 </td><td align="left">
@@ -92,24 +92,32 @@
                                 <tr><td> &nbsp; </td></tr>
                             </tbody>
                     </table>
-                                      
-                        <table border="1" cellspacing="5" cellpadding="4" align="center">
+                    </s:form>
+                     <s:if test="viewStockRecList.size() > 0">
+                        <hr>
+                    <s:label value="%{getText('')}" cssClass= "pageSubHeading">
+                        <s:param name="labelcolspan" value="%{0}" />
+                        <s:param name="inputcolspan" value="%{11}" />
+                    </s:label>
+                    <hr>
 
-                            <tr><td>
+       
+            <s:form name="frmViewSerialInfo" align="left">                 
+                        
                                     <display:table  name="viewStockRecList" pagesize=""
-                                                    excludedParams="*" export="false" cellpadding="5"
-                                                    cellspacing="0" id="doc"
+                                                    excludedParams="*" export="false" cellpadding="8"
+                                                    cellspacing="2" id="doc"
                                                     requestURI="/Purchase/PurchaseInvoiceAction.Action">
-                                        <display:column  class="griddata" title="SNo" sortable="true"  headerClass="gridheader" >
+                                        <display:column  class="griddata" title="SNo" sortable="true"  headerClass="gridheader" style="width:5%">
                                     <c:out> ${doc_rowNum}
                                     </display:column>
 
                                       <display:column property="serialCode" title="Item Serial Number"
-                                                    headerClass="gridheader"
+                                                    headerClass="gridheader" style="width:30%"
                                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="false" />
 
                                     <display:column  property="stProductNo" title="Product No"
-                                                     headerClass="gridheader"
+                                                     headerClass="gridheader" style="width:20%"
                                                      class="griddata" />
 
                                     <%--  <s:if test="pid.erpmPurchaseinvoiceMaster.erpmPoMaster = null">
@@ -140,14 +148,13 @@
                                     </display:column>
                                     </s:if>>
                                 </display:table>
-                                    </td></tr>
-                        </table>
-
+                                  
                     </s:form>
-                    <br>
-                     </div>
-                &nbsp;
-                </div>
+                     </s:if>
+               </div>
+                        </div>
+                <br>
+                <br>
 
             <div id="footer">
                  <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>

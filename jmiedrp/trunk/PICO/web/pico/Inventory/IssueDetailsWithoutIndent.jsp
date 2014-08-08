@@ -1,7 +1,9 @@
 <%--
     Document   : IssueDetailsWithoutIndent
     Created on : 7 Aug, 2012, 10:48:10 PM
-    Author     : manauwar
+    Author     : Mohd. Manauwar Alam
+    I18n By    : Mohd. Manauwar Alam
+               : March 2014
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -45,7 +47,7 @@
                 <br>
                 <br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff" ><s:label value="MANAGE ISSUE DETAILS"  /></p>
+                    <p align="center" class="pageHeading" style="color: #ffffff" ><s:property value="getText('Inventory.ManageIssueDetails')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
                 <%--------------------this is a issue items  form --------------------%>
@@ -67,18 +69,18 @@
                                 <s:param name="inputcolspan" value="%{7}" />
                                  </s:textfield> --%>
 
-                            <s:textfield label="Issue Number" name="" readonly="true" value="%{Issue_No}" cssClass="textInput" maxLength="50" size="40">
+                            <s:textfield key="Inventory.IssueNo" name="" readonly="true" value="%{Issue_No}" cssClass="textInput" maxLength="50" size="40">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
                             <s:label value=". . ." cssClass="tdSpace"/>
 
-                            <s:textfield label="Issue Date" name="" readonly="true" value="%{Issue_Date}" cssClass="textInput" maxLength="50" size="40">
+                            <s:textfield key="Inventory.IssueDate" name="" readonly="true" value="%{Issue_Date}" cssClass="textInput" maxLength="50" size="40">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
 
-                            <s:select label="Item Type" name ="eid.erpmItemMaster.erpmItemCategoryMasterByErpmimItemCat1.erpmicmItemId" headerKey="" headerValue="-- Please Select --"
+                            <s:select key="Inventory.ItemType" name ="eid.erpmItemMaster.erpmItemCategoryMasterByErpmimItemCat1.erpmicmItemId" headerKey="" headerValue="-- Please Select --"
                                       list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc" disabled="+VAL1" cssClass="textInput"
                                       onchange="getSubCategoryList('SaveIssueDetails_eid_erpmItemMaster_erpmItemCategoryMasterByErpmimItemCat1_erpmicmItemId', 'SaveIssueDetails_eid_erpmItemMaster_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId');">
                                 <s:param name="labelcolspan" value="%{1}" />
@@ -86,64 +88,72 @@
                             </s:select>
                             <s:label value=". . ." cssClass="tdSpace"/>
 
-                            <s:select label="Item Category" name="eid.erpmItemMaster.erpmItemCategoryMasterByErpmimItemCat2.erpmicmItemId" headerKey="" headerValue="-- Please Select --"
+                            <s:select key="Inventory.ItemCategory" name="eid.erpmItemMaster.erpmItemCategoryMasterByErpmimItemCat2.erpmicmItemId" headerKey="" headerValue="-- Please Select --"
                                       list="erpmIcmList2" listKey="erpmicmItemId" listValue="erpmicmCatDesc" disabled="+VAL1" cssClass="textInput"
                                       onchange="getSubCategoryList('SaveIssueDetails_eid_erpmItemMaster_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId', 'SaveIssueDetails_eid_erpmItemMaster_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId');">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:select>
 
-                            <s:select label="Item Sub Category" name="eid.erpmItemMaster.erpmItemCategoryMasterByErpmimItemCat3.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList3"
-                                      listKey="erpmicmItemId" listValue="erpmicmCatDesc" cssClass="textInput" disabled="+VAL1" onchange="getItemListTOS('SaveIssueDetails_eid_erpmItemMaster_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId', 'SaveIssueDetails_eid_erpmItemMaster_erpmimId')"
+                            <s:select key="Inventory.ItemSubCategory" name="eid.erpmItemMaster.erpmItemCategoryMasterByErpmimItemCat3.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList3"
+                                      listKey="erpmicmItemId" listValue="erpmicmCatDesc" cssClass="textInput" disabled="+VAL1" 
+                                      onchange="getItemListTOS('SaveIssueDetails_eid_erpmItemMaster_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId', 'SaveIssueDetails_eid_erpmItemMaster_erpmimId')"
                                       ondblclick="getItemListTOS('SaveIssueDetails_eid_erpmItemMaster_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId', 'SaveIssueDetails_eid_erpmItemMaster_erpmimId');" >
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:select>
                             <s:label value=". . ." cssClass="tdSpace"/>
 
-                            <s:select cssClass="textInput" label="Item Name" name="eid.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --"
+                            <s:select cssClass="textInput" key="Inventory.ItemName" name="eid.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --"
                                       list="itemList" listKey="erpmimId" listValue="erpmimItemBriefDesc" title="Select Item from the List" disabled="+VAL1" value="%{ItemId}">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:select>
 
-                            <s:textfield label="Issue Quantity" name="eid.isdIssuedQuantity"  value="%{IssQnty_val}" readonly="+IssueQtyReadOnly" cssClass="textInput">
+                            <s:textfield key="Inventory.IssueQuantity" name="eid.isdIssuedQuantity"  value="%{IssQnty_val}" readonly="+IssueQtyReadOnly" cssClass="textInput">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
                             <s:label value=". . ." cssClass="tdSpace"/>
 
-                            <s:textfield label="Unit of Measurement" name="" cssClass="textInput">
+                            <s:textfield key="Inventory.UnitOfMeasurement" name="" cssClass="textInput">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
 
                             <tr>
                                 <td align="right">
-                                    <s:submit  name="btnSubmit"  value="Save Without Indent" disabled="+BTNDSBL" action="SaveIssueDetailsWithoutIndent" theme="simple" />
+                                    <s:submit  name="btnSubmit"  key="Inventory.SaveWithoutIndent" disabled="+BTNDSBL" action="SaveIssueDetailsWithoutIndent" theme="simple" />
                                 </td>
                             </tr>
 
                         </table>
                     </s:form>
-                </div>
-                <br>
+                
+                 <s:if test="issueDetList1.size > 0">
+                        <hr>
 
-                <div id ="mainContent" align="center">
+                        <s:label value="%{getText('Inventory.ItemDetailsAre')}" cssClass= "pageSubHeading" >
+                            <s:param name="labelcolspan" value="%{1}" />
+                            <s:param name="inputcolspan" value="%{9}" />
+                        </s:label>
+
+                        <hr>
                     <s:form name="frmIssueDetailGrid" action="SaveIssueDetails">
-                        <table border="1" cellspacing="0" cellpadding="5" align="center">
+                        <table width="100%">
+
                             <tr><td>
                                     <display:table  name="issueDetList1" pagesize=""
-                                                    excludedParams="*" export="true" cellpadding="0"
+                                                    excludedParams="*"  cellpadding="8"
                                                     cellspacing="0" id="doc"
                                                     requestURI="/pico/Inventory/SaveIssueItemsAction.action">
                                         <display:column  class="griddata" title="SNo" sortable="true" maxLength="100" headerClass="gridheader">
                                     <c:out> ${doc_rowNum}
                                     </display:column>
                                     <display:column property="erpmItemMaster.erpmimItemBriefDesc" title="Item Name"
-                                                    maxLength="35" headerClass="gridheader" style="width:45%"
+                                                    maxLength="100" headerClass="gridheader" style="width:40%"
                                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="false" />
-                                    <display:column  property="isdIssuedQuantity" title="Issue Qnty" style="width:35%"
+                                    <display:column  property="isdIssuedQuantity" title="Issue Qnty" style="width:10%"
                                                      headerClass="gridheader" class="griddata"  sortable="true"/>
                                     <display:column paramId="EIDID" paramProperty="isdId"
                                                     href="/pico/Inventory/EditIssueDetailsWithoutIndent"
@@ -154,10 +164,12 @@
                         </table>
 
                     </s:form>
+                     </s:if>
                     <br>
 
                 </div>
             </div>
+                <br>
             <div id="footer">
                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
             </div>

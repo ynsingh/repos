@@ -6,38 +6,43 @@ package Inventory;
 
 /**
  *
- * @author farah
- * Updated By : Tanvir Ahmed
+ * @author farah Updated By : Tanvir Ahmed
  */
+import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.text.*;
+import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import pojo.hibernate.Departmentmaster;
 import pojo.hibernate.DepartmentmasterDAO;
+import pojo.hibernate.ErpmItemCategoryMaster;
+import pojo.hibernate.ErpmItemCategoryMasterDao;
+import pojo.hibernate.ErpmItemMaster;
+import pojo.hibernate.ErpmItemMasterDAO;
+import pojo.hibernate.ErpmStockReceived;
+import pojo.hibernate.ErpmStockReceivedDAO;
+import pojo.hibernate.ErpmTempOpeningStock;
 import pojo.hibernate.Institutionmaster;
 import pojo.hibernate.InstitutionmasterDAO;
 import pojo.hibernate.Subinstitutionmaster;
 import pojo.hibernate.SubinstitutionmasterDAO;
-import pojo.hibernate.SuppliermasterDAO;
-import pojo.hibernate.ErpmItemMasterDAO;
-import pojo.hibernate.ErpmStockReceived;
-import pojo.hibernate.ErpmTempOpeningStock;
 import pojo.hibernate.Suppliermaster;
-import pojo.hibernate.ErpmItemMaster;
-import pojo.hibernate.ErpmItemCategoryMaster;
-import pojo.hibernate.ErpmItemCategoryMasterDao;
-import java.sql.DriverManager;
-import org.apache.struts2.ServletActionContext;
-import net.sf.jasperreports.engine.*;
-import java.io.*;
-import java.sql.Connection;
-import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import pojo.hibernate.SuppliermasterDAO;
 import utils.DateUtilities;
-import org.apache.struts2.interceptor.validation.SkipValidation;
 import utils.DevelopmentSupport;
-import java.text.*;
-
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class ManageStockReports extends DevelopmentSupport {
     private String message;
@@ -48,6 +53,8 @@ public class ManageStockReports extends DevelopmentSupport {
     private SuppliermasterDAO supplierdao = new SuppliermasterDAO();
     private ErpmItemMasterDAO itemDao = new ErpmItemMasterDAO();
     private ErpmStockReceived esr = new ErpmStockReceived();
+    private List<ErpmStockReceived> esrList = new ArrayList<ErpmStockReceived>();
+    private ErpmStockReceivedDAO esrDAO = new ErpmStockReceivedDAO();
     private List<Institutionmaster> tosImIdList = new ArrayList<Institutionmaster>();
     private InstitutionmasterDAO imDao = new InstitutionmasterDAO();
     private List<Subinstitutionmaster> tosSimImIdList = new ArrayList<Subinstitutionmaster>();
@@ -59,6 +66,7 @@ public class ManageStockReports extends DevelopmentSupport {
     private List<ErpmItemCategoryMaster> erpmIcmList2 = new ArrayList<ErpmItemCategoryMaster>();
     private List<ErpmItemCategoryMaster> erpmIcmList3 = new ArrayList<ErpmItemCategoryMaster>();
     private List<ErpmItemMaster> tosINList = new ArrayList<ErpmItemMaster>();
+    private String tot;
     private String fromDate;
     private String toDate;
     private String tosInStockSince;
@@ -70,6 +78,16 @@ public class ManageStockReports extends DevelopmentSupport {
     private Short j = 2;
     private Short k = 3;
     private InputStream inputStream;
+
+    static String dataSourceURL=null;
+
+    public List<ErpmStockReceived> getEsrList() {
+        return esrList;
+    }
+
+    public void setEsrList(List<ErpmStockReceived> esrList) {
+        this.esrList = esrList;
+    }
 
     public InputStream getInputStream() {
         return inputStream;
@@ -89,7 +107,6 @@ public class ManageStockReports extends DevelopmentSupport {
     public void setTos(ErpmTempOpeningStock tos) {
         this.tos = tos;
     }
-
   
     //getter setter for fromdate,todate
 
@@ -109,8 +126,6 @@ public class ManageStockReports extends DevelopmentSupport {
         this.toDate = toDate;
     }
 
-   
-
     /**
      * @return the tosImIdList
      */
@@ -124,9 +139,7 @@ public class ManageStockReports extends DevelopmentSupport {
     public void setTosImIdList(List<Institutionmaster> tosImIdList) {
         this.tosImIdList = tosImIdList;
     }
-
-   
-
+ 
     public List<ErpmItemMaster> getTosINList() {
         return tosINList;
     }
@@ -162,7 +175,8 @@ public class ManageStockReports extends DevelopmentSupport {
     /**
      * @param tosDmList the tosDmList to set
      */
-    public void setTosDmList(List<Departmentmaster> tosDmList) {
+    public void setTosDmList(List<Departmentmaster> tosDmList)
+ {
         this.tosDmList = tosDmList;
     }
 
@@ -233,9 +247,6 @@ public class ManageStockReports extends DevelopmentSupport {
         this.message = message;
     }
 
-   
-  
-
     /**
      * @return the supplier
      */
@@ -249,8 +260,6 @@ public class ManageStockReports extends DevelopmentSupport {
     public void setSupplier(Suppliermaster supplier) {
         this.supplier = supplier;
     }
-
-   
     
     /**
      * @return the erpmItemCategoryMaster
@@ -280,8 +289,6 @@ public class ManageStockReports extends DevelopmentSupport {
     public void setEsr(ErpmStockReceived esr) {
         this.esr = esr;
     }
-
-  
    
     public String getTosInStockSince() {
         return tosInStockSince;
@@ -354,6 +361,86 @@ public class ManageStockReports extends DevelopmentSupport {
     }
 
     
+    public void findDepriciationValue() throws Exception {
+        try {
+
+            esrList = esrDAO.findStId_ImId_SimId(esr.getInstitutionmaster().getImId(), esr.getSubinstitutionmaster().getSimId());
+
+            ErpmStockReceived newesr;
+
+            for (int i = 0; i < esrList.size(); i++) {
+                Date d = esrList.get(i).getStInStockSince();
+                LocalDate ld = new LocalDate(d);
+                LocalDate ld1 = new LocalDate();
+
+                Days day = Days.daysBetween(ld, ld1);
+
+                float prd = (float) day.getDays() / 365;
+                BigDecimal prdval = new BigDecimal(prd);
+                prdval = prdval.setScale(0, RoundingMode.DOWN);
+
+                newesr = esrDAO.findByesrId(esrList.get(i).getStId());
+                if (prd >= 1) {
+
+                    char c = esrList.get(i).getErpmItemMaster().getErpmimDepreciationMethod();
+
+                    if (c == 'S') {
+                        BigDecimal qty = esrList.get(i).getStQuantity();
+                        BigDecimal utr = esrList.get(i).getStUnitRate();
+                        BigDecimal txvl = BigDecimal.ZERO;
+
+                        if (esrList.get(i).getStTaxValue() == null) {
+                        } else {
+                            txvl = esrList.get(i).getStTaxValue();
+                        }
+
+                        BigDecimal val = qty.multiply(utr).add(txvl).setScale(2, RoundingMode.HALF_EVEN);
+
+                        float amt = val.floatValue();
+                        float drv = esrList.get(i).getErpmItemMaster().getErpmimDepreciationPercentage().floatValue();
+                        float dr = (drv) / 100;
+                        prd = prdval.floatValue();
+                        float da = amt - (dr * amt * prd);
+                        BigDecimal daval = new BigDecimal(da);
+
+                        newesr.setStDepriciatedValue(daval);
+                        esrDAO.update(newesr);
+
+                    } else {
+
+                        BigDecimal qty = esrList.get(i).getStQuantity();
+                        BigDecimal utr = esrList.get(i).getStUnitRate();
+                        BigDecimal txvl = BigDecimal.ZERO;
+
+                        if (esrList.get(i).getStTaxValue() == null) {
+                        } else {
+                            txvl = esrList.get(i).getStTaxValue();
+                        }
+
+                        BigDecimal val = qty.multiply(utr).add(txvl).setScale(2, RoundingMode.HALF_EVEN);
+
+                        float dp = esrList.get(i).getErpmItemMaster().getErpmimDepreciationPercentage();
+                        float dr = 1 - (dp / 100);
+                        BigDecimal drval = new BigDecimal(dr);
+
+                        BigDecimal dv = drval.pow(prdval.intValue()).multiply(val);
+
+                        newesr.setStDepriciatedValue(dv);
+                        esrDAO.update(newesr);
+
+                    }
+
+                }
+
+            }
+
+
+        } catch (Exception e) {
+            message = "Exception in -> ManageOpeningStockAction" + e.getMessage() + " Reported Cause is: " + e.getCause();
+
+        }
+    }
+
     public void validate() {
         try {
 
@@ -511,13 +598,29 @@ public class ManageStockReports extends DevelopmentSupport {
             String whereCondition;
 
             try {
-                Locale locale = ActionContext.getContext().getLocale();
-                ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//                Locale locale = ActionContext.getContext().getLocale();
+ //               ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+                Context ctx = new InitialContext();
+                if (ctx == null) {
+                    throw new RuntimeException("JNDI");
+                }
+                dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+                Connection conn = DriverManager.getConnection(dataSourceURL);
 
                 HttpServletResponse response = ServletActionContext.getResponse();
                 response.setHeader("Cache-Control", "no-cache");
-                response.setHeader("Content-Disposition", "attachment; filename=Stock Summary.pdf");
+                String userAgent = getRequest().getHeader("user-agent");
+                if(userAgent.contains("Chrome"))
+                {
+                    response.setHeader("", "attachment; filename=Stock Summary.pdf");
+                }
+                else
+                {
+                    response.setHeader("Content-Disposition", "attachment; filename=Stock Summary.pdf");
+		}
+
                 response.setHeader("Expires", "0");
                 response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
                 response.setHeader("Pragma", "public");
@@ -680,13 +783,30 @@ public class ManageStockReports extends DevelopmentSupport {
             String whereCondition;
 
             try {
-                Locale locale = ActionContext.getContext().getLocale();
-                ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
-
+//                Locale locale = ActionContext.getContext().getLocale();
+  //              ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+    //            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+    
+                Context ctx = new InitialContext();
+                if (ctx == null) {
+                    throw new RuntimeException("JNDI");
+                }
+                dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+                Connection conn = DriverManager.getConnection(dataSourceURL);
+            
                 HttpServletResponse response = ServletActionContext.getResponse();
                 response.setHeader("Cache-Control", "no-cache");
-                response.setHeader("Content-Disposition", "attachment; filename=STOCK DETAILS.pdf");
+            //    response.setHeader("Content-Disposition", "attachment; filename=STOCK DETAILS.pdf");
+                String userAgent = getRequest().getHeader("user-agent");
+                if(userAgent.contains("Chrome"))
+                {
+                    response.setHeader("", "attachment; filename=STOCK_DETAILS.pdf");
+                }
+                else
+                {
+                    response.setHeader("Content-Disposition", "attachment; filename = STOCK_DETAILS.pdf");
+                }
+
                 response.setHeader("Expires", "0");
                 response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
                 response.setHeader("Pragma", "public");
@@ -837,7 +957,6 @@ public class ManageStockReports extends DevelopmentSupport {
 
             // Get the path separator symbol, which is unfortunatly different, in different OS platform.
             String pathSeparator = properties.getProperty("file.separator");
-
             pathSeparator = pathSeparator + pathSeparator;
             String repPath = "pico" + pathSeparator + "Inventory"  + pathSeparator + "Reports" + pathSeparator + "IssuesPendingToBeReceive.jasper" ;
 
@@ -848,13 +967,28 @@ public class ManageStockReports extends DevelopmentSupport {
             String whereCondition = "";
 
             try {
-                Locale locale = ActionContext.getContext().getLocale();
-                ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//                Locale locale = ActionContext.getContext().getLocale();
+  //              ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+    //            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+                Context ctx = new InitialContext();
+                if (ctx == null) {
+                    throw new RuntimeException("JNDI");
+                }
+                dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+                Connection conn = DriverManager.getConnection(dataSourceURL);
 
                 HttpServletResponse response = ServletActionContext.getResponse();
                 response.setHeader("Cache-Control", "no-cache");
-                response.setHeader("Content-Disposition", "attachment; filename=IssuesPendingToBeReceive.pdf");
+                String userAgent = getRequest().getHeader("user-agent");
+                if(userAgent.contains("Chrome"))
+                {
+                    response.setHeader("", "attachment; filename=IssuesPendingToBeReceive.pdf");
+                }
+                else
+                {
+                    response.setHeader("Content-Disposition", "attachment; filename=IssuesPendingToBeReceive.pdf");
+		}
                 response.setHeader("Expires", "0");
                 response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
                 response.setHeader("Pragma", "public");
@@ -1010,15 +1144,30 @@ public class ManageStockReports extends DevelopmentSupport {
 
             try {
 
-                Locale locale = ActionContext.getContext().getLocale();
-                ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//                Locale locale = ActionContext.getContext().getLocale();
+  //              ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+    //            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+    
+                Context ctx = new InitialContext();
+                if (ctx == null) {
+                    throw new RuntimeException("JNDI");
+                }
+                dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+                Connection conn = DriverManager.getConnection(dataSourceURL);
 
                 HttpServletResponse response = ServletActionContext.getResponse();
 
                 response.setHeader("Cache-Control", "no-cache");
 
-                response.setHeader("Content-Disposition", "attachment; filename=Stock_In_Hand_Report.pdf");
+                String userAgent = getRequest().getHeader("user-agent");
+                if(userAgent.contains("Chrome"))
+                {
+                    response.setHeader("", "attachment; filename=Stock_In_Hand_Report.pdf");
+                }
+                else
+                {
+                    response.setHeader("Content-Disposition", "attachment; filename=Stock_In_Hand_Report.pdf");
+		}
 
                 response.setHeader("Expires", "0");
 
@@ -1175,13 +1324,29 @@ public class ManageStockReports extends DevelopmentSupport {
             String whereCondition = "";
 
             try {
-                Locale locale = ActionContext.getContext().getLocale();
-                ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
-                
+//                Locale locale = ActionContext.getContext().getLocale();
+  //              ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+    //            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+      
+                Context ctx = new InitialContext();
+                if (ctx == null) {
+                    throw new RuntimeException("JNDI");
+                }
+                dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+                Connection conn = DriverManager.getConnection(dataSourceURL);
+          
                 HttpServletResponse response = ServletActionContext.getResponse();
                 response.setHeader("Cache-Control", "no-cache");
-                response.setHeader("Content-Disposition", "attachment; filename=GFRReport40.pdf");
+                String userAgent = getRequest().getHeader("user-agent");
+                if(userAgent.contains("Chrome"))
+                {
+                    response.setHeader("", "attachment; filename=GFRReport40.pdf");
+                }
+                else
+                {
+                    response.setHeader("Content-Disposition", "attachment; filename=GFRReport40.pdf");
+		}
+
                 response.setHeader("Expires", "0");
                 response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
                 response.setHeader("Pragma", "public");
@@ -1335,13 +1500,29 @@ public class ManageStockReports extends DevelopmentSupport {
             String whereCondition;
 
             try {
-                Locale locale = ActionContext.getContext().getLocale();
-                ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
-                
+           //     Locale locale = ActionContext.getContext().getLocale();
+           //     ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+           //     Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+           
+                Context ctx = new InitialContext();
+                if (ctx == null) {
+                    throw new RuntimeException("JNDI");
+                }
+                dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+                Connection conn = DriverManager.getConnection(dataSourceURL);
+                              
                 HttpServletResponse response = ServletActionContext.getResponse();
                 response.setHeader("Cache-Control", "no-cache");
-                response.setHeader("Content-Disposition", "attachment; filename=GFRReport41.pdf");
+                String userAgent = getRequest().getHeader("user-agent");
+                if(userAgent.contains("Chrome"))
+                {
+                    response.setHeader("", "attachment; filename=GFRReport41.pdf");
+                }
+                else
+                {
+                    response.setHeader("Content-Disposition", "attachment; filename=GFRReport41.pdf");
+		}
+
                 response.setHeader("Expires", "0");
                 response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
                 response.setHeader("Pragma", "public");
@@ -1464,13 +1645,29 @@ public class ManageStockReports extends DevelopmentSupport {
             String whereCondition;
 
             try {
-                Locale locale = ActionContext.getContext().getLocale();
-                ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
-                
+//                Locale locale = ActionContext.getContext().getLocale();
+  //              ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+    //            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+      
+                Context ctx = new InitialContext();
+                if (ctx == null) {
+                    throw new RuntimeException("JNDI");
+                }
+                dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+                Connection conn = DriverManager.getConnection(dataSourceURL);
+          
                 HttpServletResponse response = ServletActionContext.getResponse();
                 response.setHeader("Cache-Control", "no-cache");
-                response.setHeader("Content-Disposition", "attachment; filename=Stock_Register.pdf");
+                String userAgent = getRequest().getHeader("user-agent");
+                if(userAgent.contains("Chrome"))
+                {
+                    response.setHeader("", "attachment; filename=Stock_Register.pdf");
+                }
+                else
+                {
+                    response.setHeader("Content-Disposition", "attachment; filename=Stock_Register.pdf");
+		}
+
                 response.setHeader("Expires", "0");
                 response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
                 response.setHeader("Pragma", "public");

@@ -2,8 +2,9 @@
     Document   : TenderSchedule
     Created on : 22 Mar, 2013, 10:29:11 AM
     Author     : Saeed
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
 --%>
-
 
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -40,7 +41,7 @@
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
                 <div style ="background-color: #215dc6;" align="center">
-                    <p align="center" class="pageHeading" style="color: #ffffff">TENDER SCHEDULE</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('PrePurchase.TenderSchedule')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -53,42 +54,42 @@
                         <table border="0" cellpadding="4" cellspacing="0" align="center" >
                             <tbody>
 
-                                <s:select label="Institute" required="true" requiredposition="" name="tenschdl.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
+                                <s:select key="PrePurchase.Institution" required="true" requiredposition="" name="tenschdl.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
                                           cssClass="textInput"
                                           onchange="getSubinstitutionList('TenderScheduleAction_tenschdl_institutionmaster_imId', 'TenderScheduleAction_tenschdl_subinstitutionmaster_simId');">
                                     <s:param name="labelcolspan" value="%{1}" />
                                     <s:param name="inputcolspan" value="%{3}" />
                                 </s:select>
 
-                                <s:select label="SubInstitute" required="true" requiredposition="" name="tenschdl.subinstitutionmaster.simId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName"
+                                <s:select key="PrePurchase.SubInstitution" required="true" requiredposition="" name="tenschdl.subinstitutionmaster.simId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName"
                                               cssClass="textInput"
                                               onchange="getDepartmentList('TenderScheduleAction_tenschdl_subinstitutionmaster_simId', 'TenderScheduleAction_tenschdl_departmentmaster_dmId');">
                                         <s:param name="labelcolspan" value="%{3}" />
                                         <s:param name="inputcolspan" value="%{2}" />
                                 </s:select>
 
-                                <s:select label="Department" required="true" requiredposition=""  name="tenschdl.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"  cssClass="textInput">
+                                <s:select key="PrePurchase.Department" required="true" requiredposition=""  name="tenschdl.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"  cssClass="textInput">
                                     <s:param name="labelcolspan" value="%{1}" />
                                     <s:param name="inputcolspan" value="%{3}" />
                                 </s:select>
 
-                                <s:select label="Tender No" required="true" requiredposition=""  name="tenschdl.erpmTenderMaster.tmTmId" headerKey="" headerValue="-- Please Select --" list="tnoList" listKey="tmTmId" listValue="tmTenderNo"  cssClass="textInput">
+                                <s:select key="PrePurchase.TenderNo" required="true" requiredposition=""  name="tenschdl.erpmTenderMaster.tmTmId" headerKey="" headerValue="-- Please Select --" list="tnoList" listKey="tmTmId" listValue="tmTenderNo"  cssClass="textInput">
                                     <s:param name="labelcolspan" value="%{1}" />
                                     <s:param name="inputcolspan" value="%{3}" />
                                 </s:select>
 
-                                <s:textarea cssClass="textArea" rows="3" cols="40" label="Remarks" name="tenschdl.tscRemarks" maxLength="500">
+                                <s:textarea cssClass="textArea" rows="3" cols="40" key="PrePurchase.Remarks" name="tenschdl.tscRemarks" maxLength="500">
                                    <s:param name="labelcolspan" value="%{1}" />
                                    <s:param name="inputcolspan" value="%{3}" />
                                 </s:textarea>
 
 
                                 <tr><td align="left">
-                                <s:submit theme="simple" name="btnSubmit" value="Save&Proceed"   action="SaveTenderScheduleAction" />
+                                <s:submit theme="simple" name="btnSubmit" key="PrePurchase.SaveAndProceed"   action="SaveTenderScheduleAction" />
 
-                                <s:submit theme="simple" name="btnSubmit" value="Browse"   action="BrowseTenderSchedule" />
+                                <s:submit theme="simple" name="btnSubmit" key="PrePurchase.Browse"   action="BrowseTenderSchedule" />
 
-                                <s:submit theme="simple" name="btnSubmit" value="Clear"   action="ClearTenderSchedule" />
+                                <s:submit theme="simple" name="btnSubmit" key="PrePurchase.Clear"   action="ClearTenderSchedule" />
                                  </td></tr>
 
                                 <%-- <s:textfield  maxLength="30" size="20"  label="Schedule No" requiredposition="" name="tenschdl.tscScheduleNo" required="true">

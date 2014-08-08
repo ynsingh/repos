@@ -2,9 +2,9 @@
     Document   : PurchaseInvoice
     Created on : 6 Aug, 2012, 1:13:28 PM
     Author     : Tanvir Ahmed & Saeed-uz-Zama & mkhan
+    I18n By    : Mohd. Manauwar Alam
+               : March 2014
 --%>
-
-
 
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -41,7 +41,7 @@
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
                 <div style ="background-color: #215dc6;" align="center">
-                    <p align="center" class="pageHeading" style="color: #ffffff">PURCHASE INVOICE/BILL</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Purchase.PurchaseInvoiceBill')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -50,25 +50,28 @@
                    
                <s:form name="frmPurchaceInvoiceBill" action="PurchaseInvoiceAction"  theme="qxhtml">
                     <s:hidden name="pibm.pimPimId" />
-                         
+                
+                                
                  <table border="0" cellpadding="4" cellspacing="0" align="center" >
                  <tbody>
 
-                            <s:select label="Institute" required="true" requiredposition="" name="pibm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
+  
+ 
+                            <s:select  key="Purchase.Institution" required="true" requiredposition="" name="pibm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
                                       cssClass="textInput"
                                       onchange="getSubinstitutionList('PurchaseInvoiceAction_pibm_institutionmaster_imId', 'PurchaseInvoiceAction_pibm_subinstitutionmaster_simId');">
                                  <s:param name="labelcolspan" value="%{1}" />
                                  <s:param name="inputcolspan" value="%{3}" />
                             </s:select>
                            
-                            <s:select label="SubInstitute" required="true" requiredposition="" name="pibm.subinstitutionmaster.simId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName"
+                            <s:select key="Purchase.SubInstitution" required="true" requiredposition="" name="pibm.subinstitutionmaster.simId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName"
                                       cssClass="textInput"
                                       onchange="getDepartmentList('PurchaseInvoiceAction_pibm_subinstitutionmaster_simId', 'PurchaseInvoiceAction_pibm_departmentmaster_dmId');">
                                  <s:param name="labelcolspan" value="%{3}" />
                                  <s:param name="inputcolspan" value="%{2}" />
                             </s:select>
 
-                            <s:select label="Department" required="true" requiredposition=""  name="pibm.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"  cssClass="textInput">
+                            <s:select key="Purchase.Department" required="true" requiredposition=""  name="pibm.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"  cssClass="textInput">
                                  <s:param name="labelcolspan" value="%{1}" />
                                  <s:param name="inputcolspan" value="%{3}" />
                             </s:select>
@@ -80,51 +83,51 @@
                             </s:select>
 
                      --%>
-                            <s:select label="Invoice Type" required="true" requiredposition="" name="pibm.pimInvoiceType" headerKey="" headerValue="-- Please Select --" list="{'Only Invoice','Invoice Cum Challan'}"  cssClass="queryInput"
+                            <s:select key="Purchase.InvoiceType" required="true" requiredposition="" name="pibm.pimInvoiceType" headerKey="" headerValue="-- Please Select --" list="{'Only Invoice','Invoice Cum Challan'}"  cssClass="queryInput" 
                                       onchange="EnableDisablePO_Challan('PurchaseInvoiceAction_pibm_pimInvoiceType','PurchaseInvoiceAction_pibm_erpmPoMaster_pomPoMasterId','PurchaseInvoiceAction_pibm_erpmPurchasechallanMaster_pcmPcmId','PurchaseInvoiceAction_showPOreportInInvoice');">
                                  <s:param name="labelcolspan" value="%{1}" />
                                  <s:param name="inputcolspan" value="%{3}" />
                             </s:select>
 
-                            <s:textfield label="Exchange Rate" required="" requiredposition="left" maxLength="40" size="20"
+                            <s:textfield key="Purchase.ExchangeRate" required="" requiredposition="left" maxLength="40" size="20"
                                           name="pibm.pimImportExchangeRate" title="Enter Order"  cssClass="textInput">
                                  <s:param name="labelcolspan" value="%{1}" />
                                  <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
                        
 
-                            <s:textfield label="Invoice Recieved Date" required="true" requiredposition="" maxLength="40" size="20"
+                            <s:textfield key="Purchase.InvoiceRecievedDate" required="true" requiredposition="" maxLength="40" size="20"
                                           name="invoicerecvDate" title="Enter Order"  cssClass="textInput">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
 
-                            <s:textfield label="Supplier Invoice No" required="true" requiredposition="" maxLength="40" size="20"
+                            <s:textfield key="Purchase.SupplierInvoiceNo" required="true" requiredposition="" maxLength="40" size="20"
                                           name="pibm.pimSupplierInvoiceNo" title="Enter Order"  cssClass="textInput">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
 
                             <s:textfield required="true"  requiredposition="" maxLength="100" size="20"
-                                         label="Supplier Invoice Date" name="suplierinvoiceDate" title="Enter Order"  cssClass="textInput">
+                                         key="Purchase.SupplierInvoiceDate" name="suplierinvoiceDate" title="Enter Order"  cssClass="textInput">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
                
-                            <s:select label="Supplier Name" required="true"  requiredposition="" name="pibm.suppliermaster.smId" headerKey="" headerValue="-- Please Select --" list="smList" listKey="smId" listValue="smName"  cssClass="textInput"    
+                     <s:select key="Purchase.SupplierName" required="true"  requiredposition="" name="pibm.suppliermaster.smId" headerKey="" headerValue="-- Please Select --" list="smList" listKey="smId" listValue="smName"  cssClass="textInput"    
                                 onchange="getChallanList('PurchaseInvoiceAction_pibm_suppliermaster_smId', 'PurchaseInvoiceAction_pibm_erpmPurchasechallanMaster_pcmPcmId');
                                 getPOList('PurchaseInvoiceAction_pibm_suppliermaster_smId', 'PurchaseInvoiceAction_pibm_erpmPoMaster_pomPoMasterId');">
                                <s:param name="labelcolspan" value="%{1}" />
                                <s:param name="inputcolspan" value="%{7}" />
                             </s:select>
 
-                     <s:select label="Purchase order no" required="true" requiredposition=""  name="pibm.erpmPoMaster.pomPoMasterId"  headerKey="" headerValue="-- Please Select --" list="pomList"  listKey="poid" listValue="pono" cssClass="textInput">
+                     		<s:select key="Purchase.PONo" required="true" requiredposition=""  name="pibm.erpmPoMaster.pomPoMasterId"  headerKey="" headerValue="-- Please Select --" list="pomList"  listKey="poid" listValue="pono" cssClass="textInput"  >
                                  <s:param name="labelcolspan" value="%{1}" />
                                  <s:param name="inputcolspan" value="%{1}" />
                             </s:select>
                             <s:submit name="showPOreportInInvoice"  value="Show PO" action="showPOreportInInvoice"/>
 
-                            <s:select label="Challan no" required="true" requiredposition="" name="pibm.erpmPurchasechallanMaster.pcmPcmId"  headerKey="" headerValue="-- Please Select --" list="pcmList" listKey="pcmPcmId" listValue="pcmChallanNo"  cssClass="textInput">
+                            <s:select key="Purchase.ChallanNo" required="true" requiredposition="" name="pibm.erpmPurchasechallanMaster.pcmPcmId"  headerKey="" headerValue="-- Please Select --" list="pcmList" listKey="pcmPcmId" listValue="pcmChallanNo"  cssClass="textInput" >
                                  <s:param name="labelcolspan" value="%{1}" />
                                  <s:param name="inputcolspan" value="%{3}" />
                             </s:select>
@@ -133,15 +136,15 @@
                             <tr><td> &nbsp; </td></tr>
 
                             <tr><td align="left">
-                            <s:submit theme="simple" name="btnSubmit" value="SAVE"   action="SavePurchaseInvoice" />
+                            <s:submit theme="simple" name="btnSubmit" key="Purchase.Save"   action="SavePurchaseInvoice" />
 
                             </td><td align="left">
 
-                            <s:submit theme="simple" name="btnSubmit" value="BROWSE"    action="BrowsePurchaseInvoice"/>
+                            <s:submit theme="simple" name="btnSubmit" key="Purchase.Browse"    action="BrowsePurchaseInvoice"/>
 
-                            <s:submit theme="simple" name="bthReset" value="CLEAR"  action="ClearPurchaseInvoice"  />
+                            <s:submit theme="simple" name="bthReset" key="Purchase.Clear"  action="ClearPurchaseInvoice"  />
 
-                            <s:submit theme="simple" name="showGFRreport"  value="Show GFR" action="showGFRreportInvoice" disabled="varShowGFR" />
+                            <s:submit theme="simple" name="showGFRreport"  key="Purchase.ShowGFR" action="showGFRreportInvoice" disabled="varShowGFR" />
                             </td></tr>
                             <tr><td> &nbsp; </td></tr>
 

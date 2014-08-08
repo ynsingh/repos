@@ -2,6 +2,8 @@
     Document   : ReceiveItems
     Created on : 15 May, 2012, 11:01:28 AM
     Author     : Saeed
+    I18n By    : Mohd. Manauwar Alam
+               : March 2014
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -46,7 +48,7 @@
                 </s:bean>
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">RECEIVE ISSUED ITEM SERIAL DETAILS</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Inventory.ReceivedIssuedItemSerialDetails')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -70,62 +72,72 @@
                                 return true;
                             }
                         </script>
-
-
+                        <table align="center">
+                            <tr><td>
                         <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="15"
-                                     label="IssueNo" name="varchar_IssueNo" readonly="true"/>
+                                     key="Inventory.IssueNo" name="varchar_IssueNo" readonly="true"/>
 
                         <s:textfield cssClass="textInputRO" required="" requiredposition="left" maxLength="50" size="50"
-                                     label="Item Name" name="varchar_Item_Name" readonly="true"/>
+                                     key="Inventory.ItemName" name="varchar_Item_Name" readonly="true"/>
 
                         <s:textfield cssClass="textInput" required="" requiredposition="left" maxLength="6" size="15"
-                                     label="Receive Qty" name="varcharIsdReceivedQuantity"  title="" readonly="+ToLockRecdQty"/>
-
-                        <tr><td> &nbsp; </td></tr>
+                                     key="Inventory.ReceiveQty" name="varcharIsdReceivedQuantity"  title="" readonly="+ToLockRecdQty"/>
+                        </td></tr>
+                        <tr><td> 
                         <tr><td align="right">
-                                <s:submit theme="simple" value="Save" action="SaveReceiveDetails"/>
-                            </td>
-                            <td>
-                                <s:submit theme="simple" value="Recall All Items" action="ResetReceiveDetails" disabled="+dsbl"/>
-                            </td>
-                        </tr>
-                        <tr><td> &nbsp; </td></tr>
+                                <s:submit theme="simple" key="Inventory.Save" action="SaveReceiveDetails"/>
+                           
+                                <s:submit theme="simple" key="Inventory.RecallAllItems" action="ResetReceiveDetails" disabled="+dsbl"/>
+                        
+                        <tr><td> 
+                        </table>
                     </s:form>
 
-                        </div>
-            </div>
-                <br>
-                <div id ="mainContent" align="center">
+                        
+          
+                <s:if test="issSerialDetList.size > 0">
+                        <hr>
+
+                        <s:label value="%{getText('Inventory.ItemDetailsAre')}" cssClass= "pageSubHeading" >
+                            <s:param name="labelcolspan" value="%{1}" />
+                            <s:param name="inputcolspan" value="%{9}" />
+                        </s:label>
+
+                        <hr>
+              
                
                     <s:form name="FrmReceiveItems" id="ReceiveItems_Id" action="SaveReceiveDetails" align="center">
 
-                        <table border="1" cellspacing="0" cellpadding="5" align="center">
+                        <table width="100%">
                             <tr><td>
-                                    <display:table name="issSerialDetList" pagesize="10"
-                                                   excludedParams="*" export="true" cellpadding="0"
+                                    <display:table name="issSerialDetList" 
+                                                   excludedParams="*"  cellpadding="8"
                                                    cellspacing="0" id="doc"
                                                    requestURI="/Inventory/ReceiveItemsAction.Action">
                                         <display:column  class="griddata" title="S.No" sortable="true" maxLength="100" headerClass="gridheader">
                                     <c:out> ${doc_rowNum}
                                     </display:column>
-                                    <display:column property="erpmStockReceived.stStockSerialNo" title="Serial No."
+                                    <display:column property="erpmStockReceived.stStockSerialNo" title="Serial No." 
                                                      headerClass="gridheader"
                                                     class="griddata" sortable="true">
                                     </display:column>
-                                    <display:column paramId="issdId" paramProperty="issdId"
+                                    <display:column paramId="issdId" paramProperty="issdId" style="width:10%"
                                                     href="/pico/Inventory/ExcludeItems.action"
                                                     headerClass="gridheader" class="griddata" media="html" value="Exclude">
                                     </display:column>
 
                                 </display:table>
-                                <br>
+                                
                                 </td></tr>
                                 </table>
                     </s:form>
+                         </s:if>
                         <br>
+                        
                 </div>
-                    
+                <br>
             </div>
+            
             <div id="footer">
                     <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
             </div>

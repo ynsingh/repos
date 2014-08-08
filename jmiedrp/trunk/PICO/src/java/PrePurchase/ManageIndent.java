@@ -8,48 +8,45 @@
  */
 package PrePurchase;
 
+import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import pojo.hibernate.Budgetheadmaster;
+import pojo.hibernate.BudgetheadmasterDAO;
+import pojo.hibernate.Committeemaster;
+import pojo.hibernate.Departmentmaster;
+import pojo.hibernate.DepartmentmasterDAO;
+import pojo.hibernate.ErpmGenMaster;
+import pojo.hibernate.ErpmGenMasterDao;
 import pojo.hibernate.ErpmIndentMaster;
 import pojo.hibernate.ErpmIndentMasterDAO;
+import pojo.hibernate.ErpmItemMaster;
+import pojo.hibernate.ErpmItemRate;
+import pojo.hibernate.Erpmusers;
+import pojo.hibernate.ErpmusersDAO;
+import pojo.hibernate.GfrProgramMappingDAO;
 import pojo.hibernate.Institutionmaster;
 import pojo.hibernate.InstitutionmasterDAO;
 import pojo.hibernate.Subinstitutionmaster;
 import pojo.hibernate.SubinstitutionmasterDAO;
-import pojo.hibernate.Departmentmaster;
-import pojo.hibernate.DepartmentmasterDAO;
-import pojo.hibernate.Budgetheadmaster;
-import pojo.hibernate.BudgetheadmasterDAO;
-import pojo.hibernate.ErpmGenMaster;
-import pojo.hibernate.ErpmGenMasterDao;
-
-import pojo.hibernate.Erpmusers;
-import pojo.hibernate.ErpmusersDAO;
 import pojo.hibernate.UserMessage;
-import utils.DateUtilities;
-
-
-import utils.DevelopmentSupport;
 import pojo.hibernate.Workflowmaster;
 import pojo.hibernate.WorkflowmasterDAO;
 import pojo.hibernate.Workflowtransaction;
 import pojo.hibernate.WorkflowtransactionDAO;
+import utils.DateUtilities;
+import utils.DevelopmentSupport;
 
-import java.util.*;
-import java.io.*;
-import pojo.hibernate.ErpmItemRate;
-import pojo.hibernate.ErpmItemMaster;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-import pojo.hibernate.Committeemaster;
-
-import java.sql.Connection;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.DriverManager;
-import org.apache.struts2.ServletActionContext;
-import net.sf.jasperreports.engine.*;
-import pojo.hibernate.GfrProgramMappingDAO;
-
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class ManageIndent extends DevelopmentSupport {
 
@@ -120,6 +117,8 @@ public class ManageIndent extends DevelopmentSupport {
     private List<ErpmGenMaster> WfaActionsList = new ArrayList<ErpmGenMaster>();
     private Short indentId;
     private static Boolean varShowGFR;
+
+    static String dataSourceURL=null;
 
     public Boolean getVarShowGFR() {
         return varShowGFR;
@@ -635,6 +634,7 @@ public class ManageIndent extends DevelopmentSupport {
                 erpmindtmast = erpmindtmast1;
 
                 indentId = erpmindtmast1.getIndtIndentId();
+
             }
             return SUCCESS;
         } catch (Exception e) {
@@ -776,9 +776,16 @@ public class ManageIndent extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -902,13 +909,21 @@ public class ManageIndent extends DevelopmentSupport {
         String whereCondition;
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
-            response.setHeader("Content-Disposition", "attachment; filename=Indent_Reports.pdf");
+//            response.setHeader("Content-Disposition", "attachment; filename=Indent_Reports.pdf");
+            response.setHeader("", "attachment; filename = Indent_Reports.pdf");  
             response.setHeader("Expires", "0");
             response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
             response.setHeader("Pragma", "public");
@@ -918,13 +933,13 @@ public class ManageIndent extends DevelopmentSupport {
 
             //Setup Where Condition Clause
             if (erpmindtmast.getIndtIndentId() != null) {
-                whereCondition = "erpm_indent_master.Indt_Indent_Id = " + erpmindtmast.getIndtIndentId();
-
+           //     whereCondition = "erpm_indent_master.Indt_Indent_Id = " + erpmindtmast.getIndtIndentId();
+                 whereCondition = "erpm_indent_master.Indt_Indent_Id = "+ erpmindtmast.getIndtIndentId();
 
 
             } else {
-                whereCondition = "erpm_indent_master.Indt_Indent_Id = ";
-
+//                whereCondition = "erpm_indent_master.Indt_Indent_Id = ";
+                 whereCondition = "erpm_indent_master.Indt_Indent_Id <> 0";
             }
             hm.put("condition", whereCondition);
 
@@ -960,10 +975,16 @@ public class ManageIndent extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
 
+             Context ctx = new InitialContext();
+             if (ctx == null) {
+                 throw new RuntimeException("JNDI");
+             }
+             dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+             Connection conn = DriverManager.getConnection(dataSourceURL);
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
             response.setHeader("Content-Disposition", "attachment; filename=ShowGfr.pdf");
@@ -977,6 +998,7 @@ public class ManageIndent extends DevelopmentSupport {
             whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 19";
 
             hm.put("condition", whereCondition);
+            hm.put("screen_name", "INDENT ITEMS");
 
             JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
             JasperExportManager.exportReportToPdfStream(jp, baos);

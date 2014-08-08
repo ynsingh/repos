@@ -10,13 +10,14 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Hibernate;
-import utils.BaseDAO;
+//import utils.BaseDAO;
 
 /**
  *
  * @author kazim
  */
-public class ErpmPoLocationsDAO extends BaseDAO {
+//public class ErpmPoLocationsDAO extends BaseDAO {
+public class ErpmPoLocationsDAO {
 
     public void save(ErpmPoLocations polocation) {
         Session session = HibernateUtil.getSession();
@@ -79,6 +80,8 @@ public class ErpmPoLocationsDAO extends BaseDAO {
             ErpmPoLocations poLocation  = (ErpmPoLocations) session.load(ErpmPoLocations.class , poLocationsId);
             Hibernate.initialize(poLocation.getDepartmentmaster());
             Hibernate.initialize(poLocation.getErpmItemMaster());
+            Hibernate.initialize(poLocation.getDepartmentmaster().getInstitutionmaster());
+            Hibernate.initialize(poLocation.getDepartmentmaster().getSubinstitutionmaster());
             return poLocation;
         }
         finally {

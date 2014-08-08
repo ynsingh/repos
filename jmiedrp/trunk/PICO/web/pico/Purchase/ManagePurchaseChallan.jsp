@@ -1,7 +1,9 @@
 <%--
     Document   : ManageChallan
     Created on : 3 Jun, 2011, 11:32:07 AM
-    Author     : Tanvir Ahmed and Sajid and Manauwar
+    Author     : Tanvir Ahmed and Sajid and Mohd. Manauwar Alam
+    I18n By    : Mohd. Manauwar Alam
+               : March 2014
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -44,9 +46,10 @@
                 </s:bean>
                 <br>
                 <br>
+                
                 <div style ="background-color: #215dc6;">
-                    <p align="center"><s:label cssClass="pageHeading" value="MANAGE PURCHASE CHALLAN MASTER" style="color: #ffffff" /></p>
-                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                    <p align="center" class="pageHeading" style="color:  #ffffff"><s:property value="getText('Purchase.ManagePurchaseChallanMaster')" /></p>
+                    <p align="center" class="mymessage" style="color:  #ffff99 "><s:property value="message"/> </p>
                 </div>
                 <%--------------------this is a Purchase Challan Form --------------------%>
 
@@ -71,23 +74,23 @@
                         <table border="0" cellpadding="4" cellspacing="0" align="center" >
                             <tbody>
 
-                                        <s:select label="Institution" required="true" requiredposition="" name="PChallanMast.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" value="DefaultInsitute"
+                                        <s:select key="Purchase.Institution" required="true" requiredposition="" name="PChallanMast.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" value="DefaultInsitute" cssClass="textInput"
                                                   onchange="getSubinstitutionList('SavePurchaseChallan_PChallanMast_institutionmaster_imId','SavePurchaseChallan_PChallanMast_subinstitutionmaster_simId')">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{7}" />
                                         </s:select>
-                                        <s:select label="College/Faculty/School" required="true" requiredposition="" name="PChallanMast.subinstitutionmaster.simId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName" value="DefaultSubInsitute"
+                                        <s:select key="Purchase.SubInstitution" required="true" requiredposition="" name="PChallanMast.subinstitutionmaster.simId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName" value="DefaultSubInsitute"
                                                   onchange="getDepartmentList('SavePurchaseChallan_PChallanMast_subinstitutionmaster_simId','SavePurchaseChallan_PChallanMast_departmentmaster_dmId')">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{3}" />
                                         </s:select>
                                         <s:label value=". . ." cssClass="tdSpace"/>
-                                        <s:select label="Department" required="true" requiredposition="" name="PChallanMast.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"   value="DefaultDepartment">
+                                        <s:select key="Purchase.Department" required="true" requiredposition="" name="PChallanMast.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"   value="DefaultDepartment">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{3}" />
                                         </s:select>
 
-                                         <s:textfield label="Recd.Date(dd-mm-yyyy)" required="true" requiredposition="left" maxLength="40" size="20"
+                                         <s:textfield key="Purchase.RecdDate" required="true" requiredposition="left" maxLength="40" size="20"
                                                 name="recieveDate" title="Enter Order"  cssClass="textInput">
                                                 <s:param name="labelcolspan" value="%{1}" />
                                                 <s:param name="inputcolspan" value="%{7}" />
@@ -98,28 +101,28 @@
                                             <s:param name="inputcolspan" value="%{7}" />
                                         </sx:datetimepicker>--%>
 
-                                        <s:select  required="true" requiredposition="left" label="P.O. No." name="PChallanMast.erpmPoMaster.pomPoMasterId" headerKey="0" headerValue="-- Please Select --" list="POMasterList" listKey="poid"
+                                        <s:select  required="true" requiredposition="left" key="Purchase.PONo" name="PChallanMast.erpmPoMaster.pomPoMasterId" headerKey="0" headerValue="-- Please Select --" list="POMasterList" listKey="poid"
                                                    listValue="pono"  onchange="getSuppliersName('SavePurchaseChallan_PChallanMast_erpmPoMaster_pomPoMasterId','SavePurchaseChallan_PChallanMast_erpmPoMaster_suppliermaster_smName');"
                                                    ondblclick="getSuppliersName('SavePurchaseChallan_PChallanMast_erpmPoMaster_pomPoMasterId','SavePurchaseChallan_PChallanMast_erpmPoMaster_suppliermaster_smName');"
                                                    onselect="getSuppliersName('SavePurchaseChallan_PChallanMast_erpmPoMaster_pomPoMasterId','SavePurchaseChallan_PChallanMast_erpmPoMaster_suppliermaster_smName');" >
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{1}" />
                                         </s:select>
-                                        <s:submit name="btnSubmit" value="Show PO" action="ShowPOReport"/>
+                                        <s:submit name="btnSubmit" key="Purchase.ShowPO" action="ShowPOReport"/>
 
 
                                         <s:label value="." cssClass="tdSpace"/>
-                                        <s:textfield  size="40" label="Supplier Name" name="PChallanMast.erpmPoMaster.suppliermaster.smName"    readonly="true">
+                                        <s:textfield  size="40" key="Purchase.SupplierName" name="PChallanMast.erpmPoMaster.suppliermaster.smName"    readonly="true">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{4}" />
                                         </s:textfield>
 
-                                        <s:textfield required="true" requiredposition="left" maxLength="20" size="40" label="Challan No" name="PChallanMast.pcmChallanNo">
+                                        <s:textfield required="true" requiredposition="left" maxLength="20" size="40" key="Purchase.ChallanNo" name="PChallanMast.pcmChallanNo">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{4}" />
                                         </s:textfield>
 
-                                        <s:textfield label="Challan Date(dd-mm-yyyy)" required="true" requiredposition="left" maxLength="40" size=""
+                                        <s:textfield key="Purchase.ChallanDate" required="true" requiredposition="left" maxLength="40" size=""
                                             name="challanDate" title="Enter Order" cssClass="textInput" >
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{3}" />
@@ -131,17 +134,17 @@
                                         </sx:datetimepicker>--%>
 
 
-                                        <s:textfield maxLength="100" size="40" label="Import Exchange Rate" name="PChallanMast.pcmImportExchangeRate"   onkeypress="return isNumberKey(event)">
+                                        <s:textfield maxLength="100" size="40" key="Purchase.ImportExchangeRate" name="PChallanMast.pcmImportExchangeRate"   onkeypress="return isNumberKey(event)">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{4}" />
                                         </s:textfield>
 
-                                        <s:textarea cssClass="textArea"  rows="3" cols="40" label="Remarks" name="PChallanMast.pcmRemarks"     maxLength="500">
+                                        <s:textarea cssClass="textArea"  rows="3" cols="40" key="Purchase.Remarks" name="PChallanMast.pcmRemarks"     maxLength="500">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{1}" />
                                         </s:textarea>
                                         <s:label value=". . ." cssClass="tdSpace"/>
-                                        <s:textfield maxLength="50" size="45" label="Checked By" name="PChallanMast.pcmCheckedBy"   >
+                                        <s:textfield maxLength="50" size="45" key="Purchase.CheckedBy" name="PChallanMast.pcmCheckedBy" cssClass="textInput"  >
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{3}" />
                                         </s:textfield>
@@ -154,16 +157,16 @@
                                         <tr>
                                 </tr> <tr>
                                     <td align="left">
-                                        <s:submit theme="simple" name="btnSubmit" value="Save & Add Challan Detail"/>
+                                        <s:submit theme="simple" name="btnSubmit" key="Purchase.Save"/>
                                     </td>
                                     <td>
-                                        <s:submit theme="simple" name="btnSubmit" value="Browse"   action="BrowsePurchaseChallanMaster"/>
+                                        <s:submit theme="simple" name="btnSubmit" key="Purchase.Browse"   action="BrowsePurchaseChallanMaster"/>
 
                                     </td>
                                     <td>
-                                        <s:submit theme="simple" name="btnSubmit" value="Clear"   action="ManagePurchaseChallanAction"/>
+                                        <s:submit theme="simple" name="btnSubmit" key="Purchase.Clear"   action="ManagePurchaseChallanAction"/>
 
-                                        <s:submit theme="simple" name="showGFRreport"  value="Show GFR" action="showGFRreportChallan" disabled="varShowGFR" />
+                                        <s:submit theme="simple" name="showGFRreport"  key="Purchase.ShowGFR" action="showGFRreportChallan" disabled="varShowGFR" />
                                     </td>
                                     
                                 </tr>

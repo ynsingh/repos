@@ -8,36 +8,35 @@
  */
 package PrePurchase;
 
-import pojo.hibernate.ErpmGenMasterDao;
-import pojo.hibernate.Suppliermaster;
-import pojo.hibernate.SuppliermasterDAO;
-import pojo.hibernate.Institutionmaster;
-import pojo.hibernate.InstitutionmasterDAO;
-import pojo.hibernate.StatemasterDAO;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import pojo.hibernate.Countrymaster;
 import pojo.hibernate.CountrymasterDAO;
 import pojo.hibernate.ErpmGenMaster;
-import pojo.hibernate.Countrymaster;
+import pojo.hibernate.ErpmGenMasterDao;
+import pojo.hibernate.GfrProgramMappingDAO;
+import pojo.hibernate.Institutionmaster;
+import pojo.hibernate.InstitutionmasterDAO;
 import pojo.hibernate.Statemaster;
+import pojo.hibernate.StatemasterDAO;
 import pojo.hibernate.SupplierAddress;
 import pojo.hibernate.SupplierAddressDAO;
-import utils.DevelopmentSupport;
+import pojo.hibernate.Suppliermaster;
+import pojo.hibernate.SuppliermasterDAO;
 import utils.DateUtilities;
+import utils.DevelopmentSupport;
 
-import java.io.*;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-import java.sql.Connection;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.DriverManager;
-import org.apache.struts2.ServletActionContext;
-import net.sf.jasperreports.engine.*;
-
-import java.util.*;
-import java.util.Date;
-import pojo.hibernate.GfrProgramMappingDAO;
-
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class ManageSupplier extends DevelopmentSupport {
 
@@ -67,6 +66,8 @@ public class ManageSupplier extends DevelopmentSupport {
     short i2 = 2;
     private InputStream inputStream;
     private static Boolean varShowGFR;
+
+    static String dataSourceURL=null;
 
     public Boolean getVarShowGFR() {
         return varShowGFR;
@@ -321,7 +322,11 @@ public class ManageSupplier extends DevelopmentSupport {
 
             return SUCCESS;
         } catch (Exception e) {
+            if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
+                message = "This record cannot be Deleted. It is being used in other Tables.";
+            }else{
             message = "Exception in Delete method ->MangesupplierAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
+	    }
             return ERROR;
         }
     }
@@ -469,9 +474,16 @@ public class ManageSupplier extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -551,9 +563,16 @@ public class ManageSupplier extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -568,6 +587,7 @@ public class ManageSupplier extends DevelopmentSupport {
             whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 17";
 
             hm.put("condition", whereCondition);
+            hm.put("screen_name", "SUPPLIER REGISTRATION");
 
             JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
             JasperExportManager.exportReportToPdfStream(jp, baos);

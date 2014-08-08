@@ -1,7 +1,9 @@
 <%-- 
     Document   : PrePurchaseReports
     Created on : 27 May, 2013, 1:03:48 PM
-    Author     : manauwar
+    Author     : Mohd. Manauwar Alam
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -43,7 +45,7 @@
             <div id ="mainContent" >
                 <br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">MANAGE PRE-PURCHASE REPORTS</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('PrePurchase.ManagePrePurchaseReport')" /></p>
 
                     <p align="center"><s:property value="message" /></p>
                 </div>
@@ -58,28 +60,28 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <s:select label="Institution" name="institutionId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput" value="DefaultInsitute"
+                                        <s:select key="PrePurchase.Institution" name="institutionId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput" value="DefaultInsitute"
                                                   onchange="getSubinstitutionAndgetSupplierList('PrePurchaseReportAction_institutionId','PrePurchaseReportAction_subinstitutionId','PrePurchaseReportAction_supplierId')" />
-                                        <s:select label="College/Faculty/School" name="subinstitutionId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName" value="DefaultSubInsitute"
+                                        <s:select key="PrePurchase.SubInstitution" name="subinstitutionId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName" value="DefaultSubInsitute"
                                                   onchange="getDepartmentList('PrePurchaseReportAction_subinstitutionId','PrePurchaseReportAction_departmentId')"  cssClass="textInput"/>
-                                        <s:select label="Department" name="departmentId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"  cssClass="textInput" value="DefaultDepartment"/>
+                                        <s:select key="PrePurchase.Department" name="departmentId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"  cssClass="textInput" value="DefaultDepartment"/>
 
 
 
-                                        <s:select cssClass="queryInput" label="Supplier Name" name="supplierId"  title="Select Supplier from the List"
+                                        <s:select cssClass="textInput" key="PrePurchase.SupplierName" name="supplierId"  title="Select Supplier from the List"
                                                   headerKey="" headerValue="-- Please Select --" list="suppList" listKey="smId" listValue="smName"
                                                   ondblclick="getsupplieraftervalidation('PrePurchaseReportAction_supplierId_smId');">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{3}" />
                                         </s:select>
-                                        <s:select cssClass="queryInput" label="Item Type" name="ItemTypeId"  title="Select Supplier from the List"
+                                        <s:select cssClass="textInput" key="PrePurchase.ItemType" name="ItemTypeId"  title="Select Supplier from the List"
                                                   headerKey="" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                                                   onchange="getSubCategoryList('PrePurchaseReportAction_ItemTypeId', 'PrePurchaseReportAction_CategoryId')"
                                                   ondblclick="getSubCategoryList('PrePurchaseReportAction_ItemTypeId');">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{3}" />
                                         </s:select>
-                                        <s:select cssClass="queryInput" label="item Category" name="CategoryId"  title="Select Supplier from the List"
+                                        <s:select cssClass="textInput" key="PrePurchase.CapitalCategory" name="CategoryId"  title="Select Supplier from the List"
                                                   headerKey="" headerValue="-- Please Select --" list="erpmIcmList2"  listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                                                   onchange="getSubCategoryList('PrePurchaseReportAction_CategoryId','PrePurchaseReportAction_SubCategoryId')"
                                                   ondblclick="getSubCategoryList('PrePurchaseReportAction_CategoryId');">
@@ -87,13 +89,13 @@
                                             <s:param name="inputcolspan" value="%{3}" />
                                         </s:select>
 
-                                        <s:select cssClass="queryInput" label="item SubCategory" name="SubCategoryId"  title="Select Supplier from the List"
+                                        <s:select cssClass="textInput" key="PrePurchase.ItemSubCategory" name="SubCategoryId"  title="Select Supplier from the List"
                                                   headerKey="" headerValue="-- Please Select --" list="erpmIcmList3"  listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                                                   onchange="getItemListfromsubcategory('PrePurchaseReportAction_SubCategoryId','PrePurchaseReportAction_ItemNameId')" ondblclick="getItemListfromsubcategory('PrePurchaseReportAction_SubCategoryId');">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{3}" />
                                         </s:select>
-                                        <s:select cssClass="queryInput" label="Item Name" name="ItemNameId" headerKey="" headerValue="-- Please Select --"
+                                        <s:select cssClass="textInput" key="PrePurchase.ItemName" name="ItemNameId" headerKey="" headerValue="-- Please Select --"
                                                   list="itemlist" listKey="erpmimId" listValue="erpmimItemBriefDesc" title="Select Item from the List"
                                                   ondblclick="getitemList('PrePurchaseReportAction_ItemNameId');">
                                             <s:param name="labelcolspan" value="%{1}" />
@@ -104,24 +106,24 @@
 
 
                                         <s:textfield cssClass="textInput" required="true" requiredposition="left" maxLength="10" size="15"
-                                                     label="From Date(dd-mm-yyyy)" name="fromDate"  onclick="checkdate">
+                                                     key="PrePurchase.FromDate" name="fromDate"  onclick="checkdate">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{3}" />
                                         </s:textfield>
                                         <s:textfield cssClass="textInput" required="true" requiredposition="left" maxLength="10" size="15"
-                                                     label="To Date(dd-mm-yyyy)" name="toDate"   onclick="checkdate">
+                                                     key="PrePurchase.ToDate" name="toDate"   onclick="checkdate">
                                             <s:param name="labelcolspan" value="%{1}" />
                                             <s:param name="inputcolspan" value="%{3}" />
                                         </s:textfield>
 
                                 <tr>
 <td>
-                                        <s:submit theme="simple" name="btnClear" value="List of Purchase Orders Report"   action="ListOfPurchaseOrdersReport"/>
-                                        <s:submit theme="simple" name="btnClear" value="Clear"   action="PurchaseReportAction"/>
+                                        <s:submit theme="simple" name="btnClear" key="PrePurchase.ListOfPurchaseOrdersReport"   action="ListOfPurchaseOrdersReport"/>
+                                        <s:submit theme="simple" name="btnClear" key="PrePurchase.Clear"   action="PurchaseReportAction"/>
 
                                     </td>
                                     <td>
-                                        <s:submit theme="simple" name="btnClear" value="FloatedTendersReport"   action="FloatedTendersReportAction"/>
+                                        <s:submit theme="simple" name="btnClear" key="PrePurchase.FloatedTendersReport"   action="FloatedTendersReportAction"/>
 
                                     </td>
 

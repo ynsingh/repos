@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Stock_Register" language="groovy" pageWidth="936" pageHeight="612" orientation="Landscape" columnWidth="896" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f47b251e-578b-4afd-98c2-1f91ba0af7d0">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="355"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="condition1" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -191,7 +191,7 @@ ORDER BY
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="761" y="31" width="130" height="35"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Remark]]></text>
 				</staticText>
@@ -210,7 +210,7 @@ ORDER BY
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="268" y="31" width="90" height="35"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Stock added during]]></text>
 				</staticText>
@@ -220,7 +220,7 @@ ORDER BY
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="365" y="31" width="97" height="35"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Total Stock]]></text>
 				</staticText>
@@ -239,9 +239,9 @@ ORDER BY
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="305" y="63" width="54" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
-					<text><![CDATA[     Value      (Rs.)]]></text>
+					<text><![CDATA[  Value             (Rs.)]]></text>
 				</staticText>
 				<line>
 					<reportElement uuid="6cd84d77-4bbb-43e4-9c1b-5615295f8b65" x="32" y="30" width="1" height="59"/>
@@ -249,7 +249,7 @@ ORDER BY
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="661" y="31" width="96" height="35"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Closing Stock as on ]]></text>
 				</staticText>
@@ -257,44 +257,44 @@ ORDER BY
 					<reportElement uuid="5c1ec8de-c2a8-4815-98b4-0fd35d34410e" x="302" y="64" width="1" height="25"/>
 				</line>
 				<staticText>
-					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="365" y="63" width="33" height="25"/>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="364" y="63" width="34" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Quantity (Nos)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="1" y="31" width="31" height="35"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Sr. No.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="469" y="63" width="33" height="25"/>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="468" y="63" width="34" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Quantity (Nos)]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="565" y="63" width="33" height="25"/>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="564" y="63" width="34" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Quantity (Nos)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="209" y="63" width="54" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
-					<text><![CDATA[     Value      (Rs.)]]></text>
+					<text><![CDATA[  Value             (Rs.)]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="174" y="63" width="33" height="25"/>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="173" y="63" width="34" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Quantity (Nos)]]></text>
 				</staticText>
@@ -302,23 +302,23 @@ ORDER BY
 					<reportElement uuid="edf4bc42-6029-48e8-a0e7-a6357bfb8126" x="265" y="30" width="1" height="59"/>
 				</line>
 				<staticText>
-					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="661" y="63" width="33" height="25"/>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="660" y="63" width="34" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Quantity (Nos)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="469" y="31" width="90" height="35"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Write off]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="173" y="31" width="90" height="30"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Openning Stock as on]]></text>
 				</staticText>
@@ -326,9 +326,9 @@ ORDER BY
 					<reportElement uuid="d0644347-7cd9-423d-ae69-263df3f5cd1b" x="562" y="30" width="1" height="59"/>
 				</line>
 				<staticText>
-					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="269" y="63" width="33" height="25"/>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="268" y="63" width="34" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Quantity (Nos)]]></text>
 				</staticText>
@@ -336,18 +336,18 @@ ORDER BY
 					<reportElement uuid="de8eb828-532e-4776-8c1d-cbc349bacd26" x="0" y="6" width="894" height="1"/>
 				</line>
 				<staticText>
-					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="403" y="63" width="60" height="25"/>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="408" y="63" width="54" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
-					<text><![CDATA[        Value         (Rs.)]]></text>
+					<text><![CDATA[  Value             (Rs.)]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="698" y="63" width="60" height="25"/>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="701" y="63" width="54" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
-					<text><![CDATA[        Value        (Rs.)]]></text>
+					<text><![CDATA[  Value             (Rs.)]]></text>
 				</staticText>
 				<line>
 					<reportElement uuid="3d80d35d-a8a1-498b-bc5f-453cd8f39df1" x="401" y="64" width="1" height="25"/>
@@ -355,7 +355,7 @@ ORDER BY
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="6" y="7" width="64" height="20"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="10" isBold="true"/>
+						<font size="10" isBold="true"/>
 					</textElement>
 					<text><![CDATA[ITEM TYPE :]]></text>
 				</staticText>
@@ -371,35 +371,35 @@ ORDER BY
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="565" y="31" width="90" height="35"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Transfer to other Department / Collage]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="506" y="63" width="54" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
-					<text><![CDATA[     Value      (Rs.)]]></text>
+					<text><![CDATA[  Value             (Rs.)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="36" y="31" width="130" height="35"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Name of Article]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="601" y="63" width="54" height="25"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="7" isBold="true"/>
 					</textElement>
-					<text><![CDATA[     Value      (Rs.)]]></text>
+					<text><![CDATA[  Value             (Rs.)]]></text>
 				</staticText>
 				<textField pattern="">
 					<reportElement uuid="3c3a6afd-8561-4725-8576-606f2066ec8a" x="69" y="7" width="212" height="20"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="10" isBold="true"/>
+						<font size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Item_Type}]]></textFieldExpression>
 				</textField>
@@ -416,7 +416,7 @@ ORDER BY
 				<textField evaluationTime="Group" evaluationGroup="Item_Category_Full">
 					<reportElement uuid="efe41c96-0e47-47c7-9ce9-e91e96d89a10" x="78" y="1" width="200" height="16"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{Item_Type_Category}]]></textFieldExpression>
 				</textField>
@@ -426,7 +426,7 @@ ORDER BY
 				<staticText>
 					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="34" y="1" width="41" height="16"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Category :]]></text>
 				</staticText>
@@ -450,7 +450,7 @@ ORDER BY
 				<textField isBlankWhenNull="true">
 					<reportElement uuid="544621b4-b347-4ff9-ae0f-ca6988339a24" x="36" y="0" width="130" height="20"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Item_Brief_Desc}]]></textFieldExpression>
 				</textField>
@@ -505,91 +505,91 @@ ORDER BY
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
 					<reportElement uuid="b211bdc9-1bd7-4b2f-812d-9c13aff6c5c3" x="171" y="6" width="33" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SumofOpeningQuantity}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
 					<reportElement uuid="6a360277-6b45-44ac-9e52-dfa92ac8b56e" x="208" y="6" width="54" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SumofOpeningValue}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
 					<reportElement uuid="a313c6b8-30bf-4913-9bc7-5a0b294b5c6e" x="266" y="6" width="33" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SumofStockAddedQty}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
 					<reportElement uuid="bbd68c3a-eb4e-49e1-8b3b-78dfa0e9005a" x="303" y="6" width="54" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SumofStockAddedValue}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
 					<reportElement uuid="ee90d656-8400-4688-8ca6-d6dbecde0ec2" x="467" y="6" width="33" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SumofWriteOffQty}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
 					<reportElement uuid="542e9c30-15a6-4858-aaac-6ac97359c33e" x="505" y="6" width="54" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SumofWriteOffValue}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
 					<reportElement uuid="89b69bde-6f00-4631-8a55-6e07ed339249" x="563" y="6" width="33" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SumofStockTransferQty}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
 					<reportElement uuid="c7b19fd9-ff01-46d4-ac0c-600b86df2c1c" x="601" y="6" width="54" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SumofStockTransferValue}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
 					<reportElement uuid="022940e4-af15-4203-acc7-54f82c0f1f45" x="362" y="6" width="37" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{TotalStockQty}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
 					<reportElement uuid="b9a2e444-8165-4398-9f4f-ba19b533e14d" x="402" y="6" width="60" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{TotalStockValue}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
 					<reportElement uuid="06efdce3-97a9-46f8-bf5a-bad96fbc164a" x="659" y="6" width="33" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{ClosingStockQty}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
 					<reportElement uuid="b2193496-5e4f-40f3-861a-bc816c3b1caa" x="697" y="6" width="60" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{ClosingStockValue}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement uuid="134dc904-5efc-49be-bd86-bd17434a9eec" x="5" y="6" width="20" height="12"/>
 					<textElement textAlignment="Right">
-						<font fontName="Arial" size="8"/>
+						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SlNo}]]></textFieldExpression>
 				</textField>
@@ -604,7 +604,7 @@ ORDER BY
 			<textField pattern="MMMMM dd, yyyy">
 				<reportElement uuid="ded1b99d-ed4b-4fe0-a1f1-cfac1db8b6f5" x="736" y="16" width="125" height="16"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="7"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -618,7 +618,7 @@ ORDER BY
 			<staticText>
 				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="311" y="29" width="50" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[From : ]]></text>
 			</staticText>
@@ -635,7 +635,7 @@ ORDER BY
 			<staticText>
 				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="461" y="29" width="33" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[To : ]]></text>
 			</staticText>
@@ -652,7 +652,7 @@ ORDER BY
 			<textField>
 				<reportElement uuid="32ef85d1-e273-4728-80f7-34b355adee7c" x="413" y="0" width="124" height="12"/>
 				<textElement>
-					<font fontName="Arial" size="7"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of "+$V{PAGE_COUNT}]]></textFieldExpression>
 			</textField>

@@ -1,5 +1,6 @@
 package ajax;
 
+import pojo.hibernate.ErpmIssueMasterDAO;
 import pojo.hibernate.ErpmTenderMasterDAO;
 import pojo.hibernate.Subinstitutionmaster;
 import pojo.hibernate.SubinstitutionmasterDAO;
@@ -119,10 +120,15 @@ public class AjaxAction extends DevelopmentSupport {
             try {
                  //If Logged in user role is Administrator                            
                     if (getSession().getAttribute("isAdministrator").toString().compareTo("Administrator") == 0) {
+
                         simList = simDao.findSubInstForAdmin(Short.valueOf(getSession().getAttribute("imId").toString()));
-                    } else {
-                        simList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
                     }
+		    else if (getSession().getAttribute("isAdministrator").toString().compareTo("userRegisterRequest") == 0) {
+                        simList = simDao.findSubInstForAdmin(Short.valueOf(searchValue.toString()));
+                    }
+                    else {
+                        simList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
+		    }
                 if (simList != null && !simList.isEmpty()) {
                     for (Subinstitutionmaster sim : simList) {
                         Integer val = sim.getSimId();
@@ -135,7 +141,8 @@ public class AjaxAction extends DevelopmentSupport {
                         }
                     }
                 }
-            } catch (Exception e) {
+            }
+	    catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -155,7 +162,8 @@ public class AjaxAction extends DevelopmentSupport {
             DepartmentmasterDAO dmDao = new DepartmentmasterDAO();
             try {
                 //If Logged in user role is Administrator                            
-                    if(getSession().getAttribute("isAdministrator").toString().compareTo("Administrator") == 0)
+                    if(getSession().getAttribute("isAdministrator").toString().compareTo("Administrator") == 0 ||
+                       getSession().getAttribute("isAdministrator").toString().compareTo("userRegisterRequest") == 0)
                         dmList = dmDao.findBydmSimId(Integer.valueOf(searchValue));
                     else
                         dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(searchValue));
@@ -2078,6 +2086,27 @@ public class AjaxAction extends DevelopmentSupport {
             }
         }
         
+        out.print(outstr);
+        out.flush();
+        out.close();
+        return Action.SUCCESS;
+    }
+
+      public String getStockInHand() throws Exception {
+        PrintWriter out = getResponse().getWriter();
+        if (searchValue.length() > 0) {
+
+              ErpmIssueMasterDAO issuMasDao = new ErpmIssueMasterDAO();
+            try {
+
+                Float stockInHand = issuMasDao.findStockInHand(Integer.parseInt(searchValue), Short.parseShort(searchValue2));
+
+                outstr = stockInHand.toString();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         out.print(outstr);
         out.flush();
         out.close();

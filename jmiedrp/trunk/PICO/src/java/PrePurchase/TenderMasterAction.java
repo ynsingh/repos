@@ -4,39 +4,32 @@
  */
 package PrePurchase;
 
-import pojo.hibernate.Departmentmaster;
-import pojo.hibernate.DepartmentmasterDAO;
-import pojo.hibernate.Institutionmaster;
-import pojo.hibernate.InstitutionmasterDAO;
-import pojo.hibernate.Subinstitutionmaster;
-import pojo.hibernate.SubinstitutionmasterDAO;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.*;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.validation.SkipValidation;
-import pojo.hibernate.ErpmCapitalCategory;
-import pojo.hibernate.ErpmCapitalCategoryDao;
+import pojo.hibernate.Departmentmaster;
+import pojo.hibernate.DepartmentmasterDAO;
 import pojo.hibernate.ErpmGenMaster;
 import pojo.hibernate.ErpmGenMasterDao;
 import pojo.hibernate.ErpmTenderMaster;
 import pojo.hibernate.ErpmTenderMasterDAO;
-
-import pojo.hibernate.GfrProgramMappingDAO;
+import pojo.hibernate.Institutionmaster;
+import pojo.hibernate.InstitutionmasterDAO;
+import pojo.hibernate.Subinstitutionmaster;
+import pojo.hibernate.SubinstitutionmasterDAO;
 import utils.DateUtilities;
-
 import utils.DevelopmentSupport;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
-
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 /**
  *
@@ -73,6 +66,8 @@ public class TenderMasterAction extends DevelopmentSupport {
     short sh = 22;
     private Integer TMTMID;
 
+    static String dataSourceURL=null;
+
     /*getter setter */
     public Integer getTMTMID() {
         return TMTMID;
@@ -89,6 +84,7 @@ public class TenderMasterAction extends DevelopmentSupport {
     public void settenDate(String tenDate) {
         this.tenDate = tenDate;
     }
+
      public String getTenderNo() {
         return TenderNo;
     }
@@ -339,7 +335,11 @@ public class TenderMasterAction extends DevelopmentSupport {
 
             return SUCCESS;
         } catch (Exception e) {
+            if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
+                message = "This record cannot be Deleted. It is being used in other Tables." ;
+            } else {
             message = "Exception in Delete method -> IssueItemstAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
+	    }
             return ERROR;
         }
     }
@@ -375,7 +375,6 @@ public class TenderMasterAction extends DevelopmentSupport {
             message = "Exception in Clear method -> TenderMasterAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
-
     }
 
     @Override
@@ -385,12 +384,10 @@ public class TenderMasterAction extends DevelopmentSupport {
 
             if (ermptendermaster.getInstitutionmaster().getImId() == 0) {
                 addFieldError("ermptendermaster.institutionmaster.imId", "Please Select Institution Name.");
-
             }
 
             if (ermptendermaster.getDepartmentmaster().getDmId() == 0) {
                 addFieldError("ermptendermaster.departmentmaster.dmId", "Please Select Department Name.");
-
             }
 
             if (ermptendermaster.getTmTenderNo().length() == 0) {
@@ -412,10 +409,7 @@ public class TenderMasterAction extends DevelopmentSupport {
                 if (dt.isValidDate(gettenDate()) == false) {
                     addFieldError("tenDate", "Enter Tender Date[dd/MM/yyyy]");
                 }
-
-
             }
-
 
             if (ermptendermaster.getTmEmdAmount() == null) {
                 addFieldError("ermptendermaster.tmEmdAmount", "Please enter Emd Amount.");
@@ -430,25 +424,21 @@ public class TenderMasterAction extends DevelopmentSupport {
 
             if (ermptendermaster.getTmName().isEmpty()) {
                 addFieldError("ermptendermaster.tmName", "Please enter Tender Name.");
-
             }
 
             if (ermptendermaster.getErpmGenMasterByTmStatusId().getErpmgmEgmId() == 0) {
                 addFieldError("ermptendermaster.erpmGenMasterByTmStatusId.erpmgmEgmId", "Please enter Status ID.");
             }
 
-
             DefaultInsitute = Short.valueOf(ermptendermaster.getInstitutionmaster().getImId().toString());
             DefaultDepartment = Integer.valueOf(ermptendermaster.getDepartmentmaster().getDmId().toString());
             DefaultSubInsitute = Integer.valueOf(ermptendermaster.getSubinstitutionmaster().getSimId().toString());
-
 
         } catch (NullPointerException npe) {
         }
     }
 
     private void InitializeLOVs() {
-
 
         //erpmTenderMasterList=erpmTenderMasterDao.findByImId(Short.parseShort(getSession().getAttribute("imId").toString()));
         ImIdList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
@@ -458,29 +448,20 @@ public class TenderMasterAction extends DevelopmentSupport {
         tendertypeList1 = tendertypedao1.findByErpmGmType(sh1);
         tendertypeList = tendertypedao.findByErpmGmType(sh);
 
-
-
     }
+
      @SkipValidation
     public String SubmittedTendersReportAction() throws Exception {
 
         HashMap hm = new HashMap();
 
-if(getTmTmId()==null){
+        if(getTmTmId()==null){
    
-        TenderNo=null;
-            
-    
-}
-   
-else
-{
+           TenderNo=null;       
+        } else {
 
- TenderNo =""+getTmTmId();
-}
-
-
-       
+            TenderNo =""+getTmTmId();
+        }
 
      // Get System properties
        Properties properties = System.getProperties();
@@ -496,9 +477,16 @@ else
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -516,15 +504,7 @@ else
                 whereCondition = "erpm_tender_submission.TSB_TM_ID= "+TenderNo;
             }
 
-           
-
-          
-
-        
-
-
-            hm.put("condition", whereCondition);
-         
+            hm.put("condition", whereCondition);        
 
             JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
             JasperExportManager.exportReportToPdfStream(jp, baos);
@@ -559,9 +539,16 @@ else
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -576,7 +563,7 @@ else
             whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 16";
 
             hm.put("condition", whereCondition);
-
+            hm.put("screen_name", "TENDER MASTER");
             JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
             JasperExportManager.exportReportToPdfStream(jp, baos);
             response.setContentLength(baos.size());

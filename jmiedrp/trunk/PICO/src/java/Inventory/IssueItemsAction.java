@@ -9,7 +9,7 @@ package Inventory;
  * @author manauwar
  *
  *
- * <table-filter match-name="view_issue_indent_detail"/>
+<table-filter match-name="view_issue_indent_detail"/>
 <table name="view_issue_indent_detail">
 <primary-key>
 <key-column name='isd_id' />
@@ -21,24 +21,21 @@ package Inventory;
 import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import org.apache.struts2.ServletActionContext;
 import java.sql.DriverManager;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
-import java.util.ArrayList;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.*;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import pojo.hibernate.*;
 import utils.DateUtilities;
-import utils.sendMail;
 import utils.DevelopmentSupport;
-
+import utils.sendMail;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import com.opensymphony.xwork2.ActionContext;
-
-import pojo.hibernate.*;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 public class IssueItemsAction extends DevelopmentSupport {
 
@@ -124,8 +121,8 @@ public class IssueItemsAction extends DevelopmentSupport {
     private String returnDueDate;
     private String emailAddress;
     private static Boolean varShowGFR;
-	
-	static String dataSourceURL=null;
+
+    static String dataSourceURL=null;
 
     public Boolean getVarShowGFR() {
         return varShowGFR;
@@ -906,9 +903,8 @@ public class IssueItemsAction extends DevelopmentSupport {
             //if available quantity for issue is less than issue quantity then issue is not allowed else item will be allowed to issued
             if (TotalQnty < eid.getIsdIssuedQuantity().intValue()) {
                 populate_issueDetails();
-		issueDetList1 = eidDao.findByEimId(getIssueMasterId());
+                issueDetList1 = eidDao.findByEimId(getIssueMasterId());
                 setBTNDSBL("false");
-
                 message = "You cannot Issue " + eid.getIsdIssuedQuantity() + ". It is more than the Available Quantity i.e. " + TotalQnty + ".";
                 return SUCCESS;
             } else {
@@ -1851,12 +1847,12 @@ public class IssueItemsAction extends DevelopmentSupport {
 
             return SUCCESS;
         } catch (Exception e) {
-	 if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
-            message = "This record cannot be Deleted. It is being used in other Tables." ;
+            if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
+                message = "This record cannot be Deleted. It is being used in other Tables." ;
             } else {
             message = "Exception in Delete method -> IssueItemstAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
-           }
-	 return ERROR;
+            }
+            return ERROR;
         }
     }
 
@@ -2021,13 +2017,13 @@ public class IssueItemsAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            //Locale locale = ActionContext.getContext().getLocale();
-            //ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            //Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
 
-		 Context ctx = new InitialContext();
+            Context ctx = new InitialContext();
             if (ctx == null) {
-               throw new RuntimeException("JNDI");
+                throw new RuntimeException("JNDI");
             }
             dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
             Connection conn = DriverManager.getConnection(dataSourceURL);
@@ -2044,9 +2040,8 @@ public class IssueItemsAction extends DevelopmentSupport {
 
             whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 26";
 
-            		hm.put("condition", whereCondition);
-		hm.put("screen_name", "ISSUE ITEMS");
-
+            hm.put("condition", whereCondition);
+            hm.put("screen_name", "ISSUE ITEMS");
             JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
             JasperExportManager.exportReportToPdfStream(jp, baos);
             response.setContentLength(baos.size());
@@ -2080,11 +2075,11 @@ public class IssueItemsAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            //Locale locale = ActionContext.getContext().getLocale();
-            //ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            //Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
-		
-		Context ctx = new InitialContext();
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
             if (ctx == null) {
                 throw new RuntimeException("JNDI");
             }
@@ -2117,4 +2112,63 @@ public class IssueItemsAction extends DevelopmentSupport {
             return ERROR;
         }
     }
+
+
+@SkipValidation
+public String exportGatePass() throws Exception {
+        HashMap hm = new HashMap();
+
+        // Get System properties
+        Properties properties = System.getProperties();
+
+        // Get the path separator symbol, which is unfortunatly different, in different OS platform.
+        String pathSeparator = properties.getProperty("file.separator");
+
+        pathSeparator = pathSeparator + pathSeparator;
+         String repPath = "pico" + pathSeparator + "Inventory"  + pathSeparator + "Reports" + pathSeparator +  "GatePass.jasper" ;
+
+        String fileName = getSession().getServletContext().getRealPath(repPath);
+
+
+        String whereCondition = "";
+
+        try {
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
+
+            HttpServletResponse response = ServletActionContext.getResponse();
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("Content-Disposition", "attachment; filename=GatePass.pdf");
+            response.setHeader("Expires", "0");
+            response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+            response.setHeader("Pragma", "public");
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+
+            whereCondition = "erpm_issue_master.`ISM_Id`="+eim.getIsmId();
+
+            hm.put("condition", whereCondition);
+
+            JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
+            JasperExportManager.exportReportToPdfStream(jp, baos);
+            response.setContentLength(baos.size());
+            ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
+            inputStream = bis;
+
+            return SUCCESS;
+        } catch (JRException e) {
+            message = "Error is : " + e.getMessage() + e.getCause();
+            return ERROR;
+        }
+    }
+
 }

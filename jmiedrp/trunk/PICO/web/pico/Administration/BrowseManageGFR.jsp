@@ -1,5 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -22,19 +23,19 @@
         <div id="container">
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
-            </div>
-            <div id="sidebar1">
-                <jsp:include page="menu.jsp" flush="true"></jsp:include>
-            </div>
-
-            <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent" align="center">
-
-                <br><br>
-                <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">List of General Finacial Rules</p>
-                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
+                <div id="sidebar1">
+                <jsp:include page="menu.jsp" flush="true"></jsp:include>
+                </div>
+
+                <!-- *********************************End Menu****************************** -->
+                <div id ="mainContent" align="center">
+
+                    <br><br>
+                    <div style ="background-color: #215dc6;">
+                        <p align="center" class="pageHeading" style="color: #ffffff">List of General Finacial Rules</p>
+                        <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                    </div>
 
                 <div style="border: solid 1px #000000; background: gainsboro">
 
@@ -42,42 +43,42 @@
                         <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                             <display:table name="gfrMasterList" pagesize="15"
                                            excludedParams="*" export="true" cellpadding="0"
-                                           cellspacing="0" id="doc"
+                                           cellspacing="0" id="doc" decorator="Administration.ActorDecorator"
                                            requestURI="/Administration/BrowseManageGFRAction">
                                 <%-- <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
                                     <c:out> ${doc_rowNum}
                                     </display:column>--%>
-                                   <display:column property="gfrGfrId" title="Record ID"
+                               <display:column property="gfrGfrId" title="Record ID"
                                                     maxLength="35" headerClass="gridheader"
                                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:10%" sortable="true"/>
-                                   <display:column property="gfrSection" title="Section"
+                               <display:column property="gfrSection" title="Section"
                                                     maxLength="10" headerClass="gridheader"
                                                     class="griddata" style="width:10%" sortable="true"/>
-                                   <display:column property="gfrChapterNo" title="Chapter No"
+                               <display:column property="gfrChapterNo" title="Chapter No"
                                                     maxLength="35" headerClass="gridheader"
                                                     class="griddata" style="width:10%" sortable="true"/>
-                                     <display:column property="gfrChapterName" title="Chapter Name"
+                               <display:column property="gfrChapterName" title="Chapter Name"
                                                     maxLength="10" headerClass="gridheader"
                                                     class="griddata" style="width:10%" sortable="true"/>
                                       
-                                       <display:column property="gfrRuleNo" title="GFR Rule No" 
+                               <display:column property="gfrRuleNo" title="GFR Rule No" 
                                                     maxLength="10" headerClass="gridheader"
                                                     class="griddata" style="width:10%" sortable="true"/>
-                                       <display:column property="gfrDescription" title="GFR Description"
+                               <display:column property="gfrDescription" title="GFR Description"
                                                     maxLength="120" headerClass="gridheader"
                                                     class="griddata" style="width:40%" sortable="true"/>
-                                     <display:column paramId="gfrMasterId" paramProperty="gfrGfrId"
+                               <display:column paramId="gfrMasterId" paramProperty="gfrGfrId"
                                                     href="/pico/Administration/EditManageGFRAction" title="Edit"
                                                     headerClass="gridheader" class="griddata" sortable="true" >
 
-                                        Edit
-                                    </display:column>
-                                    <display:column paramId="gfrMasterId" paramProperty="gfrGfrId" title="Delete"
+                                   Edit
+                               </display:column>
+                               <display:column paramId="gfrMasterId" paramProperty="gfrGfrId" title="Delete"
                                                     href="/pico/Administration/DeleteManageGFRAction"
                                                     headerClass="gridheader" class="griddata" sortable="true" >
-                                        Delete
-                                    </display:column>
-                                    </display:table>
+                                    Delete
+                               </display:column>
+                               </display:table>
                         </table>
                     </s:form>
                     <br>

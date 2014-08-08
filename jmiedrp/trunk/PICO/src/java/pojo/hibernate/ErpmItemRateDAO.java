@@ -98,6 +98,7 @@ public ErpmItemRate findItemRateId(Integer irItemRateId) {
             Hibernate.initialize(itemrate.get(0).getInstitutionmaster());
             Hibernate.initialize(itemrate.get(0).getSuppliermaster());
             Hibernate.initialize(itemrate.get(0).getErpmGenMasterByIrCurrencyId());
+            Hibernate.initialize(itemrate.get(0).getErpmItemMaster());
             Hibernate.initialize(itemrate.get(0).getErpmGenMasterByIrWarrantyStartsFromId());            
             return itemrate.get(0);
         } finally {

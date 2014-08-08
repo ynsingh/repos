@@ -5,7 +5,7 @@
 
 package pojo.hibernate;
 
-import utils.BaseDAO;
+//import utils.BaseDAO;
 
 /**
  *

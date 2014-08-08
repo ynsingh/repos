@@ -6,7 +6,7 @@
 package pojo.hibernate;
 
 import java.math.BigDecimal;
-import java.util.Date;
+//import java.util.Date;
 import utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -85,6 +85,7 @@ public class ErpmPoDetailsDAO {
                 if (podetailslist.get(index).getErpmIndentDetail()!=null)
                     Hibernate.initialize(podetailslist.get(index).getErpmIndentDetail().getErpmIndentMaster());    //  Here is the problem
                 Hibernate.initialize(podetailslist.get(index).getErpmPoMaster().getInstitutionmaster());
+                Hibernate.initialize(podetailslist.get(index).getErpmPoMaster());
             }
             return podetailslist;
         } finally {
@@ -115,6 +116,22 @@ public class ErpmPoDetailsDAO {
             session.close();
         }
     }
+
+
+    public Integer  findItemQntyByPOMastId(Integer itemId,Integer pomPoMasterId) {
+        Session session = HibernateUtil.getSession();
+        try {
+
+           session.beginTransaction();
+           ErpmPoDetails poDet = (ErpmPoDetails)session.createQuery("Select u from ErpmPoDetails u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId and u.erpmItemMaster.erpmimId = :itemId").setParameter("pomPoMasterId", pomPoMasterId).setParameter("itemId", itemId).uniqueResult();
+            Hibernate.initialize(poDet.getErpmPoMaster());
+            Hibernate.initialize(poDet.getErpmItemMaster());
+            return poDet.getPodQuantity().intValue();
+        } finally {
+            session.close();
+        }
+    }
+
 
     public ErpmPoDetails findByPODetailsID(Integer podPodetailsId) {
         Session session = HibernateUtil.getSession();
@@ -165,12 +182,24 @@ public class ErpmPoDetailsDAO {
 
             session.beginTransaction();
             List<ErpmPoDetails> list  = session.createQuery("Select u from ErpmPoDetails u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId and u.erpmItemMaster.erpmimId = :itemId").setParameter("itemId", itemId).setParameter("pomPoMasterId", pomPoMasterId).list();
-             Hibernate.initialize(list);
+            if (list.size() > 0) {
+             Hibernate.initialize(list.get(0).getErpmIndentDetail());
+             Hibernate.initialize(list.get(0).getErpmItemMaster());
+             Hibernate.initialize(list.get(0).getErpmItemRate());
+             Hibernate.initialize(list.get(0).getErpmPoMaster());
+             Hibernate.initialize(list.get(0).getErpmPoTaxeses());
+             Hibernate.initialize(list.get(0).getPodDiscount());
+//             Hibernate.initialize(list);
 
             return list.get(0);
+            }
+            else {
+                return null;
+            }
         } finally {
+
+
             session.close();
         }
     }
-
-   }
+}

@@ -307,7 +307,11 @@ public class ErpmprogramAction extends DevelopmentSupport {
             erpmsmList = erpmsmDao.findAll();
             return SUCCESS;
         } catch (Exception e) {
+            if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
+                message = "This record cannot be Deleted. It is being used in other Tables.";
+            }else{
             message = "Exception in Delete method -> ErpmProgramAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
+	    }
             return ERROR;
         }
     }

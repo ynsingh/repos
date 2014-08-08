@@ -67,17 +67,19 @@ public class ErpmTenderScheduleDAO {
         }
     }
 
-    public List<ErpmTenderSchedule> findAll() {
+//    public List<ErpmTenderSchedule> findAll() {
+    public List<ErpmTenderSchedule> findByImId(Short ImId) {    
         Session session = HibernateUtil.getSession();
         try {
             int index = 0;
             session.beginTransaction();
-            List<ErpmTenderSchedule> list = session.createQuery("select u from ErpmTenderSchedule u").list();
+           // List<ErpmTenderSchedule> list = session.createQuery("select u from ErpmTenderSchedule u").list();
+           List<ErpmTenderSchedule> list = session.createQuery("Select u from ErpmTenderSchedule u where u.institutionmaster.imId = :ImId").setParameter("ImId", ImId).list();
             for (index = 0; index < list.size(); ++index) {
                 Hibernate.initialize(list.get(index).getInstitutionmaster());
                 Hibernate.initialize(list.get(index).getSubinstitutionmaster());
                 Hibernate.initialize(list.get(index).getDepartmentmaster());
-                Hibernate.initialize(list.get(index).getErpmTenderScheduleDetails());
+              //  Hibernate.initialize(list.get(index).getErpmTenderScheduleDetails());
                 Hibernate.initialize(list.get(index).getErpmTenderMaster());
 
             }
@@ -92,7 +94,11 @@ public class ErpmTenderScheduleDAO {
         try {
             session.beginTransaction();
             ErpmTenderSchedule tenscd = (ErpmTenderSchedule) session.load(ErpmTenderSchedule.class, tscTscId);
-            Hibernate.initialize(tenscd); //.getImName());
+            //Hibernate.initialize(tenscd); //.getImName());
+            Hibernate.initialize(tenscd.getInstitutionmaster());
+            Hibernate.initialize(tenscd.getSubinstitutionmaster());
+            Hibernate.initialize(tenscd.getDepartmentmaster()); 
+            Hibernate.initialize(tenscd.getErpmTenderMaster());
 
             return tenscd;
         } finally {
@@ -125,8 +131,7 @@ public class ErpmTenderScheduleDAO {
             session.beginTransaction();
             List<ErpmTenderSchedule> teno = session.createQuery("Select u from ErpmTenderSchedule u where u.erpmTenderMaster.tmTmId = :TenderMasterId ").setParameter("TenderMasterId", TenderMasterId).list();
             
-                Hibernate.initialize(teno.get(0).getErpmTenderMaster());
-           
+             Hibernate.initialize(teno.get(0).getErpmTenderMaster());   
             return teno.get(0);
         } finally {
             session.close();

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Item_Lifecycle_Report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="63d00d1c-ad34-4dc2-9284-e2e2b07c6ee1">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     erpm_stock_received.`ST_ID` AS ST_ID,
+     erpm_stock_received.`ST_Item_ID` AS Item_ID,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS Item_Name,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS UOP,
+     erpm_stock_received.`ST_Stock_Serial_No` AS ST_Stock_Serial_No,
+     erpm_stock_received.`ST_In_Stock_Since` AS Dated,
+     1 AS Record_Sequence,
+     suppliermaster.`SM_Name` AS Movement_From,
+     concat(institutionmaster.`IM_Short_Name`, '/', subinstitutionmaster.`SIM_Short_Name`, '/', departmentmaster.`DM_Short_Name`) AS Movement_To,
+     concat('Purchased via Challan No. : ', if(isnull(erpm_purchasechallan_master.`PCM_Challan_No`), '', erpm_purchasechallan_master.`PCM_Challan_No`), ' Dated : ', cast(if(isnull(erpm_purchasechallan_master.`PCM_Challan_Date`), '', erpm_purchasechallan_master.`PCM_Challan_Date`) as char), ' & Invoice No. : ', if(isnull(erpm_purchaseinvoice_master.`PIM_Supplier_Invoice_No`), '', erpm_purchaseinvoice_master.`PIM_Supplier_Invoice_No`), ' Dated : ', cast(if(isnull(erpm_purchaseinvoice_master.`PIM_Supplier_Invoice_Date`), '', erpm_purchaseinvoice_master.`PIM_Supplier_Invoice_Date`) as char)) AS Description
+FROM
+     `erpm_item_master` erpm_item_master INNER JOIN `erpm_stock_received` erpm_stock_received ON erpm_item_master.`ERPMIM_ID` = erpm_stock_received.`ST_Item_ID`
+     LEFT OUTER JOIN `erpm_purchasechallan_master` erpm_purchasechallan_master ON erpm_stock_received.`ST_Challan_No` = erpm_purchasechallan_master.`PCM_Challan_No`
+     LEFT OUTER JOIN `erpm_purchaseinvoice_master` erpm_purchaseinvoice_master ON erpm_stock_received.`ST_Invoice_No` = erpm_purchaseinvoice_master.`PIM_Supplier_Invoice_No`
+     LEFT OUTER JOIN `suppliermaster` suppliermaster ON erpm_stock_received.`ST_SM_ID` = suppliermaster.`SM_Id`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_stock_received.`ST_DM_ID` = departmentmaster.`DM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_stock_received.`ST_IM_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_stock_received.`ST_SIM_ID` = subinstitutionmaster.`sim_id`
+     INNER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+WHERE
+     erpm_item_master.`ERPMIM_Item_Cat1` = 1
+
+UNION
+
+SELECT
+     erpm_stock_received.`ST_ID` AS ST_ID,
+     erpm_stock_received.`ST_Item_ID` AS Item_ID,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS Item_Name,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS UOP,
+     erpm_stock_received.`ST_Stock_Serial_No` AS ST_Stock_Serial_No,
+     erpm_issue_master.`ISM_Issue_Date` AS Dated,
+     2 AS Record_Sequence,
+     concat(institutionmaster_From.`IM_Short_Name`, '/', subinstitutionmaster_From.`SIM_Short_Name`, '/', departmentmaster_From.`DM_Short_Name`) AS Movement_From,
+     concat(institutionmaster_To.`IM_Short_Name`, '/', subinstitutionmaster_To.`SIM_Short_Name`, '/', departmentmaster_To.`DM_Short_Name`) AS Movement_To,
+	 concat(if(erpm_issue_master.`ISM_Issue_Type`='U', 'Issued for USE to ', if(erpm_issue_master.`ISM_Issue_Type`='S', 'Issued for STOCK TRANSFER to ', if(erpm_issue_master.`ISM_Issue_Type`='R', 'Issued for REPAIR/MAINTENANCE to ', if(erpm_issue_master.`ISM_Issue_Type`='W', 'Issued for WRITE-OFF to ', ' ')))), if(not isnull(erpm_issue_master.`ISM_To_Employee_ID`), concat(employeemaster.`EMP_FName`,' ',employeemaster.`EMP_MName`,' ',employeemaster.`EMP_LName`), if(not isnull(erpm_issue_master.`ISM_To_Committee_ID`), committeemaster.`Committee_Name`, if(not isnull(erpm_issue_master.`ISM_To_Supplier_ID`), suppliermaster.`SM_Name`, 'NO EMPLOYEE OR COMMITTEE'))), ' via Issue No : ', erpm_issue_master.`ISM_Issue_No`) AS Description
+FROM
+     `erpm_issue_master` erpm_issue_master INNER JOIN `erpm_issue_detail` erpm_issue_detail ON erpm_issue_master.`ISM_ID` = erpm_issue_detail.`ISD_ISM_ID`
+     LEFT OUTER JOIN `erpm_issue_serial_detail` erpm_issue_serial_detail ON erpm_issue_detail.`ISD_ID` = erpm_issue_serial_detail.`ISSD_ISD_ID`
+     INNER JOIN `erpm_stock_received` erpm_stock_received ON erpm_issue_serial_detail.`ISSD_Stock_Serial_ID` = erpm_stock_received.`ST_ID`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_stock_received.`ST_Item_ID` = erpm_item_master.`ERPMIM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+     LEFT OUTER JOIN `committeemaster` committeemaster ON erpm_issue_master.`ISM_To_Committee_ID` = committeemaster.`Committee_ID`
+     LEFT OUTER JOIN `employeemaster` employeemaster ON erpm_issue_master.`ISM_To_Employee_ID` = employeemaster.`EMP_ID`
+     LEFT OUTER JOIN `suppliermaster` suppliermaster ON erpm_issue_master.`ISM_To_Supplier_ID` = suppliermaster.`SM_Id`
+     INNER JOIN `institutionmaster` institutionmaster_From ON erpm_issue_master.`ISM_From_Institute_ID` = institutionmaster_From.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster_From ON erpm_issue_master.`ISM_From_Subinstitute_ID` = subinstitutionmaster_From.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster_From ON erpm_issue_master.`ISM_From_Department_ID` = departmentmaster_From.`DM_ID`
+     INNER JOIN `institutionmaster` institutionmaster_To ON erpm_issue_master.`ISM_To_Institute_ID` = institutionmaster_To.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster_To ON erpm_issue_master.`ISM_To_Subinstitute_ID` = subinstitutionmaster_To.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster_To ON erpm_issue_master.`ISM_To_Department_ID` = departmentmaster_To.`DM_ID`
+
+UNION
+
+SELECT
+     erpm_stock_received.`ST_ID` AS ST_ID,
+     erpm_stock_received.`ST_Item_ID` AS Item_ID,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS Item_Name,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS UOP,
+     erpm_stock_received.`ST_Stock_Serial_No` AS ST_Stock_Serial_No,
+     erpm_issue_return_master.`IRM_Return_Date` AS Dated,
+     3 AS Record_Sequence,
+     concat(institutionmaster_From.`IM_Short_Name`, '/', subinstitutionmaster_From.`SIM_Short_Name`, '/', departmentmaster_From.`DM_Short_Name`) AS Movement_From,
+     concat(institutionmaster_To.`IM_Short_Name`, '/', subinstitutionmaster_To.`SIM_Short_Name`, '/', departmentmaster_To.`DM_Short_Name`) AS Movement_To,
+	 concat(if(erpm_issue_master.`ISM_Issue_Type`='U', 'Returned after USE by ', if(erpm_issue_master.`ISM_Issue_Type`='S', 'Returned back after STOCK TRANSFER by ', if(erpm_issue_master.`ISM_Issue_Type`='R', 'Returned after REPAIR/MAINTENANCE by ', if(erpm_issue_master.`ISM_Issue_Type`='W', ' ', ' ')))), if(not isnull(erpm_issue_master.`ISM_To_Employee_ID`), concat(employeemaster.`EMP_FName`,' ',employeemaster.`EMP_MName`,' ',employeemaster.`EMP_LName`), if(not isnull(erpm_issue_master.`ISM_To_Committee_ID`), committeemaster.`Committee_Name`, if(not isnull(erpm_issue_master.`ISM_To_Supplier_ID`), suppliermaster.`SM_Name`, 'UNKNOWN'))), ' via Return No : ', erpm_issue_return_master.`IRM_Return_No`, '. Received By ', concat(employeemaster_Received.`EMP_FName`, ' ', employeemaster_Received.`EMP_MName`, ' ', employeemaster_Received.`EMP_LName`)) AS Description
+FROM
+     `erpm_issue_master` erpm_issue_master LEFT OUTER JOIN `committeemaster` committeemaster ON erpm_issue_master.`ISM_To_Committee_ID` = committeemaster.`Committee_ID`
+     LEFT OUTER JOIN `employeemaster` employeemaster ON erpm_issue_master.`ISM_To_Employee_ID` = employeemaster.`EMP_ID`
+     LEFT OUTER JOIN `suppliermaster` suppliermaster ON erpm_issue_master.`ISM_To_Supplier_ID` = suppliermaster.`SM_Id`
+     INNER JOIN `erpm_issue_return_detail` erpm_issue_return_detail ON erpm_issue_master.`ISM_ID` = erpm_issue_return_detail.`IRMD_ISM_ID`
+     INNER JOIN `institutionmaster` institutionmaster_To ON erpm_issue_master.`ISM_From_Institute_ID` = institutionmaster_To.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster_To ON erpm_issue_master.`ISM_From_Subinstitute_ID` = subinstitutionmaster_To.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster_To ON erpm_issue_master.`ISM_From_Department_ID` = departmentmaster_To.`DM_ID`
+     INNER JOIN `institutionmaster` institutionmaster_From ON erpm_issue_master.`ISM_To_Institute_ID` = institutionmaster_From.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster_From ON erpm_issue_master.`ISM_To_Subinstitute_ID` = subinstitutionmaster_From.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster_From ON erpm_issue_master.`ISM_To_Department_ID` = departmentmaster_From.`DM_ID`
+     INNER JOIN `erpm_issue_return_master` erpm_issue_return_master ON erpm_issue_return_detail.`IRMD_IRM_ID` = erpm_issue_return_master.`IRM_ID`
+     INNER JOIN `erpm_stock_received` erpm_stock_received ON erpm_issue_return_detail.`IRMD_Stock_ID` = erpm_stock_received.`ST_ID`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_stock_received.`ST_Item_ID` = erpm_item_master.`ERPMIM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+     INNER JOIN `employeemaster` employeemaster_Received ON erpm_issue_return_master.`IRM_ReturnTo_Employee_ID` = employeemaster_Received.`EMP_ID`
+
+Order By ST_ID, Dated, Record_Sequence;]]>
+	</queryString>
+	<field name="ST_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Item_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Item_Name" class="java.lang.String"/>
+	<field name="UOP" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ST_Stock_Serial_No" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Dated" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Record_Sequence" class="java.lang.Long"/>
+	<field name="Movement_From" class="java.lang.String"/>
+	<field name="Movement_To" class="java.lang.String"/>
+	<field name="Description" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="6cd8c358-0897-4142-baf9-e803478dc016" x="185" y="19" width="148" height="20"/>
+				<textElement>
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Item Lifecycle Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="6" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="67" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="4398d121-c4f7-440f-ad1d-0dd9b88f2748" x="129" y="44" width="80" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="29c63dfa-7e25-4568-95f2-0846749548ac" x="211" y="44" width="88" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2014cc8e-5d6e-4c4c-b337-493a8061f7d5" x="305" y="44" width="100" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6a544405-90a1-4c9b-9400-5f0551eae187" x="6" y="44" width="34" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[S no.]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="25e1f5ce-4825-4f86-b377-6f6dabd2a2c4" x="6" y="65" width="420" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="3abe05f0-176b-447f-a582-ae1cc0434940" x="60" y="45" width="66" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="ecb025ec-6401-4f39-b260-fa93da6fe2fa" x="71" y="20" width="86" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Item_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5757f0c7-3685-4746-aaac-4ab92b1ab4ba" x="157" y="20" width="58" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{UOP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bc907f12-9498-47bc-ac87-bef4a634afef" x="328" y="20" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ST_Stock_Serial_No}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5a76f41a-c87d-4398-a945-8817ca3e7510" x="6" y="20" width="65" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Item Name :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="998f7653-3702-486b-8c62-6d8290b33d1f" x="264" y="20" width="63" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial No :]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement uuid="c09d911e-75ff-481b-ab18-5da7bb26367a" x="60" y="1" width="66" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Dated}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="497f11b2-e0ef-48a8-99c3-eef95383642d" x="129" y="1" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Movement_From}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="98d139c3-593c-49f5-91e0-b1eff3fcb22b" x="212" y="1" width="88" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Movement_To}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3a82fe96-de14-45d8-98f8-adae83d89932" x="5" y="1" width="51" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="cb15b4b3-ff5f-48fd-9428-b33863124ae4" x="305" y="1" width="121" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Description}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="40" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement uuid="8e245089-d717-4b28-8bd7-26e91b6afc96" x="426" y="22" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="7793e5eb-1a3a-4595-b404-c59804fe4f2b" x="506" y="22" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

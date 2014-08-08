@@ -41,7 +41,7 @@
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr><td> <s:property value="message" /> </td></tr>
                         <display:table name="erpmpidList" pagesize="15"
-                                       excludedParams="*" export="true" cellpadding="0"
+                                       excludedParams="*" export="false" cellpadding="0"
                                        cellspacing="0" id="doc"
                                        requestURI="/Administration/AddDetailsAction.action">
                                 <display:column  class="griddata" title="S.No" sortable="true" maxLength="50" headerClass="gridheader">

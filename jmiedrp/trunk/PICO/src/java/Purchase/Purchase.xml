@@ -13,6 +13,7 @@
                 <interceptor-ref name="validation">
                     <param name="excludeMethods">execute, browse</param>
                 </interceptor-ref>
+                 <interceptor-ref name="i18n"/>
             </interceptor-stack>
         </interceptors>
 
@@ -456,7 +457,8 @@
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Purchase/PurchaseReport.jsp</result>
         </action>
-<action name="ListOfInvoicesReceived" method="ListOfInvoicesReceived" class="Purchase.PurchaseReportAction">
+<!-- <action name="ListOfInvoicesReceived" method="ListOfInvoicesReceived" class="Purchase.PurchaseReportAction"> -->
+               <action name="ListOfInvoicesReceived" method="ListOfInvoicesReceived" class="Purchase.PurchaseReportAction">
             <result name="success" type="stream">
                 <param name="contentType">application/pdf</param>
                 <param name="inputName">inputStream</param>

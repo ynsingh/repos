@@ -1,3 +1,9 @@
+<%--
+      I18n By    : Mohd. Manauwar Alam
+                 : Jan 2014
+--%>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
@@ -40,7 +46,7 @@
 
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">College/Faculty/School Records Management</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.SubInstRecMgmt')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -55,38 +61,40 @@
 
                         <br>
                         <s:label value="..." cssClass="tdSpace" />
-                        <s:select label="Institution" name="sim.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" 
-                                  list="simImIdList" listKey="imId" listValue="imName" cssClass="textInput"
+                        <s:select name="sim.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" 
+                                  key="Administration.InstitutionName" list="simImIdList" listKey="imId" listValue="imName" cssClass="textInput"
                                   required="true">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{6}" />
                         </s:select>
 
                         <s:label value="..." cssClass="tdSpace" />
-                        <s:textfield name="sim.simName" required="true" maxLength="70" size="50"
-                                     label="College/Faculty/School Name" title="Enter College/Faculty/School"  cssClass="textInput">
+                        <s:textfield name="sim.simName" required="true" maxLength="70" size="50" key="Administration.SubinstitutionName"
+                                      title="Enter College/Faculty/School"  cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
 
                         <s:label value="....." cssClass="tdSpace" />                                                
 
-                        <s:textfield required="true" maxLength="10" size="10"
-                                     label="College/Faculty/School's Short Name" name="sim.simShortName" title="Enter Short Name for InstitutionName" cssClass="textInput">
+                        <s:textfield required="true" maxLength="10" size="10" key="Administration.SubinstShortName"
+                                     name="sim.simShortName" title="Enter Short Name for InstitutionName" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
 
 
                         <s:label/>
-                        <s:select label="Type" required="true" name="sim.erpmGenMaster.erpmgmEgmId" headerKey="0" headerValue="-- Please Select --" list="simTypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput">
+                        <s:select  required="true" name="sim.erpmGenMaster.erpmgmEgmId" headerKey="0" key="Administration.InstType"
+                                  headerValue="-- Please Select --" list="simTypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{6}" />
                         </s:select>
 
                         <s:label value="..." cssClass="tdSpace" />                                           
 
-                        <s:select label="Head's Name" required="true" name="sim.employeemaster.empId" headerKey="0" headerValue="-- Please Select --" list="empList" listKey="empId" listValue="empFname+' '+empMname+' '+empLname"
+                        <s:select  required="true" name="sim.employeemaster.empId" headerKey="0" key="Administration.HeadsName"
+                                  headerValue="-- Please Select --" list="empList" listKey="empId" listValue="empFname+' '+empMname+' '+empLname"
                                   onchange="getEmployeeEmail('SaveSubInstitutionAction_sim_employeemaster_empId','SaveSubInstitutionAction_sim_simEmailId')" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{2}" />
@@ -94,70 +102,72 @@
 
                         <s:label value="....." cssClass="tdSpace"/>                                                                              
 
-                        <s:textfield required="true" maxLength="50" size="30"
-                                     label="Head's Designation " name="sim.simHeadDesignation" title="Enter Head Designation"  cssClass="textInput">
+                        <s:textfield required="true" maxLength="50" size="30" key="Administration.HeadsDesignation"
+                                     name="sim.simHeadDesignation" title="Enter Head Designation"  cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
 
                         <s:label value="..." cssClass="tdSpace" />                                           
-                        <s:textfield required="true" maxLength="50" size="50"
-                                     label="Address" name="sim.simAddressLine1" title="Enter Address" cssClass="textInput">
+                        <s:textfield required="true" maxLength="50" size="50" key="Administration.Address"
+                                      name="sim.simAddressLine1" title="Enter Address" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{6}" />
                         </s:textfield>
 
                         <s:label value="..." cssClass="tdSpace" />                                                                           
-                        <s:textfield required="false" requiredposition="left" maxLength="50" size="50" label="" labelSeparator=""
+                        <s:textfield required="false" requiredposition="left" maxLength="50" size="50"  key="Administration.AddressLine2"
                                      name="sim.simAddressLine2" title="Enter Institution Address"  cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
 
                         <s:label value="..." cssClass="tdSpace" />                                           
-                        <s:textfield required="false" requiredposition="left" maxLength="50" size="30"
-                                     label="District" name="sim.simDistrict" title="Enter District "  cssClass="textInput">
+                        <s:textfield required="false" requiredposition="left" maxLength="50" size="30" key="Administration.District"
+                                      name="sim.simDistrict" title="Enter District "  cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
 
                         <s:label value="..." cssClass="tdSpace" />                                           
-                        <s:select label="Country" required="true" name="sim.countrymaster.countryId" headerKey="0" headerValue="-- Please Select --" list="ctList" listKey="countryId" listValue="countryName"
+                        <s:select  required="true" name="sim.countrymaster.countryId" headerKey="0" key="Administration.Country"
+                                  headerValue="-- Please Select --" list="ctList" listKey="countryId" listValue="countryName"
                                   onchange="getStateList('SaveSubInstitutionAction_sim_countrymaster_countryId','SaveSubInstitutionAction_sim_statemaster_stateId')" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{6}" />
                         </s:select>
 
                         <s:label value="..." cssClass="tdSpace" />                                           
-                        <s:select label="State" required="true"  name="sim.statemaster.stateId" headerKey="0" headerValue="-- Please Select --" list="statemasterList" listKey="stateId" listValue="stateName" cssClass="textInput">
+                        <s:select required="true"  name="sim.statemaster.stateId" headerKey="0" key="Administration.State"
+                                  headerValue="-- Please Select --" list="statemasterList" listKey="stateId" listValue="stateName" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:select>
 
                         <s:label value="..." cssClass="tdSpace" />                                           
-                        <s:textfield required="false" requiredposition="left" maxLength="6" size="6"
-                                     label="Pin Code" name="sim.simPinNo" title="Enter Pin Code" cssClass="textInput">
+                        <s:textfield required="false" requiredposition="left" maxLength="6" size="6" key="Administration.PinCode"
+                                      name="sim.simPinNo" title="Enter Pin Code" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
 
                         <s:label value="..." cssClass="tdSpace" />                                           
-                        <s:textfield required="false" requiredposition="left" maxLength="30" size="30"
-                                     label="Phone Number" name="sim.simPhone" title="Enter Phone" cssClass="textInput">
+                        <s:textfield required="false" requiredposition="left" maxLength="30" size="30" key="Administration.PhoneNumber"
+                                     name="sim.simPhone" title="Enter Phone" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
 
                         <s:label value="..." cssClass="tdSpace" />                                           
-                        <s:textfield required="false" requiredposition="left" maxLength="30" size="30"
-                                     label="Fax Number" name="sim.simFax" title="Enter Fax" cssClass="textInput">
+                        <s:textfield required="false" requiredposition="left" maxLength="30" size="30" key="Administration.FaxNumber"
+                                      name="sim.simFax" title="Enter Fax" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
 
                         <s:label value="..." cssClass="tdSpace" />                                           
-                        <s:textfield required="true" maxLength="50" size="50"
-                                     label="E-Mail Adress" name="sim.simEmailId" title="Enter Subinstitue's E-Mail " cssClass="textInput">
+                        <s:textfield required="true" maxLength="50" size="50" key="Administration.EMail"
+                                      name="sim.simEmailId" title="Enter Subinstitue's E-Mail " cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{6}" />
                         </s:textfield>
@@ -167,22 +177,22 @@
                         </s:iterator>
 
                         <s:label value="..." cssClass="tdSpace" />                                           
-                        <s:submit value="Save Sub Institution">
+                        <s:submit key="Administration.Save">
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
 
-                        <s:submit value="Browse Sub Institution"  action="BrowseSubInstitutions">
+                        <s:submit key="Administration.Browse"  action="BrowseSubInstitutions">
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
 
-                        <s:submit value="Clear Form" onclick="ClearSubInstitutionFields();">
+                        <s:submit key="Administration.Clear" onclick="ClearSubInstitutionFields();">
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
 
-                        <s:submit value="Export Data" action="PrintSubInstitutions">
+                        <s:submit key="Administration.Print" action="PrintSubInstitutions">
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>

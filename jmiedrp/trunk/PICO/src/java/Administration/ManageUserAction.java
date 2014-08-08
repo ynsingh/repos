@@ -4,37 +4,34 @@ package Administration;
  *
  * @author kazim
  */
-import pojo.hibernate.Erpmusers;
-import pojo.hibernate.ErpmusersDAO;
-import pojo.hibernate.Departmentmaster;
-import pojo.hibernate.DepartmentmasterDAO;
-import pojo.hibernate.Institutionmaster;
-import pojo.hibernate.InstitutionmasterDAO;
-import pojo.hibernate.Subinstitutionmaster;
-import pojo.hibernate.SubinstitutionmasterDAO;
-import pojo.hibernate.Institutionuserroles;
-import pojo.hibernate.InstitutionuserroleDAO;
-import pojo.hibernate.Institutionroleprivileges;
-import pojo.hibernate.Genericroleprivileges;
-import pojo.hibernate.GenericroleprivilegesDAO;
-import pojo.hibernate.InstitutionroleprivilegesDAO;
-import pojo.hibernate.Erpmuserrole;
-import pojo.hibernate.ErpmuserroleDAO;
-import pojo.hibernate.Statemaster;
-import pojo.hibernate.Countrymaster;
-import pojo.hibernate.CountrymasterDAO;
-import pojo.hibernate.Genericuserroles;
-import pojo.hibernate.GenericuserrolesDAO;
-
-import utils.sendMail;
-import utils.DevelopmentSupport;
-
 import java.util.ArrayList;
 import java.util.List;
+import pojo.hibernate.Countrymaster;
+import pojo.hibernate.CountrymasterDAO;
+import pojo.hibernate.Departmentmaster;
+import pojo.hibernate.DepartmentmasterDAO;
+import pojo.hibernate.Erpmuserrole;
+import pojo.hibernate.ErpmuserroleDAO;
+import pojo.hibernate.Erpmusers;
+import pojo.hibernate.ErpmusersDAO;
+import pojo.hibernate.Genericroleprivileges;
+import pojo.hibernate.GenericroleprivilegesDAO;
+import pojo.hibernate.Genericuserroles;
+import pojo.hibernate.GenericuserrolesDAO;
+import pojo.hibernate.Institutionmaster;
+import pojo.hibernate.InstitutionmasterDAO;
+import pojo.hibernate.Institutionroleprivileges;
+import pojo.hibernate.InstitutionroleprivilegesDAO;
+import pojo.hibernate.InstitutionuserroleDAO;
+import pojo.hibernate.Institutionuserroles;
+import pojo.hibernate.Statemaster;
+import pojo.hibernate.Subinstitutionmaster;
+import pojo.hibernate.SubinstitutionmasterDAO;
+import utils.DevelopmentSupport;
+import utils.sendMail;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import com.opensymphony.xwork2.ActionContext;
-import org.apache.struts2.interceptor.validation.SkipValidation;
 
 
 /**
@@ -75,6 +72,7 @@ public class ManageUserAction extends DevelopmentSupport  {
     private Subinstitutionmaster sim;
     private Departmentmaster dm;
 
+    static String dataSourceURL=null;
 
     private String message;
     private Integer erpmuId;
@@ -325,6 +323,7 @@ public class ManageUserAction extends DevelopmentSupport  {
         public String AddUser() throws Exception {
         try {
             imIdList = imDao.findAll();
+            getSession().setAttribute("isAdministrator", "userRegisterRequest");
             return SUCCESS;
         }
         catch (Exception e) {

@@ -1,4 +1,10 @@
 
+<%--  
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
+--%>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 
@@ -44,7 +50,7 @@
                 </s:bean>
                
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">TENDER MASTER</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('PrePurchase.TenderMaster')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message"/></p>
                 </div>
 
@@ -67,111 +73,110 @@
                        
 
                         <s:label value="..." cssClass="tdSpace"/>
-                        <s:property value="message"/>
-                        <s:select label="Institution" required="true"  name="ermptendermaster.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="ImIdList" listKey="imId" listValue="imName" 
+                        <s:select key="PrePurchase.Institution" required="true"  name="ermptendermaster.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="ImIdList" listKey="imId" listValue="imName" 
                                                 cssClass="textInput" >
                         <s:param name="labelcolspan" value="%{2}" />
                         <s:param name="inputcolspan" value="%{2}" />
                         </s:select>
-                        <s:select label="SubInstitution" required="true"  name="ermptendermaster.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please select --" list="SimImIdList" listKey="simId" listValue="simName" 
+                        <s:select key="PrePurchase.SubInstitution" required="true"  name="ermptendermaster.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please select --" list="SimImIdList" listKey="simId" listValue="simName" 
                             onchange="getDepartmentList('TenderMasterAction_ermptendermaster_subinstitutionmaster_simId','TenderMasterAction_ermptendermaster_departmentmaster_dmId')" cssClass="textInput">
                         <s:param name="labelcolspan" value="%{2}" />
                         <s:param name="inputcolspan" value="%{2}" />
                         </s:select>
                          <s:label/>
                                   
-                         <s:select required="true" label="Department" name="ermptendermaster.departmentmaster.dmId" headerKey="0" headerValue="-- Please Select --" list="DmList" listKey="dmId" listValue="dmName" cssClass="textInput"  > 
+                         <s:select required="true" key="PrePurchase.Department" name="ermptendermaster.departmentmaster.dmId" headerKey="0" headerValue="-- Please Select --" list="DmList" listKey="dmId" listValue="dmName" cssClass="textInput"  > 
                          <s:param name="labelcolspan" value="%{2}" />
                          <s:param name="inputcolspan" value="%{2}" />
                          </s:select>  
-                         <s:textfield label="Tender No" name="ermptendermaster.tmTenderNo" headerKey="0" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc" onkeypress="return isNumberKey(event)">   <s:param name="labelcolspan" value="%{2}"  />
+                         <s:textfield key="PrePurchase.TenderNo" name="ermptendermaster.tmTenderNo" headerKey="0" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc" onkeypress="return isNumberKey(event)">   <s:param name="labelcolspan" value="%{2}"  />
                          <s:param name="inputcolspan" value="%{2}" />
                          </s:textfield>
                          <s:label/>
                          
                          <s:textfield required="true" requiredposition="left" headerKey="0" maxLength="20" size="20" 
-                                     label="Tender Date dd-MM-yyyy" name="tenDate" title="Enter Item Make" onfocus="addDate();" id="datetext"> 
+                                     key="PrePurchase.TenderDate" name="tenDate" title="Enter Item Make" onfocus="addDate();" id="datetext"> 
                              
                          <s:param name="labelcolspan" value="%{2}" />
                          <s:param name="inputcolspan" value="%{2}" />
                          </s:textfield>
                          <s:textfield required="false" requiredposition="left" headerKey="0" maxLength="20" size="30"
-                                     label="Tender Name" name="ermptendermaster.tmName" title="Enter Item Make">
+                                     key="PrePurchase.TenderName" name="ermptendermaster.tmName" title="Enter Item Make">
                          <s:param name="labelcolspan" value="%{2}" />
                          <s:param name="inputcolspan" value="%{2}" />
                          </s:textfield>
                          <s:label/>
                           
-                         <s:select label="Tender Type" name="ermptendermaster.erpmGenMasterByTmTypeId.erpmgmEgmId" headerKey="0" headerValue="-- Please Select --" list="tendertypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc">
+                         <s:select key="PrePurchase.TenderType" name="ermptendermaster.erpmGenMasterByTmTypeId.erpmgmEgmId" headerKey="0" headerValue="-- Please Select --" list="tendertypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc">
                          <s:param name="labelcolspan" value="%{2}" />
                          <s:param name="inputcolspan" value="%{2}" />
                          </s:select>
                          <s:textfield required="false" requiredposition="left" maxLength="30" headerKey="0" size="30"
-                                     label="Estimated Amount" name="ermptendermaster.tmEstimatedAmount" title ="Enter Item Make" onkeypress="return isNumberKey(event)">
+                                     key="PrePurchase.EstimatedAmount" name="ermptendermaster.tmEstimatedAmount" title ="Enter Item Make" onkeypress="return isNumberKey(event)">
                          <s:param name="labelcolspan" value="%{2}" />
                          <s:param name="inputcolspan" value="%{2}" />
                          </s:textfield>
                          <s:label/>
                          
                          <s:textfield required="false" requiredposition="left" maxLength="20" headerKey="0" size="20"
-                                     label="Tender Fee" name="ermptendermaster.tmFee" title="Enter Item Make" onkeypress="return isNumberKey(event)">
+                                     key="PrePurchase.TenderFee" name="ermptendermaster.tmFee" title="Enter Item Make" onkeypress="return isNumberKey(event)">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{2}" />
                          </s:textfield>
                          <s:textfield required="false" requiredposition="left" maxLength="20" headerKey="0" size="20"
-                                     label="EMD Amount" name="ermptendermaster.tmEmdAmount" title="Enter Item Make" onkeypress="return isNumberKey(event)">
+                                     key="PrePurchase.EMDAmount" name="ermptendermaster.tmEmdAmount" title="Enter Item Make" onkeypress="return isNumberKey(event)">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
                         <s:label/>
                         
-                        <s:select label="Status" name="ermptendermaster.erpmGenMasterByTmStatusId.erpmgmEgmId" headerKey="0" headerValue="-- Please Select --" list="tendertypeList1" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc">
+                        <s:select key="PrePurchase.Status" name="ermptendermaster.erpmGenMasterByTmStatusId.erpmgmEgmId" headerKey="0" headerValue="-- Please Select --" list="tendertypeList1" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc">
                         <s:param name="labelcolspan" value="%{2}" />
                         <s:param name="inputcolspan" value="%{2}" />
                         </s:select>
                          
                       
                          <s:textfield required="false" requiredposition="left" maxLength="40" headerKey="0" size="50"
-                                     label="Notice Link" name="ermptendermaster.tmNoticeLink" title="Enter Item Make">
+                                     key="PrePurchase.NoticeLink" name="ermptendermaster.tmNoticeLink" title="Enter Item Make">
                          <s:param name="labelcolspan" value="%{2}" />
                          <s:param name="inputcolspan" value="%{2}" />
                          </s:textfield>
                         <s:label/>
                        
                         <s:textfield required="false" requiredposition="left" maxLength="50" headerKey="0" size="50"
-                                     label="Document Link" name="ermptendermaster.tmDocumentLink" title="Enter Remarks, if any">
+                                     key="PrePurchase.DocumentLink" name="ermptendermaster.tmDocumentLink" title="Enter Remarks, if any">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
                         <s:label/>
                         
                         <s:textfield required="false" requiredposition="left" maxLength="50" headerKey="0" size="30"
-                                     label="Remarks" name="ermptendermaster.tmRemarks" title="Enter Item Make">
+                                     key="PrePurchase.Remarks" name="ermptendermaster.tmRemarks" title="Enter Item Make">
                         <s:param name="labelcolspan" value="%{2}" />
-                        <s:param name="inputcolspan" value="%{4}" />
+                        <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
                         <s:label/>
                            
                               <s:label/>
                                  
                               <s:label/>
-                         <s:submit  name="btnClear" value="SubmittedReport"   action="SubmittedTendersReportAction">
+                         <s:submit  name="btnClear" key="Submited Report"   action="SubmittedTendersReportAction">
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{1}" />
                         </s:submit>     
                         
                                 
                        
-                        <s:submit name="btnSubmit" value="Save Item" action="SaveTender">
+                        <s:submit name="btnSubmit" key="PrePurchase.Save" action="SaveTender">
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{1}" />
                         </s:submit>
-                        <s:submit name="btnBrowse" value="Browse Items"  action="BrowseTender">
+                        <s:submit name="btnBrowse" key="PrePurchase.Browse"  action="BrowseTender">
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{1}" />
                         </s:submit>         
                            
-                        <s:submit name="btnClear" value="Clear" action="ClearTender">
+                        <s:submit name="btnClear" key="PrePurchase.Clear" action="ClearTender">
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{1}" />
                         </s:submit>

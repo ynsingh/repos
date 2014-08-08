@@ -135,12 +135,48 @@ public class DepartmentalBudgetAllocationDAO {
         }
     }
 
+    public List<DepartmentalBudgetAllocation> findForUserSubinstitution(Integer erpmuId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<DepartmentalBudgetAllocation> list = session.createQuery("select u from DepartmentalBudgetAllocation  u where u.subinstitutionmaster.simId in (Select s.subinstitutionmaster.simId from Erpmuserrole s where s.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId", erpmuId).list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(list.get(index).getDepartmentmaster());
+                Hibernate.initialize(list.get(index).getBudgetheadmaster());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+
     public List<DepartmentalBudgetAllocation> findByDMId(Integer dmId) {
         Session session = HibernateUtil.getSession();
         try {
             int index = 0;
             session.beginTransaction();
             List<DepartmentalBudgetAllocation> list = session.createQuery("select distinct(u) from DepartmentalBudgetAllocation u where u.departmentmaster.dmId = :dmId").setParameter("dmId", dmId).list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(list.get(index).getDepartmentmaster());
+                Hibernate.initialize(list.get(index).getBudgetheadmaster());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<DepartmentalBudgetAllocation> findForUserDepartments(Integer erpmuId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<DepartmentalBudgetAllocation> list = session.createQuery("select distinct(u) from DepartmentalBudgetAllocation u where u.departmentmaster.dmId in (Select d.departmentmaster.dmId from Erpmuserrole d where d.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId", erpmuId).list();
             for (index = 0; index < list.size(); ++index) {
                 Hibernate.initialize(list.get(index).getInstitutionmaster());
                 Hibernate.initialize(list.get(index).getSubinstitutionmaster());

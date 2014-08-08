@@ -4,7 +4,8 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-
+    
+<constant name="struts.custom.i18n.resources" value="global" />
     <package name="Administration" namespace="/Administration" extends="struts-default">
 
         <interceptors>
@@ -15,6 +16,7 @@
                     <param name="excludeMethods">execute, browse</param>
                 </interceptor-ref>
                 <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="i18n"/>
             </interceptor-stack>
         </interceptors>
 
@@ -23,12 +25,14 @@
         </global-results>
 
         <action name="Index" class="Administration.IndexAction">
-            <result>/pico/Administration/login.jsp</result>
+<!--            <result>/pico/Administration/login.jsp</result>   -->
+            <result name="success">/pico/Administration/login.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
         <action name="locale" class="Administration.LocaleAction">
             <result name="SUCCESS">/pico/Administration/login.jsp</result>
-        </action>
+        </action> 
 
         <action name="Login" class="Administration.ErpmusersAction">
             <result name="success">/pico/Administration/showWelcomePage.jsp</result>
@@ -293,6 +297,7 @@
 
         <action name="BrowseEmployee" method="Browse" class="Administration.ManageEmployeeAction">
             <result name="success">/pico/Administration/employeeBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
         <action name="EditEmployee" method="Edit"  class="Administration.ManageEmployeeAction">
@@ -302,6 +307,7 @@
 
         <action name="DeleteEmployee" method="Delete" class="Administration.ManageEmployeeAction">
             <result name="success">/pico/Administration/employeeBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
 
@@ -399,6 +405,7 @@
 
         <action name="DeleteSubInstitution" method="Delete" class="Administration.SubInstitutionAction">
             <result name="success">/pico/Administration/SubInstitutionsBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
         <!-- ACTIONS RELATED TO DEPARTMENT MASTER MANAGEMENT -->
@@ -1103,8 +1110,75 @@
             <result name="input">/pico/Administration/ManageGFRProgramMapping.jsp</result>
         </action>
         
+<!-- ACTIONS RELATED TO LIST OF TENDERS MANAGEMENT -->
+		<action name="ListOfTendersAction" method="ListOfTenders" class="Administration.ListOfTendersAction">
+            <result name="success">/pico/Administration/ViewListOfTenders.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="fetchTender" method="fetchTender" class="Administration.ListOfTendersAction">
+            <result name="success">/pico/Administration/ViewListOfTenders.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ViewListOfTenders.jsp</result>
+        </action>
+
+		<action name="getTenderSchedule" method="getTenderSchedule" class="Administration.ListOfTendersAction">
+            <result name="success">/pico/Administration/ViewListOfTenders.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ViewListOfTenders.jsp</result>
+        </action>
+
+ 		<action name="ExportTenderList" method="ExportTenderList" class="Administration.ListOfTendersAction">
+            <result name="success" type="stream" >
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+        <!-- This part handles DataManagementUtility Actions -->
+
+<!--        <action name="DataManagementUtilityAction" class="Administration.DataManagementUtilityAction">
+              
+            <result name="success">/pico/Administration/DataManagementUtility.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/DataManagementUtility.jsp</result>
+            </action>
+-->
 
 
-                
+        <action name="se@rch+$ata_app" class="Administration.DataManagementUtilityAction">
+              
+            <result name="success">/pico/Administration/DMULogin.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/DMULogin.jsp</result>
+        </action>
+
+<!--        <action name="DataManagementUtilityAction" class="Administration.DataManagementUtilityAction">
+              
+            <result name="success">/pico/Administration/DMULogin.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/DMULogin.jsp</result>
+        </action>
+ -->           
+         <action name="SignIn" method="SignIn" class="Administration.DataManagementUtilityAction">
+            <result name="success">/pico/Administration/DataManagementUtility.jsp</result>
+            <result name="SUCCESS1">/pico/Administration/DMULogin.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/DataManagementUtility.jsp</result>
+        </action>
+        
+        
+        <action name="ExecuteSqlQuery" method="ExecuteSqlQuery" class="Administration.DataManagementUtilityAction">
+            <result name="success">/pico/Administration/DataManagementUtility.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/DataManagementUtility.jsp</result>
+        </action>
+
+        <action name="ClearDMU" method="Clear" class="Administration.DataManagementUtilityAction">
+            <result name="success">/pico/Administration/DataManagementUtility.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/DataManagementUtility.jsp</result>
+        </action>
     </package>
 </struts>

@@ -2,6 +2,8 @@
     Document   : TenderScheduleDetail
     Created on : 18 Apr, 2013, 11:53:47 AM
     Author     : wml3
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
 --%>
 
 <%--
@@ -46,7 +48,7 @@
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
                 <div style ="background-color: #215dc6;" align="center">
-                    <p align="center" class="pageHeading" style="color: #ffffff">TENDER SCHEDULE DETAIL</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('PrePurchase.TenderScheduleDetail')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -61,39 +63,39 @@
                         <table border="0" cellpadding="4" cellspacing="0" align="center" >
                             <tbody>
 
-                                <s:textfield  maxLength="30" size="20"  label="Tender No" requiredposition="" name="tenschdl.erpmTenderMaster.tmTmId" required="true" readonly="True" disabled="tsdDisable" >
+                                <s:textfield  maxLength="30" size="20"  key="PrePurchase.TenderNo" requiredposition="" name="tenschdl.erpmTenderMaster.tmTmId" required="true" readonly="True" disabled="tsdDisable" >
                                     <s:param name="labelcolspan" value="%{1}" />
                                     <s:param name="inputcolspan" value="%{3}" />
                                 </s:textfield>
 
-                                 <s:textfield  maxLength="30" size="20"  label="Schedule No" requiredposition="" name="tenschdlDet.tscdScheduleNo" required="true" >
+                                 <s:textfield  maxLength="30" size="20"  key="PrePurchase.ScheduleNo" requiredposition="" name="tenschdlDet.tscdScheduleNo" required="true" >
                                     <s:param name="labelcolspan" value="%{1}" />
                                     <s:param name="inputcolspan" value="%{3}" />
                                 </s:textfield>
 
-                                <s:select label="Schedule Type" required="true" requiredposition=""  name="tenschdlDet.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="gmIdList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc"  cssClass="textInput">
+                                <s:select key="PrePurchase.ScheduleType" required="true" requiredposition=""  name="tenschdlDet.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="gmIdList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc"  cssClass="textInput">
                                     <s:param name="labelcolspan" value="%{1}" />
                                     <s:param name="inputcolspan" value="%{3}" />
                                 </s:select>
 
                                  <s:textfield required="true" requiredposition="left" maxLength="100" size="40" title="Venue"
-                                         label="Venue" name="tenschdlDet.tscdVenue" >
+                                         key="PrePurchase.Venue" name="tenschdlDet.tscdVenue" >
                                     <s:param name="labelcolspan" value="%{1}" />
                                     <s:param name="inputcolspan" value="%{3}" />
                                 </s:textfield>
 
                                 <s:textfield required="true" requiredposition="left" maxLength="10" size="30" title="Date [DD-MM-YYYY]"
-                                         label="Schedule Date" name="schdDate" >
+                                         key="PrePurchase.ScheduleDate" name="schdDate" >
                                     <s:param name="labelcolspan" value="%{1}" />
                                     <s:param name="inputcolspan" value="%{3}" />
                                 </s:textfield>
 
-                                <s:select label="Time (hr)" required="true" requiredposition="" name="strhr" headerKey="" headerValue="-- Please Select --" list="{'00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'}"  cssClass="queryInput">
+                                <s:select key="PrePurchase.TimeHour" required="true" requiredposition="" name="strhr" headerKey="" headerValue="-- Please Select --" list="{'00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'}"  cssClass="queryInput">
                                     <s:param name="labelcolspan" value="%{1}" />
                                     <s:param name="inputcolspan" value="%{3}" />
                                 </s:select>
 
-                                 <s:select label="Time (min)" required="true" requiredposition="" name="strmin" headerKey="" headerValue="-- Please Select --" list="{'00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'}"  cssClass="queryInput">
+                                 <s:select key="PrePurchase.TimeMin" required="true" requiredposition="" name="strmin" headerKey="" headerValue="-- Please Select --" list="{'00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'}"  cssClass="queryInput">
                                     <s:param name="labelcolspan" value="%{1}" />
                                     <s:param name="inputcolspan" value="%{3}" />
                                 </s:select>
@@ -101,11 +103,11 @@
                                
 
                                 <tr><td align="left">
-                                <s:submit theme="simple" name="btnSubmit" value="Add Schedule"   action="AddTenderScheduleDetailAction" />
+                                <s:submit theme="simple" name="btnSubmit" key = "PrePurchase.AddSchedule"   action="AddTenderScheduleDetailAction" />
 
-                                <s:submit theme="simple" name="btnSubmit" value="Clear"   action="ClearTenderScheduleDetail" />
+                                <s:submit theme="simple" name="btnSubmit" key="PrePurchase.Clear"   action="ClearTenderScheduleDetail" />
 
-                                <s:submit theme="simple" name="btnSubmit" value="Back"   action="BackTenderScheduleDetail" />
+                                <s:submit theme="simple" name="btnSubmit" key = "PrePurchase.Back"   action="BackTenderScheduleDetail" />
                                  </td></tr>
                           <%--      --%>
                             </tbody>

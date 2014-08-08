@@ -2,6 +2,8 @@
     Document   : ManageGFRProgramMapping
     Created on : 9 Jan, 2013, 5:11:33 PM
     Author     : Saeed
+    I18n By    : Mohd. Manauwar Alam
+               : Jan 2014
 --%>
 
 
@@ -47,7 +49,8 @@
                 </s:bean>
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">GFR & Program Mapping</p>
+         <%--           <p align="center" class="pageHeading" style="color: #ffffff">GFR & Program Mapping</p>  --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.GFRProgMap')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -59,7 +62,7 @@
                         <s:label value=".." cssClass="tdSpace"/>
 
                         <tr><td align="">
-                                <s:select cssClass="textInput" label="Sub Module"  required="true" requiredposition="" name="gfrprgrmMap.erpmprogram.erpmsubmodule.erpmSubModuleId"
+               <%--                 <s:select cssClass="textInput" label="Sub Module"  required="true" requiredposition="" name="gfrprgrmMap.erpmprogram.erpmsubmodule.erpmSubModuleId"
                                           headerKey="" headerValue="-- Please Select --" list="erpmsmList" listKey="erpmSubModuleId" listValue="esmName"
                                           onchange="getProgramListForSubModule('ManageGFRProgramMappingAction_gfrprgrmMap_erpmprogram_erpmsubmodule_erpmSubModuleId', 'ManageGFRProgramMappingAction_gfrprgrmMap_erpmprogram_erpmpId');">
                                     <s:param name="labelcolspan" value="%{1}" />
@@ -78,7 +81,27 @@
                         <s:label value="......" cssClass="tdSpace"/>
                         
                             <td align="right">
-                                <s:submit theme="simple" value="Done" action="Done">
+                                <s:submit theme="simple" value="Done" action="Done">--%>
+                                <s:select cssClass="textInput" key = "Administration.SubModuleName"  required="true" requiredposition="" name="gfrprgrmMap.erpmprogram.erpmsubmodule.erpmSubModuleId"
+                                          headerKey="" headerValue="-- Please Select --" list="erpmsmList" listKey="erpmSubModuleId" listValue="esmName"
+                                          onchange="getProgramListForSubModule('ManageGFRProgramMappingAction_gfrprgrmMap_erpmprogram_erpmsubmodule_erpmSubModuleId', 'ManageGFRProgramMappingAction_gfrprgrmMap_erpmprogram_erpmpId');">
+                                    <s:param name="labelcolspan" value="%{1}" />
+                                    <s:param name="inputcolspan" value="%{3}" />
+                                </s:select>
+
+                        <s:label value="......" cssClass="tdSpace"/>
+
+
+                                <s:select cssClass="textInput"  key="Administration.ProgramName" required="true" requiredposition="" name="gfrprgrmMap.erpmprogram.erpmpId" labelposition=""
+                                          headerKey="" headerValue="-- Please Select --" list="erpmprgmList" listKey="erpmpId" listValue="erpmpDisplayName">
+                                    <s:param name="labelcolspan" value="%{1}" />
+                                    <s:param name="inputcolspan" value="%{3}" />
+                                </s:select>
+
+                        <s:label value="......" cssClass="tdSpace"/>
+
+                            <td align="right">
+                                <s:submit theme="simple" key="Administration.Done" action="Done">
                                     <s:param name="colspan" value="%{1}" />
                                     <s:param name="align" value="%{3}" />
                                 </s:submit>

@@ -224,8 +224,8 @@ public class TenderScheduleAction extends DevelopmentSupport {
         //Prepare Department List
         dmList = dmDao.findAllDepartmentsForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
 
-        tnoList = tnoDao.findAll();
-
+       // tnoList = tnoDao.findAll();
+         tnoList = tnoDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
     }
 
     public String save() throws Exception {
@@ -410,8 +410,8 @@ public class TenderScheduleAction extends DevelopmentSupport {
     public String Browse() throws Exception {
         try {
 
-            tenschdlList = tenschdlDao.findAll();
-
+        //    tenschdlList = tenschdlDao.findAll();
+             tenschdlList = tenschdlDao.findByImId(Short.parseShort(getSession().getAttribute("imId").toString()));
             return SUCCESS;
         } catch (Exception e) {
             message = "Exception in Browse method of PurchaseInvoiceAction cause :" + e.getCause();
@@ -426,7 +426,7 @@ public class TenderScheduleAction extends DevelopmentSupport {
             tenschdl = tenschdlDao.findBytscTscId(getTenschlId());
 
             prepare_lovs();
-            message = "" +  tenschdl.getSubinstitutionmaster().getSimId() + " : "+Integer.valueOf(getSession().getAttribute("userid").toString()) ;
+//            message = "" +  tenschdl.getSubinstitutionmaster().getSimId() + " : "+Integer.valueOf(getSession().getAttribute("userid").toString()) ;            
             return SUCCESS;
         } catch (Exception e) {
             message = "Exception in Edit method -> DepartmentAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
@@ -485,7 +485,8 @@ public class TenderScheduleAction extends DevelopmentSupport {
             tenschdl = null;
             strhr = null;
             strmin = null;
-            tenschdlList = tenschdlDao.findAll();
+    //        tenschdlList = tenschdlDao.findAll();
+             tenschdlList = tenschdlDao.findByImId(Short.parseShort(getSession().getAttribute("imId").toString()));            
             gmIdList = gmDao.findByErpmGmType(i);
 
             prepare_lovs();
@@ -529,10 +530,15 @@ public class TenderScheduleAction extends DevelopmentSupport {
 
             tenschdlDao.delete(tenschdl);
             message = "Record deleted successfull";
-            tenschdlList = tenschdlDao.findAll();
+    //        tenschdlList = tenschdlDao.findAll();
+             tenschdlList = tenschdlDao.findByImId(Short.parseShort(getSession().getAttribute("imId").toString()));            
             return SUCCESS;
         } catch (Exception e) {
+             if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
+                 message = "This record cannot be Deleted. It is being used in other Tables." ;
+             } else {
             message = "Exception in Delete method -> ProgramAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
+	     }
             return ERROR;
         }
     }

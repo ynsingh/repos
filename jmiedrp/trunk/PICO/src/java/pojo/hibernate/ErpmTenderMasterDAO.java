@@ -69,25 +69,6 @@ public class ErpmTenderMasterDAO {
         }
     }
 
-    public List<ErpmTenderMaster> findAll() {
-        Session session = HibernateUtil.getSession();
-        try {
-            int index = 0;
-            session.beginTransaction();
-            List<ErpmTenderMaster> list = session.createQuery("select u from ErpmTenderMaster u").list();
-            for (index = 0; index < list.size(); ++index) {
-                Hibernate.initialize(list.get(index).getInstitutionmaster());
-                Hibernate.initialize(list.get(index).getDepartmentmaster());
-                Hibernate.initialize(list.get(index).getSubinstitutionmaster());
-                Hibernate.initialize(list.get(index).getErpmGenMasterByTmTypeId());
-                Hibernate.initialize(list.get(index).getErpmGenMasterByTmStatusId());
-            }
-            return list;
-        } finally {
-            session.close();
-        }
-    }
-
     public List<ErpmTenderMaster> findByImId(Short ImId) {
         Session session = HibernateUtil.getSession();
         try {
@@ -107,29 +88,54 @@ public class ErpmTenderMasterDAO {
         }
     }
 
-    public ErpmTenderMaster findByTenderMasterId(Integer erpmtenderId) {
-        Session session = HibernateUtil.getSession();
-        try {
-            session.beginTransaction();
-            ErpmTenderMaster erpmtender = (ErpmTenderMaster) session.load(ErpmTenderMaster.class, erpmtenderId);
-            Hibernate.initialize(erpmtender);
-            return erpmtender;
-        } finally {
-            session.close();
-        }
-    }
-
-    public List<ErpmTenderMaster> findBydmId(Short dmId) {
+    public List<ErpmTenderMaster> findTender(Short ImId, Integer tenType, Integer tenState) {
         Session session = HibernateUtil.getSession();
         try {
             int index = 0;
             session.beginTransaction();
-            List<ErpmTenderMaster> erpmTenderMasterList = session.createQuery("Select u from ErpmTenderMaster u where u.departmentmaster.dmId = :dmId").setParameter("dmId", dmId).list();
-            for (index = 0; index < erpmTenderMasterList.size(); ++index) {
-                Hibernate.initialize(erpmTenderMasterList.get(index).getDepartmentmaster());
-                // Hibernate.initialize(erpmTenderMasterList.get(index).getErpmTenderMaster());
-            }
+            List<ErpmTenderMaster> erpmTenderMasterList1;
 
+            if (ImId == 0) {
+                if (tenType != 0) {
+                    if(tenState == 1)
+                    	erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where u.erpmGenMasterByTmTypeId.erpmgmEgmId = :tenType").setParameter("tenType", tenType).list();
+                    else if(tenState == 2)
+                        erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where u.erpmGenMasterByTmTypeId.erpmgmEgmId = :tenType and (u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 105 and u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 106 and u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 107)").setParameter("tenType", tenType).list();
+                    else
+                       erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where u.erpmGenMasterByTmTypeId.erpmgmEgmId = :tenType and (u.erpmGenMasterByTmStatusId.erpmgmEgmId = 105 or u.erpmGenMasterByTmStatusId.erpmgmEgmId = 106 or u.erpmGenMasterByTmStatusId.erpmgmEgmId = 107)").setParameter("tenType", tenType).list();
+                } else {
+                    if(tenState == 1)
+                    erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u").list();
+                    else if(tenState == 2)
+                        erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where (u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 105 and u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 106 and u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 107)").list();
+                    else
+                    erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where (u.erpmGenMasterByTmStatusId.erpmgmEgmId = 105 or  u.erpmGenMasterByTmStatusId.erpmgmEgmId = 106 or u.erpmGenMasterByTmStatusId.erpmgmEgmId = 107)").list();
+                }
+            } else {
+                if (tenType != 0) {
+                    if(tenState == 1)
+                    erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where u.erpmGenMasterByTmTypeId.erpmgmEgmId = :tenType and u.institutionmaster.imId = :ImId").setParameter("tenType", tenType).setParameter("ImId", ImId).list();
+                    else if(tenState==2)
+                        erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where u.erpmGenMasterByTmTypeId.erpmgmEgmId = :tenType and u.institutionmaster.imId = :ImId and (u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 105 and u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 106 and u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 107)").setParameter("tenType", tenType).setParameter("ImId", ImId).list();
+                    else
+                      erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where u.erpmGenMasterByTmTypeId.erpmgmEgmId = :tenType and u.institutionmaster.imId = :ImId and (u.erpmGenMasterByTmStatusId.erpmgmEgmId = 105 or u.erpmGenMasterByTmStatusId.erpmgmEgmId = 106 or u.erpmGenMasterByTmStatusId.erpmgmEgmId = 107)").setParameter("tenType", tenType).setParameter("ImId", ImId).list();
+                } else {
+                    if(tenState == 1)
+                    erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where u.institutionmaster.imId = :ImId").setParameter("ImId", ImId).list();
+                    else if(tenState == 2)
+                     erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where u.institutionmaster.imId = :ImId and (u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 105 and u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 106 and u.erpmGenMasterByTmStatusId.erpmgmEgmId <> 107)").setParameter("ImId", ImId).list();
+                    else
+                        erpmTenderMasterList1 = session.createQuery("Select u from ErpmTenderMaster u where u.institutionmaster.imId = :ImId and (u.erpmGenMasterByTmStatusId.erpmgmEgmId = 105 or u.erpmGenMasterByTmStatusId.erpmgmEgmId = 106 or u.erpmGenMasterByTmStatusId.erpmgmEgmId = 107)").setParameter("ImId", ImId).list();
+                }
+            }
+            List<ErpmTenderMaster> erpmTenderMasterList = erpmTenderMasterList1;
+            for (index = 0; index < erpmTenderMasterList.size(); ++index) {
+                Hibernate.initialize(erpmTenderMasterList.get(index).getInstitutionmaster());
+                Hibernate.initialize(erpmTenderMasterList.get(index).getDepartmentmaster());
+                Hibernate.initialize(erpmTenderMasterList.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(erpmTenderMasterList.get(index).getErpmGenMasterByTmTypeId());
+                Hibernate.initialize(erpmTenderMasterList.get(index).getErpmGenMasterByTmStatusId());
+            }
             return erpmTenderMasterList;
 
         } finally {
@@ -137,19 +143,15 @@ public class ErpmTenderMasterDAO {
         }
     }
 
-    public List<ErpmTenderMaster> findForUserTender(Integer erpmId) {
-        String SQL = "Select u from ErpmTenderMaster u where u.erpmGenMaster.erpmgmEgmId";
+    public ErpmTenderMaster findByTenderMasterId(Integer erpmtenderId) {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
-            List<ErpmTenderMaster> list = session.createQuery(SQL).setParameter("erpmId", erpmuId).list();
-            for (int index = 0; index < list.size(); ++index) {
-                Hibernate.initialize(list.get(index).getErpmGenMasterByTmStatusId());
-                Hibernate.initialize(list.get(index).getErpmGenMasterByTmTypeId());
-//                Hibernate.initialize(list.get(index).getErpmGenMasterBySmOwnershipType());
-//                Hibernate.initialize(list.get(index).getErpmGenMasterBySmSupplierType());
-            }
-            return list;
+            ErpmTenderMaster erpmtender = (ErpmTenderMaster) session.load(ErpmTenderMaster.class, erpmtenderId);
+            Hibernate.initialize(erpmtender.getInstitutionmaster());
+            Hibernate.initialize(erpmtender.getSubinstitutionmaster());
+            Hibernate.initialize(erpmtender.getDepartmentmaster());
+            return erpmtender;
         } finally {
             session.close();
         }

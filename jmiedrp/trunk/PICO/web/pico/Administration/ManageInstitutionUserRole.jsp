@@ -2,6 +2,8 @@
     Document   : ManageCapitalCategory
     Created on : 5 Jan, 2011, 9:53:25 PM
     Author     : sknaqvi
+    I18n By    : Mohd. Manauwar Alam
+               : Jan 2014
 --%>
 
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
@@ -44,7 +46,8 @@
                 </s:bean>
 
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTION USER ROLE MANAGEMENT</p>
+      <%--              <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTION USER ROLE MANAGEMENT</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.InstUserRoleMgmt')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>                    
                 </div>
 
@@ -55,12 +58,12 @@
                     <table border="0" cellpadding="4" cellspacing="0" align="center" >
                         <tbody>
                             <tr>
-                                <td colspan="2" align="middle" >                                    
-                                </td>
+<%--                                <td colspan="2" align="middle" >                                    
+                                </td> --%>
                             </tr>
                             <tr>
                                 <td>
-                                    <s:select label="Institution Name" required="true" requiredposition="" name="iur.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"/>
+                         <%--           <s:select label="Institution Name" required="true" requiredposition="" name="iur.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"/>
                                     <s:textfield label="Role Name" name="iur.iurName" title="Enter Role Name"
                                                  required="true" requiredposition="left" maxLength="50" size="50" />
                                     <s:textfield label="Remarks" name="iur.iurRemarks" title="Remarks about Role"
@@ -74,7 +77,22 @@
                                     <s:submit theme="simple" name="btnSubmit" value="Clear"  />
                                 
                                 
-                                    <s:submit theme="simple" name="bthReset" value="Fetch Roles" action="FetchIUR" />
+                                    <s:submit theme="simple" name="bthReset" value="Fetch Roles" action="FetchIUR" /> --%>
+                                    <s:select key="Administration.InstitutionName" required="true" requiredposition="" name="iur.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"/>
+                                    <s:textfield key="Administration.RoleName" name="iur.iurName" title="Enter Role Name"
+                                                 required="true" requiredposition="left" maxLength="50" size="50" />
+                                    <s:textfield key="Administration.Remarks" name="iur.iurRemarks" title="Remarks about Role"
+                                                 required="false" requiredposition="left" maxLength="100" size="100" />
+                                </td>
+                            </tr> <tr>
+                                <td>
+                                    <s:submit theme="simple" name="btnSubmit" key="Administration.Save"  />
+
+
+                                    <s:submit theme="simple" name="btnSubmit" key="Administration.Clear"  />
+
+
+                                    <s:submit theme="simple" name="bthReset" key="Administration.Browse" action="FetchIUR" />
                                 </td>
                             </tr>
                             <tr><td><br></td><td><br></td></tr>

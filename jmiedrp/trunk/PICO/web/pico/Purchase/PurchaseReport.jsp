@@ -2,6 +2,8 @@
     Document   : ManageChallan
     Created on : 3 Jun, 2011, 11:32:07 AM
     Author     : Tanvir Ahmed and Sajid
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -41,9 +43,10 @@
             </div>
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" >
-               
+               <br>
+                <br>
                  <div style ="background-color: #215dc6;">
-                      <p align="center" class="pageHeading" style="color: #ffffff">MANAGE PURCHASE REPORTS</p>
+                      <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Purchase.ManagePurchaseReports')" /></p>
            
             <p align="center"><s:property value="message" /></p>
                  </div>
@@ -58,28 +61,28 @@
                     <tbody>
                     <tr>
                     <td>
-                        <s:select label="Institution" name="institutionId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput" value="DefaultInsitute"
+                        <s:select key="Purchase.Institution" name="institutionId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput" value="DefaultInsitute"
                                 onchange="getSubinstitutionAndgetSupplierList('PurchaseReportAction_institutionId','PurchaseReportAction_subinstitutionId','PurchaseReportAction_supplierId')" />
-                       <s:select label="College/Faculty/School" name="subinstitutionId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName" value="DefaultSubInsitute"
+                       <s:select key="Purchase.SubInstitution" name="subinstitutionId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName" value="DefaultSubInsitute"
                                 onchange="getDepartmentList('PurchaseReportAction_subinstitutionId','PurchaseReportAction_departmentId')"  cssClass="textInput"/>
-                       <s:select label="Department" name="departmentId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"  cssClass="textInput" value="DefaultDepartment"/>
+                       <s:select key="Purchase.Department" name="departmentId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"  cssClass="textInput" value="DefaultDepartment"/>
 
                 
 
-                <s:select cssClass="queryInput" label="Supplier Name" name="supplierId"  title="Select Supplier from the List"
+                <s:select cssClass="queryInput" key="Purchase.SupplierName" name="supplierId"  title="Select Supplier from the List"
                            headerKey="" headerValue="-- Please Select --" list="suppList" listKey="smId" listValue="smName"
                            ondblclick="getsupplieraftervalidation('PurchaseReportAction_supplierId_smId');">
                            <s:param name="labelcolspan" value="%{1}" />
                            <s:param name="inputcolspan" value="%{3}" />
                  </s:select>
-                        <s:select cssClass="queryInput" label="Item Type" name="ItemTypeId"  title="Select Supplier from the List"
+                        <s:select cssClass="queryInput" key="Purchase.ItemType" name="ItemTypeId"  title="Select Supplier from the List"
                            headerKey="" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                            onchange="getSubCategoryList('PurchaseReportAction_ItemTypeId', 'PurchaseReportAction_CategoryId')"
                            ondblclick="getSubCategoryList('PurchaseReportAction_ItemTypeId');">
                            <s:param name="labelcolspan" value="%{1}" />
                            <s:param name="inputcolspan" value="%{3}" />
                  </s:select>
-                        <s:select cssClass="queryInput" label="item Category" name="CategoryId"  title="Select Supplier from the List"
+                        <s:select cssClass="queryInput" key="Purchase.ItemCategory" name="CategoryId"  title="Select Supplier from the List"
                            headerKey="" headerValue="-- Please Select --" list="erpmIcmList2"  listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                            onchange="getSubCategoryList('PurchaseReportAction_CategoryId','PurchaseReportAction_SubCategoryId')"
                            ondblclick="getSubCategoryList('PurchaseReportAction_CategoryId');">
@@ -87,13 +90,13 @@
                            <s:param name="inputcolspan" value="%{3}" />
                  </s:select>
 
-                        <s:select cssClass="queryInput" label="item SubCategory" name="SubCategoryId"  title="Select Supplier from the List"
+                        <s:select cssClass="queryInput" key="Purchase.ItemSubCategory" name="SubCategoryId"  title="Select Supplier from the List"
                            headerKey="" headerValue="-- Please Select --" list="erpmIcmList3"  listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                            onchange="getItemListfromsubcategory('PurchaseReportAction_SubCategoryId','PurchaseReportAction_ItemNameId')" ondblclick="getItemListfromsubcategory('PurchaseReportsAction_SubCategoryId');">
                            <s:param name="labelcolspan" value="%{1}" />
                            <s:param name="inputcolspan" value="%{3}" />
                  </s:select>
-                      <s:select cssClass="queryInput" label="Item Name" name="ItemNameId" headerKey="" headerValue="-- Please Select --"
+                      <s:select cssClass="queryInput" key="Purchase.ItemName" name="ItemNameId" headerKey="" headerValue="-- Please Select --"
                            list="itemlist" listKey="erpmimId" listValue="erpmimItemBriefDesc" title="Select Item from the List"
                            ondblclick="getitemList('PurchaseReportAction_ItemNameId');">
                            <s:param name="labelcolspan" value="%{1}" />
@@ -104,12 +107,12 @@
 
 
                       <s:textfield cssClass="textInput" required="true" requiredposition="left" maxLength="10" size="15" 
-                              label="From Date(dd-mm-yyyy)" name="fromDate"  onclick="checkdate">
+                              key="Purchase.FromDate" name="fromDate"  onclick="checkdate">
                               <s:param name="labelcolspan" value="%{1}" />
                               <s:param name="inputcolspan" value="%{3}" />
                  </s:textfield>
                         <s:textfield cssClass="textInput" required="true" requiredposition="left" maxLength="10" size="15" 
-                              label="To Date(dd-mm-yyyy)" name="toDate"   onclick="checkdate">
+                              key="Purchase.ToDate" name="toDate"   onclick="checkdate">
                               <s:param name="labelcolspan" value="%{1}" />
                               <s:param name="inputcolspan" value="%{3}" />
                  </s:textfield>
@@ -117,20 +120,20 @@
 
               <tr>
                 <td align="right">
-                     <s:submit theme="simple" name="btnSubmit" value="Pending Bills" action="PrintPendingBills"/>
+                     <s:submit theme="simple" name="btnSubmit" key="Purchase.PendingBills" action="PrintPendingBills"/>
                     </td>
                     <td>
-                     <s:submit theme="simple" name="btnClear" value="Pending PO"   action = "ExportPendingPO"/>
+                     <s:submit theme="simple" name="btnClear" key="Purchase.PendingPO"   action = "ExportPendingPO"/>
  </td>
  <td>
-                     <s:submit theme="simple" name="btnClear" value="Unchecked & Unverified Items"   action = "UncheckedAndUnverifiedItems"/>
+                     <s:submit theme="simple" name="btnClear" key="Purchase.UncheckedUnverifiedItems"   action = "UncheckedAndUnverifiedItems"/>
  </td>
 
                 <td>
-                     <s:submit theme="simple" name="btnClear" value="Clear"   action="PurchaseReportAction"/>
+                     <s:submit theme="simple" name="btnClear" key="Purchase.Clear"   action="PurchaseReportAction"/>
  </td>
  <td>
-                     <s:submit theme="simple" name="btnClear" value="Invoices Received"   action = "ListOfInvoicesReceived"/>
+                     <s:submit theme="simple" name="btnClear" key = "Purchase.InvoicesReceived"   action = "ListOfInvoicesReceived"/>
  </td>
                 </tr>
                 </tbody>

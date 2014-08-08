@@ -1,3 +1,9 @@
+<%--
+        I18n By    : Mohd. Manauwar Alam
+                   : Jan 2014
+--%>
+ 
+
 <%@page import="com.sun.org.apache.bcel.internal.generic.GOTO" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -48,7 +54,8 @@
                 <tr>
                     <td> <br><br> </td>
                 </tr> <tr>
-                    <td align="center"><s:property value="message"/> <br></td>
+                <%--    <td align="center"><s:property value="message"/> <br></td> --%>
+                    <td align="center"><s:property value="getText('Administration.welcomeMessage')"/> <br></td>
                 </tr>
                  <tr>
                     <td> <br><br> </td>

@@ -1,7 +1,9 @@
 <%--
     Document   : PendingPO
     Created on : 25 Oct, 2012, 4:33:37 PM
-    Author     : manauwar
+    Author     : Mohd. Manauwar Alam
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -44,7 +46,7 @@
                 </s:bean>
                 <br><br>
                 <div style ="background-color: #215dc6;">
-            <p align="center"><s:label cssClass="pageHeading" value="PENDING PO REPORTS" style="color: #ffffff"  /></p>
+            <p align="center" class="pageHeading" style="color:  #ffffff"><s:property value="getText('Purchase.PendingPOReport')" /></p>
             <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
              </div>
                  <%--------------------this is a Purchase Challan Form --------------------%>
@@ -71,31 +73,31 @@ use where only number is required for input other than number it does not accept
                     <tbody>
                     <tr>
                     <td>
-                        <s:select name="institutionId" label="Institution"  list="imList" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
+                        <s:select name="institutionId" key="Purchase.Institution"  list="imList" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
                                   onchange="getSubinstitutionAndgetSupplierList('ExportPendingPO_institutionId','ExportPendingPO_subInstitutionId','ExportPendingPO_suppliermasterId')">
                              <s:param name="labelcolspan" value="%{1}" />
                            <s:param name="inputcolspan" value="%{3}" />
                  </s:select>
-                     <s:select label="College/Faculty/School" name="subInstitutionId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName"
+                     <s:select key="Purchase.SubInstitution" name="subInstitutionId" headerKey="" headerValue="-- Please Select --" list="simList" listKey="simId" listValue="simName"
                                 onchange="getDepartmentList('ExportPendingPO_subInstitutionId','ExportPendingPO_departmentId')" >
                           <s:param name="labelcolspan" value="%{1}" />
                            <s:param name="inputcolspan" value="%{3}" />
                  </s:select>
-                       <s:select label="Department" name="departmentId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName">
+                       <s:select key="Purchase.Department" name="departmentId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName">
                             <s:param name="labelcolspan" value="%{1}" />
                            <s:param name="inputcolspan" value="%{3}" />
                  </s:select>
 
 
 
-                  <s:select  label = "Supplier Name" name="supplierId"  title="Select Supplier from the List"
+                  <s:select  key = "Purchase.SupplierName" name="supplierId"  title="Select Supplier from the List"
                            headerKey="" headerValue="-- Please Select --" list="supList" listKey = "smId" listValue="smName"
                            ondblclick="getsupplieraftervalidation('ExportPendingPO_supplierId');">
                        <s:param name="labelcolspan" value="%{1}" />
                            <s:param name="inputcolspan" value="%{3}" />
                  </s:select>
 
-                        <s:select label="Item Type" name="ItemTypeId"  title="Select item Type from the list"
+                        <s:select key="Purchase.ItemType" name="ItemTypeId"  title="Select item Type from the list"
                            headerKey="" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                            onchange="getSubCategoryList('ExportPendingPO_ItemTypeId', 'ExportPendingPO_CategoryId')"
                            ondblclick="getSubCategoryList('PendingPOInput_ItemTypeId');">
@@ -110,14 +112,14 @@ use where only number is required for input other than number it does not accept
                            <s:param name="inputcolspan" value="%{3}" />
                  </s:select>
 
-                        <s:select  label="item SubCategory" name="SubCategoryId"  title="Select item subcategory from the List"
+                        <s:select  key="Purchase.ItemSubCategory" name="SubCategoryId"  title="Select item subcategory from the List"
                            headerKey="" headerValue="-- Please Select --" list="erpmIcmList3"  listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                            onchange="getItemListTOS('ExportPendingPO_SubCategoryId', 'ExportPendingPO_ItemNameId')"
                                       ondblclick="getItemListTOS('ExportPendingPO_SubCategoryId', 'ExportPendingPO_ItemNameId');">
                            <s:param name="labelcolspan" value="%{1}" />
                            <s:param name="inputcolspan" value="%{3}" />
                  </s:select>
-                      <s:select label="Item Name" name="ItemNameId" headerKey="" headerValue="-- Please Select --"
+                      <s:select key="Purchase.ItemName" name="ItemNameId" headerKey="" headerValue="-- Please Select --"
                            list="itemList" listKey="erpmimId" listValue="erpmimItemBriefDesc" title="Select Item from the List"
                            ondblclick="getitemList('ExportPendingPO_ItemNameId');">
                            <s:param name="labelcolspan" value="%{1}" />
@@ -128,12 +130,12 @@ use where only number is required for input other than number it does not accept
 
 
                       <s:textfield  required="true" requiredposition="left" maxLength="2" size="15" title="Enter warranty duration in months"
-                              label="From Date(dd-mm-yyyy)" name="fromDate"   onclick="checkdate">
+                              key="Purchase.FromDate" name="fromDate"   onclick="checkdate">
                               <s:param name="labelcolspan" value="%{1}" />
                               <s:param name="inputcolspan" value="%{3}" />
                  </s:textfield>
                         <s:textfield  required="true" requiredposition="left" maxLength="2" size="15" title="Enter warranty duration in months"
-                              label="To Date(dd-mm-yyyy)" name="toDate"   onclick="checkdate">
+                              key="Purchase.ToDate" name="toDate"   onclick="checkdate">
                               <s:param name="labelcolspan" value="%{1}" />
                               <s:param name="inputcolspan" value="%{3}" />
                  </s:textfield>
@@ -141,7 +143,7 @@ use where only number is required for input other than number it does not accept
 
               <tr>
                 <td align="right">
-                    <s:submit  name="btnSubmit" value="Pending PO" action="ExportPendingPO"/>
+                    <s:submit  name="btnSubmit" key="Purchase.PendingPO" action="ExportPendingPO"/>
                     </td>
 
                 </tr>

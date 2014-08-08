@@ -67,6 +67,7 @@ public String showJobs() throws Exception {
     try {
         userMessageList = userMessageDao.findByUserId(Integer.parseInt(getSession().getAttribute("userid").toString()));
 
+
         return SUCCESS;
      }
         catch (Exception e)

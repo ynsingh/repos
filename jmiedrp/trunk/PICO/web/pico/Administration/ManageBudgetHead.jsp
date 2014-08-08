@@ -1,5 +1,12 @@
+<%--
+I18n By    : Mohd. Manauwar Alam
+           : Jan 2014
+--%>
+
+
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -32,7 +39,8 @@
             <br><br>
             <div id ="mainContent"> 
             <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">BUDGET HEAD RECORDS MANAGEMENT</p>
+<%--                    <p align="center" class="pageHeading" style="color: #ffffff">BUDGET HEAD RECORDS MANAGEMENT</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.BudgetHeadRecMgmt')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
             </div>
 
@@ -43,7 +51,7 @@
                         <tbody>
                             <tr>
                                 <td><br>
-                                    <s:select label="Institution" required="true" requiredposition="" name="bhm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput"/>
+                         <%--           <s:select label="Institution" required="true" requiredposition="" name="bhm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput"/>
                                     <s:textfield required="true" requiredposition="left" maxLength="100" size="50"
                                                  label="Budget Head Name" name="bhm.bhmName" title="Enter Capital Item Category Name"  cssClass="textInput"/>
 
@@ -56,7 +64,21 @@
                                     <s:submit theme="simple" name="bthReset" value="Fetch Budget Head Entries" action="FetchEntries" cssClass="textInput"/>
                                 </td>
                                 <td>
-                                  <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearBudgetHead" cssClass="textInput"/>
+                                  <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearBudgetHead" cssClass="textInput"/> --%>
+                                    <s:select key="Administration.InstitutionName" required="true"  name="bhm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput"/>
+                                    <s:textfield required="true" requiredposition="left" maxLength="100" size="50"
+                                                 key="Administration.BudgetHeadName" name="bhm.bhmName" title="Enter Capital Item Category Name"  cssClass="textInput"/>
+
+                                </td>
+                            </tr> <tr>
+                                <td>
+                                    <s:submit theme="simple" name="btnSubmit" key="Administration.Save"  cssClass="textInput"/>
+                                </td>
+                                <td>
+                                    <s:submit theme="simple" name="bthReset" key="Administration.Browse" action="FetchEntries" cssClass="textInput"/>
+                                </td>
+                                <td>
+                                  <s:submit theme="simple" name="bthReset" key="Administration.Clear"  action="ClearBudgetHead" cssClass="textInput"/>
                                 </td>
                             </tr>
                             <tr><td><br></td><td><br></td></tr>

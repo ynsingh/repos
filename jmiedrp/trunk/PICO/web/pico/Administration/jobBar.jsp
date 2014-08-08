@@ -3,6 +3,8 @@
     Created on : 13 May, 2012, 1:17:40 PM
     Author     : sknaqvi
 --%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <div id="jobBar" style="max-height: 200px">
     <% out.println("<b>" + session.getAttribute("username") + "</b><br>");%>
     <% out.println("<b>" + session.getAttribute("isAdministrator") + "</b>");%>

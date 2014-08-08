@@ -1,3 +1,9 @@
+<%--
+I18n By    : Mohd. Manauwar Alam
+           : Jan 2014
+--%>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -39,7 +45,8 @@
                 </s:bean>
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTE RECORDS MANAGEMENT</p>
+<%--                    <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTE RECORDS MANAGEMENT</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.InstRecMgmt')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -48,18 +55,22 @@
                     <s:form name="frmInstitution" action="SaveInstitutionAction" theme="qxhtml">
                         <s:hidden name="im.imId" />
 
-                        <s:textfield requiredposition="" maxLength="100" size="100" cssErrorStyle="true"
-                                     label="Institution Name" required="true"   name="im.ImName" title="Enter Institution Name" cssClass="queryInput">
+<%--		<s:textfield requiredposition="" maxLength="100" size="100" cssErrorStyle="true"
+			     label="Institution Name" required="true"   name="im.ImName" title="Enter Institution Name" cssClass="queryInput"> --%>
+                        <s:textfield requiredposition="" maxLength="100" size="100" cssErrorStyle="true" key="Administration.InstitutionName"
+                                     required = "true"   name = "im.ImName" title = "Enter Institution Name" cssClass="queryInput">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{6}" />
                         </s:textfield>
 
-                        <s:select label="Institution Type" required="true" requiredposition=""  name="im.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="institutiontypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="queryInput">
+       <%--                 <s:select label="Institution Type" required="true" requiredposition=""  name="im.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="institutiontypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="queryInput"> --%>
+                        <s:select  required="true" requiredposition="" key="Administration.InstType"
+                                  name="im.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="institutiontypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:select>
 
-                        <s:textfield required="true" requiredposition="" maxLength="10" size="10"
+             <%--           <s:textfield required="true" requiredposition="" maxLength="10" size="10"
                                      label="Institution Short Name" name="im.ImShortName" title="Enter Short Name for InstitutionName"  cssClass="textInput">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{2}" />
@@ -129,6 +140,80 @@
                         </s:submit>
 
                         <s:submit name="btnReport" value="Export Data" action="PrintInstitutions">
+                            <s:param name="colspan" value="%{1}" />
+                            <s:param name="align" value="%{'center'}" /> --%>
+                        <s:textfield required="true" requiredposition="" maxLength="10" size="10" key="Administration.InstShortName"
+                                      name="im.ImShortName" title="Enter Short Name for InstitutionName"  cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:textfield>
+
+                        <s:select  required="true" requiredposition="" name="im.employeemaster.empId" key="Administration.HeadsName"
+                                  headerKey="0" headerValue="-- Please Select --" list="empList" listKey="empId" listValue="empFname+' '+empMname+' '+empLname" cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:select>
+
+                        <s:textfield required="true" requiredposition="" maxLength="50" size="100" key="Administration.Address"
+                                      name="im.ImAddressLine1" title="Enter Institution Address" cssClass="textInput" >
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+
+                        <s:textfield required="false" requiredposition="" maxLength="50" size="100" key="Administration.AddressLine2"
+                                      name="im.ImAddressLine2" title="Enter Institution Address"  cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+
+                        <s:textfield required="false" requiredposition="" maxLength="50" size="50" key="Administration.District"
+                                      name="im.ImDistrict" title="Enter Institution Address"  cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{3}" />
+                        </s:textfield>
+
+                        <s:textfield required="false"  cssStyle="right" maxLength="6" size="18" key="Administration.PinCode"
+                                      name="im.ImPinNo" title="Enter Institution Address"  cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{1}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:textfield>
+
+                        <s:select  required="true" requiredposition="" name="im.statemaster.stateId" key="Administration.State"
+                                  headerKey="" headerValue="-- Please Select --" list="statemasterList" listKey="stateId" listValue="stateName" cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+
+                        <s:select  required="true" requiredposition="" name="im.countrymaster.countryId" key="Administration.Country"
+                                  headerKey="" headerValue="-- Please Select --" list="ctList" listKey="countryId" listValue="countryName"
+                                  onchange="getStateList('SaveInstitutionAction_im_countrymaster_countryId','SaveInstitutionAction_im_statemaster_stateId')"  cssClass="textInput" ondblclick="getCountryList('SaveInstitutionAction_im_countrymaster_countryId');">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+
+                        <s:textfield required="true" requiredposition=""  maxLength="100" size="100" key="Administration.EMail"
+                                      name="im.ImEmailId" title="Enter Institution E-Mail Address" cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+
+                        <tr><td> &nbsp; </td></tr>
+                        <s:submit key="Administration.Save" >
+                            <s:param name="colspan" value="%{3}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+
+                        <s:submit name="btnSubmit" key="Administration.Browse" action="BrowseInstitutions">
+                            <s:param name="colspan" value="%{2}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+
+                        <s:submit key="Administration.Clear" onclick="ClearInstitutionFields();" >
+                            <s:param name="colspan" value="%{2}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+
+                        <s:submit name="btnReport" key="Administration.Print" action="PrintInstitutions">
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>

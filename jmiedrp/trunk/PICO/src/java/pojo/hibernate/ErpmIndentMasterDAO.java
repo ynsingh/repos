@@ -117,6 +117,7 @@ public class ErpmIndentMasterDAO  {
             session.beginTransaction();
             List<ErpmIndentMaster> erpmindtmast  = session.createQuery("Select u from ErpmIndentMaster u where u.indtIndentId = :indtIndentId").setParameter("indtIndentId",indtIndentId).list();
             Hibernate.initialize(erpmindtmast.get(0).getErpmGenMasterByIndtCurrencyId());
+            Hibernate.initialize(erpmindtmast.get(0).getErpmusers());
             return erpmindtmast.get(0);
         } finally {
             session.close();

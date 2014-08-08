@@ -2,6 +2,8 @@
     Document   : ManageSubmodule
     Created on : May 8, 2012, 3:10:18 PM
     Author     : mkhan
+    I18n By    : Mohd. Manauwar Alam
+               : Jan 2014
 --%>
 
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
@@ -42,7 +44,8 @@
                 </s:bean>
 
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">Sub-Module Records Management</p>
+             <%--       <p align="center" class="pageHeading" style="color: #ffffff">Sub-Module Records Management</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.SubModRecMgmt')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -51,7 +54,7 @@
                 <s:form name="frmErpmProgram" action="ManageSubmoduleAction"  theme="qxhtml">
                     <s:hidden name="erpmsm.erpmSubModuleId" />
                     <br>
-                        <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
+              <%--          <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
                                                  label="Sub Module Name" name="erpmsm.esmName" title="Enter Sub Module Name"  cssClass="textInput">
                                     <s:param name="labelcolspan" value="%{2}"/>
                                     <s:param name="inputcolspan" value="%{6}"/>
@@ -83,7 +86,40 @@
                         <s:submit name="btnSubmit" value="Browse Sub-Modules" action="Browsemodule"> 
                                   <s:param name="colspan" value="%{1}" />
                         </s:submit>
-                        <s:submit name="bthReset" value="Clear"  action="ClearModule">
+                        <s:submit name="bthReset" value="Clear"  action="ClearModule"> --%>
+                        <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
+                                                 key="Administration.SubModuleName" name="erpmsm.esmName" title="Enter Sub Module Name"  cssClass="textInput">
+                                    <s:param name="labelcolspan" value="%{2}"/>
+                                    <s:param name="inputcolspan" value="%{6}"/>
+                         </s:textfield>
+
+                        <s:select key="Administration.ModuleName" required="true" requiredposition="" name="erpmsm.erpmmodule.erpmmId" headerKey="" headerValue="-- Please Select --" list="erpmmList" listKey="erpmmId" listValue="erpmmName" cssClass="textInput" >
+                                    <s:param name="labelcolspan" value="%{2}"/>
+                                    <s:param name="inputcolspan" value="%{6}"/>
+                        </s:select>
+
+                        <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
+                                                 key="Administration.Order" name="erpmsm.esmOrder" title="Enter Order"  cssClass="textInput">
+                                    <s:param name="labelcolspan" value="%{2}"/>
+                                    <s:param name="inputcolspan" value="%{6}"/>
+                        </s:textfield>
+
+                        <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
+                                                 key="Administration.HyperlinkReference" name="erpmsm.esmHref" title="Enter Path"  cssClass="textInput">
+                                    <s:param name="labelcolspan" value="%{2}"/>
+                                    <s:param name="inputcolspan" value="%{6}"/>
+                        </s:textfield>
+
+                        <s:label value="" />
+                        <s:label value="" />
+
+                        <s:submit name="btnSubmit" key="Administration.Save" action="SaveManageSubmoduleAction" >
+                                  <s:param name="colspan" value="%{1}" />
+                        </s:submit>
+                        <s:submit name="btnSubmit" key="Administration.Browse" action="Browsemodule">
+                                  <s:param name="colspan" value="%{1}" />
+                        </s:submit>
+                        <s:submit name="bthReset" key="Administration.Clear"  action="ClearModule">
                                   <s:param name="colspan" value="%{1}" />
                         </s:submit>                        
                 </s:form> 

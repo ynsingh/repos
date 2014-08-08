@@ -1,6 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -47,7 +47,8 @@
                                 <display:column  class="griddata" title="S.No" sortable="true" headerClass="gridheader" style="width:6%" >
                                     <c:out> ${doc_rowNum}
                                     </display:column>
-                                    <display:column property="imName" title="Institution Name"
+<%--                                    <display:column property="imName" title="Institution Name" --%>
+                                    <display:column property="imName" titleKey="InstitutionName"
                                                     maxLength="35" headerClass="gridheader"
                                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"  style="width:20%" sortable="true"/>
                                     <display:column property="imShortName" title="Short Name"

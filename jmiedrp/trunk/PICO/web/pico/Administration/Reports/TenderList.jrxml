@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TenderList" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4fcd1495-e4de-4575-98bd-eb93eb1949f3">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="a2cf392f-72b2-4cf6-8f49-695ef98e5163"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     erpm_tender_master.`TM_Name` AS erpm_tender_master_TM_Name,
+     erpm_tender_master.`TM_Date` AS erpm_tender_master_TM_Date,
+     erpm_tender_master.`TM_Fee` AS erpm_tender_master_TM_Fee,
+     erpm_tender_master.`TM_Document_Link` AS erpm_tender_master_TM_Document_Link,
+     erpm_tender_master.`TM_Notice_Link` AS erpm_tender_master_TM_Notice_Link,
+     institutionmaster.`IM_Short_Name` AS institutionmaster_IM_Short_Name,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     erpm_gen_master_A.`ERPMGM_EGM_DESC` AS erpm_gen_master_A_ERPMGM_EGM_DESC,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS erpm_gen_master_ERPMGM_EGM_DESC
+FROM
+     `institutionmaster` institutionmaster INNER JOIN `erpm_tender_master` erpm_tender_master ON institutionmaster.`IM_ID` = erpm_tender_master.`TM_IM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master ON erpm_tender_master.`TM_Type_ID` = erpm_gen_master.`ERPMGM_EGM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master_A ON erpm_tender_master.`TM_Status_ID` = erpm_gen_master_A.`ERPMGM_EGM_ID`
+where $P!{condition}]]>
+	</queryString>
+	<field name="erpm_tender_master_TM_Name" class="java.lang.String"/>
+	<field name="erpm_tender_master_TM_Date" class="java.sql.Date"/>
+	<field name="erpm_tender_master_TM_Fee" class="java.lang.Integer"/>
+	<field name="erpm_tender_master_TM_Document_Link" class="java.lang.String"/>
+	<field name="erpm_tender_master_TM_Notice_Link" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Short_Name" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="erpm_gen_master_A_ERPMGM_EGM_DESC" class="java.lang.String"/>
+	<field name="erpm_gen_master_ERPMGM_EGM_DESC" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="79422d20-5401-4d04-b902-09a3a4ce5938" x="178" y="15" width="159" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[List of Tenders]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement uuid="c2dbd7b1-9533-4d63-ab37-8c2e183ea10a" x="440" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="aba5f2bf-b53d-49f7-a71d-cdc11d7b445e" x="37" y="4" width="78" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Institution]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fd89348f-8861-40d1-908d-942ce6712452" x="118" y="4" width="83" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tender Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="08ddfe96-f98b-4a00-b6f3-8605fbcee794" x="204" y="4" width="63" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tender Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ac8c6332-1c68-424f-84b7-8e4f5d4011c3" x="333" y="4" width="57" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tender Fee]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d07171a9-2680-41dc-a787-5a6422da68fd" x="393" y="4" width="54" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Doc Link]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="74f93b6b-6d64-4964-a013-187f95808376" x="475" y="4" width="82" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Notice Link]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="456c07ed-bc88-4ddf-a401-f3ef85a4b6ac" x="282" y="4" width="48" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tender Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="746f84a3-9854-4254-b498-29fd1a9fc575" x="2" y="4" width="19" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[S no]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="184a32a3-8bd1-4036-993d-4526c5f700e0" x="1" y="1" width="34" height="16"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0c1ae96a-63f1-4964-94eb-f60ee26307bc" x="37" y="1" width="78" height="16"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="b964abbc-ddb2-405f-8b14-7b723bfb3c8a" x="118" y="1" width="83" height="16"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_tender_master_TM_Name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd-MMM-yy" isBlankWhenNull="true">
+				<reportElement uuid="eed2d22a-3b79-4909-a2e2-49cf6523f458" x="282" y="1" width="48" height="16"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_tender_master_TM_Date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="4bfe5567-3027-48bb-8eb4-62db0fadd981" x="333" y="1" width="57" height="16"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_tender_master_TM_Fee}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="41ba8b18-7617-4b47-9577-8ab9d9d2a09b" x="475" y="1" width="80" height="16"/>
+				<textElement markup="none">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_tender_master_TM_Notice_Link}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7c9a239f-8882-46fe-abe6-3694471f9469" x="204" y="1" width="75" height="16"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_gen_master_ERPMGM_EGM_DESC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="36d4cabb-7d87-4e5c-be78-cd5004c8e519" x="393" y="1" width="80" height="16"/>
+				<textElement markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_tender_master_TM_Document_Link}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a75faeb9-7deb-4adb-a1b2-5c88ed58f574" x="463" y="34" width="45" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="704a7d56-2446-48ce-8b63-688817ba72d5" x="509" y="34" width="39" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

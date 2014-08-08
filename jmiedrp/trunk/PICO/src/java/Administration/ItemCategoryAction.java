@@ -308,7 +308,11 @@ public class ItemCategoryAction extends DevelopmentSupport {
 
             return SUCCESS;
         } catch (Exception e) {
+            if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
+                message = "Cannot delete record as related record(s) exist(s). Reported cause is         :" + e.getCause();
+            }else{
             message = "Exception in Delete method -> IssueItemstAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
+	    }
             return ERROR;
         }
 

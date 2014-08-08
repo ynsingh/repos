@@ -17,10 +17,10 @@ import org.hibernate.Transaction;
 import org.hibernate.Hibernate;
 import java.util.List;
 import org.hibernate.SessionFactory;
-import utils.BaseDAO;
+//import utils.BaseDAO;
 
-
-public class ErpmIssueDetailDAO extends BaseDAO{
+//public class ErpmIssueDetailDAO extends BaseDAO{
+public class ErpmIssueDetailDAO {
 
     public void save(ErpmIssueDetail eid) {
         Session session = HibernateUtil.getSession();
@@ -55,7 +55,6 @@ public class ErpmIssueDetailDAO extends BaseDAO{
             session.close();
         }
     }
-
 
      public void delete(ErpmIssueDetail eid) {
         Session session = HibernateUtil.getSession();
@@ -171,7 +170,7 @@ public class ErpmIssueDetailDAO extends BaseDAO{
 //    }
 
 
-        public Integer findCountByIssueMasterAndItemId(Integer ismId, Integer itemId) {
+     public Integer findCountByIssueMasterAndItemId(Integer ismId, Integer itemId) {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();

@@ -12,6 +12,7 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.*;
+import javax.naming.*;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.*;
 import org.apache.struts2.ServletActionContext;
@@ -28,9 +29,9 @@ import pojo.hibernate.Statemaster;
 import pojo.hibernate.StatemasterDAO;
 import utils.DevelopmentSupport;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class InstitutionAction extends DevelopmentSupport {
 
@@ -47,6 +48,8 @@ public class InstitutionAction extends DevelopmentSupport {
     private String message;
     private String fileForExport;
     private InputStream inputStream;
+
+    static String dataSourceURL=null;
 
     public InputStream getInputStream() {
         return inputStream;
@@ -290,13 +293,23 @@ public class InstitutionAction extends DevelopmentSupport {
         String whereCondition;
 
     try{
-        Locale locale = ActionContext.getContext().getLocale();
-        ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+//        Locale locale = ActionContext.getContext().getLocale();
+//        ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/pico_basic", "root", "root");
+            
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Content-Disposition","attachment; filename=\"Institutions.pdf\"");
+//        response.setHeader("Content-Disposition","attachment; filename=\"Institutions.pdf\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"Institutions.pdf\"");
         response.setHeader("Expires" , "0");
         response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
         response.setHeader("Pragma", "public");
@@ -325,10 +338,10 @@ public class InstitutionAction extends DevelopmentSupport {
 
             hm.put("condition", whereCondition);
 
-        JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
-        JasperExportManager.exportReportToPdfStream(jp,baos);
-        ByteArrayInputStream bis=new ByteArrayInputStream(baos.toByteArray());
-        inputStream = bis;
+            JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
+            JasperExportManager.exportReportToPdfStream(jp, baos);
+            ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
+            inputStream = bis;
 
             return SUCCESS;
         } catch (JRException e) {
@@ -357,4 +370,90 @@ public class InstitutionAction extends DevelopmentSupport {
         empList = empDao.findByImId(IM_ID);
 
     }
+    /*String jrprintFileName = "C:\\PICO\\PICO_Sir_IGNOU_Bkup\\pico24october2011\\web\\pico\\Administration\\Reports\\Institution.jrprint";
+     String outFileName = "C:\\PICO\\PICO_Sir_IGNOU_Bkup\\pico24october2011\\web\\pico\\Administration\\Reports\\kazim.pdf"; // + getSession().getAttribute("username")+".pdf";
+       //String fileName = ".\\Institution.jasper";
+
+
+       HashMap hm = new HashMap();
+     try{
+     //Gettign the connection object
+     //
+     //
+     //     //JasperFillManager.fillReportToFile("C:\\Users\\sknaqvi\\pico28october2011\\pico24october2011\\web\\pico\\Administration\\Reports\\Institution.jasper", hm, conn);
+     //          //JasperExportManager.exportReportToPdfFile("C:\\Users\\sknaqvi\\pico28october2011\\pico24october2011\\web\\pico\\Administration\\Reports\\Institution.jrprint");
+     //
+     //
+     //               JasperFillManager.fillReportToFile(fileName, null, conn);
+     //                    JRPdfExporter exporter = new JRPdfExporter();
+     //
+     exporter.setParameter(JRExporterParameter.INPUT_FILE_NAME, jrprintFileName);
+     exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+     //exporter.setParameter(JRPdfExporterParameter.IS_CREATING_BATCH_MODE_BOOKMARKS, Boolean.TRUE);
+     //
+     //     exporter.exportReport();
+     //
+     //
+     //          /////////////////////////////////////////////////
+     //               // This Part Prints report
+     
+     long start = System.currentTimeMillis();
+     PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+     printRequestAttributeSet.add(MediaSizeName.ISO_A4);
+
+     PrintServiceAttributeSet printServiceAttributeSet = new HashPrintServiceAttributeSet();
+
+     // printServiceAttributeSet.add(new PrinterName("Epson Stylus 820 ESC/P 2", null));
+     //      // printServiceAttributeSet.add(new PrinterName("hp LaserJet 1320 PCL 6", null));
+     //           printServiceAttributeSet.add(new PrinterName("PDFCreator", null));
+     //
+     //
+     //                JRPrintServiceExporter prnexporter = new JRPrintServiceExporter();
+     //
+     prnexporter.setParameter(JRExporterParameter.INPUT_FILE_NAME, "C:\\PICO\\PICO_Sir_IGNOU_Bkup\\pico24october2011\\web\\pico\\Administration\\Reports\\Institution.jrprint");//"build/reports/PrintServiceReport.jrprint");
+     prnexporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
+     prnexporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, printServiceAttributeSet);
+     prnexporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+     prnexporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.TRUE);
+
+     prnexporter.exportReport();
+
+     System.err.println("Printing time : " + (System.currentTimeMillis() - start));
+     */
+//fileForExport = outFileName;
+/*
+     public String Print() throws Exception
+     {
+
+     HttpServletResponse response;
+     //       response.setContentType("application/pdf");
+     response.setContentType("text/html");                               
+     PrintWriter out = response.getWriter( );
+     out.write("<html><head></head><body>Hello World!</body></html>");
+     return null;
+
+     httpResponse.setContentType("application/pdf");
+     httpResponse.setHeader("Content-disposition", "attachment; filename=MyFile.pdf");
+     ServletOutputStream out = httpResponse.getOutputStream();
+
+     //STEP 1: COMPILE REPORT (OPTIONAL ... U CAN USE DIRECTLY .jasper FILE AND SKIP THIS STEP)
+     JasperReport jasperReport = ....
+     ....
+     ....
+     
+     //STEP 2: FILL REPORT
+     JasperPrint jasperPrint = ....
+     ....
+     ....
+     
+     //STEP 3: EXPORT REPORT AND PUT INTO SERVLETOUTPUTSTREAM
+     
+     JRAbstractExporter exporter = JRPdfExporter();
+     Map<JRExporterParameter, Object> parameterExport = new HashMap<JRExporterParameter, Object>();
+     parameterExport.put((JRExporterParameter.JASPER_PRINT, jasperPrint);
+     parameterExport.put((JRPdfExporterParameter.OUTPUT_STREAM,out);
+                                                                         exporter.setParameters(parameterExport):
+                                                                         exporter.exportReport();
+   
+                                                                         out.flush();}*/
 }

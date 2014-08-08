@@ -115,18 +115,22 @@ public class ErpmItemMasterDAO {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
-            List<ErpmItemMaster> erpmimList  = session.createQuery("Select u from ErpmItemMaster u where u.institutionmaster.imId  in (select r.institutionmaster.imId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId",erpmuId).list();
+            //List<ErpmItemMaster> erpmimList  = session.createQuery("Select u from ErpmItemMaster u where u.institutionmaster.imId  in (select r.institutionmaster.imId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId",erpmuId).list();
+            List<ErpmItemMaster> erpmimList  = session.createQuery("Select u from ErpmItemMaster u where u.institutionmaster.imId in (select r.institutionmaster.imId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId",erpmuId).list();         
             for(int index = 0; index < erpmimList.size(); ++index) {
                 Hibernate.initialize(erpmimList.get(index).getInstitutionmaster());
                 Hibernate.initialize(erpmimList.get(index).getErpmItemCategoryMasterByErpmimItemCat1());
                 Hibernate.initialize(erpmimList.get(index).getErpmItemCategoryMasterByErpmimItemCat2());
+                Hibernate.initialize(erpmimList.get(index).getErpmItemCategoryMasterByErpmimItemCat3());
                 Hibernate.initialize(erpmimList.get(index).getErpmCapitalCategory());                
-                Hibernate.initialize(erpmimList.get(index).getErpmGenMaster());                
+               /* Hibernate.initialize(erpmimList.get(index).getErpmGenMaster());                
                 Hibernate.initialize(erpmimList.get(index).getErpmimDepreciationMethod());  
                 Hibernate.initialize(erpmimList.get(index).getErpmimDepreciationPercentage()); 
-                Hibernate.initialize(erpmimList.get(index).getErpmimResidualValue());    
+                Hibernate.initialize(erpmimList.get(index).getErpmimResidualValue());    */
+                Hibernate.initialize(erpmimList.get(index).getErpmGenMaster());
             }
             return erpmimList;
+
         }
         finally {
             session.close();
@@ -138,6 +142,14 @@ public class ErpmItemMasterDAO {
         try {
             session.beginTransaction();
             List<ErpmItemMaster> erpmicmList  = session.createQuery("Select u from ErpmItemMaster u where  u.erpmItemCategoryMasterByErpmimItemCat3.erpmicmItemId=:erpmim").setParameter("erpmim", erpmim).list();
+            for(int index = 0; index < erpmicmList.size(); ++index) {
+                Hibernate.initialize(erpmicmList.get(index).getInstitutionmaster());
+                Hibernate.initialize(erpmicmList.get(index).getErpmItemCategoryMasterByErpmimItemCat1());
+                Hibernate.initialize(erpmicmList.get(index).getErpmItemCategoryMasterByErpmimItemCat2());
+                Hibernate.initialize(erpmicmList.get(index).getErpmItemCategoryMasterByErpmimItemCat3());
+                Hibernate.initialize(erpmicmList.get(index).getErpmCapitalCategory());
+                Hibernate.initialize(erpmicmList.get(index).getErpmGenMaster());
+            }
             return erpmicmList;
         }
         finally {

@@ -8,6 +8,7 @@ package Administration;
  * @author kazim
  */
 
+import com.opensymphony.xwork2.ActionContext;
 import pojo.hibernate.Erpmusers;
 import pojo.hibernate.Erpmuserrole;
 import pojo.hibernate.ErpmusersDAO;
@@ -152,7 +153,9 @@ public class ErpmusersAction extends DevelopmentSupport {
                     if (erpmpFirstLevelList.size() == 0) {
                         menuName = "Menu[" + i + "][0][0]";
                         menuHref = "MenuHref["+ i + "][0][0]";
-                     
+                     if("hi".equals(ActionContext.getContext().getLocale().toString()))
+                         getSession().setAttribute(menuName,erpmsmList.get(i).getEsmNameHindi());
+                     else
                         getSession().setAttribute(menuName,erpmsmList.get(i).getEsmName());
                         getSession().setAttribute(menuHref,erpmsmList.get(i).getEsmHref());
                      
@@ -162,6 +165,9 @@ public class ErpmusersAction extends DevelopmentSupport {
                 else {
                         menuName = "Menu[" + i + "][0][0]";
                         menuHref = "MenuHref["+ i + "][0][0]";
+                        if("hi".equals(ActionContext.getContext().getLocale().toString()))
+                         getSession().setAttribute(menuName,erpmsmList.get(i).getEsmNameHindi());
+                     else
                         getSession().setAttribute(menuName,erpmsmList.get(i).getEsmName());
                         getSession().setAttribute(menuHref,erpmsmList.get(i).getEsmHref());
                         //message = message + menuName + erpmsmList.get(i).getEsmName();
@@ -173,6 +179,9 @@ public class ErpmusersAction extends DevelopmentSupport {
                         if (erpmpSecondLevelList.size() == 0) {
                             menuName = "Menu[" + i + "][" + jIncremeneted + "][0]";
                             menuHref = "MenuHref["+ i + "][" + jIncremeneted + "][0]";
+                          if("hi".equals(ActionContext.getContext().getLocale().toString()))
+                              getSession().setAttribute(menuName,erpmpFirstLevelList.get(j).getErpmpDisplayNameHindi());
+                          else
                             getSession().setAttribute(menuName,erpmpFirstLevelList.get(j).getErpmpDisplayName());
                             getSession().setAttribute(menuHref,erpmpFirstLevelList.get(j).getErpmpHref());
                            // message = message +  " ++ " + menuName + erpmpFirstLevelList.get(j).getErpmpDisplayName() + " ++ " ;
@@ -180,6 +189,9 @@ public class ErpmusersAction extends DevelopmentSupport {
                         else {
                               menuName = "Menu[" + i + "][" + jIncremeneted + "][0]";
                               menuHref = "MenuHref["+ i + "][" + jIncremeneted + "][0]";
+                              if("hi".equals(ActionContext.getContext().getLocale().toString()))
+                                  getSession().setAttribute(menuName,erpmpFirstLevelList.get(j).getErpmpDisplayNameHindi());
+                              else
                               getSession().setAttribute(menuName,erpmpFirstLevelList.get(j).getErpmpDisplayName());
                               getSession().setAttribute(menuHref,erpmpFirstLevelList.get(j).getErpmpHref());
 //                              message = message + menuName + erpmpFirstLevelList.get(j).getErpmpDisplayName();
@@ -188,7 +200,10 @@ public class ErpmusersAction extends DevelopmentSupport {
                             int kIncremeneted = k +1 ;
                             menuName = "Menu[" + i +"][" + jIncremeneted + "][" + kIncremeneted + "]";
                             menuHref = "MenuHref["+ i + "][" + jIncremeneted + "][" + kIncremeneted + "]";
-                            getSession().setAttribute(menuName,erpmpSecondLevelList.get(k).getErpmpDisplayName());
+                            if("hi".equals(ActionContext.getContext().getLocale().toString()))
+                            getSession().setAttribute(menuName,erpmpSecondLevelList.get(k).getErpmpDisplayNameHindi());
+                            else
+                                getSession().setAttribute(menuName,erpmpSecondLevelList.get(k).getErpmpDisplayName());
                             getSession().setAttribute(menuHref,erpmpSecondLevelList.get(k).getErpmpHref());
                            //message = message +  " == " + menuName + "Link = " + erpmpSecondLevelList.get(k).getErpmpHref() + "Link Finishes " + erpmpSecondLevelList.get(k).getErpmpDisplayName() + " == ";
 
@@ -219,10 +234,10 @@ public Integer addUserJobs() {
 @SkipValidation
 public String brihaspatiLogin() {
    
-    HttpServletRequest request = ServletActionContext.getRequest();
+    HttpServletRequest request =  ServletActionContext.getRequest();
 
     String email = erpmuser.getErpmuName();
-    String returnurl = request.getRequestURL().toString();
+    String returnurl = request.getRequestURL().toString(); //"http://14.139.62.116/pico/Administration/Login.action";
     returnurl = returnurl.substring(0, returnurl.indexOf("Login.action")) + "verifyBrihaspatiLogin";
     String sourceid = "jmi_pico";
 

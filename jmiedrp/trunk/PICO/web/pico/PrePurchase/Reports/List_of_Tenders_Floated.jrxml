@@ -278,11 +278,18 @@ WHERE $P!{condition}]]>
 	<pageFooter>
 		<band height="12" splitType="Stretch">
 			<textField>
-				<reportElement uuid="103f66f5-65c3-4fe1-a9ca-73a6ecc6951a" x="334" y="0" width="128" height="12"/>
+				<reportElement uuid="8e186ef5-2411-44e0-affd-15f18841d5d0" x="361" y="0" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="71c8b178-6416-4ad2-a7cb-05bfd4614b71" x="441" y="0" width="38" height="12"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " +$V{PAGE_COUNT}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

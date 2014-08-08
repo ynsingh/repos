@@ -113,6 +113,12 @@ public class SupplierAddressDAO {
          try {
        session.beginTransaction();
         List<SupplierAddress> saList = session.createQuery("Select u from SupplierAddress u where u.suppliermaster.smId = :smId").setParameter("smId", smId).list();
+        for(int index = 0; index < saList.size(); ++index) {
+            Hibernate.initialize(saList.get(index).getCountrymaster());
+            Hibernate.initialize(saList.get(index).getStatemaster());
+            Hibernate.initialize(saList.get(index).getSuppliermaster());
+        }
+
         return saList;
          }
         finally {
@@ -175,6 +181,8 @@ public class SupplierAddressDAO {
          try {
        session.beginTransaction();
         SupplierAddress supad = (SupplierAddress) session.load(SupplierAddress.class, adId);
+        Hibernate.initialize(supad.getSuppliermaster());
+        Hibernate.initialize(supad.getCountrymaster());
         return supad;
          }
         finally {

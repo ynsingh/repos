@@ -9,73 +9,57 @@
  */
 package PrePurchase;
 
-import pojo.hibernate.Institutionmaster;
-import pojo.hibernate.InstitutionmasterDAO;
+import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.*;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import pojo.hibernate.Departmentmaster;
+import pojo.hibernate.DepartmentmasterDAO;
+import pojo.hibernate.ErpmGenMaster;
+import pojo.hibernate.ErpmGenMasterDao;
+import pojo.hibernate.ErpmGeneralTerms;
 import pojo.hibernate.ErpmIndentDetail;
 import pojo.hibernate.ErpmIndentDetailDAO;
 import pojo.hibernate.ErpmIndentMaster;
 import pojo.hibernate.ErpmIndentMasterDAO;
-
-import pojo.hibernate.Departmentmaster;
-import pojo.hibernate.DepartmentmasterDAO;
-
-import pojo.hibernate.Subinstitutionmaster;
-import pojo.hibernate.SubinstitutionmasterDAO;
-
-import pojo.hibernate.Suppliermaster;
-import pojo.hibernate.SuppliermasterDAO;
-
-import pojo.hibernate.SupplierAddress;
-import pojo.hibernate.SupplierAddressDAO;
-
-import pojo.hibernate.Erpmusers;
-import pojo.hibernate.ErpmusersDAO;
-
-import pojo.hibernate.ErpmPoMaster;
-import pojo.hibernate.ErpmPoMasterDAO;
-
-import pojo.hibernate.ErpmPoDetails;
-import pojo.hibernate.ErpmPoDetailsDAO;
-
-import pojo.hibernate.ErpmGenMaster;
-import pojo.hibernate.ErpmGenMasterDao;
-
 import pojo.hibernate.ErpmItemMaster;
 import pojo.hibernate.ErpmItemMasterDAO;
-
-import pojo.hibernate.ErpmGeneralTerms;
-import pojo.hibernate.ErpmGeneralTermsDAO;
-
-import pojo.hibernate.ErpmPoTerms;
-import pojo.hibernate.ErpmPoTermsDAO;
-
 import pojo.hibernate.ErpmItemRate;
 import pojo.hibernate.ErpmItemRateDAO;
-
+import pojo.hibernate.ErpmPoDetails;
+import pojo.hibernate.ErpmPoDetailsDAO;
 import pojo.hibernate.ErpmPoLocations;
 import pojo.hibernate.ErpmPoLocationsDAO;
-
+import pojo.hibernate.ErpmPoMaster;
+import pojo.hibernate.ErpmPoMasterDAO;
+import pojo.hibernate.ErpmPoTerms;
+import pojo.hibernate.ErpmPoTermsDAO;
+import pojo.hibernate.Erpmusers;
+import pojo.hibernate.ErpmusersDAO;
+import pojo.hibernate.GfrProgramMappingDAO;
+import pojo.hibernate.Institutionmaster;
+import pojo.hibernate.InstitutionmasterDAO;
+import pojo.hibernate.Subinstitutionmaster;
+import pojo.hibernate.SubinstitutionmasterDAO;
+import pojo.hibernate.SupplierAddress;
+import pojo.hibernate.SupplierAddressDAO;
+import pojo.hibernate.Suppliermaster;
+import pojo.hibernate.SuppliermasterDAO;
+import utils.DateUtilities;
 import utils.DevelopmentSupport;
 
-import java.io.*;
-
-import utils.DateUtilities;
-import java.util.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-
-import java.sql.Connection;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.DriverManager;
-import org.apache.struts2.ServletActionContext;
-import net.sf.jasperreports.engine.*;
-import pojo.hibernate.GfrProgramMappingDAO;
-
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class ManagePOMaster extends DevelopmentSupport {
 
@@ -184,6 +168,8 @@ public class ManagePOMaster extends DevelopmentSupport {
     private Integer selectedTerm;
     private Integer poLocationsId;
     private static Boolean varShowGFR;
+
+    static String dataSourceURL=null;
 
     public Boolean getVarShowGFR() {
         return varShowGFR;
@@ -909,6 +895,7 @@ public class ManagePOMaster extends DevelopmentSupport {
     @SkipValidation
     public String getIndentItems() throws Exception {
         try {
+//            message = ""+ indentFromDate + " : " + indentToDate + " : " + Integer.parseInt(getSession().getAttribute("userid").toString()) + " : " + pomaster.getErpmGenMasterByPomCurrencyId().getErpmgmEgmDesc();
             indentItemList = erpmindetDao.findRemainingIndentItems(getindentSelected(), getpoN());
 
             indentList = indentListDao.findApprovedIndents(indentFromDate, indentToDate,
@@ -952,7 +939,8 @@ public class ManagePOMaster extends DevelopmentSupport {
 
             if (ppDecorator.getApprovedIndentItemRate(indentDetail).toString().contains("-1")) {
                 message = "No rates stand approved for the Item today; Item cannot be moved to the Purchase Order";
-            }  else if (ppDecorator.getApprovedIndentItemRate(indentDetail).compareTo(indentDetail.getIndtAcceptedUnitRate()) == 1) {
+//            }  else if (ppDecorator.getApprovedIndentItemRate(indentDetail).compareTo(indentDetail.getIndtAcceptedUnitRate()) == 1) {
+            } else if (ppDecorator.getApprovedIndentItemRate(indentDetail).compareTo(indentDetail.getIndtAcceptedUnitRate()) == 1) {       
                 message = "Approved rates for the item exceeds the accepted Indent rate; Item cannot be moved to the Purchase Order";
             } else {
                 //Check, if the approved rate of the same supplier in whose name the PO is being prepared;
@@ -966,9 +954,11 @@ public class ManagePOMaster extends DevelopmentSupport {
                     podetail.setErpmPoMaster(pomasterDao.findByPoMasterId(getpoN()));
                     podetail.setPodQuantity(new BigDecimal(indentDetail.getIndtApprovedQuantity()));
                     podetail.setPodRate(indentDetail.getIndtAcceptedUnitRate());
+                    podetail.setErpmItemRate(indentDetail.getErpmItemRate());
                     podetailDAO.save(podetail);
 
-                    message = message + "Item transferred to PO";
+                //    message = message + "Item transferred to PO";
+                    message = "Item transferred to PO ";              
                 }
 
                 //Prepare List of PO Items
@@ -1036,7 +1026,7 @@ public class ManagePOMaster extends DevelopmentSupport {
 
     @SkipValidation
     public String editPODetails() throws Exception {
-//        try {
+        try {
 
             DateUtilities dt = new DateUtilities();
 
@@ -1090,10 +1080,10 @@ public class ManagePOMaster extends DevelopmentSupport {
             PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
 
             return SUCCESS;
-//        } catch (Exception e) {
-//            message = message + "Exception in ManagePOMaster -> editPODetails method " + e.getMessage() + " Reported Cause is: " + e.getCause();
-//            return ERROR;
-//        }
+        } catch (Exception e) {
+            message = message + "Exception in ManagePOMaster -> editPODetails method " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
     }
 
     @SkipValidation
@@ -1169,6 +1159,7 @@ public class ManagePOMaster extends DevelopmentSupport {
             //Prepare List of Locations
             poLocationList = poLocationDao.findByPO(getpoN());
 
+           poN = pomaster.getPomPoMasterId();
 
             return SUCCESS;
         } catch (Exception e) {
@@ -1177,18 +1168,27 @@ public class ManagePOMaster extends DevelopmentSupport {
         }
     }
 
+    @SkipValidation
     public String saveLocationToPO() throws Exception {
         try {
 
+            Integer checkQnty = podetailDAO.findItemQntyByPOMastId(poLocation.getErpmItemMaster().getErpmimId(),poN);
+                if(checkQnty < poLocation.getQty())
+                {
+                    message = "Item Quantity cannot be greater than "+checkQnty;
 
+                }
+                else
+                {
             if (poLocation.getPoLocationsId() == null) {
 
                 ErpmPoMaster pom = pomasterDao.findByPoMasterId(poN);
-                poLocation.setErpmPoMaster(pom);
 
-                poLocationDao.save(poLocation);
+                    poLocation.setErpmPoMaster(pom);
+                    
+                    poLocationDao.save(poLocation);
 
-                message = "Location successfully added";
+                    message = "Location successfully added";
             } else {
                 ErpmPoLocations poLocationTemp = poLocationDao.findBypoLocationsId(poLocation.getPoLocationsId());
                 ErpmPoMaster pom = pomasterDao.findByPoMasterId(poN);
@@ -1197,9 +1197,11 @@ public class ManagePOMaster extends DevelopmentSupport {
 
                 poLocationDao.update(poLocationTemp);
 
-                message = "Location successfullu updated";
+                    message = "Location successfullu updated";
             }
+		}
 
+//            poN = pomaster.getPomPoMasterId();
             //Prepare List of PO Items
             PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
 
@@ -1213,6 +1215,7 @@ public class ManagePOMaster extends DevelopmentSupport {
             }
 
             poLocation = null;
+
 
             return SUCCESS;
         } catch (Exception e) {
@@ -1267,6 +1270,7 @@ public class ManagePOMaster extends DevelopmentSupport {
 
     public String editPoLocation() throws Exception {
         try {
+            poN = poLocationDao.findBypoLocationsId(getpoLocationsId()).getErpmPoMaster().getPomPoMasterId();
 
             DateUtilities dt = new DateUtilities();
 
@@ -1276,6 +1280,9 @@ public class ManagePOMaster extends DevelopmentSupport {
             //Prepare List of PO Items
             PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
 
+            //Prepare List of POLOcations
+            poLocationList = poLocationDao.findByPO(getpoN()); 
+                       
             if (PODetailList.size() > 0) {
                 departmentList = departmentDao.findByImId(PODetailList.get(0).getErpmPoMaster().getInstitutionmaster().getImId());
             } else {
@@ -1297,6 +1304,7 @@ public class ManagePOMaster extends DevelopmentSupport {
         }
     }
 
+    @SkipValidation
     public String addNonIndentedItemsToPO() throws Exception {
         try {
 
@@ -1330,11 +1338,27 @@ public class ManagePOMaster extends DevelopmentSupport {
 
                 message = "Record Saved Successfully";
             }
-
+            podetail.setPodPodetailsId(null);
+            podetail.setPodQuantity(BigDecimal.ZERO);
+            setselectedItemRate(BigDecimal.ZERO);
+            setapproxcost("");
+            settaxNarration("");
+            settaxValue("");
+            settotalCost("");
+            setUOP("");
+            setselectedItemRateCurrency("");
+            setselectedItemRateValidFrom("");
+            setselectedItemRateValidTo("");
+            setminOrderQuantity(0);
+            setmaxOrderQuantity(0);
 
             return SUCCESS;
         } catch (Exception e) {
+            if (e.getCause().toString().contains("POD_POID_ITEM_UNIQUE")) {
+                message = "This action is not allowed as it would create a duplicate item entry for this PO. Kindly change the quantity in the existing Item detail";
+            } else {
             message = "Exception in ManagePOMasterAxn -> addNonIndentedItemsToPO" + e.getMessage() + " Reported Cause is: " + e.getCause();
+	    }
             return ERROR;
         }
     }
@@ -1522,6 +1546,7 @@ public class ManagePOMaster extends DevelopmentSupport {
             deliveryDate = dt.convertDateToString(pomaster.getPomDeliveryDate(), "dd-MM-yyyy");
             poDate = dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy");
 
+           saList = supplieraddressDao.findBySupplierId(pomaster.getSuppliermaster().getSmId());
             InitializeLOVs();
 
             return SUCCESS;
@@ -1531,12 +1556,26 @@ public class ManagePOMaster extends DevelopmentSupport {
         }
     }
 
+    @SkipValidation
+    public String ClearPOMaster() throws Exception {
+        try {
+
+            pomaster= null;
+
+             InitializeLOVs();
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in POMasterAxn -> ClearPOMaster " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
     public void InitializeLOVs() {
         imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
         simList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
         dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
         suppList = suppDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
-        saList = supplieraddressDao.findAll();
+//        saList = supplieraddressDao.findAll();
         currencyList = generalMasterDao.findByErpmGmType(Short.parseShort("6"));
         paymodelist = generalMasterDao.findByErpmGmType(Short.parseShort("10"));
         erpmuserlist = erpmusersDao.findUserCollegues(Integer.valueOf(getSession().getAttribute("userid").toString()));
@@ -1561,7 +1600,8 @@ public class ManagePOMaster extends DevelopmentSupport {
         try {
 
             //If part Validates First Stage of Purchase Order Generation
-            if (pomaster.getPomPoMasterId() == null && podetail == null) {
+//            if (pomaster.getPomPoMasterId() == null && podetail == null) {
+            if (!(pomaster.getPomPoMasterId() == null && podetail == null)) {
 
                 if (pomaster.getInstitutionmaster().getImId() == null) {
                     addFieldError("pomaster.institutionmaster.imId", "Please select institution from the list");
@@ -1638,7 +1678,7 @@ public class ManagePOMaster extends DevelopmentSupport {
         // Get the path separator symbol, which is unfortunatly different, in different OS platform.
         String pathSeparator = properties.getProperty("file.separator");
 
-        pathSeparator =pathSeparator + pathSeparator;
+        pathSeparator = pathSeparator + pathSeparator;
         String repPath = "pico" + pathSeparator + "PrePurchase"  + pathSeparator + "Reports" + pathSeparator + "Purchase_Order.jasper" ;
 
         String fileName = getSession().getServletContext().getRealPath(repPath);
@@ -1648,13 +1688,29 @@ public class ManagePOMaster extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
-            response.setHeader("Content-Disposition", "attachment; filename=Purchase_Order.pdf");
+            String userAgent = getRequest().getHeader("user-agent");
+            if(userAgent.contains("Chrome"))
+                {
+                    response.setHeader("", "attachment; filename=Purchase_Order.pdf");
+                }
+                else
+                {
+                    response.setHeader("Content-Disposition", "attachment; filename=Purchase_Order.pdf");
+                }
+            //response.setHeader("Content-Disposition", "attachment; filename=Purchase_Order.pdf");
             response.setHeader("Expires", "0");
             response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
             response.setHeader("Pragma", "public");
@@ -1702,9 +1758,16 @@ public class ManagePOMaster extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");

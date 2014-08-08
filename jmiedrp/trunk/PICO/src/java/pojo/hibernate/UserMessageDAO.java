@@ -100,9 +100,13 @@ public class UserMessageDAO  {
  public List<UserMessage> findByUserId(Integer erpmuId) {
         Session session = HibernateUtil.getSession();
          try {
+             int index = 0;
        session.beginTransaction();
         List<UserMessage> umList  =  session.createQuery("Select u from UserMessage u where u.erpmusersByUmToErpmuId.erpmuId = :erpmuId and u.erpmGenMaster.erpmgmEgmId is null").setParameter("erpmuId", erpmuId).list();
-        
+        for (index = 0; index < umList.size(); ++index) {
+                Hibernate.initialize(umList.get(index).getErpmusersByUmFromErpmuId());
+
+            }        
         return umList;
          }
         finally {

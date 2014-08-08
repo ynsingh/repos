@@ -10,7 +10,8 @@ import java.util.Set;
  */
 public class GfrMaster  implements java.io.Serializable {
 
-
+     private Institutionmaster institutionmaster;
+     private char gfrorInstituteRule;
      private Integer gfrGfrId;
      private String gfrSection;
      private int gfrChapterNo;
@@ -23,22 +24,42 @@ public class GfrMaster  implements java.io.Serializable {
     }
 
 	
-    public GfrMaster(String gfrSection, int gfrChapterNo, String gfrChapterName, String gfrRuleNo, String gfrDescription) {
+    public GfrMaster(String gfrSection, int gfrChapterNo, String gfrChapterName, String gfrRuleNo, String gfrDescription, char gfrorInstituteRule,Institutionmaster institutionmaster) {
         this.gfrSection = gfrSection;
         this.gfrChapterNo = gfrChapterNo;
         this.gfrChapterName = gfrChapterName;
         this.gfrRuleNo = gfrRuleNo;
         this.gfrDescription = gfrDescription;
+        this.gfrorInstituteRule = gfrorInstituteRule;
+        this.institutionmaster = institutionmaster;
     }
-    public GfrMaster(String gfrSection, int gfrChapterNo, String gfrChapterName, String gfrRuleNo, String gfrDescription, Set gfrProgramMappings) {
+    public GfrMaster(String gfrSection, int gfrChapterNo, String gfrChapterName, String gfrRuleNo, String gfrDescription, char gfrorInstituteRule, Institutionmaster institutionmaster, Set gfrProgramMappings) {
        this.gfrSection = gfrSection;
        this.gfrChapterNo = gfrChapterNo;
        this.gfrChapterName = gfrChapterName;
        this.gfrRuleNo = gfrRuleNo;
        this.gfrDescription = gfrDescription;
        this.gfrProgramMappings = gfrProgramMappings;
+       this.gfrorInstituteRule = gfrorInstituteRule;
+       this.institutionmaster = institutionmaster;
     }
    
+
+      public void setInstitutionmaster(Institutionmaster institutionmaster) {
+        this.institutionmaster = institutionmaster;
+    }
+
+    public void setGfrorInstituteRule(char gfrorInstituteRule) {
+        this.gfrorInstituteRule = gfrorInstituteRule;
+    }
+
+    public Institutionmaster getInstitutionmaster() {
+        return institutionmaster;
+    }
+
+    public char getGfrorInstituteRule() {
+        return gfrorInstituteRule;
+    }
     public Integer getGfrGfrId() {
         return this.gfrGfrId;
     }
@@ -88,9 +109,6 @@ public class GfrMaster  implements java.io.Serializable {
     public void setGfrProgramMappings(Set gfrProgramMappings) {
         this.gfrProgramMappings = gfrProgramMappings;
     }
-
-
-
 
 }
 

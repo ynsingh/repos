@@ -22,6 +22,7 @@
                 <interceptor-ref name="validation">
                     <param name="excludeMethods">execute, browse</param>
                 </interceptor-ref>
+                <interceptor-ref name="i18n"/>
             </interceptor-stack>
         </interceptors>
 
@@ -163,7 +164,7 @@
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
-		<action name="IssueReport" method="IssueReport" class="Inventory.IssueItemsAction">
+	<action name="IssueReport" method="IssueReport" class="Inventory.IssueItemsAction">
             <result name="success" type="stream">
                 <param name = "contentType">application/pdf</param>
                 <param name = "inputName">inputStream</param>
@@ -172,6 +173,14 @@
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
+                <action name="exportGatePass" method="exportGatePass" class="Inventory.IssueItemsAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name = "inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
 
         <action name="IssueSerialNumber" method="IssueSerialNumber"  class="Inventory.IssueItemsAction">
             <!--  <result name="success" type="redirectAction">ManageInstitutionAction</result> -->
@@ -196,11 +205,10 @@
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
-<action name="DeleteSerialNo" method="DeleteSerialNo" class="Inventory.IssueItemsAction">
+        <action name="DeleteSerialNo" method="DeleteSerialNo" class="Inventory.IssueItemsAction">
             <result name="success">/pico/Inventory/IssueSerialDetail.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
-
 
         <action name="EditIssueDetailsWithIndent" method="EditIssueDetailsWithIndent"  class="Inventory.IssueItemsAction">
             <result name="success">/pico/Inventory/IssueDetailsWithIndent.jsp</result>
@@ -230,7 +238,7 @@
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
     </action>
 
-<action name="AddSerialNo" method="AddSerialNo" class="Inventory.IssueItemsAction">
+    <action name="AddSerialNo" method="AddSerialNo" class="Inventory.IssueItemsAction">
     <result name="success">/pico/Inventory/IssueSerialDetail.jsp</result>
     <result name="error">/pico/Administration/ErrorPage.jsp</result>
 </action>

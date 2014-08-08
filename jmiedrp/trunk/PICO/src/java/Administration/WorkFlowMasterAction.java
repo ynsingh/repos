@@ -295,9 +295,13 @@ public String Delete() throws Exception {
           return SUCCESS;
       }
     catch (Exception e) {
-            message = "Exception in Delete method -> WorkFlowMasterAxn  " + e.getMessage() + " Reported Cause is: " + e.getCause();
-            return ERROR;
-        }
+        if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
+                message = "This record cannot be Deleted. It is being used in other Tables.";
+            }else{
+                message = "Exception in Delete method -> WorkFlowMasterAxn  " + e.getMessage() + " Reported Cause is: " + e.getCause();
+	}
+         return ERROR;
+    }
 }
 
 @SkipValidation

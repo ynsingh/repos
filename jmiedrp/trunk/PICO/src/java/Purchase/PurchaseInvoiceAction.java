@@ -12,16 +12,18 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.math.MathContext;
+//import java.math.MathContext;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
+//import java.util.Set;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -33,9 +35,9 @@ import pojo.hibernate.*;
 import utils.DateUtilities;
 import utils.DevelopmentSupport;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class PurchaseInvoiceAction extends DevelopmentSupport {
 
@@ -52,6 +54,7 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
     private String productNo;
     private String invoicerecvDate;
     private String suplierinvoiceDate;
+    private static String invoiceType;
     private InputStream inputStream;
     private Boolean checked;
     private Boolean verified;
@@ -73,6 +76,7 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
     private ErpmPurchaseinvoiceMaster pibm;
     private ErpmPurchaseinvoiceMasterDAO pibmDao = new ErpmPurchaseinvoiceMasterDAO();
     private List<ErpmPurchaseinvoiceMaster> pibmList = new ArrayList<ErpmPurchaseinvoiceMaster>();
+    private List<ErpmPurchaseinvoiceMaster> pibmList1 = new ArrayList<ErpmPurchaseinvoiceMaster>();
     private List<String> pibmListForBrowse = new ArrayList<String>();
     private ErpmPoMasterDAO pomDao = new ErpmPoMasterDAO();
     private List<String> pomList = new ArrayList<String>();
@@ -102,6 +106,20 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
     ErpmIssueSerialDetailDAO eisdDao = new ErpmIssueSerialDetailDAO();
     private GfrProgramMappingDAO GfrProgramMappingDao = new GfrProgramMappingDAO();
     private static Boolean varShowGFR;
+
+
+    public static String InvoiceType;
+    static String dataSourceURL=null;
+
+    public static String getInvoiceType() {
+        return invoiceType;
+    }
+
+    public static void setInvoiceType(String invoiceType) {
+        PurchaseInvoiceAction.invoiceType = invoiceType;
+    }
+
+
 
     public Boolean getVarShowGFR() {
         return varShowGFR;
@@ -475,15 +493,26 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
     }
 
     public void prepare_lovs() {
-        //Prepare Institution Type List
+            //Prepare Institution Type List
         imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
 
         //Prepare SubInstitute List
-        simList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()),
+/*        simList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()),
                 Short.valueOf(getSession().getAttribute("imId").toString()));
 
         //Prepare Department List
-        dmList = dmDao.findAllDepartmentsForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
+        dmList = dmDao.findAllDepartmentsForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));*/
+
+        if (getSession().getAttribute("isAdministrator").toString().compareTo("Administrator") == 0) {
+            simList = simDao.findSubInstForAdmin(Short.valueOf(getSession().getAttribute("imId").toString()));
+        } else {
+            simList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
+        }
+        if (getSession().getAttribute("isAdministrator").toString().compareTo("Administrator") == 0) {
+            dmList = dmDao.findBydmSimId(Integer.valueOf(getSession().getAttribute("simId").toString()));
+        } else {
+            dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
+        }
 
         smList = smDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
 
@@ -523,12 +552,29 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
 
     public String Edit() throws Exception {
         try {
+
             pibm = pibmDao.findByErpmId(getPimPimId());
+
             DateUtilities dt = new DateUtilities();
             invoicerecvDate = dt.convertDateToString(pibm.getPimInvoiceRecvdDate(), "dd-MM-yyyy");
             suplierinvoiceDate = dt.convertDateToString(pibm.getPimSupplierInvoiceDate(), "dd-MM-yyyy");
-            prepare_lovs();
 
+//            prepare_lovs();
+            imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
+            simList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), pibm.getInstitutionmaster().getImId());
+            dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), pibm.getSubinstitutionmaster().getSimId());
+
+            smList = smDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
+
+            //Prepare List of Purchase Order
+            pomList = pomDao.poList2(Short.valueOf(getSession().getAttribute("imId").toString()));
+            
+            pcmList = pcmDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
+            
+            setInvoiceType(pibm.getPimInvoiceType());
+            
+
+            
             return SUCCESS;
         } catch (Exception e) {
             message = "Exception in Edit method -> DepartmentAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
@@ -639,6 +685,7 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
 
     public String Save() throws Exception {
         Integer varPIMID;
+
         try {
             // firstly we check the invoice duplication for the same supplier in any institute/subinstitute
             DateUtilities dt = new DateUtilities();
@@ -647,19 +694,34 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
             } else {
                 varPIMID = pibm.getPimPimId();
             }
-//            pibmList = pibmDao.findByImId_SimId_SmId_SupplierInvoiceNo_pimPimId(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), pibm.getSuppliermaster().getSmId(), pibm.getPimSupplierInvoiceNo(), varPIMID);
-//
-//            // if any matching record is found then alert user and don't let it to be saved
-//            if (pibmList.size() > 0) {
-//                message = "Invoice Number of this Supplier Already Exists";
-//            }
+            pibmList = pibmDao.findByImId_SimId_SmId_SupplierInvoiceNo_pimPimId(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), pibm.getSuppliermaster().getSmId(), pibm.getPimSupplierInvoiceNo(), varPIMID);
 
-            pibmList = pibmDao.findBySupplierName_ChallanNo(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), varPIMID, pibm.getSuppliermaster().getSmId(), pibm.getErpmPurchasechallanMaster().getPcmPcmId());
+//            // if any matching record is found then alert user and don't let it to be saved
             if (pibmList.size() > 0) {
-                message = "Challan Number of this Supplier Already Exists";
+                message = "Invoice Number of this Supplier Already Exists";
             }
 
-            pibmList = pibmDao.findBySupplierName_SupplierInvoiceNo(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), varPIMID, pibm.getSuppliermaster().getSmId(), pibm.getPimSupplierInvoiceNo());
+        if (pibm.getErpmPurchasechallanMaster() != null) {
+            pibmList = pibmDao.findBySupplierName_ChallanNo(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), varPIMID, pibm.getSuppliermaster().getSmId(), pibm.getErpmPurchasechallanMaster().getPcmPcmId());
+        }
+/*            if (pibmList.size() > 0) {
+                message = "Challan Number of this Supplier Already Exists";
+            }*/
+        if (pibmList.size() > 0) {
+            message = "Challan Number of this Supplier Already Exists";
+        } // if record does not match then save invoice master information and proceed further
+        // if PimPimId() is null then it means we are updating an existing record
+        else {
+            if (pibm.getPimPimId() == null) {
+                pibm.setPimInvoiceRecvdDate(dt.convertStringToDate(getInvoicerecvDate()));
+                pibm.setPimSupplierInvoiceDate(dt.convertStringToDate(getSuplierinvoiceDate()));
+                invoicerecvDate = dt.convertDateToString(dt.convertStringToDate(getInvoicerecvDate()), "dd-MM-yyyy");
+                suplierinvoiceDate = dt.convertDateToString(dt.convertStringToDate(getSuplierinvoiceDate()), "dd-MM-yyyy");
+                if (pibm.getErpmPurchasechallanMaster() == null) {
+                    pibm.setErpmPurchasechallanMaster(null);
+                }
+         
+/*            pibmList = pibmDao.findBySupplierName_SupplierInvoiceNo(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), varPIMID, pibm.getSuppliermaster().getSmId(), pibm.getPimSupplierInvoiceNo());
             if (pibmList.size() > 0) {
                 message = "Supplier Invoice No Number of this Supplier Already Exists";
             } // if record does not match then save invoice master information and proceed further
@@ -672,27 +734,44 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
                     suplierinvoiceDate = dt.convertDateToString(dt.convertStringToDate(getSuplierinvoiceDate()), "dd-MM-yyyy");
                     if (pibm.getErpmPurchasechallanMaster() == null) {
                         pibm.setErpmPurchasechallanMaster(null);
-                    }
+                    }*/
 
-                    if (pibm.getErpmPoMaster() == null) {
-                        pibm.setErpmPoMaster(null);
-                    }
+                if (pibm.getErpmPoMaster() == null) {
+                    pibm.setErpmPoMaster(null);
+                }
 
-                    pibmDao.save(pibm);
+                pibmDao.save(pibm);
 
-                    message = "Purchase Invoice record saved successfully. ";
+                message = "Purchase Invoice record saved successfully. ";
                 } else {
+                if (!pibm.getPimInvoiceType().equals(getInvoiceType())) {
 
-                    pibmList = pibmDao.findBySupplierName_ChallanNo(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), varPIMID, pibm.getSuppliermaster().getSmId(), pibm.getErpmPurchasechallanMaster().getPcmPcmId());
-                    if (pibmList.size() > 0) {
+                    message = "Invoice Type is not Editable. . . . . Originally saved data has been RESTORED";
+                    pibm = pibmDao.findByErpmId(pibm.getPimPimId());
+
+                    return "SUCCESS2";
+                }
+
+//                pibmList = pibmDao.findBySupplierName_ChallanNo(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), varPIMID, pibm.getSuppliermaster().getSmId(), pibm.getErpmPurchasechallanMaster().getPcmPcmId());
+/*                    if (pibmList.size() > 0) {
                         message = "Challan Number of this Supplier Already Exists";
                     }
 
-                    pibmList = pibmDao.findBySupplierName_SupplierInvoiceNo(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), varPIMID, pibm.getSuppliermaster().getSmId(), pibm.getPimSupplierInvoiceNo());
+                    pibmList = pibmDao.findBySupplierName_SupplierInvoiceNo(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), varPIMID, pibm.getSuppliermaster().getSmId(), pibm.getPimSupplierInvoiceNo());*/
+                pibmList = pibmDao.findByImId_SimId_SmId_SupplierInvoiceNo_pimPimId(pibm.getInstitutionmaster().getImId(), pibm.getSubinstitutionmaster().getSimId(), pibm.getSuppliermaster().getSmId(), pibm.getPimSupplierInvoiceNo(), varPIMID);
+                // if any matching record is found then alert user and don't let it to be saved
                     if (pibmList.size() > 0) {
                         message = "Supplier Invoice No Number of this Supplier Already Exists";
                     }
-                    if (pibm.getErpmPurchasechallanMaster()== null) {
+
+                if (pibm.getPimInvoiceType().equals("Only Invoice")) {
+                    pibm.setErpmPoMaster(null);
+                } else {
+                    if (pibm.getPimInvoiceType().equals("Invoice Cum Challan")) {
+                        pibm.setErpmPurchasechallanMaster(null);
+                    }
+                }
+/*                    if (pibm.getErpmPurchasechallanMaster()== null) {
                         pibm.setErpmPurchasechallanMaster(null);
                     }
 
@@ -706,16 +785,25 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
                     ErpmPurchaseinvoiceMaster pibmnew = pibmDao.findByErpmId(pibm.getPimPimId());
                     pibmnew = pibm;
                     pibmDao.update(pibmnew);
-                    message = "Record Updated Successfully";
+                    mssage = "Record Updated Successfully";*/
+//                    else{
+                pibm.setPimInvoiceRecvdDate(dt.convertStringToDate(getInvoicerecvDate()));
+                pibm.setPimSupplierInvoiceDate(dt.convertStringToDate(getSuplierinvoiceDate()));
+                invoicerecvDate = dt.convertDateToString(dt.convertStringToDate(getInvoicerecvDate()), "dd-MM-yyyy");
+                suplierinvoiceDate = dt.convertDateToString(dt.convertStringToDate(getSuplierinvoiceDate()), "dd-MM-yyyy");
+                ErpmPurchaseinvoiceMaster pibmnew = pibmDao.findByErpmId(pibm.getPimPimId());
+                pibmnew = pibm;
+                pibmDao.update(pibmnew);                    
 
-                }
+/*                }
                 // the folowing code is to carry some information to the invoice detail screen
                 Default_PO = pibm.getPimPimId();
                 Default_ChallanNo = pibm.getPimPimId();
                 pibm = pibmDao.findpimPimId(Default_PO);
-                pibm = pibmDao.findpimPimId(Default_ChallanNo);
-
-                if (pibm.getErpmPurchasechallanMaster() == null) {
+                pibm = pibmDao.findpimPimId(Default_ChallanNo);*/
+                message = "Record Updated Successfully";
+//                    }
+/*                if (pibm.getErpmPurchasechallanMaster() == null) {
                     podList = podDao.findItemListByPoMasterId(pibm.getErpmPoMaster().getPomPoMasterId());
                     erpmpidList = pidDao.findBypimId(pibm.getPimPimId());
                     prepare_lovs();
@@ -726,12 +814,37 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
                     erpmpidList = pidDao.findBypimId(pibm.getPimPimId());
                     prepare_lovs();
                     return "SUCCESS1";
-                }
+                }*/
             }
-            return "SUCCESS2";
+//            return "SUCCESS2";
+            // the folowing code is to carry some information to the invoice detail screen
+            Default_PO = pibm.getPimPimId();
+            Default_ChallanNo = pibm.getPimPimId();
+            pibm = pibmDao.findpimPimId(Default_PO);
+            pibm = pibmDao.findpimPimId(Default_ChallanNo);
+
+            if (pibm.getErpmPurchasechallanMaster() == null) {
+                podList = podDao.findBypomPoMasterId(pibm.getErpmPoMaster().getPomPoMasterId());
+                erpmpidList = pidDao.findBypimId(pibm.getPimPimId());
+
+                prepare_lovs();
+                return SUCCESS;
+            }
+            if (pibm.getErpmPoMaster() == null) {
+                ppcdList = pcdDao.findBypcmPcmId(pibm.getErpmPurchasechallanMaster().getPcmPcmId());
+                erpmpidList = pidDao.findBypimId(pibm.getPimPimId());
+
+                prepare_lovs();
+                return "SUCCESS1";
+            }
+//           
+        }
+
+        return "SUCCESS2";                         
         } catch (Exception e) {
 
-            message = "Exception in Save method -> PurchaseInvoiceAction" + e.getMessage() + " Reported Cause is: " + e.getCause() + "CH :" + pibm.getErpmPurchasechallanMaster() + "PO :" + pibm.getErpmPoMaster();
+//            message = "Exception in Save method -> PurchaseInvoiceAction" + e.getMessage() + " Reported Cause is: " + e.getCause() + "CH :" + pibm.getErpmPurchasechallanMaster() + "PO :" + pibm.getErpmPoMaster();
+            message = "Exception in Save method -> PurchaseInvoiceAction" + e.getMessage() + " Reported Cause is: " + e.getCause() + ": CH :" + pibm.getErpmPurchasechallanMaster() + ": PO :" + pibm.getErpmPoMaster();            
             return ERROR;
 
         }
@@ -790,18 +903,24 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
     public String SaveInvoiceDetailforPO() throws Exception {
 
         try {
-            Integer TotPOItemQty = 0;
-            if (pid.getPidPidId() == null) {
-                if (pid.getErpmItemMaster().getErpmimId() == null) {
-                    message = "Please select Item first.";
-                } else {
+        Integer TotPOItemQty = 0;
+        if (pid.getPidPidId() == null) {
+            if (pid.getErpmItemMaster().getErpmimId() == null) {
+                message = "Please select Item first.";
+               podList = podDao.findBypomPoMasterId(pibm.getErpmPoMaster().getPomPoMasterId());
 
-                    pid.setErpmPurchaseinvoiceMaster(pibm);
+                 prepare_lovs();
+                 return "SUCCESS1";
+            } else {
 
-                    if (pid.getPidQuantity().intValue() < 1) {
+                pid.setErpmPurchaseinvoiceMaster(pibm);
+                
+                if (pid.getPidQuantity().intValue() < 1) {
 
-                        message = "Quantity Shouldn't Zero.";
-                        podList = podDao.findItemListByPoMasterId(pibm.getErpmPoMaster().getPomPoMasterId());
+                    message = "Quantity Shouldn't Zero.";
+            //            podList = podDao.findItemListByPoMasterId(pibm.getErpmPoMaster().getPomPoMasterId());
+//                    podList = podDao.findBypomPoMasterId(pibm.getErpmPoMaster().getPomPoMasterId());                       
+                     podList = podDao.findBypomPoMasterId(pibm.getErpmPoMaster().getPomPoMasterId());                    
                         return "SUCCESS1";
                     }
                     poDetail = podDao.findBy_pomPoMasterId_ItemId(pid.getErpmPurchaseinvoiceMaster().getErpmPoMaster().getPomPoMasterId(), pid.getErpmItemMaster().getErpmimId());
@@ -1033,8 +1152,10 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
 
                 ppcdList = pcdDao.findBypcmPcmId(pibm.getErpmPurchasechallanMaster().getPcmPcmId());
                 erpmpidList = pidDao.findBypimId(pibm.getPimPimId());
+                pid = null;
                 return "SUCCESS1";
             }
+            pid = null;
             return SUCCESS;
         } catch (Exception e) {
             message = "Exception in BackToPurchaseInvoiceDetail method-> Purchase Invoice Detail" + e.getMessage() + " Reported Cause is: " + e.getCause();
@@ -1298,6 +1419,9 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
 
                 if (pid.getErpmItemMaster().getErpmimId() == null) {
                     message = "Please select Item first.";
+                    ppcdList = pcdDao.findBypcmPcmId(pibm.getErpmPurchasechallanMaster().getPcmPcmId());
+
+                                  return "SUCCESS1";
                 } else {
                     pid.setErpmPurchaseinvoiceMaster(pibm);
 
@@ -1313,6 +1437,13 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
                     i = pcm.getErpmPoMaster().getPomPoMasterId();
 
                     poDetail = podDao.findBy_pomPoMasterId_ItemId(i, pid.getErpmItemMaster().getErpmimId());
+
+                   if (poDetail==null){
+
+                        message = "Cannot find Item Detail in its PO, Please check its PO";
+                        ppcdList = pcdDao.findBypcmPcmId(pibm.getErpmPurchasechallanMaster().getPcmPcmId());
+                        return "SUCCESS1";
+                    }
 
                     challanDetail = pcdDao.findBypcmPcmId_n_ItemId(pibm.getErpmPurchasechallanMaster().getPcmPcmId(),
                             pid.getErpmItemMaster().getErpmimId());
@@ -1466,9 +1597,16 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -1519,9 +1657,16 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
 
         try {
 
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+            //Locale locale = ActionContext.getContext().getLocale();
+            //ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+            //Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -1563,6 +1708,7 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
             pibm = pibmDao.findpimPimId(Default_ChallanNo);
 
             ppcdList = pcdDao.findBypcmPcmId(pibm.getErpmPurchasechallanMaster().getPcmPcmId());
+            pibmList = pibmDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
 
             erpmpidList = pidDao.findBypimId(pibm.getPimPimId());
 
@@ -1746,9 +1892,16 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -1763,7 +1916,7 @@ public class PurchaseInvoiceAction extends DevelopmentSupport {
             whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 32";
 
             hm.put("condition", whereCondition);
-
+            hm.put("screen_name", "PURCHASE INVOICE");
             JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
             JasperExportManager.exportReportToPdfStream(jp, baos);
             response.setContentLength(baos.size());

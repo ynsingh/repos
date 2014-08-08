@@ -1,3 +1,8 @@
+<%--
+      I18n By    : Mohd. Manauwar Alam
+                 : Jan 2014
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -36,7 +41,8 @@
                 </s:bean>
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">NEWS MANAGEMENT</p>
+<%--                    <p align="center" class="pageHeading" style="color: #ffffff">NEWS MANAGEMENT</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.NewsManagement')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -45,7 +51,7 @@
                     <s:form name="frmManageNewsAction" action="ManageNewsAction" theme="qxhtml">
                         <s:hidden name="erpmNews.newsId" /> 
 
-                        <s:textfield maxLength="30" size="30" cssErrorStyle="true"
+                <%--        <s:textfield maxLength="30" size="30" cssErrorStyle="true"
                                      label="News Type" required="true" requiredposition="" name="erpmNews.newsType" title="Enter HeadLine of News" cssClass="queryInput">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{6}" />
@@ -76,7 +82,39 @@
                                 <s:param name="align" value="%{'center'}" />
                             </s:submit>
 
-                            <s:submit value="Clear Screen" action="ManageNewsAction" >
+                            <s:submit value="Clear Screen" action="ManageNewsAction" > --%>
+                        <s:textfield maxLength="30" size="30" cssErrorStyle="true"
+                                     key="Administration.NewsType" required="true" requiredposition="" name="erpmNews.newsType" title="Enter HeadLine of News" cssClass="queryInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield> <br>
+                        <s:textarea key="Administration.NewsText" required="true" requiredposition="" name="erpmNews.newsText" cols="99" rows="3">
+                           <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                       </s:textarea >
+                        <s:textfield requiredposition="left" maxLength="100" size="100" cssErrorStyle="true"
+                                     key="Administration.PublishDate" required="true" name="publishDate"  cssClass="queryInput">
+                           <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+                        <s:textfield requiredposition="left" maxLength="100" size="100" cssErrorStyle="true"
+                                     key="Administration.ExpiryDate" required="true" name="expiryDate"  cssClass="queryInput">
+                           <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+
+                            <tr><td> &nbsp; </td></tr>
+                            <s:submit key="Administration.Save" action="SaveManageNewsAction">
+                                <s:param name="colspan" value="%{3}" />
+                                <s:param name="align" value="%{'center'}" />
+                            </s:submit>
+
+                            <s:submit name="btnSubmit" key="Administration.Browse" action="BrowseManageNewsAction">
+                                <s:param name="colspan" value="%{2}" />
+                                <s:param name="align" value="%{'center'}" />
+                            </s:submit>
+
+                            <s:submit key="Administration.Clear" action="ManageNewsAction" >
                                 <s:param name="colspan" value="%{2}" />
                                 <s:param name="align" value="%{'center'}" />
                             </s:submit>

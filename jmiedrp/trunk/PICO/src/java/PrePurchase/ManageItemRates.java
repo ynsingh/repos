@@ -8,40 +8,23 @@ package PrePurchase;
  *
  * @author sknaqvi
  */
-import pojo.hibernate.*;
-import pojo.hibernate.ErpmItemRate;
-import pojo.hibernate.ErpmItemRateDAO;
-
-import pojo.hibernate.Institutionmaster;
-import pojo.hibernate.InstitutionmasterDAO;
-
-import pojo.hibernate.ErpmItemMaster;
-import pojo.hibernate.ErpmItemMasterDAO;
-
-import pojo.hibernate.Suppliermaster;
-import pojo.hibernate.SuppliermasterDAO;
-
-import pojo.hibernate.ErpmItemRateTaxes;
-import pojo.hibernate.ErpmItemRateTaxesDAO;
-
-import pojo.hibernate.ErpmGenMaster;
-import pojo.hibernate.ErpmGenMasterDao;
-
-import utils.DevelopmentSupport;
-import java.util.*;
-import utils.DateUtilities;
-
 import java.io.*;
-import org.apache.struts2.interceptor.validation.SkipValidation;
 import java.sql.Connection;
-import javax.servlet.http.HttpServletResponse;
 import java.sql.DriverManager;
-import org.apache.struts2.ServletActionContext;
+import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.*;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import pojo.hibernate.*;
+import utils.DateUtilities;
+import utils.DevelopmentSupport;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 //import org.apache.commons.lang.time.DateUtils;
 public class ManageItemRates extends DevelopmentSupport {
@@ -91,8 +74,7 @@ public class ManageItemRates extends DevelopmentSupport {
     private InputStream inputStream;
     private static Boolean varShowGFR;
 
-
-
+    static String dataSourceURL=null;
 
     public Boolean getVarShowGFR() {
         return varShowGFR;
@@ -733,10 +715,14 @@ public class ManageItemRates extends DevelopmentSupport {
             //Prepare List of Tax names
             taxList = GMDao.findByErpmGmType(Short.parseShort("13"));
 
+            itemrate = itemrateDAO.findByirItemRateId(itemRateTax.getErpmItemRate().getIrItemRateId());
             //For getting the Supplier Name On Taxes Screen
             Default_Item_Supplier = itemrate.getIrItemRateId();
-            itemrate = itemrateDAO.findItemRateId(Default_Item_Supplier);
 
+//            itemrate = itemrateDAO.findItemRateId(Default_Item_Supplier);
+            //Prepare List of saved taxes for the selected Item
+            itemratetaxlist = itemRateTaxDAO.findByirItemRateId(itemrate.getIrItemRateId());
+            
             return SUCCESS;
         } catch (Exception e) {
 
@@ -914,9 +900,16 @@ public class ManageItemRates extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -1009,9 +1002,16 @@ public class ManageItemRates extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -1024,7 +1024,8 @@ public class ManageItemRates extends DevelopmentSupport {
 
             //Setup Where Condition Clause
             if (itemrate.getInstitutionmaster().getImId() == null || itemrate.getInstitutionmaster().getImId() == 0) {
-                whereCondition = " and erpm_item_rate.ir_im_id = " + getSession().getAttribute("imId");
+//                whereCondition = " and erpm_item_rate.ir_im_id = " + getSession().getAttribute("imId");
+                whereCondition = "erpm_item_rate.ir_im_id = " + itemrate.getInstitutionmaster().getImId();                
             } else {
                 whereCondition = " and erpm_item_rate.ir_im_id = " + itemrate.getInstitutionmaster().getImId();
             }
@@ -1094,9 +1095,16 @@ public class ManageItemRates extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -1111,6 +1119,7 @@ public class ManageItemRates extends DevelopmentSupport {
             whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 18";
 
             hm.put("condition", whereCondition);
+            hm.put("screen_name", "ITEM RATES");
 
             JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
             JasperExportManager.exportReportToPdfStream(jp, baos);

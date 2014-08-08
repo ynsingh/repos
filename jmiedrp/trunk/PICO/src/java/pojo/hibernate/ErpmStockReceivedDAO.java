@@ -5,13 +5,13 @@
 
 package pojo.hibernate;
 
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
 import utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Hibernate;
-import utils.BaseDAO;
+//import utils.BaseDAO;
 
 /**
  *
@@ -143,7 +143,8 @@ public class ErpmStockReceivedDAO {
             session.beginTransaction();
             ErpmStockReceived esrId1 = (ErpmStockReceived) session.load(ErpmStockReceived.class, esrId);
             Hibernate.initialize(esrId1);
-
+            Hibernate.initialize(esrId1.getErpmGenMaster());
+            Hibernate.initialize(esrId1.getErpmItemMaster());
             return esrId1;
         } finally {
             session.close();
@@ -210,6 +211,9 @@ public class ErpmStockReceivedDAO {
             List<ErpmStockReceived> list = session.createQuery("Select u from ErpmStockReceived u where u.erpmItemMaster.erpmimId = :itemId and u.departmentmaster.dmId=:dmId and u.stId NOT IN (SELECT m.erpmStockReceived.stId FROM ErpmIssueSerialDetail m WHERE m.issdReturned = 0) order by u.stInStockSince desc, u.stStockSerialNo desc").setParameter("itemId", itemId).setParameter("dmId", dmId).list();
             for (int index = 0; index < list.size(); index++) {
                 Hibernate.initialize(list.get(index));
+                 Hibernate.initialize(list.get(index).getInstitutionmaster());
+                 Hibernate.initialize(list.get(index).getSubinstitutionmaster());
+                 Hibernate.initialize(list.get(index).getDepartmentmaster());
 
             }
             return list;
@@ -231,7 +235,9 @@ public class ErpmStockReceivedDAO {
             session.beginTransaction();
             List<ErpmStockReceived> list = session.createQuery("Select u from ErpmStockReceived u where u.stId = :stId").setParameter("stId", stId).list();
             for (int index = 0; index < list.size(); ++index) {
-                Hibernate.initialize(list.get(index));
+                //Hibernate.initialize(list.get(index));
+                Hibernate.initialize(list.get(index).getErpmGenMaster());
+                Hibernate.initialize(list.get(index).getErpmItemMaster());
 
             }
             return list.get(0);
@@ -248,7 +254,8 @@ public class ErpmStockReceivedDAO {
 //        commitTransaction();
 //        return list.get(0);
 //   }
-    public ErpmStockReceived findbyStackSerialNo(Integer StackSerialNo) {
+   // public ErpmStockReceived findbyStackSerialNo(Integer StackSerialNo) {
+     public ErpmStockReceived findbyStockSerialNo(Integer StackSerialNo) {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
@@ -330,6 +337,22 @@ public class ErpmStockReceivedDAO {
             List<ErpmStockReceived> list = session.createQuery("Select u from ErpmStockReceived u where u.stChallanDetId = :pcdPcdId").setParameter("pcdPcdId",pcdPcdId).list();
             for (int index = 0; index < list.size(); index++) {
                 Hibernate.initialize(list.get(index));
+
+            }
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+
+     public List<ErpmStockReceived> findStId_ImId_SimId(Short imId , Integer simId) {
+        Session session = HibernateUtil.getSession();
+        try {
+
+            session.beginTransaction();
+            List<ErpmStockReceived> list = session.createQuery("Select u from ErpmStockReceived u where u.institutionmaster.imId = :imId and u.subinstitutionmaster.simId = :simId ").setParameter("imId", imId).setParameter("simId", simId).list();
+            for (int index = 0; index < list.size(); index++) {
+                Hibernate.initialize(list.get(index).getErpmItemMaster());
 
             }
             return list;

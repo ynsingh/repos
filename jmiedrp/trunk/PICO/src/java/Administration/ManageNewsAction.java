@@ -131,7 +131,7 @@ public class ManageNewsAction extends DevelopmentSupport {
             try {
                 //               message = ""+dt.convertStringToDate(""+dateFormat.format(date)) + " : " + dt.convertDateToString(date,"yyyy-mm-dd");
 		//changing formate 
-                               message = ""+dt.convertStringToDate(""+dateFormat.format(date)) + " : " + dt.convertDateToString(date,"yyyy-mm-dd");
+//                               message = ""+dt.convertStringToDate(""+dateFormat.format(date)) + " : " + dt.convertDateToString(date,"yyyy-mm-dd");
                 showingNewsinPageList = erpmNewsDAO.findbyDate(dt.convertStringToDate(dateFormat.format(date)));
 
             } catch (Exception e) {

@@ -14,6 +14,7 @@ public class Erpmsubmodule  implements java.io.Serializable {
      private Integer erpmSubModuleId;
      private Erpmmodule erpmmodule;
      private String esmName;
+     private String esmNameHindi;
      private Byte esmOrder;
      private String esmHref;
      private String esmEnvVariable;
@@ -24,7 +25,7 @@ public class Erpmsubmodule  implements java.io.Serializable {
     public Erpmsubmodule() {
     }
 
-    public Erpmsubmodule(Erpmmodule erpmmodule, String esmName, Byte esmOrder, String esmHref, String esmEnvVariable, Set erpmprograms, Set genericroleprivilegeses, Set institutionroleprivilegeses) {
+    public Erpmsubmodule(Erpmmodule erpmmodule, String esmName, Byte esmOrder, String esmHref, String esmNameHindi, String esmEnvVariable, Set erpmprograms, Set genericroleprivilegeses, Set institutionroleprivilegeses) {
        this.erpmmodule = erpmmodule;
        this.esmName = esmName;
        this.esmOrder = esmOrder;
@@ -33,6 +34,7 @@ public class Erpmsubmodule  implements java.io.Serializable {
        this.erpmprograms = erpmprograms;
        this.genericroleprivilegeses = genericroleprivilegeses;
        this.institutionroleprivilegeses = institutionroleprivilegeses;
+       this.esmNameHindi = esmNameHindi;
     }
    
     public Integer getErpmSubModuleId() {
@@ -56,6 +58,15 @@ public class Erpmsubmodule  implements java.io.Serializable {
     public void setEsmName(String esmName) {
         this.esmName = esmName;
     }
+
+    public String getEsmNameHindi() {
+        return esmNameHindi;
+    }
+
+    public void setEsmNameHindi(String esmNameHindi) {
+        this.esmNameHindi = esmNameHindi;
+    }
+
     public Byte getEsmOrder() {
         return this.esmOrder;
     }

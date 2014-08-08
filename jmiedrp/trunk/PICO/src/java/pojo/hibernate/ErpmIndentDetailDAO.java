@@ -1,7 +1,3 @@
-
-
-
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -196,8 +192,10 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
                 Hibernate.initialize(indentList.get(index).getErpmItemMaster());
                 Hibernate.initialize(indentList.get(index).getErpmItemRate());
                 Hibernate.initialize(indentList.get(index).getErpmItemMaster().getErpmGenMaster());
-                Hibernate.initialize(indentList.get(index).getErpmItemRate().getErpmGenMasterByIrCurrencyId());
+                if (indentList.get(index).getErpmItemRate()!=null) {
+                    Hibernate.initialize(indentList.get(index).getErpmItemRate().getErpmGenMasterByIrCurrencyId());
                 Hibernate.initialize(indentList.get(index).getErpmItemRate().getSuppliermaster());
+		}
             }
         return indentList;
         }
@@ -206,5 +204,3 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
             }
     }
 }
-
-

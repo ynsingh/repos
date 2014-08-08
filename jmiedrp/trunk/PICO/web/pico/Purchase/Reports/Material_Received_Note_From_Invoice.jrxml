@@ -268,7 +268,7 @@ WHERE $P!{condition}]]>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{Item_Brief_Desc}]]></textFieldExpression>
 			</textField>
-			<textField pattern="Â¤ #,##0" isBlankWhenNull="true">
+			<textField pattern="¤ #,##0" isBlankWhenNull="true">
 				<reportElement uuid="dc60147e-ad66-4025-871c-cb9fa49b2921" x="251" y="0" width="59" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{Quantity}]]></textFieldExpression>
@@ -278,7 +278,7 @@ WHERE $P!{condition}]]>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{Rate}]]></textFieldExpression>
 			</textField>
-			<textField pattern="Â¤ #,##0" isBlankWhenNull="true">
+			<textField pattern="¤ #,##0" isBlankWhenNull="true">
 				<reportElement uuid="b16ab6fb-c4f4-4e47-a1fa-8d9feabaffd2" x="170" y="0" width="57" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{UOM}]]></textFieldExpression>

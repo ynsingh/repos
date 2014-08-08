@@ -137,22 +137,17 @@
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
 
-
-
-
-<action name="getDepartmentAfterValidation" method="getDepartmentAfterValidation" class="ajax.AjaxAction">
+       <action name="getDepartmentAfterValidation" method="getDepartmentAfterValidation" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
 
-
-<action name="getBudgetAfterValidation" method="getBudgetAfterValidation" class="ajax.AjaxAction">
+       <action name="getBudgetAfterValidation" method="getBudgetAfterValidation" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
 
-
-        <action name="getEmployeeList" method="getEmployeeList" class="ajax.AjaxAction">
+       <action name="getEmployeeList" method="getEmployeeList" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
-        </action>
+       </action>
        
        <action name="getForwardedToUserAfterValidation" method="getForwardedToUserAfterValidation" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
@@ -194,9 +189,10 @@
        <action name="getIssueNoByComId" method="getIssueNoByComId" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
-      <action name="getAddressForSupplier" method="getAddressForSupplier" class="ajax.AjaxAction">
+
+       <action name="getAddressForSupplier" method="getAddressForSupplier" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
-      </action>
+       </action>
 
       <action name="getApprovedIndentList" method="getApprovedIndentList" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
@@ -222,7 +218,7 @@
             <result name="success">/pico/ajax/Ajax.jsp</result>
       </action>
 
-         <action name="getEmailAddressForCommittee" method="getEmailAddressForCommittee" class="ajax.AjaxAction">
+      <action name="getEmailAddressForCommittee" method="getEmailAddressForCommittee" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
 
@@ -233,20 +229,22 @@
 	   <action name="getEmailAddressForSupplier" method="getEmailAddressForSupplier" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
+
        <action name="getSupplierList" method="getSupplierList" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
-         <action name="getSubCategoryList" method="getSubCategoryList" class="ajax.AjaxAction">
+
+       <action name="getSubCategoryList" method="getSubCategoryList" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
 
        <action name="getPOList" method="getPOList" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
-        </action>
+       </action>
 
-        <action name="getChallanList" method="getChallanList" class="ajax.AjaxAction">
+       <action name="getChallanList" method="getChallanList" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
-        </action>
+       </action>
 
         <action name="getProgramListForSubModule" method="getProgramListForSubModule" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ItemRate" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="670ba6e8-f55f-4c63-ba9e-dd6d3a130456">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="41"/>
+	<property name="ireport.x" value="31"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Crosstab Data Text" hAlign="Center"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["Item_Tax_Rate.jasper"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="condition" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -36,7 +36,7 @@ FROM
      	INNER JOIN `erpm_gen_master` wsf ON erpm_item_rate.`IR_Warranty_Starts_From_ID` = wsf.`ERPMGM_EGM_ID`
      	INNER JOIN `erpm_gen_master` UOP ON item_mast.`ERPMIM_UOP` = UOP.`ERPMGM_EGM_ID`
 	INNER JOIN `erpm_CAPITAL_CATEGORY` cc ON item_mast.`ERPMIM_Capital_Cat` = CC.`ERPMCC_ID`
-	$P!{condition}
+WHERE $P!{condition}
 ORDER BY
      	IR_ID ASC]]>
 	</queryString>
@@ -204,7 +204,7 @@ ORDER BY
 					<subreportParameterExpression><![CDATA[$F{IR_ID}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Item_Tax_Rate.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
 			</subreport>
 			<line>
 				<reportElement uuid="5fdc63a7-992f-4ee5-8180-736071207579" positionType="Float" x="0" y="72" width="800" height="1"/>

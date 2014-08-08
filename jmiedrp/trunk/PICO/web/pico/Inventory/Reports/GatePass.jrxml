@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GatePass" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9411f6ff-6c70-4ae9-a60a-8871daad2d4e">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="51"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     concat(employeemaster.`EMP_FName`,' ',employeemaster.`EMP_MName`,' ',employeemaster.`EMP_LName`) AS Employee_Name,
+     concat(departmentmaster.`DM_Name`,', ',subinstitutionmaster.`SIM_Name`,', ',institutionmaster.`IM_Name`) AS Organization,
+     concat(employeemaster_A.`EMP_FName`,' ',employeemaster_A.`EMP_MName`,' ',employeemaster_A.`EMP_LName`) AS Isuueing_Authority,
+     if(not isnull(employeemaster_A.`EMP_FName`),concat(employeemaster_A.`EMP_FName`,' ',employeemaster_A.`EMP_MName`,' ',employeemaster_A.`EMP_LName`),if(not isnull(suppliermaster.`SM_Name`),suppliermaster.`SM_Name`,if(not isnull(committeemaster.`Committee_Name`),committeemaster.`Committee_Name`,''))) AS To_Authority_Name,
+     committeemaster.`Committee_Name` AS committee,
+     erpm_issue_master.`ISM_ID` AS erpm_issue_master_ISM_ID,
+     erpm_issue_master.`ISM_Issue_No` AS erpm_issue_master_ISM_Issue_No,
+     erpm_issue_master.`ISM_Issue_Date` AS erpm_issue_master_ISM_Issue_Date,
+     erpm_issue_master.`ISM_Issue_Desc` AS erpm_issue_master_ISM_Issue_Desc,
+     erpm_issue_detail.`ISD_Issued_Quantity` AS erpm_issue_detail_ISD_Issued_Quantity,
+     employeemaster.`EMP_FName` AS employeemaster_EMP_FName,
+     employeemaster.`EMP_MName` AS employeemaster_EMP_MName,
+     employeemaster.`EMP_LName` AS employeemaster_EMP_LName,
+     departmentmaster.`DM_Name` AS departmentmaster_DM_Name,
+     departmentmaster.`DM_Short_Name` AS departmentmaster_DM_Short_Name,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS erpm_item_master_ERPMIM_Item_Brief_Desc,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS erpm_gen_master_UOM,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     institutionmaster.`IM_Short_Name` AS institutionmaster_IM_Short_Name,
+     subinstitutionmaster.`SIM_Name` AS subinstitutionmaster_SIM_Name,
+     subinstitutionmaster.`SIM_Short_Name` AS subinstitutionmaster_SIM_Short_Name,
+     erpm_issue_master.`ISM_Return_Due_Date` AS erpm_issue_master_ISM_Return_Due_Date,
+     employeemaster_A.`EMP_FName` AS employeemaster_A_EMP_FName,
+     employeemaster_A.`EMP_MName` AS employeemaster_A_EMP_MName,
+     employeemaster_A.`EMP_LName` AS employeemaster_A_EMP_LName,
+     suppliermaster.`SM_Name` AS suppliermaster_SM_Name
+FROM
+     `erpm_issue_master` erpm_issue_master INNER JOIN `erpm_issue_detail` erpm_issue_detail ON erpm_issue_master.`ISM_ID` = erpm_issue_detail.`ISD_ISM_ID`
+     LEFT OUTER JOIN `employeemaster` employeemaster ON erpm_issue_master.`ISM_To_Employee_ID` = employeemaster.`EMP_ID`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_issue_master.`ISM_To_Department_ID` = departmentmaster.`DM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_issue_master.`ISM_To_Institute_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_issue_master.`ISM_To_Subinstitute_ID` = subinstitutionmaster.`sim_id`
+     LEFT OUTER JOIN `employeemaster` employeemaster_A ON erpm_issue_master.`ISM_From_Employee_ID` = employeemaster_A.`EMP_ID`
+     LEFT OUTER JOIN `suppliermaster` suppliermaster ON erpm_issue_master.`ISM_To_Supplier_ID` = suppliermaster.`SM_Id`
+     LEFT OUTER JOIN `committeemaster` committeemaster ON erpm_issue_master.`ISM_To_Committee_ID` = committeemaster.`Committee_ID`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_issue_detail.`ISD_Item_ID` = erpm_item_master.`ERPMIM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+
+where $P!{condition}]]>
+	</queryString>
+	<field name="Employee_Name" class="java.lang.String"/>
+	<field name="Organization" class="java.lang.String"/>
+	<field name="Isuueing_Authority" class="java.lang.String"/>
+	<field name="To_Authority_Name" class="java.lang.String"/>
+	<field name="committee" class="java.lang.String"/>
+	<field name="erpm_issue_master_ISM_ID" class="java.lang.Long"/>
+	<field name="erpm_issue_master_ISM_Issue_No" class="java.lang.String"/>
+	<field name="erpm_issue_master_ISM_Issue_Date" class="java.sql.Date"/>
+	<field name="erpm_issue_master_ISM_Issue_Desc" class="java.lang.String"/>
+	<field name="erpm_issue_detail_ISD_Issued_Quantity" class="java.math.BigDecimal"/>
+	<field name="employeemaster_EMP_FName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_MName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_LName" class="java.lang.String"/>
+	<field name="departmentmaster_DM_Name" class="java.lang.String"/>
+	<field name="departmentmaster_DM_Short_Name" class="java.lang.String"/>
+	<field name="erpm_item_master_ERPMIM_Item_Brief_Desc" class="java.lang.String"/>
+	<field name="erpm_gen_master_UOM" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Short_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Short_Name" class="java.lang.String"/>
+	<field name="erpm_issue_master_ISM_Return_Due_Date" class="java.sql.Date"/>
+	<field name="employeemaster_A_EMP_FName" class="java.lang.String"/>
+	<field name="employeemaster_A_EMP_MName" class="java.lang.String"/>
+	<field name="employeemaster_A_EMP_LName" class="java.lang.String"/>
+	<field name="suppliermaster_SM_Name" class="java.lang.String"/>
+	<variable name="GATE_PASS_MESSAGE" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA["Please allow Mr/Ms. "+$F{Employee_Name}.toUpperCase()+" of "+$F{Organization}+" to take the following items."]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="5f229a2f-2de2-449b-a99e-4f89c47a8b49" x="234" y="10" width="87" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Gate Pass]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="132" splitType="Stretch">
+			<textField>
+				<reportElement uuid="64bb1b57-7e71-40ba-bc41-172825215ccc" x="96" y="4" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_issue_master_ISM_Issue_No}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a3e58928-2486-48a9-b211-6d69ed4827f7" x="50" y="4" width="46" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issue No :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5af3e431-4898-4cac-b618-47da63c3e979" x="213" y="4" width="53" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issue Date :]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement uuid="b2a482bc-9c98-4857-8377-ff19fe841587" x="266" y="4" width="95" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_issue_master_ISM_Issue_Date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="765a8676-baac-4dc8-b8a7-9b91b17e84bb" x="50" y="101" width="463" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{GATE_PASS_MESSAGE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="68cb0cd8-4353-4275-802a-9da060f9981e" x="50" y="27" width="60" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Institution :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="fe4c9baa-b5df-493b-b172-0d65c43e22af" x="110" y="27" width="251" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="cb287b06-5d90-4dab-a1ff-38fa5106c79e" x="50" y="47" width="60" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subinstitution :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="d5136b43-f621-46ef-82c7-3a05b2ee2038" x="110" y="47" width="251" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="49bb1d22-413a-4220-bdc4-5b8619ad2007" x="50" y="67" width="60" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9bc07422-9f99-498b-90d2-e12471e9549b" x="110" y="67" width="251" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{departmentmaster_DM_Name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="3abc5b91-5706-461a-a1cb-2f1e23c68bc9" x="100" y="3" width="66" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e3c5b2bc-b67a-4e95-aad3-5d992949e18c" x="349" y="3" width="54" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="eccf2dd8-99bd-44d3-8114-3557d6c2c733" x="100" y="23" width="303" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="32afccd0-c6e8-408f-b396-ce2a9ea42a6f" x="100" y="0" width="249" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_item_master_ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e3ceb808-f66a-452f-8175-b3cb172c36eb" x="349" y="0" width="54" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_issue_detail_ISD_Issued_Quantity}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="9" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="8" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="94" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="2263e921-3a73-4178-964c-fa0301e2e324" x="50" y="14" width="159" height="20">
+					<printWhenExpression><![CDATA[$F{erpm_issue_master_ISM_Return_Due_Date} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[These items will be returned on or before ]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement uuid="7229d997-2101-4430-99d8-603029c74d7b" x="212" y="14" width="70" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_issue_master_ISM_Return_Due_Date}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="eccf2dd8-99bd-44d3-8114-3557d6c2c733" x="98" y="2" width="305" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="ba8610ac-6884-41a2-a8f8-bceffad1de38" x="361" y="33" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Issueing Authority]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="73d03ae9-3f19-4584-9531-9aeb063b8e74" x="361" y="52" width="183" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{To_Authority_Name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

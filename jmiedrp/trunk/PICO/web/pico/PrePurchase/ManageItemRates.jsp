@@ -1,3 +1,9 @@
+
+<%--  
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
+--%>
+
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 
@@ -55,85 +61,85 @@
                 <s:hidden name="itemratedet.irdItemRateDetailsId" />
                 <s:hidden name="itemratetax.irtItemRateTaxesId" />
 
-                 <s:select label="Institution" required="true" requiredposition="" name="itemrate.institutionmaster.imId" cssClass="queryInput" value="DefaultInsitute1"
+                 <s:select key="PrePurchase.Institution" required="true" requiredposition="" name="itemrate.institutionmaster.imId" cssClass="textInput" value="DefaultInsitute1"
                            headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" title = "Select Institution"
                            onchange="getItemforInsituteList('SaveItemRate_itemrate_institutionmaster_imId', 'SaveItemRate_itemrate_erpmItemMaster_erpmimId');" ondblclick="getInsituteaftervalidation('SaveIndentRate_itemrate_institutionmaster_imId');">
                            <s:param name="labelcolspan" value="%{1}" />
                            <s:param name="inputcolspan" value="%{7}" />
                  </s:select>
 
-                 <s:select cssClass="queryInput" label="Item Name" required="true" requiredposition="" name="itemrate.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --"
+                 <s:select cssClass="textInput" key="PrePurchase.ItemName" required="true" requiredposition="" name="itemrate.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --"
                            list="itemList" listKey="erpmimId" listValue="erpmimItemBriefDesc" title="Select Item from the List"
                            onchange="getsupplierforInsituteList('SaveItemRate_itemrate_institutionmaster_imId', 'SaveItemRate_itemrate_suppliermaster_smId');"
                            ondblclick="getitemList_2('SaveIndentRate_itemrate_erpmItemMaster_erpmimId');">
                            <s:param name="labelcolspan" value="%{1}" />
-                           <s:param name="inputcolspan" value="%{2}" />
+                           <s:param name="inputcolspan" value="%{4}" />
                  </s:select>
 
                  <s:label value="...." cssClass="tdSpace"/>
 
-                 <s:select cssClass="queryInput" label="Supplier Name" required="true" requiredposition="" name="itemrate.suppliermaster.smId"  title="Select Supplier from the List"
+                 <s:select cssClass="textInput" key="PrePurchase.SupplierName" required="true" requiredposition="" name="itemrate.suppliermaster.smId"  title="Select Supplier from the List"
                            headerKey="" headerValue="-- Please Select --" list="suppList" listKey="smId" listValue="smName"
                            ondblclick="getsupplieraftervalidation('SaveIndentRate_itemrate_suppliermaster_smId');">
                            <s:param name="labelcolspan" value="%{1}" />
-                           <s:param name="inputcolspan" value="%{3}" />
+                           <s:param name="inputcolspan" value="%{4}" />
                  </s:select>
 
-                 <s:select cssClass="queryInput" label="Currency of Purchase" required="true" requiredposition="" name="itemrate.erpmGenMasterByIrCurrencyId.erpmgmEgmId" title="Enter Currency of Purchase"
+                 <s:select cssClass="textInput" key="PrePurchase.CurrencyOfPurchase" required="true" requiredposition="" name="itemrate.erpmGenMasterByIrCurrencyId.erpmgmEgmId" title="Enter Currency of Purchase"
                            headerKey="" headerValue="-- Please Select --" list="currencyList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc"
                            ondblclick="getCurrencyAfterValidation('SaveItemRate_itemrate_erpmGenMasterByIrCurrencyId');">
                            <s:param name="labelcolspan" value="%{1}" />
-                           <s:param name="inputcolspan" value="%{3}" />
+                           <s:param name="inputcolspan" value="%{4}" />
                  </s:select>
-
+<s:label value="..." cssClass="tdSpace"/>
                  <s:textfield cssClass="textInput" required="true" requiredposition="left" maxLength="11" size="25"
-                              label="Unit Rate" name="itemrate.irdRate"  title="Enter Unit Rate" >
+                              key="PrePurchase.UnitRate" name="itemrate.irdRate"  title="Enter Unit Rate" >
                            <s:param name="labelcolspan" value="%{1}" />
-                           <s:param name="inputcolspan" value="%{3}" />
+                           <s:param name="inputcolspan" value="%{4}" />
                  </s:textfield>
 
                  <s:textfield cssClass="queryInput" required="true" requiredposition="left" maxLength="10" size="10" title="Enter Approval Effective From Date [MM-DD-YYYY]"
-                              label="Approval Effective From Date" name="effDate" >
+                              key="PrePurchase.ApprovalEffectiveFromDate" name="effDate" >
                               <s:param name="labelcolspan" value="%{1}" />
-                              <s:param name="inputcolspan" value="%{3}" />
+                              <s:param name="inputcolspan" value="%{4}" />
                  </s:textfield>
-
+<s:label value="..." cssClass="tdSpace"/>
                  <s:textfield cssClass="queryInput" required="true" requiredposition="left" maxLength="10" size="10" title="Enter last date of approval validity [MM-DD-YYYY]"
-                              label="Approval Valid Upto Date" name="validUptoDate" >
+                              key="PrePurchase.ApprovalValidUptoDate" name="validUptoDate" >
                               <s:param name="labelcolspan" value="%{1}" />
-                              <s:param name="inputcolspan" value="%{3}" />
+                              <s:param name="inputcolspan" value="%{4}" />
                  </s:textfield>
 
                  <s:textfield cssClass="queryInput" required="true" requiredposition="left" maxLength="10" size="10" title="Enter Minimum Quantity for which the rate is valid"
-                              label="Minimum Quantity" name="itemrate.irMinQty">
+                              key = "PrePurchase.MinimumQuantity" name="itemrate.irMinQty">
                               <s:param name="labelcolspan" value="%{1}" />
-                              <s:param name="inputcolspan" value="%{3}" />
+                              <s:param name="inputcolspan" value="%{4}" />
                  </s:textfield>
-
+<s:label value="..." cssClass="tdSpace"/>
                  <s:textfield cssClass="queryInput" required="true" requiredposition="left" maxLength="10" size="10" title="Enter Maximum Quantity for which the rate is valid"
-                              label="Maximum Quantity" name="itemrate.irMaxQty" >
+                              key="PrePurchase.MaximumQuantity" name="itemrate.irMaxQty" >
                               <s:param name="labelcolspan" value="%{1}" />
-                              <s:param name="inputcolspan" value="%{3}" />
+                              <s:param name="inputcolspan" value="%{4}" />
                  </s:textfield>
 
 
 
                  <s:textfield cssClass="textInput" required="true" requiredposition="left" maxLength="2" size="10" title="Enter warranty duration in months"
-                              label="Warranty Duration(Months)" name="itemrate.irWarrantyMonths" value="12"  onclick="checkdate">
+                              key="PrePurchase.WarrantyDuration" name="itemrate.irWarrantyMonths" value="12"  onclick="checkdate">
                               <s:param name="labelcolspan" value="%{1}" />
-                              <s:param name="inputcolspan" value="%{3}" />
+                              <s:param name="inputcolspan" value="%{4}" />
                  </s:textfield>
+<s:label value="..." cssClass="tdSpace"/>
 
-
-                 <s:select cssClass="textInput" label="Warranty Starts From" required="true" requiredposition="" name="itemrate.erpmGenMasterByIrWarrantyStartsFromId.erpmgmEgmId"
+                 <s:select cssClass="textInput" key="PrePurchase.WarrantyStartsFrom" required="true" requiredposition="" name="itemrate.erpmGenMasterByIrWarrantyStartsFromId.erpmgmEgmId"
                            headerKey="" headerValue="-- Please Select --" list="wsfList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc"
                            ondblclick="getWarrantyaftervalidation('SaveIndentRate_itemrate_erpmGenMasterByIrWarrantyStartsFromId_erpmgmEgmId');"
                            title="Select warranty start point">
                               <s:param name="labelcolspan" value="%{1}" />
-                              <s:param name="inputcolspan" value="%{3}" />
+                              <s:param name="inputcolspan" value="%{4}" />
                  </s:select>
 
-                 <s:textarea cssClass="textInput"  rows="2" cols="90" label="Warranty Description"
+                 <s:textarea cssClass="textInput"  rows="2" cols="90" key="PrePurchase.WarrantyDescription"
                              name="itemrate.irWarrantyClause" title="Enter warranty description">
                               <s:param name="labelcolspan" value="%{1}" />
                               <s:param name="inputcolspan" value="%{7}" />
@@ -142,17 +148,17 @@
                 <tr><td> &nbsp; </td></tr>
                 <s:label />
 
-                <s:submit name="btnSubmit" value="Save Item Rate" cssClass="inputButton" >
+                <s:submit name="btnSubmit" key="PrePurchase.Save" cssClass="inputButton" >
                         <s:param name="colspan" value="%{2}" />
                         <s:param name="align" value="right" />
                 </s:submit>
 
-                <s:submit name="btnFetch" value="Fetch Item Rate Details" action="FetchItemRates"  cssClass="inputButton">
+                <s:submit name="btnFetch" key="PrePurchase.Browse" action="FetchItemRates"  cssClass="inputButton">
                         <s:param name="colspan" value="%{2}" />
                         <s:param name="align" value="right" />
                 </s:submit>
 
-                <s:submit name="bthReset" value="Clear Item Rates"  action="ClearItemRates" cssClass="inputButton" >
+                <s:submit name="bthReset" key="PrePurchase.Clear"  action="ClearItemRates" cssClass="inputButton" >
                         <s:param name="colspan" value="%{1}" />
                         <s:param name="align" value="right" />
                 </s:submit>

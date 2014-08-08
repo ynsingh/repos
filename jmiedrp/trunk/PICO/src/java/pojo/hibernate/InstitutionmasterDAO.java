@@ -119,7 +119,6 @@ public class InstitutionmasterDAO {
             }
         }
 
-
 /*public List<Institutionmaster> findForUser(Integer erpmuId) {
         Session session = HibernateUtil.getSession();
 
@@ -133,7 +132,6 @@ public class InstitutionmasterDAO {
             }
         }
 */
-
     public Institutionmaster findInstByIMShortName(String imShortName) {
         Session session = HibernateUtil.getSession();
         try {
@@ -147,7 +145,6 @@ public class InstitutionmasterDAO {
             }
         }
 
-
     public Institutionmaster findInstByIMFullName(String imName) {
         Session session = HibernateUtil.getSession();
         try {
@@ -159,9 +156,6 @@ public class InstitutionmasterDAO {
             session.close();
             }
         }
-
-
-
 
     public String findDefaultInstByID(Short imId) {
         Session session = HibernateUtil.getSession();
@@ -176,7 +170,7 @@ public class InstitutionmasterDAO {
         }
 
 
-public List<Institutionmaster> findInstByIMName(String imName) {
+    public List<Institutionmaster> findInstByIMName(String imName) {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
@@ -188,7 +182,7 @@ public List<Institutionmaster> findInstByIMName(String imName) {
             }
     }
 
-public List<Institutionmaster> findInstByShortName(String imShortName) {
+    public List<Institutionmaster> findInstByShortName(String imShortName) {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
@@ -198,9 +192,5 @@ public List<Institutionmaster> findInstByShortName(String imShortName) {
         finally {
             session.close();
             }
-    }
-
-
-
-  
+    } 
 }

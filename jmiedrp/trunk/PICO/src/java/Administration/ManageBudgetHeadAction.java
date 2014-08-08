@@ -312,7 +312,12 @@ catch (Exception e)
             bhm= null;
             return SUCCESS;
             } catch (Exception e) {
-            message = "Exception in Delete method -> ManageBudgetHeadAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+            //message = "Exception in Delete method -> ManageBudgetHeadAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+                if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
+                message = "Cannot delete record as related record(s) exist(s). Reported cause is         :" + e.getCause();
+            }else{
+                message = "Exception in Delete method -> ManageBudgetHeadAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+                }
             return ERROR;
         }
     }

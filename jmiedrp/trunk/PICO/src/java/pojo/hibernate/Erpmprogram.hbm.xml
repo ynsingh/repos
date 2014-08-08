@@ -17,6 +17,9 @@
         <property name="erpmpDisplayName" type="string">
             <column name="ERPMP_Display_Name" length="50" not-null="true" />
         </property>
+        <property name="erpmpDisplayNameHindi" type="string">
+            <column name="ERPMP_Display_Name_Hindi" length="50" not-null="true" />
+        </property>
         <property name="erpmpPurpose" type="string">
             <column name="ERPMP_Purpose" length="100" />
         </property>

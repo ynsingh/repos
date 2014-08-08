@@ -109,7 +109,10 @@ public class SuppliermasterDAO {
         try {
             session.beginTransaction();
             Suppliermaster  erpmsm  = (Suppliermaster ) session.load(Suppliermaster .class , erpmsmId);
-            Hibernate.initialize(erpmsm);
+//            Hibernate.initialize(erpmsm);
+             Hibernate.initialize(erpmsm.getInstitutionmaster());
+             Hibernate.initialize(erpmsm.getErpmGenMasterBySmOwnershipType());
+             Hibernate.initialize(erpmsm.getErpmGenMasterBySmSupplierType());            
             return erpmsm;            
         }
         finally {

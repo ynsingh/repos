@@ -12,10 +12,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -25,36 +26,30 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import pojo.hibernate.Committeemaster;
 import pojo.hibernate.CommitteemasterDAO;
-import pojo.hibernate.Countrymaster;
-import pojo.hibernate.CountrymasterDAO;
 import pojo.hibernate.Departmentmaster;
 import pojo.hibernate.DepartmentmasterDAO;
 import pojo.hibernate.Employeemaster;
 import pojo.hibernate.EmployeemasterDAO;
-import pojo.hibernate.ErpmGenMaster;
-import pojo.hibernate.ErpmGenMasterDao;
 import pojo.hibernate.ErpmIssueDetail;
 import pojo.hibernate.ErpmIssueDetailDAO;
-import pojo.hibernate.ErpmIssueSerialDetail;
-import pojo.hibernate.ErpmIssueSerialDetailDAO;
-import pojo.hibernate.ErpmIssueMasterDAO;
 import pojo.hibernate.ErpmIssueMaster;
+import pojo.hibernate.ErpmIssueMasterDAO;
 import pojo.hibernate.ErpmIssueReceive;
 import pojo.hibernate.ErpmIssueReceiveDAO;
+import pojo.hibernate.ErpmIssueSerialDetail;
+import pojo.hibernate.ErpmIssueSerialDetailDAO;
 import pojo.hibernate.ErpmStockReceived;
 import pojo.hibernate.GfrProgramMappingDAO;
 import pojo.hibernate.Institutionmaster;
 import pojo.hibernate.InstitutionmasterDAO;
-import pojo.hibernate.Statemaster;
-import pojo.hibernate.StatemasterDAO;
 import pojo.hibernate.Subinstitutionmaster;
 import pojo.hibernate.SubinstitutionmasterDAO;
 import utils.DateUtilities;
 import utils.DevelopmentSupport;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class ReceiveItemsAction extends DevelopmentSupport {
 
@@ -103,6 +98,8 @@ public class ReceiveItemsAction extends DevelopmentSupport {
     private static Integer varIssueReceiveID;
     private String receiptDate;
     private static Boolean varShowGFR;
+
+    static String dataSourceURL=null;
 
 
     public Boolean getVarShowGFR() {
@@ -354,6 +351,7 @@ public class ReceiveItemsAction extends DevelopmentSupport {
         }
     }
 
+    //This method is for populating the Receive items page (ReceiveItems.jsp)
     private void prepare_lovs() {
 
 
@@ -452,13 +450,16 @@ public class ReceiveItemsAction extends DevelopmentSupport {
         }
     }
 
+    //this save is for saving Receive items (save button of Receiveitems.jsp page)
     public String Save() throws Exception {
         try {
 
+            //if part is for saving new record and else part is for updating existing record
             DateUtilities dt = new DateUtilities();
             if (ir.getIsrId() == null) {
 
                 ir.setIsrReceiptDate(dt.convertStringToDate(getReceiptDate()));
+                //Following Condition Save Receive Items in two way either taken Commitee Master or Employee Maste
                 if (ir.getCommitteemaster().getCommitteeId() == 0) {
                     ir.setCommitteemaster(null);
                 }
@@ -487,10 +488,13 @@ public class ReceiveItemsAction extends DevelopmentSupport {
 
             setVarIssueReceiveID(ir.getIsrId());
 
+            //This Default_IssueNo & ReceiptDate is used to take Issue No from RECEIVE ISSUED ITEMS Master Page RECEIVE ISSUED ITEMS DETAIL Page
             Default_IssueNo = ir.getIsrId();
             ir = irDAO.findByErpmisrId(Default_IssueNo);
             
             receiptDate =""+dt.convertDateToString(ir.getIsrReceiptDate(), "dd-MM-yyyy");
+            // List to show Item Name ,U.O.M , Issue Qty , Receive Qty on RECEIVE ISSUED ITEMS DETAIL
+
             isueDetList = isueDetDAO.findByIssueMastId(ir.getErpmIssueMaster().getIsmId());
 
             prepare_lovs();
@@ -518,14 +522,21 @@ public class ReceiveItemsAction extends DevelopmentSupport {
 
     }
 
+    //This Method is used in RECEIVE ISSUED ITEMS DETAIL Page to Save RECEIVE Items
     public String Accept() throws Exception {
         try {
 
+            // sumRecvQty variable count Receive Qty From IssueSerialDetail Table
             Integer sumRecvQty = issSerialDetDAO.CountReceiveQty(getIsdId());
             issSerialDetList = issSerialDetDAO.findByIssueDetID(getIsdId());
             Integer x = issSerialDetList.size();
 
+            // This If Condition Check the Size of IssueSerialDetail Table in Database
+            //                 //If Size is greater than zero than List will Pupolate On Page Else nothing will be pupolate..
             if (x > 0) {
+                //Condition to check Quantity
+                //If Quantity is null than set issdReceived True For Each Row in Table
+                //Than update Table
                 if (sumRecvQty == 0) {
                     // if (x>0) {
                     for (int i = 0; i < x; i++) {
@@ -537,6 +548,7 @@ public class ReceiveItemsAction extends DevelopmentSupport {
                 }
                 isueSerialDet = issSerialDetDAO.findByErpmissdId(issSerialDetList.get(0).getIssdId());
                 isueDet = isueDetDAO.findisdId(getIsdId());
+                //Set value for RECEIVE ISSUED ITEM SERIAL DETAILS page
                 setVarchar_IssueNo(isueDet.getErpmIssueMaster().getIsmIssueNo());
                 setVarchar_Item_Name(isueDet.getErpmItemMaster().getErpmimItemBriefDesc());
 
@@ -548,6 +560,7 @@ public class ReceiveItemsAction extends DevelopmentSupport {
 
                 getVarIssueReceiveID();
 
+                // List to show Serial No
                 issSerialDetList = issSerialDetDAO.findSerialNoByIssueDetID(getIsdId());
 
                 Integer ItemIdIength = issSerialDetList.get(0).getErpmStockReceived().getErpmItemMaster().getErpmimId().toString().length();
@@ -564,6 +577,7 @@ public class ReceiveItemsAction extends DevelopmentSupport {
 
                 itemSubString = itemSubString + issSerialDetList.get(0).getErpmStockReceived().getErpmItemMaster().getErpmimId().toString();
 
+                //Loop to show Serial No with Instituion , SubInstituion , Department Name
                 for (int k = 0; k < issSerialDetList.size(); k++) {
                     String serialNoFull = issSerialDetList.get(k).getErpmStockReceived().getInstitutionmaster().getImShortName() + "/";
                     serialNoFull = serialNoFull + issSerialDetList.get(k).getErpmStockReceived().getSubinstitutionmaster().getSimShortName() + "/";
@@ -574,7 +588,9 @@ public class ReceiveItemsAction extends DevelopmentSupport {
                 }
 
                 setToLockRecdQty("true");
-            } else {
+            }
+            // Else Condition when quantity is mot null
+            else {
                 isueDet = isueDetDAO.findisdId(getIsdId());
                 setVarchar_IssueNo(isueDet.getErpmIssueMaster().getIsmIssueNo());
                 setVarchar_Item_Name(isueDet.getErpmItemMaster().getErpmimItemBriefDesc());
@@ -594,6 +610,7 @@ public class ReceiveItemsAction extends DevelopmentSupport {
         }
     }
 
+    // This method is used to save RECEIVE ISSUED ITEM SERIAL DETAILS data..
     @SkipValidation
     public String SaveReceiveDetails() throws Exception {
 
@@ -603,6 +620,7 @@ public class ReceiveItemsAction extends DevelopmentSupport {
 
             ErpmIssueDetail isueDet2 = isueDetDAO.findisdId(getVarIssueDetailID());
 
+            //Checking the receive qty and Issued Qty
             if (varcharIsdReceivedQuantity.intValue() > isueDet2.getIsdIssuedQuantity().intValue()) {
                 addFieldError("varcharIsdReceivedQuantity", "You cannot Receive more than the Issued Quantity, i.e. " + isueDet2.getIsdIssuedQuantity());
 
@@ -629,12 +647,14 @@ public class ReceiveItemsAction extends DevelopmentSupport {
 
     }
 
+    // This method is used to Delete Issue Serial Detail List data from List on RECEIVE ISSUED ITEM SERIAL DETAILS Page
     @SkipValidation
     public String Exclude() throws Exception {
         try {
 
             isueSerialDet = issSerialDetDAO.findByErpmissdId(getIssdId());
 
+            //To Exclude Items set IssdReceived false And Update Table
             isueSerialDet.setIssdReceived(false);
 
             issSerialDetDAO.update(isueSerialDet);
@@ -682,6 +702,7 @@ public class ReceiveItemsAction extends DevelopmentSupport {
         }
     }
 
+    // This method Reset issSerialDetList on RECEIVE ISSUED ITEM SERIAL DETAILS page
     public String ResetReceiveDetails() throws Exception {
 
         try {
@@ -689,6 +710,8 @@ public class ReceiveItemsAction extends DevelopmentSupport {
 
             Integer x = issSerialDetList.size();
 
+                //set issdReceived True For Each Row in Table
+                //Than update Table
             for (int i = 0; i < x; i++) {
                 isueSerialDet = issSerialDetDAO.findByErpmissdId(issSerialDetList.get(i).getIssdId());
                 isueSerialDet.setIssdReceived(true);
@@ -696,6 +719,7 @@ public class ReceiveItemsAction extends DevelopmentSupport {
             }
             isueSerialDet = issSerialDetDAO.findByErpmissdId(issSerialDetList.get(0).getIssdId());
 
+            //Set value for RECEIVE ISSUED ITEM SERIAL DETAILS page
             isueDet = isueDetDAO.findisdId(varIssueDetailID);
             setVarchar_IssueNo(isueDet.getErpmIssueMaster().getIsmIssueNo());
             setVarchar_Item_Name(isueDet.getErpmItemMaster().getErpmimItemBriefDesc());
@@ -708,6 +732,7 @@ public class ReceiveItemsAction extends DevelopmentSupport {
 
             getVarIssueReceiveID();
 
+            // List to show Serial No
             issSerialDetList = issSerialDetDAO.findSerialNoByIssueDetID(varIssueDetailID);
             Integer ItemIdIength = issSerialDetList.get(0).getErpmStockReceived().getErpmItemMaster().getErpmimId().toString().length();
             String itemSubString = "";
@@ -723,6 +748,7 @@ public class ReceiveItemsAction extends DevelopmentSupport {
 
             itemSubString = itemSubString + issSerialDetList.get(0).getErpmStockReceived().getErpmItemMaster().getErpmimId().toString();
 
+            //Loop to show Serial No with Instituion , SubInstituion , Department Name
             for (int k = 0; k < issSerialDetList.size(); k++) {
                 String serialNoFull = issSerialDetList.get(k).getErpmStockReceived().getInstitutionmaster().getImShortName() + "/";
                 serialNoFull = serialNoFull + issSerialDetList.get(k).getErpmStockReceived().getSubinstitutionmaster().getSimShortName() + "/";
@@ -759,9 +785,16 @@ public class ReceiveItemsAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+    //        Locale locale = ActionContext.getContext().getLocale();
+    //        ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+    //        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");

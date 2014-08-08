@@ -4,13 +4,13 @@
  */
 package pojo.hibernate;
 
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
 import utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Hibernate;
-import utils.BaseDAO;
+//import utils.BaseDAO;
 
 /**
  *

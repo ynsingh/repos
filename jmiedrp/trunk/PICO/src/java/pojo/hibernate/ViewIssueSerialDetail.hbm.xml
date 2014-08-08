@@ -52,5 +52,18 @@
     <property name="ismIssueNo" type="string">
       <column length="20" name="ISM_Issue_No"/>
     </property>
+    <property name="imShortName" type="string">
+      <column length="20" name="IM_Short_Name"/>
+    </property>
+     <property name="dmShortName" type="string">
+      <column length="20" name="DM_Short_Name"/>
+    </property>
+     <property name="simShortName" type="string">
+      <column length="20" name="SIM_Short_Name"/>
+    </property>
+    <property name="serialcode" type="string">
+      <column length="100" name="Serial_Code"/>
+    </property>
+
   </class>
 </hibernate-mapping>

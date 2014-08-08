@@ -4,6 +4,7 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
+
     <package name="PrePurchase" namespace="/PrePurchase" extends="struts-default">
 
         <interceptors>
@@ -13,6 +14,7 @@
                 <interceptor-ref name="validation">
                     <param name="excludeMethods">execute, browse</param>
                 </interceptor-ref>
+                <interceptor-ref name="i18n"/>
             </interceptor-stack>
         </interceptors>
 
@@ -133,10 +135,16 @@
         </action>
 
 
-        <action name="DeleteAddress" method="Delete" class="PrePurchase.ManageSupplierAddress">
+<!--        <action name="DeleteAddress" method="Delete" class="PrePurchase.ManageSupplierAddress">
             <result name="success">/pico/PrePurchase/BrowseAddress.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/PrePurchase/BrowseAddress.jsp</result>
+        </action> -->
+
+        <action name="DeleteAddressOnSamePage" method="Delete" class="PrePurchase.ManageSupplierAddress">
+            <result name="success">/pico/PrePurchase/Address.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/Address.jsp</result>
         </action>
 
         <action name="EditAddress" method="Edit" class="PrePurchase.ManageSupplierAddress">
@@ -627,6 +635,13 @@
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/PrePurchase/POMaster.jsp</result>
         </action>
+
+         <action name="ClearPOMaster" method="ClearPOMaster" class="PrePurchase.ManagePOMaster">
+            <result name="success">/pico/PrePurchase/POMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/POMaster.jsp</result>
+        </action>
+
 
         <action name="browsePOs" method="browsePOs" class="PrePurchase.ManagePOMaster">        
             <result name="success">/pico/PrePurchase/BrowsePOMaster.jsp</result>

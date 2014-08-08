@@ -2,6 +2,8 @@
     Document   : ReceiveItems
     Created on : 15 May, 2012, 11:01:28 AM
     Author     : Saeed
+    I18n By    : Mohd. Manauwar Alam
+               : March 2014
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -45,7 +47,7 @@
                 </s:bean>
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">RECEIVE ISSUED ITEMS FORM</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Inventory.ReceiveIssuedItemsFrom')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -68,8 +70,9 @@
                                 return true;
                             }
                         </script>
-
-                        <s:select cssClass="textInput" label="Institution"  required="true" requiredposition="" name="ir.institutionmaster.imId"
+                        <table align="center">
+                            <tr><td>
+                        <s:select cssClass="textInput" key="Inventory.Institution"  required="true" requiredposition="" name="ir.institutionmaster.imId"
                                   headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
                                   onchange="getSubinstitutionList('SaveAction_ir_institutionmaster_imId', 'SaveAction_ir_subinstitutionmaster_simId');">
                             <s:param name="labelcolspan" value="%{1}" />
@@ -77,40 +80,40 @@
                         </s:select>
 
 
-                        <s:select cssClass="textInput" required="true" requiredposition="" label="College/Faculty/School" name="ir.subinstitutionmaster.simId" labelposition="left"
+                        <s:select cssClass="textInput" required="true" requiredposition="" key="Inventory.SubInstitution" name="ir.subinstitutionmaster.simId" labelposition="left"
                                   headerKey="" headerValue="-- Please Select --" list="simImList" listKey="simId" listValue="simName"
                                   onchange="getDepartmentList('SaveAction_ir_subinstitutionmaster_simId', 'SaveAction_ir_departmentmaster_dmId');">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{3}" />
                         </s:select>
 
-                        <s:select cssClass="textInput" label="Department Name" required="true" requiredposition="" name="ir.departmentmaster.dmId"
+                        <s:select cssClass="textInput" key="Inventory.Department" required="true" requiredposition="" name="ir.departmentmaster.dmId"
                                   headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"
                                   onchange="getEmployeeListByDmID('SaveAction_ir_departmentmaster_dmId', 'SaveAction_ir_employeemaster_empId');">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{3}" />
                         </s:select>
 
-                        <s:select cssClass="textInput" label="Employee Name" required="true" requiredposition="" name="ir.employeemaster.empId"
+                        <s:select cssClass="textInput" key="Inventory.EmployeeName" required="true" requiredposition="" name="ir.employeemaster.empId"
                                   headerKey="0" headerValue="-- Please Select --" list="empList" listKey="empId" listValue="empFname+' '+empMname+' '+empLname"
                                   onchange="getIssueNoByEmpId('SaveAction_ir_employeemaster_empId', 'SaveAction_ir_erpmIssueMaster_ismId');">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{3}" />
                         </s:select>
 
-                        <s:select cssClass="textInput" label="Authority"  name="ir.committeemaster.committeeId"
+                        <s:select cssClass="textInput" key="Inventory.Authority"  name="ir.committeemaster.committeeId"
                                   headerKey="0" headerValue="-- Please Select --" list="comList" listKey="committeeId" listValue="committeeName"
                                   onchange="getIssueNoByComId('SaveAction_ir_committeemaster_committeeId', 'SaveAction_ir_erpmIssueMaster_ismId');">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{3}" />
                         </s:select>
 
-                        <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" label="Receipt No" required="true"  name="ir.isrReceiptNo" title="">
+                        <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" key="Inventory.ReceiptNo" required="true"  name="ir.isrReceiptNo" title="">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{3}" />
                         </s:textfield>
 
-                        <s:textfield label="Receipt Date" required="true" requiredposition="" maxLength="40" size="20"
+                        <s:textfield key="Inventory.ReceiptDate" required="true" requiredposition="" maxLength="40" size="20"
                                      name="receiptDate" title="Enter Order"  cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{3}" />
@@ -118,42 +121,43 @@
                         <%-- <sx:datetimepicker name="ir.isrReceiptDate" label="Receip Date(yyyy-mm-dd)" displayFormat="yyyy-MM-dd" value="%{'today'}"/>--%>
 
 
-                        <s:select cssClass="textInput" label="IssueNo" name="ir.erpmIssueMaster.ismId"
+                        <s:select cssClass="textInput" key="Inventory.IssueNo" name="ir.erpmIssueMaster.ismId"
                                 required="true" requiredposition=""  headerKey="" headerValue="-- Please Select --" list="isueList" listKey="ismId" listValue="ismIssueNo">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{3}" />
                         </s:select>
 
-                        <tr><td> &nbsp; </td></tr>
+                         </td></tr>
 
-                        <tr><td align="left">
+                            <tr><td align="center">
 
-                                <s:submit theme="simple" value="Save">
+                                <s:submit theme="simple" key="Inventory.Save">
                                     <s:param name="colspan" value="%{2}" />
                                     <s:param name="align" value="left" />
                                 </s:submit>
 
-                            </td><td align="left">
+                        
 
-                                <s:submit theme="simple" name="btnSubmit" value="Browse" requiredposition="centre" action="BrowseAction">
+                                <s:submit theme="simple" name="btnSubmit" key="Inventory.Browse" requiredposition="centre" action="BrowseAction">
                                     <s:param name="colspan" value="%{5}" />
                                     <s:param name="align" value="left" />
                                 </s:submit>
 
 
-                                <s:submit theme="simple" value="Clear" action="Clear">
+                                <s:submit theme="simple" key="Inventory.Clear" action="Clear">
                                     <s:param name="colspan" value="%{2}" />
                                     <s:param name="align" value="left" />
                                 </s:submit>
 
-                                <s:submit theme="simple" name="showGFRreport"  value="Show GFR" action="showGFRreportReceive" disabled="varShowGFR" />
+                                <s:submit theme="simple" name="showGFRreport"  key="Inventory.ShowGFR" action="showGFRreportReceive" disabled="varShowGFR" />
 
                             </td></tr>
-                        <tr><td> &nbsp; </td></tr>
+                        
+                        </table>
                     </s:form>
                     <br>
                 </div>
-                &nbsp;
+               
             </div>
             <div id="footer">
                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>

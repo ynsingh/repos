@@ -1,4 +1,7 @@
 package Administration;
+
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import utils.DevelopmentSupport;
 import java.util.Locale;
 //import com.opensymphony.xwork2.Action;
@@ -13,7 +16,6 @@ public class LocaleAction extends DevelopmentSupport{
 		return "SUCCESS";
 
 	}
-
 
 public String english() throws Exception {
 
@@ -33,4 +35,6 @@ getSession().setAttribute("org.apache.struts.action.LOCALE", Locale.FRANCE);
 
 return SUCCESS;
 }
+
+
 }

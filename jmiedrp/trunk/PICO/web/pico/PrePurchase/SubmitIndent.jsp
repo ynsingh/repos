@@ -1,3 +1,9 @@
+<%--  
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
+--%>
+
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -39,7 +45,7 @@
                 </s:bean>
                 
                  <div style="background-color: #215dc6;  " >
-                     <p align="left" class="pageHeading" style="color:  #ffffff"> &nbsp;Step 3 of 3 (Submit Indent)</p>
+                     <p align="left" class="pageHeading" style="color:  #ffffff"><s:property value="getText('PrePurchase.Step3of3SubmitIndent')" /></p>
                      <p  align="center" class="mymessage" style="color:  #ffff99 "><s:property value="message"  /> </p>
                 </div>
 
@@ -59,45 +65,45 @@
 
 
                     <s:textfield cssClass="textInputRO"  maxLength="10" size="10"
-                                 label="Indent No" name="indentId" title="" readonly="true">
+                                 key="PrePurchase.IndentNo" name="indentId" title="" readonly="true">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
 
                     <s:textfield cssClass="textInputRO"  maxLength="100" size="100"
-                                 label="Indent Title" name="erpmIndentMaster.indtTitle" title="" readonly="true">
+                                 key="PrePurchase.IndentTitle" name="erpmIndentMaster.indtTitle" title="" readonly="true">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{5}" />
                     </s:textfield>
 
 
                     <s:textfield cssClass="textInputRO"  maxLength="10" size="10"
-                                 label="No of Items in Indent" name="numberOfIndentItems" title="" readonly="true">
+                                 key="PrePurchase.NoOfItemsInIndent" name="numberOfIndentItems" title="" readonly="true">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
 
                     <s:textfield cssClass="textInputRO"  maxLength="15" size="15"
-                                 label="Approx. Indent Value" name="approxIndentValue" title="" readonly="true">
+                                 key="PrePurchase.ApproxIndentValue" name="approxIndentValue" title="" readonly="true">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
 
                     <s:textfield cssClass="textInputRO"  maxLength="15" size="15"
-                                 label="Currency" name="erpmIndentMaster.erpmGenMasterByIndtCurrencyId.erpmgmEgmDesc" title="" readonly="true">
+                                 key="PrePurchase.Currency" name="erpmIndentMaster.erpmGenMasterByIndtCurrencyId.erpmgmEgmDesc" title="" readonly="true">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
 
                     <s:textfield cssClass="textInputRO"  maxLength="50" size="20"
-                                 label="Signatory" name="erpmIndentMaster.indtGeneratedBy" title="" readonly="true">
+                                 key="PrePurchase.IndentSignatory" name="erpmIndentMaster.indtGeneratedBy" title="" readonly="true">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
 
 
                     <s:if test="defaultWfmId == null">
-                        <s:select   cssClass="textInput" label="Indent Work Flows" name="workFlowTransaction.workflowmaster.wfmId"
+                        <s:select   cssClass="textInput" key="PrePurchase.IndentWorkFlows" name="workFlowTransaction.workflowmaster.wfmId"
                                     headerKey="" headerValue="-- Please Select --"
                                     required="true" list="indentWorkFlowList" listKey="wfmId" listValue="wfmName" value="defaultWfmId"
                                     onchange="getWorkFlowStage('SubmitIndentAction_workFlowTransaction_workflowmaster_wfmId',
@@ -115,7 +121,7 @@
                         </s:select>
                     </s:if>
                     <s:else>
-                        <s:select   cssClass="textInput" label="Indent Work Flows" name="workFlowTransaction.workflowmaster.wfmId"
+                        <s:select   cssClass="textInput" key="PrePurchase.IndentWorkFlows" name="workFlowTransaction.workflowmaster.wfmId"
                                     headerKey="" headerValue="-- Please Select --"
                                     required="true" list="indentWorkFlowList" listKey="wfmId" listValue="wfmName" value="defaultWfmId"
                                     onclick="alert('Work Flow Cannot be Changed!'); return false;"
@@ -126,7 +132,7 @@
                     </s:else>
 
                     <s:textfield cssClass="textInputRO"  maxLength="10" size="10"
-                                 label="Current Workflow Stage" name="workFlowTransaction.wftStage" title="" readonly="true">
+                                 key="PrePurchase.CurrentWorkflowStage" name="workFlowTransaction.wftStage" title="" readonly="true">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
@@ -136,7 +142,7 @@
                     <s:label />
                     <s:label />
 
-                    <s:textfield cssClass="textInputRO"  maxLength="40" size="40" label="Source "
+                    <s:textfield cssClass="textInputRO"  maxLength="40" size="40" key="PrePurchase.Source"
                                  name = "sourceCommittee" readonly="true">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{2}" />
@@ -144,24 +150,24 @@
 
                     <s:label />
 
-                    <s:textfield cssClass="textInputRO"  maxLength="30" size="30" label="Destination "
+                    <s:textfield cssClass="textInputRO"  maxLength="30" size="30" key="PrePurchase.Destination"
                                  name = "destinationCommittee" readonly="true">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{2}" />
                     </s:textfield>
 
-                    <s:textfield cssClass="textInputRO"  maxLength="30" size="30"
+                    <s:textfield cssClass="textInputRO"  maxLength="30" size="30" key="PrePurchase.DestinationEmail"
                                  name="workFlowTransaction.wftDestinationEmail" readonly="true">
                         <s:param name="labelcolspan" value="%{0}" />
                         <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
 
-                    <s:textarea rows="2" cols="140" label="Action Remarks" name="workFlowTransaction.wftActionRemarks" title="">
+                    <s:textarea rows="2" cols="140" key="PrePurchase.ActionRemarks" name="workFlowTransaction.wftActionRemarks" title="">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{7}" />
                     </s:textarea>
 
-                    <s:select   cssClass="textInput" label="Action" name="workFlowTransaction.erpmGenMaster.erpmgmEgmId"
+                    <s:select   cssClass="textInput" key="PrePurchase.Action" name="workFlowTransaction.erpmGenMaster.erpmgmEgmId"
                                 headerKey="" headerValue="-- Please Select --"
                                 required="true" list="workFlowActionList" listKey="erpmGenMaster.erpmgmEgmId" listValue="erpmGenMaster.erpmgmEgmDesc">
                         <s:param name="labelcolspan" value="%{1}" />
@@ -171,13 +177,13 @@
                     <tr><td> &nbsp; </td></tr>
 
 
-                    <s:submit   name="btnSubmit" value="Take Action"
+                    <s:submit   name="btnSubmit" key="PrePurchase.TakeAction"
                                 onclick="alert('The Indent will now be forwarded to the next stage. We will keep you posted on the progress of work.');">
                                 <s:param name="colspan" value="%{1}" />
                                 <s:param name="align" value="left" />
                     </s:submit>
 
-                    <s:submit   name="btnViewWorkFlow" value="View WorkFlow" action="viewWorkFlow" align="center">
+                    <s:submit   name="btnViewWorkFlow" key="PrePurchase.ViewWorkFlow" action="viewWorkFlow" align="center">
                                 <s:param name="colspan" value="%{1}" />
                                 <s:param name="align" value="left" />
                     </s:submit>

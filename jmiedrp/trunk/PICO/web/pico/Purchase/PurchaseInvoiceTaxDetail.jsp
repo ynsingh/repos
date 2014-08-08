@@ -3,9 +3,9 @@
     Document   : PurchaseInvoiceDetails
     Created on : 6 Aug, 2012, 1:13:28 PM
     Author     : Tanvir Ahmed & Saeed & mkhan
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
 --%>
-
-
 
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -40,8 +40,10 @@
                 <s:bean name="java.util.HashMap" id="qTableLayout">
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
+                <br>
+                <br>
                 <div style ="background-color: #215dc6;" align="center">
-                    <p align="center" class="pageHeading" style="color: #ffffff">PURCHASE INVOICE TAX DETAIL</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Purchase.PurchaseInvoiceTaxDetail')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
                 <div style="border: solid 1px #000000; background: gainsboro">
@@ -57,17 +59,17 @@
 
                            
                             <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="20"
-                                          label="Supplier Invoice No" name="pibm.pimSupplierInvoiceNo" readonly="True" >
+                                          key="Purchase.SupplierInvoiceNo" name="pibm.pimSupplierInvoiceNo" readonly="True" >
                                   <s:param name="labelcolspan" value="%{1}" />
                                   <s:param name="inputcolspan" value="%{7}" />
                             </s:textfield>
 
-                            <s:textfield label="Item" required="" name="pid.erpmItemMaster.erpmimItemBriefDesc" headerKey="" cssClass="textInput">
+                            <s:textfield key="Purchase.ItemName" required="" name="pid.erpmItemMaster.erpmimItemBriefDesc" headerKey="" cssClass="textInput">
                                  <s:param name="labelcolspan" value="%{1}" />
                                  <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
 
-                            <s:textfield label="Quantity" required="" name="pid.pidQuantity" headerKey="" cssClass="textInput">
+                            <s:textfield key="Purchase.Quantity" required="" name="pid.pidQuantity" headerKey="" cssClass="textInput">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
@@ -75,7 +77,7 @@
 
                                 <tr><td align="left">
                                     
-                                    <s:submit  theme="simple" value="Back"  action="BackToPurchaseInvoiceDetail"  >
+                                    <s:submit  theme="simple" key="Purchase.PreviousPage"  action="BackToPurchaseInvoiceDetail"  >
                                     </s:submit>
                                         </td></tr>
                                 <tr><td> &nbsp; </td></tr>

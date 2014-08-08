@@ -7,30 +7,24 @@
  */
 package Purchase;
 
-import java.math.BigDecimal;
-import pojo.hibernate.*;
-import utils.DevelopmentSupport;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-import utils.DateUtilities;
-import java.util.*;
-import java.sql.Connection;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.DriverManager;
-import org.apache.struts2.ServletActionContext;
-import net.sf.jasperreports.engine.*;
-import org.apache.struts2.interceptor.validation.SkipValidation;
 import java.io.*;
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import pojo.hibernate.*;
+import utils.DateUtilities;
+import utils.DevelopmentSupport;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class ManagePurchaseChallanAction extends DevelopmentSupport {
 
@@ -108,6 +102,8 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
     private Short l = 18;
     private Integer WarrantyType;
     private String WarrantyExpiryDate;
+
+    static String dataSourceURL=null;
 
     public Boolean getVarShowGFR() {
         return varShowGFR;
@@ -589,7 +585,6 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
             dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
         }
         POMasterList = pomasterDAO.poList(Short.valueOf(getSession().getAttribute("imId").toString()));
-
     }
 
     public String SavePurchaseChallan() throws Exception {
@@ -753,7 +748,7 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
                             viewStockRecList = viewStockRecDao.findByPCDetailId(PCDetail.getPcdPcdId());
                             setPurchaseChallanDetailId(PCDetail.getPcdPcdId());
                             setPrdNoReadOnly(true);
-
+                            setPrdNoReadOnly1(false);
                             return SUCCESS;
 
                         } else {
@@ -990,7 +985,8 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
     public String BrowsePurchaseChallanMaster() throws Exception {
         try {
 
-            PChallanMastList = PChallanMastDao.poListChallan(Short.valueOf(getSession().getAttribute("imId").toString()),Integer.valueOf(getSession().getAttribute("userid").toString()));
+//            PChallanMastList = PChallanMastDao.poListChallan(Short.valueOf(getSession().getAttribute("imId").toString()),Integer.valueOf(getSession().getAttribute("userid").toString()));
+            PChallanMastList = PChallanMastDao.poListChallan(Short.valueOf(getSession().getAttribute("imId").toString()), Integer.valueOf(getSession().getAttribute("userid").toString()));            
             return SUCCESS;
         } catch (Exception e) {
             message = "Exception in BrowsePurchaseChallanMaster method -> ManagePurchaseChallanAxn" + e.getMessage();
@@ -1128,7 +1124,6 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
             subInstitutionName = PChallanMast.getSubinstitutionmaster().getSimName();
             departmentName = PChallanMast.getDepartmentmaster().getDmName();
             PCDetail = null;
-
             message = "Product No saved successfully, Please select another item for saving Purchase Challan Detail";
             return SUCCESS;
         } catch (Exception e) {
@@ -1176,7 +1171,8 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
             imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
             simList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), PChallanMast.getInstitutionmaster().getImId());
             dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), PChallanMast.getSubinstitutionmaster().getSimId());
-            POMasterList = pomasterDAO.poList(Short.valueOf(getSession().getAttribute("imId").toString()));
+//            POMasterList = pomasterDAO.poList(Short.valueOf(getSession().getAttribute("imId").toString()));
+            POMasterList = pomasterDAO.poList2(Short.valueOf(getSession().getAttribute("imId").toString()));            
             DefaultInsitute = PChallanMast.getInstitutionmaster().getImId();
             DefaultSubInsitute = PChallanMast.getSubinstitutionmaster().getSimId();
             DefaultDepartment = PChallanMast.getDepartmentmaster().getDmId();
@@ -1282,6 +1278,7 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
                     setItemName(esr.getErpmItemMaster().getErpmimItemBriefDesc());
                     viewStockRecList = viewStockRecDao.findByPCDetailId(PCDetail.getPcdPcdId());
                     setPrdNoReadOnly(true);
+                    setPrdNoReadOnly1(false);
                     message = "Item Deleted successfully";
                     return SUCCESS;
                 } else if (PCDetail.getPcdRecvQuantity().intValue() == 1) {
@@ -1299,6 +1296,7 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
                     PCDetail = null;
                     defaultPCM = PChallanMast.getPcmPcmId();
                     setPrdNoReadOnly(true);
+                    setPrdNoReadOnly1(false);
                     message = "Item Deleted successfully, You can add new Items";
                     return "SUCCESS1";
 
@@ -1309,6 +1307,7 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
                 PCDetail = PCDetailDAO.findBypcdPcdId(getPurchaseChallanDetailId());
                 viewStockRecList = viewStockRecDao.findByPCDetailId(PCDetail.getPcdPcdId());
                 setPrdNoReadOnly(true);
+                setPrdNoReadOnly1(false);
                 message = "You cannot delete the Item, Item is issued";
 
             }
@@ -1339,9 +1338,16 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -1503,9 +1509,16 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
         String whereCondition;
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -1556,9 +1569,16 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -1573,7 +1593,7 @@ public class ManagePurchaseChallanAction extends DevelopmentSupport {
             whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 21";
 
             hm.put("condition", whereCondition);
-
+            hm.put("screen_name", "PURCHASE CHALLAN RECEIPT");
             JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
             JasperExportManager.exportReportToPdfStream(jp, baos);
             response.setContentLength(baos.size());

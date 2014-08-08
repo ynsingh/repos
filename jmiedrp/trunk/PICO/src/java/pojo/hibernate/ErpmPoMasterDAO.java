@@ -14,20 +14,32 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.Hibernate;
 import java.util.List;
-import utils.BaseDAO;
-
-public class ErpmPoMasterDAO extends BaseDAO {
-
+//import utils.BaseDAO;
+//public class ErpmPoMasterDAO extends BaseDAO {
+public class ErpmPoMasterDAO {
 
 public void save(ErpmPoMaster pomaster) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
+        /*    beginTransaction();
             getSession().save(pomaster);
             commitTransaction();
         }
         catch (RuntimeException re) {
             re.printStackTrace();
-            throw re;    }
+            throw re;    }*/
+            tx = session.beginTransaction();
+            session.save(pomaster);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (pomaster != null) {
+                tx.rollback();
+            }
+            throw re;
+        } finally {
+            session.close();
+        }
     }
 
     public void delete(ErpmPoMaster pomaster) {
@@ -68,7 +80,8 @@ public void save(ErpmPoMaster pomaster) {
         Session session = HibernateUtil.getSession();
         try {
             session.beginTransaction();
-            ErpmPoMaster pomaster  = (ErpmPoMaster) getSession().load(ErpmPoMaster.class , pomPoMasterId);
+            //ErpmPoMaster pomaster  = (ErpmPoMaster) getSession().load(ErpmPoMaster.class , pomPoMasterId);
+            ErpmPoMaster pomaster  = (ErpmPoMaster) session.load(ErpmPoMaster.class , pomPoMasterId);
             Hibernate.initialize(pomaster.getInstitutionmaster());
             Hibernate.initialize(pomaster.getSubinstitutionmaster());
             Hibernate.initialize(pomaster.getDepartmentmaster());
@@ -88,8 +101,12 @@ public void save(ErpmPoMaster pomaster) {
 
             session.beginTransaction();
             List<ErpmPoMaster> pomaster  = session.createQuery("Select u from ErpmPoMaster u where u.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId",pomPoMasterId).list();
+            Hibernate.initialize(pomaster.get(0).getInstitutionmaster());
+            Hibernate.initialize(pomaster.get(0).getSubinstitutionmaster());
             Hibernate.initialize(pomaster.get(0).getDepartmentmaster());
             Hibernate.initialize(pomaster.get(0).getSuppliermaster());
+            Hibernate.initialize(pomaster.get(0).getErpmusersByPomApprovedById());
+            Hibernate.initialize(pomaster.get(0).getErpmGenMasterByPomCurrencyId());
             Hibernate.initialize(pomaster.get(0).getErpmGenMasterByPomCurrencyId());
 
             return pomaster.get(0);
@@ -148,6 +165,11 @@ public void save(ErpmPoMaster pomaster) {
                                                             .setParameter("PON",PON)
                                                             .uniqueResult();
             Hibernate.initialize(pom.getErpmGenMasterByPomCurrencyId());
+            Hibernate.initialize(pom.getSuppliermaster());
+            Hibernate.initialize(pom.getDepartmentmaster());
+            Hibernate.initialize(pom.getInstitutionmaster());
+            Hibernate.initialize(pom.getSubinstitutionmaster());
+            Hibernate.initialize(pom.getErpmusersByPomApprovedById());
 
             return pom;
         } finally {
@@ -157,6 +179,30 @@ public void save(ErpmPoMaster pomaster) {
 
      // This method is to get List of Full PO No., used in Purchase Challan and Invoice
     public List<String> poList(Short imId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            String SQL = "Select new map(u.pomPoMasterId as poid, "
+                    + " concat(u.departmentmaster.dmShortName,'/', year(u.pomPoDate),'/', pomPoNo) as pono) "
+                    + " from ErpmPoMaster u where u.institutionmaster.imId = :imId "
+                    + " and u.pomPoMasterId not in "
+                    + " (Select coalesce(m.erpmPoMaster.pomPoMasterId,0, m.erpmPoMaster.pomPoMasterId) from ErpmPurchasechallanMaster m) "
+                    + " and u.pomPoMasterId not in "
+                    + " (Select coalesce(n.erpmPoMaster.pomPoMasterId,0, n.erpmPoMaster.pomPoMasterId) from ErpmPurchaseinvoiceMaster n) ";
+
+            session.beginTransaction();
+           List<String> list =  session.createQuery(SQL).setParameter("imId", imId).list();
+           for (index = 0; index < list.size(); ++index) {
+               Hibernate.initialize(list.get(index));
+           }
+
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+
+     public List<String> poList2(Short imId) {
         Session session = HibernateUtil.getSession();
         try {
             int index = 0;
@@ -176,10 +222,19 @@ public List<ErpmPoMaster> findBySupplierId(Integer smId) {
         Session session = HibernateUtil.getSession();
         try {
             int index = 0;
+            String SQL = "Select u from ErpmPoMaster u where u.suppliermaster.smId = :smId"
+
+                    + " and u.pomPoMasterId not in "
+                    + " (Select coalesce(m.erpmPoMaster.pomPoMasterId,0, m.erpmPoMaster.pomPoMasterId) from ErpmPurchasechallanMaster m) "
+                    + " and u.pomPoMasterId not in "
+                    + " (Select coalesce(n.erpmPoMaster.pomPoMasterId,0, n.erpmPoMaster.pomPoMasterId) from ErpmPurchaseinvoiceMaster n) ";
+
             session.beginTransaction();
-            List<ErpmPoMaster> list  =  session.createQuery("Select u from ErpmPoMaster u where u.suppliermaster.smId = :smId").setParameter("smId", smId).list();
+//            List<ErpmPoMaster> list  =  session.createQuery("Select u from ErpmPoMaster u where u.suppliermaster.smId = :smId").setParameter("smId", smId).list();
+            List<ErpmPoMaster> list  =  session.createQuery(SQL).setParameter("smId", smId).list();            
             for (index = 0; index < list.size(); ++index) {
-               Hibernate.initialize(list.get(index));
+
+//               Hibernate.initialize(list.get(index));
                Hibernate.initialize(list.get(index).getDepartmentmaster());
            }
 

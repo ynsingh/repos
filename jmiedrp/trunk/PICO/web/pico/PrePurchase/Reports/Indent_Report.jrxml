@@ -47,7 +47,7 @@ FROM
      INNER JOIN `departmentmaster` departmentmaster ON erpm_indent_master.`Indt_Department_Id` = departmentmaster.`DM_ID`
      INNER JOIN `erpm_item_master` erpm_item_master ON erpm_indent_detail.`Indt_Item_Id` = erpm_item_master.`ERPMIM_ID`
      INNER JOIN `erpm_gen_master` erpm_gen_master_B ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master_B.`ERPMGM_EGM_ID`
-WHERE $P{condition}]]>
+WHERE $P!{condition}]]>
 	</queryString>
 	<field name="erpm_indent_master_Indt_Indent_Id" class="java.lang.Integer"/>
 	<field name="erpm_indent_master_Indt_Indent_Date" class="java.sql.Date"/>

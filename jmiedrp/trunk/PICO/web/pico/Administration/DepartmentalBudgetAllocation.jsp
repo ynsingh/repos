@@ -1,3 +1,10 @@
+
+<%--
+I18n By    : Mohd. Manauwar Alam
+           : Jan 2014
+--%>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sx" uri="/struts-dojo-tags" %>
@@ -36,7 +43,8 @@
 
                     <br><br>
                     <div style ="background-color: #215dc6;">
-                        <p align="center" class="pageHeading" style="color: #ffffff">DEPARTMENTAL BUDGET ALLOCATION</p>
+<%--                       <p align="center" class="pageHeading" style="color: #ffffff">DEPARTMENTAL BUDGET ALLOCATION</p> --%>
+                        <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.DeptBudgtAlloc')" /></p>
                         <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -47,7 +55,7 @@
                         <table border="0" cellpadding="4" cellspacing="0" align="center">
                             <tbody>
                                 <tr><td><br>
-                                        <s:select label="Institution" name="dba.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
+               <%--                         <s:select label="Institution" name="dba.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
                                                   onchange="getSubinstitutionList('SaveDepartmentalBudgetAllocationAction_dba_institutionmaster_imId', 'SaveDepartmentalBudgetAllocationAction_dba_subinstitutionmaster_simId');" cssClass="textInput"/>
                                         <s:select label="College/Faculty/School" name="dba.subinstitutionmaster.simId" headerKey="" headerValue="-- Please Select --" list="simImList" listKey="simId" listValue="simName" onchange="getDepartmentList('SaveDepartmentalBudgetAllocationAction_dba_subinstitutionmaster_simId','SaveDepartmentalBudgetAllocationAction_dba_departmentmaster_dmId')"  cssClass="textInput"/>
                                         <s:select label="Department" name="dba.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"  cssClass="textInput"/>
@@ -62,7 +70,7 @@
                                                           displayFormat="yyyy-MM-dd" value="%{'today'}"  cssClass="textInput" />
                                        <sx:datetimepicker name="dba.dbaToDate" label="To Date(yyyy-mm-dd)"
 
-                                                           displayFormat="yyyy-MM-dd" value="%{'today'}" cssClass="textInput"   />--%>
+                                                           displayFormat="yyyy-MM-dd" value="%{'today'}" cssClass="textInput"   />--%><%--
                                         <s:textfield required="true" requiredposition="left" maxLength="12" size="50"
                                                      label="To Date(dd-mm-yyyy)" name="todate"   cssClass="textInput"/>
                                     </td></tr>
@@ -74,7 +82,42 @@
                                         <s:submit theme="simple" name="btnClear" value="Clear"   action="ClearDepartmentalBudgetAllocation" cssClass="textInput"/>
 
 
-                                        <s:submit theme="simple" name="btnFetch" value="Fetch Departmental Budget Allocation"  action="FetchDepartmentalBudgetAllocation" cssClass="textInput"/>
+                                        <s:submit theme="simple" name="btnFetch" value="Fetch Departmental Budget Allocation"  action="FetchDepartmentalBudgetAllocation" cssClass="textInput"/> --%>
+                                        <s:select key="Administration.InstitutionName" name="dba.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
+                                                  onchange="getSubinstitutionList('SaveDepartmentalBudgetAllocationAction_dba_institutionmaster_imId', 'SaveDepartmentalBudgetAllocationAction_dba_subinstitutionmaster_simId');" cssClass="textInput"/>
+                                        <s:select key="Administration.SubinstitutionName" name="dba.subinstitutionmaster.simId" headerKey="" headerValue="-- Please Select --" list="simImList" listKey="simId" listValue="simName" 
+                                                  onchange="getDepartmentList('SaveDepartmentalBudgetAllocationAction_dba_subinstitutionmaster_simId','SaveDepartmentalBudgetAllocationAction_dba_departmentmaster_dmId')"  cssClass="textInput"/>
+                                        <s:select key="Administration.DepartmentName" name="dba.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName"  cssClass="textInput"/>
+
+                                        <s:select key="Administration.BudgetHeadName" name="dba.budgetheadmaster.bhmId" headerKey="" headerValue="-- Please Select --" list="bhmList" listKey="bhmId" listValue="bhmName" cssClass="textInput"/>
+                                        <s:textfield required="true" requiredposition="left" maxLength="100" size="50"
+                                                     key="Administration.AmountSanctioned" name="dba.dbaAmount"    cssClass="textInput"/>
+
+                                        <s:label  value="%{getText('Administration.ps_AllocationDate')}"  cssClass="pageSubHeading">
+                                           <s:param name="labelcolspan" value="%{1}" />
+                                <s:param name="inputcolspan" value="%{8}" />
+                                        </s:label>
+
+
+                                        <s:textfield required="true" requiredposition="left" maxLength="12" size="50"
+                                                     key="Administration.FromDate" name="fromdate"      cssClass="textInput"/>
+                                        <%--<sx:datetimepicker name="dba.dbaFromDate" label="From Date(yyyy-mm-dd)"
+                                                          displayFormat="yyyy-MM-dd" value="%{'today'}"  cssClass="textInput" />
+                                       <sx:datetimepicker name="dba.dbaToDate" label="To Date(yyyy-mm-dd)"
+
+                                                           displayFormat="yyyy-MM-dd" value="%{'today'}" cssClass="textInput"   />--%>
+                                        <s:textfield required="true" requiredposition="left" maxLength="12" size="50"
+                                                     key="Administration.ToDate" name="todate"   cssClass="textInput"/>
+                                    </td></tr>
+                                <tr>
+                                    <td>
+                                        <s:submit theme="simple" name="btnSubmit" key="Administration.Save"   cssClass="textInput" />
+                                    </td>
+                                    <td>
+                                        <s:submit theme="simple" name="btnClear" key="Administration.Clear"   action="ClearDepartmentalBudgetAllocation" cssClass="textInput"/>
+
+
+                                        <s:submit theme="simple" name="btnFetch" key="Administration.Browse"  action="FetchDepartmentalBudgetAllocation" cssClass="textInput"/>
                                     </td></tr><tr><td> <br><br> </td></tr>
                             </tbody>
                         </table>

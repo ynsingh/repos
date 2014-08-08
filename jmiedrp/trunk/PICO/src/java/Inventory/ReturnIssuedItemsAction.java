@@ -9,58 +9,53 @@
  */
 package Inventory;
 
-import javax.servlet.http.HttpServletResponse;
-import org.apache.struts2.ServletActionContext;
-import net.sf.jasperreports.engine.*;
+//import javax.servlet.http.HttpServletResponse;
+//import org.apache.struts2.ServletActionContext;
+//import net.sf.jasperreports.engine.*;
+import java.io.*;
+import java.math.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
-
-import pojo.hibernate.ErpmIssueReturnMaster;
-import pojo.hibernate.ErpmIssueReturnMasterDAO;
-
-import pojo.hibernate.Institutionmaster;
-import pojo.hibernate.InstitutionmasterDAO;
+import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import pojo.hibernate.Departmentmaster;
 import pojo.hibernate.DepartmentmasterDAO;
-
-import pojo.hibernate.Subinstitutionmaster;
-import pojo.hibernate.SubinstitutionmasterDAO;
-
 import pojo.hibernate.Employeemaster;
-import pojo.hibernate.ErpmItemMasterDAO;
 import pojo.hibernate.EmployeemasterDAO;
-
-import pojo.hibernate.Erpmusers;
-import pojo.hibernate.ErpmIssueSerialDetailDAO;
-import pojo.hibernate.ErpmIssueReturnDetail;
-import pojo.hibernate.ErpmItemMaster;
-import pojo.hibernate.ErpmIssueSerialDetail;
-import pojo.hibernate.ErpmIssueMaster;
-import pojo.hibernate.ErpmIssueDetailDAO;
 import pojo.hibernate.ErpmIssueDetail;
-import pojo.hibernate.ViewIssueSerialDetail;
-import pojo.hibernate.ErpmIssueReturnDetailDAO;
+import pojo.hibernate.ErpmIssueDetailDAO;
+import pojo.hibernate.ErpmIssueMaster;
 import pojo.hibernate.ErpmIssueMasterDAO;
+import pojo.hibernate.ErpmIssueReturnDetail;
+import pojo.hibernate.ErpmIssueReturnDetailDAO;
+import pojo.hibernate.ErpmIssueReturnMaster;
+import pojo.hibernate.ErpmIssueReturnMasterDAO;
+import pojo.hibernate.ErpmIssueSerialDetail;
+import pojo.hibernate.ErpmIssueSerialDetailDAO;
+import pojo.hibernate.ErpmItemMaster;
+import pojo.hibernate.ErpmItemMasterDAO;
 import pojo.hibernate.ErpmStockReceived;
 import pojo.hibernate.ErpmStockReceivedDAO;
-import pojo.hibernate.ViewIssueSerialDetailDAO;
-
-
-import utils.DevelopmentSupport;
-//import javax.jms.Session;
-
-import java.io.*;
-import java.math.*;
-
-import java.util.*;
-import org.apache.struts2.interceptor.validation.SkipValidation;
+import pojo.hibernate.Erpmusers;
 import pojo.hibernate.GfrProgramMappingDAO;
+import pojo.hibernate.Institutionmaster;
+import pojo.hibernate.InstitutionmasterDAO;
+import pojo.hibernate.Subinstitutionmaster;
+import pojo.hibernate.SubinstitutionmasterDAO;
+import pojo.hibernate.ViewIssueSerialDetail;
+import pojo.hibernate.ViewIssueSerialDetailDAO;
 import utils.DateUtilities;
+import utils.DevelopmentSupport;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class ReturnIssuedItemsAction extends DevelopmentSupport {
 
@@ -145,8 +140,7 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
     private String returnDate;
     private static Boolean varShowGFR;
 
-
-
+    static String dataSourceURL=null;
 
     public Boolean getVarShowGFR() {
         return varShowGFR;
@@ -412,7 +406,6 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
 //    public List<ErpmStockReceived> getErpmStockReceivedList() {
 //        return erpmStockReceivedList;
 //    }
-
     public void setErpmStockReceived(ErpmStockReceived erpmStockReceived) {
         this.erpmStockReceived = erpmStockReceived;
     }
@@ -644,7 +637,10 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
                     LocalVariableusedinPlaceOfreturntype = erpmirm.getIrmReturnType();
                     LocalVariableusedinPlaceOfdmId = erpmirm.getDepartmentmaster().getDmId();
                     erpmirmList = erpmirmDAO.findReturnIssuedItemsForUserInstitutes(Integer.valueOf(getSession().getAttribute("userid").toString()));
-                    erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmId(irmId);
+//                    erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmId(irmId);
+                    erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmIdwith_editedserialno(irmId);
+                      //call for erpmIssueReturnDetailList
+                     // generateSerialNoFromirmId(tempirmId);                    
                     tempirmId = irmId;
 
 
@@ -656,7 +652,7 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
                 message = "Exception in ReturnIssuedItemsAction save method-> " + e5.getMessage() + " Reported Cause is: " + e5.getCause();
                 return ERROR;
             }
-            try {
+     //       try {
                 if (getradSelectvalue().equals("ItemSerialNo")) {
                     VariableUsedtoCheckExecutionOfShowDetailmessage = "ItemSerialNo";
 
@@ -679,21 +675,28 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
                     ReturnNo = Integer.parseInt(erpmirm.getIrmReturnNo());
 
                     //erpmStockReceivedList = erpmStockReceivedDAO.findItemSerialNoList(erpmirm.getIrmReturnType(), erpmirm.getDepartmentmaster().getDmId());
-                    ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturn(erpmirm.getIrmReturnType(), erpmirm.getDepartmentmaster().getDmId(), false);
+       //             ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturn(erpmirm.getIrmReturnType(), erpmirm.getDepartmentmaster().getDmId(), false);
+                    ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturnwit_editedserialno(erpmirm.getIrmReturnType(), erpmirm.getDepartmentmaster().getDmId(), false);            
                     LocalVariableusedinPlaceOfdmId = erpmirm.getDepartmentmaster().getDmId();
                     LocalVariableusedinPlaceOfreturntype = erpmirm.getIrmReturnType();
                     erpmirmList = erpmirmDAO.findReturnIssuedItemsForUserInstitutes(Integer.valueOf(getSession().getAttribute("userid").toString()));
-                    erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmId(tempirmId);
+                  //  erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmId(tempirmId);
                     //message=""+erpmIssueReturnDetailList+""+tempirmId;
-
+                    //call for erpmIssueReturnDetailList
+                    erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmIdwith_editedserialno(tempirmId);
+      
+                    // generateSerialNoFromirmId(tempirmId);
+                    
+                    
+                    
                     return "SUCCESS2";
 
                 }
-            } catch (NullPointerException e2) {
+       /*     } catch (NullPointerException e2) {
                 InitializeLOVs();
                 message = "Exception in ReturnIssuedItemsAction save method-> " + e2.getMessage() + " Reported Cause is:getStId " + e2.getCause();
                 return ERROR;
-            }
+            }*/
 
             return "SUCCESS1";
 
@@ -881,7 +884,10 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
                     ItemSerialNo = erpmisd2.getErpmStockReceived().getStStockSerialNo();
                     returnQuantityWhenItemSerialNoZero = erpmisd2.getErpmStockReceived().getErpmItemMaster().getErpmimDetailedDesc();
                     // VarForReturnQuantityWhenIssueSerialNoselcted=erpmisd2.getErpmIssueDetail().getIsdReturnedQuantity();
-                    erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmId(tempirmId);//this list shown data that already returned in issueserialno page
+                   // erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmId(tempirmId);//this list shown data that already returned in issueserialno page
+                    erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmIdwith_editedserialno(tempirmId);//this list shown data that already returned in issueserialno page
+                      //call for erpmIssueReturnDetailList
+                     // generateSerialNoFromirmId(tempirmId);
                     ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturn(LocalVariableusedinPlaceOfreturntype, LocalVariableusedinPlaceOfdmId, false);
 
                     return "SUCCESS2";
@@ -1008,7 +1014,8 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
 
             } catch (NullPointerException e) {
                 // InitializeLOVs();
-                message = "Exception in ReturnIssuedItemsAction Done method-> ReturnIssuedItemsAction" + e.getMessage() + " Reported Cause is: " + e.getCause() + "" + eimDAO.findByEimId(ismId) + "" + erpmirmDAO.findByErpmIrmId(irmId) + "" + erpmimDAO.findByErpmimId(ismId) + "" + erpmStockReceivedDAO.findbystid(ismId);
+//                message = "Exception in ReturnIssuedItemsAction Done method-> ReturnIssuedItemsAction" + e.getMessage() + " Reported Cause is: " + e.getCause() + "" + eimDAO.findByEimId(ismId) + "" + erpmirmDAO.findByErpmIrmId(irmId) + "" + erpmimDAO.findByErpmimId(ismId) + "" + erpmStockReceivedDAO.findbystid(ismId);
+                message = "Exception in ReturnIssuedItemsAction Done method-> ReturnIssuedItemsAction" + e.getMessage() + " Reported Cause is: " + e.getCause();                
                 return ERROR;
             }
         }
@@ -1020,7 +1027,8 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
             ErpmItemMaster erpmim2 = erpmimDAO.findByErpmimId(erpmimId);
             ErpmStockReceived erpmstrobject1 = null;
             try {
-                erpmstrobject1 = erpmStockReceivedDAO.findbyStackSerialNo(StackSerialNo);
+                //erpmstrobject1 = erpmStockReceivedDAO.findbyStackSerialNo(StackSerialNo);
+                erpmstrobject1 = erpmStockReceivedDAO.findbyStockSerialNo(StackSerialNo);
                 // message = message+""+returnQuantityWhenItemSerialNoZero;
 
             } catch (Exception e8) {
@@ -1053,7 +1061,8 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
 
         } catch (NullPointerException e) {
             // InitializeLOVs();
-            message = "Exception in ReturnIssuedItemsAction Done method-> ReturnIssuedItemsAction" + e.getMessage() + " Reported Cause is: " + e.getCause() + "" + eimDAO.findByEimId(ismId) + "" + erpmirmDAO.findByErpmIrmId(irmId) + "" + erpmimDAO.findByErpmimId(ismId) + "" + erpmStockReceivedDAO.findbystid(ismId);
+            //message = "Exception in ReturnIssuedItemsAction Done method-> ReturnIssuedItemsAction" + e.getMessage() + " Reported Cause is: " + e.getCause() + "" + eimDAO.findByEimId(ismId) + "" + erpmirmDAO.findByErpmIrmId(irmId) + "" + erpmimDAO.findByErpmimId(ismId) + "" + erpmStockReceivedDAO.findbystid(ismId);
+            message = "Exception in ReturnIssuedItemsAction Done method-> ReturnIssuedItemsAction" + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
         try {
@@ -1068,19 +1077,20 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
     //this method execute when we get page by selecting issue serial no and clicking done button
 
     public String Donemethod() throws Exception {
-        try {
+        //try {
             if (!Variable.equals("yes")) {//if we are not secting item in dro down list and direct clicking in done method
                 VariableWhichManageChecksequenceOfexecutionofDoneAndReceiveBackMethod = "please first select Item or click on receiveBack link";
-                ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturn(LocalVariableusedinPlaceOfreturntype, LocalVariableusedinPlaceOfdmId, false);
+           //     ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturn(LocalVariableusedinPlaceOfreturntype, LocalVariableusedinPlaceOfdmId, false);
+                ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturnwit_editedserialno(LocalVariableusedinPlaceOfreturntype, LocalVariableusedinPlaceOfdmId, false);
                 return "SUCCESS2";
             }
-        } catch (NullPointerException e5) {
+    /*    } catch (NullPointerException e5) {
             ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturn(LocalVariableusedinPlaceOfreturntype, LocalVariableusedinPlaceOfdmId, false);
 
             VariableWhichManageChecksequenceOfexecutionofDoneAndReceiveBackMethod = "please first select Item";
 
             return "SUCCESS2";
-        }
+        }*/
         try {
             //in this erpmissuedetail we have to update return quantity by adding 1
             ErpmIssueDetail erpmisdObject = new ErpmIssueDetail();
@@ -1114,6 +1124,8 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
                 erpmirdDAO.save(erpmird);
 
             } catch (Exception e6) {
+                           message = "Exception in Done method - ReturnIssuedItemsAction> ReturnIssuedMasterxn" + e6.getMessage() + " Reported Cause is: " + e6.getCause();
+
                 return ERROR;
             }
 
@@ -1121,8 +1133,10 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
             ItemSerialNo = erpmisd3.getErpmStockReceived().getStStockSerialNo();
             returnQuantityWhenItemSerialNoZero = erpmisd3.getErpmStockReceived().getErpmItemMaster().getErpmimDetailedDesc();
             erpmIssueSerialDetailDAO.update(erpmisd3);
-            erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmId(tempirmId);
-            ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturn(LocalVariableusedinPlaceOfreturntype, LocalVariableusedinPlaceOfdmId, false);
+            /*erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmId(tempirmId);
+            ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturn(LocalVariableusedinPlaceOfreturntype, LocalVariableusedinPlaceOfdmId, false);*/
+            erpmIssueReturnDetailList = erpmIssueReturnDetailDAO.findListByirmIdwith_editedserialno(tempirmId);
+            ErpmIssueSerialDetailListforitemSerialNo = erpmIssueSerialDetailDAO.findListBydmIdReturnTypeissdReturnwit_editedserialno(LocalVariableusedinPlaceOfreturntype, LocalVariableusedinPlaceOfdmId, false);
 
             messageInItemSerialNoPage = "This Item has Received ItemSerialNo " + ItemSerialNo + "and Item Name" + returnQuantityWhenItemSerialNoZero;
             ErpmIssueSerialDetailList = null;//erpmIssueSerialDetailDAO.findListByerpmStockReceivedId(stId);
@@ -1131,7 +1145,9 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
 
         } catch (NullPointerException e) {
             // InitializeLOVs();
-            message = "Exception in ReturnIssuedItemsAction Donemethod-> ReturnIssuedItemsAction" + e.getMessage() + " Reported Cause is: " + e.getCause() + "" + eimDAO.findByEimId(ismId) + "" + erpmirmDAO.findByErpmIrmId(irmId) + "" + erpmimDAO.findByErpmimId(ismId) + "" + erpmStockReceivedDAO.findbystid(ismId);
+/*            message = "Exception in ReturnIssuedItemsAction Donemethod-> ReturnIssuedItemsAction" + e.getMessage() + " Reported Cause is: " + e.getCause() + "" + eimDAO.findByEimId(ismId) + "" + erpmirmDAO.findByErpmIrmId(irmId) + "" + erpmimDAO.findByErpmimId(ismId) + "" + erpmStockReceivedDAO.findbystid(ismId);*/
+            message = "Exception in ReturnIssuedItemsAction Donemethod-> ReturnIssuedItemsAction" + e.getMessage() + " Reported Cause is: " + e.getCause();
+
             return ERROR;
         }
         return "SUCCESS2";
@@ -1259,9 +1275,16 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
 //        String fileName = getSession().getServletContext().getRealPath("pico\\Inventory\\Reports\\ReturnIssuedItemReceiving.jasper");
         String whereCondition="";
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+  //          Locale locale = ActionContext.getContext().getLocale();
+  //          ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+    //        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
             
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -1324,10 +1347,16 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+  //          Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
 
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
             response.setHeader("Content-Disposition", "attachment; filename=ShowGfr.pdf");
@@ -1341,7 +1370,7 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
             whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 31";
 
             hm.put("condition", whereCondition);
-
+            hm.put("screen_name", "RETURN ISSUED ITEMS");
             JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
             JasperExportManager.exportReportToPdfStream(jp, baos);
             response.setContentLength(baos.size());

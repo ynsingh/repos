@@ -28,11 +28,12 @@ import utils.DevelopmentSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
-
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 /**
  *
@@ -56,6 +57,7 @@ public class ManageEmployeeAction extends DevelopmentSupport {
     private Departmentmaster dm;
     private DepartmentmasterDAO dmDao = new DepartmentmasterDAO();
     private List<Departmentmaster> dmList = new ArrayList<Departmentmaster>();
+    static String dataSourceURL=null;
 
     public InputStream getInputStream() {
         return inputStream;
@@ -265,9 +267,16 @@ public class ManageEmployeeAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -331,9 +340,20 @@ public class ManageEmployeeAction extends DevelopmentSupport {
     }
 
     public String Delete() {
-        em = emDao.findByempId(getEmpId());
-        emDao.delete(em);
-        emList = emDao.findAll();
-        return SUCCESS;
+        try {
+            em = emDao.findByempId(getEmpId());
+            emDao.delete(em);
+            emList = emDao.findAll();
+            return SUCCESS;
+            }catch (Exception e) {
+
+            if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
+                message = "Cannot delete record as related record(s) exist(s). Reported cause is         :" + e.getCause();
+            }else{
+            message = "Error is : " + e.getMessage() + " Reported Cause is: " +  e.getCause();
+            }
+            return ERROR;
+        }
+
     }
 }

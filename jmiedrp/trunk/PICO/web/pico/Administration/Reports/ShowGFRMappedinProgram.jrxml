@@ -6,8 +6,12 @@
 	<parameter name="condition" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="screen_name" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
+     if(gfr_master.`GFR_Or_Institute_Rule` = 'G','General Finacial Rule', if(gfr_master.`GFR_Or_Institute_Rule` = 'I','Institute Specific Rule', "")) AS gfr_master_GFR_Or_Institute_Rule,
      gfr_program_mapping.`GPM_Program_ID` AS GPM_Program_ID,
      gfr_master.`GFR_GFR_Id` AS GFR_GFR_Id,
      gfr_master.`GFR_Section` AS GFR_Section,
@@ -16,9 +20,9 @@
      gfr_master.`GFR_Rule_No` AS GFR_Rule_No,
      gfr_master.`GFR_Description` AS GFR_Description
 FROM
-     `gfr_master` gfr_master INNER JOIN `gfr_program_mapping` gfr_program_mapping ON gfr_master.`GFR_GFR_Id` = gfr_program_mapping.`GPM_GFR_ID`
-WHERE $P!{condition}]]>
+     `gfr_master` gfr_master INNER JOIN `gfr_program_mapping` gfr_program_mapping ON gfr_master.`GFR_GFR_Id` = gfr_program_mapping.`GPM_GFR_ID`]]>
 	</queryString>
+	<field name="gfr_master_GFR_Or_Institute_Rule" class="java.lang.String"/>
 	<field name="GPM_Program_ID" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -46,15 +50,29 @@ WHERE $P!{condition}]]>
 	<title>
 		<band height="45" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="f56e5275-3ca2-4d47-a6cd-1ec71fa4aaba" x="237" y="0" width="354" height="34"/>
+				<reportElement uuid="f56e5275-3ca2-4d47-a6cd-1ec71fa4aaba" x="284" y="0" width="135" height="34"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font size="16" isBold="true" isUnderline="false"/>
+					<font size="14" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[GFRs Related To ]]></text>
 			</staticText>
 			<line>
 				<reportElement uuid="8885ab5d-66d1-4e43-889c-357b3a2e76d7" x="1" y="44" width="801" height="1"/>
 			</line>
+			<textField>
+				<reportElement uuid="2e50b38b-1ce2-4bf4-9b26-9551fffa1255" positionType="FixRelativeToBottom" x="410" y="0" width="248" height="34"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{screen_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="f6d5f936-3e41-442f-aa78-598902b02837" x="702" y="24" width="100" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -64,70 +82,93 @@ WHERE $P!{condition}]]>
 		<band height="17" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="111" splitType="Stretch">
+		<band height="130" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="a3b55faa-84be-4a82-81d3-184a5a947525" x="123" y="0" width="270" height="20"/>
+				<reportElement uuid="a3b55faa-84be-4a82-81d3-184a5a947525" x="123" y="22" width="270" height="20"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{GFR_Section}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="4a847e85-7113-4eea-b936-c6e6c66f9b86" x="176" y="20" width="206" height="20"/>
+				<reportElement uuid="4a847e85-7113-4eea-b936-c6e6c66f9b86" x="176" y="42" width="206" height="20"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{GFR_Chapter_Name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="6b9aeba3-dbf1-4064-ba2b-fb5e5980080d" x="123" y="40" width="270" height="20"/>
+				<reportElement uuid="6b9aeba3-dbf1-4064-ba2b-fb5e5980080d" x="123" y="62" width="270" height="20"/>
 				<textElement verticalAlignment="Top">
 					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{GFR_Rule_No}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="bea5a7c2-b442-4f6c-8567-fc4ddfd273e6" x="1" y="0" width="100" height="20"/>
+				<reportElement uuid="bea5a7c2-b442-4f6c-8567-fc4ddfd273e6" x="1" y="22" width="100" height="20"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Section]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c1956ce0-333d-406a-83cb-d05c33522875" x="1" y="20" width="122" height="20"/>
+				<reportElement uuid="c1956ce0-333d-406a-83cb-d05c33522875" x="1" y="42" width="122" height="20"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Chapter]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="75cb24cd-60e6-4178-a1e0-251629c124ce" x="1" y="40" width="100" height="20"/>
+				<reportElement uuid="75cb24cd-60e6-4178-a1e0-251629c124ce" x="1" y="62" width="100" height="20"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rule No]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="5a6dae83-0d94-4801-bd97-4d2cf18b43a3" x="123" y="60" width="679" height="47"/>
+				<reportElement uuid="5a6dae83-0d94-4801-bd97-4d2cf18b43a3" x="123" y="82" width="679" height="47"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{GFR_Description}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="dc4b17eb-3579-4085-8c76-a4d3a3c42ec5" x="123" y="20" width="26" height="20"/>
+				<reportElement uuid="dc4b17eb-3579-4085-8c76-a4d3a3c42ec5" x="123" y="42" width="26" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{GFR_Chapter_No}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="bea5a7c2-b442-4f6c-8567-fc4ddfd273e6" x="1" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rule Class]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="296da45a-28c2-4c9e-8669-9007838bf7c5" x="123" y="0" width="181" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{gfr_master_GFR_Or_Institute_Rule}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="20" splitType="Stretch"/>
+		<band height="2" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="15" splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6d805943-0275-43ac-ac35-af28c3c7609a" x="339" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="6c8a914b-79c7-426f-b5cb-eb055b7a3e99" x="419" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
-		<band height="15" splitType="Stretch"/>
+		<band height="3" splitType="Stretch"/>
 	</summary>
 </jasperReport>

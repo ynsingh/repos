@@ -15,6 +15,7 @@ public class Erpmprogram  implements java.io.Serializable {
      private Erpmsubmodule erpmsubmodule;
      private Erpmprogram erpmprogram;
      private String erpmpDisplayName;
+     private String erpmpDisplayNameHindi;
      private String erpmpPurpose;
      private String erpmpHref;
      private Byte erpmpOrder;
@@ -29,14 +30,16 @@ public class Erpmprogram  implements java.io.Serializable {
     }
 
 	
-    public Erpmprogram(Erpmsubmodule erpmsubmodule, String erpmpDisplayName) {
+    public Erpmprogram(Erpmsubmodule erpmsubmodule, String erpmpDisplayName, String erpmpDisplayNameHindi) {
         this.erpmsubmodule = erpmsubmodule;
         this.erpmpDisplayName = erpmpDisplayName;
+        this.erpmpDisplayNameHindi= erpmpDisplayNameHindi;
     }
-    public Erpmprogram(Erpmsubmodule erpmsubmodule, Erpmprogram erpmprogram, String erpmpDisplayName, String erpmpPurpose, String erpmpHref, Byte erpmpOrder, String epmpEnvVariable, Set genericroleprivilegeses, Set gfrProgramMappings, Set erpmprograms, Set userprivilegeses, Set institutionroleprivilegeses) {
+    public Erpmprogram(Erpmsubmodule erpmsubmodule, Erpmprogram erpmprogram, String erpmpDisplayName,String erpmpDisplayNameHindi, String erpmpPurpose, String erpmpHref, Byte erpmpOrder, String epmpEnvVariable, Set genericroleprivilegeses, Set gfrProgramMappings, Set erpmprograms, Set userprivilegeses, Set institutionroleprivilegeses) {
        this.erpmsubmodule = erpmsubmodule;
        this.erpmprogram = erpmprogram;
        this.erpmpDisplayName = erpmpDisplayName;
+       this.erpmpDisplayNameHindi = erpmpDisplayNameHindi;
        this.erpmpPurpose = erpmpPurpose;
        this.erpmpHref = erpmpHref;
        this.erpmpOrder = erpmpOrder;
@@ -76,6 +79,15 @@ public class Erpmprogram  implements java.io.Serializable {
     public void setErpmpDisplayName(String erpmpDisplayName) {
         this.erpmpDisplayName = erpmpDisplayName;
     }
+
+    public String getErpmpDisplayNameHindi() {
+        return erpmpDisplayNameHindi;
+    }
+
+    public void setErpmpDisplayNameHindi(String erpmpDisplayNameHindi) {
+        this.erpmpDisplayNameHindi = erpmpDisplayNameHindi;
+    }
+
     public String getErpmpPurpose() {
         return this.erpmpPurpose;
     }

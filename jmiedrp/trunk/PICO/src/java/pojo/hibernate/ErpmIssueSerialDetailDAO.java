@@ -207,8 +207,10 @@ public class ErpmIssueSerialDetailDAO {
             session.close();
         }
     }
+  //method to get list of ErpmIssueSerialDetail with formatted serial nousing stid
+  //    public List<ErpmIssueSerialDetail> findListByerpmStockReceivedId(Integer stId) {
 
-    public List<ErpmIssueSerialDetail> findListByerpmStockReceivedId(Integer stId) {
+    public List<ErpmIssueSerialDetail> findListByerpmStockReceivedIdwith_editedserialno(Integer stId) {      
         Session session = HibernateUtil.getSession();
         try {
             int index = 0;
@@ -216,9 +218,73 @@ public class ErpmIssueSerialDetailDAO {
             List<ErpmIssueSerialDetail> list = session.createQuery("Select u from ErpmIssueSerialDetail u where u.erpmStockReceived.stId = :stId").setParameter("stId", stId).list();
             for (index = 0; index < list.size(); ++index) {
                 Hibernate.initialize(list.get(index).getErpmStockReceived());
-                Hibernate.initialize(list.get(index).getErpmIssueDetail());
+              //  Hibernate.initialize(list.get(index).getErpmIssueDetail());
+                Hibernate.initialize(list.get(index).getErpmIssueDetail().getErpmItemMaster());
+                Hibernate.initialize(list.get(index).getErpmStockReceived().getDepartmentmaster());
+                Hibernate.initialize(list.get(index).getErpmStockReceived().getSubinstitutionmaster());
+                Hibernate.initialize(list.get(index).getErpmStockReceived().getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getErpmIssueDetail().getErpmIssueMaster());
+              
 
             }
+           //for generating serial no from ErpmIssueSerialDetail Table
+           
+              //generating serial no for list stock receive
+              for (int l = 0; l < list.size(); l++) {
+              try{
+
+                    Integer ItemIdIength = list.get(l).getErpmStockReceived().getErpmItemMaster().getErpmimId().toString().length();
+                    //add zeroes according itemlength in to make string of 5 numerical digit
+
+                    String itemSubString = "";
+                 if (ItemIdIength <= 9) {
+                       itemSubString = "0000";
+                 } else if (ItemIdIength > 9 && ItemIdIength <= 99) {
+                       itemSubString = "000";
+                 } else if (ItemIdIength > 99 && ItemIdIength <= 999) {
+                      itemSubString = "00";
+                 } else if (ItemIdIength > 999 && ItemIdIength <= 9999) {
+                      itemSubString = "0";
+                }
+                /* to add department subins,intitute item id in serial no*/
+                   itemSubString = itemSubString +  list.get(l).getErpmStockReceived().getErpmItemMaster().getErpmimId().toString();
+                   String serialNoFull = list.get(l).getErpmStockReceived().getInstitutionmaster().getImShortName() + "/";
+                   serialNoFull = serialNoFull + list.get(l).getErpmStockReceived().getSubinstitutionmaster().getSimShortName() + "/";
+                   serialNoFull = serialNoFull + list.get(l).getErpmStockReceived().getDepartmentmaster().getDmShortName() + "/";
+                   serialNoFull = serialNoFull + itemSubString + "/";
+                   serialNoFull = serialNoFull + list.get(l).getErpmStockReceived().getStStockSerialNo();
+                 //set this serialNoFull var to StStockSerialNo in this list
+
+                  list.get(l).getErpmStockReceived().setStStockSerialNo(serialNoFull);/**/
+         }catch(Exception e){//this catch execute when stock serialno is null
+                           // message = "Exception in ReturnIssuedItemsAction save method-> " + e.getMessage() + " Reported Cause is: " + e.getCause();
+
+            }
+              }
+
+
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+      public List<ErpmIssueSerialDetail> findListByerpmStockReceivedId(Integer stId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmIssueSerialDetail> list = session.createQuery("Select u from ErpmIssueSerialDetail u where u.erpmStockReceived.stId = :stId").setParameter("stId", stId).list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getErpmStockReceived());
+                Hibernate.initialize(list.get(index).getErpmIssueDetail().getErpmItemMaster());
+                Hibernate.initialize(list.get(index).getErpmStockReceived().getDepartmentmaster());
+                Hibernate.initialize(list.get(index).getErpmStockReceived().getSubinstitutionmaster());
+                Hibernate.initialize(list.get(index).getErpmStockReceived().getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getErpmIssueDetail().getErpmIssueMaster());
+
+
+	    }
+
             return list;
         } finally {
             session.close();
@@ -239,6 +305,62 @@ public class ErpmIssueSerialDetailDAO {
             session.close();
         }
     }
+  //method to get list of ErpmIssueSerialDetail with formatted serial no
+//    public List<ErpmIssueSerialDetail> findListBydmIdReturnTypeissdReturn(char returntype, int dmId, Boolean bool) {
+    public List<ErpmIssueSerialDetail> findListBydmIdReturnTypeissdReturnwit_editedserialno(char returntype, int dmId, Boolean bool) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmIssueSerialDetail> list = session.createQuery("Select u from ErpmIssueSerialDetail u where u.issdReturned = :bool and u.erpmIssueDetail.erpmIssueMaster.departmentmasterByIsmFromDepartmentId.dmId=:dmId and u.erpmIssueDetail.erpmIssueMaster.ismIssueType=:returntype").setParameter("bool", bool).setParameter("dmId", dmId).setParameter("returntype", returntype).list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getErpmStockReceived());
+                 Hibernate.initialize(list.get(index).getErpmStockReceived().getDepartmentmaster());
+                  Hibernate.initialize(list.get(index).getErpmStockReceived().getInstitutionmaster());
+                   Hibernate.initialize(list.get(index).getErpmStockReceived().getSubinstitutionmaster());
+                    Hibernate.initialize(list.get(index).getErpmStockReceived().getErpmItemMaster());
+            }
+             //for set serial in  ErpmIssueSerialDetail list which is get using dmId and ReturnType
+
+               //generating serial no for list stock receive
+              for (int l = 0; l < list.size(); l++) {
+              try{
+
+                    Integer ItemIdIength = list.get(l).getErpmStockReceived().getErpmItemMaster().getErpmimId().toString().length();
+                    //add zeroes according itemlength in to make string of 5 numerical digit
+                    
+                    
+                     String itemSubString = "";
+                 if (ItemIdIength <= 9) {
+                      itemSubString = "0000";
+                 } else if (ItemIdIength > 9 && ItemIdIength <= 99) {
+                      itemSubString = "000";
+                 } else if (ItemIdIength > 99 && ItemIdIength <= 999) {
+                      itemSubString = "00";
+                 } else if (ItemIdIength > 999 && ItemIdIength <= 9999) {
+                      itemSubString = "0";
+                 }
+                 /* to add department subins,intitute item id in serial no*/
+                   itemSubString = itemSubString +  list.get(l).getErpmStockReceived().getErpmItemMaster().getErpmimId().toString();
+                   String serialNoFull = list.get(l).getErpmStockReceived().getInstitutionmaster().getImShortName() + "/";
+                   serialNoFull = serialNoFull + list.get(l).getErpmStockReceived().getSubinstitutionmaster().getSimShortName() + "/";
+                   serialNoFull = serialNoFull + list.get(l).getErpmStockReceived().getDepartmentmaster().getDmShortName() + "/";
+                   serialNoFull = serialNoFull + itemSubString + "/";
+                   serialNoFull = serialNoFull + list.get(l).getErpmStockReceived().getStStockSerialNo();
+                 //set this serialNoFull var to StStockSerialNo in this list
+
+                  list.get(l).getErpmStockReceived().setStStockSerialNo(serialNoFull);/**/
+         }catch(Exception e){//this catch execute when stock serialno is null
+                           // message = "Exception in ReturnIssuedItemsAction save method-> " + e.getMessage() + " Reported Cause is: " + e.getCause();
+
+            }
+
+    }
+            return list;
+        } finally {
+            session.close();
+        }
+    }
 
     public List<ErpmIssueSerialDetail> findListBydmIdReturnTypeissdReturn(char returntype, int dmId, Boolean bool) {
         Session session = HibernateUtil.getSession();
@@ -248,7 +370,14 @@ public class ErpmIssueSerialDetailDAO {
             List<ErpmIssueSerialDetail> list = session.createQuery("Select u from ErpmIssueSerialDetail u where u.issdReturned = :bool and u.erpmIssueDetail.erpmIssueMaster.departmentmasterByIsmFromDepartmentId.dmId=:dmId and u.erpmIssueDetail.erpmIssueMaster.ismIssueType=:returntype").setParameter("bool", bool).setParameter("dmId", dmId).setParameter("returntype", returntype).list();
             for (index = 0; index < list.size(); ++index) {
                 Hibernate.initialize(list.get(index).getErpmStockReceived());
+                 Hibernate.initialize(list.get(index).getErpmStockReceived().getDepartmentmaster());
+                  Hibernate.initialize(list.get(index).getErpmStockReceived().getInstitutionmaster());
+                   Hibernate.initialize(list.get(index).getErpmStockReceived().getSubinstitutionmaster());
+                    Hibernate.initialize(list.get(index).getErpmStockReceived().getErpmItemMaster());
             }
+
+
+
             return list;
         } finally {
             session.close();

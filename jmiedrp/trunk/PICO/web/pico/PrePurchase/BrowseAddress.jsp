@@ -89,12 +89,14 @@
                     <display:column paramId="ADID" paramProperty="supAdId"
                                     href="/pico/PrePurchase/EditAddress"
                                     headerClass="gridheader" class="griddata" media="html" title="Edit" >
-                                    <img align="right" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;"/>
+                          <%--          <img align="right" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;"/> --%>
+				Edit
                     </display:column>
                    <display:column paramId="ADID" paramProperty="supAdId"
                                     href="/pico/PrePurchase/DeleteAddress.action"
                                     headerClass="gridheader" class="griddata" media="html" title="Delete">
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;"/>
+        <%--                            <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;"/> --%>
+				Delete
                     </display:column>
 
 

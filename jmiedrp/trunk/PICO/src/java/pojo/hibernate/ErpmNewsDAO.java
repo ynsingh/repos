@@ -16,9 +16,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.Hibernate;
 import java.util.List;
-import utils.BaseDAO;
+//import utils.BaseDAO;
 
-public class ErpmNewsDAO extends BaseDAO {
+//public class ErpmNewsDAO extends BaseDAO {
+public class ErpmNewsDAO {
 
     public void save(ErpmNews erpmNews) {
         Session session = HibernateUtil.getSession();
@@ -76,7 +77,8 @@ public class ErpmNewsDAO extends BaseDAO {
         try {
             session.beginTransaction();
             ErpmNews nw  = new ErpmNews ();
-            nw  = (ErpmNews) getSession().load(ErpmNews.class , imId);
+  //          nw  = (ErpmNews) getSession().load(ErpmNews.class , imId);
+            nw  = (ErpmNews) session.load(ErpmNews.class , imId);          
             Hibernate.initialize(nw);
             return nw;
         } finally {
@@ -89,14 +91,16 @@ public class ErpmNewsDAO extends BaseDAO {
         Session session = HibernateUtil.getSession();
         try {
 //            int index = 0;
+/*            session.beginTransaction();
+           List<ErpmNews> imList = getSession().createQuery("select distinct(u) from ErpmNews u where u.erpmusers.erpmuId = :erpmuId Order By u.newsPublishDate desc").setParameter("erpmuId",erpmuId).list();*/
             session.beginTransaction();
-           List<ErpmNews> imList = getSession().createQuery("select distinct(u) from ErpmNews u where u.erpmusers.erpmuId = :erpmuId Order By u.newsPublishDate desc").setParameter("erpmuId",erpmuId).list();
+            List<ErpmNews> imList = session.createQuery("select distinct(u) from ErpmNews u where u.erpmusers.erpmuId = :erpmuId Order By u.newsPublishDate desc").setParameter("erpmuId",erpmuId).list();
            Hibernate.initialize(imList);
 
 //            for (index = 0; index < imList.size(); ++index) {
 //                Hibernate.initialize(imList.get(index)..getErpmItemMaster());
 //            }
-            return imList;
+           return imList;
         } finally {
             session.close();
         }
@@ -107,7 +111,8 @@ public class ErpmNewsDAO extends BaseDAO {
         try {
 //            int index = 0;
             session.beginTransaction();
-            List<ErpmNews> newsList = getSession().createQuery("select u from ErpmNews u where u.newsExpiryDate>= :date").setParameter("date", date).list();
+//            List<ErpmNews> newsList = getSession().createQuery("select u from ErpmNews u where u.newsExpiryDate>= :date").setParameter("date", date).list();
+            List<ErpmNews> newsList = session.createQuery("select u from ErpmNews u where u.newsExpiryDate>= :date").setParameter("date", date).list();            
             Hibernate.initialize(newsList);
 
             return newsList;

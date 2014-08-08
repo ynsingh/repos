@@ -80,6 +80,12 @@
         <property name="stWarrantyExpiryDate" type="date">
             <column name="ST_Warranty_Expiry_Date" length="10" />
         </property>
+        <property name="stDepriciatedValue" type="big_decimal">
+            <column name="ST_Depriciated_Value" precision="10" />
+        </property>
+        <property name="stDepriciationCalcDate" type="date">
+            <column name="ST_Depriciation_Calc_Date" length="10" />
+        </property>
         <set name="erpmIssueSerialDetails" inverse="true">
             <key>
                 <column name="ISSD_Stock_Serial_ID" not-null="true" />

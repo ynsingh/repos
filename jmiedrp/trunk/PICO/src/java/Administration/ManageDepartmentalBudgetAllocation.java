@@ -40,7 +40,7 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
     private SubinstitutionmasterDAO simDao = new SubinstitutionmasterDAO();
     private DepartmentmasterDAO dmDao = new DepartmentmasterDAO();
     private String message;
-    private  Integer DBAID;
+    private Integer DBAID;
     private String fromdate;
     private String todate;
 
@@ -58,7 +58,8 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
 
     public void setFromdate(String fromdate) {
         this.fromdate = fromdate;
-    }public String getTodate() {
+    }
+    public String getTodate() {
         return todate;
     }
 
@@ -256,19 +257,24 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
             //Prepare LOV containing User Institutions{
                    {
              if(dba.getDepartmentmaster().getDmId()!=null)
-                dbaList=dbaDao.findByDMId(dba.getDepartmentmaster().getDmId());
+               // dbaList=dbaDao.findByDMId(dba.getDepartmentmaster().getDmId());
+              dbaList=dbaDao.findForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
+
                           else
-             dbaList =dbaDao.findBySimId(dba.getSubinstitutionmaster().getSimId());
+//             dbaList =dbaDao.findBySimId(dba.getSubinstitutionmaster().getSimId());
+             dbaList =dbaDao.findForUserSubinstitution(Integer.parseInt(getSession().getAttribute("userid").toString()));
                    }
 
              else
             {
         if (dba.getDepartmentmaster().getDmId() != null)
-              dbaList=dbaDao.findByDMId(dba.getDepartmentmaster().getDmId());
+//              dbaList=dbaDao.findByDMId(dba.getDepartmentmaster().getDmId());
+            dbaList=dbaDao.findForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
         else
         {
            // message="hellooo";
-             dbaList =dbaDao.findByImId(dba.getInstitutionmaster().getImId());
+//             dbaList =dbaDao.findByImId(dba.getInstitutionmaster().getImId());
+            dbaList =dbaDao.findForUserSubinstitution(Integer.parseInt(getSession().getAttribute("userid").toString()));
         }
         }
                   //imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
@@ -276,8 +282,12 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
              {
             //dbaList=dbaDao.findAll();}
                  //Changes by sajid Aziz on 7 july 2011
-                 dbaList=dbaDao.findByDMId(dba.getDepartmentmaster().getDmId());}
+//                 dbaList=dbaDao.findByDMId(dba.getDepartmentmaster().getDmId());}
+                 dbaList=dbaDao.findForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
+             }
             InitializeLOVs();
+            simImList=simDao.findAllSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
+            dmList=dmDao.findAllDepartmentsForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
                 return SUCCESS;
             }
         catch (Exception e)
@@ -309,44 +319,4 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

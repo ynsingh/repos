@@ -38,14 +38,14 @@ import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.DriverManager;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
-import javax.naming.Context;
-import javax.naming.InitialContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class SubInstitutionAction extends DevelopmentSupport {
 
@@ -73,7 +73,7 @@ public class SubInstitutionAction extends DevelopmentSupport {
     private String message;
     private Integer SIMID;
 	
-	static String dataSourceURL=null;
+    static String dataSourceURL=null;
 
     public InputStream getInputStream() {
         return inputStream;
@@ -288,17 +288,18 @@ public class SubInstitutionAction extends DevelopmentSupport {
 
     @SkipValidation
     public String Delete() {
+
 	try {
-        sim = simDao.findBySimId(getSIMID());
-        simDao.delete(sim);
-        simList = simDao.findAll();
-        return SUCCESS;
-    }    catch (Exception e) {
+            sim = simDao.findBySimId(getSIMID());
+            simDao.delete(sim);
+            simList = simDao.findAll();
+            return SUCCESS;
+        } catch (Exception e) {
             if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
                 message = "Cannot delete record as related record(s) exist(s). Reported cause is         :" + e.getCause();
             }else{
             message = "Exception in Delete method -> SubInstitutionAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
-    }
+            }
             return ERROR;
         }
     }
@@ -339,6 +340,7 @@ public class SubInstitutionAction extends DevelopmentSupport {
   //          Locale locale = ActionContext.getContext().getLocale();
   //          ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
   //          Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+  //
             Context ctx = new InitialContext();
             if (ctx == null) {
                 throw new RuntimeException("JNDI");

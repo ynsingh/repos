@@ -1,6 +1,7 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sx" uri="/struts-dojo-tags" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -44,20 +45,20 @@
                             <tr>
                                 <td> <br><br>                                    
                                     <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                                                 label="Address" name="erpmsmad.adLine1" title="" />
+                                                 label="Address Line1" name="erpmsmad.adLine1" title="" />
                                     <s:textfield required="false" requiredposition="left" maxLength="50" size="50"
-                                                 label="" name="erpmsmad.adLine2" title="" />
-                                    <s:select required="true" label="Country" name="erpmsmad.countrymaster.countryId" headerKey="" headerValue="-- Please Select --" list="ctList" listKey="countryId" listValue="countryName" value="defaultCountry"
+                                                 label="Address Line2" name="erpmsmad.adLine2" title="" />
+                                    <s:select required="true" label = "Country" name="erpmsmad.countrymaster.countryId" headerKey="" headerValue="-- Please Select --" list="ctList" listKey="countryId" listValue="countryName" value="defaultCountry"
                                               onchange="getStateList('SaveAddress_erpmsmad_countrymaster_countryId','SaveAddress_erpmsmad_statemaster_stateId')" />
                                     <s:select label="State" name="erpmsmad.statemaster.stateId" headerKey="" headerValue="-- Please Select --" list="stList" listKey="stateId" listValue="stateName"/>
                                     <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
                                                  label="City" name="erpmsmad.adCity" title="" />
                                     <s:textfield requiredposition="left" maxLength="50" size="50"
-                                                 label="Phone no." name="erpmsmad.adPhn" title="" />
+                                                 label="Phone no" name="erpmsmad.adPhn" title="" />
                                     <s:textfield requiredposition="left" maxLength="50" size="50"
-                                                 label="Mobile no." name="erpmsmad.adMob" title="" />
+                                                 label="Mobile no" name="erpmsmad.adMob" title="" />
                                     <s:textfield requiredposition="left" maxLength="50" size="50"
-                                                 label="Fax no." name="erpmsmad.adFaxn" title="" />
+                                                 label="Fax no" name="erpmsmad.adFaxn" title="" />
                                     <s:textfield requiredposition="left" maxLength="50" size="50"
                                                  label="Email id" name="erpmsmad.adEmail" title="" />
                                 </td>
@@ -133,12 +134,12 @@
                             <display:column paramId="ADID" paramProperty="supAdId"
                                             href="/pico/PrePurchase/EditAddress"
                                             headerClass="gridheader" class="griddata" media="html" >
-                                <img align="right" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;"/>
+                                Edit
                             </display:column>
                             <display:column paramId="ADID" paramProperty="supAdId"
                                             href="/pico/PrePurchase/DeleteAddressOnSamePage.action"
                                             headerClass="gridheader" class="griddata" media="html">
-                                <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;"/>
+                               Delete
                             </display:column>
                         </display:table>
                     </table>

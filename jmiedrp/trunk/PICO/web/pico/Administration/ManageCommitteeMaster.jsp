@@ -2,6 +2,8 @@
     Document   : ManageCommitteeMaster
     Created on : 7 Oct, 2011, 10:36:18 PM
     Author     : sknaqvi
+    I18n By    : Mohd. Manauwar Alam
+               : Jan 2014
 --%>
 
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
@@ -43,7 +45,8 @@
 
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">COMMITTEE MASTER</p>
+<%--                    <p align="center" class="pageHeading" style="color: #ffffff">COMMITTEE MASTER</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.CommiteeMast')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -70,7 +73,7 @@
                                         </script>
 
                                         <br>
-                                        <s:select label="Institution" required="true" requiredposition="" name="cm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName" cssClass="textInput"
+<%--                                        <s:select label="Institution" required="true" requiredposition="" name="cm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName" cssClass="textInput"
                                                   onchange="getSubinstitutionList('SaveCommitteeMasterAction_cm_institutionmaster_imId', 'SaveCommitteeMasterAction_cm_subinstitutionmaster_simId');"/>
 
                                         <s:select label="College/Faculty/School" required="true" requiredposition="" name="cm.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput"
@@ -101,7 +104,38 @@
                                         <s:submit theme="simple" name="bthReset" value="Fetch Committee Entries" action="FetchCommitteeMaster"  cssClass="textInput"/>
                                     </td>
                                     <td>
-                                        <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearCommitteeMasterAction" cssClass="textInput"/>
+                                        <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearCommitteeMasterAction" cssClass="textInput"/> --%>
+                                        <s:select key="Administration.InstitutionName" required="true" requiredposition="" name="cm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName" cssClass="textInput"
+                                                  onchange="getSubinstitutionList('SaveCommitteeMasterAction_cm_institutionmaster_imId', 'SaveCommitteeMasterAction_cm_subinstitutionmaster_simId');"/>
+
+                                        <s:select key="Administration.SubinstitutionName" required="true" requiredposition="" name="cm.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput"
+                                                  onchange="getAllDepartmentList('SaveCommitteeMasterAction_cm_subinstitutionmaster_simId', 'SaveCommitteeMasterAction_cm_departmentmaster_dmId');"/>
+
+                                        <s:select key="Administration.DepartmentName" required="true" requiredposition="" name="cm.departmentmaster.dmId" headerKey="0" headerValue="-- Please Select --" list="dmList" listKey="dmId" listValue="dmName" cssClass="textInput"/>
+
+                                        <s:select key="Administration.CommiteeOrAuthority" required="true" requiredposition="" name="cm.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="committeeTypesList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput"/>
+                                        <s:radio key="Administration.CommitteeLevel" name="cm.committeeLevel" list="#{'I':getText('Administration.InstitutionName'),'S':getText('Administration.SubinstitutionName'),'D':getText('Administration.DepartmentName')}" value="'I'" cssClass="checkboxLabel"/>
+
+                                        <s:textfield key="Administration.CommitteeOrAuthorityName" name="cm.committeeName" title="Enter Name of the Committee/Authority"
+                                                     required="true" requiredposition="left" maxLength="100" size="100"  cssClass="textInput"/>
+
+                                        <s:textarea rows="2" cols="100" name="cm.commmitteePurpose" key="Administration.Purpose" title="Enter purpose of committee"   cssClass="textArea"/>
+
+                                        <s:textfield key="Administration.EMailCommitteeConvenerOrAuthorityEMail" name="cm.committeeConvener" title="Enter EMail address of the Committee Convener/Authority"
+                                                     required="true" requiredposition="left" maxLength="100" size="100"  cssClass="textInput"  />
+
+                                        <s:checkbox cssClass="checkboxLabel"  key="Administration.IsCommitteeActive" name="cm.committeeActive" labelposition="right"/>
+                                    </td>
+                                </tr> <tr>
+                                    <td>
+                                        <s:submit theme="simple" name="btnSubmit" key="Administration.Save"  cssClass="textInput" />
+
+                                    </td>
+                                    <td>
+                                        <s:submit theme="simple" name="bthReset" key="Administration.Browse" action="FetchCommitteeMaster"  cssClass="textInput"/>
+                                    </td>
+                                    <td>
+                                        <s:submit theme="simple" name="bthReset" key="Administration.Clear"  action="ClearCommitteeMasterAction" cssClass="textInput"/>
                                     </td>
                                 </tr>
                             </tbody>

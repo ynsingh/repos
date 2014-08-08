@@ -14,6 +14,9 @@
         <property name="esmName" type="string">
             <column name="ESM_Name" length="45" />
         </property>
+        <property name="esmNameHindi" type="string">
+            <column name="ESM_Name_Hindi" length="45" />
+        </property>
         <property name="esmOrder" type="java.lang.Byte">
             <column name="ESM_ORDER" />
         </property>

@@ -1,4 +1,6 @@
-
+<%--   I18n By    : Mohd. Manauwar Alam
+                   : March 2014
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sx" uri="/struts-dojo-tags" %>
@@ -36,14 +38,25 @@
                 <jsp:include page="../Administration/menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent" ><br><br>
-                <p align="center"><s:label cssClass="pageHeading" value="MANAGE RETURN ISSUED ITEMS" /></p><br>  <p align="center"><s:property value="message"></s:property></p>
+            <div id ="mainContent" >
+                <br>
+                <br>
+                <s:bean name="java.util.HashMap" id="qTableLayout">
+                    <s:param name="tablecolspan" value="%{8}" />
+                </s:bean>
+
+                <div style="background-color: #215dc6;  " >
+                    <p align="center" class="pageHeading" style="color:  #ffffff"><s:property value="getText('Inventory.ManageReturnIssuedItems')" /></p>
+                    
+                
                 <s:if test="%{VariableWhichManageChecksequenceOfexecutionofDoneAndReceiveBackMethod!=null}">
-                <p align="center"><s:property value="VariableWhichManageChecksequenceOfexecutionofDoneAndReceiveBackMethod" /></p>
+                <p  align="center" class="mymessage" style="color:  #ffff99 "><s:property value="VariableWhichManageChecksequenceOfexecutionofDoneAndReceiveBackMethod" /></p>
                 </s:if>
-                <%--------------------this is a Purchase Order  form --------------------%>
+                <p align="center" class="mymessage" style="color:  #ffff99 ">   <s:property value="message"></s:property></p>
+                </div>
 
                 <s:actionerror />
+                <div style="border: solid 1px #000000; background:  gainsboro">
                 <s:form name="FrmReturnIssuedItems" action="ReturnIssuedItemsAction" >
                     <p align="left" class="pageMessage"></p>
                     <s:hidden name ="erpmirm.irmId" />
@@ -55,80 +68,91 @@
                                                          
 <%--                                    <sx:datetimepicker name="erpmirm.irmReturnDate" label="Return Date(yyyy-mm-dd)" displayFormat="yyyy-MM-dd" value="%{ReturnDate}" disabled="true"/>
 --%>
-                                   <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" label="Return Date" name="returnDate" value="%{returnDate}" disable="true"/>
+                                   <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" key="Inventory.ReturnDate" name="returnDate" value="%{returnDate}" disable="true"/>
 
-                                   <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" label="Return No." name="erpmirm.irmReturnNo" value="%{ReturnNo}" disable="true"/>
-
-
-                                     <s:select cssClass="textInput" label="Return Type" name="erpmirm.ErpmIssueReturnMaster.irmReturnType" headerKey="" headerValue="%{returntype}" list="#{'U':'Returned After USE','R':'Returned After REPAIR'}"  value="%{ReturnType}" disabled="true"/>
+                                   <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" key="Inventory.ReturnNo" name="erpmirm.irmReturnNo" value="%{ReturnNo}" disable="true"/>
 
 
+                                     <s:select cssClass="textInput" key="Inventory.ReturnType" name="erpmirm.ErpmIssueReturnMaster.irmReturnType" headerKey="" headerValue="%{returntype}" list="#{'U':'Returned After USE','R':'Returned After REPAIR'}"  value="%{ReturnType}" disabled="true"/>
 
 
 
 
-                                  <s:select id="ismIssueNoId" cssClass="textInput" label="Issue No" name="eim.ismId" headerKey="" headerValue="-- Please Select --" list="issuemasterList" listKey="ismId" listValue="ismIssueNo"  disabled="false"  />
+
+
+                                  <s:select id="ismIssueNoId" cssClass="textInput" key="Inventory.IssueNo" name="eim.ismId" headerKey="" headerValue="-- Please Select --" list="issuemasterList" listKey="ismId" listValue="ismIssueNo"  disabled="false"  />
 
                                   <s:if test="%{condvar!=null}">
-                                   <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" label="Item Name" name="" value="%{itemName}"  disabled="true"/>
+                                   <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" key="Inventory.ItemName" name="" value="%{itemName}"  disabled="true"/>
                                 <s:if test="%{tempIssdId==0}">
-                                   <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" label="return quantity" name="returnQuantityWhenItemSerialNoZero" value="%{returnQuantityWhenItemSerialNoZero}" />
+                                   <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" key="Inventory.ReturnQuantity" name="returnQuantityWhenItemSerialNoZero" value="%{returnQuantityWhenItemSerialNoZero}" />
                                     </s:if>
                                    <s:else>
-                                       <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" label="return quantity" name="returnQuantityWhenItemSerialNoZero" value="1"  disabled="true" />
+                                       <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" key="Inventory.ReturnQuantity" name="returnQuantityWhenItemSerialNoZero" value="1"  disabled="true" />
 
                                    </s:else>
-                                   <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" label="Item Seial No" name="ItemSerialNo" value="%{ItemSerialNo}"  disabled="true"/>
+                                   <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInput" key="Inventory.ItemSerialNo" name="ItemSerialNo" value="%{ItemSerialNo}"  disabled="true"/>
                                    </s:if>
 
                                 </td>
                             </tr> <tr>
                                 <td align="right">
-                                    <s:submit theme="simple" name="bthReset" value="Back to Main Page" action="BacktoErpmReturnIssuedItemPage" />
-                                    <s:submit theme="simple" name="bthReset" value="Receive Back" action="SaveReturnIssuedItemsbydone"  />
-                                    <s:submit theme="simple" name="bthReset" value="Show Details" action="SaveReturnIssuedItemsbyShowDetail"  />
+                                    <s:submit theme="simple" name="bthReset" key="Inventory.BackToMainPage" action="BacktoErpmReturnIssuedItemPage" />
+                                    <s:submit theme="simple" name="bthReset" key="Inventory.ReceiveBack" action="SaveReturnIssuedItemsbydone"  />
+                                    <s:submit theme="simple" name="bthReset" key="Inventory.ShowDetails" action="SaveReturnIssuedItemsbyShowDetail"  />
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </s:form>
-                     <s:if test="%{ViewIssueSerialDetailList!=null}">
-                  <div id ="mainContent" align="center">
+                    
+                     <s:if test="ViewIssueSerialDetailList.size > 0">
+                        <hr>
+                        
+                        <s:label value="%{getText('Inventory.AvailableItemsForReturnAre')}" cssClass= "pageSubHeading" >
+                            <s:param name="labelcolspan" value="%{0}" />
+                            <s:param name="inputcolspan" value="%{9}" />
+                        </s:label>
+
+                        <hr>
+                        <%--   <s:if test="%{ViewIssueSerialDetailList!=null}">  --%>
+                  
                 <s:form name="FrmReturnIssuedItems" >
-                       <p align="center"><s:label value="AVAILABLE ITEM FOR RETURN" /></p>
+                   
                     <s:hidden name ="erpmirm.irmId" />
                     <s:hidden name ="%{ismId}" />
                     <s:hidden name ="%{irmId}" />
                     <s:hidden name ="%{stId}" />
-                   
+                   <s:hidden name ="erpmirm.irmId" />
 
-                <table width="100%" border="1" cellspacing="0" cellpadding="0" align="center">
-                    <s:hidden name ="erpmirm.irmId" />
-
+                <table width="100%" >
+                    
+<tr>
+                                    <td>
                     <display:table name = "ViewIssueSerialDetailList"
-                               excludedParams="*" export="true" cellpadding="0" defaultorder="ascending" sort="list"
+                               excludedParams="*"  cellpadding="8" defaultorder="ascending" sort="list"
                                cellspacing="0" id="doc"
                                requestURI="/Inventory/ReturnIssuedItemsReceivedBackOk.action">
                     <display:column  class="griddata" title="S.No" sortable="true" maxLength="100" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
                         </display:column>
                           
-                             <display:column property="stStockSerialNo" title="Item Serial No"
-                                    maxLength="15" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:10%"  sortable="true"/>
+                             <display:column property="serialcode" title="Item Serial No"
+                                    maxLength="100" headerClass="gridheader"
+                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:25%"  sortable="true"/>
 
-                             <display:column property="ismIssueNo" title="Issue No"
-                                    maxLength="35" headerClass="gridheader"
+                             <display:column property="ismIssueNo" title="Issue No" style="width:10%"
+                                    maxLength="100" headerClass="gridheader"
                                     class="griddata"  sortable="true"/>
 
-                             <display:column property="erpmimItemBriefDesc" title="Item Name"
-                                    maxLength="35" headerClass="gridheader"
+                             <display:column property="erpmimItemBriefDesc" title="Item Name" style="width:20%"
+                                    maxLength="100" headerClass="gridheader"
                                     class="griddata" sortable="true" />
                             
                                      
                            
-                                 <display:column property="displayQuantity" title="Issued Quantity"
-                                        maxLength="35" headerClass="gridheader"
+                                 <display:column property="displayQuantity" title="Issued Quantity" style="width:10%"
+                                        maxLength="100" headerClass="gridheader"
                                         class="griddata" sortable="true"/>
  
       
@@ -145,25 +169,50 @@
                          </display:column>
                   
                 </display:table>
+                        </td>
+                        </tr>
 </table>
              </s:form>
-               </div>
+              
                    </s:if>
+                        
+                         <s:else>
+                        <s:form name="FrmReturnIssuedItems" >
+                            <br>
+                            
+                            <s:label value="%{getText('Inventory.NoItemsAvailableToReturn')}" >
+                                <s:param name="labelcolspan" value="%{0}" />
+                                <s:param name="inputcolspan" value="%{11}" />
+                            </s:label>
+
+                            
+                        </s:form>
+                    </s:else>
                   
-                     <div id ="mainContent" align="center">
+                    <s:if test="erpmIssueReturnDetailList.size > 0">
+
+                        <br>
+                        <hr>
+                        <s:label  cssClass= "pageSubHeading" value="%{getText('Inventory.AlreadyReturnedItemsAre')}">
+                            <s:param name="labelcolspan" value="%{0}" />
+                            <s:param name="inputcolspan" value="%{11}" />
+                        </s:label>
+
+                        <hr>
                 <s:form name="FrmReturnIssuedItems" >
-                       <p align="center"><s:label value="ALREADY RETURNED ITEMS" /></p>
+                    <%--    <p align="center"><s:label value="ALREADY RETURNED ITEMS" /></p>  --%>
                     <s:hidden name ="erpmirm.irmId" />
                     <s:hidden name ="%{ismId}" />
                     <s:hidden name ="%{irmId}" />
                     <s:hidden name ="%{stId}" />
 
 
-                <table width="100%" border="1" cellspacing="0" cellpadding="0" align="center">
-                  
+                <table width="100%" >
+                  <tr>
+                                    <td>
 
                     <display:table name = "erpmIssueReturnDetailList"
-                               excludedParams="*" export="true" cellpadding="0" defaultorder="ascending" sort="list"
+                               excludedParams="*"  cellpadding="8" defaultorder="ascending" sort="list"
                                cellspacing="0" id="doc"
                                requestURI="/Inventory/ReturnIssuedItemsReceivedBackOk.action">
                     <display:column  class="griddata" title="S.No" sortable="true" maxLength="100" headerClass="gridheader">
@@ -171,29 +220,48 @@
                         </display:column>
 
                              <display:column property="erpmStockReceived.stStockSerialNo" title="Item Serial No"
-                                    maxLength="15" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:10%"  sortable="true"/>
-                              <display:column property="erpmIssueMaster.ismIssueNo" title="Issue No"
-                                    maxLength="35" headerClass="gridheader"
+                                    maxLength="100" headerClass="gridheader"
+                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:35%"  sortable="true"/>
+                              <display:column property="erpmIssueMaster.ismIssueNo" title="Issue No" style="width:15%"
+                                    maxLength="100" headerClass="gridheader"
                                     class="griddata"  sortable="true"/>
-                              <display:column property="erpmItemMaster.erpmimItemBriefDesc" title="Item Name"
-                                    maxLength="35" headerClass="gridheader"
+                              <display:column property="erpmItemMaster.erpmimItemBriefDesc" title="Item Name" style="width:25%"
+                                    maxLength="100" headerClass="gridheader"
                                     class="griddata" sortable="true" />
-                                <display:column property="irmdReturnQuantity" title="Return Quantity"
-                                    maxLength="35" headerClass="gridheader"
+                                <display:column property="irmdReturnQuantity" title="Return Quantity" style="width:15%"
+                                    maxLength="100" headerClass="gridheader"
                                     class="griddata" sortable="true" />
 
 
 
                             
                 </display:table>
+                            
+                        </td>
+                    </tr>
          </table>
          </s:form>
-               </div>
-                  
-                   
-</div>
-           
+              </s:if>
+                    <s:else>
+                        <s:form name="FrmReturnIssuedItems" >
+
+                            <br>
+
+                            <s:label value="%{getText('Inventory.NoItemsInAlreadyReturnedList')}" >
+                                <s:param name="labelcolspan" value="%{0}" />
+                                <s:param name="inputcolspan" value="%{11}" />
+                            </s:label>
+
+
+                        </s:form>
+                    </s:else>
+
+                    <br>
+                </div>
+                
+                <s:actionerror />
+            </div>
+            <br>
             <div id="footer">
                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
             </div>

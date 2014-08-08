@@ -155,4 +155,22 @@ public class ErpmTenderScheduleDetailDAO {
         }
     }
 
+    public List<ErpmTenderScheduleDetail> findByTenderId(Integer tmTmId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmTenderScheduleDetail> list = session.createQuery("Select u from ErpmTenderScheduleDetail u where u.erpmTenderSchedule.erpmTenderMaster.tmTmId = :tmTmId").setParameter("tmTmId", tmTmId).list();
+            for (index = 0; index < list.size(); ++index) {
+                 Hibernate.initialize(list.get(index).getErpmTenderSchedule());
+                 Hibernate.initialize(list.get(index).getErpmTenderSchedule().getErpmTenderMaster());
+                Hibernate.initialize(list.get(index).getErpmGenMaster());
+
+            }
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+
 }

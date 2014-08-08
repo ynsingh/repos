@@ -4,13 +4,13 @@
  */
 
 package pojo.hibernate;
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
 import utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Hibernate;
-import utils.BaseDAO;
+//import utils.BaseDAO;
 /**
  *
  * @author farah
@@ -124,12 +124,13 @@ public class ErpmTOSDAO  {
 //    }
 
 
-          public List<ErpmTempOpeningStock> findAll() {
-        Session session = HibernateUtil.getSession();
+//          public List<ErpmTempOpeningStock> findAll() {
+    public List<ErpmTempOpeningStock> findByImId(Short imId) {                 Session session = HibernateUtil.getSession();
         try {
 
             session.beginTransaction();
-            List<ErpmTempOpeningStock> list = session.createQuery("select u from ErpmTempOpeningStock u").list();
+//            List<ErpmTempOpeningStock> list = session.createQuery("select u from ErpmTempOpeningStock u").list();
+            List<ErpmTempOpeningStock> list = session.createQuery("select u from ErpmTempOpeningStock u where u.institutionmaster = :imId").setParameter(imId, imId).list();            
             for(int index = 0; index < list.size(); index++) {
                 Hibernate.initialize(list.get(index).getErpmItemMaster());
                 Hibernate.initialize(list.get(index).getSuppliermaster());
@@ -169,7 +170,6 @@ public class ErpmTOSDAO  {
                 Hibernate.initialize(erpmuserList.get(index).getInstitutionmaster());
                 Hibernate.initialize(erpmuserList.get(index).getSubinstitutionmaster());
                 Hibernate.initialize(erpmuserList.get(index).getSuppliermaster());
-
             }
             return erpmuserList;
         }

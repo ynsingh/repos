@@ -31,10 +31,12 @@ import pojo.hibernate.ErpmGenMasterDao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 /**
  *
@@ -64,6 +66,8 @@ public class DepartmentAction extends DevelopmentSupport {
     private Integer dmId;
     private CommitteemasterDAO comDAO = new CommitteemasterDAO();
     private ErpmGenMasterDao GMDao = new ErpmGenMasterDao();
+
+    static String dataSourceURL=null;
 
     public InputStream getInputStream() {
         return inputStream;
@@ -335,9 +339,16 @@ public class DepartmentAction extends DevelopmentSupport {
         String whereCondition;
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
             
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");

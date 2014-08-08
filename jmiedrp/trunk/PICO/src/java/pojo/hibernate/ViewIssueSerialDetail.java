@@ -26,6 +26,10 @@ public class ViewIssueSerialDetail  implements java.io.Serializable {
      private String erpmimItemBriefDesc;
      private char erpmimSerialNoApplicable;
      private String ismIssueNo;
+     private String imShortName;;
+     private String dmShortName;;
+     private String simShortName;
+     private String serialcode;
 
     public ViewIssueSerialDetail() {
     }
@@ -42,7 +46,7 @@ public class ViewIssueSerialDetail  implements java.io.Serializable {
         this.erpmimItemBriefDesc = erpmimItemBriefDesc;
         this.erpmimSerialNoApplicable = erpmimSerialNoApplicable;
     }
-    public ViewIssueSerialDetail(Long issdId, int isdId, int isdIsmId, int isdItemId, BigDecimal isdIssuedQuantity, BigDecimal isdReceivedQuantity, BigDecimal isdReturnedQuantity, Long issdIsdId, Long issdStockSerialId, Integer issdReceived, Integer issdReturned, String stStockSerialNo, BigDecimal displayQuantity, String erpmimItemBriefDesc, char erpmimSerialNoApplicable, String ismIssueNo) {
+    public ViewIssueSerialDetail(Long issdId, int isdId, int isdIsmId, int isdItemId, BigDecimal isdIssuedQuantity, BigDecimal isdReceivedQuantity, BigDecimal isdReturnedQuantity, Long issdIsdId, Long issdStockSerialId, Integer issdReceived, Integer issdReturned, String stStockSerialNo, BigDecimal displayQuantity, String erpmimItemBriefDesc, char erpmimSerialNoApplicable, String ismIssueNo, String imShortName, String dmShortName, String simShortName, String serialcode) {
        this.issdId = issdId;
        this.isdId = isdId;
        this.isdIsmId = isdIsmId;
@@ -59,8 +63,44 @@ public class ViewIssueSerialDetail  implements java.io.Serializable {
        this.erpmimItemBriefDesc = erpmimItemBriefDesc;
        this.erpmimSerialNoApplicable = erpmimSerialNoApplicable;
        this.ismIssueNo = ismIssueNo;
+        this.imShortName = imShortName;
+        this.dmShortName = dmShortName;
+         this.simShortName = simShortName;
+          this.serialcode = serialcode;
     }
    
+    public void setImShortName(String imShortName) {
+        this.imShortName = imShortName;
+    }
+
+    public void setDmShortName(String dmShortName) {
+        this.dmShortName = dmShortName;
+    }
+
+    public void setSimShortName(String simShortName) {
+        this.simShortName = simShortName;
+    }
+
+    public void setSerialcode(String serialcode) {
+        this.serialcode = serialcode;
+    }
+
+    public String getImShortName() {
+        return imShortName;
+    }
+
+    public String getDmShortName() {
+        return dmShortName;
+    }
+
+    public String getSimShortName() {
+        return simShortName;
+    }
+
+    public String getSerialcode() {
+        return serialcode;
+    }
+
     public Long getIssdId() {
         return this.issdId;
     }

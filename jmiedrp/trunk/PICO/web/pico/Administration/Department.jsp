@@ -1,3 +1,8 @@
+<%--
+I18n By    : Mohd. Manauwar Alam
+           : Jan 2014
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -39,7 +44,8 @@
 
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">Department Records Management</p>
+<%--                    <p align="center" class="pageHeading" style="color: #ffffff">Department Records Management</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.DeptRecMgmt')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -53,7 +59,8 @@
                         <s:hidden name="cm.subinstitutionmaster.simId"/>
                         <s:hidden name="cm.erpmGenMaster.erpmgmEgmId"/>
 
-                        <s:select label="Institution" name="dm.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName"
+<%--                        <s:select label="Institution" name="dm.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName" --%>
+                        <s:select key="Administration.InstitutionName" name="dm.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName"
                                   required = "true" requiredposition="right" 
                                   onchange="getSubinstitutionAndEmployeeList('SaveDepartmentAction_dm_institutionmaster_imId', 'SaveDepartmentAction_dm_subinstitutionmaster_simId', 'SaveDepartmentAction_dm_employeemaster_empId');" cssClass="textInput" >
                             <s:param name="labelcolspan" value="%{2}" />
@@ -61,12 +68,29 @@
                         </s:select>
                         <s:label/>
                         <s:label value=".............................." cssClass="tdSpace" />
-                        <s:select label="College/Faculty/School" name="dm.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput" required = "true" requiredposition="right">
+                <%--        <s:select label="College/Faculty/School" name="dm.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput" required = "true" requiredposition="right"> --%>
+                        <s:select key="Administration.SubinstitutionName" name="dm.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput" required = "true" requiredposition="right">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{1}" />
                         </s:select>
 
                         <s:textfield required="true" requiredposition="right" maxLength="70" size="70"
+                                     key="Administration.DepartmentName" name="dm.dmName" title="Enter Department Name"  cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{4}" />
+                        </s:textfield>
+
+                        <s:textfield required="true" requiredposition="right" maxLength="10" size="10"
+                                     key="Administration.DeptShortName" name="dm.dmShortName" title="Enter Short Name for Department"  
+                                     cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{1}" />
+                            <s:param name="inputcolspan" value="%{1}" />
+                        </s:textfield>
+
+                        <s:select key="Administration.HeadsName" required="true" name="dm.employeemaster.empId" headerKey="0" headerValue="-- Please Select --" list="empList" listKey="empId" listValue="empFname+' '+empMname+' '+empLname"
+                                  onchange="getEmployeeEmail('SaveDepartmentAction_dm_employeemaster_empId','SaveDepartmentAction_dm_dmEmailId')"
+                                  cssClass="textInput">
+                   <%--     <s:textfield required="true" requiredposition="right" maxLength="70" size="70"
                                      label="Department Name" name="dm.dmName" title="Enter Department Name"  cssClass="textInput">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{4}" />
@@ -79,9 +103,10 @@
                             <s:param name="inputcolspan" value="%{1}" />
                         </s:textfield>
 
-                        <s:select label="Head's Name" required="true" name="dm.employeemaster.empId" headerKey="0" headerValue="-- Please Select --" list="empList" listKey="empId" listValue="empFname+' '+empMname+' '+empLname"
+                        <s:select label="Head's Name" required="true" name="dm.employeemaster.empId" headerKey="0" headerValue="-- Please Select --" list="empList" listKey="empId" listValue="empFname+' '+empMname+' '+empLname" 
+
                                   onchange="getEmployeeEmail('SaveDepartmentAction_dm_employeemaster_empId','SaveDepartmentAction_dm_dmEmailId')"
-                                  cssClass="textInput">
+                                  cssClass="textInput"> --%>
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:select>
@@ -90,6 +115,76 @@
                         <s:label/>
 
                         <s:textfield required="true" requiredposition="right" maxLength="25" size="25"
+                                     key="Administration.HeadsDesignation" name="dm.dmHeadDesignation" title="Enter Designation"  cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{1}" />
+                            <s:param name="inputcolspan" value="%{1}" />
+                        </s:textfield>
+
+
+                        <s:textfield required="true" requiredposition="right" maxLength="50" size="50"
+                                     key="Administration.EMail" name="dm.dmEmailId" title="Enter Department's E-Mail Address" cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+
+                        <s:textfield required="true" requiredposition="right" maxLength="50" size="50"
+                                     key="Administration.Address" name="dm.dmAddressLine1" title="Enter Address" cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+
+                        <s:textfield required="false" maxLength="50" size="50" key="Administration.AddressLine2" labelposition="right"
+                                     name="dm.dmAddressLine2" title="Enter Department's Address" cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+
+                        <s:textfield maxLength="50" size="50" 
+                                     key="Administration.District" name="dm.dmDistrict" title="Enter District "  cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+
+                        <s:select key="Administration.Country" name="dm.countrymaster.countryId" headerKey="0" headerValue="-- Please Select --" list="ctList" listKey="countryId" listValue="countryName"
+                                  onchange="getStateList('SaveDepartmentAction_dm_countrymaster_countryId','SaveDepartmentAction_dm_statemaster_stateId')"  
+                                  required="true" requiredposition="right" cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}"/>
+                            <s:param name="inputcolspan" value="%{6}"/>
+                        </s:select>
+
+                        <s:select key="Administration.State" name="dm.statemaster.stateId" headerKey="0" headerValue="-- Please Select --" list="statemasterList" listKey="stateId" listValue="stateName" 
+                                  required="true" requiredposition="right" cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+
+                        <s:textfield required="true" requiredposition="right" maxLength="6" size="6"
+                                     key="Administration.PinCode" name="dm.dmPinNo" title="Enter Pin Code"  cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{1}" />
+                            <s:param name="inputcolspan" value="%{3}" />
+                        </s:textfield>
+
+                        <s:iterator value="{1,1,1,1,1,1,1,1}">
+                            <s:label value="..." cssClass="tdSpace"/>
+                        </s:iterator>
+
+                        <s:submit key="Administration.Save" >
+                            <s:param name="colspan" value="%{2}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+
+                        <s:submit key="Administration.Browse" action="BrowseDepartments">
+                            <s:param name="colspan" value="%{2}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+
+                        <s:submit key="Administration.Clear" onclick="ClearDepartmentFields();">
+                            <s:param name="colspan" value="%{1}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+
+                        <s:submit key="Administration.Print" action="PrintDepartments">
+<%--                        <s:textfield required="true" requiredposition="right" maxLength="25" size="25"
                                      label="Designation" name="dm.dmHeadDesignation" title="Enter Designation"  cssClass="textInput">
                             <s:param name="labelcolspan" value="%{1}" />
                             <s:param name="inputcolspan" value="%{1}" />
@@ -158,7 +253,7 @@
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
 
-                        <s:submit value="Export Data" action="PrintDepartments">
+                        <s:submit value="Export Data" action="PrintDepartments"> --%>
                             <s:param name="colspan" value="%{1}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>

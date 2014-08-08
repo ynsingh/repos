@@ -1,5 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -28,7 +29,7 @@
             </div>
 
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent" align="center">
+            <div id ="mainContent">
                 <s:bean name="java.util.HashMap" id="qTableLayout">
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
@@ -43,8 +44,9 @@
 
                     <s:form name="frmReceiveItemsBrowse">
                         <s:hidden name="varIssueReceiveID"/>
-                        <s:property value="message"/>
-                        <table width="200%" border="0" cellspacing="0" cellpadding="0" align="center">
+                       
+                        <table width="100%" >
+                            <tr><td>
                             <display:table name="irList" pagesize="15" decorator="Inventory.InventoryDecorator"
                                            excludedParams="*"  cellpadding="0"
                                            cellspacing="0"  id="doc"
@@ -59,13 +61,13 @@
                                     <display:column property="formattedisrReceiptDate" title="Receipt Date"
                                                     maxLength="10" headerClass="gridheader"
                                                     class="griddata" sortable="true"  />
-                                    <display:column property="employeemaster.empFname" title=""
+                                    <display:column property="employeemaster.empFname" title="" style="width:10%"
                                                     maxLength="30" headerClass="gridheader"
                                                     class="griddata" sortable="true"/>
-                                    <display:column property="employeemaster.empMname" title="Employee Name"
+                                    <display:column property="employeemaster.empMname" title="Employee Name" style="width:10%"
                                                     maxLength="30" headerClass="gridheader"
                                                     class="griddata" sortable="true"/>
-                                    <display:column property="employeemaster.empLname" title=""
+                                    <display:column property="employeemaster.empLname" title="" style="width:10%"
                                                     maxLength="30" headerClass="gridheader"
                                                     class="griddata" sortable="true"/>
                                     <display:column property="committeemaster.committeeName" title="Authority"
@@ -84,14 +86,17 @@
                                     </display:column>
 
                                 </display:table>
+                                    </td></tr>
                         </table>
+                        
                     </s:form>
-                    <br>
+                     <br>
                 </div>
-                &nbsp;
+                
+               <br><br>
             </div>
             <div id="footer">
-                <jsp:include page="footer.jsp" flush="true"></jsp:include>
+                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
             </div>
         </div>
     </body>

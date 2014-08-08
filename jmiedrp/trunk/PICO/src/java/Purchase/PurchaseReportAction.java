@@ -8,48 +8,38 @@
 package Purchase;
 
 import java.io.*;
-
-
-import org.apache.struts2.interceptor.validation.SkipValidation;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.struts2.ServletActionContext;
-import net.sf.jasperreports.engine.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.text.*;
-import pojo.hibernate.Subinstitutionmaster;
-import pojo.hibernate.SubinstitutionmasterDAO;
-
-import pojo.hibernate.Institutionmaster;
-import pojo.hibernate.InstitutionmasterDAO;
+import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import pojo.hibernate.Departmentmaster;
 import pojo.hibernate.DepartmentmasterDAO;
-
-import pojo.hibernate.Erpmusers;
-
-import pojo.hibernate.Suppliermaster;
-import pojo.hibernate.ErpmItemMasterDAO;
-import pojo.hibernate.ErpmItemMaster;
-import pojo.hibernate.SuppliermasterDAO;
-
-import pojo.hibernate.ErpmPoMaster;
 import pojo.hibernate.ErpmItemCategoryMaster;
 import pojo.hibernate.ErpmItemCategoryMasterDao;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import utils.DevelopmentSupport;
-import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
-import utils.DateUtilities;
+import pojo.hibernate.ErpmItemMaster;
+import pojo.hibernate.ErpmItemMasterDAO;
+import pojo.hibernate.ErpmPoMaster;
 import pojo.hibernate.ErpmPurchasechallanDetail;
+import pojo.hibernate.Erpmusers;
+import pojo.hibernate.Institutionmaster;
+import pojo.hibernate.InstitutionmasterDAO;
+import pojo.hibernate.Subinstitutionmaster;
+import pojo.hibernate.SubinstitutionmasterDAO;
+import pojo.hibernate.Suppliermaster;
+import pojo.hibernate.SuppliermasterDAO;
+import utils.DateUtilities;
+import utils.DevelopmentSupport;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
-
-import java.util.Locale;
-import java.util.ResourceBundle;
-import com.opensymphony.xwork2.ActionContext;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
+//import com.opensymphony.xwork2.ActionContext;
 
 public class PurchaseReportAction extends DevelopmentSupport {
 
@@ -83,6 +73,8 @@ public class PurchaseReportAction extends DevelopmentSupport {
     private Integer supplierId, itemId, institutionId, subinstitutionId, departmentId, SubCategoryId, CategoryId, ItemTypeId, ItemNameId;
     private InputStream inputStream;
     Institutionmaster im;
+
+    static String dataSourceURL=null;
 
     public InputStream getInputStream() {
         return inputStream;
@@ -339,9 +331,16 @@ public String ExportPendingPO() throws Exception {
 //    String fileName = getSession().getServletContext().getRealPath("pico\\Purchase\\Reports\\PendingPOReport.jasper");
     String whereCondition = "";
      try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -504,9 +503,16 @@ whereCondition = whereCondition + " and erpm_po_master.`POM_Cancelled` = 'No' AN
             String whereCondition = "";
             //  whereCondition = " subinstitutionmaster.SIM_Id = "+subinstitution.getSimId();
             try {
-                Locale locale = ActionContext.getContext().getLocale();
-                ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+//                Locale locale = ActionContext.getContext().getLocale();
+//                ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
                 HttpServletResponse response = ServletActionContext.getResponse();
                 response.setHeader("Cache-Control", "no-cache");
@@ -595,9 +601,16 @@ whereCondition = whereCondition + " and erpm_po_master.`POM_Cancelled` = 'No' AN
 //    String fileName = getSession().getServletContext().getRealPath("pico\\Purchase\\Reports\\UncheckedAndUnverifiedItems.jasper");
     String whereCondition = "";
      try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -704,9 +717,16 @@ whereCondition = whereCondition + " and erpm_po_master.`POM_Cancelled` = 'No' AN
 //    String fileName = getSession().getServletContext().getRealPath("pico\\Purchase\\Reports\\UncheckedAndUnverifiedItems.jasper");
     String whereCondition = "";
      try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+//            Locale locale = ActionContext.getContext().getLocale();
+//            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+
+            Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");

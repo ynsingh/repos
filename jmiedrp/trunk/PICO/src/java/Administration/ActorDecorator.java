@@ -9,10 +9,12 @@
  * @author afreen
  */
 package Administration;
+//import pojo.hibernate.*;
 import org.displaytag.decorator.TableDecorator;
 import pojo.hibernate.UserMessage;
 import pojo.hibernate.ErpmGenMaster;
 import pojo.hibernate.ErpmNews;
+import pojo.hibernate.GfrMaster;
 import pojo.hibernate.ErpmGenMasterDao;
 import pojo.hibernate.DepartmentalBudgetAllocation;
 import utils.DateUtilities;
@@ -102,6 +104,14 @@ public String getformatteddbaToDate() {
         else
             return "Straight Line";
     }
+    public String getformattedGFRinstituteRule() {
+      GfrMaster gfr = (GfrMaster)getCurrentRowObject();;
+         if (Character.toUpperCase(gfr.getGfrorInstituteRule()) == 'I')
+            return "Institute Specific Rule";
+        else
+            return "General Financial Rule";
+
+}
     
 }
 

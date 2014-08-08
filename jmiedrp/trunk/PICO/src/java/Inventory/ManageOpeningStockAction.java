@@ -718,7 +718,8 @@ public class ManageOpeningStockAction extends DevelopmentSupport {
             //message = "TOS ID :" + getTosId();
             tos = tosDAO.findBytosId(getTosId());
             setQuantity(tos.getTosQuantity());
-            message = "Value of BatchId is " + tos.getTosBatchId();
+            //message = "Value of BatchId is " + tos.getTosBatchId();
+            message = "Current BatchId is " + tos.getTosBatchId();
             tosImIdList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
             tosSimImIdList = simDao.findBysimImId(Short.valueOf(getSession().getAttribute("imId").toString()));
             tosDmList = dmDao.findBydmSimId(Integer.valueOf(getSession().getAttribute("simId").toString()));
@@ -771,7 +772,8 @@ public class ManageOpeningStockAction extends DevelopmentSupport {
 
         tos = tosDAO.findBytosId(getTosId());
         tosDAO.delete(tos);
-        tosList = tosDAO.findAll();
+//        tosList = tosDAO.findAll();
+        tosList = tosDAO.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
         message = "record is deleted";
         ErpmuList = erpmusersDao.findUserNamebyimid((Integer.valueOf(getSession().getAttribute("userid").toString())), (Short.valueOf(getSession().getAttribute("imId").toString())));
 
@@ -866,7 +868,6 @@ public class ManageOpeningStockAction extends DevelopmentSupport {
         } catch (NullPointerException npe) {
         }
     }
-
 /*
     @SkipValidation
     public String PrintStockSummary() throws Exception {

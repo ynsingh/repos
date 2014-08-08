@@ -8,9 +8,11 @@
 		
         <%
 		String  filename="0";
-try{
+//try{
+try{ %>
   filename=  ${userImageFileName} ;
-}catch(Exception e){}
+<%-- }catch(Exception e){} --%>
+<%}catch(Exception e){}%>
                 out.print(""+filename);
         %>
 		</table>

@@ -3,6 +3,10 @@
     Created on : Mar 26, 2012, 12:12:54 PM
     Author     : mkhan
     Modified by SKNaqvi on Dec. 09, 2012 to use qxhtml theme
+
+    I18n By    : Mohd. Manauwar Alam
+               : Jan 2014
+
 --%>
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -41,7 +45,8 @@
                 </s:bean>
 
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">PROGRAM MANAGEMENT</p>
+<%--                    <p align="center" class="pageHeading" style="color: #ffffff">PROGRAM MANAGEMENT</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.ProgramMgmt')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -50,19 +55,22 @@
                     <s:form name="frmErpmProgram" action="SaveErpmprogramAction"  theme="qxhtml">
                         <s:hidden name="erpmprogram.erpmpId" />
                         <br>
+                               <%-- <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
+                                             label="Program Name" name="erpmprogram.erpmpDisplayName" title="Enter Program Name"  cssClass="textInput"> --%>
                                 <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
-                                             label="Program Name" name="erpmprogram.erpmpDisplayName" title="Enter Program Name"  cssClass="textInput">
+                                             key="Administration.ProgramName" name="erpmprogram.erpmpDisplayName" title="Enter Program Name"  cssClass="textInput">
                                              <s:param name="labelcolspan" value="%{2}" />
                                              <s:param name="inputcolspan" value="%{6}" />
                                 </s:textfield>
 
-                                <s:select cssClass="textInput" label="Submodule"  required="true" name="erpmprogram.erpmsubmodule.erpmSubModuleId" headerKey="" headerValue="-- Please Select --" list="erpmsmList" listKey="erpmSubModuleId" listValue="esmName"
+             <%--                   <s:select cssClass="textInput" label="Submodule"  required="true" name="erpmprogram.erpmsubmodule.erpmSubModuleId" headerKey="" headerValue="-- Please Select --" list="erpmsmList" listKey="erpmSubModuleId" listValue="esmName" --%>
+                                <s:select cssClass="textInput" key="Administration.SubModuleName"  required="true" name="erpmprogram.erpmsubmodule.erpmSubModuleId" headerKey="" headerValue="-- Please Select --" list="erpmsmList" listKey="erpmSubModuleId" listValue="esmName"
                                           onchange="getProgramBySubmoduleList('SaveErpmprogramAction_erpmprogram_erpmsubmodule_erpmSubModuleId', 'SaveErpmprogramAction_erpmprogram_erpmprogram_erpmpId');">
                                              <s:param name="labelcolspan" value="%{2}" />
                                              <s:param name="inputcolspan" value="%{6}" />
                                 </s:select>
 
-                                <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
+                      <%--          <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
                                              label="Program Action" name="erpmprogram.erpmpHref" title="Enter Program Path"  cssClass="textInput">
                                              <s:param name="labelcolspan" value="%{2}" />
                                              <s:param name="inputcolspan" value="%{6}" />
@@ -74,28 +82,45 @@
                                              <s:param name="inputcolspan" value="%{6}" />
                                 </s:textfield>
 
-                                <s:select label="Subprogram of " required="false" name="erpmprogram.erpmprogram.erpmpId" headerKey="0" headerValue="None" list="erpmList" listKey="erpmpId" listValue="erpmpDisplayName"  cssClass="textInput">
+                                <s:select label="Subprogram of " required="false" name="erpmprogram.erpmprogram.erpmpId" headerKey="0" headerValue="None" list="erpmList" listKey="erpmpId" listValue="erpmpDisplayName"  cssClass="textInput"> --%>
+                                <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
+                                             key="Administration.ProgramAction" name="erpmprogram.erpmpHref" title="Enter Program Path"  cssClass="textInput">
+                                             <s:param name="labelcolspan" value="%{2}" />
+                                             <s:param name="inputcolspan" value="%{6}" />
+                                </s:textfield>
+
+                                <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
+                                             key="Administration.Order" name="erpmprogram.erpmpOrder" title="Enter Order"  cssClass="textInput">
+                                             <s:param name="labelcolspan" value="%{2}" />
+                                             <s:param name="inputcolspan" value="%{6}" />
+                                </s:textfield>
+
+                                <s:select key="Administration.SubProgramof" required="false" name="erpmprogram.erpmprogram.erpmpId" headerKey="0" headerValue="None" list="erpmList" listKey="erpmpId" listValue="erpmpDisplayName"  cssClass="textInput">
                                              <s:param name="labelcolspan" value="%{2}" />
                                              <s:param name="inputcolspan" value="%{6}" />
                                 </s:select>
 
-                                <s:label value="Choose Generic Privileges Group(s) for the Program" cssClass="label">
+                      <%--          <s:label value="Choose Generic Privileges Group(s) for the Program" cssClass="label"> --%>
+                        <s:label key="getText('Administration.GenericPrivileges')" value="" cssClass = "pageSubHeading">
                                              <s:param name="labelcolspan" value="%{2}" />
                                              <s:param name="inputcolspan" value="%{6}" />
                                 </s:label>
                                     
                                 
                                 
-                        <s:checkbox cssClass="checkboxLabel"  label="Institution Administrator" name="institutionAdministrator"  value="1" labelposition="left"/>
+            <%--            <s:checkbox cssClass="checkboxLabel"  label="Institution Administrator" name="institutionAdministrator"  value="1" labelposition="left"/>
                                 <s:checkbox cssClass="checkboxLabel"  label="Purchase Manager" name="purchaseManager" value="0" labelposition="left"/>
-                                <s:checkbox cssClass="checkboxLabel"  label="Purchase Staff" name="purchaseStaff" value="0" labelposition="left"/>
+                                <s:checkbox cssClass="checkboxLabel"  label="Purchase Staff" name="purchaseStaff" value="0" labelposition="left"/> --%>
+                        <s:checkbox cssClass="checkboxLabel"  key = "Administration.InstAdmin" name="institutionAdministrator"  value="1" labelposition="left"/>
+                                <s:checkbox cssClass="checkboxLabel"  key="Administration.PurchaseManager" name="purchaseManager" value="0" labelposition="left"/>
+                                <s:checkbox cssClass="checkboxLabel"  key="Administration.PurchaseStaff" name="purchaseStaff" value="0" labelposition="left"/>
                         
                                 <s:label/>
                                 <s:label/>
                                 <s:label/>
                                 <s:label/>
                                 <s:label/>  
-                                <s:submit name="btnSubmit" value="Save"   action="SaveErpmprogramAction">
+                        <%--        <s:submit name="btnSubmit" value="Save"   action="SaveErpmprogramAction">
                                             <s:param name="colspan" value="%{1}" />
                                             <s:param name="align" value="%{'center'}" />
                                 </s:submit>
@@ -105,7 +130,18 @@
                                             <s:param name="align" value="%{'center'}" />
                                 </s:submit>
 
-                                <s:submit name="bthReset" value="Clear" action="ClearProgram">
+                                <s:submit name="bthReset" value="Clear" action="ClearProgram">--%>
+                                <s:submit name="btnSubmit" key="Administration.Save"   action="SaveErpmprogramAction">
+                                            <s:param name="colspan" value="%{1}" />
+                                            <s:param name="align" value="%{'center'}" />
+                                </s:submit>
+
+                                <s:submit name="btnSubmit" key="Administration.Browse" action="BrowsePrograms">
+                                            <s:param name="colspan" value="%{1}" />
+                                            <s:param name="align" value="%{'center'}" />
+                                </s:submit>
+
+                                <s:submit name="bthReset" key = "Administration.Clear" action="ClearProgram">
                                             <s:param name="colspan" value="%{1}" />
                                             <s:param name="align" value="%{'center'}" />
                                 </s:submit>

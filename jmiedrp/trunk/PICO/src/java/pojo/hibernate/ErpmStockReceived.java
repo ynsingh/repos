@@ -38,6 +38,8 @@ public class ErpmStockReceived  implements java.io.Serializable {
      private String stProductNo;
      private String stStockSerialNo;
      private Date stWarrantyExpiryDate;
+     private BigDecimal stDepriciatedValue;
+     private Date stDepriciationCalcDate;
      private Set erpmIssueSerialDetails = new HashSet(0);
      private Set erpmIssueReturnDetails = new HashSet(0);
 
@@ -76,6 +78,8 @@ public class ErpmStockReceived  implements java.io.Serializable {
        this.stProductNo = stProductNo;
        this.stStockSerialNo = stStockSerialNo;
        this.stWarrantyExpiryDate = stWarrantyExpiryDate;
+       this.stDepriciatedValue = stDepriciatedValue;
+       this.stDepriciationCalcDate = stDepriciationCalcDate;
        this.erpmIssueSerialDetails = erpmIssueSerialDetails;
        this.erpmIssueReturnDetails = erpmIssueReturnDetails;
     }
@@ -254,6 +258,20 @@ public class ErpmStockReceived  implements java.io.Serializable {
     
     public void setStWarrantyExpiryDate(Date stWarrantyExpiryDate) {
         this.stWarrantyExpiryDate = stWarrantyExpiryDate;
+    }
+    public BigDecimal getStDepriciatedValue() {
+        return this.stDepriciatedValue;
+    }
+
+    public void setStDepriciatedValue(BigDecimal stDepriciatedValue) {
+        this.stDepriciatedValue = stDepriciatedValue;
+    }
+    public Date getStDepriciationCalcDate() {
+        return this.stDepriciationCalcDate;
+    }
+
+    public void setStDepriciationCalcDate(Date stDepriciationCalcDate) {
+        this.stDepriciationCalcDate = stDepriciationCalcDate;
     }
     public Set getErpmIssueSerialDetails() {
         return this.erpmIssueSerialDetails;

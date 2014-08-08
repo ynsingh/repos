@@ -2,6 +2,10 @@
     Document   : DeprecitionAction
     Created on : Apr 13, 2012, 11:55:54 AM
     Author     : Faraz & Ehtesham
+
+   I18n By    : Mohd. Manauwar Alam
+               : Jan 2014
+
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -41,7 +45,8 @@
                 <div id ="mainContent">
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">ITEM CATEGORY MANAGEMENT</p>
+<%--                    <p align="center" class="pageHeading" style="color: #ffffff">ITEM CATEGORY MANAGEMENT</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.ItemCatMgmt')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -57,8 +62,8 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <s:select requiredposition="left" required="true" label="Institution" name="erpmItemCategoryMaster.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="tosImIdList" listKey="imId" listValue="imName"
-                                                  onchange="getSubinstitutionList('ErpmTOSAction_esr_institutionmaster_imId', 'ErpmTOSAction_esr_subinstitutionmaster_simId');" cssClass="textInput" />
+<%--				<s:select requiredposition="left" required="true" label="Institution" name="erpmItemCategoryMaster.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="tosImIdList" listKey="imId" listValue="imName"
+					  onchange="getSubinstitutionList('ErpmTOSAction_esr_institutionmaster_imId', 'ErpmTOSAction_esr_subinstitutionmaster_simId');" cssClass="textInput" />
 
                                         <s:textfield requiredposition="left" required="true" maxLength="100" size="50"
                                                      label="Category Name" name="erpmItemCategoryMaster.erpmicmCatDesc" headerKey="0" title="Enter Capital Item Category Name"  cssClass="textInput"/>
@@ -91,7 +96,42 @@
                                             <s:param name="colspan" value="%{2}" />
                                             <s:param name="align" value="%{'center'}" />
                                         </s:submit> </td>
-                                    <td>  <s:submit theme="simple" name="btnSubmit" value="Clear" action="ClearItemCategory" cssClass="textInput">
+                                    <td>  <s:submit theme="simple" name="btnSubmit" value="Clear" action="ClearItemCategory" cssClass="textInput"> --%>
+                                        <s:select requiredposition="left" required="true" key="Administration.InstitutionName" name="erpmItemCategoryMaster.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="tosImIdList" listKey="imId" listValue="imName"
+                                                  onchange="getSubinstitutionList('ErpmTOSAction_esr_institutionmaster_imId', 'ErpmTOSAction_esr_subinstitutionmaster_simId');" cssClass="textInput" />
+
+                                        <s:textfield requiredposition="left" required="true" maxLength="100" size="50"
+                                                     key="Administration.CategoryName" name="erpmItemCategoryMaster.erpmicmCatDesc" headerKey="0" title="Enter Capital Item Category Name"  cssClass="textInput"/>
+
+                                        <s:select id="15" required="true" requiredposition="left" key="Administration.CategoryLevel" name="erpmItemCategoryMaster.erpmicmItemLevel" headerKey="0" headerValue="-- Please Select --" list="{'1','2','3'}"  cssClass="textInput" 
+                                                  onchange="getParentCategoryList('15', '16')">
+                                            <s:param name="labelcolspan" value="%{1}" />
+                                            <s:param name="inputcolspan" value="%{3}" />
+                                        </s:select>
+
+                                        <s:select id="16" requiredposition="left" required="true" key="Administration.ParentCategory" name="erpmItemCategoryMaster.erpmItemCategoryMaster.erpmicmItemId" headerKey="0" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc"/>
+
+                                        <s:select requiredposition="left" required="true" key="Administration.DepriciationMethod" name="erpmItemCategoryMaster.erpmicmDepreciationMethod" headerKey="0" headerValue="-- Please Select --" list="#{'S':'Straight Line','W':'Written Down Value'}"  cssClass="textInput" value="depvalue" >
+                                            <s:param name="labelcolspan" value="%{1}" />
+                                            <s:param name="inputcolspan" value="%{3}" />
+                                        </s:select>
+
+                                        <s:textfield required="true" requiredposition="left" maxLength="5" size="7"
+                                                     key="Administration.DepriciationPercnt" name="erpmItemCategoryMaster.erpmicmDepreciationPercentage" headerKey="-1" title="Enter Depre %"  cssClass="textInput"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <s:submit  theme="simple" key="Administration.Save" action="SaveItemCategoryAction" cssClass="textInput" >
+                                            <s:param name="colspan" value="%{3}" />
+                                            <s:param name="align" value="%{'center'}" />
+                                        </s:submit></td>
+                                    <td>
+                                        <s:submit theme="simple" name="btnSubmit" key="Administration.Browse" action="BrowseItemCategory" cssClass="textInput">
+                                            <s:param name="colspan" value="%{2}" />
+                                            <s:param name="align" value="%{'center'}" />
+                                        </s:submit> </td>
+                                    <td>  <s:submit theme="simple" name="btnSubmit" key="Administration.Clear" action="ClearItemCategory" cssClass="textInput">
                                             <s:param name="colspan" value="%{2}" />
                                             <s:param name="align" value="%{'center'}" />
                                         </s:submit> </td>

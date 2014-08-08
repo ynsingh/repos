@@ -2,6 +2,9 @@
     Document   : StockDetails
     Created on : Apr 13, 2012, 11:55:54 AM
     Author     : farah
+    I18n By    : Mohd. Manauwar Alam
+               : March 2014
+
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -40,7 +43,7 @@
                 </div>
                 <!-- *********************************End Menu****************************** -->
                 <br><br>
-                <p align="center"><s:label value="STOCK DETAILS"  cssClass="pageHeading"/>
+                <p align="center" class="pageHeading" style="color:  #ffffff"><s:property value="getText('Inventory.StockDetails')" />"  </p>
             <p align="center"><s:property value="message" /></p>
 
             <div id ="mainContent">
@@ -58,69 +61,69 @@
                                 <td>
 
                                     <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                                                 label="Batch Id" name="tos.tosBatchId" disabled="true" cssClass="textInputRO"/>
+                                                 key="Inventory.BatchId" name="tos.tosBatchId" disabled="true" cssClass="textInputRO"/>
 
-                                    <s:select required="true" label="Institution" name="tos.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="tosImIdList" listKey="imId" listValue="imName"
+                                    <s:select required="true" key="Inventory.Institution" name="tos.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="tosImIdList" listKey="imId" listValue="imName"
                                               onchange="getSubinstitutionList('ManageOpeningStockAction_tos_institutionmaster_imId', 'ManageOpeningStockAction_tos_subinstitutionmaster_simId');" cssClass="textInput" />
-                                    <s:select required="true" label="SubInstitution" name="tos.subinstitutionmaster.simId" headerKey="" headerValue="-- Please select --" list="tosSimImIdList" listKey="simId" listValue="simName"
+                                    <s:select required="true" key="Inventory.SubInstitution" name="tos.subinstitutionmaster.simId" headerKey="" headerValue="-- Please select --" list="tosSimImIdList" listKey="simId" listValue="simName"
                                               onchange="getDepartmentList('ManageOpeningStockAction_tos_subinstitutionmaster_simId','ManageOpeningStockAction_tos_departmentmaster_dmId')" cssClass="textInput"/>
-                                    <s:select required="true" label="Department" name="tos.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --" list="tosDmList" listKey="dmId" listValue="dmName" cssClass="textInput"/>
-                                    <s:select required="true" label="Supplier" name="tos.suppliermaster.smId" headerKey="" headerValue="-- Please Select --" list="tosSmList" listKey="smId" listValue="smName" cssClass="textInput"/>
-                                    <s:select required="true" label="Item Type" name="erpmItemCategoryMaster.erpmItemCategoryMasterByErpmimItemCat1.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
+                                    <s:select required="true" key="Inventory.Department" name="tos.departmentmaster.dmId" headerKey="" headerValue="-- Please Select --" list="tosDmList" listKey="dmId" listValue="dmName" cssClass="textInput"/>
+                                    <s:select required="true" key="Inventory.SupplierName" name="tos.suppliermaster.smId" headerKey="" headerValue="-- Please Select --" list="tosSmList" listKey="smId" listValue="smName" cssClass="textInput"/>
+                                    <s:select required="true" key="Inventory.ItemType" name="erpmItemCategoryMaster.erpmItemCategoryMasterByErpmimItemCat1.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                                               onchange="getSubCategoryList('ManageOpeningStockAction_erpmItemCategoryMaster_erpmItemCategoryMasterByErpmimItemCat1_erpmicmItemId', 'ManageOpeningStockAction_erpmItemCategoryMaster_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId')"
                                               ondblclick="getSubCategoryList('ManageOpeningStockAction_erpmItemCategoryMaster_erpmItemCategoryMasterByErpmimItemCat1_erpmicmItemId');"cssClass="textInput"/>
-                                    <s:select required="true" label="Item Category" name="erpmItemCategoryMaster.erpmItemCategoryMasterByErpmimItemCat2.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList2" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
+                                    <s:select required="true" key="Inventory.ItemCategory" name="erpmItemCategoryMaster.erpmItemCategoryMasterByErpmimItemCat2.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList2" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                                               onchange="getSubCategoryList('ManageOpeningStockAction_erpmItemCategoryMaster_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId', 'ManageOpeningStockAction_erpmItemCategoryMaster_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId')"
                                               ondblclick="getSubCategoryList('ManageOpeningStockAction_erpmItemCategoryMaster_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId');"/>
-                                    <s:select required="true" label="Item Sub Category" name="erpmItemCategoryMaster.erpmItemCategoryMasterByErpmimItemCat3.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList3" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
+                                    <s:select required="true" key="Inventory.ItemSubCategory" name="erpmItemCategoryMaster.erpmItemCategoryMasterByErpmimItemCat3.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList3" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
                                               onchange="getItemListTOS('ManageOpeningStockAction_erpmItemCategoryMaster_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId', 'ManageOpeningStockAction_tos_erpmItemMaster_erpmimId')"
                                               ondblclick="getItemListTOS('ManageOpeningStockAction_erpmItemCategoryMaster_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId');"cssClass="textInput"/>
-                                    <s:select required="true" label="Item Name" name="tos.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --" list="tosINList" listKey="erpmimId" listValue="erpmimDetailedDesc" cssClass="textInput"/>
+                                    <s:select required="true" key="Inventory.ItemName" name="tos.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --" list="tosINList" listKey="erpmimId" listValue="erpmimDetailedDesc" cssClass="textInput"/>
                                     <s:textfield  requiredposition="centre" maxLength="50" size="50"
-                                                  label="In Stock since" name="tos.tosInStockSince" title="Enter the date "  cssClass="textInput"/>
+                                                  key="Inventory.InStockSince" name="tos.tosInStockSince" title="Enter the date "  cssClass="textInput"/>
                                     <s:textfield  requiredposition="left" maxLength="50" size="50"
-                                                  label="PurchaseOrder No" name="tos.tosPoNo" title="Enter purchase order no."  cssClass="textInput"/>
+                                                  key="Inventory.PurchaseOrderNo" name="tos.tosPoNo" title="Enter purchase order no."  cssClass="textInput"/>
                                     <s:textfield  requiredposition="centre" maxLength="50" size="50"
-                                                  label="PurchaseOrder Date " name="tos.tosPoDate" title="Enter purchase order date"  cssClass="textInput"/>
+                                                  key="Inventory.PurchaseOrderDate" name="tos.tosPoDate" title="Enter purchase order date"  cssClass="textInput"/>
                                     <s:textfield  requiredposition="left" maxLength="50" size="50"
-                                                  label="Challan No." name="tos.tosChallanNo" title="Enter Challan Number"  cssClass="textInput"/>
+                                                  key="Inventory.ChallanNo" name="tos.tosChallanNo" title="Enter Challan Number"  cssClass="textInput"/>
                                     <s:textfield requiredposition="centre" maxLength="50" size="50"
-                                                 label="Challan Date" name="tos.tosChallanDate" title="Enter Challan Date"  cssClass="textInput"/>
+                                                 label="Inventory.ChallanDate" name="tos.tosChallanDate" title="Enter Challan Date"  cssClass="textInput"/>
 
                                     <s:textfield  requiredposition="left" maxLength="50" size="50"
-                                                  label="Invoice No" name="tos.tosInvoiceNo" title="Enter invoice no"  cssClass="textInput"/>
+                                                  key="Inventory.InvoiceNo" name="tos.tosInvoiceNo" title="Enter invoice no"  cssClass="textInput"/>
                                     <s:textfield  requiredposition="centre" maxLength="50" size="50"
-                                                  label="Invoice Date" name="tos.tosInvoiceDate" title="Enter Invoice date"  cssClass="textInput"/>
+                                                  label="Inventory.InvoiceDate" name="tos.tosInvoiceDate" title="Enter Invoice date"  cssClass="textInput"/>
 
                                     <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                                                 label="Unit rate" name="tos.tosUnitRate" title="Enter Unit rate"  cssClass="textInput"/>
+                                                 key="Inventory.UnitRate" name="tos.tosUnitRate" title="Enter Unit rate"  cssClass="textInput"/>
                                     <s:textfield  requiredposition="left" maxLength="50" size="50"
                                                   label="Tax Value" name="tos.tosTaxValue" title="Enter tax value"  cssClass="textInput"/>
                                     <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                                                 label="Central Stock Register No." name="tos.tosCsrNo" title="Enter Central Stock Register Number"  cssClass="textInput"/>
+                                                 key="Inventory.CentralStockRegisterNo" name="tos.tosCsrNo" title="Enter Central Stock Register Number"  cssClass="textInput"/>
                                     <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                                                 label="Central Stock Register Page No." name="tos.tosCsrPgNo" title="Enter Central Stock Register Page  Number"  cssClass="textInput"/>
+                                                 key="Inventory.CentralStockRegisterPageNo" name="tos.tosCsrPgNo" title="Enter Central Stock Register Page  Number"  cssClass="textInput"/>
                                     <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                                                 label="Department Stock Register No." name="tos.tosDeptSrNo" title="Enter Department Stock Register Number"  cssClass="textInput"/>
+                                                 key="Inventory.DepartmentStockRegisterNo" name="tos.tosDeptSrNo" title="Enter Department Stock Register Number"  cssClass="textInput"/>
                                     <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                                                 label="Department Stock Register Page No" name="tos.tosDeptSrPgNo" title="Enter Department Stock Register Page Number"  cssClass="textInput"/>
+                                                 key="Inventory.DepartmentStockRegisterPageNo" name="tos.tosDeptSrPgNo" title="Enter Department Stock Register Page Number"  cssClass="textInput"/>
                                     <s:textfield  requiredposition="left" maxLength="50" size="50"
-                                                  label="Product No." name="tos.tosProductNo" title="Enter Product No."  cssClass="textInput"/>
+                                                  key="Inventory.ProductNo" name="tos.tosProductNo" title="Enter Product No."  cssClass="textInput"/>
                                     <s:textfield  requiredposition="left" maxLength="50" size="50"
-                                                  label="Stock Serial No." name="tos.tosStockSerialNo" title="Enter Stock Serial No."  cssClass="textInput"/>
+                                                  key="Inventory.StockSerialNo" name="tos.tosStockSerialNo" title="Enter Stock Serial No."  cssClass="textInput"/>
                                     <s:textfield  requiredposition="left" maxLength="50" size="50"
-                                                  label="Warranty Expiry Date" name="tos.tosWarrantyExpiryDate" title="Enter Warranty Expiry date"  cssClass="textInput"/>
-                                    <s:select  label="Warranty Type" name="tos.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="tosWTList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput"/>
+                                                  key="Inventory.WarrantyExpiryDate" name="tos.tosWarrantyExpiryDate" title="Enter Warranty Expiry date"  cssClass="textInput"/>
+                                    <s:select  key="Inventory.WarrantyType" name="tos.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="tosWTList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput"/>
                                     <s:textarea  requiredposition="left" rows="5" cols="100" maxLength="500"
-                                                 label="Remarks" name="remark" title="Enter remark"  />
+                                                 key="Inventory.Remarks" name="remark" title="Enter remark"  />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <s:submit theme="simple" name="btnSubmit" value="Save" action="SaveTOSAction"  cssClass="textInput"/>
+                                    <s:submit theme="simple" name="btnSubmit" key="Inventory.Save" action="SaveTOSAction"  cssClass="textInput"/>
                                 </td>
                                 <td>
-                                    <s:submit theme="simple" name="bthReset" value="Clear" action="ClearTransferStockDetails"  cssClass="textInput" />
+                                    <s:submit theme="simple" name="bthReset" key="Inventory.Clear" action="ClearTransferStockDetails"  cssClass="textInput" />
 
                                     <%-- <s:submit theme="simple" name="showGFRreport"  value="Show GFR" action="showGFRreport" disabled="varShowGFR"/>
                                     --%>

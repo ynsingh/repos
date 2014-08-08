@@ -2,6 +2,8 @@
     Document   : ReceiveIssuedItemsDetails
     Created on : 30 May, 2012, 11:01:28 AM
     Author     : Saeed
+    I18n By    : Mohd. Manauwar Alam
+               : March 2014
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -44,7 +46,7 @@
                 </s:bean>
                 <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">RECEIVE ISSUED ITEMS DETAIL</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Inventory.ReceivedIssueItemsDetail')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -56,43 +58,52 @@
                         <s:hidden name="varIssueReceiveID"/>
                         <s:hidden name="varchar_IssueNo"/>
 
+<table border="0" cellpadding="4" cellspacing="0" align="center">
+                        <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInputRO" key="Inventory.ReceiptNo" name="ir.isrReceiptNo" readonly="true" title="" />
 
-                        <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInputRO" label="Receipt No" name="ir.isrReceiptNo" readonly="true" title="" />
+                        <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInputRO" key="Inventory.ReceiptDate" name="receiptDate" readonly="true" title="" />
 
-                        <s:textfield requiredposition="left" maxLength="50" size="30" cssClass="textInputRO" label="Receip Date(dd-MM-yyyy)" name="receiptDate" readonly="true" title="" />
-
-                        <%-- <sx:datetimepicker name="ir.isrReceiptDate" label="Receip Date(yyyy-mm-dd)" displayFormat="yyyy-MM-dd" value="%{'today'}"/>
-                        --%>
+                       
                         <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="50"
-                                     label="Employee Name" name="ir.employeemaster.empFname+' '+ir.employeemaster.empMname+' '+ir.employeemaster.empLname" readonly="True" />
-
-                        <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="50"
-                                     label="Authority" name="ir.committeemaster.committeeName" readonly="True" />
+                                     key="Inventory.EmployeeName" name="ir.employeemaster.empFname+' '+ir.employeemaster.empMname+' '+ir.employeemaster.empLname" readonly="True" />
 
                         <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="50"
-                                     label="IssueNo" name="ir.erpmIssueMaster.ismIssueNo" readonly="True" />
+                                     key="Inventory.Authority" name="ir.committeemaster.committeeName" readonly="True" />
 
+                        <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="50"
+                                     key="Inventory.IssueNo" name="ir.erpmIssueMaster.ismIssueNo" readonly="True" />
+
+                        </table>
+                        
                     </s:form>
-                </div>
-                <div style="border: solid 1px #000000; background: gainsboro">
+                <s:if test="isueDetList.size > 0">
+                        <hr>
+
+                        <s:label value="%{getText('Inventory.ItemDetailsAre')}" cssClass= "pageSubHeading" >
+                            <s:param name="labelcolspan" value="%{1}" />
+                            <s:param name="inputcolspan" value="%{9}" />
+                        </s:label>
+
+                        <hr>
+               
                     <s:form name="frmReceivedIssuedItemsDetailsRows" align="left">
                         <s:hidden name="varIssueReceiveID"/>
 
-                        <table width="50%" border="1" cellspacing="0" cellpadding="0" align ="center">
+                        <table width="100%" >
                             <tr><td>
                                 <display:table name="isueDetList" pagesize="10"
-                                                   excludedParams="*" export="true" cellpadding="0"
+                                                   excludedParams="*"  cellpadding="8"
                                                    cellspacing="0" id="doc"
                                                    requestURI="/Inventory/ReceiveItemsAction.Action">
 
                                     <display:column  class="griddata" title="S.No" sortable="true" maxLength="100" headerClass="gridheader">
                                     <c:out> ${doc_rowNum}
                                     </display:column>
-                                    <display:column property="erpmItemMaster.erpmimItemBriefDesc" title="Item Name"
-                                                    maxLength="35" headerClass="gridheader"
+                                    <display:column property="erpmItemMaster.erpmimItemBriefDesc" title="Item Name" style="width:30%"
+                                                    maxLength="100" headerClass="gridheader"
                                                     class="griddata" sortable="true"/>
-                                    <display:column property="erpmItemMaster.erpmGenMaster.erpmgmEgmDesc" title="U.O.M"
-                                                    maxLength="35" headerClass="gridheader"
+                                    <display:column property="erpmItemMaster.erpmGenMaster.erpmgmEgmDesc" title="U.O.M" style="width:10%"
+                                                    maxLength="100" headerClass="gridheader"
                                                     class="griddata" sortable="true"/>
                                     <display:column property="isdIssuedQuantity" title="Issue Qty"
                                                     maxLength="35" headerClass="gridheader"
@@ -110,6 +121,7 @@
                         </table>
 
                     </s:form>
+                         </s:if>
                         <br>
                 </div>
                     &nbsp;

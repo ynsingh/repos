@@ -2,6 +2,8 @@
     Document   : ManageGeneralMaster
     Created on : 6 Jan, 2011, 9:46:01 PM
     Author     : sknaqvi
+    I18n By    : Mohd. Manauwar Alam
+               : Jan 2014
 --%>
 
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
@@ -40,7 +42,8 @@
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent"> <br><br>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">GENERAL MASTER MANAGEMENT</p>
+           <%--         <p align="center" class="pageHeading" style="color: #ffffff">GENERAL MASTER MANAGEMENT</p> --%>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.GenMastMgmt')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -52,7 +55,7 @@
                         <tbody>
                             <tr>
                                 <td><br>
-                                    <s:select label="Control Parameter" required="true" requiredposition=""  name="erpmgm.erpmGenCtrl.erpmgcGenType" headerKey="" headerValue="-- Please Select --" list="erpmgctrlList" listKey="erpmgcGenType" listValue="erpmgcGenDesc" cssClass="textInput"/>
+<%--                                    <s:select label="Control Parameter" required="true" requiredposition=""  name="erpmgm.erpmGenCtrl.erpmgcGenType" headerKey="" headerValue="-- Please Select --" list="erpmgctrlList" listKey="erpmgcGenType" listValue="erpmgcGenDesc" cssClass="textInput"/>
                                     <s:textfield label="Parameter Value" name="erpmgm.erpmgmEgmDesc" title="Enter General Master Entry" 
                                                  required="true" requiredposition="" maxLength="50" size="50"  cssClass="textInput"/>
                                     <s:textfield label="Remarks" name="erpmgm.erpgmEgmRemarks" title="Remarks about General Master Entry"
@@ -66,7 +69,22 @@
                                     <s:submit theme="simple" name="bthReset" value="Fetch GM Entries" action="FetchGMEntries"  cssClass="textInput"/>
                                 </td>
                                 <td>
-                                    <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearGeneralMaster" cssClass="textInput"/>
+                                    <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearGeneralMaster" cssClass="textInput"/> --%>
+                                    <s:select  required="true" requiredposition=""  name="erpmgm.erpmGenCtrl.erpmgcGenType" headerKey="" headerValue="-- Please Select --" list="erpmgctrlList" listKey="erpmgcGenType" listValue="erpmgcGenDesc" cssClass="textInput"/>
+                                    <s:textfield key="Administration.ParameterVal" name="erpmgm.erpmgmEgmDesc" title="Enter General Master Entry" 
+                                                 required="true" requiredposition="" maxLength="50" size="50"  cssClass="textInput"/>
+                                    <s:textfield key="Administration.Remarks" name="erpmgm.erpgmEgmRemarks" title="Remarks about General Master Entry"
+                                                 required="true" requiredposition="left" maxLength="50" size="50" cssClass="textInput" />
+                                </td>
+                            </tr> <tr>
+                                <td>
+                                    <s:submit theme="simple" key="Administration.Save" name="btnSubmit"   cssClass="textInput" />
+                                </td>
+                                <td>
+                                    <s:submit theme="simple" name="bthReset" key="Administration.Browse" action="FetchGMEntries"  cssClass="textInput"/>
+                                </td>
+                                <td>
+                                    <s:submit theme="simple" name="bthReset" key="Administration.Clear"  action="ClearGeneralMaster" cssClass="textInput"/>
                                 </td>
                             </tr>
                             <tr><td><br></td><td><br></td></tr>

@@ -1,7 +1,9 @@
 <%--
     Document   : IssueSerialNumberUserChoice
     Created on : 13 Aug, 2012, 11:53:19 AM
-    Author     : Manauwar
+    Author     : Mohd. Manauwar Alam
+    I18n By    : Mohd. Manauwar Alam
+               : March 2014
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -36,14 +38,14 @@
             </div>
 
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent" align="center">
+            <div id ="mainContent">
                 <s:bean name="java.util.HashMap" id="qTableLayout">
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
                 <br>
                 <br>
                 <div style ="background-color: #215dc6;">
-                <p align="center"  style="color: #ffffff" class="pageHeading" ><s:label value="ISSUE SERIAL NUMBERS BY USER CHOICE"  /></p>
+                <p align="center"  style="color: #ffffff" class="pageHeading" ><s:property value="getText('Inventory.IssueSerialDetailUserChoice')"   /></p>
                <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
 
@@ -56,27 +58,27 @@
                     <s:hidden name="ItemName" />
 
 
-                    <s:textfield label="Issue Number" name="" readonly="true" value="%{Issue_No}" cssClass="textInput" >
+                    <s:textfield key="Inventory.IssueNo" name="" readonly="true" value="%{Issue_No}" cssClass="textInput" >
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{3}" />
                     </s:textfield>
 
                     <s:label value=". . ." cssClass="tdSpace"/>
-                    <s:textfield label="Issue Date" name="" readonly="true" value="%{Issue_Date}" cssClass="textInput">
+                    <s:textfield key="Inventory.IssueDate" name="" readonly="true" value="%{Issue_Date}" cssClass="textInput">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{3}" />
                     </s:textfield>
 
 
 
-                    <s:select cssClass="textInput" label="Item Name" name="eid.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --"
+                    <s:select cssClass="textInput" key="Inventory.ItemName" name="eid.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --"
                               list="itemList" listKey="erpmimId" listValue="erpmimItemBriefDesc" title="Select Item from the List" disabled="true" value="%{ItemId}">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{3}" />
                     </s:select>
 
                     <s:label value=". . ." cssClass="tdSpace"/>
-                    <s:textfield label="Issue Quantity" name="eid.isdIssuedQuantity"  value="%{IssQnty_val}" readonly="true" cssClass="textInput">
+                    <s:textfield key="Inventory.IssueQuantity" name="eid.isdIssuedQuantity"  value="%{IssQnty_val}" readonly="true" cssClass="textInput">
                         <s:param name="labelcolspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{3}" />
                     </s:textfield>
@@ -84,69 +86,115 @@
                     <br>
                     </table>
                     </s:form>
-                </div>
-            </div>
-                <br>
-                <div id ="mainContent" align="center">
-                <div style="border: solid 1px #000000; background: gainsboro">
+                 <s:if test="listStockRecSerialNo.size > 0">
+                        <hr>
+                        
+                        <s:label value="%{getText('Inventory.SerialNoToBeIssued')}" cssClass = "pageSubHeading" >
+                            <s:param name="labelcolspan" value="%{0}" />
+                            <s:param name="inputcolspan" value="%{9}" />
+                        </s:label>
+
+                        <hr>
+             
+                
                     <s:form name="frmIssueSerialNoUserChoice" theme="qxhtml">
 
-                    <table width="100%" border="0" cellspacing="2" cellpadding="5" align="center">
+                    <table width="100%" >
 
-                        <s:label value="SERIAL NUMBERS TO BE ISSUED"  cssClass="pageSubHeading"/>
+                       
                         <display:table name="listStockRecSerialNo"
-                                       excludedParams="*" export="false" cellpadding="2"
+                                       excludedParams="*" export="false" cellpadding="8"
                                        cellspacing="0" id="doc"
                                        requestURI="/Inventory/IssueAndRemoveItemsUserChoice.action" >
                             <display:column  class="griddata" title="Record" sortable="true"  headerClass="gridheader">
                                 <c:out> ${doc_rowNum}
                                 </display:column>
 
-                                  <display:column property="stStockSerialNo" title="Serial Numbers"
-                                                 headerClass="gridheader"
+                                  <display:column property="stStockSerialNo" title="Serial Numbers" 
+                                                  headerClass="gridheader" maxLength="100"
                                                 class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="true"/>
-                                   <display:column paramId="ESRID" paramProperty="stId"
+                                   <display:column paramId="ESRID" paramProperty="stId" style="width:10%" maxLength="100"
                                                     href="/pico/Inventory/IssueSerialNumber"
-                                                    headerClass="gridheader" class="griddata" media="html"  title="Issue" >
+                                                    headerClass="gridheader" class="griddata" media="html"   >
                                         Issue
                                    </display:column>
 
                             </display:table>
                     </table>
 
-                   <br>
-            <br>
-            <s:label value="ISSUED SERIAL NUMBERS"  cssClass="pageSubHeading"/>
+                  </s:form>
+              
+                   </s:if>
+                        
+                         <s:else>
+                        <s:form name="frmIssueSerialNoUserChoice" >
+                            <br>
+                            
+                            <s:label value="%{getText('Inventory.NothingFoundToDisplay')}" >
+                                <s:param name="labelcolspan" value="%{0}" />
+                                <s:param name="inputcolspan" value="%{11}" />
+                            </s:label>
 
-            <br>
+                            
+                        </s:form>
+                    </s:else>
+                             <s:if test="listIssueSerialDetail.size > 0">
 
-                     <table width="100%" border="0" cellspacing="2" cellpadding="5" align="center">
+                        <br>
+                        <hr>
+                        <s:label  cssClass= "pageSubHeading" value="%{getText('Inventory.IssuedSerialNoAre')}">
+                            <s:param name="labelcolspan" value="%{0}" />
+                            <s:param name="inputcolspan" value="%{11}" />
+                        </s:label>
+
+                        <hr>
+                <s:form name="frmIssueSerialNoUserChoice" >
+           
+
+          
+
+                     <table width="100%" >
                         <display:table name="listIssueSerialDetail"
-                                       excludedParams="*" export="false" cellpadding="2"
+                                       excludedParams="*" export="false" cellpadding="8"
                                        cellspacing="0" id="doc"
                                        requestURI="/Inventory/IssueAndRemoveItemsUserChoice.action" >
                             <display:column  class="griddata" title="Record" sortable="true"  headerClass="gridheader">
                                 <c:out> ${doc_rowNum}
                                 </display:column>
 
-                                  <display:column property="erpmStockReceived.stStockSerialNo" title="Serial Numbers"
-                                                 headerClass="gridheader"
+                                  <display:column property="erpmStockReceived.stStockSerialNo" title="Serial Numbers" 
+                                                  headerClass="gridheader" maxLength="100"
                                                 class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="true"/>
-                                <display:column paramId="EISDID" paramProperty="issdId"
+                                <display:column paramId="EISDID" paramProperty="issdId" style="width:10%" maxLength="100"
                                                     href="/pico/Inventory/RemoveSerialNumber"
-                                                    headerClass="gridheader" class="griddata" media="html"  title="Issue" >
+                                                    headerClass="gridheader" class="griddata" media="html"  >
                                         Remove
                                         </display:column>
 
                             </display:table>
                                         <br>
-
+</table>
 <s:submit  action="IssueDone" value="Done" align="centre" />
 
-                    </table>
-                </s:form>
+                    
+</s:form>
+              </s:if>
+                    <s:else>
+                        <s:form name="frmIssueSerialNoUserChoice" >
+
+                            <br>
+
+                            <s:label value="%{getText('Inventory.NothingFoundToDisplay')}" >
+                                <s:param name="labelcolspan" value="%{0}" />
+                                <s:param name="inputcolspan" value="%{11}" />
+                            </s:label>
+
+
+                        </s:form>
+                    </s:else>
+               
                 <br>
-            </div>
+                </div>
             </div>
                 <br>
             <div id="footer">

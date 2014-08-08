@@ -1546,3 +1546,19 @@ function getTenderName(SourceListID, DestinationListID){
         document.getElementById(DestinationListID).setAttribute("value",msg);
         }
 }
+
+
+function getStockInHand(SourceListID, DestinationListID,IndentId){
+    var searchValue = document.getElementById(SourceListID).value;
+    var indentId = document.getElementById(IndentId).value;
+
+
+    if (searchValue != "") {
+        var msg = $.ajax({
+            url:"/pico/ajax/getStockInHand.action?searchValue=" + searchValue + "&searchValue2=" + indentId,
+            async:false
+        }).responseText;
+
+        document.getElementById(DestinationListID).setAttribute("value",msg);
+        }
+}

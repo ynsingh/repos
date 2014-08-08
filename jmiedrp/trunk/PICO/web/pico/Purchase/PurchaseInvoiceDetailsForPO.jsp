@@ -2,6 +2,8 @@
     Document   : PurchaseInvoiceDetails
     Created on : 6 Aug, 2012, 1:13:28 PM
     Author     : Tanvir Ahmed , Saeed-uz-Zama & mkhan
+    I18n By    : Mohd. Manauwar Alam
+               : Feb 2014
 --%>
 
 
@@ -41,7 +43,7 @@
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
                 <div style ="background-color: #215dc6;" align="center">
-                    <p align="center" class="pageHeading" style="color: #ffffff">PURCHASE INVOICE DETAIL FOR PO</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Purchase.PurchaseInvoiceDetailforPO')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
                 <div style="border: solid 1px #000000; background: gainsboro">
@@ -55,7 +57,7 @@
                     <table border="0" cellpadding="4" cellspacing="0" align="center" >
                         <tbody>
                             <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="20"
-                                          label="Purchase order no" name="pibm.erpmPoMaster.pomPoNo" readonly="True" >
+                                          key="Purchase.PONo" name="pibm.erpmPoMaster.pomPoNo" readonly="True" >
                                <s:param name="labelcolspan" value="%{1}" />
                                <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
@@ -63,18 +65,18 @@
                             <s:label value="........." cssClass="tdSpace"></s:label>
 
                             <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="20"
-                                          label="Supplier Invoice No" name="pibm.pimSupplierInvoiceNo" readonly="True" >
+                                          key="Purchase.SupplierInvoiceNo" name="pibm.pimSupplierInvoiceNo" readonly="True" >
                                <s:param name="labelcolspan" value="%{1}" />
                                <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
 
                             <s:textfield cssClass="textInputRO"  requiredposition="left" maxLength="50" size="20"
-                                         label="Invoice Type" name="pibm.pimInvoiceType" readonly="True" >
+                                         key="Purchase.InvoiceType" name="pibm.pimInvoiceType" readonly="True" >
                                <s:param name="labelcolspan" value="%{1}" />
                                <s:param name="inputcolspan" value="%{7}" />
                             </s:textfield>
 
-                            <s:select cssClass="textInput" label="Item Name" name="pid.erpmItemMaster.erpmimId" headerKey="" disabled="PidDisable"
+                            <s:select cssClass="textInput" key="Purchase.ItemName" name="pid.erpmItemMaster.erpmimId" headerKey="" disabled="PidDisable"
                                         headerValue="-- Please Select --" list="podList" listKey="erpmItemMaster.erpmimId"
                                         listValue="erpmItemMaster.erpmimItemBriefDesc" >
                                <s:param name="labelcolspan" value="%{1}" />
@@ -83,15 +85,15 @@
 
                             <s:label value="........." cssClass="tdSpace"></s:label>
 
-                            <s:textfield label="Quantity" required="" name="pid.pidQuantity" headerKey="" tabindex="0" disabled="PidDisable"
+                            <s:textfield key="Purchase.Quantity" required="" name="pid.pidQuantity" headerKey="" tabindex="0" disabled="PidDisable" value="0"
                                          cssClass="textInput">
                                <s:param name="labelcolspan" value="%{1}" />
                                <s:param name="inputcolspan" value="%{3}" />
                             </s:textfield>
-                            <s:checkbox label="Have you checked the quantity" name="checked" />
-                            <s:checkbox label="Have the items been verified" name="verified" />
+                            <s:checkbox key="Purchase.HaveYouCheckedTheQuantity" name="checked" />
+                            <s:checkbox key="Purchase.HaveTheItemsBeenVerified" name="verified" />
 
-                            <s:textarea cssClass="textArea"  rows="3" cols="50" label="Checked and verified Remarks" name="CheckAndVerifiedRemarks" maxLength="100">
+                            <s:textarea cssClass="textArea"  rows="3" cols="50" key="Purchase.CheckedAndVerifiedRemarks" name="CheckAndVerifiedRemarks" maxLength="100">
                                <s:param name="labelcolspan" value="%{1}" />
                                <s:param name="inputcolspan" value="%{1}" />
                             </s:textarea>
@@ -100,13 +102,13 @@
 
                                 <tr><td align="left">
 
-                                    <s:submit theme="simple"  value="Save"   action="SavePurchaseInvoiceDetail" disabled="PidDisable">
+                                    <s:submit theme="simple"  key="Purchase.Save"   action="SavePurchaseInvoiceDetail" disabled="PidDisable">
                                     </s:submit>
 
-                                    <s:submit theme="simple"  value="Back"   action="BackToPurchaseInvoiceMaster" >
+                                    <s:submit theme="simple"  key="Purchase.PreviousPage"   action="BackToPurchaseInvoiceMaster" >
                                     </s:submit>
 
-                                    <s:submit  cssClass="savebutton"  name="btnSubmit" value="Save Check & Verify" action="SaveCheckAndVerifyforPO"
+                                    <s:submit  cssClass="savebutton"  name="btnSubmit" key="Purchase.SaveCheckVerify" action="SaveCheckAndVerifyforPO"
                                                disabled="btnCheckAndVerifySave"/>
                                 </td><td align="left">
                                    
@@ -116,59 +118,66 @@
                             </tbody>
                     </table>
                 </s:form>
-            </div>
+            <s:if test="erpmpidList.size() > 0">
+                        <hr>
+                    <s:label value="%{getText('')}" cssClass= "pageSubHeading">
+                        <s:param name="labelcolspan" value="%{0}" />
+                        <s:param name="inputcolspan" value="%{11}" />
+                    </s:label>
+                    <hr>
 
-        <div id ="mainContent">
+       
             <s:form name="frmPurchaseInvoiceDetail" align="left">
                <s:hidden name="pid.pidPidId" />
              
-               <table align="center" border="1" cellspacing="5" cellpadding="4">
-                <tr><td>
+               
                   <display:table name="erpmpidList" pagesize="10" decorator="Purchase.PurchaseDecorator"
-                               excludedParams="*" export="true" cellpadding="5"
-                               cellspacing="5" id="doc"
+                               excludedParams="*" export="false" cellpadding="8"
+                               cellspacing="2" id="doc"
                                requestURI="/Purchase/PurchaseInvoiceAction.Action">
 
-                        <display:column  class="griddata" title="S.No" sortable="true" maxLength="100" headerClass="gridheader">
+                        <display:column  class="griddata" title="S.No" sortable="true" maxLength="100" headerClass="gridheader" style="width:5%"> 
                         <c:out> ${doc_rowNum}
                         </display:column>
                         <display:column property="erpmItemMaster.erpmimItemBriefDesc" title="Item Name"
-                                    maxLength="35" headerClass="gridheader"
+                                    maxLength="35" headerClass="gridheader" style="width:15%"
                                     class="griddata" sortable="true"/>
                         <display:column property="pidQuantity" title="Quantity"
-                                    maxLength="35" headerClass="gridheader"
+                                    maxLength="35" headerClass="gridheader" style="width:5%"
                                     class="griddata" sortable="true"/>
-                        <display:column property="pidRate" title="Rate"
+                        <display:column property="pidRate" title="Rate" style="width:5%"
                                     maxLength="35" headerClass="gridheader"
                                     class="griddata" sortable="true"/>
    
                         <display:column paramId="pidPidId" paramProperty="pidPidId" property="editviewinvoice"
-                                    href="/pico/Purchase/EditPurchaseInvoiceDetailforPO.action"
+                                    href="/pico/Purchase/EditPurchaseInvoiceDetailforPO.action" style="width:10%"
                                     headerClass="gridheader" class="griddata" media="html" title="Edit Item/View Serial Detail"/>
 
                         <display:column property="checkedinvoice" paramId="pidPidId" title="Checked" paramProperty="pidPidId"
-                                    href="/pico/Purchase/checkedforPO.action" style="width:10%"
+                                    href="/pico/Purchase/checkedforPO.action" style="width:5%"
                                     headerClass="gridheader" class="griddata" media="html" sortable="true"/>
 
                         <display:column property="verifiedinvoice" paramId="pidPidId" title="Verified" paramProperty="pidPidId"
-                                    href="/pico/Purchase/verifiedforPO.action" style="width:10%"
+                                    href="/pico/Purchase/verifiedforPO.action" style="width:5%"
                                     headerClass="gridheader" class="griddata" media="html" sortable="true"/>
 
                         <%-- <display:column paramId="pidPidId" paramProperty="pidPidId"
                                     href="/pico/Purchase/ViewSerialInfo.action"
                                     headerClass="gridheader" class="griddata" media="html"  value="ViewSerialInfo" title="ViewSerialInfo"/>
                         --%>
-                       <display:column paramId="pidPidId" paramProperty="pidPidId"
+                       <display:column paramId="pidPidId" paramProperty="pidPidId" style="width:10%"
                                     href="/pico/Purchase/ViewTaxInfoPO.action"
                                     headerClass="gridheader" class="griddata" media="html"  value="ViewTaxInfo" title="ViewTaxInfo"/>
                   </display:table>
                     <br>
-                </table>
+               
 
              </s:form>
-                </div>
-                &nbsp;
-            </div>
+               </s:if>
+               </div>
+                        </div>
+                <br>
+                <br>
 
             <div id="footer">
                  <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>

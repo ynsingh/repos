@@ -16,7 +16,6 @@ import java.util.List;
 import org.hibernate.Hibernate;
 
 
-
 public class ErpmusersDAO  {
     
     public void save(Erpmusers erpmuser) {
@@ -259,7 +258,8 @@ public class ErpmusersDAO  {
             
 
      public List<Erpmusers> findUserCollegues(Integer erpmuId) { 
-         String SQL =   "Select u.erpmusers from Erpmuserrole u where u.institutionmaster.imId in "
+       //  String SQL =   "Select u.erpmusers from Erpmuserrole u where u.institutionmaster.imId in "
+           String SQL =   "Select distinct(u.erpmusers) from Erpmuserrole u where u.institutionmaster.imId in "         
                         + " (Select v.institutionmaster.imId from Erpmuserrole v where v.erpmusers.erpmuId = :erpmuId)";
 
 

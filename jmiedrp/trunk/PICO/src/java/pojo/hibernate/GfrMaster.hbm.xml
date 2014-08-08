@@ -23,6 +23,14 @@
         <property name="gfrDescription" type="string">
             <column name="GFR_Description" length="2000" not-null="true" />
         </property>
+        <property name="gfrorInstituteRule" type="char">
+            <column name="GFR_Or_Institute_Rule" length="1" not-null="true">
+                <comment>G -  General Financial Rule I -  Institute Specific Rule </comment>
+            </column>
+        </property>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="GFR_IM_ID" />
+        </many-to-one>
         <set name="gfrProgramMappings" inverse="true">
             <key>
                 <column name="GPM_GFR_ID" not-null="true" />
