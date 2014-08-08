@@ -28,7 +28,8 @@
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+*  Modified Date: 4 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
 --%>
 
@@ -37,6 +38,7 @@
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
 <%@ taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
 <%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -44,61 +46,103 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+        <link rel="stylesheet" type="text/css" href="css/subpage.css"/>
+        <link rel="stylesheet" type="text/css" href="css/components.css"/>
+        <link rel="stylesheet" type="text/css" href="css/Form.css"/>
+        <link rel="stylesheet" type="text/css" href="../css/richpanel.css"/>
+      
     </head>
     <body>
         <f:view>
-            <rich:panel style="width:720px;" header="Employee's Leave Details">
+            <a4j:keepAlive beanName="EmployeeLeaveBean" ajaxOnly="true"/>
+            <div class="container_form">
+            <rich:panel id="addemplleave" header="Employee's Leave Details" styleClass="form" style="width:auto;" >
             <h:panelGrid columns="2">
-                <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
+            <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
             <rich:messages>
-                       <f:facet name="infoMarker">
-                            <h:graphicImage url="/img/success.png"/>
-                       </f:facet>
-                    </rich:messages>
+                <f:facet name="infoMarker">
+                    <h:graphicImage url="/img/success.png"/>
+                </f:facet>
+                <f:facet name="errorMarker">
+                    <h:graphicImage url="/img/err.png"/>
+                </f:facet>
+                </rich:messages>
             </h:panelGrid>
-            
-                <rich:dataTable style="width:700px;" value="#{EmployeeLeaveBean.leaveData}" var="leave">
-                <h:column>
+            <h:form id="leaveForm">
+                <h:panelGrid columns="3" id="leavetypeDetail">
+                
+                <rich:dataTable  id="llist" value="#{EmployeeLeaveBean.leaveData}" binding="#{EmployeeLeaveBean.dataGrid}" var="leave" rowKeyVar="row" rows="10" style="width:1200px;">
+                    <rich:column>
+                        <f:facet name="header">
+                        <h:outputText value="Select"/>
+                        </f:facet>
+                        <h:selectBooleanCheckbox value="#{leave.selected}"/>
+                    </rich:column>
+                    <rich:column>
                     <f:facet name="header">
                         <h:outputText value="Name"/>
                     </f:facet>
                     <h:outputText value="#{leave.employee.name}"/>
-                </h:column>
-                <h:column>
+                </rich:column>
+                <rich:column>
                     <f:facet name="header">
                         <h:outputText value="Department"/>
                     </f:facet>
                     <h:outputText value="#{leave.employee.deptName}"/>
-                </h:column>
-                <h:column>
+                </rich:column>
+                <rich:column>
                     <f:facet name="header">
                         <h:outputText value="Designation"/>
                     </f:facet>
                     <h:outputText value="#{leave.employee.desigName}"/>
-                </h:column>
-                <h:column>
+                </rich:column>
+                <rich:column>
                     <f:facet name="header">
-                        <h:outputText value="Leave From"/>
+                    <h:outputText value="Leave Type"/>
+                    </f:facet>
+                    <h:outputText value="#{leave.leaveTypeName}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">
+                    <h:outputText value="Leave From"/>
                     </f:facet>
                     <h:outputText value="#{leave.dateFrom}"/>
-                </h:column>
-                <h:column>
+                </rich:column>
+                <rich:column>
                     <f:facet name="header">
-                        <h:outputText value="Leave To"/>
+                    <h:outputText value="Leave To"/>
                     </f:facet>
                     <h:outputText value="#{leave.dateTo}"/>
-                </h:column>
-                 <h:column>
+                </rich:column>
+                 <rich:column>
                     <f:facet name="header">
-                        <h:outputText value="Total"/>
+                     <h:outputText value="Total"/>
                     </f:facet>
                     <h:outputText value="#{leave.count}"/>
-                </h:column>
-            </rich:dataTable>
-            </rich:panel>
-
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">
+                    <h:outputText value="Applied Date"/>
+                    </f:facet>
+                    <h:outputText value="#{leave.appliedDate}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">
+                    <h:outputText value="Status"/>
+                    </f:facet>
+                     <h:outputText style="color : #{leave.activeStatus gt Approved ? 'red' : 'green'};"  value="#{leave.activeStatus}"/>
+                 </rich:column>
+                <f:facet name="footer">
+                <rich:datascroller for="llist" page="5" />  
+                </f:facet>
+                </rich:dataTable>
+               </h:panelGrid>
+               <%--<rich:separator/>--%>
+               <a4j:commandButton value="Apply" action="#{EmployeeLeaveBean.acceptRequest}" reRender="llist, leavetypeDetail"/>
+            </h:form>  
             <rich:modalPanel id="pnl">
-                <h:form>
+                <h:form id="leaverequest">
                     <rich:panel header="New Leave Request">
                         <h:panelGrid columns="2">
                             <h:outputText value="Employee"/>
@@ -108,28 +152,35 @@
                             <h:outputText value="From Date" />
                             <rich:calendar converter="dateConverter" showWeekDaysBar="false"
                                                showFooter="false" styleClass="special"
-                                               datePattern="yyyy-MM-dd" id="empDob" popup="true"
+                                               datePattern="yyyy-MM-dd" id="Dfrom" popup="true"
                                                required="true" value="#{EmployeeLeaveBean.dateFrom}">
                                 
                             </rich:calendar>
                             <h:outputText value="To Date" />
                             <rich:calendar converter="dateConverter" showWeekDaysBar="false"
                                                showFooter="false" styleClass="special"
-                                               datePattern="yyyy-MM-dd" id="empDoj" popup="true"
+                                               datePattern="yyyy-MM-dd" id="Dto" popup="true"
                                                required="true" value="#{EmployeeLeaveBean.dateTo}">
 
                             </rich:calendar>
                             <h:outputText value="Leave Type"/>
                             <h:selectOneMenu  id="leaveType" value="#{EmployeeLeaveBean.leaveTypeCode}">
-                                <f:selectItems value="#{LeaveTypeBean.items}"/>
-                         </h:selectOneMenu>
-                            <h:commandButton action="#{EmployeeLeaveBean.save}" value="Save"/>
-                            <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
+                                <f:selectItems value="#{LeaveQuotaBean.itemAsArray}"/>
+                          </h:selectOneMenu>
+                            <h:outputText value="Applied Date"/>
+                            <rich:calendar converter="dateConverter" showWeekDaysBar="false"
+                                               showFooter="false" styleClass="special"
+                                               datePattern="yyyy-MM-dd" id="appdate" popup="true"
+                                               required="true" value="#{EmployeeLeaveBean.appliedDate}">
+                             </rich:calendar>
+                            <a4j:commandButton  value="Save"  action="#{EmployeeLeaveBean.save}"  reRender="llist, leavetypeDetail" oncomplete="#{rich:component('pnl')}.hide();"/>
+                            <a4j:commandButton value="Close" onclick="#{rich:component('pnl')}.hide(); return false;"/>
                         </h:panelGrid>
                     </rich:panel>
                 </h:form>
-
             </rich:modalPanel>
+            </rich:panel>
         </f:view>
+        </div>
     </body>
 </html>

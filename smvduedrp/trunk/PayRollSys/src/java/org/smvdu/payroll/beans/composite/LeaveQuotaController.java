@@ -5,8 +5,11 @@
 
 package org.smvdu.payroll.beans.composite;
 
+
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.smvdu.payroll.beans.ext.attendance.LeaveQuota;
 import org.smvdu.payroll.beans.ext.attendance.db.LeaveQuotaDB;
@@ -40,18 +43,21 @@ import org.smvdu.payroll.beans.ext.attendance.db.LeaveQuotaDB;
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
-*
- */
-public class LeaveQuotaController {
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+* Modified Date: 7 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*/
+public class LeaveQuotaController  {
 
     private ArrayList<LeaveQuota> quotas;
     private SelectItem[] itemAsArray;
     private UIData dataGrid;
     private int empType;
+    private int balancecount;
+    private String code;
 
     public SelectItem[] getItemAsArray() {
-        quotas = new LeaveQuotaDB().getQuota(empType);
+        //quotas = new LeaveQuotaDB().getQuota(empType);
+        quotas = new LeaveQuotaDB().getAllSelected(empType);
         itemAsArray = new SelectItem[quotas.size()];
         LeaveQuota lq = null;
         for(int i=0;i<quotas.size();i++)
@@ -86,11 +92,21 @@ public class LeaveQuotaController {
 
     public void update()
     {
+        ArrayList<LeaveQuota> datacopy = new ArrayList<LeaveQuota>();
+        ArrayList<LeaveQuota>tabledata= new LeaveQuotaDB().getQuota(empType);
         ArrayList<LeaveQuota> data = (ArrayList<LeaveQuota>)dataGrid.getValue();
+        //System.out.println("array list=in controller=="+data);
         for(LeaveQuota lq:data)
         {
-            System.out.println("Name : "+lq.getLeaveTypeName()+" Value : "+lq.getCount());
+            if(lq.isSelected())
+                {
+                    datacopy.add(lq);
+                    //System.out.println("Name in controller: "+lq.getLeaveTypeName()+" Value : "+lq.getCount());
+                } 
+            
         }
+        new LeaveQuotaDB().update(datacopy, empType);
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Selection Updated", ""));
     }
 
     public UIData getDataGrid() {
@@ -101,11 +117,27 @@ public class LeaveQuotaController {
         this.dataGrid = dataGrid;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+    
     public ArrayList<LeaveQuota> getQuotas() {
-        quotas = new LeaveQuotaDB().getQuota(empType);
+        //quotas = new LeaveQuotaDB().getQuota(empType);
+        if(empType==0){
+            quotas = new LeaveQuotaDB().getAllSelected(empType);
+        }
+        else{
+            quotas = new LeaveQuotaDB().loadAllData(empType);
+        }
+        //System.out.println("selected====="+empType);
+        //System.out.println("selected==1234==="+quotas);
         for(LeaveQuota lq:quotas)
         {
-            System.out.println(lq.getLeaveTypeName());
+            //System.out.println("selected====="+lq.getLeaveTypeName());
         }
         if(quotas!=null&&!quotas.isEmpty())
         {
@@ -117,4 +149,49 @@ public class LeaveQuotaController {
     public void setQuotas(ArrayList<LeaveQuota> quotas) {
         this.quotas = quotas;
     }
+    private ArrayList<LeaveQuota> allotedquota;
+    public ArrayList<LeaveQuota> getAllotedQuota() {
+         //quotas = new LeaveQuotaDB().getQuota(empType);
+         allotedquota = new LeaveQuotaDB().getCombinedData(code);
+        /*for(LeaveQuota lq: allotedquota)
+        {
+            System.out.println(lq.getLeaveTypeName());
+        }
+        if(allotedquota!=null&&!allotedquota.isEmpty())
+        {
+            dataGrid.setValue(allotedquota);
+        }*/
+        dataGrid.setValue(allotedquota);
+        return allotedquota;
+    }
+
+    public void setAllotedQuota(ArrayList<LeaveQuota> allotedquota) {
+        this.allotedquota = allotedquota;
+    }
+    
+    public void loadleaveDetail() {
+        try{
+        
+            //allotedquota = new LeaveQuotaDB().getAllotedQuota(code);
+            allotedquota = new LeaveQuotaDB().getCombinedData(code);
+            if((allotedquota.isEmpty()) && (!code.equals("null"))){
+         
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Leave Record of employee is not exist", ""));
+          
+            }
+       
+        }    
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    public int getBalanceCount() {
+        return balancecount;
+    }
+
+    public void setBalanceCount(int balancecount) {
+        this.balancecount = balancecount;
+    }
+    
+      
 }

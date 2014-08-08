@@ -3,7 +3,7 @@
     Created on : Dec 13, 2010, 7:57:28 PM
     Author     :  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
 *  All Rights Reserved.
-**  Redistribution and use in source and binary forms, with or
+*  Redistribution and use in source and binary forms, with or
 *  without modification, are permitted provided that the following
 *  conditions are met:
 **  Redistributions of source code must retain the above copyright
@@ -77,7 +77,7 @@
 
             </script>
             </head>
-        <body id="" class="mainpage">
+            <body id="" class="mainpage">
             <a4j:keepAlive beanName="userBeans" ajaxOnly="true"/>
             <a4j:keepAlive beanName="SalaryProcessingSetup" ajaxOnly="true"/>
             <h:form>
@@ -108,16 +108,15 @@
                         </rich:menuGroup>
                         <rich:menuItem  id="se9"  onclick="return loadIframe('ifrm', 'account/AddUser.jsf')" value="System User Accounts"/>
                         <rich:menuItem  id="se10"  onclick="return loadIframe('ifrm', 'setup/SalaryProcessingSetup.jsf')" value="Salary Processing Setup"/>
+                        <rich:menuItem  id="se11"  onclick="return loadIframe('ifrm', 'attendance/LeaveTypes.jsf')" value="Leave Types"/>
                        
                     </rich:dropDownMenu>
                     <rich:dropDownMenu id="em"   value="Employee"><%-- rendered="#{readUserTaskList.userTaskId == 'em'}" --%>
                         <rich:menuItem id="em1" onclick="return loadIframe('ifrm', 'employee/EmployeeProfile.jsf')"  value="Add Profile"/>
                         <rich:menuItem id="em2" onclick="return loadIframe('ifrm', 'employee/EditEmployeeProfile.jsf')" value="Edit Profile"/>
                         <rich:menuItem id="em3" onclick="return loadIframe('ifrm', 'employee/SearchEmployee.jsf')" value="Search Profiles"/>
-
                     </rich:dropDownMenu> 
                     <rich:dropDownMenu  id="sa"   value="Salary">
-                        <%--rich:menuItem  id="sa1" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing"/--%>
                         <rich:menuItem  id="sa1" onclick="return loadIframe('ifrm','salary/SalaryFormula.jsf')" value="Salary Formula"/>
                         <rich:menuItem  id="sa2" onclick="return loadIframe('ifrm','salary/DefaultSalaryData.jsf')" value="Default Salary values"/>
                         <rich:menuItem  id="sa3" onclick="return loadIframe('ifrm','salary/SalarySettings.jsf')" value="Type wise Salary Head Setting"/>
@@ -156,17 +155,36 @@
                     <%--<rich:menuItem onclick="return loadIframe('ifrm', 'attendance/LeaveQuota.jsf')"  value="Loan Payback Planner"/>
                 </rich:dropDownMenu>--%>
 
-                    <%--           <rich:dropDownMenu  value="Leave">
+                 <%--<rich:dropDownMenu  value="Leave">
                                 <rich:menuItem onclick="return loadIframe('ifrm', 'attendance/LeaveManager.jsf')"  value="Leave Manager"/>
                                 <rich:menuItem onclick="return loadIframe('ifrm', 'attendance/LeaveValue.jsf')"  value="Leave Values Setup"/>
                                 <rich:menuItem onclick="return loadIframe('ifrm', 'attendance/LeaveQuota.jsf')"  value="Leave Quota Setup"/>
-                            </rich:dropDownMenu>  --%>
-                    <rich:dropDownMenu  id="pf"   value="PF Management">
+                  </rich:dropDownMenu> --%>
+                  <rich:dropDownMenu  id="pf"   value="PF Management">
                         <rich:menuItem  id="pf1"   onclick="return loadIframe('ifrm', 'pf/OpeningBalance.jsf')"  value="Opening Balance"/>
                         <rich:menuItem  id="pf2"  onclick="return loadIframe('ifrm', 'pf/PFWithdrawal.jsf')"  value="PF Withdrawal"/>
                         <rich:menuItem  id="pf3"  onclick="return loadIframe('ifrm', 'pf/PFAccount.jsf')"  value="PF Account"/>
                     </rich:dropDownMenu>
-
+                    <%--- H R Management-----------------%>
+                    
+                    <rich:dropDownMenu  id="hr"   value="HR Management">
+                        <rich:menuItem id="hr1" onclick="return loadIframe('ifrm', 'employee/EmployeefamilyRecord.jsf')" value="Employee Family Record"/>
+                        <rich:menuItem id="hr2" onclick="return loadIframe('ifrm', 'employee/EmployeeServiceHistory.jsf')" value="Employee Service History"/>
+                        <rich:menuItem id="hr3" onclick="return loadIframe('ifrm', 'employee/EmployeeQualification.jsf')" value="Employee Education Details"/>
+                       <rich:menuGroup id="hr4" value="Employee Leave Mangement" direction="right-bottom">
+                            <rich:menuItem id="hr41" onclick="return loadIframe('ifrm', 'attendance/LeaveQuota.jsf')"  value="Leave Quota Setup"/>
+                            <rich:menuItem id="hr42" onclick="return loadIframe('ifrm', 'attendance/LeaveManager.jsf')"  value="Leave Manager"/>
+                            <%--<rich:menuItem onclick="return loadIframe('ifrm', 'attendance/LeaveValue.jsf')"  value="Leave Values Setup"/>--%>
+                            <rich:menuItem id="hr43" onclick="return loadIframe('ifrm', 'attendance/LeaveDetail.jsf')"  value="Leave Detial"/>
+                        
+                       </rich:menuGroup>   
+                        <rich:menuItem id="hr5" onclick="return loadIframe('ifrm', 'employee/EmpPayscaleHistory.jsf')" value="Employee Payscale History" disabled="true"/>
+                        <rich:menuItem id="hr6" onclick="return loadIframe('ifrm', 'employee/EmployeePFNotification.jsf')" value="Employee PF notification" disabled="true"/>
+                        <rich:menuItem id="hr7" onclick="return loadIframe('ifrm', 'employee/EmployeeSanctions.jsf')" value="Employee LTC, travel,or any other sanctions" disabled="true"/>
+                                
+                    </rich:dropDownMenu>
+                                       
+                    <%--- H R Management-----------------%>
                     <rich:dropDownMenu  id="re"   value="Report">
                         <rich:menuItem  id="re1"  onclick="return loadIframe('ifrm', 'report/ReportExporterBankStatement.jsf?fwdLink=BankStatement.jsf')"  value="Bank Statement"/>
                         <rich:menuItem  id="re2" onclick="return loadIframe('ifrm', 'report/ReportExporterMonthlySlip.jsf?fwdLink=MonthlySalarySingle.jsf')"  value="Monthly Salary Slip"/>

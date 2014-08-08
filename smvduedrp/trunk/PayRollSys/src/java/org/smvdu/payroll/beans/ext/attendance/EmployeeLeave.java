@@ -5,13 +5,16 @@
 
 package org.smvdu.payroll.beans.ext.attendance;
 
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.Employee;
 import org.smvdu.payroll.beans.db.CommonDB;
-import org.smvdu.payroll.beans.ext.attendance.db.EmployeeLeaveDB;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
+import org.smvdu.payroll.beans.ext.attendance.db.EmployeeLeaveDB;
 
 /**
  *
@@ -42,11 +45,17 @@ import org.smvdu.payroll.module.attendance.LoggedEmployee;
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
-*
- */
-public class EmployeeLeave {
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+*  Modified Date: 7 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*/
 
+public class EmployeeLeave implements Serializable{
+
+    public EmployeeLeave()
+    {
+
+    }
+    
     private int id;
     private int empId;
     private String dateFrom;
@@ -55,6 +64,31 @@ public class EmployeeLeave {
     private Employee employee;
     private int leaveTypeCode;
     private String leaveTypeName;
+    private String applieddate;
+    private String approvaldate;
+    private int status;
+    private String activestatus;
+    private boolean inactivestatus;
+    private String code;
+    private boolean selected;
+    
+    
+     public EmployeeLeave(EmployeeLeaveData empld)
+     {
+            id = empld.getId();
+            code=empld.getEmpCode();
+            dateFrom=empld.getDateFrom();
+            dateTo=empld.getDateTo();
+            count=empld.getCount();
+            employee=empld.getEmployee();
+            leaveTypeName=empld.getLeaveTypeName();
+            applieddate=empld.getAppliedDate();
+            activestatus=empld.getActiveStatus();
+            
+        
+        //checked=ld.isChecked();
+
+    }
 
     public int getEmpId() {
         LoggedEmployee ec= (LoggedEmployee)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
@@ -69,6 +103,17 @@ public class EmployeeLeave {
         this.empId = empId;
     }
 
+    private UIData dataGrid;
+   
+        
+    public UIData getDataGrid() {
+        return dataGrid;
+    }
+
+    public void setDataGrid(UIData dataGrid) {
+        this.dataGrid = dataGrid;
+    }
+    
     private ArrayList<EmployeeLeave> leaveData;
     private ArrayList<EmployeeLeave> singleLeaveData;
 
@@ -81,10 +126,11 @@ public class EmployeeLeave {
     }
     
 
-
-
     public ArrayList<EmployeeLeave> getLeaveData() {
-        leaveData = new EmployeeLeaveDB().loadLeaves();
+        //leaveData = new EmployeeLeaveDB().loadLeaves();
+        leaveData = new EmployeeLeaveDB().getAllLeaveData();
+        //System.out.println("empleave Data======="+leaveData);
+        dataGrid.setValue(leaveData);  
         return leaveData;
     }
 
@@ -147,11 +193,73 @@ public class EmployeeLeave {
     public void setLeaveTypeName(String leaveTypeName) {
         this.leaveTypeName = leaveTypeName;
     }
+    
+    public String getAppliedDate() {
+        return applieddate;
+    }
 
+    public void setAppliedDate(String applieddate) {
+        this.applieddate = applieddate;
+    }
+
+    public String getApprovalDate() {
+        return approvaldate;
+    }
+
+    public void setApprovalDate(String approvaldate) {
+        this.approvaldate = approvaldate;
+    }
+    
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+    
+    int currentRecordindex;
+    public int getCurrentRecordindex() {
+        //System.out.println("current index====="+currentRecordindex);
+        return currentRecordindex;
+    }
+ 
+    public void setCurrentRecordindex(int currentRecordindex) {
+        //System.out.println("current index==inset==="+currentRecordindex);
+        this.currentRecordindex = currentRecordindex;
+    }
+    
+    
+    public String getActiveStatus() {
+        
+        return activestatus;
+    }
+
+    public void setActiveStatus(String activestatus) {
+        this.activestatus = activestatus;
+    }
+   
+    public String getEmpCode() {
+        return code;
+    }
+
+    public void setEmpCode(String code) {
+        this.code = code;
+    }
 
     public void save()
     {
-        this.count = new CommonDB().getDateDiff(dateTo, dateFrom);
+        //this.count = new CommonDB().getDateDiff(dateTo, dateFrom);
+        this.count = new CommonDB().getDateDiff(dateFrom, dateTo);
+        //System.out.println("count======"+count);
         if(count<0)
         {
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dates are wrong", ""));
@@ -161,5 +269,60 @@ public class EmployeeLeave {
         FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Leave Saved", ""));
     }
     
+    public void acceptRequest(){
+           
+        try
+        {
+            ArrayList<EmployeeLeave> datacopy = new ArrayList<EmployeeLeave>();
+            ArrayList<EmployeeLeave> data = ( ArrayList<EmployeeLeave>)dataGrid.getValue();
+            for(EmployeeLeave empl : data)
+            {
+                if(empl.isSelected())
+                {
+                    datacopy.add(empl);
+               
+                }
+            
+            } 
+            boolean b = new EmployeeLeaveDB().Accept(datacopy);
+            //System.out.print("b==in==="+b);
+            if(b==true)
+            {
+                 
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Selection Updated", ""));
+            }
+            else{
+              
+                 FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, " Sorry suffcient leave count is not available, so leave can not approved", ""));
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+    
+    public EmployeeLeave(int id)
+    {
+        this.id = id;
+    }
+    
+     public int   Integer(){
+        return id;
+    }
+    
+     @Override
+    public boolean equals(Object obj)
+    {
+        EmployeeLeave sh = (EmployeeLeave)obj;
+        if(this.id==sh.id)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 }

@@ -414,7 +414,11 @@ CREATE TABLE `employee_leave_master` (
   `el_date_to` date NOT NULL,
   `el_count` int(11) NOT NULL default '0',
   `el_quota_type` int(11) NOT NULL,
-  PRIMARY KEY  (`el_id`)
+  `el_applied_date` date NOT NULL,
+   el_approval_date  date default NULL,
+   el_approval_status  int(11) NOT NULL,
+   el_org_id  int(11) NOT NULL,	
+   PRIMARY KEY  (`el_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 #
@@ -556,7 +560,9 @@ CREATE TABLE `investment_plan_master` (
 CREATE TABLE `leave_type_master` (
   `lt_id` int(11) NOT NULL auto_increment,
   `lt_name` varchar(50) NOT NULL,
-  PRIMARY KEY  (`lt_id`)
+  `lt_value` int(11) default '0',	
+   PRIMARY KEY  (`lt_id`),
+   UNIQUE KEY `lt_name` (`lt_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 #
@@ -584,6 +590,7 @@ CREATE TABLE `leave_value_master` (
   PRIMARY KEY  (`lv_id`,`lv_name`),
   UNIQUE KEY `lt_name` (`lv_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 #
 # Structure for the `loan_master` table : 
@@ -1354,4 +1361,137 @@ INSERT INTO `Salary_processing_setup` (`seq_id`, `salary_process_mode`, `flag`,`
   (1,'Salary Processing with Budget',1,1),
   (2,'Salary Processing',0,1);
 COMMIT;
+
+#
+# Structure for the `employee_family_record`
+#
+
+
+CREATE TABLE employee_family_record (
+        efr_id int(11) NOT NULL auto_increment,
+        efr_emp_code varchar(30) NOT NULL,
+        efr_membername varchar(100) NOT NULL,
+        efr_relation varchar(30) NOT NULL,
+        efr_dob date default NULL,
+        efr_dependent varchar(10) NOT NULL,
+        efr_whetheremployed varchar(20) NOT NULL,
+        efr_department varchar(70) NULL,
+        efr_org_id int(11) NOT NULL,
+        PRIMARY KEY  (`efr_id`),
+        KEY efr_emp_code (efr_emp_code),
+        KEY efr_org_id (efr_org_id),
+        CONSTRAINT `employee_family_record_fk1` FOREIGN KEY (`efr_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT `employee_family_record_ibfk_1` FOREIGN KEY (`efr_emp_code`) REFERENCES `employee_master` (`emp_code`) ON DELETE CASCADE ON UPDATE CASCADE
+
+);
+
+
+#
+#Structure for the `employee_service_history`
+#
+
+
+CREATE TABLE employee_service_history (
+        esh_emp_id int(11) NOT NULL auto_increment,
+        esh_emp_code varchar(30) NOT NULL,
+        esh_transactiontype varchar(100) NOT NULL,
+        esh_tooffice varchar(70) NOT NULL,
+        esh_towhichpost varchar(30) NOT NULL,
+        esh_class varchar(30) NOT NULL,
+        esh_ordernumber varchar(30) NOT NULL,
+        esh_orderdate date default Null,
+        esh_dofincrement date default Null,
+        esh_payscale int(11) NOT NULL,
+        esh_dept_deputation varchar(20) NOT NULL,
+        esh_areatype varchar(20) NOT NULL,
+        esh_org_id int(11) NOT NULL,
+        PRIMARY KEY  (`esh_emp_id`),
+        KEY esh_emp_code (esh_emp_code),
+        KEY esh_org_id (esh_org_id),
+        CONSTRAINT `employee_service_history_fk1` FOREIGN KEY (`esh_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT `employee_service_history_bfk_1` FOREIGN KEY (`esh_emp_code`) REFERENCES `employee_master` (`emp_code`) ON DELETE CASCADE ON UPDATE CASCADE
+
+);
+
+#
+#Structure for the employee_training_detail
+#
+
+
+CREATE TABLE employee_training_detail (
+        etd_emp_id int(11) NOT NULL auto_increment,
+        etd_emp_code varchar(30) NOT NULL,
+        etd_trainingtype varchar(80) NOT NULL,
+        etd_topicname varchar(80) NOT NULL,
+        etd_institutename varchar(100) default NULL,
+        etd_sponsoredby varchar(80) default NULL,
+        etd_datefrom date default NULL,
+        etd_dateto date default NULL,
+        etd_org_id int(11) NOT NULL,
+        PRIMARY KEY  (etd_emp_id),
+        KEY etd_emp_code (etd_emp_code),
+        KEY etd_org_id (etd_org_id),
+        CONSTRAINT `employee_training_detail_fk1` FOREIGN KEY (`etd_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT `employee_training_detail_ibfk_1` FOREIGN KEY (`etd_emp_code`) REFERENCES `employee_master` (`emp_code`) ON DELETE CASCADE ON UPDATE CASCADE
+
+);
+
+#
+#Structure for the employee_education_detail
+#
+
+
+CREATE TABLE employee_education_detail (
+        edu_emp_id int(11) NOT NULL auto_increment,
+        edu_emp_code varchar(30) NOT NULL,
+        edu_exam_passed varchar(40) NOT NULL,
+        edu_board_university varchar(100) NOT NULL,
+        edu_marksobtained int(100) NOT NULL,
+        edu_passingYear int(30) NOT NULL,
+        edu_grade varchar(70) default NULL,
+        edu_org_id int(11) NOT NULL,
+        PRIMARY KEY  (edu_emp_id),
+        KEY edu_emp_code (edu_emp_code),
+        KEY edu_org_id (edu_org_id),
+        CONSTRAINT `employee_education_detail_fk1` FOREIGN KEY (`edu_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT `employee_education_detail_ibfk_1` FOREIGN KEY (`edu_emp_code`) REFERENCES `employee_master` (`emp_code`) ON DELETE CASCADE ON UPDATE CASCADE
+
+);
+
+#
+#Structure for the leavetype_org_record
+#
+
+CREATE TABLE leavetype_org_record (
+        ltr_leave_id int(11) NOT NULL,
+        ltr_org_id int(11) NOT NULL,
+        KEY ltr_leave_id (ltr_leave_id),
+        KEY ltr_or_gid (ltr_org_id),
+        CONSTRAINT `leavetype_org_record_fk1` FOREIGN KEY (`ltr_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT `leavetype_org_record_ibfk_1` FOREIGN KEY (`ltr_leave_id`) REFERENCES `leave_type_master` (`lt_id`) ON DELETE CASCADE ON UPDATE CASCADE
+
+);
+
+
+#
+# Data for the `leave_type_master` table  
+#
+
+INSERT INTO leave_type_master(lt_id, lt_name, lt_value) VALUES
+(1, 'Earned Leave', 0),
+(2, 'Half Pay Leave', 20),
+(3, 'Commuted Leave', 0),
+(4, 'Leave Not Due', 0),
+(5, 'Maternity Leave', 180),
+(6, 'Paternity Leave', 0),
+(7, 'Study Leave', 0),
+(8, 'Extra Ordinary Leave', 0),
+(9, 'Casual Leave', 0),
+(10, 'Child Care Leave', 0),
+(11, 'Hospital Leave', 850),
+(12, 'Vocational Department Staff Leave', 0),
+(13, 'Special Disability Leave', 0),
+(14, 'Child Adoption Leave', 135),
+(15, 'Leave to Probationers', 0),
+(16, 'Leave to Apprentices', 30);
 

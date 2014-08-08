@@ -1,5 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
+    * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
@@ -15,7 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.smvdu.payroll.Admin.AdminManagedBean;
@@ -48,7 +50,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
 *  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE 
 *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
-*  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
+*  EQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
 *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
 *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
 *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
@@ -253,6 +255,7 @@ public class Org implements Serializable{
     public ArrayList<Org> getAdminEmailIdList() {
          adminEmailIdList = new CollegeList().adminEmaiIdList();
         dataGrid2.setValue(adminEmailIdList); 
+        //System.out.println("\nadminEmailIdList====="+adminEmailIdList+"\ndataGrid2====="+dataGrid2);
         return adminEmailIdList;
     }
 
@@ -367,7 +370,9 @@ public class Org implements Serializable{
      
     public ArrayList<Org> getAdminList() {
         adminList = new CollegeList().activeAdminList();
+        //System.out.println("\nseema======adminList=====lstadmin="+adminList);
         dataGrid.setValue(adminList); 
+        //System.out.println("\nseema===========lstadmin="+adminList+"\ndataGrid====="+dataGrid);
         return adminList;
     }
 
@@ -677,10 +682,6 @@ public class Org implements Serializable{
 
     
 
-
-
-
-
     public void getProfile()   {
         Org o = new OrgProfileDB().loadOrgProfile(id);
         this.name = o.getName();
@@ -694,6 +695,7 @@ public class Org implements Serializable{
 
 
     public void save()  {
+        try{
         FacesContext fc=FacesContext.getCurrentInstance();
         /*if(new ServerDetails().getIpList(this.getIpAddress()) == true)
         {
@@ -737,7 +739,8 @@ public class Org implements Serializable{
             return;
         }
         
-        if((this.getPhone().matches(".*[0-9]{7}.*") == false) || this.getPhone().length()!=7)
+        //if((this.getPhone().matches(".*[0-9]{7}.*") == false) || this.getPhone().length()!=7)
+        if((this.getPhone().matches(".*[0-9].*") == false) || this.getPhone().length()<6)
         {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -747,7 +750,8 @@ public class Org implements Serializable{
             return;
                     }
         
-        if((String.valueOf(this.getLl()).matches(".*[0-9]{7}.*") == false) || String.valueOf(this.getLl()).length()!=7)
+        //if((String.valueOf(this.getLl()).matches(".*[0-9]{7}.*") == false) || String.valueOf(this.getLl()).length()!=7)
+        if((String.valueOf(this.getLl()).matches(".*[0-9].*") == false)|| String.valueOf(this.getLl()).length()<6)
         {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -760,12 +764,25 @@ public class Org implements Serializable{
         Exception e = new OrgProfileDB().save(this);
         if(e==null)
         {
+            //FacesContext facesContext = FacesContext.getCurrentInstance();
+            //Flash flash = facesContext.getExternalContext().getFlash();
+            //flash.setKeepMessages(true);
+            //flash.setRedirect(true);
+            //facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sample info message", "richFaces rocks!"));
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Master user Created. User Name :"+this.getEmail()+",Password :"+masterPassword, ""));
+            //FacesContext.getCurrentInstance().getExternalContext().redirect("../Login.jsf");  
+            
         }
         else
         {
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
-            return;
+            //String page= FacesContext.getCurrentInstance().getExternalContext().redirect("../Login.jsf");  
+            return;  
+        }
+        }//  
+        catch(Exception e)
+        {
+            e.printStackTrace();
         }
     }
     public void update()    {
@@ -800,11 +817,14 @@ public class Org implements Serializable{
         try
         {
             ArrayList<Org> orgProf = (ArrayList<Org>) dataGrid3.getValue();
+            //System.out.println("orgProf====="+orgProf);
             for(Org o : orgProf)
             {
                 System.out.println(o.getName()+" : "+o.getWeb()+" : "+o.isStatus());
             }
+            
             Exception ex = new CollegeList().updateRequest(orgProf); 
+            //System.out.println("orgProf==in last==="+orgProf);
             if(ex == null)
             {
                 FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "College Are Updated", ""));
@@ -927,6 +947,7 @@ public class Org implements Serializable{
             FacesMessage message = new FacesMessage();
             
             ArrayList<Org> admin = (ArrayList<Org>) dataGrid.getValue();
+            //System.out.println("\nActive Admin======seema : "+admin);
             int active = 0;
             for(Org ad : admin)
             {
@@ -944,6 +965,7 @@ public class Org implements Serializable{
                  return;
             }
             Exception ex = new CollegeList().updateAdminStatus(admin);
+            //System.out.println("\nActive Admin==in last====seema : "+admin);
             if(ex == null)
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
@@ -971,6 +993,7 @@ public class Org implements Serializable{
             FacesMessage message = new FacesMessage();
             
             ArrayList<Org> admin = (ArrayList<Org>) dataGrid2.getValue();
+            //System.out.println("Active===== Admin arrayliat : "+admin);
             int active = 0;
             for(Org ad : admin)
             {
@@ -988,6 +1011,7 @@ public class Org implements Serializable{
                  return;
             }
             Exception ex = new CollegeList().updateAdminEmailStatus(admin);
+            //System.out.println("Active==in last=== Admin arrayliat : "+admin);
             if(ex == null)
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
@@ -1076,7 +1100,7 @@ public class Org implements Serializable{
             FacesMessage message = new FacesMessage();
             Org o = new Org();
             o = (Org) dataGrid1.getRowData();
-               Exception ex = new CollegeList().updateRow(o); 
+           Exception ex = new CollegeList().updateRow(o); 
                
             if(ex == null)
             {
@@ -1211,4 +1235,5 @@ public class Org implements Serializable{
      {
          System.out.println("Email ID : "+this.getEmail());
      }
+          
 }

@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.smvdu.payroll.beans;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import org.smvdu.payroll.api.BankDetails.BankDetailsSearch;
 import org.smvdu.payroll.api.BankDetails.BankProfileDetails;
@@ -58,13 +60,15 @@ import org.smvdu.payroll.user.ActiveProfile;
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
- *  Contributors: Members of ERP Team @ SMVDU, Katra
+ *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+ * Modified Date: 4 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
  *
  */
 public class Employee implements Serializable {
 
-    public Employee() {
-    }
+    /*public Employee() {
+    }*/
+    
     private int gradePay;
 
     public int getGradePay() {
@@ -110,10 +114,12 @@ public class Employee implements Serializable {
     private String genDetails;
 
     public String getGenDetails() {
+        //System.out.println("employeebean==getdetails=="+ genDetails);
         return genDetails;
     }
 
     public void setGenDetails(String genDetails) {
+         //System.out.println("employeebean==setdetails=="+ genDetails);
         this.genDetails = genDetails;
     }
      private int genDetailCode;
@@ -133,7 +139,7 @@ public class Employee implements Serializable {
     }
 
     public void setSalaryMessage(String salaryMessage) {
-        System.out.println("DAta Should Be Write Here : "+salaryMessage);
+        System.out.println("DAta Should Be Write Here seema: "+salaryMessage);
         this.salaryMessage = salaryMessage;
     }
     public String getNotification() {
@@ -227,10 +233,12 @@ public class Employee implements Serializable {
     }
 
     public String getGenderName() {
+        //System.out.println("employeebean==get=="+ genderName);
         return genderName;
     }
 
     public void setGenderName(String genderName) {
+        //System.out.println("employeebean==set=="+ genderName);
         this.genderName = genderName;
     }
     private int currentBasic;
@@ -595,7 +603,7 @@ public class Employee implements Serializable {
         if (emp == null) {
             emp = getDefault();
         }
-        System.err.println("Name : " + emp.name);
+        //System.err.println("Name : " + emp.name);
         type = emp.type;
         name = emp.name;
         setCode(code);
@@ -613,10 +621,12 @@ public class Employee implements Serializable {
     private String genName;
 
     public String getGenName() {
+         //System.out.println("employeebean==getname=="+ genName);
         return genName;
     }
 
     public void setGenName(String genName) {
+        //System.out.println("employeebean==setname=="+ genName);
         this.genName = genName;
     }
 
@@ -634,9 +644,10 @@ public class Employee implements Serializable {
         }
     }
 
+    
     public String loadProfile() {
 
-        System.err.println("Loading Profile for code :" + code);
+        //System.err.println("Loading Profile for code :" + code);
         Employee empz = new EmployeeDB().loadProfile(code.trim(), orgCode);
         if (empz == null) {
         }
@@ -645,7 +656,7 @@ public class Employee implements Serializable {
             this.setStatusI("/img/InActive.png");
         } else {
             this.setStstus(true);
-            System.out.println("DAta Should Be Write Herekjhkgh : " + empz.getStstus());
+            //System.out.println("DAta Should Be Write Herekjhkgh : " + empz.getStstus());
             this.setStatusI("/img/Active.png");
         }
         if (empz == null) {
@@ -654,13 +665,13 @@ public class Employee implements Serializable {
         bankName = new String();
         bankBranchName = new String();
         bankIFSCcode = new String();
-        System.err.println("Name : " + empz.name);
+        //System.err.println("Name : " + empz.name);
         type = empz.type;
-        System.err.println("Type : " + type);
+        //System.err.println("Type : " + type);
         name = empz.name;
         setCode(code);
         dept = empz.dept;
-        System.err.println("Department : " + dept);
+        //System.err.println("Department : " + dept);
         desig = empz.desig;
         dob = empz.dob;
         doj = empz.doj;
@@ -689,6 +700,7 @@ public class Employee implements Serializable {
         //empLeaDate = empz.empLeaDate;
         //System.out.println("Bank l : "+empz.bankIFSCcode);
         return "EditEmployeeProfile";
+        
     }
     private SelectItem[] empIdentity;
 
@@ -777,12 +789,13 @@ public class Employee implements Serializable {
     }
 
     public String getDob() {
+        //System.out.println(">> Date Of Birth : " +dob);
         return dob;
     }
 
     public void setDob(String dob) {
         this.dob = dob;
-        System.out.println(">> Date Of Birth : " + this.dob);
+        //System.out.println(">> Date Of Birth : " + this.dob);
 
     }
 
@@ -864,9 +877,6 @@ public class Employee implements Serializable {
         return name;
     }
 
-    //private ArrayList<String> bank = new ArrayList<String>();
-    //private SelectItem[] arrayAsItem;
-    // private ArrayList<String> bankBranch = new ArrayList<String>();
     public ArrayList<BankProfileDetails> getBankSuggestion(Object obj) {
         try {
             return new BankDetailsSearch().bankSearch(obj);
@@ -940,4 +950,433 @@ public class Employee implements Serializable {
         this.userVali = userVali;
     }
     // Bank Details.............
+    
+    //family record--------------------
+    private UIData dataGrid;
+    private String membername;
+    private String relation;
+    private String dependent;
+    private String whetheremployed;
+    private boolean checked;
+       
+    
+    public String getMemberName() {
+        return membername;
+    }
+
+    public void setMemberName(String membername) {
+        this.membername = membername;
+    }
+    
+    
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+    
+    public String getDependent() {
+        return dependent;
+    }
+
+    public void setDependent(String dependent) {
+        this.dependent = dependent;
+    }
+    
+    public String getWhetherEmployed() {
+        return whetheremployed;
+    }
+
+    public void setWhetherEmployed(String whetheremployed) {
+        this.whetheremployed = whetheremployed;
+    }
+   
+    public boolean isCheck() {
+        //System.out.println("is chdecked====="+checked);
+        return checked;
+    }
+
+    public void setCheck(boolean checked) {
+        this.checked = checked;
+    }
+    
+    public UIData getDataGrid() {
+        return dataGrid;
+    }
+
+    public void setDataGrid(UIData dataGrid) {
+        this.dataGrid = dataGrid;
+    }
+    
+    private int recordId;
+
+    public int getRecordId() {
+        //System.out.println("recordId===== : "+recordId);
+        return recordId;
+    }
+
+    public void setRecordId(int recordId) {
+        //System.out.println("recordId===== : "+recordId);
+        this.recordId = recordId;
+    }
+    
+    // family record-----------------
+    
+    public void saveFamilyRecord() {
+        try {
+            //System.out.println("method====save family record=");
+            String statusMessage = null;
+            Severity s = null;
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if(this.getMemberName().matches("^[a-zA-Z\\s]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid First Name");
+                //message.setDetail("First Name Must Be At Least Three Charecter ");
+                fc.addMessage("", message);
+                return;
+            }
+            String emc = ""+this.getCode();
+            if (emc.matches("^[a-z0-9A-Z\\s]*$") == false){
+               FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid Employee Code");
+                //message.setDetail("First Name Must Be At Least Three Charecter ");
+                fc.addMessage("", message);
+                return;
+            }
+            Exception ee = new EmployeeDB().saveFamilyRecord(this);
+            if (ee == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Family Record  Saved (" + code + ")", "Employee Data Saved (" + code + ")"));
+            } else {
+                throw ee;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = " Family Record Not Saved :" + code + " Try Again";
+        }
+    }
+    private ArrayList<Employee> allfamilyrecord;
+    
+    
+    public void loadfamilyDetail() {
+        try{
+        
+            allfamilyrecord = new EmployeeDB().loadfamilyrecord(code);
+            //System.err.println("Loading Profile for code :" + code+"\nallfamilyrecord==="+allfamilyrecord);
+            if((allfamilyrecord.isEmpty()) && (!code.equals("null"))){
+         
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Family detial of employee is not exist", ""));
+          
+            }
+       
+        }    
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+     
+       
+    public ArrayList<Employee>getAllFamilyRecord()   {
+       allfamilyrecord = new EmployeeDB().loadfamilyrecord(code);
+       //System.out.println("\n inget family record in line1071==code==="+code+"\nallfamilyrecord=size==="+allfamilyrecord.size());
+       dataGrid.setValue(allfamilyrecord);  
+       return allfamilyrecord;
+       
+   }
+   
+    
+    public void setAllFamilyRecord(ArrayList<Employee> allfamilyrecord) {
+        this.allfamilyrecord = allfamilyrecord;
+        
+    }
+  
+    
+      
+   
+      
+    //Employee service history
+    
+    private UIData dataGrid1;
+    private String transactiontype;
+    private String tooffice;
+    private String towhichpost;
+    private String empservclass;
+    private int ordernum;
+    private String orderdate;
+    private String dateofincrement;
+    private String payscale;
+    private String deputationdept;
+    private String areatype;
+    
+   
+     public String getTransactiontype() {
+        return transactiontype;
+    }
+
+    public void setTransactiontype(String transactiontype) {
+        this.transactiontype = transactiontype;
+    }
+    
+     public String getTooffice() {
+        return tooffice;
+    }
+
+    public void setTooffice(String tooffice) {
+        this.tooffice = tooffice;
+    }
+    
+     public String getTowhichpost() {
+        return towhichpost;
+    }
+
+    public void setTowhichpost(String towhichpost) {
+        this.towhichpost = towhichpost;
+    }
+    
+     public String getEmpservclass() {
+        return empservclass;
+    }
+
+    public void setEmpservclass(String empservclass) {
+        this.empservclass = empservclass;
+    }
+    
+     public int getOrdernum() {
+        return ordernum;
+    }
+
+    public void setOrdernum(int ordernum) {
+        this.ordernum = ordernum;
+    }
+    
+     public String getOrderdate() {
+        return orderdate;
+    }
+
+    public void setOrderdate(String orderdate) {
+        this.orderdate = orderdate;
+    }
+    
+     public String getDateofincrement() {
+        return dateofincrement;
+    }
+
+    public void setDateofincrement(String dateofincrement) {
+        this.dateofincrement = dateofincrement;
+    }
+    
+     public String getPayscale() {
+        return payscale;
+    }
+
+    public void setPayscale(String payscale) {
+        this.payscale = payscale;
+    }
+    
+     public String getDeputationdept() {
+        return deputationdept;
+    }
+
+    public void setDeputationdept(String deputationdept) {
+        this.deputationdept = deputationdept;
+    }
+    
+     public String getAreatype() {
+        return areatype;
+    }
+
+    public void setAreatype(String areatype) {
+        this.areatype = areatype;
+    }
+    
+    
+    int currentRecordindex;
+    public int getCurrentRecordindex() {
+        //System.out.println("current index====="+currentRecordindex);
+        return currentRecordindex;
+    }
+ 
+    public void setCurrentRecordindex(int currentRecordindex) {
+        //System.out.println("current index==inset==="+currentRecordindex);
+        this.currentRecordindex = currentRecordindex;
+    }
+    
+    Employee editedRecord;
+    public Employee getEditedRecord() {
+        
+        return editedRecord;
+    }
+ 
+    public void setEditedRecord(Employee editedRecord) {
+        this.editedRecord = editedRecord;
+    }
+    
+    public void saveServiceHistory() {
+        try {
+            
+                Severity s = null;
+                FacesContext fc = FacesContext.getCurrentInstance();
+                String emc = ""+this.getCode();
+                if (emc.matches("^[a-z0-9A-Z\\s]*$") == false){
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid Employee Code");
+                fc.addMessage("", message);
+                return;
+            }
+            Exception ee = new EmployeeDB().saveEmpHistory(this);
+            if (ee == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Service Record  Saved (" + code + ")", "Employee Data Saved (" + code + ")"));
+            }
+            else {
+                throw ee;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            message = " Service Record Not Saved :" + code + " Try Again";
+        }
+    }
+    
+       
+    private ArrayList<Employee> allservicerecord;
+    
+    public void loadserviceHistory(){
+        try{
+        
+            allservicerecord = new EmployeeDB().loadEmpHitory(code);
+           //  System.out.println("\n===loadserviceHistory==code=== "+code+"\nallsrvcsHistory===="+allservicerecord);
+            if((allservicerecord.isEmpty()) && (!code.equals("null"))){
+         
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Service History of employee is not exist", ""));
+          
+            }
+      
+        }    
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    
+     public ArrayList<Employee>getAllServiceRecord(){
+        
+        allservicerecord = new EmployeeDB().loadEmpHitory(code);
+        dataGrid.setValue(allservicerecord);  
+        //System.out.println("\n inget  record in line1300=code=dataGrid1=="+dataGrid);
+        return allservicerecord;
+       
+   }
+   
+    
+    public void setAllServiceRecord(ArrayList<Employee> allservicerecord) {
+        this.allservicerecord = allservicerecord;
+        
+    }
+  
+    public void deleteRecord(){
+        
+        try
+        {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            FacesMessage message = new FacesMessage();
+            
+            ArrayList<Employee> familyrecord = (ArrayList<Employee>) dataGrid.getValue();
+            Employee emp=familyrecord.get(currentRecordindex);
+            int currentIndex=emp.getRecordId();
+           // System.out.println("\n in line 1103==getFamilyRecord=="+familyrecord);
+            Exception ex = new EmployeeDB().DeleteFamilyRecord(currentIndex, familyrecord);
+            if(ex == null )
+            {
+                    message.setSeverity(FacesMessage.SEVERITY_INFO);
+                    message.setSummary(" Record deleted Successfully");
+                    fc.addMessage("", message);
+            }
+           
+            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+    
+     
+    public void updateRecord(){
+        
+        try
+        {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            FacesMessage message = new FacesMessage();
+            //System.out.println("\n in line 1139==getFamilyRecord=="+editedRecord);
+            Exception ex = new EmployeeDB().UpdateFamilyRecord(editedRecord); 
+            if(ex == null )
+            {
+                message.setSeverity(FacesMessage.SEVERITY_INFO);
+                message.setSummary(" Record Updated Successfully");
+                fc.addMessage("", message);
+            }
+               
+            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+    
+    
+    public void deleteServiceHistory(){
+        try
+        {
+            
+            FacesContext fc = FacesContext.getCurrentInstance();
+            
+            FacesMessage message = new FacesMessage();
+            ArrayList<Employee> servicerecord = (ArrayList<Employee>) dataGrid.getValue();
+            Employee emp=servicerecord.get(currentRecordindex);
+            int currentIndex=emp.getRecordId();
+            //System.out.println("\n in line =sdghsdhellooo recordEntry=="+servicerecord);
+            //System.out.println("\n in line =sdghsdhellooo recordEntry=="+emp+"\nindexhello-----===="+editedRecord.getRecordId());
+            Exception ex = new EmployeeDB().DeleteServicehistoryRecord(currentIndex, servicerecord); 
+            if(ex == null )
+            {
+                    message.setSeverity(FacesMessage.SEVERITY_INFO);
+                    message.setSummary("  Service Record deleted Successfully");
+                    fc.addMessage("", message);
+            }
+                       
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+      
+    public void updateServiceRecord(){
+        try
+        {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            FacesMessage message = new FacesMessage();
+            Exception ex = new EmployeeDB().UpdateServicehistoryRecord(editedRecord); 
+            if(ex == null )
+            {
+                message.setSeverity(FacesMessage.SEVERITY_INFO);
+                message.setSummary(" Sevice Record Updated Successfully");
+                fc.addMessage("", message);
+            }
+               
+            
+        }//try
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+     
+    //Employee service history
+    
 }

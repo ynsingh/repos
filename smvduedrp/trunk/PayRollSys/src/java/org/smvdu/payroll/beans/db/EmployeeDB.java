@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.smvdu.payroll.api.Administrator.CollegeList;
 import org.smvdu.payroll.api.BankDetails.BankDetailsSearch;
 import org.smvdu.payroll.api.BankDetails.BankProfileDetails;
 import org.smvdu.payroll.beans.setup.Department;
@@ -21,14 +22,16 @@ import org.smvdu.payroll.beans.SimpleEmployee;
 import org.smvdu.payroll.beans.setup.EmployeeType;
 import org.smvdu.payroll.beans.setup.SalaryGrade;
 import org.smvdu.payroll.beans.UserInfo;
-import org.smvdu.payroll.beans.composite.ActivationDeactivationMessage;
-import org.smvdu.payroll.beans.composite.NewSalaryProcessing;
-import org.smvdu.payroll.beans.validator.AllValidator;
-import org.smvdu.payroll.beans.validator.EmployeeNotification;
-import org.smvdu.payroll.beans.validator.ValidationStatus;
-import org.smvdu.payroll.beans.validator.ValidatorStatus;
-import org.smvdu.payroll.user.ActiveProfile;
+//import org.smvdu.payroll.beans.composite.ActivationDeactivationMessage;
+//import org.smvdu.payroll.beans.composite.NewSalaryProcessing;
+//import org.smvdu.payroll.beans.setup.Org;
+//import org.smvdu.payroll.beans.validator.AllValidator;
+//import org.smvdu.payroll.beans.validator.EmployeeNotification;
+//import org.smvdu.payroll.beans.validator.ValidationStatus;
+//import org.smvdu.payroll.beans.validator.ValidatorStatus;
+//import org.smvdu.payroll.user.ActiveProfile;
 import org.smvdu.payroll.user.SalaryMessage;
+import org.smvdu.payroll.module.attendance.LoggedEmployee;
 
 /**
  *
@@ -59,13 +62,15 @@ import org.smvdu.payroll.user.SalaryMessage;
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
- *  Contributors: Members of ERP Team @ SMVDU, Katra
- *
+ *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+ * Modified Date: 4 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
  */
+
 public class EmployeeDB {
 
     private int orgCode = 0;
-    private UserInfo uf = null;
+    //private UserInfo uf = null;
+    private UserInfo uf;
     private int status;
     private String url;
 
@@ -78,8 +83,17 @@ public class EmployeeDB {
     }
 
     public EmployeeDB() {
+        //changes for the orgcode because by uf object not get the orgcode
         uf = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
         orgCode = uf.getUserOrgCode();
+        if(orgCode==0){
+        LoggedEmployee le =(LoggedEmployee)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
+        orgCode = le.getUserOrgCode();
+        }
+        //uf = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+        //System.err.print("employyeedb=uf=line no 85=="+uf);
+        //orgCode = uf.getUserOrgCode();
+        //System.err.print("employyeedb=== line no 87====="+orgCode);
     }
     private PreparedStatement ps;
     private ResultSet rs;
@@ -174,8 +188,8 @@ public class EmployeeDB {
                     + "left join salary_grade_master on grd_code = emp_salary_grade "
                     + " where emp_code=? and emp_org_code=?";
             ps = c.prepareStatement(q);
-            //System.out.println(">>>>>>>  seeeeeema" + q +"\nempcode====="+ empCode + "\nOrg ID===== " + orgCode);
             ps.setString(1, empCode.trim());
+            //ps.setInt(2, orgId);
             ps.setInt(2, orgCode);
             rs = ps.executeQuery();
             Employee emp = null;
@@ -233,7 +247,7 @@ public class EmployeeDB {
                 emp.setGradePay(rs.getInt(27));
                 if (rs.getInt(28) == 1)
                 {
-                    System.out.println("Status : " + rs.getInt(28));
+                    //System.out.println("Status : " + rs.getInt(28));
                     emp.setStstus(true);
                 }
                 else
@@ -308,7 +322,7 @@ public class EmployeeDB {
                 return "/img/err.png";
             }
         } catch (Exception ex) {
-            System.out.println("Error : " + ex.getMessage());
+            //System.out.println("Error : " + ex.getMessage());
             ex.printStackTrace();
             return null;
         }
@@ -377,7 +391,7 @@ public class EmployeeDB {
                     + " employee_type_master on emp_type_id = emp_type_code left "
                     + "join salary_grade_master on grd_code=emp_salary_grade "
                     + "" + s + " ";
-            System.out.println("QUARY : " + q);
+            //System.out.println("QUARY : " + q);
             ps = c.prepareStatement(q);
             rs = ps.executeQuery();
             ArrayList<Employee> data = new ArrayList<Employee>();
@@ -394,6 +408,8 @@ public class EmployeeDB {
                 desig.setName(rs.getString(4));
                 emp.setDesig(desig.getCode());
                 emp.setDesigName(desig.getName());
+                
+                //System.out.println("\n designation==abcds==="+desig.getName()+"\nrs.getString(4)===="+rs.getString(4)+"\ncode==="+desig.getCode());
                 EmployeeType et = new EmployeeType();
                 et.setName(rs.getString(5));
                 emp.setType(et.getCode());
@@ -439,7 +455,7 @@ public class EmployeeDB {
             Employee employee = new Employee().bankDetails(emp);
             Connection c = new CommonDB().getConnection();
             FacesContext fc=FacesContext.getCurrentInstance();
-            System.out.println("DAta Should Be Write Here status " + emp.isUserNameStatus());
+            //System.out.println("DAta Should Be Write Here status emploeeedb" + emp.isUserNameStatus());
             int empstatus;
             if (emp.getStstus() == true) {
                 empstatus = 1;
@@ -509,7 +525,7 @@ public class EmployeeDB {
                     + "emp_yop='" + emp.getYearOfPassing() + "',emp_prev_emp='" + emp.getYearOfPassing() + "',emp_address='" + emp.getAddress() + "',emp_active = '" + empstatus + "',"
                     + "bank_ifsc_code='" + employee.getBankIFSCcode().trim() + "',emp_bank_status='" + empstatus + "', dor = '"+emp.getDateOfResig()+"',emp_leaving = '"+emp.getEmpLeaDate()+"',emp_noti_day = '"+emp.getEmpNotDay()+"', citizen='"+emp.getGenDetailCode()+"' where emp_code='" + emp.getCode().trim() + "' and emp_org_code='" + orgCode + "'");
             ps.executeUpdate();
-            System.out.println("DAta Should Be Write Here ................");
+            //System.out.println("DAta Should Be Write Here ...employeedb.............");
             ps.executeUpdate();
             ps.close();
             c.close();
@@ -543,14 +559,14 @@ public class EmployeeDB {
             cn = new CommonDB().getConnection();
             PreparedStatement pst;
             ResultSet rst;
-            System.out.println("Code IFSC : " + emp.getBankIFSCcode());
+            //System.out.println("Code IFSC : " + emp.getBankIFSCcode());
             pst = cn.prepareStatement("select bank_name,branch_name,bank_ifsc_code from bankprofile where bank_ifsc_code = '" + emp.getBankIFSCcode() + "'");
             rst = pst.executeQuery();
             if (rst.next()) {
                 emp.setBankName(rst.getString(1));
                 emp.setBankBranchName(rst.getString(2));
                 emp.setBankIFSCcode(rst.getString(3));
-                System.out.println(emp.getBankIFSCcode());
+                //System.out.println(emp.getBankIFSCcode());
             }
 
         } catch (Exception ex) {
@@ -558,13 +574,14 @@ public class EmployeeDB {
         }
     }
 
+    
     public Exception save(Employee emp) {
         try {
             Connection c = new CommonDB().getConnection();
             ps = c.prepareStatement("insert into employee_master(emp_code,emp_name,"
                     + "emp_dept_code,emp_desig_code,emp_type_code,emp_phone,"
                     + "emp_email,emp_dob,emp_doj,emp_bank_accno,emp_pf_accno,emp_pan_no,"
-                    + "emp_salary_grade,emp_gender,emp_org_code,emp_father,emp_basic,emp_title,"
+                    + "emp_salary_grade,emp_gender,emp_org_code,emp_father,.,emp_title,"
                     + "emp_exp,emp_qual,emp_yop,emp_prev_emp,emp_address,emp_active,bank_ifsc_code,emp_bank_status) "
                     + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             ps.setString(1, emp.getCode());
@@ -623,7 +640,7 @@ public class EmployeeDB {
                 empl.setCode(rst.getString(1));
                 empl.setName(rst.getString(2));
                 empl.setBankStatus(rst.getBoolean(3));
-                System.out.println(empl.getName() + " : " + empl.getCode() + " : " + empl.getDesigName() + " : " + empl.getCurrentBasic());
+                //System.out.println(empl.getName() + " : " + empl.getCode() + " : " + empl.getDesigName() + " : " + empl.getCurrentBasic());
                 employee.add(empl);
             }
             pst.close();
@@ -675,4 +692,282 @@ public class EmployeeDB {
             return false;
         }
     }
+    
+    
+    
+    public Exception saveFamilyRecord(Employee emp) {
+        try {
+            Connection c = new CommonDB().getConnection();
+            ps = c.prepareStatement("insert into employee_family_record(efr_emp_code,efr_membername,"
+                    + "efr_relation,efr_dob,efr_dependent,efr_whetheremployed,efr_department,efr_org_id)"
+                    + "values(?,?,?,?,?,?,?,?)");
+            ps.setString(1, emp.getCode());
+            ps.setString(2, emp.getMemberName());
+            ps.setString(3, emp.getRelation());
+            ps.setString(4, emp.getDob());
+            ps.setString(5, emp.getDependent());
+            ps.setString(6, emp.getWhetherEmployed());
+            ps.setString(7, emp.getDeptName());
+            ps.setInt(8, orgCode);
+            //System.out.println("insavefamilyR empdb=====");
+            ps.executeUpdate();
+            ps.close();
+            c.close();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e;
+        }
+    }
+    
+     public ArrayList<Employee> loadfamilyrecord(String empCode) {
+        try {
+            
+            Connection c = new CommonDB().getConnection();
+            String q = "select * from employee_family_record"
+                    + " where efr_emp_code='"+empCode+"' and efr_org_id='" + orgCode + "'";
+                    
+            //System.out.println("QUARY : " + q);
+            ps = c.prepareStatement(q);
+            rs = ps.executeQuery();
+            ArrayList<Employee> data = new ArrayList<Employee>();
+            Employee emp = null;
+            int k = 1;
+            while (rs.next()) {
+                emp = new Employee();
+                
+                emp.setRecordId(rs.getInt(1));
+                emp.setCode(rs.getString(2).trim());
+                emp.setMemberName(rs.getString(3).trim());
+                emp.setRelation(rs.getString(4));
+                emp.setDob(rs.getString(5));
+                emp.setDependent(rs.getString(6));
+                emp.setWhetherEmployed(rs.getString(7));
+                emp.setDeptName(rs.getString(8));
+                emp.setSrNo(k);
+                data.add(emp);
+                k++;
+               
+            }
+            rs.close();
+            ps.close();
+            c.close();
+           
+            return data;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+     
+       
+     public Exception DeleteFamilyRecord(int currentIndex, ArrayList<Employee> empfmlydata){
+              try{
+                Connection connection = new CommonDB().getConnection();
+                
+                for(Employee efr : empfmlydata)
+                {
+                    if(efr.getRecordId()== currentIndex){
+                        
+                        ps = connection.prepareStatement("delete from employee_family_record where efr_id= '"+efr.getRecordId()+"' and efr_emp_code = '"+efr.getCode()+"' and efr_membername= '"+efr.getMemberName()+"' and efr_org_id='" + orgCode + "' ");
+                        ps.executeUpdate();
+                        ps.clearParameters();
+                    
+                   }
+                }    
+                
+                ps.close();
+                connection.close(); 
+                return null;   
+          }
+          catch(Exception ex)
+          {
+            ex.printStackTrace();
+            return ex;
+        } 
+          
+      }
+   
+   
+     public Exception UpdateFamilyRecord(Employee editedRecord){
+          try{
+                Connection connection = new CommonDB().getConnection();
+                ps = connection.prepareStatement("update employee_family_record set efr_membername= ?, efr_relation= ?,"
+                            + "efr_dob= ?, efr_dependent=?, efr_whetheremployed= ?, efr_department= ?"
+                            + "where efr_emp_code= ? and efr_id=? and efr_org_id='" + orgCode + "' ");
+                                        
+                        ps.setString(1, editedRecord.getMemberName());
+                        ps.setString(2, editedRecord.getRelation());
+                        ps.setString(3, editedRecord.getDob());
+                        ps.setString(4, editedRecord.getDependent());
+                        ps.setString(5, editedRecord.getWhetherEmployed());
+                        ps.setString(6, editedRecord.getDeptName());
+                        ps.setString(7, editedRecord.getCode().toUpperCase());
+                        ps.setInt(8, editedRecord.getRecordId());
+                        ps.executeUpdate();
+                        ps.clearParameters();
+                                  
+                    
+                //}    
+                
+                ps.close();
+                connection.close(); 
+                return null;   
+          }
+          catch(Exception ex)
+          {
+            ex.printStackTrace();
+            return ex;
+        } 
+          
+      }
+       
+    public Exception saveEmpHistory(Employee emp) {
+        try {
+            Connection c = new CommonDB().getConnection();
+            ps = c.prepareStatement("insert into employee_service_history(esh_emp_code, esh_transactiontype,"
+                    + "esh_tooffice, esh_towhichpost, esh_class, esh_ordernumber, esh_orderdate, esh_dofincrement,"
+                    + "esh_payscale, esh_dept_deputation, esh_areatype, esh_org_id)"
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?)");
+            ps.setString(1, emp.getCode());
+            ps.setString(2, emp.getTransactiontype());
+            ps.setString(3, emp.getTooffice());
+            ps.setInt(4, emp.getDesig());
+            ps.setString(5, emp.getEmpservclass());
+            ps.setInt(6, emp.getOrdernum());
+            ps.setString(7, emp.getOrderdate());
+            ps.setString(8, emp.getDateofincrement());
+            ps.setInt(9, emp.getGrade());
+            ps.setInt(10, emp.getDept());
+            ps.setString(11, emp.getAreatype());
+            ps.setInt(12, orgCode);
+            //System.out.println("\n in save history R empdb==desig==="+emp.getDesig()+"\ndept===="+emp.getDept()+"\ngrade==="+emp.getGrade());
+            ps.executeUpdate();
+            ps.close();
+            c.close();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e;
+        }
+    }
+    
+     public ArrayList<Employee> loadEmpHitory(String empCode) {
+        try {
+            
+            Connection c = new CommonDB().getConnection();
+            String q ="select esh_emp_id, esh_emp_code, esh_transactiontype,"
+                     + "esh_tooffice, esh_towhichpost, esh_class, esh_ordernumber,"
+                     + "esh_orderdate, esh_dofincrement, esh_payscale, esh_dept_deputation,"
+                     + "esh_areatype from employee_service_history "
+                    //String q ="select * from employee_service_history"
+                     + "where esh_emp_code='"+empCode+"' and esh_org_id='" +orgCode+ "'";
+            
+                    
+            //System.out.println("QUARY : " + q);
+            ps = c.prepareStatement(q);
+            rs = ps.executeQuery();
+            ArrayList<Employee> data = new ArrayList<Employee>();
+           // Employee emp = null;
+            int k = 1;
+            while (rs.next()) {
+                
+                Employee emp = new Employee();
+                
+                emp.setRecordId(rs.getInt(1));
+                emp.setCode(rs.getString(2).trim());
+                emp.setTransactiontype(rs.getString(3).trim());
+                emp.setTooffice(rs.getString(4).trim());
+                emp.setTowhichpost(rs.getString(5));
+                emp.setEmpservclass(rs.getString(6));
+                emp.setOrdernum(rs.getInt(7));
+                emp.setOrderdate(rs.getString(8));
+                emp.setDateofincrement(rs.getString(9));
+                emp.setPayscale(rs.getString(10));
+                emp.setDeputationdept(rs.getString(11));
+                emp.setAreatype(rs.getString(12));
+                //emp.setCurrentrecordindex(rs.getInt(1));
+                emp.setSrNo(k);
+                data.add(emp);
+                k++;
+                //System.out.println("\n in line 916==gethistory==payscale====="+emp.getBandName()+"\n====detp==="+emp.getDeptName()+"\n==desig===="+emp.getDesigName());
+                //System.out.println("line917===desig==5item="+emp.getDesigName()+"\n grades10==="+emp.getBandName()+"\n=====11dept==="+emp.getDeptName());
+                    
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return data;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
+     }    
+   
+       
+       public Exception DeleteServicehistoryRecord(int currentIndex, ArrayList<Employee> servicerecord){
+          try{
+                Connection connection = new CommonDB().getConnection();
+                
+                for(Employee esh : servicerecord)
+                {
+                    if(esh.getRecordId()== currentIndex){
+                                          
+                        //System.out.println("\n in line 773==deleterecordordcurrentindex=="+esh.getRecordId());
+                //System.out.println("\n in line 774==deleteRecord=="+Currentindex);
+                        ps = connection.prepareStatement("delete from employee_service_history where esh_emp_id= '"+esh.getRecordId()+"' and esh_emp_code = '"+esh.getCode()+"' and esh_org_id='" +orgCode+ "' ");
+                        ps.executeUpdate();
+                        ps.clearParameters();
+                    }
+                }    
+               
+                ps.close();
+                connection.close(); 
+                return null;   
+          }
+          catch(Exception ex)
+          {
+            ex.printStackTrace();
+            return ex;
+        } 
+          
+      }
+       
+        public Exception UpdateServicehistoryRecord(Employee editRec){
+          try{
+                Connection connection = new CommonDB().getConnection();
+                ps = connection.prepareStatement("update  employee_service_history set esh_transactiontype=?, esh_tooffice= ?,"
+                            + "esh_towhichpost= ?, esh_class=?, esh_ordernumber= ?, esh_orderdate= ?,"
+                            + "esh_dofincrement=?, esh_payscale= ?, esh_dept_deputation= ?, esh_areatype= ?"
+                            + " where esh_emp_code= ? and esh_emp_id=? and esh_org_id='" +orgCode+ "'");
+                          
+                ps.setString(1, editRec.getTransactiontype());
+                ps.setString(2, editRec.getTooffice());
+                ps.setString(3, editRec.getTowhichpost());
+                ps.setString(4, editRec.getEmpservclass());
+                ps.setInt(5, editRec.getOrdernum());
+                ps.setString(6, editRec.getOrderdate());
+                ps.setString(7, editRec.getDateofincrement());
+                ps.setString(8, editRec.getPayscale());
+                ps.setString(9, editRec.getDeputationdept());
+                ps.setString(10, editRec.getAreatype());
+                ps.setString(11, editRec.getCode());
+                ps.setInt(12, editRec.getRecordId());
+                ps.executeUpdate();
+                ps.clearParameters();
+                   
+                ps.close();
+                connection.close(); 
+                return null;   
+          }
+          catch(Exception ex)
+          {
+            ex.printStackTrace();
+            return ex;
+        } 
+          
+      }
+        
 }

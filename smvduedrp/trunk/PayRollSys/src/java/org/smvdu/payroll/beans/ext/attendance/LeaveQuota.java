@@ -5,6 +5,8 @@
 
 package org.smvdu.payroll.beans.ext.attendance;
 
+import java.io.Serializable;
+
 /**
  *
  *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
@@ -34,21 +36,36 @@ package org.smvdu.payroll.beans.ext.attendance;
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
-*
- */
-public class LeaveQuota {
+* Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+* Modified Date: 7 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*/
+
+public class LeaveQuota implements Serializable{
     private int empType;
     private String empTypename;
     private int leaveType;
     private String leaveTypeName;
     private int count;
+    private int balancecount;
+    private boolean selected;
+    private String code;
    
-    
-    
-    
+    public LeaveQuota()
+    {
 
-    public int getCount() {
+    }
+    public LeaveQuota(LeaveData ld)
+    {
+       
+        //this.setName(sd.getHeadName());
+        leaveType = ld.getCode();
+        leaveTypeName = ld.getName();
+        count =ld.getValue();
+        //checked=ld.isChecked();
+        
+    }
+    
+   public int getCount() {
         return count;
     }
 
@@ -87,7 +104,52 @@ public class LeaveQuota {
     public void setLeaveTypeName(String leaveTypeName) {
         this.leaveTypeName = leaveTypeName;
     }
+    
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
    
+public LeaveQuota(String leaveTypeName)
+    {
+        this.leaveTypeName = leaveTypeName;
+    }
+    
+     public String toString() {
+        return leaveTypeName;
+    }
+    
+     @Override
+    public boolean equals(Object obj)
+    {
+        LeaveQuota sh = (LeaveQuota)obj;
+        if(this.leaveType==sh.leaveType)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+     
+     public String getCode() {
+        return code;
+    }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+    public int getBalanceCount() {
+        return balancecount;
+    }
+
+    public void setBalanceCount(int balancecount) {
+        this.balancecount = balancecount;
+    }
+        
 }

@@ -702,14 +702,14 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <navigation-rule>
-        <from-view-id>//auth/Login.jsp</from-view-id>
+        <from-view-id>/auth/Login.jsp</from-view-id>
         <navigation-case>
             <from-outcome>success</from-outcome>
-            <to-view-id>//MainPage.jsp</to-view-id>
+            <to-view-id>/MainPage.jsp</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>fail</from-outcome>
-            <to-view-id>//auth/Login.jsp</to-view-id>
+            <to-view-id>/auth/Login.jsp</to-view-id>
         </navigation-case>
     </navigation-rule>
     
@@ -1097,4 +1097,28 @@
         <managed-bean-class>org.smvdu.payroll.beans.composite.SalaryProcessingSetupController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-</faces-config>
+    <managed-bean>
+        <managed-bean-name>actualPaidReportGen</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.api.pf.ReportGen.ActualPaidReportGen</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			EmployeeQualificationBean
+        </description>
+        <managed-bean-name>EmployeeQualification</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.EmployeeQualification</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			EmployeeQualificationDB
+        </description>
+        <managed-bean-name>EmployeeQualificationDB</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.db.EmployeeQualificationDB</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    </faces-config>

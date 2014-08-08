@@ -12,6 +12,12 @@ import java.sql.ResultSet;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+import java.util.Properties;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import javax.faces.context.FacesContext;
 
 /**
  *  This class acts as the central resource for database connection.
@@ -295,9 +301,16 @@ public class CommonDB {
     public Connection getConnection()   {
        try
         {
-            Connection conn;
+
+	   String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/dbsetting"+"/dbconf_admin.properties");
+           String url=getValue(path,"payroll_db_url");
+           String user=getValue(path,"payroll_db_user");
+           String pass=getValue(path,"payroll_db_password");
+	
+           Connection conn;
            Class.forName("com.mysql.jdbc.Driver");
-           conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/pl","etrg","brihaspatigroup");
+           //conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/pl","etrg","brihaspatigroup");
+	    conn= DriverManager.getConnection(url,user,pass);
             return conn;
         }
         catch(Exception e)
@@ -315,10 +328,17 @@ public class CommonDB {
     public Connection getwebzashConnection()   {
        try
         {
-            Connection conn;
+
+	   String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/dbsetting"+"/dbconf_admin.properties");
+           String url=getValue(path,"bgas_db_url");
+           String user=getValue(path,"bgas_db_user");
+           String pass=getValue(path,"bgas_db_password");
+
+           Connection conn;
            Class.forName("com.mysql.jdbc.Driver");
-           conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/webzash","etrg","brihaspatigroup");
-            return conn;
+           //conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/webzash","etrg","brihaspatigroup");
+	   conn= DriverManager.getConnection(url,user,pass);
+           return conn;
         }
         catch(Exception e)
         {
@@ -328,4 +348,22 @@ public class CommonDB {
         }
     }
     
+   public  String getValue(String path,String key) throws Exception{
+         try{
+                InputStream f = new FileInputStream(path);
+                Properties p = new Properties();
+                p.load(f);
+                String val = null;
+                val=p.getProperty(key);
+                f.close();
+                return(val);
+          }
+          catch(Exception e)
+        {
+            //ErrorManager.manageError(e);
+            e.printStackTrace();
+            return null;
+        }
+     }
+ 
 }

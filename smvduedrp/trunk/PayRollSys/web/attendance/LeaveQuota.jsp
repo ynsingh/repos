@@ -28,7 +28,8 @@
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+*  Modified Date: 4 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
 --%>
 
@@ -48,9 +49,10 @@
     <body class="subpage" id="">
         <div class="container_form">
             <f:view>
+                <%--<a4j:keepAlive beanName="LeaveQuotaBean"/>--%>
                 <h:form>
-                    <rich:panel style="width:600px;" header="Configure Applicable Salary Heads">
-                        <h:panelGrid columns="4">
+                    <rich:panel header="Configure Applicable Leaves Types and Leave Quota">
+                        <h:panelGrid columns="3">
                         <h:outputText value="Employee Type"/>
                         <h:selectOneMenu  value="#{LeaveQuotaBean.empType}">
                             <f:selectItems value="#{EmployeeTypeBean.items}"/>
@@ -65,24 +67,34 @@
                                 </f:facet>
                             </rich:messages>
                         </h:panelGrid>
-                        <rich:dataTable id="plist" value="#{LeaveQuotaBean.quotas}"
-                                        binding="#{LeaveQuotaBean.dataGrid}"  var="head">
-                            <h:column>
+                        <h:panelGrid columns="2">
+                            <rich:dataTable id="plist" value="#{LeaveQuotaBean.quotas}" binding="#{LeaveQuotaBean.dataGrid}" rowKeyVar="row"  var="head"  rows="10" style="width:800px;">
+                            <rich:column>
                             <f:facet name="header">
                                 <h:outputText value="Leave Type"/>
                             </f:facet>
                                 <h:outputText value="#{head.leaveTypeName}"/>
-                            </h:column>
-                            <h:column>
+                            </rich:column>
+                            <rich:column>
                             <f:facet name="header">
                                 <h:outputText value="Quota"/>
                             </f:facet>
                                 <rich:inplaceInput value="#{head.count}"/>
-                            </h:column>                            
+                            </rich:column>  
+                            <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="Applicable "/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{head.selected}"/>
+                            </rich:column>
+                            <f:facet name="footer">
+                            <rich:datascroller for="plist" page="5" />  
+                            </f:facet>
                         </rich:dataTable>
+                        </h:panelGrid>
                         <rich:separator/>
-                        <h:commandButton value="Update" action="#{LeaveQuotaBean.update}"  />
-                        <h:commandButton value="Help" action="#{ETHBean.print}"  />
+                        <a4j:commandButton value="Update" reRender="plist"  action="#{LeaveQuotaBean.update}"  />
+                        <%--<h:commandButton value="Help" action="#{ETHBean.print}"  />--%>
                     </rich:panel>
                 </h:form>
             </f:view>

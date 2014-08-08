@@ -21,10 +21,11 @@
         </head>
         <body>
             <rich:panel header="Create Company/Institute Profile">
-                <h:form>
-                    <rich:panel id="up">
+                <a href="../Login.jsf" style="font-weight:bold; font-size:15px;">Home</a>
+                <h:form id="frmTest">
+                   <rich:panel id="up">
 
-                    </rich:panel>
+                    <%--</rich:panel>--%>
                     <rich:messages>
                         <f:facet name="infoMarker">
                             <h:graphicImage url="/img/success.png"/>
@@ -135,12 +136,14 @@
                                <h:column>        <h:message for="tanno" /></h:column>                                      --%>
 
 
-                        <a4j:commandButton value="Save" reRender="up" action="#{OrgProfileBean.save}"/>
-                        <a4j:commandButton value="Cancel" action="Login.jsf" />
-                        <h:outputText value=""/>
+                        
+                    <h:outputText value=""/>
                     </h:panelGrid>
-                </h:form>
-            </rich:panel>
+                    <a4j:commandButton value="Save" reRender="up" action="#{OrgProfileBean.save}"/>&nbsp;
+                    <a4j:commandButton value="Reset" onclick="this.form.reset()"/>
+                    </rich:panel>
+                    </h:form>
+                   </rich:panel>
         </body>
     </html>
 </f:view>

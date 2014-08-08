@@ -10,8 +10,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.db.CommonDB;
+import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.ext.attendance.LeaveQuota;
+import org.smvdu.payroll.beans.ext.attendance.LeaveType;
 
 /**
  *
@@ -42,44 +46,74 @@ import org.smvdu.payroll.beans.ext.attendance.LeaveQuota;
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
-*
- */
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+*  Modified Date: 7 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*/
+
 public class LeaveQuotaDB {
     private PreparedStatement ps;
     private ResultSet rs;
+    private final UserInfo userBean;
+    
+    public LeaveQuotaDB()   {
+        //info = (ActiveProfile)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
+
+        userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+
+
+    }
+    
 
     public void update(ArrayList<LeaveQuota> data,int type)  {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps = c.prepareStatement("delete from leave_quota_master where lq_emp_type=?");
-            ps.setInt(1, type);
-            ps.executeUpdate();
-            ps.close();
-            ps = c.prepareStatement("insert into leave_quota_master values(?,?,?)");
-            for(LeaveQuota lq:data)
-            {
-                ps.setInt(1, type);
-                ps.setInt(2, lq.getLeaveType());
-                ps.setInt(3, lq.getCount());
-                ps.executeUpdate();
-                ps.clearParameters();
+            ArrayList<LeaveQuota> allltypes=new ArrayList<LeaveQuota>(getQuota(type));
+            ArrayList<LeaveQuota> diff = new ArrayList<LeaveQuota>(data);
+            diff.removeAll(allltypes);
+            /*System.out.print("\nvalue===allltypes==="+allltypes);
+            System.out.print("\nvalue====data==="+data);
+            System.out.print("\nvalue===diff==="+diff);*/   
+            if(diff.size()!=0){
+                for(LeaveQuota lq : diff)
+                {
+                   
+                   ps = c.prepareStatement("insert into leave_quota_master values(?,?,?)");
+                   ps.setInt(1, type);
+                   ps.setInt(2, lq.getLeaveType());
+                   ps.setInt(3, lq.getCount());
+                   ps.executeUpdate();
+                   ps.clearParameters();
+            
+                }
+            }
+            else{
+                for(LeaveQuota lq : data)
+                {
+                    ps=c.prepareStatement("update leave_quota_master set lq_count=? where lq_emp_type=? and lq_leave_type=? ");
+                    ps.setInt(1, lq.getCount());
+                    ps.setInt(2, type);
+                    ps.setInt(3,lq.getLeaveType());
+                    ps.executeUpdate();
+                    ps.clearParameters();
+                    
+                }   
             }
             ps.close();
             c.close();
+           
         }
         catch(Exception e)
         {
             e.printStackTrace();
+            //return false;
         }
     }
     public ArrayList<LeaveQuota> getQuota(int type)  {
-        System.err.println(" >>>> Code "+type);
         try
         {
-            String q = "select lt_id,lt_name,lq_count from leave_type_master left"
-                    + " join leave_quota_master on lq_leave_type = lt_id where lq_emp_type=?";
+            String q = "select lq_leave_type,lt_name,lq_count from leave_quota_master left"
+                    + " join leave_type_master on lq_leave_type = lt_id left join leavetype_org_record on ltr_leave_id = lt_id where lq_emp_type=? and ltr_org_id='"+userBean.getUserOrgCode()+"' ";
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement(q);
             ps.setInt(1, type);
@@ -91,7 +125,6 @@ public class LeaveQuotaDB {
                 lq.setLeaveType(rs.getInt(1));
                 lq.setLeaveTypeName(rs.getString(2));
                 lq.setCount(rs.getInt(3));
-                //System.out.println(">>>> "+lq.getEmpTypename()+","+lq.getCount());
                 data.add(lq);
             }
             rs.close();
@@ -105,5 +138,233 @@ public class LeaveQuotaDB {
             return null;
         }
     }
+        
+    public ArrayList<LeaveQuota> loadAllData(int type) {
+       
+       ArrayList<LeaveQuota> allltypes = new ArrayList<LeaveQuota>();
+       ArrayList<LeaveQuota> selected=new ArrayList<LeaveQuota>(getQuota(type));
+       ArrayList<LeaveQuota>allleave=new ArrayList<LeaveQuota>(getAllSelected(0));
+       allleave.removeAll(selected);
+       LeaveQuota lquota = new LeaveQuota();
+       for(LeaveQuota sh : allleave)
+       { 
+           lquota = new LeaveQuota();
+           lquota.setLeaveType(sh.getLeaveType());
+           lquota.setLeaveTypeName(sh.getLeaveTypeName());
+           lquota.setCount(sh.getCount());
+           allltypes.add(lquota);
+       }
+       for(LeaveQuota selh : selected){
+           lquota = new LeaveQuota();
+           lquota.setSelected(true);
+           lquota.setLeaveType(selh.getLeaveType());
+           lquota.setLeaveTypeName(selh.getLeaveTypeName());
+           lquota.setCount(selh.getCount());
+           allltypes.add(lquota);
+           
+       }   
+       return allltypes;
+       
+    }
+    
+    public ArrayList<LeaveQuota> getAllSelected(int type)  {
+        try
+        {
+            
+        
+            Connection c = new CommonDB().getConnection();
+            String q="select lt_id,lt_name, lt_value from leavetype_org_record "
+                    + "left join leave_type_master on ltr_leave_id = lt_id where ltr_org_id='"+userBean.getUserOrgCode()+"'";
+            
+            ps=c.prepareStatement(q);
+            //ps.setInt(1, 0);
+            rs = ps.executeQuery();
+            ArrayList<LeaveQuota> data = new ArrayList<LeaveQuota>();
+            //int k = 1;
+            while(rs.next())
+            {
+                LeaveQuota lv = new LeaveQuota();
+                lv.setLeaveType(rs.getInt(1));
+                lv.setLeaveTypeName(rs.getString(2));
+                lv.setCount(rs.getInt(3));
+                //lv.setSrNo(k);
+                data.add(lv);
+                //System.out.println("selected====="+lv.getLeaveTypeName());
+                //k++;
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return data;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }  
+    
+    public ArrayList<LeaveQuota> getAll()  {
+        try
+        {
+            
+        
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select * from leave_type_master");
+            rs =ps.executeQuery();
+            ArrayList<LeaveQuota> data = new ArrayList<LeaveQuota>();
+            //int k = 1;
+            while(rs.next())
+            {
+                LeaveQuota lv = new LeaveQuota();
+                lv.setLeaveType(rs.getInt(1));
+                lv.setLeaveTypeName(rs.getString(2));
+                lv.setCount(rs.getInt(3));
+                //lv.setSrNo(k);
+                data.add(lv);
+                //System.out.println("in LeaveTypeDB==="+data);;
+                //k++;
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return data;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
 
+
+    }
+    
+     public ArrayList<LeaveQuota> getAllotedQuota(String empcode)  {
+        try
+        {
+            
+            int type=EmployeeType(empcode);
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select lt_name,lq_leave_type,lq_count from leave_quota_master "
+                    + "left join leave_type_master on lq_leave_type = lt_id where lq_emp_type='"+type+"' ");
+            rs = ps.executeQuery();
+            ArrayList<LeaveQuota> data = new ArrayList<LeaveQuota>();
+            while(rs.next())
+            {
+                LeaveQuota lq = new LeaveQuota();
+                lq.setLeaveTypeName(rs.getString(1));
+                lq.setLeaveType(rs.getInt(2));
+                lq.setCount(rs.getInt(3));
+                data.add(lq);
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return data;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+     public int EmployeeType(String code) {
+        try {
+            Connection c = new CommonDB().getConnection();
+            ps = c.prepareStatement("select emp_type_code from employee_master where "
+                    + "emp_code=? and emp_org_code=?");
+            ps.setString(1, code);
+            ps.setInt(2, userBean.getUserOrgCode());
+            rs = ps.executeQuery();
+            rs.next();
+            int s = rs.getInt(1);
+            rs.close();
+            ps.close();
+            c.close();
+            return s;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+    
+    public ArrayList<LeaveQuota> getCombinedData(String empcode)  {
+        try
+        {
+           
+           ArrayList<LeaveQuota> allltypes = getAllotedQuota(empcode);
+           ArrayList<LeaveQuota>combineData=new ArrayList<LeaveQuota>();
+           for(LeaveQuota lq: allltypes){
+               //System.out.println("===LeaveType==="+lq.getLeaveType());
+               LeaveQuota lquota = new LeaveQuota();
+               lquota.setLeaveTypeName(lq.getLeaveTypeName());
+               lquota.setCount(lq.getCount());
+               int balleave=empballeave(lq.getLeaveType(), empcode);
+               lquota.setBalanceCount(balleave);
+               //System.out.println(" combined data====balleave===="+balleave+"LeaveTypename==="+lq.getLeaveTypeName()+"LeaveType==="+lq.getLeaveType()+"empcode===="+empcode);
+               combineData.add(lquota);
+           }
+            
+           return combineData;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public int LeaveValue(int leavetype) {
+        try {
+            Connection c = new CommonDB().getConnection();
+            ps = c.prepareStatement("select lq_count from leave_quota_master "
+                    + "left join leavetype_org_record on ltr_leave_id=lq_leave_type where lq_leave_type='"+leavetype+"' and ltr_org_id='"+userBean.getUserOrgCode()+"' ");
+            rs = ps.executeQuery();
+            rs.next();
+            int s = rs.getInt(1);
+            rs.close();
+            ps.close();
+            c.close();
+            //System.out.println(">>>> leave default value==== "+s);
+            return s;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+    
+    public int Emptotalleave(int leavetype, String empcode) {
+        try {
+            int totalleave = 0;
+            Connection c = new CommonDB().getConnection();
+            ps = c.prepareStatement("select el_count from employee_leave_master "
+                    + "where el_quota_type='"+leavetype+"' and el_emp_code='"+empcode+"' and el_approval_status='"+1+"' ");
+            rs = ps.executeQuery();
+            while(rs.next()){
+                int s= rs.getInt(1);
+                totalleave=s+totalleave;
+                //System.out.println(">>>> emptotal leave==inside=== "+totalleave);
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            //System.out.println(">>>> emptotal leave==outside=== "+totalleave);
+            return totalleave;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+    public int empballeave(int leavetype, String empcode) {
+        try {
+            
+            int Allotedleave=LeaveValue(leavetype);
+            int availedleave=Emptotalleave(leavetype,empcode);
+            int balanceleave=0;
+            if(Allotedleave!=0 && Allotedleave >= availedleave){
+                balanceleave=Allotedleave-availedleave;
+            }
+            return balanceleave;
+        }
+        catch (Exception e) {
+            return -1;
+        }
+    }
+        
 }
