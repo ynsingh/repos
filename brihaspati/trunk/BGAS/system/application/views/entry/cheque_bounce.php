@@ -114,9 +114,10 @@
 	
 	echo"<p id=\"submit\">";
         echo"<br>";
-	echo form_submitscript('submit', 'submit');
+	echo form_submit('submit', 'Save');
         echo " ";
-        echo"</br>";
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo form_submit('submit', 'Display Cheque');
         echo"</p>";
         echo form_close();
 

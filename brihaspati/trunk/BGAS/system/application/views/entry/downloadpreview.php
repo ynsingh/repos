@@ -97,14 +97,20 @@
 				echo "</tr>";
 			}
 			echo "<tr class=\"tr-total\"><td class=\"total-name\">Total</td><td class=\"total-dr\">" . $currency . " " .  $entry_dr_total . "</td><td class=\"total-cr\">" . $currency . " " . $entry_cr_total . "</td></tr>";
-		$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$row['id']);
+			$cheque='';
+                        $this->db->select('name,bank_name,update_cheque_no')->from('cheque_print')->where('entry_no',$row['id']);
                         $ledger_q = $this->db->get();
                         foreach($ledger_q->result() as $row)
-                                {
+                        {
                                 $bank_name = $row->bank_name;
+                                $bank[] =$bank_name;
                                 $name= $row->name;
-                                $cheque_no= $row->cheque_no;
-                                }
+                                $benif_name[] =$name;
+                                $cheque_no=$row->update_cheque_no;
+                                $cheque[] =$cheque_no;
+                        }
+                                $length=count($cheque);
+
 
 
 
@@ -116,24 +122,19 @@
 	<div id="print-entry-narration">Submitted By : <span class="value"><?php echo $submitted_by; ?></span></div>
 	<div id="print-entry-narration">Verified By : <span class="value"><?php echo $verified_by; ?></span></div>
        <?php
-	if($ledger_q->num_rows() == 0)
-        {
-        if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
-        {
-        echo "Bank Name :" . '' . "</br>";
-        echo "Beneficiary Name :" . '' . "</br>";
-        echo "Cheque No :" . '' . "</br>";
-        }
-        }
-        elseif($ledger_q->num_rows() > 0){
-         if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
-        {
-        echo "Bank Name :" . $name . "</br>";
-        echo "Beneficiary Name :" . $bank_name . "</br>";
-        echo "Cheque No :" . $cheque_no . "</br>";
-        }
-        }
- 
+		if($ledger_q->num_rows() > 0){
+			if( $cheque_no != NULL && $name != NULL)
+                	{
+        			for($i=0; $i<$length; $i++)
+        			{
+        				if($cheque[$i] != 1){
+        					echo "Bank Name :" . $bank[$i] . "</br>";
+        					echo "Beneficiary Name :" . $benif_name[$i] . "</br>";
+        					echo "Cheque No :" . $cheque[$i] . "</br>";
+        				}
+        			}
+        		}
+		}
 	?>
 	<br />
 </body>

@@ -100,9 +100,9 @@
 
 	echo"<p id=\"submit\">";	
 	echo"<br>";
-        echo form_submitscript('submit', 'submit');
-        echo " ";
-        echo"</br>";
+        echo form_submit('submit', 'Save');
+        echo "&nbsp;&nbsp;&nbsp;&nbsp; ";
+       	echo form_submit('submit', 'Display Cheque');
 	echo"</p>";
 	echo form_close();
 	
@@ -110,7 +110,7 @@
 	echo"</span>";
 	}else{
         	echo "<table  border=0 cellpadding=6 class=\"simple-table account-table\">";
-        	echo "<thead><tr><th>Cheque Status</th><th>Date</th><th>Bank Name </th><th>Payee Name</th><th>Amount</th><th>Cheque No</th><th>Cheque Type</th></tr></thead>";
+        	echo "<thead><tr><th>Cheque Status</th><th>Date</th><th>Bank Name </th><th>Payee Name</th><th>Amount</th><th>Cheque No</th><th>Cheque Type</th><th>Record Save</th><th>Display Cheque</th></tr></thead>";
         	foreach($cheque_bounce->result() as $row)
         	{
 		$ledger_id=$row->ledger_id;
@@ -130,17 +130,20 @@
                 foreach($ledger->result() as $row3)
                 {
                         $id=$row3->ledger_id;
-                }
+                
 		//Get name from that id from ledgers table....
-		$this->db->select('name')->from('ledgers')->where('id', $id);
+		$this->db->select('name')->from('ledgers')->where('id', $id)->where('type', '1');
                 $ledger_name = $this->db->get();
+		$name_rows=$ledger_name->num_rows();
                 foreach($ledger_name->result() as $row4)
                 {
                         $led_name=$row4->name;
+			$led_arr[$led_name] =$led_name;
                 }
 		if($bank_name1 == Null)
 		{
-			$bank_name1=$led_name;
+			$bank_name1=$led_arr;
+		}
 		}
 		if($update_cheque == 1)
 		{
@@ -195,16 +198,22 @@
         		echo"</td>";
 
         		echo "<td>";
-			echo"&nbsp;&nbsp;";
+			if($name_rows == 1){
+			foreach($ledger_name->result() as $row4)
+                		{
+                        $led_name=$row4->name;
 			$bank_name = array(
                         		'name' => 'bank_name',
                         		'id' => 'bank_name',
                         		'maxlength' => '255',
                         		'size' => '15',
-                        		'value' => $bank_name1,
+                        		'value' => $led_arr[$led_name],
                          );
-
+			}
         		echo form_input($bank_name);
+			}else{
+        		echo form_dropdown('bank_name', $led_arr);
+			}
         		echo"</td>";
 
         		echo "<td>";
@@ -249,10 +258,16 @@
 
         		echo"<td>";
         		echo"<p id=\"submit\">";
-			echo form_submitscript('submit', 'submit');
+			echo form_submit('submit', 'Save');
         		echo"</p>";
-        		echo form_close();
         		echo "</td>";
+			
+			echo"<td>";
+                        echo"<p id=\"submit\">";
+                        echo form_submit('submit', 'Display Cheque');
+                        echo"</p>";
+                        echo form_close();
+                        echo "</td>";
          	echo"<tr>";
         }
         	echo "</table>";

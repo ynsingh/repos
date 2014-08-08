@@ -84,7 +84,7 @@ else
 </p>
 <?php
 	if($ledger_q->num_rows() > 0){
-        	if( $cheque_no != NULL)
+        	if( $cheque_no != NULL && $name != NULL)
          	{
                         echo "<p>";
                         echo "Bank Name :" . $bank_name . "</br>";
@@ -94,9 +94,11 @@ else
                         echo "</p>";
 			for($i=0; $i<$length; $i++)
                 	{
-                        echo "<p>";
-                        echo "Cheque No :" . $cheque[$i] . "</br>";
-                        echo "</p>";
+				if($cheque[$i] != 1){
+                        		echo "<p>";
+                        		echo "Cheque No :" . $cheque[$i] . "</br>";
+                        		echo "</p>";
+				}
 			}
                 }
         }

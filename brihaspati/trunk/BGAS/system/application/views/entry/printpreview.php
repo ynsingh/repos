@@ -44,44 +44,42 @@
 				echo "</tr>";
 			}
 			echo "<tr class=\"tr-total\"><td class=\"total-name\">Total</td><td class=\"total-dr\">" . $currency . " " .  $entry_dr_total . "</td><td class=\"total-cr\">" . $currency . " " . $entry_cr_total . "</td></tr>";
-			
+			$cheque='';
 			$this->db->select('name,bank_name,update_cheque_no')->from('cheque_print')->where('entry_no',$row['id']);
          		$ledger_q = $this->db->get();
          		foreach($ledger_q->result() as $row)
-                                {
+                        {
                                 $bank_name = $row->bank_name;
 				$bank[] =$bank_name;
                                 $name= $row->name;
 				$benif_name[] =$name;
 				$cheque_no=$row->update_cheque_no;
 				$cheque[] =$cheque_no;
-                                }
+                        }
 				$length=count($cheque);
 
 
 		?>
-		</tbody>
+	</tbody>
 	</table>
 	<br />
 	<div id="print-entry-narration">Narration : <span class="value"><?php echo $entry_narration; ?></span></div>
 	<div id="print-entry-narration">Submitted By : <span class="value"><?php echo $submitted_by; ?></span></div>
         <div id="print-entry-narration">Verified By : <span class="value"><?php echo $verified_by; ?></span></div>
 	 <?php
-	if($ledger_q->num_rows() == 0)
-        {
-        echo "Bank Name :" . '' . "</br>";
-        echo "Beneficiary Name :" . '' . "</br>";
-        echo "Cheque No :" . '' . "</br>";
-        }
-        elseif($ledger_q->num_rows() > 0){
-	for($i=0; $i<$length; $i++)
-        {
-	echo "Bank Name :" . $bank[$i] . "</br>";
-        echo "Beneficiary Name :" . $benif_name[$i] . "</br>";
-        echo "Cheque No :" . $cheque[$i] . "</br>";
+        if($ledger_q->num_rows() > 0){
+		if( $cheque_no != NULL && $name != NULL)
+                {
+			for($i=0; $i<$length; $i++)
+        		{
+				if($cheque[$i] != 1){
+				echo "Bank Name :" . $bank[$i] . "</br>";
+        			echo "Beneficiary Name :" . $benif_name[$i] . "</br>";
+        			echo "Cheque No :" . $cheque[$i] . "</br>";
+				}
+			}
+        	}
 	}
-        }
-
         ?>
 	
 	<br />

@@ -2490,7 +2490,7 @@ class Entry extends Controller {
 			$bank_name = $row->bank_name;
 			$name=$row->name;
                 }
-		if($cheque_no == 1)
+		if($cheque_no == 1 || $cheque_no == NULL)
 		{	
 			$cheque_no1=Null;
 		}else{
@@ -2528,8 +2528,10 @@ class Entry extends Controller {
 			"Order" => "Order",
 			"Bearer"=> "Bearer",
 		);
+		
 
 		$data['active_cheque_type'] = "";
+		
 		$data['entry_type']=$entry_type;
 		$data['entry_id']=$entry_id;
 
@@ -2796,7 +2798,6 @@ class Entry extends Controller {
                         $data_amount = $this->input->post('amount', TRUE);
                         $data_cheque_no = $this->input->post('cheque_no', TRUE);
                         $data_cheque_type = $this->input->post('cheque_type', TRUE);
-
 			//Check entered cheque no. already exist in database(Give error message) .........
 			$this->db->select('id, entry_no')->from('cheque_bounce_record')->where('new_cheque_no', $data_cheque_no)->where('bank_name', $data_bank_name);
                         $check_name_exist = $this->db->get();
@@ -2879,6 +2880,16 @@ class Entry extends Controller {
 			
 
 		} 
+		
+		if ($_POST)
+                {
+		 	if ($_POST['submit'] == 'Save')
+                        {
+				$this->messages->add(' Cheque record save Successfully.', 'success');
+                                $this->template->load('template', 'entry/cheque', $data);
+                                return;
+			}
+		}
 		
                 /* Getting Ledger details */
                 $this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
