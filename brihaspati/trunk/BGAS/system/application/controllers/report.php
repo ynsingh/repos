@@ -890,6 +890,10 @@ class Report extends Controller {
 			$this->template->load('template', 'report/schedule_template_2', $data);
                         return;
 		}
+		elseif($name == 'Loan/Borrowings'){
+			$this->template->load('template', 'report/schedule_template_3', $data);
+                        return;
+		}
 		else{
 			$this->template->load('template', 'report/schedule_template', $data);
                         return;

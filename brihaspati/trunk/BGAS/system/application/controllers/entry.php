@@ -1641,7 +1641,8 @@ class Entry extends Controller {
 					/* code for fund list*/
                                         $ledger_code = $this->Ledger_model->get_ledger_code($row->ledger_id);
                                         $account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
-                                        $temp = $this->startsWith($ledger_code, $account_code);
+                                        //$temp = $this->startsWith($ledger_code, $account_code);
+					$temp = $this->Ledger_model->isFund($ledger_code);
 
                                         //if ledger is a liability account
                                         if($temp && $flag == 0 && $row->dc == 'D'){
@@ -1740,7 +1741,7 @@ class Entry extends Controller {
 				}
 			}
 			
-			/* Two extra rows */
+			/* Two extra rows 
 			$data['ledger_dc'][$counter] = 'D';
 			$data['ledger_id'][$counter] = 0;
 			$data['dr_amount'][$counter] = "";
@@ -1750,7 +1751,7 @@ class Entry extends Controller {
 			$data['ledger_id'][$counter] = 0;
 			$data['dr_amount'][$counter] = "";
 			$data['cr_amount'][$counter] = "";
-			$counter++;
+			$counter++;*/
 		//}
 		$creditledgername = $this->Ledger_model->get_name($creditid);
 		$debitledgername = $this->Ledger_model->get_name($debitid);
