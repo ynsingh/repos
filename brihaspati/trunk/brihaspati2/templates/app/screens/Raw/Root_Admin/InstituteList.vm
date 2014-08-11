@@ -98,7 +98,7 @@ $!data.getMessage()
         	        <td>
                 	        <input class="button-ftextstyle" type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm1,this);">
                         	<input type="hidden" name="mode" value="$mode">
-                        	<input type="hidden" name="mod" value="$brih_search">
+                        	<input type="hidden" name="mod" value="Search">
 	                        <input type="hidden" name="count" value="2">
         	      </td>
 	        </tr>
