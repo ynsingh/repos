@@ -103,6 +103,39 @@ if ( ! function_exists('form_dropdown_fund'))
         }
 }
 
+/*if ( ! function_exists('form_dropdown_secunit'))
+{
+        function form_dropdown_secunit($name, $selected = NULL, $extra = '')
+        {
+		$CI =& get_instance();
+                $CI->load->model('Secunit_model');
+
+                $options = $CI->Secunit_model->get_all_secunitid();
+
+                if ( ! ($selected))
+                {
+                        if (isset($_POST[$name]))
+                        {
+                                $selected = $_POST[$name];
+                        }
+                }
+
+                if ($extra != '') $extra = ' '.$extra;
+
+                $form = '<select name="'.$name.'"'.$extra.' >';
+
+                foreach ($options as $key => $val)
+                {
+                        $key = (string) $key;
+                        $sel = ($key == $selected) ? ' selected="selected"' : '';
+                        $form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
+                }
+
+                $form .= '</select>';
+
+                return $form;
+        }
+}*/
 if ( ! function_exists('form_input_date'))
 {
 	function form_input_date($data = '', $value = '', $extra = '')
@@ -312,5 +345,38 @@ if(! function_exists('my_form_anchor'))
 	}
 }
 
+if ( ! function_exists('form_dropdown_secunit'))
+{
+        function form_dropdown_secunit($name, $selected = NULL, $extra = '')
+        {
+		$CI =& get_instance();
+                $CI->load->model('Secunit_model');
+
+                $options = $CI->Secunit_model->get_all_secunitid();
+
+                if ( ! ($selected))
+                {
+                        if (isset($_POST[$name]))
+                        {
+                                $selected = $_POST[$name];
+                        }
+                }
+
+                if ($extra != '') $extra = ' '.$extra;
+
+                $form = '<select name="'.$name.'"'.$extra.' >';
+
+                foreach ($options as $key => $val)
+                {
+                        $key = (string) $key;
+                        $sel = ($key == $selected) ? ' selected="selected"' : '';
+                        $form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
+                }
+
+                $form .= '</select>';
+
+                return $form;
+        }
+}
 /* End of file MY_form_helper.php */
 /* Location: ./system/application/helpers/MY_form_helper.php */

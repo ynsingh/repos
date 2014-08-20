@@ -662,8 +662,8 @@ class Entry extends Controller {
 		//$data['fund_list'] = $this->Ledger_model->get_ledgers();
                 //$data['fund_list_active'] = 0;
 		
-		$data['sec_unit_id'] = $this->Secunit_model->get_all_secunitid();
-                $data['sec_unit_active'] = " ";	
+	//	$data['sec_unit_id'] = $this->Secunit_model->get_all_secunitid();
+          //      $data['sec_unit_active'] = " ";	
 
 		$data['check'] = $check;
 		
@@ -697,7 +697,7 @@ class Entry extends Controller {
 		$this->form_validation->set_rules('entry_name', 'Entry Type', 'trim|required');
 //		$this->form_validation->set_rules('bank_name', 'Bank name', 'trim');
 //		$this->form_validation->set_rules('banif_name', 'Beneficiary name', 'trim');
-		$this->form_validation->set_rules('sec_unit_id', 'Sec Unit Id', 'trim');
+	//	$this->form_validation->set_rules('sec_unit_id', 'Sec Unit Id', 'trim');
 		/* Debit and Credit amount validation */
 			
 		
@@ -733,7 +733,9 @@ class Entry extends Controller {
                         $data['ledger_payt'] = $this->input->post('ledger_payt', TRUE);
 			//$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
 			$data['fund_list'] = $this->input->post('fund_list', TRUE);
-			$data['sec_unit_active']= $this->input->post('sec_unit_id', TRUE);
+			$data['secunit'] = $this->input->post('secunit', TRUE);
+		//	$data['sec_unit_active']= $this->input->post('sec_unit_id', TRUE);
+			//$data['sec_unit_id'] = $this->input->post('sec_unit_id', TRUE);
 			$data['income_type'] = $this->input->post('income_type', TRUE);
                         $data['expense_type'] = $this->input->post('expense_type', TRUE);
 		} 
@@ -780,9 +782,10 @@ class Entry extends Controller {
 	                        $data_entry_name = $this->input->post('entry_name', TRUE);
         	                $data_date = $this->input->post('entry_date', TRUE);
                 	        $data_cheque = $this->input->post('ledger_payt', TRUE);
+				//$data_secunitid = $this->input->post('sec_unit_id', TRUE);
+	                        $data_secunit = $this->input->post('secunit', TRUE);
                         	$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 				$bank_cash_global = '';
-				$data_secunitid = $this->input->post('sec_unit_id', TRUE);
 
 				if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
                 	        {
@@ -965,7 +968,7 @@ class Entry extends Controller {
 					'submitted_by' => $uname,
 					'forward_refrence_id' => '0',
 					'backward_refrence_id' => $data_back_refrence,
-					'secunitid' => $sec_unit,
+				//	'secunitid' => $sec_unit,
 				);
 
 				if ( ! $this->db->insert('entries', $insert_data))
@@ -985,9 +988,11 @@ class Entry extends Controller {
 				$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
 				$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
 				$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
+				$data_all_secunit = $this->input->post('secunit', TRUE);
 				$data_all_income_type = $this->input->post('income_type', TRUE);
 				$data_all_expense_type = $this->input->post('expense_type', TRUE);
 				$data_cheque = $this->input->post('ledger_payt', TRUE);
+				//$data_secunitid = $this->input->post('sec_unit_id', TRUE);
 				$dr_total = 0;
 				$cr_total = 0;
 				$ledg_code = 0;
@@ -1220,6 +1225,9 @@ class Entry extends Controller {
 				
 				/* Code for making entry in Fund and Transit Income account. */
 				$fund_ledger = $data_all_fund_ledger[$id];
+				//$data_secunitid = $this->input->post('sec_unit_id', TRUE);
+				$secunitid = $data_all_secunit[$id];
+				
 				if($fund_ledger > 0 && $data_ledger_dc == 'D'){
 					$insert_fund_data = array(
                                        		'entry_id' => $entry_id,
@@ -1229,6 +1237,7 @@ class Entry extends Controller {
 	                                        'update_date' => $data_date,
                		                        'forward_refrence_id' => '0',
                                		        'backward_refrence_id' => $data_back_refrence,
+						'secunitid' => $secunitid,
 	                                );
 
         	                        if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -1277,6 +1286,7 @@ class Entry extends Controller {
                                 		'update_date' => $data_date,
 	                                        'forward_refrence_id' => '0',
         	                                'backward_refrence_id' => $data_back_refrence,
+						'secunitid' => $secunitid,
                 	                );
 
 	                                if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -1294,6 +1304,7 @@ class Entry extends Controller {
 					'update_date' => $data_date,
 					'forward_refrence_id' => '0',
 	                                'backward_refrence_id' => $data_back_refrence,
+					'secunitid' => $secunitid,
 				);
 				if ( ! $this->db->insert('entry_items', $insert_ledger_data))
 				{
@@ -4340,7 +4351,6 @@ class Entry extends Controller {
                                 return;
                         }
                         $det=$this->Ledger_model->get_other_ledger_name($ledidarray, $entry_type, $leddcarray, $dr_total);
-
 			if($det && $check == 0){
 				$data['check'] = 1;
                         	$this->messages->add('The entry with same parameter exist, if you want to submit, click Create or Cancel', 'error');

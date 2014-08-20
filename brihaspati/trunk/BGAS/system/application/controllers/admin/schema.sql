@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS entry_items (
   update_date datetime NOT NULL,
   forward_refrence_id int(11) DEFAULT NULL,
   backward_refrence_id int(11) DEFAULT NULL,
+  secunitid VARCHAR(10) DEFAULT NULL,	
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
