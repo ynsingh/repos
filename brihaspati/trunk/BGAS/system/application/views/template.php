@@ -282,6 +282,9 @@ $(document).ready(function() {
 					echo "<li>";
 						echo anchor('report/depreciation', 'Depreciation as today', array('title' => 'Depreciation as today'));
 					echo "</li>";
+					echo "<li>";
+						echo anchor('report/dayst', 'Day Book', array('title' => 'Day Book'));
+					echo "</li>";
 				echo "</ul>";
 			echo "</li>";
 

@@ -138,7 +138,23 @@ class Report extends Controller {
                         $this->load->view('report/pdfreport', $data);
                         return;
                 }
-		
+		if($statement == "dayst")
+                {
+                 $this->load->helper('text');
+                        $data['width'] = "100%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report/dayst";
+                        $data['statement'] = "Ledger Statement for the day :".$date1;
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $this->load->view('report/pdfreport', $data);
+                        $this->session->unset_userdata('date1');
+                        return;
+                }
+	
 		if($statement == "ledgerst")
 		{
 		 $this->load->helper('text');
@@ -1202,6 +1218,59 @@ class Report extends Controller {
 		return;
 	}
 
+	function dayst(){
+		$this->load->library('session');
+                $this->load->helper('text');
+                /* Pagination setup */
+                $this->load->library('pagination');
+
+                $this->template->set('page_title', 'Day Statement');
+                $this->template->set('nav_links', array('report/printpreview/dayst/' => 'Print Preview'));
+                //$this->template->set('nav_links', array('report/download/dayst/'  => 'Download CSV', 'report/printpreview/dayst/' => 'Print Preview', 'report/pdf/dayst/' => 'Download PDF'));
+                $data['width'] = "70%";
+		$data['print_preview'] = FALSE;
+		 $curr_date = date_today_php();
+		 $data['entry_date1'] = array(
+                        'name' => 'entry_date1',
+                        'id' => 'entry_date1',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => $curr_date,
+                );
+                /* Repopulating form */
+
+                if ($_POST)
+                {
+                        $data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+                }
+
+                /* Form validations */
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+
+		 /* Validating form */
+                if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('template', 'report/dayst', $data);
+                        return;
+                }
+                else
+                {
+                        $data_date1 = $this->input->post('entry_date1', TRUE);
+
+                        $date=explode("/",$data_date1);
+                        $date1=$date[2]."-".$date[1]."-".$date[0];
+
+                        $newdata = array(
+                           'date1'  => $date1,
+                        );
+                        $this->session->set_userdata($newdata);
+                        redirect('report/dayst/');
+                }
+                $this->template->load('template', 'report/dayst', $data);
+	return;
+	}
 	function ledgerst($ledger_id = 0)
 	{
 		$this->load->library('session');
@@ -2181,6 +2250,24 @@ class Report extends Controller {
 			$this->load->view('report/report_template', $data);
 			return;
 		}
+		if($statement == "dayst")
+                {
+                 $this->load->helper('text');
+                        $data['width'] = "100%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report/dayst";
+                        $data['print_preview'] = TRUE;
+                        //$data['title'] = "Ledger Statement for the day :".$date1;
+                        $data['title'] = "Day Statement";
+                        $data['entry_date1'] = $date1;
+                        $this->load->view('report/report_template', $data);
+                        $this->session->unset_userdata('date1');
+                        return;
+                }
+
 		if ($statement == "ledgerst")
 		{
 			$this->load->helper('text');

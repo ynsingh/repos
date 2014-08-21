@@ -51,7 +51,7 @@
 		$to_date = $date2;
 	}
 	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $title . "</h2><br>";
-	if(($title != "Balance Sheet")&&($title != "Balance Sheet MHRD Format")){
+	if(($title != "Balance Sheet")&&($title != "Balance Sheet MHRD Format")&&($title != "Day Statement")){
 
 	echo	 "For the period " . $from_date . " to " . $to_date ;
 	}

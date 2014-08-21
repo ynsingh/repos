@@ -54,8 +54,8 @@ class Tag extends Controller {
 		$data['tag_title'] = array(
 			'name' => 'tag_title',
 			'id' => 'tag_title',
-			'maxlength' => '15',
-			'size' => '15',
+			'maxlength' => '50',
+			'size' => '50',
 			'value' => '',
 		);
 		$data['tag_color'] = array(
@@ -74,7 +74,7 @@ class Tag extends Controller {
 		);
 
 		/* Form validations */
-		$this->form_validation->set_rules('tag_title', 'Tag title', 'trim|required|min_length[2]|max_length[15]|unique[tags.title]');
+		$this->form_validation->set_rules('tag_title', 'Tag title', 'trim|required|min_length[2]|max_length[50]|unique[tags.title]');
 		$this->form_validation->set_rules('tag_color', 'Tag color', 'trim|required|exact_length[6]|is_hex');
 		$this->form_validation->set_rules('tag_background', 'Background color', 'trim|required|exact_length[6]|is_hex');
 
@@ -182,8 +182,8 @@ class Tag extends Controller {
 		$data['tag_title'] = array(
 			'name' => 'tag_title',
 			'id' => 'tag_title',
-			'maxlength' => '15',
-			'size' => '15',
+			'maxlength' => '50',
+			'size' => '50',
 			'value' => $tag_data->title,
 		);
 		$data['tag_color'] = array(
@@ -203,7 +203,7 @@ class Tag extends Controller {
 		$data['tag_id'] = $id;
 
 		/* Form validations */
-		$this->form_validation->set_rules('tag_title', 'Tag title', 'trim|required|min_length[2]|max_length[15]|uniquewithid[tags.title.' . $id . ']');
+		$this->form_validation->set_rules('tag_title', 'Tag title', 'trim|required|min_length[2]|max_length[50]|uniquewithid[tags.title.' . $id . ']');
 		$this->form_validation->set_rules('tag_color', 'Tag color', 'trim|required|exact_length[6]|is_hex');
 		$this->form_validation->set_rules('tag_background', 'Background color', 'trim|required|exact_length[6]|is_hex');
 
