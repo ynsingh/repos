@@ -1630,6 +1630,7 @@ class Entry extends Controller {
 
 			$flag = 0;
 			$fund_id = '';
+			$entryId = '';
 
 			//get 'Transit Income' id
 			$this->db->select('id');
@@ -1645,7 +1646,7 @@ class Entry extends Controller {
 				$account_code = null;
 				$bank_cash = null;
 				$index = -1;
-				$entryId = "";
+				//$entryId = "";
 				//check whether ledger is 'Transit Income'
                                 if($row->ledger_id != $income_id){
 
@@ -1677,8 +1678,10 @@ class Entry extends Controller {
         	        	                        $temp = $this->startsWith($ledger_code, $account_code);
 							//if ledger is an asset account					
 							if($temp){
+								//echo "in temp ";
 								$bank_cash = $this->Ledger_model->get_ledgers_bankcash($debitid);
 								if($bank_cash == 0){
+									//echo "bank=0 fund_id=".$fund_id." entry_id=".$entryId." ";
 	                                                                $data['fund_list'][$counter] = $fund_id;
 									$this->db->from('income_from_investment')->where('entry_id', $entryId);
                                                                         $this->db->where('fund_id', $fund_id);
@@ -1689,6 +1692,7 @@ class Entry extends Controller {
 
                                                                                 $expense = $expense_q->row();
                                                                                 $expense_type = $expense->type;
+										//echo $expense_type;
                                                                                 $data['expense_type'][$counter] = $expense_type;
                                                                         }
                                                                 	$flag = 0;
@@ -1700,6 +1704,7 @@ class Entry extends Controller {
 
 
 							if($temp == null){
+								//echo "in temp null";
 								$account_code = $this->Budget_model->get_account_code('Expenses');
 	                                                        $temp = $this->startsWith($ledger_code, $account_code);
 								if($temp){
@@ -1712,6 +1717,7 @@ class Entry extends Controller {
                                                         		if($no_of_row > 0){
                                                                                 $expense = $expense_q->row();
                                                                                 $expense_type = $expense->type;
+										//echo $expense_type;
                                                                                 $data['expense_type'][$counter] = $expense_type;
                                                                         }
 	                                                                $flag = 0;

@@ -646,6 +646,114 @@ class Report extends Controller {
 	 */
 	function new_balancesheet($period = NULL)
 	{
+		$this->db->select('id')->from('groups');
+		$this->db->where('name', 'Advances Received');
+		$group1 = $this->db->get();
+		//$group1_name = $group1->name;
+
+		$this->db->select('id')->from('groups');
+		$this->db->where('name', 'Other liabilities');
+		$group2 = $this->db->get();
+		//$group2_name = $group1->name;
+
+		$this->db->select('chart_account')->from('settings');
+		$setting_result = $this->db->get();
+		$setting = $setting_result->row();
+		$chart = $setting->chart_account;
+
+		if($group1->num_rows() < 1 && $group2->num_rows() < 1 && $chart == 'mhrd'){
+			//Edit group names
+			$old_names = array('For Goods abd Service', 'Satutory Libilities', 'Other Libilities', 'Receipts against sponsored fellowship and scholarship', 'Grants in Advances');
+			$new_names = array('For Goods and Services', 'Statutory Liabilities', 'Other current Liabilities', 'Receipts against sponsored fellowships and scholarships', 'Grants in advance');
+			$ids = array('50', '8', '8', '53', '53');
+			$counter = 0;
+			
+			$check = sizeof($old_names);
+			while($check > 0){
+				$this->db->select('id')->from('groups')->where('name', $old_names[$counter]);
+				$this->db->where('parent_id', $ids[$counter]);
+				$group_result = $this->db->get();
+				$group = $group_result->row();
+				$group_id = $group->id;
+
+				$this->db->trans_start();
+        	                $update_data = array('name' => $new_names[$counter]);
+                	        if ( ! $this->db->where('id', $group_id)->update('groups', $update_data))
+                        	{
+                                	$this->db->trans_rollback();
+	                                $this->logger->write_message("error", "Error updating name of Group account - ". $old_names[$counter]);
+        	                } else {
+                	                $this->db->trans_complete();
+                        	        $this->logger->write_message("success", "Updated Group account name - ". $new_names[$counter]);
+                        	}
+
+				$counter++;
+				$check--;
+			}
+
+			//Add groups
+			$parent_id = array('53', '8', '13');
+			$group_names = array('Other liabilities', 'Advances Received', 'Fixed Deposits');
+			$counter = 0;
+			$check = sizeof($parent_id);
+			$data_affects_gross = "0";
+
+			while($check > 0){
+				$num = 0;
+				$g_code = 0;
+
+				/* Only Income or Expense can affect gross profit loss calculation */
+	                        if ($parent_id[$counter] == "3" || $parent_id[$counter] == "4")
+                	        {
+                        	        $data_affects_gross = 1;
+	                        } else {
+        	                        $data_affects_gross = 0;
+                	        }
+
+				$num = $this->Group_model->get_numOfChild($parent_id[$counter]);
+        	                $g_code = $this->Group_model->get_group_code($parent_id[$counter]);
+                	        if($num == 0)
+                        	{
+                                	$data_code = $g_code . '01';
+	                        } else{
+        	                        $data_code=$this->get_code($num, $g_code);
+                	        }
+
+                        	$i=0;
+                        	do{
+                                	if($i>0)
+                                	{
+                                        	$num = $num + 1;
+	                                        $data_code=$this->get_code($num, $g_code);
+        	                        }
+                	                $this->db->from('ledgers');
+                        	        $this->db->select('id')->where('code =',$data_code);
+	                                $ledger_q = $this->db->get();
+        	                        $i++;
+                	        }while($ledger_q->num_rows()>0);
+
+	                        $this->db->trans_start();
+        	                $insert_data = array(
+                	                'code' => $data_code,
+                        	        'name' => $group_names[$counter],
+                                	'parent_id' => $parent_id[$counter],
+	                                'affects_gross' => $data_affects_gross
+	                        );
+        	                if ( ! $this->db->insert('groups', $insert_data))
+                	        {
+                        	        $this->db->trans_rollback();
+                                	$this->logger->write_message("error", "Error addding Group account - " . $group_names[$counter]);
+                	        } else {
+                        	        $this->db->trans_complete();
+                                	$this->logger->write_message("success", "Added Group account - " . $group_names[$counter]);
+                	        }	
+
+				$counter++;
+				$check--;		
+			}
+
+		}
+
 		$this->load->library('session');
 		$this->db->from('settings');
 		$detail = $this->db->get();
@@ -667,6 +775,31 @@ class Report extends Controller {
 		$this->template->load('template', 'report/new_balancesheet');
 		return;
 	}
+
+	function get_code($num, $code)
+        {
+                        if($num <= 9)
+                        {
+                                $i = 0;
+                                do{
+                                        $i++;
+                                        $data_code = $code . '0' . $num+$i;
+                                        $this->db->from('groups');
+                                        $this->db->select('id')->where('code =',$data_code);
+                                        $group_q = $this->db->get();
+                                }while($group_q->num_rows() > 0);
+                        } else{
+                                 $i = 0;
+                                do{
+                                        $i++;
+                                        $data_code = $code . $num+$i;
+                                        $this->db->from('groups');
+                                        $this->db->select('id')->where('code =',$data_code);
+                                        $group_q = $this->db->get();
+                                }while($group_q->num_rows() > 0);
+                        }
+                return $data_code;
+        }	
 
 	function startsWith($str1, $str2)
         {
@@ -831,6 +964,8 @@ class Report extends Controller {
 		//$design_earm_funds = array();
 		$design_earm_funds_group = array();
 		$design_earm_funds_ledger = array();
+		$current_liabilities = array();
+		$provisions = array();
 		$data = array();
 		$id = '';
 		$schedule = '';
@@ -862,8 +997,7 @@ class Report extends Controller {
 		if($name == $ledger_name){
 			$this->template->load('template', 'report/schedule_template_1', $data);
                         return;
-		}
-		elseif($name == 'Designated-Earmarked Funds' || $name == 'Restricted Funds'){
+		}elseif($name == 'Designated-Earmarked Funds' || $name == 'Restricted Funds'){
 			//add child groups and ledgers for the fund
 			$num_of_childs = $this->Group_model->get_numOfChild($id);
 			$count = 0;
@@ -905,17 +1039,58 @@ class Report extends Controller {
 			
 			$this->template->load('template', 'report/schedule_template_2', $data);
                         return;
-		}
-		elseif($name == 'Loan/Borrowings'){
+		}elseif($name == 'Loan/Borrowings'){
 			$this->template->load('template', 'report/schedule_template_3', $data);
                         return;
-		}
-		else{
+		}elseif($name == 'Current Liabilities And Provisions'){
+			$count = 0;
+			$this->db->select('id, name, code')->from('groups');
+			$this->db->where('parent_id', $id);
+			$query_result = $this->db->get();
+			
+			foreach($query_result->result() as $row){
+				if($row->name == 'Provisions'){
+					$this->db->select('id, name, code')->from('groups');
+					$this->db->where('parent_id', $row->id);
+					$group_result = $this->db->get();
+				
+					$counter = 0;
+					foreach($group_result->result() as $row1){
+						$provisions[$counter]['id'] = $row1->id;
+						$provisions[$counter]['name'] = $row1->name;
+						$provisions[$counter]['code'] = $row1->code;
+						$counter++;
+					}
+				}else{
+					$current_liabilities[$count]['id'] = $row->id;
+					$current_liabilities[$count]['name'] = $row->name;
+					$current_liabilities[$count]['code'] = $row->code;
+					$count++;
+				}
+			}
+
+			$data['current_liabilities'] = $current_liabilities;
+			$data['provisions'] = $provisions;
+			$this->template->load('template', 'report/schedule_template_4', $data);
+			return;
+		}else{
 			$this->template->load('template', 'report/schedule_template', $data);
                         return;
 		}			
 
 		return;
+	}
+
+	function sub_schedule($ledger_id, $ledger_name){
+		$this->template->set('schedule', 'true');
+		$this->template->set('page_title', 'Schedule - ' . $ledger_name);
+		$this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule/' => 'Print Preview'));
+                $data['id'] = $ledger_id;
+		$this->load->model('Setting_model');
+                $data['start_date'] = $this->Setting_model->get_from_settings('fy_start');
+                $data['end_date'] = $this->Setting_model->get_from_settings('fy_end');
+		$this->template->load('template', 'report/sub_schedule_template', $data);
+                return;
 	}
 
 	function profitandloss($period = NULL)

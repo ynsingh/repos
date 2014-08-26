@@ -867,5 +867,457 @@ class Balancesheet
 		$this->old_dr_total = $old_debit_total;
 		$this->old_cr_total = $old_credit_total;
 	}	
+
+	function current_liabilities($counter){
+	
+                $credit_total = 0.00;
+                $debit_total = 0.00;
+                $old_credit_total = 0.00;
+                $old_debit_total = 0.00;
+
+		if(($this->name == 'Sundry Creditors') || ($this->name == 'Interest accrued but not due on') || ($this->name == 'Statutory Liabilities') || ($this->name == 'Other current Liabilities')){
+                                echo "<tr class=\"tr-group\">";
+                                        echo "<td class=\"td-group\">";
+                                                echo $counter;
+                                                //$counter++;
+                                                echo "&nbsp;&nbsp;" . $this->name;
+                                        echo "</td>";
+
+                                        echo "<td></td>";
+                                        echo "<td></td>";
+                                        echo "<td></td>";
+                                        echo "<td></td>";
+                                echo "</tr>";
+		}else{
+			echo "<tr class=\"tr-group\">";
+                                        echo "<td class=\"td-group\">";
+                                                echo $counter;
+                                                //$counter++;
+                                                echo "&nbsp;&nbsp;" . $this->name;
+                                        echo "</td>";
+		}
+
+                foreach($this->children_groups as $id => $data){
+                        $credit_amount = 0.00;
+                        $debit_amount = 0.00;
+                        $old_credit_amount = 0.00;
+                        $old_debit_amount = 0.00;
+
+				if(count($data->children_ledgers) > 0){
+                                foreach($data->children_ledgers as $id => $row){
+
+                                        $CI =& get_instance();
+                                        $CI->db->select('id, amount, dc');
+                                        $CI->db->from('entry_items')->where('ledger_id', $row['id']);
+                                        $entry_items_q = $CI->db->get();
+                                        if($entry_items_q->num_rows() > 0)
+                                        {
+                                               $entry_items_result = $entry_items_q->result();
+                                               foreach ($entry_items_result as $row1)
+                                               {
+                                                       if($row1->dc == 'C'){
+                                                               $credit_amount = $credit_amount + $row1->amount;
+                                                               $credit_total = $credit_total + $row1->amount;
+                                                       }else{
+                                                               $debit_amount = $debit_amount + $row1->amount;
+                                                               $debit_total = $debit_total + $row1->amount;
+                                                       }
+                                               }
+                                        }
+
+					//Adding opening balance for the ledger head.
+                                        $credit_amount = $credit_amount + $row['opbalance'];
+                                        $credit_total = $credit_total + $row['opbalance'];
+
+                                        $this->getPreviousYearDetails();
+                                        if($this->prevYearDB != "" ){//3
+                                                /* database connectivity for getting previous year opening balance */
+                                                $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
+                                                $op_balance = array();
+                                                if($con){//4
+                                                        $value = mysql_select_db($this->prevYearDB, $con);
+                                                        $id = mysql_real_escape_string($row['id']);
+                                                        $cl = "select id, amount, dc from entry_items where ledger_id = '$id'";
+                                                        $val = mysql_query($cl);
+                                                        if($val != ''){//5
+                                                                while($row2 = mysql_fetch_assoc($val))
+                                                                {//6
+                                                                        if($row2 != null){//7
+                                                                                if($row2['dc'] == 'C'){//12
+                                                                                        $old_credit_amount = $old_credit_amount + $row2['amount'];
+                                                                                        $old_credit_total = $old_credit_total + $row2['amount'];
+                                                                                }else{
+                                                                                        $old_debit_amount = $old_debit_amount + $row2['amount'];
+                                                                                        $old_debit_total = $old_debit_total + $row2['amount'];
+                                                                                }
+                                                                        }//7
+                                                                 }//6
+                                                        }//5
+                                                 }//4
+					}//3
+
+					//Adding previous year's opening balance for the ledger head
+                                        $old_credit_total = $old_credit_total + $row['opbalance_prev'];
+                                        $old_credit_amount = $old_credit_amount + $row['opbalance_prev'];
+
+                                }//for
+                                }//if count
+
+				if(($this->name == 'Sundry Creditors') || ($this->name == 'Interest accrued but not due on') || ($this->name == 'Statutory Liabilities') || ($this->name == 'Other current Liabilities')){
+				echo "<tr class=\"tr-ledger\">";
+                                        echo "<td class=\"td-ledger\">";
+						if(($data->name == 'Receipts against sponsored projects') || ($data->name == 'Receipts against sponsored fellowships and scholarships') || ($data->name == 'Other Funds'))
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/sub_schedule/' . $data->id . '/' . $data->name, $data->name, array('title' => $data->name, 'style' => 'color:#000000'));
+						else
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;".$data->name;
+                                        echo "</td>";
+
+					echo "<td align=\"right\">";
+		                                echo convert_amount_dc($debit_amount);
+                	                echo "</td>";
+
+                        	        echo "<td align=\"right\">";
+                                	        echo convert_amount_dc(-$credit_amount);
+	                                echo "</td>";
+
+        	                        echo "<td align=\"right\">";
+                	                        echo convert_amount_dc($old_debit_amount);
+                        	        echo "</td>";
+
+                                	echo "<td align=\"right\">";
+                                        	echo convert_amount_dc(-$old_credit_amount);
+		                        echo "</td>";
+                                echo "</tr>";
+				}
+                }
+
+			if(count($this->children_ledgers) > 0){
+                                foreach($this->children_ledgers as $id => $row){
+
+                                        $CI =& get_instance();
+                                        $CI->db->select('id, amount, dc');
+                                        $CI->db->from('entry_items')->where('ledger_id', $row['id']);
+                                        $entry_items_q = $CI->db->get();
+                                        if($entry_items_q->num_rows() > 0)
+                                        {
+                                               $entry_items_result = $entry_items_q->result();
+                                               foreach ($entry_items_result as $row1)
+                                               {
+                                                       if($row1->dc == 'C'){
+                                                               $credit_total = $credit_total + $row1->amount;
+                                                       }else{
+                                                               $debit_total = $debit_total + $row1->amount;
+                                                       }
+                                               }
+                                        }
+
+                                        //Adding opening balance for the ledger head.
+                                        $credit_total = $credit_total + $row['opbalance'];
+
+                                        $this->getPreviousYearDetails();
+                                        if($this->prevYearDB != "" ){//3
+                                                /* database connectivity for getting previous year opening balance */
+                                                $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
+                                                $op_balance = array();
+                                                if($con){//4
+                                                        $value = mysql_select_db($this->prevYearDB, $con);
+                                                        $id = mysql_real_escape_string($row['id']);
+                                                        $cl = "select id, amount, dc from entry_items where ledger_id = '$id'";
+                                                        $val = mysql_query($cl);
+                                                        if($val != ''){//5
+                                                                while($row2 = mysql_fetch_assoc($val))
+                                                                {//6
+                                                                        if($row2 != null){//7
+                                                                                if($row2['dc'] == 'C'){//12
+                                                                                        $old_credit_total = $old_credit_total + $row2['amount'];
+                                                                                }else{
+                                                                                        $old_debit_total = $old_debit_total + $row2['amount'];
+                                                                                }
+                                                                        }//7
+                                                                 }//6
+                                                        }//5
+                                                 }//4
+                                        }//3
+
+                                        //Adding previous year's opening balance for the ledger head
+                                        $old_credit_total = $old_credit_total + $row['opbalance_prev'];
+                                }//for
+			}//if count
+	
+		if(!(($this->name == 'Sundry Creditors') || ($this->name == 'Interest accrued but not due on') || ($this->name == 'Statutory Liabilities') || ($this->name == 'Other current Liabilities'))){
+                                        echo "<td align=\"right\">";
+                                                echo convert_amount_dc($debit_total);
+                                        echo "</td>";
+
+                                        echo "<td align=\"right\">";
+                                                echo convert_amount_dc(-$credit_total);
+                                        echo "</td>";
+
+                                        echo "<td align=\"right\">";
+                                                echo convert_amount_dc($old_debit_total);
+                                        echo "</td>";
+
+                                        echo "<td align=\"right\">";
+                                                echo convert_amount_dc(-$old_credit_total);
+                                        echo "</td>";
+                                echo "</tr>";
+                }	
+
+                $this->dr_total = $debit_total;
+                $this->cr_total = $credit_total;
+                $this->old_dr_total = $old_debit_total;
+                $this->old_cr_total = $old_credit_total;
+	}
+
+	function provisions($counter){
+		$credit_total = 0.00;
+                $debit_total = 0.00;
+                $old_credit_total = 0.00;
+                $old_debit_total = 0.00;
+
+		foreach($this->children_groups as $id => $data){
+	                if(count($data->children_ledgers) > 0){
+        	                foreach($data->children_ledgers as $id => $row){
+
+                                        $CI =& get_instance();
+                                        $CI->db->select('id, amount, dc');
+                                        $CI->db->from('entry_items')->where('ledger_id', $row['id']);
+                                        $entry_items_q = $CI->db->get();
+                                        if($entry_items_q->num_rows() > 0)
+                                        {
+                                               $entry_items_result = $entry_items_q->result();
+                                               foreach ($entry_items_result as $row1)
+                                               {
+                                                       if($row1->dc == 'C'){
+                                                               $credit_total = $credit_total + $row1->amount;
+                                                       }else{
+                                                               $debit_total = $debit_total + $row1->amount;
+                                                       }
+                                               }
+                                        }
+
+                                        //Adding opening balance for the ledger head.
+                                        $credit_total = $credit_total + $row['opbalance'];
+
+                                        $this->getPreviousYearDetails();
+                                        if($this->prevYearDB != "" ){//3
+                                                /* database connectivity for getting previous year opening balance */
+                                                $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
+                                                $op_balance = array();
+                                                if($con){//4
+                                                        $value = mysql_select_db($this->prevYearDB, $con);
+                                                        $id = mysql_real_escape_string($row['id']);
+                                                        $cl = "select id, amount, dc from entry_items where ledger_id = '$id'";
+                                                        $val = mysql_query($cl);
+                                                        if($val != ''){//5
+                                                                while($row2 = mysql_fetch_assoc($val))
+                                                                {//6
+                                                                        if($row2 != null){//7
+                                                                                if($row2['dc'] == 'C'){//12
+                                                                                        $old_credit_total = $old_credit_total + $row2['amount'];
+                                                                                }else{
+                                                                                        $old_debit_total = $old_debit_total + $row2['amount'];
+                                                                                }
+                                                                        }//7
+                                                                 }//6
+                                                        }//5
+                                                 }//4
+                                        }//3
+
+                                        //Adding previous year's opening balance for the ledger head
+                                        $old_credit_total = $old_credit_total + $row['opbalance_prev'];
+
+                                }//for
+	                }//if count
+		}		
+
+                        if(count($this->children_ledgers) > 0){
+                                foreach($this->children_ledgers as $id => $row){
+
+                                        $CI =& get_instance();
+                                        $CI->db->select('id, amount, dc');
+                                        $CI->db->from('entry_items')->where('ledger_id', $row['id']);
+                                        $entry_items_q = $CI->db->get();
+                                        if($entry_items_q->num_rows() > 0)
+                                        {
+                                               $entry_items_result = $entry_items_q->result();
+                                               foreach ($entry_items_result as $row1)
+                                               {
+                                                       if($row1->dc == 'C'){
+                                                               $credit_total = $credit_total + $row1->amount;
+                                                       }else{
+                                                               $debit_total = $debit_total + $row1->amount;
+                                                       }
+                                               }
+                                        }
+
+                                        //Adding opening balance for the ledger head.
+                                        $credit_total = $credit_total + $row['opbalance'];
+
+                                        $this->getPreviousYearDetails();
+                                        if($this->prevYearDB != "" ){//3
+                                                /* database connectivity for getting previous year opening balance */
+                                                $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
+                                                $op_balance = array();
+                                                if($con){//4
+                                                        $value = mysql_select_db($this->prevYearDB, $con);
+                                                        $id = mysql_real_escape_string($row['id']);
+                                                        $cl = "select id, amount, dc from entry_items where ledger_id = '$id'";
+                                                        $val = mysql_query($cl);
+                                                        if($val != ''){//5
+                                                                while($row2 = mysql_fetch_assoc($val))
+                                                                {//6
+                                                                        if($row2 != null){//7
+                                                                                if($row2['dc'] == 'C'){//12
+                                                                                        $old_credit_total = $old_credit_total + $row2['amount'];
+                                                                                }else{
+                                                                                        $old_debit_total = $old_debit_total + $row2['amount'];
+                                                                                }
+                                                                        }//7
+                                                                 }//6
+                                                        }//5
+                                                 }//4
+                                        }//3
+
+                                        //Adding previous year's opening balance for the ledger head
+                                        $old_credit_total = $old_credit_total + $row['opbalance_prev'];
+
+                                }//for
+                        }//if count
+                
+
+		 echo "<tr class=\"tr-group\">";
+	                 echo "<td class=\"td-group\">";
+				echo $counter;
+                                echo "&nbsp;&nbsp;" . $this->name;
+                         echo "</td>";
+
+                         echo "<td align=\"right\">";
+                                 echo convert_amount_dc($debit_total);
+                         echo "</td>";
+
+                         echo "<td align=\"right\">";
+                                 echo convert_amount_dc(-$credit_total);
+                         echo "</td>";
+
+                         echo "<td align=\"right\">";
+                                 echo convert_amount_dc($old_debit_total);
+                         echo "</td>";
+
+                         echo "<td align=\"right\">";
+                                 echo convert_amount_dc(-$old_credit_total);
+                         echo "</td>";
+                echo "</tr>";
+
+		$this->dr_total = $debit_total;
+                $this->cr_total = $credit_total;
+                $this->old_dr_total = $old_debit_total;
+                $this->old_cr_total = $old_credit_total;
+	}
+
+	function sub_schedule(){
+		$counter = 1;
+		$opening_dr = 0.00;
+		$closing_dr = 0.00;
+		$trans_dr = 0.00;
+		$opening_cr = 0.00;
+		$closing_cr = 0.00;
+		$trans_cr = 0.00;
+
+		foreach($this->children_ledgers as $id => $row){
+
+			$credit_total = 0.00;
+			$debit_total = 0.00;
+			$closing_bal = 0.00;
+
+                	$CI =& get_instance();
+                        $CI->db->select('id, amount, dc');
+                        $CI->db->from('entry_items')->where('ledger_id', $row['id']);
+                        $entry_items_q = $CI->db->get();
+                        if($entry_items_q->num_rows() > 0)
+                        {
+                        	$entry_items_result = $entry_items_q->result();
+                                foreach ($entry_items_result as $row1)
+                                {
+                                	if($row1->dc == 'C'){
+                                        	$credit_total = $credit_total + $row1->amount;
+						$trans_cr = $trans_cr + $row1->amount;
+                                        }else{
+                                                $debit_total = $debit_total + $row1->amount;
+						$trans_dr = $trans_dr + $row1->amount;
+                                        }
+                                }
+                        }
+
+			//Adding opening balance for the ledger head.
+                        $closing_bal = $credit_total + $row['opbalance'];
+			$opening_cr = $opening_cr + $row['opbalance'];
+			$closing_cr = $closing_cr + $closing_bal;
+			$closing_dr = $closing_dr + $debit_total;
+
+			echo "<tr class=\"tr-ledger\">";
+	                        echo "<td class=\"td-ledger\" colspan=2 width=\"22%\">";
+        	                        echo $counter;
+					$counter++;
+                	                echo ".&nbsp;&nbsp;" . $row['name'];
+                        	echo "</td>";
+
+	                        echo "<td align=\"right\" width=\"13%\">";
+        	                        echo "0.00";
+                	        echo "</td>";
+
+                        	echo "<td align=\"right\" width=\"13%\">";
+                                	echo convert_amount_dc(-$row['opbalance']);
+                         	echo "</td>";
+
+                         	echo "<td align=\"right\" width=\"13%\">";
+                                	echo convert_amount_dc($debit_total);
+                         	echo "</td>";
+
+                         	echo "<td align=\"right\" width=\"13%\">";
+                                	echo convert_amount_dc(-$credit_total);
+                        	echo "</td>";
+
+                         	echo "<td align=\"right\" width=\"13%\">";
+                                	echo convert_amount_dc($debit_total);
+                        	echo "</td>";
+
+                         	echo "<td align=\"right\" width=\"13%\">";
+                                	echo convert_amount_dc(-$closing_bal);
+                        	echo "</td>";
+	                echo "</tr>";
+		}
+
+		echo "<tr>";
+	                echo "<td colspan=2 width=\"22%\">";
+				echo "<strong>TOTAL<strong>";
+                        echo "</td>";
+
+                        echo "<td align=\"right\" width=\"13%\">";
+                                echo "<strong>0.00</strong>";
+                        echo "</td>";
+
+                        echo "<td align=\"right\" width=\"13%\">";
+                                echo "<strong>".convert_amount_dc(-$opening_cr)."</strong>";
+                        echo "</td>";
+
+                        echo "<td align=\"right\" width=\"13%\">";
+                                echo "<strong>".convert_amount_dc($trans_dr)."</strong>";
+                        echo "</td>";
+
+                        echo "<td align=\"right\" width=\"13%\">";
+                                echo "<strong>".convert_amount_dc(-$trans_cr)."</strong>";
+                        echo "</td>";
+
+                        echo "<td align=\"right\" width=\"13%\">";
+                                echo "<strong>".convert_amount_dc($closing_dr)."</strong>";
+                        echo "</td>";
+
+                        echo "<td align=\"right\" width=\"13%\">";
+                                echo "<strong>".convert_amount_dc(-$closing_cr)."</strong>";
+                        echo "</td>";
+                echo "</tr>";
+	}//function: sub_schedule
+
 }
 ?>
