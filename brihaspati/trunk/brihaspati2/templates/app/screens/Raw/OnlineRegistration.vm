@@ -60,7 +60,7 @@ $!data.getMessage()
 <form name=frm method="post" action="$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).setAction("OnlineRegistration")">
 #if($status == "UserResitration")
 <tr>
-	<td> #if($lang =="hindi") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font></td>
+	<td> #if($lang =="hindi" || $lang =="marathi") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font></td>
 	<td>
     		<select name="instName" size=1 class="drop" onChange="checkOption(document.frm,this);" style="width:300px;"/>
 		#if($Insname=="")

@@ -33,7 +33,7 @@ $!data.getMessage()
 #set($listConf = ["10","20","30","40","50"] )
 <table align="left" width="100%" bgcolor="$ui.tableColor">
 <tr><td>
-	#if($lang == "hindi")
+	#if($lang == "hindi" || $lang == "marathi")
 		<b>$brih_valueList $brih_select</b> &nbsp;&nbsp;
 	#else
 		<b>$brih_select $brih_valueList</b> &nbsp;&nbsp;
@@ -48,7 +48,7 @@ $!data.getMessage()
 </select>     
 </td>
 <td>
-	#if($lang == "hindi")
+	#if($lang == "hindi" || $lang == "marathi")
 		<b> $brih_institute $brih_searchBy</b>&nbsp;&nbsp;
         #else
 		<b>$brih_searchBy $RemoteInstitute </b>&nbsp;&nbsp;
@@ -72,7 +72,7 @@ $!data.getMessage()
 </select>
 </td>
 <td>
-	#if($lang == "hindi")
+	#if($lang == "hindi" || $lang == "marathi")
 		<b>$brih_course $brih_searchBy</b>&nbsp;&nbsp;
         #else
 		<b>$brih_searchBy $brih_course</b>&nbsp;&nbsp;
@@ -83,7 +83,7 @@ $!data.getMessage()
 			</select>
                 </td>
 <td>
-	#if($lang == "hindi")
+	#if($lang == "hindi" || $lang == "marathi")
                 <b>$brih_courses $brih_search</b>&nbsp;&nbsp;
         #else   
                 <b>$brih_search $brih_courses</b>&nbsp;&nbsp;

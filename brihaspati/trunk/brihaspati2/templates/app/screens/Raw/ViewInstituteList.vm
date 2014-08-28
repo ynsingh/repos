@@ -72,8 +72,8 @@ $!data.getMessage()
                 ##</td>
                 ##<td>
                 &nbsp;&nbsp;
-                        <input type="button" name="Search" value="Search" onClick="checkNull(document.frm,this);" class="button-ftextstyle">
-                        <input type="hidden" name="mode" value="Search">
+                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);" class="button-ftextstyle">
+                        <input type="hidden" name="mode" value="$brih_search">
                         <input type="hidden" name="count" value="$tdcolor">
               </td>
 	</tr>
@@ -84,7 +84,7 @@ $!data.getMessage()
 <table align="left" bgcolor="$ui.menuColor" width=100%>
 <tr>
 	##<td><b>$brih_reg2 $RemoteInstitute</b></font></td>
-	<td width=30%><a href="#" class="big-link" data-reveal-id="myModal" data-animation="fade" style="text-decoration:none" title="Send Email to Institute Admin"><img align="left" border=0 src="$content.getURI("/images/ml.gif")">&nbsp;<b> #if($lang=="hindi")$Notice_Send $brih_email $brih_to $RemoteInstitute $brih_admin #else $Notice_Send $brih_email $brih_to $RemoteInstitute $brih_admin #end</b></a>
+	<td width=30%><a href="#" class="big-link" data-reveal-id="myModal" data-animation="fade" style="text-decoration:none" title="Send Email to Institute Admin"><img align="left" border=0 src="$content.getURI("/images/ml.gif")">&nbsp;<b> #if($lang=="hindi" || $lang=="marathi")$RemoteInstitute $brih_admin $brih_email $brih_to $Notice_Send #else $Notice_Send $brih_email $brih_to $RemoteInstitute $brih_admin #end</b></a>
                         <input type="hidden" class="big-link" data-reveal-id="myModal" data-animation="fade" style="text-decoration:none">
                         <div id="myModal" class="reveal-modal" >
                                 <div class="frameBorderless p10">
