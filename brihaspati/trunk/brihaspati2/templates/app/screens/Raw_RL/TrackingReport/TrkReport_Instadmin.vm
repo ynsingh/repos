@@ -5,7 +5,7 @@
  *
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
- *
+ *  @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Tracking Report")
@@ -19,7 +19,7 @@ $!data.getMessage()
 	##if($data.getUser().getUserName() == "admin")
 	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
 	##if($type =="Instadmin")
-      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
         $RemoteInstitute $brih_reports
         ##end
 	</font>
