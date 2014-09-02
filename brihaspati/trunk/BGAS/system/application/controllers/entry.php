@@ -1263,10 +1263,10 @@ $width="100%";
                                                         'amount' => $data_amount,
                                                         'date' => $data_date,
                                                         'type' => $expense_type,
-                                                        'entry_id' => $entry_fund_id
+                                                        'entry_items_id' => $entry_fund_id
                                                 );
 
-                                                if ( ! $this->db->insert('income_from_investment', $insert_expense_data))
+                                                if ( ! $this->db->insert('fund_management', $insert_expense_data))
                                                 {
                                                         $this->db->trans_rollback();
                                                         $this->logger->write_message("error", "Error adding expenditure details for fund :" . $fund_ledger);
@@ -1334,10 +1334,10 @@ $width="100%";
                                                         'amount' => $data_amount,
                                                         'date' => $data_date,
                                                         'type' => $income_type,
-                                                        'entry_id' => $entry_items_id
+                                                        'entry_items_id' => $entry_items_id
                                                 );
 
-                                                if ( ! $this->db->insert('income_from_investment', $insert_income_data))
+                                                if ( ! $this->db->insert('fund_management', $insert_income_data))
                                                 {
                                                         $this->db->trans_rollback();
                                                         $this->logger->write_message("error", "Error adding income from investment details for fund :" . $data_ledger_id);
@@ -1683,7 +1683,7 @@ $width="100%";
 								if($bank_cash == 0){
 									//echo "bank=0 fund_id=".$fund_id." entry_id=".$entryId." ";
 	                                                                $data['fund_list'][$counter] = $fund_id;
-									$this->db->from('income_from_investment')->where('entry_id', $entryId);
+									$this->db->from('fund_management')->where('entry_items_id', $entryId);
                                                                         $this->db->where('fund_id', $fund_id);
                                                                         $expense_q = $this->db->get();
 									//$no_of_row=$expense_q['num_rows'];
@@ -1709,7 +1709,7 @@ $width="100%";
 	                                                        $temp = $this->startsWith($ledger_code, $account_code);
 								if($temp){
                                                                 	$data['fund_list'][$counter] = $fund_id;
-									$this->db->from('income_from_investment')->where('entry_id', $entryId);
+									$this->db->from('fund_management')->where('entry_items_id', $entryId);
                                                                         $this->db->where('fund_id', $fund_id);
                                                                         $expense_q = $this->db->get();
 									//$no_of_row=$expense_q['num_rows'];
@@ -1736,7 +1736,7 @@ $width="100%";
 							$data['dr_amount'][$counter] = "";
                                                         $data['cr_amount'][$counter] = $row->amount;
 
-							$this->db->from('income_from_investment')->where('entry_id', $row->id);
+							$this->db->from('fund_management')->where('entry_items_id', $row->id);
                                                         $income_q = $this->db->get();
 							//$no_of_row=$income_q['num_rows'];
 							$no_of_row=$income_q->num_rows();
@@ -2090,10 +2090,10 @@ $width="100%";
                                                         'amount' => $data_amount,
                                                         'date' => $updatedate,
                                                         'type' => $expense_type,
-                                                        'entry_id' => $entry_fund_id
+                                                        'entry_items_id' => $entry_fund_id
                                                 );
 
-                                                if ( ! $this->db->insert('income_from_investment', $insert_expense_data))
+                                                if ( ! $this->db->insert('fund_management', $insert_expense_data))
                                                 {
                                                         $this->db->trans_rollback();
                                                         $this->logger->write_message("error", "Error adding expenditure details for fund :" . $fund_ledger);
@@ -2160,10 +2160,10 @@ $width="100%";
                                                         'amount' => $data_amount,
                                                         'date' => $data_date,
                                                         'type' => $income_type,
-                                                        'entry_id' => $entry_items_id
+                                                        'entry_items_id' => $entry_items_id
                                                 );
 
-                                                if ( ! $this->db->insert('income_from_investment', $insert_income_data))
+                                                if ( ! $this->db->insert('fund_management', $insert_income_data))
                                                 {
                                                         $this->db->trans_rollback();
                                                         $this->logger->write_message("error", "Error adding income from investment details for fund :" . $fund_ledger);

@@ -102,6 +102,8 @@ class Balancesheet
 				//$this->schedule = $group->schedule;
 				$this->total = 0;
 				$this->total2 = 0;
+			}else{
+				$this->init_led($id);
 			}
 		}
 
@@ -183,45 +185,6 @@ class Balancesheet
 		}
 	}
 
-	function add_income_expense_sub_ledgers()
-        {
-                $CI =& get_instance();
-                $CI->load->model('Ledger_model');
-                $CI->db->from('ledgers')->where('group_id', $this->id);
-                $child_ledger_q = $CI->db->get();
-                $counter = 0;
-                foreach ($child_ledger_q->result() as $row)
-                {
-                        if($row->name != 'Transfer Account'){
-                        $this->children_ledgers[$counter]['id'] = $row->id;
-                        $this->children_ledgers[$counter]['code'] = $row->code;
-                        $this->children_ledgers[$counter]['name'] = $row->name;
-
-                        $this->children_ledgers[$counter]['total'] = $CI->Ledger_model->get_ledger_balance1($row->id);
-                        list ($this->children_ledgers[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_op_balance($row->id);
-                        $this->total = float_ops($this->total, $this->children_ledgers[$counter]['total'], '+');
-
-                        $this->children_ledgers[$counter]['total2'] = $CI->Ledger_model->get_old_ledger_balance($row->id);
-                        list ($this->children_ledgers[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_prev_year_op_balance($row->id);
-                        $this->total2 = float_ops($this->total2, $this->children_ledgers[$counter]['total2'], '+');
-
-                        $counter++;
-                        }
-                }
-        }
-
-
-	//function callToOpBalance($year, $name){
-/*	function callToOpBalance($year){
-
-                if($year == 'new'){
-				$this->opening_balance = $this->calculate_op_balance($year);
-                }
-                elseif($year == 'old'){
-				$this->opening_balance_prev = $this->calculate_op_balance($year);
-                }
-
-        }
 
 	// function calculate_op_balance($year, $name){
 	function calculate_op_balance($year){
@@ -281,7 +244,6 @@ class Balancesheet
                 elseif($year == 'old')
 			return $old_op_balance;
         }
-*/		
 
 	//function additionsToFunds($fund_id, $type){
 	function additionsToFunds($type){
@@ -305,7 +267,7 @@ class Balancesheet
                 if($isLedger){
 			$CI =& get_instance();
         	        $CI->db->select('amount');
-                	$CI->db->from('income_from_investment')->where('fund_id', $this->id);
+                	$CI->db->from('fund_management')->where('fund_id', $this->id);
 	                $CI->db->where('type', $type);
         	        $income_result = $CI->db->get();
                 	if($income_result->num_rows() > 0){
@@ -331,7 +293,7 @@ class Balancesheet
                         	{
 					$CI =& get_instance();
 	                                $CI->db->select('amount');
-        	        		$CI->db->from('income_from_investment')->where('fund_id', $data['id']);
+        	        		$CI->db->from('fund_management')->where('fund_id', $data['id']);
 					$CI->db->where('type', $type);
 		        	        $income_result = $CI->db->get();
 					if($income_result->num_rows() > 0){
@@ -374,7 +336,7 @@ class Balancesheet
 				}
 
                 	        if($isLedger){
-					$cl = "select amount from income_from_investment where fund_id = '$id' and type = '$type'";
+					$cl = "select amount from fund_management where fund_id = '$id' and type = '$type'";
 					$val = mysql_query($cl);
                                 	if($val != ''){//5
                                        		while($row = mysql_fetch_assoc($val))
@@ -395,7 +357,7 @@ class Balancesheet
                                                 foreach ($this->children_ledgers as $id => $data)
         	                                {
 							$id = mysql_real_escape_string($data['id']);
-							$cl = "select amount from income_from_investment where fund_id = '$id' and type = '$type'";
+							$cl = "select amount from fund_management where fund_id = '$id' and type = '$type'";
 							$val = mysql_query($cl);
                                         		if($val != ''){//5
 		                                                while($row = mysql_fetch_assoc($val))
@@ -438,8 +400,8 @@ class Balancesheet
         	        if($entry_result->num_rows() > 0){
 	        	        //$entry = $entry_result->row();
 				foreach($entry_result->result() as $entry){
-					$CI->db->from('income_from_investment');
-					$CI->db->where('entry_id', $entry->id);
+					$CI->db->from('fund_management');
+					$CI->db->where('entry_items_id', $entry->id);
 					$income_result = $CI->db->get();
 		                        if($income_result->num_rows() < 1)
 		                       		$sum = $sum + $entry->amount;
@@ -467,8 +429,8 @@ class Balancesheet
 	                                if($entry_result->num_rows() > 0){
 						//$entry = $entry_result->row();
 						foreach($entry_result->result() as $entry){
-	        	                        	$CI->db->from('income_from_investment');
-	        	        	                $CI->db->where('entry_id', $entry->id);
+	        	                        	$CI->db->from('fund_management');
+	        	        	                $CI->db->where('entry_items_id', $entry->id);
         	                        		$income_result = $CI->db->get();
 			                                if($income_result->num_rows() < 1)
                 				                $sum = $sum + $entry->amount;     
@@ -1224,6 +1186,7 @@ class Balancesheet
 		$closing_cr = 0.00;
 		$trans_cr = 0.00;
 
+		if(count($this->children_ledgers) > 0){
 		foreach($this->children_ledgers as $id => $row){
 
 			$credit_total = 0.00;
@@ -1286,7 +1249,8 @@ class Balancesheet
                                 	echo convert_amount_dc(-$closing_bal);
                         	echo "</td>";
 	                echo "</tr>";
-		}
+		}//for
+		}//if
 
 		echo "<tr>";
 	                echo "<td colspan=2 width=\"22%\">";
@@ -1319,5 +1283,368 @@ class Balancesheet
                 echo "</tr>";
 	}//function: sub_schedule
 
-}
+	function fixed_assets($count){
+		$counter = 1;
+                $net_dr = 0.00;
+                $net_opening_bal = 0.00;
+                $net_cr = 0.00;
+                $net_total = 0.00;
+                $net_current_year = 0.00;
+                $net_previous_year = 0.00;	
+		$dr_total = 0.00;
+		$op_total = 0.00;
+		$cr_total = 0.00;
+		$year_end_value = 0.00;
+		$year_end_total = 0.00;
+		$current_year_total = 0.00;
+		$previous_year_total = 0.00;
+		$old_debit_total = 0.00;
+		$old_credit_total = 0.00;
+		$is_ledger = true;
+
+		if($this->name == 'Land'){
+			echo "<tr class=\"tr-group\">";
+                                echo "<td class=\"td-group\" width=\"10%\">";
+					echo $this->numberToRoman($count).". ".$this->name;
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "";
+                                echo "</td>";
+                                
+				echo "<td align=\"right\" width=\"9%\">";
+                                        echo "";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "";
+                                echo "</td>";
+                        echo "</tr>";	
+		}
+
+		if(count($this->children_ledgers) > 0){
+			$counter = 1;
+			$is_ledger = false;
+
+			foreach($this->children_ledgers as $id => $row){
+				$debit_amount = 0.00;
+				$credit_amount = 0.00;
+				$old_debit_amount = 0.00;
+				$old_credit_amount = 0.00;
+
+				if($this->name == 'Land'){
+					$cr_total = 0.00;
+					$dr_total = 0.00;
+					$old_debit_total = 0.00;
+					$old_credit_total = 0.00;
+				}				
+
+				$CI =& get_instance();
+                                $CI->db->select('id, amount, dc');
+                                $CI->db->from('entry_items')->where('ledger_id', $row['id']);
+                                $entry_items_q = $CI->db->get();
+                                if($entry_items_q->num_rows() > 0)
+                                {
+	                                $entry_items_result = $entry_items_q->result();
+                                        foreach ($entry_items_result as $row1)
+                                        {
+        	                                if($row1->dc == 'C'){
+							$credit_amount = $credit_amount + $row1->amount;
+							$net_cr = $net_cr + $row1->amount;
+                                                }else{
+							$debit_amount = $debit_amount + $row1->amount;
+							$net_dr = $net_dr + $row1->amount;
+                                                }
+                                        }
+                                }
+
+				$cr_total = $cr_total + $credit_amount;
+				$dr_total = $dr_total + $debit_amount;
+
+                                //Adding opening balance for the ledger head.
+                                $op_total = $op_total + $row['opbalance'];
+				$net_opening_bal = $net_opening_bal + $row['opbalance'];
+				//$year_end_value = $year_end_value + ($row['opbalance'] + $dr_total) - $cr_total;
+				$year_end_value = $year_end_value + ($row['opbalance'] + $debit_amount) - $cr_total;
+				$net_total = $net_total + ($row['opbalance'] + $debit_amount) - $cr_total;
+				
+				/**
+				 * Calculate depreciated value of the asset
+				 */
+				//to be done using pico data
+				//till then asset value will not be deducted.
+				//So, year_end_total = year_end_value
+
+				$year_end_total = $year_end_value;
+				$net_current_year = $net_total;
+
+                                $this->getPreviousYearDetails();
+                                if($this->prevYearDB != "" ){//3
+                         	       /* database connectivity for getting previous year opening balance */
+                                       $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
+                                       $op_balance = array();
+                                       if($con){//4
+                                 	      $value = mysql_select_db($this->prevYearDB, $con);
+                                              $id = mysql_real_escape_string($row['id']);
+                                              $cl = "select id, amount, dc from entry_items where ledger_id = '$id'";
+                                              $val = mysql_query($cl);
+                                              if($val != ''){//5
+                                        	      while($row2 = mysql_fetch_assoc($val))
+                                                      {//6
+                                                	      if($row2 != null){//7
+                                                        	      if($row2['dc'] == 'C'){//12
+                                                                	      $old_credit_amount = $old_credit_amount + $row2['amount'];
+                                                                      }else{
+                                                                              $old_debit_amount = $old_debit_amount + $row2['amount'];
+                                                                      }
+                                                               }//7
+                                                       }//6
+                                               }//5
+                                        }//4
+                                }//3		
+			
+				//Adding previous year's opening balance for the ledger head
+                                $previous_year_total = $previous_year_total + ($row['opbalance_prev'] + $old_debit_amount) - $old_credit_amount;	
+				$net_previous_year = $net_previous_year + ($row['opbalance_prev'] + $old_debit_amount) - $old_credit_amount;
+					
+				if($this->name == 'Land'){
+					echo "<tr> <class=\"tr-ledger\">";
+		                                echo "<td class=\"td-ledger\" width=\"10%\">";
+							echo "&nbsp;&nbsp;&nbsp;".$counter.".&nbsp;";
+                		                        echo $row['name'];
+							$counter++;
+                                		echo "</td>";
+
+						echo "<td align=\"right\" width=\"9%\">";
+                		                        echo convert_amount_dc($row['opbalance']);
+                                		echo "</td>";
+
+		                                echo "<td align=\"right\" width=\"9%\">";
+                		                        echo convert_amount_dc($dr_total);
+                                		echo "</td>";
+
+		                                echo "<td align=\"right\" width=\"9%\">";
+                		                        echo convert_amount_dc($cr_total);
+                                		echo "</td>";
+
+		                                echo "<td align=\"right\" width=\"9%\">";
+                		                        echo convert_amount_dc($row['opbalance'] + $dr_total - $cr_total);
+                                		echo "</td>";
+
+		                                echo "<td align=\"right\" width=\"9%\">";
+                		                        echo "0.00";
+                                		echo "</td>";
+
+		                                echo "<td align=\"right\" width=\"9%\">";
+                		                        echo "0.00";
+                                		echo "</td>";
+
+		                                echo "<td align=\"right\" width=\"9%\">";
+                		                        echo "0.00";
+                                		echo "</td>";
+
+		                                echo "<td align=\"right\" width=\"9%\">";
+                		                        echo "0.00";
+                                		echo "</td>";
+
+		                                echo "<td align=\"right\" width=\"9%\">";
+                		                        echo convert_amount_dc($row['opbalance'] + $dr_total - $cr_total);
+                                		echo "</td>";
+
+		                                echo "<td align=\"right\" width=\"9%\">";	
+                		                        echo convert_amount_dc($row['opbalance_prev'] + $old_debit_amount - $old_credit_amount);
+                                		echo "</td>";
+		                        echo "</tr>";
+				}
+	
+			}//for child ledgers
+
+		}
+
+		if($is_ledger == true){
+		$CI =& get_instance();
+		$CI->db->from('ledgers');
+		$CI->db->where('id', $this->id);
+		$ledger_result = $CI->db->get();
+
+		if($ledger_result->num_rows() > 0){
+
+                                $debit_amount = 0.00;
+                                $credit_amount = 0.00;
+                                $old_debit_amount = 0.00;
+                                $old_credit_amount = 0.00;
+
+                                $CI =& get_instance();
+                                $CI->db->select('id, amount, dc');
+                                $CI->db->from('entry_items')->where('ledger_id', $this->id);
+                                $entry_items_q = $CI->db->get();
+                                if($entry_items_q->num_rows() > 0)
+                                {
+                                        $entry_items_result = $entry_items_q->result();
+                                        foreach ($entry_items_result as $row1)
+                                        {
+                                                if($row1->dc == 'C'){
+                                                        $credit_amount = $credit_amount + $row1->amount;
+							$net_cr = $net_cr + $row1->amount;
+                                                }else{
+                                                        $debit_amount = $debit_amount + $row1->amount;
+							$net_dr = $net_dr + $row1->amount;
+                                                }
+                                        }
+                                }
+
+                                $cr_total = $cr_total + $credit_amount;
+                                $dr_total = $dr_total + $debit_amount;
+
+                                //Adding opening balance for the ledger head.
+				//list ($opbalance, $optype) = $CI->Ledger_model->get_op_balance($this->id);
+                                $op_total = $op_total + $this->opbalance;
+				$net_opening_bal = $net_opening_bal + $this->opbalance;
+                                //$year_end_value = $year_end_value + ($row['opbalance'] + $dr_total) - $cr_total;
+                                $year_end_value = $year_end_value + ($this->opbalance + $debit_amount) - $cr_total;
+				$net_total = $net_total + ($this->opbalance + $debit_amount) - $cr_total;
+
+                                /**
+                                 * Calculate depreciated value of the asset
+                                 */
+                                //to be done using pico data
+                                //till then asset value will not be deducted.
+                                //So, year_end_total = year_end_value
+				
+				$year_end_total = $year_end_value;
+				$net_current_year = $net_total;
+
+                                $this->getPreviousYearDetails();
+                                if($this->prevYearDB != "" ){//3
+                                       /* database connectivity for getting previous year opening balance */
+                                       $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
+                                       $op_balance = array();
+                                       if($con){//4
+                                              $value = mysql_select_db($this->prevYearDB, $con);
+                                              $id = mysql_real_escape_string($this->id);
+                                              $cl = "select id, amount, dc from entry_items where ledger_id = '$id'";
+                                              $val = mysql_query($cl);
+                                              if($val != ''){//5
+                                                      while($row2 = mysql_fetch_assoc($val))
+                                                      {//6
+                                                              if($row2 != null){//7
+                                                                      if($row2['dc'] == 'C'){//12
+                                                                              $old_credit_total = $old_credit_total + $row2['amount'];
+										$old_credit_amount = $old_credit_amount + $row2['amount'];
+                                                                      }else{
+                                                                              $old_debit_total = $old_debit_total + $row2['amount'];
+										$old_debit_amount = $old_debit_amount + $row2['amount'];
+                                                                      }
+                                                               }//7
+                                                       }//6
+                                               }//5
+                                        }//4
+                                }//3            
+
+                                //Adding previous year's opening balance for the ledger head
+				//list ($opbalance_prev, $optype_prev) = $CI->Ledger_model->get_prev_year_op_balance($this->id);
+                                $previous_year_total = $previous_year_total + ($this->opbalance_prev + $old_debit_total) - $old_credit_total;
+				$net_previous_year = $net_previous_year + ($this->opbalance_prev + $old_debit_total) - $old_credit_total;
+		}
+		}//if ledger
+		
+			if(!($this->name == 'Land')){
+			echo "<tr class=\"tr-group\">";
+                                echo "<td class=\"td-group\" width=\"10%\">";
+                                        echo $this->numberToRoman($count).". ".$this->name;
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo convert_amount_dc($op_total);
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo convert_amount_dc($dr_total);
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo convert_amount_dc($cr_total);
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo convert_amount_dc($year_end_value);
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "0.00";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "0.00";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "0.00";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo "0.00";
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo convert_amount_dc($year_end_total);
+                                echo "</td>";
+
+                                echo "<td align=\"right\" width=\"9%\">";
+                                        echo convert_amount_dc($previous_year_total);
+                                echo "</td>";
+                        echo "</tr>";				
+			}// if not 'Land'
+	
+		return array($net_dr, $net_cr, $net_total, $net_opening_bal, $net_current_year, $net_previous_year);
+	}//function: fixed_assets()
+
+	function numberToRoman($num) 
+	{
+		$n = intval($num);
+		$result = '';
+ 
+		$lookup = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400,
+		     'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40,
+		     'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+ 
+		foreach ($lookup as $roman => $value) 
+     		{
+         		$matches = intval($n / $value);
+			$result .= str_repeat($roman, $matches);
+			$n = $n % $value;
+     		}
+		
+		return $result;
+	}
+	
+}//BalanceSheet.php
 ?>

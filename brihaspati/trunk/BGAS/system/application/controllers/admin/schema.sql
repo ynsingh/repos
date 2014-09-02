@@ -372,7 +372,7 @@ CREATE TABLE IF NOT EXISTS cheque_bounce_record (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
-CREATE TABLE income_from_investment
+CREATE TABLE IF NOT EXISTS fund_management
 (
 	id int(11)  NOT NULL AUTO_INCREMENT,
         fund_id int(11) NOT NULL,
@@ -380,7 +380,7 @@ CREATE TABLE income_from_investment
         amount decimal(15, 2) NOT NULL DEFAULT 0.00,
         date DATETIME NOT NULL,
         type varchar(100) NOT NULL,
-	 entry_id int(11) NOT NULL,
+	entry_items_id int(11) NOT NULL,
         PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 

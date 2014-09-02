@@ -1074,7 +1074,36 @@ class Report extends Controller {
 			$data['provisions'] = $provisions;
 			$this->template->load('template', 'report/schedule_template_4', $data);
 			return;
-		}else{
+		}elseif($name == 'Fixed Assets'){
+			$fixed_assets = array();
+			$count = 0;
+
+			$this->db->select('id')->from('groups');	
+			$this->db->where('parent_id', $id);
+			$group_query = $this->db->get();
+			foreach($group_query->result() as $row){
+				$this->db->select('id')->from('groups');
+				$this->db->where('parent_id', $row->id);
+				$child_group_query = $this->db->get();
+				foreach($child_group_query->result() as $row1){
+					$fixed_assets[$count]['id'] = $row1->id;
+					$count++; 
+				}
+
+				$this->db->select('id')->from('ledgers');
+                                $this->db->where('group_id', $row->id);
+                                $child_ledger_query = $this->db->get();
+                                foreach($child_ledger_query->result() as $row1){
+                                        $fixed_assets[$count]['id'] = $row1->id;
+                                        $count++;
+                                }
+			}
+			
+			$data['fixed_assets'] = $fixed_assets;			
+			$this->template->load('template', 'report/schedule_template_5', $data);
+                        return;
+		}
+		else{
 			$this->template->load('template', 'report/schedule_template', $data);
                         return;
 		}			
