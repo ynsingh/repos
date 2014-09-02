@@ -55,6 +55,7 @@ class Entry extends Controller {
 				$current_entry_type = entry_type_info($entry_type_id);
 				$this->template->set('page_title', $current_entry_type['name'] . ' Entries');
 				$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry', 'entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Entry'));
+$width="100%";
 
 			}
 		}
@@ -1294,7 +1295,7 @@ class Entry extends Controller {
                 	                        $this->db->trans_rollback();
                                 	        $this->logger->write_message("error", "Error adding transit income");
         	                        }
-				}//....
+				}
 
 				$insert_ledger_data = array(
 					'entry_id' => $entry_id,
@@ -1653,8 +1654,7 @@ class Entry extends Controller {
 					/* code for fund list*/
                                         $ledger_code = $this->Ledger_model->get_ledger_code($row->ledger_id);
                                         $account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
-                                        //$temp = $this->startsWith($ledger_code, $account_code);
-					$temp = $this->Ledger_model->isFund($ledger_code);
+                                        $temp = $this->startsWith($ledger_code, $account_code);
 
                                         //if ledger is a liability account
                                         if($temp && $flag == 0 && $row->dc == 'D'){
@@ -1758,7 +1758,7 @@ class Entry extends Controller {
 				}
 			}
 			
-			/* Two extra rows 
+			/* Two extra rows */
 			$data['ledger_dc'][$counter] = 'D';
 			$data['ledger_id'][$counter] = 0;
 			$data['dr_amount'][$counter] = "";
@@ -1768,7 +1768,7 @@ class Entry extends Controller {
 			$data['ledger_id'][$counter] = 0;
 			$data['dr_amount'][$counter] = "";
 			$data['cr_amount'][$counter] = "";
-			$counter++;*/
+			$counter++;
 		//}
 		$creditledgername = $this->Ledger_model->get_name($creditid);
 		$debitledgername = $this->Ledger_model->get_name($debitid);
@@ -4434,6 +4434,78 @@ class Entry extends Controller {
                 $this->session->set_userdata('sec_unit_id', $id);
 		return;
         }
+
+
+	function pdf($entry_type, $entry_id = 0)
+	{
+		$this->load->helper('pdf_helper');
+		$this->load->model('Setting_model');
+		$this->load->model('Ledger_model');
+
+		/* Check access */
+		if ( ! check_access('print entry'))
+		{
+			$this->messages->add('Permission denied.', 'error');
+			redirect('entry/show/' . $entry_type);
+			return;
+		}
+
+		/* Entry Type */
+		$entry_type_id = entry_type_name_to_id($entry_type);
+		if ( ! $entry_type_id)
+		{
+			$this->messages->add('Invalid Entry type.', 'error');
+			redirect('entry/show/all');
+			return;
+		} else {
+			$current_entry_type = entry_type_info($entry_type_id);
+		}
+
+		/* Load current entry details */
+		if ( ! $cur_entry = $this->Entry_model->get_entry($entry_id, $entry_type_id))
+		{
+			$this->messages->add('Invalid Entry.', 'error');
+			redirect('entry/show/' . $current_entry_type['label']);
+			return;
+		}
+
+		$data['entry_type_id'] = $entry_type_id;
+		$data['current_entry_type'] = $current_entry_type;
+		$data['entry_number'] =  $cur_entry->number;
+		$data['entry_date'] = date_mysql_to_php_display($cur_entry->date);
+		$data['entry_dr_total'] =  $cur_entry->dr_total;
+		$data['entry_cr_total'] =  $cur_entry->cr_total;
+		$data['entry_narration'] = $cur_entry->narration;
+		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
+                $data['back_ref_id'] = $cur_entry->backward_refrence_id;
+		$data['submitted_by'] = $cur_entry->submitted_by;
+                $data['verified_by'] = $cur_entry->verified_by;
+
+		/* Getting Ledger details */
+		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
+		$ledger_q = $this->db->get();
+		$counter = 0;
+		$data['ledger_data'] = array();
+		if ($ledger_q->num_rows() > 0)
+		{
+			foreach ($ledger_q->result() as $row)
+			{
+				$data['ledger_data'][$counter] = array(
+					'id' => $row->ledger_id,
+					'name' => $this->Ledger_model->get_name($row->ledger_id),
+					'dc' => $row->dc,
+					'amount' => $row->amount,
+					'id'=>$entry_id,
+				);
+				$counter++;
+			}
+		}
+
+		$this->load->view('entry/pdfentry', $data);
+		return;
+
+
+	}
 }
 
 /* End of file entry.php */

@@ -56,7 +56,7 @@
 		$this->pagination->initialize($config);
 
 //	}
-		echo "<table border=0 cellpadding=5 class=\"simple-table ledgerst-table\" width=\"70%\">";
+		echo "<table border=\"0\" cellpadding=\"5\" class=\"simple-table ledgerst-table\" width=\"$width\">";
 		$odd_even = "odd";
 
 		 if ( ! $print_preview){
@@ -73,7 +73,7 @@
 					$this->messages->add('There is no ledger entry on ' . $date1 . ' date.', 'success');
 				}
 			else {
-				echo "<thead><tr><th colspan=5 align=center> The ledger entry on date ".$date1." </th></tr></thead>";
+				echo "<thead><tr><th colspan=\"5\" align=\"center\"> The ledger entry on date ".$date1." </th></tr></thead>";
 				echo "<thead><tr><th>Sr. No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
 
 			}
@@ -88,7 +88,7 @@
                         //$this->db->order_by('entry_items.id', 'asc');
                         $this->db->limit($pagination_counter, $page_count);
 			$dayst_q = $this->db->get();
-				echo "<thead><tr><th colspan=5 align=center> The ledger entry on date ".$date1." </th></tr></thead>";
+				echo "<thead><tr><th colspan=\"5\" align=\"center\"> The ledger entry on date ".$date1." </th></tr></thead>";
 				echo "<thead><tr><th>Sr. No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
 		}
 	//	print_r($dayst_q);

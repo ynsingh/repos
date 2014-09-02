@@ -116,6 +116,9 @@ else
 	echo anchor_popup('entry/email/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Email', array('title' => 'Email this ' . $current_entry_type['name'] . ' Entry', 'width' => '400', 'height' => '200'));
 	echo " | ";
 	echo anchor('entry/download/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Download', array('title' => "Download entry", 'title' => 'Download this ' . $current_entry_type['name'] . ' Entry'));
+	echo " | ";
+        echo anchor('entry/pdf/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'pdf', array('title' => "Download in pdf", 'title' => 'Download this ' . $current_entry_type['name'] . ' Entry'));
+
 	if($no_of_row >=2){
 		 echo " | ";
  echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Print Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));

@@ -189,6 +189,7 @@ class Report extends Controller {
                         return;
                 }
 
+
 		if ($statement == "reconciliation")
                 {
                         $this->load->helper('text');
@@ -983,7 +984,7 @@ class Report extends Controller {
 		if($name != '' && $id != ''){
 			$this->template->set('page_title', 'Schedule - ' . $count . ' ' . $name);
 	                $this->session->set_userdata('code', $code);
-			$this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule/'. $count => 'Print Preview'));
+			$this->template->set('nav_links', array('report/download/schedule/'.$count => 'Download CSV', 'report/printpreview/schedule/'. $count => 'Print Preview'));
 			$data['id'] = $id;
 		}
 		else{
@@ -1400,7 +1401,7 @@ class Report extends Controller {
                 $this->load->library('pagination');
 
                 $this->template->set('page_title', 'Day Statement');
-                $this->template->set('nav_links', array('report/printpreview/dayst/' => 'Print Preview'));
+                $this->template->set('nav_links', array('report/printpreview/dayst/' => 'Print Preview','report/pdf/dayst/'=> 'Download PDF'));
                 //$this->template->set('nav_links', array('report/download/dayst/'  => 'Download CSV', 'report/printpreview/dayst/' => 'Print Preview', 'report/pdf/dayst/' => 'Download PDF'));
                 $data['width'] = "70%";
 		$data['print_preview'] = FALSE;
@@ -2428,7 +2429,7 @@ class Report extends Controller {
 		if($statement == "dayst")
                 {
                  $this->load->helper('text');
-                        $data['width'] = "100%";
+                        $data['width'] = "70%";
                         $page_count = 0;
                         /* Pagination setup */
                         $this->load->library('pagination');
