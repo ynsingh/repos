@@ -581,7 +581,7 @@ public class EmployeeDB {
             ps = c.prepareStatement("insert into employee_master(emp_code,emp_name,"
                     + "emp_dept_code,emp_desig_code,emp_type_code,emp_phone,"
                     + "emp_email,emp_dob,emp_doj,emp_bank_accno,emp_pf_accno,emp_pan_no,"
-                    + "emp_salary_grade,emp_gender,emp_org_code,emp_father,.,emp_title,"
+                    + "emp_salary_grade,emp_gender,emp_org_code,emp_father,emp_basic,emp_title,"
                     + "emp_exp,emp_qual,emp_yop,emp_prev_emp,emp_address,emp_active,bank_ifsc_code,emp_bank_status) "
                     + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             ps.setString(1, emp.getCode());
