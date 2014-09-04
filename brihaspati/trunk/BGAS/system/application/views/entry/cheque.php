@@ -245,7 +245,7 @@
 					 $cheque_no2 = array(
                                                 'name' => 'cheque_no',
                                                 'id' => 'cheque_no',
-                                                'maxlength' => '15',
+                                                'maxlength' => '25',
                                                 'size' => '15',
                                                 'value' => $update_cheque,
 					);

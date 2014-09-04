@@ -179,7 +179,7 @@ INSERT INTO `ledgers` VALUES (19,'2001010102',73,'Leasehold','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES (20,'20030101',98,'Store and Spares','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES (21,'20030102',98,'Loose Tools','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES (22,'20030103',98,'Publications','0.00','D',0,0,0);
-INSERT INTO `ledgers` VALUES (23,'20030301',100,'SBI','0.00','D',0,0,0);
+INSERT INTO `ledgers` VALUES (23,'20030301',100,'SBI','0.00','D',1,1,0);
 INSERT INTO `ledgers` VALUES (24,'200305',16,'Cash In Hand','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES (113,'200306',16,'Letter of Credit','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES (25,'20040101',102,'Salary Advances','0.00','D',0,0,0);

@@ -2537,7 +2537,7 @@ $width="100%";
 			$data['cheque_no'] = array(
 			'name' => 'cheque_no',
 			'id' => 'cheque_no',
-			'maxlength' => '11',
+			'maxlength' => '25',
 			'size' => '15',
 			'value' => $cheque_no1,
 		);
@@ -2618,7 +2618,7 @@ $width="100%";
 		$data['print_cheque_no'] = array(
                         'name' => 'print_cheque_no',
                         'id' => 'print_cheque_no',
-                        'maxlength' => '',
+                        'maxlength' => '25',
                         'size' => '15',
 			'value' =>$cheque_no,
                         'readonly'=>'readonly',
@@ -2664,7 +2664,7 @@ $width="100%";
 			$data['cheque_no'] = array(
 			'name' => 'cheque_no',
 			'id' => 'cheque_no',
-			'maxlength' => '11',
+			'maxlength' => '25',
 			'size' => '15',
 			'value' =>$cheque_no1,
 		);
@@ -2768,7 +2768,7 @@ $width="100%";
 			$data['cheque_no'] = array(
 			'name' => 'cheque_no',
 			'id' => 'cheque_no',
-			'maxlength' => '11',
+			'maxlength' => '25',
 			'size' => '15',
 			'value' => '',
 		);
