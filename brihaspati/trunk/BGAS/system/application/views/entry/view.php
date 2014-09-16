@@ -9,7 +9,7 @@ Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?>
 </p>
 
 <table border=0 cellpadding=5 class="simple-table entry-view-table">
-<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>
+<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Secondary Unit</th><th>Party Address</th></tr></thead>
 <?php
 $odd_even = "odd";
 foreach ($cur_entry_ledgers->result() as $row)
@@ -28,9 +28,13 @@ foreach ($cur_entry_ledgers->result() as $row)
 		{
 			echo "<td>Dr " . $row->amount . "</td>";
 			echo "<td></td>";
+			echo "<td> " . $this->Secunit_model->get_secunitname($row->secunitid) . "</td>";
+			echo "<td> " . $this->Secunit_model->get_secunitaddress($row->secunitid) . "</td>";
 		} else {
 			echo "<td></td>";
 			echo "<td>Cr " . $row->amount . "</td>";
+			echo "<td> " . $this->Secunit_model->get_secunitname($row->secunitid) . "</td>";
+			echo "<td> " . $this->Secunit_model->get_secunitaddress($row->secunitid) . "</td>";
 		}
 		echo "</tr>";
 		$odd_even = ($odd_even == "odd") ? "even" : "odd";

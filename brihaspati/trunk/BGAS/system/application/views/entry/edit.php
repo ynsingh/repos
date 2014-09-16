@@ -551,7 +551,8 @@ var dc = '';
 */
 	$val='';
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th colspan=4 align=\"center\">Available Selections</th></tr></thead>";
+	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th colspan=4 align=\"center\">Available Selections</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th>Sec Unit Name</th><th colspan=4 align=\"center\">Available Selections</th></tr></thead>";
 	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th></th><th colspan=2>Actions</th><th>Cur Balance</th></tr></thead>";
 	$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$entry_id);
         $ledger_q = $this->db->get();
@@ -577,6 +578,13 @@ var dc = '';
 			'value' => isset($cr_amount[$i]) ? $cr_amount[$i] : "",
 			'class' => 'cr-item',
 		);
+		$secondaryid = array(
+                        'name' => 'sunitid[' . $i . ']',
+                        'id' => 'sunitid' . $i,
+                        'maxlength' => '15',
+                        'size' => '15',
+                        'value' => isset($sunitid[$i]) ? $sunitid[$i] : "",
+                );
 /*		$cheque = array(
                         'name' => 'cheque[' . $i . ']',
                         'id' => 'cheque[' . $i . ']',
@@ -607,6 +615,8 @@ var dc = '';
 		echo "<td id =\"dr\">" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
 		echo "<td id = \"dc\">" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "0") . "</td>";
+		echo "<td>" . form_input($secondaryid) . "</td>";
+			
 		//echo "<td>" . form_input($cheque) . "</td>";
 
 		/* code for fund list*/

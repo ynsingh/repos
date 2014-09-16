@@ -694,7 +694,8 @@ var dc = '';
 		echo "<td>" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
 		echo "<td>" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "0") . "</td>";
-		echo "<td>" . form_dropdown('sec_unit_id', $sec_unit_id, $sec_unit_active). "</td>";
+//		echo "<td>" . form_dropdown('sec_unit_id', $sec_unit_id, $sec_unit_active). "</td>";
+		echo "<td>" . form_dropdown_secunit('secunit[' . $i . ']', isset($secunit[$i]) ? $secunit[$i] : 0) . "</td>";
 
 //		echo "<td>" . form_input($cheque) . "</td>";	
 	

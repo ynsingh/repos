@@ -351,6 +351,7 @@ CREATE TABLE IF NOT EXISTS cheque_print (
   bank_name VARCHAR (255) NOT NULL,
   amount decimal(15,2) NOT NULL DEFAULT '0.00',
   update_cheque_no VARCHAR (25) NOT NULL,
+  secunitid VARCHAR(10) NOT NULL DEFAULT 0,
   cheque_print_date datetime NOT NULL,
   cheque_bounce_date datetime NOT NULL,
   cheque_print_status int(1) NOT NULL DEFAULT 0,
@@ -367,6 +368,7 @@ CREATE TABLE IF NOT EXISTS cheque_bounce_record (
   name VARCHAR (255) NOT NULL,
   bank_name VARCHAR (255) NOT NULL,
   amount decimal(15,2) NOT NULL DEFAULT '0.00',
+  secunitid VARCHAR(10) NOT NULL DEFAULT 0,
   new_cheque_no VARCHAR (25) NOT NULL,
   cheque_bounce_date datetime NOT NULL,
   PRIMARY KEY (id)

@@ -1348,7 +1348,8 @@ $width="100%";
                                                 $insert_cheque_data = array(
                                                         'ledger_id' => $data_ledger_id,
                                                         'entry_no' => $entry_id,
-                                                        'update_cheque_no' => $data_cheque[$id]
+                                                        'update_cheque_no' => $data_cheque[$id],
+							'secunitid' => $secunitid
                                                 );
                                                 if ( ! $this->db->insert('cheque_print', $insert_cheque_data))
                                                 {
@@ -1618,6 +1619,7 @@ $width="100%";
 		$debitid="";
 		$creditled="";
 		$creditid="";
+
 		/* Load current ledger details if not $_POST */
 		//if ( ! $_POST)
 		//{
@@ -1649,6 +1651,8 @@ $width="100%";
 				$index = -1;
 				//$entryId = "";
 				//check whether ledger is 'Transit Income'
+//echo "nbdbedbfnbednb";
+//print_r($row);
                                 if($row->ledger_id != $income_id){
 
 					/* code for fund list*/
@@ -1726,15 +1730,15 @@ $width="100%";
                 	                                                $bank_cash = null;
                         	                                }
 							}
-
-	
 							$data['dr_amount'][$counter] = $row->amount;
 							$data['cr_amount'][$counter] = "";
+							$data['sunitid'][$counter]= $this->Secunit_model->get_secunitname($row->secunitid);
 						} else {
 							$creditled=$row->dc;
 							$creditid=$row->ledger_id;
 							$data['dr_amount'][$counter] = "";
                                                         $data['cr_amount'][$counter] = $row->amount;
+							$data['sunitid'][$counter]= $this->Secunit_model->get_secunitname($row->secunitid);
 
 							$this->db->from('fund_management')->where('entry_items_id', $row->id);
                                                         $income_q = $this->db->get();
@@ -1818,8 +1822,8 @@ $width="100%";
 			$data['fund_list'] = $this->input->post('fund_list', TRUE);
 			$data['income_type'] = $this->input->post('income_type', TRUE);
                         $data['expense_type'] = $this->input->post('expense_type', TRUE);
+			$data['sunitid'] = $this->input->post('sunitid', TRUE);
 		}
-
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->messages->add(validation_errors(), 'error');
@@ -1836,6 +1840,7 @@ $width="100%";
                         $data_date = $this->input->post('entry_date', TRUE);
                         $data_cheque = $this->input->post('ledger_payt', TRUE);
                         $data_date = date_php_to_mysql($data_date); // Converting date to MySQL
+			$data_all_sunitid = $this->input->post('sunitid', TRUE);
 
 
 			$dr_total = 0;
@@ -1969,7 +1974,7 @@ $width="100%";
 			$data_date = $this->input->post('entry_date', TRUE);
 			$data_narration = $this->input->post('entry_narration', TRUE);
 			$data_tag = $this->input->post('entry_tag', TRUE);
-			$data_secunitid = $this->input->post('sec_unit_id', TRUE);
+			//$data_secunitid = $this->input->post('sec_unit_id', TRUE);
 			if ($data_tag < 1)
 				$data_tag = NULL;
 			$this->db->select('id')->from('entry_types')->where('name', $data_entry_name);
@@ -2026,6 +2031,7 @@ $width="100%";
 			$data_all_income_type = $this->input->post('income_type', TRUE);
                         $data_all_expense_type = $this->input->post('expense_type', TRUE);
 			$data_cheque = $this->input->post('ledger_payt', TRUE);
+			$data_all_sunitid = $this->input->post('sunitid', TRUE);
 			$dr_total = 0;
 			$cr_total = 0;
 			foreach ($data_all_ledger_dc as $id => $ledger_data)
@@ -2043,17 +2049,22 @@ $width="100%";
 
 				if ($data_ledger_id < 1)
 					continue;
-
 				$data_amount = 0;
 				if ($data_all_ledger_dc[$id] == "D")
 				{
 					$data_amount = $data_all_dr_amount[$id];
 					$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
+					$secondunitid=$data_all_sunitid[$id];
 				} else {
 					$data_amount = $data_all_cr_amount[$id];
 					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
+					$secondunitid=$data_all_sunitid[$id];
 				}
-
+                                $this->db->from('addsecondparty')->where('partyname', $secondunitid);
+                                $party_name = $this->db->get();
+                                foreach($party_name->result() as $row1) {
+                                       $secondunitid = $row1->sacunit;
+                                }
 				/* Code for making entry in Fund and Transit Income account. */
                                 $fund_ledger = $data_all_fund_ledger[$id];
                                 if($fund_ledger > 0 && $data_ledger_dc == 'D'){
@@ -2064,7 +2075,8 @@ $width="100%";
                                                 'dc' => 'D',
                                                 'update_date' => $updatedate,
                                                 'forward_refrence_id' => $data_forw_refrence,
-                                                'backward_refrence_id' => $data_back_refrence
+                                                'backward_refrence_id' => $data_back_refrence,
+						'secunitid' => $secondunitid
                                         );
 
                                         if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -2113,7 +2125,8 @@ $width="100%";
                                                 'dc' => 'C',
                                                 'update_date' => $updatedate,
                                                 'forward_refrence_id' => $data_forw_refrence,
-                                                'backward_refrence_id' => $data_back_refrence
+                                                'backward_refrence_id' => $data_back_refrence,
+						'secunitid' => $secondunitid
                                         );
 
                                         if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -2131,6 +2144,7 @@ $width="100%";
 					'amount' => $data_amount,
 					'dc' => $data_ledger_dc,
 					'update_date' => $updatedate,
+					'secunitid' => $secondunitid
 				);				
 
 				if ( ! $this->db->insert('entry_items', $insert_ledger_data))
@@ -2713,7 +2727,7 @@ $width="100%";
 		
 	}
 
-	function cheque_print($entry_type, $entry_id = 0, $ledger_id)
+	function cheque_print($entry_type, $entry_id = 0, $ledger_id, $secunitid)
         {
 		$id=0;
 		$new_cheque_no='';
@@ -2836,7 +2850,7 @@ $width="100%";
                         );
                         $this->session->set_userdata($newdata);//end
 		
-			$this->db->select('id, entry_no, update_cheque_no, cheque_print_status, cheque_bounce_status')->from('cheque_print')->where('entry_no', $entry_id)->where('ledger_id', $ledger_id);
+			$this->db->select('id, entry_no, update_cheque_no, cheque_print_status, cheque_bounce_status')->from('cheque_print')->where('entry_no', $entry_id)->where('ledger_id', $ledger_id)->where('secunitid', $secunitid);
                 	$ch_value = $this->db->get();
                 	foreach($ch_value->result() as $row)
                 	{
@@ -2869,6 +2883,7 @@ $width="100%";
 					'ledger_id'=> $ledger_id,
                                         'new_cheque_no' => $update_cheque_no,
                                         'cheque_bounce_date' => $today_date,
+					'secunitid' => $secunitid,
                                 );
                                 if ( ! $this->db->insert('cheque_bounce_record', $insert_cheque_data))
                                 {
@@ -2886,7 +2901,7 @@ $width="100%";
                                         'update_cheque_no'=>$data_cheque_no,
 
                                 );
-                                if ( ! $this->db->where('id', $id)->update('cheque_print', $update_data2))
+                                if ( ! $this->db->where('id', $id)->where('secunitid', $secunitid)->update('cheque_print', $update_data2))
                                 {
                                         $this->db->trans_rollback();
                                         $this->messages->add('Error addding Entry', 'error');
@@ -4193,7 +4208,7 @@ $width="100%";
                         'rows' => '4',
                         'value' => '',
                 );
-		$data['sec_unit_id'] = $this->Secunit_model->get_all_secunitid();
+		//$data['sec_unit_id'] = $this->Secunit_model->get_all_secunitid();
                 $data['sec_unit_active']=0;
                 $data['entry_type_id'] = $entry_type_id;
                 $data['current_entry_type'] = $current_entry_type;
@@ -4268,7 +4283,8 @@ $width="100%";
 			$data['fund_list'] = $this->input->post('fund_list', TRUE);
 			$data['income_type'] = $this->input->post('income_type', TRUE);
                         $data['expense_type'] = $this->input->post('expense_type', TRUE);
-			$data['sec_unit_active'] = $this->input->post('sec_unit_id', TRUE);
+		//	$data['sec_unit_active'] = $this->input->post('sec_unit_id', TRUE);
+			$data['secunit'] = $this->input->post('secunit', TRUE);
 
                 }
 		else {
@@ -4305,7 +4321,8 @@ $width="100%";
 			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
 			$data_all_income_type = $this->input->post('income_type', TRUE);
                         $data_all_expense_type = $this->input->post('expense_type', TRUE);
-			$data_sec_unit_active = $this->input->post('sec_unit_id', TRUE);
+		//	$data_sec_unit_active = $this->input->post('sec_unit_id', TRUE);
+                        $data_secunit = $this->input->post('secunit', TRUE);
 			$data_cheque = $this->input->post('cheque', TRUE);
                         $data['data_cheque']=$data_cheque;
 

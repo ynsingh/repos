@@ -9,7 +9,7 @@ Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?>
 </p>
 
 <table border=0 cellpadding=5 class="simple-table entry-view-table">
-<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>
+<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>SecondaryUnit</th></tr></thead>
 <?php
 foreach ($cur_entry_ledgers->result() as $row)
 {
@@ -26,9 +26,12 @@ foreach ($cur_entry_ledgers->result() as $row)
 		{
 			echo "<td>Dr " . $row->amount . "</td>";
 			echo "<td></td>";
+			echo "<td>" . $this->Secunit_model->get_secunitname($row->secunitid) . "</td>";
+			echo "<td></td>";
 		} else {
 			echo "<td></td>";
 			echo "<td>Cr " . $row->amount . "</td>";
+			echo "<td>" . $this->Secunit_model->get_secunitname($row->secunitid) . "</td>";
 		}
 		echo "</tr>";
 	}

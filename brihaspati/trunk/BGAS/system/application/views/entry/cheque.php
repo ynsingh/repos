@@ -1,6 +1,6 @@
 <?php
 	$entry_amount='0';
-	$this->db->select('entry_no, name, amount, ledger_id, bank_name, update_cheque_no')->from('cheque_print')->where('entry_no', $entry_id);
+	$this->db->select('entry_no, name, secunitid, amount, ledger_id, bank_name, update_cheque_no')->from('cheque_print')->where('entry_no', $entry_id);
         $cheque_bounce = $this->db->get();
 	$no_of_row=$cheque_bounce->num_rows();
 	if($no_of_row == 1)
@@ -9,14 +9,16 @@
         	{
 			$ledger_id=$row->ledger_id;
 			$bank_name1=$row->bank_name;
+			$secunitid=$row->secunitid;
 
         	}
 		//Get amount when entry has been made initially(from entry_items)...
-                $this->db->select('amount')->from('entry_items')->where('entry_id', $entry_id)->where('ledger_id', $ledger_id);
+                $this->db->select('amount, secunitid')->from('entry_items')->where('entry_id', $entry_id)->where('ledger_id', $ledger_id);
                 $entry_items = $this->db->get();
                 foreach($entry_items->result() as $row2)
                 {
                         $entry_amount=$row2->amount;
+                        $beneficiary_name1= $this->Secunit_model->get_secunitname($row2->secunitid) ;
                 }
 		//Get bank or cash id when entry has been made initially(from entry_items)...
                 $this->db->select('ledger_id')->from('entry_items')->where('entry_id', $entry_id)->where('dc', 'C');
@@ -37,7 +39,7 @@
                         $bank_name1=$led_name;
                 }
 
-	echo form_open_multipart('entry/cheque_print/'. $entry_type."/".$entry_id."/". $ledger_id);
+	echo form_open_multipart('entry/cheque_print/'. $entry_type."/".$entry_id."/". $ledger_id."/".$secunitid);
 	echo"<br>";
         echo form_label('Date', 'date');
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -62,7 +64,13 @@
 	echo"<br>";
 	echo form_label('Beneficiary', 'beneficiary_name');
 	echo "&nbsp;&nbsp;&nbsp;";
-	echo " ";
+	$beneficiary_name = array(
+                        'name' => 'beneficiary_name',
+                        'id' => 'bank_name',
+                        'maxlength' => '255',
+                        'size' => '15',
+                        'value' => $beneficiary_name1,
+                   );	
         echo form_input($beneficiary_name);
 	echo"</br>";
 
@@ -111,18 +119,31 @@
 	}else{
         	echo "<table  border=0 cellpadding=6 class=\"simple-table account-table\">";
         	echo "<thead><tr><th>Cheque Status</th><th>Date</th><th>Bank Name </th><th>Payee Name</th><th>Amount</th><th>Cheque No</th><th>Cheque Type</th><th>Record Save</th><th>Display Cheque</th></tr></thead>";
+		$i=0;
         	foreach($cheque_bounce->result() as $row)
         	{
 		$ledger_id=$row->ledger_id;
+		$secunitid=$row->secunitid;
 		$bank_name1=$row->bank_name;
 		$update_cheque=$row->update_cheque_no;
 		$name1=$row->name;
 		//Get amount when entry has been made initially(from entry_items)...
-		$this->db->select('amount')->from('entry_items')->where('entry_id', $entry_id)->where('ledger_id', $ledger_id);
+		//$this->db->select('amount, secunitid')->from('entry_items')->where('entry_id', $entry_id)->where('ledger_id', $ledger_id);
+		$this->db->select('id')->from('entry_items')->where('entry_id', $entry_id)->where('ledger_id', $ledger_id);
                 $entry_items = $this->db->get();
                 foreach($entry_items->result() as $row2)
                 {
-                        $entry_amount=$row2->amount;
+			$entry_items_id=$row2->id;
+                        $this->db->select('amount,secunitid')->from('entry_items')->where('id', $entry_items_id);
+                        $entry_items_amount = $this->db->get();
+                        foreach($entry_items_amount->result() as $row5)
+                        {
+                                $entry_amount=$row5->amount;
+                                $entry_amount_arr[]=$entry_amount;
+                                $entry_secunit_arr[]=$this->Secunit_model->get_secunitname($row5->secunitid);
+
+                        }
+	
                 }
 		//Get bank or cash id when entry has been made initially(from entry_items)...
                 $this->db->select('ledger_id')->from('entry_items')->where('entry_id', $entry_id)->where('dc', 'C');
@@ -140,10 +161,10 @@
                         $led_name=$row4->name;
 			$led_arr[$led_name] =$led_name;
                 }
-		if($bank_name1 == Null)
+	/*	if($bank_name1 == Null)
 		{
 			$bank_name1=$led_arr;
-		}
+		}*/
 		}
 		if($update_cheque == 1)
 		{
@@ -170,9 +191,9 @@
                                                 $old_cheque_no = $row3->new_cheque_no;
                                         }
 
-			echo form_open_multipart('entry/cheque_print/'. $entry_type."/".$entry_id."/". $ledger_id);
+			echo form_open_multipart('entry/cheque_print/'. $entry_type."/".$entry_id."/". $ledger_id."/".$secunitid);
 			}else{
-			echo form_open_multipart('entry/cheque_print/'. $entry_type."/".$entry_id."/".$ledger_id);
+			echo form_open_multipart('entry/cheque_print/'. $entry_type."/".$entry_id."/".$ledger_id."/".$secunitid);
 			}
 			if($cheque_print_status == 1 )
 			{
@@ -199,20 +220,29 @@
 
         		echo "<td>";
 			if($name_rows == 1){
-			foreach($ledger_name->result() as $row4)
+				foreach($ledger_name->result() as $row4)
                 		{
-                        $led_name=$row4->name;
-			$bank_name = array(
-                        		'name' => 'bank_name',
-                        		'id' => 'bank_name',
-                        		'maxlength' => '255',
-                        		'size' => '15',
-                        		'value' => $led_arr[$led_name],
-                         );
-			}
-        		echo form_input($bank_name);
+                        		$led_name=$row4->name;
+					$bank_name = array(
+                        			'name' => 'bank_name',
+                        			'id' => 'bank_name',
+                        			'maxlength' => '255',
+                        			'size' => '15',
+                        			'value' => $led_arr[$led_name],
+                         		);
+				}
+        			echo form_input($bank_name);
+			}elseif($name_rows > 1){
+        			echo form_dropdown('bank_name', $led_arr);
 			}else{
-        		echo form_dropdown('bank_name', $led_arr);
+				$bank_name = array(
+                                        'name' => 'bank_name',
+                                        'id' => 'bank_name',
+                                        'maxlength' => '255',
+                                        'size' => '15',
+                                        'value' => '',
+                         	);
+				 echo form_input($bank_name);
 			}
         		echo"</td>";
 
@@ -222,7 +252,9 @@
                                         'id' => 'beneficiary_name',
                                         'maxlength' => '255',
                                         'size' => '15',
-                                        'value' => $name1,
+                                        //'value' => $name1,
+                                        'value' => $entry_secunit_arr[$i],
+					'readonly'=>'readonly',
                          );
 
         		echo form_input($beneficiary_name);
@@ -234,7 +266,7 @@
                        		 	'id' => 'amount',
                         		'maxlength' => '11',
 		                        'size' => '15',
-		                        'value' => $entry_amount,
+		                        'value' => $entry_amount_arr[$i],
 					'readonly'=>'readonly',
 		                );
 			echo form_input($amount1);
@@ -269,6 +301,7 @@
                         echo form_close();
                         echo "</td>";
          	echo"<tr>";
+		$i++;
         }
         	echo "</table>";
 

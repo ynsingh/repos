@@ -68,12 +68,8 @@ $(document).ready(function(){
 		</td><td width="200" align="right"> 
 		<?php
 				if($cheque_type == 'Order'){
-                      		$this->db->select('date')->from('entries')->where('id',$row['id']);
-                      		$entry_date = $this->db->get();
-                      		foreach($entry_date->result() as $row1)
-                      		{
-                                	$date = $row1->date;
-                                	$date1 = new DateTime($date);
+					$today_date=date("Y-m-d");
+                                	$date1 = new DateTime($today_date);
                                 	$actual_date= $date1->format('dmY');
                                 	$len=strlen($actual_date);
                                 	$split=str_split($actual_date);
@@ -88,7 +84,6 @@ $(document).ready(function(){
                                         		echo $split[$i];
                                         		echo"&nbsp;";
                                 	}
-				}
 		}
 	?>	
 </td></tr>

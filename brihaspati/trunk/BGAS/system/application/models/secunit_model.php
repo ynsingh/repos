@@ -20,5 +20,27 @@ class Secunit_model extends Model {
 		}
 		return $secunitarray;
 	}
+
+	function get_secunitname($secunit_id)
+        {
+                $this->db->from('addsecondparty')->where('sacunit', $secunit_id)->limit(1);
+                $sparty_q = $this->db->get();
+                if ($pname = $sparty_q->row())
+                        return $pname->partyname;
+                else
+                        //return "(Error)";
+                        return;
+        }
+	
+	function get_secunitaddress($secunit_id)
+        {
+                $this->db->from('addsecondparty')->where('sacunit', $secunit_id)->limit(1);
+                $sparty_q = $this->db->get();
+                if ($pname = $sparty_q->row())
+                        return $pname->permanentaddress;
+                else
+                        //return "(Error)";
+                        return;
+        }
 }
 ?>
