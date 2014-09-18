@@ -33,7 +33,8 @@
 
 	$temp_dr_total = 0;
 	$temp_cr_total = 0;
-	
+	$total_cl_bal = 0;
+	$total_op_bal = 0;
 	echo "<table border=0 cellpadding=5 class=\"simple-table trial-balance-table\" width=\"$width\">";
 	echo "<thead><tr><th>Ledger Account</th><th>O/P Balance</th><th>C/L Balance</th><th>Dr Total</th><th>Cr Total</th></tr></thead>";
 	$this->load->model('Ledger_model');
@@ -51,11 +52,17 @@
 
 		echo "<td>";
 		list ($opbal_amount, $opbal_type) = $this->Ledger_model->get_op_balance($ledger_id);
+		if($opbal_type == 'D')
+			$new_opbal_amount = $opbal_amount;
+		else
+			$new_opbal_amount = -$opbal_amount;
+                $total_op_bal = float_ops($total_op_bal, $new_opbal_amount, '+');
 		echo convert_opening($opbal_amount, $opbal_type);
 		echo "</td>";
 
 		echo "<td>";
 		$clbal_amount = $this->Ledger_model->get_ledger_balance($ledger_id);
+		$total_cl_bal = float_ops($total_cl_bal, $clbal_amount, '+');
 		echo convert_amount_dc($clbal_amount);
 		echo "</td>";
 
@@ -82,12 +89,12 @@
 		echo "</tr>";
 		$odd_even = ($odd_even == "odd") ? "even" : "odd";
 	}
-		echo "<tr class=\"tr-total\"><td colspan=\"3\">TOTAL ";
+		echo "<tr class=\"tr-total\"><td colspan=\"1\">TOTAL ";
 	if (float_ops($temp_dr_total, $temp_cr_total, '=='))
 		echo "<img src=\"" . asset_url() . "images/icons/match.png\">";
 	else
 		echo "<img src=\"" . asset_url() . "images/icons/nomatch.png\">";
-	echo "</td><td>Dr " . money_format('%!i', convert_cur($temp_dr_total)) . "</td><td>Cr " . money_format('%!i', convert_cur($temp_cr_total)) . "</td></tr>";
+	echo "</td><td> " . convert_amount_dc($total_op_bal) . "</td><td> " . convert_amount_dc($total_cl_bal) . "</td><td>Dr " . money_format('%!i', convert_cur($temp_dr_total)) . "</td><td>Cr " . money_format('%!i', convert_cur($temp_cr_total)) . "</td></tr>";
 	echo "</table>";
 	echo "<br>";
 	if(! $print_preview)
