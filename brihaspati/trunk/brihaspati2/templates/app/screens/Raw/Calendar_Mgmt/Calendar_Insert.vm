@@ -33,7 +33,7 @@ $!data.getMessage()
 	#if($mode=='insert')  
 		$brih_insert $brih_event $brih_detail
  	#else
-		#if($lang=="hindi")
+		#if($lang=="hindi" || $lang=="marathi")
 		$brih_event $brih_detail $brih_update
 		#else
 		$brih_update $brih_event $brih_detail

@@ -102,13 +102,13 @@ $!data.getMessage()
         #elseif($tdcolor == "3")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi") $brih_Instructor $brih_delete #else $brih_delete $brih_Instructor #end </a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi" || $lang == "marathi") $brih_Instructor $brih_delete #else $brih_delete $brih_Instructor #end </a></td>
         #if($tdcolor != "4")
         <td>
         #elseif($tdcolor == "4")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>  #if($lang == "hindi") $brih_student $brih_delete / $brih_view #else $brih_view / $brih_delete $brih_student #end </a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>  #if($lang == "hindi" || $lang == "marathi") $brih_student $brih_delete / $brih_view #else $brih_view / $brih_delete $brih_student #end </a></td>
         #if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
@@ -120,7 +120,7 @@ $!data.getMessage()
         #elseif($tdcolor == "6")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> #if($lang == "hindi") $brih_photo $brih_upload #else $brih_upload $brih_photo #end </a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> #if($lang == "hindi" || $lang == "marathi") $brih_photo $brih_upload #else $brih_upload $brih_photo #end </a></td>
 	#if($tdcolor != "7")
         <td>
         #elseif($tdcolor == "7")
@@ -424,8 +424,8 @@ face="$ui.sansSerifFonts">$type</font>
 <div class="scroll">
 <table width="100%" bgcolor="$ui.tableColor" align="left">
 <tr  bgcolor="$ui.menuColor">
-<td bgcolor="#AFDCEC" width="25%"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none><img src="$content.getURI("/images/text.jpg")">$brih_upload $brih_txt $brih_file</a></td>
-<td> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","5").addPathInfo("mode","USzip") style=text-decoration:none><img src="$content.getURI("/images/zipfile.jpg")">$brih_upload $brih_zip $brih_file</a></td>
+<td bgcolor="#AFDCEC" width="25%"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none><img src="$content.getURI("/images/text.jpg")"> #if($lang = "marathi") $brih_txt $brih_file brih_upload #else $brih_upload $brih_txt $brih_file #end</a></td>
+<td> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","5").addPathInfo("mode","USzip") style=text-decoration:none><img src="$content.getURI("/images/zipfile.jpg")"> #if($lang = "marathi") $brih_zip $brih_file $brih_upload #else $brih_upload $brih_zip $brih_file #end</a></td>
 </tr>
 <tr bgcolor="$ui.menuColor"><td colspan=8>
 <marquee scrollamount="3" direction="left" width="100%" behaviour="slide">

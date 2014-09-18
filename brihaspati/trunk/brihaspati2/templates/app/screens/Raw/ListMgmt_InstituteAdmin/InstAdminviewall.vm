@@ -31,7 +31,7 @@ $!data.getMessage()
 	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> | 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 	#if($mode!="Search")
-		#if($lang == "hindi" || $lang == "bhojpuri")
+		#if($lang == "hindi" || $lang == "bhojpuri" || $lang == "marathi")
 			$brih_listUsr
 		#else
 			 $brih_view_all $brih_usr
@@ -66,7 +66,7 @@ $!data.getMessage()
 	<td width=30% bgcolor="#AFDCEC">	
 	#end
         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>
-	#if($lang == "hindi" || $lang == "bhojpuri")
+	#if($lang == "hindi" || $lang == "bhojpuri" || $lang == "marathi")
 		$brih_listUsr
 	#else
 		$brih_view_all $brih_usr

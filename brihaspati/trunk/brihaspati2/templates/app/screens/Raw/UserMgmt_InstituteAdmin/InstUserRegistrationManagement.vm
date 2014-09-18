@@ -116,7 +116,7 @@ $!data.getMessage()
 	<td> $brih_schce</td>
         <td>
         	<select class="drop" name="SCHNAME" size=1 style="width:300px;" />
-        		<option value="" title="$brih_select $brih_sch">$brih_select $brih_sch</option>
+        		<option value="" title="$brih_select $brih_sch"> #if($lang == "marathi") $brih_sch $brih_select #else $brih_select $brih_sch #end</option>
         	#foreach($name in $schlist)
         		<option value="$!name.getName()" title="$!name.getName()" style="width:275px;">$!name.getName()</option>
         	#end
@@ -127,7 +127,7 @@ $!data.getMessage()
 	<td> $brih_dept</td>
         <td>
         	<select class="drop" name="DEPARTMENT" size=1 style="width:300px;" />
-        		<option value="" title="$brih_select $brih_dept">$brih_select $brih_dept </option>
+        		<option value="" title="$brih_select $brih_dept"> #if($lang == "marathi") $brih_dept $brih_select #else $brih_select $brih_dept #end </option>
         	#foreach($name in $deptlist)
         		<option value="$!name.getName()" title="$!name.getName()" style="width:275px;">$!name.getName()</option>
         	#end

@@ -29,7 +29,7 @@ $!data.getMessage()
 	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> | 	
 	##<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionstat","Edit").addPathInfo("count","2") style=text-decoration:none>$brih_view_all1</a> |
         #if($mode!="Search")
-                #if($lang == "hindi")
+                #if($lang == "hindi" || $lang == "marathi")
                          $brih_view_all1
                 #else
                         $brih_view_all $brih_course
@@ -62,7 +62,7 @@ $!data.getMessage()
 <td width=30% bgcolor="#AFDCEC">
 #end 
 <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>
-#if($lang == "hindi")
+#if($lang == "hindi" || $lang == "marathi")
 	$brih_listUsr
 #else
 	$brih_view_all $brih_usr
