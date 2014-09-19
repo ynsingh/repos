@@ -3,4 +3,4 @@ CLASSPATH=$CLASSPATH:/home/brihaspati/brihaspati_sync/webapps/brihaspatisync_ref
 CLASSPATH=$CLASSPATH:/home/brihaspati/brihaspati_sync/webapps/brihaspatisync_reflector/jnlp/HttpClient.jar
 CLASSPATH=$CLASSPATH:/home/brihaspati/brihaspati_sync/webapps/brihaspatisync_reflector/jnlp/syncreflector.jar
 export CLASSPATH  
-java -Djavax.net.ssl.trustStore=jnlp/brihaspatisync org.bss.brihaspatisync.reflector.Reflector start <option &
+java -Djavax.net.ssl.trustStore=jnlp/brihaspatisync -Xincgc org.bss.brihaspatisync.reflector.Reflector start <option &
