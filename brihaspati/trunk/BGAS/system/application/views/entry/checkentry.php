@@ -565,12 +565,37 @@ var dc = '';
                 }
         });
 
+	$('.sanc-type').change(function() {
+                var name = $('.sanc-type').val();
+                
+                if(name != "select"){
+                        if(name == "plan"){
+                                $('.plan').show();
+                                $('.plan-label').show();
+                                $('.non-plan').hide();
+                                $('.non-plan-label').hide();
+                        }
+                        else
+                        {
+                                $('.non-plan').show();
+                                $('.non-plan-label').show();
+                                $('.plan').hide();
+                                $('.plan-label').hide();
+                        }
+                }else{
+                        $('.plan').hide();
+                        $('.plan-label').hide();
+                        $('.non-plan').hide();
+                        $('.non-plan-label').hide();    
+                }
+        });
 
 	/* On page load initiate all triggers */
 	$('.dc-dropdown').trigger('change');
 	$('.ledger-dropdown').trigger('change');
 	$('.dr-item:first').trigger('change');
 	$('.cr-item:first').trigger('change');
+	$('.sanc-type').trigger('change');
 	//$('#fund').trigger('change');
 	//response.setIntHeader("Refresh", 1);	
 
@@ -620,6 +645,35 @@ var dc = '';
         echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related back dated transaction</span>";
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "</p>";
+
+	echo "<p>";
+        echo form_label('Sanction Letter No.', 'sanc_letter_no');
+        echo " ";
+        echo form_input($sanc_letter_no);
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+        echo form_label('Sanction Letter Date', 'sanc_letter_date');
+        echo " ";
+        echo form_input_date_restrict($sanc_letter_date);
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+        echo form_label('Sanction Type');
+        echo " ";
+        echo form_dropdown('sanc_type', $sanc_type, $active_sanc_type, "class = \"sanc-type\"");
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+        $plan_attr = array('class' => 'plan-label');
+        echo form_label('Plan', 'plan', $plan_attr);
+        echo " ";
+        echo form_dropdown('plan', $plan, $active_plan, "class = \"plan\"");
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+        $non_plan_attr = array('class' => 'non-plan-label');
+        echo form_label('Non Plan', 'non_plan', $non_plan_attr);
+        echo " ";
+        echo form_dropdown('non_plan', $non_plan, $active_non_plan, "class = \"non-plan\"");
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        echo "</p>";
 /*
                 echo "<span class=\"bank_value\">";
                 echo form_label('Bank Name', 'bank_name');
