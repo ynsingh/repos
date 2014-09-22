@@ -6,9 +6,11 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu singh sisaudiya</a>
+ * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * modified date: 17-10-2009, 29-09-2010
  * @modified date: 22-11-2010, 15-02-2011
- * modified date: 01-01-2013, 15-03-2013 
+ * @modified date: 01-01-2013, 15-03-2013 
+ * @modified date: 22-08-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
@@ -337,7 +339,17 @@ $!data.getMessage()
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="mailSpoolingExpiry" value="$!mailSpoolingExpiry"></font></td>
 	<td width=30><font face="$ui.sansSerifFonts">$emailSpooling_expiry </font></td>	
    </tr>
-   <tr bgcolor="$ui.menuColor" align="right">
+<tr  bgcolor="$ui.menuColor">
+        <td>
+                <input type="text" name="brihServerUrl" value="$!brihServer" >
+        </td>
+        <td>
+                <font face="$ui.sansSerifFonts">$brih_bri #if($lang == "hindi") $brih_Of1 #end $brih_Url</font>
+        </td>
+
+   </tr>
+   <tr>
+
       <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName"/>
 	  <input type="reset" class="button-ftextstyle" name="reset" value="$brih_reset"Click ="checkClear(document.frm,this);"/>

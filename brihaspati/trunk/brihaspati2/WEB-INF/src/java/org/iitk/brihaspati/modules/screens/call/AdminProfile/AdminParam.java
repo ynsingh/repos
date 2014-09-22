@@ -37,6 +37,7 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -57,8 +58,10 @@ import org.apache.commons.lang.StringUtils;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a> 
  * @modified date: 29-09-2010
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
- *@modified date: 10-01-2013
+ * @modified date: 10-01-2013
  * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+ * @modified date: 22-08-2013
  */
 
 
@@ -149,6 +152,12 @@ public class AdminParam extends SecureScreen{
                 context.put("normalTraffic", normal_traffic);
 		String high_traffic = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
                 context.put("highTraffic", high_traffic);
+//------------------------ Getting of brihaspati Server IP  --------------------
+		String filePath = TurbineServlet.getRealPath("../../conf/BrihaspatiServer.properties");
+		String brihServerName = AdminProperties.getValue(filePath,"brihaspatiServerIp");
+                if(!StringUtils.isBlank(brihServerName))
+			 context.put("brihServer",brihServerName);
+//------------------------ Getting of brihaspati Server IP & Port --------------------
 
 		// --------------------------------Telephone Directory------------------
 	Criteria crt=new Criteria();

@@ -34,6 +34,7 @@ package org.iitk.brihaspati.modules.utils;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Vector;
 import java.util.Properties;
@@ -57,6 +58,7 @@ import javax.activation.FileDataSource;
 import javax.activation.DataSource;
 import javax.activation.DataHandler;
 import javax.mail.Transport;
+import javax.servlet.http.HttpServletRequest;	
 //import javax.mail.*;
 //import javax.activation.*;
 //import javax.mail.internet.*;
@@ -217,10 +219,15 @@ public class MailNotification{
 
 	 //public static String replaceServerPort(String info,String serverScheme, String serverName, String serverPort) throws Exception {
 	 public static String replaceServerPort(String info) throws Exception {
-		String serverName= TurbineServlet.getServerName();
-                String serverPort= TurbineServlet.getServerPort();
+		String serverName = "";
                 String serverScheme = TurbineServlet.getServerScheme();
-		
+		String serverPort = TurbineServlet.getServerPort();
+		String filePath = TurbineServlet.getRealPath("../../conf/BrihaspatiServer.properties");
+		serverName = AdminProperties.getValue(filePath,"brihaspatiServerIp");
+	
+		if(StringUtils.isBlank(serverName))
+			serverName= TurbineServlet.getServerName();
+	
                if(serverScheme.length() >0)
                        info=info.replaceAll("server_scheme", serverScheme);
                if(serverName.length() >0)

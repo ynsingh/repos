@@ -34,6 +34,8 @@ package org.iitk.brihaspati.modules.actions;
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  */
 import java.io.File;
+import java.io.IOException;
+import java.io.FileOutputStream;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -53,6 +55,7 @@ import java.util.List;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+
 /**
  * @author <a href="mailto:nksinghiitk@yahoo.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
@@ -63,11 +66,12 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
  * @modified date: 30-1-2013
  * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu singh sisaudiya</a>
- * @modified date: 12-03-2013, 16-03-2013
+ * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+ * @modified date: 12-03-2013, 16-03-2013, 22-08-2013
  */
 
-//public class changeAParam extends SecureAction_Admin{
 public class changeAParam extends SecureAction_Admin{
+//public class changeAParam {
 
 	/**
 	 * This method updates the first, last name and configuration 
@@ -78,7 +82,12 @@ public class changeAParam extends SecureAction_Admin{
 	 * @return nothing
 	 */
 	private String LangFile=null;
+	private String brihServerUrl = null;
 	MultilingualUtil m_u= new MultilingualUtil();
+///////////////////////////////////////////////////////////////
+	public changeAParam (){}
+
+/////////////////////////////////////////////////////////
 	public void doUpdate(RunData data, Context context) throws Exception{
 		/**
 		 * Get the user object from RunData for the user
@@ -88,6 +97,7 @@ public class changeAParam extends SecureAction_Admin{
 		User user=data.getUser();
 		String loginName=user.getName();
                 int uid=UserUtil.getUID(loginName);
+
 
 		/**
                  * getting property file According to selection of Language in temporary variable 
@@ -243,6 +253,10 @@ public class changeAParam extends SecureAction_Admin{
 		String mailSpoolResendTime = pp.getString("spoolMailResendTime","");
 		String mailSpoolExpiryDay = pp.getString("mailSpoolingExpiry","");
 		String normalTrafficTime = pp.getString("normalTraffic");
+///////////////////////////////////////////////
+		brihServerUrl = pp.getString("brihServerUrl");
+		writeBrihServerUrl(brihServerUrl);
+///////////////////////////////////////////////
 		if(normalTrafficTime.equals(""))
 		{
 			//in seconds
@@ -307,8 +321,56 @@ public class changeAParam extends SecureAction_Admin{
                                         java.util.Date date= new java.util.Date();
                                         String LogfilePath=TurbineServlet.getRealPath("/logs")+"/Operation.txt";
                                         ErrorDumpUtil.ErrorLog("User Name --> Admin| Operation --> Update Profile | Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
-	}	
+	}
+	public void writeBrihServerUrl(String serverUrl){
+		if(isNotEmpty(serverUrl)){
+			String filePath = TurbineServlet.getRealPath("../../conf/BrihaspatiServer.properties");
+			if(isNotEmpty(filePath)){
+	                	File f = new File(filePath);
+	                        try{
+				
+			                /*
+					 ** createNewFile() method is used to creates a new, empty file
+					 ** mentioned by given abstract pathname if and only if a file with
+					 ** this name does not exist in given abstract pathname.
+					**/
+					 if (!f.exists()) {
+					 	 f.createNewFile();
+        		                        // get the content in bytes
+						writeFile(f,serverUrl);
+	
+	                	        }
+					else{
+						writeFile(f,serverUrl);
+					}	
+       	                	} catch (Exception e) {
+               	                	e.printStackTrace();
+				}
+			}
+	
+		}
+	}
 
+	
+	public boolean isNotEmpty(String string){
+	boolean bl = false;
+		if(!StringUtils.isBlank(string))
+			bl = true;
+		return bl;
+	}
+
+	public void writeFile(File f, String serverUrl){
+		try{
+			FileOutputStream fop = new FileOutputStream(f);
+	
+			fop.write(("brihaspatiServerIp = "+serverUrl).getBytes());
+	               	fop.flush();
+        	        fop.close();
+		} catch (IOException e) {
+               		e.printStackTrace();
+		}
+	}
+  	
 	/**
 	 * This is the default method called when the action is not
 	 * found

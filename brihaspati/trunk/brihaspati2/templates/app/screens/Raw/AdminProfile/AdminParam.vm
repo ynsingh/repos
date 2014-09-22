@@ -9,6 +9,8 @@
  * modified date: 17-10-2009, 29-09-2010
  * @modified date: 22-11-2010, 15-02-2011
  * modified date: 01-01-2013, 
+ * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+ * @modified date: 22-08-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
@@ -332,9 +334,17 @@ $!data.getMessage()
         <td width=30><font face="$ui.sansSerifFonts">$brih_highSystemLoad</font></td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="highTraffic" value="$!highTraffic"></font></td>
    </tr>
+   <tr  bgcolor="$ui.menuColor">
+	<td>
+                <font face="$ui.sansSerifFonts">$brih_bri #if($lang == "hindi") $brih_Of1 #end $brih_Url</font>
+        </td>
+	<td>
+                <input type="text" name="brihServerUrl" value="$!brihServer" >
+        </td>
 
-   <tr bgcolor="$ui.menuColor">
-      <td colspan=2 bgcolor="$ui.menuColor">	
+   </tr>
+   <tr>
+      <td colspan=2>	
 	  <input type="hidden" name="actionName"/>
           <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
 	  <input type="reset" class="button-ftextstyle" name="reset" value="$brih_reset"Click ="checkClear(document.frm,this);"/>
@@ -367,7 +377,7 @@ document.getElementById('tabl0').style.display = 'none';
 
 function checkValues(frm,field)
 {
-	if((frm.AFName.value!="") && (frm.ALName.value!="") && (frm.AdminConf.value!="") && (frm.AdminFaqExp.value!="")&& (frm.mailSpoolingExpiry.value !="") && (frm.spoolMailResendTime.value !=""))
+	if((frm.AFName.value!="") && (frm.ALName.value!="") && (frm.AdminConf.value!="") && (frm.AdminFaqExp.value!="")&& (frm.mailSpoolingExpiry.value !="") && (frm.spoolMailResendTime.value !="") && (frm.brihServerUrl.value !=""))
         {
 		if(frm.AdminConf.value>=1 && frm.AdminConf.value<=100)
 		{
