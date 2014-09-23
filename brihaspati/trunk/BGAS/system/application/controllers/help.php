@@ -13,6 +13,11 @@ class Help extends Controller {
 		$this->template->load('template', 'help/entry');
 		return;
 	}
+
+	function helpdoc(){
+		$this->template->load('template', 'help/helpdoc');
+		return;
+	}
 }
 
 /* End of file help.php */
