@@ -1102,6 +1102,47 @@ class Report extends Controller {
 			$data['fixed_assets'] = $fixed_assets;			
 			$this->template->load('template', 'report/schedule_template_5', $data);
                         return;
+		}elseif($name == 'Current Assets'){
+			$current_assets_group = array();
+			$current_assets_ledger = array();
+			$count = 0;
+
+			$this->db->select('id');
+			$this->db->from('groups')->where('parent_id', $id);
+			$group_query = $this->db->get();
+			foreach($group_query->result() as $row){
+				$current_assets_group[$count]['id'] = $row->id;
+				$count++;
+			}
+	
+			$count = 0;
+			$this->db->select('id');
+			$this->db->from('ledgers')->where('group_id', $id);
+			$ledger_query = $this->db->get();
+			foreach($ledger_query->result() as $row1){
+				$current_assets_ledger[$count]['id'] = $row1->id;
+				$count++;
+			}
+
+			$data['current_assets_group'] = $current_assets_group;
+			$data['current_assets_ledger'] = $current_assets_ledger;
+			$this->template->load('template', 'report/schedule_template_6', $data);
+			return;
+		}elseif($name == 'Loans Advances and Deposits'){
+			$loans_advances = array();
+			$count = 0;
+
+			$this->db->select('id');
+                        $this->db->from('groups')->where('parent_id', $id);
+                        $group_query = $this->db->get();
+                        foreach($group_query->result() as $row){
+                                $loans_advances[$count]['id'] = $row->id;
+                                $count++;
+                        }
+
+			$data['loans_advances'] = $loans_advances;
+			$this->template->load('template', 'report/schedule_template_7', $data);
+			return;
 		}
 		else{
 			$this->template->load('template', 'report/schedule_template', $data);

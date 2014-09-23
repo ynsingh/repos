@@ -1303,7 +1303,12 @@ $width="100%";
 				
 				if($fund_ledger > 0 && $data_ledger_dc == 'D'){
 					$expense_type = $data_all_expense_type[$id];
-					if($expense_type != 'Capital'){
+					//if($expense_type != 'Capital'){
+					$this->db->from('ledgers')->where('id', $data_ledger_id);
+                                        $query_q = $this->db->get();
+                                        $query_n = $query_q->row();
+                                        $ledger_code = $query_n->code;
+					if($expense_type == 'Capital' && !($this->Ledger_model->isFixedAsset($ledger_code))){
 						$insert_fund_data = array(
         	                               		'entry_id' => $entry_id,
 	        	                                'ledger_id' => $fund_ledger,
@@ -2220,7 +2225,12 @@ $width="100%";
                                 $fund_ledger = $data_all_fund_ledger[$id];
                                 if($fund_ledger > 0 && $data_ledger_dc == 'D'){
 					$expense_type = $data_all_expense_type[$id];
-					if($expense_type != 'Capital'){
+					//if($expense_type != 'Capital'){
+					$this->db->from('ledgers')->where('id', $data_ledger_id);
+                                        $query_q = $this->db->get();
+                                        $query_n = $query_q->row();
+                                        $ledger_code = $query_n->code;
+					if($expense_type == 'Capital' && !($this->Ledger_model->isFixedAsset($ledger_code))){
 	                                        $insert_fund_data = array(
         	                                        'entry_id' => $entry_id,
                 	                                'ledger_id' => $fund_ledger,
@@ -4244,7 +4254,7 @@ $width="100%";
 				$data['forward_reference_id'] = $ref->forward_refrence_id;
 	                	$data['backward_reference_id'] = $ref->backward_refrence_id;
 	                }
-		}           
+		}
 		$this->template->load('template', 'entry/verify', $data);
 		return;
 	}

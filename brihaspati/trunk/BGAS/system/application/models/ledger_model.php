@@ -1262,9 +1262,8 @@ var $ledgers = array();
 					if(!($this->startsWith($ledger->code, $provision))){
 						$funds[$ledger->id] = $ledger->name;
 					}
-				}
-				else{
-					 $funds[$ledger->id] = $ledger->name;
+				}else{
+					$funds[$ledger->id] = $ledger->name;
 				}
 			}
 		}
@@ -1307,9 +1306,50 @@ var $ledgers = array();
                                         }
                                 }
                         }
-               // }
+               //}
                 return $flag;
 
+	}
+
+	function isExpense($ledger_code){
+		$flag = false; 
+		$expense_code = $this->get_account_code('Expenses');
+		if($this->startsWith($ledger_code, $expense_code))
+			$flag = true;
+
+		return $flag;
+	}
+
+	function isAsset($ledger_code){
+		$flag = false;
+		$asset = $this->get_account_code('Assets');
+		if($this->startsWith($ledger_code, $asset))
+			$flag = true;
+
+		return $flag;
+	}
+
+	function get_type($ledger_id, $entry_id){
+		$type = '';
+		$this->db->select('type');
+		$this->db->from('fund_management');
+		$this->db->where('fund_id', $ledger_id);
+		$this->db->where('entry_items_id', $entry_id);
+		$type_query = $this->db->get();
+		if($type_query->num_rows() > 0){
+			$type_row = $type_query->row();
+			$type = $type_row->type;
+		}
+		return $type;	
+	}
+
+	function isFixedAsset($ledger_code){
+		$flag = false;
+                $fixed_asset_code = $this->get_account_code('Fixed Assets');
+                if($this->startsWith($ledger_code, $fixed_asset_code))
+                        $flag = true;
+
+                return $flag;
 	}
 }
 ?>
