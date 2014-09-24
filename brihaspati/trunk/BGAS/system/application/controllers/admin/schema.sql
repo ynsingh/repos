@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS entries (
   sanc_letter_no VARCHAR(255) DEFAULT NULL,
   sanc_letter_date datetime DEFAULT NULL,
   sanc_type VARCHAR(255) DEFAULT NULL,
-  sanc_value VARCHAR(255) DEFAULT NULL
+  sanc_value VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
