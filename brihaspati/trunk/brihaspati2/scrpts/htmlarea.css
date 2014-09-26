@@ -244,7 +244,7 @@ font-size:12px;	display:none; font-family: 'Alegreya SC', Georgia, serif; font-w
 }
 
 .tweet_header {
-width:310px; padding-top:3px; padding-bottom:3px; margin-top:20px; position:absolute; text-align:center; font-weight:bold;
+width:310px; padding-top:3px; padding-bottom:3px; margin-top:0px; position:absolute; text-align:center; font-weight:bold;
 }
 .link{
 	color:#0000FF;

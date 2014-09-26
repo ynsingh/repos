@@ -19,10 +19,14 @@
  * @author <a href="sunil0711@gmail.com">Sunil Yadav</a>
  * @modified date: 23-08-2012 
  * @author <a href="sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
- * @modified date: 21-11-2012
+ * @author<a href="mailto:rekha20july@gmail.com@gmail.com">Rekha Devi Pal</a>
+ * @author<a href="mailto:vijay.pal428@gmail.com">Vijay Bahadur</a>
+
+ * @modified date: 21-11-2012 , 11-09-2014
 
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
+
 
 $page.setTitle("User Home Page")
 $page.setBgColor("bgcolor")
@@ -35,160 +39,114 @@ $!data.getMessage()
 ##<body onload="doLoad();">
 <body>
 #macro(UNAME)
-       	<font color="blue">
-  		<b>$flname</b>
-	</font>
+        <font color="blue">
+                <b>$flname</b>
+        </font>
 #end
 ## if message have any value then show 
 #if(($Role1!="AdminRole") || ($guest_login!="true"))  
-	#if($message!="")
-	<table width=100% CellPadding=0 align=center>
-        <tr>    
+        #if($message!="")
+        <table width=100% CellPadding=0 align=center>
+        <tr>
         <td>$message &nbsp;<a href=$link.setPage("call,UserMgmt_User,Profile.vm")>$brih_click</a>
-        </td>   
+        </td>
         </tr>
-	#end
+        #end
 #end
 #if($Uid.toString()=="1")
 <div class="scroll">
 #end
 <form name="frm" method="post"  enctype="multipart/form-data"  action="$link.setPage("Index.vm")">
-
 <table>
-<td valign="top">
-<div style="overflow:auto; height:auto; ">
-        <table  bgcolor="$ui.tableColor" style="width:310px;">
-		#if($uList.size()!=0)
-		#if($au==0)
-			#set($au=1)
-		#end
-                <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($au)</b></td></tr>
-
-                        #foreach($element in $uList)
-                        #if($velocityCount%2==0)
-                                <tr bgcolor="$ui.menuColor">
-                        #else
-                                <tr bgcolor="$ui.tableColor">
-                        #end
-
-                                <td> $element </td>
-                                  </tr>
-                        #end
-			#if(($uList.size()) > 4)
-				#if($viewAll!="ViewAll")
-				<tr bgcolor="$ui.tableColor" align="right"><td>...</td></tr>
-				#end
-                        <tr bgcolor="$ui.menuColor"><td align="right"><input type="submit" value="$brih_more" onclick="checkBlankTest()"></td></tr>
-                        #end
-
-		#else
-			<tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>Active User #if($lang== "hindi") of #end List &nbsp;&nbsp;(0)</b></td></tr>
-                #end
-
-        </table>
-</div>
-
-##iframe is use to show brihaspati Twitter
-<div style="background:$ui.menuColor;" class="tweet_header">$brih_twitter</div>
-<iframe height="410" width="310px" style="margin:46px auto;overflow:hidden;" src="$ipadd/brihaspatiSpring/index.vm?username=$fullname&uname=$username&Uid=$Uid&expdate=$expdate&language=$lang" frameborder="0"></iframe>
-<div style="background:$ui.menuColor;height:30px;margin-top:-46px;">
-<a href=javascript:popup("$link.setPage("call,Twtwin.vm").addPathInfo("mode","all")","newWin"); style="margin-top:5px;margin-right:9px;z-index:100; cursor:pointer;text-decoration:none;color:black;text-align:right;float:right;">$brih_view_all</a>
-</div>
-##iframe is use to show brihaspati poll
+<td width="50%" valign="top">
 #if($Uid.toString()!="1")
-<div style="position:auto; margin-top:3px; height:230px; background:$ui.menuColor;" >
-<iframe src="$ipadd/brihaspatiSpring/pollmodule/pollAttemptIndex.vm?user_Id=$UserId&f=$firstname&usrNme=$usrNme&instNme=$instN" style="height:230px; width:310px; border-radius:-5px;" scrolling="yes" frameborder="0"></iframe>
-</div><br>
-#end
-
-
-<td width="80%" valign="top">
-#if($Uid.toString()!="1")
-<div class="indexhomescroll">
+<div>
 #end
 <table bgcolor="$ui.tableColor" width="100%">
 <tr bgcolor="$ui.menuColor"><td align=center colspan="7">
 #if(( $data.getUser().getTemp("lang" ).toString())!="english")
-	<font face="$ui.sansSerifFonts"><b> #UNAME() $brih_welcome </b></font> 
+        <font face="$ui.sansSerifFonts"><b> #UNAME() $brih_welcome </b></font> 
 #else
-	<font face="$ui.sansSerifFonts"><b>$brih_welcome #UNAME()</b></font>
+        <font face="$ui.sansSerifFonts"><b>$brih_welcome #UNAME()</b></font>
 #end
 </td></tr>
 
 #if($guest_login=="false")
 <div align=center>
-	#foreach($photo in $Image)
-        	#if($photo.getPhoto()!="")
-                	<img src="$content.getURI("/localImages/Photo/$username")" width="80" height="100">
-	        #end
-	#end
-</div>
-#end
-#set($lang = $data.getUser().getTemp("lang" ).toString())
-               
-    		#*if($Role1=="AdminRole")
-		<tr><td align="center">
-        		<b><a href=$link.setPage("call,Admin.vm").addPathInfo("lang",$lang)>$brih_ad $brih_home</a>
-		</td></tr>
-   		#end*#
-    		#if($Role7=="InstituteAdminRole")
-		<tr><td align="center" colspan="7">
+        #foreach($photo in $Image)
+                #if($photo.getPhoto()!="")
+                        <img src="$content.getURI("/localImages/Photo/$username")" width="80" height="100">
+                #end
+        #end
+        </div>
+        #end
+               #set($lang = $data.getUser().getTemp("lang" ).toString())
 
-       		<a href=$link.setPage("call,InstituteAdmin.vm").addPathInfo("role","institute_admin") style=text-decoration:none>$instituteHome</a>
-		</td></tr>
-		#end
-		
-    		#if($Role2=="InstructorRole")
-		<tr><td align="center" colspan="7">
-       		<a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","instructor").addPathInfo("lang",$lang) style=text-decoration:none>$brih_instructorHome</a>
-		</td></tr>
-		#end
-		
-		#if($Role8=="TeacherAssistantRole")
+                #*if($Role1=="AdminRole")
+                <tr><td align="center">
+                        <b><a href=$link.setPage("call,Admin.vm").addPathInfo("lang",$lang)>$brih_ad $brih_home</a>
+                </td></tr>
+                #end*#
+                #if($Role7=="InstituteAdminRole")
                 <tr><td align="center" colspan="7">
-                <a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","teacher_assistant").addPathInfo("lang",$lang) style=text-decoration:none> $bri_ta_home</a>
+
+                <a href=$link.setPage("call,InstituteAdmin.vm").addPathInfo("role","institute_admin") style=text-decoration:none>$instituteHome</a>
                 </td></tr>
                 #end
-	
-    		#if($Role3=="StudentRole")
-		<tr><td align="center" colspan="7">
-       		<a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","student").addPathInfo("lang",$lang) style=text-decoration:none>$brih_studentHome</a>
-		</td></tr>
-		#end
-    		#if($Role4=="GAdminRole")
-		<tr><td align="center" colspan="7">
-       		<a href=$link.setPage("call,IndexHome.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_groupAdmin  $brih_home</a>
-		</td></tr>
-		#end
+
+                #if($Role2=="InstructorRole")
+                <tr><td align="center" colspan="7">
+                <a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","instructor").addPathInfo("lang",$lang) style=text-decoration:none>$brih_instructorHome</a>
+                </td></tr>
+                #end
+
+                #if($Role8=="TeacherAssistantRole")
+                <tr><td align="center" colspan="7">
+                <a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","teacher_assistant").addPathInfo("lang",$lang) style=text-decoration:none>$bri_ta_home</a>
+                </td></tr>
+                #end
+
+                #if($Role3=="StudentRole")
+                <tr><td align="center" colspan="7">
+                <a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","student").addPathInfo("lang",$lang) style=text-decoration:none>$brih_studentHome</a>
+                </td></tr>
+                #end
+                #if($Role4=="GAdminRole")
+                <tr><td align="center" colspan="7">
+                <a href=$link.setPage("call,IndexHome.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_groupAdmin  $brih_home</a>
+                </td></tr>
+                #end
                 #if($Role5=="AuthorRole") 
                 <tr><td align="center" colspan="7">
-		<a href=$link.setPage("call,Repository_Mgmt,Author.vm").addPathInfo("role","Author").addPathInfo("count","1") style=text-decoration:none>$brih_authorHome</a>
-                </td></tr>                                                                                #end                                                                      	    #if($Role9=="ParentRole")
+                <a href=$link.setPage("call,Repository_Mgmt,Author.vm").addPathInfo("role","Author").addPathInfo("count","1") style=text-decoration:none>$brih_authorHome</a>
+                </td></tr>
+                #end   
+                #if($Role9=="ParentRole")
                 <tr><td align="center" colspan="7">
                 <a href=$link.setPage("call,ParentChildList.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_parent $brih_home</a>
                 </td></tr>
                 #end
-<tr bgcolor="$ui.menuColor">
-#if($guest_login=="false" )
-		#if(($Role2=="InstructorRole")||($Role3=="StudentRole")||($Role4=="GAdminRole")||($Role5=="AuthorRole") || ($Role8=="TeacherAssistantRole"))
+               <tr bgcolor="$ui.menuColor">
+                #if($guest_login=="false" )
+                #if(($Role2=="InstructorRole")||($Role3=="StudentRole")||($Role4=="GAdminRole")||($Role5=="AuthorRole") || ($Role8=="TeacherAssistantRole"))
 
-	<td width="16%" > <a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
-	</td>
-	<td width="16%" > <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general") style=text-decoration:none> $brih_chat</a> </td>
-	<td width="16%" ><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none> #if($lang == "hindi") $brih_usr $brih_Of $Profile_user #else  $brih_usr $Profile_user #end </a></td>
-	
-		<td width="16%" > #if($lang == "hindi") $brih_Institute $brih_wise $brih_chat/$DiscussionBoard #else $RemoteInstitute $brih_wise $brih_chat/$DiscussionBoard #end </td>
-		<td width="16%" > 
-    		<select name="instName" onChange="checkOption(this);" class="drop" style="width:300px;" />
+        <td width="16%" > <a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
+        </td>
+        <td width="16%" > <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general") style=text-decoration:none> $brih_chat</a> </td>
+        <td width="16%" ><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none> #if($lang == "hindi") $brih_usr $brih_Of $Profile_user #else  $brih_usr $Profile_user #end </a></td>
+
+                <td width="16%" > #if($lang == "hindi") $brih_Institute $brih_wise $brih_chat/$DiscussionBoard #else $RemoteInstitute $brih_wise $brih_chat/$DiscussionBoard #end </td>
+                <td width="16%" >
+                <select name="instName" onChange="checkOption(this);" class="drop" style="width:300px;"/>
                 <option> #if($lang == "hindi" || $lang == "gujarati") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
-	  	#foreach($name in $instNameList)
-		<option value="$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8").addPathInfo("grpName",$name)" style="width:275px;" title="$name">$name </option>
-		##<option value="$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","instituteWise").addPathInfo("grpName",$name)">$name </option>
-		#end
-		</select>
-		</td>
-		<td width="20%" align="center" ><a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4") style=text-decoration:none>$brih_general $DiscussionBoard</a></td>
-	#end
+                #foreach($name in $instNameList)
+                <option value="$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8").addPathInfo("grpName",$name)" style="width:275px;" title="$name">$name </option>
+                ##<option value="$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","instituteWise").addPathInfo("grpName",$name)">$name </option>
+                #end
+                </select>
+                </td>
+                <td width="20%" align="center" ><a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4") style=text-decoration:none>$brih_general $DiscussionBoard</a></td>
+        #end
 #end
 
 #if($Role7=="InstituteAdminRole" || $Role3=="StudentRole" || $Role2=="InstructorRole" || ($Role8=="TeacherAssistantRole"))
@@ -197,18 +155,80 @@ $!data.getMessage()
 </tr>
 <tr>
 <td>
-	<input type="hidden" name="chatRoomName" value="">
-	<input type="hidden" name="mode" value="">
-	<input type="hidden" name="mode2" value="">
-	<input type="hidden" name="viewAll" value="">
+        <input type="hidden" name="chatRoomName" value="">
+        <input type="hidden" name="mode" value="">
+        <input type="hidden" name="mode2" value="">
+        <input type="hidden" name="viewAll" value="">
 </from>
 </td>
+</tr>
+<tr>
+
+<table width=100% CellPadding=0 align=center >
+      <tr>
+               #if($uList.size()!=0)
+                #if($au==0)
+                        #set($au=1)
+                #end
+
+              <td colspan="5" height="50" valign="top" align= "center" bgcolor="$ui.menuColor"><b> Active User #if($lang== "hindi") of #end List &nbsp;&nbsp;($au)</b>
+               <br><br>
+                        #foreach($element in $uList)
+                        #if($velocityCount%2==0)
+                        #else
+                        #end
+
+                        $element<br>
+#end
+                </td>
+                <td colspan="5" height="200" valign="top" align="center" bgcolor="$ui.menuColor">
+##iframe is use to show brihaspati Twitter
+<div style="background:$ui.menuColor;" class="tweet_header">Brih Tweets</div>
+<iframe height="100%" width="100%" style="margin:50px auto;" src="$ipadd/brihaspatiSpring/index.vm?username=$fullname&uname=$username&Uid=$Uid&expdate=$expdate&language=$lang"  frameborder="0"></iframe>
+<div style="background:$ui.menuColor:">
+
+<a href=javascript:popup("$link.setPage("call,Twtwin.vm").addPathInfo("mode","all")","newWin"); style="margin-top:5px;margin-right:9px;z-index:100; cursor:pointer;text-decoration:none;color:black;text-align:right;float:right;">View All</a></div>
+                </td>
+                <td colspan="5" height="150%" valign="top" bgcolor="$ui.menuColor" >
+                 #if($data.getUser().getName() !="admin")
+                <div style="background:$ui.menuColor;" class="tweet_header"><center>Poll</center></div>
+		#end
+
+##iframe is use to show brihaspati poll
+#if($Uid.toString()!="1")
+<div style="position:auto; height:230px; background:$ui.menuColor;" >
+<iframe height="87%" width="100%" style="margin:50px auto;" src="$ipadd/brihaspatiSpring/pollmodule/pollAttemptIndex.vm?user_Id=$UserId&f=$firstname&usrNme=$usrNme&instNme=$instN" style="margin:46px auto; border-radius:0px;" scrolling="yes" frameborder="0"></iframe>
+
+</div>
+#end
+                </td>
+               #if($velocityCount%2==0)
+               </tr>
+                  #end
+                  #if(($uList.size()) > 4)
+                                #if($viewAll!="ViewAll")
+                                <tr bgcolor="$ui.tableColor" align="right"><td>...</td></tr>
+                                #end
+                        <tr bgcolor="$ui.menuColor">
+                       <td align="right"><input type="submit" value="More" onclick="checkBlankTest()"></td>
+                      </tr>
+                        #end
+
+                #else
+                        <tr>
+                        <td colspan="1" align="center" bgcolor="$ui.menuColor"><b> Active User #if($lang== "hindi") of #end  List  &nbsp;&nbsp;(0)</b></td></tr>
+                #end
+        </table>
+        </td>
+</tr>
+</table>
 </tr>
 </table>
 </div>
 </td>
 </table>
 </body>
+
 <SCRIPT Language="javascript">
 
 function checkOption(field)
@@ -241,4 +261,4 @@ function popup(url,popupName)
                 //Win2=window.open(url,popupName,"resizable,height=200,width=650");
         }
 
-</SCRIPT >
+</SCRIPT>
