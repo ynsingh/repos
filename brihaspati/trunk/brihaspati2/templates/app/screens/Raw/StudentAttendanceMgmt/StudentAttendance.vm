@@ -4,7 +4,9 @@
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @ModifyDate: 02-08-2013,27-08-2013(Tej)
+ * @modified date: 02-08-2013,27-08-2013(Tej)
+ * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+ * @modified date: 30-08-2014
  * @Video help file added by 16 August 2013(omprakash) 
 *#
 
@@ -45,6 +47,24 @@ $!data.getMessage()
                         $("#Calrange").daterangepicker({arrows:true});
                 });
         </script>
+	<style type="text/css">
+                a.one:link,a.one:visited{
+                        display:block;
+                        font-size:14px;
+                        color:#FFFFFF;
+                        background-color:#98bf21;
+                        width:140px;
+                        text-align:center;
+                        padding:4px;
+                        text-decoration:none;
+
+                }
+                a.one:hover,a.one:active{
+                        background-color:#7A991A;
+                }
+
+        </style>
+
 </head>
 
 <body>
@@ -271,6 +291,8 @@ $!data.getMessage()
                 	<td><font color="dark red">$brih_absent</font></td>
                 	<td><font color="dark orange">$brih_leave</font></td>
 		</tr>
+		## $allDetail is added by shaista
+		#set($allDetail="") 
 		#set($sno=1)
 		#set($present=0)
                 #set($absent=0)
@@ -299,6 +321,7 @@ $!data.getMessage()
                                                 <a href="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance").addPathInfo("actionName","eventSubmit_doSearch").addPathInfo("userid",$urecord.getUserId()).addPathInfo("count",$tdcolor).addPathInfo("mode","All").addPathInfo("group",$course_id)" style="text-decoration:none;"><font color="blue"> $brih_full $brih_attend</font> | </a>
                                                 <a href="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance").addPathInfo("actionName","eventSubmit_doSearch").addPathInfo("userid",$urecord.getUserId()).addPathInfo("count",$tdcolor).addPathInfo("mode","update").addPathInfo("group",$course_id).addPathInfo("date",$encodedate)" style="text-decoration:none;" ><font color="blue"> $brih_update</font></a>
                                         </td>
+					#set($allDetail ="${allDetail}${sno}-${urecord.getRollNo()}-${urecord.getLoginName()}-${urecord.getEmail()}-${urecord.getPresent()}-${urecord.getAbsent()}-${urecord.getLeave()}<br>")
 					#end
                 			#set($sno=$sno+1)
 					
@@ -309,6 +332,15 @@ $!data.getMessage()
                                         #set($leave=$leave+$!urecord.getLeave())
 				</tr>
                 	#end
+                	#if($allDetail != "")
+                		<table width="100%" valign="top" bgcolor="$ui.menuColor">
+                                        <tr><td><input type="hidden" name="allDetail" value="$allDetail">
+					 ##Below line for print the Details
+					  <tr><td colspan="2"><a class="one" href=javascript:(popupWin1("newWin"))> #if( $data.getUser().getTemp("lang").toString() == "english") $brih_print $brih_student $brih_detail #else $brih_student $brih_Of $brih_detail $brih_print #end </a></td></tr>
+                                        </td></tr>
+                                </table>
+                        #end
+
 				######### Show total attendance ############
 			
 				#if(($data.getUser().getTemp("role") == "student") && ($attendreport.size()>1))
@@ -525,8 +557,7 @@ function checkOption (frm,field)
   	frm.val.value=document.frm.group.value;
         document.getElementById("btnSearch").click();
 }
-function checkCourse (frm,field)
-{
+function checkCourse (frm,field){
 	var course = document.frm.group.value;
         if (course == "") {
         	alert(" you haven't select any course !!");
@@ -535,6 +566,50 @@ function checkCourse (frm,field)
         else {
         	document.frm.submit();
        	}       
-}  
+}
+function popupWin1(popupName) {
+	var x = document.getElementsByName('allDetail');
+        var col_array=x[0].value.split("<br>");
+        //alert("col_array[]="+col_array);
+        Win1=window.open('',popupName,"scrollbars=1,resizable,height=200,width=400");
+        var tmp = Win1.document;
+        tmp.write('<html><head><title>Task List</title>');
+        tmp.write('<body bgcolor="$ui.tableColor"></head>');
+        tmp.write('<table width="100%"><tr><td colspan="2"</td>');
+        tmp.write('<tr bgcolor="$ui.menuColor">');
+        tmp.write('<th rowspan="2"><font size=3>S.No.</font></th>');
+        tmp.write('<th colspan="3"><font size=3>Student Details</font></th>');
+        tmp.write('<th colspan="3"><font size=3>Attendance  Status <font color="blue">(In days)</font></th>');
+	tmp.write('<tr bgcolor="$ui.menuColor">');
+        tmp.write('<td><font color="blue">Roll No</font></td>');
+        tmp.write('<td><font color="blue">Name</font></td>');
+        tmp.write('<td><font color="blue">Email </font></td>');
+        tmp.write('<td><font color="dark orange">Leave</font></td>');
+        tmp.write('<td><font color="dark red">Absent</font></td>');
+        tmp.write('<td><font color="green">Present</font></td>');
+        tmp.write('</tr>');
+
+        var value=2;
+        for (var i=0;i<col_array.length;i++) {
+        	//alert("col_array[i]="+col_array[i]);
+                if(value%2 == 0){
+                        tmp.write('<tr bgcolor="$ui.tableColor" >');
+		}else {
+                	tmp.write('<tr bgcolor="$ui.menuColor" >');
+		}
+                var tmpColArray = col_array[i].split("-")
+                //alert("tmpColArray.length=="+tmpColArray.length);
+                for (var j=0; j<tmpColArray.length; j++) {
+                	//alert('tmpColArray=='+tmpColArray[j]);
+                        tmp.write('<td>'+tmpColArray[j]+'</td>');
+		}
+                tmp.write('</tr>');
+                value++;
+	}
+        tmp.write('</td></tr></table>');
+        tmp.write('<p><a href="javascript:self.print()">Print</a> &nbsp;&nbsp;&nbsp;<a href="javascript:self.close()">Close</a> window</p>');
+        tmp.write('</body></html>');
+}
+  
 </script>
 ############# END of SCRIPT ####################
