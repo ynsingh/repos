@@ -324,6 +324,9 @@ $(document).ready(function() {
 			echo "<li>";
 				echo anchor('help', 'Help', array('title' => 'Help',)); 
 				echo "<ul>";
+				echo "<li>";
+					echo anchor('help/FAQ', 'FAQ', array('title' => 'FAQ',));
+				echo "</li>";
 					echo "<li>" . anchor('help/helpdoc', 'User Mannual', array('title' => 'User Mannual',)) . "</li>";
 				echo "</ul>";
 			echo "</li>";

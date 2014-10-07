@@ -4,7 +4,7 @@ class Help extends Controller {
 	function index()
 	{
 		$this->template->set('page_title', 'Help');
-		$this->template->load('template', 'help/index');
+		$this->template->load('template', 'help/main_index');
 		return;
 	}
 
@@ -13,6 +13,11 @@ class Help extends Controller {
 		$this->template->load('template', 'help/entry');
 		return;
 	}
+
+        function FAQ(){
+                $this->template->load('template', 'help/index');
+                return;
+        }
 
 	function helpdoc(){
 		$this->template->load('template', 'help/helpdoc');
