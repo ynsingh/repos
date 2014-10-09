@@ -219,11 +219,12 @@
                 </s:submit>
                 
             </s:else>
+<tr><td>
              <s:submit name="btnPrintPO" key="PrePurchase.Print" action="PrintPO">
                       <s:param name="colspan" value="%{1}" />
                       <s:param name="align" value="left" />
             </s:submit>
-
+</td></tr>
       </s:form>
             <br>
          </div>

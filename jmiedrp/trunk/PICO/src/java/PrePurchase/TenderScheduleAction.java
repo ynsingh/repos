@@ -19,7 +19,7 @@ public class TenderScheduleAction extends DevelopmentSupport {
     private String message;
     private ErpmTenderSchedule tenschdl;
     private ErpmTenderScheduleDetail tenschdlDet;
-    short i = 25;
+    short i = 23;
     private String schdDate;
     private String strhr;
     private String strmin;

@@ -295,7 +295,7 @@ public class PrePurchaseReportAction extends DevelopmentSupport {
                 frmDate = dt.convertDateToString(d1, "yyyy-MM-dd");
                
             }
-        } catch (Exception e) {
+        } catch (Exception e) {message="in first try";
         }
 
         try {
@@ -311,7 +311,7 @@ public class PrePurchaseReportAction extends DevelopmentSupport {
                 d2 = dt.convertStringToDate(toDate.trim());
                 toDate = dt.convertDateToString(d2, "yyyy-MM-dd");
             }
-        } catch (Exception e) {
+        } catch (Exception e) {message="in second try";
         }
 
 
@@ -319,9 +319,9 @@ public class PrePurchaseReportAction extends DevelopmentSupport {
         Properties properties = System.getProperties();
 
         // Get the path separator symbol, which is unfortunatly different, in different OS platform.
-        String pathSeparator = properties.getProperty("file.separator");
+        String pathSeparator = properties.getProperty("file.separator"+ "/");
 
-        pathSeparator = pathSeparator + pathSeparator;
+        //pathSeparator = pathSeparator + pathSeparator;
         String repPath = "pico" + pathSeparator + "PrePurchase" + pathSeparator + "Reports" + pathSeparator + "ListOfPurchaseOrders.jasper";
 
         String fileName = getSession().getServletContext().getRealPath(repPath);
@@ -398,7 +398,7 @@ public class PrePurchaseReportAction extends DevelopmentSupport {
 
             return "success";
         } catch (JRException e) {
-            message = "Error is : " + e.getMessage() + e.getCause();
+            message = "Error is : " + e.getMessage() + e.getCause()+"========"+ pathSeparator;
             return ERROR;
         }
     }
@@ -550,5 +550,24 @@ InitializeLOVs();
             message = "Error is : " + e.getMessage() + e.getCause();
             return ERROR;
         }
+    }
+
+    public String PrePurchaseReportAction() throws Exception {
+        try {
+            institutionId = null;
+	    supplierId = null;
+	    ItemTypeId= null;
+	    CategoryId= null;
+	    SubCategoryId= null;
+	    ItemNameId= null;
+	    fromDate= null;
+	    toDate= null;
+            //Prepare LOVs
+            InitializeLOVs();
+            return SUCCESS;
+            } catch (Exception e) {
+            	message = "Exception in Clear method -> PrePurchaseReportActionAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
+                return ERROR;
+            }
     }
 }

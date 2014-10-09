@@ -118,8 +118,8 @@
 
                                 <tr>
 <td>
-                                        <s:submit theme="simple" name="btnClear" key="PrePurchase.ListOfPurchaseOrdersReport"   action="ListOfPurchaseOrdersReport"/>
-                                        <s:submit theme="simple" name="btnClear" key="PrePurchase.Clear"   action="PurchaseReportAction"/>
+                                        <s:submit theme="simple" name="btnClear" key="PrePurchase.ListOfPurchaseOrdersReport" action="ListOfPurchaseOrdersReport"/>
+                                        <s:submit theme="simple" name="btnClear" key="PrePurchase.Clear" action="PrePurchaseReportAction"/>
 
                                     </td>
                                     <td>

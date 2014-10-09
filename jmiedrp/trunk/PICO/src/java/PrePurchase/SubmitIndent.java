@@ -233,7 +233,7 @@ public class SubmitIndent extends DevelopmentSupport {
         //otherwise we need to initialise the Stage, Source Committtee, destination Committee, Convener Mail
         if(workFlowTransactionDao.findCurrentWFTStageByWorkId(getindentId()) == 0) {
             //Prepare List of Work Flows Applicable to Indent
-            indentWorkFlowList = workFlowMasterDao.findByErpmGmID(72);
+            indentWorkFlowList = workFlowMasterDao.findByErpmGmID(59);
             
         }
         else {
@@ -246,7 +246,7 @@ public class SubmitIndent extends DevelopmentSupport {
             if (sessionUser.equalsIgnoreCase(authorisedUser)) {
 
                 //Prepare LOV for WorkFlow
-                indentWorkFlowList = workFlowMasterDao.findByErpmGmID(72);
+                indentWorkFlowList = workFlowMasterDao.findByErpmGmID(59);
                 defaultWfmId = workFlowTransactionDao.findWorkFlowID(getindentId());
                 workFlowTransaction.setWorkflowmaster(workFlowMasterDao.findWorkFlowById(defaultWfmId));
                 
@@ -440,7 +440,7 @@ public void validate() {
 
 
         //Prepare LOV for WorkFlow
-        indentWorkFlowList = workFlowMasterDao.findByErpmGmID(72);
+        indentWorkFlowList = workFlowMasterDao.findByErpmGmID(59);
         defaultWfmId = workFlowTransactionDao.findWorkFlowID(getindentId());
         workFlowTransaction.setWorkflowmaster(workFlowMasterDao.findWorkFlowById(defaultWfmId));
     

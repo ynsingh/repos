@@ -38,9 +38,11 @@
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent">
             <br><br>
-            <p align="center"><s:label cssClass="pageHeading" value="MANAGE ITEM RATES TAXES" /></p>
-            <s:actionerror/>
-            <p align="left" class="pageMessage"><s:property value="message" /></p> <br>
+            <div style ="background-color: #215dc6;">
+            	<p align="center"><s:label cssClass="pageHeading" value="MANAGE ITEM RATES TAXES" /></p>
+           	<s:actionerror/>
+	    </div>
+            	<p align="left" class="pageMessage"><s:property value="message" /></p> <br>
             <s:form name="Frmitemratetaxes" action="SaveItemRateTaxes" >
             <s:hidden name="itemRateTax.irtItemRateTaxesId" />
             <s:hidden name ="itemrate.irItemRateId" />

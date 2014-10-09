@@ -160,18 +160,18 @@ public class ErpmIndentMasterDAO  {
         try {
             int index = 0;
             String SQL = "Select u from ErpmIndentMaster u where "
-                + " u.indtIndentDate >= str_to_date(:FromDate,'%d-%m-%Y') and "
+             //   + " u.indtIndentDate >= str_to_date(:FromDate,'%d-%m-%Y') and "
                 + " u.indtIndentDate <= str_to_date(:ToDate,'%d-%m-%Y') and "
-                + " u.erpmGenMasterByIndtCurrencyId.erpmgmEgmDesc = :currency and"
+               // + " u.erpmGenMasterByIndtCurrencyId.erpmgmEgmDesc = :currency and"
                 + " u.institutionmaster.imId in (Select w.institutionmaster.imId from Erpmuserrole w where w.erpmusers.erpmuId = :userId) and "
                 + " u.indtIndentId in (Select distinct(v.wftWorkId) "
                 + " from Workflowtransaction v "
-                + " where v.erpmGenMaster.erpmgmEgmId = 82) ";
+                + " where v.erpmGenMaster.erpmgmEgmId = 56) ";
             session.beginTransaction();
             List<ErpmIndentMaster> indentList  = session.createQuery(SQL)
-                                                     .setParameter("FromDate", FromDate)
+              //                                       .setParameter("FromDate", FromDate)
                                                      .setParameter("ToDate", ToDate)
-                                                     .setParameter("currency",currency)
+              //                                       .setParameter("currency",currency)
                                                      .setParameter("userId", userId).list();
             for (index = 0; index < indentList.size(); ++index) {
                 Hibernate.initialize(indentList.get(index).getInstitutionmaster());

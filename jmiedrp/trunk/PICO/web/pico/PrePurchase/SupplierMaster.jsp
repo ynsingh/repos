@@ -232,22 +232,17 @@
 
                     <tr><td> &nbsp; </td></tr>
 
-                    <s:label />
-                    <s:label />
                     <s:submit name="btnSubmit" key="PrePurchase.Save"  >
                         <s:param name="colspan" value="%{2}" />
                         <s:param name="align" value="right" />
                     </s:submit>
-
 
                     <s:label value="..." cssClass="tdSpace" />
                     <s:submit name="btnSubmit" key="PrePurchase.Browse" action="BrowseSupplier"  cssClass="inputButton">
                         <s:param name="colspan" value="%{5}" />
                         <s:param name="align" value="left" />
                     </s:submit>
-
                     <s:label />
-                    <s:label value="..." cssClass="tdSpace" />
                     <s:submit name="btnSubmit" key="PrePurchase.Clear" action="ManageSupplier">
                         <s:param name="colspan" value="%{2}" />
                         <s:param name="align" value="left" />

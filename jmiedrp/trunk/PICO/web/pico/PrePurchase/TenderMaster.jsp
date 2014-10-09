@@ -148,8 +148,7 @@
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:textfield>
-                        <s:label/>
-                        
+                       <%--s:label/> --%>
                         <s:textfield required="false" requiredposition="left" maxLength="50" headerKey="0" size="30"
                                      key="PrePurchase.Remarks" name="ermptendermaster.tmRemarks" title="Enter Item Make">
                         <s:param name="labelcolspan" value="%{2}" />

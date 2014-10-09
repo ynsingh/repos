@@ -148,7 +148,6 @@
                         <s:param name="inputcolspan" value="%{2}" />
                     </s:textfield>
 
-                    <s:label />
 
                     <s:textfield cssClass="textInputRO"  maxLength="30" size="30" key="PrePurchase.Destination"
                                  name = "destinationCommittee" readonly="true">
@@ -161,6 +160,8 @@
                         <s:param name="labelcolspan" value="%{0}" />
                         <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
+
+		    <s:label />
 
                     <s:textarea rows="2" cols="140" key="PrePurchase.ActionRemarks" name="workFlowTransaction.wftActionRemarks" title="">
                         <s:param name="labelcolspan" value="%{1}" />

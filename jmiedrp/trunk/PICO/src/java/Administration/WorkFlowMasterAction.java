@@ -560,7 +560,9 @@ public String AddWorkFlowActions() throws Exception {
     //Retrieve the WorkflowDetail Object
     wfdtl=wfdtlDAO.findWorkFlowDetailById(getwfdId());
     //Prepare LOV for Action List
-    WfaActionsList = egmDAO.findByErpmGmType(Short.parseShort("17"));
+    //WfaActionsList = egmDAO.findByErpmGmType(Short.parseShort("17"));
+    //shobhi
+    WfaActionsList = egmDAO.findByErpmGmType(Short.parseShort("15"));
 
     // Prepare Workflow Action Records List
     wfactnList = wfactnDAO.findWorkFlowActionsForWFD(getwfdId());

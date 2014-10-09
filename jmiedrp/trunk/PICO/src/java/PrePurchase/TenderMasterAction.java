@@ -62,7 +62,7 @@ public class TenderMasterAction extends DevelopmentSupport {
     private Integer tmTmId;
     private String tenDate;
     private  String TenderNo;
-    short sh1 = 26;
+    short sh1 = 24;
     short sh = 22;
     private Integer TMTMID;
 
@@ -444,7 +444,7 @@ public class TenderMasterAction extends DevelopmentSupport {
         ImIdList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
         SimImIdList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
         DmList = dmDao.findAllDepartmentsForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-
+	
         tendertypeList1 = tendertypedao1.findByErpmGmType(sh1);
         tendertypeList = tendertypedao.findByErpmGmType(sh);
 

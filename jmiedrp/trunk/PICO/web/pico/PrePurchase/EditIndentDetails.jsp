@@ -245,10 +245,10 @@
                             <s:param name="inputcolspan" value="%{4}" />
                         </s:textarea>
 
-                        <s:iterator value="{1,1,1,1,1,1,1,1}">
+                        <%--s:iterator value="{1,1,1,1,1,1,1,1}">
                             <s:label />
                         </s:iterator>
-
+--%>
                         <s:textfield   requiredposition="left" maxLength="10" size="30" cssClass="textInputRO"
                                        key="PrePurchase.TotalCost" name="totalCost" readonly="true">
                             <s:param name="labelcolspan" value="%{1}" />

@@ -1180,5 +1180,10 @@
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/DataManagementUtility.jsp</result>
         </action>
+        <action name="CurrentProfileAction" method="CurrentProfile" class="Administration.ManageUserAction">
+            <result name="success">/pico/Administration/CurrentProfile.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/CurrentProfile.jsp</result>
+        </action>
     </package>
 </struts>

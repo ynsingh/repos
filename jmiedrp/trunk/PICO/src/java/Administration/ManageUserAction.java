@@ -872,6 +872,18 @@ public String SendMessageToInstitutionAdmin() throws Exception {
         }
     }
 
+    public String CurrentProfile() throws Exception {
 
+    try {
+            ErpmuserroleDAO erpmurDao = new ErpmuserroleDAO();
+            erpmurList = erpmurDao.findActiveRolesByErpmUserId(Integer.parseInt(getSession().getAttribute("userid").toString()));
+
+            return SUCCESS;
+    }
+    catch (Exception e) {
+         message = "Exception in CurrentProfileAxn method " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
 
 }

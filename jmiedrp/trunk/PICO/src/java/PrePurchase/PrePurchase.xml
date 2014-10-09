@@ -35,15 +35,14 @@
         </action>
 
         <action name="SaveItemMaster" method="Save" class="PrePurchase.ManageItems">
-            <result name="success">/pico/PrePurchase/BrowseItems.jsp</result>
-            <result name="error">/pico/PrePurchase/ManageItems.jsp</result>
+            <result name="success">/pico/PrePurchase/ManageItems.jsp</result>
+            <result name="error">/pico/PrePurchase/ErrorPage.jsp</result>
             <result name="input">/pico/PrePurchase/ManageItems.jsp</result>
         </action>
 
         <action name="BrowseItems" method="Browse" class="PrePurchase.ManageItems">
-            <interceptor-ref name="PrePurchaseStack" />
             <result name="success">/pico/PrePurchase/BrowseItems.jsp</result>
-            <result name="error">/pico/PrePurchase/BrowseItems.jsp</result>
+            <result name="error">/pico/PrePurchase/ErrorPage.jsp</result>
             <result name="input">/pico/PrePurchase/BrowseItems.jsp</result>
         </action>
 
@@ -994,7 +993,7 @@
 
 <!--    ACTION RELATED TO PREPURCHASE REPORT MANAGEMENT -->
 
-<action name="PrePurchaseReportAction" class="PrePurchase.PrePurchaseReportAction">
+	<action name="PrePurchaseReportAction" method="PrePurchaseReportAction" class="PrePurchase.PrePurchaseReportAction">
             <result name="success">/pico/PrePurchase/PrePurchaseReports.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/PrePurchase/PrePurchaseReports.jsp</result>

@@ -92,13 +92,14 @@
                         </s:else>
                     </s:iterator>
                 </marquee>
+<%--
                 <br><br><br>
                 <s:url action="ListOfTendersAction.action" id="ListOfTenders"></s:url>
                 <a href='<s:property value="ListOfTenders"/>'><s:property value="getText('Administration.TenderList')"/> </a>
-               </td>
-                <td>
+               </td> --%>
+              <%--  <td>
                     <p align="center"><img align="center" src="../images/mhrd.jpg" border="0" style="cursor:pointer;"/></p>
-                </td>
+                </td> --%>
                 <td width="20%">
                     <s:url id="localeEN" namespace="/Administration" action="locale" >
                     <s:param name="request_locale" >en</s:param>
@@ -143,6 +144,10 @@
                                         <s:url action="ViewRegisteredInstitutions.action" id="NavigateToURL"></s:url>
                                         <a href='<s:property value="NavigateToURL"/>'><s:property value="getText('Administration.RegisteredInstitution')"/></a></td>
                                 </tr>
+				<tr><td colspan="2" class="textInput">
+					<s:url action="ListOfTendersAction.action" id="ListOfTenders"></s:url>
+                			<a href='<s:property value="ListOfTenders"/>'><s:property value="getText('Administration.TenderList')"/> </a>
+				</td></tr>
                             </tbody>
                         </table>
                     </s:form>

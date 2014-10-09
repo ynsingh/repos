@@ -127,7 +127,7 @@
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{2}" />
                         </s:select>
-                          <s:label/>
+			<%--<s:label/>--%>
                         <s:select key = "PrePurchase.DepriciationMethod" name="erpmim.erpmimDepreciationMethod" requiredposition="right"  headerKey=""  headerValue="" list="#{'S':'Straight Line','W':'Written Down Value'}">
                             <s:param name="labelcolspan" value="%{2}" />
                             <s:param name="inputcolspan" value="%{2}" />
@@ -170,7 +170,7 @@
                             <s:param name="colspan" value="%{2}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
-                        <s:submit name="btnBrowse" key="PrePurchase.Browse"  action="BrowseItems">
+                        <s:submit name="btnSubmit" key="PrePurchase.Browse"  action="BrowseItems"  cssClass="inputButton">
                             <s:param name="colspan" value="%{2}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
@@ -185,11 +185,11 @@
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
                         </td></tr>
+                <tr><td> &nbsp; </td></tr>
                     </s:form>
-                    <br>
                 </div>
+                &nbsp;
             </div>
-            <br>
             <div id="footer">
                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
             </div>
