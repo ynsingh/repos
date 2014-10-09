@@ -5,14 +5,21 @@
 
 package org.smvdu.payroll.beans.db;
 
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+import au.com.bytecode.opencsv.bean.CsvToBean;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.Department;
 import org.smvdu.payroll.user.ActiveProfile;
+import org.smvdu.payroll.beans.upload.UploadFile;
+
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manages Department in database.
@@ -44,8 +51,9 @@ import org.smvdu.payroll.user.ActiveProfile;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modified Date: 07 OCT 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
- */
+*/
 public class DepartmentDB {
     
 
@@ -91,38 +99,45 @@ public class DepartmentDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update department_master set dept_name=? where dept_code=? and dept_org_id = '"+userBean.getUserOrgCode()+"'");
+            ps=c.prepareStatement("update department_master set  dept_dcode=?, dept_name=?, dept_nickname=?"
+                    + " where dept_code=? and org_code= ? ");
             for(Department dp : depts)
             {
-                ps.setString(1, dp.getName().toUpperCase());
-                ps.setInt(2, dp.getCode());
+                ps.setString(1, dp.getDCode());
+                ps.setString(2, dp.getName().toUpperCase());
+                ps.setString(3, dp.getNickName());
+                ps.setInt(4, dp.getCode());
+                ps.setInt(5, userBean.getUserOrgCode());
                 ps.executeUpdate();
                 ps.clearParameters();
+                //System.out.println("departments===="+dp.getDCode()+":"+dp.getName()+":"+dp.getNickName()+":"+dp.getCode());
             }
             ps.close();
             c.close();
         }
         catch(Exception e)
         {
-            //Logger.getAnonymousLogger().log(Log., e.getMessage());
+           e.printStackTrace();
+           //Logger.getAnonymousLogger().log(Log., e.getMessage());
         }
     }
     public ArrayList<Department> loadDepartments()   {
         ArrayList<Department> data = new ArrayList<Department>();
         try
         {
-            System.out.println("Org Code : "+userBean.getUserOrgCode());
-            Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select dept_code,dept_name from department_master where org_code = '"+userBean.getUserOrgCode()+"'");
-           // ps.setInt(1, info.getUserOrgCode());
-            rs=ps.executeQuery();
             
+            Connection c = new CommonDB().getConnection();
+            //ps=c.prepareStatement("select dept_code,dept_name from department_master where org_code = '"+userBean.getUserOrgCode()+"'");
+            //modify 26 sept 2014 for dcode and nickname
+            ps=c.prepareStatement("select * from department_master where org_code = '"+userBean.getUserOrgCode()+"'");
+            rs=ps.executeQuery();
             while(rs.next())
             {
                 Department dept = new Department();
                 dept.setCode(rs.getInt(1));
-                dept.setName(rs.getString(2));
-                //dept.setEmpCount(rs.getInt(3));
+                dept.setDCode(rs.getString(2));
+                dept.setName(rs.getString(3));
+                dept.setNickName(rs.getString(4));
                 data.add(dept);
             }
             rs.close();
@@ -137,13 +152,17 @@ public class DepartmentDB {
         }
         
     }
-    public Exception save(String dptName)   {
+   
+    public Exception save(Department dptName)   {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("insert into department_master(dept_name, org_code) values(?,?)");
-            ps.setString(1, dptName.toUpperCase());
-            ps.setInt(2, userBean.getUserOrgCode());
+            //ps=c.prepareStatement("insert into department_master(dept_name, org_code) values(?,?)");
+            ps=c.prepareStatement("insert into department_master(dept_dcode, dept_name, dept_nickname, org_code) values(?,?,?,?)");
+            ps.setString(1, dptName.getDCode().toUpperCase());
+            ps.setString(2, dptName.getName().toUpperCase());
+            ps.setString(3, dptName.getNickName().toUpperCase());
+            ps.setInt(4, userBean.getUserOrgCode());
             
             ps.executeUpdate();
             ps.close();
@@ -157,5 +176,53 @@ public class DepartmentDB {
         }
 
     }
+    
+    
+    public Exception saveFile(UploadFile file)   {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            
+            ps=c.prepareStatement("insert into department_master(dept_dcode, dept_name, dept_nickname, org_code) values(?,?,?,?)");
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("../../web/tmp");
+            CSVReader reader = new CSVReader(new FileReader(path+"/"+file.getName()), ',', '\"', 1);
+            ColumnPositionMappingStrategy<Department> mappingStrategy 
+                                 = new ColumnPositionMappingStrategy<Department>();
+            mappingStrategy.setType(Department.class);
+            String[] columns = new String[] {"DCode","Name","NickName"};
+            mappingStrategy.setColumnMapping(columns);
+        
+            CsvToBean<Department> csv = new CsvToBean<Department>();
+            List<Department> DepartmentList = csv.parse(mappingStrategy, reader);
+
+        
+            for (int i = 0; i < DepartmentList.size(); i++) 
+            {
+                
+                Department DDetail = DepartmentList.get(i);
+                // display CSV values
+                
+                ps.setString(1,DDetail.getDCode());
+                ps.setString(2,DDetail.getName());
+                ps.setString(3, DDetail.getNickName());
+                ps.setInt(4, userBean.getUserOrgCode());
+                ps.executeUpdate();
+                           
+
+            }
+            reader.close();
+            ps.close();
+            c.close();
+            return null;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return e;
+        }
+
+    }
+    
+         
 
 }

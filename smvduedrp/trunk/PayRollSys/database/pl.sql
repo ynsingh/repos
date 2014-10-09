@@ -109,10 +109,13 @@ CREATE TABLE `org_profile` (
 
 CREATE TABLE `department_master` (
   `dept_code` int(11) NOT NULL auto_increment,
+  `dept_dcode` varchar(80) NOT NULL,
   `dept_name` varchar(100) NOT NULL,
+  `dept_nickname` varchar(80) NOT NULL,
   `org_code` int(11) default NULL,
   PRIMARY KEY  (`dept_code`),
   UNIQUE KEY `dept_name` (`dept_name`),
+  UNIQUE KEY `dept_dcode` (`dept_dcode`),
   KEY `org_code` (`org_code`),
   CONSTRAINT `department_master_fk` FOREIGN KEY (`org_code`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1494,4 +1497,28 @@ INSERT INTO leave_type_master(lt_id, lt_name, lt_value) VALUES
 (14, 'Child Adoption Leave', 135),
 (15, 'Leave to Probationers', 0),
 (16, 'Leave to Apprentices', 30);
+
+
+
+#
+#Structure for the Salary_processing_dbsetup
+#
+
+
+CREATE TABLE Salary_processing_dbsetup
+(
+        id int(11) NOT NULL auto_increment,
+        fyear varchar(14) NOT NULL,
+        dbname varchar(255) NOT NULL,
+        dbuname varchar(255) NOT NULL,
+        dbpass varchar(255) NOT NULL,
+        dbunit varchar(255) NOT NULL,
+        dblable varchar(255) NOT NULL,
+        port int(7) NOT NULL,
+        org_id int(11) NOT NULL,
+        UNIQUE KEY dbname(dbname),
+        UNIQUE KEY dblable(dblable),
+        PRIMARY KEY  (id)
+
+);
 

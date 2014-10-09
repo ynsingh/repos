@@ -35,6 +35,7 @@ package org.smvdu.payroll.beans.upload;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modified Date: 07 OCT 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
  */
 public class UploadFile {
@@ -44,9 +45,8 @@ public class UploadFile {
     private String mime;
     private long length;
     private byte[] data;
-    public byte[] getData() {
-
-        
+    public byte[] getData(){
+      
         return data;
     }
     public void setData(byte[] data) {
@@ -68,10 +68,14 @@ public class UploadFile {
                 mime="image/gif";
             } else if("png".equals(extension)){
                 mime="image/png";
+            } else if("txt".equals(extension)){
+                mime="text/plain";
+            } else if("csv".equals(extension)){
+                mime="text/csv";   
             } else {
                 mime = "image/unknown";
             }
-        }
+       }
     }
     public long getLength() {
         return length;
