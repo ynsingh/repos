@@ -67,20 +67,15 @@ if ( ! function_exists('check_access'))
 			'delete budget',
 			'reappropriate budget',
 			'administer',
-			'add student',
-			'edit student',
-			'delete student',
-			'add employee',
-			'edit employee',
-			'delete employee',
-			'add party',
-			'edit party',
-			'delete party',
 			'change password',
 			'create projection',
 			'reappropriate projection',
 			'verify entry',
-			'edit doc'
+			'edit doc',
+			'bill upload',
+                        'approve/reject',
+                        'vouchercreation'
+
 		);
 		$permissions['manager'] = array(
 			'view entry',
@@ -113,7 +108,11 @@ if ( ! function_exists('check_access'))
 			'create projection',
                         'reappropriate projection',
 			'verify entry',
-			'edit doc'
+			'edit doc',
+			'bill upload',
+                        'approve/reject',
+                        'vouchercreation'
+
 		);
 		$permissions['accountant'] = array(
 			'view entry',
@@ -139,7 +138,10 @@ if ( ! function_exists('check_access'))
 			'create projection',
                         'reappropriate projection',
 			'verify entry',
-			'edit doc'
+			'edit doc',
+			'bill uplaod',
+			'approve/reject',
+			'vouchercreation'
 		);
 		$permissions['dataentry'] = array(
 			'view entry',
@@ -153,7 +155,9 @@ if ( ! function_exists('check_access'))
 			'edit ledger',
 			'change password',
 			'verify entry',
-			'edit doc'
+			'edit doc',
+			'bill upload',
+			'vouchercreation'
 		);
 		$permissions['guest'] = array(
 			'view entry',

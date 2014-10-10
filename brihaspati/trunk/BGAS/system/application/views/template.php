@@ -1,3 +1,4 @@
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -251,6 +252,10 @@ $(document).ready(function() {
 								echo  "</li>";
 							}
 						}
+						  echo "<li>";
+                                                        echo anchor('payment/showupload_bill', 'Bill Upload/Voucher Creation', array('title' => 'Bill/Voucher Creation'));
+                                                echo "</li>";
+
 						echo "</ul>";
 					}
 				

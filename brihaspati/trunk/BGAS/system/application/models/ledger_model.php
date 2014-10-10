@@ -1,4 +1,5 @@
 <?php
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Ledger_model extends Model {
 
@@ -135,6 +136,22 @@ var $ledgers = array();
 		}
 		return $options;
 	}
+
+     function get_all_ledgers_bankcash1()
+        {
+                $options = array();
+                $options[0] = "(Please Select)";
+                $this->db->from('ledgers')->where('code LIKE', '20%')->where('type', 1)->order_by('name', 'asc');
+                $ledger_q = $this->db->get();
+                foreach ($ledger_q->result() as $row)
+                {
+                        $new_id=$row->id."-".$row->name;
+                        $options[$new_id]=$row->name;
+                }
+                return $options;
+
+        }
+
 
 	function get_ledgers_bankcash($id)
         {
@@ -1271,6 +1288,24 @@ var $ledgers = array();
 		return $funds;
 	
 	}
+
+        function get_codewise_ledgers()
+        {
+                $options = array();
+                $options[0] = 'Please Select';
+                //$this->db->from('ledgers');
+                $this->db->from('ledgers')->select('id,name')->where('code LIKE', '40%')->order_by('name', 'asc');
+                $ledger_q = $this->db->get();
+              //  $counter = 0;
+                foreach ($ledger_q->result() as $row)
+                {
+                        $new_id = "$row->id"."."."$row->name";
+                        $options[$new_id]=$row->name;
+
+                }
+                return $options;
+        }
+
 
 	function startsWith($str1, $str2)
         {
