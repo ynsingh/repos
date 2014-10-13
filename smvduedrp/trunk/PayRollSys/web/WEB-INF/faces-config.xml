@@ -1121,4 +1121,32 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     
+    <managed-bean>
+        <description>
+			EmpSalaryLiability
+        </description>
+        <managed-bean-name>EmpSalaryLiabilityBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.EmpSalaryLiability</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    
+    <managed-bean>
+        <description>
+			FileUploadBean
+        </description>
+        <managed-bean-name>FileUploadBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.upload.FileUploadBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+			UploadFile
+        </description>
+        <managed-bean-name>UploadFile</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.upload.UploadFile</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
     </faces-config>

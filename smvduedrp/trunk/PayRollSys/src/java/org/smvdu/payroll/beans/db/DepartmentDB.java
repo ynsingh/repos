@@ -184,7 +184,7 @@ public class DepartmentDB {
             Connection c = new CommonDB().getConnection();
             
             ps=c.prepareStatement("insert into department_master(dept_dcode, dept_name, dept_nickname, org_code) values(?,?,?,?)");
-            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("../../web/tmp");
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
             CSVReader reader = new CSVReader(new FileReader(path+"/"+file.getName()), ',', '\"', 1);
             ColumnPositionMappingStrategy<Department> mappingStrategy 
                                  = new ColumnPositionMappingStrategy<Department>();
