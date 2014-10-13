@@ -154,7 +154,7 @@ $(document).ready(function() {
 		?>
 
 		 <?php
-			$this->db->select('id, name')->from('settings');
+		$this->db->select('id, name')->from('settings');
                 $ins_id = $this->db->get();
                 foreach( $ins_id->result() as $row)
                 {
@@ -301,10 +301,19 @@ $(document).ready(function() {
 					echo "</li>";
 				echo "</ul>";
 			echo "</li>";
+			echo"<li>";
 
-			echo "<li>";
-                                echo anchor('report/depreciation', 'Depreciation Of Assets', array('title' => 'Depreciation Of Assets',));
-                        echo "</li>";
+				echo anchor('report2','Other Report',array('title'=>'Other Report'));
+				echo"<ul>";
+					echo"<li>";
+						echo anchor('report2/fundlist','Fund List', array('title' =>'Fund List'));
+
+					echo"</li>";
+                                        echo"<li>";
+
+						echo anchor('report2/tag','Tag Report', array('title'=>'Tag Report'));
+					echo"</li>";
+				echo"</ul>";
 
 			echo "<li>";
 				echo anchor('setting', 'Settings', array('title' => 'Settings')); 

@@ -378,5 +378,134 @@ if ( ! function_exists('form_dropdown_secunit'))
                 return $form;
         }
 }
+
+if ( ! function_exists('form_input_fund_ledger'))
+{
+	function form_input_fund_ledger($name, $selected = NULL, $extra = '', $type = 'all')
+	{
+		$CI =& get_instance();
+		$CI->load->model('Ledger_model');
+                $data_user_name= $CI->session->userdata('user_name');
+                //get role of user
+                $user_account_active = $CI->session->userdata('active_account');
+                $db1=$CI->load->database('login', TRUE);
+                $db1->select('role')->from('bgasuser')->where('username', $data_user_name);
+                $role= $db1->get();
+                //$userrole;
+                foreach($role->result() as $row)
+                {
+                        $userrole=$row->role;
+                }
+                //$db1->close();
+
+                //get account detail and find out if user have all account head permission.     
+                $db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $user_account_active);
+                $accdetail = $db1->get();
+                foreach ($accdetail->result() as $row)
+                {
+                        $databasehost=$row->hostname;
+                        $dbname= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+                }
+                $db1->close();
+		$CI->db->from('bgas_acl')->where('username', $data_user_name);
+                $CI->db->where('headid', '*');
+                $val = $CI->db->get();
+                $num_rows = $val->num_rows();
+
+                if(($userrole == 'administrator') || ($num_rows != "0"))
+                {
+		if ($type == 'bankcash')
+			$options = $CI->Ledger_model->get_all_ledgers_bankcash();
+		else if ($type == 'nobankcash')
+			$options = $CI->Ledger_model->get_all_ledgers_nobankcash();
+		else if ($type == 'reconciliation')
+			$options = $CI->Ledger_model->get_all_ledgers_reconciliation();
+		else
+			$options = $CI->Ledger_model->get_all_fund_ledgers();
+
+		}
+                else
+                {
+                if ($type == 'bankcash')
+                        $options = $CI->Ledger_model->get_all_ledgers_bankcash();
+                else if ($type == 'nobankcash')
+                        $options = $CI->Ledger_model->get_all_ledgers_nobankcash();
+                else if ($type == 'reconciliation')
+                        $options = $CI->Ledger_model->get_all_ledgers_reconciliation();
+                else
+                {
+                        $options = $CI->Ledger_model->get_all_ledgers_permission();
+                }
+
+                }
+
+		// If no selected state was submitted we will attempt to set it automatically
+		if ( ! ($selected))
+		{
+			// If the form name appears in the $_POST array we have a winner!
+			if (isset($_POST[$name]))
+			{
+				$selected = $_POST[$name];
+			}
+		}
+
+
+		if ($extra != '') $extra = ' '.$extra;
+
+		$form = '<select name="'.$name.'"'.$extra.' class="ledger-dropdown">';
+
+		foreach ($options as $key => $val)
+		{
+			$key = (string) $key;
+			$sel = ($key == $selected) ? ' selected="selected"' : '';
+			$form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
+		}
+
+		$form .= '</select>';
+
+		return $form;
+	}
+}
+
+if ( ! function_exists('form_input_tag'))
+{
+	function form_input_tag($name, $selected = NULL, $extra = '', $type = 'all')
+	{
+		$CI =& get_instance();
+		$CI->load->model('Tag_model');
+               	
+		$options = $CI->Tag_model->get_all_tags();
+		
+		// If no selected state was submitted we will attempt to set it automatically
+		if ( ! ($selected))
+		{
+			// If the form name appears in the $_POST array we have a winner!
+			if (isset($_POST[$name]))
+			{
+				$selected = $_POST[$name];
+			}
+		}
+
+
+		if ($extra != '') $extra = ' '.$extra;
+
+		$form = '<select name="'.$name.'"'.$extra.' class="ledger-dropdown">';
+
+		foreach ($options as $key => $val)
+		{
+			$key = (string) $key;
+			$sel = ($key == $selected) ? ' selected="selected"' : '';
+			$form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
+		}
+
+		$form .= '</select>';
+
+		return $form;
+	}
+}
 /* End of file MY_form_helper.php */
 /* Location: ./system/application/helpers/MY_form_helper.php */

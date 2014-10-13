@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Tag_model extends Model {
 
 	function Tag_model()
@@ -11,7 +11,7 @@ class Tag_model extends Model {
 	{
 		$options = array();
 		if ($allow_none)
-			$options[0] = "(None)";
+			$options[0] = "(Please Select)";
 		$this->db->from('tags')->order_by('title', 'asc');
 		$tag_q = $this->db->get();
 		foreach ($tag_q->result() as $row)

@@ -1386,5 +1386,86 @@ var $ledgers = array();
 
                 return $flag;
 	}
+
+	
+	
+         function get_opp_tag_entry_name($entry_id, $entry_type_id)
+        {
+                // Selecting whether to show debit side Ledger or credit side Ledger 
+                $current_entry_type = entry_type_info($entry_type_id);
+                $ledger_type = 'C';
+
+                if ($current_entry_type['bank_cash_ledger_restriction'] == 3)
+                        $ledger_type = 'D';
+
+                $this->db->select('ledgers.name as name');
+                $this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('ledgers.type != 1');
+                $ledger_q = $this->db->get();
+                if ( ! $ledger = $ledger_q->row())
+                {
+                        return "(Invalid)";
+                } else {
+                        $ledger_multiple = ($ledger_q->num_rows() > 1) ? TRUE : FALSE;
+                        $html = '';
+                        if ($ledger_multiple)
+                                {
+                                $html .= $ledger->name ;
+                                }
+                        else
+                                {
+                                $html .= $ledger->name;
+                                }
+                        return $html;
+                        }
+                return ;
+        } 
+	
+	
+	function get_tag_entry_name($entry_id, $entry_type_id)
+        {
+                /* Selecting whether to show debit side Ledger or credit side Ledger */
+                $current_entry_type = entry_type_info($entry_type_id);
+                $ledger_type = 'C';
+
+                if ($current_entry_type['bank_cash_ledger_restriction'] == 3)
+                        $ledger_type = 'D';
+
+                $this->db->select('ledgers.name as name');
+                $this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('ledgers.type != 1');
+                $ledger_q = $this->db->get();
+                if ( ! $ledger = $ledger_q->row())
+                {
+                        return "(Invalid)";
+                } else {
+                        $ledger_multiple = ($ledger_q->num_rows() > 1) ? TRUE : FALSE;
+                        $html = '';
+                        if ($ledger_multiple)
+                                {
+                                $html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, "(" . $ledger->name . ")", array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
+                                }
+                        else
+                                {
+                                $html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $ledger->name, array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
+                                }
+                        return $html;
+                        }
+                return ;
+        }
+
+	 function get_all_fund_ledgers()
+        {
+                $options = array();
+                $options[0] = "(Please Select)";
+		$desinated_code=$this->get_account_code('Designated-Earmarked Funds');
+        	$this->db->select('name, id, code, op_balance')->from('ledgers')->where('code LIKE', '%' . $desinated_code . '%');
+        	$query=$this->db->get();
+                foreach ($query->result() as $row)
+                {
+                        $options[$row->id] = $row->name." - L";
+                }
+                return $options;
+        }
+
+	
 }
 ?>
