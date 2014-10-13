@@ -1308,7 +1308,8 @@ $width="100%";
                                         $query_q = $this->db->get();
                                         $query_n = $query_q->row();
                                         $ledger_code = $query_n->code;
-					if($expense_type == 'Capital' && !($this->Ledger_model->isFixedAsset($ledger_code))){
+				// make entry for both case (capital exp and revenu exp )in fund management table
+					if(!($expense_type == 'Capital') && !($this->Ledger_model->isFixedAsset($ledger_code))){
 						$insert_fund_data = array(
         	                               		'entry_id' => $entry_id,
 	        	                                'ledger_id' => $fund_ledger,
@@ -1348,10 +1349,10 @@ $width="100%";
 	                                                if ( ! $this->db->insert('fund_management', $insert_expense_data))
         	                                        {
                 	                                        $this->db->trans_rollback();
-                        	                                $this->logger->write_message("error", "Error adding expenditure details for fund :" . $fund_ledger);
+                        	                                $this->logger->write_message("error", "Error adding expenditure details for fund in fund management:" . $fund_ledger);
                                 	                }
                                         	}
-				
+
 						$this->db->select('id');
 						$this->db->from('ledgers')->where('name', 'Transit Income');
 						$query = $this->db->get();
@@ -1376,7 +1377,6 @@ $width="100%";
         	                        	}
 					}
 				}
-
 				$insert_ledger_data = array(
 					'entry_id' => $entry_id,
 					'ledger_id' => $data_ledger_id,
@@ -1440,7 +1440,6 @@ $width="100%";
                                                         return;
                                                 }//if inner
                                         }//if
-
 			}
 
 			/* Updating Debit and Credit Total in entries table */
@@ -2230,7 +2229,7 @@ $width="100%";
                                         $query_q = $this->db->get();
                                         $query_n = $query_q->row();
                                         $ledger_code = $query_n->code;
-					if($expense_type == 'Capital' && !($this->Ledger_model->isFixedAsset($ledger_code))){
+					if(!($expense_type == 'Capital') && !($this->Ledger_model->isFixedAsset($ledger_code))){
 	                                        $insert_fund_data = array(
         	                                        'entry_id' => $entry_id,
                 	                                'ledger_id' => $fund_ledger,

@@ -63,8 +63,8 @@
 			$this->db->select('entry_items.ledger_id as entry_items_ledger_id, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc, ledgers.id as ledgers_id, ledgers.code as ledgers_code, ledgers.name as ledgers_name');
 			$this->db->from('entry_items')->join('ledgers', 'ledgers.id = entry_items.ledger_id');
 			$this->db->where('entry_items.update_date', $date1);
-			$this->db->not_like('ledgers.code', '10','after');
-			$this->db->not_like('ledgers.code','20', 'after');
+		//	$this->db->not_like('ledgers.code', '10','after');
+		//	$this->db->not_like('ledgers.code','20', 'after');
 			//$this->db->order_by('entry_items.id', 'asc');
 			$this->db->limit($pagination_counter, $page_count);		
 			$dayst_q = $this->db->get();
