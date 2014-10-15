@@ -91,6 +91,24 @@
 	echo "</p>";
 	
 	echo "<p>";
+	echo "<span id=\"tooltip-target-8\">";
+	echo form_label('VAT Number', 'vatnum');
+	echo "<br />";
+	echo form_input($vatnum);
+	echo "</span>";
+	echo "<span id=\"tooltip-content-8\">Vat Number should be 10 digit</span>";	
+	echo "</p>";
+	
+	echo "<p>";
+	echo "<span id=\"tooltip-target-9\">";
+	echo form_label('GST Number', 'gstnum');
+	echo "<br />";
+	echo form_input($gstnum);
+	echo "</span>";
+	echo "<span id=\"tooltip-content-9\">GST Number should be 10 digit</span>";	
+	echo "</p>";
+	
+	echo "<p>";
 	echo form_submit('submit', 'Update');
 	echo " ";
 	echo anchor('addparty/index', 'Back', 'Back to addparty');

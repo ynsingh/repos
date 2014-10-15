@@ -20,6 +20,8 @@ $(document).ready(function() {
 	$("#tooltip-target-5").ezpz_tooltip();
 	$("#tooltip-target-6").ezpz_tooltip();
 	$("#tooltip-target-7").ezpz_tooltip();
+	$("#tooltip-target-8").ezpz_tooltip();
+	$("#tooltip-target-9").ezpz_tooltip();
 })
 
 

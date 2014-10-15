@@ -46,6 +46,8 @@ class Addparty extends Controller {
 			"pan"=> "PAN No.",
 			"tan"=> "TAN No.",
 			"staxnum"=> "Service Tax No.",
+			"vat"=> "VAT No.",
+			"gst"=> "GST No",
                 );
 		$data['search_by_active'] = '';
 
@@ -84,7 +86,7 @@ class Addparty extends Controller {
 			redirect('addparty/index');
 		}
 		else {
-			if($data_search_by == "partyname" || $data_search_by == "mobnum" || $data_search_by == "bancacnum" || $data_search_by == "ifsccode" || $data_search_by == "pan" || $data_search_by == "tan" || $data_search_by == "staxnum")
+			if($data_search_by == "partyname" || $data_search_by == "mobnum" || $data_search_by == "bancacnum" || $data_search_by == "ifsccode" || $data_search_by == "pan" || $data_search_by == "tan" || $data_search_by == "staxnum" || $data_search_by == "vat" || $data_search_by == "gst" )
 			{
 				if(! ctype_alnum($data_text)) {
 					$this->messages->add('Please enter alphanumeric value.', 'error');
@@ -208,6 +210,20 @@ class Addparty extends Controller {
                         'size' => '25',
                         'value' => '',
                 );
+		$data['vatnum'] = array(
+                        'name' => 'vatnum',
+                        'id' => 'vatnum',
+                        'maxlength' => '10',
+                        'size' => '25',
+                        'value' => '',
+                );
+		$data['gstnum'] = array(
+                        'name' => 'gstnum',
+                        'id' => 'gstnum',
+                        'maxlength' => '10',
+                        'size' => '25',
+                        'value' => '',
+                );
 		/* Form validations */
 		$this->form_validation->set_rules('pname', 'Party Name', 'trim|required|min_length[2]|max_length[30]');
 		$this->form_validation->set_rules('sacunitid', 'Secondary Accounting Unit', 'trim|required|max_length[10]');
@@ -222,6 +238,8 @@ class Addparty extends Controller {
 		$this->form_validation->set_rules('pannum', 'PAN Number','trim');
 		$this->form_validation->set_rules('tannum', 'TAN Number','trim');
 		$this->form_validation->set_rules('stnum', 'Service Tax Number','trim');
+		$this->form_validation->set_rules('vatnum', 'VAT Number','trim');
+		$this->form_validation->set_rules('gstnum', 'GST Number','trim');
 		
 		/* Repopulating form */
 		if ($_POST)
@@ -239,6 +257,8 @@ class Addparty extends Controller {
 			$data['pannum']['value'] = $this->input->post('pannum', TRUE);
 			$data['tannum']['value'] = $this->input->post('tannum', TRUE);
 			$data['stnum']['value'] = $this->input->post('stnum', TRUE);
+			$data['vatnum']['value'] = $this->input->post('vatnum', TRUE);
+			$data['gstnum']['value'] = $this->input->post('gstnum', TRUE);
 		}
 
 		/* Validating form */
@@ -295,6 +315,8 @@ class Addparty extends Controller {
                         $data_pannum = $this->input->post('pannum', TRUE);
                         $data_tannum = $this->input->post('tannum', TRUE);
                         $data_stnm = $this->input->post('stnum', TRUE);
+                        $data_vatnum = $this->input->post('vatnum', TRUE);
+                        $data_gstnum = $this->input->post('gstnum', TRUE);
 			if(strlen($data_sacunitid) < 10){
                                 $this->messages->add('second account unit should be 10 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
@@ -349,6 +371,20 @@ class Addparty extends Controller {
                                 return;
 			}
 			}
+			if($data_vatnum !=""){
+			if(strlen($data_vatnum) < 10){
+                                $this->messages->add('VAT number should be 10 digits.', 'error');
+                                $this->template->load('template', 'addparty/add', $data);
+                                return;
+			}
+			}
+			if($data_gstnum !=""){
+			if(strlen($data_gstnum) < 10){
+                                $this->messages->add('GST number should be 10 digits.', 'error');
+                                $this->template->load('template', 'addparty/add', $data);
+                                return;
+			}
+			}
 			$this->db->from('addsecondparty');
 	                $pdetail = $this->db->get();
 			foreach ($pdetail->result() as $row)
@@ -359,6 +395,8 @@ class Addparty extends Controller {
 				$pan=$row->pan;
 				$tan=$row->tan;
 				$stnumber=$row->staxnum;
+				$vat=$row->vat;
+				$gst=$row->gst;
 				if($sacunit == $data_sacunitid)
 				{
                         		$this->messages->add(' Party with sunitid ' .$data_sacunitid. ' already exist. ', 'error');
@@ -405,6 +443,22 @@ class Addparty extends Controller {
                         		return;
 				}
 				}
+				if($data_vatnum !=""){
+				if($vat == $data_vatnum)
+				{
+                        		$this->messages->add(' Party with Vat Number ' .$data_vatnum. ' already exist. ', 'error');
+                			$this->template->load('template', 'addparty/add', $data);
+                        		return;
+				}
+				}
+				if($data_gstnum !=""){
+				if($gst == $data_gstnum)
+				{
+                        		$this->messages->add(' Party with GST Number ' .$data_gstnum. ' already exist. ', 'error');
+                			$this->template->load('template', 'addparty/add', $data);
+                        		return;
+				}
+				}
                 	}
 			$this->db->trans_start();
 			$insert_data=array(
@@ -422,7 +476,9 @@ class Addparty extends Controller {
 				'pan' =>$data_pannum,
 				'tan' =>$data_tannum,
 				'staxnum' =>$data_stnm,
-				'partyrole' =>$prole
+				'partyrole' =>$prole,
+				'vat' =>$data_vatnum,
+				'gst' =>$data_gstnum
 			);
 
 			if ( ! $this->db->insert('addsecondparty', $insert_data))
@@ -541,6 +597,20 @@ class Addparty extends Controller {
                         'size' => '25',
                         'value' => $update_detail->staxnum,
                 );
+                $data['vatnum'] = array(
+                        'name' => 'vatnum',
+                        'id' => 'vatnum',
+                        'maxlength' => '10',
+                        'size' => '25',
+                        'value' => $update_detail->vat,
+                );
+                $data['gstnum'] = array(
+                        'name' => 'gstnum',
+                        'id' => 'gstnum',
+                        'maxlength' => '10',
+                        'size' => '25',
+                        'value' => $update_detail->gst,
+                );
 		$data['sunitid'] = $sunitid;
 
 		/* Form validations */
@@ -556,6 +626,8 @@ class Addparty extends Controller {
 		$this->form_validation->set_rules('pannum', 'PAN Number','trim');
 		$this->form_validation->set_rules('tannum', 'TAN Number','trim');
 		$this->form_validation->set_rules('stnum', 'Service Tax Number','trim');
+		$this->form_validation->set_rules('vatnum', 'VAT Number','trim');
+		$this->form_validation->set_rules('gstnum', 'GST Number','trim');
 		
 		/* Repopulating form */
 		if ($_POST)
@@ -572,6 +644,8 @@ class Addparty extends Controller {
 			$data['pannum']['value'] = $this->input->post('pannum', TRUE);
 			$data['tannum']['value'] = $this->input->post('tannum', TRUE);
 			$data['stnum']['value'] = $this->input->post('stnum', TRUE);
+			$data['vatnum']['value'] = $this->input->post('vatnum', TRUE);
+			$data['gstnum']['value'] = $this->input->post('gstnum', TRUE);
 		}
 
 		/* Validating form */
@@ -595,6 +669,8 @@ class Addparty extends Controller {
                         $data_pannum = $this->input->post('pannum', TRUE);
                         $data_tannum = $this->input->post('tannum', TRUE);
                         $data_stnm = $this->input->post('stnum', TRUE);
+                        $data_vatnum = $this->input->post('vatnum', TRUE);
+                        $data_gstnum = $this->input->post('gstnum', TRUE);
 			$data_sunitid = $sunitid;
 			if($data_mnumber !=""){
 			if(strlen($data_mnumber) < 10){
@@ -645,6 +721,20 @@ class Addparty extends Controller {
                                 return;
 			}
 			}
+			if($data_vatnum !=""){
+			if(strlen($data_vatnum) < 10){
+                                $this->messages->add('VAT number should be 10 digits.', 'error');
+                                $this->template->load('template', 'addparty/edit', $data);
+                                return;
+			}
+			}
+			if($data_gstnum !=""){
+			if(strlen($data_gstnum) < 10){
+                                $this->messages->add('GST number should be 10 digits.', 'error');
+                                $this->template->load('template', 'addparty/edit', $data);
+                                return;
+			}
+			}
 			$this->db->trans_start();
 			$update_data=array(
 				'partyname' =>$data_pname,
@@ -660,6 +750,8 @@ class Addparty extends Controller {
 				'pan' =>$data_pannum,
 				'tan' =>$data_tannum,
 				'staxnum' =>$data_stnm,
+				'vat' =>$data_vatnum,
+				'gst' =>$data_gstnum,
 			);
 			if ( ! $this->db->where('sacunit', $data_sunitid)->update('addsecondparty', $update_data))
 			{
