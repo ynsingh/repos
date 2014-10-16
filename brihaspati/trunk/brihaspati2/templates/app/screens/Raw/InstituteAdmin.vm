@@ -34,33 +34,35 @@ $flname
 	
 	##<tr><td align="center">Institute Admin List</td></tr>
 	<tr><td align="center"> #if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ad #if($lang =="hindi") $brih_Of #end $brih_list </td></tr>
-	#if($rldpage != "yes")
-		#set($coun=1)
-		#foreach($lst in $list1)
-		##	#foreach($lst1 in $list1)
-		##		#if($lst.getInstituteId() == $lst1.getInstituteId())
-		##<tr>
-		#if($velocityCount%2==0)
-                                <tr bgcolor="$ui.tableColor">
+<table width=100% cellpadding="1" cellspacing="1" colspan="3"  bgcolor="$ui.tableColor">
+<tr>
+        #if($rldpage != "yes")
+                #set($coun=1)
+                #foreach($lst in $list1)
+                #if($velocityCount%3==1)
+                          #if($velocityCount%2==0)
+                               <tr bgcolor="$ui.tableColor">
                         #else
                                 <tr bgcolor="$ui.menuColor">
                         #end
-
-		<td align=center><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("role",$role).addPathInfo("mInststat","1").addPathInfo("instituteId",$lst.getInstituteId()).addPathInfo("iname",$lst.getInstituteName()).addPathInfo("domainName",$lst.getInstituteDomain()).addPathInfo("reload","yes").addPathInfo("count","1") style=text-decoration:none>$lst.getInstituteName()</a>
+#end
+                <td align=center width=30%>
+                   <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("role",$role).addPathInfo("mInststat","1").addPathInfo("instituteId",$lst.getInstituteId()).addPathInfo("iname",$lst.getInstituteName()).addPathInfo("domainName",$lst.getInstituteDomain()).addPathInfo("reload","yes").addPathInfo("count","1") style=text-decoration:none>$lst.getInstituteName()</a>
                 ##set($coun1=1)
                 #foreach($idinst in $onlineinst)
                 ###if($coun==$coun1)
                 #if("$lst.getInstituteId()"=="$idinst")
-&nbsp;&nbsp;<a href=javascript:popupWin("$link.setPage("call,OnLine_Rgtn,OnlineCourseApproval.vm").addPathInfo("instituteId",$lst.getInstituteId())","newWin");>$online_online $brih_courses $brih_view </a></td>
-		#end
-		#end		
-		</tr>
-		##		#end
-		##	#end
-		#end
-	#else
+&nbsp;&nbsp;<a href=javascript:popupWin("$link.setPage("call,OnLine_Rgtn,OnlineCourseApproval.vm").addPathInfo("instituteId",$lst.getInstituteId())","newWin");>$online_online $brih_courses $brih_view</a>
+</td>
+                #end
+                #end            
+                   ##if($velocityCount%3==0)
+                        ##end
+                #end
+        #else
+</tr>
         <tr><td align=center><b>$list</b></td></tr>
-	#end	
+        #end    
 </table>
 </body>
 <SCRIPT language="JavaScript">
