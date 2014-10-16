@@ -10,7 +10,7 @@ Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?>
 
 <table border=0 cellpadding=5 class="simple-table entry-view-table">
 <thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Secondary Unit</th><th>Party Address</th><th>Fund</th><th>Income/Expense Type</th></tr></thead>
-<?php
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 $odd_even = "odd";
 $fund = "";
 $entry_id = "";
@@ -114,7 +114,7 @@ else
 	Verified By : <span class="bold"><?php echo $verified_by; ?></span>
 </p>
 <p>Sanction Letter No. : <span class="bold"><?php echo $cur_entry->sanc_letter_no; ?></span></p>
-<p>Sanction Letter Date : <span class="bold"><?php echo $cur_entry->sanc_letter_date; ?></span></p>
+<p>Sanction Letter Date : <span class="bold"><?php echo date_mysql_to_php($cur_entry->sanc_letter_date); ?></span></p>
 <p>Sanction Letter Detail : <span class="bold"><?php echo $cur_entry->sanc_value; ?></span></p>
 <?php
 	if($ledger_q->num_rows() > 0){

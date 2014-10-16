@@ -1,4 +1,4 @@
-<?php
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Entry extends Controller {
 
@@ -2566,7 +2566,7 @@ $width="100%";
 			redirect('entry/show/' . $current_entry_type['label']);
 			return;
 		}
-
+		$data['cur_entry'] = $cur_entry;
 		$data['entry_type_id'] = $entry_type_id;
 		$data['current_entry_type'] = $current_entry_type;
 		$data['entry_number'] =  $cur_entry->number;
@@ -2638,7 +2638,8 @@ $width="100%";
 			redirect('entry/show/' . $current_entry_type['label']);
 			return;
 		}
-
+		
+		$data['cur_entry'] = $cur_entry;
 		$data['entry_type_id'] = $entry_type_id;
 		$data['current_entry_type'] = $current_entry_type;
 		$data['entry_number'] =  $cur_entry->number;
