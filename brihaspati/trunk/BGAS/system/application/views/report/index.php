@@ -1,3 +1,4 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');?>
 <div>
 	<div id="left-col">
 		<div class="settings-container">
@@ -77,7 +78,7 @@
                 </div>
 		<div class="settings-container">
                         <div class="settings-title">
-                                <?php //echo anchor('report/taglist', 'Tag Base Report', array('title' => 'Tag Base Report')); ?>
+                                <?php echo anchor('report/cashst', 'Cash Report', array('title' => 'Cash Report')); ?>
                         </div>
                         <div class="settings-desc">
                                 &nbsp;

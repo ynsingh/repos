@@ -299,6 +299,10 @@ $(document).ready(function() {
 					echo "<li>";
 						echo anchor('report/dayst', 'Day Book', array('title' => 'Day Book'));
 					echo "</li>";
+					echo "<li>";
+                                                echo anchor('report/cashst', 'Cash Book', array('title' => 'Cash Book'));
+                                        echo "</li>";
+
 				echo "</ul>";
 			echo "</li>";
 			echo"<li>";
