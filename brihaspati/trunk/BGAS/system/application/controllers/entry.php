@@ -21,6 +21,33 @@ class Entry extends Controller {
 		return;
 	}
 
+        function fileupload()
+        {
+        //      $path= "";
+                $filename="";
+                $path=getcwd().'/uploads/Docs';
+        //      echo"path is=$path";
+                if (!is_dir('uploads/Docs')) {
+                       mkdir('./uploads/Docs');
+                        chmod('./uplaods/Docs',0777);
+
+                }
+
+                $config['upload_path'] = $path;
+                $config['allowed_types'] = 'gif|jpg|jpeg|png|pdf|';
+                $config['max_size'] = '1000';
+                $config['max_width'] = '1920';
+                $config['max_height'] = '1280';
+                $this->load->library('upload', $config);
+                 if(!$this->upload->do_upload())
+                        $this->upload->display_errors();
+                 else {
+                        $fInfo = $this->upload->data();
+                        $filename=$fInfo['file_name'];
+                }
+                return $filename;
+	}
+
 	function show($entry_type)
 	{
 
@@ -696,7 +723,7 @@ $width="100%";
 			'id' => 'sanc_letter_date',
 			'maxlength' => '11',
 			'size' => '11',
-			'value' => date_today_php()
+			'value' => ''
 		);
 
 		$data['sanc_type'] = array(
@@ -782,7 +809,7 @@ $width="100%";
 			$data['secunit'] = $this->input->post('secunit', TRUE);
 		//	$data['sec_unit_active']= $this->input->post('sec_unit_id', TRUE);
 			//$data['sec_unit_id'] = $this->input->post('sec_unit_id', TRUE);
-			$data['income_type'] = $this->input->post('income_type', TRUE);
+	//		$data['income_type'] = $this->input->post('income_type', TRUE);
                         $data['expense_type'] = $this->input->post('expense_type', TRUE);
 			$data['sanc_letter_no']['value'] = $this->input->post('sanc_letter_no', TRUE);
                         $data['sanc_letter_date']['value'] = $this->input->post('sanc_letter_date', TRUE);
@@ -842,7 +869,7 @@ $width="100%";
 	                        $data_secunit = $this->input->post('secunit', TRUE);
                         	$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 				$bank_cash_global = '';
-
+				$filename=$this->fileupload();
 				$sanc_value = '';
 				$data_sanc_type = $this->input->post('sanc_type', TRUE);
 				if($data_sanc_type != 'select'){
@@ -1062,7 +1089,7 @@ $width="100%";
 				$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
 				$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
 				$data_all_secunit = $this->input->post('secunit', TRUE);
-				$data_all_income_type = $this->input->post('income_type', TRUE);
+				//$data_all_income_type = $this->input->post('income_type', TRUE);
 				$data_all_expense_type = $this->input->post('expense_type', TRUE);
 				$data_cheque = $this->input->post('ledger_payt', TRUE);
 				//$data_secunitid = $this->input->post('sec_unit_id', TRUE);
@@ -1294,23 +1321,79 @@ $width="100%";
 						}
 					}//01	
 				
-				}//001
-				
+				}//001	
+
+
 				/* Code for making entry in Fund and Transit Income account. */
 				$fund_ledger = $data_all_fund_ledger[$id];
 				//$data_secunitid = $this->input->post('sec_unit_id', TRUE);
 				$secunitid = $data_all_secunit[$id];
+//////////////////////////////////////	
 				
+                                $insert_ledger_data = array(
+                                        'entry_id' => $entry_id,
+                                        'ledger_id' => $data_ledger_id,
+                                        'amount' => $data_amount,
+                                        'dc' => $data_ledger_dc,
+                                        'update_date' => $data_date,
+                                        'forward_refrence_id' => '0',
+                                        'backward_refrence_id' => $data_back_refrence,
+                                        'secunitid' => $secunitid,
+                                );
+                                if ( ! $this->db->insert('entry_items', $insert_ledger_data))
+                                {
+                                        $this->db->trans_rollback();
+                                        $this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
+                                        $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
+                                        $this->template->load('template', 'entry/add', $data);
+                                        return;
+                                }else {
+                                        $entry_items_id = $this->db->insert_id();
+                                }
+
+				  if($data_ledger_dc == 'C'){
+                                        $expense_type = $data_all_expense_type[$id];
+					
+                                        if($expense_type == "Earn" || $expense_type == "Accru"){
+
+                                                $this->db->select('name');
+                                                $this->db->from('ledgers')->where('id', $data_ledger_id);
+                                                $query = $this->db->get();
+                                                $ledger = $query->row();
+                                                $ledger_name = $ledger->name;
+
+                                                $insert_income_data = array(
+                                                        'fund_id' => $data_ledger_id,
+                                                        'fund_name' => $ledger_name,
+                                                        'amount' => $data_amount,
+                                                        'date' => $data_date,
+                                                        'type' => $expense_type,
+                                                        'entry_items_id' => $entry_items_id
+                                                         );
+                                             //   print_r($insert_income_data);
+                                                if ( ! $this->db->insert('fund_management', $insert_income_data))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->logger->write_message("error", "Error adding income from investment details for fund :" . $data_ledger_id);
+                                                }
+                                            }
+                                      } 
+	
 				if($fund_ledger > 0 && $data_ledger_dc == 'D'){
 					$expense_type = $data_all_expense_type[$id];
 					//if($expense_type != 'Capital'){
+					
 					$this->db->from('ledgers')->where('id', $data_ledger_id);
                                         $query_q = $this->db->get();
                                         $query_n = $query_q->row();
                                         $ledger_code = $query_n->code;
 				// make entry for both case (capital exp and revenu exp )in fund management table
-					if(!($expense_type == 'Capital') && !($this->Ledger_model->isFixedAsset($ledger_code))){
-						$insert_fund_data = array(
+		//			if(!($expense_type == 'Capital') && !($this->Ledger_model->isFixedAsset($ledger_code))){
+					if(($expense_type !="Select") && ($expense_type !=""))
+					   { 
+					     if($expense_type == "Revenue")
+						{
+						    $insert_fund_data = array(
         	                               		'entry_id' => $entry_id,
 	        	                                'ledger_id' => $fund_ledger,
                			                        'amount' => $data_amount,
@@ -1319,18 +1402,42 @@ $width="100%";
                		                        	'forward_refrence_id' => '0',
 	                               		        'backward_refrence_id' => $data_back_refrence,
 							'secunitid' => $secunitid,
-	        	                        );
+	        	                                );
 	
-        		                        if ( ! $this->db->insert('entry_items', $insert_fund_data))
-			                        {
-                		                        $this->db->trans_rollback();
-	                        	                $this->logger->write_message("error", "Error adding fund id:" . $fund_ledger);
-                        	        	}else {
-                                 			$entry_fund_id = $this->db->insert_id();
-	                                	}
+        		                                if ( ! $this->db->insert('entry_items', $insert_fund_data))
+			                                  {
+                		                             $this->db->trans_rollback();
+	                        	                     $this->logger->write_message("error", "Error adding fund id:" . $fund_ledger);
+                        	        	       }else {
+                                 			     $entry_fund_id = $this->db->insert_id();
+	                                	             }
+						      
+   						    $this->db->select('id');
+                                                    $this->db->from('ledgers')->where('name', 'Transit Income');
+                                                    $query = $this->db->get();
+                                                    $income = $query->row();
+                                                    $income_id = $income->id;
 
-						//$expense_type = $data_all_expense_type[$id];
-        	        	                if($expense_type != "Select" && $expense_type != ""){
+                                                    $insert_income_data = array(
+                                                        'entry_id' => $entry_id,
+                                                        'ledger_id' => $income_id,
+                                                        'amount' => $data_amount,
+                                                        'dc' => 'C',
+                                                        'update_date' => $data_date,
+                                                        'forward_refrence_id' => '0',
+                                                        'backward_refrence_id' => $data_back_refrence,
+                                                        'secunitid' => $secunitid,
+                                                        );
+
+                                                     if ( ! $this->db->insert('entry_items', $insert_income_data))
+                                                        {
+                                                            $this->db->trans_rollback();
+                                                            $this->logger->write_message("error", "Error adding transit income");
+                                                        }
+
+						
+						//$expense_type = $data_all_expense_type[$id];*/
+        	        	               
                 	        	                $this->db->select('name');
                         	        	        $this->db->from('ledgers')->where('id', $fund_ledger);
                                 	                $query = $this->db->get();
@@ -1350,9 +1457,36 @@ $width="100%";
         	                                        {
                 	                                        $this->db->trans_rollback();
                         	                                $this->logger->write_message("error", "Error adding expenditure details for fund in fund management:" . $fund_ledger);
-                                	                }
-                                        	}
+                                	                } 
+						   }
+						  
+						else{
+                                                        $this->db->select('name');
+                                                        $this->db->from('ledgers')->where('id', $fund_ledger);
+                                                        $query = $this->db->get();
+                                                        $ledger = $query->row();
+                                                        $ledger_name = $ledger->name;
 
+                                                        $insert_expense_data = array(
+                                                                'fund_id' => $fund_ledger,
+                                                                'fund_name' => $ledger_name,
+                                                                'amount' => $data_amount,
+                                                                'date' => $data_date,
+                                                                'type' => $expense_type,
+                                                                'entry_items_id' => $entry_items_id
+                                                        );
+
+                                                        if ( ! $this->db->insert('fund_management', $insert_expense_data))
+                                                        {
+                                                                $this->db->trans_rollback();
+                                                                $this->logger->write_message("error", "Error adding expenditure details for fund in fund management:" . $fund_ledger);
+							}
+						}
+                                        	
+					}
+				}
+			/*		if( $expense_type !="Capital")
+					   {
 						$this->db->select('id');
 						$this->db->from('ledgers')->where('name', 'Transit Income');
 						$query = $this->db->get();
@@ -1375,9 +1509,10 @@ $width="100%";
                 		                        $this->db->trans_rollback();
                                 		        $this->logger->write_message("error", "Error adding transit income");
         	                        	}
-					}
-				}
-				$insert_ledger_data = array(
+				    	}*/
+			//	}
+///////////////////
+		/*		$insert_ledger_data = array(
 					'entry_id' => $entry_id,
 					'ledger_id' => $data_ledger_id,
 					'amount' => $data_amount,
@@ -1396,11 +1531,11 @@ $width="100%";
 					return;
 				}else {
                                         $entry_items_id = $this->db->insert_id();
-                                }
+                                } 
 
                                 if($data_ledger_dc == 'C'){
-                                        $income_type = $data_all_income_type[$id];
-                                        if($income_type != "Select" && $income_type != ""){
+                                        $expense_type = $data_all_expense_type[$id];
+                                        if($expense_type == "Earn" || $expense_type == "Accru"){
 
                                                 $this->db->select('name');
                                                 $this->db->from('ledgers')->where('id', $data_ledger_id);
@@ -1416,14 +1551,14 @@ $width="100%";
                                                         'type' => $income_type,
                                                         'entry_items_id' => $entry_items_id
                                                 );
-
+						print_r($insert_income_data);
                                                 if ( ! $this->db->insert('fund_management', $insert_income_data))
                                                 {
                                                         $this->db->trans_rollback();
                                                         $this->logger->write_message("error", "Error adding income from investment details for fund :" . $data_ledger_id);
                                                 }
                                         }
-                                }
+                                }*/
 				if ($data_cheque[$id] == 1 ){
                                                 $insert_cheque_data = array(
                                                         'ledger_id' => $data_ledger_id,
@@ -3289,7 +3424,7 @@ $width="100%";
 			$config['mailtype'] = "html";
 			if ($account_data)
 			{
-				$config['protocol'] = $account_data->email_protocol;
+
 				$config['smtp_host'] = $account_data->email_host;
 				$config['smtp_port'] = $account_data->email_port;
 				$config['smtp_user'] = $account_data->email_username;
@@ -3320,8 +3455,8 @@ $width="100%";
 
 	function addrow($add_type = 'all')
 	{
-		
 		$i = time() + rand  (0, time()) + rand  (0, time()) + rand  (0, time());
+
 		$dr_amount = array(
 			'name' => 'dr_amount[' . $i . ']',
 			//'id' => 'dr_amount[' . $i . ']',
@@ -3382,15 +3517,16 @@ $width="100%";
   //            	echo form_input($cheque);
     //          	echo '</td>';
 		echo '<td>' . form_dropdown('sec_unit_id', $sec_unit_id).'</td>';
-		
+		$ledger_id ="";
+		$ledger= $this->ledger_code($ledger_id[$i]);		
 
 		$temp = "fund-list".$i;
 //                echo '<td id ="fund">' . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, 'class = "'.$temp.'"') . '</td>';
 		echo '<td id = "fund">' . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, 'class = "'.$temp.'"') . '</td>';
 
-		$temp1 = "type-dropdown".$i;
+	/*	$temp1 = "type-dropdown".$i;
                 echo '<td>' . form_dropdown_type('income_type[' . $i . ']', isset($income_type[$i]) ? $income_type[$i] : 'Select', 'class = "'.$temp1.'"') . '</td>';
-
+*/
                 $temp2 = "exp-dropdown".$i;
                 echo '<td>' . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : 'Select', 'class = "'.$temp2.'"') . '</td>';
 
@@ -4413,7 +4549,7 @@ $width="100%";
                         'id' => 'sanc_letter_date',
                         'maxlength' => '11',
                         'size' => '11',
-                        'value' => date_today_php()
+                        'value' => ''
                 );
 
                 $data['sanc_type'] = array(
@@ -4628,6 +4764,16 @@ $width="100%";
 		$ledger_amount = 0 - $ledger_amount;
 		echo $ledger_amount;
 		return;
+	}
+
+	function fund_balance($id){
+		 $fval = $this->Ledger_model->get_ledger_balance($id);
+		 $fund = $this->Ledger_model->get_fund_capital($id);
+		 $fval = 0 - $fval;
+		 $fval = $fval - $fund;
+	//	echo "fval==>$fval fund==>$fund "; 
+		 echo $fval;
+		  return $fval;
 	}
 
 	function set_group_id($ledgerid){

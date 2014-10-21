@@ -262,7 +262,7 @@ if ( ! function_exists('form_dropdown_type'))
 {
         function form_dropdown_type($name, $selected = NULL, $extra = '')
         {
-                $options = array("Select" => "Select Type", "Earn" => "Earned", "Accru" => "Accrued");
+                $options = array("Select" => "Select Type", "Earn" => "Earned Interest", "Accru" => "Accrued Interest", "Capital" => "Capital Expenditure", "Revenue" => "Revenue Expenditure", "Investment" => "Investment");
 
                 // If no selected state was submitted we will attempt to set it automatically
                 if ( ! ($selected == "Earn" || $selected == "Accru"))
@@ -294,10 +294,10 @@ if ( ! function_exists('form_dropdown_exptype'))
 {
         function form_dropdown_exptype($name, $selected = NULL, $extra = '')
         {
-                $options = array("Select" => "Select Type", "Capital" => "Capital Expenditure", "Revenue" => "Revenue Expenditure");
+                $options = array("Select" => "Select Type", "Capital" => "Capital Expenditure", "Revenue" => "Revenue Expenditure", "Earn" => "Earned Interest", "Accru" => "Accrued Interest", "Investment" => "Investment");
 
                 // If no selected state was submitted we will attempt to set it automatically
-                if ( ! ($selected == "Capital" || $selected == "Revenue"))
+                if ( ! ($selected == "Capital" || $selected == "Revenue" || $selected == "Accru" || $selected == "Earn" || $selected == "Investment"))
                 {
                         // If the form name appears in the $_POST array we have a winner!
                         if (isset($_POST[$name]))

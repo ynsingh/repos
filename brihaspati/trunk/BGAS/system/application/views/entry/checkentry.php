@@ -1,4 +1,5 @@
 <?php
+	if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	/* Add row ledger type */
 	if ($current_entry_type['bank_cash_ledger_restriction'] == '4')
 		$add_type = "bankcash";
@@ -131,7 +132,7 @@ var dc = '';
                                 var fund_ledger_id = $(this).children.val();
 
                                 $.ajax({
-                                        url: <?php echo '\'' . site_url('entry/ledger_fund/') . '/\''; ?> + fund_ledger_id,
+                                        url: <?php echo '\'' . site_url('entry/fund_balance/') . '/\''; ?> + fund_ledger_id,
                                         success: function(data){
                                                 fund_amount = $.trim(data);
                                                 fund_amount = parseFloat(fund_amount);
@@ -140,7 +141,7 @@ var dc = '';
                                                 fundTotal = jsFloatOps(fundTotal, fund_amount, '+');
 
                                                 if(drTotal > fundTotal)
-                                                        alert("Amount payable is more than the available fund.");
+                                                        alert("Amount payable is more than the available fund("+fund_amount+").");
                                         }
                                 });
                         });
@@ -514,7 +515,7 @@ var dc = '';
                         var fund_amount = 0;
                 
                         $.ajax({
-                                url: <?php echo '\'' . site_url('entry/ledger_fund/') . '/\''; ?> + fund_ledger_id,
+                                url: <?php echo '\'' . site_url('entry/fund_balance/') . '/\''; ?> + fund_ledger_id,
                                 success: function(data){
                                         fund_amount = $.trim(data);
         
@@ -533,7 +534,7 @@ var dc = '';
                                                 drTotal = jsFloatOps(drTotal, curDr, '+');
                                         });
                                         if(drTotal > fundTotal)
-                                                alert("Amount payable is more than the available fund.");
+                                                alert("Amount payable is more than the available fund("+fund_amount+").");
                                 }
                         });
                 });	
@@ -757,9 +758,9 @@ var dc = '';
                 //echo "<td id =\"fund\">" . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, "class = \"".$temp."\"") . "</td>";
 		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp."\"") . "</td>";
 
-		$temp1 = "type-dropdown".$i;
+	/*	$temp1 = "type-dropdown".$i;
                 echo "<td>" . form_dropdown_type('income_type[' . $i . ']', isset($income_type[$i]) ? $income_type[$i] : "Select", "class = \"".$temp1."\"") . "</td>";
-
+*/
                 $temp2 = "exp-dropdown".$i;
                 echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select", "class = \"".$temp2."\"") . "</td>";
 

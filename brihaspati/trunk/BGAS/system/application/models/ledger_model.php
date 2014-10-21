@@ -373,6 +373,18 @@ var $ledgers = array();
 		return $output;
 	}
 
+	function get_fund_capital($ledger_id)
+	{
+	       $this->db->select_sum('amount')->from('fund_management')->where('type', "Capital")->where('fund_id', $ledger_id);
+		$total = $this->db->get();
+//		print_r($total);
+		foreach($total->result() as $row){
+			$balance = $row->amount;
+		}
+//		echo"total========>$balance";
+		return $balance;
+	}
+
 	function get_ledger_balance($ledger_id)
 	{
 		list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);

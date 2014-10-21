@@ -1,4 +1,5 @@
 <?php
+	if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	/* Add row ledger type */
 	if ($current_entry_type['bank_cash_ledger_restriction'] == '4')
 		$add_type = "bankcash";
@@ -115,8 +116,7 @@ var dc = '';
 			}
 		}
 
-		/**
-                 * Following code is for fund drop down list 
+		/**                 * Following code is for fund drop down list 
                  * @author Priyanka Rawat
                  */
                 bank_cash = -1;
@@ -138,14 +138,14 @@ var dc = '';
 							if(fund_ledger_id != 0)
 			                                        check = 1;
 							$.ajax({
-			                                        url: <?php echo '\'' . site_url('entry/ledger_fund/') . '/\''; ?> + fund_ledger_id,
+			                                        url: <?php echo '\'' . site_url('entry/fund_balance/') . '/\''; ?> + fund_ledger_id,
                         	        		        success: function(data){
                                 	                		fund_amount = $.trim(data);
 			                                                fund_amount = parseFloat(fund_amount);
                         			                        if (isNaN(fund_amount))
                                                 			        fund_amount = 0;
 			                                                if(jsFloatOps(dr_amount, fund_amount, '>') && check == 1){
-						                                alert("Amount payable is more than the available fund.");
+						                                alert("Amount payable is more than the available fund. ("+fund_amount+")");
                         						}
                                                 	
                         			                }
@@ -242,13 +242,13 @@ var dc = '';
                 		                                $(temp).hide();
                                 		        }
 
-							if(dc == 'C' && account == 'Liability'){
-                                                                $(temp1).show();
+				/*			if(dc == 'C' && account == 'Liability'){
+                                                                $(temp2).show();
                                                         }else{
-                                                                $(temp1).hide();
-                                                        }
+                                                                $(temp2).hide();
+                                                        }*/
 
-                                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')){
+                                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')||(dc == 'C' && account == 'Liability')){
                                                                 $(temp2).show();
                                                         }else{
                                                                 $(temp2).hide();
@@ -412,13 +412,13 @@ var dc = '';
                                                 		$(temp).hide();
 	        	                                }
 						
-							if(dc_value == 'C' && account == 'Liability'){
-                                                                $(temp1).show();
+				/*			if(dc_value == 'C' && account == 'Liability'){
+                                                                $(temp2).show();
                                                         }else{
-                                                                $(temp1).hide();
-                                                        }
+                                                                $(temp2).hide();
+                                                        }*/
 
-                                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0')){
+                                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0') || (dc_value == 'C' && account == 'Liability')){
                                                                 $(temp2).show();
                                                         }else{
                                                                 $(temp2).hide();
@@ -453,18 +453,19 @@ var dc = '';
 				url: <?php echo '\'' . site_url('ledger/balance') . '/\''; ?> + ledgerid,
 				success: function(data) {
 					var ledger_bal = parseFloat(data);
+			//		alert("jgkdhjdhj"+ledger_bal);
 					if (isNaN(ledger_bal))
 						ledger_bal = 0;
 					if (jsFloatOps(ledger_bal, 0, '=='))
-						rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("0");
+						rowid.parent().next().next().next().next().next().next().next().next().next().children().text("0");
 					else if (jsFloatOps(ledger_bal, 0, '<'))
-						rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("Cr " + -data);
+						rowid.parent().next().next().next().next().next().next().next().next().next().children().text("Cr " + -data);
 					else
-						rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("Dr " + data);
+						rowid.parent().next().next().next().next().next().next().next().next().next().children().text("Dr " + data);
 				}
 			});
 		} else {
-			rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("");
+			rowid.parent().next().next().next().next().next().next().next().next().next().children().text("");
 		}
 	});
 
@@ -492,14 +493,38 @@ var dc = '';
 		$.ajax({
 			url: <?php echo '\'' . site_url('entry/addrow/' . $add_type) . '\''; ?>,
 			success: function(data) {
-			
+		//		 var ledger_bal = $.trim(data);
+		//		alert(ledger_bal+"djadjadj");	
 				$(cur_obj).parent().parent().next().after(data);
 				$(cur_obj).attr('src', add_image_url);
 				$(".cheque-item").show();
 				$("#ch_no").show();
+			//	 $('.exp-dropdown').hide();
 			//	$('.dc-dropdown').trigger('change');
 			}
 		});
+/*
+			     var account = '';   
+                $.ajax({
+                                url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
+                                success: function(data) {
+
+                                        account = $.trim(data);
+                                        if(account == 'Income'){
+                                                if(dc_value == 'D')
+                                    
+                         //               var first_index = dr_name.lastIndexOf("[");
+                           //             var last_index = dr_name.lastIndexOf("]"); 
+                             //           var fund_index = dr_name.substring(first_index+1, last_index);
+					                
+                       //                 temp = ".fund-list"+fund_index;
+                          //              var temp1 = ".type-dropdown"+fund_index;
+
+                                         $('.type-dropdown').hide();
+                                         }
+                                                
+                       
+		});*/
 	});
 
 	/** 
@@ -522,11 +547,12 @@ var dc = '';
 			if(fund_ledger_id != 0)
 			{
 			$.ajax({
-	                        url: <?php echo '\'' . site_url('entry/ledger_fund/') . '/\''; ?> + fund_ledger_id,
+	                        url: <?php echo '\'' . site_url('entry/fund_balance/') . '/\''; ?> + fund_ledger_id,
         	                success: function(data){
 					var fund_amount = $.trim(data);
+		//			alert("djgdj");
 					if (jsFloatOps(dr_amount, fund_amount, '>')) {
-                 			       alert("Amount payable is more than the available fund. ");
+                 			       alert("Amount payable is more than the available fund. ("+fund_amount+")");
                 			}
 				}
 	                });
@@ -678,7 +704,7 @@ var dc = '';
 
 
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Sec Unit Id</th><th></th><th></th><th></th><th colspan=2></th><th colspan=2>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Secondary Unit</th><th></th><th colspan=2></th><th></th><th colspan=2>Cur Balance</th></tr></thead>";
 	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Sec Unit Id</th><th></th><th colspan=2>Available Action</th><th>Cur Balance</th></tr></thead>";
 
 	foreach ($ledger_dc as $i => $ledger)
@@ -733,14 +759,16 @@ var dc = '';
 		echo "<td>" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "0") . "</td>";
 
 		echo "<td>" . form_dropdown_secunit('secunit[' . $i . ']', isset($secunit[$i]) ? $secunit[$i] : 0) . "</td>";
-
+/*?>		
+		<td> <input type="file" name="userfile" /></td>
+<?php*/
 		$temp = "fund-list".$i;
 		//echo "<td id =\"fund\">" . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, "class = \"".$temp."\"") . "</td>";
 		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp."\"") . "</td>";
 
-		$temp1 = "type-dropdown".$i;
+/*		$temp1 = "type-dropdown".$i;
                 echo "<td>" . form_dropdown_type('income_type[' . $i . ']', isset($income_type[$i]) ? $income_type[$i] : "Select", "class = \"".$temp1."\"") . "</td>";
-
+*/
                 $temp2 = "exp-dropdown".$i;
                 echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select", "class = \"".$temp2."\"") . "</td>";
 
