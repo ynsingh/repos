@@ -1,5 +1,4 @@
-CREATE TABLE IF NOT EXISTS groups (:wq
-
+CREATE TABLE IF NOT EXISTS groups (
   id int(11) NOT NULL AUTO_INCREMENT,
   code varchar(100) NOT NULL,
   parent_id int(11) NOT NULL,
@@ -420,5 +419,5 @@ CREATE TABLE bill_approval
          sanc_type VARCHAR(255) DEFAULT NULL,
          sanc_value VARCHAR(255) DEFAULT NULL,
          PRIMARY KEY(bill_no)
-); ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
