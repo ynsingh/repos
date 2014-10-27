@@ -5,13 +5,20 @@
 
 package org.smvdu.payroll.beans.db;
 
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+import au.com.bytecode.opencsv.bean.CsvToBean;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.beans.setup.Department;
 import org.smvdu.payroll.beans.setup.Designation;
+import org.smvdu.payroll.beans.upload.UploadFile;
 
 /**
  *
@@ -85,11 +92,14 @@ public class DesignationDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update designation_master set desig_name=? where desig_code=? and d_org_id='"+orgCode+"'");
+            ps=c.prepareStatement("update designation_master set desig_dcode=?, desig_name=?, desig_nickname=?" 
+                                +" where desig_code=? and d_org_id='"+orgCode+"'");
             for(Designation dp : depts)
             {
-                ps.setString(1, dp.getName().toUpperCase());
-                ps.setInt(2, dp.getCode());
+                ps.setString(1, dp.getDCode());
+                ps.setString(2, dp.getName().toUpperCase());
+                ps.setString(3, dp.getNickName().toUpperCase());
+                ps.setInt(4, dp.getCode());
                 ps.executeUpdate();
                 ps.clearParameters();
             }
@@ -105,6 +115,8 @@ public class DesignationDB {
         try
         {
             Connection c = new CommonDB().getConnection();
+            //ps=c.prepareStatement("select * from designation_master where d_org_id = '"+orgCode+"'");
+            //modify 16oct 2014 for dcode and nickname
             ps=c.prepareStatement("select * from designation_master where d_org_id = '"+orgCode+"'");
             rs=ps.executeQuery();
             ArrayList<Designation> data = new ArrayList<Designation>();
@@ -112,7 +124,9 @@ public class DesignationDB {
             {
                 Designation dept = new Designation();
                 dept.setCode(rs.getInt(1));
-                dept.setName(rs.getString(2));
+                dept.setDCode(rs.getString(2));
+                dept.setName(rs.getString(3));
+                dept.setNickName(rs.getString(4));
                 data.add(dept);
             }
             rs.close();
@@ -126,19 +140,63 @@ public class DesignationDB {
             return null;
         }
     }
-    public Exception save(String desigName)   {
+    //public Exception save(String desigName)   {
+    public Exception save(Designation desig)   {
         try
         {
 
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("insert into designation_master(desig_name,d_org_id) values(?,?) ");
-            ps.setString(1, desigName.toUpperCase());
-            ps.setInt(2, orgCode);
+            ps=c.prepareStatement("insert into designation_master(desig_dcode, desig_name, desig_nickname, d_org_id) values(?,?,?,?)");
+            ps.setString(1, desig.getDCode());
+            ps.setString(2, desig.getName().toUpperCase());
+            ps.setString(3, desig.getNickName().toUpperCase());
+            ps.setInt(4, orgCode);
             ps.executeUpdate();
-            //rs=ps.getGeneratedKeys();
-            //rs.next();
-            //int code = rs.getInt(1);
-            //rs.close();
+            ps.close();
+            c.close();
+            return null;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return e;
+        }
+
+    }
+    
+     public Exception saveFile(UploadFile file)   {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            
+            ps=c.prepareStatement("insert into designation_master(desig_dcode, desig_name, desig_nickname, d_org_id) values(?,?,?,?)");
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
+            CSVReader reader = new CSVReader(new FileReader(path+"/"+file.getName()), ',', '\"', 1);
+            ColumnPositionMappingStrategy<Designation> mappingStrategy 
+                                 = new ColumnPositionMappingStrategy<Designation>();
+            mappingStrategy.setType(Designation.class);
+            String[] columns = new String[] {"DCode","Name","NickName"};
+            mappingStrategy.setColumnMapping(columns);
+        
+            CsvToBean<Designation> csv = new CsvToBean<Designation>();
+            List<Designation> DesignationList = csv.parse(mappingStrategy, reader);
+
+        
+            for (int i = 0; i < DesignationList.size(); i++) 
+            {
+                
+                Designation DDetail = DesignationList.get(i);
+                // display CSV values
+                
+                ps.setString(1,DDetail.getDCode());
+                ps.setString(2,DDetail.getName().toUpperCase());
+                ps.setString(3, DDetail.getNickName().toUpperCase());
+                ps.setInt(4, orgCode);
+                ps.executeUpdate(); 
+                           
+
+            }
+            reader.close();
             ps.close();
             c.close();
             return null;

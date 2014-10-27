@@ -126,9 +126,14 @@ CREATE TABLE `department_master` (
 
 CREATE TABLE `designation_master` (
   `desig_code` int(11) NOT NULL auto_increment,
+  `desig_dcode` varchar(80) NOT NULL,
   `desig_name` varchar(100) NOT NULL,
-  `d_org_id` int(11) NOT NULL default '1',
+  `desig_nickname` varchar(80) NOT NULL,
+ /*`d_org_id` int(11) NOT NULL default '1',*/
+  `d_org_id` int(11) default NULL, 
   PRIMARY KEY  (`desig_code`),
+  UNIQUE KEY `desig_name` (`desig_name`),
+  UNIQUE KEY `desig_dcode` (`desig_dcode`),
   KEY `d_org_id` (`d_org_id`),
   CONSTRAINT `designation_master_ibfk_1` FOREIGN KEY (`d_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -273,14 +278,21 @@ CREATE TABLE `attendance_master` (
 
 CREATE TABLE `bankprofile` (
   `seq_no` int(11) NOT NULL auto_increment,
-  `bank_name` varchar(130) NOT NULL,
+  `bank_name` varchar(250) NOT NULL,
   `bank_address` varchar(1000) NOT NULL,
   `bank_ifsc_code` varchar(100) NOT NULL,
   `branch_name` varchar(100) NOT NULL,
+   account_number bigint(20) NOT NULL,
+   account_type varchar(40) NOT NULL,
+   pan_number varchar(10) NOT NULL,
+   tan_number varchar(10) NOT NULL,
+   account_name varchar(250) NOT NULL,
   `org_code` int(11) NOT NULL,
-  PRIMARY KEY  (`bank_ifsc_code`),
-  UNIQUE KEY `seq_no` (`seq_no`),
-  UNIQUE KEY `seq_no_2` (`seq_no`),
+   PRIMARY KEY  (`seq_no`),
+/*  PRIMARY KEY  (`bank_ifsc_code`),*/
+  /*UNIQUE KEY `seq_no` (`seq_no`),*/
+  /*UNIQUE KEY `seq_no_2` (`seq_no`),*/
+  UNIQUE KEY (account_number,bank_ifsc_code),
   KEY `org_code` (`org_code`),
   CONSTRAINT `bankprofile_fk` FOREIGN KEY (`org_code`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

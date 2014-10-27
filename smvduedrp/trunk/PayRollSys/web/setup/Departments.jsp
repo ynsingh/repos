@@ -88,19 +88,19 @@
                         
                         <h:column >
                             <f:facet name="header">
-                                <h:outputText value="Dept Code"/>
+                                <h:outputText value="Department Code"/>
                             </f:facet>
                             <rich:inplaceInput value="#{dept.DCode}" />
                         </h:column>  
                         <h:column >
                             <f:facet name="header">
-                                <h:outputText value="Dept Name"/>
+                                <h:outputText value="Department Name"/>
                             </f:facet>
                             <rich:inplaceInput value="#{dept.name}" />
                         </h:column>                       
                          <h:column >
                             <f:facet name="header">
-                                <h:outputText value="Dept Nick Name"/>
+                                <h:outputText value="Department Nick Name"/>
                             </f:facet>
                             <rich:inplaceInput value="#{dept.nickName}" />
                         </h:column> 
@@ -164,7 +164,7 @@
                 </rich:modalPanel>
                  
                  
-                 <rich:modalPanel id="hnl" autosized="true" domElementAttachment="parent" width="700" height="400">
+               <rich:modalPanel id="hnl" autosized="true" domElementAttachment="parent" width="700" height="400">
                <f:facet name="controls">
                     <h:graphicImage value="/img/cls.png" style="cursor:pointer"
                                     onclick="Richfaces.hideModalPanel('hnl')" />
@@ -184,7 +184,7 @@
                     <h:outputText style="font-size:1.5em;font-weight:bold;" value=" Department Code = EE03"/>
                     <h:outputText style="font-size:1.5em;font-weight:bold;" value=" Department Name =Electrical Engineering"/>
                     <h:outputText style="font-size:1.5em;font-weight:bold;" value=" Department Nick Name = EE "/>
-                    <h:outputText style="font-size:1.5em;"  value="3. Save as csv formate."/>
+                    <h:outputText style="font-size:1.5em;"  value="3. Save as csv format."/>
                                
                     </h:panelGrid>
                     </rich:panel>

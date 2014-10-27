@@ -7,14 +7,13 @@ package org.smvdu.payroll.api.BankDetails;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
 
 /**
- *
  * @author ERP
+ * Modified Date: 22OCT 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
  */
 public class BankDetailsSearch {
 
@@ -91,7 +90,7 @@ public class BankDetailsSearch {
             rst = pst.executeQuery();
             while(rst.next())
             {
-                System.out.println("In Bank Name List ..");
+                
                 BankProfileDetails bpd = new BankProfileDetails();
                 bpd.setBankName(rst.getString(1));
                 bpd.setBankIFSCCode(rst.getString(2));
@@ -99,6 +98,7 @@ public class BankDetailsSearch {
                 bpd.setBankBranch(rst.getString(3));
                 bankDetails.add(bpd);
             }
+            
             return bankDetails;
 
         }
@@ -155,6 +155,7 @@ public class BankDetailsSearch {
     
     public ArrayList<BankProfileDetails> bankDetails()
     {
+        
         try
         {
             Connection cn = new CommonDB().getConnection();
@@ -166,10 +167,19 @@ public class BankDetailsSearch {
             while(rst.next())
             {
                 BankProfileDetails bpd = new BankProfileDetails();
+                bpd.setSeqId(rst.getInt(1));
                 bpd.setBankName(rst.getString(2));
-                bpd.setBankBranch(rst.getString(5));
+                bpd.setBankAddress(rst.getString(3));
                 bpd.setBankIFSCCode(rst.getString(4));
+                bpd.setBankBranch(rst.getString(5));
+                bpd.setAccountNumber(rst.getInt(6));
+                bpd.setAccountType(rst.getString(7));
+                bpd.setPanNumber(rst.getString(8));
+                bpd.setTanNumber(rst.getString(9));
+                bpd.setAccountName(rst.getString(10));
+                
                 bankdetails.add(bpd);
+                //System.out.println("In Bank Name List 17 oct 2014......");
             }
             return bankdetails;
         }

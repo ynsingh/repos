@@ -7,7 +7,6 @@ package org.smvdu.payroll.api.BankDetails;
 
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -15,6 +14,7 @@ import javax.faces.model.SelectItem;
 /**
  *
  * @author ERP
+ * Modified Date: 22OCT 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
  */
 public class BankProfileDetails{
 
@@ -36,6 +36,12 @@ public class BankProfileDetails{
     private String bankIFSCCode = new String();
     private String bankAddress = new String();
     private String bankBranch = new String();
+    private int accountNumber;
+    private String accountType;
+    private String panNumber;
+    private String tanNumber;
+    private String accountName;
+    private int seqno;
     private SelectItem[] arrayAsItem;
 
     public String getBankAddress() {
@@ -71,6 +77,53 @@ public class BankProfileDetails{
         this.bankName = bankName;
     }
     
+    
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+    public void setAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+    
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+    
+    public String getPanNumber() {
+        return panNumber;
+    }
+
+    public void setPanNumber(String panNumber) {
+        this.panNumber = panNumber;
+    }
+    
+    public String getTanNumber() {
+        return tanNumber;
+    }
+
+    public void setTanNumber(String tanNumber) {
+        this.tanNumber = tanNumber;
+    }
+    
+     public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+    
+    public int getSeqId() {
+        return seqno;
+    }
+    public void setSeqId(int seqno) {
+        this.seqno = seqno;
+    }
+
     public SelectItem[] getArrayAsItem()
     {
         ArrayList<BankProfileDetails> bankpro = new ArrayList<BankProfileDetails>();
@@ -114,6 +167,50 @@ public class BankProfileDetails{
                fc.addMessage("", message);
                return;
             }
+            if(this.getAccountName().matches("^[a-zA-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Correct Account Name ");
+                fc.addMessage("", message);
+               return;
+            }
+            if(this.getAccountType().matches("^[a-zA-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Correct Account Type");
+                fc.addMessage("", message);
+               return;
+            }
+            
+            if(this.getBankIFSCCode().matches("[a-zA-Z]{4}[0-9]{7}") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid bank ifsc code number");
+                fc.addMessage("", message);
+               return;
+            }
+            
+            if(this.getPanNumber().matches("[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid pan number");
+                fc.addMessage("", message);
+               return;
+            }
+            
+            if(this.getTanNumber().matches("[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid tan number");
+                fc.addMessage("", message);
+               return;
+            }
+            
             boolean ex = new SaveBankDetails().save(this) ;
             if(ex == true)
             {

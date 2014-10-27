@@ -47,7 +47,7 @@ public class BankConttroler {
             boolean b = new SaveBankDetails().update(bpd);
             if(b == true)
             {
-                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Bank Detaile Updated", ""));
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Bank Detail Updated Successfully", ""));
             }
         }
         catch(Exception ex)
