@@ -139,7 +139,7 @@ if ( ! function_exists('check_access'))
                         'reappropriate projection',
 			'verify entry',
 			'edit doc',
-			'bill uplaod',
+			'bill upload',
 			'approve/reject',
 			'vouchercreation'
 		);
