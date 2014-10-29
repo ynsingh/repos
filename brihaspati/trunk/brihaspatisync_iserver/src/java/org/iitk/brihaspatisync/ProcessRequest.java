@@ -70,7 +70,14 @@ public class ProcessRequest extends HttpServlet {
                         	ReflectorStatusManager.setContext(context);        
                		} catch(Exception dberror){ ServerLog.log("Exception in ProcessRequest class for database connection "+dberror.getMessage()); }
 		}
-		
+	
+/*
+
+ReflectorManager ->   purge the reflectorStatus.xml to remove all the reflectors whose registration
+referesh is not received in last five minute.
+
+*/
+	
 		String reqType=request.getParameter("req");
 		PrintWriter out = response.getWriter();
 
@@ -89,11 +96,14 @@ public class ProcessRequest extends HttpServlet {
 			} catch(Exception e) { ServerLog.log("Exception in ProcessRequest class for reflector logout loop "+e.getMessage()); }
                 } else if(reqType.equals("reflector_registration")) {
 			
-			/**
-                 	 * This block of code is used to register a reflector on this server with ipAddress of reflector 
-                	 * and initial status which return success or failure message.Reflector Status an Ip is written in
-			 * Reflector.xml file.
-                	 */
+/**
+
+get the IP address from connection.
+retrieve the IP address from the request.
+ReflectorManager ->  update/add reflector with current time stamp.
+save the record update in the log file.
+
+*/
 			try {
 				String reflectorIP  =InetAddress.getByName(request.getRemoteAddr()).toString();
 				String status=request.getParameter("status");
