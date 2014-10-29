@@ -125,7 +125,7 @@ $!data.getMessage()
                 <form name="frm" method="post" action="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance")">
         	<table width="100%" align="center" border="1"bgcolor="$ui.menuColor" style="border-collapse:collapse; border:1px solid black;">
         	<tr align="left">
-                	<td width="14%"><b>$brih_select $brih_Da : </b></td><td width="13%"><div style="width: 10px; font-size: 80%;"><input type="text" value="$currentdate" name="searchdate" id="datepick" class="button-ftextstyle" style="width:90px;"/></div></td>
+                	<td width="14%"><b> #if($lang == "marathi")$brih_Da $brih_select #else $brih_select $brih_Da #end : </b></td><td width="13%"><div style="width: 10px; font-size: 80%;"><input type="text" value="$currentdate" name="searchdate" id="datepick" class="button-ftextstyle" style="width:90px;"/></div></td>
 			#if($data.getUser().getTemp("role") == "institute_admin")
                 	<td align="center" width="52%"><b>$brih_course : </b> 
 				#if($mode =="attend")

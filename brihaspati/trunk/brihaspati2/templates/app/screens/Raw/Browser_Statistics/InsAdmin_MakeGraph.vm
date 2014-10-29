@@ -26,7 +26,7 @@ $!data.getMessage()
                         <td><b>
                         <font face="$ui.sansSerifFonts">
                         <a href=$link.setPage("call,InstituteAdmin.vm")>$brih_home</a> |
-                         <a href=$link.setPage("call,Browser_Statistics,InsAdmin_MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi")$brih_statistics $Repo_browser #else $Repo_browser $brih_statistics #end</a>
+                         <a href=$link.setPage("call,Browser_Statistics,InsAdmin_MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "marathi")$brih_statistics $Repo_browser #else $Repo_browser $brih_statistics #end</a>
                         </td>
               </tr>
         </table>
@@ -34,7 +34,7 @@ $!data.getMessage()
         <table width="100%">
                 <tr bgcolor="$ui.tableColor">
                         <td colspan="1">
-                        #if($lang =="hindi")$brih_courseName $brih_select #else $brih_select $brih_courseName #end
+                        #if($lang =="hindi" || $lang == "marathi")$brih_courseName $brih_select #else $brih_select $brih_courseName #end
                         <select class="drop" name="uname1" id="u1" size="1" onChange="Changename(document.frm,this);" style="width:300px;"/>
 			#if($cname!="")
                                 <option style="width:275px;">$coursename</option>
@@ -51,7 +51,7 @@ $!data.getMessage()
 			</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	#if($userList.size()!=0)
 		#if(($mode=="cinfo") && ($cname!=""))
-			#if($lang =="hindi")$brih_student $brih_name $brih_select #else $brih_select $brih_student $brih_name #end
+			#if($lang =="hindi"  || $lang == "marathi")$brih_student $brih_name $brih_select #else $brih_select $brih_student $brih_name #end
 			<select class="drop" name="uname2" id="u2" size="1" onChange="Changename(document.frm,this);"/>
 			#if($studname!="")
                                <option>$studname </option>
@@ -97,7 +97,7 @@ $!data.getMessage()
 			#if($value!="")
                                 <option>$value </option>
 	                #else
-                               <option> - $brih_days$brih_value - </option>
+                               <option> - $brih_days $brih_value - </option>
         	        #end
 			 #if($value!="7")
                         	    <option value="$link.setPage("call,Browser_Statistics,InsAdmin_MakeGraph.vm").addPathInfo("mode","cinfo").addPathInfo("cname",$cname).addPathInfo("studname",$studname).addPathInfo("mname",$mname).addPathInfo("value","7")">7 </option>
@@ -119,7 +119,7 @@ $!data.getMessage()
                                 #if($value!="")
                                 <option>$value </option>
                                 #else
-                                <option> - $brih_days$brih_value - </option>
+                                <option> - $brih_days $brih_value - </option>
                                 #end
                                  #if($value!="7")
                 	                <option value="$link.setPage("call,Browser_Statistics,InsAdmin_MakeGraph.vm").addPathInfo("mode","cinfo").addPathInfo("cname",$cname).addPathInfo("studname",$studname).addPathInfo("value","7")">7 </option>

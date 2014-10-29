@@ -25,7 +25,7 @@ $!data.getMessage()
 <table  bgcolor="$ui.menuColor" width=100%>
 <tr> <td>
  <b><a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_ad $brih_home</a> |
- <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style='text-decoration:none'> #if ($lang == "hindi" || $lang == "bhojpuri") $online_online $brih_reg $brih_Of1 $brih_view #else $brih_view $online_online $brih_reg #end </a> |
+ <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style='text-decoration:none'> #if ($lang == "hindi" || $lang == "bhojpuri" || $lang == "marathi") $online_online $brih_reg $brih_Of1 $brih_view #else $brih_view $online_online $brih_reg #end </a> |
 #if($status=="UserResitration")
 	#if($lang =="hindi" || $lang == "bhojpuri") $brih_usr $brih_Of2 $brih_reg $brih_Of1 $brih_view  #else $brih_view $brih_usr $brih_reg #end
 #else
@@ -40,13 +40,13 @@ $!data.getMessage()
 	#elseif($tdcolor=="1")
 	<td width=33% bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang =="bhojpuri") $brih_course $brih_Of2 $brih_reg $brih_Of1 $brih_view  #else $brih_view $brih_course $brih_reg #end </a></td>
+        <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang =="bhojpuri" || $lang =="marathi") $brih_course $brih_Of2 $brih_reg $brih_Of1 $brih_view  #else $brih_view $brih_course $brih_reg #end </a></td>
 	#if($tdcolor!="2")
 	<td width=33%>
 	#elseif($tdcolor=="2")
 	<td width=33% bgcolor="#AFDCEC">
 	#end
-        	<a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","UserResitration").addPathInfo("count","2") style='text-decoration:none'> #if($lang =="hindi" || $lang =="bhojpuri") $brih_usr $brih_Of2 $brih_reg $brih_Of1 $brih_view  #else $brih_view $brih_usr $brih_reg #end </a></td>
+        	<a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","UserResitration").addPathInfo("count","2") style='text-decoration:none'> #if($lang =="hindi" || $lang =="bhojpuri" || $lang =="marathi") $brih_usr $brih_Of2 $brih_reg $brih_Of1 $brih_view  #else $brih_view $brih_usr $brih_reg #end </a></td>
 <td align="right">
 <img src="$content.getURI("/images/hand.gif")"><font face="$ui.sansSerifFonts" size=3>
 <a href=javascript:popupWin("/brihaspati2/docs/OnlineRegistrationAdmin.html","newWin") style='text-decoration:none'>$brih_help</a></font>

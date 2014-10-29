@@ -26,15 +26,15 @@ $!data.getMessage()
 	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> |
 	#if($type =="user")
-      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
+      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi" || $lang=="marathi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
         $brih_usr $brih_reports
         #end
         #if($type =="course")
-     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
+     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi" ||  $lang=="marathi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
         $brih_course $brih_reports
         #end
         #if($type =="quiz")
-      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
+      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi" ||  $lang=="marathi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
         $brih_quiz $brih_reports
         #end
 	#end
@@ -76,7 +76,7 @@ $!data.getMessage()
 <table  bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
 <tr><td><b><i>$brih_test/$brih_quiz #if($lang == "hindi" || $lang == "gujarati") $brih_Of #end $brih_reports</b></td></tr>
 <tr bgcolor="$ui.menuColor" width="100%">
-        <td width ="100%" colspan="5"><i><b> #if($lang == "hindi" || $lang == "gujarati") 
+        <td width ="100%" colspan="5"><i><b> #if($lang == "hindi" || $lang == "gujarati" || $lang == "marathi") 
 							$brih_reports $brih_for $brih_quiz $brih_select 
 						#else 
 							$brih_select $brih_quiz $brih_for $brih_reports 
@@ -107,7 +107,7 @@ $!data.getMessage()
         <td align="left" width="50%"><b>$quiztime</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%">  #if($lang == "hindi" || $lang == "gujarati") 
+        	<td align="left" width="50%">  #if($lang == "hindi" || $lang == "gujarati") 
 						$brih_qus #if ($lang == "hindi") $brih_of2 #end $brih_type 
 					#else 
 						$brih_type $brih_of $brih_qus 

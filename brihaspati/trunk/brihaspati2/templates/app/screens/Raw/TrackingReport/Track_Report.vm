@@ -113,7 +113,7 @@ $!data.getMessage()
 </tr>
 #end
 #if($status == "Search")
-	<tr bgcolor="$ui.tableColor" width="100%"><td width="100%" colspan="5"><b> #if($lang == "hindi" || $lang=="gujarati") 
+	<tr bgcolor="$ui.tableColor" width="100%"><td width="100%" colspan="5"><b> #if($lang == "hindi" || $lang=="gujarati" || $lang=="marathi") 
 											$brih_reports $brih_for $brih_usr $brih_select 
 										   #else 
 											$brih_select $brih_usr $brih_for $brih_reports 

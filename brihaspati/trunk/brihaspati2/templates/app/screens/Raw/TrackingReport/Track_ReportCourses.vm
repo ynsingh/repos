@@ -129,7 +129,7 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b><i>$brih_most $brih_active $brih_usr</i></b></td></tr>
 <tr bgcolor="$ui.tableColor" colspan="5">
         <td align="left" width="40%"><b>$brih_usr $brih_name</td>
-        <td align="left" width="30%"><b>$brih_total $brih_nos $brih_access</td>
+        <td align="left" width="30%"><b> #if($lang == "marathi")$brih_access $brih_total $brih_nos #else $brih_total $brih_nos $brih_access</td>
         <td align="left" width="30%"><b>$brih_total $brih_access $brih_time</td>
 </tr>
 <tr bgcolor="$ui.menuColor">
@@ -140,7 +140,7 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_most $brih_active $brih_courses</b></td></tr>
 <tr bgcolor="$ui.tableColor">
         <td align="left" width="30%"><b>$brih_course $brih_name</td>
-        <td align="left" width="30%"><b>$brih_total $brih_nos $brih_usr $brih_access</td>
+        <td align="left" width="30%"><b> #if($lang == "marathi") $brih_access $brih_total  $brih_usr $brih_nos  #else $brih_total $brih_nos $brih_usr $brih_access #end</td>
         <td align="left" width="30%"><b>$brih_total $brih_access $brih_time</td>
 <tr>
 <tr bgcolor="$ui.menuColor">

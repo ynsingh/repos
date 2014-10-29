@@ -25,13 +25,13 @@ $!data.getMessage()
 	$brih_FAQ
 	#end
 	#if($mode=="add")
-	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> | #if($lang =="hindi" || $lang == "gujarati" ) $brih_cat $brih_add #else $brih_add $brih_cat #end
+	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> | #if($lang =="hindi" || $lang == "gujarati" || $lang == "marathi") $brih_cat $brih_add #else $brih_add $brih_cat #end
 	#end
 	#if($mode=="delete")
-	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> | #if($lang =="hindi" || $lang == "gujarati" ) $brih_cat $brih_delete #else $brih_delete $brih_cat #end
+	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> | #if($lang =="hindi" || $lang == "gujarati" || $lang == "marathi") $brih_cat $brih_delete #else $brih_delete $brih_cat #end
 	#end
 	#if($mode=="edit")
-	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> |  #if($lang =="hindi" || $lang == "gujarati" ) $brih_cat $brih_Of1 $brih_edit #else $brih_edit $brih_cat #end
+	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> |  #if($lang =="hindi" || $lang == "gujarati" || $lang == "marathi" ) $brih_cat $brih_Of1 $brih_edit #else $brih_edit $brih_cat #end
 	#end
 	</font>
 </b></td>
@@ -81,7 +81,7 @@ $!data.getMessage()
                         #elseif($tdcolor == "2")
 			<td width="30" bgcolor="#AFDCEC">
 			#end
-			<b><I><a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","add").addPathInfo("count","2") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati" ) $brih_cat $brih_add #else $brih_add $brih_cat #end </I></b></a></td>
+			<b><I><a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","add").addPathInfo("count","2") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati" ||  $lang == "marathi" ) $brih_cat $brih_add #else $brih_add $brih_cat #end </I></b></a></td>
 			#if($tdcolor != "3")
                         <td width=30%>
                         #elseif($tdcolor == "3")
@@ -149,7 +149,7 @@ $!data.getMessage()
 					</td>
 				#else
 					<td><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("category",$catlist).addPathInfo("mode","alllist")" style=text-decoration:none>$catlist</a></td>
-					<td><a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("category",$catlist).addPathInfo("mode","edit")"style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati" ) $brih_cat $brih_Of1 $brih_edit #else $brih_edit $brih_cat #end </a></td>
+					<td><a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("category",$catlist).addPathInfo("mode","edit")"style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati" || $lang == "marathi" ) $brih_cat $brih_Of1 $brih_edit #else $brih_edit $brih_cat #end </a></td>
 				#end
                 		</tr>
 		#set ( $count= "$count$!catlist^")

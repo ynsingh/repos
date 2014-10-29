@@ -38,7 +38,7 @@ $!data.getMessage()
                 #elseif($tdcolor == "1")
                 <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri")$brih_ad $brih_list $brih_view #else $brih_view $brih_ad $brih_list #end </a>
+                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri" || $lang == "marathi")$brih_ad $brih_list $brih_view #else $brih_view $brih_ad $brih_list #end </a>
                 </td>
 		 #if($tdcolor != "2")
                 <td>
@@ -47,7 +47,7 @@ $!data.getMessage()
                 #end
 		
 		#if($permission != "0")
-                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("Institute_Id",$Institute_Id).addPathInfo("Institute_Name",$Institute_Name).addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri") $brih_sec $brih_admin $brih_reg1 #else $brih_reg1 $brih_sec $brih_admin #end </a>
+                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("Institute_Id",$Institute_Id).addPathInfo("Institute_Name",$Institute_Name).addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri" || $lang == "marathi" ) $brih_sec $brih_admin $brih_reg1 #else $brih_reg1 $brih_sec $brih_admin #end </a>
 		#end
                 </td>
         </tr>
@@ -58,7 +58,7 @@ $!data.getMessage()
                 #elseif($tdcolor == "1")
                 <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri") $brih_view $brih_ad $brih_list #else $brih_view $brih_ad $brih_list #end </a>
+                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri" || $lang == "marathi") $brih_view $brih_ad $brih_list #else $brih_view $brih_ad $brih_list #end </a>
                 </td>
         </tr>
 	#end
