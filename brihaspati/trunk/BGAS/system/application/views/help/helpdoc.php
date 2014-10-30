@@ -2,11 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>BGAS</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/helpdoc.css"
->
+    <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/helpdoc.css">
 </head>
 
 
@@ -38,7 +34,7 @@
                     <li><a href="#Dashboard"><i class="icon-chevron-right"></i>Dashboard</a></li>
                     <li><a href="#Budget"><i class="icon-chevron-right"></i>Budget</a></li>
                     <li><a href="#AddBudget"><i class="icon-chevron-right"></i>Add Budget</a></li>
-                    <li><a href="#Reappropriate Budget"><i class="icon-chevron-right"></i>Reappropriate Budget</a></li>
+                    <li><a href="#ReappropriateBudget"><i class="icon-chevron-right"></i>Reappropriate Budget</a></li>
                     <li><a href="#Projection"><i class="icon-chevron-right"></i>Projection</a></li>
                     <li><a href="#AddProjection"><i class="icon-chevron-right"></i>Add Projection</a></li>
                  <li><a href="#ReappropriateProjection"><i class="icon-chevron-right"></i>Reappropriate Projection</a></li>
@@ -46,6 +42,9 @@
 		    <li><a href="#Entries"><i class="icon-chevron-right"></i>Entries</a></li>
                     <li><a href="#ViewAll"><i class="icon-chevron-right"></i>View All</a></li>
                     <li><a href="#CreateJournal"><i class="icon-chevron-right"></i>Create Journal</a></li>
+		    <li><a href="#BillUpload/VoucherCreation"><i class="icon-chevron-right"></i>Bill Upload/Voucher Creation</a></li>
+		    <li><a href="#ViewBill"><i class="icon-chevron-right"></i>View Bill</a></li>
+		    <li><a href="#BillUpload"><i class="icon-chevron-right"></i>Bill Upload</a></li>
 		    <li><a href="#Report"><i class="icon-chevron-right"></i>Report</a></li>
 	            <li><a href="#BalanceSheet"><i class="icon-chevron-right"></i>Balance Sheet</a></li>
                     <li><a href="#BalanceSheetMHRDFormat"><i class="icon-chevron-right"></i>Balance Sheet MHRD Format</a></li>
@@ -56,7 +55,12 @@
                     <li><a href="#Reconciliation"><i class="icon-chevron-right"></i>Reconciliation</a></li>
                     <li><a href="#Depreciationastoday"><i class="icon-chevron-right"></i>Depreciation as today</a></li>
                     <li><a href="#DayBook"><i class="icon-chevron-right"></i>Day Book</a></li>
+		    <li><a href="#CashBook"><i class="icon-chevron-right"></i>Cash Book</a></li>
 			<li><a href="#DepreciationOfAssets"><i class="icon-chevron-right"></i>Depreciation Of Assets</a></li>
+			<li><a href="#OtherReport"><i class="icon-chevron-right"></i>Other Report</a></li>
+			<li><a href="#FundList"><i class="icon-chevron-right"></i>Fund List</a></li>
+		<li><a href="#TagReport"><i class="icon-chevron-right"></i>Tag Report</a></li>
+		<li><a href="#SecondaryUnitStatement"><i class="icon-chevron-right"></i>Secondary Unit Statement</a></li>
 		    <li><a href="#Setting"><i class="icon-chevron-right"></i>Setting</a></li>
 	        <li><a href="#AccountSettings"><i class="icon-chevron-right"></i>Account Settings</a></li>
 		<li><a href="#C/FAccount"><i class="icon-chevron-right"></i>C/F Account</a></li>
@@ -78,7 +82,6 @@
 
             <div class="span15">
 
-
                 <section id="AboutBrihaspatiGeneralAccontingSystem">
                     <div class="row-fluid">
                         <h2>About Brihaspati General Acconting System</h2>
@@ -88,7 +91,7 @@
 			<font size="4">
                         <ol>
 			<p align="justify" STYLE="line-height: 150%">
-                           BGAS is an Accounting System than creates reports of financial statement.  To provide a standardise web based, full featured Double Entry Accrual Accounting system Prescribed by MHRD for all Acedemic and Educational Institutions in India. BGAS is standard integrated accounting and genral ledger system. It is composed of a set of a module that correspond to the main business function of accounting management modules include Genral , Ledger Accounts, Payable Acounts, Fixed and Personal Assets. 
+                           BGAS is an Accounting System than creates reports of financial statement.  To provide a standardise web based, full featured Double Entry Accrual Accounting system Prescribed by MHRD for all Acedemic and Educational Institutions in India. BGAS is standard integrated accounting and genral ledger system. It is composed of a set of a module that correspond to the main business function of accounting management modules include Genral, Ledger Accounts, Payable Acounts, Fixed and Personal Assets. 
                         </ol>
 	</font>
                        </section>
@@ -104,7 +107,7 @@
 			</font>
                         </ol>
  			<?php
-			echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adminhome.png', 'width' => 1450, 'height' =>645));
+			echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adminhome.png', 'width' => 1650, 'height' =>790));
 			?>
                     
                  </div>
@@ -123,7 +126,7 @@
 			</font>
                         </ol>
                         <?php
-                       echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'changeaccount.png', 'width' => 1450, 'height' =>665));
+                       echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'changeaccount.png', 'width' => 1650, 'height' =>810));
                         ?>
                     </div>
                 </section>
@@ -430,6 +433,39 @@ This page have a button to create a new Journal entry the link  will available t
 			<?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'newjournal.png'));
                         ?>
+<section id="BillUpload/VoucherCreation">
+<div class="row-fluid">
+<h2>Bill Upload/Voucher Creation</h2>
+<font size="4">
+</font>
+<section id="ViewBill">
+<div class="row-fluid">
+                        <h2>View Bill</h2>
+                    </div>
+ <div class="row-fluid">
+<font size="4">
+ <ol>
+<p align="justify" STYLE="line-height: 150%">
+We can see all list of all uploaded bills with Submit Date, Submitted Email ID, type of expenses, consider during bill upload, total amount of bill, Decision, Approved date, Approved by voucher creation date, Bank cash account, Mode of Payment, Payment Status and Payment Date.
+</ol>
+                                </font>
+ <?php
+                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'viewbill.png'));
+                        ?>
+<section id="BillUpload">
+<div class="row-fluid">
+                        <h2>Bill Upload</h2>
+                    </div>
+ <div class="row-fluid">
+<font size="4">
+ <ol>
+<p align="justify" STYLE="line-height: 150%">
+From here we can add a new bill by filling Submitter Email ID, Total Amount, Select Secondary Unit ID, Select Expenses and upload Bill file (jpg, png, jpeg, pdf).
+ </ol>
+                                </font>
+<?php
+                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'billupload.png'));
+                        ?>
 <section id="Report">
 <div class="row-fluid">
 <font size="4">
@@ -534,7 +570,7 @@ of the ladger account, value of ledger a/c will hold either a debit balance in t
                         ?>
 <section id="LedgerStatement">
 <div class="row-fluid">
-                        <h2>Ladger Statement</h2>
+                        <h2>Ledger Statement</h2>
                     </div>
 <div class="row-fluid">
 <font size="4">
@@ -585,7 +621,68 @@ Day Book statement shows current activity of user in particular date.
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'daystatement.png'));
                         ?>
-<section id="DepreciationOfAssets ">
+<section id="CashBook">
+<div class="row-fluid">
+                        <h2>Cash Book</h2>
+                    </div>
+<div class="row-fluid">
+<font size="4">
+ <ol>
+<p align="justify" STYLE="line-height: 150%">
+From here we can see all cash reports activity with in selected date range.
+ </ol>
+                        </font>
+                         <?php
+                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'cashreport.png'));
+                        ?>
+<section id="OtherReport">
+<div class="row-fluid">
+<h2>Other Report</h2>
+<font size="4">
+</font>
+<section id="FundList">
+<div class="row-fluid">
+                        <h2>Fund List</h2>
+                    </div>
+<div class="row-fluid">
+<font size="4">
+ <ol>
+<p align="justify" STYLE="line-height: 150%">
+From here we can see all type of fund list with S.No, Code, Fund Name, O/P Balance and C/L Balance.  We can get the statement with selected date range.
+ </ol>
+                        </font>
+                         <?php
+                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'fundlist.png'));
+                        ?>
+<section id="TagReport">
+<div class="row-fluid">
+                        <h2>Tag Report</h2>
+                    </div>
+<div class="row-fluid">
+<font size="4">
+ <ol>
+<p align="justify" STYLE="line-height: 150%">
+From here we can see all tag statement with in selected date range.  We can also search tag account by selecting tag title.
+</ol>
+                        </font>
+                         <?php
+                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'tagreport.png'));
+                        ?>
+<section id="SecondaryUnitStatement">
+<div class="row-fluid">
+                        <h2>Secondary Unit Statement</h2>
+                    </div>
+<div class="row-fluid">
+<font size="4">
+ <ol>
+<p align="justify" STYLE="line-height: 150%">
+We can see all list of secondary unit statement with selected date range.
+</ol>
+                        </font>
+                         <?php
+                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'secondaryunitstatement.png'));
+                        ?>
+<section id="DepreciationOfAssets">
 <div class="row-fluid">
                         <h2>Depreciation Of Assets</h2>
                     </div>
