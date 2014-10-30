@@ -7,13 +7,13 @@
 	$start_date = $this->session->userdata('startdate');
 	$end_date = $this->session->userdata('enddate');
 	$this->load->model('Ledger_model');
-	$this->load->model('Tag_model');
+	$this->load->model('Secunit_model');
 
 	$from_date = '';
 	$to_date = '';
 	if ( ! $print_preview)
 	{
-		echo form_open('report2/tag/' . $ledger_id);
+		echo form_open('report2/sec_report/' . $sec_uni_id);
 		echo "<p>";
 		echo "<span id=\"tooltip-target-1\">";
 		echo form_label('From', 'entry_date1');
@@ -29,9 +29,10 @@
 		echo "</span>";
 		echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		echo form_label('Tag Account', 'ledger_id');
+		echo form_label('Secondary Unit', 'sec_uni_id');
                 echo " ";
-		echo form_input_tag('ledger_id', $ledger_id);
+		echo "&nbsp;&nbsp;&nbsp;";
+		echo form_dropdown_secunit('sec_uni_id', $sec_uni_id);
 		echo " ";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		echo form_submit('submit', 'Show');
@@ -55,12 +56,12 @@
 		$page_count = $this->input->xss_clean($page_count);
 		if ( ! $page_count)
 			$page_count = "0";
-		$config['base_url'] = site_url('report/ledgerst/' . $ledger_id);
+		$config['base_url'] = site_url('report/ledgerst/' . $sec_uni_id);
 		$pagination_counter = $this->config->item('row_count');
 		$config['num_links'] = 10;
 		$config['per_page'] = $pagination_counter;
 		$config['uri_segment'] = 4;
-		$config['total_rows'] = (int)$this->db->from('entries')->where('tag_id', $ledger_id)->where('date >=', $from_date)->where('date <=', $to_date)->count_all_results();
+		$config['total_rows'] = (int)$this->db->from('entries')->where('tag_id', $sec_uni_id)->where('date >=', $from_date)->where('date <=', $to_date)->count_all_results();
 		$config['full_tag_open'] = '<ul id="pagination-flickr">';
 		$config['full_close_open'] = '</ul>';
 		$config['num_tag_open'] = '<li>';
@@ -82,19 +83,21 @@
 		$this->pagination->initialize($config);
 
 	}
-	if ($ledger_id != 0)
+	if ($sec_uni_id != 0)
 	{
+		if($from_date > $to_date)
+        	{
+                	$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
+        	}
 
-		
 		$current_enty_type=array();
-
-		$this->db->from('entries')->where('tag_id', $ledger_id);
+		$this->db->from('entries')->where('secunitid', $sec_uni_id);
 		$this->db->where('date >=', $from_date);
                 $this->db->where('date <=', $to_date);          
                 $prevbal_q = $this->db->get();
 		if ($prevbal_q->num_rows() < 1)
                 {
-                	$this->messages->add('No entry has been done with this tag between ' . $from_date .' & ' .$to_date . ' date.', 'success');
+                	$this->messages->add('No entry has been done with this Secondary unit name between ' . $from_date .' & ' .$to_date . ' date.', 'success');
                 }
                 if ($prevbal_q->num_rows() != 0)
                 {
@@ -119,14 +122,14 @@
                 echo "</table>";
 		if (!$print_preview){
                 echo "<br>";
-                echo form_open('report2/printpreview/tag/' . $ledger_id);
+                echo form_open('report2/printpreview/sec_report/' . $sec_uni_id);
                 echo form_submit('submit', 'Print Preview');
                 echo form_close();
                 }
 		}
 	}
 	else{
-                $this->messages->add('Please select the tag account.', 'success');
+                $this->messages->add('Please select the Secondary Unit Name.', 'success');
         }
 
 

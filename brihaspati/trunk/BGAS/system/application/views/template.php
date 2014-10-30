@@ -317,6 +317,11 @@ $(document).ready(function() {
 
 						echo anchor('report2/tag','Tag Report', array('title'=>'Tag Report'));
 					echo"</li>";
+					 echo"<li>";
+
+                                                echo anchor('report2/sec_report','Secondary Unit Report', array('title'=>'Secondary Unit Report'));
+                                        echo"</li>";
+
 				echo"</ul>";
 
 			echo "<li>";
