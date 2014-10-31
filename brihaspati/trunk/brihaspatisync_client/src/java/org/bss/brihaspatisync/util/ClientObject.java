@@ -135,7 +135,6 @@ public class ClientObject {
                 return name_new;
         }
 
-
 	/**
          * This method is used to get user role of this client.
          */
@@ -275,6 +274,17 @@ public class ClientObject {
 
         public static String getSelectedListUsername(){
                 return selectedUserlistname;
+        }
+	
+	/** 
+	 * set grand parent reflector ip, if parent reflector is disconect
+	 **/   	
+        public static void setParentReflector(String str){
+                parent_ref=str;
+        }
+	
+        public static String getParentReflector(){
+                return parent_ref;
         }
 }
 

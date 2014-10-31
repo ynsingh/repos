@@ -193,7 +193,6 @@ public class RuntimeDataObject {
                 userlist=str;
         }
 
-
 	public void setVideoServerPort(String value){
                 videoServerPort=value;
         }

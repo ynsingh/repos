@@ -78,6 +78,9 @@
                 <copy file="${lib.dir}/vlcj-2.3.1.jar" tofile="${jnlp.dir}/vlcj.jar"/>
                 <copy file="${lib.dir}/HttpClient.jar" tofile="${jnlp.dir}/HttpClient.jar"/>
                 <copy file="${lib.dir}/commons-codec-1.4.jar" tofile="${jnlp.dir}/commons-codec-1.4.jar"/>
+         <!--       <copy file="${lib.dir}/monte-cc.jar" tofile="${jnlp.dir}/monte-cc.jar"/> -->
+                <copy file="${reflector.dir}/syncreflector.jar" tofile="${jnlp.dir}/syncreflector.jar"/>
+                <copy file="${reflector.dir}/commons-io-1.1.jar" tofile="${jnlp.dir}/commons-io-1.1.jar"/>
                 <signjar keystore="${jnlp.dir}/brihaspatisync" alias="client" storepass="arvind">
                          <path>
                                 <fileset dir="${jnlp.dir}" includes="**/*.jar" />

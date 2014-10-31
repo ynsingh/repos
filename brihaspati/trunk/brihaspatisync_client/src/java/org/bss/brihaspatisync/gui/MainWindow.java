@@ -172,6 +172,8 @@ public class MainWindow  extends JFrame implements ActionListener {
                 } else if(e.getActionCommand().equals("Logout")) {
 			new Logout().sendLogoutRequest();	
                         desktop.removeAll();
+                        StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog6"));
+
 			desktop.setBackground(new Color(220,220,220));
 			menuItem1.setEnabled(false);
 	                menuItem2.setEnabled(false);	
