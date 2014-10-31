@@ -36,7 +36,8 @@ public class ClientObject {
 	private static Vector usrNameVector=null;
 	private static Vector usrStatusVector=null;
 	private static Vector indexServerList=null;
-		
+	private static String parent_ref="";
+	
         public static void setParentReflectorIP(String value){
                 parent_reflector_ip=value;
         }
