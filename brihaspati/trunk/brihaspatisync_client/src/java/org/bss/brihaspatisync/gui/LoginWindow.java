@@ -272,7 +272,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                 cancelButton.setEnabled(true);
                                 username.setFocusable(true);
                         }
-                        if(indexServerName.equals("Select")){
+                        else {
                                 username.setEnabled(false);
                                 usernameText.setEnabled(false);
                                 password.setEnabled(false);
@@ -302,7 +302,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	}   
 		
 	public void mouseClicked(MouseEvent e) {
-		if(e.getComponent().getName().equals("username")) {
+	/*	if(e.getComponent().getName().equals("username")) {
 			if(passwordField.getText().equals(""))		
 				passwordField.setText("guest");
 			usernameText.setText("");
@@ -313,11 +313,12 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
         	        	usernameText.setText("guest");
               		passwordField.setText("");
                 } 
-			
+	*/		
                 if(e.getComponent().getName().equals("forgetpass.Action")){
 			forgetpass.setCursor(busyCursor);
 			forgetpass.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			ForgetPass.getController();
+			
 			forgetpass.setCursor(defaultCursor);
 		}
 
@@ -342,18 +343,18 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
 	private void checkUserNamePasswd() {  
 		try {
-			if(passwordField.getText().equals(""))
+		/*	if(passwordField.getText().equals(""))
                         	passwordField.setText("guest");
                        	if(usernameText.getText().equals(""))
                         	usernameText.setText("guest");
-                     	submitButton.setCursor(busyCursor);
-                        if((!(usernameText.getText()).equals(""))) {
+                  */   	submitButton.setCursor(busyCursor);
+                        if(! ( (usernameText.getText()).equals("") )) {
                         	boolean loginValue=ClientObject.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
 				System.out.println(loginValue);
                                 if(loginValue==false) {
                                 	passwordField.setText("");
-                                        setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
-                                        StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+                /*                        setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+                  */                      StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
                                         submitButton.setCursor(defaultCursor);
                            	} else {
                                 	ClientObject.setUserName(usernameText.getText());
@@ -367,7 +368,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                         StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
                              	}
                      	} else
-                        	setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog4"));
+                        	//setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog4"));
+                        	StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog4"));
                        	submitButton.setCursor(defaultCursor);			
 		} catch(Exception e) { System.out.println(this.getClass()+ " "+e.getMessage());  }
 	}

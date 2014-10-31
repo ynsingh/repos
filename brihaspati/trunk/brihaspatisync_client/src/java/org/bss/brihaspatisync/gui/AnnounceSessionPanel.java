@@ -36,6 +36,8 @@ import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.DateUtil;
 import org.bss.brihaspatisync.network.Log;
 import java.net.URLEncoder;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> created 
@@ -91,6 +93,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
 	private int year=2011;
 	private int month=1;
         private int day=1;
+        
 	
 	private InstructorCSPanel insCSPanel=null;
 
@@ -298,14 +301,21 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
 		getTimeIndexingServer();
 		String courseName="";
 		String value;
+		String phone_no = (String)phone_Text.getText();
+		Pattern regex = Pattern.compile("\\d+");
+		Matcher match = regex.matcher(phone_no);  
        		if((lectName_Text.getText().equals("")) ||(lecInfoArea.getText().equals(""))||(phone_Text.getText().equals(""))){
                 	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog1"));
               	}
+              	else if(!match.matches()) 
+              	{
+                        JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog7"));
+                }              	
 		else{
 	       		String st_year=(String)yearBox.getSelectedItem();
 	               	String st_month=(String)monthBox.getSelectedItem();
                        	String st_day=(String)dayBox.getSelectedItem();
-			int curdate=year+month+day;
+			int curdate=Integer.parseInt(Integer.toString(year)+Integer.toString(month)+Integer.toString(day));
 	                int intforduedate=Integer.parseInt(st_year+st_month+st_day);
 			boolean check=DateUtil.getController().checkDateInput(st_year,st_month,st_day);
 			if(intforduedate < curdate)
@@ -431,6 +441,8 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
 				indexServer=indexServer.replace("date","");
 				String str[]=indexServer.split(" ");
 				String str1[]=str[0].split("/");
+				
+				
 			
 				year=Integer.parseInt(str1[0]);
 				month=Integer.parseInt(str1[1]);
