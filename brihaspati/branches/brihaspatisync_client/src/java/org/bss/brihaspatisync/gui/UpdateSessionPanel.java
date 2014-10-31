@@ -23,6 +23,8 @@ import org.bss.brihaspatisync.util.DateUtil;
 
 import java.net.URLEncoder;
 import org.bss.brihaspatisync.network.Log;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -350,9 +352,17 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	 */
 			
 	private String getLectureValues(){
+	
+	String phone_no = (String)phone_Text.getText();
+		Pattern regex = Pattern.compile("\\d+");
+		Matcher match = regex.matcher(phone_no); 
 		if((lectName_Text.getText().equals(""))|| (urlText.getText().equals(""))||(lecInfoArea.getText().equals(""))||(endText.getText().equals(""))||(phone_Text.getText().equals(""))){
 			JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog1"));
                 }
+                else if(!match.matches()) 
+              	{
+                        JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog7"));
+                } 
                 else{
 			getTimeIndexingServer();
 			DateUtil date=DateUtil.getController();
@@ -360,7 +370,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                         String st_month=(String)monthBox.getSelectedItem();
                         String st_day=(String)dayBox.getSelectedItem();
 			
-                        int curdate=year+month+day;
+                        int curdate=Integer.parseInt(Integer.toString(year)+Integer.toString(month)+Integer.toString(day));
 			int intforduedate=Integer.parseInt(st_year+st_month+st_day);
                         boolean check=date.checkDateInput(st_year,st_month,st_day);
                         if(intforduedate < curdate)
@@ -464,18 +474,25 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         String  indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
                                         if(HttpsUtil.getIndexingMessage(indexServer)) {
 						/********************* modified ******************************/
-                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));						      frame.dispose();
+                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));						      
+                                                frame.dispose();
 						insCSPanel.getmainPanel().remove(1);	
 						insCSPanel.getmainPanel().add(insCSPanel.showLecture(ClientObject.getSessionList(ClientObject.getInstCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
                                                 insCSPanel.getmainPanel().revalidate();
                                                 insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
-                                        }else
+                                        }
+                                        else{
+                                        
                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog6"));
-                                } else
+                                               
+                                          } 
+                                  }
+                                  else{
 					System.out.println("insufficient indexServer name in UpdateSession :" + indexServerName);
-                                annBttn.setCursor(defaultCursor);
-			} catch(Exception ex){log.setLog("Error at actionPerformed()in UpdateSessionPanel"+ex.getMessage());}
+                                //annBttn.setCursor(defaultCursor);
+			} }catch(Exception ex){log.setLog("Error at actionPerformed()in UpdateSessionPanel"+ex.getMessage());}
 			StatusPanel.getController().setProcessBar("no");
+		annBttn.setCursor(defaultCursor);
 		}//if
      	}
 

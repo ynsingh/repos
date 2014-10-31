@@ -32,7 +32,6 @@ public class ClientObject {
 	private static String courseForAnnounce="";
 	private static String parent_reflector_ip="";
 	private static String selectedUserlistname="";
-	private static String parent_ref="";
 	
 	private static Vector usrNameVector=null;
 	private static Vector usrStatusVector=null;
@@ -49,7 +48,7 @@ public class ClientObject {
 		return null;
         }
 
-	public static void setReflectorIP(String value){
+	protected static void setReflectorIP(String value){
                 reflector_ip=value;
         }
 
@@ -135,7 +134,6 @@ public class ClientObject {
                 }catch(Exception e){}
                 return name_new;
         }
-
 
 	/**
          * This method is used to get user role of this client.
@@ -288,6 +286,5 @@ public class ClientObject {
         public static String getParentReflector(){
                 return parent_ref;
         }
-
 }
 

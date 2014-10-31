@@ -14,7 +14,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
-
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
@@ -215,14 +215,33 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 submitButton.setEnabled(false);
                 submitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 submitButton.setName("submit.Action");
-		submitButton.addMouseListener(this);
+               
+                submitButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent ae) {
+                                StatusPanel.getController().setProcessBar("no");
+                                checkUserNamePasswd();
+                                StatusPanel.getController().setProcessBar("no");
+                        }
+                });
+
+       
                 
 		cancelButton=new JButton(Language.getController().getLangValue("InstructorCSPanel.Cancel"),new ImageIcon(clr.getResource("resources/images/user/denie.png")));
                 cancelButton.setEnabled(false);
                 cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 cancelButton.setName("cancel.Action");
-		cancelButton.addMouseListener(this);
-	
+	        
+               
+                cancelButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent ae) {
+                                StatusPanel.getController().setProcessBar("no");
+                                 usernameText.setText("");
+                                 passwordField.setText("");
+                                StatusPanel.getController().setProcessBar("no");
+                        }
+                });
+
+                
                 forgetpass=new JLabel("<html><Font color=blue><u>"+Language.getController().getLangValue("LoginWindow.forgetpass")+"</u></font></html>");
 		forgetpass.setForeground(Color.BLUE);
                 forgetpass.addMouseListener(this);
@@ -263,7 +282,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
   	
 	private void Update_Enable_Decable(){
 		try {
-			if(!(indexServerName.equals("Select"))){
+			if(!indexServerName.equals("Select")){
                                 username.setEnabled(true);
                                 usernameText.setEnabled(true);
                                 password.setEnabled(true);
@@ -271,8 +290,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                 submitButton.setEnabled(true);
                                 cancelButton.setEnabled(true);
                                 username.setFocusable(true);
-                        }
-                        if(indexServerName.equals("Select")){
+                        } else{
                                 username.setEnabled(false);
                                 usernameText.setEnabled(false);
                                 password.setEnabled(false);
@@ -302,31 +320,40 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	}   
 		
 	public void mouseClicked(MouseEvent e) {
-		if(e.getComponent().getName().equals("username")) {
+	/*	if(e.getComponent().getName().equals("username")) {
 			if(passwordField.getText().equals(""))		
-				passwordField.setText("guest");
-			usernameText.setText("");
+                 	usernameText.setText("");
 		} 
 		
 		if(e.getComponent().getName().equals("passwd")) {
 			if(usernameText.getText().equals(""))            
-        	        	usernameText.setText("guest");
-              		passwordField.setText("");
+        		passwordField.setText("");
                 } 
-			
+
+                 if(e.getComponent().getName().equals("guest")) {
+                        if(usernameText.getText().equals(""))
+                        usernameText.setText("guest");
+                    	passwordField.setText("");
+                }
+	
+	*/		
                 if(e.getComponent().getName().equals("forgetpass.Action")){
 			forgetpass.setCursor(busyCursor);
 			forgetpass.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			ForgetPass.getController();
+			
 			forgetpass.setCursor(defaultCursor);
 		}
 
                 if(e.getComponent().getName().equals("submit.Action")) {	
 			StatusPanel.getController().setProcessBar("yes");
-			checkUserNamePasswd();
+                         
+	         		checkUserNamePasswd();
 			StatusPanel.getController().setProcessBar("no");
 			submitButton.setCursor(defaultCursor);
-                }
+                    }
+                  
+                             
 		if(e.getComponent().getName().equals("cancel.Action")) {
 			cancelButton.setCursor(busyCursor);
                         cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -342,20 +369,20 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
 	private void checkUserNamePasswd() {  
 		try {
-			if(passwordField.getText().equals(""))
-                        	passwordField.setText("guest");
-                       	if(usernameText.getText().equals(""))
-                        	usernameText.setText("guest");
-                     	submitButton.setCursor(busyCursor);
-                        if((!(usernameText.getText()).equals(""))) {
+                        submitButton.setCursor(busyCursor);
+                        if((usernameText.getText().equals("")) && (passwordField.getText().equals(""))) {
+                                StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog5"));
+                                submitButton.setCursor(defaultCursor); 
+                        } else {
                         	boolean loginValue=ClientObject.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
+                                                         
 				System.out.println(loginValue);
                                 if(loginValue==false) {
                                 	passwordField.setText("");
-                                        setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
-                                        StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
-                                        submitButton.setCursor(defaultCursor);
-                           	} else {
+                /*                        setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+                */                      StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+                                } // submitButton.setCursor(defaultCursor);
+				else {
                                 	ClientObject.setUserName(usernameText.getText());
 					mainWindow.setMenuItemText();
 		                        mainWindow.getDesktop().removeAll();
@@ -366,10 +393,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		                        mainWindow.getContainer().repaint();	
                                         StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
                              	}
-                     	} else
-                        	setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog4"));
-                       	submitButton.setCursor(defaultCursor);			
-		} catch(Exception e) { System.out.println(this.getClass()+ " "+e.getMessage());  }
+                         }
+                       			
+		} catch(Exception e) { System.out.println(this.getClass()+ " "+e.getMessage());}
 	}
-
 }

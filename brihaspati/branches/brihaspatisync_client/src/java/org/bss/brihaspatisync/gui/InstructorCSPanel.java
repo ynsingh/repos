@@ -35,6 +35,7 @@ import java.net.URLEncoder;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;
+import javax.swing.JOptionPane; 
 
 import org.apache.commons.codec.binary.BinaryCodec;
 /**
@@ -420,6 +421,8 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 					
                                 for(int i=0;i<cancleLabel.length;i++) {
                                         if(ev.getSource()==cancleLabel[i]){
+                                        int choice = JOptionPane.showOptionDialog(null,"Do you really want to cancel this lecture", "Cancel", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
+                                        if(choice == JOptionPane.YES_OPTION)
 						cancleLecture(i);
 					}//if
 				} //for

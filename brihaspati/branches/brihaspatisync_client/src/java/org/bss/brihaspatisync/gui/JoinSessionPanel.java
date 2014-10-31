@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * JoinSessionPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012,2013,2014 ETRG, IIT Kanpur.
+ * Copyright (c) 2012,2013 ETRG, IIT Kanpur.
  */
 
 import java.awt.Toolkit;
@@ -25,7 +25,7 @@ import org.bss.brihaspatisync.tools.presentation.PresentationViewPanel;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
- * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a> Modified on march2014
+ * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
  */
 
 public class JoinSessionPanel extends JPanel { 
@@ -39,7 +39,7 @@ public class JoinSessionPanel extends JPanel {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                 int screen_width= (int)dim.getWidth();
                 int screen_height= (int)dim.getHeight();
-		setSize(screen_width, screen_height-150);
+		setSize(screen_width, screen_height-113);
 		VideoPanel.getController().resetController();
 		
 		// left panel ************************************
@@ -51,7 +51,7 @@ public class JoinSessionPanel extends JPanel {
 		av_userlist_split.setBottomComponent(userlist_chat_Split);
 		av_userlist_split.addAncestorListener(new BaseAncestorListener() {
         		public void ancestorAdded(AncestorEvent event) {
-	            		av_userlist_split.setDividerLocation(getSize().height/3);
+	            		av_userlist_split.setDividerLocation(getSize().height/4);
         		}
     		});
 		av_userlist_split.setDividerSize(2);
@@ -59,15 +59,15 @@ public class JoinSessionPanel extends JPanel {
 		userlist_chat_Split.setBottomComponent(chat_pp_Split);
 		userlist_chat_Split.addAncestorListener(new BaseAncestorListener() {
                         public void ancestorAdded(AncestorEvent event) {
-                                userlist_chat_Split.setDividerLocation((getSize().height/3));
+                                userlist_chat_Split.setDividerLocation((getSize().height/4));
                         }
                 });
 		userlist_chat_Split.setDividerSize(2);
 		chat_pp_Split.setTopComponent(ChatPanel.getController().createGUI());
-		//chat_pp_Split.setBottomComponent(PresentationPanel.getController().createGUI());	
+		chat_pp_Split.setBottomComponent(PresentationPanel.getController().createGUI());	
 		chat_pp_Split.addAncestorListener(new BaseAncestorListener() {
                         public void ancestorAdded(AncestorEvent event) {
-                                chat_pp_Split.setDividerLocation((getSize().height/3));
+                                chat_pp_Split.setDividerLocation((getSize().height/4));
                         }
                 });
 		chat_pp_Split.setDividerSize(2);
@@ -75,7 +75,7 @@ public class JoinSessionPanel extends JPanel {
 		JTabbedPane desktop_whiteBoard_ppt_panel = new JTabbedPane();
 		desktop_whiteBoard_ppt_panel.addTab(Language.getController().getLangValue("JoinSessionPanel.DesktopSharing"),Desktop_Sharing.getController().createGUI());
                 desktop_whiteBoard_ppt_panel.addTab(Language.getController().getLangValue("JoinSessionPanel.Whiteboard"),WhiteBoardPanel.getController().createGUI());
-                //desktop_whiteBoard_ppt_panel.addTab(Language.getController().getLangValue("JoinSessionPanel.PptPresentation"),PresentationViewPanel.getController().createGUI());	
+                desktop_whiteBoard_ppt_panel.addTab(Language.getController().getLangValue("JoinSessionPanel.PptPresentation"),PresentationViewPanel.getController().createGUI());	
 				
 		JSplitPane left_right_Pane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,av_userlist_split,desktop_whiteBoard_ppt_panel);
 		left_right_Pane.setDividerLocation((((int)(getSize()).getWidth())/7));	

@@ -22,7 +22,6 @@ public class UtilObject {
 
 	private java.util.Hashtable ht_for_queue = null;
 	private java.util.Hashtable ht_for_send_queue = null;
-	private java.util.Hashtable ht_for_local_send_queue = null;
 	
 	private Vector type_vector=new Vector();	
 
@@ -34,6 +33,12 @@ public class UtilObject {
 		return nob;
 	}
 	
+	/**
+	 * This method are used to return send queue hash table .
+	 */  
+	private synchronized java.util.Hashtable get_send_queue_hashTable() {
+		return ht_for_send_queue;
+	}
 	
 	/**
  	 * This method are used to create rechive queue according to type .
@@ -54,7 +59,7 @@ public class UtilObject {
                         ht_for_queue.remove(type);
                 }
         }
-		
+	
 	/**
  	 * This method are used to create send queue according to type .
  	 */
@@ -74,33 +79,11 @@ public class UtilObject {
                 }
         }
 
-	///////////////////
-	/**
-         * This method are used to create local send queue according to type .
-         */
-        public synchronized LinkedList getLocalSendQueue(String type) {
-                if(!(ht_for_local_send_queue.containsKey(type))){
-                        ht_for_local_send_queue.put(type,new LinkedList<byte[]>());
-                }
-                return (LinkedList)ht_for_local_send_queue.get(type);
-        }
-
-        /**
-         * This method are used to remove local send queue according to type .
-         */
-        public synchronized void removeLocalSendQueue(String type) {
-                if(ht_for_local_send_queue.containsKey(type)){
-                        ht_for_local_send_queue.remove(type);
-                }
-        }
-
-	public UtilObject() {
+	public UtilObject(){
 		this.ht_for_queue = new java.util.Hashtable();	
 		this.ht_for_send_queue = new java.util.Hashtable();	
-		this.ht_for_local_send_queue = new java.util.Hashtable();	
 		
 	}
-	
 	public synchronized void addType(String type) {
                 if(!(type_vector.contains(type)))
                         type_vector.add(type);
