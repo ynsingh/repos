@@ -2,7 +2,7 @@
 <!-- JNLP File for Brihaspati_Sync client Application
      change IP address in the codebase field to the one used by your server.
  --> 
-<jnlp  spec="1.0+"  codebase="https://202.141.40.216:8443/brihaspatisync_client/jnlp"  href="brihaspatisync.jnlp">
+<jnlp  spec="1.0+"  codebase="https://172.26.82.19:8443/brihaspatisync_client/jnlp"  href="brihaspatisync.jnlp">
   	<information>
     		<title>Brihaspatisync Client</title>
     		<vendor>IIT Kanpur</vendor>
@@ -17,7 +17,7 @@
 		<all-permissions/> 
 	</security>
 	<resources>
-		<j2se version="1.6+" initial-heap-size="128m" max-heap-size="1024m" java-vm-args="-Xincgc"/>   
+		<j2se version="1.6+" initial-heap-size="128m" max-heap-size="1024m" java-vm-args="-Xincgc"/>  
 		<property name="sun.java2d.d3d" value="false"/>
 		<jar href="brihaspatisync.jar"/>
 		<jar href="vlcj.jar"/>
@@ -25,8 +25,6 @@
 		<jar href="jspeex-0.9.7.jar"/>
 		<jar href="commons-codec-1.4.jar"/>
 		<jar href="HttpClient.jar"/>
-		<jar href="syncreflector.jar"/>
-		<jar href="commons-io-1.1.jar"/>
 	</resources>
 	<application-desc main-class="org.bss.brihaspatisync.Client">
 		<argument>no</argument>

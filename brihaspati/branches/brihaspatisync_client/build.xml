@@ -4,7 +4,6 @@
   	<property name="build-client.properties" value="build-client.properties"/>
   	<property file="${build-client.properties}"/>
   	<property name="lib.dir" value="lib"/>
-  	<property name="reflector.dir" value="../brihaspatisync_reflector/jnlp/"/>
 	<property name="src.dir" value="src/java"/>
     	<property name="bin.dir" value="bin/classes"/>
 	<property name="jnlp.dir" value="jnlp"/>
@@ -36,7 +35,6 @@
 	<!-- -->
 	<target name="compile" depends="init" description="**** Compiles the JAVA classes">
     		<mkdir dir="${bin.dir}"/>
-                <copy file="${reflector.dir}/syncreflector.jar" tofile="${lib.dir}/syncreflector.jar"/>
     		<javac srcdir="${src.dir}"
       		       destdir="${bin.dir}"
       		       debug="${debug}"
