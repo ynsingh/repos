@@ -50,7 +50,11 @@ public class ProcessRequest extends HttpServlet {
 	
 	private Torque set=null;
 	private ServletContext context=null;
-	
+/*
+   Get method also lead to invocation of Post method of http mechanism. The
+request will contain the method to be executed. These methods are usually sent
+from clients, reflectors 
+*/	
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException {
 		doPost(request,response);
 	}
@@ -58,9 +62,11 @@ public class ProcessRequest extends HttpServlet {
 	protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException {
 		if(set==null) {
 			try {
-				/**
-				 * context has been set to call getRealPath() of files.
-				 */
+/**
+ * The context has been set to call getRealPath() of files. It is set in static
+ * references in the objects where it is needed to get the actual path of
+ * specific files.
+ */
 				set=new Torque();
 				context = getServletContext();
                                 set.init(context.getRealPath("Torque.properties"));
@@ -68,24 +74,39 @@ public class ProcessRequest extends HttpServlet {
 				ReflectorManager.setContext(context);
 				PeerManager.setContext(context);
                         	ReflectorStatusManager.setContext(context);        
-               		} catch(Exception dberror){ ServerLog.log("Exception in ProcessRequest class for database connection "+dberror.getMessage()); }
+               		} catch(Exception error){ ServerLog.log("Exception in\\
+ProcessRequest class during the context configuration of various objects."+error.getMessage()); }
 		}
 	
 /*
 
 ReflectorManager ->   purge the reflectorStatus.xml to remove all the reflectors whose registration
 referesh is not received in last five minute.
-
+TBD - code for this part to be written.
 */
-	
+/*
+   The request string is retreived.
+*/	
 		String reqType=request.getParameter("req");
+/*
+   The response to the client or reflector is to be written as text.
+*/
 		PrintWriter out = response.getWriter();
-
+/*
+   The reflector_logout message handling by indexing server.
+*/
 		if(reqType.equals("reflector_logout")) {
 
-			/**
-			 * call to removePeer method to remove all entries from Reflector.xml and from ReflectorStatus.xml file.
-			 */
+/**
+ * call to removePeer method to remove all entries for the calling reflector
+ * from Reflector.xml and from ReflectorStatus.xml file
+ * 
+ * In case of reflector sending the reflector_logout message from behind the
+ * firewall, both connection's other end IP address and local IP address
+ * reported by reflector (most likely private IP) should be used to search the
+ * entry in the ReflectorStatus.xml, which is to be removed.
+ * TBD - the corresponding code is to be added below.
+ */
 			try {
 	                        String reflectorIP  =InetAddress.getByName(request.getRemoteAddr()).toString();
         	                String message =ReflectorManager.removePeer(reflectorIP);
@@ -94,7 +115,12 @@ referesh is not received in last five minute.
         	                out.flush();
                 	        out.close();
 			} catch(Exception e) { ServerLog.log("Exception in ProcessRequest class for reflector logout loop "+e.getMessage()); }
-                } else if(reqType.equals("reflector_registration")) {
+                }
+/*
+ * Reflector registration sent by reflector for adding his entry in the
+ * ReflectorStatus.xml file on indexing server.
+ */
+		 else if(reqType.equals("reflector_registration")) {
 			
 /**
 
@@ -102,7 +128,7 @@ get the IP address from connection.
 retrieve the IP address from the request.
 ReflectorManager ->  update/add reflector with current time stamp.
 save the record update in the log file.
-
+TBD - code to be updated as per the above logic.
 */
 			try {
 				String reflectorIP  =InetAddress.getByName(request.getRemoteAddr()).toString();
@@ -114,7 +140,11 @@ save the record update in the log file.
 	                        out.close();
 			} catch(Exception e ) { ServerLog.log("Exception in ProcessRequest Class in reflector registration"+e.getMessage()); }
 			
-		} else if(reqType.equals("getjnlp")) {
+		}
+/*
+ * 
+ */
+		else if(reqType.equals("getjnlp")) {
 			/**
 			 * This block of code is used to to create urlbrihaspatisync.jnlp which is used to join a session directly.
 			 */
