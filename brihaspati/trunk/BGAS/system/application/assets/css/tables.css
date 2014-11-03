@@ -6,6 +6,7 @@
 	font-size:14px;
 	border-collapse:collapse;
 	text-align:left;
+	width:70%;
 }
 
 .simple-table th {
@@ -52,6 +53,17 @@ tr.total-area {
 	font-size:14px;
 	border-collapse:collapse;
 	text-align:left;
+}
+
+#entry_info {
+	width:70%;
+	margin-bottom:20px;
+}
+#td_second{
+  	text-align:right;
+}
+#td_first{
+        text-align:left;
 }
 
 .entry-table th {

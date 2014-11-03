@@ -548,9 +548,42 @@ $width="100%";
 
 		/* Load current entry details */
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
-		//exclude Transit Income account
 		$this->db->where('ledger_id !=', $income_id);
 		$cur_entry_ledgers = $this->db->get();
+/*		$row1 = "";
+		foreach($cur_entry_ledgers->result() as $row1)
+			{
+			$ledgerid = $row1->ledger_id;
+			$ledger_code = $this->Ledger_model->get_ledger_code($ledgerid);
+			$id = "";
+			$earn_code = $this->Ledger_model->get_account_code('Designated-Earmarked Funds');
+			$capital_code = $this->Ledger_model->get_account_code('Capital Funds');
+                	$corpus_code = $this->Ledger_model->get_account_code('Corpus');
+                	$reserve_code = $this->Ledger_model->get_account_code('General Reserve');
+		//	echo"earn==>>$earn_code cap==>>$capital_code corp==>>$corpus_code reserv==>>$reserve_code";
+
+			if($this->StartsWith($ledger_code, $earn_code) || $this->StartsWith($ledger_code, $capital_code) ||$this->StartsWith($ledger_code, $corpus_code)|| $this->StartsWith($ledger_code, $reserve_code))
+			   {
+				$id = $this->Ledger_model->get_ledger_id($ledger_code);
+				$id1 = $id;
+			   }
+			 }
+			$this->db->from('entry_items')->where('entry_id', $entry_id);
+			$query =$this->db->get();
+			$num_row=$query->num_rows();
+			if($num_row == 4){
+		 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+                		//exclude Transit Income account and fund entry
+                		$this->db->where('ledger_id !=', $income_id);
+				$this->db->where('ledger_id !=', $id1);
+                		$cur_entry_ledgers1 = $this->db->get();
+				}
+			else{	
+				$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+                                //exclude Transit Income account
+                                $this->db->where('ledger_id !=', $income_id);
+                                $cur_entry_ledgers1 = $this->db->get();
+				}*/
 		if ($cur_entry_ledgers->num_rows() < 1)
 		{
 			$this->messages->add('Entry has no associated Ledger accounts.', 'error');
@@ -559,7 +592,6 @@ $width="100%";
 		$data['cur_entry_ledgers'] = $cur_entry_ledgers;
 		$data['entry_type_id'] = $entry_type_id;
 		$data['current_entry_type'] = $current_entry_type;
-
 		/**
                  * Get reference ids from entries table
                  * Lines added by Priyanka
@@ -580,7 +612,6 @@ $width="100%";
 				$data['verified_by'] = $ref->verified_by;
                         }
                 }
-
 		$this->template->load('template', 'entry/view', $data);
 		return;
 	}

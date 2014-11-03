@@ -32,12 +32,6 @@ class Payment extends Controller {
 			chmod('./uplaods/Bills',0777);
 
                 }
-	/*	$this->upload_path= realpath(BASEPATH.'../');
-		echo"$this->upload_path";
-       		if (!is_dir($this->upload_path . "/uploads/Bills")) {
-                $result = mkdir($this->upload_path . "/uploads/Bills");
-                chmod($this->upload_path . "/uploads/Bills", 0777);
-        	}*/
 
                 $config['upload_path'] = $path;
                 $config['allowed_types'] = 'gif|jpg|jpeg|png|pdf|';
@@ -453,7 +447,7 @@ class Payment extends Controller {
 
 			$data['decision_active']="Select";
 			$data['exp_type_active']="Select";
-			$data['fund'] = $this->Ledger_model->get_ledgers();
+			$data['fund'] = $this->Ledger_model->get_fund_ledgers();
 			 $data['fund_active']="0";
                         $data['bill_no'] = array(
                         'name' => 'bill_no',
@@ -1315,6 +1309,7 @@ class Payment extends Controller {
                                         		$this->template->load('template', 'payment/voucherfilling', $data);
                                         		return;
                                        		  }
+
                                         	$insert_ledger_data = array(
                                         		'entry_id' => $entry_id,
                                         		'ledger_id' => $id,
@@ -1329,9 +1324,12 @@ class Payment extends Controller {
                                         	 {
                                         		$this->db->trans_rollback();
                                         		$this->messages->add('Error adding Ledger account - ' . $id . ' to Entry.', 'error');
-                                        		$this->template->load('template', 'payment/voucherfilling', $data);
-                                        		return;
-						  }
+
+						   } else {
+                                                $entry_items_id = $this->db->insert_id();
+                                      
+                                                           }
+
 	                                        $insert_fund_data = array(
                                                         'entry_id' => $entry_id,
                                                         'ledger_id' => $fund,
@@ -1384,7 +1382,7 @@ class Payment extends Controller {
                                                         'amount' => $approved_amount,
                                                         'date' => $data_date,
                                                         'type' => $exp_type,
-                                                        'entry_items_id' => $entry_fund_id
+                                                        'entry_items_id' => $entry_items_id,
                                                		 );
 
                                                 if ( ! $this->db->insert('fund_management', $insert_expense_data))

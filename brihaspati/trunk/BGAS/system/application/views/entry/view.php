@@ -1,13 +1,14 @@
-<p>Bill/Voucher Number : <span class="bold"><?php echo full_entry_number($entry_type_id, $cur_entry->number); ?></span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Bill/Voucher Date : <span class="bold"><?php echo date_mysql_to_php_display($cur_entry->date); ?></span>
-</p>
+<table id="entry_info">
+<tr>
+<td id="td_first">Bill/Voucher Number : <span class="bold"><?php echo full_entry_number($entry_type_id, $cur_entry->number); ?></span></td>
 
-<p>Forward Reference Id : <span class="bold"><?php echo $forward_reference_id; ?></span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?></span>
-</p>
+<td id="td_second">Bill/Voucher Date : <span class="bold"><?php echo date_mysql_to_php_display($cur_entry->date); ?></span></td>
+</tr>
 
+<tr>
+<td id="td_first">Forward Reference Id : <span class="bold" align="left"><?php echo $forward_reference_id; ?></span></td>
+<td id="td_second">Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?></span></td>
+</tr>
 <table border=0 cellpadding=5 class="simple-table entry-view-table">
 <thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Secondary Unit</th><th>Party Address</th><th>Fund</th><th>Income/Expense Type</th></tr></thead>
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
@@ -15,57 +16,50 @@ $odd_even = "odd";
 $fund = "";
 $entry_id = "";
 $type = "";
+$fund_id = "";
+$id ="";
 foreach ($cur_entry_ledgers->result() as $row)
 {
+	$id = $row->ledger_id;
 	$ledger_code = $this->Ledger_model->get_ledger_code($row->ledger_id);
         //$account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
 	$temp = $this->Ledger_model->isFund($ledger_code);
-	//$temp = !strncmp($ledger_code, $account_code, strlen($account_code));
-
-	if($temp){
-		$fund = $this->Ledger_model->get_name($row->ledger_id);
-		$entry_id = $row->id;
-		$type = $this->Ledger_model->get_type($row->ledger_id, $entry_id);
-		if($type == 'Revenue')
-			$type = 'Revenue Expenditure';
-		elseif($type == 'Capital')
-			$type = 'Capital Expenditure';
-		elseif($type == 'Accru')
-			$type = 'Accrued Income';
-		elseif($type == 'Earn')
-			$type = 'Earned Income';
-	}
-
-	if(!($temp && $row->dc == "D")){
-	//if($temp){
-		echo "<tr class=\"tr-" . $odd_even . "\">";
-		echo "<td>" . convert_dc($row->dc) . "</td>";
-		echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
+	$entry_id = $row->id;
+		$dc = $row->dc;
 		if ($row->dc == "D")
 		{
+		  if(!($temp)){
+			$query = $this->Ledger_model->get_type1($entry_id);
+			$my_values = explode('#',$query);
+			$type =$my_values[0];
+			$name =$my_values[1];
+			echo "<tr class=\"tr-" . $odd_even . "\">";
+            		echo "<td>" . convert_dc($row->dc) . "</td>";
+		        echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
 			echo "<td>Dr " . $row->amount . "</td>";
 			echo "<td></td>";
 			echo "<td> " . $this->Secunit_model->get_secunitname($row->secunitid) . "</td>";
 			echo "<td> " . $this->Secunit_model->get_secunitaddress($row->secunitid) . "</td>";
-			if(!($this->Ledger_model->isFixedAsset($ledger_code)) || $this->Ledger_model->isExpense($ledger_code)){
-				echo "<td> " . $fund . "</td>";
-				echo "<td> " . $type . "</td>";
+			echo "<td> " . $name . "</td>";
+			echo "<td> " . $type . "</td>";
 				
-			}else{
-				 echo "<td> </td>";
-                                echo "<td> </td>";
-			}
+		     }
 		} else {
+			$type = $this->Ledger_model->get_type($row->ledger_id, $entry_id);
+			echo "<tr class=\"tr-" . $odd_even . "\">";
+                        echo "<td>" . convert_dc($row->dc) . "</td>";
+                        echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
+
 			echo "<td></td>";
 			echo "<td>Cr " . $row->amount . "</td>";
 			echo "<td> " . $this->Secunit_model->get_secunitname($row->secunitid) . "</td>";
 			echo "<td> " . $this->Secunit_model->get_secunitaddress($row->secunitid) . "</td>";
-			echo "<td></td>";
-			echo "<td></td>";
+			echo "<td>"."</td>";
+			echo "<td>".$type."</td>";
 		}
 		echo "</tr>";
 		$odd_even = ($odd_even == "odd") ? "even" : "odd";
-	}
+ //	}
 }
 	$this->db->select('name,bank_name,ledger_id, update_cheque_no')->from('cheque_print')->where('entry_no',$row->entry_id);
         $ledger_q = $this->db->get();
@@ -94,28 +88,31 @@ if ($cur_entry->dr_total != $cur_entry->cr_total)
 }
 ?>
 </table>
-<p>Narration :<br />
-<span class="bold"><?php echo $cur_entry->narration; ?></span>
-</p>
-<p>
-Tag : 
-<?php
-$cur_entry_tag = $this->Tag_model->show_entry_tag($cur_entry->tag_id);
-if ($cur_entry_tag == "")
-	echo "(None)";
-else
-	echo $cur_entry_tag;
-?>
-</p>
-<p>
-	Submitted By : <span class="bold"><?php echo $submitted_by; ?></span>
-</p>
-<p>
-	Verified By : <span class="bold"><?php echo $verified_by; ?></span>
-</p>
-<p>Sanction Letter No. : <span class="bold"><?php echo $cur_entry->sanc_letter_no; ?></span></p>
-<p>Sanction Letter Date : <span class="bold"><?php echo date_mysql_to_php($cur_entry->sanc_letter_date); ?></span></p>
-<p>Sanction Letter Detail : <span class="bold"><?php echo $cur_entry->sanc_value; ?></span></p>
+</br>
+<table id="entry_info">
+	<tr>
+	<td id="td_first">Narration :<span class="bold"><?php echo $cur_entry->narration; ?></span></td>	
+<td id="td_second">Tag :
+	<?php $cur_entry_tag = $this->Tag_model->show_entry_tag($cur_entry->tag_id);
+	if ($cur_entry_tag == "")
+		echo "(None)";
+	else
+		echo $cur_entry_tag;
+	?></td>
+</tr>
+<tr>
+<td id="td_first">Submitted By : <span class="bold"><?php echo $submitted_by; ?></span></td>
+<td id="td_second">Verified By : <span class="bold"><?php echo $verified_by; ?></span></td>
+</tr>
+<tr>
+<td id="td_first">Sanction Letter No. :<span class="bold"><?php echo $cur_entry->sanc_letter_no; ?></span></td>
+<td id="td_second">Sanction Letter Detail : <span class="bold"><?php echo $cur_entry->sanc_value; ?></span></td>
+</tr>
+<tr>
+<td id="td_first">Sanction Letter Date :<span class="bold"><?php echo date_mysql_to_php($cur_entry->sanc_letter_date); ?></span></td>
+</tr>
+</table>
+<br/>
 <?php
 	if($ledger_q->num_rows() > 0){
         	if( $cheque_no != NULL && $name != NULL)

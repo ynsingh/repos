@@ -1061,6 +1061,17 @@ var $ledgers = array();
                         return 0;
 	}
 
+	 function get_ledger_id($code)
+        {
+                $this->db->select('id');
+                $this->db->from('ledgers')->where('code =', $code);
+                $ledger_result = $this->db->get();
+                if ($ledger = $ledger_result->row())
+                        return $ledger->id;
+                else
+                        return 0;
+        }
+
 
 	function get_asset_amount($id)
         {
@@ -1276,7 +1287,8 @@ var $ledgers = array();
 		$this->db->not_like('name', 'Capital', 'both');
 		$this->db->not_like('name', 'Income & Expenditure', 'both');
 		$query = $this->db->get();
-
+		$query1= $query->result();
+	//	print_r($query1);
 		$funds[0] = 'Select Fund';
 		if($query->num_rows() > 0){
 			foreach($query->result() as $ledger){
@@ -1299,6 +1311,29 @@ var $ledgers = array();
 
 		return $funds;
 	
+	}
+	function get_fund_ledgers()
+	{
+		 $funds = array();
+                $funds[0] = 'Select Fund';
+	//	$income_code = $this->get_account_code('Liabilities and Owners Equity');
+	//	$general_code = $this->get_account_code('General Funds');
+         //       $capital_code = $this->get_account_code('capital Funds');
+		$this->db->select('name, id, group_id, code');
+                $this->db->from('ledgers');
+		$this->db->like('code', '10', 'after');
+		$this->db->not_like('code', '1003', 'after');
+		$this->db->not_like('code', '1004', 'after');
+		$this->db->not_like('code', '1005', 'after');
+		$query = $this->db->get();
+//		$query1 = $query->result();
+//		print_r($query1);
+		 if($query->num_rows() > 0){
+                        foreach($query->result() as $ledger){
+				 $funds[$ledger->id] = $ledger->name;
+				}
+			}
+		return $funds;
 	}
 
         function get_codewise_ledgers()
@@ -1328,27 +1363,24 @@ var $ledgers = array();
                 $flag = false;
                 $income_code = $this->get_account_code('Liabilities and Owners Equity');
 
-                $unrestricted_code = $this->get_account_code('Unrestricted Funds');
-                $restricted_code = $this->get_account_code('Restricted Funds');
+                $general_code = $this->get_account_code('General Funds');
+                $capital_code = $this->get_account_code('Capital Funds');
 
-                $ownfund_code = $this->get_account_code('Own Funds');
-                $reservesurplus_code = $this->get_account_code('Reserves and Surplus');
-                $earn_code = $this->get_account_code('Earnmarked');
-                $other_code = $this->get_account_code('Other Funds');
-                $endowcode = $this->get_account_code('Endowment Funds-L');
-
+                $corpus_code = $this->get_account_code('Corpus');
+                $reserve_code = $this->get_account_code('General Reserve');
+                $earn_code = $this->get_account_code('Designated-Earmarked Funds');
 //                $this->db->from('ledgers');
   //              $this->db->like('code', $income_code, 'after');
     //            $query = $this->db->get();
       //          if($query->num_rows() > 0){
         //                foreach($query->result() as $ledger){
 			if($this->startsWith($ledger_code, $income_code)){
-                                if(($unrestricted_code != '') &&  ($restricted_code != '')){
-                                        if($this->startsWith($ledger_code, $unrestricted_code) || $this->startsWith($ledger_code, $restricted_code)){
+                                if(($general_code != '') &&  ($capital_code != '')){
+                                        if($this->startsWith($ledger_code, $general_code) || $this->startsWith($ledger_code, $capital_code)){
                                                 $flag = true;
                                         }
-                                }elseif(($ownfund_code != '') && ($reservesurplus_code != '') && ($earn_code != '') && ($other_code != '') && ($endowcode != '')){
-                                        if($this->startsWith($ledger_code, $ownfund_code) || $this->startsWith($ledger_code, $reservesurplus_code) || $this->startsWith($ledger_code, $earn_code) || $this->startsWith($ledger_code, $other_code) ||  $this->startsWith($ledger_code, $endowcode)){
+                                }elseif(($corpus_code != '') && ($reserve_code != '') && ($earn_code != '')){
+                                        if($this->startsWith($ledger_code, $corpus_code) || $this->startsWith($ledger_code, $reserve_code) || $this->startsWith($ledger_code, $earn_code)){
                                                 $flag = true;
                                         }
                                 }
@@ -1360,7 +1392,7 @@ var $ledgers = array();
 
 	function isExpense($ledger_code){
 		$flag = false; 
-		$expense_code = $this->get_account_code('Expenses');
+		$expense_code = $this->get_account_code('Expenditure');
 		if($this->startsWith($ledger_code, $expense_code))
 			$flag = true;
 
@@ -1369,7 +1401,7 @@ var $ledgers = array();
 
 	function isAsset($ledger_code){
 		$flag = false;
-		$asset = $this->get_account_code('Assets');
+		$asset = $this->get_account_code('Application of Funds');
 		if($this->startsWith($ledger_code, $asset))
 			$flag = true;
 
@@ -1387,8 +1419,42 @@ var $ledgers = array();
 			$type_row = $type_query->row();
 			$type = $type_row->type;
 		}
+		if($type == 'Revenue')
+                        $type = 'Revenue Expenditure';
+                elseif($type == 'Capital')
+                        $type = 'Capital Expenditure';
+                elseif($type == 'Accru')
+                        $type = 'Accrued Income';
+                elseif($type == 'Earn')
+                        $type = 'Earned Income';
+
 		return $type;	
 	}
+
+	function get_type1($entry_id){
+                $type = '';
+		$name ="";
+                $this->db->select('type,fund_name');
+                $this->db->from('fund_management');
+                $this->db->where('entry_items_id', $entry_id);
+                $type_query = $this->db->get();
+                if($type_query->num_rows() > 0){
+                        $type_row = $type_query->row();
+                        $type = $type_row->type;
+			$name =$type_row->fund_name;
+                }
+                if($type == 'Revenue')
+                        $type = 'Revenue Expenditure';
+                elseif($type == 'Capital')
+                        $type = 'Capital Expenditure';
+                elseif($type == 'Accru')
+                        $type = 'Accrued Income';
+                elseif($type == 'Earn')
+                        $type = 'Earned Income';
+		$new_id = $type."#".$name;
+                return $new_id; 
+        }
+
 
 	function isFixedAsset($ledger_code){
 		$flag = false;
