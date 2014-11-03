@@ -74,8 +74,7 @@ from clients, reflectors
 				ReflectorManager.setContext(context);
 				PeerManager.setContext(context);
                         	ReflectorStatusManager.setContext(context);        
-               		} catch(Exception error){ ServerLog.log("Exception in\\
-ProcessRequest class during the context configuration of various objects."+error.getMessage()); }
+               		} catch(Exception error){ ServerLog.log("Exception in ProcessRequest class during the context configuration of various objects."+error.getMessage()); }
 		}
 	
 /*
