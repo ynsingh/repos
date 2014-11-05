@@ -2,7 +2,7 @@
 	<div id="left-col">
 		<div class="settings-container">
 			<div class="settings-title">
-				<?php echo anchor('report2/fundlist', 'Fund List', array('title' => 'Fund List')); ?>
+				<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');echo anchor('report2/fundlist', 'Fund List', array('title' => 'Fund List')); ?>
 			</div>
        	                <div class="settings-desc">
 				&nbsp;    

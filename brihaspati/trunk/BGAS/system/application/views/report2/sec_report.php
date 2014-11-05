@@ -48,7 +48,7 @@
 			$from_date = $date1;
 			$to_date = $date2;
 		}	
-	/* Pagination configuration */
+	/* Pagination configuration 
 	if ( ! $print_preview)
 	{		
 		$this->load->library('pagination');
@@ -61,7 +61,7 @@
 		$config['num_links'] = 10;
 		$config['per_page'] = $pagination_counter;
 		$config['uri_segment'] = 4;
-		$config['total_rows'] = (int)$this->db->from('entries')->where('tag_id', $sec_uni_id)->where('date >=', $from_date)->where('date <=', $to_date)->count_all_results();
+		$config['total_rows'] = (int)$this->db->from('entry_items')->where('secunitid', $sec_uni_id)->where('update_date >=', $from_date)->where('update_date <=', $to_date)->count_all_results();
 		$config['full_tag_open'] = '<ul id="pagination-flickr">';
 		$config['full_close_open'] = '</ul>';
 		$config['num_tag_open'] = '<li>';
@@ -82,7 +82,7 @@
 		$config['last_tag_close'] = '</li>';
 		$this->pagination->initialize($config);
 
-	}
+	}*/
 	if ($sec_uni_id != 0)
 	{
 		if($from_date > $to_date)
@@ -91,7 +91,7 @@
         	}
 
 		$current_enty_type=array();
-		$this->db->from('entries')->where('secunitid', $sec_uni_id);
+		$this->db->from('entries');
 		$this->db->where('date >=', $from_date);
                 $this->db->where('date <=', $to_date);          
                 $prevbal_q = $this->db->get();
@@ -106,18 +106,20 @@
 
                 echo "<thead><tr><th>Date</th><th>No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
 		foreach($prevbal_q->result() as $row) {
+			$ledger_name = $this->Secunit_model->get_sec_unit_report($row->id, $row->entry_type, $sec_uni_id);
+			if($ledger_name != "(Invalid)"){
 			$current_entry_type = entry_type_info($row->entry_type);
 			echo "<tr>";
 			echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
 			echo "<td>$row->number</td>";
-			$tag_name = $this->Ledger_model->get_tag_entry_name($row->id, $row->entry_type);
-			echo "<td>$tag_name</td>";
+			echo "<td>$ledger_name</td>";
 			echo "<td>". $current_entry_type['name']."</td>";
 			echo "<td>$row->dr_total</td>";
 			echo "<td>$row->cr_total</td>";
 
 
 			echo "</tr>";
+			}
 		}
                 echo "</table>";
 		if (!$print_preview){

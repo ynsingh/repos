@@ -562,7 +562,7 @@ class Report2 extends Controller {
 				$fund_ledgerst[$counter][5]= "Cr Amount";
 				$counter++;
 
-				$this->db->from('entries')->where('secunitid', $sec_uni_id);
+				$this->db->from('entries');
 				$this->db->where('date >=', $date1);
 				$this->db->where('date <=', $date2);
 				$fund_ledgerst_q = $this->db->get();
@@ -573,12 +573,15 @@ class Report2 extends Controller {
 					$fund_ledgerst[$counter][0] = date_mysql_to_php_display($row->date);
 					$fund_ledgerst[$counter][1] = $row->number;
 					/* Opposite entry name */
-					$tag_name = $this->Ledger_model->get_opp_tag_entry_name($row->id, $row->entry_type);
-					$fund_ledgerst[$counter][2] = $tag_name;
+					$ledger_name = $this->Secunit_model->get_sec_unit_report($row->id, $row->entry_type, $sec_uni_id );
+					 if($ledger_name != "(Invalid)"){
+
+					$fund_ledgerst[$counter][2] = $ledger_name;
 					$fund_ledgerst[$counter][3] =  $current_entry_type['name'];
 					$fund_ledgerst[$counter][4] = $row->dr_total;
 					$fund_ledgerst[$counter][5] = $row->cr_total;
 					$counter++;
+					}
 				}
 					$this->load->helper('csv');
 					echo array_to_csv($fund_ledgerst, "Secondary Unit report.csv");
