@@ -18,7 +18,7 @@ class Statuscheck {
 		{
 			$this->error_messages[] = 'Application settings directory "' . $check_path . '" is not writable. You will not able to edit any application related settings.';
 		}
-
+/*
 		$check_path = $CI->config->item('config_path') . "accounts/";
 		if (! is_writable($check_path))
 		{
@@ -30,7 +30,7 @@ class Statuscheck {
 		{
 			$this->error_messages[] = 'User directory "' . $check_path . '" is not writable. You will not able to add or edit any users.';
 		}
-
+*/
 		$check_path = $CI->config->item('backup_path');
 		if (! is_writable($check_path))
 		{

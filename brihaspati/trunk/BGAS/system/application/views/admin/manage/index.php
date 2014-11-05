@@ -31,7 +31,7 @@ $odd_even = "odd";
 		        echo "<td>" . $row->hostname . "</td>";
 		        echo "<td>" . $row->port . "</td>";
 		        echo "<td>" . $row->databasename . "</td>";
-		        echo "<td>" . $row->dbpass . "</td>";
+		        echo "<td>" . $row->uname . "</td>";
 
 		        echo "<td>";
 		        if ($this->session->userdata('active_account') == $label)

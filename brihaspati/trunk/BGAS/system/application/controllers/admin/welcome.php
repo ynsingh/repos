@@ -19,7 +19,7 @@ class Welcome extends Controller {
 	
 	function index()
 	{
-		$this->template->set('page_title', 'Administer Webzash');
+		$this->template->set('page_title', 'Administer BGAS');
 
 		/* Check status report */
 		$this->load->library('statuscheck');
