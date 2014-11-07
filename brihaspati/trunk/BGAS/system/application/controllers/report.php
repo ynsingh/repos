@@ -2628,11 +2628,13 @@ class Report extends Controller {
 
 		if ($statement == "new_balancesheet")
                 {
+			$curr_date = date_today_php();
                         $data['report'] = "report/new_balancesheet";
-                        $data['title'] = "Balance Sheet MHRD Format";
+                        $data['title'] = "Balance Sheet As At ".$curr_date;
                         $data['left_width'] = "";
                         $data['right_width'] = "";
                         $data['print_preview'] = TRUE;
+			$data['date'] = $curr_date;
                         $data['entry_date1'] = $date1;
                         $data['entry_date2'] = $date2;
                         $this->load->view('report/report_template', $data);

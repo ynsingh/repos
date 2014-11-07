@@ -8,7 +8,7 @@
 		echo "<table border='0' cellpadding='5'class=\"simple-table report-table\" width=\"100%\" align=\"center\">";
 		}
 		else
-		echo "<table border='0' cellpadding='5'class=\"simple-table report-table\" width=\"70%\">";
+		echo "<table border='0' cellpadding='5'class=\"simple-table report-table\" width=\"100%\">";
 		echo "<tr><td align=\"left\">";
 		$this->db->select('id, name')->from('settings');
                 $ins_id = $this->db->get();
@@ -35,6 +35,7 @@
 	
 	<br>
 	<?php
+	$curr_date = date_today_php();
 	$date1 = $this->session->userdata('date1');
 	$date2 = $this->session->userdata('date2');
 	$start_date = $this->session->userdata('startdate');
@@ -50,8 +51,8 @@
 		$from_date = $date1;
 		$to_date = $date2;
 	}
-	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $title . "</h2><br>";
-	if(($title != "Balance Sheet")&&($title != "Balance Sheet MHRD Format")&&($title != "Day Statement")){
+	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $this->config->item('account_ins_name'). "<br>".$title . "</h2><br>";
+	if(($title != "Balance Sheet")&&($title != "Balance Sheet As At ".$curr_date)&&($title != "Day Statement")){
 
 	echo	 "For the period " . $from_date . " to " . $to_date ;
 	}
@@ -66,4 +67,9 @@
 			$this->load->view($report); 
 	?>
 		<br>
+<?php
+if($title == "Balance Sheet As At ".$curr_date){
+echo "Balance Sheet Prepared By Brihaspati General Accounting System (BGAS)"."</br>";
+}
+?>
 	<form><input class="hide-print" type="button" onClick="window.print()" value="Print Statement"></form>

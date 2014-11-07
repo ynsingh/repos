@@ -323,7 +323,7 @@ class Reportlist
 //			$this->counter++;
 			echo "<tr>";
                         echo "<td class=\"td-group\">";
-                        echo "&nbsp;" .  $this->name;
+                        echo "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" .  $this->name;
                         echo "</td>";
 			
 			$CI =& get_instance();

@@ -75,10 +75,11 @@
 
 	$liability = new Reportlist();
 	$liability->init(2);
+	//print_r($liability);
 	//$liability_total = float_ops($liability_total, -$liability->total, '+');
 	//$old_liability_total = float_ops($old_liability_total, -$liability->total2, '+');
 
-	echo "<table border=0 class=\"simple-table balance-sheet-table\"  >";
+	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
 	echo "<thead><tr><th></th><th>Schedule</th><th>Current Year<br>$curr_year</th><th>Previous Year<br>$prev_year</th></tr></thead>";
 	echo "<tr>";
         echo "<td colspan=\"4\" class=\"bold\">";
