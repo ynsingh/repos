@@ -100,7 +100,7 @@ public class Assignments extends SecureAction
 
                         /**
                         * Get courseid  and coursename for the user currently logged in
-                        * @see UserUtil in Util.
+                        * @see UserUtil in Util
                         */
 				
                         User user=data.getUser();
@@ -111,7 +111,6 @@ public class Assignments extends SecureAction
                                 String Fullname=UserUtil.getFullName(userid);
                         // Get the roll no of this student              
                                 String Rollnm=CourseProgramUtil.getUserRollNo(username,courseid);
-
 				
 				
                         /**
@@ -130,12 +129,13 @@ public class Assignments extends SecureAction
                         */
 
 			String mode=pp.getString("mode","");	
-			String cid=null;
+			String cid=null; 
+			int Id = 0;
 			if(mode.equals("Update")){
 				cid=pp.getString("cid","");	
+				Id=Integer.parseInt(pp.getString("tmpId").trim());
 			}
 
-				
                         /**
                         *convert the year,month,date in date formate
                         */
@@ -168,9 +168,10 @@ public class Assignments extends SecureAction
                         */
 				
 
-                        String uname=user.getName();
+                        /*String uname=user.getName();
                         int u_id=UserUtil.getUID(uname);
                         String uid=Integer.toString(u_id);
+*/
 			
                         /**
                         * convert date String to Integer
@@ -211,6 +212,7 @@ public class Assignments extends SecureAction
                                 * Select GroupName
                                 * from the Assignment table
                                 */
+				Criteria crit1;
                                 Criteria crit=new Criteria();
                                 crit.add(AssignmentPeer.GROUP_NAME,courseid);
 				crit.addAscendingOrderByColumn(AssignmentPeer.ID);
@@ -229,7 +231,7 @@ public class Assignments extends SecureAction
                                 		Assignment element=(Assignment)(u.get(i));
                 		                String assgnid=(element.getAssignId());
 		                                assno=Integer.parseInt(StringUtils.substringAfterLast(assgnid,"-"));
-						ErrorDumpUtil.ErrorLog("list of assignment-------------"+element.toString()+" and n is "+assno);
+						//ErrorDumpUtil.ErrorLog("list of assignment-------------"+element.toString()+" and n is "+assno);
                         		}
                                 	//agroup_name=courseid+"-"+u.size();
 					assno=assno+1;
@@ -256,7 +258,7 @@ public class Assignments extends SecureAction
                                 FileItem fileItem;
                                 fileItem = pp.getFileItem("file");
                                 String fileName1=fileItem.getName();
-				//ErrorDumpUtil.ErrorLog("fileName1 in assignment-------------"+StringUtils.isNotBlank(fileName1));
+				TopicMetaDataXmlReader topicMetaData;
 				if(StringUtils.isNotBlank(fileName1)){
 					if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt"))
                                 	{//if1
@@ -287,6 +289,7 @@ public class Assignments extends SecureAction
                 	                                        fl.delete();
                         	                        }
                                 	        }	
+						//ErrorDumpUtil.ErrorLog("I am here 296 Assign====>"+Assign);
                                                 File scormDir1=new File(Assign+"/"+fileName);
                                                 fileItem.write(scormDir1);
 
@@ -297,21 +300,23 @@ public class Assignments extends SecureAction
 
 						crit=new Criteria();
                                 	        crit.add(NewsPeer.GROUP_ID,GID);
-                        	                crit.add(NewsPeer.USER_ID,uid);
+                        	                crit.add(NewsPeer.USER_ID,userid);
+                        	                //crit.add(NewsPeer.USER_ID,uid);
                 	                        crit.add(NewsPeer.NEWS_TITLE,News);
 		                                crit.add(NewsPeer.NEWS_DESCRIPTION,MessageBox);
                                                 crit.add(NewsPeer.PUBLISH_DATE,Cur_date);
                                                 crit.add(NewsPeer.EXPIRY,Edate);
                                                 crit.add(NewsPeer.EXPIRY_DATE,Post_date);
 						NewsPeer.doInsert(crit);
-						//ErrorDumpUtil.ErrorLog("In news Insert1====>"+MessageBox);
                                                 /**
 						* Insert the Aissignment Info
                 		                * from the Assignment table
                                 	        */
 
-					//	ErrorDumpUtil.ErrorLog("I am here 279 ====>"+MessageBox);
-						Criteria crit1=new Criteria();
+						//ErrorDumpUtil.ErrorLog("I am here 279 agroup_name====>"+agroup_name);
+						crit1=new Criteria();
+						if(mode.equals("Update")) 
+	                                                crit1.add(AssignmentPeer.ID,Id);
                                                 crit1.add(AssignmentPeer.ASSIGN_ID,agroup_name);
                                                 crit1.add(AssignmentPeer.GROUP_NAME,courseid);
                                                 crit1.add(AssignmentPeer.TOPIC_NAME,DB_subject1);
@@ -319,36 +324,55 @@ public class Assignments extends SecureAction
                                                 crit1.add(AssignmentPeer.DUE_DATE,Post_date);
                                                 crit1.add(AssignmentPeer.PER_DATE,Post_date);
                                                 crit1.add(AssignmentPeer.GRADE,Grade);
-//						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+agroup_name);
-//						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+mode + agroup_name + courseid + DB_subject1 + Cur_date + Post_date + Post_date + Grade);
-//						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+crit1);
+						//ErrorDumpUtil.ErrorLog("I am here 289 ====>"+mode + agroup_name + courseid + DB_subject1 + Cur_date + Post_date + Post_date + Grade);
 						if (mode.equals("Update")) {
 //							ErrorDumpUtil.ErrorLog("In Assignment Update====>");
 							AssignmentPeer.doUpdate(crit1);
-						} else {
-//							ErrorDumpUtil.ErrorLog("In Assignment Insert1====>"+crit1);
+						}
+						else {
+						//	ErrorDumpUtil.ErrorLog("In Assignment Insert1====>"+crit1);
                                                 	AssignmentPeer.doInsert(crit1);
 						}
-	//					ErrorDumpUtil.ErrorLog("I am here 296 ====>");
 						File file=new File(Assign+"/__file.xml");
                                                 XmlWriter xmlwriter=null;
 						int kk = -1;
+
                                                 if(!file.exists())
                                                 {
+							ErrorDumpUtil.ErrorLog("!file.exists()"+!file.exists());
                                                        	TopicMetaDataXmlWriter.writeWithRootOnly1(file.getAbsolutePath());
-                                                       	xmlwriter=new XmlWriter(Assign+"/__file.xml");
+                                               		xmlwriter=new XmlWriter(Assign+"/__file.xml");
 						}else{
                                                 	if(mode.equals("Update")){
                                                         	kk=0;
-                                                       		xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","update", username);
-                                                	}else {
+/////////////////////////////////////////////////////////////////////////////////////////////////
+													      //String filePath1,String xmlFile1
+                                                       		//xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","update", username);
+							         Vector v= new Vector();
+							         try{
+							                topicMetaData=new TopicMetaDataXmlReader(Assign+"/__file.xml");
+						                        v=topicMetaData.getAssignmentDetails();
+                                                       			TopicMetaDataXmlWriter.writeWithRootOnly1(file.getAbsolutePath());
+									
+									xmlwriter=new XmlWriter(Assign+"/__file.xml");
+						                        if(v.size()>0){
+										//To Write xml with modified attribute	
+										writeModifiedAttribute(xmlwriter, v, username, Grade, Duedate, Fullname, Rollnm);
+						                        }
+						                }
+						                catch(Exception e){}
+//////////////////////////////////////////////////////////////////////////////////////////////
+                                                	}
+							else {
                                                        		//xmlwriter=new XmlWriter(Assign+"/__file.xml",kk);
 								xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",-1);
-							}
+							}	
 						}
-
+                                               	if(!mode.equals("Update")){
+						ErrorDumpUtil.ErrorLog("I am here 314 ====>"+MessageBox);
                                         		TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,Duedate,Fullname,Rollnm);     
-						xmlwriter.writeXmlFile();
+							xmlwriter.writeXmlFile();
+						}
 
 //						ErrorDumpUtil.ErrorLog("I am here 314 ====>"+MessageBox);
 						/**
@@ -388,11 +412,13 @@ public class Assignments extends SecureAction
                                         * Select the Topic Name According to Course Id
                                         * from the Assignment table
                                         */
+					ErrorDumpUtil.ErrorLog("In START of else====>"+MessageBox);
 				
                                         crit=new Criteria();
 					crit.add(AssignmentPeer.GROUP_NAME,courseid);
                                         crit.add(AssignmentPeer.TOPIC_NAME,DB_subject1);
                                         List u5=AssignmentPeer.doSelect(crit);
+					ErrorDumpUtil.ErrorLog("In else====u5.size()>"+u5.size());
 
                                         if( (u5.size()==0) || (mode.equals("Update")) )
                                         {//if2
@@ -403,7 +429,8 @@ public class Assignments extends SecureAction
 
 						crit=new Criteria();
                                 	        crit.add(NewsPeer.GROUP_ID,GID);
-                        	                crit.add(NewsPeer.USER_ID,uid);
+//                        	                crit.add(NewsPeer.USER_ID,uid);
+                        	                crit.add(NewsPeer.USER_ID,userid);
                 	                        crit.add(NewsPeer.NEWS_TITLE,News);
 		                                crit.add(NewsPeer.NEWS_DESCRIPTION,MessageBox);
                                                 crit.add(NewsPeer.PUBLISH_DATE,Cur_date);
@@ -417,7 +444,8 @@ public class Assignments extends SecureAction
                                 	        */
 
 					//	ErrorDumpUtil.ErrorLog("I am here 279 ====>"+MessageBox);
-						Criteria crit1=new Criteria();
+						crit1=new Criteria();
+                                                crit1.add(AssignmentPeer.ID,Id);
                                                 crit1.add(AssignmentPeer.ASSIGN_ID,agroup_name);
                                                 crit1.add(AssignmentPeer.GROUP_NAME,courseid);
                                                 crit1.add(AssignmentPeer.TOPIC_NAME,DB_subject1);
@@ -431,37 +459,58 @@ public class Assignments extends SecureAction
 						if (mode.equals("Update")) {
 //							ErrorDumpUtil.ErrorLog("In Assignment Update====>");
 							AssignmentPeer.doUpdate(crit1);
+							ErrorDumpUtil.ErrorLog("In after Update ====>");
 						} else {
 //							ErrorDumpUtil.ErrorLog("In Assignment Insert1====>"+crit1);
                                                 	AssignmentPeer.doInsert(crit1);
 						}
-	//					ErrorDumpUtil.ErrorLog("I am here 296 ====>");
 						File file=new File(Assign+"/__file.xml");
                                                 XmlWriter xmlwriter=null;
 						int kk = -1;
+						xmlwriter=new XmlWriter(Assign+"/__file.xml");
                                                 if(!file.exists())
                                                 {
+							//ErrorDumpUtil.ErrorLog("I am here 444 absolutePAth====>"+file.getAbsolutePath());
                                                        	TopicMetaDataXmlWriter.writeWithRootOnly1(file.getAbsolutePath());
                                                        	xmlwriter=new XmlWriter(Assign+"/__file.xml");
 						}else{
                                                 	if(mode.equals("Update")){
                                                         	kk=0;
-                                                       		xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","update", username);
+//////////////////////////////////////////////////////////////////////////////////////////////
+                                                       		//xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","update", username);
+                                                                try{
+                                                       			Vector v= new Vector();
+                                                                        topicMetaData=new TopicMetaDataXmlReader(Assign+"/__file.xml");
+                                                                        v=topicMetaData.getAssignmentDetails();
+									//ErrorDumpUtil.ErrorLog("else v =="+ v.size());
+                                                                        TopicMetaDataXmlWriter.writeWithRootOnly1(file.getAbsolutePath());
+									//ErrorDumpUtil.ErrorLog("PATH==="+Assign+"/__file.xml");
+									xmlwriter=new XmlWriter(Assign+"/__file.xml");
+                                                                        if(v.size()>0){
+										writeModifiedAttribute(xmlwriter, v, username,Grade,Duedate,Fullname,Rollnm);
+                                                                        }
+                                                                }
+                                                                catch(Exception e){}
+//////////////////////////////////////////////////////////////////////////////////////////////
+
                                                 	}else {
                                                        		//xmlwriter=new XmlWriter(Assign+"/__file.xml",kk);
 								xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",-1);
 							}
 						}
-						if(mode.equals("Update"))
+						/*if(mode.equals("Update"))
 						{
 							if(StringUtils.isBlank(fileName1))
 							fileName1=pp.getString("filename","");
-						}
+						}*/
+						if(!mode.equals("Update")){
 					
-						TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName1,username,Grade,Duedate,Fullname,Rollnm);
-						xmlwriter.writeXmlFile();
+							TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName1,username,Grade,Duedate,Fullname,Rollnm);
+							xmlwriter.writeXmlFile();
+						}
 
 //						ErrorDumpUtil.ErrorLog("I am here 314 ====>"+MessageBox);
+						ErrorDumpUtil.ErrorLog("I am here 574 ====>"+MessageBox);
 						/**
                                                 * Disply Message when assignment uploaded successfully
                                                 * and Assignment update successfully
@@ -475,6 +524,7 @@ public class Assignments extends SecureAction
 							data.setMessage(msg);
 						}
 						flag=true;
+						//ErrorDumpUtil.ErrorLog("End ELSE========");
 						
                                         }//if2
                                         else {  
@@ -505,6 +555,33 @@ public class Assignments extends SecureAction
 		}catch(Exception ex) {   data.setMessage("Error in assignment action in do_submit method !!"+ex); }
         }
 
+	/*
+	 * A method to modified existing attribute of given XML
+	 */
+	/////////////////////////
+	public void writeModifiedAttribute(XmlWriter xmlwriter, Vector v, String username, String Grade, String Duedate, String Fullname, String Rollnm){
+		for(int i=0;i<v.size();i++){
+			String fileName=((FileEntry)v.get(i)).getfileName();
+			//ErrorDumpUtil.ErrorLog("fileName-------"+fileName);
+			if(fileName.startsWith("AssignmentFile")){
+				TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,Duedate,Fullname,Rollnm);
+                                //ErrorDumpUtil.ErrorLog("IF ======part END");
+			}
+			else{
+                        	String usrname=((FileEntry)v.get(i)).getUserName();
+                                String grade=((FileEntry)v.get(i)).getGrade();
+                                String Duedate1=((FileEntry)v.get(i)).getDuedate();
+                                String Fullname1=((FileEntry)v.get(i)).getFullname();
+                                String Rollnm1=((FileEntry)v.get(i)).getRollnm();
+                                                                                                                                                          
+                                TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,usrname,grade,Duedate1,Fullname1,Rollnm1);
+                                //ErrorDumpUtil.ErrorLog("ELSE ======part END");
+			}
+		}
+                xmlwriter.writeXmlFile();
+	}
+	//////////////////////
+
         /**
         * Place all the data object in the context for use in the template.
         * @param data RunData instance
@@ -513,6 +590,11 @@ public class Assignments extends SecureAction
         **/
         public void dosubmit(RunData data,Context context)
         {
+		String fileName="";
+		String username = ""; 
+		String str4 = "";
+		String Fullname = "";
+		int userid = 0;
                 try
                 {
 			String LangFile=data.getUser().getTemp("LangFile").toString();
@@ -525,17 +607,19 @@ public class Assignments extends SecureAction
 
                         User user=data.getUser();
                         ParameterParser pp=data.getParameters();
-                        String username=user.getName();
-                        int userid=UserUtil.getUID(username);
-                        String str4=Integer.toString(userid);
+			String mode=pp.getString("mode","");
+			if(StringUtils.isBlank(mode)){
+	                       username=user.getName();
+                        	userid=UserUtil.getUID(username);
+                        	str4=Integer.toString(userid);
+				// get the full of student 
+                                Fullname=UserUtil.getFullName(userid);
+			}
                         /**  Select Role from temp  */
                         String user_role=(String)data.getUser().getTemp("role");
                         String courseid=(String)user.getTemp("course_id","");
-			// get the full of student 
-                                String Fullname=UserUtil.getFullName(userid);
                         // Get the roll no of this student              
                                 String Rollnm=CourseProgramUtil.getUserRollNo(username,courseid);
-
                         
 			/**
                         * create current Date
@@ -582,7 +666,6 @@ public class Assignments extends SecureAction
                         if(br==false)
                         {*/
                                 File file=new File(Assign+"/__file.xml");
-				String fileName="";
                                 FileItem fileItem;
                                 fileItem = pp.getFileItem("file");
                                 String fileName1=fileItem.getName();
@@ -598,7 +681,14 @@ public class Assignments extends SecureAction
                                        // String fileName="AssignmentFile"+fileExt;
                                         if(user_role.equals("student"))
                                                 fileName=userid+fileExt;
-                                        if(user_role.equals("instructor"))
+					else if(mode.equals("PostCorrectAns")){
+                                                //fileName=userid+fileExt;
+						fileName = pp.getString("filename","");
+						userid = Integer.parseInt(StringUtils.substringBeforeLast(fileName,"."));
+						username = UserUtil.getLoginName(userid);
+                                		Fullname=UserUtil.getFullName(userid);
+					}
+                                        else if(user_role.equals("instructor"))
                                                 fileName="Answerfile"+fileExt;
 					for(int ss=0;ss<flist.length;ss++)
                         		{
@@ -608,15 +698,18 @@ public class Assignments extends SecureAction
 							fl.delete();
 						}
 					}
+	                                //ErrorDumpUtil.ErrorLog("BL ======part ");
 					File scormDir1=new File(Assign+"/"+fileName);
                                         fileItem.write(scormDir1);
                                         XmlWriter xmlwriter=null;
-					xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","submit",username);            
+				        //ErrorDumpUtil.ErrorLog("fileName-------"+fileName);
+					if(fileName.equals("Answerfile"+fileExt)){
+					       // ErrorDumpUtil.ErrorLog("fileName-------"+fileName);
+						xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","Answerfile",username);            
+					}
+					else
+	                                        xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","submit",username);
                                         String Grade="10";
-
-                                        //String Duedate=pp.getString("date");
-                                        
-					//xmlwriter=new XmlWriter(Assign+"/__file.xml");
 					TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,date,Fullname,Rollnm);
                                         xmlwriter.writeXmlFile();
 					//msg= MultilingualUtil.ConvertedString("c_msg5",LangFile);
@@ -1337,9 +1430,10 @@ public class Assignments extends SecureAction
         {       try
                 {
                         String action=data.getParameters().getString("actionName","");
-			//ErrorDumpUtil.ErrorLog("actionname"+action);
+			ErrorDumpUtil.ErrorLog("actionname=="+action);
                         if(action.equals("brih_upload"))
                                 do_submit(data,context);
+                                //do_submit();
         	        else if(action.equals("eventSubmit_doDelete"))
                 	        doDelete(data,context);
                         else if(action.equals("dosubmit"))

@@ -242,6 +242,8 @@ public class  ASS_subm  extends  SecureScreen
                         	String tcid=pp.getString("cid","");
                         	String flName=pp.getString("filename","");
                                 context.put("Assignmentfilename",flName);
+                        	String tmpId=pp.getString("tmpId","");
+				context.put("tmpId",tmpId);
 				crit1=new Criteria();
         	                crit1.add(AssignmentPeer.GROUP_NAME,courseid);
         	                crit1.add(AssignmentPeer.ASSIGN_ID,tcid);

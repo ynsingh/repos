@@ -182,6 +182,7 @@ $!data.getMessage()
 		<input type="button" class="button-ftextstyle" name="brih_upload" value="$brih_upload" onClick="checkBlank(document.uploadform,this);" />
 		#else
 		<input type="button" class="button-ftextstyle" name="doUpdate" value="$brih_update" onClick="checkBlank(document.uploadform,this);" />
+		<input type="hidden" name="tmpId" value=$tmpId>
 		#end
                         </font>
                         </td>

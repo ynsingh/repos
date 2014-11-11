@@ -1,0 +1,113 @@
+#*
+ * @(#) ViewAss.vm 
+ * Copyright (c) 2014 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
+#set($lang=$data.getUser().getTemp("lang").toString())
+$!data.getMessage()
+<table bgcolor="$ui.menuColor" width=100% > ##table 1 start
+        <tr> 
+		<td><b>
+			<a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none" >$brih_home</a> |
+	        	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a> |
+        		<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>| #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_view #else $brih_view $brih_assignment #end </b>
+	        	##<a href=$link.setPage("call,Assignment,AssView.vm")> </a> $brih_view $brih_assignment</b>
+        	</td>
+	</tr>
+</table> ##table 1 end
+<table width=100% bgcolor="$ui.tableColor">
+	<tr>
+        	#if($tdcolor != "1")
+	        <td>
+        	#elseif($tdcolor=="1")
+	        <td bgcolor="#AFDCEC">
+        	#end
+	        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </a></td>
+        	#if($tdcolor != "2")
+		<td>
+	        #elseif($tdcolor=="2")
+        	<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","2") style="text-decoration:none">  #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </a></td>
+	        #if($tdcolor != "5")
+        	<td>
+	        #elseif($tdcolor=="5")
+        	<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_edit/$brih_delete #else  $brih_edit/$brih_delete $brih_assignment #end </a></td>
+	        #if($tdcolor != "3")
+	        <td>
+	        #elseif($tdcolor=="3")
+	        <td bgcolor="#AFDCEC">
+	        #end
+		<a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","3") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td>
+	        #if($tdcolor != "4")
+	        <td>
+	        #elseif($tdcolor=="4")
+	        <td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Assignment,RePermission.vm").addPathInfo("count","4") style="text-decoration:none"> $brih_repost  #if($lang == "hindi") $brih_Of #end $Repo_Perm</a></td>
+                	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+</tr>
+</table>
+<form name="uploadform" method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,PostAns.vm").setAction("Assignments")>
+<table width=100% bgcolor="$ui.menuColor">
+	<tr>
+        	<td width=15%> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
+                <td>  <input type="text" name="topicList" value="$topicName" readonly> </td>
+	</tr>
+	<tr bgcolor="$ui.tableColor">
+                #fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
+	</tr>
+	<tr>
+        	<td colspan=2>
+		        <input type="button" class="button-ftextstyle" name="dosubmit" value="$brih_upload" onClick="checkBlank(document.uploadform,this);"  />
+			<input type="hidden" name="mode" value="PostCorrectAns" />
+			<input type="hidden" name="actionName">
+			<input type="hidden" name="fileName" value="$fileName" />
+        	</td>
+	</tr>
+
+</table>
+</form>
+<script LANGUAGE="JAVASCRIPT">
+        function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+        }
+        function checkBlank1(uploadform,field)
+        {
+                if(uploadform.topicList.value!="")
+                {
+                        uploadform.actionName.value=field.name;
+                        uploadform.submit();
+                } else
+                        alert("Selected Topic Name should not be empty !!");
+        }
+
+        function checkBlank(uploadform,field)
+        {       var tList=uploadform.topicList;
+                if(uploadform.topicList.value!="")
+                {
+                        if(uploadform.file.value!="")
+                        {
+                                uploadform.actionName.value=field.name;
+                                uploadform.submit();
+                        }
+                        else
+                                alert("Please Attach file. It can not be empty !!");
+                }
+                else
+                        alert("Selected Topic Name should not be empty !!");
+
+        }
+</script>                
+
+

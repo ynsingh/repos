@@ -773,7 +773,13 @@ public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,Str
 						String Duedate=((FileEntry)v.get(i)).getDuedate();
                                 	        String Fullname =((FileEntry)v.get(i)).getFullname();
                                 	        String Rollnm=((FileEntry)v.get(i)).getRollnm();
-						if(!usrName.equals(username))	
+						if(mode.equals("Answerfile")){ 
+							if(!fileName.startsWith("Answerfile")){
+			                                        appendUpdationMailElement(xmlWriter,fileName,username,grade,Duedate,Fullname,Rollnm);
+									//mode = "submit";
+							}
+						}
+						else if(!usrName.equals(username))	
 		                                        appendUpdationMailElement(xmlWriter,fileName,username,grade,Duedate,Fullname,Rollnm);
                 	                }
 				}

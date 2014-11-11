@@ -72,14 +72,14 @@ $!data.getMessage()
 	#if($user_role ==  "student") 	
 	<td>
 		 #if($topicnm =="")
-        	<SELECT class='drop' name='topicList' onFocus='changeTopic(document.uploadform)' onChange='changeTopic(document.uploadform)'>
-         	<option value="" ></option>
-		#foreach($topic in $allTopics1)
-			<option value="$topic" >$topic</option>
-		#end
-		</SELECT>
+	        	<SELECT class='drop' name='topicList' onFocus='changeTopic(document.uploadform)' onChange='changeTopic(document.uploadform)'>
+        		 	<option value="" ></option>
+				#foreach($topic in $allTopics1)
+					<option value="$topic" >$topic</option>
+				#end
+			</SELECT>
 		 #else
-                 <input type="text" name="topicList" value="$topicnm" readonly>
+	                 <input type="text" name="topicList" value="$topicnm" readonly>
                 #end
 	</td>
 	<td width=15%>$brih_topic $brih_Of1 $brih_name</td>

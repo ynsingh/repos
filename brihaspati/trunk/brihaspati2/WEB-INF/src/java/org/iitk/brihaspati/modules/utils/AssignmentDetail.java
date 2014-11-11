@@ -59,6 +59,15 @@ public class AssignmentDetail
         private String AssignmentId;
         private String FullName;
         private String RollNo;
+        private boolean tmpBool;
+	
+	public void setBoolean(boolean  tmpBool){
+                this.tmpBool=tmpBool;
+        }
+        public boolean getBoolean()
+        {
+                return tmpBool;
+        }
 
 	public void setFullName(String FullName)
         {

@@ -107,6 +107,7 @@ public class EditDelete extends  SecureScreen
 			*/
                         context.put("coursename",(String)user.getTemp("course_name"));
                         String courseid=(String)user.getTemp("course_id");
+			//ErrorDumpUtil.ErrorLog("\n\ncourseid="+courseid);
                         context.put("tdcolor",pp.getString("count",""));
 			/**
 			* Get Topic Name
@@ -128,7 +129,7 @@ public class EditDelete extends  SecureScreen
                         String mode=pp.getString("mode","");
                         context.put("mode",mode);
                         context.put("DB_subject1",DB_subject1);
-
+			//ErrorDumpUtil.ErrorLog("\n\nDB_subject1=="+DB_subject1+"\n topic=="+topic+"mode=="+mode);
 			/**
                         *Find the Assignment Course path and show assignment 
                         */	
@@ -148,10 +149,34 @@ public class EditDelete extends  SecureScreen
                                 String Assid=(element.getAssignId());
                                 if(Assid.startsWith(courseid))
                                 {
+					//////////////////////////////
+					String id = Integer.toString(element.getId());
+					//ErrorDumpUtil.ErrorLog(" Assid ==="+ Assid );
+					AssignmentDetail assignmentdetail=new AssignmentDetail();
+					TopicMetaDataXmlReader topicmetadata = null;
+					try{
+						Vector gradeList=new Vector();
+						//TopicMetaDataXmlReader topicMetaData;
+						topicmetadata=new TopicMetaDataXmlReader(Assign+"/"+Assid+"/__Gradefile.xml");
+                        			gradeList = topicmetadata.getAssignmentDetails1();
+			                        File f2= new File(Assign+"/"+Assid+"/__Gradefile.xml");
+                        			if(f2.exists()){
+			                               	//ErrorDumpUtil.ErrorLog("Grade size in else Grade=="+ gradeList.size());
+                        				if(gradeList!=null){
+								assignmentdetail.setBoolean(true);
+							}
+						}
+						else
+							assignmentdetail.setBoolean(false);
+					
+					}	
+					catch(Exception e){}
+					//////////////////////////////
 					String topicname=(element.getTopicName());
                                         String str2=(element.getTopicName());
 		                        Vector Assignmentlist=new Vector();
-					TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(Assign+"/"+Assid+"/__file.xml");
+					//TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(Assign+"/"+Assid+"/__file.xml");
+					topicmetadata=new TopicMetaDataXmlReader(Assign+"/"+Assid+"/__file.xml");
 		                        Assignmentlist=topicmetadata.getAssignmentDetails(); //Grade
 					String filegrade=""; //Assignment File
 					String fileAssignment=""; //Due Date
@@ -167,7 +192,10 @@ public class EditDelete extends  SecureScreen
 							break;
                                         	}
 					}
-					AssignmentDetail assignmentdetail=new AssignmentDetail();
+					//////////////////////////////
+					//AssignmentDetail assignmentdetail=new AssignmentDetail();
+					assignmentdetail.setAssignmentId(id);
+					//////////////////////////////
 					assignmentdetail.setStudentname(topicname);
 					assignmentdetail.setStudentfile(Assid);
 					assignmentdetail.setAssignmentfile(fileAssignment);
