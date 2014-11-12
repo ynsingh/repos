@@ -597,9 +597,9 @@ function popupWin1(popupName) {
         tmp.write('<td><font color="blue">Roll No</font></td>');
         tmp.write('<td><font color="blue">Name</font></td>');
         tmp.write('<td><font color="blue">Email </font></td>');
-        tmp.write('<td><font color="dark orange">Leave</font></td>');
-        tmp.write('<td><font color="dark red">Absent</font></td>');
         tmp.write('<td><font color="green">Present</font></td>');
+        tmp.write('<td><font color="dark red">Absent</font></td>');
+        tmp.write('<td><font color="dark orange">Leave</font></td>');
         tmp.write('</tr>');
         var value=2;
         for (var i=0;i<col_array.length;i++) {

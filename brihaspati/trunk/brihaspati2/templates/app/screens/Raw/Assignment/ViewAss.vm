@@ -206,12 +206,12 @@ $!data.getMessage()
 	</tr>	
 	## #if($user_role ==  "instructor")
 	#if(($user_role ==  "instructor") || ($user_role == "teacher_assistant"))
-	#foreach($e in $Assignmentlist )
-	#if($velocityCount%2==0)
-	<tr bgcolor="$ui.menuColor">
-	#else
-	<tr bgcolor="$ui.tableColor">
-	#end
+		#foreach($e in $Assignmentlist )
+			#if($velocityCount%2==0)
+				<tr bgcolor="$ui.menuColor">
+			#else
+				<tr bgcolor="$ui.tableColor">
+			#end
 		<td width="10%"> $!e.getStudentname() , 
 			#if($e.getStudentname() ==  $e.getFullName()) 
 			#else $!e.getFullName() , 
@@ -232,7 +232,13 @@ $!data.getMessage()
 		<td width="10%" align="center"> ##Student file
 			#if($!e.getStudentfile() != "")
 				<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getStudentfile())","newWin"); style="text-decoration:none">$brih_view</a> </td>
-			 <td width="10%" align="center"><a href=$link.setPage("call,Assignment,PostCorrectAns.vm").addPathInfo("count","2").addPathInfo("topicname","$topicList").addPathInfo("filename",$e.getStudentfile()) style="text-decoration:none">  #if($lang == "hindi") $brih_correct $brih_answer $DisBoard_DB_msg25 #else $DisBoard_DB_msg25 $brih_correct $brih_answer #end </a> ##post Ans
+				<td width="10%" align="center">
+				#if($!e.getBoolean())		
+					<a href=$link.setPage("call,Assignment,PostCorrectAns.vm").addPathInfo("count","2").addPathInfo("topicname","$topicList").addPathInfo("filename",$e.getStudentfile()) style="text-decoration:none">  #if($lang == "hindi") Correct Answer Post #else Post Correct Answer #end </a> ##post Ans
+				#end
+			#else
+				</td><td width="10%">
+	
 			#end
 		</td>
 		#end

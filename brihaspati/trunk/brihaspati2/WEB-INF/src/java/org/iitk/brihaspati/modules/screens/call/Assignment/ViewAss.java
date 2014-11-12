@@ -334,11 +334,17 @@ public class ViewAss extends  SecureScreen
 				String dateFormatted = dateFormat.format(date1);
 				Date todayDate = dateFormat.parse(dateFormatted);
 				Date newDueDate = dateFormat.parse(filedate);
+				
+				ErrorDumpUtil.ErrorLog("filedate=="+filedate);
+				ErrorDumpUtil.ErrorLog("(todayDate.compareTo(newDueDate==="+todayDate.compareTo(newDueDate));
  				if ((todayDate.compareTo(newDueDate)<0)||(todayDate.compareTo(newDueDate)==0))
 					postAnsChk = "Yes";
-
-				AssignmentDetail assignmentdetail=new AssignmentDetail();
 				
+				AssignmentDetail assignmentdetail=new AssignmentDetail();
+
+				if((todayDate.compareTo(newDueDate)>0)){
+					assignmentdetail.setBoolean(true);
+				}
 				assignmentdetail.setStudentname(studentname);
 				assignmentdetail.setFullName(stFName);
 				assignmentdetail.setRollNo(stRlNo);
