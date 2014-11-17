@@ -388,7 +388,8 @@ TBD - code to be updated as per the above logic.
 				String sessionid = request.getParameter("lect_id");
 				String publicip =(InetAddress.getByName(request.getRemoteAddr())).toString();
 				publicip=publicip.replaceAll("/","");
-				String privateip=request.getParameter("privateip");
+				//String privateip=request.getParameter("privateip");
+				String privateip = publicip;
 				String user=request.getParameter("user");
 				String status=request.getParameter("status");
 				String role=request.getParameter("role");

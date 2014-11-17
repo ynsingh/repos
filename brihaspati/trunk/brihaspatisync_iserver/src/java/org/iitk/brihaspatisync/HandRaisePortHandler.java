@@ -30,7 +30,7 @@ import javax.swing.JOptionPane;
  */
 
 public class HandRaisePortHandler {
-	
+	/*
 	private int port=2004;
 	
 	private static HandRaisePortHandler xmlhandle=null;
@@ -210,4 +210,5 @@ public class HandRaisePortHandler {
            		}
 		} catch( Exception e ){}
 	}
+	*/
 }

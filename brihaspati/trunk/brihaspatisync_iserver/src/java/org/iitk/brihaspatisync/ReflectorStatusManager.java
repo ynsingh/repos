@@ -139,7 +139,8 @@ public class ReflectorStatusManager
         	        	Node node = peerList.item(i);
                 	        if( node.getNodeType() == node.ELEMENT_NODE ){
                         		Element element = ( Element )node;
-                                	String getip=element.getAttribute("PRIVATEIP").trim();
+                                	//String getip=element.getAttribute("PRIVATEIP").trim();
+                                	String getip=element.getAttribute("PUBLICIP").trim();
 	                                if(getip.equals(ip)) {
 						doc.getDocumentElement().removeChild(peerList.item(i));
                                                 saveXML(doc);
