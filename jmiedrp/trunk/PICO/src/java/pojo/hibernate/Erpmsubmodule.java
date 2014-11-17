@@ -60,11 +60,11 @@ public class Erpmsubmodule  implements java.io.Serializable {
     }
 
     public String getEsmNameHindi() {
-        return esmNameHindi;
+        return this.esmName;
     }
 
-    public void setEsmNameHindi(String esmNameHindi) {
-        this.esmNameHindi = esmNameHindi;
+    public void setEsmNameHindi(String esmName) {
+        this.esmNameHindi = esmName;
     }
 
     public Byte getEsmOrder() {

@@ -89,7 +89,7 @@
                                     <s:submit theme="simple" name="btnSubmit" key="Administration.Save"  />
 
 
-                                    <s:submit theme="simple" name="btnSubmit" key="Administration.Clear"  />
+                                    <s:submit theme="simple" name="bthReset" key="Administration.Clear" action="Clear" />
 
 
                                     <s:submit theme="simple" name="bthReset" key="Administration.Browse" action="FetchIUR" />

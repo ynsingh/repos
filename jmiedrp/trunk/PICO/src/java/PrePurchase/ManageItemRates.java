@@ -567,6 +567,9 @@ public class ManageItemRates extends DevelopmentSupport {
     @SkipValidation
     public String FetchItemRates() throws Exception {
         try {
+		if(itemrate.getErpmItemMaster().getErpmimId() == null)
+			message = "Please Select Item Name";
+
             itemRateList = itemrateDAO.findItemRatesForInstitutionAndItem(itemrate.getInstitutionmaster().getImId(), itemrate.getErpmItemMaster().getErpmimId());
 
             //Prepare LOVs

@@ -37,10 +37,16 @@
 
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                <p align="center" class="pageHeading" style="color:  #ffffff">PURCHASE INVOICE/BILL LIST</p>
+                <p align="center" class="mymessage" style="color:  #ffff99" ><s:property value="message" /></p>
+                </div>
+                <div style="border: solid 1px #000000; background: gainsboro">
              <s:form name="frmBrowsePurchaseInvoice">
                  <s:hidden name="pibm.pimPimId"/>
-                 <s:property value="message"/>
-                 <s:label value="PURCHASE INVOICE/BILL LIST" />
+             <%--    <s:property value="message"/>
+                 <s:label value="PURCHASE INVOICE/BILL LIST" /> --%>
                  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                      <display:table name="pibmList" pagesize="15" decorator="Purchase.PurchaseDecorator"
                                excludedParams="*" export="true" cellpadding="0"
@@ -99,7 +105,7 @@
                 </table>
              </s:form>
             </div>
-
+            </div>
              <div id="footer">
                  <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
             </div>

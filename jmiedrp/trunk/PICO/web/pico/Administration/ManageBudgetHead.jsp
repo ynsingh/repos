@@ -103,7 +103,7 @@ I18n By    : Mohd. Manauwar Alam
                         <display:column property="institutionmaster.imName" title="Institution"
                                     maxLength="100" headerClass="gridheader"
                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
-                                   style="width:30%" sortable="true"  href=""/>
+                                   style="width:30%" sortable="true" />
                        <display:column property="bhmName" title="Description"
                                     maxLength="100" headerClass="gridheader"
                                     class="griddata" style="width:40%" sortable="true"/>

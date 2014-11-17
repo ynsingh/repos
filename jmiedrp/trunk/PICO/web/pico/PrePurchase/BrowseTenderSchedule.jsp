@@ -37,10 +37,17 @@
 
             <!-- *********************************End Menu****************************** erpmGenCtrl.erpmgcGenType-->
             <div id ="mainContent" align="center">
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">TENDER SCHEDULE LIST</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+                <div style="border: solid 1px #000000; background: gainsboro">
+
              <s:form name="frmBrowseTenderSchedule">
                    <s:hidden name="tenschdl.tscTscId"/> 
                  <s:property value="message"/>
-                 <s:label value="TENDER SCHEDULE" />
+<%--                 <s:label value="TENDER SCHEDULE" /> --%>
                  <table width="70%" border="0" cellspacing="0" cellpadding="0" align="center">
                      <display:table name="tenschdlList" pagesize="15"
                                excludedParams="*" export="true" cellpadding="0"
@@ -84,6 +91,9 @@
 
                 </table>
              </s:form>
+                <br>
+                </div>
+                &nbsp;
             </div>
 
              <div id="footer">

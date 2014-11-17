@@ -11,7 +11,7 @@ import pojo.hibernate.ErpmsubmoduleDAO;
 import utils.DevelopmentSupport;
 import pojo.hibernate.Erpmmodule;
 import pojo.hibernate.ErpmmoduleDAO;
-
+import org.apache.struts2.interceptor.validation.SkipValidation;
 /**
  *
  * @author mkhan
@@ -126,7 +126,7 @@ public class ManageSubmoduleAction extends DevelopmentSupport{
                 return ERROR;
         }
     }
- 
+    @SkipValidation
   public String Clear() throws Exception {
         try {
             erpmsm=new Erpmsubmodule();
@@ -168,5 +168,27 @@ public class ManageSubmoduleAction extends DevelopmentSupport{
             return ERROR;
         }
     }
- 
+
+    public void validate() {
+        try {
+                if(erpmsm.getErpmSubModuleId() == null) {
+			if(erpmsm.getEsmName().isEmpty())
+                        addFieldError("erpmsm.esmName" ,"Please give Sub Module name");
+          		if(erpmsm.getErpmmodule().getErpmmId() == null)
+                        {
+                        	erpmsmList = erpmsmDao.findAll();
+                        	erpmmList=erpmmDao.findAll();
+                        	addFieldError("erpmsm.erpmmodule.erpmmId","Please set Module's name");
+                        }
+			if(erpmsm.getEsmHref().isEmpty())
+                        addFieldError("erpmsm.esmHref" ,"Please give Submodule's Action Name");
+			if(erpmsm.getEsmOrder()==null)
+                        addFieldError("erpmsm.esmOrder" ,"Please give Order Number");
+			//prepare lov of module name
+             		erpmsmList = erpmsmDao.findAll();
+             		erpmmList=erpmmDao.findAll();
+		}
+	}
+        catch (NullPointerException e) {}
+    } 
 }

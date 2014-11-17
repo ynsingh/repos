@@ -366,6 +366,8 @@ public class ReceiveItemsAction extends DevelopmentSupport {
         empList = empDao.findByDmId(Integer.valueOf(getSession().getAttribute("dmId").toString()));
         //Prepare Committee List
         comList = comDAO.findCommitteeByInstitution(Short.valueOf(getSession().getAttribute("imId").toString()));
+	//Prepare Issue No List
+	isueList = isueDAO.findIssueNo(Integer.valueOf(getSession().getAttribute("dmId").toString()));
     }
 
     @SkipValidation

@@ -48,10 +48,13 @@
             </div>
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
-                <br>
+                <br><br>
+		<div style ="background-color: #215dc6;">
+			<p align="center" class="pageHeading" style="color: #ffffff">GENERAL TERMS LIST</p>
+		</div>
+		<div style="border: solid 1px #000000; background: gainsboro">
+		<br>
              <s:form name="frmManageGeneralTermsBrowse" >
-                   <p align="center"><s:label value="GENERAL TERMS LIST" /></p>
-                 <s:property value="message" />
                  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                     <display:table name="GTermsList" pagesize="15"
                                excludedParams="*" export="true" cellpadding="0"
@@ -82,6 +85,7 @@
                 </table>
              </s:form>
              <br>
+            </div>
             </div>
              <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>

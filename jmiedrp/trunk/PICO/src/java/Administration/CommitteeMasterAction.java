@@ -182,13 +182,14 @@ public class CommitteeMasterAction extends DevelopmentSupport {
  @SkipValidation
 public String FetchCommitteeMaster() throws Exception {
     try{
-        if(cm.getSubinstitutionmaster().getSimId() == null )
+        /*if(cm.getSubinstitutionmaster().getSimId() == null )
             cmList = cmDAO.findCommittees(cm.getInstitutionmaster().getImId());
         else if (cm.getDepartmentmaster().getDmId()==0)
             cmList = cmDAO.findCommittees(cm.getInstitutionmaster().getImId(),cm.getSubinstitutionmaster().getSimId());
         else
             cmList = cmDAO.findCommittees(cm.getInstitutionmaster().getImId(), cm.getSubinstitutionmaster().getSimId(), cm.getDepartmentmaster().getDmId());
-
+*/
+	cmList = cmDAO.findCommittees(Short.valueOf(getSession().getAttribute("imId").toString()));
         //Initialize LOV,s
         InitializeitemsLOVs();
 

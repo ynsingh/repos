@@ -30,7 +30,7 @@
         <action name="ManageItems" class="PrePurchase.ManageItems">
             <interceptor-ref name="PrePurchaseStack" />
             <result name="success">/pico/PrePurchase/ManageItems.jsp</result>
-            <result name="error">/pico/PrePurchase/ManageItems.jsp</result>
+            <result name="error">/pico/PrePurchase/ErrorPage.jsp</result>
             <result name="input">/pico/PrePurchase/ManageItems.jsp</result>
         </action>
 
@@ -48,13 +48,13 @@
 
         <action name="DeleteItem" method="Delete" class="PrePurchase.ManageItems">
             <result name="success">/pico/PrePurchase/BrowseItems.jsp</result>
-            <result name="error">/pico/PrePurchase/BrowseItems.jsp</result>
+            <result name="error">/pico/PrePurchase/ErrorPage.jsp</result>
             <result name="input">/pico/PrePurchase/BrowseItems.jsp</result>
         </action>
 
         <action name="EditItem" method="Edit" class="PrePurchase.ManageItems">
             <result name="success">/pico/PrePurchase/ManageItems.jsp</result>
-            <result name="error">/pico/PrePurchase/BrowseItems.jsp</result>
+            <result name="error">/pico/PrePurchase/ErrorPage.jsp</result>
             <result name="input">/pico/PrePurchase/BrowseItems.jsp</result>
         </action>
         <action name="PrintItems" method="Print" class="PrePurchase.ManageItems">
@@ -162,6 +162,12 @@
         </action>
 
         <!--ACTION RELATED TO INDENT MASTER-->
+
+        <action name="Help" class="PrePurchase.HelpAction">
+            <result name="success">/pico/PrePurchase/Help.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/Help.jsp</result>
+        </action>
 
         <action name="ManageIndent" class="PrePurchase.ManageIndent">
             <interceptor-ref name="PrePurchaseStack" />

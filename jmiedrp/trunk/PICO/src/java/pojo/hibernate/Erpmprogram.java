@@ -81,11 +81,11 @@ public class Erpmprogram  implements java.io.Serializable {
     }
 
     public String getErpmpDisplayNameHindi() {
-        return erpmpDisplayNameHindi;
+        return this.erpmpDisplayName;
     }
 
-    public void setErpmpDisplayNameHindi(String erpmpDisplayNameHindi) {
-        this.erpmpDisplayNameHindi = erpmpDisplayNameHindi;
+    public void setErpmpDisplayNameHindi(String erpmpDisplayName) {
+        this.erpmpDisplayNameHindi = erpmpDisplayName;
     }
 
     public String getErpmpPurpose() {

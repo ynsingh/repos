@@ -98,13 +98,13 @@
                            <s:param name="inputcolspan" value="%{4}" />
                  </s:textfield>
 
-                 <s:textfield cssClass="queryInput" required="true" requiredposition="left" maxLength="10" size="10" title="Enter Approval Effective From Date [MM-DD-YYYY]"
+                 <s:textfield cssClass="queryInput" required="true" requiredposition="left" maxLength="10" size="10" title="Enter Approval Effective From Date [DD-MM-YYYY]"
                               key="PrePurchase.ApprovalEffectiveFromDate" name="effDate" >
                               <s:param name="labelcolspan" value="%{1}" />
                               <s:param name="inputcolspan" value="%{4}" />
                  </s:textfield>
 <s:label value="..." cssClass="tdSpace"/>
-                 <s:textfield cssClass="queryInput" required="true" requiredposition="left" maxLength="10" size="10" title="Enter last date of approval validity [MM-DD-YYYY]"
+                 <s:textfield cssClass="queryInput" required="true" requiredposition="left" maxLength="10" size="10" title="Enter last date of approval validity [DD-MM-YYYY]"
                               key="PrePurchase.ApprovalValidUptoDate" name="validUptoDate" >
                               <s:param name="labelcolspan" value="%{1}" />
                               <s:param name="inputcolspan" value="%{4}" />

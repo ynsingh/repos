@@ -367,12 +367,13 @@ public void  validate () {
 
     public String FetchWorkFlowMaster() throws Exception {
 
-            if(wfm.getSubinstitutionmaster().getSimId() == null )
+            /*if(wfm.getSubinstitutionmaster().getSimId() == null )
                 wfmList=wfmDAO.findWorkFlowRecords(wfm.getInstitutionmaster().getImId());
             else if (wfm.getDepartmentmaster().getDmId()==0)
                 wfmList=wfmDAO.findWorkFlowRecords(wfm.getInstitutionmaster().getImId(),wfm.getSubinstitutionmaster().getSimId());
             else
-                wfmList = wfmDAO.findWorkFlowRecords(wfm.getInstitutionmaster().getImId(), wfm.getSubinstitutionmaster().getSimId(), wfm.getDepartmentmaster().getDmId());      
+                wfmList = wfmDAO.findWorkFlowRecords(wfm.getInstitutionmaster().getImId(), wfm.getSubinstitutionmaster().getSimId(), wfm.getDepartmentmaster().getDmId());      */
+	wfmList = wfmDAO.findWorkFlowRecords(Short.valueOf(getSession().getAttribute("imId").toString()));
         //Initialize LOV,s
         InitializeitemsLOVs();
 

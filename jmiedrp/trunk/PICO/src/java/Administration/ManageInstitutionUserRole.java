@@ -247,7 +247,11 @@ public class ManageInstitutionUserRole extends DevelopmentSupport {
     public String FetchIUR() throws Exception {
         try {
             //Prepare list for showing Institution User Role(s) for the selected institution
-            iurList = iurDao.findByInstitutionId(iur.getInstitutionmaster().getImId());
+            //lines added by shobhi
+            if(iur.getInstitutionmaster().getImId() == null)
+           	 iurList = iurDao.findByInstitutionId(Short.valueOf(getSession().getAttribute("imId").toString()));
+	    else            
+                 iurList = iurDao.findByInstitutionId(iur.getInstitutionmaster().getImId());
 
             //Prepare a list of institutions under perview of the current user
             imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));

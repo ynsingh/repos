@@ -114,6 +114,30 @@ public class ErpmTenderSubmissionDAO {
             session.close();
         }
     }
+
+    public List<ErpmTenderSubmission> findbyId(Short imId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+		List< ErpmTenderSubmission> list = session.createQuery("Select u from  ErpmTenderSubmission u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(list.get(index).getDepartmentmaster());
+                Hibernate.initialize(list.get(index).getErpmTenderMaster());
+                Hibernate.initialize(list.get(index).getErpmGenMaster());
+                Hibernate.initialize(list.get(index).getTsbCompanyName());
+
+            }
+
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+
+
 public ErpmTenderSubmission findByTenderSubmissionId(Integer tsbTsbId) {
         Session session = HibernateUtil.getSession();
         try {

@@ -264,8 +264,10 @@ catch (Exception e)
 
            //Prepare LOV containing Budget Head for the selected institution
             if(bhm.getInstitutionmaster().getImId()==null)
-                message = "Please select institution";
-            bhmList=bhmDao.findByImId(bhm.getInstitutionmaster().getImId());
+                //message = "Please select institution";
+		bhmList=bhmDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
+	    else
+                bhmList=bhmDao.findByImId(bhm.getInstitutionmaster().getImId());
 
             //Prepare LOV containing User Institutions
             imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));

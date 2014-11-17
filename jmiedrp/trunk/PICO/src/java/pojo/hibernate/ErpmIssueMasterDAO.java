@@ -69,6 +69,19 @@ public class ErpmIssueMasterDAO {
         }
     }
 
+/////Shobhi
+    public List<ErpmIssueMaster> findIssueNo(int dmId) {
+ 
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<ErpmIssueMaster> isueList  =  session.createQuery("from ErpmIssueMaster u where u.departmentmasterByIsmFromDepartmentId.dmId = :dmId").setParameter("dmId", dmId).list();
+            return isueList;
+        }
+        finally {
+            session.close();
+            }
+    }
 //    public List<ErpmIssueMaster> findAll() {
 //        Session session = HibernateUtil.getSession();
 //        try {

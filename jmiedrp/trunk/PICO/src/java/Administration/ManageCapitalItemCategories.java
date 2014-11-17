@@ -194,7 +194,12 @@ public void setIMID(short IMID) {
 
 public String FetchCCEntries() throws Exception {
     try{
-        erpmccList = erpmccDao.findByImId(erpmcc.getInstitutionmaster().getImId());
+	if(erpmcc.getInstitutionmaster().getImId() == null)
+        	erpmccList = erpmccDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
+	else
+		erpmccList = erpmccDao.findByImId(erpmcc.getInstitutionmaster().getImId());
+
+        //erpmccList = erpmccDao.findByImId(erpmcc.getInstitutionmaster().getImId());
         imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
         return SUCCESS;
     }
@@ -231,10 +236,10 @@ public String Clear() throws Exception {
  public void validate()  {
     try {
         //message="hi in validate";
-        if(erpmcc.getInstitutionmaster().getImId()==null) {
+       /* if(erpmcc.getInstitutionmaster().getImId()==null) {
             addFieldError("erpmcc.institutionmaster.imId","please select Insitute!");
             imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-        }
+        }*/
         if(erpmcc.getErmccDesc().toString()==null) {
            addFieldError("erpmcc.ermccDesc","please item category name");
 imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));

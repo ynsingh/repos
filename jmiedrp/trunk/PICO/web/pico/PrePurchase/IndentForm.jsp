@@ -37,6 +37,9 @@
                 <!-- *********************************End Menu****************************** -->
                 <div id ="mainContent" align="left">
                     <br><br>         
+                <div align="right" style="margin-right: 10px">
+		<a href="" onclick="window.open('Help','name','width=600,height=400,scrollbars=1,resizable=0')">HELP</a>
+                </div>
                 <s:actionerror/>
                 <s:property value="message" />         
                 <s:bean name="java.util.HashMap" id="qTableLayout">

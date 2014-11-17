@@ -39,9 +39,11 @@
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
                 <br><br>
-                <p align="center">PURCHASE CHALLAN LIST</p>
-
-                <br><p align="center"><s:property value="message" /></p>
+                <div style ="background-color: #215dc6;">
+                <p align="center" class="pageHeading" style="color:  #ffffff">PURCHASE CHALLAN LIST</p>
+                <p align="center" class="mymessage" style="color:  #ffff99" ><s:property value="message" /></p>
+		</div>
+                <div style="border: solid 1px #000000; background: gainsboro">
                 <s:form name="frmPurchaseChallanBrowse" >
 
                     <table  border="0" cellspacing="0" cellpadding="6" align="center">
@@ -102,6 +104,7 @@
                             </td></tr>
                     </table>
                 </s:form>
+</div>
                 <br><br><br>
             </div>
             <div id="footer">

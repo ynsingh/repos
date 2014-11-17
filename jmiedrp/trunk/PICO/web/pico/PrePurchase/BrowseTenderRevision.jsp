@@ -39,7 +39,7 @@
                     <p align="center" class="pageHeading" style="color: #ffffff">TENDER REVISION</p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
-                
+		<div style="border: solid 1px #000000; background: gainsboro">                
                 <s:form name="frmBrowseTenderRevision">
                     
                     <s:label value="TENDER REVISION" />
@@ -102,6 +102,7 @@
                     </table>
 
                 </s:form>
+            	</div>
             </div>
             <br>
             <div id="footer">

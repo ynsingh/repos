@@ -533,7 +533,9 @@ public class TenderSubmissionAction extends DevelopmentSupport {
     public String BrowseTSB() throws Exception {
         try {
             //Retrieve Items which belong to the institutes in the perview of user
-            erpmtsbList = erpmtsbDao.findAll();
+            //erpmtsbList = erpmtsbDao.findAll();
+            //line added by shobhi
+            erpmtsbList = erpmtsbDao.findbyId(Short.valueOf(getSession().getAttribute("imId").toString()));
             //findItemsForUserInstitutes(Integer.valueOf(getSession().getAttribute("userid").toString()));
             tsfTsfId = 0;
 

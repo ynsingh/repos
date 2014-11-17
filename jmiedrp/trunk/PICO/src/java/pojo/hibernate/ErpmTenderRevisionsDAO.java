@@ -121,6 +121,25 @@ public class ErpmTenderRevisionsDAO {
         }
     }
 
+     public List<ErpmTenderRevisions> findByImId(Short imId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmTenderRevisions> list = session.createQuery("select u from ErpmTenderRevisions u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getErpmGenMaster());
+                Hibernate.initialize(list.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(list.get(index).getDepartmentmaster());
+                Hibernate.initialize(list.get(index).getErpmTenderMaster());
+
+            }
+            return list;
+       }
+        finally {
+            session.close();
+        }
+    }
 
       public Boolean findByRevisionNoAndTenderNo(Integer tenderId, int revisionNo) {
         Session session = HibernateUtil.getSession();

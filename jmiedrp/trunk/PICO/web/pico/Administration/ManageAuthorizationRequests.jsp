@@ -29,12 +29,15 @@
             </div>
             <s:hidden name="erpmuName" />
             <!-- *********************************End Menu****************************** -->
-            <s:property value="message" />
-            <div id ="mainContent" align="center">
-
+            <div id ="mainContent" >
+                <br>
+		<div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">Authorization Requests</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+		<div style="border: solid 1px #000000; background: gainsboro">
                 <br>
                 <s:form name="frmManageAuthorizationRequests">
-                    <br><br>
 
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                         <display:table name="erpmurList" pagesize="15" summary="false"
@@ -74,6 +77,8 @@
                             </display:table>
                     </table>
                 </s:form>
+		</div>
+		</div>
                 <br>
             </div>
             <div id="footer">

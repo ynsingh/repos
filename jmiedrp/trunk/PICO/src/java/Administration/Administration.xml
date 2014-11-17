@@ -148,6 +148,11 @@
             <result name="success">/pico/Administration/ManageInstitutionUserRole.jsp</result>
         </action>
 
+	<action name="Clear" method="Clear" class="Administration.ManageInstitutionUserRole">
+            <result name="success">/pico/Administration/ManageInstitutionUserRole.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
         <action name="DeleteIUR" method="DeleteIUR" class="Administration.ManageInstitutionUserRole">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/ManageInstitutionUserRole.jsp</result>
@@ -541,8 +546,8 @@
         <action name="FetchCCEntries" method="FetchCCEntries" class="Administration.ManageCapitalItemCategories">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/ManageCapitalCategory.jsp</result>
-            <result name="error">/pico/Administration/ManageInstitutionUserRole.jsp</result>
-            <result name="success">/pico/Administration/ManageCapitalCategory.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageCapitalCategory.jsp</result>
         </action>
 
         <action name="ManageCapitalExportAction" method="Export" class="Administration.ManageCapitalItemCategories">
@@ -1184,6 +1189,11 @@
             <result name="success">/pico/Administration/CurrentProfile.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/CurrentProfile.jsp</result>
+        </action>
+        <action name="PICOHelpAction" class="Administration.PICOHelpAction">
+            <result name="success">/pico/Administration/helpdoc.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/helpdoc.jsp</result>
         </action>
     </package>
 </struts>

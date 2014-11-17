@@ -214,9 +214,10 @@ public class TenderRevisionAction extends DevelopmentSupport {
     @SkipValidation
     public String BrowseTenderRevision() {
         try {
-
-            etrList = etrDao.findAll();
-            message = "You can now EDIT and DELETE the records";
+//lines added by Shobhi
+            //etrList = etrDao.findAll();
+            //message = "You can now EDIT and DELETE the records";
+            etrList = etrDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
             return SUCCESS;
         } catch (Exception e) {
             message = "Exception in BrowseTenderRevision method -> TenderRevisionAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
