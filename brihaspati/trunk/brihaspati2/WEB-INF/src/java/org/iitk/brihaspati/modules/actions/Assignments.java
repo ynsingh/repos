@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Vector;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
@@ -760,7 +762,7 @@ public class Assignments extends SecureAction
                         ParameterParser pp=data.getParameters();
                         String username=user.getName();
                         int userid=UserUtil.getUID(username);
-                        String str4=Integer.toString(userid);
+                        //String str4=Integer.toString(userid);
 
 
                         /**  Get Role id Student or Instructor   */
@@ -820,14 +822,14 @@ public class Assignments extends SecureAction
                                 File scormDir1=new File(Assign+"/"+fileName);
                                 fileItem.write(scormDir1);
                                 XmlWriter xmlwriter=null;
-                                int kk=-1;
+                                //int kk=-1;
 
                                 /**
                                 * Read xml file in Assignment Dir
 				* remove the duplicate entry
                                 *@see TopicMetaDataXmlReader in Util
                                 */
-
+/*
                                 TopicMetaDataXmlReader topicmetadata=null;
                                 Vector Assignmentlist1=new Vector();
                                 topicmetadata=new TopicMetaDataXmlReader(Assign+"/__file.xml");
@@ -837,17 +839,18 @@ public class Assignments extends SecureAction
                                         for(int c=0;c<Assignmentlist1.size();c++)
                                         {
                                                 String filereader1 =((FileEntry) Assignmentlist1.elementAt(c)).getfileName();
+						ErrorDumpUtil.ErrorLog("c==="+c);
                                                 if(filereader1.startsWith(str4))
                                                         kk=c;
                                         }
                                 }
-
+                                xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",kk);
+*/
                                 /**
                                 *Maintaing the records in the xml file
                                 * @see TopicMetaDataXmlWriter in Util.
                                 */
-
-                                xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",kk);
+				xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","submit",username);
                                 String Grade="10";
                                 //String Duedate=pp.getString("date");
                                 TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,date,Fullname,Rollnm);
@@ -932,6 +935,7 @@ public class Assignments extends SecureAction
                         * @see UserUtil in utils
                         */
 			String LangFile=data.getUser().getTemp("LangFile").toString();
+			//ErrorDumpUtil.ErrorLog("START===========");
                         String msg="";
 				
                         User user=data.getUser();
@@ -939,8 +943,6 @@ public class Assignments extends SecureAction
                         String username=user.getName();
                         int userid=UserUtil.getUID(username);
                         String str4=Integer.toString(userid);
-
-
                         String user_role=(String)data.getUser().getTemp("role");
                         String courseid=(String)user.getTemp("course_id","");
 			// get the full of student 
@@ -959,6 +961,7 @@ public class Assignments extends SecureAction
                         //String date=pp.getString("date","");
                         String DB_subject=pp.getString("topicList");
                         String DB_subject1=pp.getString("topicList1");
+			//ErrorDumpUtil.ErrorLog("DB_subject1==="+DB_subject1);
                         String grade=pp.getString("");
                         String year=pp.getString("Start_year");
                         String month=pp.getString("Start_mon");
@@ -1033,8 +1036,42 @@ public class Assignments extends SecureAction
                                                 TopicMetaDataXmlWriter.writeWithRootOnly1(file.getAbsolutePath());
                                                 xmlwriter=new XmlWriter(Assign+"/__permission.xml");
                                         }
+                                        if(!DB_subject1.equals("All")){
+						//ErrorDumpUtil.ErrorLog("IF ! DB_subject1== All ="+DB_subject1);
+				                Vector v= new Vector();
+				                File descFile=new File(Assign+"/__permission.xml");
+				                try{
+                        				TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(Assign+"/__permission.xml");
+							v=topicMetaData.getAssignmentDetails();
+							TopicMetaDataXmlWriter.writeWithRootOnly1(descFile.getAbsolutePath());
+				                        xmlwriter=new XmlWriter(Assign+"/__permission.xml");
+				                        if(v.size()>0){
+								for(int tmpI=0;tmpI<v.size();tmpI++){
+									String fileName=((FileEntry)v.get(tmpI)).getfileName();
+									if(!fileName.equals("All")){
+										if(!fileName.equals(DB_subject1)){
+					                                                String username1=((FileEntry)v.get(tmpI)).getUserName();
+        		                			                        String grade1=((FileEntry)v.get(tmpI)).getGrade();
+                		                                			String Duedate1=((FileEntry)v.get(tmpI)).getDuedate();
+					                                                String Fullname1=((FileEntry)v.get(tmpI)).getFullname();
+                        					                        String Rollnm1=((FileEntry)v.get(tmpI)).getRollnm();
 
-                                        xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__permission.xml",-1);
+                                                					TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username1,grade1,Duedate1,Fullname1,Rollnm1);
+										}
+									}
+									else{
+                                        					xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__permission.xml",-1);
+										break;
+									}
+								}
+								//ErrorDumpUtil.ErrorLog("IF ! DB_subject1== All ENDDDDDDDDD="+DB_subject1);
+							}
+						}
+						catch(Exception e){}
+					}
+					else
+                                        	xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__permission.xml",-1);
+					//ErrorDumpUtil.ErrorLog("AFTER ELSE ! DB_subject1== All ="+DB_subject1);
                                         TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,DB_subject1,str2,DB_subject,Duedate,"","");
                                         xmlwriter.writeXmlFile();	
 					msg= MultilingualUtil.ConvertedString("assignment_msg16",LangFile);

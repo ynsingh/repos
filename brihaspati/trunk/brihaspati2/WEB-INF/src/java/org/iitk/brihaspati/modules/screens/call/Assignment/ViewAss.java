@@ -335,8 +335,8 @@ public class ViewAss extends  SecureScreen
 				Date todayDate = dateFormat.parse(dateFormatted);
 				Date newDueDate = dateFormat.parse(filedate);
 				
-				ErrorDumpUtil.ErrorLog("filedate=="+filedate);
-				ErrorDumpUtil.ErrorLog("(todayDate.compareTo(newDueDate==="+todayDate.compareTo(newDueDate));
+				//ErrorDumpUtil.ErrorLog("filedate=="+filedate);
+				//ErrorDumpUtil.ErrorLog("(todayDate.compareTo(newDueDate==="+todayDate.compareTo(newDueDate));
  				if ((todayDate.compareTo(newDueDate)<0)||(todayDate.compareTo(newDueDate)==0))
 					postAnsChk = "Yes";
 				
