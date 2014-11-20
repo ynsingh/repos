@@ -90,6 +90,8 @@ if ( ! function_exists('force_download'))
 			header('Pragma: no-cache');
 			header("Content-Length: ".strlen($data));
 		}
+		$path= realpath(BASEPATH.'../backups');
+                @unlink($path.'/'.$filename);
 	
 		exit($data);
 	}
