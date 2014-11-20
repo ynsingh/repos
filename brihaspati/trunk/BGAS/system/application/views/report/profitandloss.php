@@ -124,7 +124,7 @@
 		        $old_grosstotal = float_ops($old_grosstotal, -$old_grosspl, '+');
 
 			echo "<tr valign=\"top\">";
-			echo "<td width=\"$left_width\" class=\"bold\">Gross Loss C/O</td>";
+			echo "<td width=\"$left_width\" class=\"bold\">Gross Deficit C/O</td>";
 			echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$grosspl)) . "</td>";
 		        echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$old_grosspl)) . "</td>";
 			echo "</tr>";
@@ -154,7 +154,7 @@
 		        $old_grosstotal = float_ops($old_grosstotal, $old_grosspl, '+');
 
 			echo "<tr valign=\"top\">";
-			echo "<td width=\"$left_width\" class=\"bold\">Gross Profit C/O</td>";
+			echo "<td width=\"$left_width\" class=\"bold\">Gross Surplus C/O</td>";
 			echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($grosspl)) . "</td>";
 		        echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_grosspl)) . "</td>";
 			echo "</tr>";
@@ -245,7 +245,7 @@
 		        $net_old_total = float_ops($net_old_total, $old_grosspl, '+');
 
 			echo "<tr valign=\"top\">";
-			echo "<td width=\"$left_width\" class=\"bold\">Gross Profit B/F</td>";
+			echo "<td width=\"$left_width\" class=\"bold\">Gross Surplus B/F</td>";
 			echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($grosspl)) . "</td>";
 		        echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_grosspl)) . "</td>";
 			echo "</tr>";
@@ -267,7 +267,7 @@
 			$nettotal = float_ops($nettotal, -$netpl, '+');
 			$net_old_total = float_ops($net_old_total, -$old_netpl, '+');
 			echo "<tr valign=\"top\">";
-			echo "<td width=\"$left_width\" class=\"bold\">Net Loss</td>";
+			echo "<td width=\"$left_width\" class=\"bold\">Net Deficit</td>";
 			echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$netpl)) . "</td>";
 			echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$old_netpl)) . "</td>";
 			echo "</tr>";
@@ -302,7 +302,7 @@
 		        $net_old_total = float_ops($net_old_total, -$old_grosspl, '+');
 
 			echo "<tr valign=\"top\">";
-			echo "<td width=\"$left_width\" class=\"bold\">Gross Loss B/F</td>";
+			echo "<td width=\"$left_width\" class=\"bold\">Gross Deficit B/F</td>";
 			echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$grosspl)) . "</td>";
 		        echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$old_grosspl)) . "</td>";
 
@@ -313,7 +313,7 @@
 			$nettotal = float_ops($nettotal, $netpl, '+');
 		        $net_old_total = float_ops($net_old_total, $old_netpl, '+');
 			echo "<tr valign=\"top\">";
-			echo "<td width=\"$left_width\" class=\"bold\">Net Profit</td>";
+			echo "<td width=\"$left_width\" class=\"bold\">Net Surplus /td>";
 			echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($netpl)) . "</td>";
 		        echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_netpl)) . "</td>";
 			echo "</tr>";

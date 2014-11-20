@@ -82,7 +82,7 @@
 			$total = float_ops($total, $pandl, '+');
 			$old_total = float_ops($old_total, $old_pandl, '+');
 			echo "<tr valign=\"top\">";
-			echo "<td class=\"bold\">Profit & Loss Account (Net Profit)</td>";
+			echo "<td class=\"bold\">Surplus & Deficit Account (Net Surplus)</td>";
 			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($pandl)) . "</td>";
 			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_pandl)) . "</td>";
 			echo "</tr>";
@@ -147,7 +147,7 @@
 			$total = float_ops($total, -$pandl, '+');
 			$old_total = float_ops($old_total, -$old_pandl, '+');
 			echo "<tr valign=\"top\">";
-			echo "<td class=\"bold\">Profit & Loss Account (Net Loss)</td>";
+			echo "<td class=\"bold\">Surplus & Deficit Account (Net Deficit)</td>";
 			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$pandl)) . "</td>";
 			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$old_pandl))  . "</td>";
 			echo "</tr>";

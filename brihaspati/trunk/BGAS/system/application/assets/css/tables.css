@@ -6,7 +6,6 @@
 	font-size:14px;
 	border-collapse:collapse;
 	text-align:left;
-	width:100%;
 }
 
 .simple-table th {
@@ -112,8 +111,7 @@ tr.total-area {
                       
 /* balance sheet */
 .balance-sheet-table {
-	border:1px solid #BBBBBB;
-	width:70%;	
+	border:1px solid #BBBBBB;	
 }
 
 .balance-sheet-table td {

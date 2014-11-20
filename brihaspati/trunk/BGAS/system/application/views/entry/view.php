@@ -9,7 +9,7 @@
 <td id="td_first">Forward Reference Id : <span class="bold" align="left"><?php echo $forward_reference_id; ?></span></td>
 <td id="td_second">Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?></span></td>
 </tr>
-<table border=0 cellpadding=5 class="simple-table entry-view-table">
+<table border=0 cellpadding=5 class="simple-table entry-view-table" width="70%">
 <thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Secondary Unit</th><th>Party Address</th><th>Fund</th><th>Income/Expense Type</th></tr></thead>
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 $odd_even = "odd";
