@@ -302,7 +302,20 @@ $(document).ready(function() {
 					echo "<li>";
                                                 echo anchor('report/cashst', 'Cash Book', array('title' => 'Cash Book'));
                                         echo "</li>";
-
+	/*				echo "<li>";
+						echo anchor('','Unspent Balance');
+						echo "<ul>";
+							echo "<li>";
+								echo anchor('unspentbalance/planreport', 'Plan Report', array('title' => 'Plan Report', 'class' => 'loading'));
+							echo "</li>";
+							echo "<li>";
+								echo anchor('unspentbalance/nonplanreport', 'Non-Plan Report', array('title' => 'Non-Plan Report', 'class' => 'loading'));
+							echo "</li>";
+							echo "<li>";
+								echo anchor('unspentbalance/summaryreport', 'Summary Report', array('title' => 'Summary Report', 'class' => 'loading'));
+							echo "</li>";
+						echo "</ul>";
+					echo "</li>"; */
 				echo "</ul>";
 			echo "</li>";
 			echo"<li>";
@@ -318,9 +331,25 @@ $(document).ready(function() {
 						echo anchor('report2/tag','Tag Report', array('title'=>'Tag Report'));
 					echo"</li>";
 					 echo"<li>";
-
                                                 echo anchor('report2/sec_report','Secondary Unit Report', array('title'=>'Secondary Unit Report'));
                                         echo"</li>";
+					echo "<li>";
+                                                echo anchor('','Log Report');
+                                                echo "<ul>";
+                                                        echo "<li>";
+                                                                echo anchor('log/LogReport/COA', 'Chart Of Account', array('title' => 'Chart Of Account', 'class' => 'anchor-link-a'));
+                                                        echo "</li>";
+                                                        echo "<li>";
+                                                                echo anchor('log/LogReport/TrnsLog', 'Transaction Log', array('title' => 'Transaction Log', 'class' => 'anchor-link-a'));
+                                                        echo "</li>";
+                                                        echo "<li>";
+                                                                echo anchor('log/LogReport/BugtLog', 'Budget Log', array('title' => 'Budget Log', 'class' => 'anchor-link-a'));
+                                                        echo "</li>";
+                                                        echo "<li>";
+                                                                echo anchor('log/LogReport/OtherLog', 'Other Log', array('title' => 'Other Log', 'class' => 'anchor-link-a'));
+                                                        echo "</li>";
+                                                echo "</ul>";
+                                        echo "</li>";
 
 				echo"</ul>";
 
