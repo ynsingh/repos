@@ -1,13 +1,13 @@
 #*
  * @(#) InstituteAdmin.vm
- * Copyright (c) 2010,2013 ETRG,IIT Kanpur.
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @author <a href="mailto:tejdgurung20@gmail.com">Shaista</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modified date 22-11-2010,10-06-2013
+ * @modified date 22-11-2010, 21-11-2014
 *#
 
 $page.setTitle("Login | Index | IndexHome")
@@ -16,47 +16,54 @@ $page.setBgColor("$ui.tableColor")
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 $!data.getMessage()
 #macro(UNAME)
-#if($firstname!="")
-                #if($lastname!="")
-                <b> $firstname $lastname</b>
-                #else
-                <b> $firstname</b>
-                #end
-        #else
-        <b>$username</b>
-        #end
+$flname
 #end
 <table bgcolor="$ui.tableColor" width=100% CellPadding=0 align=center>
-<tr align="right" bgcolor="$ui.menuColor">
+<tr bgcolor="$ui.menuColor">
 	<td align="center">
+			###if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
+			#if($lang =="hindi" || $lang =="bhojpuri")
 			        <font size=4 face="$ui.sansSerifFonts"><b>#UNAME()  $brih_welcome
 			        </font>
+			#else
+			        <font size=4 face="$ui.sansSerifFonts"><b>$brih_welcome
+			        #UNAME()
+			        </font>
+			#end
 	</td>
 </tr>
 	
 	##<tr><td align="center">Institute Admin List</td></tr>
-	<tr align="right"><td align="center"> $RemoteInstitute $brih_Of2 $brih_ad $brih_Of $brih_list </td></tr>
-	#if($rldpage != "yes")
-		#set($coun=1)
-		#foreach($lst in $list1)
-			#if($velocityCount%2==0)
-                                <tr bgcolor="$ui.tableColor">
+	<tr><td align="center"> #if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ad #if($lang =="hindi") $brih_Of #end $brih_list </td></tr>
+<table width=100% cellpadding="1" cellspacing="1" colspan="3"  bgcolor="$ui.tableColor">
+<tr>
+        #if($rldpage != "yes")
+                #set($coun=1)
+                #foreach($lst in $list1)
+                #if($velocityCount%3==1)
+                          #if($velocityCount%2==0)
+                               <tr bgcolor="$ui.tableColor">
                         #else
                                 <tr bgcolor="$ui.menuColor">
                         #end
-			<td align=center>
-			 #foreach($idinst in $onlineinst)
-                                #if("$lst.getInstituteId()"=="$idinst")
-                                       <a href=javascript:popupWin("$link.setPage("call,OnLine_Rgtn,OnlineCourseApproval.vm").addPathInfo("instituteId",$lst.getInstituteId())","newWin");> $brih_course $online_online $brih_view </a> &nbsp;&nbsp;
-                                #end
-                        #end 
-			<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("role",$role).addPathInfo("mInststat","1").addPathInfo("instituteId",$lst.getInstituteId()).addPathInfo("iname",$lst.getInstituteName()).addPathInfo("domainName",$lst.getInstituteDomain()).addPathInfo("reload","yes").addPathInfo("count","1") style=text-decoration:none>$lst.getInstituteName()</a></td>
-			</td>
-		</tr>
-		#end
-	#else
-        <tr align="right"><td align=center><b>$list</b></td></tr>
-	#end	
+#end
+                <td align=center width=30%>
+                   <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("role",$role).addPathInfo("mInststat","1").addPathInfo("instituteId",$lst.getInstituteId()).addPathInfo("iname",$lst.getInstituteName()).addPathInfo("domainName",$lst.getInstituteDomain()).addPathInfo("reload","yes").addPathInfo("count","1") style=text-decoration:none>$lst.getInstituteName()</a>
+                ##set($coun1=1)
+                #foreach($idinst in $onlineinst)
+                ###if($coun==$coun1)
+                #if("$lst.getInstituteId()"=="$idinst")
+&nbsp;&nbsp;<a href=javascript:popupWin("$link.setPage("call,OnLine_Rgtn,OnlineCourseApproval.vm").addPathInfo("instituteId",$lst.getInstituteId())","newWin");>$online_online $brih_courses $brih_view</a>
+</td>
+                #end
+                #end            
+                   ##if($velocityCount%3==0)
+                        ##end
+                #end
+        #else
+</tr>
+        <tr><td align=center><b>$list</b></td></tr>
+        #end    
 </table>
 </body>
 <SCRIPT language="JavaScript">
@@ -64,6 +71,37 @@ $!data.getMessage()
         {
                 Win1=window.open(url,popupName,"resizable,height=800,width=1200");
         }
+        function checkUNamePwd(frm,field)
+        {
+                if(frm.username.value!="")
+                {
+                        if(frm.password.value!="")
+                        {
+                                frm.submit();
+                        }
+                        else
+                        {
+                                alert("Password should not be blank !!");
+                                frm.password.focus();
+                        }
+                }
+                else
+                {
+                        alert("User Name should not be blank !!");
+                        frm.username.focus();
+                }
+        }
+function doSomething(e)
+ {
+
+        if (!e) var e = window.event;
+        if (e.keyCode == 13)
+        {
+        checkUNamePwd(document.frm,this);
+        }
+}
+
+document.onkeydown = doSomething;
 function OnChange()
 {
 var x=document.getElementById("language");

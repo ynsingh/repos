@@ -3,6 +3,8 @@
   * Copyright (c) 2008,2009 ETRG,IIT Kanpur.
   * All Rights Reserved
   * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+  * @author <a href="mailto:Rekha Devi Pal">Rekha Devi Pal</a>
+  * @modified date: 21-11-2014
   * Contributors: Members of ETRG, I.I.T. Kanpur
   *#
 
@@ -20,57 +22,187 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("Index.vm").setAction("ProfileUser")">
-<br>
-        <table border=5 cellpadding=4 align="center" bgcolor="$ui.tableColor">
-	<tr>
-	<td align=center colspan=2  bgcolor="$ui.tableColor">
-	 	<font face="$ui.sansSerifFonts" size=4><b>$brih_profile1 </b></font>
-	 </td>
-	</tr>
-	#foreach($ud in $udetl)
-	  <tr align="right">
-	  <td>
-          	<input type="text" name="FName" value="$!ud.getFirstName()" size=30>
+        <table width=100% bgcolor="$ui.tableColor">
+         <tr align="right">
+         <tr align="right">
+          <td align="right" colspan="4"><b>$brih_profile1 </b></td></tr>
+         #foreach($ud in $udetl)
+                     <tr bgcolor="$ui.menuColor" align="right">
+                ##formCell("$brih_first $brih_name" "FNAME" "$!ud.getFirstName()")
+                <td align="right" colspan="4"> <input type="text" name="FNAME" value="$!st.Fstname"> </td>
+                <td> $brih_first $brih_name </td>
+
+            </tr>
+
+               <tr bgcolor="$ui.menuColor" align="right">
+                ##formCell("$brih_last $brih_name" "LNAME" "$!ud.getLirstName()")
+                <td align="right" colspan="4"> <input type="text" name="LNAME" value="$!st.Lstname"> </td>
+                <td> $brih_last $brih_name </td>
+
+            </tr>
+
+                <tr bgcolor="$ui.menuColor" align="right">
+                ##formCell("$brih_alternate $brih_email" "EMAIL" "$!ud.getEmail()")
+                <td align="right" colspan="4"> <input type="text" name="LNAME" value="$!st.email"> </td>
+                <td> $brih_alternate $brih_email</td>
+              </tr>
+                 #end
+
+                 <tr "$ui.tableColor" align="right">
+                 <td align="right" colspan="4">
+
+                        #if($!offradio=="3")
+                               $private <input type="radio" name="Offdirectory" value="$private" checked/>
+                               $protected <input type="radio" name="Offdirectory" value="$protected"/>
+                               $public <input type="radio" name="Offdirectory" value="$public"/>
+                        #elseif($!offradio=="2")
+                               $private<input type="radio" name="Offdirectory" value="$private"/>
+                               $protected<input type="radio" name="Offdirectory" value="$protected" checked />
+                               $public<input type="radio" name="Offdirectory" value="$public"/>
+                        #else
+                               $private <input type="radio" name="Offdirectory" value="$private"/>
+                               $protected <input type="radio" name="Offdirectory" value="$protected"/>
+                               $public <input type="radio" name="Offdirectory" value="$public" checked />
+                        #end
+                        <input title="Number (Maximum limit 10 digit)" type="text" name="Offphnumber" value="$!offphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Offphnumber" onclick="remove(name)">
+                        <input title="State code (Maximum limit 5 digit)" type="text" name="Offrcode" value="$!offrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Offrcode" onclick="remove(name)">
+                        <input title="Country code (Maximum limit 4 digit)" type="text" name="Offccode" value="$!offccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Offccode" onclick="remove(name)">
+                        <select name="Offprefix" class="drop">
+                                #if($!offprefix=="+")
+                                        #option1()
+                                #else
+                                        #option2()
+                                #end
+                        </select>
+                        </td>
+                        <td align="right" colspan="4">$brih_officeno</td>
+                       <tr bgcolor="$ui.menuColor" align="right"  width=100%>
+                                <td colspan="4">
+                                #if($!mobradio=="3")
+                                       $private <input type="radio" name="Mobdirectory" value="$private" checked />
+                                       $protected <input type="radio" name="Mobdirectory" value="$protected"/>
+                                       $public <input type="radio" name="Mobdirectory" value="$public"/>
+                                #elseif($!mobradio=="2")
+                                       $private <input type="radio" name="Mobdirectory" value="$private"/>
+                                       $protected <input type="radio" name="Mobdirectory" value="$protected" checked/>
+                                       $public <input type="radio" name="Mobdirectory" value="$public"/>
+                                #else
+                                       $private <input type="radio" name="Mobdirectory" value="$private"/>
+                                       $protected <input type="radio" name="Mobdirectory" value="$protected"/>
+                                       $public<input type="radio" name="Mobdirectory" value="$public" checked />
+                                #end
+                                <input title="Number (Maximum limit 10 digit)" type="text" name="Mobphnumber" value="$!mobphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Mobphnumber" onclick="remove(name)">
+                                <input title="State code (Maximum limit 5 digit)" type="text" name="Mobrcode" value="$!mobrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Mobrcode" onclick="remove(name)">
+                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Mobccode" value="$!mobccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Mobccode" onclick="remove(name)">
+                                <select name="Mobprefix" class="drop">
+                                        #if($!mobprefix=="+")
+                                                #option1()
+                                        #else   
+                                                #option2()
+                                        #end
+                                </select>
+                                </td>
+                                <td colspan="4">$brih_mobileno</td>
+                        </tr>
+                          <tr align="right">
+                                <td colspan="4">
+                                #if($!homeradio=="3")
+                                       $private <input type="radio" name="Homedirectory" value="$private" checked />
+                                       $protected <input type="radio" name="Homedirectory" value="$protected"/>
+                                      $public<input type="radio" name="Homedirectory" value="$public"/>
+                                #elseif($!homeradio=="2")
+                                       $private <input type="radio" name="Homedirectory" value="$private"/>
+                                       $protected <input type="radio" name="Homedirectory" value="$protected" checked />
+                                       $public <input type="radio" name="Homedirectory" value="$public"/>
+                                #else
+                                        <input type="radio" name="Homedirectory" value="$private"/>$private
+                                        <input type="radio" name="Homedirectory" value="$protected"/>$protected
+                                        <input type="radio" name="Homedirectory" value="$public" checked />$public
+                                #end
+                                <input title="Number (Maximum limit 10 digit)" type="text" name="Homephnumber" value="$!homephone" maxlength="10" onkeypress="return isNumberKey(event)" id="Homephnumber" onclick="remove(name)">
+                                <input title="State code (Maximum limit 5 digit)" type="text" name="Homercode" value="$!homercode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Homercode" onclick="remove(name)">
+                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Homeccode" value="$!homeccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Homeccode" onclick="remove(name)">
+                                <select name="Homeprefix" class="drop">
+                                        #if($!homeprefix=="+")
+                                                #option1()
+                                        #else
+                                                #option2()
+                                        #end
+                                </select>
+                                </td>
+                                <td colspan="4">$brih_homeno</td>
+                        </tr>
+
+ <tr bgcolor="$ui.menuColor" align="right">
+                                <td colspan="4">
+                                #if($!othradio=="3")
+                                       $private <input type="radio" name="Othdirectory" value="$private" checked />
+                                       $protected <input type="radio" name="Othdirectory" value="$protected"/>
+                                       $public <input type="radio" name="Othdirectory" value="$public"/>
+                                #elseif($!othradio=="2")
+                                       $private <input type="radio" name="Othdirectory" value="$private"/>
+                                       $protected <input type="radio" name="Othdirectory" value="$protected" checked />
+                                       $public <input type="radio" name="Othdirectory" value="$public"/>
+                                #else
+                                       $private <input type="radio" name="Othdirectory" value="$private"/>
+                                       $protected <input type="radio" name="Othdirectory" value="$protected"/>
+                                       $public <input type="radio" name="Othdirectory" value="$public" checked />
+                                #end
+                                <input title="Number (Maximum limit 10 digit)" type="text" name="Othphnumber" value="$!othphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Othphnumber" onclick="remove(name)">
+                                <input title="State code (Maximum limit 5 digit)" type="text" name="Othrcode" value="$!othrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Othrcode" onclick="remove(name)">
+                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Othccode" value="$!othccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Othccode" onclick="remove(name)">
+                                <select name="Othprefix" class="drop">
+                                        #if($!othprefix=="+")
+                                                #option1()
+                                        #else
+                                                #option2()
+                                        #end
+                                </select>
+                                </td>
+                                <td colspan="4">$brih_otherno</td>
+                        </tr>
+
+
+                <tr bgcolor="$ui.menuColor" align="right">
+                ##formCell("$brih_address" "address" "$!address")
+                <td colspan="4"> <input type="txt" name="address" value="$!address"</td>
+                <td colspan="4"> $brih_address </td>
+        </tr>
+        ##<tr bgcolor="$ui.menuColor">
+        <tr align="right">
+                <td colspan="4"> <input type="txt" name="state"  value="$!state" > </td>
+                <td> $Inst_state </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor" align="right">
+                ##formCell("$brih_country" "country" "$!country")
+                <td colspan="4"> <input type="txt" name="country" value="$!country" > </td>
+                <td colspan="4"> $brih_country </td>
+
+        </tr>
+        <tr align="right">
+                <td colspan="4"> <input type="txt" name="department" value="$!department" > </td>
+                <td colspan="4"> $brih_dept </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor" align="right">
+                <td colspan="4"> <input type="txt" name="designation"  value="$!designation" > </td>
+                <td colspan="4"> $Inst_designation </td>
+                </tr>
+               <tr align="right">
+                <td colspan="4" >
+                <input class="button-ftextstyle" type="file" name="file"> </td>
+                <td>$brih_photo</td>
+            </tr>
+       <tr align="right">
+          <td colspan="4">
+                <input type="text" name="Conf" value="$!conf" size=30>
           </td>
-	  <td align=right>
-	  	$brih_first $brih_name
-	  </td>
-          </tr>
-	  <tr align="right">
-	  <td>
-          	<input type="text" name="LName" value="$!ud.getLastName()" size=30>
+          <td align="right" colspan="4">
+                $List_config
           </td>
-	  <td align=right>
-	  	$brih_last $brih_name
-	  </td>
-          </tr>
-          <tr align="right">
-	  <td>
-          	<input type="text" name="EMAIL" value="$!ud.getEmail()" size=30>
-          </td>
-	  <td align=right>
-	  	$brih_email
-	  </td>
-	  </tr>
-	 #end
-          <tr align=right>
-	  <td>
-          	<input type="file" name="PHOTO"  size=30>
-          </td>
-	  <td>
-	  	$brih_photo
-	  </td>
-	</tr>
+        </tr>
+
 	<tr align="right">
-	  <td>
-          	<input type="text" name="Conf" value="$!conf" size=30>
-          </td>
-	  <td align=right>
-	  	$List_config
-	  </td>
-	</tr>
-	<tr align="right">
-	    <td size ="30%">
+	    <td size ="30%" colspan="4">
 		 <select name="que" class="drop" size=1 onChange="clearAnswer(document.frm,this);"/>
 		<option value=$!qid> #foreach($q in $qname) $q.getQuestionName() #end
                  #foreach($questions in $question)
@@ -79,28 +211,146 @@ $!data.getMessage()
                  </option>
               </select>
             </td>
-	    <td bgcolor="$ui.tableColor">
+	    <td bgcolor="$ui.tableColor" colspan="4">
             	<b> <font face="$ui.sansSerifFonts"> $brih_select $brih_qus </font></b>
             </td>
 	</tr>
-                <tr align=right>
-		  <td> <input type="text" name="ANSWER" value="$!ans" size=30> 
+                <tr align="right">
+		  <td colspan="4"> <input type="text" name="ANSWER" value="$!ans" size=30> 
 		  </td>
-	          <td>
+	          <td colspan="4">
 			$Profile_Ans
 	          </td>
                 </tr>
 		 <tr align="right">
-		   <td>  <input type="text" name="TaskConf" value="$!TaskConf" size=30> </td>
-		   <td>$brih_tcf</td>
+		   <td colspan="4">  <input type="text" name="TaskConf" value="$!TaskConf" size=30> </td>
+		   <td colspan="4">$brih_tcf</td>
                 </tr>
 
-		<tr>
-             <td align="center" colspan=2>
-                 <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkAnswer(document.frm,this);"/>                 
-		 <input type="reset"  class="button-ftextstyle" value="$brih_reset"/>
-		 <input type="hidden" name="actionName"/>
-             </td>
+
+                <tr align="right">
+                <td colspan="2">$brih_rollno</td>
+                <td colspan="2">$brih_select $brih_program</td>
+                <td colspan="2">$RemoteInstitute</td>
+                </tr>
+                #*#if($status == "more")
+                        #set ($counter = $counter +1)
+                #elseif($counter <1)
+                        #set ($counter=1)
+                #end*#
+                #if($count<1)
+                        #set($count=1)
+                #end
+                #set($temp=0)
+                ##foreach($num in [1..$counter])
+                #foreach($num in [1..$count])
+                <tr align="right">
+                                <td colspan="2">
+                                #set($temp1=0)
+                                #foreach($st in $UDetail)
+                                        #if($temp == $temp1)
+                                                <input type="text" name="rollno$num" value="$!st.getRollNo()" #if($count>0) readonly #end>
+                                        #end
+                                        #set($temp1=$temp1+1)
+                                #end
+                                        #if($sizecount == 0)
+                                        <input type="text" name="rollno$num" value="" #if($sizecount>0) readonly #end>
+                                        #end
+                        </td>
+
+                       <td  colspan="2"><select name="prg$num" class="drop" size=1 #if($sizecount==0) enabled #elseif($count>0) disabled #end/>
+                                #set($temp1=0)
+                                #foreach($st in $UDetail)
+                                        #if($temp == $temp1)
+                                        <option value="$st.getPrgCode()">$!st.getPrgName() </option>
+                                        #end
+                                        #set($temp1=$temp1+1)
+                                #end
+                                                <option>$brih_select $brih_program</option>
+                                                #foreach($prgname in $prgList)
+                                                <option value="$prgname.getProgramCode()">$prgname.getProgramName() </option>
+                                                #end
+                                </select></td>
+                               <td  colspan="2"><select name="instName$num" class="drop" style="width:300px;" size=1  #if($sizecount==0) enabled #elseif($count>0) disabled #end/>
+                                #set($temp1=0)
+
+                                    #foreach($st in $UDetail)
+                                        #if($temp == $temp1)
+                                        <option value="$st.getInstId()">$!st.getInstName()</option>
+                                        #end
+                                        #set($temp1=$temp1+1)
+                                #end
+                                                <option>$RemoteInstitute </option>
+                                                #foreach($name in $instList)
+                                                <option value="$name.getInstituteId()" style="width:275px;" title="$name.getInstituteName()">$name.getInstituteName() </option>
+                                                #end
+                                </select></td>
+                 </tr>
+
+                #set($temp=$temp+1)
+                #end
+                <tr>
+                </tr>
+
+ ## CHECK WHETHER PARENT DETAILS EXIST
+                #if($parent_details == "exists")        
+                        <tr>
+                                <td colspan="3">$brih_parent $brih_first $brih_name</td>
+                                <td colspan="3"><input type="text" name="PFName" value="$parent_fname" readonly></td>
+                        </tr>
+                        <tr>
+                                <td colspan="3">$brih_parent $brih_last $brih_name</td>
+                                <td colspan="3"><input type="text" name="PLName" value="$parent_lname" readonly></td>
+                        </tr>
+                        <tr>
+                                <td colspan="3">$brih_parent $brih_email</td>
+                                <td colspan="3"><input type="text" name="PEMAIL" value="$parent_email" readonly></td>
+                        </tr>
+                        <tr>
+                                <td colspan="3">$brih_parent $brih_mobileno</td>
+                                <td colspan="3"><input type="text" name="PMOBILE" value="$parent_mobile" readonly></td>
+                        </tr>
+                        <input type="hidden" name="parent_details" value="not_exists"/>
+                #else
+                                <tr align ="right">
+                                <td colspan="3"><input type="text" name="PFName" value="" ></td>
+                                <td colspan="3">$brih_parent $brih_first $brih_name</td>
+                               </tr>
+                        <tr align ="right">
+                                <td colspan="3"><input type="text" name="" value=""></td>
+                           <td colspan="3">$brih_parent $brih_last $brih_name</td>
+                        </tr>
+                        <tr align ="right">
+                                <td colspan="3"><input type="text" name="" value=""></td>
+                              <td colspan="3">$brih_parent $brih_email</td>
+                        </tr>
+                        <tr align ="right">
+                              <td colspan="3"><input type="text" name="" value="" ></td>
+                              <td colspan="3">$brih_parent $brih_mobileno</td>
+                         </tr>
+
+                 #*<tr align="right">
+                ##formCell("$brih_dept" "department" "$!department")
+                <td colspan="3"> <input type="txt" name="parent_details" value="not_exists" ></td>
+                <td colspan="3"> $parent_details </td>*#
+        </tr>
+
+
+                #end
+
+ <tr bgcolor="$ui.menuColor" align="right">
+                <td colspan="7">
+                #if($size == 0)
+                        <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkAnswer(document.frm,this);"/>
+                #else
+                        <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkAnswer(document.frm,this);"/>
+                #end
+                <input type="reset"  value="$brih_reset" class="button-ftextstyle" />
+                <input type="hidden" name="actionName"/>
+                <input type="hidden" name="counter" value="$counter"/>
+                <input type="hidden" name="count" value="$count"/>
+                </td>
+          </tr>
           </tr>
      </table>
 </form>
