@@ -62,27 +62,33 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
     }
 
 
-    public void update(ArrayList<EmployeeType> grades)   {
+    public Exception update(ArrayList<EmployeeType> grades)   {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update employee_type_master set emp_type_name=?"
-                    + ",emp_pf_applies=? where emp_type_id=? and emp_org_id = ?");
+            ps=c.prepareStatement("update employee_type_master set emp_tcode=?, emp_type_name=?, emp_type_nickname=?"
+                    + ",emp_pf_applies=?, emp_maxpf_applies=? where emp_type_id=? and emp_org_id = ?");
             for(EmployeeType sg : grades)
             {
-                ps.setString(1, sg.getName().toUpperCase());
-                ps.setBoolean(2, sg.isPfApplies());
-                ps.setInt(3, sg.getCode());
-                ps.setInt(4, userBean.getUserOrgCode());             // ADDED ORG CODE;
+                ps.setString(1, sg.getEmpTypeCode());
+                //if(!sg.getName().equals(""))
+                ps.setString(2, sg.getName().toUpperCase());
+                ps.setString(3, sg.getNickname().toUpperCase());
+                ps.setBoolean(4, sg.isPfApplies());
+                ps.setInt(5, sg.getMaxpf());
+                ps.setInt(6, sg.getCode());
+                ps.setInt(7, userBean.getUserOrgCode());             // ADDED ORG CODE;
                 ps.executeUpdate();
                 ps.clearParameters();
             }
             ps.close();
             c.close();
+        return null;
         }
         catch(Exception e)
         {
             e.printStackTrace();
+            return e;
         }
     }
     public ArrayList<EmployeeType> loadTypes()   {
@@ -96,8 +102,11 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
             {
                 EmployeeType dept = new EmployeeType();
                 dept.setCode(rs.getInt(1));
-                dept.setName(rs.getString(2));
-                dept.setPfApplies(rs.getBoolean(3));
+                dept.setEmpTypeCode(rs.getString(2));
+                dept.setName(rs.getString(3));
+                dept.setNickname(rs.getString(4));
+                dept.setPfApplies(rs.getBoolean(5));
+                dept.setMaxpf(rs.getInt(6));
                 data.add(dept);
             }
             rs.close();
@@ -111,17 +120,23 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
             return null;
         }
     }
-    public Exception save(String dptName,boolean b)   {
+    //public Exception save(String empName,String empNickname,boolean pf,int maxpf) 
+    public Exception save(EmployeeType emptype){
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("insert into employee_type_master(emp_type_name,emp_pf_applies,emp_org_id) values(?,?,?)");
-            ps.setString(1, dptName.toUpperCase());
-            ps.setBoolean(2, b);
-            ps.setInt(3, userBean.getUserOrgCode());
+            ps=c.prepareStatement("insert into employee_type_master(emp_tcode,emp_type_name,emp_type_nickname,emp_pf_applies,emp_maxpf_applies,emp_org_id) values(?,?,?,?,?,?)");
+            ps.setString(1,emptype.getEmpTypeCode());
+            ps.setString(2, emptype.getName().toUpperCase());
+            ps.setString(3, emptype.getNickname().toUpperCase());
+            ps.setBoolean(4, emptype.isPfApplies());
+            ps.setInt(5, emptype.getMaxpf());
+            ps.setInt(6, userBean.getUserOrgCode());
             ps.executeUpdate();
             ps.close();
             c.close();
+            
+            
             return null;
         }
         catch(Exception e)

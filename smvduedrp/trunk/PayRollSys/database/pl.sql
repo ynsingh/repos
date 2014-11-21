@@ -480,6 +480,23 @@ CREATE TABLE `employee_salary_summery` (
 
 CREATE TABLE `employee_type_master` (
   `emp_type_id` int(11) NOT NULL auto_increment,
+  `emp_tcode` varchar(80) NOT NULL,
+  `emp_type_name` varchar(100) NOT NULL,
+  `emp_type_nickname` varchar(80),
+  `emp_pf_applies` tinyint(4) NOT NULL default '1',
+  `emp_maxpf_applies` bigint(100),
+  `emp_org_id` int(11) NOT NULL,
+  PRIMARY KEY  (`emp_type_id`),
+  KEY `emp_type_id` (`emp_type_id`),
+  UNIQUE KEY `emp_tcode` (`emp_tcode`,`emp_org_id`),
+  KEY `emp_org_id` (`emp_org_id`),
+  CONSTRAINT `employee_type_master_fk1` FOREIGN KEY (`emp_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+/*
+CREATE TABLE `employee_type_master` (
+  `emp_type_id` int(11) NOT NULL auto_increment,
   `emp_type_name` varchar(100) NOT NULL,
   `emp_pf_applies` tinyint(4) NOT NULL default '1',
   `emp_org_id` int(11) NOT NULL,
@@ -489,6 +506,7 @@ CREATE TABLE `employee_type_master` (
   KEY `emp_type_name` (`emp_type_name`),
   CONSTRAINT `employee_type_master_fk1` FOREIGN KEY (`emp_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
 
 #
 # Structure for the `empoyee_team_master` table : 

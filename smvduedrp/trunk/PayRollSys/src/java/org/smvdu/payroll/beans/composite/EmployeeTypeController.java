@@ -83,6 +83,7 @@ public class EmployeeTypeController {
         return employeeTypes;
     }
 
+// The following Method Updates the values in the database
 
     public void update()
     {
@@ -90,10 +91,49 @@ public class EmployeeTypeController {
         for(EmployeeType d: data)
         {
             System.out.println(d.getName()+", PF Applies :"+d.isPfApplies());
+        
+        FacesContext fc = FacesContext.getCurrentInstance();
+            if (d.getEmpTypeCode().matches("^[a-zA-Z0-9\\s]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Please Enter Valid Code. No Special Characters are Allowed");
+                fc.addMessage("", message);
+                return;
+            }
+        
+            if (d.getName().matches("^[a-zA-Z0-9\\s]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Please Enter Valid Name. NO Special Charecters are Allowed");
+                fc.addMessage("", message);
+                return;
+            }
+
+            if (d.getNickname().matches("^[a-zA-Z0-9\\s]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Please Enter Valid Nick Name. NO Special Charecters are Allowed");
+                fc.addMessage("", message);
+                return;
+            }
+        /*      
+           if (d.getMaxpf().matches("^[0-9]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Please Enter Valid PF Limit. Only Numeric Values are Allowed");
+                fc.addMessage("", message);
+                return;
+            } 
+        */
         }
-        new EmployeeTypeDB().update(data);
-        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Types Updated", ""));
-    }
+       Exception e = new EmployeeTypeDB().update(data);
+       if(e==null){
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Updated Successfully", ""));
+          }
+       else{
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Type Already Exist", ""));   
+       }
+    }   
     public void setEmployeeTypes(ArrayList<EmployeeType> salaryData) {
         this.employeeTypes = salaryData;
     }

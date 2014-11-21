@@ -11,6 +11,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.smvdu.payroll.beans.Employee;
+import org.smvdu.payroll.beans.db.EmployeeDB;
 import org.smvdu.payroll.beans.db.EmployeeTypeDB;
 
 /**
@@ -49,6 +51,19 @@ public class EmployeeType implements Serializable{
     
     private String name;
     private boolean pfApplies;
+
+
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param string
+     */
+    public void setName(String string) {
+        name = string;
+    }
+
 
     public boolean isPfApplies() {
         return pfApplies;
@@ -97,21 +112,49 @@ public class EmployeeType implements Serializable{
         this.message = message;
     }
 
-    public void update()
-    {
-        ArrayList<EmployeeType> types = (ArrayList<EmployeeType>)dataGrid.getValue();
-        for(EmployeeType et : types)
-        {
-            System.out.println("Name : "+et.getName()+", Code : "+et.getCode());
-        }
-        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Types Updated", ""));
+    public int getCode() {
+        return code;
     }
+    private String emptypecode;
+    public void setCode(int code) {
+        this.code = code;
+    }
+     public String getEmpTypeCode() {
+        return emptypecode;
+    }
+
+    public void setEmpTypeCode(String emptypecode) {
+        this.emptypecode = emptypecode;
+    }
+	
+    private String nickname;
+    public String getNickname() {
+        return nickname;
+    }
+
+
+    public void setNickname(String string) {
+        nickname = string;
+    }
+
+    private int maxpf;
+    public int getMaxpf() {
+        return maxpf;
+    }
+
+
+    public void setMaxpf(int mpf) {
+        this.maxpf = mpf;
+    }
+
+ 
 
     private ArrayList<EmployeeType> allTypes;
 
     public ArrayList<EmployeeType> getAllTypes() {
 
         allTypes = new EmployeeTypeDB().loadTypes();
+        dataGrid.setValue(allTypes); 
         return allTypes;
     }
 
@@ -121,54 +164,60 @@ public class EmployeeType implements Serializable{
         return name;
     }
 
+
     public void setAllTypes(ArrayList<EmployeeType> allTypes) {
         this.allTypes = allTypes;
     }
+    
+    // This method is used for Saving the values in the database
 
     public void save()
     {
          FacesContext fc = FacesContext.getCurrentInstance();
-        if (this.getName().matches("^[a-zA-Z\\s]*$") == false) {
-            FacesMessage message = new FacesMessage();
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            message.setSummary("Plz Enter Valid Name.No speacial characters allowed.");
-            //message.setDetail("First Name Must Be At Least Three Charecter ");
-            fc.addMessage("", message);
-            return;
+          
+         if (this.getEmpTypeCode().matches("^[a-zA-Z0-9\\s]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Please Enter Valid Code. No Special Characters are Allowed");
+                fc.addMessage("", message);
+                return;
+            }
+        
+            if (this.getName().matches("^[a-zA-Z0-9\\s]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Please Enter Valid Name. No Special Charecters are Allowed");
+                fc.addMessage("", message);
+                return;
+            }
+
+            if (this.getNickname().matches("^[a-zA-Z0-9\\s]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Please Enter Valid Nick Name. No Special Charecters are Allowed");
+                fc.addMessage("", message);
+                return;
+            }
+      
+           
+     /*     if (this.getMaxpf().matches("^[0-9]*$") == false){
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Please Enter Valid PF Limit. Only Numeric Values are Allowed");
+                //message.setDetail("First Name Must Be At Least Three Charecter ");
+                fc.addMessage("", message);
+                return;
+            }*/
+              
+        Exception e = new EmployeeTypeDB().save(this);
+        if(e==null)
+        {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "New Employee Type Saved", ""));
         }
-        new EmployeeTypeDB().save(name,pfApplies);
-        name=null;
-        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "New Type Saved", ""));
+        else
+        {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Type Already Exist", ""));
+        }
+    
     }
-
-    /**
-     * @return
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param string
-     */
-    public void setName(String string) {
-        name = string;
-    }
-
-    /**
-     * @return
-     */
-    public int getCode() {
-        return code;
-    }
-
-    /**
-     * @param i
-     */
-    public void setCode(int i) {
-        code = i;
-    }
-
-   
-   
 }
