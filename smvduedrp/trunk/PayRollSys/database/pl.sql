@@ -774,6 +774,7 @@ CREATE TABLE `report_master` (
 
 CREATE TABLE `salary_head_master` (
   `sh_id` int(11) NOT NULL auto_increment,
+  `sh_code` varchar(80) NOT NULL,
   `sh_name` varchar(100) NOT NULL,
   `sh_type` tinyint(4) NOT NULL default '1',
   `sh_alias` varchar(10) default NULL,
@@ -785,8 +786,10 @@ CREATE TABLE `salary_head_master` (
   `sh_display` tinyint(4) NOT NULL default '1',
   `sh_type_code` int(11) NOT NULL default '2',
   `sh_process_type` tinyint(4) NOT NULL default '0',
+  `sh_ledger_code` varchar(100) default NULL,
   `sh_org_id` int(11) NOT NULL,
   PRIMARY KEY  (`sh_id`),
+  UNIQUE KEY `sh_code` (`sh_code`,`sh_org_id`),
   UNIQUE KEY `sh_name` (`sh_name`),
   KEY `sh_org_id` (`sh_org_id`),
   CONSTRAINT `salary_head_master_fk` FOREIGN KEY (`sh_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE

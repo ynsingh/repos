@@ -42,9 +42,10 @@ import org.smvdu.payroll.beans.db.SalaryGradeDB;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+* Modified Date: 03 Nov 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
- */
-public class SalaryGradeController {
+*/
+    public class SalaryGradeController {
 
 
     public SalaryGradeController()
@@ -79,7 +80,15 @@ public class SalaryGradeController {
         ArrayList<SalaryGrade> grades = (ArrayList<SalaryGrade>)dataGrid.getValue();
         for(SalaryGrade sg : grades)
         {
-            System.out.println("Code : "+sg.getCode()+"Name : "+sg.getName()+", Max : "+sg.getMaxValue()+", Min : "+sg.getMinValue());
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if((sg.getName().matches("^[a-zA-Z0-9\\s]*$") == false) || (!sg.getName().equals(""))) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Please Enter Valid Pay Band Name. No Special Characters are Allowed");
+                fc.addMessage("", message);
+                return;
+            }
+           // System.out.println("Code : "+sg.getCode()+"Name : "+sg.getName()+", Max : "+sg.getMaxValue()+", Min : "+sg.getMinValue());
         }
         new SalaryGradeDB().update(grades);
         FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Grades Updated", ""));

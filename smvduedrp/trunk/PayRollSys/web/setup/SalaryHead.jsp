@@ -1,8 +1,10 @@
 <%--
     Document        : SalaryHead.jsp
     Created on      : 3:02 AM Saturday, October 02, 2010
-    Last Modified   : 3:02 AM Saturday, October 02, 2010
+    Modified        : 3:02 AM Saturday, October 02, 2010
     Author          : Saurabh Kumar
+    Last Modified   : 3:02 AM Wednesday, November 12, 2014
+    Author          : Manorama Pal Kishore Kumar Shukla
 --%>
 
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
@@ -19,13 +21,14 @@
     <f:view>
         <rich:panel header="Existing Salary Heads">
             <h:panelGrid columns="2">
-                <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
-                <rich:messages>
+                <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/><br/>
+                 <rich:messages>
                     <f:facet name="infoMarker">
                         <h:graphicImage url="/img/success.png"/>
                     </f:facet>
                 </rich:messages>
             </h:panelGrid>
+            <rich:separator  style="width:100%;" /><br/>
             <h:form>
                 <rich:contextMenu attached="false" id="menu" submitMode="ajax">
                     <rich:menuItem ajaxSingle="true">
@@ -48,6 +51,12 @@
                                     value="#{SalaryHeadControllerBean.heads}" var="heads" >
                         <h:column>
                             <f:facet name="header">
+                                <h:outputText value="Head Code"/>
+                            </f:facet>
+                            <rich:inplaceInput value="#{heads.SHCode}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
                                 <h:outputText value="Head Name"/>
                             </f:facet>
                             <rich:inplaceInput value="#{heads.name}" />
@@ -58,6 +67,12 @@
                                 <h:outputText value="Short Name"/>
                             </f:facet>
                             <rich:inplaceInput value="#{heads.alias}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ledger Code"/>
+                            </f:facet>
+                            <h:outputText value="#{heads.ledgerCode}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -118,41 +133,59 @@
                 <h:commandButton action="#{SalaryHeadControllerBean.update}" value="Update"/>
             </h:form>
         </rich:panel>
-        <rich:modalPanel width="300" height="240" autosized="true" id="pnl">
+        <rich:modalPanel width="400" height="240" autosized="true" id="pnl">
+            <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="Add New Salary Head"></h:outputText>
+                        </h:panelGroup>
+                    </f:facet>
+            <f:facet name="controls">
+                        <h:panelGroup>
+                            <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelink"/>
+                            <rich:componentControl for="pnl" attachTo="hidelink" operation="hide" event="onclick"/>
+                         </h:panelGroup>
+                    </f:facet>
             <h:form>
-                <rich:panel header="Add New Salary Head">
-                    <h:panelGrid columns="2">
+                  <h:panelGrid columns="3">
+                        <h:outputText value="Salary Head Code"/>
+                        <h:inputText id="shCode" required="true" requiredMessage="Enter Salary Head Code" value="#{SalaryHeadBean.SHCode}" />
+                        <h:message for="shCode" styleClass="error"/>
                         <h:outputText value="Salary Head"/>
-                        <h:inputText value="#{SalaryHeadBean.name}" />
-
+                        <h:inputText id="shName" required="true" requiredMessage="Enter Salary Head Name" value="#{SalaryHeadBean.name}" />
+                        <h:message for="shName" styleClass="error"/>
                         <h:outputText value="Short Name"/>
-                        <h:inputText value="#{SalaryHeadBean.alias}" />
+                        <h:inputText id="shortName" required="true" requiredMessage="Enter Salary Head Short Name" value="#{SalaryHeadBean.alias}" />
+                        <h:message for="shortName" styleClass="error"/>
                         <h:outputText value="Under"/>
                         <h:selectOneMenu value="#{SalaryHeadBean.under}">
                             <f:selectItem itemValue="false" itemLabel="Income"/>
                             <f:selectItem itemValue="true" itemLabel="Deduction"/>
                         </h:selectOneMenu>
+                        <h:outputText value=""/>
                         <h:outputText value="Schedule Type"/>
                         <h:selectOneMenu value="#{SalaryHeadBean.processType}">
                             <f:selectItem itemValue="false" itemLabel="Regular"/>
                             <f:selectItem itemValue="true" itemLabel="Scheduled"/>
                         </h:selectOneMenu>
+                        <h:outputText value=""/>
                         <h:outputText value="Calculation Type"/>
                         <h:selectOneMenu value="#{SalaryHeadBean.calculationType}">
                             <f:selectItem itemValue="false" itemLabel="Consolidated"/>
                             <f:selectItem itemValue="true" itemLabel="Formula"/>
-                        </h:selectOneMenu>   
+                        </h:selectOneMenu>  
+                        <h:outputText value=""/>
                         <h:outputText value="Category"/>
                         <h:selectOneMenu value="#{SalaryHeadBean.typeCode}">
                             <f:selectItems  value="#{SalaryHeadControllerBean.category}"/>
-                        </h:selectOneMenu>   
+                        </h:selectOneMenu>
+                        <h:outputText value=""/>
                         <h:outputText value="Taxable"/>
                         <h:selectBooleanCheckbox value="#{SalaryHeadBean.type}"/>
-                        <a4j:commandButton value="Save" styleClass="submit" reRender="headTable"
+                   </h:panelGrid>
+                    <a4j:commandButton value="Save" styleClass="submit" reRender="headTable"
                                            action="#{SalaryHeadBean.save}" />
-                        <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
-                    </h:panelGrid>
-                </rich:panel>
-            </h:form>
+                    <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
+                </h:form>
         </rich:modalPanel>
+                   
     </f:view>

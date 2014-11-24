@@ -43,9 +43,10 @@ import org.smvdu.payroll.beans.db.SalaryHeadDB;
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
+* Contributors: Members of ERP Team @ SMVDU, Katra
+* Modified Date: 13 Nov 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
- */
+*/
 public class SalaryHeadController {
     
     
@@ -67,11 +68,6 @@ public class SalaryHeadController {
         this.asItem = asItem;
     }
 
-
-
-
-    
-
     
     private SelectItem[] category;
 
@@ -91,10 +87,7 @@ public class SalaryHeadController {
     public void setCategory(SelectItem[] category) {
         this.category = category;
     }
-    
-    
-    
-    
+        
     private ArrayList<SalaryHead> heads;
     private UIData dataGrid;
 
@@ -114,11 +107,9 @@ public class SalaryHeadController {
         this.heads = heads;
     }
 
-
-
     public void delete(int id)
     {
-        System.out.println("Got delete request for "+id);
+        //System.out.println("Got delete request for "+id);
     }
 
     public void update()
@@ -126,7 +117,32 @@ public class SalaryHeadController {
         ArrayList<SalaryHead> hs = (ArrayList<SalaryHead>)dataGrid.getValue();
         for(SalaryHead sh : hs)
         {
-            System.out.println("Name : "+sh.getName()+""+sh.isType());
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (sh.getSHCode().matches("^[a-zA-Z0-9\\s]*$") == false) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Valid Code. No Special Characters are Allowed ");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+            }
+            if (sh.getName().trim().matches("^[a-zA-Z\\s]*$") == false) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Plz Enter Valid Salary Head Name. No Special Characters are Allowed");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
+            if (sh.getAlias().matches("^[a-zA-Z\\s]*$") == false) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Valid Short Name. No Special Characters are Allowed ");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+            }
+            //System.out.println("Name : "+sh.getName()+""+sh.isType());
         }
         new SalaryHeadDB().update(heads);
         FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Salary Heads Updated", ""));

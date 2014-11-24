@@ -5,13 +5,20 @@
 
 package org.smvdu.payroll.beans.db;
 
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+import au.com.bytecode.opencsv.bean.CsvToBean;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.beans.setup.Department;
 import org.smvdu.payroll.beans.setup.SalaryGrade;
+import org.smvdu.payroll.beans.upload.UploadFile;
 
 /**
  *
@@ -43,8 +50,9 @@ import org.smvdu.payroll.beans.setup.SalaryGrade;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+* Modified Date: 03 Nov 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
- */
+*/
 public class SalaryGradeDB {
 
     private PreparedStatement ps;
@@ -111,6 +119,7 @@ public class SalaryGradeDB {
             return null;
         }
     }
+    
     public int save(SalaryGrade sg)   {
         try
         {
@@ -137,5 +146,50 @@ public class SalaryGradeDB {
             return -1;
         }
     }
+    
+    public Exception saveFile(UploadFile file)   {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            
+            ps=c.prepareStatement("insert into salary_grade_master(grd_name, grd_max, grd_min, grd_gp, grd_org_id) values(?,?,?,?,?)");
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
+            CSVReader reader = new CSVReader(new FileReader(path+"/"+file.getName()), ',', '\"', 1);
+            ColumnPositionMappingStrategy<SalaryGrade> mappingStrategy 
+                                 = new ColumnPositionMappingStrategy<SalaryGrade>();
+            mappingStrategy.setType(SalaryGrade.class);
+            String[] columns = new String[] {"Name","MaxValue","MinValue","GradePay"};
+            mappingStrategy.setColumnMapping(columns);
+        
+            CsvToBean<SalaryGrade> csv = new CsvToBean<SalaryGrade>();
+            List<SalaryGrade> SalaryGradeList = csv.parse(mappingStrategy, reader);
+
+            for (int i = 0; i < SalaryGradeList.size(); i++) 
+            {
+                
+                SalaryGrade SGDetail = SalaryGradeList.get(i);
+                // display CSV values
+                ps.setString(1,SGDetail.getName());
+                ps.setInt(2, SGDetail.getMaxValue());
+                ps.setInt(3, SGDetail.getMinValue());
+                ps.setInt(4, SGDetail.getGradePay());
+                ps.setInt(5, userBean.getUserOrgCode());
+                ps.executeUpdate();
+                
+              
+            }
+            reader.close();
+            ps.close();
+            c.close();
+            return null;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return e;
+        }
+
+    }
+    
 
 }

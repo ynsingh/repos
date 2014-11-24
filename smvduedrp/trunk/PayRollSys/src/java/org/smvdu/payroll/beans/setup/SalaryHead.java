@@ -49,6 +49,7 @@ import org.smvdu.payroll.beans.db.SalaryHeadDB;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modified Date: 13 Nov 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
  */
 public class SalaryHead implements Serializable {
@@ -58,6 +59,7 @@ public class SalaryHead implements Serializable {
 
     public SalaryHead()
     {
+       // System.out.println("salary Head111=====");
 
     }
     /**
@@ -67,16 +69,15 @@ public class SalaryHead implements Serializable {
      * Avoid using Salarydata , as it is planned to be deprecated in v2
      */
 
-
-
      public SalaryHead(SalaryData sd)
     {
-       
+       //System.out.println("salary Head=====");
         //this.setName(sd.getHeadName());
         name = sd.getHeadName();
         under = sd.isCatagory();
         number = sd.getHeadCode();
         defaultValue = sd.getHeadValue();
+        //System.out.println("salary Head=in defaultvalue===="+sd.getHeadValue());
         formula = sd.getFormula();
         alias= sd.getAlias();
         scalable = sd.isScalable();
@@ -94,6 +95,8 @@ public class SalaryHead implements Serializable {
     private boolean type;
     private boolean display;
     private boolean processType; // Regular or scheduled
+    private String shcode;
+    private String ledgercode;
 
     public boolean isProcessType() {
         return processType;
@@ -224,7 +227,7 @@ public class SalaryHead implements Serializable {
 
     public void populate()
     {
-        System.err.println("Emptype : "+empType);
+        //System.err.println("Emptype : "+empType);
         getSelected();
     }
     
@@ -245,23 +248,25 @@ public class SalaryHead implements Serializable {
     public SelectItem[] getItems() {
         ArrayList<SalaryHead> allheads = new SalaryHeadDB().loadAllHeads();
         items = new SelectItem[allheads.size()];
+        SalaryHead sh=null;
         for(int i=0;i<allheads.size();i++ )
         {
-            SalaryHead sh = allheads.get(i);
-            SelectItem si = new SelectItem(sh.number, sh.name);
+            sh = allheads.get(i);
+            SelectItem si = new SelectItem(sh.number,sh.name);
             items[i] = si;
+            //System.out.println("\nsiin head===="+si+"\nsh====="+sh+"\nitems"+items+"\nitems[i]==="+items[i]);
         }
         return items;
     }
     public void print()   {
         if(items==null)
         {
-            System.err.println(" >> No Selection");
+            //System.err.println(" >> No Selection");
             return;
         }
          for(SelectItem si : items)
         {
-            System.err.print(si.getLabel()+""+si.getValue());
+            //System.err.print(si.getLabel()+""+si.getValue());
         }
     }
     public void setItems(String[] items) {
@@ -294,14 +299,17 @@ public class SalaryHead implements Serializable {
             return "Deduction";
  }
     }
-    public ArrayList<SalaryHead> getSelected() {        
+    public ArrayList<SalaryHead> getSelected() { 
+       // System.out.println("salary Head=====");
         return  new SalaryHeadDB().loadSelectedHeads(number);
     }
     public ArrayList<SalaryHead> getHeads() {
+        //System.out.println("salary Head=====");
         return  new SalaryHeadDB().loadAllHeads();
+        
     }
     public void setHeads(ArrayList<SalaryHead> heads) {
-        
+        //System.out.println("salary Head=====");
         this.heads = heads;
     }
     public boolean isCalculationType() {
@@ -309,6 +317,14 @@ public class SalaryHead implements Serializable {
     }
     public void save()   {
          FacesContext fc = FacesContext.getCurrentInstance();
+        if (this.getSHCode().matches("^[a-zA-Z0-9\\s]*$") == false) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Valid Code. No Special Characters are Allowed ");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+            } 
         if (this.getName().matches("^[a-zA-Z\\s]*$") == false) {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -359,13 +375,13 @@ public class SalaryHead implements Serializable {
     public void update()
     {
         String code = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
-        System.err.println("Got delete Code "+code);
+        //System.err.println("Got delete Code "+code);
     }
 
     public void delete()
     {
         String code = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
-        System.err.println("Got delete Code "+code);
+        //System.err.println("Got delete Code "+code);
     }
 
 
@@ -387,6 +403,20 @@ public class SalaryHead implements Serializable {
     public void setNumber(int i) {        
         number = i;
     }
+    
+    public String getLedgerCode() {
+        return ledgercode;
+    }
+    public void setLedgerCode(String ledgercode) {
+        this.ledgercode = ledgercode;
+    }
 
+    public String getSHCode() {
+        return shcode;
+    }
+    public void setSHCode(String shcode) {
+        this.shcode = shcode;
+    }
+   
     
 }

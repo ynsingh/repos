@@ -5,11 +5,17 @@
 
 package org.smvdu.payroll.beans.setup;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.io.File;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.richfaces.event.UploadEvent;
+import org.richfaces.model.UploadItem;
+//import org.smvdu.payroll.beans.db.DepartmentDB;
 import org.smvdu.payroll.beans.db.SalaryGradeDB;
+import org.smvdu.payroll.beans.upload.UploadFile;
 
 /**
  *
@@ -41,8 +47,9 @@ import org.smvdu.payroll.beans.db.SalaryGradeDB;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modified Date: 03 Nov 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
- */
+*/
 public class SalaryGrade {
 
     private int maxValue;
@@ -120,6 +127,7 @@ public class SalaryGrade {
             sg = grds.get(i);
             SelectItem si = new SelectItem(sg.code, sg.toString());
             grades[i] = si;
+            //System.out.println("\nsiin grades===="+si+"\ngrades====="+grades+"\nsg====="+sg+"\ngrades[i]===="+grades[i]);
         }
         return grades;
     }
@@ -136,7 +144,16 @@ public class SalaryGrade {
             fc.addMessage("", message);
             return;
         }
+        if(this.getName().matches("^[a-zA-Z0-9\\s]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Please Enter Valid Pay Band Name. No Special Characters are Allowed");
+                fc.addMessage("", message);
+                return;
+       }
+           // System.out.println("Code : "+sg.getCode()+"Name : "+sg.getName()+", Max : "+s 
        new SalaryGradeDB().save(this);
+       FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Pay scale saved "+" "+this.getName(), ""));
        name=null;
        maxValue=0;
        minValue=0;
@@ -170,8 +187,51 @@ public class SalaryGrade {
     public void setCode(int i) {
         code = i;
     }
-
     
-
+   private UploadFile files=null ;
+   //private int uploadsAvailable = 5;
+   public void listener(UploadEvent event) throws Exception{
+        UploadItem item = event.getUploadItem();
+        UploadFile file= new UploadFile();
+        file.setLength(item.getData().length);
+        file.setName(item.getFileName());
+        file.setData(item.getData());
+        //System.err.println("File Size : "+item.getData().length);
+        this.files=file;
+        String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
+        File ff=new File(path);
+        if(!ff.exists())
+        ff.mkdirs();
+        ff=new File(path+"/"+file.getName());
+        FileOutputStream stream=new FileOutputStream(ff,true);
+        stream.write(file.getData());
+        stream.close();
+        saveFile();
+        ff.delete();
+        
+    }
    
+   
+   private void saveFile()   {
+        
+        try
+        {
+                      
+           Exception e = new SalaryGradeDB().saveFile(files);
+           if(e==null)
+            {
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Pay Band saved", ""));
+            }
+            else
+            {
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Pay Band already Exist : "+getName(), ""));
+            }
+                   
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 }

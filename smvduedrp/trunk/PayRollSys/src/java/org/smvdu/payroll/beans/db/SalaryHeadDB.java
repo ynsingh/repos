@@ -45,8 +45,9 @@ import org.smvdu.payroll.user.ActiveProfile;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+* Modified Date: 13 Nov 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
- */
+*/
 public class SalaryHeadDB {
 
     private PreparedStatement ps;
@@ -146,17 +147,7 @@ public class SalaryHeadDB {
             return null;
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+       
     public void updateDefaultvalue(ArrayList<SalaryHead> heads,int emptype)  {
         try
         {
@@ -187,18 +178,20 @@ public class SalaryHeadDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update salary_head_master set sh_name=?,"
-                    + "sh_calc_type=?,sh_type=?,sh_cat=?,sh_display=?,sh_process_type=? where sh_id=? and sh_org_id = ?");
+            ps=c.prepareStatement("update salary_head_master set sh_code=?,sh_name=?,sh_alias=?,"
+                    + "sh_calc_type=?,sh_type=?,sh_cat=?,sh_display=?,sh_process_type=? where sh_id=? and sh_org_id=?");
             for(SalaryHead sh : heads)
             {
-                ps.setString(1, sh.getName().toUpperCase());
-                ps.setBoolean(2, sh.isCalculationType());
-                ps.setBoolean(3, sh.isUnder());
-                ps.setBoolean(4, sh.isType());
-                ps.setBoolean(5, sh.isDisplay());
-                ps.setBoolean(6, sh.isProcessType());
-                ps.setInt(7, sh.getNumber());
-                ps.setInt(8, userBean.getUserOrgCode());
+                ps.setString(1, sh.getSHCode().toUpperCase());
+                ps.setString(2, sh.getName().toUpperCase());
+                ps.setString(3, sh.getAlias().toUpperCase());
+                ps.setBoolean(4, sh.isCalculationType());
+                ps.setBoolean(5, sh.isUnder());
+                ps.setBoolean(6, sh.isType());
+                ps.setBoolean(7, sh.isDisplay());
+                ps.setBoolean(8, sh.isProcessType());
+                ps.setInt(9, sh.getNumber());
+                ps.setInt(10, userBean.getUserOrgCode());
                 ps.executeUpdate();
                 ps.clearParameters();
             }
@@ -320,6 +313,7 @@ public class SalaryHeadDB {
                 dept.setNumber(rs.getInt(1));
                 dept.setName(rs.getString(2));
                 dept.setDefaultValue(rs.getInt(3));
+                //System.out.println("\n loadSelectedDeductionHeadss======"+rs.getInt(3)); 
                 dept.setCalculationType(rs.getBoolean(4));
                 data.add(dept);
             }
@@ -352,6 +346,7 @@ public class SalaryHeadDB {
                 dept.setNumber(rs.getInt(1));
                 dept.setName(rs.getString(2));
                 dept.setDefaultValue(rs.getInt(3));
+                //System.out.println("\n loadSelectedIncomeHeads======"+rs.getInt(3));               
                 dept.setCalculationType(rs.getBoolean(4));
                 data.add(dept);
             }
@@ -394,10 +389,11 @@ public class SalaryHeadDB {
             {
                 SalaryHead dept = new SalaryHead();
                 dept.setNumber(rs.getInt(1));
-                dept.setName(rs.getString(2));
-                dept.setUnder(rs.getBoolean(3));
-                dept.setAlias(rs.getString(4));
-                dept.setCalculationType(rs.getBoolean(5));
+                dept.setSHCode(rs.getString(2));
+                dept.setName(rs.getString(3));
+                dept.setUnder(rs.getBoolean(4));
+                dept.setAlias(rs.getString(5));
+                dept.setCalculationType(rs.getBoolean(6));
                 data.add(dept);
             }
             rs.close();
@@ -423,8 +419,9 @@ public class SalaryHeadDB {
             {
                 SalaryHead dept = new SalaryHead();
                 dept.setNumber(rs.getInt(1));
-                dept.setName(rs.getString(2));
-                dept.setUnder(rs.getBoolean(3));
+                dept.setSHCode(rs.getString(2));
+                dept.setName(rs.getString(3));
+                dept.setUnder(rs.getBoolean(4));
                 data.add(dept);
             }
             rs.close();
@@ -442,7 +439,7 @@ public class SalaryHeadDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select sh_id,sh_name,sh_type,sh_alias,sh_calc_type,"
+            ps=c.prepareStatement("select sh_id,sh_code,sh_name,sh_type,sh_alias,sh_calc_type,"
                     + "sh_scalable,sh_special,sh_cat,sh_display,"
                     + "sh_type_code,st_name,sh_process_type from salary_head_master left join salary_type "
                     + "on st_id = sh_type_code order by sh_id");  
@@ -452,21 +449,23 @@ public class SalaryHeadDB {
             {
                 SalaryHead dept = new SalaryHead();
                 dept.setNumber(rs.getInt(1));
-                dept.setName(rs.getString(2));
-                dept.setUnder(rs.getBoolean(3));
-                dept.setAlias(rs.getString(4));
-                dept.setCalculationType(rs.getBoolean(5));
-                dept.setScalable(rs.getBoolean(6));
-                dept.setSpecial(rs.getBoolean(7));
-                dept.setType(rs.getBoolean(8));
-                dept.setDisplay(rs.getBoolean(9));
+                dept.setSHCode(rs.getString(2));
+                dept.setName(rs.getString(3));
+                dept.setUnder(rs.getBoolean(4));
+                dept.setAlias(rs.getString(5));
+                dept.setCalculationType(rs.getBoolean(6));  
+                dept.setScalable(rs.getBoolean(7));
+                dept.setSpecial(rs.getBoolean(8));
+                dept.setType(rs.getBoolean(9));
+                dept.setDisplay(rs.getBoolean(10));
                 SalaryTypeMaster st = new SalaryTypeMaster();
-                st.setCode(rs.getInt(10));
-                st.setName(rs.getString(11));
+                st.setCode(rs.getInt(11));
+                st.setName(rs.getString(12));
                 dept.setSalaryType(st);
-                dept.setProcessType(rs.getBoolean(12));
+                dept.setProcessType(rs.getBoolean(13));
                 data.add(dept);
-            }
+                //System.out.println("data===="+data);
+            } 
             rs.close();
             ps.close();
             c.close();
@@ -482,17 +481,18 @@ public class SalaryHeadDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("insert into salary_head_master(sh_name,sh_type,"
-                    + "sh_alias,sh_calc_type,sh_scalable,sh_display,sh_type_code,sh_process_type,sh_org_id) values(?,?,?,?,?,?,?,?,?)");
-            ps.setString(1, form.getName().toUpperCase());
-            ps.setBoolean(2, !form.isUnder());
-            ps.setString(3, form.getAlias());
-            ps.setBoolean(4, form.isCalculationType());
-            ps.setBoolean(5, form.isType());
-            ps.setBoolean(6, form.isDisplay());
-            ps.setInt(7, form.getTypeCode());
-            ps.setBoolean(8, form.isProcessType());
-            ps.setInt(9, userBean.getUserOrgCode());
+            ps=c.prepareStatement("insert into salary_head_master(sh_code,sh_name,sh_type,"
+                    + "sh_alias,sh_calc_type,sh_scalable,sh_display,sh_type_code,sh_process_type,sh_org_id) values(?,?,?,?,?,?,?,?,?,?)");
+            ps.setString(1, form.getSHCode().toUpperCase());
+            ps.setString(2, form.getName().toUpperCase());
+            ps.setBoolean(3, !form.isUnder());
+            ps.setString(4, form.getAlias().toUpperCase());
+            ps.setBoolean(5, form.isCalculationType());
+            ps.setBoolean(6, form.isType());
+            ps.setBoolean(7, form.isDisplay());
+            ps.setInt(8, form.getTypeCode());
+            ps.setBoolean(9, form.isProcessType());
+            ps.setInt(10, userBean.getUserOrgCode());
             ps.executeUpdate();            
             ps.close();
             c.close();
