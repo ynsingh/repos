@@ -73,7 +73,9 @@ $!data.getMessage()
 
  	#end
 	</td>
-</tr>
+        <td align=right>
+                <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati/docs/RegisterMultiCourseInstructor.html","newWin"); style=text-decoration:none>$brih_help</a>
+        </td>
 </table>
 <table width=100% align=left bgcolor="$ui.tableColor">
 <tr>
@@ -167,25 +169,17 @@ $!data.getMessage()
 </form>
 #end
 #if($mode ==  "MCRegister")
-<table width=100% align=left bgcolor="$ui.menuColor">
-<tr>
-	<td align=right>
-        	<img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati/docs/RegisterMultiCourseInstructor.html","newWin"); style=text-decoration:none>$brih_help</a>
-	</td>
-</tr>
-</table>
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").setAction("RegisterIMCInstructor")">
 ##<div align="left">
-<br>
 ##<table width=100% bgcolor="$ui.menuColor" cellpadding="2" align="left" >
-<table width=100% cellpadding="2" align="left" >
+<table width=100% cellpadding="2" align="left" bgcolor="$ui.menuColor">
 <tr>
 	##<td colspan=2 bgcolor="$ui.menuColor" align="left">
         <td colspan=2 align="left">
                 <font size=4><b>$brih_upload_msg3</b></font>
         </td>
 </tr>
-<tr bgcolor="$ui.menuColor">
+<tr bgcolor="$ui.tableColor">
 	#fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
 </tr>
 <tr>
