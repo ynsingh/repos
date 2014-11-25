@@ -334,6 +334,8 @@ CREATE TABLE IF NOT EXISTS addsecondparty (
         vat VARCHAR(15) DEFAULT NULL,
         gst VARCHAR(15) DEFAULT NULL,
         partyrole VARCHAR(100) NOT NULL,
+        opbal decimal(15,2) NOT NULL DEFAULT '0.00',
+        dc VARCHAR(1)  NULL,
         PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1  AUTO_INCREMENT=1;
 

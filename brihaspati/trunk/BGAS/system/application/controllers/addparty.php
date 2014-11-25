@@ -5,6 +5,7 @@ class Addparty extends Controller {
 	function Addparty()
 	{
 		parent::Controller();
+		$this->load->model('secunit_model');
 
 		/* Check access */
 		if ( ! check_access('create entry'))
@@ -30,6 +31,7 @@ class Addparty extends Controller {
 		$this->db->from('addsecondparty');
 		$pdetail = $this->db->get();
 		$data['party_detail'] = $pdetail;
+		$data['sbal']=$this->secunit_model->get_all_secclsbal();
 		// code for searching a given text
 		$text = '';
 		$data['search'] = '';
@@ -105,6 +107,7 @@ class Addparty extends Controller {
 			$this->messages->add($text . ' is not found.', 'error');
 			redirect('addparty/index');
 		}
+		//$data['abc']=$abc;
 		$data['search'] = $data_search_by;
 		$this->template->load('template', 'addparty/index', $data);
 		return;
@@ -224,6 +227,14 @@ class Addparty extends Controller {
                         'size' => '25',
                         'value' => '',
                 );
+		 $data['opbal'] = array(
+                        'name' => 'opbal',
+                        'id' => 'opbal',
+                        'maxlength' => '15',
+                        'size' => '25',
+                        'value' => '',
+                );
+		$data['op_balance_dc'] = "D";
 		/* Form validations */
 		$this->form_validation->set_rules('pname', 'Party Name', 'trim|required|min_length[2]|max_length[30]');
 		$this->form_validation->set_rules('sacunitid', 'Secondary Accounting Unit', 'trim|required|max_length[10]');
@@ -240,7 +251,8 @@ class Addparty extends Controller {
 		$this->form_validation->set_rules('stnum', 'Service Tax Number','trim');
 		$this->form_validation->set_rules('vatnum', 'VAT Number','trim');
 		$this->form_validation->set_rules('gstnum', 'GST Number','trim');
-		
+		$this->form_validation->set_rules('opbal', 'Opening Balance','trim');
+		$this->form_validation->set_rules('op_balance_dc', 'Opening balance type', 'trim|required|is_dc');	
 		/* Repopulating form */
 		if ($_POST)
 		{
@@ -259,6 +271,8 @@ class Addparty extends Controller {
 			$data['stnum']['value'] = $this->input->post('stnum', TRUE);
 			$data['vatnum']['value'] = $this->input->post('vatnum', TRUE);
 			$data['gstnum']['value'] = $this->input->post('gstnum', TRUE);
+			$data['opbal']['value'] = $this->input->post('opbal', TRUE);
+			$data['op_balance_dc'] = $this->input->post('op_balance_dc', TRUE);
 		}
 
 		/* Validating form */
@@ -317,6 +331,8 @@ class Addparty extends Controller {
                         $data_stnm = $this->input->post('stnum', TRUE);
                         $data_vatnum = $this->input->post('vatnum', TRUE);
                         $data_gstnum = $this->input->post('gstnum', TRUE);
+                        $data_opbal = $this->input->post('opbal', TRUE);
+			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
 			if(strlen($data_sacunitid) < 10){
                                 $this->messages->add('second account unit should be 10 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
@@ -478,7 +494,9 @@ class Addparty extends Controller {
 				'staxnum' =>$data_stnm,
 				'partyrole' =>$prole,
 				'vat' =>$data_vatnum,
-				'gst' =>$data_gstnum
+				'gst' =>$data_gstnum,
+				'opbal' =>$data_opbal,
+				'dc'=>$data_op_balance_dc
 			);
 
 			if ( ! $this->db->insert('addsecondparty', $insert_data))
@@ -611,8 +629,15 @@ class Addparty extends Controller {
                         'size' => '25',
                         'value' => $update_detail->gst,
                 );
+		 $data['opbal'] = array(
+                        'name' => 'opbal',
+                        'id' => 'opbal',
+                        'maxlength' => '15',
+                        'size' => '25',
+                        'value' => $update_detail->opbal,
+                );
 		$data['sunitid'] = $sunitid;
-
+		$data['op_balance_dc'] = $update_detail->dc;
 		/* Form validations */
 		$this->form_validation->set_rules('pname', 'Party Name', 'trim|required|min_length[2]|max_length[30]');
 		$this->form_validation->set_rules('mnumber', 'Mobile Number');
@@ -628,7 +653,8 @@ class Addparty extends Controller {
 		$this->form_validation->set_rules('stnum', 'Service Tax Number','trim');
 		$this->form_validation->set_rules('vatnum', 'VAT Number','trim');
 		$this->form_validation->set_rules('gstnum', 'GST Number','trim');
-		
+		$this->form_validation->set_rules('opbal', 'Opening Balance','trim');
+		$this->form_validation->set_rules('op_balance_dc', 'Opening balance type', 'trim|required|is_dc');
 		/* Repopulating form */
 		if ($_POST)
 		{
@@ -646,6 +672,8 @@ class Addparty extends Controller {
 			$data['stnum']['value'] = $this->input->post('stnum', TRUE);
 			$data['vatnum']['value'] = $this->input->post('vatnum', TRUE);
 			$data['gstnum']['value'] = $this->input->post('gstnum', TRUE);
+			$data['opbal']['value'] = $this->input->post('opbal', TRUE);
+			$data['op_balance_dc'] = $this->input->post('op_balance_dc', TRUE);
 		}
 
 		/* Validating form */
@@ -671,6 +699,8 @@ class Addparty extends Controller {
                         $data_stnm = $this->input->post('stnum', TRUE);
                         $data_vatnum = $this->input->post('vatnum', TRUE);
                         $data_gstnum = $this->input->post('gstnum', TRUE);
+                        $data_opbal = $this->input->post('opbal', TRUE);
+			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
 			$data_sunitid = $sunitid;
 			if($data_mnumber !=""){
 			if(strlen($data_mnumber) < 10){
@@ -752,6 +782,8 @@ class Addparty extends Controller {
 				'staxnum' =>$data_stnm,
 				'vat' =>$data_vatnum,
 				'gst' =>$data_gstnum,
+				'opbal' =>$data_opbal,
+				'dc'=>$data_op_balance_dc
 			);
 			if ( ! $this->db->where('sacunit', $data_sunitid)->update('addsecondparty', $update_data))
 			{

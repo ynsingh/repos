@@ -121,6 +121,14 @@
 	echo "</p>";
 
 	echo "<p>";
+	echo form_label('Opening Balance', 'opbal');
+	echo "<br />";
+        echo form_dropdown_dc('op_balance_dc', $op_balance_dc);
+        echo " ";
+	echo form_input($opbal);
+	echo "</p>";
+
+	echo "<p>";
 	echo form_submit('submit', 'Create');
 	echo " ";
 	echo anchor('addparty/add', 'Back', 'Back to addparty');

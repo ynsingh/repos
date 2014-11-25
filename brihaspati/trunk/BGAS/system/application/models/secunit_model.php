@@ -42,6 +42,79 @@ class Secunit_model extends Model {
                         //return "(Error)";
                         return;
         }
+	// get the array of all secondary unit id with opening balance
+	function get_allsecid()
+ 	{
+		$this->db->select('id,sacunit,opbal,dc');
+                $this->db->from('addsecondparty')->order_by('id', 'asc');
+                $secid_q = $this->db->get();
+		return $secid_q;
+	}
+
+	// get the clossing balance for respective secondary unit 
+	function gel_secclsbal($secunit_id)
+	{
+		$this->db->select('amount');
+		$this->db->from('entry_items')->where('secunitid', $secunit_id)->where('dc', 'D');
+                $entry_q = $this->db->get();
+		$numrow = $entry_q->num_rows();
+		$damnt = 0;
+		$camnt = 0;
+		if($numrow > 0){
+			foreach($entry_q->result() as $row)
+			{
+				$damnt = $damnt + $row->amount;
+			}
+		}
+		else{
+			$damnt = 0;
+		} 
+		$this->db->select('amount');
+		$this->db->from('entry_items')->where('secunitid', $secunit_id)->where('dc', 'C');
+                $entry_q = $this->db->get();
+                $numrow = $entry_q->num_rows();
+		if($numrow > 0){
+                        foreach($entry_q->result() as $row)
+                        {
+                                $camnt = $camnt + $row->amount;
+                        }
+                }
+                else{
+                        $camnt = 0;
+                }
+		$dif= $damnt-$camnt;
+	return $dif;
+	}
+	// get array of seconary unit clossing balance
+	function get_all_secclsbal()
+	{
+		$secbalarray = array();
+		$lstsecunit=$this->get_allsecid();
+		foreach($lstsecunit->result() as $item)
+		{
+			$sid = $item->id;
+			$secid = $item->sacunit;
+			$secopbal = $item->opbal;
+			$secoptyp = $item->dc;
+			$subal = $this->gel_secclsbal($secid);
+			if ($secoptyp == 'D'){
+				$subal=$subal + $secopbal;
+			}
+			else {
+				$subal=$subal - $secopbal;
+			}
+			$subal=money_format('%!i', convert_cur($subal));
+			if($subal<0){
+				$secbalarray[$secid]='C '. str_replace('-','',$subal);
+			}
+			else{
+				$secbalarray[$secid]='D '.$subal;
+			}
+		}
+	return $secbalarray;
+	}
+
+	
 	/* get entry name with its ledger type of selected date range */
 	function get_sec_unit_report($entry_id, $entry_type_id, $sec_uni_id)
 	{

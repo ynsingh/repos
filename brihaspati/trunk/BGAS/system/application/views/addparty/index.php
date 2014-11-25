@@ -21,6 +21,7 @@
 		<tr>
                         <th>Secondary Unit</th>
                         <th>Party Name</th>
+                        <th>Party Type</th>
                         <th>Mobile NO.</th>
                         <th>Email Id</th>
                         <th>Bank A/C No.</th>
@@ -32,6 +33,9 @@
                         <th>Service Tax No.</th>
 			<th>VAT No.</th>
 			<th>GST No.</th>
+                        <th>Opening Balance</th>
+                        <th>Clossing Balance</th>
+                        <th>Available Actions</th>
 
 		</tr>
 	</thead>
@@ -42,6 +46,7 @@
 			echo "<tr>";
                         echo "<td>" . $row->sacunit . "</td>";
                         echo "<td>" . $row->partyname . "</td>";
+                        echo "<td>" . $row->partyrole . "</td>";
                         echo "<td>" . $row->mobnum . "</td>";
                         echo "<td>" . $row->email . "</td>";
                         echo "<td>" . $row->bancacnum . "</td>";
@@ -53,7 +58,8 @@
                         echo "<td>" . $row->staxnum . "</td>";
                         echo "<td>" . $row->vat . "</td>";
                         echo "<td>" . $row->gst . "</td>";
-			echo "<td>" . "</td>";
+			echo "<td>" . $row->dc ." ". $row->opbal . "</td>";
+                       	echo "<td>" . $sbal[$row->sacunit] . "</td>";
 			echo "<td>" . anchor('addparty/edit/' . $row->sacunit , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) . " ";
                         echo "</tr>";
 		}
