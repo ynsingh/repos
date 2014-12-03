@@ -346,9 +346,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 					// store this lect_id in client objects for later use by this client.
 					ClientObject.setLectureID(lect_id);	
 					// store role in client objects for later use by this client.
-					if(!((ClientObject.getUserRole()).equals("instructor")))
-                                		ClientObject.setUserRole("instructor");
-					new JoinSession(lect_id);
+					new JoinSession(lect_id,"instructor");
 					ClientObject.setLectureInfo(lectinfoVector);
 					ClientObject.setLectureInfoIndex(i);
 				}

@@ -282,9 +282,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 					// store this lect_id in client objects for later use by this client.
                                         ClientObject.setLectureID(lect_id);
 					// store role in client objects for later use by this client.
-					if(!(ClientObject.getUserRole()).equals("student"))
-                                                ClientObject.setUserRole("student");
-                                       	new JoinSession(lect_id);
+                                       	new JoinSession(lect_id, "student");
                                	}
                        	}
                 }catch(Exception ex) { System.out.println("Error in load session in "+this.getClass()+"  "+ex.getMessage()); }

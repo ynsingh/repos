@@ -208,7 +208,7 @@ public class SinglePortClient implements Runnable {
 			return receive_data_fromserver;
 		}catch(Exception e) { 
 			client=null;
-			org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus("sssss");
+			org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus("Reflector Stopped Abruptly");
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 			ThreadController.setReflectorStatusThreadFlag(false);
 			System.out.println(this.getClass()+" in Send data from client to reflector "+e.getMessage());

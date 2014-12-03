@@ -32,7 +32,7 @@ public class MailLogin {
 			MainWindow.getController().setCouseid(course_id);
 			ClientObject.setLectureID(lect_id);
                         ClientObject.setUserRole(ins_std);
-                        new JoinSession(lect_id);
+                        new JoinSession(lect_id, ins_std);
 		}catch(Exception e){System.out.println("Error in MilLogin");}	
 	}	
 }	

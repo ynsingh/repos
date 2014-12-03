@@ -11,6 +11,7 @@ import java.io.File;
 import java.awt.BorderLayout;
 import java.net.URLEncoder;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
@@ -19,6 +20,8 @@ import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 import org.bss.brihaspatisync.network.Log;
 
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;	
+
+import java.net.InetAddress;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on dec2008
@@ -35,26 +38,32 @@ public class JoinSession {
  	 * client system to it, to received the lecture transmission.The method does not return anything.
  	 */
 
-	protected JoinSession(String Lecture_ID) {
+	protected JoinSession(String Lecture_ID, String SelectRole) {
                 try{
 			String usr_name=ClientObject.getUserName();
 			if(usr_name.equals("guest")) {
-				usr_name = javax.swing.JOptionPane.showInputDialog(null, "Please give nick name : ", "Nick name panel ", 1);
-				if(!usr_name.equals("")) {
-					usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
-					ClientObject.setUserName(usr_name);
-				}else
-					return;
-			}
+                           usr_name =""; 
+                           usr_name = javax.swing.JOptionPane.showInputDialog(null, "Please give nick name : ", "Nick name panel ", 1);
+                           if(!usr_name.matches("^[a-zA-Z_]*$")){
+                                JOptionPane.showMessageDialog(null, "Nick name should only contains alphabets, * or $ characters. Kindly join the sesion again.");
+                                return;
+                           }
+                        }
+                        if( usr_name.equals("")){
+                            JOptionPane.showMessageDialog(null, "Nothing was entered as Nickname. Kindly Join the session again.");
+                            return;
+                        }
+                        usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
+                        ClientObject.setUserName(usr_name);
 			String username="user="+URLEncoder.encode(usr_name,"UTF-8");
 			//start GUI for this lecture id 
-			String role="role="+URLEncoder.encode(ClientObject.getUserRole(),"UTF-8");
+                	String role="role="+URLEncoder.encode(SelectRole,"UTF-8");
                 	String st="status="+URLEncoder.encode("available","UTF-8");
 			String indexName=ClientObject.getIndexServerName();
 			String lectid="lect_id="+URLEncoder.encode(Lecture_ID,"UTF-8");
 			String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
 			//get reflector ip from indexing server.
-			String ref_ip =HttpsUtil.getReflectorAddress(indexServer);
+			String ref_ip  =HttpsUtil.getReflectorAddress(indexServer);
 			if(!(ref_ip.equals(""))) {
 				if(!(ThreadController.getThreadFlag()))
 			       		ThreadController.setThreadFlag(true);	
@@ -65,11 +74,8 @@ public class JoinSession {
 				startGUIThread();
 				ThreadController.setReflectorStatusThreadFlag(true);
 	                        ReceiveQueueHandler.getController().start();
-				StatusPanel.getController().setProcessBar("no");
-			} else {
-				StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
-			}
-          	}catch(Exception ex) {  System.out.println("Exception on Join Session !! "+ex.getMessage());}
+				StatusPanel.getController().setProcessBar("no"); StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog2")); } else {
+				StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	} }catch(Exception ex) {  System.out.println("Exception on Join Session !! "+ex.getMessage());}
 	}
 
 	/**
