@@ -53,12 +53,82 @@ class Report extends Controller {
 			$date1 = $row->fy_start;
 			$date2 = $row->fy_end;
 		}
-		//echo $date1 . $date2;
+		$date=explode("-",$date1);
+		$date2 = explode("-", $row->fy_end);
+		$default_start = '01/04/'.$date[0];
+		$default_end = '31/03/'.$date2[0];
+		
+		$curr_date = date_today_php();
+		if($curr_date >= $default_end) {
+			$default_end_date = $default_end;
+		}
+		else {
+			$default_end_date = $curr_date;
+		}
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => $default_start,
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => $default_end_date,
+		);
+
+                $data['print_preview'] =FALSE;
+
+		$data_date1 = $default_start;
+                $data_date2 = $default_end_date;
+
+                $date=explode("/",$data_date1);
+                $date1=$date[2]."-".$date[1]."-".$date[0];
+                $date=explode("/",$data_date2);
+                $date2=$date[2]."-".$date[1]."-".$date[0];
+
                 $newdata = array(
                       'date1'  => $date1,
                       'date2'  => $date2
                      );
                 $this->session->set_userdata($newdata);
+		/* Form validations */
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Repopulating form */
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
+		} 
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'report/balancesheet', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+			$date=explode("/",$data_date1);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$data_date2);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+			
+			$newdata = array(
+	                   'date1'  => $date1,
+        	           'date2'  => $date2
+	                );
+			$this->session->set_userdata($newdata);
+		}
 		$this->template->load('template', 'report/balancesheet', $data);
 		return;
 	}
@@ -773,6 +843,7 @@ class Report extends Controller {
 
 		}
 
+
 		$this->load->library('session');
 		$this->db->from('settings');
 		$detail = $this->db->get();
@@ -790,8 +861,95 @@ class Report extends Controller {
 		$this->template->set('page_title', 'Balance Sheet MHRD Format');
                 //$this->template->set('nav_links', array('report/download/new_balancesheet' => 'Download CSV', 'report/printpreview/new_balancesheet' => 'Print Preview'));
                 $this->template->set('nav_links', array('report/printpreview/new_balancesheet' => 'Print Preview', 'report/printPreview_schedules/1' => 'Print All Schedules', 'report/pdf/new_balancesheet' => 'Download PDF'));
+		$default_end_date;
 
-		$this->template->load('template', 'report/new_balancesheet');
+		/* Form fields */ 
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$date1 = $row->fy_start;
+			$date2 = $row->fy_end;
+		}
+		$date=explode("-",$date1);
+		$date2 = explode("-", $row->fy_end);
+		$default_start = '01/04/'.$date[0];
+		$default_end = '31/03/'.$date2[0];
+		
+		$curr_date = date_today_php();
+		if($curr_date >= $default_end) {
+			$default_end_date = $default_end;
+		}
+		else {
+			$default_end_date = $curr_date;
+		}
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => $default_start,
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => $default_end_date,
+		);
+
+                $data['print_preview'] =FALSE;
+
+		$data_date1 = $default_start;
+                $data_date2 = $default_end_date;
+
+                $date=explode("/",$data_date1);
+                $date1=$date[2]."-".$date[1]."-".$date[0];
+                $date=explode("/",$data_date2);
+                $date2=$date[2]."-".$date[1]."-".$date[0];
+
+                $newdata = array(
+                      'date1'  => $date1,
+                      'date2'  => $date2
+                     );
+                $this->session->set_userdata($newdata);
+		/* Form validations */
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Repopulating form */
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
+		} 
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'report/new_balancesheet', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+
+			$date=explode("/",$data_date1);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$data_date2);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+			
+			$newdata = array(
+	                   'date1'  => $date1,
+        	           'date2'  => $date2
+	                );
+			$this->session->set_userdata($newdata);
+		}
+
+		$this->template->load('template', 'report/new_balancesheet',$data);
 		return;
 	}
 
@@ -2630,7 +2788,7 @@ class Report extends Controller {
                 {
 			$curr_date = date_today_php();
                         $data['report'] = "report/new_balancesheet";
-                        $data['title'] = "Balance Sheet As At ".$curr_date;
+                        $data['title'] = "Balance Sheet As At ".$date2;
                         $data['left_width'] = "";
                         $data['right_width'] = "";
                         $data['print_preview'] = TRUE;

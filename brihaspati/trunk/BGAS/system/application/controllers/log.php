@@ -63,10 +63,10 @@ class Log extends Controller {
                 $data['search'] = '';
                 $data['search_by'] = array(
                         "Select" => "Select",
+			"date"=> "Date",
                         "host_ip" => "Host IP",
                         "user"=> "User",
                         "message_title"=> "Message",
-                        "date"=> "Date",
                 );
                 $data['search_by_active'] = '';
 
@@ -98,22 +98,112 @@ class Log extends Controller {
                 {
                         $data_search_by = $this->input->post('search_by', TRUE);
                         $data_text = $this->input->post('text', TRUE);
-			redirect('log/LogReport/'.$name);
+			//redirect('log/LogReport/'.$name);
                 }
-		echo "data_search_by=======in controller--$data_search_by";
+		//if searching host ip....
+		$i=0;
 		if($data_search_by == "host_ip") {
-                       $search_text = $data_text;
- 		       if(! ctype_digit($data_text)) {
-                	        $this->messages->add('Please enter a number.', 'error');
-        	                redirect('log/LogReport/'.$name);
-	                }
-                }
-			
+                       	$search_text = $data_text;
+			$str_val=(explode(".",$search_text));
+			$arr_len=count($str_val);
+			for($i=0; $i< $arr_len-1; $i++){
+				if($str_val[$i] != NULL){
+					if(! ctype_digit($str_val[$i])) {
+                                	$this->messages->add('Please enter a numeric value .', 'error');
+                                	redirect('log/LogReport/'.$name);
+                                	return;
+                        		}
+				}
+			}
+
+                }//end
 	        if(gmp_sign($data_text) == -1) {
         		$this->messages->add('Text should be a positive value.', 'error');
                 	redirect('log/LogReport/'.$name);
 			return;
-                }		
+                }
+		//if searching date....	
+		if($data_search_by == "date")
+		{
+			$search_text = $data_text;
+			// if date and update date is single digit
+			if(ctype_digit($data_text)) {
+				 $this->messages->add('Please enter date in dd mm yy format.', 'error');
+                                 redirect('log/LogReport/'.$name);
+
+			}
+			else {
+				$date=explode(' ', $data_text);
+				// if date and update format is dd mm yy only
+				if(count($date)>1) {
+				// if date and update date contain two digit
+					if(count($date) == '2') {
+						// if month is character
+						if(ctype_alpha($date['1'])) {
+							if(strtotime($date['1'])) {
+								$month = $date['1'];
+								$x = date('m', strtotime($month));
+								$data_text = $x . "-" . $date[0];
+								$field = $data_search_by . '      ' . 'LIKE';
+							}
+							else {
+								$this->messages->add('Invalid Month.', 'error');
+								redirect('log/LogReport/'.$name);
+							}
+						}
+						// if month is digit
+						else if(ctype_digit($date['1'])) {
+						// if month is valid or not
+							if("1" <= $date['1'] && $date['1'] <= "12") {
+								$field = $data_search_by . '      ' . 'LIKE';
+								$data_text = $date[1]. "-" . $date[0];
+							}
+							else {
+								$this->messages->add('Invalid Month.', 'error');
+								redirect('log/LogReport/'.$name);
+							}
+						}
+						// if date is invalid
+						else {
+							$this->messages->add('Invalid date format. Please enter date in dd mm yy format.', 'error');
+							redirect('log/LogReport/'.$name);
+						}
+					}
+					// if date contain three digit
+					if(count($date) == '3') {
+						$date0 = $date['0'];
+						$x = $date['1'];
+						$date2 = $date['2'];
+						//it converts month name to digit
+						if(ctype_alpha($date['1'])) {
+							$month = $date['1'];
+							$x = date('m', strtotime($month));
+							$data_text = $date[2]. "-" . $x . "-" . $date[0];
+						}
+						$data_text = $date0. "-" . $x . "-" . $date2;
+						//check for date is valid or not
+						@$valid_date = checkdate($x,$date0,$date2);
+						if($valid_date == 'true') {
+							//check date is exist in financial year or not
+							if($date2 == "2014" || $date2 == "2015") {
+							$data_text = $date2."-". $x ."-".$date0;
+						}
+						else {
+						$this->messages->add($data_text . ' does not exist in financial year.', 'error');
+		//				redirect('log/LogReport/'.$name);
+						}
+					}
+					else {
+						$this->messages->add($data_text . ' is invalid date Please enter date in dd mm yyyy format.', 'error');
+		//				redirect('log/LogReport/'.$name);
+					}	
+				}
+			}
+			else {
+				$this->messages->add('Invalid date format. Please enter date in dd mm yyyy format.', 'error');
+				redirect('log/LogReport/'.$name);							}
+		}		
+	}	
                 /*if($data_search_by == "host_ip")
                 {
 			$search_text = $data_text;
@@ -133,6 +223,7 @@ class Log extends Controller {
                         }
 		}*/
                 $data['search'] = $data_search_by;
+                $data['datetext'] = $data_text;
                 $this->template->load('template', 'log/LogReport', $data);
 
 
