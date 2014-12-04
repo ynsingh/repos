@@ -53,8 +53,8 @@ public class JoinSession {
                             JOptionPane.showMessageDialog(null, "Nothing was entered as Nickname. Kindly Join the session again.");
                             return;
                         }
-                        usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
-                        ClientObject.setUserName(usr_name);
+                        //usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
+                        //ClientObject.setUserName(usr_name);
 			String username="user="+URLEncoder.encode(usr_name,"UTF-8");
 			//start GUI for this lecture id 
                 	String role="role="+URLEncoder.encode(SelectRole,"UTF-8");
