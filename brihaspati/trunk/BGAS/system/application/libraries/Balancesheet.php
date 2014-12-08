@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+//error_reporting(E_ALL ^ E_DEPRECATED);
 
 class Balancesheet
 {
@@ -93,17 +94,19 @@ class Balancesheet
 		 else {
 			$CI->db->from('groups')->where('id', $id)->limit(1);
 			$group_q = $CI->db->get();
+			
 			if($group_q->num_rows() > 0){
 				$group = $group_q->row();
 				$this->id = $group->id;
 				$this->name = $group->name;
 				$this->code = $group->code;
 				$this->status = $group->status;
-				//$this->schedule = $group->schedule;
+			//	$this->schedule = $group->schedule;
 				$this->total = 0;
 				$this->total2 = 0;
 			}else{
 				$this->init_led($id);
+			
 			}
 		}
 
@@ -253,6 +256,7 @@ class Balancesheet
                 $CI =& get_instance();
                 $CI->db->select('name, group_id');
                 $CI->db->from('ledgers')->where('id', $this->id);
+		print_r($this->id);
                 $ledger_result = $CI->db->get();
                 if($ledger_result->num_rows() > 0){
 			$ledger = $ledger_result->row();
@@ -527,6 +531,7 @@ class Balancesheet
 	                        if($c == 2){
 					$income = new Balancesheet();
 			                $income->init(3);
+				
 			                $expense = new Balancesheet();
 			                $expense->init(4);
 					$income_total = -$income->total;
@@ -630,13 +635,14 @@ class Balancesheet
 						echo $counter;
 						$counter++;
 						echo "&nbsp;&nbsp;" . $data->name;
+						
 					echo "</td>";
 
 					echo "<td></td>";
 					echo "<td></td>";
 					echo "<td></td>";
 					echo "<td></td>";
-				echo "</tr>";
+				echo "</tr>"; 
 
 /*				foreach($data->children_ledgers as $id => $row){
 					echo "<tr class=\"tr-ledger\">";		
@@ -683,16 +689,17 @@ class Balancesheet
 
 					//Adding opening balance for the ledger head.
 					$credit_amount = $credit_amount + $row['opbalance'];
-					$credit_total = $credit_total + $row['opbalance'];
+					$credit_total = $credit_total + $row['opbalance'];  
 
                                         $this->getPreviousYearDetails();
-                                        if($this->prevYearDB != "" ){//3
+                                        if($this->prevYearDB != "" ){//3  
                                 	        /* database connectivity for getting previous year opening balance */
                                                 $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
                                                 $op_balance = array();
                                                 if($con){//4
                                         	        $value = mysql_select_db($this->prevYearDB, $con);
                                                         $id = mysql_real_escape_string($row['id']);
+						
                                                         $cl = "select id, amount, dc from entry_items where ledger_id = '$id'";
                                                         $val = mysql_query($cl);
                                                         if($val != ''){//5
@@ -773,7 +780,7 @@ class Balancesheet
 						$credit_amount = $credit_amount + $row['opbalance'];
 	
 						$this->getPreviousYearDetails();
-                                		if($this->prevYearDB != "" ){//3
+                                		if($this->prevYearDB != "" ){//3  
 		                                        /* database connectivity for getting previous year opening balance */
                 		                        $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
                                 		        $op_balance = array();
@@ -829,6 +836,7 @@ class Balancesheet
 		$this->old_dr_total = $old_debit_total;
 		$this->old_cr_total = $old_credit_total;
 	}	
+
 
 	function current_liabilities($counter){
 	
@@ -1176,7 +1184,215 @@ class Balancesheet
                 $this->old_dr_total = $old_debit_total;
                 $this->old_cr_total = $old_credit_total;
 	}
+	
 
+
+
+   ////////////////////////////////
+   
+  function Investments($id,$type){//main
+
+     $counter = 1;
+     $sum1 = "";
+     $sum2 = "";
+     $sum3 = "";
+     $sum4 = "";
+     $sum5 = "";
+     $sum6 = "";
+     $sum7 = "";
+     $sum8 = "";
+	
+     $CI =& get_instance();
+     $CI->db->select('id,name')->from('groups')->where('parent_id',$id);
+     $groups_result1 = $CI->db->get();
+     $gr = $groups_result1->result();
+	
+     foreach($groups_result1->result() as $row1)
+     {//1	
+     	$invest_id = $row1->id;
+     	if($id == "21")
+	{
+        	echo "<tr class=\"tr-group\">";
+        	echo "<td class=\"td-group\">";
+		echo $counter;
+        	$counter++;
+                echo "&nbsp;&nbsp;" . $row1->name;
+                echo "</td>";
+				
+		$CI =& get_instance();
+		$CI->load->model('investment_model');   
+		$result = $CI->investment_model->investment1($invest_id,$type);  
+		$value = explode('#',$result);
+
+		$total1 = $value[0];
+		$sum1 = $sum1+$total1;
+		
+		$total2 = $value[1];
+		$sum2 = $sum2+$total2;
+
+		$total3 = $value[2];
+		$sum3 = $sum3+$total3;
+		
+		$total4 = $value[3];
+		$sum4 = $sum4+$total4;
+
+		$total5 = $value[4];  
+		$sum5 = $sum5+$total5;
+
+		$total6 = $value[5];
+		$sum6 = $sum6+$total6;
+		
+		$total7 = $value[6];
+		$sum7 = $sum7+$total7;
+		
+		$total8 = $value[7];
+		$sum8 = $sum8+$total8;
+				
+		if($type == "Earmarked Funds")
+		{
+			echo "<td width=15% align=\"right\">";
+                	echo convert_amount_dc(+$total1);
+	        	echo "</td>";
+
+                	echo "<td width=15% align=\"right\">";
+         		echo convert_amount_dc(-$total2);
+			echo "</td>";
+			
+                	echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(+$total5);
+			echo "</td>";
+
+               		echo "<td  width=15% align=\"right\">";
+			echo convert_amount_dc(-$total6);
+			echo "</td>";
+                	echo "</tr>";
+
+		}else{
+			echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(+$total3);
+                        echo "</td>";
+
+                        echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(-$total4);
+			echo"</td>";
+
+                        echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(+$total7);
+			echo "</td>";
+
+			echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(-$total8);
+                        echo "</td>";
+                        echo "</tr>";
+
+
+		    }
+			$this->dr_total1 = $sum1;
+			$this->cr_total1 = $sum2;
+			$this->dr_total2 = $sum3;
+			$this->cr_total2 = $sum4;
+			$this->old_dr_total1 = $sum5;
+			$this->old_cr_total1 = $sum6;
+			$this->old_dr_total2 = $sum7;
+			$this->old_cr_total2 = $sum8;
+
+	}elseif($id == "22")
+		{
+			echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+			echo $counter;
+                        $counter++;
+                        echo "&nbsp;&nbsp;" . $row1->name;
+                        echo "</td>";
+
+			$CI =& get_instance();
+                        $CI->load->model('investment_model');
+                        $result = $CI->investment_model->investment1($invest_id,$type);
+                        $value = explode('#',$result);
+
+                        $total1 = $value[0];
+			$sum1 = $sum1+$total1;
+
+                        $total2 = $value[1];
+			$sum2 = $sum2+$total2;
+
+			$total3 = $value[2];
+			$sum3 = $sum3+$total3;
+
+			$total4 = $value[3];
+			$sum4 = $sum4+$total4;
+			
+			$total5 = $value[4];
+	                $sum5 = $sum5+$total5;
+
+                	$total6 = $value[5];
+                	$sum6 = $sum6+$total6;
+
+                	$total7 = $value[6];
+                	$sum7 = $sum7+$total7;
+
+                	$total8 = $value[7];
+                	$sum8 = $sum8+$total8;
+
+
+                        if($type == "Earmarked Funds")
+			{
+			echo "<td width=15% align=\"right\">";
+                        echo convert_amount_dc(+$total1);
+                        echo "</td>";
+
+                        echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(-$total2);
+                        echo "</td>";
+
+                        echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(+$total5);
+                        echo "</td>";
+
+                        echo "<td  width=15% align=\"right\">";
+			echo convert_amount_dc(-$total6);
+                        echo "</td>";
+                        echo "</tr>";
+
+                        }else{
+
+			echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(+$total3);
+                        echo "</td>";
+
+                        echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(-$total4);
+                        echo"</td>";
+
+                        echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(+$total7);
+                        echo "</td>";
+
+                        echo "<td width=15% align=\"right\">";
+			echo convert_amount_dc(-$total8);
+                        echo "</td>";
+                        echo "</tr>";
+
+	    			}
+				
+			$this->dr_total1 = $sum1;
+                        $this->cr_total1 = $sum2;
+                        $this->dr_total2 = $sum3;
+                        $this->cr_total2 = $sum4;
+                        $this->old_dr_total1 = $sum5;
+                        $this->old_cr_total1 = $sum6;
+                        $this->old_dr_total2 = $sum7;
+                        $this->old_cr_total2 = $sum8;
+
+
+		         }
+		}//1
+		
+		   
+	}//main
+//////////////////////////////////
+
+				
 	function sub_schedule(){
 		$counter = 1;
 		$opening_dr = 0.00;

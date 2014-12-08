@@ -1219,7 +1219,7 @@ class Report extends Controller {
 		}elseif($name == 'Loan/Borrowings'){
 			$this->template->load('template', 'report/schedule_template_3', $data);
                         return;
-		}elseif($name == 'Current Liabilities And Provisions'){
+		     }	elseif($name == 'Current Liabilities And Provisions'){
 			$count = 0;
 			$this->db->select('id, name, code')->from('groups');
 			$this->db->where('parent_id', $id);
@@ -1278,7 +1278,38 @@ class Report extends Controller {
 			$data['fixed_assets'] = $fixed_assets;			
 			$this->template->load('template', 'report/schedule_template_5', $data);
                         return;
-		}elseif($name == 'Current Assets'){
+
+		}  elseif($name == 'Investments'){
+                        $investments = array();
+                        $count = 0;
+
+                        $this->db->select('id')->from('groups');
+                        $this->db->where('parent_id', $id);
+                        $group_query = $this->db->get();
+                        foreach($group_query->result() as $row){
+                                $this->db->select('id')->from('groups');
+                                $this->db->where('parent_id', $row->id);
+                                $child_group_query = $this->db->get();
+                                foreach($child_group_query->result() as $row1){
+                                        $investments[$count]['id'] = $row1->id;
+                                        $count++;
+                                }
+
+                                $this->db->select('id')->from('ledgers');
+                                $this->db->where('group_id', $row->id);
+                                $child_ledger_query = $this->db->get();
+                                foreach($child_ledger_query->result() as $row1){
+                                        $investments[$count]['id'] = $row1->id;
+                                        $count++;
+                                } 
+                        }
+
+                        $data['investments'] = $investments;
+                        $this->template->load('template', 'report/schedule_template_8',$data);
+                        return;
+
+
+		} elseif($name == 'Current Assets'){
 			$current_assets_group = array();
 			$current_assets_ledger = array();
 			$count = 0;
@@ -2867,6 +2898,48 @@ class Report extends Controller {
 
 	                        //$data['designated_earmarked_funds'] = $design_earm_funds;
 			}
+		//////////////////////////////////
+
+			elseif($name == 'Investments'){
+                        $investments = array();
+                        $count = 0;
+
+                        $this->db->select('id')->from('groups');
+                        $this->db->where('parent_id', $id);
+                        $group_query = $this->db->get();
+                        foreach($group_query->result() as $row){
+                                $this->db->select('id')->from('groups');
+                                $this->db->where('parent_id', $row->id);
+                                $child_group_query = $this->db->get();
+                                foreach($child_group_query->result() as $row1){
+                                        $investments[$count]['id'] = $row1->id;
+                                        $count++;
+                                }
+
+                                $this->db->select('id')->from('ledgers');
+                                $this->db->where('group_id', $row->id);
+                                $child_ledger_query = $this->db->get();
+                                foreach($child_ledger_query->result() as $row1){
+                                        $investments[$count]['id'] = $row1->id;
+                                        $count++;
+                                }
+                        }
+			$data['report'] = "report/schedule_template_8";
+
+			$data['title'] = $title;
+                        $data['left_width'] = "";
+                        $data['right_width'] = "";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+                        $data['isSchedule'] = "true";
+                        $data['arr'] = $arr;
+			$this->load->view('report/report_template',$data);
+			return;
+
+		} 
+/////////////////////////////////
+
 			else
 				$data['report'] = "report/schedule_template";
 

@@ -76,7 +76,7 @@
 	echo "</p>";
 
 	echo "<p>";
-	echo form_submit('submit', 'Carrfy forward');
+	echo form_submit('submit', 'Carry forward');
 	echo " ";
 	echo anchor('setting', 'Back', array('title' => 'Back to settings'));
 	echo "</p>";
