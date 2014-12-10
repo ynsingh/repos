@@ -91,6 +91,21 @@ public class ErpmusersDAO  {
             }
         }
 
+    public List<Erpmusers> findGUser() {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            List<Erpmusers> list = session.createQuery("from Erpmusers where erpmuId >'2'").list();
+            return list;
+        }
+        catch (RuntimeException re) {
+                throw re;
+        }
+        finally {
+            session.close();
+            }
+        }
 
     public Erpmusers findByUserName(String ERPMU_Name) {
         Session session = HibernateUtil.getSession();

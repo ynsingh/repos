@@ -148,6 +148,10 @@
 					<s:url action="ListOfTendersAction.action" id="ListOfTenders"></s:url>
                 			<a href='<s:property value="ListOfTenders"/>'><s:property value="getText('Administration.TenderList')"/> </a>
 				</td></tr>
+				<tr><td colspan="2" class="textInput">
+					<s:url action="ViewUsersList.action" id="NavigateToURL"></s:url>
+                			<a href='<s:property value="NavigateToURL"/>'><s:property value="getText('Administration.UsersList')"/> </a>  
+				</td></tr>  
                             </tbody>
                         </table>
                     </s:form>
@@ -182,7 +186,7 @@
                     </tbody>
                 </table>
                 <br><br>
-            <s:label label="Application Last Updated On 02-06-2014" labelSeparator=""></s:label>
+        <%--    <s:label label="Application Last Updated On 02-06-2014" labelSeparator=""></s:label>  --%>
                 <br>
                 <hr>
                 <div id="footer">
