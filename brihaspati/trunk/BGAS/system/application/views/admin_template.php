@@ -33,7 +33,20 @@ $(document).ready(function(){
 	}).superfish(); // call supersubs first, then superfish, so that subs are 
 });
 </script>
-
+<?php
+$username = $this->config->item('account_name');
+$db1=$this->load->database('login', TRUE);
+$db1->from('aggregateaccounts')->where('username', $username);
+$agglist = $db1->get();
+$aggact="";
+foreach($agglist->result() as $row)
+{
+	$aggact = $row->accounts;
+//	$lngt=strlen($aggact);
+	
+}
+$lngt=strlen($aggact);
+?>
 </head>
 <body>
 <div id="container">
@@ -51,6 +64,15 @@ $(document).ready(function(){
 					echo anchor('admin', 'Administer', array('title' => "Administer", 'class' => 'anchor-link-b'));
 					echo " | ";
 				}
+				if (check_access('administer')) {
+					
+					if($lngt!=0)					
+					{
+                                        	echo anchor('admin/aggregator', 'Aggregator', array('title' => "Administer", 'class' => 'anchor-link-b'));
+                                        	echo " | ";
+					}
+                                }
+
 				echo anchor('user/profile', 'Profile', array('title' => "Profile", 'class' => 'anchor-link-b'));
 				echo " | ";
 				echo anchor('user/logout', 'Logout', array('title' => "Logout", 'class' => 'anchor-link-b'));

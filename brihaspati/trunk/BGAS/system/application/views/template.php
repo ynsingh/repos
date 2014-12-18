@@ -109,6 +109,7 @@ $(document).ready(function() {
 			}
 			else{
 			echo "<div id=\"admin\">";
+			echo $username=$this->session->userdata('user_name');
 			if ($this->session->userdata('user_name')) {
 				echo anchor('', 'Accounts', array('title' => "Accounts", 'class' => 'anchor-link-b'));
 				echo " | ";
@@ -117,6 +118,11 @@ $(document).ready(function() {
 					echo anchor('admin', 'Administer', array('title' => "Administer", 'class' => 'anchor-link-b'));
 					echo " | ";
 				}
+                                if (check_access('manager')) {
+                                        echo anchor('user/aggregator', 'Aggregator', array('title' => "Administer", 'class' => 'anchor-link-b'));
+                                        echo " | ";
+                                }
+
 				echo anchor('user/profile', 'Profile', array('title' => "Profile", 'class' => 'anchor-link-b'));
 				echo " | ";
 				echo anchor('user/logout', 'Logout', array('title' => "Logout", 'class' => 'anchor-link-b'));

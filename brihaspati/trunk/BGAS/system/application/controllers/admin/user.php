@@ -40,7 +40,7 @@ class User extends Controller {
 		}*/  
                 $data['users'] = array();
 		$db1=$this->load->database('login', TRUE);
-                $db1->select('id,username,email,role,status,accounts')->from('bgasuser');
+                $db1->select('id,username,email,role,status,accounts,aggtype')->from('bgasuser');
 
 		$query = $db1->get();
                 $config['total_rows'] =$db1->count_all('bgasuser');
@@ -442,7 +442,8 @@ class User extends Controller {
 			else
 				$data_user_status = 0;
 			$data_accounts = $this->input->post('accounts', TRUE);
-			 
+			//print_r($data_accounts);
+			$this->messages->add("Test=====>".$data_accounts); 
 			/* Forming account querry string */
                         $data_accounts_string = '';
                         if ( ! $data_accounts)
@@ -460,7 +461,8 @@ class User extends Controller {
                                         $data_accounts_string = implode(",", $data_accounts_valid);
                                 }
                         }
-
+			//echo $data_accounts_string;
+			$this->messages->add($data_accounts_string);
                          $db1->trans_start();
                          $update_data = array(
                                              'username' => $data_user_name,						 
@@ -609,7 +611,7 @@ class User extends Controller {
                         {
                                 $db1->from('bgasAccData');
                                 $accname = $db1->get();
-                                print_r(sizeof($accname->result()));
+                                //print_r(sizeof($accname->result()));
 
                                 foreach($accname->result() as $row1)
                                 {
@@ -879,7 +881,8 @@ class User extends Controller {
                 }
 
                 $type=3;
-                echo $query = "INSERT INTO bgas_acl"."(username,headid,roleid,ptype,atype)" . "VALUES ('$user_name','*','1','$type','grp')";
+                //echo $query = "INSERT INTO bgas_acl"."(username,headid,roleid,ptype,atype)" . "VALUES ('$user_name','*','1','$type','grp')";
+                $query = "INSERT INTO bgas_acl"."(username,headid,roleid,ptype,atype)" . "VALUES ('$user_name','*','1','$type','grp')";
                 $result = mysql_query($query);
                 $data['user_name']=$user_name;
                 $data['accountname'] = $accountname;
@@ -931,7 +934,250 @@ class User extends Controller {
 		}
 
 	}
-}
+	function makeaggregator($user_id =0)
+ 	{
+		$this->template->set('page_title', 'Assign Aggregator');
+		$data['accounts1'] = array('name' => 'user_name');
+                $user_accounts = array();
+                $db1=$this->load->database('login', TRUE);
+                $db1->from('bgasuser')->where('id', $user_id);
+                $user_name1 = $db1->get();
+		$data['accounts_active'] = array('(All Accounts)');
+		$data['accounts'] = array('(All Accounts)' => '(All Accounts)');
+                foreach($user_name1->result() as $row)
+                {
+                        $user_name = $row->username;
+			$userrole = $row->role;
+                        if($user_name=='guest')
+                        {
+                                $this->messages->add('Permission denied.', 'error');
+                                redirect('admin/user');
+                                return;
+                        }
+			$count=0;			
+			$db1->from('bgasAccData');
+                        $bgasacc=$db1->get();
 
+                        foreach($bgasacc->result() as $row1)
+                        {
+                               $var1=$row1->dblable;
+                               $value[$row1->dblable]=$row1->dblable;
+                               $count++;
+ 
+                        }
+				
+                                $data['accounts'] = $value;
+				$data['role'] = $userrole;
+				$data['user_name'] = $user_name;
+		}
+		$this->template->load('admin_template', 'admin/user/makeaggregator',$data);
+
+	}
+
+
+
+
+	function aggregatoraccounts($username)
+	{
+		if ($_POST)
+		{
+			$data['accounts'] = $this->input->post('accounts', TRUE);
+		}
+			$data_accounts = $this->input->post('accounts', TRUE);
+
+			$data_accounts_string = '';
+                        if ( ! $data_accounts)
+                        {
+                                $this->messages->add('Please select account.', 'error');
+                                $this->template->load('admin_template', 'admin/user/edit', $data);
+                                return;
+                        } else {
+                                /*if (in_array('(All Accounts)', $data_accounts))
+                                {
+                                        $data_accounts_string = '*';
+                                } else {*/
+                                        $data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
+                                        $data_accounts_string = implode(",", $data_accounts_valid);
+					$insert_data=array('username'=>$username,'accounts'=>$data_accounts_string);
+					$tablead="aggregateaccounts";
+					
+					//insert valuse in aggregateaccounts
+
+					$db1=$this->load->database('login', TRUE);
+					$db1->insert($tablead, $insert_data);
+
+					$tablebgu="bgasuser";
+					$update_data=array('aggtype'=>'agg');
+					$db1->where('username',$username )->update('bgasuser', $update_data);
+					$this->messages->add($username. " has been assigned as an aggreegator for the accounts==> ".$data_accounts_string);
+					redirect('admin/user/');
+	
+                        }
+			
+		
+	}
+
+	function updateaggregator($user_id =0)
+ 	{
+		$this->template->set('page_title', 'Manage Aggregator Accounts');
+		$data['accounts1'] = array('name' => 'user_name');
+                $user_accounts = array();
+                $db1=$this->load->database('login', TRUE);
+                $db1->from('bgasuser')->where('id', $user_id);
+                $user_name1 = $db1->get();
+		$data['accounts_active'] = array('(All Accounts)');
+		$data['accounts'] = array('(All Accounts)' => '(All Accounts)');
+                foreach($user_name1->result() as $row)
+                {
+                        $user_name = $row->username;
+			$userrole = $row->role;
+                        if($user_name=='guest')
+                        {
+                                $this->messages->add('Permission denied.', 'error');
+                                redirect('admin/user');
+                                return;
+                        }
+			$count=0;			
+			$db1->from('bgasAccData');
+                        $bgasacc=$db1->get();
+			$i=0;
+                        foreach($bgasacc->result() as $row1)
+                        {
+                               $var1=$row1->dblable;
+                               $value[$i]=$row1->dblable;
+                               $count++;
+				$i++;
+ 
+                        }
+				
+                                $data['accounts'] = $value;
+				$data['role'] = $userrole;
+				$data['user_name'] = $user_name;
+		}
+
+		$this->template->load('admin_template', 'admin/user/updateaggregator',$data);
+
+	}
+	function delaggact($username,$del)
+	{
+		$db1=$this->load->database('login', TRUE);
+                $db1->from('aggregateaccounts')->where('username', $username);
+                $agglist = $db1->get();
+                foreach($agglist->result() as $row)
+                {
+                        $aggact = $row->accounts;
+                }
+        	$accarray = array();
+	        $accarray = explode(",", $aggact);
+        	//print_r($accarray);
+
+	        //Create a merge file name.
+
+        	$length1 = array();
+	        $length2 = array();
+        	$mergefile="";
+		$acctpath= $this->upload_path1= realpath(BASEPATH.'../acct');
+
+	        //$doc = new DomDocument;
+        	for($i = 0 ; $i<sizeof($accarray); $i++)
+        	{
+                	$accname=$accarray[$i];
+			$mergefile = $mergefile.$accname;
+
+        	        $file_name1=$accname."_Liabilty.xml";
+	                $tt1=$acctpath."/".$file_name1;
+        	        $file_name2=$accname."_Assets.xml";
+                	$tt2=$acctpath."/".$file_name2;
+        	
+        	        if (file_exists($tt1))
+                	{
+	                        unlink($tt1);
+        	        }
+                	if (file_exists($tt2))
+			{
+                        	unlink($tt2);
+			}
+
+		}
+                $file_name1=$mergefile."_Liabilty.xml";
+                $tt1=$acctpath."/".$file_name1;
+                $file_name2=$mergefile."_Assets.xml";
+                $tt2=$acctpath."/".$file_name2;
+
+                if (file_exists($tt1))
+		{
+                        unlink($tt1);	
+		}
+                if (file_exists($tt2))
+		{
+                        unlink($tt2);
+		}
+
+
+		$lenstr = strlen($del);
+		$result = substr_compare($aggact, $del, -$lenstr, $lenstr);
+		$db1=$this->load->database('login', TRUE);
+		if($result == 0)
+		{
+			if ( strcmp ( $aggact, $del) == 0 )
+			{
+				$del=$del;
+				$db1->delete('aggregateaccounts', array('username' => $username));
+				$db1->trans_complete();
+				$deldata= array('aggtype' => "");
+				$db1->where('username', $username)->update('bgasuser',$deldata);
+				$this->messages->add('Update Aggregate  Account of - - ' . $username . ' success');
+				redirect('admin/user/');
+			}
+			else
+			{
+				$del = ",".$del ;	
+				$newagglist = str_replace ($del,"",$aggact);
+	                        $update_data = array('accounts' => $newagglist);
+			 	$db1->where('username', $username)->update('aggregateaccounts', $update_data);
+                	        $db1->trans_complete();
+                        	$this->messages->add('Update Aggregate  Account of - ' . $username . ' success');
+                        	redirect('admin/user/');
+			}
+		}
+		else
+		{
+                        $del = $del."," ;
+                        $newagglist = str_replace ($del,"",$aggact);
+                        $update_data = array('accounts' => $newagglist);
+                        $db1->where('username', $username)->update('aggregateaccounts', $update_data);
+                        $db1->trans_complete();
+                        $this->messages->add('Update Aggregate  Account of - ' . $username . ' success');
+                        redirect('admin/user/');
+
+		}
+	}
+
+	function addaggact($username,$add)
+	{
+		$username;
+
+		$db1=$this->load->database('login', TRUE);
+                $db1->from('aggregateaccounts')->where('username', $username);
+                $agglist = $db1->get();
+                foreach($agglist->result() as $row)
+                {
+                        $aggact = $row->accounts;
+                }
+			
+                        $add = ",".$add ;
+			$newagglist = $aggact.$add;
+			
+                        $update_data = array('accounts' => $newagglist);
+                        $db1=$this->load->database('login', TRUE);
+                        $db1->where('username', $username)->update('aggregateaccounts', $update_data);
+                        $db1->trans_complete();
+                        $this->messages->add('Update Aggregate  Accounts of - ' . $username . ' success');
+                        redirect('admin/user/');
+
+	}
+
+
+}
 /* End of file user.php */
 /* Location: ./system/application/controllers/admin/user.php */

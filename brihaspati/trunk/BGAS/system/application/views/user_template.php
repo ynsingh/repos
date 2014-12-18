@@ -56,6 +56,17 @@
 			}
 */
 			echo "<div id=\"admin\">";
+			$username=$this->session->userdata('user_name');
+			$db1=$this->load->database('login', TRUE);
+			$db1->from('bgasuser')->where('username', $username);
+			$userrec = $db1->get();
+			foreach($userrec->result() as $row)
+                        {
+                                $type=$row->aggtype;
+				$userrole=$row->role;
+                        }
+
+			
 			if ($this->session->userdata('user_name')) {
 				echo anchor('', 'Accounts', array('title' => "Accounts", 'class' => 'anchor-link-b'));
 				echo " | ";
@@ -63,6 +74,15 @@
 				if (check_access('administer')) {
 					echo anchor('admin', 'Administer', array('title' => "Administer", 'class' => 'anchor-link-b'));
 					echo " | ";
+				}
+				//if (check_access('administer')) ||(check_access('manager')) {
+				//if ($userrole=='manager') {
+				if(check_access('administer')){
+					if($type=='agg')
+					{
+					echo anchor('admin/aggregator', 'Aggregator', array('title' => "Administer", 'class' => 'anchor-link-b'));
+					echo " | ";
+					}
 				}
 				echo anchor('user/profile', 'Profile', array('title' => "Profile", 'class' => 'anchor-link-b'));
 				echo " | ";

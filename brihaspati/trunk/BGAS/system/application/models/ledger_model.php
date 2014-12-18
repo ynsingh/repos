@@ -406,6 +406,7 @@ var $ledgers = array();
 
 		$dr_total = $this->get_dr_total1($ledger_id);
 		$cr_total = $this->get_cr_total1($ledger_id);
+		//echo $cr_total."==";
 		$total = float_ops($dr_total, $cr_total, '-');
 
 		if ($op_bal_type == "D")
@@ -438,8 +439,11 @@ var $ledgers = array();
 	/* get ledger balance for balancesheet in selected date in current financial year */ 
 	function get_balancesheet_ledger_balance($ledger_id)
 	{
+		//echo "get_balancesheet_ledger_balance==>";
+		//echo $ledger_id."==";
 		list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
-
+		
+		//print_r($this->get_op_balance($ledger_id));
 		$dr_total = $this->get_balancesheet_dr_total($ledger_id);
 		$cr_total = $this->get_balancesheet_cr_total($ledger_id);
 		$total = float_ops($dr_total, $cr_total, '-');
@@ -475,12 +479,20 @@ var $ledgers = array();
 
 	function get_op_balance($ledger_id)
 	{
+		//echo $ledger_id."==";		
 		$this->db->from('ledgers')->where('id', $ledger_id)->limit(1);
 		$op_bal_q = $this->db->get();
+		//print_r($op_bal_q->row());
 		if ($op_bal = $op_bal_q->row())
+		{
+			//echo "<br>";
+			//print_r($op_bal->op_balance."==".$op_bal->op_balance_dc);
+			//return;
 			return array($op_bal->op_balance, $op_bal->op_balance_dc);
+		}
 		else
 			return array(0, "D");
+
 	}
 
 	function get_op_balance1($ledger_id, $from_date, $to_date)
@@ -841,7 +853,9 @@ var $ledgers = array();
 	        $this->db->where('date <=', $date2);
 		$dr_total_q = $this->db->get();
 		if ($dr_total = $dr_total_q->row())
+		{	$dr_total->drtotal;	
 			return $dr_total->drtotal;
+		}
 		else
 			return 0;
 	}
@@ -930,7 +944,10 @@ var $ledgers = array();
 		$this->db->where('date <=', $date2);
 		$cr_total_q = $this->db->get();
 		if ($cr_total = $cr_total_q->row())
+		{
+			$cr_total->crtotal;
 			return $cr_total->crtotal;
+		}
 		else
 			return 0;
 	}
@@ -1389,6 +1406,309 @@ var $ledgers = array();
                 return $flag;
 
 	}
+	//method for aggregation.
+        /* get ledger balance for balancesheet in selected date in current financial year for aggregate */
+        function get_balancesheet_ledger_balance_agg($ledger_id,$accname)
+        {
+			
+		//echo "account name in get_balancesheet_ledger_balance_agg acc==>".$accname;
+		//echo "<br>account name in get_balancesheet_ledger_balance_agg id==>".$ledger_id;
+		//echo $ledger_id."==";
+                list ($op_bal, $op_bal_type) = $this->get_op_balance_agg($ledger_id,$accname);
+		//print_r($this->get_op_balance_agg($ledger_id,$accname));
+                $dr_total = $this->get_balancesheet_dr_total_agg($ledger_id,$accname);
+                $cr_total = $this->get_balancesheet_cr_total_agg($ledger_id,$accname);
+                $total = float_ops($dr_total, $cr_total, '-');
+                if ($op_bal_type == "D"){
+                        $total = float_ops($total, $op_bal, '+');
+                }else {
+                        $total = float_ops($total, $op_bal, '-');
+                }
+
+                return $total;
+        }
+
+        function get_op_balance_agg($ledger_id,$accname)
+        {
+		//echo "Acc Name in get_op_balance_agg".$accname;
+		$CI =& get_instance();
+                $db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accname);
+                $accdetail = $db1->get();
+                //print_r(sizeof($accdetail->result()));
+                foreach ($accdetail->result() as $row)
+			
+                {
+			
+                        $databasehost=$row->hostname;
+                        $databasename= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+			//echo "get_op_balance_agg===>".$databasehost.$databasename.$databaseport.$databaseusername.$databasepassword;
+                }
+                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                if ($new_link)
+                {
+                        $db_selected = mysql_select_db($databasename, $new_link);
+                        if ($db_selected) {
+
+//                        }
+//                }
+		//echo $ledger_id."==";
+                $query = sprintf("SELECT * from ledgers where id=$ledger_id limit 1");
+                $result = mysql_query($query);
+                if (!$result) {
+	                $message  = 'Invalid query: ' . mysql_error() . "\n";
+                        $message .= 'Whole query: ' . $query;
+                        die($message);
+                }
+
+//			$op_bal_q = mysql_fetch_assoc($result);
+//echo "shobhi";
+		if($result != ''){
+                	while($row = mysql_fetch_assoc($result))
+                        {
+				
+                        	$op_balance = array($row['op_balance'], $row['op_balance_dc']);
+				//echo "<br>";
+				//print_r($row['op_balance']."==".$row['op_balance_dc']);
+                                return $op_balance;
+                        }
+		}
+		}
+                }
+        }
+	
+        /* Return debit total of balancesheet of selected date as positive value */
+        function get_balancesheet_dr_total_agg($ledger_id,$accname)
+        {
+		$db_name ='';
+                $db_username ='';
+                $db_password ='';
+                $host_name ='';
+                $port ='';
+		$db_name ='';
+
+                $this->load->library('session');
+		//echo "Date ===>";
+                $date1 = $this->session->userdata('date1');
+                $date2 = $this->session->userdata('date2');
+
+                $CI =& get_instance();
+                $db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accname);
+                $db_name_q = $db1->get();
+		//$db1->close();
+		foreach ($db_name_q->result() as $row)
+                {
+                        $db_name = $row->databasename;
+                        $db_username = $row->uname;
+                        $db_password = $row->dbpass;
+                        $host_name = $row->hostname;
+                        $port = $row->port;
+                }
+                $con = mysql_connect($host_name, $db_username, $db_password);
+                $op_balance = array();
+                if($con){
+                        $value = mysql_select_db($db_name, $con);
+                        $id = mysql_real_escape_string($ledger_id);
+                        //$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D' and entries.date >= '$date1' and entries.date <= '$date2'";
+                        $abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D'";
+                        $val = mysql_query($abc);
+                        if($val != ''){
+                                while($row = mysql_fetch_assoc($val))
+                                {
+                                        $dr_total = $row['sum(amount)'];
+                                        mysql_close($con);
+					$dr_total;
+                                        return $dr_total;
+                                }
+                        }
+                }
+
+
+//	$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D' and entries.date >= '$date1' and entries.date <= '$date2'";
+	
+		
+              /*  $this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
+                $this->db->where('date >=', $date1);
+                $this->db->where('date <=', $date2);
+                $dr_total_q = $this->db->get();
+                if ($dr_total = $dr_total_q->row())
+                        return $dr_total->drtotal;
+                else
+                        return 0;*/
+		
+        }
+
+        /* Return credit total of balancesheet of selected date as positive value */
+        function get_balancesheet_cr_total_agg($ledger_id,$accname)
+        {
+                $this->load->library('session');
+                $date2 = $this->session->userdata('date2');
+                $date1 = $this->session->userdata('date1');
+                $db_name ='';
+                $db_username ='';
+                $db_password ='';
+                $host_name ='';
+                $port ='';
+                $CI =& get_instance();
+                $db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accname);
+                $db_name_q = $db1->get();
+                //$db1->close();
+                foreach ($db_name_q->result() as $row)
+                {
+                        $db_name = $row->databasename;
+                        $db_username = $row->uname;
+                        $db_password = $row->dbpass;
+                        $host_name = $row->hostname;
+                        $port = $row->port;
+                }
+                $con = mysql_connect($host_name, $db_username, $db_password);
+                $op_balance = array();
+                if($con){
+                        $value = mysql_select_db($db_name, $con);
+                        $id = mysql_real_escape_string($ledger_id);
+                        //$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'C' and entries.date >= '$date1' and entries.date <= '$date2'";
+                        $abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'C'";
+                        $val = mysql_query($abc);
+                        if($val != ''){
+                                while($row = mysql_fetch_assoc($val))
+                                {
+					
+                                        $cr_total = $row['sum(amount)'];
+					//echo "||".$cr_total;
+                                        mysql_close($con);
+                                        return $cr_total;
+                                }
+                        }
+                }
+
+
+/*                $this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
+                $this->db->where('date >=', $date1);
+                $this->db->where('date <=', $date2);
+                $cr_total_q = $this->db->get();
+                if ($cr_total = $cr_total_q->row())
+                        return $cr_total->crtotal;
+                else
+                        return 0;
+*/
+		
+	}
+        /* get ledger balance for selected date in current financial year*/
+        function get_ledger_balance1_agg($ledger_id,$accname)
+        {
+                list ($op_bal, $op_bal_type) = $this->get_op_balance_agg($ledger_id,$accname);
+
+                $dr_total = $this->get_dr_total1_agg($ledger_id,$accname);
+		//echo "==";
+                $cr_total = $this->get_cr_total1_agg($ledger_id,$accname);
+                $total = float_ops($dr_total, $cr_total, '-');
+
+                if ($op_bal_type == "D")
+                        $total = float_ops($total, $op_bal, '+');
+                else
+                        $total = float_ops($total, $op_bal, '-');
+                return $total;
+        }
+
+        /* Return debit total of selected date in current financial year as positive value */
+        function get_dr_total1_agg($ledger_id,$accname)
+        {
+                $this->load->library('session');
+		$CI =& get_instance();
+		$db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accname);
+                $db_name_q = $db1->get();
+                //$db1->close();
+                foreach ($db_name_q->result() as $row)
+                {
+                        $db_name = $row->databasename;
+                        $db_username = $row->uname;
+                        $db_password = $row->dbpass;
+                        $host_name = $row->hostname;
+                        $port = $row->port;
+                }
+                $con = mysql_connect($host_name, $db_username, $db_password);
+                $op_balance = array();
+                if($con){
+                        $value = mysql_select_db($db_name, $con);
+                        $id = mysql_real_escape_string($ledger_id);
+                        $abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D' ";
+                        $val = mysql_query($abc);
+                        if($val != ''){
+                                while($row = mysql_fetch_assoc($val))
+                                {
+
+                                        $dr_total = $row['sum(amount)'];
+
+                                        //mysql_close($con);
+                                        return $dr_total;
+                                }
+                        }
+                }
+	/*	
+                $this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
+                $dr_total_q = $this->db->get();
+                if ($dr_total = $dr_total_q->row())
+                        return $dr_total->drtotal;
+                else
+                        return 0;
+	*/
+        }
+        /* Return credit total of selected date as positive value in current financial year*/
+        function get_cr_total1_agg($ledger_id,$accname)
+        {
+                $this->load->library('session');
+                /*$date1 = $this->session->userdata('date1');
+                $date2 = $this->session->userdata('date2');
+                $this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
+                $this->db->where('date >=', $date1);
+                $this->db->where('date <=', $date2);
+                $cr_total_q = $this->db->get();
+                if ($cr_total = $cr_total_q->row())
+                        return $cr_total->crtotal;
+                else
+                        return 0;
+		*/
+                $CI =& get_instance();
+                $db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accname);
+                $db_name_q = $db1->get();
+                //$db1->close();
+                foreach ($db_name_q->result() as $row)
+                {
+                        $db_name = $row->databasename;
+                        $db_username = $row->uname;
+                        $db_password = $row->dbpass;
+                        $host_name = $row->hostname;
+                        $port = $row->port;
+                }
+                $con = mysql_connect($host_name, $db_username, $db_password);
+                $op_balance = array();
+                if($con){
+                        $value = mysql_select_db($db_name, $con);
+                        $id = mysql_real_escape_string($ledger_id);
+                        $abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'C' ";
+
+                        $val = mysql_query($abc);
+                        if($val != ''){
+                                while($row = mysql_fetch_assoc($val))
+                                {
+
+                                        $cr_total = $row['sum(amount)'];
+
+                                        //mysql_close($con);
+                                        return $cr_total;
+                                }
+                        }
+                }
+
+        }
+	
 
 	function isExpense($ledger_code){
 		$flag = false; 
@@ -1546,4 +1866,5 @@ var $ledgers = array();
 
 	
 }
+
 ?>

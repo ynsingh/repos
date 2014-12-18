@@ -1,11 +1,14 @@
-<?php
+<?php	
 echo "<p>";
 echo "<b>You are logged in as : </b>";
 echo $this->session->userdata('user_name');
 echo "</p>";
+echo "<p align='right'>";
+echo anchor('admin', 'Back', array('title' => 'Back to admin'));
+echo "</p>";
 
-echo "<table border=0 cellpadding=5 class=\"simple-table manage-account-table\">";
-echo "<thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Account</th><th></th></tr></thead>";
+echo "<table border=0 cellpadding=9 class=\"simple-table manage-account-table\">";
+echo "<thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Account</th><th> </th><th> </th><th> </th><th> </th><th> </th></tr></thead>";
 echo "<tbody>";
 $odd_even = "odd";
 $user_id=0;
@@ -33,6 +36,7 @@ foreach ($users->result()  as $row)
                                         $user_role =  $row->role;
                                         $user_status = $row->status;
 					$user_account = $row->accounts;
+					$user_type = $row->aggtype;
 
 
 	 echo "<tr class=\"tr-" . $odd_even;
@@ -48,6 +52,16 @@ foreach ($users->result()  as $row)
         echo "<td>" . anchor('admin/user/edit/'.$row->id, 'Edit', array('title' => 'Back to admin')); "</td>";
 	if(($user_role!="guest") && ($user_name1!="admin"))
         echo "<td>" . anchor('admin/user/permission/'.$row->id, 'Assign Permission', array('title' => 'Back to admin')); "</td>";
+        if(($user_role=="administrator") ||($user_role=="manager")) 
+	{
+		if($user_type=='agg')
+		{
+                	echo "<td> " . anchor('admin/user/updateaggregator/'.$row->id, 'Update Aggregator', array('title' => 'Back to admin','class' => 'red-link')); "</td>";
+		}
+		else
+		{	echo "<td>" . anchor('admin/user/makeaggregator/'.$row->id, 'Make Aggregator', array('title' => 'Back to admin')); "</td>";
+		}
+	}
 	echo "<td>" .anchor('admin/user/delete/'.$row->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Student')), array('class' => "confirmClick", 'title' => "Delete Student")) . "</td>";
 //  echo "<td>" .anchor('admin/user/delete/', img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Student')), array('class' => "confirmClick", 'title' => "Delete Student")) . "</td>";
 
