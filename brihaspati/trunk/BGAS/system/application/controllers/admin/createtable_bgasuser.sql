@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS bgasuser
 			role VARCHAR (200) NOT NULL,
 			status VARCHAR (200) NOT NULL,
 			accounts VARCHAR (200) NOT NULL,
+			aggtype VARCHAR (100) DEFAULT NULL;
 			PRIMARY KEY(id),
 			UNIQUE (username)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -33,3 +34,12 @@ CREATE TABLE IF NOT EXISTS bgasAccData
 			UNIQUE(databasename),
 			UNIQUE (dblable)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS aggregateaccounts
+(
+id INTEGER (11) NOT NULL AUTO_INCREMENT,
+username varchar (100) NOT NULL,
+accounts varchar (200) NOT NULL,
+PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
