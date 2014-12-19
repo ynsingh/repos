@@ -25,7 +25,6 @@ $!data.getMessage()
 ##          <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin2("/brihaspati2/docs/Addbookmarks.html","newWin");>$brih_help</a></td>
 	</tr>
 </table> ##table 1 end
-<br>
 <table bgcolor="$ui.menuColor" width="100%">
         <tr>
                 <td align="center"><b>
@@ -34,25 +33,24 @@ $!data.getMessage()
                 </td>
         </tr>
 </table>
-<br>
 <form name="frm" method="post" action=$link.setPage("call,Bookmarks,ManageBookmarks.vm").setAction("Bookmarks").addPathInfo("stat1","All").addPathInfo("Mode","NoBlank")>
 #if($mode =="addBmarks")
-<table bgcolor="$ui.tableColor" width=100% > ## table 3 start
-<tr bgcolor="$ui.menuColor">
+<table bgcolor="$ui.menuColor" width=100% > ## table 3 start
+<tr bgcolor="$ui.tableColor">
 	<td><b>$brih_name:</b></td>
 	<td colspan="3"><input type="text"  size="31" name="name"  value=""/></td>
 </tr>
-<tr bgcolor="$ui.tableColor">
+<tr bgcolor="$ui.menuColor">
 	<td><b>$brih_Url/$brih_Location:</b></td>
 	<td colspan="3"><input type="text"  size="31" name="location"  value="http://"/></td>
 </tr>
-<tr bgcolor="$ui.menuColor">
+<tr bgcolor="$ui.tableColor">
         <td><b>$brih_Comment:</b></td>
-        <td><input type="text"  size="50" name="comment"  value=""/></td>
+        <td><input type="text"  size="31" name="comment"  value=""/></td>
 	<input type="hidden" name="type" value="general">
         <td><input type="button" name="eventSubmit_doCreateFolder" value="$brih_new $brih_Folder" onClick="SetDirName(document.frm,this);"/></td>
 </tr>
-<tr bgcolor="$ui.tableColor">
+<tr bgcolor="$ui.menuColor">
 	#if($Mode=="NoBlank")
         <td><b>$brih_select $brih_Folder:</b></td>
 	<td colspan="3">
@@ -69,14 +67,14 @@ $!data.getMessage()
 	#end
 
 </tr>
-	<tr bgcolor="$ui.menuColor"><td align="left" colspan="3">
+	<tr bgcolor="$ui.tableColor"><td align="left" colspan="3">
         	<input type="button" name="eventSubmit_doSave" value="$WikiSave" onClick="checkField(document.frm,this);"/>
 		<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
 	</td></tr>
 </table>
 #end
 #if($mode=="Course" ||$mode=="Course_file")
-<table bgcolor="$ui.tableColor" width=100% > ## table 3 start
+<table bgcolor="$ui.menuColor" width=100% > ## table 3 start
 <tr bgcolor="$ui.tableColor">
 	#if($mode=="Course")
 	<td><b> $brih_course $brih_name:</b></td>

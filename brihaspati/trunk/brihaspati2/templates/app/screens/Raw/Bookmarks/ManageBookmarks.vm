@@ -21,6 +21,7 @@ $!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in the corresponding screen class.
 #set($lang=$data.getUser().getTemp("lang").toString())
+
 <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
@@ -31,9 +32,12 @@ $!data.getMessage()
         });
  </script>
 
-<table bgcolor="$ui.tableColor" width=100% > ##table 1 start
+<table bgcolor="$ui.menuColor" width=100% > ##table 1 start
         <tr> <td><b>
         <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | #if($lang == "hindi") $brih_Bookmark $brih_Of1 $brih_Manage #else $brih_Manage$brih_Bookmark #end </b>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin2("/brihaspati2/docs/ManageBookmarks.html","newWin");>Help</a>
+                 <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">| VideoHelp</font></a>
+                </td>
      ##</b></td></tr>
 	</td>
 	<td align=right>
@@ -56,23 +60,19 @@ $!data.getMessage()
         </td></tr>
 
 </table> ##table 1 end
-<br>
-<table bgcolor="$ui.menuColor" width="100%">
+<table bgcolor="$ui.tableColor" width="100%">
         <tr>
                 <td align="center"><b>
                 <a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("mode","addBmarks")> #if($lang == "hindi") $brih_Bookmark $brih_add #else $brih_add $brih_Bookmark #end </a>&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All")> #if($lang == "hindi") $brih_Bookmark $brih_Of1 $brih_Manage #else $brih_Manage $brih_Bookmark #end </a></b>&nbsp;&nbsp;&nbsp;&nbsp;
 		</td>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td lign="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin2("/brihaspati2/docs/ManageBookmarks.html","newWin");>$brih_help</a>
-		 <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">| $brih_VideoHelp</font></a>
-		</td>
-        </tr>
+     </tr>
 </table>
-<br>
+
 #if($Mode=="NoBlank")
 <form name="frm" method="post" action="$link.setPage("call,Bookmarks,ManageBookmarks.vm")">
-<table  bgcolor="$ui.tableColor" width="100%">
-<tr bgcolor="$ui.tableColor">
+<table  bgcolor="$ui.menuColor" width="100%">
+<tr>
         <td  align="left"><b>$brih_Bookmark #if($lang =="hindi") $brih_Of2 $brih_Folder $brih_Of2 $brih_name $brih_searchBy #else  $brih_searchBy $brih_Folder $brih_name: #end </b>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="dirname" size="1" onChange="Changedir(document.frm,this);"/>
                                 <option>  - $brih_select - </option>
@@ -89,13 +89,13 @@ $!data.getMessage()
 </table>
 ##if($Mode=="NoBlank")
 <table  bgcolor="$ui.tableColor" width="100%">
-<tr bgcolor="$ui.menuColor">
-        <td bgcolor="$ui.menuColor" ><b>$brih_Bookmark</b></td>
-        <td bgcolor="$ui.menuColor"colspan="5"><b>$brih_availableAction</td>
+<tr>
+        <td bgcolor="$ui.tableColor" ><b>$brih_Bookmark</b></td>
+        <td bgcolor="$ui.tableColor"colspan="5"><b>$brih_availableAction</td>
 </tr>
 #set ( $count="" )
                 #foreach($btopics in $allTopics)
-<tr bgcolor="ui.tableColor">
+<tr bgcolor="$ui.menuColor">
 	#if($btopics.type =="Course_file" || $btopics.type =="Course")
         <td>$btopics.Url</td>
 	#else
@@ -107,6 +107,7 @@ $!data.getMessage()
 #if($btopics.type=="Course")
         <td><a href="$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("btname",$btopics.Topic).addPathInfo("bturl",$btopics.Url).addPathInfo("bgroup",$btopics.Name).addPathInfo("stat","view").addPathInfo("stat1","All")">$brih_view</a></td>
 #end
+
 ##making bookmark of file in Coursefile
 #if($btopics.type=="Course_file")
 ##if file is flv than make  bookmark
@@ -129,13 +130,13 @@ $!data.getMessage()
        		 #end
 </tr>
 </table>
-<table bgcolor="$ui.tableColor" width="100%"><tr><td align="left">
+<table bgcolor="$ui.menuColor" width="100%"><tr><td align="left">
 	#if($stat1!="Search")
 	#if($total_size <= $userConf)
-                <u><font color="white">$brih_first</font></u> &nbsp;
-                <u><font color="white">$brih_pre</font></u> &nbsp;
-                <u><font color="white">$brih_nxt</font></u> &nbsp;
-                <u><font color="white">$brih_last</font></u> &nbsp;
+                <u><font color="blue">$brih_first</font></u> &nbsp;
+                <u><font color="blue">$brih_pre</font></u> &nbsp;
+                <u><font color="blue">$brih_nxt</font></u> &nbsp;
+                <u><font color="blue">$brih_last</font></u> &nbsp;
                 #elseif($startIndex == $userConf_string)
                 <u><font color="white">$brih_first</font></u> &nbsp;
                 <u><font color="white">$brih_pre</font></u> &nbsp;
@@ -179,7 +180,7 @@ $!data.getMessage()
 	</td></tr>
 </table>
 #else
-<table bgcolor="#e5e5e5" width="100%">
+<table bgcolor="$ui.tableColor" width="100%">
 <tr><td align="center"><b><font color="blue"> $brih_Bookmark $Res_mess1</font></b></td></tr>
 </table>
 #end

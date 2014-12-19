@@ -4,6 +4,9 @@
  * All Rights Reserved.
  *
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
+ * @modified date: 07-12-2010, 18-12-2014
+
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -21,52 +24,58 @@ $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 ##creating link for Admin's home & Program Management
 <table  bgcolor="$ui.tableColor" width=100%>
-        <tr bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.menuColor" align="right">
                 <td>
                 <font face="$ui.sansSerifFonts">
                 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-                <a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a> |$brih_map $brih_program
+                <a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a>
+                |$brih_map $brih_program
                 </td>
         </tr>
 </table> ##table close
 ##form created 
 <form name="frm" method="Post" action="$link.setPage("call,Program,MapProgram.vm").setAction("AddProgram")">
 <table  bgcolor="$ui.tableColor" width=100%>
-        <tr>
-	#if($tdcolor != "1")
-		<td>
-	#elseif($tdcolor == "1")
-		<td bgcolor="#AFDCEC">
-	#end
-	<a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none> $brih_map $brih_program </a></td>
-	#if($tdcolor != "2")
-		<td align="center">
-	#elseif($tdcolor == "2")
-		<td bgcolor="#AFDCEC">
-	#end
-	<a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_program $brih_add  #else $brih_add $brih_program #end </a></td>
-	#if($tdcolor != "3")
-		<td>
-	#elseif($tdcolor == "3")
-		<td bgcolor="#AFDCEC">
-	#end
-		<a href=$link.setPage("call,Program,ProgramList.vm").addPathInfo("count","3") style=text-decoration:none>$brih_program $brih_list </a></td>
-	</tr>
+        <tr align="right">
+
+       
+       #if($tdcolor != "3")
+                <td>
+        #elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+        #end
+                <a href=$link.setPage("call,Program,ProgramList.vm").addPathInfo("count","3") style=text-decoration:none>$brih_program $brih_list </a></td>
+
+            #if($tdcolor != "2")
+                <td align="center">
+        #elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+        #end
+          <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri") $brih_program $brih_add  #else $brih_add $brih_program #end </a></td>
+
+        #if($tdcolor != "1")
+                <td>
+        #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati" || $lang =="bhojpuri")$brih_program $brih_map #else $brih_map $brih_program #end </a></td>
+
+        </tr>
+
 </table>
 <table bgcolor="$ui.tableColor" width=100%>
         <tr bgcolor="$ui.menuColor">
-        <td width=5%>$brih_select
-        </td>
-        <td colspan=2><b>$brih_program $brih_name ( $brih_program $brih_code)<b></td>
+        <td colspan=2><b>($brih_program $brih_code) $brih_program $brih_name<b></td>
+        <td width=5%>$brih_select</td>
         </tr>
 	#set($flag=false)
 	#set( $count = "" )
 	##Get program list
 	#foreach($program in $prgList)
 		#if($velocityCount%2==0)
-			<tr bgcolor="$ui.menuColor">
+			<tr bgcolor="$ui.menuColor" align="right">
 		#else
-			<tr bgcolor="$ui.tableColor">
+			<tr bgcolor="$ui.tableColor" align="right">
 		#end
 		##Get Institute program list
 		#foreach($InstProgram in $InstprgList)
@@ -79,8 +88,8 @@ $!data.getMessage()
 		#end
 		##If flag true then disable that check box 
 		#if($flag)
-			<td><INPUT TYPE="CHECKBOX" NAME=$!program.getProgramCode() onClick="addSelectedList(this,document.frm);" DISABLED></td>
 		        <td colspan=2>$program.getProgramName()  ($program.ProgramCode )</td>
+			<td><INPUT TYPE="CHECKBOX" NAME=$!program.getProgramCode() onClick="addSelectedList(this,document.frm);" DISABLED></td>
 			#set($flag=false)
 		#else
 			<td><INPUT TYPE="CHECKBOX" NAME=$!program.getProgramCode() onClick="addSelectedList(this,document.frm);" ></td>
@@ -89,7 +98,7 @@ $!data.getMessage()
 	#end
 	#set ( $count = "$count$!program.getProgramCode()^"  )
 	</tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.menuColor" align="right">
                 <td colspan=3>
                         <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doSelect" VALUE="$brih_submit" onClick="checkValue(document.frm,this);">
 			<INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">

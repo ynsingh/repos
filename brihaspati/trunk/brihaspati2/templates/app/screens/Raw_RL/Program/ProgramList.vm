@@ -5,7 +5,8 @@
  *
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 07-12-2010
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
+ * @modified date: 07-12-2010, 18-12-2014
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -21,7 +22,7 @@ $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 ##creating link for Admin's home & Program Management
 <table  bgcolor="$ui.tableColor" width=100%>
-        <tr bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.menuColor" align="right">
                 <td>
                 <font face="$ui.sansSerifFonts">
                 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
@@ -31,37 +32,36 @@ $!data.getMessage()
         </tr>
 </table> ##table close
 <table  bgcolor="$ui.tableColor" width=100%>
-        <tr>
-	#if($tdcolor != "1")
-		<td>
-	#elseif($tdcolor == "1")
-		<td bgcolor="#AFDCEC">
-	#end
-	<a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none> $brih_map $brih_program </a></td>
-        #if($tdcolor != "2")
-                <td>
-        #elseif($tdcolor == "2")
-                <td bgcolor="#AFDCEC">
-        #end
-                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_program $brih_add  #else $brih_add $brih_program #end </a></td>
-        #if($tdcolor != "3")
+
+ <tr align="right">
+
+       #if($tdcolor != "3")
                 <td>
         #elseif($tdcolor == "3")
                 <td bgcolor="#AFDCEC">
         #end
                 <a href=$link.setPage("call,Program,ProgramList.vm").addPathInfo("count","3") style=text-decoration:none>$brih_program $brih_list </a></td>
-        </tr>
+
+            #if($tdcolor != "2")
+                <td align="center">
+        #elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+        #end
+          <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri") $brih_program $brih_add  #else $brih_add $brih_program #end </a></td>
+
+        #if($tdcolor != "1")
+                <td>
+        #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati" || $lang =="bhojpuri")$brih_program $brih_map #else $brih_map $brih_program #end </a></td>
+
+       </tr>
 </table>
 ##form created
 <form name="frm" method="Post" action="$link.setPage("call,Program,ProgramList.vm").setAction("AddProgram")">
 <table bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor">
-		<td align="center">
-	               	<font size=3><b>$brih_program $brih_code</b>
-		</td>	
-		<td align="center">
-			<font size=3><b>$brih_program #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
-		</td>
 		#*<td align="center">
 			<font size=3><b> #if($lang == "hindi") $brih_program $brih_code $brih_Of1 $brih_alias #else $brih_alias $brih_program $brih_code #end</b>
 		</td>*#
@@ -74,6 +74,12 @@ $!data.getMessage()
 		<td align="center">
 			<font size=3><b>$brih_availableAction</b>
 		</td>
+		<td align="center">
+			<font size=3><b>$brih_program #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
+		</td>
+		<td align="center">
+	               	<font size=3><b>$brih_program $brih_code</b>
+		</td>	
 	</tr>
 	#set($flag=false)
 	##get list of program from table
@@ -84,18 +90,18 @@ $!data.getMessage()
 			##if match it shows, this institute have program
 			#if(("$InstProgram.ProgramCode")==("$prgrecord.ProgramCode"))
 			#if($flag)
-				<tr bgcolor="$ui.menuColor">
+				<tr bgcolor="$ui.menuColor" align="right">
 			#else
-			        <tr bgcolor="$ui.tableColor">
+			        <tr bgcolor="$ui.tableColor" align="right">
 			#end
 				##display institute program
-					<td align="center">$!prgrecord.getProgramCode()</td>
-					<td align="center">$!prgrecord.getProgramName()</td>
 					##<td align="center">$!prgrecord.getAliasPcode()</td>
 					##<td align="center">$!prgrecord.getAliasPname()</td>
-					<td align="center">$!prgrecord.getDescrp()</td>
 					##<td align="center"><a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("pcode",$prgrecord.getProgramCode()).addPathInfo("pname",$prgrecord.getProgramName()).addPathInfo("descrp",$prgrecord.getDescrp()).addPathInfo("status","update") style=text-decoration:none> #if($lang == "hindi") $brih_alias $brih_add #else $brih_add $brih_alias #end </a> &nbsp;
 					<td align="center"><a href=$link.setAction("AddProgram").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("pcode",$prgrecord.getProgramCode()).addPathInfo("pname",$prgrecord.getProgramName()) onclick="javascript:return confirm('Do you want to delete this Program')" style=text-decoration:none >$brih_delete</a></td>
+					<td align="center">$!prgrecord.getDescrp()</td>
+					<td align="center">$!prgrecord.getProgramName()</td>
+					<td align="center">$!prgrecord.getProgramCode()</td>
 				</tr>
 				#if($flag)
 					#set($flag=false)

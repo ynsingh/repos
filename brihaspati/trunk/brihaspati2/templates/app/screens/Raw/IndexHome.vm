@@ -374,13 +374,12 @@ $!data.getMessage()
 	</tr>
 </table>
 ## bookmarks##
-<table width="20%" align="left">
+<table width="100%" align="left">
                         #if($guest_login=="false")
-			<tr bgcolor="$ui.menuColor">
+			<tr bgcolor="$ui.tableColor">
 			<ul>	
-				<td width=20% valign="top"><b><a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none;onmouseover="mopen('m1')" onmouseout="mclosetime()">$brih_My $brih_Bookmark</a></b>
 				<div id="m1" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
-				<tr bgcolor="$ui.tableColor"><td width=20% valign="top"><a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All") style=text-decoration:none>$brih_showall</a></b></td><tr>
+				<tr bgcolor="$ui.menuColor"><td width=20% valign="top"><a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All") style=text-decoration:none>$brih_Bookmark</a></b></td><tr>
                         #end
 				#if($allTopics.size() > 1)
                 		## Below line for horizental scrolling is added by shaista
