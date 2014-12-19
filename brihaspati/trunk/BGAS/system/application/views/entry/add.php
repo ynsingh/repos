@@ -236,7 +236,7 @@ var dc = '';
                         	                success: function(bank) {
                                 	                bank_cash = $.trim(bank);
 
-							if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')){
+							if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0') || (dc == 'C' && account == 'Income-I')){
                                 	       		      $(temp).show();
 		                                        }else{
                 		                                $(temp).hide();
@@ -248,7 +248,7 @@ var dc = '';
                                                                 $(temp2).hide();
                                                         }*/
 
-                                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')||(dc == 'C' && account == 'Liability')){
+                                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')||(dc == 'C' && account == 'Liability') || (dc == 'C' && account == 'Income-I')){
                                                                 $(temp2).show();
                                                         }else{
                                                                 $(temp2).hide();
@@ -503,28 +503,7 @@ var dc = '';
 			//	$('.dc-dropdown').trigger('change');
 			}
 		});
-/*
-			     var account = '';   
-                $.ajax({
-                                url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
-                                success: function(data) {
 
-                                        account = $.trim(data);
-                                        if(account == 'Income'){
-                                                if(dc_value == 'D')
-                                    
-                         //               var first_index = dr_name.lastIndexOf("[");
-                           //             var last_index = dr_name.lastIndexOf("]"); 
-                             //           var fund_index = dr_name.substring(first_index+1, last_index);
-					                
-                       //                 temp = ".fund-list"+fund_index;
-                          //              var temp1 = ".type-dropdown"+fund_index;
-
-                                         $('.type-dropdown').hide();
-                                         }
-                                                
-                       
-		});*/
 	});
 
 	/** 

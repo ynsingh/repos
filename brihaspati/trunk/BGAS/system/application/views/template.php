@@ -285,8 +285,17 @@ $(document).ready(function() {
 				//		echo anchor('report/new_balancesheet', 'Balance Sheet MHRD Format', array('title' => 'Balance Sheet MHRD Format', 'class' => 'loading')); 
 				//	echo "</li>";
 					echo "<li>";
-						echo anchor('report/profitandloss', 'Income & Expenditure', array('title' => 'Income & Expenditure', 'class' => 'loading'));
-					echo "</li>";
+                                                echo  anchor('','Income & Expenditure');
+                                                 echo "<ul>";
+                                                        echo "<li>";
+                                                             echo anchor('report/profitandloss', 'Corporate Format', array('title' => 'Income & Expenditure', 'class' => 'loading'));
+                                                        echo "</li>";
+                                                        echo "<li>";
+                                                                echo anchor('report2/profitandloss_mhrd', 'MHRD Format', array('title' => 'Income & Expenditure', 'class' => 'loading'));
+                                                        echo "</li>";
+                                                  echo "</ul>";
+                                         echo "</li>";
+
 					echo "<li>";
 						echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt', 'class' => 'loading'));
 					echo "</li>";

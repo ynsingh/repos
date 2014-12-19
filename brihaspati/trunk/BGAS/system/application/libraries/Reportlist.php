@@ -407,7 +407,266 @@ class Reportlist
                 $search = '1234567890';
                 $count = strlen($this->code) - strlen(str_replace(str_split($search), '', $this->code));
                 return $count;
-        }	
+        }
+
+
+//Method for display MHRD format of income ad expenditure @megha pal
+        function income_exp_mhrd($id ,$type,$database)
+        {
+                $total1="";
+                $total2 = "";
+                $total3 ="";
+                $total4 ="";
+                $c ="16";
+                $counter=10;
+                $sum = "0";
+		$sum1 =0;
+		$sum2 =0;
+		$sum3 = 0;
+		$sum4 =0;
+		$sum5 =0;
+		$sum6 =0;
+		$total07 = 0;
+		$total09 = 0;
+		$type_total = 0;
+		$income_total = "";
+                $expense_total = "";
+		$i=0;
+		$incomelist2 = "";
+		$expenselist2 = "";
+		$CI =& get_instance();
+		$CI->db->from('settings');
+                $detail = $CI->db->get();
+                foreach ($detail->result() as $row)
+                {
+                    $date1 = $row->fy_start;
+                    $date2 = $row->fy_end;
+                }
+                    $fy_start=explode("-",$date1);
+                    $fy_end=explode("-",$date2);
+
+               	$curr_year = $fy_start[0] ."-" .$fy_end[0];
+		$prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+
+                $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+                $main = $CI->db->get();
+                $main_result= $main->result();
+		$income1 = new Reportlist();
+                $income1->init('26');
+                $income_total = $income1->total;
+		$CI =& get_instance();
+                $CI->load->model('Payment_model');
+                $db = $CI->Payment_model->database_name();
+
+                 foreach($main_result as $row){
+                        $name = $row->name;
+                        $code =$row->code;
+                        $ledg_id = $row->id;
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name;
+                        echo "</td>";
+                        echo "<td class=\"td-group\">";
+                        if($id == 3 && $type == "view" && $database == "NULL" )
+			{ 
+                        	$counter++;
+                                echo "&nbsp;" . anchor_popup('report/schedule/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000'));
+
+                        		echo"</td>";
+					$CI =& get_instance();
+                                        $CI->load->model('Payment_model');
+                                        $result = $CI->Payment_model->get_all_income_detail($ledg_id);
+					$my_values = explode('#',$result);
+                                        $total1 =$my_values[0];
+                                        $total2 =$my_values[1];
+                                        $total3 =$my_values[2];
+                                        $total4 =$my_values[3];
+					$total5 =$my_values[4];
+                                        $total6 =$my_values[5];
+                                        $total7 =$my_values[6];
+					$total9=$my_values[7];
+
+					$CI =& get_instance();
+                                        $CI->load->model('Ledger_model');
+					$transit= $CI->Ledger_model->get_ledger_balance('123');
+                                        $transit = 0-$transit;
+
+                                        $income = new Reportlist();
+                                        $income->init($ledg_id);
+                                        $total = $income->total;
+                                        $sum= $sum + $total;
+					$total8=0;
+					if($ledg_id == "24"){
+					     $total = (-$total) + $total4 + $total5 + $total7 + $total6;
+
+					     $total07 = $total1 +$total7 +$total07;
+                        		     echo "<td align=\"right\">".money_format('%!i', convert_cur($total4))."</td>";
+                        		     echo "<td align=\"right\">".money_format('%!i', convert_cur($total5))."</td>";
+                        		     echo "<td align=\"right\">".money_format('%!i', convert_cur($total07))."</td>";
+                        		     echo "<td align=\"right\">".money_format('%!i', convert_cur($total6))."</td>";
+				   	     echo "<td align=\"right\">" . convert_amount_dc(-$total) . "</td>";
+					     $sum3 = $sum3 + $total07;
+					     $this->total3 =$sum3;
+					  }elseif($ledg_id == 26){
+						$total= (-$income_total) - $transit;
+						$total09 = $total09 + $total +$total9;
+						echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
+                        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
+                        			echo"<td align=\"right\">".money_format('%!i',convert_cur($total09))."</td>";
+                        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
+                        			echo "<td align=\"right\">" . convert_amount_dc(-$total) . "</td>";
+						$sum5 = $sum5 + $total09;
+                                		$this->total5 =$sum5;
+
+					    }else{
+						echo "<td align=\"right\">".money_format('%!i',convert_cur($total2))."</td>";
+                        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
+                        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total1))."</td>";
+                        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total3))."</td>";
+						echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
+						$sum6 = $sum6 + $total1;
+						$this->total6 = $sum6;
+					    }
+						$sum1 = $sum1 + $total4 + $total8 + $total2;
+						$sum2 = $sum2 + $total5 + $total8 + $total8;
+						$sum4 = $sum4 + $total6 +$total8 + $total3;
+						$this->total1 = $sum1;
+                                		$this->total2 = $sum2;
+                                		$this->total4 = $sum4;
+
+						$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                				$file_name="Income".$db.$prev_year.".xml";
+                				$tt=$acctpath."/".$file_name;
+                				if(file_exists($tt)){
+                        				$doc = new DomDocument();
+                        				$doc->formatOutput = true;
+                        				$doc->load($tt);
+                        				$xpath = new DomXPath($doc);
+
+                        				$xpath->query("/Income/Income_Name/Group_Name");
+                        				$xpath->query("/Income/Income_Name/Amount");
+                        				$xpath->query("/Income/Income_Name/Group_ID");
+
+                        				$incomenode1 = $xpath->query("/Income/Income_Name/Group_Name");
+                        				$incomenode2 = $xpath->query("/Income/Income_Name/Amount");
+                        				$incomenode3 = $xpath->query("/Income/Income_Name/Group_ID");
+                        				$incomelist1 = @$incomenode1->item($i)->nodeValue;
+                        				$incomelist2 = @$incomenode2->item($i)->nodeValue;
+                        				$incomelist3 = @$incomenode3->item($i)->nodeValue;
+                				}
+							
+                                                      $type_total = $type_total + $incomelist2;
+							$i++;
+						if($incomelist2 == 0)	
+				               	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+						else
+						echo "<td align=\"right\">" . convert_amount_dc($incomelist2) . "</td>";
+			}			
+	
+			if(($type == "CF") && ($id == 3) && ($database != "NULL"))
+			{	
+				$t_name = "Income";
+				$CI =& get_instance();
+                        	$CI->load->model('Payment_model');
+                        	$data = $CI->Payment_model->xml_creation($t_name,$ledg_id,$database,$name,$curr_year);
+			}
+                
+                        if($id == 4 && $type == "view" && $database == "NULL")
+			{
+                                        $c++;
+                       
+                        echo "&nbsp;" . anchor_popup('report/schedule/' . $code . '/' . $c, $c, array('title' => $name, 'style' => 'color:#000000'));
+
+                        echo"</td>";
+                                        $CI =& get_instance();
+                                        $CI->load->model('Payment_model');
+					$CI->db->select('code')->from('groups')->where('id', $ledg_id);
+                			$code_result= $CI->db->get();
+                			$code = $code_result->row();
+                			$CI->db->select('id')->from('ledgers');
+                			foreach( $code as $code1){
+                       				$CI->db->like('code', $code1);
+                 			}		
+
+                			$query_result =$CI->db->get();
+                			$no_row = $query_result->num_rows(); 
+                			if($no_row != 0)
+					{
+                                        	$result = $CI->Payment_model->get_all_expense_detail($ledg_id);
+					}
+                                        $my_values = explode('#',$result);
+                                        $total1 =$my_values[0];
+                                        $total2 =$my_values[1];
+                                        $total3 =$my_values[2];
+                                        $total4 =$my_values[3];
+                                        $total="";
+                                        $expense1="";
+                                        $expense = new Reportlist();
+                                        $expense->init($ledg_id);
+                                        $total = $expense->total;
+                                        $sum= $sum + $total;
+					$sum1 = $sum1 + $total1;
+					$sum2 = $sum2 + $total2;
+					$sum3 = $sum3 + $total3;
+					$sum4 = $sum4 + $total4;
+					$this->total1 = $sum1;
+					$this->total2 = $sum2;
+					$this->total3 = $sum3;
+                                        $this->total4 = $sum4;
+                			echo "<td align=\"right\">".money_format('%!i', convert_cur($total1))."</td>";
+                        		echo "<td align=\"right\">".money_format('%!i', convert_cur($total3))."</td>";
+                       			echo "<td align=\"right\">".money_format('%!i', convert_cur($total2))."</td>";
+                        		echo "<td align=\"right\">".money_format('%!i', convert_cur($total4))."</td>";
+
+                        		echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
+
+					$CI->load->library('session');
+                                                $database_name = $CI->session->userdata('cf_db_name');
+
+                                                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                                                $file_name="Expense".$db.$prev_year.".xml";
+                                                $tt=$acctpath."/".$file_name;
+                                                if(file_exists($tt)){
+                                                        $doc = new DomDocument();
+                                                        $doc->formatOutput = true;
+                                                        $doc->load($tt);
+                                                        $xpath = new DomXPath($doc);
+
+							 $xpath->query("/Expense/Expense_Name/Group_Name");
+                        				 $xpath->query("/Expense/Expense_Name/Amount");
+                        				 $xpath->query("/Expense/Expense_Name/Group_ID");
+
+                        				 $expensenode1 = $xpath->query("/Expense/Expense_Name/Group_Name");
+                        				 $expensenode2 = $xpath->query("/Expense/Expense_Name/Amount");
+                        				 $expensenode3 = $xpath->query("/Expense/Expense_Name/Group_ID");
+
+                                                        $expenselist1 = @$expensenode1->item($i)->nodeValue;
+                                                        $expenselist2 = @$expensenode2->item($i)->nodeValue;
+							$expenselist3 = @$expensenode3->item($i)->nodeValue;
+                                                }
+							$type_total = $type_total + $expenselist2;
+                                                        $i++;
+					
+					if($expenselist2 == 0)
+                        		echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+					else
+					echo "<td align=\"right\">" . convert_amount_dc($expenselist2) . "</td>";
+                        }   
+                  	if($type == "CF" && $id == 4 && $database != "NULL")
+			{
+				$t_name = "Expense";
+                                $CI =& get_instance();
+                                $CI->load->model('Payment_model');
+                                $data = $CI->Payment_model->xml_creation($t_name,$ledg_id,$database,$name,$curr_year);
+
+					
+			}
+		}
+
+		$this->prev_total = $type_total;
+                return $sum;
+        }
+	
 
 
 	/**

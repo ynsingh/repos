@@ -234,6 +234,7 @@ class Create extends Controller {
 			$data_fy_end = date_php_to_mysql_end_time($this->input->post('fy_end', TRUE));
 			$data_account_currency = $this->input->post('account_currency', TRUE);
 			$data_account_date_form = $this->input->post('account_date', TRUE);
+
 			/* Checking for valid format */
 			if ($data_account_date_form == "dd/mm/yyyy")
 				$data_account_date = "dd/mm/yyyy";

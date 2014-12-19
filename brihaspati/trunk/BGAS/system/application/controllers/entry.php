@@ -1392,15 +1392,33 @@ $width="100%";
                                                 $query = $this->db->get();
                                                 $ledger = $query->row();
                                                 $ledger_name = $ledger->name;
+						if($fund_ledger > 0)
+						{
+							$this->db->select('name');
+                                                        $this->db->from('ledgers')->where('id', $fund_ledger);
+                                                        $query = $this->db->get();
+                                                        $ledger = $query->row();
+                                                        $ledger_name = $ledger->name;
 
-                                                $insert_income_data = array(
-                                                        'fund_id' => $data_ledger_id,
-                                                        'fund_name' => $ledger_name,
-                                                        'amount' => $data_amount,
-                                                        'date' => $data_date,
-                                                        'type' => $expense_type,
-                                                        'entry_items_id' => $entry_items_id
-                                                         );
+                                                        $insert_income_data = array(
+                                                                'fund_id' => $fund_ledger,
+                                                                'fund_name' => $ledger_name,
+                                                                'amount' => $data_amount,
+                                                                'date' => $data_date,
+                                                                'type' => $expense_type,
+                                                                'entry_items_id' => $entry_items_id
+                                                        );
+
+						}else{
+                                                	$insert_income_data = array(
+                                                        	'fund_id' => $data_ledger_id,
+                                                        	'fund_name' => $ledger_name,
+                                                        	'amount' => $data_amount,
+                                                        	'date' => $data_date,
+                                                        	'type' => $expense_type,
+                                                        	'entry_items_id' => $entry_items_id
+                                                         	);
+						}
                                              //   print_r($insert_income_data);
                                                 if ( ! $this->db->insert('fund_management', $insert_income_data))
                                                 {
@@ -1469,7 +1487,7 @@ $width="100%";
 						
 						//$expense_type = $data_all_expense_type[$id];*/
         	        	               
-                	        	                $this->db->select('name');
+                	       /* 	                $this->db->select('name');
                         	        	        $this->db->from('ledgers')->where('id', $fund_ledger);
                                 	                $query = $this->db->get();
                                         	        $ledger = $query->row();
@@ -1481,17 +1499,17 @@ $width="100%";
                         	                                'amount' => $data_amount,
                                 	                        'date' => $data_date,
                                         	                'type' => $expense_type,
-                                                	        'entry_items_id' => $entry_fund_id
+                                                	        'entry_items_id' => $entry_items_id,
                                                 	);
 
 	                                                if ( ! $this->db->insert('fund_management', $insert_expense_data))
         	                                        {
                 	                                        $this->db->trans_rollback();
                         	                                $this->logger->write_message("error", "Error adding expenditure details for fund in fund management:" . $fund_ledger);
-                                	                } 
+                                	                } */
 						   }
 						  
-						else{
+				//		else{
                                                         $this->db->select('name');
                                                         $this->db->from('ledgers')->where('id', $fund_ledger);
                                                         $query = $this->db->get();
@@ -1512,7 +1530,7 @@ $width="100%";
                                                                 $this->db->trans_rollback();
                                                                 $this->logger->write_message("error", "Error adding expenditure details for fund in fund management:" . $fund_ledger);
 							}
-						}
+					//	}
                                         	
 					}
 				}
@@ -1667,11 +1685,14 @@ $width="100%";
                                 else
                                         echo "Expense";
                         }
-
+                        $interest_code = $this->Budget_model->get_account_code('Income from Investments');
                         $account_code = $this->Budget_model->get_account_code('Incomes');
                         $temp = $this->startsWith($code, $account_code);
                         if($temp){
-                                        echo "Income";
+				if(($interest_code != '') && ($this->startsWith($code, $interest_code)))
+					echo "Income-I";
+				else
+					echo "Income";
                         }
 
                         $account_code = $this->Budget_model->get_account_code('Assets');

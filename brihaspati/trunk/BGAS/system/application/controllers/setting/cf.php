@@ -20,6 +20,7 @@ class Cf extends Controller {
 
 	function index()
 	{
+
 		$this->load->helper('file');
 		$this->load->library('accountlist');
 		$this->load->model('Ledger_model');
@@ -520,16 +521,9 @@ class Cf extends Controller {
 				}
 
 				/* Adding org name unit name year and database name in login database */
-				$date=Date("Y");
-                                $m = Date("m");
-                                if($m>3){
-                                        $dy = $date + 1;
-                                        $fy=$date."-".$dy;
-                                }
-                                else{
-                                        $dy = $date - 1;
-                                        $fy = $dy."-".$date;
-                                }
+				$sy =$last_year_end_year;
+				$ey = $last_year_end_year+1;
+				$fy = $sy.'-'.$ey;
 
                                 $tablebad="bgasAccData";
                                 $db1=$this->load->database('login', TRUE);
@@ -558,7 +552,19 @@ class Cf extends Controller {
                                 }
 				$db1->close();
 
+				   /* xml creation */
+                		$this->load->library('Reportlist');
+                		$income = new Reportlist();
+                		$income->income_exp_mhrd(3,"CF",$data_database_name);
+                		$expense = new Reportlist();
+                		$expense->income_exp_mhrd(4,"CF" ,$data_database_name);
+                		$newdata = array(
+                                	'cf_db_name'  => $data_database_name,
+                        	);
+                        	$this->session->set_userdata($newdata);
+                		$this->messages->add('xml created'.$data_database_name, 'success');
 
+				
 				if ($cf_status)
 					$this->messages->add('Account carried forward.', 'success');
 				else
@@ -584,7 +590,17 @@ class Cf extends Controller {
 		}
 		redirect("setting");
 		return;
+
+		/* xml creation */
+                $this->load->library('Reportlist');
+                $income = new Reportlist();
+                $income->income_exp_mhrd(3,"CF",$data_database_name);
+                $expense = new Reportlist();
+                $expense->income_exp_mhrd(4,"CF" ,$data_database_name);
+		$this->messages->add('xml created'.$data_database_name, 'success');
+
 	}//end of Index method
+
 }//end of class
 
 /* End of file cf.php */

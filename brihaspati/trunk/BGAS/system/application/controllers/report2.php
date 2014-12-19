@@ -19,6 +19,7 @@ class Report2 extends Controller {
 		$this->load->model('Budget_model');
 		$this->load->model('Group_model');
 		$this->load->model('Secunit_model');
+		$this->load->model('Payment_model');
 		/* Check access */
 		if ( ! check_access('view reports'))
 		{
@@ -302,6 +303,27 @@ class Report2 extends Controller {
                         $this->session->unset_userdata('date2');
                         return;
                 }
+	
+		 if ($statement == "profitandloss_mhrd")
+                {
+                        $this->load->helper('text');
+                        $data['width'] = "70%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                      //  $data['sec_uni_id'] = $this->uri->segment(4);
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report2/profitandloss_mhrd";
+                        $data['title'] =  "Income and Expenditure Statement";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+                        $this->load->view('report/report_template', $data);
+                        $this->session->unset_userdata('date1');
+                        $this->session->unset_userdata('date2');
+                        return;
+                }
+
 	}
 	function pdf($statement, $id = NULL)
         {
@@ -356,7 +378,32 @@ class Report2 extends Controller {
                         $this->load->view('report/pdfreport', $data);
                         return;
                 }
+		
+		if($statement == "profitandloss_mhrd")
+		{
+			$this->load->helper('pdf_helper');
+                	$this->load->library('session');
+                	$date1 = $this->session->userdata('date1');
+                	$date2 = $this->session->userdata('date2');
 
+			$this->load->helper('text');
+                        $data['width'] = "100%";
+
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                 //       $data['sec_uni_id'] = $this->uri->segment(4);
+//                        $data['page_count'] = $page_count;
+                        $data['report'] = "report2/profitandloss_mhrd";
+                        $data['statement'] = "Income Expenditure Statement";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+                        $this->load->view('report/pdfreport', $data);
+                        return;
+	
+
+		}
 	}
 	function fund_ledgerst($ledger_id = 0)
 	{
@@ -704,6 +751,109 @@ class Report2 extends Controller {
 		$this->template->load('template', 'report2/sec_report/' . $sec_uni_id, $data);
 		return;
 	}
-		
+
+	function profitandloss_mhrd()
+	{
+                $this->load->library('session');
+		$this->template->set('page_title', 'Income And Expenditure Statement');
+		$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrd' => 'PrintPreview'));
+
+		$data['left_width'] = "300";
+                $data['right_width'] = "125";
+                $default_end_date;
+
+                /* Form fields */
+                $this->db->from('settings');
+                $detail = $this->db->get();
+                foreach ($detail->result() as $row)
+                {
+                        $date1 = $row->fy_start;
+                        $date2 = $row->fy_end;
+                }
+		 $newdata = array(
+                      'date1'  => $date1,
+                      'date2'  => $date2
+                     );
+                $this->session->set_userdata($newdata);
+
+                $date=explode("-",$date1);
+                $date2 = explode("-", $row->fy_end);
+                $default_start = '01/04/'.$date[0];
+                $default_end = '31/03/'.$date2[0];
+
+                $curr_date = date_today_php();
+                if($curr_date >= $default_end) {
+                        $default_end_date = $default_end;
+                }
+                else {
+                        $default_end_date = $curr_date;
+                }
+                $data['entry_date1'] = array(
+                        'name' => 'entry_date1',
+                        'id' => 'entry_date1',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => $default_start,
+                );
+                $data['entry_date2'] = array(
+                        'name' => 'entry_date2',
+                        'id' => 'entry_date2',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => $default_end_date,
+                );
+
+                $data['print_preview'] =FALSE;
+
+                $data_date1 = $default_start;
+                $data_date2 = $default_end_date;
+
+                $date=explode("/",$data_date1);
+                $date1=$date[2]."-".$date[1]."-".$date[0];
+                $date=explode("/",$data_date2);
+                $date2=$date[2]."-".$date[1]."-".$date[0];
+
+                /* Form validations */
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+                /* Repopulating form */
+                if ($_POST)
+                {
+                        $data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+                        $data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);
+                }
+
+                /* Validating form */
+                if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('template', 'report2/profitandloss_mhrd', $data);
+                        return;
+                }
+                else
+                {
+                        $data_date1 = $this->input->post('entry_date1', TRUE);
+                        $data_date2 = $this->input->post('entry_date2', TRUE);
+
+                        $date=explode("/",$data_date1);
+                        $date1=$date[2]."-".$date[1]."-".$date[0];
+                        $date=explode("/",$data_date2);
+                        $date2=$date[2]."-".$date[1]."-".$date[0];
+
+                        $newdata = array(
+                           'date1'  => $date1,
+                           'date2'  => $date2
+                        );
+                        $this->session->set_userdata($newdata);
+                }
+
+
+                $this->template->load('template', 'report2/profitandloss_mhrd', $data);
+                return;
+
+	}	
+
 }
 ?>

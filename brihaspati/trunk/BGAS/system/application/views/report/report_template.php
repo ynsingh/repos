@@ -51,12 +51,19 @@
 		$from_date = $date1;
 		$to_date = $date2;
 	}
+	if($title == 'Income and Expenditure Statement'){
+	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?>
+	<?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $this->config->item('account_ins_name'). "<br>".$title . "</h2><br>";
+        echo     "For the period " . $from_date . " to " . $to_date ;
+	}else{
 	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $this->config->item('account_ins_name'). "<br>".$title . "</h2><br>";
 	if(($title != "Balance Sheet")&&($title != "Balance Sheet As At ".$curr_date)&&($title != "Day Statement")){
 
 	echo	 "For the period " . $from_date . " to " . $to_date ;
 	}
-	echo  "</td>" ; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
+	echo  "</td>" ; 
+	}
+	echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
 
 	<?php echo"</table>";?>
 
