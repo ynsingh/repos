@@ -30,7 +30,7 @@
 *
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITK.
 *  Modified Date: 7 jan 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
-*
+*  Modified date 27 October 2014, IITK , (omprakashkgp@gmail.com)
 --%>
 
 <%@page import="org.smvdu.payroll.api.UserOperationBeans.UserBeans"%>
@@ -115,6 +115,7 @@
                         <rich:menuItem id="em1" onclick="return loadIframe('ifrm', 'employee/EmployeeProfile.jsf')"  value="Add Profile"/>
                         <rich:menuItem id="em2" onclick="return loadIframe('ifrm', 'employee/EditEmployeeProfile.jsf')" value="Edit Profile"/>
                         <rich:menuItem id="em3" onclick="return loadIframe('ifrm', 'employee/SearchEmployee.jsf')" value="Search Profiles"/>
+                        <rich:menuItem id="em4" onclick="return loadIframe('ifrm', 'employee/EmployeeAttendance.jsf')" value="Employee Attendance"/>
                     </rich:dropDownMenu> 
                     <rich:dropDownMenu  id="sa"   value="Salary">
                         <rich:menuItem  id="sa1" onclick="return loadIframe('ifrm','salary/SalaryFormula.jsf')" value="Salary Formula"/>

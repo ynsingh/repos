@@ -340,8 +340,16 @@
         <managed-bean-class>org.smvdu.payroll.beans.composite.DepartmentController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-
     <managed-bean>
+        <description>
+			AttendanceController
+        </description>
+        <managed-bean-name>AttendanceControllerBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.AttendanceController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+      <managed-bean>
         <description>
 			GrossSalaryController
         </description>
@@ -585,6 +593,15 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <description>
+			Attendance Bean
+        </description>
+        <managed-bean-name>AttendanceBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.Attendance</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
 
     <managed-bean>
@@ -1118,6 +1135,25 @@
         </description>
         <managed-bean-name>EmployeeQualificationDB</managed-bean-name>
         <managed-bean-class>org.smvdu.payroll.beans.db.EmployeeQualificationDB</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+            FileUploadBean
+        </description>
+        <managed-bean-name>FileUploadBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.upload.FileUploadBean</managed-bean-class>
+
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+            UploadFile
+        </description>
+        <managed-bean-name>UploadFile</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.upload.UploadFile</managed-bean-class>
+
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     
