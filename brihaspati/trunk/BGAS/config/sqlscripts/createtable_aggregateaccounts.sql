@@ -1,3 +1,5 @@
+use login;
+
 CREATE TABLE aggregateaccounts 
 (
 id int(11) NOT NULL AUTO_INCREMENT,

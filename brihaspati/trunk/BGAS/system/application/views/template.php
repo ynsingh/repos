@@ -109,7 +109,7 @@ $(document).ready(function() {
 			}
 			else{
 			echo "<div id=\"admin\">";
-			echo $username=$this->session->userdata('user_name');
+	//		echo $username=$this->session->userdata('user_name');
 			if ($this->session->userdata('user_name')) {
 				echo anchor('', 'Accounts', array('title' => "Accounts", 'class' => 'anchor-link-b'));
 				echo " | ";
@@ -295,7 +295,6 @@ $(document).ready(function() {
                                                         echo "</li>";
                                                   echo "</ul>";
                                          echo "</li>";
-
 					echo "<li>";
 						echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt', 'class' => 'loading'));
 					echo "</li>";
@@ -317,7 +316,7 @@ $(document).ready(function() {
 					echo "<li>";
                                                 echo anchor('report/cashst', 'Cash Book', array('title' => 'Cash Book'));
                                         echo "</li>";
-	/*				echo "<li>";
+				/*	echo "<li>";
 						echo anchor('','Unspent Balance');
 						echo "<ul>";
 							echo "<li>";
