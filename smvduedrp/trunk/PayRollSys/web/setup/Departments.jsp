@@ -84,7 +84,7 @@
                   <%--  <rich:panel>--%>
                     <h:panelGrid id="deptlist" style="width:100%;">  
                     <rich:dataTable id="tbl" binding="#{DepartmentControllerBean.dataGrid}" 
-                                        value="#{DepartmentControllerBean.departments}" var="dept" rowKeyVar="row"  rows="20" style="width:100%;">
+                                        value="#{DepartmentControllerBean.departments}" var="dept" rowKeyVar="row"  rows="10" style="width:100%;">
                         
                         <h:column >
                             <f:facet name="header">
@@ -105,7 +105,7 @@
                             <rich:inplaceInput value="#{dept.nickName}" />
                         </h:column> 
                         <f:facet name="footer">
-                                <rich:datascroller for="tbl" page="20"/>  
+                                <rich:datascroller for="tbl" page="1"/>  
                             </f:facet>
                     </rich:dataTable>
                     </h:panelGrid>
@@ -115,9 +115,9 @@
                    <%-- </rich:panel>--%>
                 </h:form>
             </rich:panel>
-            <rich:modalPanel  width="500" height="240" autosized="true" id="pnl">
+            <rich:modalPanel width="300" autosized="true" id="pnl">
                 <f:facet name="controls">
-                    <h:graphicImage value="/img/cls.png" style="cursor:pointer"
+                    <h:graphicImage value="/img/close1.png" style="cursor:pointer"
                                     onclick="Richfaces.hideModalPanel('pnl')" />
                 </f:facet>
                 
@@ -140,11 +140,11 @@
                     <h:commandButton value="Close" onclick="#{rich:component('pnl')}.hide(); return false;" />
                 </h:form>
                 </rich:modalPanel>
-                <rich:modalPanel  width="500" height="240" autosized="true" id="dnl">
+                <rich:modalPanel height="240" autosized="true" id="dnl">
                 
                 <%--file upload for departments---------------------- --%>
                 <f:facet name="controls">
-                    <h:graphicImage value="/img/cls.png" style="cursor:pointer"
+                    <h:graphicImage value="/img/close1.png" style="cursor:pointer"
                                     onclick="Richfaces.hideModalPanel('dnl')" />
                 </f:facet>
                <h:form>
@@ -166,7 +166,7 @@
                  
                <rich:modalPanel id="hnl" autosized="true" domElementAttachment="parent" width="700" height="400">
                <f:facet name="controls">
-                    <h:graphicImage value="/img/cls.png" style="cursor:pointer"
+                    <h:graphicImage value="/img/close1.png" style="cursor:pointer"
                                     onclick="Richfaces.hideModalPanel('hnl')" />
                 </f:facet>
                 

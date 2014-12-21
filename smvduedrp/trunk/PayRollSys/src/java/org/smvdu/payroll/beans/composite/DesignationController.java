@@ -65,6 +65,7 @@ public class DesignationController {
         return designations;
     }
 
+  // This method is used to UPDATE the values of the department setup  
 
     public void update()
     {
@@ -72,8 +73,31 @@ public class DesignationController {
         for(Designation d: data)
         {
             System.out.println(d.getName());
+            
+                    FacesContext fc = FacesContext.getCurrentInstance();
+                if (d.getDCode().matches("[a-zA-Z0-9]*") == false) {
+                    FacesMessage message = new FacesMessage();
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Plz Enter Valid Designation Code.No speacial characters allowed.");
+                    fc.addMessage("", message);
+                    return;
+                }
+                if (d.getName().matches("^[a-zA-Z\\s]*$") == false) {
+                    FacesMessage message = new FacesMessage();
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Plz Enter Valid Designation Name.No speacial characters allowed.");
+                    fc.addMessage("", message);
+                    return;
+                }
+                if (d.getNickName().matches("^[a-zA-Z\\s]*$") == false) {
+                    FacesMessage message = new FacesMessage();
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Plz Enter Valid Nick Name No speacial characters allowed");
+                    fc.addMessage("", message);
+                    return;
+                }
         }
-        new DesignationDB().update(data);
+      Exception e = new DesignationDB().update(data);
         FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Designations Updated", ""));
     }
     public void setDesignations(ArrayList<Designation> salaryData) {

@@ -95,7 +95,7 @@ public class DepartmentDB {
             return null;
         }
     }
-    public void update(ArrayList<Department> depts)    {
+    public Exception update(ArrayList<Department> depts)    {
         try
         {
             Connection c = new CommonDB().getConnection();
@@ -114,10 +114,12 @@ public class DepartmentDB {
             }
             ps.close();
             c.close();
+            return null;
         }
         catch(Exception e)
         {
            e.printStackTrace();
+           return e;
            //Logger.getAnonymousLogger().log(Log., e.getMessage());
         }
     }

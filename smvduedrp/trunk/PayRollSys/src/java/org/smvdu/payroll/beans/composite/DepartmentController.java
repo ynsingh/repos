@@ -93,9 +93,33 @@ public class DepartmentController {
         for(Department d: data)
         {
             System.out.println("Session Name "+d.getName());
+        
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (d.getName().matches("^[a-zA-Z\\s]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid Department Name.No speacial characters allowed.");
+                fc.addMessage("", message);
+                return;
+            }
+            if (d.getNickName().matches("^[a-zA-Z\\s]*$") == false) {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid Nick Name No speacial characters allowed");
+                fc.addMessage("", message);
+                return;
+            }
+        
         }
-        new DepartmentDB().update(data);
-        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Departments Updated", ""));
+       Exception e = new DepartmentDB().update(data);
+    //    FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Departments Updated", ""));
+        
+        if(e==null){
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Updated Successfully", ""));
+          }
+       else{
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "DepartmentAlready Exist", ""));   
+       }
     }
     public void setDepartments(ArrayList<Department> salaryData) {
         this.departments = salaryData;

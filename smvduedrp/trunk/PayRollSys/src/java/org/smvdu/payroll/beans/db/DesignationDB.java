@@ -88,7 +88,7 @@ public class DesignationDB {
             return null;
         }
     }
-    public void update(ArrayList<Designation> depts)    {
+    public Exception update(ArrayList<Designation> depts)    {
         try
         {
             Connection c = new CommonDB().getConnection();
@@ -105,9 +105,12 @@ public class DesignationDB {
             }
             ps.close();
             c.close();
+            return null;
         }
         catch(Exception e)
         {
+           e.printStackTrace();
+           return e;
             //Logger.getAnonymousLogger().log(Log., e.getMessage());
         }
     }

@@ -115,7 +115,7 @@
 
                     </rich:dataTable>
 
-                    <rich:panel style="height:700px;" header="Important Points related to salary Heads">
+                    <rich:panel style="" header="Important Points related to salary Heads">
                         <h:panelGrid columns="1">
                             <h:outputText value="1. Salary Heads marked with Income are Income , otherwise Deduction"/>
                             <h:outputText value="2. Salary Heads marked with Formula are Formula , otherwise Consolidated"/>
