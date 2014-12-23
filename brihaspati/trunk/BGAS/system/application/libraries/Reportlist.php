@@ -593,7 +593,7 @@ class Reportlist
                 			if($no_row != 0)
 					{
                                         	$result = $CI->Payment_model->get_all_expense_detail($ledg_id);
-					}
+					
                                         $my_values = explode('#',$result);
                                         $total1 =$my_values[0];
                                         $total2 =$my_values[1];
@@ -617,11 +617,14 @@ class Reportlist
                         		echo "<td align=\"right\">".money_format('%!i', convert_cur($total3))."</td>";
                        			echo "<td align=\"right\">".money_format('%!i', convert_cur($total2))."</td>";
                         		echo "<td align=\"right\">".money_format('%!i', convert_cur($total4))."</td>";
-
                         		echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
-
-					$CI->load->library('session');
-                                                $database_name = $CI->session->userdata('cf_db_name');
+					}else{
+                                        echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
+                                        echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
+                                        echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
+                                        echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
+                                        echo "<td align=\"right\">".convert_amount_dc(0)."</td>";
+                                        }
 
                                                 $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
                                                 $file_name="Expense".$db.$prev_year.".xml";
@@ -651,6 +654,7 @@ class Reportlist
                         		echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
 					else
 					echo "<td align=\"right\">" . convert_amount_dc($expenselist2) . "</td>";
+					
                         }   
                   	if($type == "CF" && $id == 4 && $database != "NULL")
 			{

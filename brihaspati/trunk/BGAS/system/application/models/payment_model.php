@@ -193,21 +193,36 @@ class Payment_model extends Model {
                                                 	 $this->db->select('amount,fund_id')->from('fund_management')->where('entry_items_id', $entry_item_id);
                                                 	 $result2 =$this->db->get();
                                                 	 $fund_result = $result2->result();
-                                                	foreach($fund_result as $row2)
-                                                	{
-                                                        	$fund_id =$row2->fund_id;
-                                                        	$fund_code =$this->get_ledger_code($fund_id);
-                                                        	$code = substr($fund_code,0,6);
-								$code1 = substr($fund_code,0,4);
-								if($code == "100101"){
-                                                                	$fund_amount = $row2->amount;
-                                                                	$total1 = $total1+$fund_amount;
-                                                        	}elseif($code1 == "1002"){
+							 $n_row = $result2->num_rows();
+							if($n_row >0)
+                                                	{	
+								foreach($fund_result as $row2)
+                                                		{
+                                                        		$fund_id =$row2->fund_id;
+                                                        		$fund_code =$this->get_ledger_code($fund_id);
+                                                        		$code = substr($fund_code,0,6);
+									$code1 = substr($fund_code,0,4);
+									if($code == "100101"){
+                                                                		$fund_amount = $row2->amount;
+                                                                		$total1 = $total1+$fund_amount;
+                                                        		}elseif($code1 == "1002"){
 
-                                                                	$fund_amount = $row2->amount;
-                                                                	$total2 = $total2+$fund_amount;
+                                                                		$fund_amount = $row2->amount;
+                                                                		$total2 = $total2+$fund_amount;
+									}
+								 }
+							 }else{
+								if($dc == "C")
+								{
+									$entry_item_id=$row1->id;
+                                                        		$sum = $row1->amount;
+                                                        		$cr_total = $cr_total + $sum;
+								 }elseif($dc == "D"){
+									$entry_item_id=$row1->id;
+                                                        		$sum = $row1->amount;
+                                                        		$cr_total = $cr_total + $sum;
 								}
-							}
+							 }
 						  }elseif($dc == "C"){
 						 	$entry_item_id=$row1->id;
                                                 	$sum = $row1->amount;
