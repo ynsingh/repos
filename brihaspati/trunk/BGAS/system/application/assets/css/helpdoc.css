@@ -62,11 +62,15 @@
 
 /* Sidenav for Docs
  * -------------------------------------------------- */
+#left-nav ul li a:hover { background-color:#F0E68C; color: #fff; }
+#left-nav ul li a:visited { color:#800080;}
+#left-nav ul li a:link {color:#0000FF; text-decoration:none;}
 .bs-docs-sidenav {
   width: 500px;
   padding: 0;
   background-color: #C0C0C0;
   font-size: 18px;
+  font-weight:bold;
   font-family: "Times New Roman", Times, serif;
   margin: 0 0 -0.5px;
   float:left;
@@ -83,6 +87,7 @@
   width: 190px \9;
   margin: 0 0 -1px;
   padding: 6px 12px;
+  font-color: #000000;
   border: 1px solid #e5e5e5;
 }
 .bs-docs-sidenav > li:first-child > a {

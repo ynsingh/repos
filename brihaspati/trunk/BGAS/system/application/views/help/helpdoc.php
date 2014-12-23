@@ -3,9 +3,9 @@
 <head>
     <title>BGAS</title>
     <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/helpdoc.css">
+    <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/scroll.css">
+    <script type="text/javascript" src="<?php echo asset_url(); ?>js/scroll.js"></script>
 </head>
-
-
 
     <!-- Subhead
 ================================================== -->
@@ -18,13 +18,11 @@
          <!-- Docs nav
     ================================================== -->
         <div class="row-fluid">
-
+	<div id="left-nav">
             <div class="span3 bs-docs-sidebar">
                  <ul id="ulNav" class="nav nav-list bs-docs-sidenav affix-top">
-
-                <li><a href="#AboutBrihaspatiGeneralAccontingSystem"><i class="icon-chevron-right"></i>About Brihaspati General Acconting System</a></li>
+                    <li><a href="#AboutBrihaspatiGeneralAccontingSystem"><i class="icon-chevron-right"></i>About Brihaspati General Acconting System</a></li>
                     <li><a href="#Administrator(Home)"><i class="icon-chevron-right"></i>Administrator(Home)</a>
-			<li><a href="#ChangeAccount"><i class="icon-chevron-right"></i>Change Account</a></li>
                     <li><a href="#ChangeAccount"><i class="icon-chevron-right"></i>Change Account</a></li>
                     <li><a href="#CreateAccount"><i class="icon-chevron-right"></i>Create Account</a></li>    
 	            <li><a href="#ManageAccounts"><i class="icon-chevron-right"></i>Manage Account</a></li>
@@ -37,8 +35,8 @@
                     <li><a href="#ReappropriateBudget"><i class="icon-chevron-right"></i>Reappropriate Budget</a></li>
                     <li><a href="#Projection"><i class="icon-chevron-right"></i>Projection</a></li>
                     <li><a href="#AddProjection"><i class="icon-chevron-right"></i>Add Projection</a></li>
-                 <li><a href="#ReappropriateProjection"><i class="icon-chevron-right"></i>Reappropriate Projection</a></li>
-	           <li><a href="#Accounts"><i class="icon-chevron-right"></i>Accounts</a></li>
+                    <li><a href="#ReappropriateProjection"><i class="icon-chevron-right"></i>Reappropriate Projection</a></li>
+	            <li><a href="#Accounts"><i class="icon-chevron-right"></i>Accounts</a></li>
 		    <li><a href="#Entries"><i class="icon-chevron-right"></i>Entries</a></li>
                     <li><a href="#ViewAll"><i class="icon-chevron-right"></i>View All</a></li>
                     <li><a href="#CreateJournal"><i class="icon-chevron-right"></i>Create Journal</a></li>
@@ -47,41 +45,46 @@
 		    <li><a href="#BillUpload"><i class="icon-chevron-right"></i>Bill Upload</a></li>
 		    <li><a href="#Report"><i class="icon-chevron-right"></i>Report</a></li>
 	            <li><a href="#BalanceSheet"><i class="icon-chevron-right"></i>Balance Sheet</a></li>
-                    <li><a href="#BalanceSheetMHRDFormat"><i class="icon-chevron-right"></i>Balance Sheet MHRD Format</a></li>
+		    <li><a href="#CorporateFormat"><i class="icon-chevron-right"></i>Corporate Format</a></li>
+                    <li><a href="#MHRDFormat"><i class="icon-chevron-right"></i>MHRD Format</a></li>
                     <li><a href="#IncomeandExpenditureStatement"><i class="icon-chevron-right"></i>Income and Expenditure Statement</a></li>
-                     <li><a href="#Payment&Receipt"><i class="icon-chevron-right"></i>Payment & Receipt</a></li>
-                     <li><a href="#TrialBalance"><i class="icon-chevron-right"></i>Trial Balance</a></li>
+                    <li><a href="#Payment&Receipt"><i class="icon-chevron-right"></i>Payment & Receipt</a></li>
+                    <li><a href="#TrialBalance"><i class="icon-chevron-right"></i>Trial Balance</a></li>
                     <li><a href="#LedgerStatement"><i class="icon-chevron-right"></i>Ledger Statement</a></li>
                     <li><a href="#Reconciliation"><i class="icon-chevron-right"></i>Reconciliation</a></li>
                     <li><a href="#Depreciationastoday"><i class="icon-chevron-right"></i>Depreciation as today</a></li>
                     <li><a href="#DayBook"><i class="icon-chevron-right"></i>Day Book</a></li>
 		    <li><a href="#CashBook"><i class="icon-chevron-right"></i>Cash Book</a></li>
-			<li><a href="#DepreciationOfAssets"><i class="icon-chevron-right"></i>Depreciation Of Assets</a></li>
-			<li><a href="#OtherReport"><i class="icon-chevron-right"></i>Other Report</a></li>
-			<li><a href="#FundList"><i class="icon-chevron-right"></i>Fund List</a></li>
-		<li><a href="#TagReport"><i class="icon-chevron-right"></i>Tag Report</a></li>
-		<li><a href="#SecondaryUnitStatement"><i class="icon-chevron-right"></i>Secondary Unit Statement</a></li>
+		    <li><a href="#OtherReport"><i class="icon-chevron-right"></i>Other Report</a></li>
+		    <li><a href="#FundList"><i class="icon-chevron-right"></i>Fund List</a></li>
+		    <li><a href="#TagReport"><i class="icon-chevron-right"></i>Tag Report</a></li>
+		    <li><a href="#SecondaryUnitStatement"><i class="icon-chevron-right"></i>Secondary Unit Statement</a></li>
+	            <li><a href="#LogReport"><i class="icon-chevron-right"></i>Log Report</a></li>
+              	    <li><a href="#ChartofAccountLog"><i class="icon-chevron-right"></i>Chart of Account Log</a></li>
+  	            <li><a href="#TransactionLog"><i class="icon-chevron-right"></i>Transaction Log</a></li>
+	            <li><a href="#BudgetLog"><i class="icon-chevron-right"></i>Budget Log</a></li>
+		    <li><a href="#OtherLog"><i class="icon-chevron-right"></i>Other Log</a></li>
 		    <li><a href="#Setting"><i class="icon-chevron-right"></i>Setting</a></li>
-	        <li><a href="#AccountSettings"><i class="icon-chevron-right"></i>Account Settings</a></li>
-		<li><a href="#C/FAccount"><i class="icon-chevron-right"></i>C/F Account</a></li>
-		<li><a href="#EmailSettings"><i class="icon-chevron-right"></i>Email Settings</a></li>
-		<li><a href="#PrinterSettings"><i class="icon-chevron-right"></i>Printer Settings</a></li>
-		<li><a href="#DownloadBackup"><i class="icon-chevron-right"></i>Download Backup</a></li>
-		<li><a href="#Tags"><i class="icon-chevron-right"></i>Tags</a></li>
-                <li><a href="#EntryTypes"><i class="icon-chevron-right"></i>Entry Types</a></li>
-                <li><a href="#UploadLogo"><i class="icon-chevron-right"></i>Upload Logo</a></li>
-		<li><a href="#PayrollSetup"><i class="icon-chevron-right"></i>Payroll Setup</a></li>
-		<li><a href="#SecUnitID"><i class="icon-chevron-right"></i>Sec Unit ID</a></li>
-		<li><a href="#ViewParty"><i class="icon-chevron-right"></i>View Party</a></li>
-		<li><a href="#AddParty"><i class="icon-chevron-right"></i>Add Party</a></li>
-		<li><a href="#Help"><i class="icon-chevron-right"></i>Help</a></li>
-		<li><a href="#ChangePassword"><i class="icon-chevron-right"></i>Change Password</a></li>
+	            <li><a href="#AccountSettings"><i class="icon-chevron-right"></i>Account Settings</a></li>
+	            <li><a href="#C/FAccount"><i class="icon-chevron-right"></i>C/F Account</a></li>
+	            <li><a href="#EmailSettings"><i class="icon-chevron-right"></i>Email Settings</a></li>
+          	    <li><a href="#PrinterSettings"><i class="icon-chevron-right"></i>Printer Settings</a></li>
+	            <li><a href="#AvailableBackup"><i class="icon-chevron-right"></i>Available Backup</a></li>
+		    <li><a href="#Tags"><i class="icon-chevron-right"></i>Tags</a></li>
+                    <li><a href="#EntryTypes"><i class="icon-chevron-right"></i>Entry Types</a></li>
+                    <li><a href="#UploadLogo"><i class="icon-chevron-right"></i>Upload Logo</a></li>
+         	    <li><a href="#PayrollSetup"><i class="icon-chevron-right"></i>Payroll Setup</a></li>
+	            <li><a href="#SecUnitID"><i class="icon-chevron-right"></i>Sec Unit ID</a></li>
+		    <li><a href="#ViewParty"><i class="icon-chevron-right"></i>View Party</a></li>
+		    <li><a href="#AddParty"><i class="icon-chevron-right"></i>Add Party</a></li>
+		    <li><a href="#Help"><i class="icon-chevron-right"></i>Help</a></li>
+		    <li><a href="#ChangePassword"><i class="icon-chevron-right"></i>Change Password</a></li>
             </ul>
             </div>
-
-
-            <div class="span15">
-
+            </div>
+		<div style="display:none;"<div class="scroll_up" id="scroll_up"></div>
+		<div class="scroll_down" id="scroll_down"></div>
+	         <div class="span15">
                 <section id="AboutBrihaspatiGeneralAccontingSystem">
                     <div class="row-fluid">
                         <h2>About Brihaspati General Acconting System</h2>
@@ -93,7 +96,7 @@
 			<p align="justify" STYLE="line-height: 150%">
                            BGAS is an Accounting System than creates reports of financial statement.  To provide a standardise web based, full featured Double Entry Accrual Accounting system Prescribed by MHRD for all Acedemic and Educational Institutions in India. BGAS is standard integrated accounting and genral ledger system. It is composed of a set of a module that correspond to the main business function of accounting management modules include Genral, Ledger Accounts, Payable Acounts, Fixed and Personal Assets. 
                         </ol>
-	</font>
+			</font>
                        </section>
 	                <section id="Administrator(Home)">
                     <div class="row-fluid">
@@ -107,14 +110,12 @@
 			</font>
                         </ol>
  			<?php
-			echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adminhome.png', 'width' => 1650, 'height' =>790));
+			echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adminhome.png', 'width' => 1650, 'height' =>860));
 			?>
-                    
-                 </div>
-                </section>
-
-                  <section id="ChangeAccount">
-                    <div class="row-fluid">
+                	 </div>
+               		 </section>
+                 	 <section id="ChangeAccount">
+                   	 <div class="row-fluid">
                         <h2>Change Account</h2>
                     </div>
 
@@ -126,7 +127,7 @@
 			</font>
                         </ol>
                         <?php
-                       echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'changeaccount.png', 'width' => 1650, 'height' =>810));
+                       echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'changeaccount.png', 'width' => 1650, 'height' =>860));
                         ?>
                     </div>
                 </section>
@@ -141,16 +142,16 @@
                         <ol>
 			<p align="justify" STYLE="line-height: 150%">
 	User (Admin) can create account by filling all data.
-</font>
-<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%"><BR>
-<table border="1" style="width:620px">
-<tr>
-   <td><B>Field</B></td>
-  <td><B>Description</B></td>
-</tr>
-<tr>
-<td><B>Lable</B></td>
-  <td>Enter labal.(Example : bgasiitk)</td>
+	</font>
+	<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%"><BR>
+	<table border="1" style="width:620px">
+	<tr>	
+ 	  <td><B>Field</B></td>
+	  <td><B>Description</B></td>
+		</tr>
+		<tr>
+	<td><B>Lable</B></td>
+	  <td>Enter labal.(Example : bgasiitk)</td>
 </tr>
 <tr>
 <td><B>Organization Name</B></td>
@@ -177,7 +178,7 @@
   <td>Select Date Format. (Ex-Day/Month/Year)</td>
 </tr>
 <td><B>Financial Year Start</B></td>
-  <td>Enter financial year start date. (Warning : Financial Year Start cannot be changed later.Format as per 'Date Format' selected above.)</td>
+<td>Enter financial year start date. (Warning : Financial Year Start cannot be changed later.Format as per 'Date Format' selected above.)</td>
 </tr>
 <td><B>Financial Year End</B></td>
 <td>Enter financial year end date. ( Warning : Financial Year End cannot be changed later.Format as per 'Date Formet' selected above.)</td>
@@ -221,9 +222,9 @@
 			 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'createaccount1.png'));
                         ?>
-
-
- <section id="ManageAccounts">
+	</div>
+	</section>
+		 <section id="ManageAccounts">
                     <div class="row-fluid">
                         <h2>Manage Accounts</h2>
                     </div>
@@ -240,8 +241,7 @@
                         ?>
                  </div>
                 </section>
-
-<section id="ManageUsers">
+		<section id="ManageUsers">
                     <div class="row-fluid">
                         <h2>Manage Users</h2>
                     </div>
@@ -258,7 +258,7 @@
                         ?>
                     </div>
                 </section>
-<section id="MySQLAdminSetting">
+		<section id="MySQLAdminSetting">
                     <div class="row-fluid">
                         <h2>MySQL Admin Setting</h2>
                     </div>
@@ -273,19 +273,17 @@
 			 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adminsetting.png'));
                         ?>
-
                     </div>
                 </section>
-
-<section id="AccountsFunctionality">
- <div class="row-fluid">
- <h2>Accounts Functionality</h2>
-<section id="Dashboard">
-<div class="row-fluid">
+		<section id="AccountsFunctionality">
+		 <div class="row-fluid">
+		 <h2>Accounts Functionality</h2>
+		<section id="Dashboard">
+		<div class="row-fluid">
                         <h2>Dashboard</h2>
                     </div>
- <div class="row-fluid">
-<font size="4">
+		 <div class="row-fluid">
+		<font size="4">
                         <ol>
 		<p align="justify" STYLE="line-height: 150%">
     This page consists of account details and summary, Bank and Cash accounts, and recent activity. The page is constantly updated on the basis of the activities carried out in the system. 
@@ -294,6 +292,8 @@
 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'dashboard.png'));
                         ?>
+</div>
+</section>
 <section id="Budget">
 <div class="row-fluid">
                         <h2>Budget</h2>
@@ -308,7 +308,8 @@
 			 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'budget.png'));
                         ?>
-
+</div>
+</section>
 <section id="AddBudget">
 <div class="row-fluid">
                         <h2>Add Budget</h2>
@@ -323,6 +324,8 @@ This page displays a form that allows a user to add a budget to the account. The
 			 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'addbudget.png'));
                         ?>
+</div>
+</section>
 <section id="ReappropriateBudget">
 <div class="row-fluid">
                         <h2>Reappropriate Budget</h2>
@@ -337,6 +340,8 @@ This page displays in a hierarchy all the budget heads along with their allocate
 			 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'BudgetReappropriation.png'));
                         ?>
+</div>
+</section>
 <section id="Projection">
 <div class="row-fluid">
                         <h2>Projection</h2>
@@ -351,6 +356,8 @@ The page displays chart of income projections estimated for the organization. It
 			 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'projection.png'));
                         ?>
+</div>
+</section>
 <section id="AddProjection">
 <div class="row-fluid">
                         <h2>Add Projection</h2>
@@ -365,6 +372,8 @@ This page displays a form that allows a user to add a projection to the account.
 			 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'NewProjection.png'));
                         ?>
+</div>
+</section>
 <section id="ReappropriateProjection">
 <div class="row-fluid">
                         <h2>Reappropriate Projection</h2>
@@ -379,6 +388,8 @@ This page displays in a hierarchy all the projections of income heads along with
 			 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'ProjectionReappropriation.png'));
                         ?>
+</div>
+</section>
 <section id="Accounts">
 <div class="row-fluid">
                         <h2>Accounts</h2>
@@ -393,7 +404,8 @@ Chart of account reflect the operations performed in the accounting year.  All t
 			<?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccount.png'));
                         ?>
-
+</div>
+</section>
 <section id="Entries">
 <div class="row-fluid">
                         <h2>Entries</h2>
@@ -405,6 +417,8 @@ Chart of account reflect the operations performed in the accounting year.  All t
 Entry page display the no. of entries has been done by user. Entry has two options.
 			 </ol>	
 			</font>
+</div>
+</section>
 <section id="ViewAll">
 <div class="row-fluid">
                         <h2>View All</h2>
@@ -419,6 +433,8 @@ This page shows the all Payment, Receipt, countra or Journal Entry made in the f
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'allentries.png'));
                         ?>
+</div>
+</section>
 <section id="CreateJournal">
 <div class="row-fluid">
                         <h2>Create Journal</h2>
@@ -433,6 +449,8 @@ This page have a button to create a new Journal entry the link  will available t
 			<?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'newjournal.png'));
                         ?>
+</div>
+</section>
 <section id="BillUpload/VoucherCreation">
 <div class="row-fluid">
 <h2>Bill Upload/Voucher Creation</h2>
@@ -452,6 +470,8 @@ We can see all list of all uploaded bills with Submit Date, Submitted Email ID, 
  <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'viewbill.png'));
                         ?>
+</div>
+</section>
 <section id="BillUpload">
 <div class="row-fluid">
                         <h2>Bill Upload</h2>
@@ -466,6 +486,8 @@ From here we can add a new bill by filling Submitter Email ID, Total Amount, Sel
 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'billupload.png'));
                         ?>
+</div>
+</section>
 <section id="Report">
 <div class="row-fluid">
 <font size="4">
@@ -474,7 +496,13 @@ From here we can add a new bill by filling Submitter Email ID, Total Amount, Sel
                     </div>
 <section id="BalanceSheet">
 <div class="row-fluid">
+<font size="4">
+</font>
                         <h2>Balance Sheet</h2>
+                    </div>
+<section id="CorporateFormat">
+<div class="row-fluid">
+                        <h2>Corporate Format</h2>
                     </div>
 <div class="row-fluid">
 <font size="4">
@@ -492,10 +520,11 @@ Its a financial statement that summarizes the organization's assets, liabilities
 			<?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheet2.png'));
                         ?>
-
-<section id="BalanceSheetMHRDFormat">
+</div>
+</section>
+<section id="MHRDFormat">
 <div class="row-fluid">
-                        <h2>Balance Sheet MHRD Format</h2>
+                        <h2>MHRD Format</h2>
                     </div>
 <div class="row-fluid">
 <font size="4">
@@ -510,7 +539,8 @@ The balancesheet has the format as per the recommendation of the MHRD. The balan
 			<?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheetmhrd2.png'));
                         ?>
-
+</div>
+</section>
 <section id="IncomeandExpenditureStatement">
 <div class="row-fluid">
                         <h2>Income And Expenditure Statement</h2>
@@ -531,7 +561,8 @@ The Income and Expenditure in statement includes revenue and expenses.  It summa
 			<?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'incomeandexpenditurestatement2.png'));
                         ?>
-
+</div>
+</section>
 <section id="Payment&Receipt">
 <div class="row-fluid">
                         <h2>Payment & Receipt</h2>
@@ -552,7 +583,8 @@ The Payment and Receipt in statement includes revenue and expenses.  It summarie
 			<?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'payment&receipt2.png'));
                         ?>
-
+</div>
+</section>
 <section id="TrialBalance">
 <div class="row-fluid">
                         <h2>Trial Balance</h2>
@@ -568,6 +600,8 @@ of the ladger account, value of ledger a/c will hold either a debit balance in t
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'trialbalance.png'));
                         ?>
+</div>
+</section>
 <section id="LedgerStatement">
 <div class="row-fluid">
                         <h2>Ledger Statement</h2>
@@ -582,6 +616,8 @@ A general ledger contain all the account for recording transaction relation to a
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'ledgerstatement.png'));
                         ?>
+</div>
+</section>
 <section id="Reconciliation">
 <div class="row-fluid">
                         <h2> Reconciliation</h2>
@@ -596,6 +632,8 @@ It refer to the process of ensuring that tow sets of records are in agreement.  
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'reconciliation.png'));
                         ?>
+</div>
+</section>
 <section id="Depreciationastoday">
 <div class="row-fluid">
                         <h2>Depreciation as today</h2>
@@ -607,6 +645,8 @@ It refer to the process of ensuring that tow sets of records are in agreement.  
 This page shows the depreciated amount of purchase assets in the financial year.
  </ol>
                         </font>
+</div>
+</section>
 <section id="DayBook">
 <div class="row-fluid">
                         <h2>Day Book</h2>
@@ -621,6 +661,8 @@ Day Book statement shows current activity of user in particular date.
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'daystatement.png'));
                         ?>
+</div>
+</section>
 <section id="CashBook">
 <div class="row-fluid">
                         <h2>Cash Book</h2>
@@ -635,6 +677,8 @@ From here we can see all cash reports activity with in selected date range.
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'cashreport.png'));
                         ?>
+</div>
+</section>
 <section id="OtherReport">
 <div class="row-fluid">
 <h2>Other Report</h2>
@@ -654,6 +698,8 @@ From here we can see all type of fund list with S.No, Code, Fund Name, O/P Balan
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'fundlist.png'));
                         ?>
+</div>
+</section>
 <section id="TagReport">
 <div class="row-fluid">
                         <h2>Tag Report</h2>
@@ -668,6 +714,8 @@ From here we can see all tag statement with in selected date range.  We can also
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'tagreport.png'));
                         ?>
+</div>
+</section>
 <section id="SecondaryUnitStatement">
 <div class="row-fluid">
                         <h2>Secondary Unit Statement</h2>
@@ -682,17 +730,77 @@ We can see all list of secondary unit statement with selected date range.
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'secondaryunitstatement.png'));
                         ?>
-<section id="DepreciationOfAssets">
+</div>
+</section>
+<section id="LogReport">
 <div class="row-fluid">
-                        <h2>Depreciation Of Assets</h2>
+<h2>Log Report</h2>
+<font size="4">
+</font>
+<section id="ChartofAccountLog">
+<div class="row-fluid">
+                        <h2>Chart of Account Log</h2>
                     </div>
 <div class="row-fluid">
 <font size="4">
  <ol>
 <p align="justify" STYLE="line-height: 150%">
-This page shows the depreciated amount of purchase assets in the financial year.
+From hear we can see chart of account logs with Date, Host IP, User, Message andBrowser. We can also search log by selecting log title.
  </ol>
-                        </font>                        
+                        </font>
+                         <?php
+                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccountlogs.png'));
+                        ?>
+</div>
+</section>
+<section id="TransactionLog">
+<div class="row-fluid">
+                        <h2>Transaction Log</h2>
+                    </div>
+ <div class="row-fluid">
+<font size="4">
+                        <ol>
+                        <p align="justify" STYLE="line-height: 150%">
+From hear we can see transaction log with Date, Host IP, User, Message and Browser.We can also search transaction log by selecting log title.
+</ol>
+                        </font>
+                         <?php
+                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'transactionlogs.png'));
+                        ?>
+</div>
+</section>
+<section id="BudgetLog">
+<div class="row-fluid">
+                        <h2>Budget Log</h2>
+                    </div>
+ <div class="row-fluid">
+<font size="4">
+                        <ol>
+                        <p align="justify" STYLE="line-height: 150%">
+From hear we can see budget log with Date, Host IP, User, Message and Browser. We can also search Budget log by selecting log title.
+</ol>
+                        </font>
+                         <?php
+                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'budgetlogs.png'));
+                        ?>
+</div>
+</section>
+<section id="OtherLog">
+<div class="row-fluid">
+                        <h2>Other Log</h2>
+                    </div>
+ <div class="row-fluid">
+<font size="4">
+                        <ol>
+                        <p align="justify" STYLE="line-height: 150%">
+From hear we can see recent activity with Date, Host IP, User, Message and Browser.
+</ol>
+                        </font>
+                         <?php
+                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'otherlogs.png'));
+                        ?>
+</div>
+</section>
 <section id="Setting">
 <div class="row-fluid">
                         <h2>Setting</h2>
@@ -707,6 +815,8 @@ This page shows the depreciated amount of purchase assets in the financial year.
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'settings.png'));
                         ?>
+</div>
+</section>
 <section id="AccountSettings">
 <div class="row-fluid">
                         <h2>Account Settings</h2>
@@ -721,6 +831,8 @@ From here we can update Account Name, Account Address, Account Email, Currency, 
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'accountsettings.png'));
                         ?>
+</div>
+</section>
 <section id="C/FAccount">
 <div class="row-fluid">
                         <h2>C/F Account</h2>
@@ -735,6 +847,8 @@ From here we can update Account Name, Account Address, Account Email, Currency, 
  			 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'carryfowardaccount.png'));
                         ?>
+</div>
+</section>
 <section id="EmailSettings">
 <div class="row-fluid">
                         <h2>Email Settings</h2>
@@ -773,6 +887,8 @@ You need to use the following gmail settings in Settings--> Email Settings.
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'emailsettings.png'));
                         ?>
+</div>
+</section>
 <section id="PrinterSettings">
 <div class="row-fluid">
                         <h2>Printer Settings</h2>
@@ -787,20 +903,24 @@ From here we can setup printing option for entries, report etc.
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'printersettings.png'));
                         ?>
-<section id="DownloadBackup">
+</div>
+</section>
+<section id="AvailableBackup">
 <div class="row-fluid">
-                        <h2>Download Backup</h2>
+                        <h2>Available Backup</h2>
                     </div>
  <div class="row-fluid">
 <font size="4">
                         <ol>
                         <p align="justify" STYLE="line-height: 150%">
-From here we can download backup of current account data.
+From here we can see list of backup with S.No, Name Of Backup File, Download Backup, Delete Backup file. we can download backup of current account data.  Backup data delete automatically in seven days.
 			</ol>
                         </font>
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'downloadbackup.png'));
                         ?>
+</div>
+</section>
 <section id="Tags">
 <div class="row-fluid">
                         <h2>Tags</h2>
@@ -815,6 +935,8 @@ From here we can see all tags with title and color.  We can also add new tag by 
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'tags.png'));
                         ?>
+<div>
+</section>
 <section id="EntryTypes">
 <div class="row-fluid">
                         <h2>Entry Types</h2>
@@ -829,6 +951,8 @@ This page shows how many entries can be made by user, and we can add one entry t
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'entrytype.png'));
                         ?>
+</div>
+</section>
 <section id="UploadLogo">
 <div class="row-fluid">
                         <h2>Upload Logo</h2>
@@ -843,6 +967,8 @@ From here every institute can upload their logo.
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'uploadlogo.png'));
                         ?>
+</div>
+</section>
 <section id="PayrollSetup">
 <div class="row-fluid">
                         <h2>Payroll Setup</h2>
@@ -857,6 +983,8 @@ By filling Main Budget Code, after it select Salary Budget Code, and select Cash
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'payrollsetup.png'));
                         ?>
+</div>
+</section>
 <section id="SecUnitID">
 <div class="row-fluid">
 <h2>Sec Unit ID</h2>
@@ -876,6 +1004,8 @@ We can see all list of secondary unit with Party Name, Mobile NO., Email Id, Ban
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'viewparty.png'));
                         ?>
+</div>
+</section>
 <section id="AddParty">
 <div class="row-fluid">
                         <h2>Add Party</h2>
@@ -893,6 +1023,8 @@ From here we can add party by filling Party Name, Secondary Accounting UID (Facu
 			<?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'addparty1.png'));
                         ?>
+</div>
+</section>
 
 <section id="Help">
 <div class="row-fluid">
@@ -908,7 +1040,8 @@ Help link provides for convenience of user that tells how to use this project.
 <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'help.png'));
                         ?>
-
+</div>
+</section>
 <section id="ChangePassword">
 <div class="row-fluid">
                         <h2>Change Password</h2>
@@ -923,4 +1056,7 @@ Password can be changed from the Change Password link.  Each user must enter the
                          <?php
                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'passwordsetting.png'));
                         ?>
- 
+</section>
+</div>
+</div>
+</html>
