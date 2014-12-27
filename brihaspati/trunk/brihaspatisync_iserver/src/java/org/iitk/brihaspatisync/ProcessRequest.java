@@ -60,7 +60,8 @@ from clients, reflectors
 	}
 	
 	protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException {
-		if(set==null) {
+                System.gc();
+                if(set==null) {
 			try {
 /**
  * The context has been set to call getRealPath() of files. It is set in static
@@ -112,7 +113,6 @@ TBD - code for this part to be written.
 	                        ServerLog.log("reflector ip in remove peer is>>>>>>>>>> "+reflectorIP);
         	                message =ReflectorManager.removePeer(reflectorIP);
                         	response.setContentLength(message.length());
-	                        
 			} catch(Exception e) { ServerLog.log("Exception in ProcessRequest class for reflector logout loop "+e.getMessage()); }
                 }
 /*
@@ -132,9 +132,9 @@ TBD - code to be updated as per the above logic.
 			try {
 				String reflectorIP  =InetAddress.getByName(request.getRemoteAddr()).toString();
 				String status=request.getParameter("status");
+				//message =ReflectorManager.Register(reflectorIP,status);
 				message =ReflectorManager.register(reflectorIP);
 				response.setContentLength(message.length());
-                	        
 			} catch(Exception e ) { ServerLog.log("Exception in ProcessRequest Class in reflector registration"+e.getMessage()); }
 			
 		}
@@ -186,7 +186,6 @@ TBD - code to be updated as per the above logic.
                                 	RequestDispatcher rd= context.getRequestDispatcher("/checkuserbrihaspati.html");
 					rd.include(request, response);
 				}
-                                
                         } catch(Exception e) { ServerLog.log("Exception in writting jnlp file in ProcessRequest class"+e.getMessage()); }
                 } else if(reqType.equals("http")) {
 			/**
@@ -196,7 +195,6 @@ TBD - code to be updated as per the above logic.
 				InetAddress clientIP  = InetAddress.getByName(request.getRemoteAddr());
 				message=clientIP.toString();
 				response.setContentLength(message.length());
-                        	
 			} catch(Exception e) { ServerLog.log("Exception in condition check http in ProcessRequest class"+e.getMessage()); }
 			
 		}
@@ -212,7 +210,6 @@ TBD - code to be updated as per the above logic.
 				message=ProcessRequestMethods.loginAuthorised(userName,userPassword);
 				if(message.equals("loginfailed")) {
 					response.setContentLength(message.length());
-               				
 				} 
 				else {
 					/**
@@ -227,7 +224,6 @@ TBD - code to be updated as per the above logic.
 					 **/
 					message=message+"\n"+ServerUtil.getCurrentDate("");
 					response.setContentLength(message.length());
-                                	
 				}//else	
 			} catch(Exception e) { ServerLog.log("Exception in login in ProcessRequest class"+e.getMessage()); }
 		}
@@ -249,7 +245,6 @@ TBD - code to be updated as per the above logic.
 					ReflectorStatusManager.updateStatusPeer(ipAddress.replace("/",""));
 				}
 				//out.println("Successfull");	
-				
 			} catch(Exception e) { ServerLog.log("Exception in logout in ProcessRequest class"+e.getMessage()); }
 		}
 		else if(reqType.equals("getCourse")) {
@@ -270,12 +265,10 @@ TBD - code to be updated as per the above logic.
 							message=message+","+result.elementAt(i).toString();
 					}
 					response.setContentLength(message.length());
-        	              		
 				}
 				else {
 					message="noCourse";
                                 	response.setContentLength(message.length());
-                                	
 				}
 			} catch(Exception e) { ServerLog.log("Exception in getCourse in ProcessRequest class"+e.getMessage()); }
 		} 
@@ -288,11 +281,9 @@ TBD - code to be updated as per the above logic.
         	                message=ServerUtil.getLectureInfo(lecture_id);
                 	        if(!message.equals("")) {
                         	        response.setContentLength(message.length());
-                                	
                 	        } else {
                         	        message="noLecture";
                                 	response.setContentLength(message.length());
-	                                
                         	}
 			} catch(Exception e) { ServerLog.log("Exception in getting lecture info in ProcessRequest class"+e.getMessage()); }
 		}
@@ -305,11 +296,9 @@ TBD - code to be updated as per the above logic.
 				message=ServerUtil.getSessionList(courseName);
 				if(!message.equals(""))	{
                 	        	response.setContentLength(message.length());
-	                	        
 				} else {
 					message="noLecture";
                         	        response.setContentLength(message.length());
-                                	
 				}
 			} catch(Exception e) { ServerLog.log("Exception in getting session list in ProcessRequest class"+e.getMessage()); }	
 		} 
@@ -338,7 +327,6 @@ TBD - code to be updated as per the above logic.
 					url=request.getRequestURL();
 				} catch(Exception e) { ServerLog.log("Exception in getting url in ProcessRequest class"+e.getMessage()); }
 				message=ProcessRequestMethods.putLecture(context,url,lect_id,lectGetParameter,lectUserName,lectCouseName,lectName,lectInfo,lectNo,lectDate,lectTime,lectDuration,lectAudio,lectVedio,lectWhiteBoard,mailsend_permission);                       
-                	       	
 			} catch(Exception e) { ServerLog.log("Exception in putLecture in ProcessRequest class"+e.getMessage()); }
 		}
 		else if(reqType.equals("getTimeforLecture")) {
@@ -349,7 +337,6 @@ TBD - code to be updated as per the above logic.
 			try {
 				message=ServerUtil.getSystemDateTime();
         	                response.setContentLength(message.length());
-                	        
 			} catch(Exception e) { ServerLog.log("Exception in get time for lecture in ProcessRequest class"+e.getMessage()); }
 		}
 		else if(reqType.equals("join")) {
@@ -371,6 +358,7 @@ TBD - code to be updated as per the above logic.
 				String logintime=ServerUtil.getSystemDateTime();
                                 logintime=logintime.substring(4,20);
 				String proxy="NO";	
+			//	message=ReflectorStatusManager.Register(user,lect_id,role);  
 				message=ReflectorStatusManager.Register(sessionid,publicip,privateip);  
 				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not available !!")) && (!message.equals("Reflector have insufficient Load !!")) ) {
 					String ref_ip=message;
@@ -385,7 +373,6 @@ TBD - code to be updated as per the above logic.
 				String av_status=ServerUtil.getAVStatus(sessionid);
 				message	= message+av_status;	
 				response.setContentLength(message.length());
-                        	
 			} catch(Exception e) { ServerLog.log("Exception in getting input string in ProcessRequest class"+e.getMessage()); }
                 }
 		else if(reqType.equals("userlist")) {
@@ -410,12 +397,10 @@ TBD - code to be updated as per the above logic.
         	        	                                message=message+","+result.elementAt(i).toString();
 						}
                         	      		response.setContentLength(message.length());
-						
         		                } 
 				} else {
                 	               	message="noUser";
                         	        response.setContentLength(message.length());
-                                	
                 	        }
 			} catch(Exception e) { ServerLog.log("Exception in messsage for user list in ProcessRequest class"+e.getMessage()); }
 		
@@ -432,8 +417,8 @@ TBD - code to be updated as per the above logic.
 		                LecturePeer.doDelete(crit);
         	                message="Successfull";
                         	response.setContentLength(message.length());
-                        	
 			} catch(Exception e) { ServerLog.log("Exception in Cancle Lecture for user list in ProcessRequest class"+e.getMessage()); }
+
 		}
 		else if(reqType.equals("Permissions")) {
 
@@ -452,7 +437,6 @@ TBD - code to be updated as per the above logic.
 					message=PeerManager.updateStatus(userAction,login,lect_id);
 				} 
 				response.setContentLength(message.length());
-                                
 			} catch(Exception e) { ServerLog.log(" Exception in cancle Lecture for user list in ProcessRequest class"+e.getMessage()); }
                 }
 		else if(reqType.equals("GetReflectorStatusXML")) {
@@ -471,8 +455,7 @@ TBD - code to be updated as per the above logic.
 					message=message+strLine;
   				}
 				response.setContentLength(message.length());
-                                
-				in.close();	
+				in.close();
 			} catch(Exception e) { ServerLog.log("Exception in GetReflectorStatusXML in ProcessRequest class"+e.getMessage()); }
 		} 
 		else if(reqType.equals("GetReflectorXML")) {
@@ -490,7 +473,6 @@ TBD - code to be updated as per the above logic.
                                         message=message+strLine;
                                 }
                                 response.setContentLength(message.length());
-                                
                                 in.close();
                         } catch(Exception e) { ServerLog.log("Exception in GetReflectorXML in ProcessRequest class"+e.getMessage()); }
                 }
@@ -511,11 +493,9 @@ TBD - code to be updated as per the above logic.
                                         message=message+strLine;
                                 }
                                 response.setContentLength(message.length());
-                                
                                 in.close();
                         } catch(Exception e) { ServerLog.log("Exception in GetReflectorXML in Processrequest class"+e.getMessage()); }
                 }
-                
                	out.println(message);
         	out.flush();
                 out.close();
@@ -525,7 +505,7 @@ TBD - code to be updated as per the above logic.
 	                 *to the  end of the durataion of session.
         	         */
 		
-                        org.iitk.brihaspatisync.util.ReflectorHandler.getController().LectureHandler(context);
+//                        org.iitk.brihaspatisync.util.ReflectorHandler.getController().LectureHandler(context);
                 } catch(Exception e) { ServerLog.log("Exception in removing sessionid xml in ProcessRequest class"+e.getMessage()); }
 	}//end of post method
 } //end of class

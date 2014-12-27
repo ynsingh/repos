@@ -183,6 +183,7 @@ public class ReflectorStatusManager
                         DocumentBuilder builder = factory.newDocumentBuilder();
                         Document doc = builder.parse(getFile());
                         NodeList peerList = doc.getElementsByTagName("ReflectorStatus");
+                ServerLog.log("Error01 in removeLoad_and_Sessionid_Peer");
                         for( int i=0; i<peerList.getLength(); i++ ){
                                 Node node = peerList.item(i );
                                 if( node.getNodeType() == node.ELEMENT_NODE ){
@@ -196,7 +197,7 @@ public class ReflectorStatusManager
                                 }
                         }
                         message_ip=saveXML(doc);
-                } catch( Exception e ) { ServerLog.log("Error in removeLoad_and_Sessionid_Peer  "+e.getMessage());    }
+                } catch( Exception e ) { ServerLog.log("Error02 in removeLoad_and_Sessionid_Peer  "+e.getMessage());    }
                 return message_ip;
         }
 		

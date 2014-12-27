@@ -92,22 +92,22 @@ public class ReflectorManager
 			}
 			nodeList=null;
 			
-			/**
-			nodeList = doc.getElementsByTagName("IP");
-                        for( int i=0; i<nodeList.getLength(); i++ ){
-                                Node node = nodeList.item(i);
-                                String ip=node.getFirstChild().getNodeValue();
-				node=null;
-                                if(ip.equals(reflector_ip)) {
-					NodeList loadnodeList = doc.getElementsByTagName("Load");
-                                        node = loadnodeList.item(i);
-					String load=node.getFirstChild().getNodeValue();
-					int load_int=Integer.parseInt(load);
-					load_int=load_int-1;
-                                        node.getFirstChild().setNodeValue(Integer.toString(load_int));
-                                        saveXML(doc);
-                                }
-                        } */
+			
+		//	nodeList = doc.getElementsByTagName("IP");
+                  //      for( int i=0; i<nodeList.getLength(); i++ ){
+                    //            Node node = nodeList.item(i);
+                      //          String ip=node.getFirstChild().getNodeValue();
+			//	node=null;
+                          //      if(ip.equals(reflector_ip)) {
+			//		NodeList loadnodeList = doc.getElementsByTagName("Load");
+                          //              node = loadnodeList.item(i);
+			//		String load=node.getFirstChild().getNodeValue();
+			//		int load_int=Integer.parseInt(load);
+			//		load_int=load_int-1;
+                          //              node.getFirstChild().setNodeValue(Integer.toString(load_int));
+                            //            saveXML(doc);
+                              //  }
+                       // } 
                 }catch(Exception e) { ServerLog.log("   Exception in removeLoad method of ReflectorManager class "+e.getMessage()); }
                 return "UnSuccessfull";
         }
