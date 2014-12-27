@@ -46,6 +46,7 @@ public class JoinSession {
                            usr_name = javax.swing.JOptionPane.showInputDialog(null, "Please give nick name : ", "Nick name panel ", 1);
                            if(!usr_name.matches("^[a-zA-Z_]*$")){
                                 JOptionPane.showMessageDialog(null, "Nick name should only contains alphabets, * or $ characters. Kindly join the sesion again.");
+                        	usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
                                 return;
                            }
                         }
@@ -53,14 +54,16 @@ public class JoinSession {
                             JOptionPane.showMessageDialog(null, "Nothing was entered as Nickname. Kindly Join the session again.");
                             return;
                         }
-                        //usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
-                        //ClientObject.setUserName(usr_name);
+                        ClientObject.setUserName(usr_name);
 			String username="user="+URLEncoder.encode(usr_name,"UTF-8");
 			//start GUI for this lecture id 
                 	String role="role="+URLEncoder.encode(SelectRole,"UTF-8");
                 	String st="status="+URLEncoder.encode("available","UTF-8");
 			String indexName=ClientObject.getIndexServerName();
 			String lectid="lect_id="+URLEncoder.encode(Lecture_ID,"UTF-8");
+
+                  //      ClientObject.setUserRole(role);
+		//	ClientObject.setLectureID(lectid);
 			String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
 			//get reflector ip from indexing server.
 			String ref_ip  =HttpsUtil.getReflectorAddress(indexServer);

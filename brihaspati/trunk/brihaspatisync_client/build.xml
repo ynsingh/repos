@@ -37,7 +37,7 @@
 	<target name="compile" depends="init" description="**** Compiles the JAVA classes">
     		<mkdir dir="${bin.dir}"/>
 		<!-- Reflector copy into client -->
-                <copy file="${reflector.dir}/syncreflector.jar" tofile="${lib.dir}/syncreflector.jar"/>
+<!--                <copy file="${reflector.dir}/syncreflector.jar" tofile="${lib.dir}/syncreflector.jar"/> -->
     		<javac srcdir="${src.dir}"
       		       destdir="${bin.dir}"
       		       debug="${debug}"
