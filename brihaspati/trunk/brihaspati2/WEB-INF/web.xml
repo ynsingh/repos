@@ -54,6 +54,9 @@
       <url-pattern>/reports/*</url-pattern>
       <url-pattern>/EmailUpdation/*</url-pattern>
       <url-pattern>/tmp/*</url-pattern>
+      <url-pattern>/babylon/User.passwords</url-pattern>
+      <url-pattern>/babylon/Messages.saved</url-pattern>
+      <url-pattern>/babylon/*log</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>admin</role-name>
