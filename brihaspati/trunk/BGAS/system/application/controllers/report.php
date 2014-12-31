@@ -735,14 +735,14 @@ class Report extends Controller {
 	 */
 	function new_balancesheet($period = NULL)
 	{
-		$this->db->select('id')->from('groups');
+	/*	$this->db->select('id')->from('groups');
 		$this->db->where('name', 'Advances Received');
-		$group1 = $this->db->get();
-		//$group1_name = $group1->name;
+		$group1 = $this->db->get(); */ 
 
 		$this->db->select('id')->from('groups');
 		$this->db->where('name', 'Other liabilities');
 		$group2 = $this->db->get();
+		//$group3 = $group2->row();
 		//$group2_name = $group1->name;
 
 		$this->db->select('chart_account')->from('settings');
@@ -750,7 +750,8 @@ class Report extends Controller {
 		$setting = $setting_result->row();
 		$chart = $setting->chart_account;
 
-		if($group1->num_rows() < 1 && $group2->num_rows() < 1 && $chart == 'mhrd'){
+	//	if($group1->num_rows() < 1 &&
+		if($group2->num_rows() < 1 && $chart == 'mhrd'){
 			//Edit group names
 			$old_names = array('For Goods abd Service', 'Satutory Libilities', 'Other Libilities', 'Receipts against sponsored fellowship and scholarship', 'Grants in Advances');
 			$new_names = array('For Goods and Services', 'Statutory Liabilities', 'Other current Liabilities', 'Receipts against sponsored fellowships and scholarships', 'Grants in advance');
@@ -818,6 +819,7 @@ class Report extends Controller {
                 	                $this->db->from('ledgers');
                         	        $this->db->select('id')->where('code =',$data_code);
 	                                $ledger_q = $this->db->get();
+					$ledger = $ledger_q->result();
         	                        $i++;
                 	        }while($ledger_q->num_rows()>0);
 
@@ -995,11 +997,12 @@ class Report extends Controller {
                 $date2 = $this->session->userdata('date2');
 
 		$this->counter = 1;
-		if($c == 1){
+		if($c == 2){
 	                $this->template->set('page_title', 'Print All Schedules');
         	        $this->template->set('nav_links', array('report/download/all_schedules' => 'Download CSV', 'report/printPreview_schedules/2' => 'Print Preview'));
 			//$this->template->load('template', 'report/print_all_schedules');
 		}
+		elseif($c == 1){
 
 		$check = 2;
 		//$count = 0;
@@ -1012,74 +1015,120 @@ class Report extends Controller {
                 $schedule = '';
                 $name = '';
 
-		while($check>0){
+		while($check>0)
+		{
 			$this->init($check);
-			foreach ($this->children_groups as $id => $row){
+			foreach ($this->children_groups as $id => $row)
+			{
 				$count = 0;
 				$this->id = $row['id'];
 				$this->code = $row['code'];
-				if($this->countDigits($row['code']) == 4){
-					$this->db->from('groups')->where('parent_id', $this->id);
+				if(($this->countDigits($row['code']) == 4) && ($this->id != 0) && ($this->code > 100)  && ($this->code!= '1006') && ($this->code!= '1005') && ($this->code!= '1001')){
+			
+		/*			print_r($this->id);
+					$this->db->from('groups')->where('parent_id',$this->id);
 	        	        	$child_group_q = $this->db->get();
+					$child = $child_group_q->row();
+	//				print_r($child);
 	        	        	$counter1 = 0;
 					$children_sub_groups = array();
         			        foreach ($child_group_q->result() as $child)
 			                {
+						
                         			$children_sub_groups[$counter1]['id'] = $child->id;
 			                        $children_sub_groups[$counter1]['name'] = $child->name;
                         			$children_sub_groups[$counter1]['code'] = $child->code;
 						$counter1++;
 						$count++;
-			                }
+			                }  */
 
-					if($count == 0){
-				                $data['code'] = $this->code;
-				                $group_details = $this->Group_model->get_schedule($this->code);
-			        	        foreach ($group_details as $id => $group)
-			                	{
-			                        	$data['id']  = $group['id'];
-	                        			$data['name'] = $group['name'];
-				                }
+				if($count == 0)
+				{
+
+					$data['code'] = $this->code;
+				//	print_r("lll====>$this->code");
+				        $group_details = $this->Group_model->get_schedule($this->code);
+			        	foreach ($group_details as $id => $group)
+			                {
+			                	$data['id']  = $group['id'];
+	                        		$data['name'] = $group['name'];
+				        }
 						$main['arr'][$counter] = $data;
                                                 $counter++;
-					}//if count
-					else{
-						foreach($children_sub_groups as $id => $child)
-						{
-							$data['code'] = $child['code'];
-		                                        $group_details = $this->Group_model->get_schedule($child['code']);
-                		                        foreach ($group_details as $id => $group)
-                                		        {
-                                                		$data['id']  = $group['id'];
-			                                        $data['name'] = $group['name'];
-                        		                }
-							$main['arr'][$counter] = $data;
-			                                $counter++;
-						}
-					}
+				}//if count
+
+				else
+				{
+				foreach($children_sub_groups as $id => $child)
+				{
+					$data['code'] = $child['code'];
+		                        $group_details = $this->Group_model->get_schedule($child['code']);
+                		        foreach ($group_details as $id => $group)
+                                	{
+                                        	$data['id']  = $group['id'];
+			                        $data['name'] = $group['name'];
+                        		}
+						$main['arr'][$counter] = $data;
+			                        $counter++;
+				}
+				}
 				
 				}
-				elseif($this->countDigits() == 6 && $this->id != 0 && $this->code > 100){
-					$data['code'] = $this->code;
-                                        $group_details = $this->Group_model->get_schedule($this->code);
-                                        foreach ($group_details as $id => $group)
-                                        {
-                                        	$data['id']  = $group['id'];
-                                                $data['name'] = $group['name'];
-                                        }
-					$main['arr'][$counter] = $data;
-                                        $counter++;
-				}
-				//$main['arr'][$counter] = $data;
-				//$counter++;
-			}//for
+
+				$this->db->from('groups')->where('parent_id',$this->id);
+                                $child_group = $this->db->get();
+                                $counter1 = 0;
+                                $children_sub_groups = array();
+                                foreach ($child_group->result() as  $child)
+                                {
+                                	$children_sub_groups[$counter1]['id'] = $child->id;
+                                 	$children_sub_groups[$counter1]['name'] = $child->name;
+                                  	$children_sub_groups[$counter1]['code'] = $child->code;
+                                  	$counter1++;
+                                       	$count++;
+					if($child->code <= 100103)
+				  	{
+						if($count == 0)
+						{
+                                         		$data['code'] = $this->code;
+                                         		$group_details = $this->Group_model->get_schedule($this->code);
+                                         		foreach ($group_details as $id => $group)
+                                         		{
+                                         			$data['id']  = $group['id'];
+                                         			$data['name'] = $group['name'];
+                                         		}
+                                                		$main['arr'][$counter1] = $data;
+                                                		$counter++;
+                                        	}//if count
+                                        	else
+						{
+                                                foreach($children_sub_groups as $id => $child1)
+                                                {
+                                                        $data['code'] = $child1['code'];
+                                                        $group_details = $this->Group_model->get_schedule($child1['code']);
+                                                        foreach ($group_details as $id => $group)
+                                                        {
+                                                        	$data['id']  = $group['id'];
+                                                                $data['name'] = $group['name'];
+                                                        }
+                                                        	$main['arr'][$counter1] = $data;
+                                                        	$counter++;
+                                                }
+                                        	}//else
+
+						}//if 
+					}
+						
+				}//for
 
 			$check--;
 		}//while
+		
+	}//if
 
-		if($c == 1)
-		{
-	                $this->template->load('template', 'report/printPreview', $main);
+	if($c == 1)
+	{
+		$this->template->load('template', 'report/printPreview', $main);
 		}elseif($c == 2)
 		{
 			$this->load->view('report/print_schedules', $main);
@@ -1087,6 +1136,7 @@ class Report extends Controller {
 
                 return;
 	}
+////////////////////////////////////////////////////////
 
 	function init($i)
 	{
@@ -1157,6 +1207,12 @@ class Report extends Controller {
 			$name = $group['name'];
 		}
 	
+		if($name == 'Current Liabilities')
+		{
+                $name = 'Current Liabilities And Provisions';
+		}
+			
+	
 		if($name != '' && $id != ''){
 			$this->template->set('page_title', 'Schedule - ' . $count . ' ' . $name);
 	                $this->session->set_userdata('code', $code);
@@ -1170,11 +1226,16 @@ class Report extends Controller {
 
 		$this->load->model('Setting_model');
 		$ledger_name = $this->Setting_model->get_from_settings('ledger_name');
-		//if($name == 'General Funds' || $name == 'Reserves and Surplus'){
+	//	if($name == 'General Funds' || $name == 'Reserves and Surplus'){
 		if($name == $ledger_name){
 			$this->template->load('template', 'report/schedule_template_1', $data);
                         return;
-		}elseif($name == 'Designated-Earmarked Funds' || $name == 'Restricted Funds'){
+		}
+		/*	elseif($name == 'General Reserve'){
+			$this->template->load('template', 'report/schedule_template_9', $data);
+			return;
+			}  */
+			elseif($name == 'Designated-Earmarked Funds'){
 			//add child groups and ledgers for the fund
 			$num_of_childs = $this->Group_model->get_numOfChild($id);
 			$count = 0;
@@ -1226,7 +1287,7 @@ class Report extends Controller {
 			$query_result = $this->db->get();
 			
 			foreach($query_result->result() as $row){
-				if($row->name == 'Provisions'){
+			/*	if($row->name == 'Provisions'){
 					$this->db->select('id, name, code')->from('groups');
 					$this->db->where('parent_id', $row->id);
 					$group_result = $this->db->get();
@@ -1238,13 +1299,24 @@ class Report extends Controller {
 						$provisions[$counter]['code'] = $row1->code;
 						$counter++;
 					}
-				}else{
+				}else{  */
 					$current_liabilities[$count]['id'] = $row->id;
 					$current_liabilities[$count]['name'] = $row->name;
 					$current_liabilities[$count]['code'] = $row->code;
 					$count++;
 				}
-			}
+				
+				$this->db->select('id, name, code')->from('groups');
+                        	$this->db->where('parent_id', 157);
+                        	$query_result1 = $this->db->get();
+
+				 	$counter = 0;
+                                        foreach($query_result1->result() as $row1){
+                                                $provisions[$counter]['id'] = $row1->id;
+                                                $provisions[$counter]['name'] = $row1->name;
+                                                $provisions[$counter]['code'] = $row1->code;
+                                                $counter++;
+						}
 
 			$data['current_liabilities'] = $current_liabilities;
 			$data['provisions'] = $provisions;
@@ -1266,7 +1338,7 @@ class Report extends Controller {
 					$count++; 
 				}
 
-				$this->db->select('id')->from('ledgers');
+				$this->db->select('id,name')->from('ledgers');
                                 $this->db->where('group_id', $row->id);
                                 $child_ledger_query = $this->db->get();
                                 foreach($child_ledger_query->result() as $row1){
@@ -2829,27 +2901,38 @@ class Report extends Controller {
                         $this->load->view('report/report_template', $data);
                         return;
                 }
-
+///////////////////////////////////////////////////////////
 		if ($statement == "schedule")
                 {
 			$arr = array();
 			$design_earm_funds_group = array();
 			$design_earm_funds_ledger = array();
+
 	                $group_id = '';
         	        $title = '';
                 	$name = '';
 	                $arr['code'] = $code;
+
         	        $this->load->model('Group_model');
                 	$group_details = $this->Group_model->get_schedule($code);
 	                foreach ($group_details as $id => $group)
         	        {
-                	        $group_id  = $group['id'];
+                	        $id  = $group['id'];
 	                        $name = $group['name'];
         	        }
+			
+			if($name == 'Current Liabilities')
+	                {
+        	        	$name = 'Current Liabilities And Provisions';
+                	}
 
-                	if($name != '' && $group_id != ''){
+
+
+			 if($name != '' && $id != ''){
 	                        $title =  'Schedule - ' . $count . ' ' . $name;
-                        	$arr['id'] = $group_id;
+                        	$arr['id'] = $id;
+				$arr['name'] = $group['name'];
+				$arr['code'] = $code;
                 	}
 	                else{
         	                $title = 'Schedule - Notes on Accounts';
@@ -2860,48 +2943,111 @@ class Report extends Controller {
 	                $ledger_name = $this->Setting_model->get_from_settings('ledger_name');
         	        if($name == $ledger_name)
 				$data['report'] = "report/schedule_template_1";
-			elseif($name == 'Designated-Earmarked Funds' || $name == 'Restricted Funds'){
-				$data['report'] = "report/schedule_template_2";
-				//add child groups and ledgers for the fund
-	                        $num_of_childs = $this->Group_model->get_numOfChild($group_id);
-        	                $count = 0;
+				
+			elseif($name == 'Designated-Earmarked Funds'){
+                        //add child groups and ledgers for the fund
+                        $num_of_childs = $this->Group_model->get_numOfChild($id);
+                        $count = 0;
 
-                	        if($num_of_childs > 0){
-                        	        //get child id, name, code
-                                	$this->db->select('id, name, code');
-	                                $this->db->from('groups')->where('parent_id', $group_id);
-        	                        $group_result = $this->db->get();
+                        if($num_of_childs > 0){
+                                //get child id, name, code
+                                $this->db->select('id, name, code');
+                                $this->db->from('groups')->where('parent_id', $id);
+                                $group_result = $this->db->get();
 
-                	                foreach($group_result->result() as $row){
-                        	                $design_earm_funds_group[$count]['id'] = $row->id;
-                                	        $design_earm_funds_group[$count]['name'] = $row->name;
-                                        	$design_earm_funds_group[$count]['code'] = $row->code;
-	                                        $count++;
-        	                        }
-                	        }
+                                foreach($group_result->result() as $row){
+                                        $design_earm_funds_group[$count]['id'] = $row->id;
+                                        $design_earm_funds_group[$count]['name'] = $row->name;
+                                        $design_earm_funds_group[$count]['code'] = $row->code;
+                                        $count++;
+                                }
+                        }
 
-                        	$num_of_childs = $this->Ledger_model->get_numOfChild($group_id);
+                        $num_of_childs = $this->Ledger_model->get_numOfChild($id);
 
-	                        if($num_of_childs > 0){
-        		 	       //get child id, name, code
-                                	$this->db->select('id, name, code');
-	                                $this->db->from('ledgers')->where('group_id', $group_id);
-        	                        $ledger_result = $this->db->get();
-	
-        	                        foreach($ledger_result->result() as $row){
-                	                        $design_earm_funds_ledger[$count]['id']= $row->id;
-                        	                $design_earm_funds_ledger[$count]['name'] = $row->name;
-                                	        $design_earm_funds_ledger[$count]['code'] = $row->code;
-                                        	$count++;
-                                	}
+                        if($num_of_childs > 0){
+                                //get child id, name, code
+                                $this->db->select('id, name, code');
+                                $this->db->from('ledgers')->where('group_id', $id);
+                                $ledger_result = $this->db->get();
+
+                                foreach($ledger_result->result() as $row){
+                                        $design_earm_funds_ledger[$count]['id']= $row->id;
+                                        $design_earm_funds_ledger[$count]['name'] = $row->name;
+                                        $design_earm_funds_ledger[$count]['code'] = $row->code;
+                                        $count++;
+                                }
+                        }
+				 $data['designated_earmarked_funds_group'] = $design_earm_funds_group;
+                        	 $data['designated_earmarked_funds_ledger'] = $design_earm_funds_ledger;
+
+				 $data['report'] = "report/schedule_template_2";
+                        	 $data['title'] = $title;
+                        	 $data['left_width'] = "";
+                        	 $data['right_width'] = "";
+                        	 $data['print_preview'] = TRUE;
+                        	 $data['entry_date1'] = $date1;
+                        	 $data['entry_date2'] = $date2;
+                        	 $data['isSchedule'] = "true";
+                        	 $data['arr'] = $arr;
+                        	 $this->load->view('report/report_template', $data);
+                        	 return;
                         	}
 
-	                        //$data['designated_earmarked_funds'] = $design_earm_funds;
-			}
-		//////////////////////////////////
+			elseif($name == 'Current Liabilities And Provisions'){
+                        $count = 0;
+                        $this->db->select('id, name, code')->from('groups');
+                        $this->db->where('parent_id', $id);
+                        $query_result = $this->db->get();
 
-			elseif($name == 'Investments'){
-                        $investments = array();
+                        foreach($query_result->result() as $row){
+                                        $current_liabilities[$count]['id'] = $row->id;
+                                        $current_liabilities[$count]['name'] = $row->name;
+                                        $current_liabilities[$count]['code'] = $row->code;
+                                        $count++;
+                                }
+
+                                $this->db->select('id, name, code')->from('groups');
+                                $this->db->where('parent_id', 157);
+                                $query_result1 = $this->db->get();
+
+                                        $counter = 0;
+                                        foreach($query_result1->result() as $row1){
+                                                $provisions[$counter]['id'] = $row1->id;
+                                                $provisions[$counter]['name'] = $row1->name;
+                                                $provisions[$counter]['code'] = $row1->code;
+                                                $counter++;
+                              	                }
+				$data['current_liabilities'] = $current_liabilities;
+                        	$data['provisions'] = $provisions;
+
+				 $data['report'] = "report/schedule_template_4";
+  	                      	 $data['title'] = $title;
+        	                 $data['left_width'] = "";
+                	         $data['right_width'] = "";
+                        	 $data['print_preview'] = TRUE;
+                      		 $data['entry_date1'] = $date1;
+                       		 $data['entry_date2'] = $date2;
+                       		 $data['isSchedule'] = "true";
+                        	 $data['arr'] = $arr;
+                        	 $this->load->view('report/report_template', $data);
+                        	 return;
+				}
+				
+			elseif($name == 'Investments')
+			{
+			$data['report'] = "report/schedule_template_8";
+			}
+			
+
+			elseif($name == 'Loan/Borrowings')
+			{
+			$data['report'] = "report/schedule_template_3";
+			}
+
+			elseif($name == 'Fixed Assets')
+			{
+			$fixed_assets = array();
                         $count = 0;
 
                         $this->db->select('id')->from('groups');
@@ -2912,19 +3058,22 @@ class Report extends Controller {
                                 $this->db->where('parent_id', $row->id);
                                 $child_group_query = $this->db->get();
                                 foreach($child_group_query->result() as $row1){
-                                        $investments[$count]['id'] = $row1->id;
+                                        $fixed_assets[$count]['id'] = $row1->id;
                                         $count++;
                                 }
 
-                                $this->db->select('id')->from('ledgers');
+                                $this->db->select('id,name')->from('ledgers');
                                 $this->db->where('group_id', $row->id);
                                 $child_ledger_query = $this->db->get();
                                 foreach($child_ledger_query->result() as $row1){
-                                        $investments[$count]['id'] = $row1->id;
+                                        $fixed_assets[$count]['id'] = $row1->id;
                                         $count++;
                                 }
-                        }
-			$data['report'] = "report/schedule_template_8";
+
+			}
+			$data['fixed_assets'] = $fixed_assets;
+//			print_r($data['fixed_assets']);
+			$data['report'] = "report/schedule_template_5";
 
 			$data['title'] = $title;
                         $data['left_width'] = "";
@@ -2934,12 +3083,80 @@ class Report extends Controller {
                         $data['entry_date2'] = $date2;
                         $data['isSchedule'] = "true";
                         $data['arr'] = $arr;
-			$this->load->view('report/report_template',$data);
-			return;
+			$this->load->view('report/report_template', $data);
+                        return;
+			} 
+				
+			elseif($name == 'Current Assets')	
+			{
+				$current_assets_group = array();
+                        	$current_assets_ledger = array();
+                        	$count = 0;
 
-		} 
+                        	$this->db->select('id');
+                        	$this->db->from('groups')->where('parent_id', $id);
+                        	$group_query = $this->db->get();
+                        	foreach($group_query->result() as $row){
+                                $current_assets_group[$count]['id'] = $row->id;
+                                $count++;
+                        	}	
+
+                        	$count = 0;
+                        	$this->db->select('id');
+                        	$this->db->from('ledgers')->where('group_id', $id);
+                        	$ledger_query = $this->db->get();
+                        	foreach($ledger_query->result() as $row1){
+                                $current_assets_ledger[$count]['id'] = $row1->id;
+                                $count++;
+                        	}
+
+                        	$data['current_assets_group'] = $current_assets_group;
+                        	$data['current_assets_ledger'] = $current_assets_ledger;
+
+				$data['report'] = "report/schedule_template_6";
+				$data['title'] = $title;
+              	          	$data['left_width'] = "";
+                        	$data['right_width'] = "";
+                        	$data['print_preview'] = TRUE;
+                        	$data['entry_date1'] = $date1;
+                        	$data['entry_date2'] = $date2;
+                        	$data['isSchedule'] = "true";
+                        	$data['arr'] = $arr;
+                        	$this->load->view('report/report_template', $data);
+                        	return;
+                        }
+			
+			elseif($name == 'Loans Advances and Deposits')
+			{
+                        	$loans_advances = array();
+                        	$count = 0;
+
+                        	$this->db->select('id');
+                        	$this->db->from('groups')->where('parent_id', $id);
+                        	$group_query = $this->db->get();
+                        	foreach($group_query->result() as $row){
+                                $loans_advances[$count]['id'] = $row->id;
+                                $count++;
+                        	}
+
+                        	$data['loans_advances'] = $loans_advances;
+				$data['report'] = "report/schedule_template_7";
+	
+        	                $data['title'] = $title;
+                	        $data['left_width'] = "";
+                        	$data['right_width'] = "";
+                        	$data['print_preview'] = TRUE;
+                        	$data['entry_date1'] = $date1;
+                        	$data['entry_date2'] = $date2;
+                        	$data['isSchedule'] = "true";
+                        	$data['arr'] = $arr;
+				$this->load->view('report/report_template', $data);
+                        	return;
+			}
+
+
 /////////////////////////////////
-
+			
 			else
 				$data['report'] = "report/schedule_template";
 

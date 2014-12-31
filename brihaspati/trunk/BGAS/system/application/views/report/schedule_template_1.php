@@ -42,11 +42,13 @@
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                                echo  money_format('%!i', convert_cur($opening_balance));
+				 echo convert_amount_dc($opening_balance);
+                               // echo  money_format('%!i', convert_cur($opening_balance));
                         echo "</td>";
                 }else{
                         echo "<td width=15% align=\"right\">";
-                                echo  money_format('%!i', convert_cur($opening_balance));
+				 echo convert_amount_dc($opening_balance);
+                               // echo  money_format('%!i', convert_cur($opening_balance));
                         echo "</td>";
 
                         echo "<td width=15%>";
@@ -58,11 +60,13 @@
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                                echo  money_format('%!i', convert_cur($opening_balance_prev));
+				echo convert_amount_dc($opening_balance_prev);
+                               // echo  money_format('%!i', convert_cur($opening_balance_prev));
                         echo "</td>";
                 }else{
                         echo "<td width=15% align=\"right\">";
-                                echo  money_format('%!i', convert_cur($opening_balance_prev));
+				 echo convert_amount_dc($opening_balance_prev);
+                                //echo  money_format('%!i', convert_cur($opening_balance_prev));
                         echo "</td>";
 
                         echo "<td width=15%>";
@@ -71,11 +75,13 @@
 	echo "</tr>";
 	
 	$liability->callToSchedule(1);
+//	print_r($liability);
 	//$liability->schedule(1);
 	$cr_total = $liability->cr_total;
         $dr_total = $liability->dr_total;
 
         $total = $cr_total - $dr_total;
+//	print_r($total);
 	//$liability->getPreviousYearDetails();
 	//$liability->previous_year_data(1);
 //	$liability->callToOldSchedule(1);
@@ -92,19 +98,23 @@
 
                 echo "<td width=15% align=\"right\">";
                         //echo $total;
-			echo  money_format('%!i', convert_cur($dr_total));
+			 echo "<strong>" . convert_amount_dc($dr_total) . "</strong>";
+			//echo  money_format('%!i', convert_cur($dr_total));
                 echo "</td>";
 
                 echo "<td width=15% align=\"right\">";
-			echo  money_format('%!i', convert_cur($cr_total));
+			 echo "<strong>" . convert_amount_dc($cr_total) . "</strong>";
+			//echo  money_format('%!i', convert_cur($cr_total));
                 echo "</td>";
 
                 echo "<td width=15% align=\"right\">";
-			echo  money_format('%!i', convert_cur($old_dr_total));
+			 echo "<strong>" . convert_amount_dc($old_dr_total) . "</strong>";
+			//echo  money_format('%!i', convert_cur($old_dr_total));
                 echo "</td>";
 
                 echo "<td width=15% align=\"right\">";
-			echo  money_format('%!i', convert_cur($old_cr_total));
+			 echo "<strong>" . convert_amount_dc($old_cr_total) . "</strong>";
+			//echo  money_format('%!i', convert_cur($old_cr_total));
                 echo "</td>";
         echo "</tr>";
 	//$liability->schedule();
@@ -133,7 +143,8 @@
 			echo "</td>";
 
                         echo "<td align=\"right\">";
-                                echo  money_format('%!i', convert_cur($pandl));
+				echo convert_amount_dc($pandl);
+                              //  echo  money_format('%!i', convert_cur($pandl));
                         echo "</td>";
 
                         echo "<td>";
@@ -152,7 +163,8 @@
                         echo "</td>";
 
 			echo "<td align=\"right\">";
-				echo  money_format('%!i', convert_cur(-$pandl));
+				echo convert_amount_dc(-$pandl);
+			//	echo  money_format('%!i', convert_cur(-$pandl));
                         echo "</td>";
 
                         echo "<td>";
@@ -183,7 +195,8 @@
                         echo "</td>";
 
                         echo "<td align=\"right\">";
-				echo  money_format('%!i', convert_cur($old_pandl));
+				echo convert_amount_dc($old_pandl);
+				//echo  money_format('%!i', convert_cur($old_pandl));
                         echo "</td>";
 
                         echo "</tr>";
@@ -202,7 +215,8 @@
                         echo "</td>";
 
                         echo "<td align=\"right\">";
-                                echo  money_format('%!i', convert_cur(-$old_pandl));
+				echo convert_amount_dc(-$old_pandl);
+                               // echo  money_format('%!i', convert_cur(-$old_pandl));
                         echo "</td>";
 
                         echo "<td>";
@@ -217,22 +231,16 @@
                 echo "</td>";
 
                 echo "<td colspan =2 width=30% align=\"right\">";
-		        echo  money_format('%!i', convert_cur($total));
-                        //echo $dr_total;
+			 echo "<strong>" . convert_amount_dc($total) . "</strong>";
+		      //  echo  money_format('%!i', convert_cur($total));
                 echo "</td>";
 
-               // echo "<td width=15% align=\"right\">";
-                        //echo $cr_total;
-               // echo "</td>";
 
                 echo "<td  colspan = 2 width=30% align=\"right\">";
-			echo  money_format('%!i', convert_cur($old_total));
+			 echo "<strong>" . convert_amount_dc($old_total) . "</strong>";
+	//		echo  money_format('%!i', convert_cur($old_total));
                 echo "</td>";
-
-                //echo "<td width=15%>";
-                //echo "</td>";
         echo "</tr>";
-
 	echo "</table>";
 
 	//unset schedule() method's static values

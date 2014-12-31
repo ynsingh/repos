@@ -23,19 +23,21 @@
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($dr_total1));
+				 echo "<strong>" . convert_amount_dc($dr_total1) . "</strong>";
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($cr_total1));
+				 echo "<strong>" . convert_amount_dc($cr_total1) . "</strong>";
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($old_dr_total1));
+				 echo "<strong>" . convert_amount_dc($old_dr_total1) . "</strong>";
+                       // echo  money_format('%!i', convert_cur($old_dr_total1));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($old_cr_total1));
+				 echo "<strong>" . convert_amount_dc($old_cr_total1) . "</strong>";
+                        //echo  money_format('%!i', convert_cur($old_cr_total1));
                         echo "</td>";
                         echo "</tr>";
 
@@ -61,19 +63,23 @@
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($dr_total2));
+				 echo "<strong>" . convert_amount_dc($dr_total2) . "</strong>";
+                      //  echo  money_format('%!i', convert_cur($dr_total2));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($cr_total2));
+				 echo "<strong>" . convert_amount_dc($cr_total2) . "</strong>";
+                        //echo  money_format('%!i', convert_cur($cr_total2));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($old_dr_total2));
+				 echo "<strong>" . convert_amount_dc($old_dr_total2) . "</strong>";
+                       // echo  money_format('%!i', convert_cur($old_dr_total2));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($old_cr_total2));
+				 echo "<strong>" . convert_amount_dc($old_cr_total2) . "</strong>";
+                        //echo  money_format('%!i', convert_cur($old_cr_total2));
                         echo "</td>";
                         echo "</tr>";
 			echo "</table>";
@@ -99,19 +105,23 @@
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($dr_total1));
+				 echo "<strong>" . convert_amount_dc($dr_total1) . "</strong>";
+                        //echo  money_format('%!i', convert_cur($dr_total1));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($cr_total1));
+				 echo "<strong>" . convert_amount_dc($cr_total1) . "</strong>";
+                        //echo  money_format('%!i', convert_cur($cr_total1));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($old_dr_total1));
+				 echo "<strong>" . convert_amount_dc($old_dr_total1) . "</strong>";
+                        //echo  money_format('%!i', convert_cur($old_dr_total1));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($old_cr_total1));
+				 echo "<strong>" . convert_amount_dc($old_cr_total1) . "</strong>";
+                       // echo  money_format('%!i', convert_cur($old_cr_total1));
                         echo "</td>";
                         echo "</tr>";
 
@@ -137,19 +147,23 @@
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($dr_total2));
+				 echo "<strong>" . convert_amount_dc($dr_total2) . "</strong>";
+                        //echo  money_format('%!i', convert_cur($dr_total2));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($cr_total2));
+				 echo "<strong>" . convert_amount_dc($cr_total2) . "</strong>";
+                        //echo  money_format('%!i', convert_cur($cr_total2));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($old_dr_total2));
+				 echo "<strong>" . convert_amount_dc($old_dr_total2) . "</strong>";
+                        //echo  money_format('%!i', convert_cur($old_dr_total2));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                        echo  money_format('%!i', convert_cur($old_cr_total2));
+				 echo "<strong>" . convert_amount_dc($old_cr_total2) . "</strong>";
+                        //echo  money_format('%!i', convert_cur($old_cr_total2));
                         echo "</td>";
                         echo "</tr>";
 

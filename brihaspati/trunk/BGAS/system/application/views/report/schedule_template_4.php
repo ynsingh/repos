@@ -2,11 +2,14 @@
 
 	setlocale(LC_MONETARY, 'en_IN');
 	$this->load->library('balancesheet');
-	
-	$i = 0;
-	if($id != '')
-                $i = $id;
-
+		
+	$id1 = '8';
+	$id2 = '157';
+		
+//	$i = 0;
+//	if($id != '')
+//		$i = $id;
+		
 	$dr_total_A = 0.00;
 	$cr_total_A = 0.00;
 	$old_cr_total_A = 0.00;
@@ -32,8 +35,7 @@
 		echo "</tr>";
 
 		$counter = 1;
-		foreach($current_liabilities as $id => $row){
-			
+		foreach($current_liabilities as $id1 => $row){
 			$object = new Balancesheet();
 			$object->init($row['id']);
 			$object->current_liabilities($counter);
@@ -50,19 +52,23 @@
 			echo "</td>";
 
                 	echo "<td width=15% align=\"right\">";
-       	                	echo  money_format('%!i', convert_cur($dr_total_A));
+				echo "<strong>" . convert_amount_dc($dr_total_A) . "</strong>";
+       	                //	echo  money_format('%!i', convert_cur($dr_total_A));
         	        echo "</td>";
 	
        	        	echo "<td width=15% align=\"right\">";
-               	        	echo  money_format('%!i', convert_cur($cr_total_A));
+				 echo "<strong>" . convert_amount_dc($cr_total_A) . "</strong>";
+               	        //	echo  money_format('%!i', convert_cur($cr_total_A));
 	                echo "</td>";
 
        		        echo "<td width=15% align=\"right\">";
-               		        echo  money_format('%!i', convert_cur($old_dr_total_A));
+				 echo "<strong>" . convert_amount_dc($old_dr_total_A) . "</strong>";
+               		  //      echo  money_format('%!i', convert_cur($old_dr_total_A));
                 	echo "</td>";
 
         	        echo "<td width=15% align=\"right\">";
-       	        	        echo  money_format('%!i', convert_cur($old_cr_total_A));
+				 echo "<strong>" . convert_amount_dc($old_cr_total_A) . "</strong>";
+       	        	       // echo  money_format('%!i', convert_cur($old_cr_total_A));
         	        echo "</td>";
 		echo "</tr>";
 
@@ -80,7 +86,7 @@
 		echo "</tr>";
 
 		$counter = 1;
-		foreach($provisions as $id => $row1){
+		foreach($provisions as $id2 => $row1){
 			
 			$object = new Balancesheet();
 			$object->init($row1['id']);
@@ -99,19 +105,23 @@
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                               echo  money_format('%!i', convert_cur($dr_total_B));
+			        echo "<strong>" . convert_amount_dc($dr_total_B) . "</strong>";
+                              // echo  money_format('%!i', convert_cur($dr_total_B));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                               echo  money_format('%!i', convert_cur($cr_total_B));
+				 echo "<strong>" . convert_amount_dc($cr_total_B) . "</strong>";
+                              // echo  money_format('%!i', convert_cur($cr_total_B));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                               echo  money_format('%!i', convert_cur($old_dr_total_B));
+				 echo "<strong>" . convert_amount_dc($old_dr_total_B) . "</strong>";
+                              // echo  money_format('%!i', convert_cur($old_dr_total_B));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                               echo  money_format('%!i', convert_cur($old_cr_total_B));
+				 echo "<strong>" . convert_amount_dc($old_cr_total_B) . "</strong>";
+                               //echo  money_format('%!i', convert_cur($old_cr_total_B));
                         echo "</td>";
                 echo "</tr>";
 
@@ -126,19 +136,23 @@
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                               echo  money_format('%!i', convert_cur($dr_total));
+			        echo "<strong>" . convert_amount_dc($dr_total) . "</strong>";
+                               //echo  money_format('%!i', convert_cur($dr_total));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                               echo  money_format('%!i', convert_cur($cr_total));
+				 echo "<strong>" . convert_amount_dc($cr_total) . "</strong>";
+                              // echo  money_format('%!i', convert_cur($cr_total));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                               echo  money_format('%!i', convert_cur($old_dr_total));
+				 echo "<strong>" . convert_amount_dc($old_dr_total) . "</strong>";
+                               //echo  money_format('%!i', convert_cur($old_dr_total));
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                               echo  money_format('%!i', convert_cur($old_cr_total));
+				 echo "<strong>" . convert_amount_dc($old_cr_total) . "</strong>";
+                               //echo  money_format('%!i', convert_cur($old_cr_total));
                         echo "</td>";
                 echo "</tr>";
 
