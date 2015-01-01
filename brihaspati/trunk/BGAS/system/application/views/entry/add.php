@@ -195,6 +195,7 @@ var dc = '';
 		}
 	});
 
+
 	/* Dr - Cr dropdown changed */
 	$('.dc-dropdown').live('change', function() {
 		/**
@@ -206,7 +207,11 @@ var dc = '';
 		bank_cash = -1;
 		var account = '';
                 var ledger_value = $(this).parent().next().children().attr('value');
-
+//		var pay = $(this).parent().next().next().next().next().children().attr('value');
+//		if(dc == 'D'){
+//			if(pay == '1')
+//			alert("Please Select Secondry Party Name" +pay);
+//			}
 	                $.ajax({
                                 url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledger_value,
                                 success: function(data) {
@@ -493,12 +498,12 @@ var dc = '';
 		$.ajax({
 			url: <?php echo '\'' . site_url('entry/addrow/' . $add_type) . '\''; ?>,
 			success: function(data) {
-		//		 var ledger_bal = $.trim(data);
-		//		alert(ledger_bal+"djadjadj");	
+			//	 var ledger_bal = $.trim(data);
+			//	alert(ledger_bal+"djadjadj");	
 				$(cur_obj).parent().parent().next().after(data);
 				$(cur_obj).attr('src', add_image_url);
-				$(".cheque-item").show();
-				$("#ch_no").show();
+			//	$("/.cheque-item").show();
+			//	$("#ch_no").show();
 			//	 $('.exp-dropdown').hide();
 			//	$('.dc-dropdown').trigger('change');
 			}
@@ -735,7 +740,7 @@ var dc = '';
 		echo "<td>" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
 		//echo "<td>" . form_input($cheque) . "</td>";
-		echo "<td>" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "0") . "</td>";
+		echo "<td>" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "0","class =\"pay_type\"") . "</td>";
 
 		echo "<td>" . form_dropdown_secunit('secunit[' . $i . ']', isset($secunit[$i]) ? $secunit[$i] : 0) . "</td>";
 /*?>		

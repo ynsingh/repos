@@ -558,10 +558,6 @@ class Cf extends Controller {
                 		$income->income_exp_mhrd(3,"CF",$data_database_name);
                 		$expense = new Reportlist();
                 		$expense->income_exp_mhrd(4,"CF" ,$data_database_name);
-                		$newdata = array(
-                                	'cf_db_name'  => $data_database_name,
-                        	);
-                        	$this->session->set_userdata($newdata);
                 		$this->messages->add('xml created'.$data_database_name, 'success');
 
 				
@@ -591,13 +587,6 @@ class Cf extends Controller {
 		redirect("setting");
 		return;
 
-		/* xml creation */
-                $this->load->library('Reportlist');
-                $income = new Reportlist();
-                $income->income_exp_mhrd(3,"CF",$data_database_name);
-                $expense = new Reportlist();
-                $expense->income_exp_mhrd(4,"CF" ,$data_database_name);
-		$this->messages->add('xml created'.$data_database_name, 'success');
 
 	}//end of Index method
 

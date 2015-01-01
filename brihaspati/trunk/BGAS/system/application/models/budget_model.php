@@ -562,5 +562,426 @@ class Budget_model extends Model {
                         return $row->code;
         }
 
+	function check_budget($data_ledger_id,$cr_total,$dr_total,$data_amount,$data)
+	{
+		 $this->load->library('GetParentlist');
+		 $this->db->from('ledgers')->where('id', $data_ledger_id);
+                 $query_q = $this->db->get();
+                 $query_n = $query_q->row();
+                 $this->id = $query_n->id;
+                 $this->code = $query_n->code;
+                 $this->group_id = $query_n->group_id;
+                 $ledg_code=$this->code;
+                 $groupid=$this->group_id;
+
+//		 $this->load->model('Budget_model');
+                 $account_code = $this->get_account_code('Expenses');
+                 $temp = $this->startsWith($ledg_code, $account_code);
+                 if($temp){//01
+                 //get budget amnt 
+                      $parents;
+                      $query1=$this->db->from('budgets')->where('code', $ledg_code)->get();
+
+                       /**
+                       * code for if particular head is not in budget,
+                       * then made payment from parent which is present
+                       * in budget.
+                       */
+                       if($query1->num_rows() > 0)
+                       {
+				$this->db->from('budgets')->where('code', $ledg_code);
+                                $query_l = $this->db->get();
+                                $query_l = $query_l->row();
+                                $this->amt = $query_l->bd_balance;
+                                $this->useamt = $query_l->consume_amount;
+                                $this->allow=$query_l->allowedover;
+                                $budgetamt=$this->amt;
+                                $useamt=$this->useamt;
+                                $allow=$this->allow;
+
+                                if($budgetamt > $useamt)
+				{//if1
+                                	$available_amount=$budgetamt - $useamt ;//its wrong
+                                     	/**  payment amount is greater than or equal to available amount **/
+                                        if($data_amount > $available_amount)
+                                        {
+                                        /* check for allowed over expense*/
+                                              if(($allow == -1) || ($allow == 0))
+                                              {
+                                      		     $this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                     //       $this->template->load('template', 'entry/add',$data);
+                                                      return;
+                                              }
+                                              else
+                                              {
+                                                       /* check for payment amount by adding allowd over amount + consume amount */
+					    		$available_amount = $budgetamt - $useamt + $allow;
+                                                        if($data_amount >= $available_amount)
+                                                        {
+                                                        	$this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                                 //  $this->template->load('template', 'entry/add',$data);
+                                                                 return;
+                                                         }
+                                                         else
+                                                         {
+                                                         /* Update budget table */
+                                                       		  $sumamt=$data_amount + $useamt;
+                                                                  $allow_left = $available_amount - $data_amount ;
+                                                                  $update_data1 = array('consume_amount' => $sumamt, 'allowedover' => $allow_left);
+                                                                  if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                                  {
+                                                                   	$this->db->trans_rollback();
+                                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                        $this->template->load('template', 'entry/add', $data);
+                                                                        return;
+                                                                  }
+                                                                  $parents = new GetParentlist();
+                                                                  $parents->init($groupid,$data_amount);
+								  //$this->db->from('budgets')->where('code', '50');
+                                                                  $this->db->from('budgets')->where('budgetname', 'Main Budget');
+                                                                  $query_ll = $this->db->get();
+                                                                  $query_ll = $query_ll->row();
+                                                                  //$this->id = $query_l->id;
+                                                                  $this->amt1 = $query_ll->bd_balance;
+                                                                  $this->useamt1 = $query_ll->consume_amount;
+                                                                  $update_data2 = $this->useamt1 + $data_amount;
+                                                                  $update_data3 = array('consume_amount' => $update_data2);
+                                                                  //if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+                                                                  if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
+                                                                  {
+                                                                  	$this->db->trans_rollback();
+                                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                        $this->template->load('template', 'entry/add', $data);
+                                                                        return;
+                                                                  }
+                                                         }
+                                              }
+                                        }
+					else
+                                        {
+                                        	$sumamt=$data_amount + $useamt;
+                                                $update_data1 = array('consume_amount' => $sumamt );
+                                                if (! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                {
+                                                	$this->db->trans_rollback();
+                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        $this->template->load('template', 'entry/add', $data);
+                                                        return;
+                                                }
+                                                $parents = new GetParentlist();
+                                                $parents->init($groupid,$data_amount);
+                                                //$this->db->from('budgets')->where('code', '50');
+                                             	$this->db->from('budgets')->where('budgetname', 'Main Budget');
+                                                $query_ll = $this->db->get();
+                                                $query_ll = $query_ll->row();
+                                                $this->amt1 = $query_ll->bd_balance;
+                                                $this->useamt1 = $query_ll->consume_amount;
+                                                $update_data2 = $this->useamt1 + $data_amount;
+                                                $update_data3 = array('consume_amount' => $update_data2);
+
+                                                //if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+                                                if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
+                                                {
+                                                	$this->db->trans_rollback();
+							$this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        $this->template->load('template', 'entry/add', $data);
+                                                        return;
+                                                }
+                                        }
+                                }//1    
+                                /* consume amount is greater than allocated budget amount*/
+                                if($useamt >= $budgetamt)
+                                {//2
+                                /* check for allowed over expenses */
+                                	if(($allow == -1) || ($allow == 0))
+                                        {
+                                        	$this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                return;
+                                        }
+                                        /** get over consume amount and check with allowed left **/
+                                        $overconsume_amount = $useamt - $budgetamt ;
+                                        /* payment amount is greater than allowed over amount*/
+                                        if($data_amount > $allow)
+                                        {
+                                        	$this->template->load('template', 'entry/add',$data);
+                                                return;
+                                        }
+                                        /* payment amount is less than allowed over amount*/
+                                        if($data_amount <= $allow)
+                                        {
+                                        	$overconsume_amount = $useamt - $budgetamt ;
+                                                $available_amount = $allow ;
+                                                $allowed_left = $allow - $data_amount;
+                                                $consume_amount = $useamt + $data_amount;
+						$update_data1 = array('consume_amount' => $consume_amount, 'allowedover' => $allowed_left);
+                                                if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                {
+                                                	$this->db->trans_rollback();
+                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        $this->template->load('template', 'entry/add', $data);
+                                                        return;
+                                                }
+                                                $parents = new GetParentlist();
+                                                $parents->init($groupid,$data_amount);
+                                                //$this->db->from('budgets')->where('code', '50');
+                                                $this->db->from('budgets')->where('budgetname', 'Main Budget');
+                                                $query_ll = $this->db->get();
+                                                $query_ll = $query_ll->row();
+                                                $this->amt1 = $query_ll->bd_balance;
+                                                $this->useamt1 = $query_ll->consume_amount;
+                                                $update_data2 = $this->useamt1 + $data_amount;
+                                                $update_data3 = array('consume_amount' => $update_data2);
+
+                                                //if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+                                                if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
+                                                {
+                                                	$this->db->trans_rollback();
+                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        $this->template->load('template', 'entry/add', $data);
+ 							return;
+                                                }
+                                        }
+                                }//2
+                       }else
+                       {
+                       		$parents_get ="";
+                                $parents_get=$this->init1l($groupid,$data_amount,$data);
+                       }
+		}//01
+	}
+
+	function init1l($id,$data_amount,$data)
+	{
+                $parent_id = 0;
+                $code = "";
+                $this->load->library('GetParentlist');
+                if ($id == 0)
+                {
+
+                        $id = 0;
+                        $this->messages->add('Please Add atleast one parent group for this ledger entry for Payment','error');
+                        redirect('/entry/add/payment');
+                        return $id;
+
+                }else{
+                        $this->db->from('groups')->where('id', $id);
+                        $group_q = $this->db->get();
+                        $group = $group_q->row();
+                        $this->parent_id = $group->parent_id;
+                        $this->code = $group->code;
+                        $this->db->from('budgets')->where('code', $this->code);
+                        $query_l = $this->db->get();
+                        $query_l = $query_l->num_rows();
+                        if($query_l>0)
+                        {
+
+                                $budgetamt = 0;
+                                $useamt = 0;
+                                $allow = 0;
+                                $ledg_code=$this->code;
+                                $this->db->from('budgets')->where('code', $this->code);
+                                $query_l = $this->db->get();
+                                $query_l = $query_l->row();
+				$this->amt = $query_l->bd_balance;
+                                $this->useamt = $query_l->consume_amount;
+                                $this->allow=$query_l->allowedover;
+                                $budgetamt=$this->amt;
+                                $useamt=$this->useamt;
+                                $allow=$this->allow;
+
+                                /* if alloted budget amount is more than consume amount*/
+
+                                if($budgetamt > $useamt)
+
+                                {//if1
+                                        $available_amount=$budgetamt - $useamt ;//its wrong
+
+                                        /**  payment amount is greater than or equal to available amount **/
+                                        if($data_amount > $available_amount)
+                                        {
+                                                /* check for allowed over expense*/
+                                                if(($allow == -1) || ($allow == 0))
+                                                {
+                                                        $this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                        //$this->template->load('template','entry/add',$data);
+                                                        redirect('entry/add/payment');
+                                                        //redirect
+                                                        return ;
+                                                }else
+                                                {
+                                                        /* check for payment amount by adding allowd over amount + consume amount */
+                                                      $available_amount = $budgetamt - $useamt + $allow;
+                                                      if($data_amount >= $available_amount)
+                                                      {
+                                                             $this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                             //$this->template->load('template', 'entry/add',$data);
+                                                             redirect('entry/add');
+                                                             return ;
+                                                      }else{
+                                                                /* Update budget table */
+                                                             $sumamt=$data_amount + $useamt;
+                                                             $allow_left = $available_amount - $data_amount ;
+                                                             $update_data1 = array('consume_amount' => $sumamt, 'allowedover' => $allow_left);
+                                                             	if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                             	{
+                                                                        $this->db->trans_rollback();
+                                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                        //$this->template->load('template', 'entry/add', $data);
+                                                                        redirect('entry/add/payment');
+                                                                        return ;
+                                                             	 }
+                                                             $parents = new GetParentlist();
+                                                             $parents->init($groupid,$data_amount);
+                                                             //$this->db->from('budgets')->where('code', '50');
+                                                             $this->db->from('budgets')->where('budgetname', 'Main Budget');
+                                                             $query_ll = $this->db->get();
+                                                             $query_ll = $query_ll->row();
+                                                             $this->amt1 = $query_ll->bd_balance;
+							     $this->useamt1 = $query_ll->consume_amount;
+                                                             $update_data2 = $this->useamt1 + $data_amount;
+                                                                $update_data3 = array('consume_amount' => $update_data2);
+                                                                //if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+                                                                if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
+                                                                {
+                                                                        $this->db->trans_rollback();
+                                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                        $this->template->load('template', 'entry/add', $data);
+                                                                        redirect('entry/add/payment');
+                                                                        return;
+                                                                 }
+                                                                return;
+                                                      }
+                                                }
+
+                                        }
+                                        else
+                                        {
+                                                $sumamt=$data_amount + $useamt;
+                                                $update_data1 = array('consume_amount' => $sumamt );
+                                                $parents = new GetParentlist();
+                                                $parents->init($id,$data_amount);
+
+                                                //$this->db->from('budgets')->where('code', '50');
+                                                $this->db->from('budgets')->where('budgetname', 'Main Budget');
+                                                $query_ll = $this->db->get();
+                                                $query_ll = $query_ll->row();
+                                                //$this->id = $query_l->id;
+                                                $this->amt1 = $query_ll->bd_balance;
+                                                $this->useamt1 = $query_ll->consume_amount;
+                                                $update_data2 = $this->useamt1 + $data_amount;
+                                                $update_data3 = array('consume_amount' => $update_data2);
+                                                //echo "$update_data2"; 
+                                                //if (!$this->db->where('code', '50')->update('budgets', $update_data3))
+                                                if (!$this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
+                                                {
+                                                        //$this->messages->add("Test in Getparent 8==>");
+                                                        $this->db->trans_rollback();
+                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        //$this->template->load('template', 'entry/add', $data);
+                                                        redirect('entry/add/payment');
+                                                        return;
+                                                }
+
+                                        }
+                                        //$this->template->load('template', 'entry/add', $data);
+                                        //return $id;
+                                }//1    
+				  /* consume amount is greater than allocated budget amount*/
+                                if($useamt >= $budgetamt)
+                                {//2
+                                        /* check for allowed over expenses */
+                                      if(($allow == -1) || ($allow == 0))
+                                      {
+                                                $this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                //$this->template->load('template', 'entry/add',$data);
+                                                redirect('entry/add/payment');
+                                                return;
+                                      }
+                                        /** get over consume amount and check with allowed left **/
+
+
+                                      $overconsume_amount = $useamt - $budgetamt ;
+                                        /* payment amount is greater than allowed over amount*/
+                                      if($data_amount > $allow)
+                                      {
+
+
+                                                $this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                //$this->template->load('template', 'entry/add',$data);
+                                                redirect('entry/add/payment');
+                                                return;
+                                      }
+                                        /* payment amount is less than allowed over amount*/
+                                      if($data_amount <= $allow)
+                                      {
+				      		$overconsume_amount = $useamt - $budgetamt ;
+                                                $available_amount = $allow ;
+                                                $allowed_left = $allow - $data_amount;
+                                                $consume_amount = $useamt + $data_amount;
+                                                $update_data1 = array('consume_amount' => $consume_amount, 'allowedover' => $allowed_left);
+                                                if (!$this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        //$this->template->load('template', 'entry/add', $data);
+                                                        redirect('entry/add/payment');
+                                                        return;
+                                                }
+                                                $parents = new GetParentlist();
+                                                $parents->init($groupid,$data_amount);
+                                                //$this->db->from('budgets')->where('code', '50');
+                                                $this->db->from('budgets')->where('budgetname', 'Main Budget');
+                                                $query_ll = $this->db->get();
+                                                $query_ll = $query_ll->row();
+                                                //$this->id = $query_l->id;
+                                                $this->amt1 = $query_ll->bd_balance;
+                                                $this->useamt1 = $query_ll->consume_amount;
+                                                $update_data2 = $this->useamt1 + $data_amount;
+                                                $update_data3 = array('consume_amount' => $update_data2);
+						//if(!$this->db->where('code', '50')->update('budgets', $update_data3))
+                                                if(!$this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        //$this->template->load('template', 'entry/add', $data);
+                                                        redirect('entry/add/payment');
+                                                        return;
+                                                }
+
+						                                        
+
+				      }
+                                }//2
+                //      return $id;
+                        }
+                        else{
+
+                                $this->get_parent_groups($id,$data_amount,$data);
+
+                        }
+                return $id;
+                }
+        }//function
+
+        function get_parent_groups($id1,$data_amount,$data)
+        {
+
+                $parent_groups = array();
+                $this->db->from('groups')->where('id', $id1);
+                $parent_group_q = $this->db->get();
+
+
+                foreach ($parent_group_q->result() as $row)
+                {
+                        $row->parent_id;
+                        $row->code;
+                        $this->init1l($row->parent_id,$data_amount,$data);
+                }
+                //return $row->parent_id;
+        }
 	
+	 function startsWith($str1, $str2)
+        {
+                return !strncmp($str1, $str2, strlen($str2));
+        }			
 }
