@@ -66,6 +66,8 @@
 	}
 		echo "<table border=\"0\" cellpadding=\"5\" class=\"simple-table ledgerst-table\" width=\"$width\">";
 		$odd_even = "odd";
+		$dr_total = 0;
+        	$cr_total= 0;
 		$this->load->library('session');
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
@@ -79,9 +81,23 @@
 		else {
 			$from_date = $date1;
 			$to_date = $date2;
-		}	
+		}
+			$tot_op_bal='';
+			$this->db->from('ledgers')->where('type', '1');
+                	$op_balance = $this->db->get();
+                	foreach ($op_balance->result() as $row){
+			list ($opbalance, $optype) = $this->Ledger_model->get_op_balance($row->id); /* Opening Balance */
+			 //$tot_op_bal = float_ops($tot_op_bal, $opbalance, '+');
+			if($optype == 'C'){
+				$opbalance=-$opbalance;
+			}
+			$tot_op_bal=$tot_op_bal+$opbalance;
+			}	
+			//$val=gmp_sign($tot_op_bal);
 			echo "<thead><tr><th colspan=\"5\" align=\"center\"> The ledger entries between date ".$from_date." to ".$to_date." </th></tr></thead>";
                         echo "<thead><tr><th>Sr. No.</th><th>Date</th><th>Ledger Name</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
+			echo "<tr class=\"tr-balance\"><td colspan=\"4\">Opening Balance</td><td>" . convert_amount_dc($tot_op_bal) . "</td></tr>";
+
 			$i=1;
 			$this->db->select('id, name, code');
 			$this->db->from('ledgers')->where('type', '1')->order_by('name', 'asc');
@@ -114,6 +130,7 @@
                                 	if ($row1->dc == "D")
                                 	{
                                         	echo "<td>";
+						$dr_total = float_ops($dr_total,  $row1->amount, '+');
                                                 echo convert_dc($row1->dc);
                                                 echo " ";
                                                 echo money_format('%!i', $row1->amount);
@@ -122,19 +139,25 @@
                                 	} else {
                                         	echo "<td></td>";
                                         	echo "<td>";
+						$cr_total = float_ops($cr_total,  $row1->amount, '+');
                                                 echo convert_dc($row1->dc);
                                                 echo " ";
                                                 echo money_format('%!i', $row1->amount);
                                         	echo "</td>";
                                 	}	
-
+						$total = float_ops($dr_total, $cr_total, '-');
                         			echo "</tr>";
                         			$odd_even = ($odd_even == "odd") ? "even" : "odd";
                         		$i++;
                 	}	
-			
 
 		}
+	 echo "<tr class=\"tr-balance\"><td colspan=\"4\">Closing Balance</td><td>" . convert_amount_dc($total) . "</td></tr>";
+
+	echo "<tr class=\"tr-total\"><td colspan=\"1\">TOTAL ";
+	echo"<td></td>";
+	echo"<td></td>";
+        echo "</td><td>Dr " . money_format('%!i', convert_cur($dr_total)) . "</td><td>Cr " . money_format('%!i', convert_cur($cr_total)) . "</td></tr>";
 
 		echo "</table>";
 		if (!$print_preview){
