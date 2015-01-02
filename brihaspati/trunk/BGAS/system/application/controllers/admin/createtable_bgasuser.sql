@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS bgasuser
 			UNIQUE (username)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 			
-insert into bgasuser values (1,'admin', md5('admin'),'ynsingh@iitk.ac.in','administrator',1,'*'); 
-insert into bgasuser values (2,'guest', md5('guest'),'ynsingh@iitk.ac.in','guest',1,'*'); 
+insert into bgasuser values (1,'admin', md5('admin'),'ynsingh@iitk.ac.in','administrator',1,'*',''); 
+insert into bgasuser values (2,'guest', md5('guest'),'ynsingh@iitk.ac.in','guest',1,'*',''); 
 
 CREATE TABLE IF NOT EXISTS bgasAccData
 (
