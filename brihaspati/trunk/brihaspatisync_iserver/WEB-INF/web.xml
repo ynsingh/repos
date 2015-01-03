@@ -27,8 +27,17 @@
       		<web-resource-collection>
          		<web-resource-name>Brihaspatisync Index Server Internals</web-resource-name>
          		<!-- Define the context-relative URL(s) to be protected -->
-         		<url-pattern>/*</url-pattern>
+<!--         		<url-pattern>/*</url-pattern>
+-->
+         		<url-pattern>/build.properties</url-pattern>
+         		<url-pattern>/Torque.properties</url-pattern>
+         		<url-pattern>/logs</url-pattern>
+         		<url-pattern>/schema</url-pattern>
+         		<url-pattern>/docs</url-pattern>
+         		<url-pattern>/src</url-pattern>
+
          		<!-- If you list http methods, only those methods are protected -->
+
          		<http-method>DELETE</http-method>
          		<http-method>GET</http-method>
          		<http-method>POST</http-method>
@@ -37,7 +46,8 @@
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
-    		<auth-constraint>
+    		
+		<auth-constraint>
 		      <role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
