@@ -13,7 +13,7 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-<script type="text/javascript" src="/brihaspati2/scrpts/Academic_Event.js">
+<script type="text/javascript" src="/brihaspati/scrpts/Academic_Event.js">
         </script>
 
 </head>
@@ -165,7 +165,7 @@ $!data.getMessage()
 		<tr bgcolor="$ui.menuColor">
 		<td>$brih_Ev</td>
                 <td colspan=3><textarea name="detail" wrap="physical" rows=4 cols=50>$!element</textarea>
-		<a href=javascript:popupWin("/brihaspati2/docs/acdevent.html","newWin");style=text-decoration:none>$brih_hint</a>
+		<a href=javascript:popupWin("/brihaspati/docs/acdevent.html","newWin");style=text-decoration:none>$brih_hint</a>
 		</td>
                 </tr>
 	#end
@@ -173,7 +173,7 @@ $!data.getMessage()
 	<tr bgcolor="$ui.tableColor">
                 <td>$brih_Ev</font></td>
                 <td colspan=3><textarea name="detail" wrap="physical" rows=4 cols=50>$!detail</textarea>
-		<a href=javascript:popupWin("/brihaspati2/docs/acdevent.html","newWin");>$brih_hint</a>
+		<a href=javascript:popupWin("/brihaspati/docs/acdevent.html","newWin");>$brih_hint</a>
                 </td>
         </tr>
         <tr bgcolor="$ui.menuColor">

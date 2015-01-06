@@ -42,7 +42,7 @@ $!data.getMessage()
                         	<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang) style=text-decoration:none> $brih_login $WikiPage </a>| $brih_parent $brih_reg   
                 	</td>
  	<td align="right">
-              <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ParentRegistration.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
+              <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ParentRegistration.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
         </td>
 </tr>
 		#end

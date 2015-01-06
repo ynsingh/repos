@@ -221,7 +221,7 @@ $!data.getMessage()
 				<img src="$content.getURI("/images/hand.gif")">
 				<input type="hidden" name="actionName" value="eventSubmit_doAddMultipleDepartments">
 				<font face="$ui.sansSerifFonts" size=3>
-					<b><a href=javascript:popupWin("/brihaspati2/docs/DepartmentMultiUploadHelp.html","newWin"); style=text-decoration:none>Help</a></b>
+					<b><a href=javascript:popupWin("/brihaspati/docs/DepartmentMultiUploadHelp.html","newWin"); style=text-decoration:none>Help</a></b>
 				</font>
 			</td>
     	</tr>
@@ -243,7 +243,7 @@ $!data.getMessage()
 				<img src="$content.getURI("/images/hand.gif")">
 				<input type="hidden" name="actionName" value="eventSubmit_doAddMultipleRooms">
 				<font face="$ui.sansSerifFonts" size=3>
-					<b><a href=javascript:popupWin("/brihaspati2/docs/RoomMultiUploadHelp.html","newWin"); style=text-decoration:none>Help</a></b>
+					<b><a href=javascript:popupWin("/brihaspati/docs/RoomMultiUploadHelp.html","newWin"); style=text-decoration:none>Help</a></b>
 				</font>
 			</td>
     	</tr>

@@ -13,8 +13,8 @@ $page.setBgColor($ui.bgcolor)
 <head>
 ##calling script for flv
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="/brihaspati2/scrpts/webflv.css" />
-        <script type="text/javascript" src="/brihaspati2/scrpts/webflv.js">
+        <link rel="stylesheet" type="text/css" href="/brihaspati/scrpts/webflv.css" />
+        <script type="text/javascript" src="/brihaspati/scrpts/webflv.js">
         </script>
 </head>
 <body onload="init();return false">

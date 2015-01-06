@@ -41,7 +41,7 @@ $!data.getMessage()
 <div align="left">
 <br>
 <table width="100%"><tr><td align="right"><img src="$content.getURI("/images/hand.gif")"><b>
-	<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin");>$brih_help</a></font></td></tr>
+	<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati/docs/Userdoc.html","newWin");>$brih_help</a></font></td></tr>
 </table>
 <br>
 <table width=50% bgcolor="$ui.menuColor" cellpadding="2" align="center" border=1>

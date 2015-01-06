@@ -120,13 +120,13 @@ $!data.getMessage()
 </table>
 <table width=100% bgcolor="$ui.menuColor">
 <tr>
-<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/jnlp.html","newWin"); style=text-decoration:none>$brih_jnlp</a></td>
+<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/jnlp.html","newWin"); style=text-decoration:none>$brih_jnlp</a></td>
 ##foreach($content in $contentvalue)
 ##<td><a href="$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$username).addPathInfo("type","reload").addPathInfo("filename",$content).addPathInfo("count",$tdcolor)">$brih_Launch $brih_packager $brih_Application</a></td>
 ##<td><a href=$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$username).addPathInfo("type","reload").addPathInfo("filename",$content) style=text-decoration:none> #if($lang == "english") $brih_Launch $brih_packager $brih_Application #else $brih_packager $brih_Launch #end </a></td>
 ##end
-<td><a href=javascript:popupWin("/brihaspati2/BrihaspatiEditor/BrihaspatiEditor.jnlp"); style=text-decoration:none> #if($lang == "english") $brih_Launch $brih_packager $brih_Application #else $brih_packager $brih_Launch #end </a></td>
-<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/BrihaspatiEditor_v1_3_manual.pdf","newWin"); style=text-decoration:none>$brih_help</a><td>
+<td><a href=javascript:popupWin("/brihaspati/BrihaspatiEditor/BrihaspatiEditor.jnlp"); style=text-decoration:none> #if($lang == "english") $brih_Launch $brih_packager $brih_Application #else $brih_packager $brih_Launch #end </a></td>
+<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/BrihaspatiEditor_v1_3_manual.pdf","newWin"); style=text-decoration:none>$brih_help</a><td>
 </tr>
 </table>
 </html>

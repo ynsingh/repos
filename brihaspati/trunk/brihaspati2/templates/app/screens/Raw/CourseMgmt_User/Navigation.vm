@@ -11,14 +11,14 @@
 $page.setTitle("User Home Page")
 $page.setBgColor("bgcolor")
 <head>
-<link rel="stylesheet" type="text/css" href="/brihaspati2/scrpts/Scormjs/common.css"/>
+<link rel="stylesheet" type="text/css" href="/brihaspati/scrpts/Scormjs/common.css"/>
 </head>
 <body  align ="left" topmargin="0" leftmargin="0" bgcolor="$ui.tableColor" onload="parent.highlightFirstItem();">
 <form name="f" method="post">
 <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
 <tr align="left">
 <td width="40" align="left">
-<img src="/brihaspati2/images/book.gif">
+<img src="/brihaspati/images/book.gif">
 </td>
 <td>
 <script>
@@ -46,10 +46,10 @@ self.document.writeln('</strong></font>');
 
 <table cellpadding="0" cellspacing="0" border="0" align="right">
 <tr align="right">
-<td><a class="topmenu" href="javascript:goPreviousSco()"><img src="/brihaspati2/images/nav/prev.gif" border="0"></a></td>
-<td><a class="topmenu"  href="javascript:goNextSco()"><img src="/brihaspati2/images/nav/next.gif" border="0"></a></td>
+<td><a class="topmenu" href="javascript:goPreviousSco()"><img src="/brihaspati/images/nav/prev.gif" border="0"></a></td>
+<td><a class="topmenu"  href="javascript:goNextSco()"><img src="/brihaspati/images/nav/next.gif" border="0"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td><a class="topmenu"  href="javascript:goExit()"><img src="/brihaspati2/images/nav/exit2.gif" border="0"></a></td>
+<td><a class="topmenu"  href="javascript:goExit()"><img src="/brihaspati/images/nav/exit2.gif" border="0"></a></td>
 </tr>
 </table>
 </tr></table>
@@ -60,7 +60,7 @@ function getPageURL(p) {
 	var s;
 	if ( p == "blank" ) {
 			//alert("nav===="+s);
-		s ="/brihaspati2/ScormPlayer/show_title.html";
+		s ="/brihaspati/ScormPlayer/show_title.html";
 	}
 	else {
 		if ( p.indexOf('http://') < 0 ) {
@@ -78,7 +78,7 @@ function goNextSco() {
 	var page = API.goNextSco();
 	if ( page != "" ) {
 		if ( page == "blank" ) {
-			window.parent.frame_content.location.href = "/brihaspati2/ScormPlayer/show_title.html";
+			window.parent.frame_content.location.href = "/brihaspati/ScormPlayer/show_title.html";
 		}
 		else window.parent.frame_content.location.href = getPageURL(page);
 		eval(parent.nextDocs())
@@ -92,7 +92,7 @@ function goPreviousSco() {
 	if ( page != "" ) {
 		var url = getPageURL(page);
 		if ( page == "blank" ) {
-			window.parent.frame_content.location.href = "/brihaspati2/ScormPlayer/show_title.html";
+			window.parent.frame_content.location.href = "/brihaspati/ScormPlayer/show_title.html";
 		}
 		else window.parent.frame_content.location.href = url;
 		eval(parent.prevDocs())
@@ -105,7 +105,7 @@ function goToSco(i) {
 	var API = window.parent.parent.API;
 	var page = API.goToSco(i);
 	if ( page != "" ) {
-		window.parent.frame_content.location.href = "/brihaspati2/ScormPlayer/loading.html";
+		window.parent.frame_content.location.href = "/brihaspati/ScormPlayer/loading.html";
 		var url = getPageURL(page);
 		window.parent.frame_content.location.href = url;
 	} else {

@@ -28,7 +28,7 @@ $!data.getMessage()
                 <a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a> | #if($lang =="hindi" || $lang == "gujarati" || $lang == "bhojpuri")$brih_program $brih_map #else $brih_map $brih_program #end
                 </td>
                 <td align="right">
-                        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ProgramManagement.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+                        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ProgramManagement.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
                 </td>
         </tr>
 </table> ##table close

@@ -35,12 +35,12 @@ if (API.getScoItems(courseid)) {
 }
 
 if (self.name == 'menu') {
-        self.location.href = "../brihaspati2/ScormPlayer/menu.htm";
+        self.location.href = "../brihaspati/ScormPlayer/menu.htm";
 } else {
         initialise(API);
         var thePage = "";
         if ( initpage == "blank" ) {
-                thePage = pageFromSearch("/brihaspati2/ScormPlayer/show_title.html", theMenu, true);
+                thePage = pageFromSearch("/brihaspati/ScormPlayer/show_title.html", theMenu, true);
         }
         else thePage = pageFromSearch("$Baseurl"+"servlet/brihaspati/template/call,ViewFileContent.vm/topic/"+title+"/type/Scormpackage"+"/filename/"+initpage, theMenu, true);
 	self.document.writeln('<table width="100%" border="0" cellspacing="0">');

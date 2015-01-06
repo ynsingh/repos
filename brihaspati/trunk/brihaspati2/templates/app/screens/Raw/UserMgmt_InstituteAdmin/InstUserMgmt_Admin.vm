@@ -72,7 +72,7 @@ $!data.getMessage()
 	</td>
 	#if($mode!="USzip" && $mode!="UPhoto")
  	<td align="right">
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_InstAdmin.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/UserMgmt_InstAdmin.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
         </td>
  #end
  </tr>
@@ -543,7 +543,7 @@ face="$ui.sansSerifFonts">$type</font>
 <td bgcolor="#AFDCEC"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","5").addPathInfo("mode","USzip") style=text-decoration:none><img src="$content.getURI("/images/zipfile.jpg")">$brih_upload $brih_zip $brih_file</a></td>
 </tr>
 <tr><td align="right" colspan=8><img src="$content.getURI("/images/hand.gif")"><b>
-<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/ZipUploadHelp.html","newWin"); style=text-decoration:none>$brih_help</a></font>
+<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati/docs/ZipUploadHelp.html","newWin"); style=text-decoration:none>$brih_help</a></font>
 </td></tr>
 <tr bgcolor="$ui.menuColor"><td colspan=8>
 <marquee scrollamount="3" direction="left" width="100%" behaviour="slide">

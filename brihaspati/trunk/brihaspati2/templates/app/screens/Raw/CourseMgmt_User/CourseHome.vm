@@ -55,7 +55,7 @@ $!data.getMessage()
                 </td>
 		## Representation of HELP link
 		<td align=right>
-		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/CourseHome.html","newWin");>$brih_help</a>
+		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/CourseHome.html","newWin");>$brih_help</a>
 		</td>
 	</tr>
 </table>

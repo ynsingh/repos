@@ -33,7 +33,7 @@ $!data.getMessage()
 <table width=100%>
         <tr bgcolor="$ui.tableColor">
                 <td align=right colspan="10">
-		<img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/Quota.html","newWin");>$brih_help</a>
+		<img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati/docs/Quota.html","newWin");>$brih_help</a>
                 </td>
         </tr>
 <tr bgcolor="$ui.menuColor">

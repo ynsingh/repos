@@ -88,7 +88,7 @@ $!data.getMessage()
 	<td bgcolor="#AFDCEC">
 	#end
     	<a href=$link.setPage("call,Group_Mgmt,ViewActivity.vm").addPathInfo("count","2") style="text-decoration:none"> #if($lang =="hindi") $brih_activity $brih_Of1 $brih_view #else $brih_view $brih_activity #end </a></td>
-	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/joingroupactivity.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/joingroupactivity.html","newWin"); style="text-decoration:none">$brih_help</a></td>
 #end
 </tr>
 </table>

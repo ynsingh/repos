@@ -28,7 +28,7 @@ $!data.getMessage()
 <table width=100%>
 <tr>
 <td align=right>
-<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ContentUpload.html","newWin");>$brih_help</a>
+<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ContentUpload.html","newWin");>$brih_help</a>
 </td>
 </tr>
 </table>

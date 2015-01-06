@@ -22,7 +22,7 @@ $!data.getMessage()
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course1</a> | $brih_listOf $bri_ta
 	</td>
         <td align="right">
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/TAManagement.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/TAManagement.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
                 </td>
 	</tr>
 	</table>

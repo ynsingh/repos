@@ -47,7 +47,7 @@ $!data.getMessage()
                 #end
                 </td>
 ## Creating the links for help regarding FAQ 
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin") style='text-decoration:none'>$brih_help</a></td><td align="right"><a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">$brih_VideoHelp</font></a></td>
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/OLES.html","newWin") style='text-decoration:none'>$brih_help</a></td><td align="right"><a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">$brih_VideoHelp</font></a></td>
 
 </tr>
 </table>

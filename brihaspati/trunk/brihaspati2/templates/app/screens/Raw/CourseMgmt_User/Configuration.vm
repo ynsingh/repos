@@ -41,7 +41,7 @@ $page.setBgColor($ui.bgcolor)
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
 	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> |  $brih_course  $RemoteConfiguration
 	##<td align="right"> <img src="$content.getURI("/images/hand.gif")"> <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp &nbsp; | </font></a> &nbsp;<a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a>
-	<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a> <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> |$brih_VideoHelp</font></a></td>
+	<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a> <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> |$brih_VideoHelp</font></a></td>
 		</td></tr>
 </table>
 

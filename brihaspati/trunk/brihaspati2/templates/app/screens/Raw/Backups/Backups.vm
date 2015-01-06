@@ -34,7 +34,7 @@ $!data.getMessage()
 #end
 
 
-<tr><td><font size=4></font></td><td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/AdminBackup.html","newWin");>$brih_help</a></td></tr>
+<tr><td><font size=4></font></td><td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/AdminBackup.html","newWin");>$brih_help</a></td></tr>
 
 	</td>
 </tr>

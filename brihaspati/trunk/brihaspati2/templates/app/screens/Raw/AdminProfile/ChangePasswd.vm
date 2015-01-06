@@ -21,7 +21,7 @@ $!data.getMessage()
 		<font face="$ui.sansSerifFonts" size=3><b><a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_changePassword </font>
 	</td>
         <td align="right">
-          	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ChangePassword.html","newWin"); style=text-decoration:none><font size=4>$brih_help</a></font>
+          	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ChangePassword.html","newWin"); style=text-decoration:none><font size=4>$brih_help</a></font>
         </td>
 </tr>
 </table>

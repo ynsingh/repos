@@ -42,7 +42,7 @@ $!data.getMessage()
 
                  
         #end
-<td align="right"><img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/HeaderImage.html","newWin"); style=text-decoration:none>$brih_help</a>
+<td align="right"><img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati/docs/HeaderImage.html","newWin"); style=text-decoration:none>$brih_help</a>
         
 </td></tr>
 </table>

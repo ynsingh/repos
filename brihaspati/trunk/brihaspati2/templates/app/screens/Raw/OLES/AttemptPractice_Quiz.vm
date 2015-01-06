@@ -27,7 +27,7 @@ $!data.getMessage()
 	<td><b><a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> | $brih_Practice $brih_quiz
         </td>
 	<td align=right>
-		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin")  style='text-decoration:none'>$brih_help</a>
+		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Quizstudent.html","newWin")  style='text-decoration:none'>$brih_help</a>
 	</td>
 </tr>
 </table>

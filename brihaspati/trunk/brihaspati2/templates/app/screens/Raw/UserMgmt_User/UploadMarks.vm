@@ -23,15 +23,15 @@ $!data.getMessage()
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
 <html>
         <head>
-        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_HtmlUtil.lib.js"></script>
-        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_Array.class.js"></script>
-        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_String.lib.js"></script>
-        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_CsvUtil.class.js"></script>
-        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_Misc.lib.js"></script>
-        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_SpreadSheet.class.js"></script>
-        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_SpreadSheet.inc.js"></script>
-        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_ButtonBar.class.js"></script>
-        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_Button.class.js"></script>
+        <script type="text/javascript" src="/brihaspati/scrpts/Bs_HtmlUtil.lib.js"></script>
+        <script type="text/javascript" src="/brihaspati/scrpts/Bs_Array.class.js"></script>
+        <script type="text/javascript" src="/brihaspati/scrpts/Bs_String.lib.js"></script>
+        <script type="text/javascript" src="/brihaspati/scrpts/Bs_CsvUtil.class.js"></script>
+        <script type="text/javascript" src="/brihaspati/scrpts/Bs_Misc.lib.js"></script>
+        <script type="text/javascript" src="/brihaspati/scrpts/Bs_SpreadSheet.class.js"></script>
+        <script type="text/javascript" src="/brihaspati/scrpts/Bs_SpreadSheet.inc.js"></script>
+        <script type="text/javascript" src="/brihaspati/scrpts/Bs_ButtonBar.class.js"></script>
+        <script type="text/javascript" src="/brihaspati/scrpts/Bs_Button.class.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 	    		var counter = 2;
@@ -96,7 +96,7 @@ $!data.getMessage()
   	<tr><td>
 		<font color=red>$brih_MarksMsg1</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	</td><td align="right">
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/MarkList.html","newWin");>$brih_help</a>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/MarkList.html","newWin");>$brih_help</a>
   	</td></tr>
 	<tr><td>
 		<font color=red>$brih_MarksMsg5</font>
@@ -201,10 +201,10 @@ $!data.getMessage()
                 }
         }
         if (moz) {
-                        document.writeln("<link rel='stylesheet' href='/brihaspati2/scrpts/win2k_mz.css'>");
+                        document.writeln("<link rel='stylesheet' href='/brihaspati/scrpts/win2k_mz.css'>");
                 }
         else    {
-                        document.writeln("<link rel='stylesheet' href='/brihaspati2/scrpts/win2k_ie.css'>");
+                        document.writeln("<link rel='stylesheet' href='/brihaspati/scrpts/win2k_ie.css'>");
                 }
         function init()
         {

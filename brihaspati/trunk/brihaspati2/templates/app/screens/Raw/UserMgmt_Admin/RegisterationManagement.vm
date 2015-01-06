@@ -280,7 +280,7 @@ $!data.getMessage()
 </tr>
 <tr>
 <td align="right" colspan="8">
-        <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/ZipUploadHelp.html","newWin"); style=text-decoration:none>$brih_help</a>
+        <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati/docs/ZipUploadHelp.html","newWin"); style=text-decoration:none>$brih_help</a>
 </td>
 </tr>
 <tr bgcolor="$ui.menuColor"><td colspan=8>

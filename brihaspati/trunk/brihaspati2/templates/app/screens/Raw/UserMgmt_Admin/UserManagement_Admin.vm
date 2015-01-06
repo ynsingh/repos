@@ -52,7 +52,7 @@ $!data.getMessage()
 	#end
 	</td>
 	<td align="right">
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Userdoc.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
        </td>
 	</tr>
 <tr bgcolor="$ui.tableColor">

@@ -28,7 +28,7 @@ $!data.getMessage()
 	<b>
      	<a href=$link.setPage("Index.vm")> $RemoteInstitute $brih_ad $brih_home</a> |#if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ap 
 	</td>
-<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Profile.html","newWin");>$brih_help</a></td>
+<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Profile.html","newWin");>$brih_help</a></td>
 </tr>
 </table>
 <table bgcolor="$ui.tableColor" width=100%>

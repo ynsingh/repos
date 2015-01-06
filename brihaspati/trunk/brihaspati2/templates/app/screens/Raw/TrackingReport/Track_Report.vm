@@ -50,11 +50,11 @@ $!data.getMessage()
 <table width="100%">
 <tr><td align=right>
 	#if($data.getUser().getUserName() == "admin")
-	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Trackadminreport.html","newWin");>$brih_help</a>
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Trackadminreport.html","newWin");>$brih_help</a>
 	#elseif($data.getUser().getTemp("role")=="institute_admin")
-	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Trackreport_Instadmin.html","newWin");>$brih_help</a>
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Trackreport_Instadmin.html","newWin");>$brih_help</a>
 	#else
-	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/TrackInstreport.html","newWin");>$brih_help
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/TrackInstreport.html","newWin");>$brih_help
 	#end
 </td></tr>
 </table>

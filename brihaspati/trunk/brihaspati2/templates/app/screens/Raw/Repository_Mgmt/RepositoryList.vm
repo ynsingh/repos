@@ -45,7 +45,7 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal").addPathInfo("count","4") style=text-decoration:none>$personal $brih_calendar</a></td>
-	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin1("/brihaspati2/docs/ViewContent.html","newWin");>$brih_help</a></td>
+	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin1("/brihaspati/docs/ViewContent.html","newWin");>$brih_help</a></td>
 </tr>
 </table>
 

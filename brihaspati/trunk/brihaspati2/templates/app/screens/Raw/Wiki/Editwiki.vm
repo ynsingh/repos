@@ -50,7 +50,7 @@ $!data.getMessage()
 			</b>
 		</td>
 		<td align="right">
-                        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/WikiHelp.html","newWin");>$brih_help</a>
+                        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/WikiHelp.html","newWin");>$brih_help</a>
                 </td>
 	</tr>
 <FORM name="frm" id="frm" method="POST" 

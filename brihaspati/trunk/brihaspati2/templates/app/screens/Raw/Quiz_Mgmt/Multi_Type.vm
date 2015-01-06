@@ -103,7 +103,7 @@ $!data.getMessage()<br>
 		</td>
                 <td >
                 <input type="text" size="30" name="ans" value="">
-		<a href=javascript:popupWin("/brihaspati2/docs/multitype.html","newWin");>$brih_hint</a> 
+		<a href=javascript:popupWin("/brihaspati/docs/multitype.html","newWin");>$brih_hint</a> 
                 </td>
         </tr>
 	#end
@@ -131,7 +131,7 @@ $!data.getMessage()<br>
 		</td>
 		<td >
 		<input type="text" size="30"  name="ans" value="">
-		<a href=javascript:popupWin("/brihaspati2/docs/tfalse.html","newWin");>$brih_hint</a> 
+		<a href=javascript:popupWin("/brihaspati/docs/tfalse.html","newWin");>$brih_hint</a> 
 		</td>
 	</tr>
 	#end
@@ -194,7 +194,7 @@ $!data.getMessage()<br>
                 <td >
                 <input type="text" size="30" name="ans" value=$!ans>
                 ##<input type="text" size="30" name="ans" value="">
-		<a href=javascript:popupWin("/brihaspati2/docs/multitype.html","newWin");>$brih_hint</a> 
+		<a href=javascript:popupWin("/brihaspati/docs/multitype.html","newWin");>$brih_hint</a> 
                 </td>
         </tr>
 	#end
@@ -222,7 +222,7 @@ $!data.getMessage()<br>
 		</td>
 		<td >
 		<input type="text" size="30"  name="ans" value=$!ans>
-		<a href=javascript:popupWin("/brihaspati2/docs/tfalse.html","newWin");>$brih_hint</a> 
+		<a href=javascript:popupWin("/brihaspati/docs/tfalse.html","newWin");>$brih_hint</a> 
 		</td>
 	</tr>
 	#end

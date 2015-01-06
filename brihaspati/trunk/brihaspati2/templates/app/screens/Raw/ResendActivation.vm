@@ -20,7 +20,7 @@ $!data.getMessage()
 		<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login</a> | $brih_resend $brih_mail
         </td>
         <td align="right">
-        	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ResendMail.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+        	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ResendMail.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
                 </td>
 </tr>
 </table>

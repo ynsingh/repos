@@ -33,7 +33,7 @@ $!data.getMessage()
         <b>
         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | <a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("count","1").addPathInfo("mode","quote") style=text-decoration:none>$brih_quotation $brih_mgmt</a> | #if($mode=="edit") $brih_edit $brih_quotation #else $brih_add $brih_quotation #end </td>
         <td align="right">
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/QuotationManagement.html","newWin"); style='text-decoration:none'><font size=4>$brih_help</font></a>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/QuotationManagement.html","newWin"); style='text-decoration:none'><font size=4>$brih_help</font></a>
         </td>
 </tr>
 </table>

@@ -108,7 +108,7 @@ $page.setTitle("Home | $course | Course management")
                  <td><b>$brih_space $!aSize $quota_sze</b></td><td align=right ><b>$brih_usedspace   $!TUSize $quota_sze </b></td>
         #end
         <td align=right>
-        <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/Upload.html","newWin"); style=text-decoration:none>$brih_help</a>
+        <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati/docs/Upload.html","newWin"); style=text-decoration:none>$brih_help</a>
         <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> |$brih_VideoHelp</font></a>
 	</td>
 </tr>

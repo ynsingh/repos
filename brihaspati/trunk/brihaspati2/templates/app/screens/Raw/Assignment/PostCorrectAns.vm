@@ -57,7 +57,7 @@ $!data.getMessage()
 	        <td bgcolor="#AFDCEC">
 	        #end
         	<a href=$link.setPage("call,Assignment,RePermission.vm").addPathInfo("count","4") style="text-decoration:none"> $brih_repost  #if($lang == "hindi") $brih_Of #end $Repo_Perm</a></td>
-                	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+                	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a></td>
 </tr>
 </table>
 <form name="uploadform" method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,PostAns.vm").setAction("Assignments")>

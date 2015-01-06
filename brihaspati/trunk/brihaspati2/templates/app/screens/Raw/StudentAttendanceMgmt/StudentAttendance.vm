@@ -87,7 +87,7 @@ $!data.getMessage()
 	</td>
 	 <td align="right">
 	#if($data.getUser().getTemp("role") != "student")
-         <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/AttendanceManagement.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
+         <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/AttendanceManagement.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
 	<a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">| $brih_VideoHelp</font></a></td>
  	#end
        </td>

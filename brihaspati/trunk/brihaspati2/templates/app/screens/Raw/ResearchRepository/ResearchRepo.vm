@@ -54,7 +54,7 @@ $!data.getMessage()
 		#if($data.getUser().getUserName()!= "admin" && $data.getUser().getUserName()!= "guest")
 		<a href=$link.setPage("call,ResearchRepository,ResearchRepo.vm").addPathInfo("mode","createResgroup").addPathInfo("username",$username).addPathInfo("count","2")>$WikiCreate $brih_Res $Repo_Repo1</a></td>
 		#end
-		<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ResearchRepository.html","newWin");>$brih_help</a></td>
+		<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ResearchRepository.html","newWin");>$brih_help</a></td>
 </tr>
 </table>
 <form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,ResearchRepository,ResearchRepo.vm").setAction("ResearchRepo_Action")>

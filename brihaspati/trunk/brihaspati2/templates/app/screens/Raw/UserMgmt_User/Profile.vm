@@ -22,7 +22,7 @@ $page.setBgColor($ui.bgcolor)
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
 <td><a href=$link.setPage("Index.vm")>$brih_home</a> | $Profile_user</td>
-<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Profile.html","newWin");>$brih_help</a></td>
+<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Profile.html","newWin");>$brih_help</a></td>
 </tr></table>
 $!data.getMessage()
 

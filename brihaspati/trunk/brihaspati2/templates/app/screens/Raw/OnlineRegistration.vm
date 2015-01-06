@@ -48,7 +48,7 @@ $!data.getMessage()
 		<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","CourseRegistration").addPathInfo("count","2") style=text-decoration:none> $brih_Instructor ($brih_course) #if($lang =="hindi") $brih_Of1 #end $brih_reg </a>
 	</td>
 	<td align=right>
-		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OnlineRegistration.html","newWin") style='text-decoration:none'>$brih_help</a>
+		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/OnlineRegistration.html","newWin") style='text-decoration:none'>$brih_help</a>
 	</td>
 </tr>
 </table>

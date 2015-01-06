@@ -29,7 +29,7 @@ $!data.getMessage()
 	#if($lang=="hindi")$brih_qus $brih_bank $brih_of $brih_view #else $brih_view $brih_qus $brih_bank #end
 </b></td>
 ## Creating the links for help regarding FAQ 
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin") style='text-decoration:none'>$brih_help</a></td>
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/OLES.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 </tr>
 </table>
 ##creating form for FAQ

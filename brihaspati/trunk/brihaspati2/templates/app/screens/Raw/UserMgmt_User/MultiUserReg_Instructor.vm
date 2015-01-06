@@ -80,7 +80,7 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor">
 <td colspan=5><b>$brih_upload_msg5</b></td>
 <td align="right"><img src="$content.getURI("/images/hand.gif")">
-<a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a>
+<a href=javascript:popupWin("/brihaspati/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a>
 </td>
 </tr>
 ##</table>

@@ -42,7 +42,7 @@ $!data.getMessage()
                         <td bgcolor="#AFDCEC">
                         #end
                         <a href=$link.setPage("call,Assignment,RePostAns.vm").addPathInfo("count","3") style="text-decoration:none"> #if($lang == "hindi") $brih_answer $brih_repost #else $brih_repost $brih_answer #end </a></td>
-                <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+                <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a></td>
 #else
 	#if($tdcolor != "1")
         <td>
@@ -76,9 +76,9 @@ $!data.getMessage()
 	<a href=$link.setPage("call,Assignment,RePostAns.vm").addPathInfo("count","4") style="text-decoration:none"> #if($lang == "hindi") $brih_answer $brih_repost #else $brih_repost $brih_answer #end </a></td>
         <td>
         #if($Status!="Edit")
-        <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Ass.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+        <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Ass.html","newWin"); style="text-decoration:none">$brih_help</a></td>
         #else
-            <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/EditDelete.html","newWin"); style="text-decoration:none">$brih_help</a>
+            <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/EditDelete.html","newWin"); style="text-decoration:none">$brih_help</a>
         #end
         </td>
 #end

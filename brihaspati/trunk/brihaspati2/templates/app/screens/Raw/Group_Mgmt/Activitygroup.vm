@@ -58,7 +58,7 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,Group_Mgmt,Activitygroup.vm").addPathInfo("count","5") style="text-decoration:none">$brih_grp #if($lang == "hindi") $brih_Of #end $brih_activity</a></td>
-	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/activity.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/activity.html","newWin"); style="text-decoration:none">$brih_help</a></td>
 </tr>
 </table> ## table 2 end
 <form name="frm" method="post" action=$link.setPage("call,Group_Mgmt,Activitygroup.vm").setAction("Groupmanagement")>

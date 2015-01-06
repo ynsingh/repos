@@ -35,7 +35,7 @@ $page.setTitle("Home | $course | Course Management | Remote Course |Remote Cours
                         <h4><a href=$link.setPage("call,CourseMgmt_User,ViewRemote.vm").addPathInfo("status","1").addPathInfo("count",$tdcolor) style=text-decoration:none> #if($lang=="hindi") $ReSell #else $brih_view $RemoteSELL $RemoteTag $brih_course #end </a></h4>
 		#end
                 </td>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a></td>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a></td>
 	</tr>
 </table>
 <p align="center"><font size=3 color="red">$!data.getMessage()</font></p>

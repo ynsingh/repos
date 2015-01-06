@@ -25,9 +25,9 @@ $!data.getMessage()
 <tr>
 <td align=right>
 	#if($user_role == "instructor" )	
-	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizhelp.html","newWin");>$brih_help</a>
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Quizhelp.html","newWin");>$brih_help</a>
 	#else	
-	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Quizstudent.html","newWin");>$brih_help</a>
 	#end
 </td>
 </tr>
@@ -57,9 +57,9 @@ $!data.getMessage()
 	#end		
 	<td align=right>
 	#if($user_role == "instructor" )	
-	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizhelp.html","newWin");>$brih_help</a>
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Quizhelp.html","newWin");>$brih_help</a>
 	#else	
-	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Quizstudent.html","newWin");>$brih_help</a>
 	#end
 	</td>
        	</tr>

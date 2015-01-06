@@ -51,9 +51,9 @@ $!data.getMessage()
         <tr>
                 <td align=right>
 		#if(($mode=="adphase")||($mode=="sresult")||($mode=="update"))
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Survey.html","newWin");>$brih_help</a>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Survey.html","newWin");>$brih_help</a>
 		#else
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/SurveyStud.html","newWin");>$brih_help</a>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/SurveyStud.html","newWin");>$brih_help</a>
 		#end
                 </td>
         </tr>
