@@ -17,7 +17,6 @@ public class PICOHelpAction extends DevelopmentSupport {
 
     public String execute() throws Exception {
       try {
-message = "shobhi!!!!!!!!!";
       return SUCCESS;
       }
       catch (Exception e) {

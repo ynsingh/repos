@@ -48,7 +48,7 @@
                 <s:bean name="java.util.HashMap" id="qTableLayout">
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
-               
+              <br><br> 
                 <div style ="background-color: #215dc6;">
                     <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('PrePurchase.TenderMaster')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message"/></p>

@@ -39,11 +39,13 @@
                 <s:bean name="java.util.HashMap" id="qTableLayout">
                     <s:param name="tablecolspan" value="%{4}" />
                 </s:bean>
-
+<br><br>
                 <div style ="background-color: #215dc6;">
                     <p align="center" class="pageHeading" style="color: #ffffff">Upload Submission File</p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
+                <div style="border: solid 1px #000000; background:  gainsboro">
+
                 <s:form  enctype="multipart/form-data" name="frmTenderSubmission"  action="UploadTenderSubmissionFile" method="POST" theme="qxhtml">
                     <s:textfield  cssClass="textInput" required="" requiredposition="left" maxLength="50" size="50"
                                   label="Tender No" name="localttenderno" disabled="true">
@@ -62,7 +64,7 @@
                     </s:textfield > 
 
                     <s:textfield  cssClass="textInput" required="left"  maxLength="50" size="50"
-                                  label="File Name" name="fileUploadFileName" title="rt">
+                                  label="File Name" name="fileUploadFileName" title="enter file name">
                         <s:param name="labelcolspan" value="%{2}" />
                         <s:param name="inputcolspan" value="%{2}" />
                     </s:textfield >
@@ -87,6 +89,10 @@
                     </s:submit> 
 
                 </s:form>
+		</div>
+		<br><br>
+                <div style="border: solid 1px #000000; background:  gainsboro">
+
                 <s:hidden name="erpmtsb.tsbTsbId" />
                 <table style="height:19em;" width="80%"><tr><td valign="top">
 
@@ -125,19 +131,15 @@
                                                 headerClass="gridheader" class="griddata" media="html" title="DownLoad" >
                                     DownLoad
                                 </display:column>
-
-
-
                             </display:table>                    
                         </s:form>
                     </td></tr></table>
-                <br>
+		</div>
             </div>
-        </div>
         <br>
         <div id="footer">
             <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
         </div>
-
+    </div>
     </body>
 </html>

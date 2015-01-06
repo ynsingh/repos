@@ -16,6 +16,21 @@
         <script language="JavaScript"  type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/PrePurchase/country.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/Administration/Admin.js"></script>
+	<script type="text/javascript">
+function confirmBox() 
+{
+var location = confirm("Please change the quantity for editing the item detail.");
+ if (location == true)
+        {
+        window.location = "${pageContext.request.contextPath}/trueAction";
+        }
+        else
+        {
+        window.location = "${pageContext.request.contextPath}/falseAction";
+        }
+ }
+</script>
+
         <link href="../css/pico.css" rel="stylesheet" type="text/css" />
         <meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
         <meta name="description" content="ERP for Universities">
@@ -94,7 +109,7 @@
 
                     <s:label value="..." cssClass="tdSpace"/>
 
-                    <s:textfield  cssClass="textInputRO"  key="PrePurchase.Department" name="pomaster.departmentmaster.dmName" title="" readonly="true" maxLength="30" size="30">
+                    <s:textfield  cssClass="textInputRO"  key="PrePurchase.Department" name="pomaster.departmentmaster.dmName" title="" readonly="true" maxLength="30" size="25">
                                 <s:param name="labelcolspan" value="%{1}" />
                                 <s:param name="inputcolspan" value="%{1}" />
                     </s:textfield>
@@ -124,30 +139,28 @@
                                 <s:param name="labelcolspan" value="%{0}" />
                                 <s:param name="inputcolspan" value="%{11}" />
                     </s:label>
-
-                    <s:if test="(editPODetail=='ON')">
+                    <s:label value="Please change the quantity for editing the item detail" cssClass= "pageSubHeading">
+                                <s:param name="labelcolspan" value="%{0}" />
+                                <s:param name="inputcolspan" value="%{11}" />
+                    </s:label>
+		<s:if test="(editPODetail=='ON')">
                     <s:select   cssClass="textInputRO" key="PrePurchase.Items" name="podetail.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --"
-                                required="true" list="itemList" listKey="erpmimId" listValue="erpmimItemBriefDesc" value="defaultItem" disabled="true"
-                                ondblclick="getitemList('SaveNonIndentItemsToPO_podetail_erpmItemMaster_erpmimId', 'SaveNonIndentItemsToPO_pomaster_suppliermaster_smName');" >
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
+                                required="true" list="itemList" listKey="erpmimId" listValue="erpmimItemBriefDesc" value="defaultItem" disabled="true"                                
+                                ondblclick="getitemList('SaveNonIndentItemsToPO_podetail_erpmItemMaster_erpmimId', 'SaveNonIndentItemsToPO_pomaster_suppliermaster_smName');">
+                                <s:param name="labelcolspan" value="%{2}" />
+                                <s:param name="inputcolspan" value="%{2}" />
                     </s:select>
-                    </s:if>
-                    <s:else>
+		</s:if>
+                <s:else>
                     <s:select   cssClass="textInput" key="PrePurchase.Items" name="podetail.erpmItemMaster.erpmimId" headerKey="" headerValue="-- Please Select --"
-                                required="true" list="itemList" listKey="erpmimId" listValue="erpmimItemBriefDesc" value="defaultItem"
-                                ondblclick="getitemList('SaveNonIndentItemsToPO_podetail_erpmItemMaster_erpmimId', 'SaveNonIndentItemsToPO_pomaster_suppliermaster_smName');"
-                                >
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
+                                required="true" list="itemList" listKey="erpmimId" listValue="erpmimItemBriefDesc" value="defaultItem"                                 
+                                ondblclick="getitemList('SaveNonIndentItemsToPO_podetail_erpmItemMaster_erpmimId', 'SaveNonIndentItemsToPO_pomaster_suppliermaster_smName');">
+                                <s:param name="labelcolspan" value="%{2}" />
+                                <s:param name="inputcolspan" value="%{2}" />
                     </s:select>
-                    </s:else>
+		</s:else>
 
-                   
-                    <s:label value="..." cssClass="tdSpace"/>
-
-                    <s:textfield  cssClass="textInput"  maxLength="5" size="30" key="PrePurchase.Quantity" name="podetail.podQuantity" 
-                                  onkeypress="return isNumberKey(event)"
+                    <s:textfield cssClass="textInput"  maxLength="5" size="30" key="PrePurchase.Quantity" name="podetail.podQuantity" onkeypress="return isNumberKey(event)"
                                   onchange="getItemRateAndUOP('SaveNonIndentItemsToPO_podetail_erpmItemMaster_erpmimId',
                                                               'SaveNonIndentItemsToPO_pomaster_erpmGenMasterByPomCurrencyId_erpmgmEgmDesc',
                                                               'SaveNonIndentItemsToPO_podetail_podQuantity',
@@ -156,23 +169,13 @@
                                                               'SaveNonIndentItemsToPO_selectedItemRate',
                                                               'SaveNonIndentItemsToPO_approxcost',                                                              
                                                               'SaveNonIndentItemsToPO_POMode');">
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
-                    </s:textfield>                   
-
-                   <s:textfield    requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
-                                    key="PrePurchase.ItemRate" name="selectedItemRate" readonly="true">
-                                    <s:param name="labelcolspan" value="%{2}" />
-                                    <s:param name="inputcolspan" value="%{1}" />
+                                <s:param name="labelcolspan" value="%{2}" />
+                                <s:param name="inputcolspan" value="%{2}" />
                     </s:textfield>
-
-      
-                    <s:label value="..." cssClass="tdSpace"/>
-                    
-                    <s:textfield  maxLength="20" size="12"  key="PrePurchase.Cost" name="approxcost" cssClass="textInputRO"
-                                  title="" onkeypress="return isNumberKey(event)" readonly="true">
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
+                   
+                   <s:textfield  maxLength="5" size="25" cssClass="textInputRO" key="PrePurchase.UnitOfPurchase" name="UOP"  readonly="true">
+                                <s:param name="labelcolspan" value="%{2}" />
+                                <s:param name="inputcolspan" value="%{2}" />
                     </s:textfield>
 
                     <s:select  cssClass="textInput" key="PrePurchase.Rates" name="podetail.erpmItemRate.irItemRateId" headerKey="" headerValue="-- Please Select --" required="true"
@@ -185,95 +188,74 @@
                                                              'SaveNonIndentItemsToPO_minOrderQuantity',
                                                              'SaveNonIndentItemsToPO_maxOrderQuantity',
                                                              'SaveNonIndentItemsToPO_podetail_podQuantity',
-                                                             'SaveNonIndentItemsToPO_approxcost',
-                                                             'SaveNonIndentItemsToPO_taxNarration',
+                                                             'SaveNonIndentItemsToPO_approxcost',                                                             					    'SaveNonIndentItemsToPO_taxNarration',
                                                              'SaveNonIndentItemsToPO_taxValue',
                                                              'SaveNonIndentItemsToPO_totalCost');">
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{10}" />
-                    </s:select>
-                    
-                    <s:iterator value="{1,1,1}">
-                        <s:label value="..." cssClass="tdSpace"/>
-                    </s:iterator>
-
-                   <s:textfield requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
-                                key="PrePurchase.ApplicableTaxes" name="taxNarration"  readonly="true" title="Applicable Taxes">
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
-                    </s:textfield>
-
-                    <s:label value="..." cssClass="tdSpace"/>
-
-                    <s:textfield   requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
-                                   key="PrePurchase.TaxValue" name="taxValue" readonly="true">
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
-                    </s:textfield>
-
-                    <s:textfield   requiredposition="left" maxLength="15" size="15" cssClass="textInputRO"
-                                   key="PrePurchase.TotalCost" name="totalCost" readonly="true" title="Total Cost">
                                 <s:param name="labelcolspan" value="%{2}" />
-                                <s:param name="inputcolspan" value="%{1}" />
+                                <s:param name="inputcolspan" value="%{2}" />
+                    </s:select>
+
+                    <s:textfield    requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
+                                    key="PrePurchase.ItemRate" name="selectedItemRate" readonly="true">
+                                    <s:param name="labelcolspan" value="%{2}" />
+                                    <s:param name="inputcolspan" value="%{2}" />
+                    </s:textfield>                    
+
+                    <s:textfield  maxLength="20" size="12"  key="PrePurchase.Cost" name="approxcost" cssClass="textInputRO"
+                                  title="" onkeypress="return isNumberKey(event)" readonly="true">
+                                <s:param name="labelcolspan" value="%{2}" />
+                                <s:param name="inputcolspan" value="%{6}" />
                     </s:textfield>
 
-                    <s:iterator value="{1,1,1}">
-                        <s:label value="..." cssClass="tdSpace"/>
-                    </s:iterator>
-
-                   <s:textfield requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
-                                key="PrePurchase.UnitOfPurchase" name="UOP"  readonly="true">
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
+                    <s:textfield   requiredposition="left" maxLength="5" size="20" cssClass="textInputRO"
+                                   key="PrePurchase.ApplicableTaxes" name="taxNarration" readonly="true">
+                                <s:param name="labelcolspan" value="%{2}" />
+                                <s:param name="inputcolspan" value="%{2}" />
                     </s:textfield>
 
-                    <s:label value="..." cssClass="tdSpace"/>
+                    <s:textfield    requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
+                                    key="PrePurchase.TaxValue" name="taxValue" readonly="true" title="Tax Value">
+                                    <s:param name="labelcolspan" value="%{2}" />
+                                    <s:param name="inputcolspan" value="%{2}" />
+                    </s:textfield>
 
-                    <s:textfield   requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
+                    <s:textfield    requiredposition="left" maxLength="5" size="25" cssClass="textInputRO"
+                                    key="PrePurchase.TotalCost" name="totalCost" readonly="true" title="Total Cost">
+                                    <s:param name="labelcolspan" value="%{2}" />
+                                    <s:param name="inputcolspan" value="%{2}" />
+                     </s:textfield>
+
+                    <s:textfield   requiredposition="left" maxLength="5" size="20" cssClass="textInputRO"
                                    key="PrePurchase.Currency" name="selectedItemRateCurrency" readonly="true">
-                                <s:param name="labelcolspan" value="%{1}" />
-                                <s:param name="inputcolspan" value="%{1}" />
+                                <s:param name="labelcolspan" value="%{2}" />
+                                <s:param name="inputcolspan" value="%{2}" />
                     </s:textfield>
-
-                    <s:iterator value="{1,1,1,1,1,1}">
-                        <s:label value="..." cssClass="tdSpace"/>
-                    </s:iterator>
 
                     <s:textfield    requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
                                     key="PrePurchase.ValidFrom" name="selectedItemRateValidFrom" readonly="true" title="Rate valid from date">
-                                    <s:param name="labelcolspan" value="%{1}" />
-                                    <s:param name="inputcolspan" value="%{1}" />
+                                    <s:param name="labelcolspan" value="%{2}" />
+                                    <s:param name="inputcolspan" value="%{2}" />
                     </s:textfield>
 
-                    <s:label value="..." cssClass="tdSpace"/>
-
-                    <s:textfield    requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
+                    <s:textfield    requiredposition="left" maxLength="5" size="25" cssClass="textInputRO"
                                     key="PrePurchase.ValidTo" name="selectedItemRateValidTo" readonly="true" title="Rate valid till date">
-                                    <s:param name="labelcolspan" value="%{1}" />
-                                    <s:param name="inputcolspan" value="%{1}" />
-                    </s:textfield>
-
-                    <s:iterator value="{1,1,1,1,1,1}">
-                        <s:label value="..." cssClass="tdSpace"/>
-                    </s:iterator>
+                                    <s:param name="labelcolspan" value="%{2}" />
+                                    <s:param name="inputcolspan" value="%{2}" />
+                     </s:textfield>
 
                     <s:textfield    requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
                                     key="PrePurchase.MinOrderQty" name="minOrderQuantity" readonly="true">
-                                    <s:param name="labelcolspan" value="%{1}" />
-                                    <s:param name="inputcolspan" value="%{1}" />
+                                    <s:param name="labelcolspan" value="%{2}" />
+                                    <s:param name="inputcolspan" value="%{2}" />
                     </s:textfield>
-                    
+
                     <s:textfield    requiredposition="left" maxLength="5" size="30" cssClass="textInputRO"
                                     key="PrePurchase.MaxOrderQty" name="maxOrderQuantity" readonly="true">
                                     <s:param name="labelcolspan" value="%{2}" />
-                                    <s:param name="inputcolspan" value="%{1}" />
-                    </s:textfield>
+                                    <s:param name="inputcolspan" value="%{2}" />
+                     </s:textfield>                             
 
-                    <s:label value="..." cssClass="tdSpace"/>
-                    <s:label value="..." cssClass="tdSpace"/>
-                    <s:label value="..." cssClass="tdSpace"/>
-                    
-                    <s:submit name="btnAddItemToPO" key="PrePurchase.AddItem" action="addNonIndentedItemsToPO">
+                    <s:submit name="btnAddItemToPO" key="PrePurchase.AddItem" action="addNonIndentedItemsToPO" onclick="confirmBox();">
                         <s:param name="colspan" value="%{1}" />
                         <s:param name="inputcolspan" value="%{0}" />
                         <s:param name="align" value="left" />
@@ -361,14 +343,6 @@
                                     headerClass="gridheader" class="griddata" media="html" title="Remove from PO" style="width:25%">
                                     Remove from PO
                         </display:column>
-
-
-                   <%--     <display:footer>
-                        <tr>
-                         <td>Total Bill:</td>
-                        <td><c:out value="${totals.column3}" /></td>
-                        <tr>
-  </display:footer> --%>
 
                     </display:table>
              </s:form>

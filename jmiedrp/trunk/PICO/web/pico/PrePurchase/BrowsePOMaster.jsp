@@ -39,7 +39,7 @@
             <br>
             <div id ="mainContent" align="center">
             <div style="background-color: #215dc6;">
-                <p align="left" class="pageHeading" style="color:  #ffffff"> &nbsp;List of Purchase Orders)</p>             
+                <p align="left" class="pageHeading" style="color:  #ffffff"> &nbsp;List of Purchase Orders</p>             
                 <p align="center" class="mymessage" style="color:  #ffff99 "><s:property value="message"/> </p>
             </div>
 

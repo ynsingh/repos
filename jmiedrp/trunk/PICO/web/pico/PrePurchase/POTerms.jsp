@@ -37,7 +37,7 @@
                  <s:bean name="java.util.HashMap" id="qTableLayout">
                     <s:param name="tablecolspan" value="%{11}" />
                  </s:bean>
-
+<br><br>
                  <div style="background-color: #215dc6;">
                              <p align="left" class="pageHeading" style="color:  #ffffff"> &nbsp;<s:property value="getText('PrePurchase.Step4of5AddTermsAndConditionsToPO')" /></p>
                              <p align="center" class="mymessage" style="color:  #ffff99 "><s:property value="message"/> </p>
