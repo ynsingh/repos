@@ -25,6 +25,7 @@ import java.util.Vector;
 import org.iitk.brihaspatisync.util.ServerLog;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.servlet.ServletContext;
+import org.iitk.brihaspatisync.ReflectorManager;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a> modified date march 2014
@@ -50,25 +51,37 @@ public class ReflectorStatusManager
                                 Node node = peerList.item(i);
                                 if( node.getNodeType() == node.ELEMENT_NODE ) {
                                         Element element = (Element)node;
+					String session_id = element.getAttribute("SESSIONID");
+					if(session_id.equals(sessionid)){
                                         String public_ip=element.getAttribute("PUBLICIP");
 					if(check_proxy_addr(public_ip) && check_proxy_addr(publicip)) {
 	                                        int load=Integer.parseInt(element.getAttribute("LOAD"));
-						if(load<10) {
+						//if(load<10) {
 							int loadint=load+1;
 							Attr attrNode = element.getAttributeNode("LOAD");
                                 	                attrNode.setValue(""+loadint);
                                         	        saveXML(doc);
-							return message_ip="current"+element.getAttribute("PRIVATEIP")+","+"parent"+"";
-						}
+							String ip=ReflectorManager.searchElement(sessionid);
+							return message_ip="current"+ip+","+"parent"+"";
+						//	return message_ip="current"+element.getAttribute("PRIVATEIP")+","+"parent"+"";
+						//}
 					} else {
 						int load=Integer.parseInt(element.getAttribute("LOAD"));
-                                                if(public_ip.equals(publicip) && (load<5) ) {
+                                               // if(public_ip.equals(publicip) && (load<5) ) {
                                                         int loadint=load+1;
                                                         Attr attrNode = element.getAttributeNode("LOAD");
                                                         attrNode.setValue(""+loadint);
                                                         saveXML(doc);
-                                                        return message_ip="current"+element.getAttribute("PRIVATEIP")+","+"parent"+"";
-                                                }
+							String ip=ReflectorManager.searchElement(sessionid);
+                                                        return message_ip="current"+ip+","+"parent"+"";
+
+//                                                        return message_ip="current"+element.getAttribute("PRIVATEIP")+","+"parent"+"";
+                                               // }
+					}
+					}
+					else{
+					message_ip="UnSuccessfull";
+					continue;
 					}
 				}
 			}
@@ -77,32 +90,43 @@ public class ReflectorStatusManager
 		return message_ip;
 	}
 		
-	protected static String Register(String sessionid,String publicip,String privateip) {
+	protected static String Register(String sessionid,String publicip,String privateip,String role) {
 		String message_ip="";
 		try{
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                         DocumentBuilder builder = factory.newDocumentBuilder();
                         Document doc = builder.parse(getFile());
 			message_ip=searchreRunningReflector(sessionid,publicip,privateip);
-			if(message_ip.equals("UnSuccessfull")) {
-				String ip=ReflectorManager.searchElement(sessionid);	
+			String ip=ReflectorManager.searchElement(sessionid);
+			if((message_ip.equals("UnSuccessfull"))&&(role.equals("instructor"))) {
+			//	String ip=ReflectorManager.searchElement(sessionid);
+				String load=PeerManager.updateLoad(sessionid); 	
 				if((!ip.equals("Reflector have insufficient Load !!")) && (!ip.equals("Reflector is not available !!")) && (!ip.equals("UnSuccessfull"))) {
 							
 		                        Element root = doc.getDocumentElement();
         		                Element reflector = doc.createElement("ReflectorStatus");
 					reflector.setAttribute("SESSIONID", sessionid);
-					reflector.setAttribute("LOAD", "0");
+					reflector.setAttribute("LOAD", load);
 					reflector.setAttribute("PUBLICIP", publicip);
 					reflector.setAttribute("PRIVATEIP", privateip);
                 	        	root.appendChild(reflector);
 	                	        if(saveXML(doc).equals("Successfull"))
 						message_ip="current"+ip+","+"parent"+"";//searchParentIP(ip ,sessionid);
 				}
-			}
+			}else{ 
+				 message_ip="current"+ip+","+"parent"+"";
+				}
 		} catch(Exception ex) {	ServerLog.log("Error on creating xml file : "+ex.getMessage()); }
 		ServerLog.log(message_ip);
 		return message_ip;
 	}
+	
+
+	//private static String updateLoad( String  sessionid) {
+	//	String message="";
+		
+			
+
 	
 	protected static String searchParentIP(String reflector_ip ,String sessionid) {
                 String message_ip="";
@@ -129,28 +153,49 @@ public class ReflectorStatusManager
                 return message_ip;
         }
 	
-	protected static void updateStatusPeer(String ip){
+	protected static void updateStatusPeer(String ip, String sessionid){
 		try {
+			//ServerLog.log("inside updatestatuspeer method");
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
         	        Document doc = builder.parse(getFile());
 			NodeList peerList = doc.getElementsByTagName("ReflectorStatus");
+			//ServerLog.log("peerlist length is :"+peerList.getLength());
 	                for( int i=0; i<peerList.getLength(); i++ ) {
+				//ServerLog.log("inside for loop in updatestatuspeer method");
         	        	Node node = peerList.item(i);
                 	        if( node.getNodeType() == node.ELEMENT_NODE ){
+				//	ServerLog.log("inside first ifelse in updatestatuspeer method");
                         		Element element = ( Element )node;
+					String session_id=element.getAttribute("SESSIONID");
+					if(session_id.equals(sessionid)){
+
+					 int load=Integer.parseInt(element.getAttribute("LOAD")); /*storing current load value */
+					load = load-1;                                       /*decrementing the load parameter */
+					  Attr attrNode = element.getAttributeNode("LOAD");
+                                                        attrNode.setValue(""+load);
+					saveXML(doc); 
                                 	//String getip=element.getAttribute("PRIVATEIP").trim();
                                 	String getip=element.getAttribute("PUBLICIP").trim();
-	                                if(getip.equals(ip)) {
+				//	ServerLog.log("value of getip in updatestatuspeer"+getip);
+	                          //      ServerLog.log("value of ip in updatestatuspeer is "+ip);
+					if(getip.equals(ip)) {
+						ServerLog.log("inside updatestatus peer method");
+						ServerLog.log("value of getip :"+getip);
+						ServerLog.log("value of ip:"+ip);
+						ReflectorManager.removeLoad(sessionid);
+				//	ServerLog.log("inside second ifelse in updatestatuspeer method");
 						doc.getDocumentElement().removeChild(peerList.item(i));
                                                 saveXML(doc);
+                                           } 
                               		}
+						
 	                   	}
         	    	}	
 		}catch(Exception e){}
 	}		
 		
-	protected static String removeReflector_IP_Peer(String reflector_ip){
+/*	protected static String removeReflector_IP_Peer(String reflector_ip){
 		String message_ip="UnSuccessfull";	
                 try{
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -162,9 +207,9 @@ public class ReflectorStatusManager
                                 if( node.getNodeType() == node.ELEMENT_NODE ){
                                         Element element = ( Element )node;
                                         String ip=element.getAttribute("PUBLICIP");
-                                        /** 
+                                        
  					 * Remove Peer from Peer List
-					 */
+					 
                                         if(ip.equals(reflector_ip)){
 						doc.getDocumentElement().removeChild(peerList.item(i));
                         			message_ip=saveXML(doc);
@@ -175,8 +220,9 @@ public class ReflectorStatusManager
                 } catch( Exception e ){ ServerLog.log("Error in removeReflector_IP_Peer "+e.getMessage());	}
 		return message_ip;
         }
+*/
 
-	public static String removeLoad_and_Sessionid_Peer(String session_id){
+/*	public static String removeLoad_and_Sessionid_Peer(String session_id){
                 String message_ip="UnSuccessfull";
                 try{
                         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -191,15 +237,17 @@ public class ReflectorStatusManager
                                         String sessionid=element.getAttribute("SessionId");
                                         if(sessionid.equals(session_id)){
                                                 String ip=element.getAttribute("IP");
-                                                ReflectorManager.removeLoad(ip,session_id);
+						
                                                 doc.getDocumentElement().removeChild(peerList.item(i));
                                         }
                                 }
-                        }
+			}
                         message_ip=saveXML(doc);
                 } catch( Exception e ) { ServerLog.log("Error02 in removeLoad_and_Sessionid_Peer  "+e.getMessage());    }
                 return message_ip;
-        }
+        } */
+
+
 		
 	private static String saveXML(Document doc) {
 		try {
@@ -211,9 +259,11 @@ public class ReflectorStatusManager
 	}
 
         private static File getFile() {
+	ServerLog.log("Enter in get file function");
 	    	File file=new File(context.getRealPath("ReflectorStatus.xml"));
         	if(!file.exists()){
                 	try {
+			ServerLog.log("inside if else");
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                                 DocumentBuilder builder = factory.newDocumentBuilder();
                                 Document doc = builder.newDocument();

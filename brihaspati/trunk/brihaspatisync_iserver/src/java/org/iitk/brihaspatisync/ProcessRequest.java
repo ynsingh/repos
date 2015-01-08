@@ -41,6 +41,7 @@ import org.iitk.brihaspatisync.om.UrlConection;
 import org.iitk.brihaspatisync.om.UrlConectionPeer;
 
 
+
  /**
   * @author <a href="mailto:ayadav@iitk.ac.in"> Ashish Yadav </a>
   * @author <a href="mailto:@arvindjss17@gmail.com"> Arvind Pal </a>
@@ -235,14 +236,20 @@ TBD - code to be updated as per the above logic.
 			 **/
 			try {
 				String username=request.getParameter("username");
+				ServerLog.log("value of username in logout request of PR:"+username);
 				String lectID=request.getParameter("lectID");
+				  ServerLog.log("value of lectID in logout request of PR:"+lectID);
 				String ipAddress=InetAddress.getByName(request.getRemoteAddr()).toString();
+				  ServerLog.log("value of ipAddress in logout request of PR:"+ipAddress);
+				 String publicip =(InetAddress.getByName(request.getRemoteAddr())).toString();
+				  String privateip = publicip;
+				String reflector_ip  =request.getParameter("reflectorIP");
 
 				/** Remove Entry from the peer list from LecturePeer.xml */
 				if(!(lectID.equals(""))) {
 					PeerManager.removePeer(lectID,username);
 					//ServerLog.log("inside logout request");
-					ReflectorStatusManager.updateStatusPeer(ipAddress.replace("/",""));
+					ReflectorStatusManager.updateStatusPeer(ipAddress.replace("/",""), lectID);
 				}
 				//out.println("Successfull");	
 			} catch(Exception e) { ServerLog.log("Exception in logout in ProcessRequest class"+e.getMessage()); }
@@ -359,7 +366,7 @@ TBD - code to be updated as per the above logic.
                                 logintime=logintime.substring(4,20);
 				String proxy="NO";	
 			//	message=ReflectorStatusManager.Register(user,lect_id,role);  
-				message=ReflectorStatusManager.Register(sessionid,publicip,privateip);  
+				message=ReflectorStatusManager.Register(sessionid,publicip,privateip,role);  
 				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not available !!")) && (!message.equals("Reflector have insufficient Load !!")) ) {
 					String ref_ip=message;
 					if(ref_ip.startsWith("current")) {
@@ -505,7 +512,7 @@ TBD - code to be updated as per the above logic.
 	                 *to the  end of the durataion of session.
         	         */
 		
-//                        org.iitk.brihaspatisync.util.ReflectorHandler.getController().LectureHandler(context);
+                        org.iitk.brihaspatisync.util.ReflectorHandler.getController().LectureHandler(context);
                 } catch(Exception e) { ServerLog.log("Exception in removing sessionid xml in ProcessRequest class"+e.getMessage()); }
 	}//end of post method
 } //end of class

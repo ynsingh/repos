@@ -6,6 +6,7 @@ package org.iitk.brihaspatisync;
  */
 
 import java.util.Vector;
+import java.util.StringTokenizer;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -30,6 +31,8 @@ import org.apache.xerces.dom.DocumentImpl;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.iitk.brihaspatisync.util.ServerLog;
+import org.iitk.brihaspatisync.ReflectorStatusManager;
+
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a> modified data march 2014
@@ -66,31 +69,63 @@ public class ReflectorManager
                 return "UnSuccessfull";
 	}
 	
-	protected static String removeLoad(String reflector_ip ,String courseid){
+	
+	protected static String removeLoad(String sessionid){
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                         DocumentBuilder builder = factory.newDocumentBuilder();
                         Document doc = builder.parse(getFile());
-                        NodeList nodeList = doc.getElementsByTagName("IP");
-                        for( int i=0; i<nodeList.getLength(); i++ ){
+			// NodeList coursenodeList = doc.getElementsByTagName("Session_Id");
+                      //  NodeList nodeList = doc.getElementsByTagName("IP");
+                        
+			 NodeList nodeList = doc.getElementsByTagName("Session_Id");
+
+			for( int i=0; i<nodeList.getLength(); i++ ){
                                 Node node = nodeList.item(i);
-                                String ip=node.getFirstChild().getNodeValue();
-                                if(ip.equals(reflector_ip)) {
-					NodeList coursenodeList = doc.getElementsByTagName("Session_Id");
-					Node course = coursenodeList.item(i);
-                                        String courses=course.getFirstChild().getNodeValue();
-                                        if((courses.indexOf(courseid))> -1){
-						courses=courses.replaceAll(courseid,"");	
-						if((courses.indexOf(","))>-1)
-							courses=courses.replaceAll(",","");	
+				
+                                String courses = node.getFirstChild().getNodeValue();
+                          //      if(ip.equals(reflector_ip)) {
+					//NodeList coursenodeList = doc.getElementsByTagName("Session_Id");
+					//Node course = coursenodeList.item(i);
+                                        //String courses=course.getFirstChild().getNodeValue();
+                                       /* if((courses.indexOf(sessionid))> -1){
+						courses=courses.replaceAll(sessionid, "");	
+					//	if((courses.indexOf(","))>-1)
+					//		courses=courses.replaceAll(",","");	
+				//	}*/
+					int token_counter = 0;
+					String total_sessionid = new String();
+					total_sessionid = "";
+					StringTokenizer course_token = new StringTokenizer(courses, ",");
+					while(course_token.hasMoreElements()) {
+						String temp = course_token.nextElement().toString();
+						if(!temp.equals(sessionid)){
+						if(token_counter ==0){
+								total_sessionid =  temp;
+								token_counter++;
+							}
+						else{
+							total_sessionid = total_sessionid +","+temp;
+							token_counter++;
+						}
+						}
+						temp = "";
 					}
-					if(courses.length()<1)
-						courses="0";
-					course.getFirstChild().setNodeValue(courses);
+						
+					
+					if(total_sessionid.length()<1){
+						total_sessionid="0";
+					}
+					node.getFirstChild().setNodeValue(total_sessionid);
 					saveXML(doc);
-				}
-			}
-			nodeList=null;
+					//removeLoad(reflector_ip ,courseid);
+					}
+				
+				
+				 
+			
+	//	}
+	//		nodeList=null;
 			
 			
 		//	nodeList = doc.getElementsByTagName("IP");
@@ -160,14 +195,14 @@ public class ReflectorManager
 						/** if session id not exists then now load sessionid and load will increase only 
 						 * check single session sessionid or doble 
 						 */ 
-						k=courses.indexOf(",");
-                                	       	if(k < 0) {
+						//k=courses.indexOf(",");
+                                	       	//if(k < 0) {
                         				courses=courses+","+courseid;	
 							course.getFirstChild().setNodeValue(courses);
         	                                       	saveXML(doc);
                         	                       	Node ipnode = newnodeList.item(i);
                                 	               	return ipnode.getFirstChild().getNodeValue();
-                                        	}
+                                        	//}
 					}
 				}	
 			}//for
@@ -176,6 +211,9 @@ public class ReflectorManager
 		} catch(Exception e) { ServerLog.log(" Exception in searchElement method of ReflectorManager class  "+e.getMessage()); }
 		return message_for_reflector;
 	}
+	
+
+	
 
 	protected static String register(String reflector_ip){
 		try{
@@ -193,6 +231,8 @@ public class ReflectorManager
 	                        Element courses = doc.createElement("Session_Id");
         	                Text coursesText = doc.createTextNode("0");
                 	        courses.appendChild(coursesText);
+			//	reflector.setAttribute("SESSIONID", sessionid);
+
 
 	                        reflector.appendChild(ip);
         	                reflector.appendChild(courses);

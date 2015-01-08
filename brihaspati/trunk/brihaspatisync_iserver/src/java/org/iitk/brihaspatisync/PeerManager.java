@@ -34,8 +34,7 @@ import org.iitk.brihaspatisync.util.ServerLog;
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
  */
 
-public class PeerManager 
-{
+public class PeerManager {
 	private static ServletContext context=null;
 
 	public static void setContext(ServletContext context1) throws Exception {
@@ -62,8 +61,8 @@ public class PeerManager
       		} catch (Exception ex) { ServerLog.log(" Exception in getFile method of PeerManager class "+ex.getMessage());  }
 		return file;
 	}
-
-	/**
+		
+	/*	
          * This Method Returns Parent Peer's IPAddress for Peer Connection .and also increase load of this parent peer.
          */
 	protected static String createPeer(String lect_id, String publicIP,String user,String role,String status,String privateIP,String proxy,String ref_ip,String first_lst_name) {
@@ -128,6 +127,22 @@ public class PeerManager
 		return message;
 	}
 	
+
+	 protected static String updateLoad( String  sessionid) {
+                String message="";
+		int count=0;
+		try{
+		/*	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile(lect_id));*/
+			NodeList nodelist = getNodeList(getFile(sessionid)); 
+			count =  nodelist.getLength();
+		//	return Integer.toString(count);
+			}catch ( Exception e ) { ServerLog.log(" Exception in updateLoad method of PeerManager class "+e.getMessage()); }
+			 return Integer.toString(count);
+ 		}
+
+	
 	protected static boolean searchUserName(String lectID,String username) {
 		boolean flag=false;
                 try{
@@ -167,23 +182,29 @@ public class PeerManager
                         Element root = document.getDocumentElement();
                         NodeList peerList = root.getElementsByTagName("Peer");
                         for( int i=0; i<peerList.getLength(); i++ ){
+				//ServerLog.log("inside for loop in removepeer method");
                         	Node node = peerList.item(i );
                                 if( node.getNodeType() == node.ELEMENT_NODE ){
+				//ServerLog.log("inside ifelse in removepeer method");
                                 	Element element = ( Element )node;
 					String User=element.getAttribute("User");
-					
+					//ServerLog.log("value of user from xml file :"+User);
+					//ServerLog.log("value of username"+username);
 					/** 
 					* Remove Peer from Peer List
 					*/
 					if(User.equals(username)){
+					//	ServerLog.log("inside second ifelse ");
 	                                	root.removeChild(element);
                 	                        saveXML(document,getFile(lectID));
-                                        }
+					}
 					
-                            	}
-                     	}
+                                }
+                        }
+		       	
           	} catch( Exception e ){ ServerLog.log(" Exception in removePeer method of PeerManager class "+e.getMessage()); }
    	}
+
 	
 	/**
 	 * This method save peer's information in XML file.
@@ -196,6 +217,8 @@ public class PeerManager
              		output.serialize(doc);
          	}catch(Exception e) { ServerLog.log(" Exception in saveXML method of PeerManager class "+e.getMessage());}
 	}
+
+
 	
 	/**
 	 * This method returns Peer List. 
@@ -236,6 +259,7 @@ public class PeerManager
         	                        string=string.append(fullusername);
                         	        userList.addElement(string.toString());
                         	}
+				 
                 	}
 		}
                 return userList;
