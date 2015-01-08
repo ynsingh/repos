@@ -61,7 +61,7 @@ public class ReflectorManager
 					NodeList removenodeList=doc.getElementsByTagName("Reflector");
                 		        doc.getDocumentElement().removeChild(removenodeList.item(i));
                      			saveXML(doc);
-					ReflectorStatusManager.removeReflector_IP_Peer(reflector_ip);
+//					ReflectorStatusManager.removeReflector_IP_Peer(reflector_ip);
 					removePeer(reflector_ip);
                                 }
                         }

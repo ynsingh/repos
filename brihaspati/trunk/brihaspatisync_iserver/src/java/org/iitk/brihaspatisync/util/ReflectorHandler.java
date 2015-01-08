@@ -89,11 +89,11 @@ public class ReflectorHandler {
  	 **/  	
 	private void removeExpiryEntry(String lectid,javax.servlet.ServletContext context ){
                 try {
-                        ReflectorStatusManager.removeLoad_and_Sessionid_Peer(lectid);
+//                        ReflectorStatusManager.removeLoad_and_Sessionid_Peer(lectid);
                         Criteria crit=new Criteria();
                         crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lectid));
                         UrlConectionPeer.doDelete(crit);
-                        ReflectorStatusManager.removeLoad_and_Sessionid_Peer(lectid);
+  //                      ReflectorStatusManager.removeLoad_and_Sessionid_Peer(lectid);
 			java.io.File filepath=new java.io.File(context.getRealPath(lectid+".xml"));
                         if(filepath.exists())
                         	filepath.delete();

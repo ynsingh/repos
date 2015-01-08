@@ -207,9 +207,6 @@ public class ReflectorStatusManager
                                 if( node.getNodeType() == node.ELEMENT_NODE ){
                                         Element element = ( Element )node;
                                         String ip=element.getAttribute("PUBLICIP");
-                                        
- 					 * Remove Peer from Peer List
-					 
                                         if(ip.equals(reflector_ip)){
 						doc.getDocumentElement().removeChild(peerList.item(i));
                         			message_ip=saveXML(doc);
@@ -219,8 +216,8 @@ public class ReflectorStatusManager
                         }
                 } catch( Exception e ){ ServerLog.log("Error in removeReflector_IP_Peer "+e.getMessage());	}
 		return message_ip;
-        }
-*/
+        }*/
+
 
 /*	public static String removeLoad_and_Sessionid_Peer(String session_id){
                 String message_ip="UnSuccessfull";
@@ -245,7 +242,7 @@ public class ReflectorStatusManager
                         message_ip=saveXML(doc);
                 } catch( Exception e ) { ServerLog.log("Error02 in removeLoad_and_Sessionid_Peer  "+e.getMessage());    }
                 return message_ip;
-        } */
+        }*/ 
 
 
 		
