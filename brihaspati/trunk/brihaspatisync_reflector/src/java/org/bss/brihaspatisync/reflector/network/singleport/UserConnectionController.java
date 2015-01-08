@@ -102,7 +102,7 @@ public class UserConnectionController implements Runnable {
 									buffer_mgt=StoreBufferMgnObject.getBufferMgtObject("stud_video"+lecture_id);
 									if(buffer_mgt != null)
 	                                                                        buffer_mgt.removeUseridKey(login_name);
-									org.bss.brihaspatisync.reflector.RegisterToIndexServer.request_For_RemoveUser(lecture_id,login_name);
+									// org.bss.brihaspatisync.reflector.RegisterToIndexServer.request_For_RemoveUser(lecture_id,login_name);
 									} catch(Exception ex){}				
 								}
 							}
