@@ -19,7 +19,7 @@ $!data.getMessage()
         <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 
         ##### Video Help Java Script ########
-        <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
+       ## <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
         <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
         <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
         <script type="text/javascript">
@@ -84,11 +84,11 @@ $!data.getMessage()
 	#end
 	#if($mode=="attend") | $brih_student $brih_attend #end
 	#if($mode=="list") | $brih_attendence #end
-	</td>
+	</b></td>
 	 <td align="right">
 	#if($data.getUser().getTemp("role") != "student")
          <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/AttendanceManagement.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
-	<a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">| $brih_VideoHelp</font></a></td>
+	<a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">| $brih_VideoHelp</font></a>
  	#end
        </td>
 </tr>
@@ -167,7 +167,7 @@ $!data.getMessage()
 			<th rowspan="2"><font size=3>$brih_serialNo</font></th>
                         <th colspan="3"><font size=3>$brih_student $brih_detail</font></th>
                         <th rowspan="2"><font size=3>$brih_attend</font></th>
-                        <th rowspan="2"><font size=3>$brih_remark</th>
+                        <th rowspan="2"><font size=3>$brih_remark</font></th>
         	</tr>
 		<tr align="center" bgcolor="$ui.menuColor">
                         <td><font color="blue">$brih_rollno</font></td>

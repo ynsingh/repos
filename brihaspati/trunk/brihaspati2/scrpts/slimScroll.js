@@ -6,7 +6,7 @@
         wheelStep : 20,
         width : 'auto',
         height : '250px',
-        size : '5px',
+        size : '15px',
         color: '#000',
         position : 'right',
         distance : '1px',
@@ -33,7 +33,7 @@
       var isOverPanel, isOverBar, isDragg, queueHide, touchDif,
         barHeight, percentScroll, lastScroll,
         divS = '<div></div>',
-        minBarHeight = 30,
+        minBarHeight = 50,
         releaseScroll = false;
 
         // used in event handlers and for better minification
