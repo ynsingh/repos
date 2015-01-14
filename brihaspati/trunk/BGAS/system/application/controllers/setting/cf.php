@@ -1,4 +1,4 @@
-<?php
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Cf extends Controller {
 
@@ -552,12 +552,17 @@ class Cf extends Controller {
                                 }
 				$db1->close();
 
-				   /* xml creation */
+				/* xml creation */
+				$this->load->library('Paymentreceipt');
                 		$this->load->library('Reportlist');
                 		$income = new Reportlist();
                 		$income->income_exp_mhrd(3,"CF",$data_database_name);
                 		$expense = new Reportlist();
                 		$expense->income_exp_mhrd(4,"CF" ,$data_database_name);
+				$payment = new Paymentreceipt();
+                        	$payment->payment_receipt('Payment', "CF",$data_database_name);
+                        	$receipt = new Paymentreceipt();
+                        	$receipt->payment_receipt('Receipt',"CF",$data_database_name);
                 		$this->messages->add('xml created'.$data_database_name, 'success');
 
 				
