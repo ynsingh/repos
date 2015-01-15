@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * MainWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012,2013 ETRG, IIT Kanpur.
+ * Copyright (c) 2012,2013,2015 ETRG, IIT Kanpur.
  */
 
 import java.awt.Color;
@@ -28,10 +28,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
+ * @author <a href="mailto:Pradeepmca30@gmail.com">Pradeep Kumar Pal </a>
  */
 
 public class MainWindow  extends JFrame implements ActionListener {
@@ -100,8 +102,11 @@ public class MainWindow  extends JFrame implements ActionListener {
                 setVisible(true);
                 addWindowListener( new WindowAdapter (){
                         public void windowClosing (WindowEvent ev ) {
-				new Logout().sendLogoutRequest();
-	                        System.exit(0);
+				int choice = JOptionPane.showOptionDialog(null,"Do you really want to exit the system", "Exit", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
+                                        if(choice == JOptionPane.YES_OPTION){
+						new Logout().sendLogoutRequest();
+	        	                	System.exit(0);
+					}
                         }
                 });
 	}
@@ -193,8 +198,11 @@ public class MainWindow  extends JFrame implements ActionListener {
                         content.repaint();
 			
          	}else if(e.getActionCommand().equals("Exit")) {
-			new Logout().sendLogoutRequest();
-                        System.exit(0);
+			int choice = JOptionPane.showOptionDialog(null,"Do you really want to exit the system", "Exit", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
+                                        if(choice == JOptionPane.YES_OPTION){
+						new Logout().sendLogoutRequest();
+                		        	System.exit(0);
+					}
 		}else if(e.getActionCommand().equals("Start-Recorder")) {
 			 // Action code for start recorder.
                 } else if(e.getActionCommand().equals("LectureInfo")) {
