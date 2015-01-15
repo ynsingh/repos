@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.util;
  * @(#)RuntimeObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2010,2012 ETRG, IIT Kanpur.
+ * Copyright (c) 2010,2012,2015 ETRG, IIT Kanpur.
  */
 
 import java.util.Properties;
@@ -13,6 +13,7 @@ import java.io.InputStream;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
+ * @author <a href="mailto:pradeepmca30@gmail.com"> Pradeep Kumar Pal </a> 
  */
 
 public class RuntimeDataObject {
@@ -31,6 +32,8 @@ public class RuntimeDataObject {
 	private String proxy_pass="";
 	private String videoServer="127.0.0.1";
 	private String videoServerPort="8090";
+	private long time_delay=1030;
+
 	
 	private String vlcServer="C:\\Program Files\\VideoLAN\\VLC";
         private String vlcDeviceName="HP Webcam-50";//"Default";
@@ -200,5 +203,15 @@ public class RuntimeDataObject {
        	public String getVideoServerPort(){
                return videoServerPort;
        	}
+	
+	/*----Video Slider Frame  Timer Set-----*/
+	public void setTimeDelayFrame(int value){
+                time_delay=value;
+        }
+
+        public long getTimeDelayFrame(){
+                return time_delay;
+        }
+
 	
 }	

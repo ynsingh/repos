@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * UserListPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG,Kanpur.
+ * Copyright (c) 2011,2015 ETRG,Kanpur.
  */
 
 import java.awt.Font;
@@ -30,11 +30,13 @@ import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar Pal </a>
  */
 
 public class UserListPanel extends Thread {
 
 	private JPanel mainPanel;
+	private JPanel mainPanel_new;
 	private JScrollPane scrollPane=null;
 	private JList jlist=null;
 	
@@ -61,6 +63,9 @@ public class UserListPanel extends Thread {
 		mainPanel=new JPanel();
                 mainPanel.setLayout(new BorderLayout());
 		
+		mainPanel_new=new JPanel();
+                mainPanel_new.setLayout(new BorderLayout());
+	
 		ClassLoader clr= this.getClass().getClassLoader();
 		Object elements[][]=new Object[1][5];
 		elements[0][0] = new Font("Helvetica", Font.PLAIN, 14);
@@ -74,9 +79,13 @@ public class UserListPanel extends Thread {
                 jlist.setCellRenderer(renderer);
                 scrollPane = new JScrollPane(jlist);
 	
-              	mainPanel.add(all_deny_per.createGUI(),BorderLayout.NORTH);
-		all_deny_per.setEnable_Decable_Permission(true);
+		mainPanel_new.add(new VideoSlider(),BorderLayout.PAGE_START);//BorderLayout.NORTH);
+                mainPanel_new.add(all_deny_per.createGUI(),BorderLayout.PAGE_END);//BorderLayout.NORTH);
+                all_deny_per.setEnable_Decable_Permission(true);
+
+		mainPanel.add(mainPanel_new,BorderLayout.NORTH);
 		mainPanel.add(scrollPane,BorderLayout.CENTER);
+	
 		this.start();
 		return mainPanel;
 	
@@ -116,7 +125,7 @@ public class UserListPanel extends Thread {
 
 	private void user_Name_Id(int k,String str) {
 		try {
-			System.out.println("==============>>>>>>>>>>>>>>>>>   "+str);
+			System.out.println("user_Name_Id====>>>>   "+str);
                         StringTokenizer st=new StringTokenizer(str,"$");
                         while(st.hasMoreTokens()) {
 				if(k== 0) {
