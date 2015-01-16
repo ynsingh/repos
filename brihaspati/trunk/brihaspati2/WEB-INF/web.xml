@@ -87,28 +87,42 @@
             <servlet-name>preq</servlet-name>
             <servlet-class>org.iitk.brihaspati.modules.screens.call.tunnel.PrerequisitesServlet</servlet-class>
         </servlet>
-        <!-- /SCORM CONTENT LAUNCH -->
+<!-- /SCORM CONTENT LAUNCH -->
 
 <!--SCORM  CONTENT LAUNCH -->
-<servlet-mapping>
-        <servlet-name>items</servlet-name>
-        <url-pattern>/ScormPlayer/items</url-pattern>
+	<servlet-mapping>
+        	<servlet-name>items</servlet-name>
+	        <url-pattern>/ScormPlayer/items</url-pattern>
         </servlet-mapping>
         <servlet-mapping>
-        <servlet-name>initservlet</servlet-name>
-        <url-pattern>/ScormPlayer/initservlet</url-pattern>
+        	<servlet-name>initservlet</servlet-name>
+	        <url-pattern>/ScormPlayer/initservlet</url-pattern>
         </servlet-mapping>
         <servlet-mapping>
-        <servlet-name>myservlet</servlet-name>
-        <url-pattern>/ScormPlayer/myservlet</url-pattern>
+        	<servlet-name>myservlet</servlet-name>
+	        <url-pattern>/ScormPlayer/myservlet</url-pattern>
         </servlet-mapping>
         <servlet-mapping>
-        <servlet-name>update</servlet-name>
-        <url-pattern>/ScormPlayer/update</url-pattern>
+        	<servlet-name>update</servlet-name>
+	        <url-pattern>/ScormPlayer/update</url-pattern>
         </servlet-mapping>
         <servlet-mapping>
-        <servlet-name>preq</servlet-name>
-        <url-pattern>/ScormPlayer/preq</url-pattern>
+        	<servlet-name>preq</servlet-name>
+	        <url-pattern>/ScormPlayer/preq</url-pattern>
         </servlet-mapping>
-        <!-- /SCORM CONTENT LAUNCH -->
+<!-- /SCORM CONTENT LAUNCH -->
+ <servlet>
+    <servlet-name>JnlpDownloadServlet</servlet-name>
+    <servlet-class>jnlp.sample.servlet.JnlpDownloadServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>JnlpDownloadServlet</servlet-name>
+    <url-pattern>*.jnlp</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>JnlpDownloadServlet</servlet-name>
+    <url-pattern>*.jar</url-pattern>
+  </servlet-mapping>
 </web-app>
