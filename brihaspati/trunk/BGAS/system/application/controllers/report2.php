@@ -250,6 +250,8 @@ class Report2 extends Controller {
 		$this->load->model('Tag_model');
                 $date1 = $this->session->userdata('date1');
                 $date2 = $this->session->userdata('date2');
+		$code = $this->session->userdata('code');
+		$count = $id;
 		if ($statement == "tag")
                 {
                         $this->load->helper('text');
@@ -304,7 +306,7 @@ class Report2 extends Controller {
                         return;
                 }
 	
-		 if ($statement == "profitandloss_mhrd")
+		if ($statement == "profitandloss_mhrd")
                 {
                         $this->load->helper('text');
                         $data['width'] = "70%";
@@ -323,8 +325,47 @@ class Report2 extends Controller {
                         $this->session->unset_userdata('date2');
                         return;
                 }
+		if ($statement == "schedule")
+                {
+                        $arr = array();
+                        $arr['code'] = $code;
+
+                        $this->load->model('Group_model');
+                        $group_details = $this->Group_model->get_schedule($code);
+                        foreach ($group_details as $id => $group)
+                        {
+                                $id  = $group['id'];
+                                $name = $group['name'];
+                        }
+
+                        if($name != '' && $id != ''){
+                                $title =  'Schedule - ' . $count . ' ' . $name;
+                                $arr['id'] = $id;
+                                $arr['name'] = $group['name'];
+                                $arr['code'] = $code;
+				$arr['count'] = $count;
+                        }
+                        else{
+                                $title = 'Schedule - Notes on Accounts';
+                        }
+
+                        //if(($name == 'Staff Payments and Benefits') || ($name == 'Academic Expenses') || ($name =='Administrative and General expenses') || ($name == 'Repairs and Maintenance') || ($name == 'Finance Costs')||($name == 'Transportations Expenses')){
+                        	 $data['report'] = "report2/schedule_template";
+                                 $data['title'] = $title;
+                                 $data['left_width'] = "";
+                                 $data['right_width'] = "";
+                                 $data['print_preview'] = TRUE;
+                                 $data['entry_date1'] = $date1;
+                                 $data['entry_date2'] = $date2;
+                                 $data['isSchedule'] = "true";
+                                 $data['arr'] = $arr;
+                                 $this->load->view('report/report_template', $data);
+                                 return;
+		//	}
+		}
 
 	}
+
 	function pdf($statement, $id = NULL)
         {
                 $this->load->helper('pdf_helper');
@@ -853,7 +894,60 @@ class Report2 extends Controller {
                 $this->template->load('template', 'report2/profitandloss_mhrd', $data);
                 return;
 
-	}	
+	}
+	
+	function schedule($code, $count)
+        {
+                $this->template->set('schedule', 'true');
+                $data = array();
+                $id = '';
+                $schedule = '';
+                $name = '';
+		$this->db->from('settings');
+                $detail = $this->db->get();
+                foreach ($detail->result() as $row)
+                {
+                        $date1 = $row->fy_start;
+                        $date2 = $row->fy_end;
+                }
+                 $newdata = array(
+                      'date1'  => $date1,
+                      'date2'  => $date2
+                     );
+                $this->session->set_userdata($newdata);
 
+                $data['code'] = $code;
+		$data['count'] = $count;
+                $this->load->model('Group_model');
+                $group_details = $this->Group_model->get_schedule($code);
+                foreach ($group_details as $id => $group)
+                {
+                        $id  = $group['id'];
+                        $name = $group['name'];
+                }
+
+                if($name != '' && $id != ''){
+                        $this->template->set('page_title', 'Schedule - ' . $count . ' ' . $name);
+                        $this->session->set_userdata('code', $code);
+                        $this->template->set('nav_links', array('report/download/schedule/'.$count => 'Download CSV', 'report2/printpreview/schedule/'. $count => 'Print Preview'));
+                                                                            
+		        $data['id'] = $id;
+                }
+                else{
+                        $this->template->set('page_title', 'Schedule - Notes on Accounts');
+                        $this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule' => 'Print Preview'));
+                }
+
+		$data['print_preview'] = 'FALSE';
+//		if($name == 'Transportations Expenses'){
+                
+  //                      $this->template->load('template', 'report2/schedule_template_2',$data);
+    //                    return;
+//		}else{
+		      	$this->template->load('template', 'report2/schedule_template', $data);
+                        return;
+//		}
+		return;
+	}
 }
 ?>

@@ -334,7 +334,7 @@ class Payment_model extends Model {
 		return $total;
 	}
 
-	function xml_creation($type,$ledg_id,$database,$name,$curr_year)
+	function xml_creation($type,$ledg_id,$database,$name,$curr_year,$total)
 	{
 		$counter = "0";
 				if($type == "Income")
@@ -346,7 +346,6 @@ class Payment_model extends Model {
 					 $expense = new Reportlist();
                                         $expense->init($ledg_id);
                                         $total = $expense->total; 
-					echo"$total";
 				 }
 		//		echo"total==$total sum =$sum";
                               

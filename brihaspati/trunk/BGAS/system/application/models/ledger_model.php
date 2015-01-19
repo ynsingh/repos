@@ -1089,6 +1089,26 @@ var $ledgers = array();
                         return 0;
         }
 
+	  function get_group_id($code)
+        {
+                $this->db->select('id');
+                $this->db->from('groups')->where('code =', $code);
+                $group_result = $this->db->get();
+                if ($group = $group_result->row())
+                        return $group->id;
+                else
+                        return 0;
+        }
+
+	function get_group_name($id)
+	{
+		$this->db->select('name')->from('groups')->where('id' , $id);
+		$group_result = $this->db->get();
+		if($group = $group_result->row())
+			return $group->name;
+		else
+			return 0;
+	}
 
 	function get_asset_amount($id)
         {

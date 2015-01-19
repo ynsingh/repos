@@ -598,16 +598,17 @@ class Reportlist
 			if(($type == "CF") && ($id == 3) && ($database != "NULL"))
 			{	
 				$t_name = "Income";
+				$total = 0;
 				$CI =& get_instance();
                         	$CI->load->model('Payment_model');
-                        	$data = $CI->Payment_model->xml_creation($t_name,$ledg_id,$database,$name,$curr_year);
+                        	$data = $CI->Payment_model->xml_creation($t_name,$ledg_id,$database,$name,$curr_year,$total);
 			}
                 
                         if($id == 4 && $type == "view" && $database == "NULL")
 			{
                                         $c++;
                        
-                        echo "&nbsp;" . anchor_popup('report/schedule/' . $code . '/' . $c, $c, array('title' => $name, 'style' => 'color:#000000'));
+                        echo "&nbsp;" . anchor_popup('report2/schedule/' . $code . '/' . $c, $c, array('title' => $name, 'style' => 'color:#000000'));
 
                         echo"</td>";
                                         $CI =& get_instance();
@@ -691,9 +692,10 @@ class Reportlist
                   	if($type == "CF" && $id == 4 && $database != "NULL")
 			{
 				$t_name = "Expense";
+				$total = "";
                                 $CI =& get_instance();
                                 $CI->load->model('Payment_model');
-                                $data = $CI->Payment_model->xml_creation($t_name,$ledg_id,$database,$name,$curr_year);
+                                $data = $CI->Payment_model->xml_creation($t_name,$ledg_id,$database,$name,$curr_year,$total);
 
 					
 			}
@@ -1689,5 +1691,233 @@ class Reportlist
                 //$this->counter = $this->counter + 1;
                 return $this->counter;
 	}
+
+	function get_IE_schedule($code,$type,$database,$count)
+        {
+		$i =0;
+		$sum = 0;
+		$sum1 =0;
+		$prev_sum = 0;
+		$prev_sum1 =0;
+		$schedulelist1 = "";
+		$schedulelist2 ="";
+		$schedulelist3 = "";
+		$CI = & get_instance();
+        	$CI->db->from('settings');
+                $detail = $CI->db->get();
+                foreach ($detail->result() as $row)
+                {
+                    $date1 = $row->fy_start;
+                    $date2 = $row->fy_end;
+                }
+                    $fy_start=explode("-",$date1);
+                    $fy_end=explode("-",$date2);
+
+                $curr_year = $fy_start[0] ."-" .$fy_end[0];
+                $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+		$CI =& get_instance();
+                $CI->load->model('ledger_model');
+                $id = $CI->ledger_model->get_group_id($code);
+		$parent = $CI->ledger_model->get_group_name($id);
+                $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+	//	$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+                $main = $CI->db->get();
+                $main_result= $main->result();
+		$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+		$ledger_detail = $CI->db->get();
+		$ledger_result = $ledger_detail->result();
+		$CI =& get_instance();
+		$CI->load->model('payment_model');
+		$db = $CI->payment_model->database_name();
+                              //  echo "</tr>";   
+		
+                foreach($main_result as $row)
+                {
+                        $name = $row->name;
+                        $group_id =$row->id;
+			if(($type == 'view') && ($database == 'NULL'))
+			{
+				echo "<tr class=\"tr-group\">";
+                        	echo "<td class=\"td-group\">";
+                        	echo "&nbsp;" .  $name;
+                        	echo "</td>";
+				$object = new Reportlist();
+                                $object->init($group_id);
+                                $total = $object->total;
+                                echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
+                                $sum = $sum + $total;
+
+				/* code for reading previous year data from xml @megha */
+
+				$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                                $file_name="schedule".$count.$db.$prev_year.".xml";
+                                $tt=$acctpath."/".$file_name;
+                                if(file_exists($tt))
+				{
+                                	$doc = new DomDocument();
+                                        $doc->formatOutput = true;
+                                        $doc->load($tt);
+                                        $xpath = new DomXPath($doc);
+					$schedule1 = "schedule".$count;
+					$schedule2 = $schedule1."_Name";
+                                        $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+					$xpath->query("/".$schedule1."/".$schedule2."/Amount");
+					$xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
+					$schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+					$schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
+					$schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
+                                        $schedulelist1 = @$schedulenode1->item($i)->nodeValue;
+                                        $schedulelist2 = @$schedulenode2->item($i)->nodeValue;
+                                       	$schedulelist3 = @$schedulenode3->item($i)->nodeValue;
+				}
+                                
+				$prev_sum = $prev_sum + $schedulelist2;
+                                $i++;
+                                if($schedulelist2 == 0)
+                                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                                else
+                                echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
+                       		echo "</tr>";
+
+				if ($id == '30')
+                                {
+                                        $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id);
+                                        $sub_groups = $CI->db->get();
+                                        $sub_group_result = $sub_groups->result();
+                                        foreach($sub_group_result as $row3)
+                                        {
+                                                $name = $row3->name;
+                                                $sub_g_id = $row3->id;
+                                                echo "<tr class=\"tr-ledger\">";
+                                                echo "<td class=\"td-ledger\">";
+                                                echo "&nbsp;&nbsp;&nbsp;&nbsp" .  $name;
+                                                echo "</td>";
+                                                $CI->load->model('ledger_model');
+                                                $total = $CI->ledger_model->get_ledger_balance($sub_g_id);
+                                                echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
+
+                                                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                                		$file_name="schedule".$count.$db.$prev_year.".xml";
+                                		$tt=$acctpath."/".$file_name;
+                                		if(file_exists($tt))
+                                		{
+                                        		$doc = new DomDocument();
+                                        		$doc->formatOutput = true;
+                                        		$doc->load($tt);
+                                        		$xpath = new DomXPath($doc);
+                                        		$schedule1 = "schedule".$count;
+                                        		$schedule2 = $schedule1."_Name";
+                                        		$xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+                                        		$xpath->query("/".$schedule1."/".$schedule2."/Amount");
+                                        		$xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
+                                        		$schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+                                        		$schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
+                                        		$schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
+                                        		$schedulelist1 = @$schedulenode1->item($i)->nodeValue;
+                                        		$schedulelist2 = @$schedulenode2->item($i)->nodeValue;
+                                        		$schedulelist3 = @$schedulenode3->item($i)->nodeValue;
+                                		}
+						$i++;
+						if($schedulelist2 == 0)
+                                		echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                                		else
+                                		echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
+                                		echo "</tr>";
+                                        }
+                                }
+                	}
+			if(($type == 'CF')&&($database != 'NULL'))
+			{
+				$t_name = "schedule".$count;
+				$object = new Reportlist();
+                          	$object->init($group_id);
+                            	$total = $object->total;
+                                $CI =& get_instance();
+                                $CI->load->model('Payment_model');
+                                $data = $CI->Payment_model->xml_creation($t_name,$group_id,$database,$name,$curr_year,$total);
+				if($id == '30')
+				{
+				 	$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id);
+                                        $sub_groups = $CI->db->get();
+                                        $sub_group_result = $sub_groups->result();
+                                        foreach($sub_group_result as $row3)
+                                        {
+                                                $name = $row3->name;
+                                                $sub_g_id = $row3->id;
+						$t_name = "schedule".$count;
+						$CI = & get_instance();
+						$CI->load->model('ledger_model');
+                                                $total = $CI->ledger_model->get_ledger_balance($sub_g_id);
+                                		$CI->load->model('Payment_model');
+                                		$data = $CI->Payment_model->xml_creation($t_name,$sub_g_id,$database,$name,$curr_year,$total);
+					}
+				}
+			}
+		}
+		foreach($ledger_result as $row1)
+		{
+			$ledger_name = $row1->name;
+			$ledger_id =$row1->id;
+			if(($type == 'view') && ($database == 'NULL'))
+			{
+                        	echo "<tr class=\"tr-group\">";
+                        	echo "<td class=\"td-group\">";                  
+       				echo "&nbsp;" .  $ledger_name;
+                                echo "</td>";
+                        	$CI =& get_instance();
+                        	$CI->load->model('ledger_model');
+                        	$total1 = $CI->ledger_model->get_ledger_balance($ledger_id);
+                                echo "<td align=\"right\">" . convert_amount_dc($total1) . "</td>";
+                                $sum1 = $sum1 + $total1;
+				$this->ledger_id = $ledger_id;
+				/* code for reading previous year data form xml by 'megha'  */
+
+				$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                                $file_name="schedule".$count.$db.$prev_year.".xml";
+                                $tt=$acctpath."/".$file_name;
+                                if(file_exists($tt))
+                                {
+                                        $doc = new DomDocument();
+                                        $doc->formatOutput = true;
+                                        $doc->load($tt);
+                                        $xpath = new DomXPath($doc);
+                                        $schedule1 = "schedule".$count;
+                                        $schedule2 = $schedule1."_Name";
+                                        $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+                                        $xpath->query("/".$schedule1."/".$schedule2."/Amount");
+                                        $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
+                                        $schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+                                        $schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
+                                        $schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
+                                        $schedulelist1 = @$schedulenode1->item($i)->nodeValue;
+                                        $schedulelist2 = @$schedulenode2->item($i)->nodeValue;
+                                        $schedulelist3 = @$schedulenode3->item($i)->nodeValue;
+                                }
+				$prev_sum1 = $prev_sum1 + $schedulelist2;
+				$i++;
+				if($schedulelist2 == 0)
+                                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                                else
+                                echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
+                                echo "</tr>";
+
+			}
+			if(($type == 'CF') && ($database != 'NULL'))
+			{
+                                $t_name = "schedule".$count;
+				$CI =& get_instance();
+				$CI->load->model('ledger_model');
+                                $total1 = $CI->ledger_model->get_ledger_balance($ledger_id);
+                                $CI->load->model('Payment_model');
+                                $data = $CI->Payment_model->xml_creation($t_name,$ledger_id,$database,$ledger_name,$curr_year,$total1);
+			}
+		}
+
+		$curr_total= $sum + $sum1;
+		$prev_total = $prev_sum + $prev_sum1;
+		$this->curr_total = $curr_total;
+		$this->prev_total = $prev_total;	
+        }
+
 }
 

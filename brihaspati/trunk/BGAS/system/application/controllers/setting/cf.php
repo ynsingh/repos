@@ -519,7 +519,20 @@ class Cf extends Controller {
 	        	                        }
 					}
 				}
-
+				
+				$this->db->select('code')->from('groups')->where('parent_id','4');
+				$groups = $this->db->get();
+				$count = 17;
+				foreach($groups->result() as $row)
+				{
+					$code = $row->code;
+					$this->load->library('Reportlist');
+                                	$schedule = new Reportlist();
+                                	$schedule->get_IE_schedule($code,"CF",$data_database_name,$count);
+					$count++;
+				}
+				
+			
 				/* Adding org name unit name year and database name in login database */
 				$sy =$last_year_end_year;
 				$ey = $last_year_end_year+1;
@@ -551,6 +564,8 @@ class Cf extends Controller {
                                         $this->messages->add('Added Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
                                 }
 				$db1->close();
+	
+	
 
 				/* xml creation */
 				$this->load->library('Paymentreceipt');
