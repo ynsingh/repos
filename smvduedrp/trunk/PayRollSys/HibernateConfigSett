@@ -1,0 +1,20 @@
+<Resource name="jdbc/Database_Name"
+      global="jdbc/Database_Name"
+      auth="Container"
+      type="javax.sql.DataSource"
+      driverClassName="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://localhost:3306/Database_Name"
+      username="User_Name"
+      password="password"
+       
+      maxActive="100"
+      maxIdle="20"
+      minIdle="5"
+      maxWait="10000"/>
+
+
+1. copy and paste above code in context.xml file of apache tomcat. 
+2. change "Database_Name", "User_Name" and "password" field.
+3. Go to hibernate.cfg.xml file (PayRollSys/src/java/hibernate.cfg.xml) and Change the "Database_Name" in "hibernate.connection.datasource" 	  property.
+4. Congratulation ! You are all done.
+
