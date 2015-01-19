@@ -8,7 +8,6 @@ package org.smvdu.payroll.beans.setup;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import org.smvdu.payroll.beans.db.DepartmentDB;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.io.File;
@@ -16,6 +15,7 @@ import java.io.FileOutputStream;
 
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
+import org.smvdu.payroll.beans.db.DepartmentDB;
 import org.smvdu.payroll.beans.upload.UploadFile;
 
 /**
@@ -52,8 +52,126 @@ import org.smvdu.payroll.beans.upload.UploadFile;
 *
 */
 //public class Department extends BaseBean implements Converter,Serializable{
+
 public class Department implements Serializable{
-    public void save() {
+  
+   
+
+  /*  @Override
+    public String toString()
+    {
+        return getName();
+    }
+
+    
+    /*@Override
+    public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
+        //System.err.println("Got String "+string);
+        Department dept =  new DepartmentDB().convert(string);
+        //System.err.println("Got Object Name "+dept.getName()+",Code "+dept.getCode());
+        return dept;
+    }
+
+    @Override
+    public String getAsString(FacesContext fc, UIComponent uic, Object o) {
+        //System.out.println("Object class Dept: "+o.getClass().getSimpleName());
+        BaseBean bb = (BaseBean)o;
+        return String.valueOf(bb.getName());
+    }*/
+    public Department () {}
+   
+  /*  public Department (int code, String dcode, String name, String nickname,int orgcode)
+    {
+           this.code = code;
+           this.dcode = dcode;
+           this.name = name;
+           this.nickname = nickname;
+           this.orgcode = orgcode;
+    }*/
+    
+    private int code;
+        
+    public int getCode() {
+        return code;
+    }
+    
+    public void setCode(int code) {
+        this.code = code;
+    }
+    
+    private String dcode;
+
+    public String getDcode() {
+        return dcode;
+    }
+
+    public void setDcode(String dcode) {
+        this.dcode = dcode;
+    }
+    
+
+    
+    private String name;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    private String nickName;
+    
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickname) {
+        this.nickName = nickname;
+    }
+    
+    private int orgcode;
+    public int getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
+    }
+
+ 
+    private SelectItem[] arrayAsItem;
+
+    public SelectItem[] getArrayAsItem() {
+
+        ArrayList<Department> departments = new DepartmentDB().loadDepartments();
+        arrayAsItem = new SelectItem[departments.size()];
+        //Department dp = null;
+        for(int i=0;i<departments.size();i++)
+        {
+           Department dp = departments.get(i);
+            SelectItem si = new SelectItem(dp.getCode(), dp.getName());
+            arrayAsItem[i] = si;
+        }
+        return arrayAsItem;
+    }
+
+    public void setArrayAsItem(SelectItem[] arrayAsItem) {
+        this.arrayAsItem = arrayAsItem;
+    }
+    
+    private int empCount;
+
+    public int getEmpCount() {
+        return empCount;
+    }
+
+    public void setEmpCount(int empCount) {
+        this.empCount = empCount;
+    }
+    
+    
+      public void save() {
         FacesContext fc = FacesContext.getCurrentInstance();
         /*if (this.getDCode()matches("^[a-zA-Z\\s]*$") == false) {
             FacesMessage message = new FacesMessage();
@@ -89,106 +207,12 @@ public class Department implements Serializable{
         }
         
     }
-
-    private SelectItem[] arrayAsItem;
-
-    public SelectItem[] getArrayAsItem() {
-
-        ArrayList<Department> departments = new DepartmentDB().loadDepartments();
-        arrayAsItem = new SelectItem[departments.size()];
-        //Department dp = null;
-        for(int i=0;i<departments.size();i++)
-        {
-           Department dp = departments.get(i);
-            SelectItem si = new SelectItem(dp.getCode(), dp.getName());
-            arrayAsItem[i] = si;
-        }
-        return arrayAsItem;
-    }
-
-    public void setArrayAsItem(SelectItem[] arrayAsItem) {
-        this.arrayAsItem = arrayAsItem;
-    }
-        
-    private int empCount;
-
-    public int getEmpCount() {
-        return empCount;
-    }
-
-    public void setEmpCount(int empCount) {
-        this.empCount = empCount;
-    }
-    
-    
-
-    @Override
-    public String toString()
-    {
-        return getName();
-    }
-
-    
-    /*@Override
-    public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
-        //System.err.println("Got String "+string);
-        Department dept =  new DepartmentDB().convert(string);
-        //System.err.println("Got Object Name "+dept.getName()+",Code "+dept.getCode());
-        return dept;
-    }
-
-    @Override
-    public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-        //System.out.println("Object class Dept: "+o.getClass().getSimpleName());
-        BaseBean bb = (BaseBean)o;
-        return String.valueOf(bb.getName());
-    }*/
-    
-    private String nickname;
-    
-    public String getNickName() {
-        return nickname;
-    }
-
-    public void setNickName(String nickname) {
-        this.nickname = nickname;
-    }
-    
-    
-    private String dcode;
-    public String getDCode() {
-        return dcode;
-    }
-
-    public void setDCode(String dcode) {
-        this.dcode = dcode;
-    }
-    private int code;
-    
-    public int getCode() {
-        return code;
-    }
-    
-    public void setCode(int code) {
-        this.code = code;
-    }
-    
-    
-    private String name;
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    
     
     //upload file --------------------//
-    
+   
    private UploadFile files=null ;
-   //private int uploadsAvailable = 5;
+
+//   private int uploadsAvailable = 5;
    public void listener(UploadEvent event) throws Exception{
         UploadItem item = event.getUploadItem();
         UploadFile file= new UploadFile();
@@ -232,6 +256,6 @@ public class Department implements Serializable{
         {
             e.printStackTrace();
         }
-    }
-   
+   }
+
 }

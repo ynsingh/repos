@@ -5,6 +5,7 @@
 
 package org.smvdu.payroll.beans.db;
 
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.bean.CsvToBean;
@@ -20,6 +21,9 @@ import org.smvdu.payroll.beans.upload.UploadFile;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
+
 
 /**
  * Manages Department in database.
@@ -59,7 +63,8 @@ public class DepartmentDB {
 
     private ActiveProfile info;
     private final UserInfo userBean;
-    
+    private HibernateUtil helper;
+    private Session session;
     
     public DepartmentDB()   {
         info = (ActiveProfile)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
@@ -72,7 +77,7 @@ public class DepartmentDB {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    public Department convert(String code)    {
+/*    public Department convert(String code)    {
         try
         {
             Connection c = new CommonDB().getConnection();
@@ -81,11 +86,11 @@ public class DepartmentDB {
             rs =ps.executeQuery();
             rs.next();
             Department d = new Department();
-            d.setCode(rs.getInt(1));
+             d.setCode(rs.getInt(1));
             d.setName(rs.getString(2));
             rs.close();
             ps.close();
-            c.close();
+            c.close(); 
             return d;
 
         }
@@ -94,11 +99,30 @@ public class DepartmentDB {
             e.printStackTrace();
             return null;
         }
-    }
+    }   */
     public Exception update(ArrayList<Department> depts)    {
         try
         {
-            Connection c = new CommonDB().getConnection();
+    
+            session = helper.getSessionFactory().openSession();
+            
+            for(Department dp : depts)
+            {
+                session.beginTransaction();
+
+                Department dept = (Department)session.get(Department.class, dp.getCode());
+
+                dept.setDcode(dp.getDcode().toUpperCase());
+                dept.setName(dp.getName().toUpperCase());
+                dept.setNickName(dp.getNickName().toUpperCase());   
+                dept.setOrgcode(userBean.getUserOrgCode());
+                session.update(dept);
+                session.getTransaction().commit();
+            }
+           
+            session.close();
+
+         /*   Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update department_master set  dept_dcode=?, dept_name=?, dept_nickname=?"
                     + " where dept_code=? and org_code= ? ");
             for(Department dp : depts)
@@ -113,7 +137,7 @@ public class DepartmentDB {
                 //System.out.println("departments===="+dp.getDCode()+":"+dp.getName()+":"+dp.getNickName()+":"+dp.getCode());
             }
             ps.close();
-            c.close();
+            c.close(); */
             return null;
         }
         catch(Exception e)
@@ -124,11 +148,22 @@ public class DepartmentDB {
         }
     }
     public ArrayList<Department> loadDepartments()   {
-        ArrayList<Department> data = new ArrayList<Department>();
+      //  ArrayList<Department> data = new ArrayList<Department>();
         try
         {
             
-            Connection c = new CommonDB().getConnection();
+          session = helper.getSessionFactory().openSession();
+          session.beginTransaction();
+          Query query = session.createQuery("from Department where orgcode = '"+userBean.getUserOrgCode()+"'");
+          ArrayList<Department> data = (ArrayList<Department>) query.list();
+        
+          session.getTransaction().commit();
+          session.close();  
+
+          System.out.println("list of Department = " +data.size());
+      
+                 
+            /*    Connection c = new CommonDB().getConnection();
             //ps=c.prepareStatement("select dept_code,dept_name from department_master where org_code = '"+userBean.getUserOrgCode()+"'");
             //modify 26 sept 2014 for dcode and nickname
             ps=c.prepareStatement("select * from department_master where org_code = '"+userBean.getUserOrgCode()+"'");
@@ -144,7 +179,7 @@ public class DepartmentDB {
             }
             rs.close();
             ps.close();
-            c.close();
+            c.close();*/
             return data;
         }
         catch(Exception e)
@@ -158,7 +193,20 @@ public class DepartmentDB {
     public Exception save(Department dptName)   {
         try
         {
-            Connection c = new CommonDB().getConnection();
+          Department dept = new Department();
+          
+          dept.setDcode(dptName.getDcode().toUpperCase());
+          dept.setName(dptName.getName().toUpperCase());
+          dept.setNickName(dptName.getNickName().toUpperCase());
+          dept.setOrgcode(userBean.getUserOrgCode());
+          
+          session = helper.getSessionFactory().openSession();
+          session.beginTransaction();
+          session.save(dept);
+          session.getTransaction().commit();
+          session.close();
+                  
+            /*  Connection c = new CommonDB().getConnection();
             //ps=c.prepareStatement("insert into department_master(dept_name, org_code) values(?,?)");
             ps=c.prepareStatement("insert into department_master(dept_dcode, dept_name, dept_nickname, org_code) values(?,?,?,?)");
             ps.setString(1, dptName.getDCode().toUpperCase());
@@ -168,7 +216,7 @@ public class DepartmentDB {
             
             ps.executeUpdate();
             ps.close();
-            c.close();
+            c.close(); */
             return null;
         }
         catch(Exception e)
@@ -183,7 +231,43 @@ public class DepartmentDB {
     public Exception saveFile(UploadFile file)   {
         try
         {
-            Connection c = new CommonDB().getConnection();
+        
+          Department dept = new Department();
+          
+           String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
+            CSVReader reader = new CSVReader(new FileReader(path+"/"+file.getName()), ',', '\"', 1);
+            ColumnPositionMappingStrategy<Department> mappingStrategy 
+                                 = new ColumnPositionMappingStrategy<Department>();
+            mappingStrategy.setType(Department.class);
+            String[] columns = new String[] {"DCode","Name","NickName"};
+            mappingStrategy.setColumnMapping(columns);
+        
+            CsvToBean<Department> csv = new CsvToBean<Department>();
+            List<Department> DepartmentList = csv.parse(mappingStrategy, reader);
+            
+            
+        
+            for (int i = 0; i < DepartmentList.size(); i++) 
+            {
+                
+                Department DDetail = DepartmentList.get(i);
+                // display CSV values
+                
+                dept.setDcode(DDetail.getDcode().toUpperCase());
+                dept.setName(DDetail.getName().toUpperCase());
+                dept.setNickName(DDetail.getNickName().toUpperCase());
+                dept.setOrgcode(userBean.getUserOrgCode());
+                session = helper.getSessionFactory().openSession();
+                session.beginTransaction();
+                session.save(dept);
+                session.getTransaction().commit();
+                           
+
+            }
+          reader.close();;
+          session.close();
+            
+          /*    Connection c = new CommonDB().getConnection();
             
             ps=c.prepareStatement("insert into department_master(dept_dcode, dept_name, dept_nickname, org_code) values(?,?,?,?)");
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
@@ -196,7 +280,7 @@ public class DepartmentDB {
         
             CsvToBean<Department> csv = new CsvToBean<Department>();
             List<Department> DepartmentList = csv.parse(mappingStrategy, reader);
-
+           
         
             for (int i = 0; i < DepartmentList.size(); i++) 
             {
@@ -214,7 +298,7 @@ public class DepartmentDB {
             }
             reader.close();
             ps.close();
-            c.close();
+            c.close();  */
             return null;
         }
         catch(Exception e)

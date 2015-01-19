@@ -90,7 +90,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Department Code"/>
                             </f:facet>
-                            <rich:inplaceInput value="#{dept.DCode}" />
+                            <rich:inplaceInput value="#{dept.dcode}" />
                         </h:column>  
                         <h:column >
                             <f:facet name="header">
@@ -102,7 +102,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Department Nick Name"/>
                             </f:facet>
-                            <rich:inplaceInput value="#{dept.nickName}" />
+                            <rich:inplaceInput value="#{dept.nickName}"/>
                         </h:column> 
                         <f:facet name="footer">
                                 <rich:datascroller for="tbl" page="1"/>  
@@ -124,15 +124,15 @@
                 <h:form>
                     <rich:panel header="Add New Department">
                     <h:panelGrid columns="3">
-                    <h:outputText value="Department Code"/>
-                    <h:inputText id="deptCode" required="true" requiredMessage="Please Enter Department Code" value="#{DepartmentBean.DCode}"/>
-                    <h:message styleClass="error" for="deptCode" tooltip="Employee Type"/>
-                    <h:outputText value="Department Name"/>
-                    <h:inputText id="deptName" required="true" requiredMessage="Please Enter Department Name" value="#{DepartmentBean.name}"/>
-                    <h:message styleClass="error" for="deptName" tooltip="*"/>
-                    <h:outputText value="Department Nick Name"/>
-                    <h:inputText id="nickName" required="true" requiredMessage="Please Enter Department NickName" value="#{DepartmentBean.nickName}"/>
-                    <h:message styleClass="error" for="nickName" tooltip="*"/>
+                        <h:outputText value="Department Code"/>
+                        <h:inputText id="deptCode" required="true" requiredMessage="Please Enter Department Code" value="#{DepartmentBean.dcode}"/>
+                        <h:message styleClass="error" for="deptCode" tooltip="Employee Type"/>
+                        <h:outputText value="Department Name"/>
+                        <h:inputText id="deptName" required="true" requiredMessage="Please Enter Department Name" value="#{DepartmentBean.name}"/>
+                        <h:message styleClass="error" for="deptName" tooltip="*"/>
+                        <h:outputText value="Department Nick Name"/>
+                        <h:inputText id="nickName" required="true" requiredMessage="Please Enter Department NickName" value="#{DepartmentBean.nickName}"/>
+                        <h:message styleClass="error" for="nickname" tooltip="*"/>
                     </h:panelGrid>
                     </rich:panel>
                     <a4j:commandButton value="Save" action="#{DepartmentBean.save}" reRender="deptForm,tbl" oncomplete="#{rich:component('pnl')}.hide();" />

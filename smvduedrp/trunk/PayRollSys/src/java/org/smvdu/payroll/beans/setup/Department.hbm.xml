@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+  <class name="org.smvdu.payroll.beans.setup.Department" table="department_master">
+        <id name="code" type="java.lang.Integer">
+            <column name="dept_code" />
+            <generator class="identity"/>
+        </id>
+       
+        <property name="dcode" type="string">
+            <column name="dept_dcode" length="100" not-null="true"/>
+        </property>
+        <property name="name" type="string">
+            <column name="dept_name" length="100" not-null="true"/>
+        </property>
+        <property name="nickName" type="string">
+            <column name="dept_nickname" length="100" not-null="true"/>
+        </property>
+        
+        <property name="orgcode" type="java.lang.Integer">
+            <column name="org_code"/>
+        </property>
+        
+    </class>
+</hibernate-mapping>
