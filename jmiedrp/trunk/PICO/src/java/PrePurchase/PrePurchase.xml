@@ -41,6 +41,7 @@
         </action>
 
         <action name="BrowseItems" method="Browse" class="PrePurchase.ManageItems">
+            <interceptor-ref name="PrePurchaseStack" />
             <result name="success">/pico/PrePurchase/BrowseItems.jsp</result>
             <result name="error">/pico/PrePurchase/ErrorPage.jsp</result>
             <result name="input">/pico/PrePurchase/BrowseItems.jsp</result>

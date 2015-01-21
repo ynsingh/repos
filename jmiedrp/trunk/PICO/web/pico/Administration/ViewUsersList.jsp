@@ -26,29 +26,28 @@
         <meta name="email" content="jaivirpal@gmail.com">
       <%--  <meta name="copyright" content="NMEICT, MHRD, Govt. of India">  --%>
     </head>
-    <body class="oneColElsLtHdr">
+    <body class="twoColElsLtHdr">
         <div id="container">
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
-
+	     <div id="sidebar1">
+                <jsp:include page="menu.jsp" flush="true"></jsp:include>
+            </div>
+	
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent" align="center">
+            <div id ="mainContent" align="center"><br><br>
                 <br>
-                <div align="right" style="margin-right: 10px">
-                    <a href="Index" >HOME</a>
-                </div>
                 <div style ="background-color: #215dc6;">
-                    <p align="center" class="pageHeading" style="color: #ffffff">REGISTERED USERS LIST</p>
+                    <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.UsersList')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p> 
                 </div>
 			<table><tr>
 			<td align="center"><s:property value="message"/> <br></td>
 			</tr></table>
                 <div style="border: solid 1px #000000; background: gainsboro">
-             	<s:form name="frmUserListBrowse">                                                      
-                 <s:property value="message" /> 
-                
+             	<s:form name="frmUserListBrowse">  
+                <s:property value="message" /> 
                  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                     <display:table name="ruList" pagesize="15"
                                excludedParams="*"  cellpadding="0"

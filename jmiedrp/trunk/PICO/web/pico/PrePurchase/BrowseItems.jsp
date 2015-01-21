@@ -37,22 +37,21 @@
                     <p align="center" class="pageHeading" style="color: #ffffff">ITEM LIST</p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>                                
+                                    <%--   cellspacing="0" id="doc" decorator="PrePurchase.PrePurchaseDecorator"  --%>
                 
                <table style="height:20em;" width="100%"><tr><td valign="top">
                 <s:form name="frmItemsBrowse">
                         <display:table name="erpmimList" pagesize="15"
                                        excludedParams="*" export="true" cellpadding="0"
-                                       cellspacing="0" id="doc" decorator="PrePurchase.PrePurchaseDecorator"
+                                       cellspacing="0" id="doc" 
                                        requestURI="/PrePurchase/BrowseItems.action">
                                 
                                 <display:column  class="griddata" title="S.No" sortable="true" maxLength="100" headerClass="gridheader">
                                     <c:out> ${doc_rowNum}
                                 </display:column>
-                                
                                 <display:column property="institutionmaster.imShortName" title="Institution"
                                                 maxLength="10" headerClass="gridheader"
                                                 class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="true"/>
-                                
                                 <display:column property="erpmimItemBriefDesc" title="Brief Description"
                                                 maxLength="35" headerClass="gridheader"
                                                 class="griddata" style="width:20%" sortable="true"/>
@@ -80,15 +79,16 @@
                                 <display:column property="erpmCapitalCategory.ermccDesc" title="Capital Category"
                                                 maxLength="35" headerClass="gridheader"
                                                 class="griddata" style="width:10%" sortable="true"/>
+                               <%-- 
                                 
                                 <display:column property="serializableStatus" title="Serial No. Applicable"
                                                 maxLength="10" headerClass="gridheader"
                                                 class="griddata" style="width:10%" sortable="true"/>
-                                 
                                 <display:column property="formatederpmimDepreciationMethod" title="Depreciation Method"
                                                 maxLength="20" headerClass="gridheader"
                                                 class="griddata" style="width:15%" sortable="true"/>
                                  
+                               --%>  
                               
                                 
                                 <display:column paramId="ErpmimId" paramProperty="erpmimId"

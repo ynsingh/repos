@@ -1,0 +1,1 @@
+insert into erpmprogram (ERPMP_ID, ERPMP_Display_Name, ERPMP_ESM_ID, ERPMP_Purpose, ERPMP_HREF, ERPMP_Order, ERPMP_SubProgram_ID, EPMP_Env_Variable, ERPMP_Display_Name_Hindi, ERPMP_Display_Name_Urdu) VALUES (43,'PICO Registered User ',1,NULL,'/pico/Administration/ErpmUserList.action',4,36,NULL,' ',' ');
