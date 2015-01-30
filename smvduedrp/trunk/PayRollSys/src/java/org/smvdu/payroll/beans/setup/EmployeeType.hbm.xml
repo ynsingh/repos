@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.setup.EmployeeType" table="employee_type_master">
+        <id name="code" type="java.lang.Integer">
+            <column name="emp_type_id" />
+            <generator class="identity"/>
+        </id>
+       
+        <property name="empTypeCode" type="string">
+            <column name="emp_tcode" length="80" not-null="true"/>
+        </property>
+        <property name="name" type="string">
+            <column name="emp_type_name" length="100" not-null="true"/>
+        </property>
+        <property name="nickname" type="string">
+            <column name="emp_type_nickname" length="80"/>
+        </property>
+        <property name="pfApplies" type="java.lang.Boolean">
+            <column name="emp_pf_applies"/>
+        </property>
+        <property name="maxpf" type="java.lang.Integer">
+            <column name="emp_maxpf_applies" length="100"/>
+        </property>
+        <property name="orgcode" type="java.lang.Integer">
+            <column name="emp_org_id"/>
+        </property>    
+  </class>
+</hibernate-mapping>

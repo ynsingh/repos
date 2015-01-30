@@ -16,6 +16,7 @@ import javax.faces.model.SelectItem;
  * @author ERP
  * Modified Date: 22OCT 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
  */
+
 public class BankProfileDetails{
 
     /** Creates a new instance of BankProfileDetails */
@@ -32,16 +33,20 @@ public class BankProfileDetails{
         //System.out.println("DAta Should Be Write Here klop : "+bifsc);
         this.bifsc = bifsc;
     }
+
     private String bankName = new String();
-    private String bankIFSCCode = new String();
-    private String bankAddress = new String();
+    private String bankIFSCCode = new String();   
+    private String bankAddress = new String();   
     private String bankBranch = new String();
     private int accountNumber;
     private String accountType;
     private String panNumber;
     private String tanNumber;
     private String accountName;
-    private int seqno;
+    
+    private int seqId;
+    private int orgcode;
+
     private SelectItem[] arrayAsItem;
 
     public String getBankAddress() {
@@ -71,6 +76,7 @@ public class BankProfileDetails{
     public String getBankName() {
         return bankName;
     }
+
     private String name;
 
     public void setBankName(String bankName) {
@@ -109,7 +115,7 @@ public class BankProfileDetails{
         this.tanNumber = tanNumber;
     }
     
-     public String getAccountName() {
+    public String getAccountName() {
         return accountName;
     }
 
@@ -118,12 +124,20 @@ public class BankProfileDetails{
     }
     
     public int getSeqId() {
-        return seqno;
+        return seqId;
     }
     public void setSeqId(int seqno) {
-        this.seqno = seqno;
+        this.seqId = seqno;
     }
 
+    public int getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
+    }
+    
     public SelectItem[] getArrayAsItem()
     {
         ArrayList<BankProfileDetails> bankpro = new ArrayList<BankProfileDetails>();
@@ -223,6 +237,7 @@ public class BankProfileDetails{
             ex.printStackTrace();
         }
     }
+
     private ArrayList<BankProfileDetails> getdatils = new ArrayList<BankProfileDetails>();
 
     public ArrayList<BankProfileDetails> getCompleteBankInfo() {

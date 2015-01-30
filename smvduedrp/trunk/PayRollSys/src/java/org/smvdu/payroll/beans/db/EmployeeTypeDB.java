@@ -10,6 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.EmployeeType;
 
@@ -53,6 +57,8 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
 
     private PreparedStatement ps;
     private ResultSet rs;
+    private HibernateUtil helper;
+    private Session session;
 
     private UserInfo userBean;
 
@@ -65,7 +71,30 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
     public Exception update(ArrayList<EmployeeType> grades)   {
         try
         {
-            Connection c = new CommonDB().getConnection();
+    
+            session = helper.getSessionFactory().openSession();
+           
+            for(EmployeeType sg : grades)
+            { 
+                session.beginTransaction();
+                
+                EmployeeType emp = (EmployeeType)session.get(EmployeeType.class, sg.getCode());
+                
+                emp.setEmpTypeCode(sg.getEmpTypeCode().toUpperCase());
+                emp.setName(sg.getName().toUpperCase());
+                emp.setNickname(sg.getNickname().toUpperCase());
+                emp.setPfApplies(sg.isPfApplies());
+                emp.setMaxpf(sg.getMaxpf());
+                emp.setOrgcode(userBean.getUserOrgCode());
+                
+                session.update(emp);
+                session.getTransaction().commit();
+            }
+            
+            session.close();
+            
+            
+            /*      Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update employee_type_master set emp_tcode=?, emp_type_name=?, emp_type_nickname=?"
                     + ",emp_pf_applies=?, emp_maxpf_applies=? where emp_type_id=? and emp_org_id = ?");
             for(EmployeeType sg : grades)
@@ -82,7 +111,7 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
                 ps.clearParameters();
             }
             ps.close();
-            c.close();
+            c.close();          */
         return null;
         }
         catch(Exception e)
@@ -94,7 +123,17 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
     public ArrayList<EmployeeType> loadTypes()   {
         try
         {
-            Connection c = new CommonDB().getConnection();
+            session = helper.getSessionFactory().openSession();
+            
+            session.beginTransaction();
+            
+            Query query = session.createQuery("from EmployeeType where orgcode = '"+userBean.getUserOrgCode()+"'");
+            ArrayList<EmployeeType> data = (ArrayList<EmployeeType>)query.list();
+            session.getTransaction().commit();
+            session.close();
+            
+            
+            /*   Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select * from employee_type_master where emp_org_id = '"+userBean.getUserOrgCode()+"'");
             rs=ps.executeQuery();
             ArrayList<EmployeeType> data = new ArrayList<EmployeeType>();
@@ -111,7 +150,7 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
             }
             rs.close();
             ps.close();
-            c.close();
+            c.close();          */
             return data;
         }
         catch(Exception e)
@@ -124,7 +163,24 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
     public Exception save(EmployeeType emptype){
         try
         {
-            Connection c = new CommonDB().getConnection();
+              
+            EmployeeType emp = new EmployeeType();
+            
+            emp.setEmpTypeCode(emptype.getEmpTypeCode().toUpperCase());
+            emp.setName(emptype.getName().toUpperCase());
+            emp.setNickname(emptype.getNickname().toUpperCase());
+            emp.setPfApplies(emptype.isPfApplies());
+            emp.setMaxpf(emptype.getMaxpf());
+            emp.setOrgcode(userBean.getUserOrgCode());
+            
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(emp);
+            session.getTransaction().commit();
+            session.close();
+            
+            
+            /*      Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into employee_type_master(emp_tcode,emp_type_name,emp_type_nickname,emp_pf_applies,emp_maxpf_applies,emp_org_id) values(?,?,?,?,?,?)");
             ps.setString(1,emptype.getEmpTypeCode());
             ps.setString(2, emptype.getName().toUpperCase());
@@ -134,7 +190,7 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
             ps.setInt(6, userBean.getUserOrgCode());
             ps.executeUpdate();
             ps.close();
-            c.close();
+            c.close();          */
             
             
             return null;

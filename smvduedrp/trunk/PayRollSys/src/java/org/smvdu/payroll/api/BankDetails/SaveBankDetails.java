@@ -7,6 +7,9 @@ package org.smvdu.payroll.api.BankDetails;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
@@ -20,6 +23,8 @@ public class SaveBankDetails {
 
     /** Creates a new instance of SaveBankDetails */
     private int orgCode;
+    private HibernateUtil helper;
+    private Session session;
     private ArrayList<BankProfileDetails> completeBankInfo = new ArrayList<BankProfileDetails>();
 
     public ArrayList<BankProfileDetails> getCompleteBankInfo() {
@@ -57,7 +62,29 @@ public class SaveBankDetails {
     
     public boolean save(BankProfileDetails bankDetails) {
         try {
-            Connection cn;
+        
+            BankProfileDetails data = new BankProfileDetails();
+            
+            data.setBankName(bankDetails.getBankName().toUpperCase());
+            data.setBankAddress(bankDetails.getBankAddress());
+            data.setBankIFSCCode(bankDetails.getBankIFSCCode().toUpperCase());
+            data.setBankBranch(bankDetails.getBankBranch());
+            data.setAccountNumber(bankDetails.getAccountNumber());
+            data.setAccountType(bankDetails.getAccountType());
+            data.setPanNumber(bankDetails.getPanNumber().toUpperCase());
+            data.setTanNumber(bankDetails.getTanNumber().toUpperCase());
+            data.setAccountName(bankDetails.getAccountName());
+            data.setOrgcode(orgCode);
+            
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(data);
+            session.getTransaction().commit();
+            session.close();
+            return true;
+            
+            
+            /*   Connection cn;
             cn = new CommonDB().getConnection();
             PreparedStatement pst;
             //pst = cn.prepareStatement("insert into bankprofile(bank_name,bank_address,bank_ifsc_code,branch_name,org_code) values('" + bankDetails.getBankName() + "','" + bankDetails.getBankAddress() + "','" + bankDetails.getBankIFSCCode() + "','" + bankDetails.getBankBranch() + "','" + orgCode + "')");
@@ -75,7 +102,7 @@ public class SaveBankDetails {
             pst.setInt(10, orgCode);
             pst.executeUpdate();
             //System.out.println("Hello World" +orgCode );
-            return true;
+            return true;        */
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -90,7 +117,16 @@ public class SaveBankDetails {
     
     public ArrayList<BankProfileDetails> loadBankProfile() {
         try {
-            ArrayList<BankProfileDetails> bankProfile = new ArrayList<BankProfileDetails>();
+       
+            session = helper.getSessionFactory().openSession();
+           
+            Query query = session.createQuery("from EmployeeType where orgcode = '"+orgCode+"'");
+            ArrayList<BankProfileDetails> data = (ArrayList<BankProfileDetails>)query.list();
+            session.getTransaction().commit();
+            session.close();
+            return data;
+            
+            /*     ArrayList<BankProfileDetails> bankProfile = new ArrayList<BankProfileDetails>();
             BankProfileDetails bp = new BankProfileDetails();
             Connection cn;
             cn = new CommonDB().getConnection();
@@ -106,7 +142,7 @@ public class SaveBankDetails {
            // System.out.println("Hello World 20OCT 2014" +orgCode );
             pst.close();
             cn.close();
-            return bankProfile;
+            return bankProfile;             */
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
@@ -123,7 +159,34 @@ public class SaveBankDetails {
     public boolean update(ArrayList<BankProfileDetails> bankProfileDetails) {
         
         try {
-            Connection cn;
+         
+             session = helper.getSessionFactory().openSession();
+           
+            for(BankProfileDetails b : bankProfileDetails)
+            { 
+                session.beginTransaction();
+                
+                BankProfileDetails data = (BankProfileDetails)session.get(BankProfileDetails.class, b.getSeqId());
+                
+                data.setBankName(b.getBankName().toUpperCase());
+                data.setBankAddress(b.getBankAddress());
+                data.setBankIFSCCode(b.getBankIFSCCode().toUpperCase());
+                data.setBankBranch(b.getBankBranch());
+                data.setAccountNumber(b.getAccountNumber());
+                data.setAccountType(b.getAccountType());
+                data.setPanNumber(b.getPanNumber().toUpperCase());
+                data.setTanNumber(b.getTanNumber().toUpperCase());
+                data.setAccountName(b.getAccountName());
+                data.setOrgcode(orgCode);
+                
+                session.update(data);
+                session.getTransaction().commit();
+            }
+            
+            session.close();
+            return true;
+         
+            /*   Connection cn;
             
              cn = new CommonDB().getConnection();
              pst=cn.prepareStatement("update bankprofile set bank_name=?, bank_address=?, branch_name=?," 
@@ -144,7 +207,7 @@ public class SaveBankDetails {
             }
             pst.close();
             cn.close();
-            return true;
+            return true;        */
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

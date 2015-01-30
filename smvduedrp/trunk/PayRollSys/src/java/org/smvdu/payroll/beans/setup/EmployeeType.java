@@ -48,23 +48,50 @@ import org.smvdu.payroll.beans.db.EmployeeTypeDB;
 *
  */
 public class EmployeeType implements Serializable{
+      
+    private int code;
     
-    private String name;
-    private boolean pfApplies;
+    public int getCode() {
+        return code;
+    }
+    
+    public void setCode(int code) {
+        this.code = code;
+    }
+     
+    private String empTypeCode;
+    
+     public String getEmpTypeCode() {
+        return empTypeCode;
+    }
 
+    public void setEmpTypeCode(String emptypecode) {
+        this.empTypeCode = emptypecode;
+    }
+	
+    private String name;
 
     public String getName() {
         return name;
     }
-
-    /**
-     * @param string
-     */
+    
     public void setName(String string) {
         name = string;
     }
+    
+    private String nickname;
+    
+    public String getNickname() {
+        return nickname;
+    }
 
 
+    public void setNickname(String string) {
+        nickname = string;
+    }
+
+    private boolean pfApplies;
+    
     public boolean isPfApplies() {
         return pfApplies;
     }
@@ -73,7 +100,38 @@ public class EmployeeType implements Serializable{
         this.pfApplies = pfApplies;
     }
     
+    
+    private int maxpf;
+    
+    public int getMaxpf() {
+        return maxpf;
+    }
 
+
+    public void setMaxpf(int mpf) {
+        this.maxpf = mpf;
+    }
+
+    private int orgcode;
+
+    public int getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
+    }
+    
+    private String message;
+    
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    
     private UIData dataGrid;
 
     public UIData getDataGrid() {
@@ -102,52 +160,6 @@ public class EmployeeType implements Serializable{
     public void setItems(SelectItem[] items) {
         this.items = items;
     }
-    private int code;
-    private String message;
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public int getCode() {
-        return code;
-    }
-    private String emptypecode;
-    public void setCode(int code) {
-        this.code = code;
-    }
-     public String getEmpTypeCode() {
-        return emptypecode;
-    }
-
-    public void setEmpTypeCode(String emptypecode) {
-        this.emptypecode = emptypecode;
-    }
-	
-    private String nickname;
-    public String getNickname() {
-        return nickname;
-    }
-
-
-    public void setNickname(String string) {
-        nickname = string;
-    }
-
-    private int maxpf;
-    public int getMaxpf() {
-        return maxpf;
-    }
-
-
-    public void setMaxpf(int mpf) {
-        this.maxpf = mpf;
-    }
-
- 
 
     private ArrayList<EmployeeType> allTypes;
 

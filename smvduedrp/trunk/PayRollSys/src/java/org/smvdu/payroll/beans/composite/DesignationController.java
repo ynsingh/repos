@@ -75,7 +75,7 @@ public class DesignationController {
             System.out.println(d.getName());
             
                     FacesContext fc = FacesContext.getCurrentInstance();
-                if (d.getDCode().matches("[a-zA-Z0-9]*") == false) {
+                if (d.getDcode().matches("[a-zA-Z0-9]*") == false) {
                     FacesMessage message = new FacesMessage();
                     message.setSeverity(FacesMessage.SEVERITY_ERROR);
                     message.setSummary("Plz Enter Valid Designation Code.No speacial characters allowed.");

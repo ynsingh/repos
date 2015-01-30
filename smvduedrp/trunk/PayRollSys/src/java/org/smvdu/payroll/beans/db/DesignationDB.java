@@ -15,6 +15,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.Department;
 import org.smvdu.payroll.beans.setup.Designation;
@@ -56,7 +59,9 @@ public class DesignationDB {
 
     private PreparedStatement ps;
     private ResultSet rs;
-
+    
+    private HibernateUtil helper;
+    private Session session;
     private int orgCode;
 
     public DesignationDB()
@@ -65,7 +70,7 @@ public class DesignationDB {
         orgCode = uf.getUserOrgCode();
     }
 
-    public Designation convert(String code)    {
+ /*   public Designation convert(String code)    {
         try
         {
             Connection c = new CommonDB().getConnection();
@@ -87,11 +92,29 @@ public class DesignationDB {
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
     public Exception update(ArrayList<Designation> depts)    {
         try
         {
-            Connection c = new CommonDB().getConnection();
+            session = helper.getSessionFactory().openSession();
+
+           for(Designation dp : depts )
+           {
+               
+               session.beginTransaction();
+           
+               Designation desig = (Designation)session.get(Designation.class, dp.getCode());
+                
+                desig.setDcode(dp.getDcode().toUpperCase());
+                desig.setName(dp.getName().toUpperCase());
+                desig.setNickName(dp.getNickName().toUpperCase());
+                desig.setOrgcode(orgCode);
+                session.update(desig);
+                session.getTransaction().commit();
+           }
+                session.close();
+           
+        /*    Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update designation_master set desig_dcode=?, desig_name=?, desig_nickname=?" 
                                 +" where desig_code=? and d_org_id='"+orgCode+"'");
             for(Designation dp : depts)
@@ -104,7 +127,7 @@ public class DesignationDB {
                 ps.clearParameters();
             }
             ps.close();
-            c.close();
+            c.close();  */
             return null;
         }
         catch(Exception e)
@@ -117,7 +140,16 @@ public class DesignationDB {
     public ArrayList<Designation> loadDesignations()   {
         try
         {
-            Connection c = new CommonDB().getConnection();
+            
+            session = helper.getSessionFactory().openSession();
+            
+            session.beginTransaction();
+            Query query = session.createQuery("from Designation where orgcode = '"+orgCode+"'");
+            ArrayList<Designation> data = (ArrayList<Designation>)query.list();
+            session.getTransaction().commit();
+            session.close();
+                       
+    /*        Connection c = new CommonDB().getConnection();
             //ps=c.prepareStatement("select * from designation_master where d_org_id = '"+orgCode+"'");
             //modify 16oct 2014 for dcode and nickname
             ps=c.prepareStatement("select * from designation_master where d_org_id = '"+orgCode+"'");
@@ -134,8 +166,8 @@ public class DesignationDB {
             }
             rs.close();
             ps.close();
-            c.close();
-            return data;
+            c.close();` */
+            return data;        
         }
         catch(Exception e)
         {
@@ -147,8 +179,22 @@ public class DesignationDB {
     public Exception save(Designation desig)   {
         try
         {
-
-            Connection c = new CommonDB().getConnection();
+            Designation deg = new Designation();
+            
+            deg.setDcode(desig.getDcode().toUpperCase());
+            deg.setName(desig.getName().toUpperCase());
+            deg.setNickName(desig.getNickName().toUpperCase());
+            deg.setOrgcode(orgCode);
+            
+            session = helper.getSessionFactory().openSession();
+            
+            session.beginTransaction();
+            session.save(deg);
+            session.getTransaction().commit();
+            session.close();
+           
+            
+         /*   Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into designation_master(desig_dcode, desig_name, desig_nickname, d_org_id) values(?,?,?,?)");
             ps.setString(1, desig.getDCode());
             ps.setString(2, desig.getName().toUpperCase());
@@ -156,7 +202,7 @@ public class DesignationDB {
             ps.setInt(4, orgCode);
             ps.executeUpdate();
             ps.close();
-            c.close();
+            c.close();  */
             return null;
         }
         catch(Exception e)
@@ -170,7 +216,42 @@ public class DesignationDB {
      public Exception saveFile(UploadFile file)   {
         try
         {
-            Connection c = new CommonDB().getConnection();
+           
+            Designation deg = new Designation();
+            
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
+            CSVReader reader = new CSVReader(new FileReader(path+"/"+file.getName()), ',', '\"', 1);
+            ColumnPositionMappingStrategy<Designation> mappingStrategy 
+                                 = new ColumnPositionMappingStrategy<Designation>();
+            mappingStrategy.setType(Designation.class);
+            String[] columns = new String[] {"DCode","Name","NickName"};
+            mappingStrategy.setColumnMapping(columns);
+        
+            CsvToBean<Designation> csv = new CsvToBean<Designation>();
+            List<Designation> DesignationList = csv.parse(mappingStrategy, reader);
+            
+            
+            for (int i = 0; i < DesignationList.size(); i++) 
+            {
+                
+                Designation DDetail = DesignationList.get(i);
+
+                deg.setDcode(DDetail.getDcode().toUpperCase());
+                deg.setName(DDetail.getName().toUpperCase());
+                deg.setNickName(DDetail.getNickName().toUpperCase());
+                deg.setOrgcode(orgCode);
+                session = helper.getSessionFactory().openSession();
+
+                session.beginTransaction();
+                session.save(deg);
+                session.getTransaction().commit();
+           }
+            reader.close();
+            session.close();
+            
+            
+            
+      /*      Connection c = new CommonDB().getConnection();
             
             ps=c.prepareStatement("insert into designation_master(desig_dcode, desig_name, desig_nickname, d_org_id) values(?,?,?,?)");
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
@@ -201,7 +282,7 @@ public class DesignationDB {
             }
             reader.close();
             ps.close();
-            c.close();
+            c.close();      */
             return null;
         }
         catch(Exception e)

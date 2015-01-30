@@ -52,7 +52,7 @@ public class Designation implements Serializable {
 
     public void save() {
         FacesContext fc = FacesContext.getCurrentInstance();
-        if (this.getDCode().matches("[a-zA-Z0-9]*") == false) {
+        if (this.getDcode().matches("[a-zA-Z0-9]*") == false) {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             message.setSummary("Plz Enter Valid Designation Code.No speacial characters allowed.");
@@ -108,23 +108,23 @@ public class Designation implements Serializable {
     }*/
     
     
-    private String nickname;
+    private String nickName;
     
     public String getNickName() {
-        return nickname;
+        return nickName;
     }
 
     public void setNickName(String nickname) {
-        this.nickname = nickname;
+        this.nickName = nickname;
     }
     
     
     private String dcode;
-    public String getDCode() {
+    public String getDcode() {
         return dcode;
     }
 
-    public void setDCode(String dcode) {
+    public void setDcode(String dcode) {
         this.dcode = dcode;
     }
     
@@ -145,6 +145,15 @@ public class Designation implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    private int orgcode;
+    public int getOrgcode() {
+        return orgcode;
+    }
+    
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
     }
     
     //upload file --------------------//

@@ -49,7 +49,7 @@
                                     <f:facet name="header">
                                         <h:outputText  value="Designation Code"/>
                                     </f:facet>
-                                    <rich:inplaceInput value="#{desig.DCode}" />
+                                    <rich:inplaceInput value="#{desig.dcode}" />
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">
@@ -84,7 +84,7 @@
                            <rich:panel header="Add New Designation">
                            <h:panelGrid columns="3">
                            <h:outputText value="Designation Code"/>
-                           <h:inputText id="desigCode" required="true" requiredMessage="Please Enter Designation Code" value="#{DesignationBean.DCode}"/>
+                           <h:inputText id="desigCode" required="true" requiredMessage="Please Enter Designation Code" value="#{DesignationBean.dcode}"/>
                            <h:message styleClass="error" for="desigCode" tooltip="Employee Type"/>
                            <h:outputText value="Designation Name"/>
                            <h:inputText id="desigName" required="true" requiredMessage="Please Enter New Designation Name" value="#{DesignationBean.name}"/>

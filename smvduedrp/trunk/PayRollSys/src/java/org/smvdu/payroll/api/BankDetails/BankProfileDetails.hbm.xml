@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.api.BankDetails.BankProfileDetails"  table="bankprofile">
+       <id name="seqId" type="java.lang.Integer">
+            <column name="seq_no" />
+            <generator class="identity"/>
+        </id>
+       
+        <property name="bankName" type="string">
+            <column name="bank_name" length="250" not-null="true"/>
+        </property>
+        <property name="bankAddress" type="string">
+            <column name="bank_address" length="1000" not-null="true"/>
+        </property>
+        <property name="bankIFSCCode" type="string">
+            <column name="bank_ifsc_code" length="100" not-null="true"/>
+        </property>
+        <property name="bankBranch" type="string">
+            <column name="branch_name" length="100" not-null="true"/>
+        </property>
+        <property name="accountNumber" type="java.lang.Integer">
+            <column name="account_number" length="20" not-null="true"/>
+        </property>
+        <property name="accountType" type="string">
+            <column name="account_type" length="40" not-null="true" unique="true"/>
+        </property>
+        <property name="panNumber" type="string">
+            <column name="pan_number" length="10" not-null="true" />
+        </property>
+        <property name="tanNumber" type="string">
+            <column name="tan_number" length="10" not-null="true" />
+        </property>
+        <property name="accountName" type="string">
+            <column name="account_name" length="250" not-null="true" />
+        </property>
+        
+        <property name="orgcode" type="java.lang.Integer">
+            <column name="org_code"/>
+        </property>
+        
+  </class>
+</hibernate-mapping>
