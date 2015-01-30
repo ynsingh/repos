@@ -12,6 +12,7 @@ $page.setTitle("QuestionBank")
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
 <link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet"></script>
