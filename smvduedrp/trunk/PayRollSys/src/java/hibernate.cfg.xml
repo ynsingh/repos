@@ -7,12 +7,10 @@
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.datasource">java:comp/env/jdbc/pl</property>
     <property name="hibernate.show_sql">true</property>
-    <mapping resource="org/smvdu/payroll/beans/SessionMaster.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/beans/setup/Department.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/beans/setup/Designation.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/beans/setup/EmployeeType.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/api/BankDetails/BankProfileDetails.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/beans/setup/SalaryGrade.hbm.xml"/>
 
   </session-factory>
 </hibernate-configuration>
