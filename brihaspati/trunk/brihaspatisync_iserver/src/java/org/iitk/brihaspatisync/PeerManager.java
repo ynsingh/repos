@@ -2,7 +2,7 @@ package org.iitk.brihaspatisync;
 
 /*@(#)LecturePeerNode.java
  * See licence file for usage and redistribution terms
- * Copyright (c) 2007-2008, 2013 All Rights Reserved.
+ * Copyright (c) 2007-2008, 2013,2015 All Rights Reserved.
  */
 
 import java.util.Vector;
@@ -132,12 +132,12 @@ public class PeerManager {
                 String message="";
 		int count=0;
 		try{
-		/*	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document doc = builder.parse(getFile(lect_id));*/
+			//DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        //DocumentBuilder builder = factory.newDocumentBuilder();
+                        //Document doc = builder.parse(getFile(lect_id));
 			NodeList nodelist = getNodeList(getFile(sessionid)); 
 			count =  nodelist.getLength();
-		//	return Integer.toString(count);
+			//return Integer.toString(count);
 			}catch ( Exception e ) { ServerLog.log(" Exception in updateLoad method of PeerManager class "+e.getMessage()); }
 			 return Integer.toString(count);
  		}
@@ -182,19 +182,14 @@ public class PeerManager {
                         Element root = document.getDocumentElement();
                         NodeList peerList = root.getElementsByTagName("Peer");
                         for( int i=0; i<peerList.getLength(); i++ ){
-				//ServerLog.log("inside for loop in removepeer method");
                         	Node node = peerList.item(i );
                                 if( node.getNodeType() == node.ELEMENT_NODE ){
-				//ServerLog.log("inside ifelse in removepeer method");
                                 	Element element = ( Element )node;
 					String User=element.getAttribute("User");
-					//ServerLog.log("value of user from xml file :"+User);
-					//ServerLog.log("value of username"+username);
 					/** 
 					* Remove Peer from Peer List
 					*/
 					if(User.equals(username)){
-					//	ServerLog.log("inside second ifelse ");
 	                                	root.removeChild(element);
                 	                        saveXML(document,getFile(lectID));
 					}
@@ -251,12 +246,15 @@ public class PeerManager {
                                   	String userName=element.getAttribute("User");
 					String status=element.getAttribute("Status");
 					String fullusername=element.getAttribute("UserName");
+                                        String role=(String)element.getAttribute("Role");
         		                StringBuffer string=new StringBuffer(100);
 	                                string=string.append(userName);
         	                        string=string.append("$");
                 	                string=string.append(status);
         	                        string=string.append("$");
         	                        string=string.append(fullusername);
+                                        string=string.append("$");
+                                        string=string.append(role);
                         	        userList.addElement(string.toString());
                         	}
 				 
