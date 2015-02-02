@@ -35,6 +35,7 @@ import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
 
 public class UserListPanel extends Thread {
 
+
 	private JPanel mainPanel;
 	private JPanel mainPanel_new;
 	private JScrollPane scrollPane=null;
@@ -43,13 +44,15 @@ public class UserListPanel extends Thread {
 	private	Vector statusVector=new Vector();
 	private Vector user_id=new Vector();
 	private Vector user_full_name=new Vector();
+        private Vector temp_role=new Vector();
 	
 	private boolean flag=false;
 	private String diffuser_list="";		
 	private String turnof_onFlag="";
 
-	private String role=ClientObject.getUserRole();	
-	private String username=ClientObject.getUserName();;	
+	private String role=ClientObject.getUserRole();
+
+        private String username=ClientObject.getUserName();;	
 	private String a_status=AudioUtilObject.getAudioStatus();
         private String v_status=AudioUtilObject.getVideoStatus();
 	private Allow_Deny_Permission all_deny_per=new Allow_Deny_Permission();	
@@ -57,8 +60,7 @@ public class UserListPanel extends Thread {
 	/**
 	* Creating GUI for UserListPanel.
 	*/
-	
-	protected JPanel createGUI(){
+	protected JPanel createGUI() {
 		
 		mainPanel=new JPanel();
                 mainPanel.setLayout(new BorderLayout());
@@ -67,8 +69,8 @@ public class UserListPanel extends Thread {
                 mainPanel_new.setLayout(new BorderLayout());
 	
 		ClassLoader clr= this.getClass().getClassLoader();
-		Object elements[][]=new Object[1][5];
-		elements[0][0] = new Font("Helvetica", Font.PLAIN, 14);
+		Object elements[][]=new Object[1][6];
+                elements[0][0] = new Font("Helvetica", Font.PLAIN, 14); 
 		elements[0][1] = Color.black;
 		elements[0][2] = new ImageIcon(clr.getResource("resources/images/user/user.jpe"));
 		elements[0][3] = username;
@@ -88,101 +90,94 @@ public class UserListPanel extends Thread {
 	
 		this.start();
 		return mainPanel;
-	
 	}
-
 	/**
  	 * This method is used to get all userlist from reflector. 
  	 */
 	public  void run() {
 		while(org.bss.brihaspatisync.util.ThreadController.getThreadFlag()) {
-			user_id.clear();	
-			statusVector.clear();
-			user_full_name.clear();
-			try {
-				String str=RuntimeDataObject.getController().getUserList();
-				if(!diffuser_list.equals(str)) {
-					diffuser_list=str;
-                     			str=str.replaceAll(","," ");
-		                        if(str.length()>0){
-        		                	java.util.StringTokenizer Tok = new java.util.StringTokenizer(str);
-                		                while(Tok.hasMoreElements()) {
-                        		        	String str1=(String)Tok.nextElement();
-                        				if(( str1.indexOf("Allow") > 0 ) || (str1.indexOf("Get")>0) || (str1.indexOf("Share")>0) ){
-                                				user_Name_Id(0,str1);
-                        				} else {
-                                 				user_Name_Id(1,str1);
-                        				}
-	                             		}       
-        	            		}
-					display_UserList();
-				}
-				this.sleep(500);
-				this.yield();
-			}catch(Exception e){}
+		user_id.clear();	
+		statusVector.clear();
+		user_full_name.clear();
+                temp_role.clear();
+		try {
+			String str=RuntimeDataObject.getController().getUserList();
+			if(!diffuser_list.equals(str)) {
+				diffuser_list=str;
+                		str=str.replaceAll(","," ");
+			                if(str.length()>0){
+        		               	java.util.StringTokenizer Tok = new java.util.StringTokenizer(str);
+                	                while(Tok.hasMoreElements()) {
+                        	        	String str1=(String)Tok.nextElement();
+                        			if(( str1.indexOf("Allow") > 0 ) || (str1.indexOf("Get")>0) || (str1.indexOf("Share")>0) ){
+                               				user_Name_Id(0,str1);
+                        		       }else {
+                               				user_Name_Id(1,str1);
+                        		       }
+	                       		}       
+        	        	}
+				display_UserList();
+			}
+			this.sleep(500);
+			this.yield();
+		}catch(Exception e){}
 		}		
 	}	
-
-	private void user_Name_Id(int k,String str) {
+	private void user_Name_Id(int k,String str) {            
 		try {
-			System.out.println("user_Name_Id====>>>>   "+str);
-                        StringTokenizer st=new StringTokenizer(str,"$");
-                        while(st.hasMoreTokens()) {
-				if(k== 0) {
-					user_id.add(k,(String)st.nextToken());
-					statusVector.add(k,st.nextToken().trim());
-        	        	        user_full_name.add(k,java.net.URLDecoder.decode(st.nextToken().trim()));
-				} else {
-					user_id.add((String)st.nextToken());
-                                        statusVector.add(st.nextToken().trim());
-                                        user_full_name.add(java.net.URLDecoder.decode(st.nextToken().trim()));
-				}
+               		 StringTokenizer st=new StringTokenizer(str,"$");
+                       	 while(st.hasMoreTokens()) {
+			 if(k== 0) {
+				user_id.add(k,(String)st.nextToken());
+				statusVector.add(k,st.nextToken().trim());
+                	        user_full_name.add(k,java.net.URLDecoder.decode(st.nextToken().trim()));
+                                temp_role.add(k,st.nextToken().trim());
+			 } else {
+				user_id.add((String)st.nextToken());
+                                statusVector.add(st.nextToken().trim());
+                                user_full_name.add(java.net.URLDecoder.decode(st.nextToken().trim()));
+                                temp_role.add(st.nextToken().trim());
+		                }
 			}
 		}catch(Exception e){ }
 	}
-	
 	/**
 	 * Getting username and it's status from userlist vector to change userlist view in gui
 	 * according to status set flags for student mic controller, screen share controller, whiteboard controller etc.
 	 */
-	
 	private void display_UserList(){
 		ClassLoader clr= this.getClass().getClassLoader();
-		Object elements[][]=new Object[user_id.size()][5];
-
-                for (int i=0;i<statusVector.size();i++){
+		Object elements[][]=new Object[user_id.size()][6];
+		for (int i=0;i<statusVector.size();i++){
 			String user = (String)user_id.get(i);
 			String status=(String)statusVector.get(i);	
 			String fullname=(String)user_full_name.get(i);	
-			
+	    		String temprole = (String)temp_role.get(i);
 			if(role.equals("student")) {
-				if((user.equals(username)) && (status.equals("Allow-Permission") || (status.equals ("Get-Permission")))) {
-                                        all_deny_per.setEnable_Decable_Permission(false);	
-				} else {
+		        	if((user.equals(username)) && (status.equals("Allow-Permission") || (status.equals ("Get-Permission")))) {
+                                	all_deny_per.setEnable_Decable_Permission(false);	
+				}else {
                                         all_deny_per.setEnable_Decable_Permission(true);	
 				}
-				
 				if(statusVector.contains("Allow-Permission")){					
-					try {
-						if((user.equals(username)) && (!flag)) {
-							flag=true; 
-                                                        HandRaiseThreadController.getController().startPostPermission(true);
-							
-						} else if(!flag) {
-							flag=true; 
-	                                                HandRaiseThreadController.getController().startGetPermission(true);
+			     	try{ 
+					if((user.equals(username)) && (!flag)) {
+						flag=true; 
+                                                HandRaiseThreadController.getController().startPostPermission(true);
+				       	}else if(!flag) {
+						flag=true; 
+	                                        HandRaiseThreadController.getController().startGetPermission(true);
 						}
-					}catch(Exception e) {   }
-				} else {
-					if(flag) {
-						flag=false;
-						HandRaiseThreadController.getController().stopAllPermission(true);
+				}catch(Exception e){}
+			        }else{
+			       		if(flag) {
+			              		flag=false;
+					        HandRaiseThreadController.getController().stopAllPermission(true);
 	                                        all_deny_per.setEnable_Decable_Permission(true);
-                        		}
-				}
-					
-			} else if(role.equals("instructor")) { // check only for controller according to username.
-				if(statusVector.contains("Allow-Permission")) {
+                                            }
+			             }
+		       	}else if(role.equals("instructor")) { // check only for controller according to username.
+                          	if(statusVector.contains("Allow-Permission")) {
 					if((user.equals(username)) && (!flag)) {
 						flag=true;
 						HandRaiseThreadController.getController().startPostShareScreen(true);
@@ -190,42 +185,46 @@ public class UserListPanel extends Thread {
 						flag=true;
 						HandRaiseThreadController.getController().startGetPermission(true);
 					}
-                                        all_deny_per.setEnable_Decable_Permission(false);
-				}else {
-					if(flag) {
+                                        	all_deny_per.setEnable_Decable_Permission(false);
+				        } else {
+					        if(flag) {
                                                	flag=false;
                    				HandRaiseThreadController.getController().stopAllPermission(true);
                         		}
-                                        all_deny_per.setEnable_Decable_Permission(true);
+                                                all_deny_per.setEnable_Decable_Permission(true);
 				}
 			}
-			elements[i][0] = new Font("Helvetica", Font.PLAIN, 14);
-        	        elements[i][1] = Color.black;
-			elements[i][2] = new ImageIcon(clr.getResource(getImageIcon(status)));
-	                elements[i][3] = user;
-	                elements[i][4] = fullname;
-               		
-                }
-		
+
+			if(status.equals("Allow-Permission")){              
+				elements[i][0] = new Font("Helvetica", Font.BOLD, 14);
+                       	}else if(temprole.equals("instructor")){
+                        	elements[i][0] = new Font("Helvetica", Font.BOLD | Font.ITALIC, 16);
+                        	}else{
+					elements[i][0] = new Font("Helvetica", Font.PLAIN, 14);	
+	                	}
+                        	elements[i][1] = Color.black;   
+				elements[i][2] = new ImageIcon(clr.getResource(getImageIcon(status)));
+	                	elements[i][3] = user;
+	                	elements[i][4] = fullname;
+               	}
 		jlist.setListData(elements);
                 ListCellRenderer renderer = new UserListCellRendered();
                 jlist.setCellRenderer(renderer);
 		scrollPane.revalidate();
                 scrollPane.repaint();
-		
         }
 
 	/**
  	 * Controll images in Userlist according to it's status.
  	 */ 	 
-	private String getImageIcon(String status){
-		if(status.equals("available")){
-			return "resources/images/login.png";
-                }else if(status.equals("Get-Permission")){
-                        return "resources/images/user/hr.jpeg";
-		}else if(status.equals("Allow-Permission")){
-                        return "resources/images/user/allowscreen.jpeg";
-		}
-		return "";
+		private String getImageIcon(String status){
+			if(status.equals("available")){
+				return "resources/images/login.png";
+                	}else if(status.equals("Get-Permission")){
+                        	return "resources/images/user/hr.jpeg";
+			}else if(status.equals("Allow-Permission")){
+                        	return "resources/images/user/allowscreen.jpeg";
+			}	
+			return "";
 	}
 }
