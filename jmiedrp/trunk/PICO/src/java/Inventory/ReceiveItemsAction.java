@@ -370,6 +370,11 @@ public class ReceiveItemsAction extends DevelopmentSupport {
 	isueList = isueDAO.findIssueNo(Integer.valueOf(getSession().getAttribute("dmId").toString()));
     }
 
+    //This method is for help
+    public String Help() {
+	return SUCCESS;
+    }
+
     @SkipValidation
     public String Browse() throws Exception {
         try {

@@ -89,6 +89,38 @@ public class ErpmIssueDetailDAO {
 //        }
 //    }
 
+//Lines added by shobhi
+//method to get issue detail id by issue master id
+    public Integer findIsdId(Integer ismId) {
+        Session session = HibernateUtil.getSession();
+        try {
+
+                String SQL = "Select u.isdId from ErpmIssueDetail u where u.erpmIssueMaster.ismId = :ismId";
+                Integer isdId;
+                session.beginTransaction();
+                 isdId  = Integer.parseInt(session.createQuery(SQL).setParameter("ismId", ismId).uniqueResult().toString());
+                return isdId;
+        }
+        finally {
+            session.close();
+            }
+        }
+
+//method to get item id by issue master id
+    public Integer findItemId(Integer ismId) {
+        Session session = HibernateUtil.getSession();
+        try {
+                String SQL = "Select u.erpmItemMaster.erpmimId from ErpmIssueDetail u where u.erpmIssueMaster.ismId = :ismId";
+                Integer isdId;
+                session.beginTransaction();
+                 isdId  = Integer.parseInt(session.createQuery(SQL).setParameter("ismId", ismId).uniqueResult().toString());
+                return isdId;
+        }
+        finally {
+            session.close();
+            }
+        }
+
      public List<ErpmIssueDetail> findByEimId(Integer eimId) {
         Session session = HibernateUtil.getSession();
         try {

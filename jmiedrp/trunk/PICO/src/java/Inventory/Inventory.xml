@@ -119,6 +119,12 @@
             <result name="input">/pico/Inventory/ManageOpeningStock.jsp</result>
         </action>
 
+        <action name="HelpForOpeningStock" method="Help"  class="Inventory.ManageOpeningStockAction">
+            <result name="SUCCESS">/pico/Inventory/HelpForOpeningStock.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/HelpForOpeningStock.jsp</result>
+        </action>
+
         <action name="showGFRreportStock" method="showGFRreport" class="Inventory.ManageOpeningStockAction">
             <result name="success" type="stream">
                 <param name="contentType">application/pdf</param>
@@ -256,6 +262,12 @@
             <result name="input">/pico/Inventory/IssueDetails.jsp</result>
         </action>
 
+        <action name="HelpForIssue" method="Help"  class="Inventory.IssueItemsAction">
+            <result name="SUCCESS">/pico/Inventory/HelpForIssue.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/HelpForIssue.jsp</result>
+        </action>
+
         <action name="showGFRreport" method="showGFRreport" class="Inventory.IssueItemsAction">
             <result name="success" type="stream">
                 <param name="contentType">application/pdf</param>
@@ -309,6 +321,12 @@
             <result name="success">/pico/Inventory/ReceiveItems.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Inventory/ReceiveItems.jsp</result>
+        </action>
+
+        <action name="HelpForReceive" method="Help"  class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/HelpForReceive.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/HelpForReceive.jsp</result>
         </action>
 
         <action name="PrintReceiptAction" method="PrintReceipt" class="Inventory.ReceiveItemsAction">
@@ -424,6 +442,12 @@
             <result name="success">/pico/Inventory/BrowseReturnIssuedItems.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Inventory/BrowseReturnIssuedItems.jsp</result>
+        </action>
+
+        <action name="HelpForReturn" method="Help"  class="Inventory.ReturnIssuedItemsAction">
+            <result name="success">/pico/Inventory/HelpForReturn.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/HelpForReturn.jsp</result>
         </action>
 
         <action name="EditReturnIssuedItem" method="Edit" class="Inventory.ReturnIssuedItemsAction">

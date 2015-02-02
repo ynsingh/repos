@@ -780,6 +780,11 @@ public class ManageOpeningStockAction extends DevelopmentSupport {
         return SUCCESS;
     }
 
+    //This method is for help
+    public String Help() {
+	return "SUCCESS";
+    }
+                    
     public void validate() {
         try {
 

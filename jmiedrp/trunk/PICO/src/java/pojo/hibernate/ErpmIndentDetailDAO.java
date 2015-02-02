@@ -80,6 +80,21 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
         }
     }
 
+//made by Shobhi to find indent approved quantity
+     public Short findIndApprovedQunatity(Short indtIndentId) {
+        Session session = HibernateUtil.getSession();
+        try {
+
+                String SQL = "Select u.indtApprovedQuantity from ErpmIndentDetail u where u.erpmIndentMaster.indtIndentId = :indtIndentId";
+                Short indentQuantity;
+                session.beginTransaction();
+                 indentQuantity  = new Short(session.createQuery(SQL).setParameter("indtIndentId", indtIndentId).uniqueResult().toString());
+                return indentQuantity;
+        }
+        finally {
+            session.close();
+            }
+        }
       public List<ErpmIndentDetail> findByindtIndentId(Short indtIndentId) {
         Session session = HibernateUtil.getSession();
         try {
@@ -88,6 +103,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
             List<ErpmIndentDetail> indentList  = session.createQuery("Select u from ErpmIndentDetail u where u.erpmIndentMaster.indtIndentId = :indtIndentId").setParameter("indtIndentId", indtIndentId).list();
             for (index=0; index < indentList.size(); ++index) {
                 Hibernate.initialize(indentList.get(index).getErpmIndentMaster());
+                Hibernate.initialize(indentList.get(index).getIndtQuantity());
                 Hibernate.initialize(indentList.get(index).getErpmItemMaster());
                 Hibernate.initialize(indentList.get(index).getErpmItemRate());
                 Hibernate.initialize(indentList.get(index).getErpmItemMaster().getErpmGenMaster());

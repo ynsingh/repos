@@ -582,6 +582,11 @@ public class ReturnIssuedItemsAction extends DevelopmentSupport {
         }
     }
 
+    //This method is for Help
+    public String Help() {
+	return SUCCESS;
+    }
+
     public String Save() throws Exception {
         Variable = "";
         condvar = null;

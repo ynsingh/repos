@@ -24,6 +24,12 @@
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/PrePurchase/country.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/PrePurchase/ItemMasterScript.js"></script>
+        <script language="JavaScript">
+        function popupWin(url,popupName)
+        {
+                Win=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=600");
+        }
+        </script>
         <link href="../css/pico.css" rel="stylesheet" type="text/css" />
         <meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
         <meta name="description" content="ERP for Universities">
@@ -46,7 +52,9 @@
                 <s:bean name="java.util.HashMap" id="qTableLayout">
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
-                <br><br>
+		<div align="right" style="margin-right: 10px">
+		<a href=javascript:popupWin("/pico/Inventory/HelpForOpeningStock.action","HelpForOpeningStock"); style=text-decoration:none><font size=3>HELP</font></a>
+                </div>
                 <div style ="background-color: #215dc6;">
                     <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Inventory.OpeningStock')" /></p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>

@@ -18,6 +18,12 @@
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/PrePurchase/country.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/Administration/Admin.js"></script>
+        <script language="JavaScript">
+        function popupWin(url,popupName)
+        {
+                Win=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=600");
+        }
+        </script>
         <link href="../css/pico.css" rel="stylesheet" type="text/css" />
         <meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
         <meta name="description" content="ERP for Universities">
@@ -38,7 +44,7 @@
                 <div id ="mainContent" align="left">
                     <br><br>         
                 <div align="right" style="margin-right: 10px">
-		<a href="" onclick="window.open('Help','name','width=600,height=400,scrollbars=1,resizable=0')">HELP</a>
+                <a href=javascript:popupWin("/pico/PrePurchase/Help.action","HelpForIndent"); style=text-decoration:none><font size=3>HELP</font></a>
                 </div>
                 <s:actionerror/>
                 <s:property value="message" />         

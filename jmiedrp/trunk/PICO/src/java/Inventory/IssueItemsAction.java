@@ -121,6 +121,11 @@ public class IssueItemsAction extends DevelopmentSupport {
     private String returnDueDate;
     private String emailAddress;
     private static Boolean varShowGFR;
+//shobhi
+    private static Integer IssueItemId;
+    private static Integer ledgerQnty ;
+    private static Short ApprovedIndentQnty;
+    private static Short indentQnty;
 
     static String dataSourceURL=null;
 
@@ -835,11 +840,17 @@ public class IssueItemsAction extends DevelopmentSupport {
                 Indent_Title = eim1.getErpmIndentMaster().getIndtTitle();
                 setIssue_No(Issue_No);
                 setIssue_Date(Issue_Date);
-                setBTNDSBL("true");
+                setBTNDSBL("false");
                 setVAL1("true");
 
                 // indent detail list is created for the current indent id selected in issue items page
                 indDetailList = indDetailDao.findByindtIndentId(eim1.getErpmIndentMaster().getIndtIndentId());
+		//Approved Qunatity on selected indent
+		ApprovedIndentQnty = indDetailDao.findIndApprovedQunatity(eim1.getErpmIndentMaster().getIndtIndentId());
+		//Indent Quantity on selected indent
+		for (int x = 0; x < indDetailList.size(); x++) {
+                        indentQnty = indDetailList.get(x).getIndtQuantity();
+		}
                 // issue detail is saved for the issue master page
                 ErpmIssueDetail eid = new ErpmIssueDetail();
                 //if its a new entry then insert the data for the issue detail page
@@ -853,7 +864,6 @@ public class IssueItemsAction extends DevelopmentSupport {
                         eidDao.save(eid);
                     }
                 }
-
                 //This is issue detail list for the gridview displayed below in the issue detail page
                 issueDetList = eidDao.findByEimIdfromView(getIssueMasterId());
 
@@ -883,15 +893,18 @@ public class IssueItemsAction extends DevelopmentSupport {
             setBTNDSBL("true");
             setIndent_Title("");
             ErpmIssueMaster eim3 = eimDAO.findByEimId(getIssueMasterId());
+//	    IssueDetailId = eidDao.findIsdId(getIssueMasterId());
+//            IssueItemId = eidDao.findItemId(getIssueMasterId());
            // setIndent_Title(eim3.getErpmIndentMaster().getIndtTitle());
             //count the item to check whether that item is already issued or not i.e. already present in issue detail or not
             Integer count1 = eidDao.findCountByIssueMasterAndItemId(getIssueMasterId(), eid.getErpmItemMaster().getErpmimId());
 
-            //Get the ledger quantity of items available in issue master
-            Float ledgerQnty = eimDAO.findLedgerValue(eim3.getInstitutionmasterByIsmFromInstituteId().getImId(), eim3.getSubinstitutionmasterByIsmFromSubinstituteId().getSimId(),
-                    eim3.getDepartmentmasterByIsmFromDepartmentId().getDmId(), eid.getErpmItemMaster().getErpmimId());
+            //to find items available in stock
+    /*        listStockRecSerialNo = esrDao.findByItemIdAsc(eid.getErpmItemMaster().getErpmimId(), Integer.valueOf(getSession().getAttribute("dmId").toString()));
 
-            Integer TotalQnty;
+            Integer ledgerQnty = listStockRecSerialNo.size();
+
+            Integer TotalQnty;/*
             //if its new issue detail Total available quantity is same as ledger quantity else it is sum of ledger quantity and issued quantity
             if (getEIDID() == null) {
                 TotalQnty = ledgerQnty.intValue();
@@ -899,16 +912,16 @@ public class IssueItemsAction extends DevelopmentSupport {
                 ErpmIssueDetail eid0 = eidDao.findByeidId(getEIDID());
                 TotalQnty = ledgerQnty.intValue() + eid0.getIsdIssuedQuantity().intValue();
             }
-
+/*
             //if available quantity for issue is less than issue quantity then issue is not allowed else item will be allowed to issued
-            if (TotalQnty < eid.getIsdIssuedQuantity().intValue()) {
+            if(TotalQnty < eid.getIsdIssuedQuantity().intValue()) {
                 populate_issueDetails();
                 issueDetList1 = eidDao.findByEimId(getIssueMasterId());
                 setBTNDSBL("false");
-                message = "You cannot Issue " + eid.getIsdIssuedQuantity() + ". It is more than the Available Quantity i.e. " + TotalQnty + ".";
+                message = "You cannot Issue " + eid.getIsdIssuedQuantity() + ". It is more than the Available Quantity i.e. " + TotalQnty + "."+listStockRecSerialNo.size()+getItemId()+getEIDID();
                 return SUCCESS;
             } else {
-
+*/
                 //if items issued is zero i.e if we are issuing new item then save it in new object
                 if (count1 == 0) {
                     ErpmIssueDetail eid2 = new ErpmIssueDetail();
@@ -993,7 +1006,7 @@ public class IssueItemsAction extends DevelopmentSupport {
                         listIssueSerialDetail = generateSerialNoFromEISD(eid3.getIsdId(), getItemId());
                         setIssueDetailId(eid3.getIsdId());
                         listStockRecSerialNoLeft.clear();
-                        message = "Items Selected Using FIFO " + listIssueSerialDetail.size();
+                        message = "Items Selected Using FIFO " + listStockRecSerialNo.size();
 
                         return "SUCCESS1";
 
@@ -1039,7 +1052,7 @@ public class IssueItemsAction extends DevelopmentSupport {
                 }
 
                 return SUCCESS;
-            }
+//            }
         } catch (Exception e) {
             message = "Exception in SaveIssueDetailsWithoutIndent method -> IssueItems Action" + "  " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
@@ -1050,20 +1063,22 @@ public class IssueItemsAction extends DevelopmentSupport {
     public String SaveIssueDetailsWithIndent() throws Exception {
 
         try {
-
-            VAL1 = "true";
-            ErpmIssueMaster eim3 = eimDAO.findByEimId(getIssueMasterId());
-            setIndent_Title(eim3.getErpmIndentMaster().getIndtTitle());
+             VAL1 = "false";
+             setBTNDSBL("false");
+             IssueDetailId = eidDao.findIsdId(getIssueMasterId());
+             IssueItemId = eidDao.findItemId(getIssueMasterId());
+	     ErpmIssueMaster eim3 = eimDAO.findByEimId(getIssueMasterId());
+	     setIndent_Title(eim3.getErpmIndentMaster().getIndtTitle());
             //item list is created for current institution
             itemList = itemDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
-            ErpmIssueDetail eid2 = eidDao.findByeidId(getEIDID());
-            //find ledger quantity from the issue master
-            Float ledgerQnty = eimDAO.findLedgerValue(eim3.getInstitutionmasterByIsmFromInstituteId().getImId(), eim3.getSubinstitutionmasterByIsmFromSubinstituteId().getSimId(),
-                    eim3.getDepartmentmasterByIsmFromDepartmentId().getDmId(), eid.getErpmItemMaster().getErpmimId());
-
+            ErpmIssueDetail eid2 = eidDao.findisdId(IssueDetailId);
+	    //find stock is available or not 
+	    listStockRecSerialNo = esrDao.findRemainingStockAsc(IssueItemId, Integer.valueOf(getSession().getAttribute("dmId").toString()), IssueDetailId);
+	    Integer ledgerQnty = listStockRecSerialNo.size();
             Integer TotalQnty;
+
             //if its a new issue detail then total available quantity is same as ledger quantity else it is sum of leger quantity and issued quantity
-            if (getEIDID() == null) {
+            if (IssueDetailId == null) {
                 TotalQnty = ledgerQnty.intValue();
             } else {
                 TotalQnty = ledgerQnty.intValue() + eid2.getIsdIssuedQuantity().intValue();
@@ -1078,17 +1093,16 @@ public class IssueItemsAction extends DevelopmentSupport {
                 return SUCCESS;
             } else {
 
-
                 // View is created  from issue and indendt detail to get the issuedQuantity
                 ViewIssueIndentDetail viid1 = new ViewIssueIndentDetail();
-                viid1 = viidDao.findByeidId(getEIDID());
+                viid1 = viidDao.findByeidId(IssueDetailId);
                 setIssQnty_val(eid.getIsdIssuedQuantity());
 
                 setViid(viid1);
 
                 // checking if approved quantity is less than issue Quantity then give error
-                if (viid.getIndentApprovedQuantity() < getIssQnty_val().intValue()) {
-                    addFieldError("eid.isdIssuedQuantity", "You cannot enter Issue Quantity greater than the Indent's approved Quantity i.e. " + viid.getIndentApprovedQuantity());
+                if (ApprovedIndentQnty.intValue() < eid.getIsdIssuedQuantity().intValue()) {
+                    addFieldError("eid.isdIssuedQuantity", "You cannot enter Issue Quantity greater than the Indent's approved Quantity i.e. " + ApprovedIndentQnty);
                     setItemId(eid2.getErpmItemMaster().getErpmimId());
                     issueDetList = eidDao.findByEimIdfromView(eid2.getErpmIssueMaster().getIsmId());
                     return INPUT;
@@ -1101,16 +1115,16 @@ public class IssueItemsAction extends DevelopmentSupport {
                     setIssQnty_val(eid.getIsdIssuedQuantity());
                     setIssue_No(Issue_No);
                     setIssue_Date(Issue_Date);
-                    setItemId(eid2.getErpmItemMaster().getErpmimId());
+                    setItemId(IssueItemId);
 
                     // prepare issue detail list from issue master id
-                    issueDetList = eidDao.findByEimIdfromView(eid2.getErpmIssueMaster().getIsmId());
+                    issueDetList = eidDao.findByEimIdfromView(getIssueMasterId());
 
                     //create object for item master
-                    eitm = itemDao.findByItemId(getItemId());
+                    eitm = itemDao.findByItemId(IssueItemId);
 
                     // prepare count for the number of record of issue serial detail by passing issue detail id
-                    Integer count = eisdDao.findCountByIssueDetailId(eid2.getIsdId());
+                    Integer count = eisdDao.findCountByIssueDetailId(IssueDetailId);
 
 
 
@@ -1118,7 +1132,7 @@ public class IssueItemsAction extends DevelopmentSupport {
                     if (eitm.getErpmimSerialNoApplicable() == 'Y' && eid.getIsdIssuedQuantity().intValue() != 0) {
                         //policy =1 is for FIFO
                         if (eitm.getErpmimIssuePolicy().equals("1")) {
-                            listStockRecSerialNo = esrDao.findByItemIdAsc(getItemId(), Integer.valueOf(getSession().getAttribute("dmId").toString()));
+                            listStockRecSerialNo = esrDao.findByItemIdAsc(IssueItemId, Integer.valueOf(getSession().getAttribute("dmId").toString()));
 
 
                             //To save issue_detail_id along with stock_serial_detail_id in issue serial detail table if it is a new record
@@ -1139,7 +1153,7 @@ public class IssueItemsAction extends DevelopmentSupport {
                             setBTNDSBL("true");
                             setIssueDetailId(eid2.getIsdId());
 
-                            listIssueSerialDetail = generateSerialNoFromEISD(eid2.getIsdId(), getItemId());
+                            listIssueSerialDetail = generateSerialNoFromEISD(eid2.getIsdId(), IssueItemId);
 
                             listStockRecSerialNoLeft.clear();
                             message = "Items Selected Using FIFO ";
@@ -1149,7 +1163,7 @@ public class IssueItemsAction extends DevelopmentSupport {
                             //policy =2 is for LIFO
                         } else if (eitm.getErpmimIssuePolicy().equals("2")) {
 
-                            listStockRecSerialNo = esrDao.findByItemIdDesc(getItemId(), Integer.valueOf(getSession().getAttribute("dmId").toString()));
+                            listStockRecSerialNo = esrDao.findByItemIdDesc(IssueItemId, Integer.valueOf(getSession().getAttribute("dmId").toString()));
                             //To save issue_detail_id along with stock_serial_detail_id in issue serial detail table
 
                             if (count == 0) {
@@ -1169,7 +1183,7 @@ public class IssueItemsAction extends DevelopmentSupport {
                             setIssueDetailId(eid2.getIsdId());
                             setBTNDSBL("true");
 
-                            listIssueSerialDetail = generateSerialNoFromEISD(eid2.getIsdId(), getItemId());
+                            listIssueSerialDetail = generateSerialNoFromEISD(eid2.getIsdId(), IssueItemId);
 
                             message = "Items Selected Using LIFO ";
 
@@ -1179,9 +1193,9 @@ public class IssueItemsAction extends DevelopmentSupport {
                         } else if (eitm.getErpmimIssuePolicy().equals("3")) {
 
 
-                            listStockRecSerialNo = generateSerialNoFromESR(getItemId(), eid2.getIsdId());
+                            listStockRecSerialNo = generateSerialNoFromESR(IssueItemId, eid2.getIsdId());
 
-                            listIssueSerialDetail = generateSerialNoFromEISD(eid2.getIsdId(), getItemId());
+                            listIssueSerialDetail = generateSerialNoFromEISD(eid2.getIsdId(), IssueItemId);
                             setIssueDetailId(eid2.getIsdId());
                             return "SUCCESS2";
                         }
@@ -1228,6 +1242,11 @@ public class IssueItemsAction extends DevelopmentSupport {
 
     }
 
+    //This method is for help
+    public String Help() {
+	return "SUCCESS";
+    }
+
     //This method is for browsing issue items
     @SkipValidation
     public String Browse() throws Exception {
@@ -1258,7 +1277,7 @@ public class IssueItemsAction extends DevelopmentSupport {
                         + "<body><table width='500' border='0' align='center' cellpadding='15' cellspacing='0' style='font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt; color:#5a5a5a;'>"
                         + "<tr>"
                         + "<b>Issue items are</b><br/><br/>"
-                        + "<b>Issue Number : </b>" + eim.getIsmIssueNo() + "&nbsp   &nbsp &nbsp &nbsp    <b>Issue Date : </b>" + eim.getIsmIssueDate();
+                        + "<b>Issue Number : </b>" + eim.getIsmIssueNo() + "&nbsp&nbsp&nbsp&nbsp<b>Issue Date : </b>" + eim.getIsmIssueDate();
 
                 if (eim.getErpmIndentMaster() != null) {
                     indMast = indDao.findIndentMasterId(eim.getErpmIndentMaster().getIndtIndentId());

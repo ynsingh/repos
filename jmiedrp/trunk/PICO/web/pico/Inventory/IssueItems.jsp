@@ -21,6 +21,12 @@
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/PrePurchase/country.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/Administration/Admin.js"></script>
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/Inventory/Inventory.js"></script>
+        <script language="JavaScript">
+	function popupWin(url,popupName)
+	{
+        	Win=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=600");
+	}
+	</script>
         <link href="../css/pico.css" rel="stylesheet" type="text/css" />
         <meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
         <meta name="description" content="ERP for Universities">
@@ -44,7 +50,9 @@
                     <s:param name="tablecolspan" value="%{8}" />
                 </s:bean>
                 <br>
-                <br>
+		<div align="right" style="margin-right: 10px">
+		<a href=javascript:popupWin("/pico/Inventory/HelpForIssue.action","HelpForIssue"); style=text-decoration:none><font size=3>HELP</font></a>
+                </div>
                 <div style ="background-color: #215dc6;">
                     <p align="center" class="pageHeading" style="color:  #ffffff"><s:property value="getText('Inventory.ManageIssueItems')" /> </p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
