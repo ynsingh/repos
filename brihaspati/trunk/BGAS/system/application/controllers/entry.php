@@ -636,7 +636,8 @@ $width="100%";
 
 		/* Message for entries related to asset purchase. */
 		$this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
-
+                $this->messages->add('If TDS is being deducted.Then, Select Party name next to TDS Ledger and make Narration like type@ rate of TDS on payment Amount u/s name e.g. Deduction@1.0300% on Payment Amount 41,540.00 u/s 194C.', 'success');
+                    
 		/* Entry Type */
 		$entry_type_id = entry_type_name_to_id($entry_type);
 		if ( ! $entry_type_id)
@@ -1130,47 +1131,53 @@ $width="100%";
 					{ 
 						if($expense_type == "Revenue")
 					     	{
-							$insert_fund_data = array(
-        	                               			'entry_id' => $entry_id,
-	        	                                	'ledger_id' => $fund_ledger,
-               			                        	'amount' => $data_amount,
-                               			        	'dc' => 'D',
-	                                	        	'update_date' => $data_date,
-               		                        		'forward_refrence_id' => '0',
-	                               		        	'backward_refrence_id' => $data_back_refrence,
-								'secunitid' => $secunitid,
-	        	                                	);
+							$this->load->model('ledger_model');
+                                                        $fund_code =$this->ledger_model->get_ledger_code($fund_ledger);
+                                                        $fund_code1 = substr($fund_code,0,6);
+                                                        if($fund_code1 == '100103')
+                                                        {
+								$insert_fund_data = array(
+        	                               				'entry_id' => $entry_id,
+	        	                                		'ledger_id' => $fund_ledger,
+               			                        		'amount' => $data_amount,
+                               			        		'dc' => 'D',
+	                                	        		'update_date' => $data_date,
+               		                        			'forward_refrence_id' => '0',
+	                               		        		'backward_refrence_id' => $data_back_refrence,
+									'secunitid' => $secunitid,
+	        	                                		);
 	
-        		                                	if ( ! $this->db->insert('entry_items', $insert_fund_data))
-			                                  	{
-                		                             		$this->db->trans_rollback();
-	                        	                     		$this->logger->write_message("error", "Error adding fund id:" . $fund_ledger);
-                        	        	       		}else {
-                                 			     		$entry_fund_id = $this->db->insert_id();
-	                                	             	}
-						      
-   						    	$this->db->select('id');
-                                                    	$this->db->from('ledgers')->where('name', 'Transit Income');
-                                                    	$query = $this->db->get();
-                                                    	$income = $query->row();
-                                                    	$income_id = $income->id;
+        		                                		if ( ! $this->db->insert('entry_items', $insert_fund_data))
+			                                  		{
+                		                             			$this->db->trans_rollback();
+	                        	                     			$this->logger->write_message("error", "Error adding fund id:" . $fund_ledger);
+                        	        	       			}else {
+                                 			     			$entry_fund_id = $this->db->insert_id();
+	                                	             		}
+			
+   						    		$this->db->select('id');
+                                                    		$this->db->from('ledgers')->where('name', 'Transit Income');
+                                                    		$query = $this->db->get();
+                                                    		$income = $query->row();
+                                                    		$income_id = $income->id;
 
-                                                    	$insert_income_data = array(
-                                                        	'entry_id' => $entry_id,
-                                                        	'ledger_id' => $income_id,
-                                                        	'amount' => $data_amount,
-                                                        	'dc' => 'C',
-                                                        	'update_date' => $data_date,
-                                                        	'forward_refrence_id' => '0',
-                                                        	'backward_refrence_id' => $data_back_refrence,
-                                                        	'secunitid' => $secunitid,
-                                                        	);
+                                                    		$insert_income_data = array(
+                                                        		'entry_id' => $entry_id,
+                                                        		'ledger_id' => $income_id,
+                                                        		'amount' => $data_amount,
+                                                        		'dc' => 'C',
+                                                        		'update_date' => $data_date,
+                                                        		'forward_refrence_id' => '0',
+                                                        		'backward_refrence_id' => $data_back_refrence,
+                                                        		'secunitid' => $secunitid,
+                                                        		);
 
-                                                     		if ( ! $this->db->insert('entry_items', $insert_income_data))
-                                                        	{
-                                                            		$this->db->trans_rollback();
-                                                            		$this->logger->write_message("error", "Error adding transit income");
-                                                        	}
+                                                     			if ( ! $this->db->insert('entry_items', $insert_income_data))
+                                                        		{
+                                                            			$this->db->trans_rollback();
+                                                            			$this->logger->write_message("error", "Error adding transit income");
+                                                        		}
+							}	
 						}  
                                                 $this->db->select('name');
                                                 $this->db->from('ledgers')->where('id', $fund_ledger);

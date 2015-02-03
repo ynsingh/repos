@@ -285,7 +285,51 @@ class paymentreceipt
 	}
 
 	}
-	
-	
+
+	function tds_report()
+	{	
+		$counter = 1;
+		$CI =& get_instance();
+		$CI->db->select('id,amount,dc,secunitid,entry_id')->from('entry_items')->where('ledger_id', '4');
+        	$query_result = $CI->db->get();
+        	$result = $query_result->result();
+//      	print_r($result);
+        	$no_rows = $query_result->num_rows();
+        	foreach($result as $row)
+        	{
+                	$entry_items_id = $row->id;
+                	$amount = $row->amount;
+                	$dc = $row->dc;
+                	$secunitid = $row->secunitid;
+                	$entry_id = $row->entry_id;
+                	$CI->db->select('partyname,pan,vat,staxnum,sacunit')->from('addsecondparty')->where('sacunit', $secunitid);
+                	$party_result = $CI->db->get();
+                	$p_detail = $party_result->result();
+			foreach($p_detail as $row)
+			{
+				echo "<tr>";
+				echo "<td align=\"center\">". $counter. "</td>";
+				$counter++;
+				echo "<td>". $row->partyname."</td>";
+				echo "<td>". $row->pan."</td>";
+				echo "<td>". $row->vat."</td>";
+				echo "<td>". $row->staxnum."</td>";
+				echo "<td>". $row->sacunit."</td>";
+			}
+
+                	$CI->db->select('date,narration')->from('entries')->where('id', $entry_id);
+                	$entry_result = $CI->db->get();
+                	$entry_detail = $entry_result->result();
+			foreach($entry_detail as $row1)
+			{
+				$datetime = $row1->date;
+				$date = date_mysql_to_php($datetime);
+				echo "<td>".$date. "</td>";
+                        	echo "<td>". $row1->narration ."</td>";
+			}
+			echo "<td align=\"center\">". $entry_items_id."</td>";
+                        echo "<td align=\"center\">". $amount ."</td>";			
+        	}	
+	}
 }
 ?>

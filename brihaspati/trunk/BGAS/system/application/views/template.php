@@ -364,6 +364,10 @@ $(document).ready(function() {
                                                         echo "</li>";
                                                 echo "</ul>";
                                         echo "</li>";
+					echo"<li>";
+                                                echo anchor('report2/tds_report','TDS Report', array('title'=>'TDS Report'));
+                                        echo"</li>";
+
 
 				echo"</ul>";
 

@@ -502,7 +502,7 @@ class Reportlist
                         if($id == 3 && $type == "view" && $database == "NULL" )
 			{ 
                         	$counter++;
-                                echo "&nbsp;" . anchor_popup('report/schedule/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000'));
+                                echo "&nbsp;" . anchor_popup('report2/schedule/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000'));
 
                         		echo"</td>";
 					$CI =& get_instance();
@@ -1744,7 +1744,12 @@ class Reportlist
 				$object = new Reportlist();
                                 $object->init($group_id);
                                 $total = $object->total;
-                                echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
+				if($group_id == '127'){
+				$CI->load->model('ledger_model');
+                                $transit = $CI->ledger_model->get_ledger_balance('123');
+				$total = $total - $transit;
+				}
+				echo "<td align=\"right\">". convert_amount_dc($total). "</td>";
                                 $sum = $sum + $total;
 
 				/* code for reading previous year data from xml @megha */
@@ -1779,9 +1784,10 @@ class Reportlist
                                 echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
                        		echo "</tr>";
 
-				if ($id == '30')
+				if (($id == '30')||($id == '26'))
                                 {
-                                        $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id);
+                                        $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id)->where('id !=' ,'123');
+				
                                         $sub_groups = $CI->db->get();
                                         $sub_group_result = $sub_groups->result();
                                         foreach($sub_group_result as $row3)

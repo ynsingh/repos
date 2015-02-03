@@ -325,6 +325,29 @@ class Report2 extends Controller {
                         $this->session->unset_userdata('date2');
                         return;
                 }
+		
+		if($statement == 'tds_report')
+		{
+			$this->load->helper('text');
+
+                        $data['width'] = "70%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                      //  $data['sec_uni_id'] = $this->uri->segment(4);
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report2/tds_report";
+                        $data['title'] =  "TDS Report";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+                        $this->load->view('report/report_template', $data);
+                        $this->session->unset_userdata('date1');
+                        $this->session->unset_userdata('date2');
+                        return;
+
+		}
+
 		if ($statement == "schedule")
                 {
                         $arr = array();
@@ -949,5 +972,65 @@ class Report2 extends Controller {
 //		}
 		return;
 	}
+
+	function tds_report()
+	{
+	$data['print_preview'] = 'FALSE';
+	$this->template->set('page_title', 'TDS Report');
+	$this->template->set('nav_links', array('report2/printpreview/tds_report' => 'Print Preview'));
+
+	 // code for search 
+                $data['search'] = '';
+                $data['search_by'] = array(
+                        "Select" => "Select",
+                        "partyname" => "Party Name",
+                        "pan"=> "PAN No.",
+			"vat" => "VAT No.",
+			"serv_no" => "Service Tax No.",
+			"party_id" => "Party ID",
+			"date" => "Date",
+			"entry_no" => "Entry No.",
+			"amount" => "TDS Amount",
+                );
+                $data['search_by_active'] = '';
+
+                $data['text'] = array(
+                        'name' => 'text',
+                        'id' => 'text',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => '',
+                );
+                if ($_POST)
+                {
+                        $data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+                        $data['text']['value'] = $this->input->post('text', TRUE);
+                }
+                /* Form validation */
+
+                $this->form_validation->set_rules('search_by', 'Search By', 'trim|required');
+                $this->form_validation->set_rules('text', 'Text', 'trim|required');
+                /* Validating form */
+
+                if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('template', 'report2/tds_report', $data);
+                        return;
+                }
+		else
+                {
+                        $data_search_by = $this->input->post('search_by', TRUE);
+                        $data_text = $this->input->post('text', TRUE);
+                }
+
+                $data['search'] = $data_search_by;
+
+
+
+	$this->template->load('template', 'report2/tds_report', $data);
+	
+        return;
+	}
 }
-?>
+
