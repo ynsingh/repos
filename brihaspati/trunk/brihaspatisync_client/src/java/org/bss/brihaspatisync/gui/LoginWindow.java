@@ -20,8 +20,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionListener;
 import java.awt.KeyboardFocusManager;
-
+import java.lang.Object;
 import javax.swing.JPanel;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
@@ -367,11 +368,23 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e)  {}
 
+	/*private void showProcessbar(){
+	JFrame processframe = new JFrame("Please Wait..");
+	ImageIcon loading = new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif"));
+	processframe.add(new JLabel("Loading .....",loading, JLabel.CENTER));
+	processframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	processframe.setSize(355,100);
+	processframe.setVisible(true);
+	
+	mainWindow.getContainer().add(processframe,BorderLayout.CENTER);
+	}
+	*/
+	
 	private void checkUserNamePasswd() {  
 		try {
                         submitButton.setCursor(busyCursor);
                         if((usernameText.getText().equals("")) && (passwordField.getText().equals(""))) {
-                                StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog5"));
+                                StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog3"));
                                 submitButton.setCursor(defaultCursor); 
                         } else {
                         	boolean loginValue=ClientObject.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
@@ -380,9 +393,10 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                 if(loginValue==false) {
                                 	passwordField.setText("");
                 /*                        setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
-                */                      StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+                */                      StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));
                                 } 
 				else {
+					//showProcessbar();
                                 	ClientObject.setUserName(usernameText.getText());
 					mainWindow.setMenuItemText();
 		                        mainWindow.getDesktop().removeAll();

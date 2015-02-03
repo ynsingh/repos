@@ -196,6 +196,7 @@ public class MainWindow  extends JFrame implements ActionListener {
 			org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);
                         content.validate();
                         content.repaint();
+                        StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog4"));
 			
          	}else if(e.getActionCommand().equals("Exit")) {
 			int choice = JOptionPane.showOptionDialog(null,"Do you really want to exit the system", "Exit", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);

@@ -35,7 +35,7 @@ public class HandRaiseAction implements MouseListener {
                                 selectedUsername=ClientObject.getUserName();
                                 ClientObject.setSelectedUserListname(selectedUsername);
                                 actionONRequest("Get-Permission",selectedUsername);
-                                StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8") +" "+" is get permission to use all tools ");
+                                StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8")+Language.getController().getLangValue("HandRaiseAction.MessageDialog2"));
                         }
 			if(selectedUsername.equals("")) {
                        		StatusPanel.getController().setStatus(Language.getController().getLangValue("HandRaiseAction.MessageDialog1"));
@@ -45,10 +45,10 @@ public class HandRaiseAction implements MouseListener {
 
                         if(cmd.equals("Allow-Permission")) {
                         	actionONRequest("Allow-Permission",selectedUsername);
-                                StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8")+" "+" is Allowed to use all tools ");
+                                StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8")+Language.getController().getLangValue("HandRaiseAction.MessageDialog3"));
                         } else if(cmd.equals("Denie-Permission")) {
                         	actionONRequest("available",selectedUsername);
-                                StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8") +" "+" is Denied to use all tools ");
+                                StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8")+Language.getController().getLangValue("HandRaiseAction.MessageDialog4"));
                         }
 		} catch(Exception ex){}
 	}

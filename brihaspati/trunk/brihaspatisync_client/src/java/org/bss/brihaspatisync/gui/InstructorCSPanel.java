@@ -379,7 +379,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                	        	instCourseCombo_Panel.revalidate();
 				mainPanel.remove(1);
 				mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
-				StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.msg1"));
+				StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.MessageDialog3"));
 				reloadLabel.setCursor(defaultCursor);
 				reloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 	} catch(Exception ex){ System.out.println("Exception in Reload Action "+this.getClass()+" "+ex.getMessage());  }
