@@ -42,17 +42,18 @@ public class JoinSession {
                 try{
 			String usr_name=ClientObject.getUserName();
 			if(usr_name.equals("guest")) {
-                           usr_name =""; 
-                          usr_name = javax.swing.JOptionPane.showInputDialog(null,Language.getController().getLangValue("JoinSession.NickName"),Language.getController().getLangValue("JoinSession.NickNamePanel"), 1);
-                           if(!usr_name.matches("^[a-zA-Z_]*$")){
-                        	 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("JoinSession.MessageDialog3"));
-                                return;
-                           }
-                        }
-                        if( usr_name.equals("")){
-                           JOptionPane.showMessageDialog(null,Language.getController().getLangValue("JoinSession.MessageDialog4"));
-                           return;
-                        }
+                        	  usr_name =""; 
+                         	  usr_name = javax.swing.JOptionPane.showInputDialog(null,Language.getController().getLangValue("JoinSession.NickName"),Language.getController().getLangValue("JoinSession.NickNamePanel"), 1);
+                          	  if(!usr_name.matches("^[a-zA-Z_]*$")){
+                        		 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("JoinSession.MessageDialog3"));
+                               		 return;
+                          	 }
+                       		 if( usr_name.equals("")){
+                          		 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("JoinSession.MessageDialog4"));
+                          		 return;
+                     	        }
+				usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
+			}
                         ClientObject.setUserName(usr_name);
 			String username="user="+URLEncoder.encode(usr_name,"UTF-8");
 			//start GUI for this lecture id 
