@@ -1,12 +1,10 @@
 package org.bss.brihaspatisync.gui;
-
 /**
  * LoginWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ,2013 ETRG,IIT Kanpur.
+ * Copyright (c) 2012,2013,2015 ETRG,IIT Kanpur.
  */
-
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
@@ -32,9 +30,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JInternalFrame;
 import javax.swing.JPasswordField;
 import javax.swing.border.TitledBorder;
-
+import javax.swing.SwingWorker;
 import org.bss.brihaspatisync.util.ClientObject;
-
+import java.lang.Object;
+import javax.swing.JProgressBar;
+import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha</a> Modified this class for signalling. 
@@ -43,13 +44,12 @@ import org.bss.brihaspatisync.util.ClientObject;
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a> last modified in 
  */
 
-public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener {
+public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener{
 	
 	private JPanel loginGUIPanel;
 	
 	private JComboBox indexServerListCombo=null;
 	private JComboBox languageListCombo=null;	
-	
 	
 	private JLabel username;
 	private JLabel password;
@@ -219,7 +219,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                
                 submitButton.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
-                                StatusPanel.getController().setProcessBar("no");
+                                StatusPanel.getController().setProcessBar("yes");
                                 checkUserNamePasswd();
                                 StatusPanel.getController().setProcessBar("no");
                         }
@@ -348,7 +348,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
                 if(e.getComponent().getName().equals("submit.Action")) {	
 			StatusPanel.getController().setProcessBar("yes");
-                         
 	         		checkUserNamePasswd();
 			StatusPanel.getController().setProcessBar("no");
 			submitButton.setCursor(defaultCursor);
@@ -367,18 +366,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
         public void mouseReleased(MouseEvent e){}
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e)  {}
-
-	/*private void showProcessbar(){
-	JFrame processframe = new JFrame("Please Wait..");
-	ImageIcon loading = new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif"));
-	processframe.add(new JLabel("Loading .....",loading, JLabel.CENTER));
-	processframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	processframe.setSize(355,100);
-	processframe.setVisible(true);
-	
-	mainWindow.getContainer().add(processframe,BorderLayout.CENTER);
-	}
-	*/
 	
 	private void checkUserNamePasswd() {  
 		try {
@@ -392,23 +379,53 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 				System.out.println(loginValue);
                                 if(loginValue==false) {
                                 	passwordField.setText("");
-                /*                        setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
-                */                      StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));
+                                        StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));
                                 } 
 				else {
-					//showProcessbar();
+					
                                 	ClientObject.setUserName(usernameText.getText());
-					mainWindow.setMenuItemText();
-		                        mainWindow.getDesktop().removeAll();
-					mainWindow.getDesktop().setBackground(new Color(220,220,220));	
-					mainWindow.getDesktop().add(new CourseSessionWindow());
-					mainWindow.getContainer().add(mainWindow.getDesktop(),BorderLayout.CENTER);
-					mainWindow.getContainer().validate();
-		                        mainWindow.getContainer().repaint();	
-                                        StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
+					guiworker task = new guiworker();
+					task.execute();
                              	}
                          }
                        			
 		} catch(Exception e) { System.out.println(this.getClass()+ " "+e.getMessage());}
 	}
+
+	public class guiworker extends SwingWorker<CourseSessionWindow,Void>{
+
+		JFrame processframe = new JFrame("Please Wait....");
+ 			guiworker(){
+			Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+			ImageIcon loading = new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif"));
+        		processframe.add(new JLabel("Loading .....",loading, JLabel.CENTER));
+        		processframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        		processframe.setSize(355,100);
+        		processframe.setVisible(true);
+			//processframe.setUndecorated(false);
+			//processframe.setResizeable(false);
+			//processframe.setLocationRelativeTo(null);
+			processframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
+  		}
+
+		protected CourseSessionWindow doInBackground() throws Exception {
+			CourseSessionWindow csw = new CourseSessionWindow();
+    			return csw;
+  		}
+
+		protected void done() {
+    			processframe.dispose();
+    			mainWindow.setMenuItemText();
+    			mainWindow.getDesktop().removeAll();
+    			mainWindow.getDesktop().setBackground(new Color(220,220,220));	
+			try{	
+				mainWindow.getDesktop().add(get());
+			}catch(Exception e){ System.out.println(e.getMessage());
+		}
+		mainWindow.getContainer().add(mainWindow.getDesktop(),BorderLayout.CENTER);
+		mainWindow.getContainer().validate();
+		mainWindow.getContainer().repaint();	
+        	StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
+		}
+	} /*end guiworkerclass*/
 }
