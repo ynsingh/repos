@@ -193,6 +193,7 @@
                         <rich:menuItem  id="re4" onclick="return loadIframe('ifrm','report/ReportExporterMonthlyRoll.jsf?fwdLink=MonthlyPayroll.jsf')" value="Monthly Salary Roll"/>
                         <rich:menuItem  id="re5" onclick="return loadIframe('ifrm','report/ReportExporter.jsf?fwdLink=APF.jsf')" value="Annual PF Report"/>
                         <rich:menuItem  id="re6" onclick="return loadIframe('ifrm','report/ReportExporterConcise.jsf?fwdLink=APF_Compact.jsf')" value="Concise PF Report"/>
+                        <rich:menuItem  id="re7" onclick="return loadIframe('ifrm','report/ReportExporterAttendance.jsf?fwdLink=AttendanceReportMonthly.jsf')" value="Monthly Attendance Report"/>
                     </rich:dropDownMenu>
 
                     <rich:dropDownMenu  id="tr"   value="Tax Reports">

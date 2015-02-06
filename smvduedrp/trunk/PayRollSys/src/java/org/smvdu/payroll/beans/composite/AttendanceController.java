@@ -11,6 +11,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletException;
+import org.smvdu.payroll.api.pf.ReportGen.AttendancePDF;
 import org.smvdu.payroll.beans.setup.Attendance;
 import org.smvdu.payroll.beans.db.AttendanceDB;
 
@@ -46,6 +48,7 @@ import org.smvdu.payroll.beans.db.AttendanceDB;
 *  Contributors: Members of ERP Team @ SMVDU, Katra
 *
 * IITK , Om Prakash(omprakashkgp@gmail.com), Manorama Pal (palseema30@gmail.com)
+* modified on 29 January 2015 by <omprakashkgp@gmail.com> 
  */
 public class AttendanceController {
     private String data;
@@ -60,6 +63,8 @@ public class AttendanceController {
     private ArrayList<Attendance> attendances;
     private UIData dataGrid;
     public String loadAtt;
+    private ArrayList<Attendance> attendancepdf;
+    private ArrayList<Attendance> attendancehtml;
 
    
    /* load selected attendance  */
@@ -240,6 +245,38 @@ public class AttendanceController {
       }
       
     
- 
+     /* load selected attendance report in PDF Formate */
+   public void attendanceReportPDF()
+    {
+        //getAllAttendanceData();
+        attendancepdf = new AttendancePDF().Attendance(month,year);
+        
+    }
+    
+     public ArrayList<Attendance> getAllAttendancePDF() {
+        attendancepdf = new AttendancePDF().Attendance(month,year);
+        return attendancepdf;
+    }
+   
+    public void setAllAttendancePDF(ArrayList<Attendance> attendancepdf) {
+        this.attendancepdf =attendancepdf;
+    }
   
+        /* load selected attendance report in HTML Formate */
+   public void attendanceReportHTML() throws ServletException
+    {
+        //getAllAttendanceData();
+        attendancehtml = new AttendancePDF().AttendanceHTML(month,year);
+        
+    }
+    
+     public ArrayList<Attendance> getAllAttendanceHTML() throws ServletException {
+        attendancehtml = new AttendancePDF().AttendanceHTML(month,year);
+        return attendancehtml;
+    }
+   
+    public void setAllAttendanceHTML(ArrayList<Attendance> attendancehtml) {
+        this.attendancehtml =attendancehtml;
+    }
+
 }
