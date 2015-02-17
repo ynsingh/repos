@@ -290,10 +290,10 @@ class paymentreceipt
 	{	
 		$counter = 1;
 		$CI =& get_instance();
-		$CI->db->select('id,amount,dc,secunitid,entry_id')->from('entry_items')->where('ledger_id', '4');
+		$CI->db->select('id,amount,dc,secunitid,entry_id')->from('entry_items')->where('ledger_id', '4')->where('dc', 'C');
         	$query_result = $CI->db->get();
         	$result = $query_result->result();
-//      	print_r($result);
+	     // 	print_r($result);
         	$no_rows = $query_result->num_rows();
         	foreach($result as $row)
         	{
@@ -331,5 +331,7 @@ class paymentreceipt
                         echo "<td align=\"center\">". $amount ."</td>";			
         	}	
 	}
+
+
 }
 ?>

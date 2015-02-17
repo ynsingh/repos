@@ -47,6 +47,14 @@ class Cf extends Controller {
                         return;
                 }
 
+		/* Difference of income and expenditure  */
+	
+		$this->load->library('Reportlist');
+        	$income = new Reportlist();
+        	$diff = $income->income_expense_diff();
+		
+	//	echo "$diff";
+		
 		/* Form fields */
 		$last_year_end = $this->config->item('account_fy_end');
 		list($last_year_end_date, $last_year_end_time) = explode(' ', $last_year_end);
@@ -394,6 +402,40 @@ class Cf extends Controller {
 					$this->messages->add('Added account settings.', 'success');
 				}
 
+				/* Adding org name unit name year and database name in login database */
+                                $sy =$last_year_end_year;
+                                $ey = $last_year_end_year+1;
+                                $fy = $sy.'-'.$ey;
+
+                                $tablebad="bgasAccData";
+                                $db1=$this->load->database('login', TRUE);
+                                $db1->trans_start();
+                                $insert_data = array(
+                                        'organization'=> $data_ins_name,
+                                        'unit'=>  $data_uni_name,
+                                        'databasename' =>  $data_database_name,
+                                        'fyear' => $fy,
+                                        'uname' => $data_database_username,
+                                        'dbpass' => $data_database_password,
+                                        'hostname' => $data_database_host,
+                                        'port' => $data_database_port,
+                                        'dbtype' => $data_database_type,
+                                        'dblable' => $data_account_label
+                                );
+
+                                if ( ! $db1->insert($tablebad, $insert_data))
+                                {
+                                        $db1->trans_rollback();
+                                        $this->messages->add('Error in Adding value in  bgasAccData table under login data base ' . $data_database_name . '.', 'error');
+                                        $db1->close();
+                                } else {
+                                        $db1->trans_complete();
+                                        $this->messages->add('Added Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
+                                }
+                                $db1->close();
+
+
+
 				/**************** Importing the C/F Values : START ***************/
 
 				$cf_status = TRUE;
@@ -425,14 +467,31 @@ class Cf extends Controller {
 					if (in_array($row->id, $cf_ledgers))
 					{
 						/* Calculating closing balance for previous year */
-						$cl_balance = $this->Ledger_model->get_ledger_balance($row->id);
-						if (float_ops($cl_balance, 0, '<'))
+						if ($row->id == "2")
 						{
-							$op_balance = -$cl_balance;
-							$op_balance_dc = "C";
-						} else {
-							$op_balance = $cl_balance;
-							$op_balance_dc = "D";
+							$balance = $this->Ledger_model->get_ledger_balance('2');
+							$cl_balance = $diff + $balance;
+
+							if (float_ops($cl_balance, 0, '<'))
+                                                	{
+                                                        	$op_balance = -$cl_balance;
+                                                        	$op_balance_dc = "D";
+                                                	} else {
+                                                        	$op_balance = $cl_balance;
+                                                        	$op_balance_dc = "C";
+                                                	}
+
+						}else{
+							$cl_balance = $this->Ledger_model->get_ledger_balance($row->id);
+						
+							if (float_ops($cl_balance, 0, '<'))
+							{
+								$op_balance = -$cl_balance;
+								$op_balance_dc = "C";
+							} else {
+								$op_balance = $cl_balance;
+								$op_balance_dc = "D";
+							}
 						}
 						if ( ! $newacc->query("INSERT INTO ledgers (id, code, group_id, name, op_balance, op_balance_dc, type, reconciliation) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", array($row->id, $row->code, $row->group_id, $row->name, $op_balance, $op_balance_dc, $row->type, $row->reconciliation)))
 						{
@@ -520,6 +579,22 @@ class Cf extends Controller {
 					}
 				}
 				
+				/* CF Income Schedules Balance using xml */				
+				$this->db->select('code')->from('groups')->where('parent_id','3');
+                                $groups = $this->db->get();
+                                $count = 11;
+                                foreach($groups->result() as $row)
+                                {
+                                        $code = $row->code;
+                                        $this->load->library('Reportlist');
+                                        $schedule = new Reportlist();
+                                        $schedule->get_IE_schedule($code,"CF",$data_database_name,$count);
+                                        $count++;
+                                }
+				
+				$this->messages->add('Income schedules xml created'.$data_database_name, 'success');
+
+				/* CF Expenditure schedules Balance using xml*/
 				$this->db->select('code')->from('groups')->where('parent_id','4');
 				$groups = $this->db->get();
 				$count = 17;
@@ -532,9 +607,10 @@ class Cf extends Controller {
 					$count++;
 				}
 				
-			
+				$this->messages->add('Expenditure schedule xml created'.$data_database_name, 'success');	
+		
 				/* Adding org name unit name year and database name in login database */
-				$sy =$last_year_end_year;
+			/*	$sy =$last_year_end_year;
 				$ey = $last_year_end_year+1;
 				$fy = $sy.'-'.$ey;
 
@@ -565,9 +641,9 @@ class Cf extends Controller {
                                 }
 				$db1->close();
 	
-	
+	*/
 
-				/* xml creation */
+				/* CF Income Expenduture MHRD,Payment Reciept Balance using xml */
 				$this->load->library('Paymentreceipt');
                 		$this->load->library('Reportlist');
                 		$income = new Reportlist();
@@ -578,9 +654,23 @@ class Cf extends Controller {
                         	$payment->payment_receipt('Payment', "CF",$data_database_name);
                         	$receipt = new Paymentreceipt();
                         	$receipt->payment_receipt('Receipt',"CF",$data_database_name);
-                		$this->messages->add('xml created'.$data_database_name, 'success');
+                		$this->messages->add('I/E and Payment/Receipt xml created'.$data_database_name, 'success');
 
-				
+				/* Account lock */
+			//	$this->db->trans_start()
+				$update_data = array(
+                                        'account_locked'=> '1'
+                                );
+
+				if ( ! $this->db->where('id', '1')->update('settings', $update_data))
+                                {
+                                        $this->db->trans_rollback();
+                                        $this->messages->add('Error in locking account.', 'error');
+                                } else {
+					$this->db->trans_complete();
+                                        $this->messages->add('Account is locked', 'success');
+                                }
+
 				if ($cf_status)
 					$this->messages->add('Account carried forward.', 'success');
 				else

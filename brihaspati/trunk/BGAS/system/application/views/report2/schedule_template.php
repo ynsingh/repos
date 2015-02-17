@@ -22,6 +22,11 @@
         $object->get_IE_schedule($code,'view','NULL',$count);
         $total = $object->curr_total;
 	$prev_year_total = $object->prev_total;
+	if (($total < 0)|| ($prev_year_total < 0))
+	{
+		$total = 0 - $total ;
+		$prev_year_total = 0 - $prev_year_total;
+	}
         echo "<tr>";
 	echo"<td>Total</td>";
 	echo "<td align=\"right\" class=\"bold\">";

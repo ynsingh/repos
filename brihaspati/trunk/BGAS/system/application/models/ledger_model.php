@@ -553,7 +553,7 @@ var $ledgers = array();
 		}
 		if( $db_name_q->num_rows() == 1 ) {
 			/* database connectivity for getting previous year opening balance */
-			$con = mysql_connect($host_name, $db_username, $db_password);
+			$con = @mysql_connect($host_name, $db_username, $db_password);
 			$op_balance = array();
 			if($con){
 				$value = mysql_select_db($db_name, $con);
@@ -638,7 +638,7 @@ var $ledgers = array();
 			$port = $row->port;
 		}
 		/* database connectivity for getting previous year opening balance */
-		$con = mysql_connect($host_name, $db_username, $db_password);
+		$con = @mysql_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
 			$value = mysql_select_db($db_name, $con);
@@ -733,7 +733,7 @@ var $ledgers = array();
 		$to_date = $old_year1."-".$date1[1]."-".$date1[2];
 
 		/* database connectivity for getting previous year debit amount */
-		$con = mysql_connect($host_name, $db_username, $db_password);
+		$con = @mysql_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
 			$value = mysql_select_db($db_name, $con);
@@ -808,7 +808,7 @@ var $ledgers = array();
 		$to_date = $old_year1."-".$date1[1]."-".$date1[2];
 
 		/* database connectivity for getting previous year debit amount */
-		$con = mysql_connect($host_name, $db_username, $db_password);
+		$con = @mysql_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
 			$value = mysql_select_db($db_name, $con);
@@ -914,7 +914,7 @@ var $ledgers = array();
 
 		/* database connectivity for getting previous year debit amount */
 
-		$con = mysql_connect($host_name, $db_username, $db_password);
+		$con = @mysql_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
 			$value = mysql_select_db($db_name, $con);
@@ -1008,7 +1008,7 @@ var $ledgers = array();
 
 		/* database connectivity for getting previous year debit amount */
 
-		$con = mysql_connect($host_name, $db_username, $db_password);
+		$con = @mysql_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
 		if($con){
 			$value = mysql_select_db($db_name, $con);

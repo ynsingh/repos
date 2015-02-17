@@ -526,6 +526,7 @@ class Reportlist
                                         $income = new Reportlist();
                                         $income->init($ledg_id);
                                         $total = $income->total;
+				
                                         $sum= $sum + $total;
 					$total8=0;
 					if($ledg_id == "24"){
@@ -586,13 +587,15 @@ class Reportlist
                         				$incomelist2 = @$incomenode2->item($i)->nodeValue;
                         				$incomelist3 = @$incomenode3->item($i)->nodeValue;
                 				}
-							
+							if ($incomelist2 > 0){
+								$incomelist2 = 0 -  $incomelist2;
+							}	
                                                       $type_total = $type_total + $incomelist2;
 							$i++;
 						if($incomelist2 == 0)	
 				               	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
 						else
-						echo "<td align=\"right\">" . convert_amount_dc($incomelist2) . "</td>";
+							echo "<td align=\"right\">" . convert_amount_dc($incomelist2) . "</td>";
 			}			
 	
 			if(($type == "CF") && ($id == 3) && ($database != "NULL"))
@@ -1838,10 +1841,16 @@ class Reportlist
 				$object = new Reportlist();
                           	$object->init($group_id);
                             	$total = $object->total;
+				if($group_id == '127'){
+                                $CI->load->model('ledger_model');
+                                $transit = $CI->ledger_model->get_ledger_balance('123');
+                                $total = $total - $transit;
+                                }
+
                                 $CI =& get_instance();
                                 $CI->load->model('Payment_model');
                                 $data = $CI->Payment_model->xml_creation($t_name,$group_id,$database,$name,$curr_year,$total);
-				if($id == '30')
+				if(($id == '30') || ($id == '26'))
 				{
 				 	$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id);
                                         $sub_groups = $CI->db->get();
@@ -1924,6 +1933,27 @@ class Reportlist
 		$this->curr_total = $curr_total;
 		$this->prev_total = $prev_total;	
         }
+
+	function income_expense_diff()
+	{
+
+		$income = new Reportlist();
+                $income->init('3');
+                $total = $income->total;
+		
+		$expense = new Reportlist();
+                $expense->init('4');
+                $total1 = $expense->total;
+
+		$total = 0 - $total;
+	
+		$diff = $total - $total1;
+//		echo "diff==$diff";
+//		print_r($total);
+//		print_r($total1);
+
+		return $diff;
+	}
 
 }
 

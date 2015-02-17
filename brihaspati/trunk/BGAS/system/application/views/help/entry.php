@@ -213,3 +213,26 @@ Expense Account Debit 100,000</br></br>
 Cash's Account Credit 100,000</br></br>
 
 Narration : </b>Salary paid.</br></br></br></br>
+
+<b>2. Salary paid to employees Rs. 100,000 and TDS is being deducted at rate of 1%</b></br></br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; a) Salary is an item of expense, hence it will be debited</br></br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; But, the entry will be made only when, the related expense head has sufficient budget amount.</br></br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; b)  Cash is an item of asset and it goes out, so it will be credited.</br></br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; c)  TDS is an item of sources of funds, so it will be credited.</br></br>
+
+
+
+<b><u>Journal Entry</u></br></br>
+
+Expense Account Debit 100,000</br></br>
+
+Cash's Account Credit 99,000</br></br>
+
+TDS's Account Credit 1,000</br></br>
+
+Narration : </b>Deduction@1% on Payment Amount 100,000.00 u/s 194C</br></br></br></br>
+
