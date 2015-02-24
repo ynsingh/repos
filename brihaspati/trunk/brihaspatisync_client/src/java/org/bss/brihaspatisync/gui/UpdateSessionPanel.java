@@ -1,5 +1,6 @@
 package org.bss.brihaspatisync.gui;
 
+
 /**
  * UpdateSessionPanel.java
  *
@@ -20,7 +21,9 @@ import java.net.URLEncoder;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.DateUtil;
-
+import javax.swing.SwingWorker;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 import java.net.URLEncoder;
 import org.bss.brihaspatisync.network.Log;
 import java.util.regex.Pattern;
@@ -32,6 +35,7 @@ import java.util.regex.Matcher;
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>  Modified for GUI on 13 Jun 2011
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> Testing for gui.
+ * @author <a href="mailto:nehapal2209@gmail.com">Neha Pal</a>Progressbar is added at Update button.
  */
 
 public class UpdateSessionPanel extends JFrame implements ActionListener, MouseListener{
@@ -97,6 +101,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	//private ClientObject client_obj=ClientObject.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+	private ClassLoader clr= this.getClass().getClassLoader();
 	private InstructorCSPanel insCSPanel=null;	
 
 	protected UpdateSessionPanel(int indexnumber,Vector updatevector,InstructorCSPanel insCSPanel) {
@@ -176,7 +181,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 		mail_send=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("mail_send")+"</font></html>");
 
                 mail_send.setBackground(Color.LIGHT_GRAY);	
-                north_Panel.add(new JLabel("                           "));
+                north_Panel.add(new JLabel(" "));
                 north_Panel.add(audio);
                 north_Panel.add(video);
                 north_Panel.add(whiteboard);
@@ -465,7 +470,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
       	 */
 	public void actionPerformed(ActionEvent e){
         	if(e.getSource()==annBttn){
-			StatusPanel.getController().setProcessBar("yes");
+			StatusPanel.getController().setProcessBar("no");
 			try {
 				annBttn.setCursor(busyCursor);
 				String lectValue = getLectureValues();
@@ -475,14 +480,9 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         if(HttpsUtil.getIndexingMessage(indexServer)) {
 						/********************* modified ******************************/
                                                 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));						      
-                                                frame.dispose();
-						insCSPanel.getmainPanel().remove(1);	
-						insCSPanel.getmainPanel().add(insCSPanel.showLecture(ClientObject.getSessionList(ClientObject.getInstCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
-                                                insCSPanel.getmainPanel().revalidate();
-                                                insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
-                                        }
-                                        else{
-                                        
+                         			frame.dispose();
+						guiworker task = new guiworker();
+						task.execute();     
                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog6"));
                                                
                                           } 
@@ -503,7 +503,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	public void mouseClicked(MouseEvent ev) {
         	if(ev.getComponent().getName().equals("")){ }
 		if(ev.getComponent().getName().equals("closeLabel.Action")) {
-			StatusPanel.getController().setProcessBar("yes");
+			StatusPanel.getController().setProcessBar("no");
 			closeLabel.setCursor(busyCursor);
 			try{
 				Thread.sleep(500);
@@ -521,7 +521,37 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         public void mouseReleased(MouseEvent e) {}
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
-	
+
+        public class guiworker extends SwingWorker<JScrollPane,Void>{
+                	JFrame processframe = new JFrame("Please Wait....");
+                        guiworker(){
+                        	Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+                        	ImageIcon loading = new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif"));
+                        	processframe.add(new JLabel("Loading .....",loading, JLabel.CENTER));
+                        	processframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                        	processframe.setSize(355,100);
+                        	processframe.setVisible(true);
+                        	processframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
+                	}
+     
+		protected JScrollPane doInBackground() throws Exception {
+				JScrollPane courselist = new JScrollPane();
+				InstructorCSPanel inscspanel = new InstructorCSPanel();
+				courselist= inscspanel.showLecture(ClientObject.getSessionList(ClientObject.getInstCourseList(),ClientObject.getIndexServerName()));
+				return courselist;
+                	}
+
+	 	protected void done() {
+                        	processframe.dispose();
+                                insCSPanel.getmainPanel().remove(1);
+		        	try{
+                        		insCSPanel.getmainPanel().add(get(),BorderLayout.CENTER);
+				}catch(Exception e) { System.out.println(e.getMessage());}
+                	        insCSPanel.getmainPanel().revalidate();
+                        	insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
+     			}
+	}
+
 	private void getTimeIndexingServer() {
                 try {
   			String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getTimeIndexingServer();
