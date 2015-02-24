@@ -52,6 +52,7 @@ import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import java.util.Vector;
+import java.util.Collections;
 import java.util.List;
 import java.io.File;
 
@@ -104,6 +105,7 @@ public class InstituteAdmin extends SecureScreen{
 			Vector list1=new Vector();
 			List list2=null;
 			Vector list3=new Vector();
+ 
                         if(list.size() !=0){
 	                        for(int i=0;i<list.size();i++){
         	                        InstituteAdminUser inst=(InstituteAdminUser)(list.get(i));
@@ -117,13 +119,15 @@ public class InstituteAdmin extends SecureScreen{
 				String inst_id=(list1.get(j)).toString();
 				int instid=Integer.parseInt(inst_id);
 				crit=new Criteria();
-				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instid);
+                                //crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instid);
+				crit.addAscendingOrderByColumn(InstituteAdminRegistrationPeer.INSTITUTE_NAME);
 				crit.and(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,1);
 				try{
 	                                list2=InstituteAdminRegistrationPeer.doSelect(crit);
                                         for(int k=0;k<list2.size();k++)
                                         {
-        	                                InstituteAdminRegistration instadminreg=(InstituteAdminRegistration)list2.get(k);
+						InstituteAdminRegistration instadminreg=(InstituteAdminRegistration)list2.get(k);
+                                               //Collections.sort(list1);
                                                 list3.add(instadminreg);
                                         }
                                  }
@@ -133,7 +137,7 @@ public class InstituteAdmin extends SecureScreen{
 			String rldpage=pp.getString("reload"," ");
 			if(rldpage.equals(" ")){
 			context.put("list",list);
-			context.put("list1",list3);
+			context.put("list1",list2);
 			
 			}
 			else{
