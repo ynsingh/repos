@@ -61,12 +61,11 @@ location=document.brihaspaticombo.brihInst.options[document.brihaspaticombo.brih
          <div style="overflow-y:hidden; position:fixed;z-index:500; width:100%;" class="tableColor">
 	<table width="100%" height="2px">
 	<tr>	
-##	<td><center><b><font size="4" color="#000">#springMessage("brih_poll")</font></b></center>
 	#if($model.lsSize >= 1)
 		<form name="brihaspaticombo">
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<select name="brihInst" size="1" class="drop_Val" onchange="go()" style="width:100px; height:35px;">
-		<option>Select Institute
+		<p>&nbsp;&nbsp;
+		<select name="brihInst" size="1" class="drop_Val" onchange="go()" style="width:230px; height:35px;">
+		<option> #if($lang == "hindi") #springMessage("brih_Institute") #springMessage("brih_select") #else #springMessage("brih_select") #springMessage("brih_Institute") #end 
 		<option hidden>$model.inst
 		#foreach($name in $model.lstData)
 		<option style="width:100px; height:20px;" value='#springUrl("/pollmodule/pollAttemptIndex.vm")?usrNme=$model.usrNme&user_Id=$model.UserId&instNme=$name.getInstituteId()&modeview=viewp' title="$name.getInstituteName()">$name.getInstituteName()</option>
@@ -79,16 +78,16 @@ location=document.brihaspaticombo.brihInst.options[document.brihaspaticombo.brih
 	</tr>
 	#if($model.lsSize > 1)
 	<tr>
-	<font style="margin-left:2px; font-size:16px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$!model.inst</font>
+	<font style="margin-left:2px; font-size:16px;">&nbsp;&nbsp;&nbsp;$!model.inst</font>
 	</tr>
 	#end
 	</table>
 	</div>
 	<br><br><br>
 	#if($model.lsSize > 1)
-		<div style="overflow-y:hidden; position:fixed;z-index:500; margin-top:-50px; margin-left:200px; width:100%;"class="tableColor">
+		<div style="overflow-y:hidden; position:fixed;z-index:500; margin-top:-50px; margin-left:250px; width:100%;"class="tableColor">
 	#else
-		<div style="overflow-y:hidden; position:fixed;z-index:500; margin-top:-50px; margin-left:200px; height:35px; width:100%; "class="tableColor">
+		<div style="overflow-y:hidden; position:fixed;z-index:500; margin-top:-50px; margin-left:250px; height:35px; width:100%; "class="tableColor">
 	#end
 		<script type="text/javascript">function PopupViewPoll() { window.open( "#springUrl("/pollmodule/pollAttemptIndex.vm")?usrNme=$model.usrNme&user_Id=$model.UserId&instNme=$model.instidv&modeview=check", "myWindow","status = 1, height = 400, width = 600, resizable = 1, scrollbars = 1,left=600,top=250" )}</script><form>&nbsp;&nbsp;&nbsp;<font onClick="PopupViewPoll()" color="#0000FF" size="3" style="cursor:pointer;">#springMessage("brih_View") </font>&nbsp;|
 		<script type="text/javascript">function PopupViewResult() { window.open( "#springUrl("/pollmodule/pollViewResult.vm")?usrNme=$model.usrNme&user_Id=$model.UserId&instNme=$model.instidv", "myWindow","status = 1, height = 400, width = 600, resizable = 1, scrollbars = 1,location =0,left=600,top=250 " )}</script><table width="320px"  height="40px"><form>&nbsp;&nbsp;&nbsp;<font onClick="PopupViewResult()" color="#0000FF" size="3" style="cursor:pointer;">#springMessage("brih_Result")</font></form></table><br></div>
