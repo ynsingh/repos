@@ -1,6 +1,5 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
-class Cf extends Controller {
+<?php if(! defined('BASEPATH')) exit('No direct script access allowed');
+class Cf extends Controller{
 
 	function Cf()
 	{
@@ -644,17 +643,46 @@ class Cf extends Controller {
 	*/
 
 				/* CF Income Expenduture MHRD,Payment Reciept Balance using xml */
+
 				$this->load->library('Paymentreceipt');
                 		$this->load->library('Reportlist');
                 		$income = new Reportlist();
                 		$income->income_exp_mhrd(3,"CF",$data_database_name);
                 		$expense = new Reportlist();
                 		$expense->income_exp_mhrd(4,"CF" ,$data_database_name);
+
 				$payment = new Paymentreceipt();
                         	$payment->payment_receipt('Payment', "CF",$data_database_name);
                         	$receipt = new Paymentreceipt();
                         	$receipt->payment_receipt('Receipt',"CF",$data_database_name);
                 		$this->messages->add('I/E and Payment/Receipt xml created'.$data_database_name, 'success');
+
+//////////////////             /* CF Asset Liability MHRD Balance using xml */
+				
+				$this->load->library('reportlist');				
+				$liability = new Reportlist();
+                                $liability->new_balance_sheet(0,2,"CF",$data_database_name,0);
+                                $asset = new Reportlist();
+                                $asset->new_balance_sheet(6,1,"CF",$data_database_name,9);
+				
+				$this->load->library('balancesheet');
+                                $asset = new Balancesheet();
+				$asset->get_schedule(9,'2003',"CF",$data_database_name);
+                                $asset->loans_advances(10,'2004',"CF",$data_database_name);
+                                $asset->Investments(21,'Earmarked Funds',8,'200201',$data_database_name,"CF",0);
+                                $asset->Investments(21,'others',8,'200201',$data_database_name,"CF",6);
+                                $asset->Investments(22,'Earmarked Funds',8,'200202',$data_database_name,"CF",12);
+                                $asset->Investments(22,'others',8,'200202',$data_database_name,"CF",18); 
+                                $asset->fixed_assets(14,7,'2001',"CF",$data_database_name);
+				
+				$this->load->library('balancesheet');
+                                $liability = new Balancesheet();
+                                $liability->schedule_five('12',5,'100301',"CF",$data_database_name);
+                                $liability->schedule_five('13',5,'100302',"CF",$data_database_name);
+                                $liability->current_liabilities(8,6,'1004',"CF",$data_database_name);
+                                $liability->provisions(157,6,'1005',"CF",$data_database_name);
+
+                		$this->messages->add('xml created'.$data_database_name, 'success');
 
 				/* Account lock */
 			//	$this->db->trans_start()
@@ -696,11 +724,8 @@ class Cf extends Controller {
 		}
 		redirect("setting");
 		return;
-
-
 	}//end of Index method
 
 }//end of class
-
 /* End of file cf.php */
 /* Location: ./system/application/controllers/setting/cf.php */

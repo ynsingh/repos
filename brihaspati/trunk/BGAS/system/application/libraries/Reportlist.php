@@ -1,5 +1,4 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
 class Reportlist
 {
 	var $id = 0;
@@ -186,7 +185,6 @@ class Reportlist
 			$this->children_ledgers[$counter]['total2'] = $CI->Ledger_model->get_old_ledger_balance($row->id);
 			list ($this->children_ledgers[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_prev_year_op_balance($row->id);
 			$this->total2 = float_ops($this->total2, $this->children_ledgers[$counter]['total2'], '+');
-
 			$counter++;
 			}
 		}
@@ -228,193 +226,317 @@ class Reportlist
 			$this->counter--;
 		}
 	}
+////////////////////////////
 
-	/** Method for displaying Balance Sheet
-	 * in MHRD format.
-	 * @author Priyanka Rawat <rpriyanka12@ymail.com>
-	 */
-        function new_balance_sheet($c =0)
+/** Method for displaying Balance Sheet
+ * in MHRD format.
+ */
+ function new_balance_sheet($c,$id1,$type,$database,$i)
+ {
+ 	$CI = & get_instance();
+        $prev_sum = 0;
+        $mhrdlist2 = "";
+	$mhrdlist3 = "";
+	$incomelist2 = "";
+	$old_income_total = "";
+	$old_expense_total = "";
+        $check = 0;
+        $this->counter = $c;
+	$c1 = $c;
+	$type_total = "";
+        $sum = 0;
+        $total = "";
+	$id2 = $id1;
+        $CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
         {
+        $date1 = $row->fy_start;
+        $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+       	$prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        $CI->load->model('Setting_model');
+        $ledger_name = $CI->Setting_model->get_from_settings('ledger_name');
+        $CI->load->model('Payment_model');
+        $db = $CI->Payment_model->database_name();
+
+        $CI->db->select('name,code,id')->from('groups')->where('parent_id =',$id1);
+        $main = $CI->db->get();
+       	$no_row = $main->num_rows();
+        $main_result= $main->result();
+        foreach($main_result as $row)
+	{
+                $this->name = $row->name;
+                $this->code =$row->code;
+                $this->id = $row->id;
+                $liability = new Reportlist();
+                $liability->init($this->id);
+                $total = $liability->total;
+                $sum = $sum+$total;
+	        if(($this->countDigits() == 4) && ($this->id != 0) && ($this->code > 100) && ($this->code!= '1006') && ($this->code!= 1005))
+	        {
+	       	if($this->name == 'Current Liabilities')
+		$this->name = ('Current Liabilities And Provisions');
+		if($this->name == 'General Funds')
+		{
+		$check++;
+		}
+		else
+		{
 		$check = 0;
-                $this->counter = $c;
+		}
+		echo "<tr class=\"tr-group\">";
+                echo "<td class=\"td-group\">";
+                echo "&nbsp;" .  $this->name;
+                echo "</td>";
+                echo "<td class=\"td-group\">";
+		if(($c == $c1) && ($id1 == $id2) && ($type == "view") && ($database == "NULL"))
+                {
+		if($check == 0)
+		{
+		$this->counter++;
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
+		/* Get Balance of net income/(expenditure) for 'this' ledger head*/
+	       //if($c == 2){
+		if($ledger_name == $this->name)
+		{
+			$income = new Reportlist();
+			$income->init(3);
+			$income_total = -$income->total;
+			$expense = new Reportlist();
+			$expense->init(4);
+			$expense_total = $expense->total;
+			$old_income_total = -$this->income_total(3,$type,$database);
+                        $old_expense_total = $this->expense_total(4,$type,$database);
+			$pandl = float_ops($income_total, $expense_total, '-');
+			$old_pandl = float_ops($old_income_total, $old_expense_total, '-');
+                        if ($pandl != 0 || $old_pandl !=0)
+                        {
+                        //the change in sign is needed
+                        if($pandl > 0)
+                        $total = float_ops($total, -$pandl, '+');
+                        else
+                      	$total = float_ops($total, -$pandl, '+');
+                        if($old_pandl > 0)
+                        $mhrdlist2 = float_ops($mhrdlist2, -$old_pandl, '+');
+                        else
+                       	$mhrdlist2 = float_ops($mhrdlist2, -$old_pandl, '+');
+                        }
+	     }//if
+	     }//ifcheck
+		else
+		{
+			$income = new Reportlist();
+                	$income->init(3);
+			$income_total = -$income->total;
+                	$expense = new Reportlist();
+                	$expense->init(4);
+               		$expense_total = $expense->total;
+			$old_income_total = -$this->income_total(3,$type,$database);
+                        $old_expense_total = $this->expense_total(4,$type,$database);
+			$pandl = float_ops($income_total, $expense_total, '-');
+                        $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
+                        if ($pandl != 0 || $old_pandl !=0)
+                        {
+                        //the change in sign is needed
+                        if($pandl > 0)
+                        $total = float_ops($total, -$pandl, '+');
+                        else
+                        $total = float_ops($total, -$pandl, '+');
+                        if($old_pandl > 0)
+                        $mhrdlist2 = float_ops($mhrdlist2, -$old_pandl, '+');
+                        else
+                        $mhrdlist2 = float_ops($mhrdlist2, -$old_pandl, '+');
+                        }
 
-		$CI =& get_instance();
-                $CI->load->model('Setting_model');
-                $ledger_name = $CI->Setting_model->get_from_settings('ledger_name');
-		
-		if(($this->countDigits() == 4) && ($this->id != 0) && ($this->code > 100)  && ($this->code!= '1006') && ($this->code!= 1005)){
-
-	        	if($this->name == 'Current Liabilities')
-			$this->name = ('Current Liabilities And Provisions');
-			if($this->name == 'General Funds')
+		}//else
+			echo "</td>";
+        	        echo "<td align=\"right\">" . convert_amount_dc(+$total) . "</td>";
+			// code for reading previous year data from xml
+			$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+               		$file_name="MHRD".$db.$prev_year.".xml";
+               		$tt=$acctpath."/".$file_name;
+                	if(file_exists($tt))
 			{
-				$check++;
-			}else{
-				$check = 0;
-			     }
+                     	$doc = new DomDocument();
+                        $doc->formatOutput = true;
+                        $doc->load($tt);
+                        $xpath = new DomXPath($doc);
+                        $xpath->query("/MHRD/MHRD_Name/Group_Name");
+                        $xpath->query("/MHRD/MHRD_Name/Amount");
+                        $xpath->query("/MHRD/MHRD_Name/Group_ID");
+                        $mhrdnode1 = $xpath->query("/MHRD/MHRD_Name/Group_Name");
+                        $mhrdnode2 = $xpath->query("/MHRD/MHRD_Name/Amount");
+                        $mhrdnode3 = $xpath->query("/MHRD/MHRD_Name/Group_ID");
+                        $mhrdlist1 = @$mhrdnode1->item($i)->nodeValue;
+                        $mhrdlist2 = @$mhrdnode2->item($i)->nodeValue;
+                        $mhrdlist3 = @$mhrdnode3->item($i)->nodeValue;
+                        }
+                        $prev_sum = $prev_sum + $mhrdlist2;
+                        $i++;
+			if($mhrdlist3 == '5')
+                        echo "<td align=\"right\">" . convert_amount_dc(float_ops($mhrdlist2, -$old_pandl, '+')) . "</td>";
+			else
+			echo "<td align=\"right\">" . convert_amount_dc(+$mhrdlist2) . "</td>";
+			echo "</tr>";
+			}//ifview
+			if(($c == $c1) && ($id1 == $id2) &&  ($type == "CF") && ($database != "NULL"))
+                        {
+                        $t_name = "MHRD";
+			$liability = new Reportlist();
+	                $liability->init($this->id);
+        	        $total = $liability->total;
+                        $CI =& get_instance();
+                        $CI->load->model('payment_model');
+                        $data = $CI->payment_model->xml_creation($t_name,$this->id,$database,$this->name,$curr_year,$total);
+                       	}
+			}//ifcondition
 
-			echo "<tr class=\"tr-group\">";
-                        echo "<td class=\"td-group\">";
-                        echo "&nbsp;" .  $this->name;
-                        echo "</td>";
-                        echo "<td class=\"td-group\">";
-               		        	
-			if($check == 0)
-			{
-				$this->counter++;
-                        	echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
-				/* Get Balance of net income/(expenditure) for 'this' ledger head*/
-	                        //if($c == 2){
-				if($ledger_name == $this->name){
-					$income = new Reportlist();
-			                $income->init(3);
-			                $expense = new Reportlist();
-			                $expense->init(4);
-					$income_total = -$income->total;
-			                $old_income_total = -$income->total2;
-			                $expense_total = $expense->total;
-			                $old_expense_total = $expense->total2;
-					$pandl = float_ops($income_total, $expense_total, '-');
-				        $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
-					if ($pandl != 0 || $old_pandl !=0)
-				        {
-						//the change in sign is needed
-				                if($pandl > 0)
-							$this->total = float_ops($this->total, -$pandl, '+');
-					//		print_r($this->total);
-						else
-							$this->total = float_ops($this->total, -$pandl, '+');
-						if($old_pandl > 0)
-				                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
-						else
-				                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
-					}
-	                        }
-			}else{
-				$income = new Reportlist();
-                                $income->init(3);
-                                $expense = new Reportlist();
-                                $expense->init(4);
-                                $income_total = -$income->total;
-                                $old_income_total = -$income->total2;
-                                $expense_total = $expense->total;
-                                $old_expense_total = $expense->total2;
-                                $pandl = float_ops($income_total, $expense_total, '-');
-                                $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
-                                if ($pandl != 0 || $old_pandl !=0)
-                                {
-  	                              //the change in sign is needed
-                                      if($pandl > 0)
-        	                              $this->total = float_ops($this->total, -$pandl, '+');
-                                      else
-                                              $this->total = float_ops($this->total, -$pandl, '+');
-                                      if($old_pandl > 0)
-                                              $this->total2 = float_ops($this->total2, -$old_pandl, '+');
-                                      else
-                                              $this->total2 = float_ops($this->total2, -$old_pandl, '+');
-                                }
-			}
+			else
 
-                        echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($this->total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($this->total2) . "</td>";
-                        echo "</tr>";
-
-		    }else
-			if(($this->countDigits() == 6) && ($this->id != 0) && ($this->code > 100) && ($this->id < 98) && ($this->id!= '48') && ($this->id!= '49') && ($this->id!= '50') && ($this->id!= '51') && ($this->id!= '52') && ($this->id!= '53'))
+			$CI = & get_instance();
+                        $CI->db->select('id,name,code')->from('groups')->where('parent_id',$this->id);
+                        $query1 = $CI->db->get();
+                        $q1 = $query1->result();
+                        foreach($q1 as $row){
+                        $this->name = $row->name;
+                        $this->code =$row->code;
+                        $this->id = $row->id;
+                        $liability = new Reportlist();
+                        $liability->init($this->id);
+                        $total = $liability->total;
+		        if(($this->countDigits() == 6) && ($this->id != 0) && ($this->code > 100) && ($this->id < 98) && ($this->id!= '48') && ($this->id!= '49') && ($this->id!= '50') && ($this->id!= '51') && ($this->id!= '52') && ($this->id!= '53'))
 			{
 				echo "<tr>";
                         	echo "<td class=\"td-group\">";
                         	echo "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" .  $this->name;
                         	echo "</td>";
-
 				$CI =& get_instance();
                         	$CI->db->select('parent_id');
                         	$CI->db->from('groups')->where('id', $this->id);
                         	$groups_q = $CI->db->get();
 				$groups= $groups_q->row();
 	                	$parent_id = $groups->parent_id;
-
 				$CI =& get_instance();
                         	$CI->db->select('name');
                         	$CI->db->from('groups')->where('id', $parent_id);
                         	$groups_q = $CI->db->get();
                         	$groups= $groups_q->row();
                         	$name = $groups->name;
-		
-                        	echo "<td class=\"td-group\">";
 
+                        	echo "<td class=\"td-group\">";
+				if(($c == $c1) && ($id1 == $id2) && ($type == "view") && ($database == "NULL"))
+				{
 				if($name  == 'General Funds')
 				{
-					$this->counter++;
-					echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
+				$this->counter++;
+				echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
 				//if($c == 2){
 				if($ledger_name == $this->name)
 				{
-
                                 	$income = new Reportlist();
                                         $income->init(3);
                                         $expense = new Reportlist();
                                         $expense->init(4);
                                         $income_total = -$income->total;
-                                        $old_income_total = -$income->total2;
                                         $expense_total = $expense->total;
-                                        $old_expense_total = $expense->total2;
-                                        $pandl = float_ops($income_total, $expense_total, '-');
-                                        $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
-                                        if ($pandl != 0 || $old_pandl !=0)
-                                        {
-						//the change in sign is needed
-                                        	if($pandl > 0)
-                                                        $this->total = float_ops($this->total, -$pandl, '+');	
-                                                else
-                                                        $this->total = float_ops($this->total, -$pandl, '+');
-                                                if($old_pandl > 0)
-                                                        $this->total2 = float_ops($this->total2,-$old_pandl, '+');
-                                                else
-                                                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
-                                        } 
+					$pandl = float_ops($income_total, $expense_total, '-');
+		                        $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
+                		        if ($pandl != 0 || $old_pandl !=0)
+                       			{
+                        		//the change in sign is needed
+                        		if($pandl > 0)
+                        		$total = float_ops($total, -$pandl, '+');
+                        		else
+                        		$total = float_ops($total, -$pandl, '+');
+                        		if($old_pandl > 0)
+                        		$mhrdlist2 = float_ops($mhrdlist2, -$old_pandl, '+');
+                        		else
+                        		$mhrdlist2 = float_ops($mhrdlist2, -$old_pandl, '+');
+                        		}
                         	}
-			}
-					if($this->name == "General Reserve")
-					{
+				}//if(name = general fund)
+				if($this->name == "General Reserve")
+				{
 					$income = new Reportlist();
                                         $income->init(3);
                                         $expense = new Reportlist();
                                         $expense->init(4);
                                         $income_total = -$income->total;
-                                        $old_income_total = -$income->total2;
                                         $expense_total = $expense->total;
-                                        $old_expense_total = $expense->total2;
+					$old_income_total = -$this->income_total(3,$type,$database);	
+					$old_expense_total = $this->expense_total(4,$type,$database);
                                         $pandl = float_ops($income_total, $expense_total, '-');
-                                        $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
+					$old_pandl = float_ops($old_income_total, $old_expense_total, '-');
                                         if ($pandl != 0 || $old_pandl !=0)
                                         {
-                                                //the change in sign is needed
-                                                if($pandl > 0)
-                                                        $this->total = float_ops($this->total, -$pandl, '+');
-                                                else
-                                                        $this->total = float_ops($this->total, -$pandl, '+');
-                                                if($old_pandl > 0)
-                                                        $this->total2 = float_ops($this->total2,-$old_pandl, '+');
-                                                else
-                                                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
-                                        }
-                                }  
+                                        //the change in sign is needed
+                                        if($pandl > 0)
+                                        $total = float_ops($total, -$pandl, '+');
+                                        else
+                                        $total = float_ops($total, -$pandl, '+');
+					if($old_pandl > 0)
+                                        $mhrdlist2 = float_ops($mhrdlist2, -$old_pandl, '+');
+                                      	else
+                                        $mhrdlist2 = float_ops($mhrdlist2, -$old_pandl, '+');
+					}
 
-                        echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($this->total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($this->total2) . "</td>";
-                        echo "</tr>";
-		}
+                                }//if  
+                        	echo "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(+$total) . "</td>";
 
+				$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+        	                $file_name="MHRD".$db.$prev_year.".xml";
+                	        $tt=$acctpath."/".$file_name;
+                        	if(file_exists($tt))
+                        	{
+                        	$doc = new DomDocument();
+                                $doc->formatOutput = true;
+                                $doc->load($tt);
+                                $xpath = new DomXPath($doc);
+                                $xpath->query("/MHRD/MHRD_Name/Group_Name");
+                                $xpath->query("/MHRD/MHRD_Name/Amount");
+                                $xpath->query("/MHRD/MHRD_Name/Group_ID");
+                                $mhrdnode1 = $xpath->query("/MHRD/MHRD_Name/Group_Name");
+                                $mhrdnode2 = $xpath->query("/MHRD/MHRD_Name/Amount");
+                                $mhrdnode3 = $xpath->query("/MHRD/MHRD_Name/Group_ID");
+                                $mhrdlist1 = @$mhrdnode1->item($i)->nodeValue;
+                                $mhrdlist2 = @$mhrdnode2->item($i)->nodeValue;
+                                $mhrdlist3 = @$mhrdnode3->item($i)->nodeValue;
+                        	}
+                                $i++;
+				if($mhrdlist3 != '10')
+                                echo "<td align=\"right\">" . convert_amount_dc(+$mhrdlist2) . "</td>";
+				else
+                                echo "<td align=\"right\">" . convert_amount_dc(float_ops($mhrdlist2, -$old_pandl, '+')) . "</td>";
+				echo "</tr>";
+                       }//ifview
 
-		foreach ($this->children_groups as $id => $data)
-                {
-                        $len = $data->countDigits();
-                        $this->counter = $data->new_balance_sheet($this->counter);
-  
-                }
+			if(($c == $c1) && ($id1 == $id2) && ($type == "CF") && ($database != "NULL"))
+                        {
+                                $t_name = "MHRD";
+                                $total = "";
+                                $CI =& get_instance();
+				$liability = new Reportlist();
+				$liability->init($this->id);
+				$total = $liability->total;
+                                $CI->load->model('payment_model');
+                                $data = $CI->payment_model->xml_creation($t_name,$this->id,$database,$this->name,$curr_year,$total);
+                        }
+                       }//elseif
+		}//foreach
+	}//foreach
+
+	/*		foreach ($this->children_groups as $id => $data)
+                	{
+                        	$len = $data->countDigits();
+                        	$this->counter = $data->new_balance_sheet($this->counter,$id1,$type,$database);
+				print_r($this->counter);
+                	} 
 
 		/*foreach ($this->children_ledgers as $id => $led_data){
 			$search = '1234567890';
@@ -430,9 +552,137 @@ class Reportlist
                         echo "</tr>";
 			}
 		}*/
-                return $this->counter;
-        }
+	$this->prev_total = $prev_sum;
+	$this->curr_total = $sum;
+        }//main
 
+function income_total($id,$type,$database)
+{
+	$CI = & get_instance();
+	$incomelist2 = "";
+	$type_total = "";
+	$i = 0;
+	$id = "";
+        $total = "";
+        $CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+        $date1 = $row->fy_start;
+        $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        $CI->load->model('Payment_model');
+        $db = $CI->Payment_model->database_name();
+	
+	$income = new Reportlist();
+	$income->init(3);
+	$total = $income->total;
+	$id = $income->id;
+        $CI = & get_instance();
+        $CI->db->select('id,name,code')->from('groups')->where('parent_id',$id);
+       	$main2 =  $CI->db->get();
+        foreach($main2->result() as $row)
+       	{
+        $ledg_id = $row->id;
+        $CI = & get_instance();
+        $CI->load->model('payment_model');
+        $result1 = $CI->payment_model->income_xml_data($ledg_id);
+
+	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+        $file_name="Income".$db.$prev_year.".xml";
+        $tt=$acctpath."/".$file_name;
+       	if(file_exists($tt)){
+        $doc = new DomDocument();
+      	$doc->formatOutput = true;
+        $doc->load($tt);
+        $xpath = new DomXPath($doc);
+     	$xpath->query("/Income/Income_Name/Group_Name");
+        $xpath->query("/Income/Income_Name/Amount");
+        $xpath->query("/Income/Income_Name/Group_ID");
+
+     	$incomenode1 = $xpath->query("/Income/Income_Name/Group_Name");
+        $incomenode2 = $xpath->query("/Income/Income_Name/Amount");
+       	$incomenode3 = $xpath->query("/Income/Income_Name/Group_ID");
+        $incomelist1 = @$incomenode1->item($i)->nodeValue;
+        $incomelist2 = @$incomenode2->item($i)->nodeValue;
+      	$incomelist3 = @$incomenode3->item($i)->nodeValue;
+        }
+        $type_total = $type_total + $incomelist2;
+	$i++;
+	}
+	$old_income_total = $type_total;
+	return $old_income_total;
+}
+
+function expense_total($id,$type,$database)
+{
+	$CI = & get_instance();
+        $expenselist2 = "";
+        $type_total = "";
+        $i = 0;
+        $id = "";
+        $total = "";
+        $CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+        $date1 = $row->fy_start;
+        $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        $CI->load->model('Payment_model');
+        $db = $CI->Payment_model->database_name();
+
+
+        $expense = new Reportlist();
+        $expense->init(4);
+        $expense_total = $expense->total;
+        $id = $expense->id;
+        $CI = & get_instance();
+        $CI->db->select('id,name,code')->from('groups')->where('parent_id',$id);
+        $main2 =  $CI->db->get();
+        foreach($main2->result() as $row)
+        {
+        $ledg_id = $row->id;
+        $CI = & get_instance();
+        $CI->load->model('payment_model');
+	$result = $CI->payment_model-> get_all_expense_detail($id);
+
+
+        $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+        $file_name="Expense".$db.$prev_year.".xml";
+        $tt=$acctpath."/".$file_name;
+        if(file_exists($tt)){
+        $doc = new DomDocument();
+        $doc->formatOutput = true;
+        $doc->load($tt);
+        $xpath = new DomXPath($doc);
+        $xpath->query("/Expense/Expense_Name/Group_Name");
+        $xpath->query("/Expense/Expense_Name/Amount");
+        $xpath->query("/Expense/Expense_Name/Group_ID");
+
+        $expensenode1 = $xpath->query("/Expense/Expense_Name/Group_Name");
+        $expensenode2 = $xpath->query("/Expense/Expense_Name/Amount");
+        $expensenode3 = $xpath->query("/Expense/Expense_Name/Group_ID");
+        $expenselist1 = @$expensenode1->item($i)->nodeValue;
+        $expenselist2 = @$expensenode2->item($i)->nodeValue;
+        $expenselist3 = @$expensenode3->item($i)->nodeValue;
+        }
+        $type_total = $type_total + $expenselist2;
+        $i++;
+	}
+	$old_expensetotal = $type_total;
+	return $old_expensetotal;
+}
         function countDigits()
         {
                 //preg_match_all( "/[0-9]/", $str, $arr );
@@ -575,7 +825,6 @@ class Reportlist
                         				$doc->formatOutput = true;
                         				$doc->load($tt);
                         				$xpath = new DomXPath($doc);
-
                         				$xpath->query("/Income/Income_Name/Group_Name");
                         				$xpath->query("/Income/Income_Name/Amount");
                         				$xpath->query("/Income/Income_Name/Group_ID");
@@ -755,106 +1004,99 @@ class Reportlist
 
         }
 
-	function calculate_op_balance($year, $name)
+function calculate_op_balance($year, $name)
+{
+	static $credit_total = 0;
+	static $debit_total = 0;
+	static $old_credit_total = 0;
+        static $old_debit_total = 0;
+        static $total = 0;
+        static $total2 = 0;
+	static $op_balance = 0;
+        static $old_op_balance = 0;
+	if($year == null)
 	{
-		static $credit_total = 0;
-                static $debit_total = 0;
-                static $old_credit_total = 0;
-                static $old_debit_total = 0;
-                static $total = 0;
-                static $total2 = 0;
-		static $op_balance = 0;
-                static $old_op_balance = 0;
-
-		if($year == null)
+		$credit_total = null;
+	        $debit_total = null;
+        	$old_credit_total = null;
+                $old_debit_total = null;
+	        $op_balance = null;	
+        	$old_op_balance = null;
+		$total = null;
+		$total2 = null;
+	}
+	else
+	{
+	foreach ($this->children_groups as $id => $data)
+	{
+        $this->counter++;
+	$data->calculate_op_balance($year, $name);
+      	$this->counter--;
+        }
+	if (count($this->children_ledgers) > 0)
+     	{
+        foreach ($this->children_ledgers as $id => $data)
+	{
+		//Get opening balance
+        	$CI =& get_instance();
+        	$CI->load->model('Ledger_model');
+		if($year == 'new')	
 		{
-			$credit_total = null;
-	                $debit_total = null;
-        	        $old_credit_total = null;
-                	$old_debit_total = null;
-	                $op_balance = null;	
-        	        $old_op_balance = null;
-			$total = null;
-			$total2 = null;
-		}
-		else{
-			foreach ($this->children_groups as $id => $data)
+			list($opBal, $optype) = $CI->Ledger_model->get_op_balance($data['id']);
+        		$op_balance = $op_balance + $opBal;
+			if($name == 'schedule')
 			{
-                	        $this->counter++;
-                        	//$data->calculate_op_balance($this->counter, $name);
-				$data->calculate_op_balance($year, $name);
-        	                $this->counter--;
-                	}
-	                if (count($this->children_ledgers) > 0)
-        	        {
-                	        //$this->counter++;
-                        	foreach ($this->children_ledgers as $id => $data)
-				{
-					//Get opening balance
-                	                $CI =& get_instance();
-                        	        $CI->load->model('Ledger_model');
-					if($year == 'new'){
-		                                //list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
-		                                list($opBal, $optype) = $CI->Ledger_model->get_op_balance($data['id']);
-        		                        //$this->opening_balance = $this->opening_balance + $opBal;
-        		                        $op_balance = $op_balance + $opBal;
-						if($name == 'schedule'){
-							if($optype == 'C')
-								//$this->cr_total = $this->cr_total + $opBal;
-								$credit_total = $credit_total + $opBal;
-							elseif($optype == 'D')
-        	                	        		//$this->dr_total = $this->dr_total + $opBal;
-                	        	        		$debit_total = $debit_total + $opBal;
-						}else
-						{
-							if($optype == 'C')
-                                                	        //$this->total = $this->total - $opBal;
-                                                        	$total = $total - $opBal;
-	                                                elseif($optype == 'D')
-        	                                                //$this->total = $this->total + $opBal;
-                	                                        $total = $total + $opBal;
-						}
-	
-					}
-					elseif($year == 'old'){
-					        //list($opBal, $optype) = $CI->Ledger_model->get_prevToPrev_year_op_balance($data['id']);
-					        list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
-                                        	//$this->opening_balance_prev = $this->opening_balance_prev + $opBal;
-                                        	$old_op_balance = $old_op_balance + $opBal;
-						if($name == 'schedule'){
-		                                        if($optype == 'C')
-        		                                        //$this->old_cr_total = $this->old_cr_total + $opBal;
-        	        	                                $old_credit_total = $old_credit_total + $opBal;
-                	        	                elseif($optype == 'D')
-                        	        	                //$this->old_dr_total = $this->old_dr_total + $opBal;	
-                        	                	        $old_debit_total = $old_debit_total + $opBal;	
-						}	
-						else
-						{
-							if($optype == 'C')
-                                	                        //$this->total2 = $this->total2 - $opBal;
-                                        	                $total2 = $total2 - $opBal;
-                                                	elseif($optype == 'D')
-                                                        	//$this->total2 = $this->total2 + $opBal;
-		                                                $total2 = $total2 + $opBal;
-						}
-                        	        }
-				}
+			if($optype == 'C')
+			$credit_total = $credit_total + $opBal;
+			elseif($optype == 'D')
+                	$debit_total = $debit_total + $opBal;
 			}
-		}//else null
+			else
+			{
+			if($optype == 'C')
+                        $total = $total - $opBal;
+	                elseif($optype == 'D')
+                	$total = $total + $opBal;
+			}
+	
+		}//if
+			elseif($year == 'old')
+			{
+				list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
+                                $old_op_balance = $old_op_balance + $opBal;
+				if($name == 'schedule')
+				{
+		                if($optype == 'C')
+        	        	$old_credit_total = $old_credit_total + $opBal;
+                	   	elseif($optype == 'D')
+                        	$old_debit_total = $old_debit_total + $opBal;	
+				}	
+				else
+				{
+				if($optype == 'C')
+                                $total2 = $total2 - $opBal;
+                                elseif($optype == 'D')
+		                $total2 = $total2 + $opBal;
+				}
+                       }//elseif
+		}
+	}
+	}//else null
 
-		if($year == 'new'){
-			if($name == 'schedule')
-				return array($credit_total, $debit_total, $op_balance);
-			else
-				return array($total, $op_balance);
-		}
-		elseif($year == 'old'){
-			if($name == 'schedule')
-				return array($old_credit_total, $old_debit_total, $old_op_balance);
-			else
-				return array($total2, $old_op_balance);
-		}
+	if($year == 'new')
+	{
+	if($name == 'schedule')
+	return array($credit_total, $debit_total, $op_balance);
+	else
+	return array($total, $op_balance);
+	}
+	elseif($year == 'old')
+	{
+	if($name == 'schedule')
+	return array($old_credit_total, $old_debit_total, $old_op_balance);
+	else
+	return array($total2, $old_op_balance);
+	}
 	}
 
 	function startsWith($str1, $str2)
@@ -883,75 +1125,74 @@ class Reportlist
         }
 
 	/* Displays schedule */
-        function schedule($c = 1)
-        {
-		static $credit_total = 0.00;
-		static $debit_total = 0.00;
-		static $old_credit_total = 0.00;
-		static $old_debit_total = 0.00;
+function schedule($c = 1)
+{//main
+	static $credit_total = 0.00;
+	static $debit_total = 0.00;
+	static $old_credit_total = 0.00;
+	static $old_debit_total = 0.00;
 		
-		if($c == null)
-		{
-			$credit_total = null;
-                	$debit_total = null;
-			$old_credit_total = null;
-                        $old_debit_total = null;
-		}else{
+	if($c == null)
+	{
+		$credit_total = null;
+                $debit_total = null;
+		$old_credit_total = null;
+                $old_debit_total = null;
+	}else{
 
                 $len = $this->countDigits();
 		
-                //if ($this->id != 0  && $len > 4)
-		if($this->id != 0  && $len > 6)
-                {
-                        echo "<tr class=\"tr-group\">";
-                        echo "<td class=\"td-group\">";
-                       // echo $this->print_space($this->counter);
-                        echo "&nbsp;" . "<b>" . $this->name . "</b>";
-                        echo "</td>";
+	if($this->id != 0  && $len > 6)
+        {
+        	echo "<tr class=\"tr-group\">";
+                echo "<td class=\"td-group\">";
+                echo "&nbsp;" . "<b>" . $this->name . "</b>";
+                echo "</td>";
+                echo "</tr>";
+        }
+        foreach ($this->children_groups as $id => $data)
+        {
+        	$this->counter++;
+               	$data->schedule($this->counter);
+                $this->counter--;
+        }
+        if (count($this->children_ledgers) > 0)
+        {//1
+        foreach ($this->children_ledgers as $id => $data)
+        {//2
+		$c_total = 0.00;
+		$d_total = 0.00;
+		$old_c_total = 0.00;
+                $old_d_total = 0.00;
+		$ledger_id = $data['id'];
+		$ledger_name = $data['name'];
+//	if(($type == 'view') && ($database == 'NULL'))
+//	{
+		echo "<tr class=\"tr-ledger\">";
+	        echo "<td class=\"td-ledger\">";
+        	echo $this->print_space($this->counter);
+        	echo "&nbsp;" . "<b>" . $data['name'] . "<b>";
+                echo "</td>";
 
-                        echo "</tr>";
-
-                }
-                foreach ($this->children_groups as $id => $data)
-                {
-                        $this->counter++;
-                        $data->schedule($this->counter);
-                        $this->counter--;
-                }
-                if (count($this->children_ledgers) > 0)
-                {
-                        //$this->counter++;
-                        foreach ($this->children_ledgers as $id => $data)
-                        {
-				$c_total = 0.00;
-				$d_total = 0.00;
-				$old_c_total = 0.00;
-                                $old_d_total = 0.00;
-				echo "<tr class=\"tr-ledger\">";
-	                                echo "<td class=\"td-ledger\">";
-        	                                echo $this->print_space($this->counter);
-                	                        echo "&nbsp;" . "<b>" . $data['name'] . "<b>";
-                                        echo "</td>";
-                               // echo "</tr>";
-
-                                $CI =& get_instance();
-                                $CI->db->select('entry_id, id, amount, dc');
-                                $CI->db->from('entry_items')->where('ledger_id', $data['id']);
-                                $entry_items_q = $CI->db->get();
-                                if($entry_items_q->num_rows() > 0)
-                                {
-                                        $entry_items_result = $entry_items_q->result();
-                                        //$counter = 0;
-                                        foreach ($entry_items_result as $row)
-                                        {
-                                                if($row->dc == 'C'){
-                                                        $CI =& get_instance();
-                                                        $CI->db->select('narration');
-                                                        $CI->db->from('entries')->where('id', $row->entry_id);
-                                                        $entries_q = $CI->db->get();
-                                                        $entries = $entries_q->row();
-                                                        foreach($entries_q->result() as $entries){
-                                                                $narration = $entries->narration;
+              	$CI =& get_instance();
+                $CI->db->select('entry_id, id, amount, dc');
+                $CI->db->from('entry_items')->where('ledger_id', $data['id']);
+                $entry_items_q = $CI->db->get();
+               	if($entry_items_q->num_rows() > 0)
+                {//3
+              		$entry_items_result = $entry_items_q->result();
+                       	foreach ($entry_items_result as $row)
+                        {//4
+                        if($row->dc == 'C')
+			{//5
+                        	$CI =& get_instance();
+                                $CI->db->select('narration');
+                                $CI->db->from('entries')->where('id', $row->entry_id);
+                                $entries_q = $CI->db->get();
+                               	$entries = $entries_q->row();
+                              	foreach($entries_q->result() as $entries)
+				{//6
+                               	$narration = $entries->narration;
 							/*	if($this->startsWith($data['code'], '10')){
                                                                 echo "<tr class=\"tr-ledger\">";
                                                                 echo "<td class=\"td-ledger\">";
@@ -1002,18 +1243,20 @@ class Reportlist
 
                                                                 echo "</tr>";
                                                                 } */
-                                                        }                                                        
-							$c_total = $c_total + $row->amount;
-							$credit_total = $credit_total + $row->amount;
-                                                }
-                                                else{
-                                                        $CI =& get_instance();
-                                                        $CI->db->select('narration');
-                                                        $CI->db->from('entries')->where('id', $row->entry_id);
-                                                        $entries_q = $CI->db->get();
+                                } //6                                                       
+				$c_total = $c_total + $row->amount;
+				$credit_total = $credit_total + $row->amount;
+                                }//5
+                                else
+				{//a
+                               	$CI =& get_instance();
+                                $CI->db->select('narration');
+                                $CI->db->from('entries')->where('id', $row->entry_id);
+                              	$entries_q = $CI->db->get();
                                                         //$entries = $entries_q->row();
-                                                        foreach($entries_q->result() as $entries){
-                                                                $narration = $entries->narration;
+                              	foreach($entries_q->result() as $entries)
+				{//b
+                                $narration = $entries->narration;
 							////////////////////////////
 							/*	if($this->startsWith($data['code'], '10')){
                                 	                                echo "<tr class=\"tr-ledger\">";
@@ -1065,11 +1308,12 @@ class Reportlist
 
                         	                                        echo "</tr>";
 								}  */
-                                                        }
-		                                        $d_total = $d_total + $row->amount;
-							$debit_total = $debit_total + $row->amount;                                               
-                                                }
-                                        }
+                                }//b
+		                $d_total = $d_total + $row->amount;
+				$debit_total = $debit_total + $row->amount;                                               
+                                }//a
+                        }//4
+		}//3
 					/*echo "<td align=\"right\">";
                         	                echo convert_amount_dc($d_total);
 		                        echo "</td>";
@@ -1086,61 +1330,6 @@ class Reportlist
                                                 echo "";
 					echo "</td>";
                         		echo "</tr>";*/
-                                }
-			///////////////////////////////////////////////
-			/*		if($data['name'] == 'Balance of net income/expenditure transferred from I/E Account')
-					{
-
-						$total1 = "";
-						$total2 = "";
-						$total = "";
-						$totalA = "";
-						$data['total'] = $total1;
-						$data['total2'] = $totalA;
-
-					       //Calculate net profit/loss for current year
-						$income = new Reportlist();
-        					$income->init(3);
-        					$expense = new Reportlist();
-        					$expense->init(4);
-        					$income_total = -$income->total;
-        					$old_income_total = -$income->total2;
-        					$expense_total = $expense->total;
-        					$old_expense_total = $expense->total2;
-        					$pandl = float_ops($income_total, $expense_total, '-');
-        					$old_pandl = float_ops($old_income_total, $old_expense_total, '-');
-        					if ($pandl != 0 || $old_pandl !=0)
-       						{
-							if($pandl>0 ||  $pandl<0){
-                
-                        				$total = float_ops($total, -$pandl, '+');
-							$total2 = $total+$total1;
-						//	print_r($total1);
-							echo "<td align=\"right\">";
-                                                        echo convert_amount_dc($total2);
-                                                        echo "</td>";
-
-                        				}else{
-							
-						//	echo "<td></td>";
-
-							     }
-						if($old_pandl > 0 || $old_pandl<0){
-							
-						   $old_total = float_ops($old_total, $old_pandl, '+');
-						   $old_total1 = $old_total+$totalA;
-						   echo "<td align=\"right\">";
-                                                   echo convert_amount_dc($old_total1);
-                                                   echo "</td>";
-					  	   } else{
-						//	echo "<td></td>";
-							}
-						}
-					}  */
-
-
-
-
 				
 				$this->getPreviousYearDetails();
                                 if($this->prevYearDB != "" ){//3
@@ -1168,7 +1357,7 @@ class Reportlist
                                                         }//6
 						}//5
 					}//4
-				}//3
+				}//3 
 
 					echo "<td align=\"right\">";
                                                 echo convert_amount_dc($d_total);
@@ -1177,24 +1366,20 @@ class Reportlist
                                         echo "<td align=\"right\">";
                                                 echo convert_amount_dc(-$c_total);
                                         echo "</td>";
-
-                                        echo "<td>";
+					echo "<td align=\"right\">";
                                                 echo convert_amount_dc($old_d_total);
                                         echo "</td>";
 
-                                        echo "<td>";
+                                        echo "<td align=\"right\">";
                                                 echo convert_amount_dc(-$old_c_total);
                                         echo "</td>";
-                                        echo "</tr>";
-                        }                        //$this->counter--;
-                }
-
-		}//else for null
-		
-	//	$total2 = $this->total2;
-
+					echo "</tr>";
+					
+	}//2
+	}//1
+	}//
                 return array($credit_total, $debit_total, $old_credit_total, $old_debit_total);
-        }
+        }//main
 
         function previous_year_data($c = 0)
         {
@@ -1288,6 +1473,129 @@ class Reportlist
 		}//else null
 		return array($old_credit_total, $old_debit_total);
         }//method
+
+/*	function schedule_template($id,$code,$type,$database)
+	{
+		$CI = & get_instance();
+        	$counter = 1;
+        	$CI->db->from('settings');
+        	$detail = $CI->db->get();
+        	foreach ($detail->result() as $row)
+        	{
+        	$date1 = $row->fy_start;
+        	$date2 = $row->fy_end;
+        	}
+        	$fy_start=explode("-",$date1);
+        	$fy_end=explode("-",$date2);
+        	$curr_year = $fy_start[0] ."-" .$fy_end[0];
+        	$prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        	$CI->load->model('payment_model');
+        	$db = $CI->payment_model->database_name();
+
+			
+		$liability = new Reportlist();	
+		$liability->init($id);
+		$liability->callToOpBalance('new', 'schedule');
+	        $opening_balance = $liability->opening_balance;
+        	$dr_total = $liability->dr_total;
+       	 	$cr_total = $liability->cr_total;
+		
+/*		if(($type == "CF") && ($database != "NULL"))
+		{
+		$t_name = "schedule";
+		$CI = & get_instence();
+		$CI->load->model('investment_model');
+		$data = $CI->investment_model->xml_creation($t_name,$id,$database,$name,$curr_year,$dr_total,$cr_total);
+		}*/
+/*		$liability->callToOpBalance('old', 'schedule');
+	        $opening_balance_prev = $liability->opening_balance_prev;
+        	$old_dr_total = $liability->old_dr_total;
+        	$old_cr_total = $liability->old_cr_total;
+		
+	//Fetch opening balance from db
+	        echo "<tr>";
+                echo "<td width=40%>";
+                echo "Balance as at the beginning of the year";
+                echo "</td>";
+
+                if($cr_total > $dr_total)
+		{
+                	echo "<td width=15%>";
+                        echo "</td>";
+                        echo "<td width=15% align=\"right\">";
+                        echo  money_format('%!i', convert_cur($opening_balance));
+                        echo "</td>";
+                }
+		else
+		{
+                	echo "<td width=15% align=\"right\">";
+                        echo  money_format('%!i', convert_cur($opening_balance));
+                        echo "</td>";
+                        echo "<td width=15%>";
+                        echo "</td>";
+                }
+		
+
+
+                if($old_cr_total > $old_dr_total)
+		{
+                	echo "<td width=15%>";
+                        echo "</td>";
+                        echo "<td width=15% align=\"right\">";
+                        echo  money_format('%!i', convert_cur($opening_balance_prev));
+                        echo "</td>";
+                }
+		else
+		{
+                	echo "<td width=15% align=\"right\">";
+                        echo  money_format('%!i', convert_cur($opening_balance_prev));
+                        echo "</td>";
+		}
+		$liability->callToSchedule(1);
+	        $cr_total = $liability->cr_total;
+        	$dr_total = $liability->dr_total;
+        	if(!strncmp($liability->code, '10', strlen('10')))
+                $total = $cr_total - $dr_total;
+        	else
+                $total = $dr_total - $cr_total;
+        
+        	$old_cr_total = $liability->old_cr_total;
+        	$old_dr_total = $liability->old_dr_total;
+        	if(!strncmp($liability->code, '10', strlen('10')))
+                $old_total = $old_cr_total - $old_dr_total;
+        	else
+                $old_total = $old_dr_total - $old_cr_total;
+
+		//Display total for the given schedule
+        echo "<tr>";
+                echo "<td width=40% class=\"bold\">";
+                        echo "TOTAL";
+                echo "</td>";
+
+                echo "<td width=15% align=\"right\">";
+                        //echo $total;
+                        echo  money_format('%!i', convert_cur($dr_total));
+                echo "</td>";
+
+                echo "<td width=15% align=\"right\">";
+                        echo  money_format('%!i', convert_cur($cr_total));
+                echo "</td>";
+
+                echo "<td width=15% align=\"right\">";
+                        echo  money_format('%!i', convert_cur($old_dr_total));
+                echo "</td>";
+
+                echo "<td width=15% align=\"right\">";
+                        echo  money_format('%!i', convert_cur($old_cr_total));
+                echo "</td>";
+        echo "</tr>";
+	
+	$this->total = $total;
+	$this->old_total = $old_total;
+	}//main	*/
+
+
+
 
 
 	/* Display chart of accounts view */
@@ -1933,7 +2241,6 @@ class Reportlist
 		$this->curr_total = $curr_total;
 		$this->prev_total = $prev_total;	
         }
-
 	function income_expense_diff()
 	{
 
@@ -1951,9 +2258,7 @@ class Reportlist
 //		echo "diff==$diff";
 //		print_r($total);
 //		print_r($total1);
-
 		return $diff;
 	}
-
 }
-
+?>
