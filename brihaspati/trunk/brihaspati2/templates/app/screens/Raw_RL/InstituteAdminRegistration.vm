@@ -5,11 +5,13 @@
  *
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 24-03-2012 (Shaista)
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
+ * @modified date: 24-03-2012 (Shaista),24-02-2015
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 </head>
 $!data.getMessage()
 $page.setTitle("Login Page | Institute Admin Registration ")
@@ -30,15 +32,6 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 			</td>
 		</tr>
 	</table>
-#*
-#macro(opt)
-
-        <option value=Govt>$brih_govt</option>
-        <option value=SemiGovt2>$brih_semi $brih_govt</option>
-        <option value=SF>$brih_sf</option>
-        <option value=Other>$brih_other</option>
-#end
-*#
 ## Creating the form to collect the information for creation of Instiute account
 ## alongwith Institute admin information.
 
@@ -72,12 +65,6 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="ISTATE" value=""> </font> </td>
 				 <td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_state </font></td>
                         </tr>
-#*
-                                ###formCell ("$Inst_landline <font color=red>*</font>" "ILANDLINE" "")
-				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="ILANDLINE" value=""> </font> </td>
-				<td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_landline  </font></td>
-
-*#
                         <tr align="right">
                                 <td></td>
                                 <td align="right"><font color=red>*</font> $Inst_landline</td>

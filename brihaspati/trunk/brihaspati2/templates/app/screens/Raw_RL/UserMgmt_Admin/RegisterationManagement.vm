@@ -1,51 +1,511 @@
 #*
  * @(#) RegisterationManagement.vm
- * Copyright (c) 2007 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2008,2010,2012,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
+ * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
- * @author <a href="mailto:shaista.shekh@gmail.com">Shaista</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 19-08-2011,10-12-2011,07-07-2012,22-04-2013,31-05-2013,06-06-2013
 *#
 
-$page.setTitle("Admin Home | Registeration Management")
-$page.setBgColor("$ui.bgcolor")
-
+$page.setTitle("Admin Home | Registration Management")
+$page.setBgColor("bgcolor")
+$!data.getMessage()
+## This java script is called to return an alert message and to highlight the field in the form, in which input value missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
 
-<table bgcolor="$ui.bgColor" width=100% cellspacing=0>
+##<table bgcolor="#d9e3ec" width=100% cellspacing=0>
+
+<table bgcolor="$ui.menuColor" width=100%>
 <tr align="right">
+<td width="30%" align="right">
+        #if( $total_size!=0 )
+        #if( $endIndex < $total_size )
+                #if( $endIndex < $AdminConf )
+                [$k - $total_size] of $total_size
+                #else
+                [$k - $endIndex] of $total_size
+                #end
+        #else
+        [$k - $total_size] of $total_size
+        #end
+        #end
+        </td>
 	<td>
-	<font face="$ui.sansSerifFonts" size=3>
-	<b>
-     	<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home </a> |$brih_reg $brih_mgmt
+     	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home </a> |
+	<a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> |
+	#if($mode=="")
+	$brih_course #if($lang == "hindi") $brih_Of1 #end $brih_reg
+	#elseif($mode=="MCRegister")
+	$brih_multi_usr2 | $brih_upload $brih_txt $brih_file
+	#elseif($mode=="MCRZip") 
+        $brih_multi_usr2 | $brih_upload $brih_zip $brih_file
+
+	#else		
+        #if($mode!="Search")
+                #if($lang == "hindi" || $lang == "gujarati")
+                	$brih_view_all1
+                #else
+	                $brih_view_all $brih_course
+                #end
+        #else
+                $brih_view_sel
+        #end
+
+ 	#end
 	</td>
 </tr>
 </table>
 
-<br>
-<table width=20% align=center cellpadding=10 bgcolor="$ui.menuColor">
+<table width=100% align="right" bgcolor="$ui.tableColor">
+<tr align="right">
+	#if($tdcolor != "3")
+        <td width=33%>
+	#elseif($tdcolor == "3")
+        <td width=33% bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("count","3") style=text-decoration:none>$brih_course $brih_list</a></td>
+
+        #if($tdcolor != "2")
+        <td width=33%>
+        #elseif($tdcolor == "2")
+        <td width=33% bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("mode","MCRZip").addPathInfo("count","2") style=text-decoration:none>  #if($lang == "hindi" || $lang == "gujarati") $brih_multiple1 $brih_course $brih_Of1 $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td> 
+        #if($tdcolor != "1")
+        <td width=33%>
+        #elseif($tdcolor == "1")
+        <td width=33% bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>  #if($lang == "hindi" || $lang == "gujarati") $brih_course #if($lang == "hindi") $brih_Of1 #end $brih_reg1 #else $brih_reg1 $brih_course #end </a> </td> 
+
+</tr>
+</table>
+<table bgcolor="$ui.tableColor" align="right" width=100%>
+<tr align="right">
+	<td>
+	#if(($mode == "") && ($mode != "MCRegister") && ($mode != "All"))
+	<form name=frm method="post" action="$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").setAction("RegisterCourseInstructor")">
+  	##<div align="left">
+    	<table align="right" width=100%>
+	#*
+         * User Name is not required any more so it is comented
+         * Institute name is required in regitration in Super Admin case so it is added.
+         * @ modified by shaista
+         *#
+         	<tr bgcolor="$ui.menuColor" align="right">
+         	<td>
+        	<select class="drop" name="instName" size="1" onChange="checkOption(document.frm,this);" style="width:300px;" />
+		#if($Insname=="")
+                <option> #if($lang == "hindi") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
+        	#else
+                <option>$Insname</option>
+                <option> #if($lang == "hindi") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
+        	#end
+
+        	#foreach($name in $instList)
+         	<option value="$name.getInstituteName()" title="$name.getInstituteName()" style="width:275px;">$name.getInstituteName() </option>
+        	#end
+         	</select>
+               ##formCell ("$RemoteInstitute $brih_name $brih_select<font color=Red>*</font>" "$brih_select $RemoteInstitute $brih_name" "")
+               <td align="right"> #if($lang =="hindi" || $lang == "gujarati") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font>
+                </td>
+         	</td>
+	</tr>
+
+<table align="right" width=100%>
+<tr bgcolor="$ui.menuColor" align="right">
+##formCell ("$brih_course $brih_ID <font color=Red>*</font>" "COURSEID" "")
+        <td align="right"> <input type="text" name="COURSEID" value=""> </td>
+        <td> <font color=Red>*</font> $brih_course $brih_Of1 $brih_ID </td>
+</tr>
+<tr align="right">
+        ##formCell ("$brih_course $brih_name <font color=Red>*</font>" "CNAME" "")
+        <td>  <input type="text" name="CNAME" value=""> </td>
+        <td> <font color=Red>*</font> $brih_course  $brih_Of1 $brih_name </td>
+</tr>
+<tr align="right" bgcolor="$ui.menuColor">
+        <td>
+                <select class="drop" name="SCHNAME" size=1 style="width:300px;" />
+                        <option value="" title="$brih_select $brih_sch">$brih_select $brih_sch</option>
+                #foreach($name in $schlist)
+                        <option value="$!name.getName()" title="$!name.getName()" style="width:275px;">$!name.getName()</option>
+                #end
+                </select>
+        </td>
+        <td> $brih_schce</td>
+</tr>
+<tr align="right">
+        <td>
+                <select class="drop" name="DEPARTMENT" size=1 style="width:300px;" />
+                        <option value="" title="$brih_select $brih_dept">$brih_select $brih_dept </option>
+                #foreach($name in $deptlist)
+                        <option value="$name.getName()" title="$name.getName()" style="width:275px;">$name.getName()</option>
+                #end
+                </select>
+        </td>
+        <td> $brih_dept</font></td>
+</tr>
+<tr bgcolor="$ui.menuColor" align="right">
+        <td> <font face="$ui.sansSerifFonts"><textarea name="DESCRIPTION" rows=5 cols=60></textarea></font> </td>
+        ##<font face="$ui.sansSerifFonts"> $brih_desc </font>
+        <td> $brih_desc </td>
+</tr>
+<tr align="right">
+        ##formCell ("$brih_first $brih_name" "FNAME" "")
+        <td> <input type="text" name="FNAME" value=""> </td>
+        <td>$brih_first $brih_name</td>
+</tr>
+<tr bgcolor="$ui.menuColor" align="right">
+        ##formCell("$brih_last $brih_name" "LNAME" "")
+        <td> <input type="text" name="LNAME" value=""> </td>
+        <td>$brih_last $brih_name</td>
+</tr>
+<tr align="right">
+        ##formCell("$brih_email $brih_ID <font color=Red>*</font>" "EMAIL" "")
+        <td> <input type="text" name="EMAIL" value=""> </td>
+        <td> <font color=Red>*</font> $brih_email $brih_ID</td>
+</tr>
+<tr bgcolor="$ui.menuColor" align="right">
+        ##formPasswordCell ("$brih_pwd" "PASSWD" "")
+        <td> <input type="passwd" name="PASSWD" vaue=""> </td>
+        <td> $brih_pwd </td>
+</tr>
+<tr align="right">
+        <td align="right" colspan=2>
+                <input type="hidden" name="actionName" >
+                <input type="hidden" name="mode" value="$mode" >
+                <input type="reset" class="button-ftextstyle" name="Clear" value=$brih_clear onClick="checkClear(document.frm,this);"/>
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value=$brih_reg onClick="checkCourseName(document.frm,this);"/>
+                <input type="hidden" name="count" value="$tdcolor" >
+                ##<input type="hidden" name="instituteId" value="$lst.get(0).getInstitueId()" >
+                <input type="hidden" name="instituteId" value="$instituteId" >
+                <input type="hidden" name="domainname" value="$domainname" >
+        </td>
+</tr>
+
+</table>
+	##</div>
+	</form>
+	#end
+	#if($mode ==  "MCRegister")
+<table width="100%" align="right">
+<tr  bgcolor="$ui.menuColor" align="right">
+<td> <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRZip").addPathInfo("count","2") style=text-decoration:none><img src="$content.getURI("/images/zipfile.jpg")">$brih_upload $brih_zip $brih_file</a></td>
+<td bgcolor="#AFDCEC" width="25%"> <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","2") style=text-decoration:none><img src="$content.getURI("/images/text.jpg")">$brih_upload $brih_txt $brih_file</a></td>
+</tr>
 <tr>
-<td>
-  <table align=center>
-        <tr>
-        <td>
-        <a href=$link.setPage("call,CourseMgmt_Admin,CourseRegister.vm")>
-        <img src="$content.getURI("/images/$lang/registercourse.jpg")" border="0"></a>
-        </td>
-        </tr>
-	<tr>
-        <td>
-        <a href=$link.setPage("call,CourseMgmt_Admin,MultiCourseRegister.vm")>
-        <img src="$content.getURI("/images/$lang/RegisterMultiCourse.jpg")"border=0></a>
-        </td>
-        </tr>
-        <tr>
-        <td>
-        <a href=$link.setPage("call,ListMgmt_Admin,ListCourse_Register.vm").addPathInfo("mode","All")>
-        <img src="$content.getURI("/images/$lang/secondaryinstructor.jpg")" border="0"></a>
-        </td>
-        </tr>
-  </table>
+<td colspan="8">
+       <a href=javascript:popupWin("/brihaspati/docs/RegisterMultiCourseInstructor.html","newWin"); style=text-decoration:none>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
 </td>
 </tr>
 </table>
+<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRegister").setAction("RegisterMultiCourseInstructor")">
+<br>
+<table width=100% cellpadding="2" align="right">
+        <tr bgcolor="$ui.menuColor">
+        <td colspan=6 align="right">
+                <font size=4><b>$brih_upload_msg3</b></font>
+      
+              </td>
+        </tr>
+	 <tr align="right">
+                <td colspan="2">
+                <select class="drop" name="instName" size=1 style="width:300px;" />
+                          #foreach($name in $instList)
+                                  <option value="$name.getInstituteName()" title="$name.getInstituteName()" style="width:275px;">$name.getInstituteName() </option>
+                          #end
+                <td align="right"> #if($lang =="hindi" || $lang == "gujarati") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font>
+                </select>
+                </td>
+        </tr>
+
+        <tr bgcolor="$ui.menuColor" align="right">
+
+                <td colspan="2" >
+                <input class="button-ftextstyle" type="file" name="file"> </td>
+                <td><font color=RED>*</font> $brih_at_file </td>
+        </tr>
+        <tr>
+        <td colspan=6 align="right">
+                <font face="$ui.sansSerifFonts">
+                <input  class="button-ftextstyle" type="button" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
+                <input type="hidden" name="actionName" value=""/>
+                <input type="hidden" name="count" value="$tdcolor">
+
+                </font>
+        </td>
+        </tr>
+</table>
+<br>
+<br>
+
+<table width=100% bgcolor="$ui.menuColor" align="right">
+#foreach( $e in $Msg )
+        <tr bgcolor="$ui.tableColor" align="right">
+        <td align=center>
+        <font face="$ui.sansSerifFonts">$brih_entry <font color="$ui.fontColorBrown">"$e.getErr_User()"</font>
+        </font>
+        </td>
+        <td align=center>
+        <font face="$ui.sansSerifFonts">$e.getErr_Type()</font>
+        </td>
+        </tr>
+#end
+</table>
+  </div>
+</form>
+
+	#end
+
+#if($mode ==  "MCRZip")
+<table width="100%" align="right" >
+<tr  bgcolor="$ui.menuColor" align="right">
+<td width="25%"> <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","2") style=text-decoration:none><img src="$content.getURI("/images/text.jpg")">$brih_upload $brih_txt $brih_file</a></td>
+<td  bgcolor="#AFDCEC" > <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","2").addPathInfo("mode","MCRZip") style=text-decoration:none><img src="$content.getURI("/images/zipfile.jpg")">$brih_upload $brih_zip $brih_file</a></td>
+</tr>
+<tr>
+<td colspan="8">
+        <a href=javascript:popupWin("/brihaspati/docs/ZipUploadHelp.html","newWin"); style=text-decoration:none>$brih_help</a><img src="$content.getURI("/images/lefthand.gif")">
+</td>
+</tr>
+<tr bgcolor="$ui.menuColor"><td colspan=8 align="right">
+<font size=4 color=red><b>$brih_upload_msg4 $brih_upload_msg6</b></font>
+</td></tr>
+</table>
+<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRZip").setAction("UserAction_InstituteAdmin")">
+##<div align="left">
+<br>
+##<table width=100% bgcolor="$ui.menuColor" cellpadding="2" align="left" >
+<table width=100% cellpadding="5" align="right" >
+        <tr>
+        ##<td colspan=2 bgcolor="$ui.menuColor" align="left">
+        <td colspan=2 align="right">
+                <font size=4><b>$brih_upload_msg1</b></font>
+             </tr>
+
+        </td>
+        </tr>
+         <tr bgcolor="$ui.menuColor" align="right">
+                <td> #if($lang =="hindi" || $lang == "gujarati") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font>
+             </td>
+                <td>
+                <select class="drop" name="instName" size=1 style="width:300px;" />
+                          #foreach($name in $instList)
+                                  <option value="$name.getInstituteName()" title="$name.getInstituteName()" style="width:275px;">$name.getInstituteName() </option>
+                          #end
+                </select>
+                </td
+        </tr>
+
+        ##<tr bgcolor="$ui.menuColor" >
+        <tr>
+
+                #fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
+
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+        ##<td colspan=2 align="left" bgcolor="$ui.buttonBoxColor">
+        <td colspan=2 align="left">
+                <font face="$ui.sansSerifFonts">
+                <input class="button-ftextstyle" type="button" name="eventSubmit_doUploadMultiUserZip" value="Upload" onClick="CheckFieldFile(document.frm,this);"/>
+                <input type="hidden" name="actionName" value=""/>
+                <input type="hidden" name="count" value="$tdcolor">
+                <input type="hidden" name="role" value="admin">
+
+                </font>
+        </td>
+                   </tr>
+</table>
+<br>
+<br>
+
+<table width=100% bgcolor="$ui.menuColor" align=left>
+#foreach( $e in $Msg )
+        <tr bgcolor="$ui.tableColor">
+           <td align=center>
+              <font face="$ui.sansSerifFonts">$brih_entry <font color="$ui.fontColorBrown">"$e.getErr_User()"</font>
+              </font>
+           </td>
+           <td align=center>
+              <font face="$ui.sansSerifFonts">$e.getErr_Type()</font>
+           </td>
+        </tr>
+#end
+</table>
+  </div>
+</form>
+
+        #end
+	##if($mode ==  "All")
+	#if($scourse ==  "scourse")
+<form name="frm" method="post" action="$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm")">
+
+<table width=100% align="right" bgcolor="$ui.tableColor">
+        <tr bgcolor="$ui.menuColor">
+                <td>
+                       <b><a href="$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("count",$tdcolor)">$brih_listCourse</a></b></td>
+                <td align="right">
+                        <input align=center type="text" name="valueString" value="">
+                </td>
+                <td>
+                        <input class="button-ftextstyle" type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="hidden" name="mode" value="Search">
+                        <input type="hidden" name="scourse" value="scourse">
+                        <input type="hidden" name="count" value="$tdcolor">
+                </td>
+                        <td align="right"><b>$brih_match_str</b></td>
+                  
+                            <td align="right">
+                               <select class="drop" name="queryList">
+                                <option value=CourseId>$brih_course #if($lang == "hindi") $brih_Of1 #end $brih_ID </option>
+                                <option value="Course Name">$brih_course #if($lang == "hindi") $brih_Of1 #end $brih_name</option>
+                                <option value=Dept>$brih_dept</option>
+                                <td align="right"><b>$brih_searchBy </b></td>
+                        </select>
+                </td>
+        </tr>
+</table>
+
+
+#if($status == "Noblank" )
+#set($headings = ["", "$brih_status", "$brih_creation $brih_Da", "$brih_desc", "$brih_dept", "$brih_course $brih_Of1 $brih_name", "$brih_course $brih_Of1 $brih_ID"] )
+<table bgcolor="$ui.tableColor" align="right" width=100%>
+<tr align="right" colspan=7>
+        <td>
+        <table bgcolor="$ui.tableColor" width=100% align="right">
+        <tr align="right" colspan=7>
+                #foreach($heading in $headings)
+                        #headerCell($heading)
+                #end
+        </tr>
+        #foreach($entry in $courseDetail)
+                #if($velocityCount%2==0)        
+                <tr bgcolor="$ui.tableColor" align="right" colspan=4>
+                #else
+                <tr bgcolor="$ui.menuColor" align="right" colspan=4>
+                #end
+                ##entryCell($entry.getGroupName())
+                        <td bgcolor="$ui.tableColor" align="right">
+                        <font face="$ui.sansSerifFonts">
+                        <a href=$link.setPage("call,UserMgmt_Admin,RegisterSecInstructor.vm").addPathInfo("gName",$entry.getGroupName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_reg1</a>
+                        </font>
+                 </td>
+
+                     </td>
+                        #if($entry.getActive()=="1")    
+                        <td align="right"><font bgcolor="$ui.tableColor" color="Green">$brih_active</font></td>
+                        #else
+                        <td align="right"><font bgcolor="$ui.tableColor" color="Red">$brih_inactive</font></td>
+                        #end
+                        <td colspan=7>$entry.getCreateDate()</td>
+                        <td colspan=7>$entry.getDescription()</td>
+                        <td colspan=7>$entry.getDept()</td>
+                        <td colspan=7>$entry.getCourseName()</td>
+                        <td colspan=7>$entry.getGroupName()</td>
+                </tr>
+        #end
+        </td>
+</tr>
+
+        <tr bgcolor="$ui.menuColor" align="right">
+         ##<td align=center bgcolor="$ui.menuColor">
+         <td>
+         #if($mode!="Search")
+         #if($total_size<= $AdminConf)
+
+		<img src="$content.getURI("images/First_blank.png")">
+                <img src="$content.getURI("images/Next_blank.png")">
+                <img src="$content.getURI("images/Previous_blank.png")">
+                <img src="$content.getURI("images/Last_blank.png")">
+
+          #elseif($startIndex== $AdminConf_str)
+
+          <img src="$content.getURI("images/First_blank.png")">
+          <img src="$content.getURI("images/Previous_blank.png")">
+
+          <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+          <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+         #elseif($endIndex == $total_size || $endIndex > $total_size)
+
+         <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+         <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a> &nbsp;
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #else
+           <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+           <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+<a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+            <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+     #end     #else
+         #if($total_size<= $AdminConf)
+         <img src="$content.getURI("images/First_blank.png")">
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Previous_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #elseif($startIndex== $AdminConf_str)
+          <img src="$content.getURI("images/First_blank.png")">
+          <img src="$content.getURI("images/Previous_blank.png")">
+          <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+          <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+         #elseif($endIndex == $total_size || $endIndex > $total_size)        
+	 <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+	 <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #else
+           <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+           <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+           <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+  <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("scourse",$scourse).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+     #end
+    #end
+    </td>
+ </tr>
+</table>
+</table>
+#end
+</form>
+
+<br>
+<table width=100% bgcolor="$ui.menuColor" align="right">
+#set ( $count = 1 )
+        #foreach( $entry in $error_user )
+                #set ( $count2 = 1 )
+                #foreach( $type in $error_type )
+                        #if( $count == $count2 )
+                        <tr bgcolor="ui.menuColor">
+                        <td align=center>
+                                <font face="$ui.sansSerifFonts">User
+Name <font color="brown">"$entry"</font></font>
+                        </td>
+                        <td align=center>
+                                <font
+face="$ui.sansSerifFonts">$type</font>
+                        </td>
+                        </tr>
+                        #end
+                        #set ( $count2 = $count2+1 )
+                #end
+                #set ( $count = $count+1 )
+        #end
+</table>
+
+
+	#end
+	</td></tr>
+  </table>
+<SCRIPT LANGUAGE="javascript">
+function checkOption (frm,field)
+        {
+                frm.val.value=document.frm.instName.value;
+                document.getElementById('btnSearch').click();
+        }
+</SCRIPT>
+

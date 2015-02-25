@@ -3,28 +3,34 @@
  * Copyright (c) 2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *@author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ *@author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributor: Member of ETRG, I.I.T. Kanpur
 *#
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 </head>
 $page.setTitle("Login Page | Resend Activation")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
-<tr><td>
-<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)>$brih_login</a> | $brih_act $brih_for $brih_resend
+<tr>
+        <td align="right"><td>
+		<a href=javascript:popupWin("/brihaspati2/docs/ResendMail.html","newWin"); style=text-decoration:none><font size=4>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+                </td>
+ 		<td align="right">
+		<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)>$brih_login</a> | $brih_act $brih_for $brih_resend
 </td></tr>
 </table>
 
 <form name=frm method="post" action="$link.setPage("ResendActivation.vm").setAction("ResendActivation")">
-<table align=left width=100% bgcolor="$ui.tableColor">
-                <tr><td width="15"> <font face="$ui.sansSerifFonts">$brih_email </td>
+<table align=left bgcolor="$ui.tableColor" width="100%">
+		<tr align="right">
                 <td width="40"><input type="text" size="30" name="email" value=""></td>
+	        <td width="15"> <font face="$ui.sansSerifFonts">$brih_email </td>
 		</tr>
-
-                <tr bgcolor="$ui.menuColor">
+                <tr bgcolor="$ui.menuColor" align="right">
                 ##<td align=center colspan=2 bgcolor="$ui.menuColor">
                 <td colspan=2>
                         <input type="hidden" name="lang" value=$lang>

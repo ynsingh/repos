@@ -1,94 +1,99 @@
 #*
  * @(#) RegisterSecInstructor.vm
- * Copyright (c) 2007 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
+ * @author <a href="shaistashekh@hotmail.com"> Shaista</a>  
  * @author <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>  
- * @author <a href="mailto:shaista.shekh@gmail.com">Shaista</a>
+ * @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>  
+ * @author <a href="tejdgurung20@gmail.com">Tej Bahadur</a>  
+ * @author <a href="rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date:24-08-2011 (Shaista),24-02-2015
 *#
-<head>
-<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-</head>
 
-<body bgcolor="$ui.bgcolor" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
+##<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+##<body bgcolor="$ui.bgcolor" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<body>
+$page.setTitle("Admin Home | Registeration Management | Register Secondary Instructor | Registeration")
 $!data.getMessage()
-
-<br>
-<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+#set($lang = $data.getUser().getTemp("lang" ).toString()) 
+<table align=left bgcolor="$ui.menuColor" width=100%>
 <tr align="right">
 	<td>
 	<font face="$ui.sansSerifFonts" size=3>
-	 $page.setTitle("Admin Home | Registeration Management | Register Secondary Instructor | Registeration")
-	 <b>
-	 $brih_in $brih_secInsReg $brih_instructor $brih_Of1 $brih_reg $entry | 
-	 <a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> |
-	 <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm")>$brih_mgmt $brih_reg </a> |
-	 <a href=$link.setPage("call,ListMgmt_Admin,ListCourse_Register.vm").addPathInfo("mode","All")> $brih_instructor $brih_Of2 $brih_reg $brih_for, $brih_view $brih_all $brih_course </a>  
+             #if($lang=="hindi")
+         $entry $brih_regSecondaryIns
+        #else
+          $brih_regSecondaryIns $entry
+        #end
+	| <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("count","3") style=text-decoration:none>$brih_listCourse</a> 
+	 |<a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> 
+
+	|<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a>
 	 </td>
 </tr>
 </table>
-<br>
-<form name=frm method="post" action="$link.setPage("call,ListMgmt_Admin,ListCourse_Register.vm").setAction("InstructorRegisteration").addPathInfo("cName",$entry)">
-  <div align="left">
-    <table border=1 align=center bgcolor="$ui.tableColor" cellpadding="5">
-      <tr align="right" bgcolor="$ui.tableColor">  
-
+<table width=100% align="right" bgcolor="$ui.tableColor">
+        <tr align="right">
+	#if($tdcolor != "3")
+	<td width=33%>
+	#elseif($tdcolor=="3")
+	<td width=33% bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("count","3") style=text-decoration:none>$brih_course $brih_list</a></td>
+	#if($tdcolor != "1")
+	<td width=33%>
+	#elseif($tdcolor=="1")
+	<td width=33% bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_course $brih_Of1 $brih_reg1 #else $brih_reg1 $brih_course #end </a></td>
+	#if($tdcolor != "2")
+	<td width=33%>
+	#elseif($tdcolor=="2")
+	<td width=33% bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","1") style=text-decoration:none>  #if($lang == "hindi") $brih_multiple1 $brih_course $brih_Of1 $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td>
+        </tr>
+</table>
+<form name=frm method="post" action="$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").setAction("InstructorRegisteration").addPathInfo("cName",$entry)">
+<table align=left width=100% bgcolor="$ui.tableColor">
+<tr bgcolor="$ui.menuColor">  
+		<td><b>$brih_course $brih_ID</b></td>
 		<td><b>$entry</b></td>
-		<td><b>$brih_course  $brih_Of1 $brih_ID</b></td>
       </tr>
-      <tr align="right" bgcolor="$ui.tableColor">
-	<td> <input type="txt" size="30%" name="UNAME" value=" " > </td>
-	<td> <b> <font color=red> * </font> $brih_usr $brih_Of1 $brih_name </b></td>
+        <tr align="right">
+        <td> <input type="text" name="EMAIL" value=""> </td>
+        <td> $brih_email $brih_ID</td>
       </tr>
-
-      <tr align="right" bgcolor="$ui.tableColor">
-	<td> <input type="password" size="30%" name="PASSWD" value="" > </td>
-	<td> <b> $brih_pwd </b> </td>
+      <tr bgcolor="$ui.menuColor" align="right" >
+         <td> <input type="passwd" name="PASSWD" vaue=""> </td>
+        <td> $brih_pwd </td>
       </tr>
-
-      <tr  align="right" bgcolor="$ui.tableColor">
-	<td> <input type="txt" size="30%" name="FNAME" value=" " > </td>
-	<td> <b> $brih_first $brih_name </b> </td>
+      <tr align="right">
+           <td> <input type="text" name="FNAME" value=""> </td>
+        <td>$brih_first $brih_name</td>
       </tr>
-
-      <tr align="right" bgcolor="$ui.tableColor">
-	<td> <input type="txt" size="30%" name="LNAME" value=" " > </td>
-	<td> <b> $brih_last $brih_name </b> </td>
+      <tr bgcolor="$ui.menuColor" align="right">
+        <td> <input type="text" name="LNAME" value=""> </td>
+        <td>$brih_last $brih_name</td>
       </tr>
 
-      <tr align="right" bgcolor="$ui.tableColor">
-	<td> <input type="txt" size="30%" name="EMAIL" value=" " > </td>
-	<td> <b>$brih_email $brih_ID </b></td>
-      </tr>
-	<tr>
-	<td colspan=2 align=center>
-
-	    <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
-
-	    <input type="reset" class="button-ftextstyle" name="Clear" value="$brih_clear"/>
+	<tr bgcolor="$ui.menuColor">
+	<td colspan=2 align="right">
+	    <input class="button-ftextstyle" type="reset" name="Clear" value="$brih_clear"/>
+	    <input class="button-ftextstyle" type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldInst(document.frm,this);"/>
 	</td>
 	</tr>
     </table>
     <input type="hidden" name="actionName">
     <input type="hidden" name="mode" value="$mode">	
     <input type="hidden" name="cName" value="$entry">	
+    <input type="hidden" name="count" value="$tdcolor">	
   </div>
 </form>
 </body>
-
-<SCRIPT LANGUAGE="javascript">
-        function checkField(frm,field)
-        {
-                if(frm.UNAME.value!="")
-                {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                }
-                else
-                {
-                        alert("Please fill the Mandatory(*) Fields !");
-                }
-        }
-</SCRIPT>
