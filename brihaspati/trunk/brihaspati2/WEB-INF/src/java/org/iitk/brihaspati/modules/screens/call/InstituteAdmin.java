@@ -105,6 +105,8 @@ public class InstituteAdmin extends SecureScreen{
 			Vector list1=new Vector();
 			List list2=null;
 			Vector list3=new Vector();
+			List list4=new Vector();
+			Vector list5=new Vector();
  
                         if(list.size() !=0){
 	                        for(int i=0;i<list.size();i++){
@@ -119,25 +121,34 @@ public class InstituteAdmin extends SecureScreen{
 				String inst_id=(list1.get(j)).toString();
 				int instid=Integer.parseInt(inst_id);
 				crit=new Criteria();
-                                //crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instid);
-				crit.addAscendingOrderByColumn(InstituteAdminRegistrationPeer.INSTITUTE_NAME);
+				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instid);
 				crit.and(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,1);
 				try{
 	                                list2=InstituteAdminRegistrationPeer.doSelect(crit);
                                         for(int k=0;k<list2.size();k++)
                                         {
 						InstituteAdminRegistration instadminreg=(InstituteAdminRegistration)list2.get(k);
-                                               //Collections.sort(list1);
-                                                list3.add(instadminreg);
+						String inme=instadminreg.getInstituteName();
+                                                list3.add(inme);
+                         			Collections.sort(list3);
                                         }
                                  }
                                  catch(Exception e){}
 
 			}
+			for(int x=0; x < list3.size(); x++){
+				crit=new Criteria();
+				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,list3.get(x));
+	                        list4=InstituteAdminRegistrationPeer.doSelect(crit);
+				for(int y=0;y<list4.size();y++){
+				InstituteAdminRegistration instadminreg=(InstituteAdminRegistration)list4.get(y);
+				list5.add(instadminreg);
+				}
+			}
 			String rldpage=pp.getString("reload"," ");
 			if(rldpage.equals(" ")){
 			context.put("list",list);
-			context.put("list1",list2);
+			context.put("list1",list5);
 			
 			}
 			else{
