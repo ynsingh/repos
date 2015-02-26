@@ -35,7 +35,7 @@ $!data.getMessage()
 <table width=100%>
         <tr>
                 <td>
-		<a href=javascript:popupWin("/brihaspati2/docs/stquiz.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+		<a href=javascript:popupWin("/brihaspati/docs/stquiz.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
                 </td>
         </tr>
 </table>

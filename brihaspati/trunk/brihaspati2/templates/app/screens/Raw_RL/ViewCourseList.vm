@@ -20,7 +20,7 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
    <tr>
                 <td>
-        <href=javascript:popupWin("/brihaspati2/docs/RegisteredCourses.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font><img src="$content.getURI("/images/Lefthand.gif")"></a>
+        <href=javascript:popupWin("/brihaspati/docs/RegisteredCourses.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font><img src="$content.getURI("/images/Lefthand.gif")"></a>
        </td>
 	<td align="right">
 		<font face="$ui.sansSerifFonts" size=3>

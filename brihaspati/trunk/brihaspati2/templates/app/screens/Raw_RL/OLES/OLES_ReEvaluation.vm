@@ -31,7 +31,7 @@ $page.setBgColor($ui.bgcolor)
 <table width="100%">
 	<tr>
 		<td>
-<a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
+<a href=javascript:popupWin("/brihaspati/docs/OLES_Quiz.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
 	</tr>
 </table>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">

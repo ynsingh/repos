@@ -38,7 +38,7 @@ $!data.getMessage()
 
 ## Creating the links for help regarding FAQ 
 <table width="100%">
-	<tr><td><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td></tr>
+	<tr><td><a href=javascript:popupWin("/brihaspati/docs/OLES_Quiz.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td></tr>
 </table>
 
 #if($mode == "QuizDetail")

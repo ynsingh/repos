@@ -68,7 +68,7 @@ $brih_listOfInstructor
 <table width=100%>
 <align="right" bgcolor="$ui.tableColor">
        <td>
-        <a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_Instructor.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+        <a href=javascript:popupWin("/brihaspati/docs/UserMgmt_Instructor.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
         </td>
 
         <td>

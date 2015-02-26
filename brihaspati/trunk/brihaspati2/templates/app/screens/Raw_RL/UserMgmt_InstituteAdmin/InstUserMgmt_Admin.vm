@@ -24,7 +24,7 @@ $!data.getMessage()
 <table bgcolor="$ui.tableColor" width=100%>
 <tr align="right"  bgcolor="$ui.menuColor">
 <td>
-<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font> <img src="$content.getURI("/images/Lefthand.gif")">
+<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font> <img src="$content.getURI("/images/Lefthand.gif")">
 </td>
 	#if($mode=="sclist")
 		<td>
@@ -433,7 +433,7 @@ face="$ui.sansSerifFonts">$type</font>
 #*<tr align="right">
 <td align="right" colspan=7>
 <b>
-<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font> <img src="$content.getURI("/images/Lefthand.gif")">
+<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font> <img src="$content.getURI("/images/Lefthand.gif")">
 </td></tr>*#
 <tr  bgcolor="$ui.menuColor" align="right">
  <td>
@@ -557,7 +557,7 @@ face="$ui.sansSerifFonts">$type</font>
 <td bgcolor="#AFDCEC"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","5").addPathInfo("mode","USzip") style=text-decoration:none><img src="$content.getURI("/images/zipfile.jpg")"> $brih_zip $brih_file $brih_upload</a></td>
 </tr>
 <tr align="left"><td align="left" colspan=8>
-	<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/ZipUploadHelp.html","newWin"); style=text-decoration:none>$brih_help</a></font>
+	<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati/docs/ZipUploadHelp.html","newWin"); style=text-decoration:none>$brih_help</a></font>
 	<img src="$content.getURI("/images/Lefthand.gif")"><b>
 </td></tr>
 <tr bgcolor="$ui.menuColor" align="right"><td colspan=8>

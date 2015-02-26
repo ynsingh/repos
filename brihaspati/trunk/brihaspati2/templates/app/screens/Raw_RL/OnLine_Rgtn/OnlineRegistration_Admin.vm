@@ -40,7 +40,7 @@ $!data.getMessage()
 
 ##<a href=javascript:popupWin("/brihaspati2/docs/OnlineRegistrationAdmin.html","newWin") style='text-decoration:none'>$brih_help</a><img src="$content.getURI("/images/lefthand.gif")"><font face="$ui.sansSerifFonts" size=3></font>
 
-<a href=javascript:popupWin("/brihaspati2/docs/OnlineRegistrationAdmin.html","newWin"); style=text-decoration:none>$brih_help<img src="$content.getURI("/images/Lefthand.gif")"></a>
+<a href=javascript:popupWin("/brihaspati/docs/OnlineRegistrationAdmin.html","newWin"); style=text-decoration:none>$brih_help<img src="$content.getURI("/images/Lefthand.gif")"></a>
 
 
         #if($tdcolor!="2")

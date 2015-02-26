@@ -53,7 +53,7 @@ $!data.getMessage()
 <table bgcolor="#e5e5e5" width="100%">
         <tr>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td > ##lign="right">
-<a href=javascript:popupWin2("/brihaspati2/docs/ManageBookmarks.html","newWin");style=text-decoration:none> $brih_help &nbsp;| </a> &nbsp; 
+<a href=javascript:popupWin2("/brihaspati/docs/ManageBookmarks.html","newWin");style=text-decoration:none> $brih_help &nbsp;| </a> &nbsp; 
 <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font> <img src="$content.getURI("/images/Lefthand.gif")"> </a> 
 </td>
                 <td align="right"><b>

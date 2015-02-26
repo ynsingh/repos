@@ -31,7 +31,7 @@ $!data.getMessage()
 <table bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor">
             <td>
-                  <a href=javascript:popupWin("/brihaspati2/docs/WikiHelp.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+                  <a href=javascript:popupWin("/brihaspati/docs/WikiHelp.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
                 </td>
 
 		<td align="right">

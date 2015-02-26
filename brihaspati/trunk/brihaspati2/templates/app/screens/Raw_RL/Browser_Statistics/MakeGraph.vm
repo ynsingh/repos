@@ -23,7 +23,7 @@ $!data.getMessage()
 	 </script>
 	<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
-        <script type="text/javascript" src="/brihaspati2/scrpts/dygraph-dev.js"></script>
+        <script type="text/javascript" src="/brihaspati/scrpts/dygraph-dev.js"></script>
 	##<script type="text/javascript" src="/brihaspati2/scrpts/CommonScripts/CommonScript.js")"></script>
 </head>
 #if($valuestr!=" ")

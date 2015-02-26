@@ -19,7 +19,7 @@ $page.setBgColor("bgcolor")
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 	<tr align="right">
-		<td align="left"> <a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+		<td align="left"> <a href=javascript:popupWin("/brihaspati/docs/Quizstudent.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
 		<td>
 			## If some message has been set, that is retrieved and displayed.
 			<font face="$ui.sansSerifFonts">

@@ -28,7 +28,7 @@ $!data.getMessage()
 </table>
 <table width=100%  bgcolor="$ui.tableColor">
 	<tr align="right" bgcolor="$ui.tableColor">
-                <a href=javascript:popupWin("/brihaspati2/docs/WikiHelp.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+                <a href=javascript:popupWin("/brihaspati/docs/WikiHelp.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
         	<td colspan="2">
                 	<a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $brih_Wiki $brih_home </a> 
 	                <a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $brih_index </a>

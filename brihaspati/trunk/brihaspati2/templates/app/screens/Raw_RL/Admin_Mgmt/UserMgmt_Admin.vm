@@ -19,11 +19,11 @@ $!data.getMessage()
 
 	 #if($permission !="0")
         <td align=right>
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_Admin.html","newWin");>$brih_help</a>
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/UserMgmt_Admin.html","newWin");>$brih_help</a>
         </td>
         #else
         <td align=right>
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_Admin_sec.html","newWin");>$brih_help</a>
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/UserMgmt_Admin_sec.html","newWin");>$brih_help</a>
         </td>
         #end
 </tr>

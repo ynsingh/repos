@@ -97,7 +97,7 @@ $page.setTitle("Upload Marks")
 ## if type is not spreadsheet then show help image for uploading marks
 #if($type !="spreadsheet")
  <tr align="right"><td align="right">
-<a href=javascript:popupWin("/brihaspati2/docs/MarkList.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+<a href=javascript:popupWin("/brihaspati/docs/MarkList.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
 <td align="right" colspan=3>
         <font color=red>$brih_MarksMsg1</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </td>

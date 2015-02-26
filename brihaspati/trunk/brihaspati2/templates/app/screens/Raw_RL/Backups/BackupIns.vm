@@ -37,7 +37,7 @@ $!data.getMessage()
 </tr>
 #end
 <tr align="right"><td colspan="3"> $brih_course $brih_Of1 $brih_backup</b> </td> </tr>
-<tr><td> <a href=javascript:popupWin("/brihaspati2/docs/Backup.html","newWin");>$brih_help</a>
+<tr><td> <a href=javascript:popupWin("/brihaspati/docs/Backup.html","newWin");>$brih_help</a>
 	<img src="$content.getURI("/images/Lefthand.gif")">
 </td></tr>
 

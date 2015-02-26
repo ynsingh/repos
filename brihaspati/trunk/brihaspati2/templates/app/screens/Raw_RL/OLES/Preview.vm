@@ -21,7 +21,7 @@ $page.setBgColor("bgcolor")
 ## Creating the links for help regarding FAQ 
 
 <table bgcolor="$ui.menuColor" width=100%>
-	<tr align="right"> <a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a> <td align="left"> <img src="$content.getURI("/images/Lefthand.gif")"></td>
+	<tr align="right"> <a href=javascript:popupWin("/brihaspati/docs/OLES_Quiz.html","newWin");>$brih_help</a> <td align="left"> <img src="$content.getURI("/images/Lefthand.gif")"></td>
 	<td><b>
 		<font face="$ui.sansSerifFonts">
               $!quizName|

@@ -20,7 +20,7 @@ $page.setBgColor("bgcolor")
 
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr align="right">
-		<td align=left> <a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a><img src="$content.getURI("/images/hand.gif")"></td>
+		<td align=left> <a href=javascript:popupWin("/brihaspati/docs/OLES_Quiz.html","newWin");>$brih_help</a><img src="$content.getURI("/images/hand.gif")"></td>
 		<td><b> <font face="$ui.sansSerifFonts">
 		$!quizName |
 		<a href=$link.setPage("call,OLES,Preview_Quiz.vm").addPathInfo("count","4")>$brih_preview</a> | 

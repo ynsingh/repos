@@ -29,7 +29,7 @@ $!data.getMessage()
 <table  bgcolor="#d9e3ec" width=100%>
 <tr>
 <td>
-	<a href=javascript:popupWin("/brihaspati2/docs/ResearchRepository.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
+	<a href=javascript:popupWin("/brihaspati/docs/ResearchRepository.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
 </td>
 </tr>
 </table>

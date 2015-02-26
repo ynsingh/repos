@@ -25,7 +25,7 @@ $!data.getMessage()
 <tr align="right">
 <td align="left">
 $brih_help
-<img src="$content.getURI("/images/Lefthand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/HeaderImage.html","newWin"); style=text-decoration:none>
+<img src="$content.getURI("/images/Lefthand.gif")"> <a href=javascript:popupWin("/brihaspati/docs/HeaderImage.html","newWin"); style=text-decoration:none>
 </a> </td>
 <td align="right">
         ##<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |

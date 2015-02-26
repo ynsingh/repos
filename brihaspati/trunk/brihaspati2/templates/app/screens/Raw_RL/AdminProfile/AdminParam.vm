@@ -38,7 +38,7 @@ $!data.getMessage()
 </tr>
 <form name="frm" method="post" action="$link.setPage("call,AdminProfile,AdminParam.vm").setAction("changeAParam")">
     <tr align="right">
-	<td align="left"> <a href=javascript:popupWin("/brihaspati2/docs/Profile.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+	<td align="left"> <a href=javascript:popupWin("/brihaspati/docs/Profile.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
 	<td><font size=4> $brih_ap </font></td>
    </tr>
     <tr bgcolor="$ui.menuColor" align="right">

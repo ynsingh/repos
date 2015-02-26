@@ -88,13 +88,13 @@ $!data.getMessage()
 </table>
 <table width=100% bgcolor="$ui.menuColor">
 <tr>
-<td><a href=javascript:popupWin("/brihaspati2/docs/BrihaspatiEditor_v1_3_manual.pdf","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
+<td><a href=javascript:popupWin("/brihaspati/docs/BrihaspatiEditor_v1_3_manual.pdf","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
 #foreach($content in $contentvalue)
 <td><a href=$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$username).addPathInfo("type","reload").addPathInfo("filename",$content) style=text-decoration:none> #if($lang == "english") $brih_Launch $brih_packager $brih_Application #else $brih_packager $brih_Launch #end </a></td>
 ##<td><a href="$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$username).addPathInfo("type","reload").addPathInfo("filename",$content).addPathInfo("count",$tdcolor)">$brih_Launch $brih_packager $brih_Application</a>
 
 ##<td align="right"><a href=javascript:popupWin("/brihaspati2/docs/jnlp.html","newWin");>$brih_jnlp</a><img src="$content.getURI("/images/righthand.gif")"></td>
-<td align="right"><a href=javascript:popupWin("/brihaspati2/docs/jnlp.html","newWin");>$brih_jnlp</a><img src="$content.getURI("/images/Lefthand.gif")">
+<td align="right"><a href=javascript:popupWin("/brihaspati/docs/jnlp.html","newWin");>$brih_jnlp</a><img src="$content.getURI("/images/Lefthand.gif")">
 
 
 </td>

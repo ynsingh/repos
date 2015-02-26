@@ -73,9 +73,9 @@ $!data.getMessage()
 </tr>
                 #if(($mode=="adphase")||($mode=="sresult")||($mode=="update"))
                 <tr bgcolor="$ui.menuColor"><td colspan=4>
-<a href=javascript:popupWin("/brihaspati2/docs/Survey.html","newWin"); style=text-decoration:none>$brih_help<img src="$content.getURI("/images/Lefthand.gif")"></a>
+<a href=javascript:popupWin("/brihaspati/docs/Survey.html","newWin"); style=text-decoration:none>$brih_help<img src="$content.getURI("/images/Lefthand.gif")"></a>
                 #elseif($mode !="")
-<a href=javascript:popupWin("/brihaspati2/docs/SurveyStud.html","newWin"); style=text-decoration:none>$brih_help<img src="$content.getURI("/images/Lefthand.gif")"></a>
+<a href=javascript:popupWin("/brihaspati/docs/SurveyStud.html","newWin"); style=text-decoration:none>$brih_help<img src="$content.getURI("/images/Lefthand.gif")"></a>
                 </td></tr>
                 #end
 #macro(ls)

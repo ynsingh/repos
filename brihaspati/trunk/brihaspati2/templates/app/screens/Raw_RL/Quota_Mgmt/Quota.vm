@@ -34,7 +34,7 @@ $!data.getMessage()
 <table width=100%>
         <tr bgcolor="$ui.tableColor">
                 <td colspan="10">
-		<a href=javascript:popupWin("/brihaspati2/docs/Quota.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"> 
+		<a href=javascript:popupWin("/brihaspati/docs/Quota.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"> 
                 </td>
         </tr>
 <tr bgcolor="$ui.menuColor">

@@ -38,7 +38,7 @@ $!data.getMessage()
 <table width=100% >
 <tr>
 <td align="right">
-	<img src="$content.getURI("/images/hand.gif")"><a href="/brihaspati2/docs/AuthorManagement.html">$brih_help</a>
+	<img src="$content.getURI("/images/hand.gif")"><a href="/brihaspati/docs/AuthorManagement.html">$brih_help</a>
 </td>
 </tr>
 </table>

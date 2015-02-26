@@ -27,9 +27,9 @@ $!data.getMessage()
 <tr>
 <td align="left">
 	#if($user_role == "instructor" )	
-	<a href=javascript:popupWin("/brihaspati2/docs/Quizhelp.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
+	<a href=javascript:popupWin("/brihaspati/docs/Quizhelp.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
 	#else	
-	<a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
+	<a href=javascript:popupWin("/brihaspati/docs/Quizstudent.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
 	#end
 </td>
 </tr>

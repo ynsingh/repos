@@ -22,7 +22,7 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 <tr align="right">
         <td colspan="10">
-		<a href=javascript:popupWin("/brihaspati2/docs/Department.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> 
+		<a href=javascript:popupWin("/brihaspati/docs/Department.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> 
 	</td>
 	<td>
         	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home </a> |

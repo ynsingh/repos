@@ -31,7 +31,7 @@ $!data.getMessage()
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
 	</tr>
 </table>
 <form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,OneByOne_Quiz.vm").setAction("OLES_Quiz")>

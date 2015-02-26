@@ -61,7 +61,7 @@ $!data.getMessage()
 <table width=100% bgcolor="$ui.tableColor"> ##table 2 start
 <tr bgcolor="$ui.menuColor" align="right">
                   <td>
-                       <a href=javascript:popupWin("/brihaspati2/docs/edit-removemembers.html","newWin") style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td> 
+                       <a href=javascript:popupWin("/brihaspati/docs/edit-removemembers.html","newWin") style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td> 
 
       ##  <td><a href=javascript:popupWin("/brihaspati2/docs/edit-removemembers.html","newWin") style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
 

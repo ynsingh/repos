@@ -50,10 +50,10 @@ $!data.getMessage()
 	#if ($isInstructor=="true")
 		#if($AccessMsg!="")
 			<td align="left" colspan="3">
-				<a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+				<a href=javascript:popupWin("/brihaspati/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
 			<td align="right" colspan="6"> <font color="red" size="4">$AccessMsg  </td>
 		#else
-			<td align="left" colspan="9"> <a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+			<td align="left" colspan="9"> <a href=javascript:popupWin("/brihaspati/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
 
 			
 	        #end

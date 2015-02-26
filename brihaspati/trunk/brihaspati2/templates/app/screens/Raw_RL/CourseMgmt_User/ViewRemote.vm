@@ -28,7 +28,7 @@ $page.setTitle("Home | $course | Course Management | Remote Course |Remote Cours
  		
    <tr>
 	<td>
-               <a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin");>$brih_help</a>
+               <a href=javascript:popupWin("/brihaspati/docs/RemoteCourses.html","newWin");>$brih_help</a>
                <img src="$content.getURI("/images/Lefthand.gif")">
 
 

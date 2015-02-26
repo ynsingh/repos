@@ -17,7 +17,7 @@ $!data.getMessage()
 <table width=100%  bgcolor="$ui.menuColor">
 <tr align="right">
 ## Creating the links for help regarding FAQ 
-<td align="left"> <a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+<td align="left"> <a href=javascript:popupWin("/brihaspati/docs/Quizstudent.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
 <td>
 	<b>	
 		#if($type=="practice")

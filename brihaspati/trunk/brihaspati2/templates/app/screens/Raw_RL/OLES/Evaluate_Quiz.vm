@@ -23,7 +23,7 @@ $page.setBgColor($ui.bgcolor)
 			</font>
 		</td>
 		<td align="left">
-			<a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
+			<a href=javascript:popupWin("/brihaspati/docs/Quizstudent.html","newWin");>$brih_help</a>
 			<img src="$content.getURI("/images/Lefthand.gif")">
 		</td>
 	</tr>

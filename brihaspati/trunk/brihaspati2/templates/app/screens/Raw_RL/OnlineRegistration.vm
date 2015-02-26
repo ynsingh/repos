@@ -28,7 +28,7 @@ $!data.getMessage()
 </tr>
 <tr align="right" bgcolor="$ui.menuColor">
 	<td>
-		<a href=javascript:popupWin("/brihaspati2/docs/OnlineRegistration.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
+		<a href=javascript:popupWin("/brihaspati/docs/OnlineRegistration.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
 	</td>
 	#if($tdcolor != "1")
 	<td>

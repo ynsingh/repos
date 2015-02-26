@@ -28,7 +28,7 @@ $page.setTitle("$brih_home | $brih_course | $brih_student $brih_mgmt | $brih_stu
 #*<table width=100%>
 <tr>
 	<td align=right>
-        	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/QuizGrade.html","newWin");>$brih_help</a>
+        	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/QuizGrade.html","newWin");>$brih_help</a>
 	</td>
 	</tr>
 </table>*#

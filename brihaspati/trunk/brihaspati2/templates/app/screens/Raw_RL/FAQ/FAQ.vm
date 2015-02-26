@@ -93,10 +93,10 @@ $!data.getMessage()
 ## Creating the links for help regarding FAQ for student and instructor.
         #if($user_role == "instructor")
 	<td align="right" colspan="7">
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/FAQInst.html","newWin");>$brih_help</a>
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/FAQInst.html","newWin");>$brih_help</a>
         #end
         #if($user_role == "student")
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/FAQStu.html","newWin");>$brih_help</a>
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/FAQStu.html","newWin");>$brih_help</a>
         #end
 </td>
 </td></tr>

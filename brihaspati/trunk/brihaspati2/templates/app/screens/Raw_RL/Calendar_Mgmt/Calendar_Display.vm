@@ -23,7 +23,7 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width="100%">
 <tr>
  <td>
-       <img src="$content.getURI("/images/Lefthand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/CourseCalendar.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+       <img src="$content.getURI("/images/Lefthand.gif")"><a href=javascript:popupWin("/brihaspati/docs/CourseCalendar.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
         </td>
 
       <td align="right">

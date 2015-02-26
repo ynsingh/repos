@@ -74,7 +74,7 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" align="right">
          <td>
         #if($data.getUser().getTemp("role") != "student")
-         <a href=javascript:popupWin("/brihaspati2/docs/AttendanceManagement.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font><img src="$content.getURI("/images/Lefthand.gif")"></a>
+         <a href=javascript:popupWin("/brihaspati/docs/AttendanceManagement.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font><img src="$content.getURI("/images/Lefthand.gif")"></a>
         <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">| $brih_VideoHelp</font></a></td>
         #end
        </td>

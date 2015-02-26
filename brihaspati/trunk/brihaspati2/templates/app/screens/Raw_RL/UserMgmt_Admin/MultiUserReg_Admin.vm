@@ -31,7 +31,7 @@ $!data.getMessage()
 <br>
 <table><tr align="right"><td><b>$brih_upload_msg </b><img src="$content.getURI("/images/Lefthand.gif")">
 <font face="$ui.sansSerifFonts" size=3>
-<a href="/brihaspati2/docs/Userdoc.html">$brih_here</a> $brih_click
+<a href="/brihaspati/docs/Userdoc.html">$brih_here</a> $brih_click
 </font></td></tr></table>
 <br>
 <table width=60% bgcolor="$ui.tableColor" cellpadding="2" align="center" border=1>

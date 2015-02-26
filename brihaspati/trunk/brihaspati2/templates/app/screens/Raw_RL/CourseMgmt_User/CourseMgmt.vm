@@ -33,7 +33,7 @@ $!data.getMessage()
 
                 #if ($isInstructor=="true")
         <tr><td align="left" colspan="16">
-        <a href=javascript:popupWin("/brihaspati2/docs/CourseMgmt.html","newWin"); style=text-decoration:none >$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">         </td></tr>
+        <a href=javascript:popupWin("/brihaspati/docs/CourseMgmt.html","newWin"); style=text-decoration:none >$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">         </td></tr>
         <tr bgcolor="$ui.menuColor">
 #if($tdcolor != "7")
          <td>

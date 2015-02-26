@@ -29,7 +29,7 @@ $!data.getMessage()
 </table> ##table 1 end
 <table width=100% bgcolor="$ui.tableColor"> ##table 2 start
 <tr align="right">
-    <td><a href=javascript:popupWin("/brihaspati2/docs/activity.html","newWin"); style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
+    <td><a href=javascript:popupWin("/brihaspati/docs/activity.html","newWin"); style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
 
        #if($tdcolor != "5")
         <td>

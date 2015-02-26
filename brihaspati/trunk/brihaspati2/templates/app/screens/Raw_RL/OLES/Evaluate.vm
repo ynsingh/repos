@@ -59,7 +59,7 @@ $page.setBgColor("bgcolor")
 <table width="100%">
 	<tr align="right">
 		<td>
-			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
+			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Quizstudent.html","newWin");>$brih_help</a>
 		</td>
 	</tr>
 </table>
