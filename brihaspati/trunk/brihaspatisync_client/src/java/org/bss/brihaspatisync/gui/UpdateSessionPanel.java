@@ -483,9 +483,10 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                          			frame.dispose();
 						guiworker task = new guiworker();
 						task.execute();     
-                                               JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog6"));
                                                
-                                          } 
+                                               
+                                          }else
+                                          	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog6"));
                                   }
                                   else{
 					System.out.println("insufficient indexServer name in UpdateSession :" + indexServerName);
