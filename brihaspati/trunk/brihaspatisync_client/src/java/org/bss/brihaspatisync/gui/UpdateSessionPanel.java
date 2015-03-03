@@ -523,7 +523,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
 
-        public class guiworker extends SwingWorker<JScrollPane,Void>{
+        public class guiworker extends SwingWorker<Boolean,Void>{
                 	JFrame processframe = new JFrame("Please Wait....");
                         guiworker(){
                         	Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
@@ -535,21 +535,27 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                         	processframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
                 	}
      
-		protected JScrollPane doInBackground() throws Exception {
+		protected  Boolean doInBackground() throws Exception {
 				JScrollPane courselist = new JScrollPane();
-				InstructorCSPanel inscspanel = new InstructorCSPanel();
-				courselist= inscspanel.showLecture(ClientObject.getSessionList(ClientObject.getInstCourseList(),ClientObject.getIndexServerName()));
-				return courselist;
-                	}
-
-	 	protected void done() {
-                        	processframe.dispose();
-                                insCSPanel.getmainPanel().remove(1);
+				//InstructorCSPanel inscspanel = new InstructorCSPanel();
+				courselist= insCSPanel.showLecture(ClientObject.getSessionList(ClientObject.getInstCourseList(),ClientObject.getIndexServerName()));
+				insCSPanel.getmainPanel().remove(1);
 		        	try{
-                        		insCSPanel.getmainPanel().add(get(),BorderLayout.CENTER);
+                        		insCSPanel.getmainPanel().add(courselist,BorderLayout.CENTER);
 				}catch(Exception e) { System.out.println(e.getMessage());}
                 	        insCSPanel.getmainPanel().revalidate();
                         	insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
+				return true;
+                	}
+
+	 	protected void done(){
+	 			boolean retval = false;
+	 			try{
+	 				 retval = get();
+	 			}catch(Exception e) { System.out.println(e.getMessage());}
+	 			if(retval)
+                        	processframe.dispose();
+                                
      			}
 	}
 
