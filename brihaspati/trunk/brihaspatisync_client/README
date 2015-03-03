@@ -2,4 +2,8 @@ To compile the code and creating the jar for use
 
 $ ant sign
 
+Preferably use
 
+$ant allsign
+
+for signing all the jars.
