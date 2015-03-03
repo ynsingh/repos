@@ -5,10 +5,15 @@
 
 package org.smvdu.payroll.beans;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import org.smvdu.payroll.beans.setup.Department;
 import org.smvdu.payroll.beans.setup.Designation;
 import java.util.ArrayList;
@@ -18,11 +23,16 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.richfaces.event.UploadEvent;
+import org.richfaces.model.UploadItem;
 import org.smvdu.payroll.api.BankDetails.BankDetailsSearch;
 import org.smvdu.payroll.api.BankDetails.BankProfileDetails;
 import org.smvdu.payroll.api.report.LeavingDate;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.EmployeeDB;
+import org.smvdu.payroll.beans.upload.UploadFile;
 import org.smvdu.payroll.beans.validator.DateValidation;
 import org.smvdu.payroll.beans.validator.EmployeeNotification;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
@@ -61,7 +71,7 @@ import org.smvdu.payroll.user.ActiveProfile;
  *
  *
  *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
- * Modified Date: 4 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+ *  Modified Date: 4 AUG 2014, 17 Jan 2015 IITK  IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
  *
  */
 public class Employee implements Serializable {
@@ -100,12 +110,12 @@ public class Employee implements Serializable {
     private String code;
     private String genderName;
     private boolean selected;
-    private String title;
+    private String title="Mr";
     boolean ststus;
-    private String qualification;
-    private int experience;
-    private String address;
-    private int yearOfPassing;
+    private String qualification="";
+    private int experience=0;
+    private String address="";
+    private int yearOfPassing=0;
     private boolean bankStatus;
     private boolean userNameStatus;
     private String notification = new String();
@@ -125,21 +135,21 @@ public class Employee implements Serializable {
      private int genDetailCode;
 
     public int getGenDetailCode() {
-        System.out.println("Code : "+genDetailCode);
+        //System.out.println("Code : "+genDetailCode);
         return genDetailCode;
     }
 
     public void setGenDetailCode(int genDetailCode) {
-        System.out.println("Code : "+genDetailCode);
+        //System.out.println("Code : "+genDetailCode);
         this.genDetailCode = genDetailCode;
     }
     public String getSalaryMessage() {
-        System.out.println("DAta Should Be Write Here :dsd "+salaryMessage);
+        //System.out.println("DAta Should Be Write Here :dsd "+salaryMessage);
         return salaryMessage;
     }
 
     public void setSalaryMessage(String salaryMessage) {
-        System.out.println("DAta Should Be Write Here seema: "+salaryMessage);
+        //System.out.println("DAta Should Be Write Here seema: "+salaryMessage);
         this.salaryMessage = salaryMessage;
     }
     public String getNotification() {
@@ -197,7 +207,7 @@ public class Employee implements Serializable {
     public void setYearOfPassing(int yearOfPassing) {
         this.yearOfPassing = yearOfPassing;
     }
-    private String previousEmployer;
+    private String previousEmployer="";
 
     public String getPreviousEmployer() {
         return previousEmployer;
@@ -222,7 +232,7 @@ public class Employee implements Serializable {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
-    private String fatherName;
+    private String fatherName="";
 
     public String getFatherName() {
         return fatherName;
@@ -309,6 +319,7 @@ public class Employee implements Serializable {
     }
 
     public boolean isMale() {
+        //System.out.println("male==="+   male);
         return male;
     }
 
@@ -331,16 +342,16 @@ public class Employee implements Serializable {
     private String dob;
     private String doj;
     private int empId;
-    private String bankAccNo;
-    private String pfAccNo;
-    private String panNo;
+    private String bankAccNo="";
+    private String pfAccNo="";
+    private String panNo="";
     private String message;
     private Department department;
     private Designation designation;
     private String statusI;
     private boolean event;
     private String buttonValue;
-    private String bankName = new String();
+    private String bankName = new String("");
     private String bankIFSCcode = new String();
     private String bankBranchName = new String();
     private String dateOfResig = new String();
@@ -486,20 +497,220 @@ public class Employee implements Serializable {
         }
     }
 
-    public void updateProfile() {
-        //new EmployeeDB().bankDetails(this);
-        boolean dateVali = new DateValidation().dateOfBirthValidation(this.getDob(), this.getDoj(), this.getDateOfResig());
-        if (dateVali == true) {
-            boolean b = new EmployeeDB().update(this);
-            if (b) {
-                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Details Updated", ""));
+    public void updateProfile(){
+        try{
+            //new EmployeeDB().bankDetails(this);
+            FacesContext fc=FacesContext.getCurrentInstance();
+            if(this.getEmail().matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter EmailID In Correct Format ");
+                this.setStatusI("/img/InActive.png");
+                fc.addMessage("", message);
+                return;
             }
-        } else {
-            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "(Check: DateOfBirth,DateOfJoining,DateOfResignation and Diffrence Between DateOfBirth And DateOfJoining Should Be 23 Year ) ", ""));
+            if(this.getName().matches("^[a-zA-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid First Name");
+                fc.addMessage("", message);
+                return;
+            }
+            if(this.getFatherName().matches("^[a-zA-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid Father Name");
+                fc.addMessage("", message);
+                return;
+            }
+            if(this.getPhone().matches(".*[0-9]{10}.*") == false || this.getPhone().length()!=10)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid Phone Number");
+                fc.addMessage("", message);
+                return;
+            }
+            if(this.getBankAccNo().trim().matches(".*[0-9].*") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid Bank Acc. Number");
+                fc.addMessage("", message);
+                return;
+            }
+        
+            if((this.getPanNo().matches("[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}") == false)&&(!(this.getPanNo().equals(""))))
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid pan number");
+                fc.addMessage("", message);
+                return;
+            }
+            if(this.getGpfNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid GPF Number");
+                fc.addMessage("", message);
+                return;
+            }
+            if(this.getDpsNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid DPS Number");
+                fc.addMessage("", message);
+                return;
+            }
+            if(this.getEcrNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid ECR Number");
+                fc.addMessage("", message);
+                return;
+            }
+            
+            if(this.getEcrPageNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid Page No of ECR Book");
+                fc.addMessage("", message);
+                return;
+            }
+            if(this.getPostingId().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid Posting Id");
+                fc.addMessage("", message);
+                return;
+            }
+            if(this.getHouseType().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid House Type");
+                fc.addMessage("", message);
+                return;
+            }
+
+            if(this.getHouseNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid House Number");
+                fc.addMessage("", message);
+                return;
+            }
+
+            if(this.getPolicyNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid House Number");
+                fc.addMessage("", message);
+                return;
+            }
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date1=new java.util.Date();
+            java.util.Date date2=new java.util.Date();
+
+            date1=dateFormat.parse(this.getDoj());
+            date2=dateFormat.parse(this.getDob());
+
+            if (date1.compareTo(date2) <=0)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Date of Joing should be graeter than Date of Birth.");
+                fc.addMessage("", message);
+                return;
+            }
+            //System.out.println("doa==="+this.getDoAcceptance()+"dom=="+this.getDoMaturity());
+            if((!(this.getDoMaturity().equals("")))||(!(this.getDoAcceptance().equals(""))))
+            {
+                //System.out.println("doa=222=="+this.getDoAcceptance()+"dom=="+this.getDoMaturity());
+                date1=dateFormat.parse(this.getDoMaturity());
+                date2=dateFormat.parse(this.getDoAcceptance());
+
+                if(date1.compareTo(date2) <= 0)
+                {
+                    FacesMessage message = new FacesMessage(); 
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Date of Maturity should be greater than date of Acceptance.");
+                    fc.addMessage("", message);
+                    return;
+                }
+            }
+            if((!(this.getDoNextIncrement().equals("")))&&(!(this.getDoj().equals(""))))
+            {
+                date1=dateFormat.parse(this.getDoNextIncrement());
+                date2=dateFormat.parse(this.getDoj());
+
+                if (date1.compareTo(date2)<=0)
+                {
+                    FacesMessage message = new FacesMessage();
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Date of Next Increment should be greater than date of Joining.");
+                    fc.addMessage("", message);
+                    return;
+                }
+            }
+            if((!(this.getConfirmationDate().equals("")))||(!(this.getProbationDate().equals("")))){
+                date1=dateFormat.parse(this.getConfirmationDate());
+                date2=dateFormat.parse(this.getProbationDate());
+                if (date1.compareTo(date2) <=0)
+                {
+                    FacesMessage message = new FacesMessage();
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Confirmation date  is greater than Probation date.");
+                    fc.addMessage("", message);
+                    return;
+                }
+            }
+            if((!(this.getExtentionDate().equals("")))&&(!(this.getDoj().equals("")))){
+                date1=dateFormat.parse(this.getExtentionDate());
+                date2=dateFormat.parse(this.getDoj());
+                if (date1.compareTo(date2) <=0)
+                {
+                    FacesMessage message = new FacesMessage();
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Extention Date  is greater than  Date of joining.");
+                    fc.addMessage("", message);
+                    return;
+                }
+            }
+           
+            boolean dateVali = new DateValidation().dateOfBirthValidation(this.getDob(), this.getDoj(), this.getDateOfResig());
+            if (dateVali == true) {
+                boolean b = new EmployeeDB().update(this);
+                boolean c= new EmployeeDB().updateEmpSupport(this);
+                //System.out.println("update====b="+b+"\nc======"+c);
+                if (b || c) {
+                    FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Details Updated sucessfully", ""));
+                }
+                else
+                {
+                    FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Details not Updated", ""));
+                }    
+            }
+            else {
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "(Check: DateOfBirth,DateOfJoining,DateOfResignation and Diffrence Between DateOfBirth And DateOfJoining Should Be 23 Year ) ", ""));
+            }
         }
-    }
-
-
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }     
+    
     public void setBankAccNo(String bankAccNo) {
         this.bankAccNo = bankAccNo;
     }
@@ -643,67 +854,94 @@ public class Employee implements Serializable {
             this.setMale(false);
         }
     }
-
     
-    public String loadProfile() {
-
-        //System.err.println("Loading Profile for code :" + code);
+    /**
+     * This method load the employee data
+     * @param empcode
+     * @param orgcode
+     * @see EmployeeDB()
+     * @return String 
+     */
+     public String loadProfile(){
         Employee empz = new EmployeeDB().loadProfile(code.trim(), orgCode);
+        Employee empsupp = new EmployeeDB().loadEmpsupportProfile(code.trim());
         if (empz == null) {
+            addEmpMess();
         }
-        if (empz.getStstus() == false) {
-            this.setStstus(false);
-            this.setStatusI("/img/InActive.png");
-        } else {
-            this.setStstus(true);
-            //System.out.println("DAta Should Be Write Herekjhkgh : " + empz.getStstus());
-            this.setStatusI("/img/Active.png");
-        }
-        if (empz == null) {
-            empz = getDefault();
-        }
-        bankName = new String();
-        bankBranchName = new String();
-        bankIFSCcode = new String();
-        //System.err.println("Name : " + empz.name);
-        type = empz.type;
-        //System.err.println("Type : " + type);
-        name = empz.name;
-        setCode(code);
-        dept = empz.dept;
-        //System.err.println("Department : " + dept);
-        desig = empz.desig;
-        dob = empz.dob;
-        doj = empz.doj;
-        phone = empz.phone;
-        bankAccNo = empz.bankAccNo;
-        pfAccNo = empz.pfAccNo;
-        email = empz.email;
-        currentBasic = empz.currentBasic;
-        panNo = empz.panNo;
-        fatherName = empz.fatherName;
-        male = empz.male;
-        qualification = empz.qualification;
-        experience = empz.experience;
-        address = empz.address;
-        previousEmployer = empz.previousEmployer;
-        yearOfPassing = empz.yearOfPassing;
-        ststus = empz.ststus;
-        empNotDay = empz.empNotDay;
-        notification = new EmployeeNotification().resignationNotification(empz.doj, empz.dateOfResig);
-        //System.out.println("Noti "+notification);
-        empLeaDate = new LeavingDate().leavingDate(empz.dateOfResig,empz.empNotDay);
-        bankIFSCcode = empz.bankIFSCcode.trim();
-        dateOfResig = empz.dateOfResig;
-        genDetails = empz.genDetails;
-        //seniorCitizen = empz.seniorCitizen;
-        //empLeaDate = empz.empLeaDate;
-        //System.out.println("Bank l : "+empz.bankIFSCcode);
+        else{
+            //System.err.println("Load Profile for code empz===:" +empz);
+            if (empz.getStstus() == false) {
+                this.setStstus(false);
+                this.setStatusI("/img/InActive.png");
+            }
+            else {
+                this.setStstus(true);
+                //System.out.println("DAta Should Be Write Herekjhkgh : " + empz.getStstus());
+                this.setStatusI("/img/Active.png");
+            }
+            bankName = new String();
+            bankBranchName = new String();
+            bankIFSCcode = new String();
+            type = empz.type;
+            name = empz.name;
+            setCode(code);
+            dept = empz.dept;
+            desig = empz.desig;
+            dob = empz.dob;
+            doj = empz.doj;
+            phone = empz.phone;
+            bankAccNo = empz.bankAccNo;
+            pfAccNo = empz.pfAccNo;
+            email = empz.email;
+            currentBasic = empz.currentBasic;
+            panNo = empz.panNo;
+            fatherName = empz.fatherName;
+            male = empz.male;
+            qualification = empz.qualification;
+            experience = empz.experience;
+            address = empz.address;
+            previousEmployer = empz.previousEmployer;
+            yearOfPassing = empz.yearOfPassing;
+            ststus = empz.ststus;
+            empNotDay = empz.empNotDay;
+            notification = new EmployeeNotification().resignationNotification(empz.doj, empz.dateOfResig);
+            //System.out.println("Noti "+notification);
+            empLeaDate = new LeavingDate().leavingDate(empz.dateOfResig,empz.empNotDay);
+            bankIFSCcode = empz.bankIFSCcode.trim();
+            dateOfResig = empz.dateOfResig;
+            genDetails = empz.genDetails;
+            /* employee (support table data) support data */       
+            entitledCategory = empsupp.entitledCategory.trim();
+            employeeStatus = empsupp.employeeStatus;
+            saldept = empsupp.saldept;
+            gpfNo= empsupp.gpfNo;
+            dpsNo=empsupp.dpsNo;
+            npsNo=empsupp.npsNo;
+            workingType = empsupp.workingType;
+            houseType = empsupp.houseType;
+            houseNo = empsupp.houseNo;
+            ecrNo = empsupp.ecrNo;
+            ecrPageNo = empsupp.ecrPageNo;
+            joindept = empsupp.joindept;
+            postingId = empsupp.postingId;
+            policyNo = empsupp.policyNo;
+            doAcceptance = empsupp.doAcceptance;
+            doMaturity = empsupp.doMaturity;
+            doNextIncrement = empsupp.doNextIncrement;
+            probationDate = empsupp.probationDate;
+            confirmationDate = empsupp.confirmationDate;
+            extentionDate = empsupp.extentionDate;
+            joindesig = empsupp.joindesig;
+            //seniorCitizen = empz.seniorCitizen;
+            //empLeaDate = empz.empLeaDate;
+            //System.out.println("Bank l : "+empz.bankIFSCcode);
+        }  
         return "EditEmployeeProfile";
         
     }
+     
     private SelectItem[] empIdentity;
-
+    
     public SelectItem[] getEmpIdentity() {
         ArrayList<Employee> loadProfiles = new EmployeeDB().loadProfiles("");
         Employee em = null;
@@ -730,57 +968,183 @@ public class Employee implements Serializable {
             String statusMessage = null;
             Severity s = null;
             FacesContext fc = FacesContext.getCurrentInstance();
+            FacesMessage message = new FacesMessage();
             if (new EmployeeDB().codeExist(code)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Code already exist(" + code + ")", "(" + code + ")"));
                 return;
             }
             if (this.getEmail().matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$") == false) {
 
-                FacesMessage message = new FacesMessage();
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 message.setSummary("Plz Enter EmailID In Correct Format ");
-                //message.setDetail("First Name Must Be At Least Three Charecter ");
                 fc.addMessage("", message);
                 return;
             }
             if(this.getName().matches("^[a-zA-Z\\s]*$") == false) {
-                FacesMessage message = new FacesMessage();
+                
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 message.setSummary("Plz Enter Valid First Name");
-                //message.setDetail("First Name Must Be At Least Three Charecter ");
                 fc.addMessage("", message);
                 return;
             }
             if(this.getFatherName().matches("^[a-zA-Z\\s]*$") == false) {
-                FacesMessage message = new FacesMessage();
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 message.setSummary("Plz Enter Valid Father Name");
-                //message.setDetail("First Name Must Be At Least Three Charecter ");
                 fc.addMessage("", message);
                 return;
             }
             if(this.getPhone().matches(".*[0-9]{10}.*") == false || this.getPhone().length() != 10) {
-                FacesMessage message = new FacesMessage();
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 message.setSummary("Plz Enter Valid Phone Number");
-                //message.setDetail("First Name Must Be At Least Three Charecter ");
                 fc.addMessage("", message);
                 return;
             }
             String emc = ""+this.getCode();
             if (emc.matches("^[a-z0-9A-Z\\s]*$") == false){
-               FacesMessage message = new FacesMessage();
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 message.setSummary("Plz Enter Valid Employee Code");
-                //message.setDetail("First Name Must Be At Least Three Charecter ");
                 fc.addMessage("", message);
                 return;
             }
-            Exception ee = new EmployeeDB().save(this);
-            if (ee == null) {
+             //------------------------checks for new Add fields---------------------------------
+            if((this.getPanNo().matches("[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}") == false)&&(!(this.getPanNo().equals(""))))
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid pan number");
+                fc.addMessage("", message);
+               return;
+            }
+            if(this.getGpfNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid GPF Number");
+                fc.addMessage("", message);
+               return;
+            }
+            if(this.getDpsNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid DPS Number");
+                fc.addMessage("", message);
+               return;
+            }
+            if(this.getEcrNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid ECR Number");
+                fc.addMessage("", message);
+               return;
+            }
+            
+            if(this.getEcrPageNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid Page No of ECR Book");
+                fc.addMessage("", message);
+               return;
+            }
+            if(this.getPostingId().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid Posting Id");
+                fc.addMessage("", message);
+               return;
+            }
+            if(this.getHouseType().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid House Type");
+                fc.addMessage("", message);
+               return;
+            }
+
+            if(this.getHouseNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid House Number");
+                fc.addMessage("", message);
+               return;
+            }
+
+            if(this.getPolicyNo().matches("^[a-z0-9A-Z\\s]*$") == false)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter valid House Number");
+                fc.addMessage("", message);
+               return;
+            }
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date1=new java.util.Date();
+            java.util.Date date2=new java.util.Date();
+
+            date1=dateFormat.parse(this.getDoj());
+            date2=dateFormat.parse(this.getDob());
+
+            if (date1.compareTo(date2) <=0)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Date of Joing should be graeter than Date of Birth.");
+                fc.addMessage("", message);
+                return;
+            }
+            //System.out.println("doa==="+this.getDoAcceptance()+"dom=="+this.getDoMaturity());
+            if((!(this.getDoMaturity().equals("")))||(!(this.getDoAcceptance().equals(""))))
+            {
+                //System.out.println("doa=222=="+this.getDoAcceptance()+"dom=="+this.getDoMaturity());
+                date1=dateFormat.parse(this.getDoMaturity());
+                date2=dateFormat.parse(this.getDoAcceptance());
+
+                if(date1.compareTo(date2) <= 0)
+                {
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Date of Maturity should be greater than date of Acceptance.");
+                    fc.addMessage("", message);
+                    return;
+                }
+            }
+            if((!(this.getDoNextIncrement().equals("")))&&(!(this.getDoj().equals(""))))
+            {
+                date1=dateFormat.parse(this.getDoNextIncrement());
+                date2=dateFormat.parse(this.getDoj());
+
+                if (date1.compareTo(date2)<=0)
+                {
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Date of Next Increment should be greater than date of Joining.");
+                    fc.addMessage("", message);
+                    return;
+                }
+            }
+            if((!(this.getConfirmationDate().equals("")))||(!(this.getProbationDate().equals("")))){
+                date1=dateFormat.parse(this.getConfirmationDate());
+                date2=dateFormat.parse(this.getProbationDate());
+                if (date1.compareTo(date2) <=0)
+                {
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Confirmation date  is greater than Probation date.");
+                    fc.addMessage("", message);
+                    return;
+                }
+            }
+            if((!(this.getExtentionDate().equals("")))&&(!(this.getDoj().equals("")))){
+                date1=dateFormat.parse(this.getExtentionDate());
+                date2=dateFormat.parse(this.getDoj());
+                if (date1.compareTo(date2) <=0)
+                {
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Extention Date  is greater than  Date of joining.");
+                    fc.addMessage("", message);
+                    return;
+                }
+            }
+            //------------------End------checks for new Add fields---------------------------------
+            //Exception ee = new EmployeeDB().save(this);
+            boolean b=new EmployeeDB().InsertAllEmpData(this);
+            if (b == true) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Data Saved (" + code + ")", "Employee Data Saved (" + code + ")"));
             } else {
-                throw ee;
+                //throw ee;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Profile Not Saved (" + code + ")",""));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -859,7 +1223,7 @@ public class Employee implements Serializable {
     public void delete() {
         String s = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("delid");
         int pid = Integer.parseInt(s);
-        System.err.println("CUT Command " + pid);
+        //System.err.println("CUT Command " + pid);
         new EmployeeDB().delete(pid);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected Employee Record Deleted", ""));
     }
@@ -897,12 +1261,12 @@ public class Employee implements Serializable {
     public String bifsc = new String();
 
     public String getBifsc() {
-        System.out.println("DAta Should Be Write Here klop cv: " + bifsc);
+        //System.out.println("DAta Should Be Write Here klop cv: " + bifsc);
         return bifsc;
     }
 
     public void setBifsc(String bifsc) {
-        System.out.println("DAta Should Be Write Here klop : " + bifsc);
+        //System.out.println("DAta Should Be Write Here klop : " + bifsc);
         this.bifsc = bifsc;
     }
 
@@ -1023,7 +1387,6 @@ public class Employee implements Serializable {
     }
     
     // family record-----------------
-    
     public void saveFamilyRecord() {
         try {
             //System.out.println("method====save family record=");
@@ -1058,12 +1421,12 @@ public class Employee implements Serializable {
             message = " Family Record Not Saved :" + code + " Try Again";
         }
     }
+    
     private ArrayList<Employee> allfamilyrecord;
-    
-    
+        
     public void loadfamilyDetail() {
         try{
-        
+            
             allfamilyrecord = new EmployeeDB().loadfamilyrecord(code);
             //System.err.println("Loading Profile for code :" + code+"\nallfamilyrecord==="+allfamilyrecord);
             if((allfamilyrecord.isEmpty()) && (!code.equals("null"))){
@@ -1093,10 +1456,6 @@ public class Employee implements Serializable {
         
     }
   
-    
-      
-   
-      
     //Employee service history
     
     private UIData dataGrid1;
@@ -1111,8 +1470,7 @@ public class Employee implements Serializable {
     private String deputationdept;
     private String areatype;
     
-   
-     public String getTransactiontype() {
+    public String getTransactiontype() {
         return transactiontype;
     }
 
@@ -1261,24 +1619,21 @@ public class Employee implements Serializable {
         }
     }
     
-    
-     public ArrayList<Employee>getAllServiceRecord(){
+    public ArrayList<Employee>getAllServiceRecord(){
         
         allservicerecord = new EmployeeDB().loadEmpHitory(code);
         dataGrid.setValue(allservicerecord);  
         //System.out.println("\n inget  record in line1300=code=dataGrid1=="+dataGrid);
         return allservicerecord;
        
-   }
-   
-    
+    }
+        
     public void setAllServiceRecord(ArrayList<Employee> allservicerecord) {
         this.allservicerecord = allservicerecord;
         
     }
   
     public void deleteRecord(){
-        
         try
         {
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -1304,11 +1659,8 @@ public class Employee implements Serializable {
         }
     }
     
-     
     public void updateRecord(){
-        
-        try
-        {
+        try{
             FacesContext fc = FacesContext.getCurrentInstance();
             FacesMessage message = new FacesMessage();
             //System.out.println("\n in line 1139==getFamilyRecord=="+editedRecord);
@@ -1327,20 +1679,15 @@ public class Employee implements Serializable {
             ex.printStackTrace();
         }
     }
-    
-    
+        
     public void deleteServiceHistory(){
-        try
-        {
-            
+        try{
             FacesContext fc = FacesContext.getCurrentInstance();
-            
             FacesMessage message = new FacesMessage();
             ArrayList<Employee> servicerecord = (ArrayList<Employee>) dataGrid.getValue();
             Employee emp=servicerecord.get(currentRecordindex);
             int currentIndex=emp.getRecordId();
-            //System.out.println("\n in line =sdghsdhellooo recordEntry=="+servicerecord);
-            //System.out.println("\n in line =sdghsdhellooo recordEntry=="+emp+"\nindexhello-----===="+editedRecord.getRecordId());
+            //System.out.println("\nindex-----===="+editedRecord.getRecordId());
             Exception ex = new EmployeeDB().DeleteServicehistoryRecord(currentIndex, servicerecord); 
             if(ex == null )
             {
@@ -1357,8 +1704,7 @@ public class Employee implements Serializable {
     }
       
     public void updateServiceRecord(){
-        try
-        {
+        try{
             FacesContext fc = FacesContext.getCurrentInstance();
             FacesMessage message = new FacesMessage();
             Exception ex = new EmployeeDB().UpdateServicehistoryRecord(editedRecord); 
@@ -1368,15 +1714,341 @@ public class Employee implements Serializable {
                 message.setSummary(" Sevice Record Updated Successfully");
                 fc.addMessage("", message);
             }
-               
-            
+     
         }//try
         catch(Exception ex)
         {
             ex.printStackTrace();
         }
     }
-     
-    //Employee service history
+       
+    //==================start== Employee support data (add some new field according to nysa).
+
+    private UIData dataGrid2;
+    private String entitledCategory;
+    private String employeeStatus;
+    private String gpfNo="";
+    private String dpsNo="";
+    private String npsNo="";
+    private String workingType;
+    private String houseType="";
+    private String houseNo="";
+    private String ecrNo="";
+    private String ecrPageNo="";
+    private String postingId="";
+    private String policyNo="";
+    private String doAcceptance="";
+    private String doMaturity="";
+    private String doNextIncrement="";
+    private String probationDate="";
+    private String confirmationDate="";
+    private String extentionDate="";
     
-}
+    public UIData getDataGrid2() {
+        return dataGrid2;
+    }
+
+    public void setDataGrid2(UIData dataGrid2) {
+        this.dataGrid = dataGrid2;
+    }
+
+     public String getEntitledCategory() {
+        return entitledCategory;
+    }
+
+    public void setEntitledCategory(String entitledCategory) {
+        this.entitledCategory = entitledCategory;
+    }
+     public String getEmployeeStatus() {
+        return employeeStatus;
+    }
+
+    public void setEmployeeStatus(String employeeStatus) {
+        this.employeeStatus = employeeStatus;
+    }
+     public String getGpfNo() {
+        return gpfNo;
+    }
+
+    public void setGpfNo(String gpfNo) {
+        this.gpfNo = gpfNo;
+    }
+
+    public String getDpsNo() {
+        return dpsNo;
+    }
+
+    public void setDpsNo(String dpsNo) {
+        this.dpsNo = dpsNo;
+    }
+
+    public String getNpsNo() {
+        return npsNo;
+    }
+    public void setNpsNo(String npsNo) {
+        this.npsNo = npsNo;
+    }
+
+    public String getWorkingType() {
+        return workingType;
+    }
+
+    public void setWorkingType(String workingType) {
+        this.workingType = workingType;
+    }
+
+    public String getHouseType() {
+        return houseType;
+    }
+
+    public void setHouseType(String houseType) {
+        this.houseType = houseType;
+    }
+
+    public String getHouseNo() {
+        return houseNo;
+    }
+
+    public void setHouseNo(String houseNo) {
+        this.houseNo = houseNo;
+    }
+
+    public String getEcrNo() {
+        return ecrNo;
+    }
+
+    public void setEcrNo(String ecrNo) {
+        this.ecrNo = ecrNo;
+    }
+
+    public String getEcrPageNo() {
+        return ecrPageNo;
+    }
+ public void setEcrPageNo(String ecrPageNo) {
+        this.ecrPageNo = ecrPageNo;
+    }
+
+    public String getPostingId() {
+        return postingId;
+    }
+
+    public void setPostingId(String postingId) {
+        this.postingId = postingId;
+    }
+
+    public String getPolicyNo() {
+        return policyNo;
+    }
+
+    public void setPolicyNo(String policyNo) {
+        this.policyNo = policyNo;
+    }
+
+    public String getDoAcceptance() {
+        return doAcceptance;
+    }
+
+    public void setDoAcceptance(String doAcceptance) {
+        this.doAcceptance = doAcceptance;
+    }
+
+    public String getDoMaturity() {
+        return doMaturity;
+    }
+
+    public void setDoMaturity(String doMaturity) {
+        this.doMaturity = doMaturity;
+    }
+
+    public String getDoNextIncrement() {
+        return doNextIncrement;
+    }
+    public void setDoNextIncrement(String doNextIncrement) {
+        this.doNextIncrement = doNextIncrement;
+    }
+
+    public String getProbationDate() {
+        return probationDate;
+    }
+
+    public void setProbationDate(String probationDate) {
+        this.probationDate = probationDate;
+    }
+
+    public String getConfirmationDate() {
+        return confirmationDate;
+    }
+
+    public void setConfirmationDate(String confirmationDate) {
+        this.confirmationDate = confirmationDate;
+    }
+
+    public String getExtentionDate() {
+        return extentionDate;
+    }
+
+    public void setExtentionDate(String extentionDate) {
+        this.extentionDate = extentionDate;
+    }
+    private int saldept;
+    public int getSaldept() {
+        return saldept;
+    }
+    public void setSaldept(int saldept) {
+
+        this.saldept = saldept;
+    }
+    private int joindept;
+    public int getJoindept() {
+        return joindept;
+    }
+    public void setJoindept(int joindept) {
+
+        this.joindept = joindept;
+    }
+    
+    private int joindesig;
+    public int getJoindesig() {
+        return joindesig;
+    }
+     
+    public void setJoindesig(int joindesig) {
+       this.joindesig = joindesig;
+    }
+    
+    private String saldeptdcode;
+    public String getSaldeptdcode() {
+        return saldeptdcode;
+    }
+    public void setSaldeptdcode(String saldeptdcode) {
+
+        this.saldeptdcode = saldeptdcode;
+    }
+    private String joindeptdcode;
+    public String getJoindeptdcode() {
+        return joindeptdcode;
+    }
+    public void setJoindeptdcode(String joindeptdcode) {
+
+        this.joindeptdcode = joindeptdcode;
+    }
+    
+    private String joindesigdcode;
+    public String getJoindesigdcode() {
+        return joindesigdcode;
+    }
+
+    public void setJoindesigdcode(String joindesigdcode) {
+
+        this.joindesigdcode = joindesigdcode;
+    }
+    
+    
+    private String dcode;
+    public String getDeptdcode(){
+        return dcode;
+    }
+
+    public void setDeptdcode(String dcode) {
+
+        this.dcode = dcode;
+    }
+    
+    private String ddcode;
+    public String getDesigdcode(){
+        return ddcode;
+    }
+
+    public void setDesigdcode(String ddcode) {
+
+        this.ddcode = ddcode;
+    }
+
+    private String tcode;
+    public String getEmptcode(){
+        return tcode;
+    }
+
+    public void setEmptcode(String tcode) {
+
+        this.tcode = tcode;
+    }
+    
+    private String sgcode;
+    public String getSGcode(){
+        return sgcode;
+    }
+
+    public void setSGcode(String sgcode) {
+
+        this.sgcode = sgcode;
+    }
+    
+    //==================end=== Employee support data (add some new field according to nysa).
+
+    //upload file --------------------//
+    
+    private UploadFile files=null ;
+    public void listener(UploadEvent event) throws Exception{
+        UploadItem item = event.getUploadItem();
+        UploadFile file= new UploadFile();
+        file.setLength(item.getData().length);
+        file.setName(item.getFileName());
+        file.setData(item.getData());
+        this.files=file;
+        String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
+        //System.out.println("path=in employee==="+path);
+        File ff=new File(path);
+        if(!ff.exists())
+            ff.mkdirs();
+        ff=new File(path+"/"+file.getName());
+        FileOutputStream stream=new FileOutputStream(ff,true);
+        stream.write(file.getData());
+        stream.close();
+        saveFile();
+        ff.delete();
+
+    }
+    
+    public void saveFile(){
+        try{
+            
+            FacesContext fc = FacesContext.getCurrentInstance();
+                   
+            boolean b=new EmployeeDB().loadData(files);
+            // System.out.println("\n boolean b in save file===="+b);
+            if(b==true)
+            {
+                //System.out.println("\n boolean b in save file==true case=="+b);
+           
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee registration file uploaded successfully ", ""));
+                //System.out.println("\n boolean b in save below message file==true case=="+b);
+            }
+            else
+            {
+                //System.out.println("\n boolean b in save file=false case==="+b);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Code already exist",""));
+            }   
+
+        }   
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+
+        }
+        
+    }
+    
+    public void addEmpMess(){
+        try{
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Code does not exist",""));
+            return;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+
+        }
+    }
+          
+}   

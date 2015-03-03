@@ -42,11 +42,8 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
-
     <body>
-
         <f:view>
-
             <rich:modalPanel style="height:300px;bgcolor:blue;" id="simplesearch">
                 <h:form id="ssearch">
                     <rich:panel header="Search Options">
@@ -82,6 +79,7 @@
             <rich:panel  header="Existing Employees">
                 <h:panelGrid columns="3">
                     <h:commandButton onclick="Richfaces.showModalPanel('simplesearch');" value="Filter"/>
+                    <h:commandButton   onclick="javascript:window.print();" value="Print"/>
                     <rich:messages>
                         <f:facet name="infoMarker">
                             <h:graphicImage url="/img/success.png"/>

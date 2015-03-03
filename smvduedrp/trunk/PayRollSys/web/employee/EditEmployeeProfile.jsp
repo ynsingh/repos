@@ -1,8 +1,9 @@
 <%--
     Document        : AddUser.jsp
     Created on      : 3:02 AM Friday, October 01, 2010
-    Last Modified   : 4:03 AM Saturday, October 02, 2010
-    Author          :  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+    Last Modified   : 4:03 AM Saturday, October 02, 2010, February 24, 2015
+    Author          :
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -29,7 +30,7 @@
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
 *
 --%>
 
@@ -51,7 +52,7 @@
         <link rel="stylesheet" type="text/css" href="css/table.css"/>
         <link rel="stylesheet" type="text/css"  href="css/PanelWidth.css"/>
         <link rel="stylesheet" type="text/css" href="../css/richpanel.css"/>
-        <link type="text/css" rel="stylesheet" href="../bankDetails.css"/>
+       <%-- <link type="text/css" rel="stylesheet" href="../bankDetails.css"/>--%>
         <script type="text/javascript">
 
             function activate()
@@ -76,8 +77,8 @@
     <body class="subpage"  id="">
         <div class="container_form">
             <f:view>
-                <hr class="line" />
-                <rich:panel style="width:auto;float:left;" header="Edit Employee Profile" id="pnl">
+             <%-- <hr class="line" />--%>
+                <rich:panel style="width:auto;" header="Edit Employee Profile" id="pnl">
                     <h:panelGrid columns="1">
                         <h:column>
                             <h:form>
@@ -109,7 +110,7 @@
                                                         </h:column>
                                                     </rich:suggestionbox>
                                                     <rich:toolTip value="Enter few characters of name and choose from List" for="empCode"/>
-                                                    <a4j:commandButton id="ldbtn" styleClass="panel" action="#{EmployeeBean.loadProfile}" value="Load Profile" reRender="si"/>
+                                                    <a4j:commandButton id="ldbtn" styleClass="panel" action="#{EmployeeBean.loadProfile}" value="Load Profile" />
                                                     <h:graphicImage value="#{EmployeeBean.statusI}"></h:graphicImage>
                                                     <h:outputText value="#{EmployeeBean.genDetails}"/>
                                                 </h:panelGrid>
@@ -117,7 +118,7 @@
                                         </h:panelGrid>
                                     </rich:panel>
                                 </h:panelGroup>
-                                <h:panelGrid columns="2">
+                                <h:panelGrid columns="3">
                                     <h:panelGrid columns="3">
                                         <h:outputText value="Title"/>
                                         <h:selectOneMenu value="#{EmployeeBean.title}">
@@ -126,17 +127,18 @@
                                             <f:selectItem itemLabel="Mr." itemValue="Mr."/>
                                             <f:selectItem itemLabel="Mrs." itemValue="Mrs."/>
                                         </h:selectOneMenu>
-                                        <h:message styleClass="error" for="empCode" tooltip="true"/>
-                                        <h:outputText styleClass="Label" value="Employee Name"/>
+                                        <h:message styleClass="error" for="Title" tooltip=""/>
+                                        
+                                        <h:column><h:outputText styleClass="Label" value="Employee Name"/>
+                                        <h:outputText value="*" style="color:red;"/></h:column>
                                         <h:inputText id="empName" styleClass="fields" value="#{EmployeeBean.name}">
                                             <h:message for="empName" styleClass="error"/>
                                         </h:inputText>
                                         <h:outputText value=""/>
                                         <h:outputText styleClass="Label" value="Father's Name"/>
-                                        <h:inputText id="empfName"
-                                                     styleClass="fields" value="#{EmployeeBean.fatherName}">
+                                        <h:inputText id="empfName" styleClass="fields" value="#{EmployeeBean.fatherName}">
                                             <f:validateLength  maximum="70"/>
-                                            <h:message styleClass="error" for="empfName" tooltip="Enter Employee's Name."/>
+                                            <h:message styleClass="error" for="empfName" tooltip="Enter Father's Name."/>
                                         </h:inputText>
                                         <h:outputText value=""/>
                                         <h:outputText styleClass="Label" value="Gender"/>
@@ -154,32 +156,194 @@
                                         </h:selectOneMenu>
                                         <h:outputText value=""/>
                                      
-                                        <%--                                      <h:outputText styleClass="Label" value="Senior Citizen"/>
+                                        <%--<h:outputText styleClass="Label" value="Senior Citizen"/>
                                         <h:selectBooleanCheckbox value="#{EmployeeBean.seniorCitizen}" id="seci"/>
                                         <h:outputText value=""/>--%>
+                                        
+                                   <%-- ==================Add Employee Category-----start------- --%>
+                                    
+                                    <h:outputText styleClass="Label" value="Entitlement Category "/>
+                                    <h:selectOneMenu  styleClass="combo" id="entileCat"  value="#{EmployeeBean.entitledCategory}">
+                                        <f:selectItem itemValue="General" itemLabel="General"/>
+                                        <f:selectItem itemValue="fHandicap" itemLabel="Handicap"/>
+                                    </h:selectOneMenu>
+                                    <h:message for="entileCat" tooltip="Entitlement Category . Select From Choices"/>
+                                    <h:outputText styleClass="Label" value="Status of Employee "/>
+                                    <h:selectOneMenu  styleClass="combo" id="empStat"  value="#{EmployeeBean.employeeStatus}">
+                                        <f:selectItem itemValue="Married" itemLabel="Married"/>
+                                        <f:selectItem itemValue="Single" itemLabel="Single"/>
+                                    </h:selectOneMenu>
+                                    <h:message for="empStat" tooltip="Status of Employee . Select From Choices"/>
+                                    
+                                    <%-- ============== Add Employee Category--end---------- --%>
+                                        
+                                        
                                         <h:outputText styleClass="Label" value="Employee Type"/>
                                         <h:selectOneMenu styleClass="combo" id="empType" value="#{EmployeeBean.type}">
                                             <f:selectItems value="#{EmployeeTypeBean.items}"/>
                                         </h:selectOneMenu>
-                                        <h:message for="empType"/>
-                                        <h:outputText styleClass="Label" value="Department"/>
+                                        <h:message for="empType" tooltip="Employee Type . Select From Choices"/>
+                                        
+                                        <h:outputText styleClass="Label" value="Current Department"/>
                                         <h:selectOneMenu  id="empDept" value="#{EmployeeBean.dept}">
                                             <f:selectItems value="#{DepartmentBean.arrayAsItem}"/>
                                         </h:selectOneMenu>
-                                        <h:message for="empDept"/>
-                                        <h:outputText styleClass="Label" value="Designation"/>
+                                        <h:message for="empDept" tooltip="Employee Department . Select From Choices"/>
+                                        
+                                        <h:outputText styleClass="Label" value=" Current Designation"/>
                                         <h:selectOneMenu id="empDesig" value="#{EmployeeBean.desig}">
                                             <f:selectItems value="#{DesignationBean.arrayAsItem}"/>
                                         </h:selectOneMenu>
-                                        <h:message for="empDesig"/>
+                                        <h:message for="empDesig" tooltip="Employee Designation . Select From Choices"/>
+                                        
                                         <h:outputText styleClass="Label" value="Pay Band"/>
-                                        <h:selectOneMenu styleClass="combo" value="#{EmployeeBean.grade}">
+                                        <h:selectOneMenu id="empPB" styleClass="combo" value="#{EmployeeBean.grade}">
                                             <f:selectItems value="#{SalaryGradeBean.grades}"/>
                                         </h:selectOneMenu>
-                                        <h:message for="empDesig"/>
+                                        <h:message for="empPB" tooltip="Employee Pay Band . Select From Choices"/>
                                         <h:outputText value="Current Basic"/>
                                         <h:inputText id="empBasic" requiredMessage="Basic Is must.Input Numbers without decimal" validatorMessage="Input Numbers without decimal " value="#{EmployeeBean.currentBasic}"/>
                                         <h:message for="empBasic"  tooltip="*"/>
+                                        
+                                        <%-- new field Add=================Salary Department Code-------start---------%>
+                                    
+                                    <h:outputText styleClass="Label" value=" Salary Department Code"/>
+                                    <h:selectOneMenu styleClass="combo" id="salDept"   value="#{EmployeeBean.saldept}">
+                                        <f:selectItems value="#{DepartmentBean.arrayAsItem}"/>
+                                    </h:selectOneMenu>
+                                    <h:message for="salDept" tooltip="Salary Department Code. Select From Choices (Department Code from which salary issued)*"/>
+                                   
+                                    <%-- new field Add ===================Salary Department Code--============end========== --%>
+                                    
+                                    
+                                    <%-- ================= New Field Added According to Nysa ==start============= --%>
+                                    
+                                    <h:outputText value=" GPF Number"/>
+                                    <h:inputText id="empgpf" value="#{EmployeeBean.gpfNo}" />
+                                    <h:message styleClass="error"  for="empgpf" tooltip="Enter Employee GPF Number( Employee Eligible if)*"/>
+                                    
+                                    <h:outputText value="DPS Number"/>
+                                    <h:inputText id="empDps" value="#{EmployeeBean.dpsNo}" />
+                                    <h:message styleClass="error"  for="empDps" tooltip="Enter Employee DPS Number( Employee Eligible if)*"/>
+                                    
+                                    <h:outputText value="NPS Number"/>
+                                    <h:inputText id="empNps" value="#{EmployeeBean.dpsNo}" />
+                                    <h:message styleClass="error"  for="empNps" tooltip="Enter Employee NPS Number( Employee Eligible if)*"/>
+                                    
+                                    
+                                    <h:outputText value=" ECR Number"/>
+                                    <h:inputText id="empEcr" value="#{EmployeeBean.ecrNo}" />
+                                    <h:message styleClass="error"  for="empEcr" tooltip="Enter Employee ECR Number( ECR Number of Employee)*"/>
+                                    
+                                    <h:outputText value=" Page Number"/>
+                                    <h:inputText id="pageNo" value="#{EmployeeBean.ecrPageNo}" />
+                                    <h:message styleClass="error"  for="pageNo" tooltip="Page Number of the ECR book.)*"/>
+                                    </h:panelGrid> 
+                                    <h:panelGrid columns="3">
+                                        
+                                    <h:outputText value="Working Type"/>
+                                    <h:selectOneMenu id="worType" value="#{EmployeeBean.workingType}">
+                                        <f:selectItem itemLabel="Teaching" itemValue="Teaching"/>
+                                        <f:selectItem itemLabel="NonTeaching" itemValue="NonTeaching"/>
+                                    </h:selectOneMenu>
+                                    <h:message for="worType" tooltip="Employee Working Type. Select From Choices*"/>
+                                                     
+                                    <h:outputText styleClass="Label" value="Joining Department"/>
+                                    <h:selectOneMenu styleClass="combo" id="joiningDept"   value="#{EmployeeBean.joindept}">
+                                        <f:selectItems value="#{DepartmentBean.arrayAsItem}"/>
+                                    </h:selectOneMenu>
+                                    <h:message for="joiningDept" tooltip="Department at the time of joining of Employee *"/>
+                                     
+                                    <h:outputText styleClass="Label" value="Posting Id"/>
+                                    <h:inputText id="postingId" value="#{EmployeeBean.postingId}" />
+                                    <h:message for="postingId" tooltip="Posting Department of Employee *"/>
+                                                                     
+                                    <h:outputText value="House Type"/>
+                                    <h:inputText id="empHtype" value="#{EmployeeBean.houseType}" />
+                                    <h:message styleClass="error"  for="empHtype" tooltip="Employee House Type (Type of House alloted if any)*"/>
+                                    
+                                    <h:outputText value=" House Number"/>
+                                    <h:inputText id="emphouseNo" value="#{EmployeeBean.houseNo}" />
+                                    <h:message styleClass="error"  for="emphouseNo" tooltip="Employee House Number (H.No., if House provided by university)*"/>
+                                                                        
+                                    <h:outputText styleClass="Label" value="LIC Policy"/>
+                                    <h:inputText id="licPNo" value="#{EmployeeBean.policyNo}" />
+                                    <h:message for="licPNo" tooltip="Policy Number Of LIC *"/>
+                                    
+                                    <h:outputText styleClass="Label" value="Date of Acceptance (LIC Policy)"/>
+                                    <rich:calendar enableManualInput="false" converter="dateConverter"
+                                                   datePattern="yyyy-MM-dd" id="emplicDoa" popup="true" 
+                                                   requiredMessage="*Enter Date Of Acceptance as yyyy-mm-dd" value="#{EmployeeBean.doAcceptance}"/>
+                                    <h:message styleClass="error" for="emplicDoa" tooltip="*"/>
+                                    
+                                    <h:outputText styleClass="Label" value="Date of Maturity (LIC Policy)"/>
+                                    <rich:calendar enableManualInput="false" converter="dateConverter"
+                                                   showWeekDaysBar="false" showFooter="false" styleClass="special"
+                                                   datePattern="yyyy-MM-dd" id="emplicDom" popup="true" 
+                                                   requiredMessage="*Enter Date Of Maturity as yyyy-mm-dd" value="#{EmployeeBean.doMaturity}"/>
+                                    <h:message styleClass="error" for="emplicDom" tooltip="*"/>
+                                    
+                                    <h:outputText styleClass="Label" value="GI Policy"/>
+                                    <h:inputText id="giPNo" value="#{EmployeeBean.policyNo}" />
+                                    <h:message for="giPNo" tooltip="Policy Number Of GI *"/>
+                                    
+                                    <h:outputText styleClass="Label" value="Date of Acceptance (GI Policy)"/>
+                                    <rich:calendar enableManualInput="false" converter="dateConverter"
+                                                   showWeekDaysBar="false" showFooter="false" styleClass="special"
+                                                   datePattern="yyyy-MM-dd" id="empgiDoa" popup="true" 
+                                                   requiredMessage="*Enter Date Of Acceptance as yyyy-mm-dd" value="#{EmployeeBean.doAcceptance}"/>
+                                    <h:message styleClass="error" for="empgicDoa" tooltip="*"/>
+                                    
+                                    <h:outputText styleClass="Label" value="Date of Maturity (GI Policy)"/>
+                                    <rich:calendar enableManualInput="false" converter="dateConverter"
+                                                   showWeekDaysBar="false" showFooter="false" styleClass="special"
+                                                   datePattern="yyyy-MM-dd" id="empgicDom" popup="true" 
+                                                   requiredMessage="*Enter Date Of Maturity as yyyy-mm-dd" value="#{EmployeeBean.doMaturity}"/>
+                                    <h:message styleClass="error" for="empgicDom" tooltip="*"/>
+                                   <%-- </h:panelGrid>
+                                     <h:panelGrid columns="3">--%>
+                                  <%-- </h:panelGrid>
+                                    <h:panelGrid columns="3" columnClasses="label,field">--%>
+                                    <h:outputText styleClass="Label" value="Date of Next Increment"/>
+                                    <rich:calendar enableManualInput="false" converter="dateConverter"
+                                                   showWeekDaysBar="false" showFooter="false" styleClass="special"
+                                                   datePattern="yyyy-MM-dd" id="empNIncDate" popup="true" 
+                                                   requiredMessage="*Enter Date Of Next Increment as yyyy-mm-dd" value="#{EmployeeBean.doNextIncrement}"/>
+                                    <h:message styleClass="error" for="empNIncDate" tooltip="*"/>
+                                    
+                                    
+                                    <h:outputText styleClass="Label" value="Probation Date"/>
+                                    <rich:calendar enableManualInput="false" converter="dateConverter"
+                                                   showWeekDaysBar="false" showFooter="false" styleClass="special"
+                                                   datePattern="yyyy-MM-dd" id="empdop" popup="true" 
+                                                   requiredMessage="*Enter Date Of Probation period as yyyy-mm-dd" value="#{EmployeeBean.probationDate}"/>
+                                    <h:message styleClass="error" for="empdop" tooltip="*"/>
+                                    
+                                    
+                                    <h:outputText styleClass="Label" value="Confirmation Date"/>
+                                    <rich:calendar enableManualInput="false" converter="dateConverter"
+                                                   showWeekDaysBar="false" showFooter="false" styleClass="special"
+                                                   datePattern="yyyy-MM-dd" id="empdoc" popup="true" 
+                                                   requiredMessage="*Enter Date Of Confirmation as permanent employee as yyyy-mm-dd" value="#{EmployeeBean.confirmationDate}"/>
+                                    <h:message styleClass="error" for="empdoc" tooltip="*"/>
+                                    
+                                    <h:outputText styleClass="Label" value="Extention Date"/>
+                                    <rich:calendar enableManualInput="false" converter="dateConverter"
+                                                   showWeekDaysBar="false" showFooter="false" styleClass="special"
+                                                   datePattern="yyyy-MM-dd" id="empdoext" popup="true" 
+                                                   requiredMessage="* Enter Date Of Extention as yyyy-mm-dd" value="#{EmployeeBean.extentionDate}"/>
+                                    <h:message styleClass="error" for="empdoext" tooltip="*"/>
+                                    
+                                    
+                                    <h:outputText value="Joined As"/>
+                                    <h:selectOneMenu  styleClass="combo"  id="empjoinDesig"  value="#{EmployeeBean.joindesig}">
+                                        <f:selectItems value="#{DesignationBean.arrayAsItem}"/>
+                                    </h:selectOneMenu>
+                                    <h:message styleClass="error"  for="empjoinDesig" tooltip="Employee Designation (Designation at the time of joining)*"/>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="3">                          
+                                    <%-- ================ New Field Added According to Nysa ======end ======================--%>
+                                        
                                         <h:outputText value="Qualification"/>
                                         <h:inputText id="qual"  value="#{EmployeeBean.qualification}"/>
                                         <h:message for="qual"/>
@@ -189,15 +353,17 @@
                                         <h:outputText styleClass="Label" value="PF. Account No."/>
                                         <h:inputText id="empPf" styleClass="fields" value="#{EmployeeBean.pfAccNo}"/>
                                         <h:message for="empPf" tooltip="*"/>
-                                    </h:panelGrid>
-                                    <h:panelGrid columns="3" >
+                                   <%-- </h:panelGrid>
+                                    <h:panelGrid columns="3" >--%>
                                         <h:outputText id="st" value="Employee Status"></h:outputText>
                                         <h:selectBooleanCheckbox id="sta" value="#{EmployeeBean.ststus}"></h:selectBooleanCheckbox>
                                         <rich:toolTip value="Click On Here To Activate/Deactivate An Employee" for="sta"/>
-                                        <h:outputText styleClass="Label" value="Date of Birth"/>
+                                        <h:column><h:outputText styleClass="Label" value="Date of Birth"/>
+                                        <h:outputText value="*" style="color:red;"/></h:column>
                                         <rich:calendar enableManualInput="false" converter="dateConverter" datePattern="yyyy-MM-dd" styleClass="fields" id="empDob" value="#{EmployeeBean.dob}"/>
                                         <h:message for="empDob" styleClass="error"/>
-                                        <h:outputText  styleClass="Label" value="Date of Joining"/>
+                                        <h:column><h:outputText  styleClass="Label" value="Date of Joining"/>
+                                        <h:outputText value="*" style="color:red;"/></h:column>
                                         <rich:calendar enableManualInput="false" converter="dateConverter" datePattern="yyyy-MM-dd" styleClass="fields" id="empDoj"  value="#{EmployeeBean.doj}"/>
                                         <h:message for="empDob" styleClass="error"/>
                                         <h:outputText value="Year of Passing"/>
@@ -206,11 +372,14 @@
                                         <h:outputText value="Previous Employer"/>
                                         <h:inputText id="prev" value="#{EmployeeBean.previousEmployer}" />
                                         <h:message for="prev"/>
-                                        <h:outputText styleClass="Label" value="Phone/Mobile"/>
+                                        <h:column><h:outputText styleClass="Label" value="Phone/Mobile"/>
+                                        <h:outputText value="*" style="color:red;"/></h:column>
                                         <h:inputText id="empPhone"  styleClass="fields" value="#{EmployeeBean.phone}"/>
-                                        <h:message for="empPhone" tooltip="*"/>
-                                        <h:outputText styleClass="Label" value="E-Mail ID"/>
+                                        <h:message for="empPhone" tooltip="* Enter Employee Phone/Mobile Number"/>
+                                        <h:column><h:outputText styleClass="Label" value="E-Mail ID"/>
+                                        <h:outputText value="*" style="color:red;"/></h:column>
                                         <h:inputText id="empEmail" styleClass="fields" value="#{EmployeeBean.email}"/>
+                                        <%--<h:message for="empEmail" tooltip="* Enter Employee Email"/>--%>
                                         <rich:message>
                                             <f:facet name="errorMarker">
                                                 <h:graphicImage url="/img/err.png"/>
@@ -278,15 +447,15 @@
                                 </h:panelGroup>
                             </h:form>
                         </h:column>
-                        <h:column>
-                            <rich:panel styleClass="bodyBack"  header="Employee Notification">
+                       <%-- <h:column>--%>
+                            <rich:panel style="width:auto;" styleClass="bodyBack"  header="Employee Notification">
                                 <h:outputText style="color:red;font-size: 17px;font-weight: bold;" value="#{EmployeeBean.notification}"/>
                             </rich:panel>
-                        </h:column>
+                       <%-- </h:column>--%>
                     </h:panelGrid>
 
                 </rich:panel>
-                <rich:panel style="width:auto;float:left;" header="Employee's Pending Bank Details">
+                <rich:panel style="width:auto;" header="Employee's Pending Bank Details">
                     <h:form>
                         <rich:panel>
                             <h:panelGrid columns="5">
