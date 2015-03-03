@@ -316,7 +316,7 @@ $(document).ready(function() {
 					echo "<li>";
                                                 echo anchor('report/cashst', 'Cash Book', array('title' => 'Cash Book'));
                                         echo "</li>";
-				/*	echo "<li>";
+					echo "<li>";
 						echo anchor('','Unspent Balance');
 						echo "<ul>";
 							echo "<li>";
@@ -329,7 +329,7 @@ $(document).ready(function() {
 								echo anchor('unspentbalance/summaryreport', 'Summary Report', array('title' => 'Summary Report', 'class' => 'loading'));
 							echo "</li>";
 						echo "</ul>";
-					echo "</li>"; */
+					echo "</li>"; 
 				echo "</ul>";
 			echo "</li>";
 			echo"<li>";

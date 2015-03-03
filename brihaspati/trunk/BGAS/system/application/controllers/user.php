@@ -17,7 +17,7 @@ class User extends Controller {
 		/* check if table exist */
 		$table="bgasuser";
 		if($db1->query("SHOW TABLES LIKE '".$table."'")->num_rows()==1){
-			$this->messages->add('login database with user table exists.', 'success');
+			//$this->messages->add('login database with user table exists.', 'success');
 		}
 		else{
 
@@ -144,7 +144,7 @@ class User extends Controller {
 		$this->session->unset_userdata('user_role');
 		$this->session->unset_userdata('active_account');
 		$this->session->sess_destroy();
-		$this->messages->add('Logged out.', 'success');
+		//$this->messages->add('Logged out.', 'success');
 		redirect('user/login');
 	}
 

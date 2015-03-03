@@ -388,5 +388,15 @@ $config['application_version'] = '1.6';
 */
 $config['required_database_version'] = '4';
 
+/*
+|--------------------------------------------------------------------------
+| Custom : Backup Path
+|--------------------------------------------------------------------------
+|
+| Sets the base backup path for all account backups
+|
+*/
+$config['docs_path'] = 'docs/';
+
 /* End of file config.php */
 /* Location: ./system/application/config/config.php */

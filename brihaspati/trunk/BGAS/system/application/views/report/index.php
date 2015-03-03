@@ -86,7 +86,7 @@
                 </div>
 		<div class="settings-container">
                         <div class="settings-title">
-                                <?php //echo anchor('report/fundlist', 'Fund List', array('title' => 'Fund List')); ?>
+                                <?php echo anchor('unspentbalance/planreport', 'Unspent Balance', array('title' => 'Unspent Balance')); ?>
                         </div>
                         <div class="settings-desc">
                                 &nbsp;

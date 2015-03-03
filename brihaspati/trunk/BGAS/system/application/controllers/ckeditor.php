@@ -1,4 +1,5 @@
-<?php
+<?php 
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Ckeditor extends Controller {
 	
@@ -93,9 +94,15 @@ class Ckeditor extends Controller {
 								
 			)
 		);
-
+		$this->load->library('session');
+                $unspent_type = $this->session->userdata('unspent_type');
+                if($unspent_type == 'non-plan'){
+		$var = getcwd().'/docs/'.Date("F d, Y").'nonplan_report'.'.txt';
+		}elseif($unspent_type == 'plan'){
+			 $var = getcwd().'/docs/'.Date("F d, Y").'plan_report'.'.txt';
+		}else{
 		$var = getcwd().'/docs/notesToAccount.txt';
-
+		}
 		$file_content = file_get_contents($var);
 
 		$this->data['textarea'] = array(
@@ -114,17 +121,30 @@ class Ckeditor extends Controller {
 	public function addToFile(){
 
 		$editor_data = $_POST['content'];
+
 		$var = getcwd().'/docs/notesToAccount.txt';
 
+
+
 		if(is_writable($var)){
+
 			$myfile = fopen($var, 'w') or die("Unable to open file!");
+
 			fwrite($myfile, $editor_data);
+
 			fclose($myfile);
+
 		}else{
+
 			$this->messages->add('Please give write permission to "BGAS/docs/notesToAccount.txt" file', 'error');
+
 		}	
 
+
+
 		redirect('notes/display_notes');
+
 		return;
+
 	}
 }
