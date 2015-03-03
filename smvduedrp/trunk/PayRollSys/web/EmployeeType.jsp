@@ -20,13 +20,16 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="css/reset.css"/>
         <link rel="stylesheet" type="text/css" href="css/subpage.css"/>
-        <title>Add Employee Type</title>
+        <title>Employee Types</title>
     </head>
     <body class="subpage" id="">
         <div class="container_form">
             <f:view>
                 <rich:panel header="Employee Types Master Setup">
-                    <div align="right" >                                            
+                    <div align="right" >
+                    <a4j:commandLink   onclick="javascript:window.print();" style="margin-right:10px;">
+                    <h:graphicImage value="/img/Printer-icon.png" alt="Print"  /> 
+                    </a4j:commandLink>
                     <a4j:commandLink ajaxSingle="true" reRender="helppnl" onclick="Richfaces.showModalPanel('hnl');" >
                     <h:graphicImage value="/img/help-icon.png" alt="Help" /> 
                     </a4j:commandLink>

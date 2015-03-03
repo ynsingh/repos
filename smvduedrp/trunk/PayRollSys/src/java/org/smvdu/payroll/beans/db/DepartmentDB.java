@@ -108,19 +108,28 @@ public class DepartmentDB {
             
             for(Department dp : depts)
             {
-                session.beginTransaction();
+               session.beginTransaction();
 
                 Department dept = (Department)session.get(Department.class, dp.getCode());
 
                 dept.setDcode(dp.getDcode().toUpperCase());
                 dept.setName(dp.getName().toUpperCase());
                 dept.setNickName(dp.getNickName().toUpperCase());   
-                dept.setOrgcode(userBean.getUserOrgCode());
+                dept.setOrgcode(userBean.getUserOrgCode()); 
                 session.update(dept);
                 session.getTransaction().commit();
             }
-           
+         return null;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
             session.close();
+        }
+           
 
          /*   Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update department_master set  dept_dcode=?, dept_name=?, dept_nickname=?"
@@ -137,15 +146,17 @@ public class DepartmentDB {
                 //System.out.println("departments===="+dp.getDCode()+":"+dp.getName()+":"+dp.getNickName()+":"+dp.getCode());
             }
             ps.close();
-            c.close(); */
+            c.close(); 
             return null;
         }
-        catch(Exception e)
+        
+       
+          catch(Exception e)
         {
            e.printStackTrace();
            return e;
            //Logger.getAnonymousLogger().log(Log., e.getMessage());
-        }
+        }   */
     }
     public ArrayList<Department> loadDepartments()   {
       //  ArrayList<Department> data = new ArrayList<Department>();
@@ -155,12 +166,20 @@ public class DepartmentDB {
           session = helper.getSessionFactory().openSession();
           session.beginTransaction();
           Query query = session.createQuery("from Department where orgcode = '"+userBean.getUserOrgCode()+"'");
-          ArrayList<Department> data = (ArrayList<Department>) query.list();
-        
+          ArrayList<Department> data = (ArrayList<Department>) query.list();       
           session.getTransaction().commit();
-          session.close();  
+          return data;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }  
 
-          System.out.println("list of Department = " +data.size());
+          
       
                  
             /*    Connection c = new CommonDB().getConnection();
@@ -179,14 +198,14 @@ public class DepartmentDB {
             }
             rs.close();
             ps.close();
-            c.close();*/
+            c.close();
             return data;
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return null;
-        }
+        }                   */
         
     }
    
@@ -204,7 +223,16 @@ public class DepartmentDB {
           session.beginTransaction();
           session.save(dept);
           session.getTransaction().commit();
-          session.close();
+          return null;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
+            session.close();
+        }
                   
             /*  Connection c = new CommonDB().getConnection();
             //ps=c.prepareStatement("insert into department_master(dept_name, org_code) values(?,?)");
@@ -216,15 +244,15 @@ public class DepartmentDB {
             
             ps.executeUpdate();
             ps.close();
-            c.close(); */
+            c.close(); 
             return null;
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return e;
-        }
-
+        }       */
+                                    
     }
     
     
@@ -265,7 +293,16 @@ public class DepartmentDB {
 
             }
           reader.close();;
-          session.close();
+          return null;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
+            session.close();
+        }
             
           /*    Connection c = new CommonDB().getConnection();
             
@@ -298,15 +335,15 @@ public class DepartmentDB {
             }
             reader.close();
             ps.close();
-            c.close();  */
+            c.close();  
             return null;
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return e;
-        }
-
+        }               */
+                    
     }
     
          

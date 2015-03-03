@@ -98,8 +98,14 @@ public class DesignationController {
                 }
         }
       Exception e = new DesignationDB().update(data);
-        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Designations Updated", ""));
-    }
+      if (e == null) {
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Updated Successfully", ""));
+      }
+      else {
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Designation Already Exist", ""));   
+      }
+      
+   }
     public void setDesignations(ArrayList<Designation> salaryData) {
         this.designations = salaryData;
     }

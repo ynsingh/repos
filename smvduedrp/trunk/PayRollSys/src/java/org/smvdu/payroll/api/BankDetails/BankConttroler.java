@@ -49,6 +49,8 @@ public class BankConttroler {
             {
                 FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Bank Detail Updated Successfully", ""));
             }
+            else 
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Bank Details Already Exist", ""));
         }
         catch(Exception ex)
         {

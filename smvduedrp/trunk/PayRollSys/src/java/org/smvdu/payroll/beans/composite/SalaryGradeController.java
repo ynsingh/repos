@@ -81,7 +81,7 @@ import org.smvdu.payroll.beans.db.SalaryGradeDB;
         for(SalaryGrade sg : grades)
         {
             FacesContext fc = FacesContext.getCurrentInstance();
-            if((sg.getName().matches("^[a-zA-Z0-9\\s]*$") == false) || (!sg.getName().equals(""))) {
+            if((sg.getName().matches("^[a-zA-Z0-9\\s]*$") == false) || (sg.getName().equals(""))) {
                 FacesMessage message = new FacesMessage();
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 message.setSummary("Please Enter Valid Pay Band Name. No Special Characters are Allowed");
@@ -90,8 +90,11 @@ import org.smvdu.payroll.beans.db.SalaryGradeDB;
             }
            // System.out.println("Code : "+sg.getCode()+"Name : "+sg.getName()+", Max : "+sg.getMaxValue()+", Min : "+sg.getMinValue());
         }
-        new SalaryGradeDB().update(grades);
+       Exception e =  new SalaryGradeDB().update(grades);
+       if (e==null)
         FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Grades Updated", ""));
+       else
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Grade Already Exist", ""));
     }
 
 }

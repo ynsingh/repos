@@ -86,8 +86,7 @@ public class DepartmentController {
 
     public void update()
     {
-
-        
+    
         ArrayList<Department> data = (ArrayList<Department>) dataGrid.getValue();
         System.out.println("Data R Updating");
         for(Department d: data)

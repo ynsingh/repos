@@ -15,6 +15,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.Department;
 import org.smvdu.payroll.beans.setup.SalaryGrade;
@@ -58,18 +61,49 @@ public class SalaryGradeDB {
     private PreparedStatement ps;
     private ResultSet rs;
 
-     private UserInfo userBean;
+    private UserInfo userBean;
 
+    private HibernateUtil helper;
+    private Session session;
+    
     public SalaryGradeDB()
     {
         userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
     }
 
-    public void update(ArrayList<SalaryGrade> grades)
+    public Exception update(ArrayList<SalaryGrade> grades)
     {
         try
         {
-            Connection c = new CommonDB().getConnection();
+            session = helper.getSessionFactory().openSession();
+            
+            for(SalaryGrade sg : grades)
+            {
+                session.beginTransaction();
+
+                SalaryGrade data = (SalaryGrade)session.get(SalaryGrade.class, sg.getCode());
+
+                data.setName(sg.getName().toUpperCase());
+                data.setMinValue(sg.getMinValue());
+                data.setMaxValue(sg.getMaxValue());
+                data.setGradePay(sg.getGradePay());
+                data.setOrgcode(userBean.getUserOrgCode());
+                session.update(data);
+                session.getTransaction().commit();
+            }
+            return null;
+        }   
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
+            session.close();
+        }
+            
+            
+        /*    Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update salary_grade_master set grd_name=?"
                     + ",grd_max=?,grd_min=?,grd_gp=? where grd_code=? and grd_org_id = ?");
             for(SalaryGrade sg : grades)
@@ -84,18 +118,34 @@ public class SalaryGradeDB {
                 ps.clearParameters();
             }
             ps.close();
-            c.close();
+            c.close();      
         }
         catch(Exception e)
         {
             e.printStackTrace();
-        }
+        }           */
     }
 
     public ArrayList<SalaryGrade> load()    {
         try
         {
-            Connection c = new CommonDB().getConnection();
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("from SalaryGrade where orgcode = '"+userBean.getUserOrgCode()+"'");
+            ArrayList<SalaryGrade> grades = (ArrayList<SalaryGrade>)query.list();
+            session.getTransaction().commit();
+            return grades;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }
+            
+            /*      Connection c = new CommonDB().getConnection();
             ps = c.prepareStatement("select * from salary_grade_master where grd_org_id = '"+userBean.getUserOrgCode()+"'");
             rs=ps.executeQuery();
             ArrayList<SalaryGrade> grades = new ArrayList<SalaryGrade>();
@@ -112,18 +162,41 @@ public class SalaryGradeDB {
             rs.close();
             ps.close();
             c.close();
-            return grades;
-        }
+            return grades;      
+        }          
         catch(Exception e)
         {
             return null;
-        }
+        }           */
     }
     
-    public int save(SalaryGrade sg)   {
+    public Exception save(SalaryGrade sg)   {
         try
         {
-            Connection c = new CommonDB().getConnection();
+          SalaryGrade grade = new SalaryGrade();
+          
+          grade.setName(sg.getName().toUpperCase());
+          grade.setMinValue(sg.getMinValue());
+          grade.setMaxValue(sg.getMaxValue());
+          grade.setGradePay(sg.getGradePay());
+          grade.setOrgcode(userBean.getUserOrgCode());
+          
+          session = helper.getSessionFactory().openSession();
+          session.beginTransaction();
+          session.save(grade);
+          session.getTransaction().commit();
+          return null;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
+            session.close();
+        }
+      
+        /*      Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into salary_grade_master(grd_name,"
                     + "grd_max,grd_min,grd_gp,grd_org_id) values(?,?,?,?,?)");
             ps.setString(1, sg.getName());
@@ -138,19 +211,64 @@ public class SalaryGradeDB {
             rs.close();
             ps.close();
             c.close();
-            return code;
+            return code;        
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            return -1;
-        }
+            return e;
+        }           */
     }
     
     public Exception saveFile(UploadFile file)   {
         try
         {
-            Connection c = new CommonDB().getConnection();
+          
+            SalaryGrade grade = new SalaryGrade();
+            
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
+            CSVReader reader = new CSVReader(new FileReader(path+"/"+file.getName()), ',', '\"', 1);
+            ColumnPositionMappingStrategy<SalaryGrade> mappingStrategy 
+                                 = new ColumnPositionMappingStrategy<SalaryGrade>();
+            mappingStrategy.setType(SalaryGrade.class);
+            String[] columns = new String[] {"Name","MaxValue","MinValue","GradePay"};
+            mappingStrategy.setColumnMapping(columns);
+        
+            CsvToBean<SalaryGrade> csv = new CsvToBean<SalaryGrade>();
+            List<SalaryGrade> SalaryGradeList = csv.parse(mappingStrategy, reader);
+            
+            for (int i = 0; i < SalaryGradeList.size(); i++) 
+            {
+                
+                SalaryGrade SGDetail = SalaryGradeList.get(i);
+                // display CSV values
+                grade.setName(SGDetail.getName());
+                grade.setMaxValue(SGDetail.getMaxValue());
+                grade.setMinValue(SGDetail.getMinValue());
+                grade.setGradePay(SGDetail.getGradePay());
+                grade.setOrgcode(userBean.getUserOrgCode());
+                
+                session = helper.getSessionFactory().openSession();
+                session.beginTransaction();
+                session.save(grade);
+                session.getTransaction().commit();
+                                      
+            }
+            
+            reader.close();
+            return null;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
+            session.close();
+        }
+            
+            
+            /*  Connection c = new CommonDB().getConnection();
             
             ps=c.prepareStatement("insert into salary_grade_master(grd_name, grd_max, grd_min, grd_gp, grd_org_id) values(?,?,?,?,?)");
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
@@ -181,15 +299,15 @@ public class SalaryGradeDB {
             reader.close();
             ps.close();
             c.close();
-            return null;
+            return null;        
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return e;
-        }
+        }               */
 
-    }
+    }       
     
 
 }

@@ -5,8 +5,15 @@
 package org.smvdu.payroll.beans;
 
 import java.io.Serializable;
+import javax.annotation.Generated;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.smvdu.payroll.beans.db.SessionDB;
 
 /**
@@ -45,12 +52,71 @@ import org.smvdu.payroll.beans.db.SessionDB;
  *  Contributors: Members of ERP Team @ SMVDU, Katra
  *
  */
-public class SessionMaster extends BaseBean implements Serializable {
 
+public class SessionMaster implements Serializable {
+    
+
+    private int code;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    private String name;
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     private String startDate;
+    
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
     private String endDate;
+    
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String enddate) {
+        this.endDate = enddate;
+    }
+
     private boolean current;
 
+    public boolean isCurrent() {
+        return current;
+    }
+
+    public void setCurrent(boolean current) {
+        this.current = current;
+    }
+
+    private int orgcode;
+
+    public int getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
+    }
+    
+    
     public void save() {
         FacesContext fc = FacesContext.getCurrentInstance();
         String[] se1 = this.getName().split("-");
@@ -71,34 +137,21 @@ public class SessionMaster extends BaseBean implements Serializable {
             fc.addMessage("", message);
             return;
         }
-        int x = new SessionDB().save(this);
-        if (x > 0) {
+        
+         Exception e = new SessionDB().save(this);
+        if(e==null)
+        {
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Session Saved", ""));
         }
-    }
-
-    public boolean isCurrent() {
-        return current;
-    }
-
-    public void setCurrent(boolean current) {
-        this.current = current;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String enddate) {
-        this.endDate = enddate;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+        else
+        {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Session Already Exist", ""));
+        }
+        
+      /*  int x = new SessionDB().save(this);
+        if (x > 0) {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Session Saved", ""));
+        }       */
     }
 
     public String toString() {

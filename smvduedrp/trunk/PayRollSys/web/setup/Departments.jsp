@@ -44,7 +44,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Departments</title>
         <style>
 .top {
     vertical-align: top;
@@ -60,13 +60,17 @@
     <body>
         <f:view>
                <rich:panel header="Existing Departments">
-               <div align="right" >                                            
+               <div align="right" > 
+                <a4j:commandLink   onclick="javascript:window.print();" style="margin-right:10px;">
+                <h:graphicImage value="/img/Printer-icon.png" alt="Print"  /> 
+                </a4j:commandLink>
                 <a4j:commandLink ajaxSingle="true" reRender="helppnl" onclick="Richfaces.showModalPanel('hnl');" >
                 <h:graphicImage value="/img/help-icon.png" alt="Help" /> 
                 </a4j:commandLink>
                  </div>
                  <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
-                 <h:commandButton onclick="Richfaces.showModalPanel('dnl');" value="Upload Deptarment List"/><br/>
+                 <h:commandButton onclick="Richfaces.showModalPanel('dnl');" value="Upload Deptarment List"/>
+                 <br/>
                  </div>
                  <rich:separator  style="width:100%;" /><br/>
                  <h:outputText style="font-size:1em;font-color:green;" value="Total Department   : #{DepartmentControllerBean.total}"/>

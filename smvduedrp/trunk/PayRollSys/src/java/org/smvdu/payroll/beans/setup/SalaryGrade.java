@@ -52,27 +52,28 @@ import org.smvdu.payroll.beans.upload.UploadFile;
 */
 public class SalaryGrade {
 
-    private int maxValue;
-    public int minValue;
-
-    private int gradePay;
-
-    public int getGradePay() {
-        return gradePay;
+    private int code;
+    
+    public int getCode() {
+        return code;
     }
 
-    public void setGradePay(int gradePay) {
-        this.gradePay = gradePay;
+    public void setCode(int i) {
+        code = i;
     }
     
+    private String name;
 
-    public int getMaxValue() {
-        return maxValue;
+    public String getName() {
+        return name;
     }
 
-    public void setMaxValue(int maxValue) {
-        this.maxValue = maxValue;
+    public void setName(String string) {
+        if(string!=null)
+        name = string.toUpperCase();
     }
+    
+    public int minValue;
 
     public int getMinValue() {
         return minValue;
@@ -82,14 +83,36 @@ public class SalaryGrade {
         this.minValue = minValue;
     }
     
-    private String name;
-
-    @Override
-    public String toString()
-    {
-        return name + "("+maxValue+"-"+minValue+") - "+gradePay;
+    private int maxValue;
+    
+    public int getMaxValue() {
+        return maxValue;
     }
-    private int code;
+
+    public void setMaxValue(int maxValue) {
+        this.maxValue = maxValue;
+    }
+    
+    private int gradePay;
+    
+    public int getGradePay() {
+        return gradePay;
+    }
+
+    public void setGradePay(int gradePay) {
+        this.gradePay = gradePay;
+    }
+    
+    private int orgcode;
+
+    public int getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
+    }
+    
     private String error;
 
     public String getError() {
@@ -98,13 +121,6 @@ public class SalaryGrade {
 
     public void setError(String error) {
         this.error = error;
-    }
-
-    private  SelectItem[] grades;
-
-    public void setGrades(int[] ints)
-    {
-        
     }
 
     private ArrayList<SalaryGrade> allGrades;
@@ -116,7 +132,14 @@ public class SalaryGrade {
     public void setAllGrades(ArrayList<SalaryGrade> allGrades) {
         this.allGrades = allGrades;
     }
-
+    
+    @Override
+    public String toString()
+    {
+        return name + "("+maxValue+"-"+minValue+") - "+gradePay;
+    }
+    
+    private  SelectItem[] grades;
 
     public SelectItem[] getGrades() {
         ArrayList<SalaryGrade> grds= new SalaryGradeDB().load();
@@ -131,8 +154,13 @@ public class SalaryGrade {
         }
         return grades;
     }
+    
+    public void setGrades(int[] ints)
+    {
+        
+    }
 
-   public void save()
+    public void save()
     {
          FacesContext fc = FacesContext.getCurrentInstance();
          if (this.getMaxValue()< this.getMinValue())
@@ -152,41 +180,18 @@ public class SalaryGrade {
                 return;
        }
            // System.out.println("Code : "+sg.getCode()+"Name : "+sg.getName()+", Max : "+s 
-       new SalaryGradeDB().save(this);
+      Exception e = new SalaryGradeDB().save(this);
+      if(e==null)
+      {
        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Pay scale saved "+" "+this.getName(), ""));
+      }
+      else{
+      FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Pay scale already exist "+" "+this.getName(), ""));    
+      }
        name=null;
        maxValue=0;
        minValue=0;
-   }
-
-    /**
-     * @return
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param string
-     */
-    public void setName(String string) {
-        if(string!=null)
-        name = string.toUpperCase();
-    }
-
-    /**
-     * @return
-     */
-    public int getCode() {
-        return code;
-    }
-
-    /**
-     * @param i
-     */
-    public void setCode(int i) {
-        code = i;
-    }
+   }    
     
    private UploadFile files=null ;
    //private int uploadsAvailable = 5;

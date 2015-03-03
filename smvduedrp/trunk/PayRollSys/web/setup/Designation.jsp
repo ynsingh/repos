@@ -23,12 +23,15 @@
         <div class="container_form">
             <f:view>
                 <rich:panel header="Existing Designations">
-                    <div align="right" >                                            
+                    <div align="right" > 
+                        <a4j:commandLink   onclick="javascript:window.print();" style="margin-right:10px;">
+                        <h:graphicImage value="/img/Printer-icon.png" alt="Print"  /> 
+                        </a4j:commandLink>
                         <a4j:commandLink ajaxSingle="true" reRender="helppnl" onclick="Richfaces.showModalPanel('hnl');" >
                         <h:graphicImage value="/img/help-icon.png" alt="Help" /> 
                         </a4j:commandLink>
                     </div>
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="3">
                         <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
                         <h:commandButton onclick="Richfaces.showModalPanel('dnl');" value="Upload Designation List"/><br/>
                         <rich:messages  >

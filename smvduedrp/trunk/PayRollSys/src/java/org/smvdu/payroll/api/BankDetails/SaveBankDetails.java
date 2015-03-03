@@ -80,8 +80,16 @@ public class SaveBankDetails {
             session.beginTransaction();
             session.save(data);
             session.getTransaction().commit();
-            session.close();
             return true;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            session.close();
+        }
             
             
             /*   Connection cn;
@@ -102,11 +110,11 @@ public class SaveBankDetails {
             pst.setInt(10, orgCode);
             pst.executeUpdate();
             //System.out.println("Hello World" +orgCode );
-            return true;        */
+            return true;        
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
-        }
+        }           */
     }
 
     /**
@@ -123,8 +131,16 @@ public class SaveBankDetails {
             Query query = session.createQuery("from EmployeeType where orgcode = '"+orgCode+"'");
             ArrayList<BankProfileDetails> data = (ArrayList<BankProfileDetails>)query.list();
             session.getTransaction().commit();
-            session.close();
             return data;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }
             
             /*     ArrayList<BankProfileDetails> bankProfile = new ArrayList<BankProfileDetails>();
             BankProfileDetails bp = new BankProfileDetails();
@@ -142,11 +158,11 @@ public class SaveBankDetails {
            // System.out.println("Hello World 20OCT 2014" +orgCode );
             pst.close();
             cn.close();
-            return bankProfile;             */
+            return bankProfile;             
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
-        }
+        }       */
     }
 
     /**
@@ -183,8 +199,17 @@ public class SaveBankDetails {
                 session.getTransaction().commit();
             }
             
-            session.close();
             return true;
+            
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            session.close();
+        }
          
             /*   Connection cn;
             
@@ -207,10 +232,10 @@ public class SaveBankDetails {
             }
             pst.close();
             cn.close();
-            return true;        */
+            return true;        
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
-        }
+        }       */
     }
 }

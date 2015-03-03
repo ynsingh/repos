@@ -10,6 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.SessionMaster;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.user.ActiveProfile;
@@ -53,6 +56,8 @@ public class SessionDB {
     private ResultSet rs;
     private ActiveProfile info;
     private final UserInfo userBean;
+    private HibernateUtil helper;
+    private Session session;
 
     public SessionDB() {
         info = (ActiveProfile) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
@@ -64,10 +69,42 @@ public class SessionDB {
 
     
     private ArrayList<SessionMaster> currentSessionReport;
+ 
     public void setCurrentSession(int sessId)
     {
         try
         {
+            session.beginTransaction();
+            Query query = session.createQuery("from SessionMaster where ss_org_id='"+userBean.getUserOrgCode()+"'");
+            ArrayList<SessionMaster> sess = (ArrayList<SessionMaster>)query.list();
+            SessionMaster data = new SessionMaster();
+            for(SessionMaster s : sess)
+                {
+                    data.setCurrent(false);
+                }
+            session.update(data);
+            session.getTransaction().commit();
+            session.close();
+            
+            session.beginTransaction();
+            SessionMaster ses = (SessionMaster) session.get(SessionMaster.class, sessId);
+            
+            ses.setCurrent(true);
+            
+            session.update(ses);
+            session.getTransaction().commit();
+        }
+            
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+            
+        /*
+        try {   
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update session_master set ss_current=0 where ss_org_id='"+userBean.getUserOrgCode()+"'");
             ps.executeUpdate();
@@ -76,50 +113,103 @@ public class SessionDB {
             ps.setInt(1, sessId);
             ps.executeUpdate();
             ps.close();
-            c.close();
-        }
+            c.close();      
+        }       
         catch(Exception e)
         {
             e.printStackTrace();
-        }
+        }           */
     }
 
 
 
 
 
-    public int save(SessionMaster session) {
+    public Exception save(SessionMaster sess) {
         try
+        {
+           session = helper.getSessionFactory().openSession();
+           
+           SessionMaster s = new SessionMaster();
+           
+           s.setName(sess.getName());
+           s.setStartDate(sess.getStartDate());
+           s.setEndDate(sess.getEndDate());
+           s.setOrgcode(userBean.getUserOrgCode());
+           
+           session.beginTransaction();
+           session.save(s);
+           session.getTransaction().commit();
+           return null;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
+            session.close();
+        }             
+                   
+       /* try
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into session_master(ss_name,"
                     + "ss_start_from,ss_end_to,ss_current,ss_org_id) values(?,?,?,?,?)");
-            ps.setString(1, session.getName());
-            ps.setString(2, session.getStartDate());
-            ps.setString(3, session.getEndDate());
-            ps.setBoolean(4, session.isCurrent());
+            ps.setString(1, sess.getName());
+            ps.setString(2, sess.getStartDate());
+            ps.setString(3, sess.getEndDate());
+            ps.setBoolean(4, sess.isCurrent());
             ps.setInt(5, userBean.getUserOrgCode());
             ps.executeUpdate();
        //     rs = ps.getGeneratedKeys();
-            rs.next();
+            rs.next();          
             int code =rs.getInt(1);
             rs.close();
             ps.close();
-            c.close();
-            return code;
+            c.close();          
+        //    return code;        
+           return null;
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            return -1;
-        }
+           // return -1;
+            return e;
+        }           */
     }
 
     public SessionMaster getCurrentSession()
     {
         try
         {
-            Connection c = new CommonDB().getConnection();
+            session = helper.getSessionFactory().openSession();
+            
+            session.beginTransaction();
+            Query query = session.createQuery("from SessionMaster where current = 1 and orgcode = '"+userBean.getUserOrgCode()+"'");
+            ArrayList<SessionMaster> sess = (ArrayList<SessionMaster>)query.list();
+            SessionMaster data = new SessionMaster();
+            for(SessionMaster s : sess)
+                {
+                    data.setCode(s.getCode());
+                    data.setName(s.getName());
+                }
+            session.getTransaction().commit();        
+            return data;
+        }    
+         
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }   
+                
+       /*
+        try {
+           Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select * from session_master where ss_current=1 and ss_org_id='"+userBean.getUserOrgCode()+"'");
             rs = ps.executeQuery();
             SessionMaster sess = new SessionMaster();
@@ -130,20 +220,40 @@ public class SessionDB {
             }
             rs.close();
             ps.close();
-            c.close();
-            return sess;
+            c.close();      
+            return sess;        
 
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return null;
-        }
+        }               */
     }
+    
     public ArrayList<SessionMaster> getCurrentSessionForReport()
     {
         try
         {
+            session = helper.getSessionFactory().openSession();
+            
+            session.beginTransaction();
+            Query query = session.createQuery("from SessionMaster where current = 1 and orgcode = '"+userBean.getUserOrgCode()+"'");
+            ArrayList<SessionMaster> sess = (ArrayList<SessionMaster>)query.list();
+            session.getTransaction().commit();   
+            return sess;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }
+            
+            
+      /* try {  
             currentSessionReport = new ArrayList<SessionMaster>();
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select * from session_master where ss_current=1 and ss_org_id='"+userBean.getUserOrgCode()+"'");
@@ -157,14 +267,15 @@ public class SessionDB {
             }
             rs.close();
             ps.close();
-            c.close();
-            return currentSessionReport;
+            c.close();          
+            return currentSessionReport;            
+            return sess;        
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return null;
-        }
+        }       */
     }
 
 
@@ -172,7 +283,49 @@ public class SessionDB {
     public boolean  update(ArrayList<SessionMaster> sesss)
     {
         try
-        {
+        {   
+            boolean flag = false;
+            int currentStatus = 0;
+            session = helper.getSessionFactory().openSession();
+            
+            for(SessionMaster sm : sesss)
+            {
+                session.beginTransaction();
+                SessionMaster data = (SessionMaster)session.get(SessionMaster.class, sm.getCode());
+                
+                if(sm.isCurrent() == true)
+                {
+                    currentStatus++;
+                }
+                if(currentStatus>1)
+                {
+                    flag = false;
+                    break;
+                }
+                else
+                {
+                    flag = true;
+                    
+                }
+                data.setName(sm.getName());
+                data.setCurrent(sm.isCurrent());
+                session.update(data);
+                session.getTransaction().commit();
+            }
+            return flag;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            session.close();
+        }
+                
+    
+        /*
+        try {
             boolean flag = false;
             int currentStatus = 0;
             Connection c = new CommonDB().getConnection();
@@ -191,6 +344,7 @@ public class SessionDB {
                 else
                 {
                     flag = true;
+                    
                 }
                 ps.setString(1, sm.getName());
                 ps.setBoolean(2, sm.isCurrent());
@@ -199,23 +353,42 @@ public class SessionDB {
                 ps.clearParameters();
             }
             ps.close();
-            c.close();
-            return flag;
+            c.close();      
+            return flag;        
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return false;
-        }
+        }       */
     }
 
 
 
     public ArrayList<SessionMaster> load()  {
-        ArrayList<SessionMaster> data = new ArrayList<SessionMaster>();
+      //  ArrayList<SessionMaster> data = new ArrayList<SessionMaster>();
         try
         {
-            Connection c = new CommonDB().getConnection();
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            
+            Query query = session.createQuery("from SessionMaster where orgcode = '"+userBean.getUserOrgCode()+"'");
+            ArrayList<SessionMaster> data = (ArrayList<SessionMaster>)query.list();
+            session.getTransaction().commit();
+            return data;
+        }    
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }
+            
+         /*   
+          try
+        {    Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select * from session_master where ss_org_id='"+userBean.getUserOrgCode()+"'");
             rs = ps.executeQuery();
 
@@ -231,22 +404,43 @@ public class SessionDB {
             }
             rs.close();
             ps.close();
-            c.close();
-            //return data;
+            c.close();      
+            return data;    
 
         }
         catch(Exception e)
         {
             e.printStackTrace();
+            return null;
 
-        }
-        return data;
+        }       */
+        
     }
     public String StartDateOfCurrentSession()
     {
         try
         {
-            Connection c = new CommonDB().getConnection();
+            session = helper.getSessionFactory().openSession();
+            Query query = session.createQuery("from SessionMaster where current = 1 and orgcode = '"+userBean.getUserOrgCode()+"'");
+            SessionMaster data = (SessionMaster)query.list();
+            
+            String startDate = data.getStartDate();
+            
+            session.getTransaction().commit();
+            return startDate;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }
+      
+        
+       /*   try
+        {  Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select * from session_master where ss_current=1 and ss_org_id='"+userBean.getUserOrgCode()+"'");
             rs = ps.executeQuery();
             rs.next();
@@ -254,13 +448,13 @@ public class SessionDB {
             rs.close();
             ps.close();
             c.close();
-            return startDate;
+            return startDate;       
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return null;
-        }
+        }       */
     }
 
 }

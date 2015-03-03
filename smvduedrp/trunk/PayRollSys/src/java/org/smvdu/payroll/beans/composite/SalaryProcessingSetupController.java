@@ -58,8 +58,8 @@ public class SalaryProcessingSetupController {
         for(SalaryProcessingSetup sps : salpromode)
         {
              //System.out.println("activeSalaryprocessmode: "+sps.getsalaryprocessmode());
-             String salpromode=sps.getsalaryprocessmode();
-             sps.setsalaryprocessmode(salpromode);
+             String salpromode=sps.getSalaryprocessmode();
+             sps.setSalaryprocessmode(salpromode);
              
             //System.out.println("activeSalaryprocessmode:line63 "+sps.getsalaryprocessmode());
         }

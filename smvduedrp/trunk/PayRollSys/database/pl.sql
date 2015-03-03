@@ -114,11 +114,26 @@ CREATE TABLE `department_master` (
   `dept_nickname` varchar(80) NOT NULL,
   `org_code` int(11) default NULL,
   PRIMARY KEY  (`dept_code`),
+  UNIQUE KEY `dept_dcode` (`dept_dcode`,`org_code`),
+  UNIQUE KEY `dept_name` (`dept_name`,`org_code`),	
+  KEY `org_code` (`org_code`),
+  CONSTRAINT `department_master_fk` FOREIGN KEY (`org_code`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*
+CREATE TABLE `department_master` (
+  `dept_code` int(11) NOT NULL auto_increment,
+  `dept_dcode` varchar(80) NOT NULL,
+  `dept_name` varchar(100) NOT NULL,
+  `dept_nickname` varchar(80) NOT NULL,
+  `org_code` int(11) default NULL,
+  PRIMARY KEY  (`dept_code`),
   UNIQUE KEY `dept_name` (`dept_name`),
   UNIQUE KEY `dept_dcode` (`dept_dcode`),
   KEY `org_code` (`org_code`),
   CONSTRAINT `department_master_fk` FOREIGN KEY (`org_code`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
 
 #
 # Structure for the `designation_master` table : 
@@ -129,7 +144,23 @@ CREATE TABLE `designation_master` (
   `desig_dcode` varchar(80) NOT NULL,
   `desig_name` varchar(100) NOT NULL,
   `desig_nickname` varchar(80) NOT NULL,
- /*`d_org_id` int(11) NOT NULL default '1',*/
+/* `d_org_id` int(11) NOT NULL default '1',	*/				
+  `d_org_id` int(11) default NULL, 
+  PRIMARY KEY  (`desig_code`),
+  UNIQUE KEY `desig_dcode` (`desig_dcode`,`d_org_id`),  
+  UNIQUE KEY `desig_name` (`desig_name`, `d_org_id`),	
+  KEY `d_org_id` (`d_org_id`),
+  CONSTRAINT `designation_master_ibfk_1` FOREIGN KEY (`d_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+/*
+CREATE TABLE `designation_master` (
+  `desig_code` int(11) NOT NULL auto_increment,
+  `desig_dcode` varchar(80) NOT NULL,
+  `desig_name` varchar(100) NOT NULL,
+  `desig_nickname` varchar(80) NOT NULL,
+ `d_org_id` int(11) NOT NULL default '1',				// this line is commented
   `d_org_id` int(11) default NULL, 
   PRIMARY KEY  (`desig_code`),
   UNIQUE KEY `desig_name` (`desig_name`),
@@ -137,6 +168,7 @@ CREATE TABLE `designation_master` (
   KEY `d_org_id` (`d_org_id`),
   CONSTRAINT `designation_master_ibfk_1` FOREIGN KEY (`d_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
 
 #
 # Structure for the `salary_grade_master` table : 
@@ -149,15 +181,32 @@ CREATE TABLE `salary_grade_master` (
   `grd_min` int(11) NOT NULL default '0',
   `grd_gp` int(11) NOT NULL default '5000',
   `grd_org_id` int(11) NOT NULL default '1',
+  PRIMARY KEY  (`grd_code`),
+  KEY `grd_code` (`grd_code`),
+  UNIQUE KEY `grd_name` (`grd_name`,`grd_org_id`),	
+  KEY `grd_org_id` (`grd_org_id`),
+  CONSTRAINT `salary_grade_master_fk1` FOREIGN KEY (`grd_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+/*
+CREATE TABLE `salary_grade_master` (
+  `grd_code` int(11) NOT NULL auto_increment,
+  `grd_name` varchar(20) NOT NULL,
+  `grd_max` int(11) NOT NULL default '0',
+  `grd_min` int(11) NOT NULL default '0',
+  `grd_gp` int(11) NOT NULL default '5000',
+  `grd_org_id` int(11) NOT NULL default '1',
   PRIMARY KEY  (`grd_code`,`grd_name`),
   KEY `grd_code` (`grd_code`),
   KEY `grd_org_id` (`grd_org_id`),
   CONSTRAINT `salary_grade_master_fk1` FOREIGN KEY (`grd_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
 
 #
 # Structure for the `employee_master` table : 
-#
+#																						
 
 CREATE TABLE `employee_master` (
   `emp_code` varchar(30) NOT NULL,
@@ -530,10 +579,28 @@ CREATE TABLE `employee_type_master` (
   PRIMARY KEY  (`emp_type_id`),
   KEY `emp_type_id` (`emp_type_id`),
   UNIQUE KEY `emp_tcode` (`emp_tcode`,`emp_org_id`),
+  UNIQUE KEY `emp_type_name` (`emp_type_name`,`emp_org_id`),	
   KEY `emp_org_id` (`emp_org_id`),
   CONSTRAINT `employee_type_master_fk1` FOREIGN KEY (`emp_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+/*
+CREATE TABLE `employee_type_master` (
+  `emp_type_id` int(11) NOT NULL auto_increment,
+  `emp_tcode` varchar(80) NOT NULL,
+  `emp_type_name` varchar(100) NOT NULL,
+  `emp_type_nickname` varchar(80),
+  `emp_pf_applies` tinyint(4) NOT NULL default '1',
+  `emp_maxpf_applies` bigint(100),
+  `emp_org_id` int(11) NOT NULL,
+  PRIMARY KEY  (`emp_type_id`),
+  KEY `emp_type_id` (`emp_type_id`),
+  UNIQUE KEY `emp_tcode` (`emp_tcode`,`emp_org_id`),
+  KEY `emp_org_id` (`emp_org_id`),
+  CONSTRAINT `employee_type_master_fk1` FOREIGN KEY (`emp_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
 
 /*
 CREATE TABLE `employee_type_master` (

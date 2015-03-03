@@ -43,12 +43,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Financial Years</title>
     </head>
     <body>
         <f:view>
             <rich:panel header="Existing Financial years">
-                <h:panelGrid columns="2">
+                <div align="right">
+                    <a4j:commandLink   onclick="javascript:window.print();" style="margin-right:10px;">
+                    <h:graphicImage value="/img/Printer-icon.png" alt="Print"  /> 
+                    </a4j:commandLink>
+                </div>
+                <h:panelGrid columns="3">
                     <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
                     <rich:messages>
                         <f:facet name="infoMarker">

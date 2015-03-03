@@ -90,9 +90,16 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
                 session.update(emp);
                 session.getTransaction().commit();
             }
-            
+            return null;         
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
             session.close();
-            
+        }
             
             /*      Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update employee_type_master set emp_tcode=?, emp_type_name=?, emp_type_nickname=?"
@@ -111,15 +118,16 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
                 ps.clearParameters();
             }
             ps.close();
-            c.close();          */
+            c.close();          
         return null;
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return e;
-        }
+        }       */
     }
+    
     public ArrayList<EmployeeType> loadTypes()   {
         try
         {
@@ -130,8 +138,17 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
             Query query = session.createQuery("from EmployeeType where orgcode = '"+userBean.getUserOrgCode()+"'");
             ArrayList<EmployeeType> data = (ArrayList<EmployeeType>)query.list();
             session.getTransaction().commit();
+            return data;
+        }
+        
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
             session.close();
-            
+        }
             
             /*   Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select * from employee_type_master where emp_org_id = '"+userBean.getUserOrgCode()+"'");
@@ -150,14 +167,14 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
             }
             rs.close();
             ps.close();
-            c.close();          */
+            c.close();          
             return data;
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return null;
-        }
+        }       */
     }
     //public Exception save(String empName,String empNickname,boolean pf,int maxpf) 
     public Exception save(EmployeeType emptype){
@@ -177,7 +194,16 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
             session.beginTransaction();
             session.save(emp);
             session.getTransaction().commit();
+            return null;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
             session.close();
+        }
             
             
             /*      Connection c = new CommonDB().getConnection();
@@ -190,7 +216,7 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
             ps.setInt(6, userBean.getUserOrgCode());
             ps.executeUpdate();
             ps.close();
-            c.close();          */
+            c.close();          
             
             
             return null;
@@ -199,7 +225,7 @@ public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
         {
             e.printStackTrace();
             return e;
-        }
+        }           */
 
     }
 

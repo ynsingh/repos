@@ -112,9 +112,24 @@ public class DesignationDB {
                 session.update(desig);
                 session.getTransaction().commit();
            }
-                session.close();
+        
+           return null;
+        }
            
-        /*    Connection c = new CommonDB().getConnection();
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
+            session.close();
+        }
+       
+           
+     /* try
+        {
+                
+            Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update designation_master set desig_dcode=?, desig_name=?, desig_nickname=?" 
                                 +" where desig_code=? and d_org_id='"+orgCode+"'");
             for(Designation dp : depts)
@@ -127,7 +142,7 @@ public class DesignationDB {
                 ps.clearParameters();
             }
             ps.close();
-            c.close();  */
+            c.close();  
             return null;
         }
         catch(Exception e)
@@ -135,7 +150,7 @@ public class DesignationDB {
            e.printStackTrace();
            return e;
             //Logger.getAnonymousLogger().log(Log., e.getMessage());
-        }
+        }           */
     }
     public ArrayList<Designation> loadDesignations()   {
         try
@@ -147,9 +162,21 @@ public class DesignationDB {
             Query query = session.createQuery("from Designation where orgcode = '"+orgCode+"'");
             ArrayList<Designation> data = (ArrayList<Designation>)query.list();
             session.getTransaction().commit();
+            return data;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
             session.close();
+        }
                        
-    /*        Connection c = new CommonDB().getConnection();
+    /*  try
+        {
+            
+            Connection c = new CommonDB().getConnection();
             //ps=c.prepareStatement("select * from designation_master where d_org_id = '"+orgCode+"'");
             //modify 16oct 2014 for dcode and nickname
             ps=c.prepareStatement("select * from designation_master where d_org_id = '"+orgCode+"'");
@@ -166,14 +193,14 @@ public class DesignationDB {
             }
             rs.close();
             ps.close();
-            c.close();` */
+            c.close();` 
             return data;        
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return null;
-        }
+        }               */
     }
     //public Exception save(String desigName)   {
     public Exception save(Designation desig)   {
@@ -191,10 +218,24 @@ public class DesignationDB {
             session.beginTransaction();
             session.save(deg);
             session.getTransaction().commit();
+            
+            return null;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
             session.close();
+        }
            
             
-         /*   Connection c = new CommonDB().getConnection();
+         /* 
+        try
+        {
+        
+            Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into designation_master(desig_dcode, desig_name, desig_nickname, d_org_id) values(?,?,?,?)");
             ps.setString(1, desig.getDCode());
             ps.setString(2, desig.getName().toUpperCase());
@@ -202,14 +243,14 @@ public class DesignationDB {
             ps.setInt(4, orgCode);
             ps.executeUpdate();
             ps.close();
-            c.close();  */
+            c.close();  *
             return null;
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return e;
-        }
+        }               */
 
     }
     
@@ -247,11 +288,26 @@ public class DesignationDB {
                 session.getTransaction().commit();
            }
             reader.close();
+            
+            return null;
+        }
+       
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
             session.close();
+        }           
             
             
             
-      /*      Connection c = new CommonDB().getConnection();
+      /*   
+        try
+        {
+        
+            Connection c = new CommonDB().getConnection();
             
             ps=c.prepareStatement("insert into designation_master(desig_dcode, desig_name, desig_nickname, d_org_id) values(?,?,?,?)");
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
@@ -282,14 +338,14 @@ public class DesignationDB {
             }
             reader.close();
             ps.close();
-            c.close();      */
+            c.close();      
             return null;
         }
         catch(Exception e)
         {
             e.printStackTrace();
             return e;
-        }
+        }           */
 
     }
 

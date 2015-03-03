@@ -10,6 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.SalaryProcessingSetup;
 
@@ -49,16 +52,19 @@ import org.smvdu.payroll.beans.setup.SalaryProcessingSetup;
 */
  
 public class SalaryProcessingSetupDB {
-        private int orgCode;
+        private int orgcode;
         private PreparedStatement ps;
         private ResultSet rs;
+        private HibernateUtil helper;
+        private Session session;
+        
         
         
         public SalaryProcessingSetupDB() {
             try {
             
                     UserInfo uf = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
-                    orgCode = uf.getUserOrgCode();
+                    orgcode = uf.getUserOrgCode();
             } 
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -67,17 +73,44 @@ public class SalaryProcessingSetupDB {
         
         public  ArrayList<SalaryProcessingSetup> activeSalaryprocessmode()
         {
+            
+         try {
+            session =helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("from SalaryProcessingSetup where status = 1 and orgcode = '"+orgcode+"'");
+            ArrayList<SalaryProcessingSetup> data = (ArrayList<SalaryProcessingSetup>)query.list();
+            ArrayList<SalaryProcessingSetup> activemode =  new ArrayList<SalaryProcessingSetup>();
+                    SalaryProcessingSetup sps = new SalaryProcessingSetup();
+            for(SalaryProcessingSetup s : data)
+            {
+                sps.setSalaryprocessmode(s.getSalaryprocessmode());
+                activemode.add(sps);
+            }
+            session.getTransaction().commit();
+            return activemode;
+         }
+         catch(Exception ex){
+            session.getTransaction().rollback();
+            ex.printStackTrace();
+            return null;
+         }
+         finally{
+            session.close();
+        }           
+            
+            
+        /*    
                 try
                 {
                     ArrayList<SalaryProcessingSetup> salmode = new ArrayList<SalaryProcessingSetup>();
                     Connection connection = new CommonDB().getConnection(); 
-                    ps = connection.prepareStatement("select salary_process_mode  from Salary_processing_setup where flag=1 and org_id='"+orgCode+"' ");
+                    ps = connection.prepareStatement("select salary_process_mode  from Salary_processing_setup where flag=1 and org_id='"+orgcode+"' ");
                     rs = ps.executeQuery();
             
                     while(rs.next())
                     {
                             SalaryProcessingSetup salprosetup = new SalaryProcessingSetup();
-                            salprosetup.setsalaryprocessmode(rs.getString(1));
+                            salprosetup.setSalaryprocessmode(rs.getString(1));
                             salmode.add(salprosetup );
                     }
 
@@ -91,25 +124,44 @@ public class SalaryProcessingSetupDB {
                 {
                     ex.printStackTrace();
                     return null;
-                }
+                }              */
         }
         
         
         public ArrayList<SalaryProcessingSetup> AllDetailSalaryProcessMode()
         {
-                try
+         
+           try
+            {
+                session = helper.getSessionFactory().openSession();
+                session.beginTransaction();
+                Query query = session.createQuery("from SalaryProcessingSetup where orgcode = '"+orgcode+"'");
+                ArrayList<SalaryProcessingSetup> data = (ArrayList<SalaryProcessingSetup>)query.list();
+                session.getTransaction().commit();
+                return data;           
+            }
+            catch(Exception e){
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                return null;
+            }
+            finally{
+                session.close();
+            }           
+        /*                
+                  try
                 {
                         ArrayList<SalaryProcessingSetup> salmode = new ArrayList<SalaryProcessingSetup>();
                         Connection connection = new CommonDB().getConnection(); 
                         PreparedStatement pst;
                         ResultSet rst;
-                        pst = connection.prepareStatement("select * from Salary_processing_setup where org_id='"+orgCode+"' ");
+                        pst = connection.prepareStatement("select * from Salary_processing_setup where org_id='"+orgcode+"' ");
                         rst = pst.executeQuery();
                         while(rst.next())
                         {
                                 SalaryProcessingSetup salprosetup = new SalaryProcessingSetup();
                                 salprosetup.setId(rst.getInt(1));
-                                salprosetup.setsalaryprocessmode(rst.getString(2));
+                                salprosetup.setSalaryprocessmode(rst.getString(2));
                                 salprosetup.setStatus(rst.getInt(3));
                                 salmode.add(salprosetup ); 
                         }
@@ -122,10 +174,41 @@ public class SalaryProcessingSetupDB {
                 {
                     ex.printStackTrace();
                     return null;
-                }
+                }                */  
         }    
  
         public Exception update(ArrayList<SalaryProcessingSetup> salprosetup)    {
+          
+            try{
+                int st=0;
+                session = helper.getSessionFactory().openSession();
+                
+                for(SalaryProcessingSetup sps : salprosetup)
+                {
+                    if(sps.getStatus()==1){
+                            st=0;   
+                    }
+                    else{
+                            st=1;
+                    }
+                    session.beginTransaction();
+                    SalaryProcessingSetup data = (SalaryProcessingSetup)session.get(SalaryProcessingSetup.class, sps.getId());
+                    data.setStatus(st);
+                    session.update(data);
+                    session.getTransaction().commit();
+                }
+                return null;         
+            }
+            catch(Exception e){
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                return e;
+            }
+            finally{
+                session.close();
+            }      
+                
+           /* 
                 try
                 {
                         int st=0;
@@ -138,7 +221,7 @@ public class SalaryProcessingSetupDB {
                                 else{
                                         st=1;
                                 }
-                                ps=c.prepareStatement("update Salary_processing_setup set flag='"+st+"' where salary_process_mode ='"+sps.getsalaryprocessmode()+"' and org_id = '"+orgCode+"'");
+                                ps=c.prepareStatement("update Salary_processing_setup set flag='"+st+"' where salary_process_mode ='"+sps.getSalaryprocessmode()+"' and org_id = '"+orgcode+"'");
                                 //System.out.println(" updation===activeSalaryprocessmode:==== "+sps.getStatus());
                                 //System.out.println("updation===activeSalaryprocessmode:===="+sps.getsalaryprocessmode());
                                 ps.executeUpdate();
@@ -152,7 +235,7 @@ public class SalaryProcessingSetupDB {
                 {
                     return e;
            
-                }
+                }          */
         }
         
     

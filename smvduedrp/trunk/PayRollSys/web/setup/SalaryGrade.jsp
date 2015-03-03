@@ -22,17 +22,21 @@
         <link rel="stylesheet" type="text/css" href="css/reset.css"/>
         <link rel="stylesheet" type="text/css" href="css/subpage.css"/>
         <link rel="stylesheet" type="text/css" href="css/table.css"/>
+        <title>Pay Scales</title>
     </head>
     <body class="subpage" id="">
 
         <f:view>
             <rich:panel header="Existing Pay Scales">
-                <div align="right" >                                            
+                <div align="right" >    
+                <a4j:commandLink   onclick="javascript:window.print();" style="margin-right:10px;">
+                <h:graphicImage value="/img/Printer-icon.png" alt="Print"  /> 
+                </a4j:commandLink>
                 <a4j:commandLink ajaxSingle="true" reRender="helppnl" onclick="Richfaces.showModalPanel('hnl');" >
                 <h:graphicImage value="/img/help-icon.png" alt="Help" /> 
                 </a4j:commandLink>
                  </div>
-                <h:panelGrid columns="2">
+                <h:panelGrid columns="3">
                     <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
                     <h:commandButton onclick="Richfaces.showModalPanel('dnl');" value="Upload Pay Band List"/><br/>
                     
@@ -96,15 +100,15 @@
             </rich:panel>
 
             <rich:modalPanel id="pnl">
-                  <f:facet name="header">
+                    <f:facet name="header">
                         <h:panelGroup>
                             <h:outputText value="Add New Pay Scale"></h:outputText>
                         </h:panelGroup>
                     </f:facet>
-                  <f:facet name="controls">
+                    <f:facet name="controls">
                         <h:panelGroup>
-                            <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelink"/>
-                            <rich:componentControl for="pnl" attachTo="hidelink" operation="hide" event="onclick"/>
+                            <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelinkpnl"/>
+                            <rich:componentControl for="pnl" attachTo="hidelinkpnl" operation="hide" event="onclick"/>
                          </h:panelGroup>
                     </f:facet>
                     <h:form>
@@ -139,15 +143,24 @@
                 <%--</rich:panel>--%>
             </rich:modalPanel>
                     
-                     <rich:modalPanel  width="500" height="240" autosized="true" id="dnl">
+            <rich:modalPanel  width="400" height="150" autosized="true" id="dnl">
                 
                 <%--file upload for departments---------------------- --%>
-                <f:facet name="controls">
-                    <h:graphicImage value="/img/cls.png" style="cursor:pointer"
-                                    onclick="Richfaces.hideModalPanel('dnl')" />
+                
+                <f:facet name="header">
+                    <h:panelGroup>
+                        <h:outputText value="Upload File"></h:outputText>
+                    </h:panelGroup>
                 </f:facet>
-               <h:form>
-              <h:panelGrid columns="2" columnClasses="top,top">
+                
+                <f:facet name="controls">
+                    <h:panelGroup>
+                        <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelinkdnl"/>
+                        <rich:componentControl for="dnl" attachTo="hidelinkdnl" operation="hide" event="onclick"/>
+                    </h:panelGroup>
+                </f:facet>
+                <h:form>
+                <h:panelGrid columns="2" columnClasses="top,top">
                   <rich:fileUpload fileUploadListener="#{SalaryGradeBean.listener}"
                 maxFilesQuantity="#{FileUploadBean.uploadsAvailable}"
                 id="upload"
@@ -156,23 +169,30 @@
                       <a4j:support event="onuploadcomplete" reRender="tbl"/>
                   </rich:fileUpload>
                
-                 </h:panelGrid>
+                </h:panelGrid>
                 </h:form>
                 
            <%---file upload END================================= --%>     
-                </rich:modalPanel>
+            </rich:modalPanel>
                  
                  
-               <rich:modalPanel id="hnl" autosized="true" domElementAttachment="parent" width="700" height="400">
-               <f:facet name="controls">
-                    <h:graphicImage value="/img/cls.png" style="cursor:pointer"
-                                    onclick="Richfaces.hideModalPanel('hnl')" />
+            <rich:modalPanel id="hnl" autosized="true" domElementAttachment="parent" width="700" height="400">
+                <f:facet name="header">
+                    <h:panelGroup>
+                        <h:outputText value="Help"></h:outputText>
+                    </h:panelGroup>
+                </f:facet>
+                
+                <f:facet name="controls">                                    
+                    <h:panelGroup>
+                        <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelinkhnl"/>
+                        <rich:componentControl for="hnl" attachTo="hidelinkhnl" operation="hide" event="onclick"/>
+                    </h:panelGroup>
                 </f:facet>
                 
                 <h:form>
-                    <rich:panel header="Help">
                     <h:panelGrid  id="helppnl">
-                        <h:outputText style="font-size:1.5em;" value="Instruction for upload a csv file."/>
+                    <h:outputText style="font-size:1.5em;" value="Instruction for upload a csv file."/>
 
                     <h:outputText style="font-size:1.5em;" value=" 1. Open LibreOffice Calc in ubuntu and Excel in windows."/>
 
@@ -190,7 +210,6 @@
                     <h:outputText style="font-size:1.5em;"  value="3. Save as csv format."/>
                                
                     </h:panelGrid>
-                    </rich:panel>
                     <h:commandButton value="Close" onclick="#{rich:component('hnl')}.hide(); return false;" />
                 </h:form>
                 </rich:modalPanel>

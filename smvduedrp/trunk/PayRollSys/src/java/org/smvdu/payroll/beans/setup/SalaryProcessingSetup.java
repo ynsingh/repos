@@ -9,7 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.SalaryProcessingSetupDB;
@@ -51,7 +55,15 @@ import org.smvdu.payroll.beans.db.SalaryProcessingSetupDB;
  */
 public class SalaryProcessingSetup  implements Serializable{
     
-    private int orgCode;
+    private int orgcode;
+
+    public int getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
+    }
     private String imgUrl;
     private int status;
     private String salarypromode;
@@ -60,11 +72,13 @@ public class SalaryProcessingSetup  implements Serializable{
     private boolean inactive;
     PreparedStatement pst;
     ResultSet rst;
+    private HibernateUtil helper;
+    private Session session;
     
     public SalaryProcessingSetup()
     {
         UserInfo uf = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
-        orgCode = uf.getUserOrgCode();
+        orgcode = uf.getUserOrgCode();
                 
     }
     
@@ -82,7 +96,7 @@ public class SalaryProcessingSetup  implements Serializable{
     public boolean getInactive() {
         activeStatussecond();
         //System.out.println("is status=get====inactive======: "+inactive);
-        return inactive ;
+        return inactive;
     }
     
     public void setInactive(boolean inactive) {
@@ -108,12 +122,12 @@ public class SalaryProcessingSetup  implements Serializable{
     
     private String salaryprocessmode;
     
-    public String getsalaryprocessmode() {
+    public String getSalaryprocessmode() {
         //System.out.println("salpromode ----in new check: "+salaryprocessmode);
         return salaryprocessmode;
     }
 
-    public void setsalaryprocessmode(String salaryprocessmode) {
+    public void setSalaryprocessmode(String salaryprocessmode) {
         //System.out.println("salpromode ----in new check: "+salaryprocessmode);
         
         this.salaryprocessmode = salaryprocessmode;
@@ -127,7 +141,7 @@ public class SalaryProcessingSetup  implements Serializable{
         this.Id = Id;
     }
     
-    private ArrayList<SalaryProcessingSetup> salpromode ;
+    private ArrayList<SalaryProcessingSetup> salpromode;
     
     public ArrayList<SalaryProcessingSetup> getsalpromode()
     {        
@@ -139,15 +153,43 @@ public class SalaryProcessingSetup  implements Serializable{
         this.salpromode = salpromode;
     }
 
-    public void  activeStatussecond()
+    public void activeStatussecond()
     {
-        try
+        try {
+          boolean b = false;
+          String spb = "Salary Processing with Budget";
+          session = helper.getSessionFactory().openSession();
+          session.beginTransaction();
+          Query query = session.createQuery("select status from SalaryProcessingSetup where salaryprocessmode = '"+spb+"' and orgcode = '"+orgcode+"' ");
+          ArrayList<Integer> flag =  (ArrayList<Integer>)query.list();
+          session.getTransaction().commit();
+               for(Integer f : flag)
+                if(f==1) {
+                    b=false;               
+                } 
+                else {
+                    b=true;
+                }
+          
+            setInactive(b);
+      } 
+      catch(Exception e) {
+          session.getTransaction().rollback();
+          e.printStackTrace();
+
+      }     
+      finally{
+          session.close();
+      }     
+                
+   /*     
+            try
         {
                 boolean b=false;
                 String spb = "Salary Processing with Budget";
                 Connection connection = new CommonDB().getConnection(); 
                 pst = connection.prepareStatement("select flag from Salary_processing_setup"
-                       +" where salary_process_mode='"+spb+"' and org_id='"+orgCode+"' ");
+                       +" where salary_process_mode='"+spb+"' and org_id='"+orgcode+"' ");
                 rst = pst.executeQuery();
                 rst.next();
                 //System.out.println("second=====stat=============="+rst.getInt(1));
@@ -165,18 +207,46 @@ public class SalaryProcessingSetup  implements Serializable{
         {
             ex.printStackTrace();
                     //return false;
-        }
+        }              */
     }
       
     public void  activeStatusfirst()
     {
-        try
+     
+        try {
+          boolean b = false;
+          String spb = "Salary Processing";
+          session = helper.getSessionFactory().openSession();
+          session.beginTransaction();
+          Query query = session.createQuery("select status from SalaryProcessingSetup where salaryprocessmode = '"+spb+"' and orgcode = '"+orgcode+"' ");
+          ArrayList<Integer> flag =  (ArrayList<Integer>)query.list();
+          session.getTransaction().commit();
+          for(Integer f : flag) {
+             if(f==1) {
+                 b=false;               
+             } 
+             else {
+                 b=true;
+             }
+          }      
+          setActive(b);
+
+      } 
+      catch(Exception e) {
+          session.getTransaction().rollback();
+          e.printStackTrace();
+      }     
+      finally{
+          session.close();
+      }         
+    /*    
+          try
         {
                 boolean b=false;
                 String spb = "Salary Processing";
                 Connection connection = new CommonDB().getConnection(); 
                 pst = connection.prepareStatement("select flag from Salary_processing_setup"
-                         +" where salary_process_mode='"+spb+"' and org_id='"+orgCode+"' ");
+                         +" where salary_process_mode='"+spb+"' and org_id='"+orgcode+"' ");
                 rst = pst.executeQuery();
                 rst.next();
                 //System.out.println("second=====stat=============="+rst.getInt(1));
@@ -193,6 +263,6 @@ public class SalaryProcessingSetup  implements Serializable{
         catch(Exception ex)
         {
             ex.printStackTrace();
-        }
+        }       */               
     }
 }

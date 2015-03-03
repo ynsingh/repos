@@ -15,14 +15,19 @@
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>JSP Page</title>
+            <title>Bank Profiles</title>
             <%--<link type="text/css" rel="stylesheet" href="../bankDetails.css"/>--%>  
         </head>
         <body>
             <rich:panel header="Add New Bank Profile">
-                <h:panelGrid columns="1" id="bank">
+                <div align="right">   
+                    <a4j:commandLink   onclick="javascript:window.print();" style="margin-right:10px;">
+                    <h:graphicImage value="/img/Printer-icon.png" alt="Print"  /> 
+                    </a4j:commandLink>
+                </div>
+                <h:panelGrid columns="2" id="bank">
                    <%-- <h:column>--%>
-                        <h:commandButton value="Add New Bank Profile" onclick="Richfaces.showModalPanel('bankd');"/>
+                        <h:commandButton value="Add New Bank Profile" onclick="Richfaces.showModalPanel('bankd');"/></br>
                         <rich:messages  >
                             <f:facet name="infoMarker">
                                 <h:graphicImage url="/img/success.png"/>
