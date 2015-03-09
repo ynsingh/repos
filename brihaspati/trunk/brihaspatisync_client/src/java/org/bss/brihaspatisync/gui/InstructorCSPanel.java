@@ -266,17 +266,17 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
 			/********************************MODIFIED BY PRATIBHA*********************/
 
-                        if((instCourseCombo.getSelectedItem()).equals("--Show All--")){
+                 //       if((instCourseCombo.getSelectedItem()).equals("--Show All--")){
                                 upLabel[i]=new JLabel("<html><Font color=black><u>"+Language.getController().getLangValue("InstructorCSPanel.Update")+"</u></font></html>");
                                 upLabel[i].setEnabled(false);
                                 upLabel[i].removeMouseListener(this);
-                        }
-			else{
+                       // }
+		//	else{
                                 upLabel[i]=new JLabel("<html><Font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.Update")+"</u></font></html>");
                                 upLabel[i].addMouseListener(this);
                 		upLabel[i].setName("Update.Action");
                                 upLabel[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
-                        }
+                  //      }
 			
                         /******************************************************************************/
 			buttonPanel[i].add(upLabel[i]);
