@@ -101,7 +101,7 @@ public class AudioPlayer implements Runnable {
 						}	
                                 	}
                                        	mixed_byteThread.yield();
-                                       	mixed_byteThread.sleep(10);
+                                       	//mixed_byteThread.sleep(10);
                                 } catch(Exception ex) { System.out.println("Exception in AudioPlayer mixed_byteThread thread "+ex.getMessage());}
                    	}
               	}}).start();
@@ -119,10 +119,10 @@ public class AudioPlayer implements Runnable {
                                                                 sourceDataLine=org.bss.brihaspatisync.util.AudioUtilObject.getSourceLine();
                                                 }
                                                 playerThread.yield();
-						playerThread.sleep(5000);
-						stopThread();
+						//playerThread.sleep(5000);
+						//stopThread();
                                         }catch(Exception e){ System.out.println("Exception in AudioPlayer in run() method "+e.getMessage());}
-                                }
+                                }stopThread();
                         }
                 }).start();
 	}

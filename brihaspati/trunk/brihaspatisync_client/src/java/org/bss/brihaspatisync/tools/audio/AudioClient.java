@@ -120,7 +120,7 @@ public class AudioClient implements Runnable {
 				} else
 					StatusPanel.getController().setaudioClient("no");
 				runner.yield();
-				runner.sleep(100);
+				//runner.sleep(100);
 			} catch(Exception epe) {StatusPanel.getController().setaudioClient("no"); 	}
         	}
 		try {
