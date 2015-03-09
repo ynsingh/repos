@@ -1243,7 +1243,7 @@ var $ledgers = array();
                 $data_user_name= $this->session->userdata('user_name');
                 $this->db->from('bgas_acl')->where('username',$data_user_name)->where('atype','grp');
                 $heads = $this->db->get();
-                print_r(sizeof($heads));
+//                print_r(sizeof($heads));
                 $options = array();
                 $options[0] ="(Please Select)";
                 foreach ($heads->result() as $row1)

@@ -203,29 +203,32 @@ if ( ! function_exists('form_input_ledger'))
 
                 if(($userrole == 'administrator') || ($num_rows != "0"))
                 {
-		if ($type == 'bankcash')
-			$options = $CI->Ledger_model->get_all_ledgers_bankcash();
-		else if ($type == 'nobankcash')
-			$options = $CI->Ledger_model->get_all_ledgers_nobankcash();
-		else if ($type == 'reconciliation')
-			$options = $CI->Ledger_model->get_all_ledgers_reconciliation();
-		else
-			$options = $CI->Ledger_model->get_all_ledgers();
+			if ($type == 'bankcash')
+				$options = $CI->Ledger_model->get_all_ledgers_bankcash();
+			else if ($type == 'nobankcash')
+				$options = $CI->Ledger_model->get_all_ledgers_nobankcash();
+			else if ($type == 'reconciliation')
+				$options = $CI->Ledger_model->get_all_ledgers_reconciliation();
+			else
+				$options = $CI->Ledger_model->get_all_ledgers();
 
 		}
                 else
-                {
-                if ($type == 'bankcash')
-                        $options = $CI->Ledger_model->get_all_ledgers_bankcash();
-                else if ($type == 'nobankcash')
-                        $options = $CI->Ledger_model->get_all_ledgers_nobankcash();
-                else if ($type == 'reconciliation')
-                        $options = $CI->Ledger_model->get_all_ledgers_reconciliation();
-                else
-                {
-                        $options = $CI->Ledger_model->get_all_ledgers_permission();
-                        //        $options = $CI->Ledger_model->get_all_ledgers();
-                }
+                	{
+	                if ($type == 'bankcash')
+        	                $options = $CI->Ledger_model->get_all_ledgers_bankcash();
+                	else if ($type == 'nobankcash')
+                        	$options = $CI->Ledger_model->get_all_ledgers_nobankcash();
+	                else if ($type == 'reconciliation')
+        	                $options = $CI->Ledger_model->get_all_ledgers_reconciliation();
+                	else if($num_rows >0)
+                	{
+                        	$options = $CI->Ledger_model->get_all_ledgers_permission();
+                	}
+                	else
+                	{
+                       		$options = $CI->Ledger_model->get_all_ledgers();
+                	}
 
                 }
 
