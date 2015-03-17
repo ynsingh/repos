@@ -175,7 +175,8 @@ public class MainWindow  extends JFrame implements ActionListener {
                 } else if(e.getActionCommand().equals("VideoServer")) {
                         new VideoServerConfigure();
                 } else if(e.getActionCommand().equals("Logout")) {
-			new Logout().sendLogoutRequest();	
+			if(org.bss.brihaspatisync.util.ThreadController.getThreadFlag())
+			   new Logout().sendLogoutRequest();	
                         desktop.removeAll();
                         StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog6"));
 
@@ -188,7 +189,8 @@ public class MainWindow  extends JFrame implements ActionListener {
                 	content.validate();
                 	content.repaint();
             	} else if(e.getActionCommand().equals("Sessionout")) {
-			new Logout().sendLogoutRequest();
+			if(org.bss.brihaspatisync.util.ThreadController.getThreadFlag())
+			   new Logout().sendLogoutRequest();
 			desktop.removeAll();
                         desktop.setBackground(new Color(220,220,220));
                         desktop.add(new CourseSessionWindow());
@@ -201,7 +203,8 @@ public class MainWindow  extends JFrame implements ActionListener {
          	}else if(e.getActionCommand().equals("Exit")) {
 			int choice = JOptionPane.showOptionDialog(null,"Do you really want to exit the system", "Exit", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
                                         if(choice == JOptionPane.YES_OPTION){
-						new Logout().sendLogoutRequest();
+						if(org.bss.brihaspatisync.util.ThreadController.getThreadFlag())
+			                            new Logout().sendLogoutRequest();
                 		        	System.exit(0);
 					}
 		}else if(e.getActionCommand().equals("Start-Recorder")) {
