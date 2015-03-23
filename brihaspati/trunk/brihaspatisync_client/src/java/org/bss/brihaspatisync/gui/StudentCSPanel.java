@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * StudentCSPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur.
+ * Copyright (c) 2011,2015 ETRG, IIT Kanpur.
  */
 
 import java.awt.BorderLayout;
@@ -281,6 +281,9 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 					lect_id=courseid.get(i).toString();
 					// store this lect_id in client objects for later use by this client.
                                         ClientObject.setLectureID(lect_id);
+                                        ClientObject.setLectureInfo(lectinfoVector);
+                                        ClientObject.setLectureInfoIndex(i);
+
 					// store role in client objects for later use by this client.
 					if(!((ClientObject.getUserRole()).equals("student")))
                                                 ClientObject.setUserRole("student");
@@ -298,6 +301,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 				for(int i=0;i<descLabel.length;i++) {
 					if(ev.getSource()==descLabel[i]){
                        	  			LectureInfo info=new LectureInfo(i,lectinfoVector);
+
                     			}
         			}
 			}catch(Exception e){}	 	

@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.util;
  * ClientObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2010-2011-2012,2013 ETRG, IIT Kanpur.
+ * Copyright (c) 2010-2011-2012,2013,2015 ETRG, IIT Kanpur.
  */
 
 import java.util.Vector;
@@ -115,8 +115,7 @@ public class ClientObject {
 	 * from HttpCommManager.
          */
 	public static Vector getInstSessionList(){
-		return HttpCommManager.getInstSessionList();
-        }
+		return HttpCommManager.getInstSessionList();        }
 
      	/**
          * This method is used to get user name of this client which is used to login authentication from login window.
@@ -237,11 +236,12 @@ public class ClientObject {
                 return LectureInfo;
         }
 	
-	public static void setLectureInfoIndex(int LectureInfoindex){
-                LectureInfoindex=LectureInfoindex;
+	public static void setLectureInfoIndex(int i){
+                LectureInfoindex=i;
         }
 	
         public static int getLectureInfoIndex(){
+
                 return LectureInfoindex;
         }
 	

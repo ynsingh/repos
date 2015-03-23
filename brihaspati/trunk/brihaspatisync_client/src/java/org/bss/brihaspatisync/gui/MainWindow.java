@@ -17,12 +17,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.ActionListener;
-
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -49,13 +46,12 @@ public class MainWindow  extends JFrame implements ActionListener {
 	private JMenuItem menuItem5;
 	private JMenuItem menuItem6;
 	private JMenuItem menuItem7;
-	
 	private static Container content=null;
 	private static MainWindow fw=null;
 	private static JDesktopPane desktop=null;
 	private ClassLoader clr= this.getClass().getClassLoader();
 
-	/**
+	/*e
 	 * Controller for class.
 	 */
 	
@@ -182,19 +178,22 @@ public class MainWindow  extends JFrame implements ActionListener {
 
 			desktop.setBackground(new Color(220,220,220));
 			menuItem1.setEnabled(false);
-	                menuItem2.setEnabled(false);	
+	                menuItem2.setEnabled(false);
 			desktop.add(new LoginWindow());
 			content.add(desktop,BorderLayout.CENTER);
                         org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);
                 	content.validate();
                 	content.repaint();
             	} else if(e.getActionCommand().equals("Sessionout")) {
+                         
 			if(org.bss.brihaspatisync.util.ThreadController.getThreadFlag())
 			   new Logout().sendLogoutRequest();
+                          
 			desktop.removeAll();
                         desktop.setBackground(new Color(220,220,220));
                         desktop.add(new CourseSessionWindow());
                         content.add(desktop,BorderLayout.CENTER);
+                        menuItem7.setEnabled(false);
 			org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);
                         content.validate();
                         content.repaint();
@@ -210,7 +209,8 @@ public class MainWindow  extends JFrame implements ActionListener {
 		}else if(e.getActionCommand().equals("Start-Recorder")) {
 			 // Action code for start recorder.
                 } else if(e.getActionCommand().equals("LectureInfo")) {
-		  	LectureInfo info=new LectureInfo(org.bss.brihaspatisync.util.ClientObject.getLectureInfoIndex(),org.bss.brihaspatisync.util.ClientObject.getLectureInfo());                      
+
+		  	LectureInfo info= new LectureInfo(org.bss.brihaspatisync.util.ClientObject.getLectureInfoIndex(),org.bss.brihaspatisync.util.ClientObject.getLectureInfo()); 
                 }
 		else {
 			StatusPanel.getController().setStatus(Language.getController().getLangValue("MainWindow.MessageDialog1"));
@@ -234,9 +234,13 @@ public class MainWindow  extends JFrame implements ActionListener {
 		menuItem2.setEnabled(true);
 		menuItem5.setEnabled(true);
 		menuItem6.setEnabled(true);
-		//setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+	//	setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
 	}
-
+               
+	public void setMenuText() {
+        	menuItem7.setEnabled(true);
+        }
+	
         public JDesktopPane getDesktop(){
                 return desktop;
         }

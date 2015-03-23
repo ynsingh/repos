@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * JoinSession.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur
+ * Copyright (c) 2011,2015 ETRG, IIT Kanpur
  */
 
 import java.io.File;
@@ -89,6 +89,7 @@ public class JoinSession {
 			//remove CourseSessionWindow and add gui for view all tools activities.
 			MainWindow mainWindow=MainWindow.getController();
 			mainWindow.setMenuItemText();
+			mainWindow.setMenuText();
 			mainWindow.getDesktop().removeAll();
                         mainWindow.getDesktop().setBackground(new java.awt.Color(220,220,220));
                         mainWindow.getDesktop().add(new JoinSessionPanel(),BorderLayout.CENTER);
