@@ -1364,6 +1364,7 @@ var $ledgers = array();
 		$this->db->not_like('code', '1005', 'after');
 		$this->db->not_like('code', '1006', 'after');
 		$this->db->not_like('code', '100102', 'after');
+		$this->db->not_like('code', '100101', 'after');
 		$query = $this->db->get();
 //		$query1 = $query->result();
 //		print_r($query1);

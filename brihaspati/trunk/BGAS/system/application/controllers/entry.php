@@ -855,7 +855,25 @@ $width="100%";
 				}
 
 				$data_sanc_letter_no = $this->input->post('sanc_letter_no', TRUE);
-				$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
+			//	$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
+				$number = $this->input->post('entry_number', TRUE);
+
+				if ($this->input->post('sanc_letter_date', TRUE)) {
+					$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
+				}
+				else{
+					$data_sanc_letter_date = "";
+				}
+
+				/* code for validation of unique voucher no */
+				$entry_type_id=entry_type_name_to_id(strtolower($data_entry_name));
+				$duplicate = $this->Entry_model->check_duplicacy($number,$entry_type_id);
+				if ($duplicate) {
+					$this->messages->add('Voucher No. Already Exist. Please Input a Different Voucher No.', 'error');
+                 //   $this->template->load('template', 'entry/add');
+					
+                    return;
+				}
 
 				if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
                 	        {
@@ -882,25 +900,25 @@ $width="100%";
 				}
 				// get the correct id
 
-				$entry_type_id=entry_type_name_to_id(strtolower($data_entry_name));
+			//	$entry_type_id=entry_type_name_to_id(strtolower($data_entry_name));
 				$dr_total = 0;
 				$cr_total = 0;
 				$bank_cash_present = FALSE; /* Whether atleast one Ledger account is Bank or Cash account */
 				$non_bank_cash_present = FALSE;  /* Whether atleast one Ledger account is NOT a Bank or Cash account */
 				/* Adding main entry */
-                        	if ($current_entry_type['numbering'] == '2')
+                        /*	if ($current_entry_type['numbering'] == '2')
                         	{
                                 	$data_number = $this->input->post('entry_number', TRUE);
 	                        } else if ($current_entry_type['numbering'] == '3') {
         	                        $data_number = $this->input->post('entry_number', TRUE);
                 	                if ( ! $data_number)
                         	                $data_number = NULL;
-	                        } else {
+	                        } else {*/
         	                        if ($this->input->post('entry_number', TRUE))
                 	                        $data_number = $this->input->post('entry_number', TRUE);
                         	        else
                                 	        $data_number = $this->Entry_model->next_entry_number($entry_type_id);
-                        	}
+                        //	}
 		
 				foreach ($data_all_ledger_dc as $id => $ledger_data)
 				{
@@ -961,7 +979,10 @@ $width="100%";
                                 }
 				
 				$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
-				$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
+				if($data_sanc_letter_date != ""){
+					$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
+				}
+
 				$entry_id = NULL;
 				$uname=$this->session->userdata('user_name');
 	                        $sec_unit=$this->session->userdata('sec_unit_id');
@@ -1131,11 +1152,11 @@ $width="100%";
 					{ 
 						if($expense_type == "Revenue")
 					     	{
-							$this->load->model('ledger_model');
+						/*	$this->load->model('ledger_model');
                                                         $fund_code =$this->ledger_model->get_ledger_code($fund_ledger);
                                                         $fund_code1 = substr($fund_code,0,6);
                                                         if($fund_code1 == '100103')
-                                                        {
+                                                        {*/
 								$insert_fund_data = array(
         	                               				'entry_id' => $entry_id,
 	        	                                		'ledger_id' => $fund_ledger,
@@ -1177,7 +1198,7 @@ $width="100%";
                                                             			$this->db->trans_rollback();
                                                             			$this->logger->write_message("error", "Error adding transit income");
                                                         		}
-							}	
+						//	}	
 						}  
                                                 $this->db->select('name');
                                                 $this->db->from('ledgers')->where('id', $fund_ledger);

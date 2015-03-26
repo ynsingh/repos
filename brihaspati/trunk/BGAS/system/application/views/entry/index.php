@@ -31,7 +31,7 @@
 			<th>Bkwd Ref Id</th>
 			<th>Date</th>
 			<th>Update Date</th>
-			<th>No</th>
+			<th>Voucher No</th>
 			<th>Ledger Account</th>
 			<th>Type</th>
 			<th>DR Amount</th>

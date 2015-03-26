@@ -109,7 +109,17 @@ if ($cur_entry->dr_total != $cur_entry->cr_total)
 <td id="td_second">Sanction Letter Detail : <span class="bold"><?php echo $cur_entry->sanc_value; ?></span></td>
 </tr>
 <tr>
-<td id="td_first">Sanction Letter Date :<span class="bold"><?php echo date_mysql_to_php($cur_entry->sanc_letter_date); ?></span></td>
+<td id="td_first">Sanction Letter Date :<span class="bold">
+
+<?php
+	$sanc_date  = $cur_entry->sanc_letter_date;
+	if($sanc_date != "0000-00-00 00:00:00"){
+		echo date_mysql_to_php($sanc_date);
+	}
+	else{
+		echo ""; 
+	}
+	?></span></td>
 </tr>
 </table>
 <br/>
