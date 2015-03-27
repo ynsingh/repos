@@ -21,8 +21,8 @@ import java.util.LinkedList;
 public class Buffer { 
 
 	private Vector<String> userid_store=null; 
-        /* The userid_store contains the user_id of the source node which has generated the corresponding packet (byte[])
-         * in the LinkedList<byte[]>.
+        /* The userid_store contains the user_id of the source node which has generated the
+         * corresponding packet (byte[]) in the LinkedList<byte[]>.
          */
 
   	private LinkedList<byte[]> data;  

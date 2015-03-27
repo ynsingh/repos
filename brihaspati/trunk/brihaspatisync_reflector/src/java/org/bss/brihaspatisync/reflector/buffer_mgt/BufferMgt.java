@@ -32,10 +32,19 @@ public class  BufferMgt {
          */                   
 
         private synchronized void removeBufferAndSetPointer() {
+/* When a http response to a user is given, all the data in the buffer is sent. This user's pointer
+ * is now shifted to the end of last packet location in buffer.
+ */
 		try {
                        	java.util.Vector pointer=pointerStore_userRemove.getAllPointer();
+/* For each user there is a pointer indicating the location in buffer upto which packets have been
+ * received by the user.
+ */
 			if(pointer.size()>0) {
-	                        int p1=(Integer)pointer.get(0); int maxpointer=buffer.size();
+/* This implies that at least one user is getting a feed from reflector.
+ */
+	                        int p1=(Integer)pointer.get(0);
+                                int maxpointer=buffer.size();
 				if(maxpointer>1000) {
         	                	pointerStore_userRemove.resetPointer(40+maxpointer-1000);
 	        	               	buffer.removeRange(40+maxpointer-1000);
@@ -45,32 +54,38 @@ public class  BufferMgt {
                              	}
 			} else 
 				buffer.removeRange(buffer.size());
+/* As there is no user who is receiving the packets from reflector, whole of the buffer is cleared.
+ */
             	} catch(Exception e) { System.out.println("Exception remove method to Increase Pointer in BufferMgt class "+e.getMessage()); }
     	}
 	
 	/**
 	 * This method is used to get data from buffer 
-	 * and increase pointer from pointer buffer .
+	 * and increase pointer in the pointer buffer for this userid.
 	 */  
 	public synchronized byte[] sendDataAndIncreasePointer(String user_id) {
-		byte[] str=null;
+		byte[] byteArray=null;
 		try {	
 			int cur_position_pointer = pointerStore_userRemove.getPointerBy_UserId(user_id);
 			int size=buffer.size();
 			while( cur_position_pointer < size) {
+                        // implies that packets are available for this user. = implies no packets
+                        // pending.
 				String get_userid=(buffer.getSourceUser_id(cur_position_pointer)).toString();
 	               		if(!(get_userid.equals(user_id))) {
-					str=buffer.getObject(cur_position_pointer);
-					if(str != null) 
+                        // For the packet at the head of queue, check if the source of packet and
+                        // the userid are same or not. If not same, then send this packet.
+					byteArray=buffer.getObject(cur_position_pointer);
+					if(byteArray != null) 
         	                		pointerStore_userRemove.setPointer(user_id,++cur_position_pointer);
 	                        } else 
                 	              	pointerStore_userRemove.setPointer(user_id,++cur_position_pointer);
-				if(str !=null)
+				if(byteArray !=null)
 					break;
 			}
 			removeBufferAndSetPointer();	
 		} catch(Exception e){ System.out.println("Exception in send Data Increase Pointer in BufferMgt class "+e.getMessage()); }
-		return str;
+		return byteArray;
 	}
 
 	public synchronized byte[] sendData_AudioIncreasePointer(String user_id) {	
