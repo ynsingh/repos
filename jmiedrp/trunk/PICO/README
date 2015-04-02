@@ -1,0 +1,48 @@
+*************************************************************************************************************
+Copyright 2015 ERP Mission, IIT Kanpur
+Contributions by:- Nagendra Kumar Singh
+Last modified on 01 April 2015
+*************************************************************************************************************
+This document describes procedure to install PICO(New) on any Linux machine or windows PC.
+Step for Installation of PICO
+
+1. You must install tomcat application server version 6.0 onwards,
+        download from http://tomcat.apache.org/
+
+2. You must install ant 1.6 onwards,
+        download from http://ant.apache.org/
+
+3. You must install mysql 5 or onwards,
+        download from http://dev.mysql.com/downloads/
+
+4. Checkout PICO from svn repository. The URL is 
+	http://202.141.40.215/repos/jmiedrp/trunk/PICO
+
+5. Open the file src/java/pico.properties and write the email address and password. 
+This email is used for sneding the mail on behalf of administrator to user. 
+	PICO$ vi src/java/pico.properties
+
+6. For creating war file just type ant as
+	PICO$ ant
+
+7. Create database pico and grant the permission to database user and password
+	$PICO> mysql -u root -p 
+	mysql> create database pico;
+	mysql> grant pico.* to dbuser@127.0.0.1 identified by 'dbpassword';
+	mysql> grant pico.* to dbuser@localhost identified by 'dbpassword';
+
+
+8. Install tomcat 7 and open context file (tomcat/conf/context.xml) and add the content given below-
+
+	<Resource name="jdbc/pico" auth="Container" type="javax.sql.DataSource"
+               maxActive="100" maxIdle="10" maxWait="100"
+               username="xxxxx" password="xxxxx" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/pico?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
+	<Environment name="path1" value="<Tomcat server Webapps folder path>/pico" type="java.lang.String" override="false"/>
+
+
+9. Deploye the war file to tomcat web server.
+
+10. Open web browser and type  http://IPADDRESS:PORTNO/pico
+
+The default admin user password is admin. You must change after first login.

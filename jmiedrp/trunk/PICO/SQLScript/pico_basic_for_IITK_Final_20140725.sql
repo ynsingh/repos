@@ -1988,7 +1988,7 @@ CREATE TABLE `erpmusers` (
 
 LOCK TABLES `erpmusers` WRITE;
 /*!40000 ALTER TABLE `erpmusers` DISABLE KEYS */;
-INSERT INTO `erpmusers` VALUES (1,'suadmin','skn123','1969-12-07','Y',NULL,'What is my father\'s middle name?','Haider','Dr. S. Kazim Naqvi'),(2,'guest','guest','1969-12-07','N',NULL,'What is my father\'s first name?','shane','Guest');
+INSERT INTO `erpmusers` VALUES (1,'admin','admin','2015-04-01','Y',NULL,'What is my father\'s middle name?','admin','PICO Administrator'),(2,'guest','guest','1969-12-07','N',NULL,'What is my father\'s first name?','shane','Guest');
 /*!40000 ALTER TABLE `erpmusers` ENABLE KEYS */;
 UNLOCK TABLES;
 
