@@ -19,10 +19,10 @@ a:hover {
 	display:inline; 
 	float: left;
 	position: relative;
-	margin-left: 5px;
-	margin-right: 10px;
-	padding-right: 5px;
-	width: 180px;
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-right: 0px;
+	width: 15%;
 }
 .mainpage .rightbar {
 	display:inline;
@@ -102,27 +102,33 @@ a:hover {
 
 .mainpage .usermenu {
 	text-align: right;
-	padding: 5px;
+	padding: 0px;
 	font-size: 14px;
 }
 .mainpage .body {
 	position: relative;
-	border-left: 1px solid #f5dbdb;
-	border-top: 1px solid #f5dbdb;
-	margin-left: 220px;	
-	min-height: 1000px;
+	float:left;
+    width:85%;
+    padding:0px 0px;
 }
+
 .mainpage .nav-menu {
-	height: 30px;
+	height: 25px;
 	background-color:#fcfce8;
 	}
 
 
 .mainpage .body .content-area {
-	position: absolute;
+	position: relative;
 	margin: 0px;
 	background-color: #FFF;
-	min-width: 1000px;
-	min-height: 1000px;
+	width: 100%;
 	
 	}
+        
+ #header {
+ 
+     padding: 0px;
+     border: 0px;
+   
+ }

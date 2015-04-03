@@ -102,7 +102,7 @@
                     </h:panelGrid>
                 </h:form>
             </rich:panel>
-            <rich:modalPanel id="pnl">
+            <rich:modalPanel id="pnl" width="500" height="300">
                 <rich:panel header="Add New Session">
                     <h:form>
                         <h:panelGrid columns="3">
@@ -127,7 +127,7 @@
                             </rich:calendar>
                             <h:message styleClass="error" for="deptName" tooltip="Employee Type"/>
                         </h:panelGrid>
-                        <a4j:commandButton value="Save" action="#{SessionBean.save}" reRender="tbl" />
+                        <a4j:commandButton value="Save" action="#{SessionBean.save}" reRender="tbl" oncomplete="#{rich:component('pnl')}.hide()"/>
                         <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
                     </h:form>
                 </rich:panel>

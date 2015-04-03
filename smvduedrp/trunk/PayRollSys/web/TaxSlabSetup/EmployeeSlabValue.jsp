@@ -25,11 +25,12 @@
                         <h:form>
                             <rich:panel>
                                 <h:panelGrid columns="1">
-                                    <h:panelGrid columns="3">
+                                    <h:panelGrid columns="4">
                                         <h:outputText value="Select Gender"/>
                                         <h:selectOneMenu value="#{employeeSlabHeadConttroler.genderCode}">
                                             <f:selectItems value="#{employeeSlabDetail.items}"/>
                                         </h:selectOneMenu>
+                                        <a4j:commandButton reRender="sllist" value="Load" action="#{employeeSlabHeadConttroler.populate}"/>
                                         <rich:messages>
                                             <f:facet name="infoMarker">
                                                 <h:graphicImage url="/img/success.png"/>
@@ -40,12 +41,12 @@
                                     <rich:separator/>
                                     <rich:panel>
                                         <rich:dataTable id="sllist" value="#{employeeSlabHeadConttroler.loadGenderSlabValue}"
-                                                        binding="#{employeeSlabHeadConttroler.dataGrid}" var="gensl" headerClass="headerStyle" rowClasses="rowStyle">
+                                                        binding="#{employeeSlabHeadConttroler.dataGrid}" var="gensl">
                                             <h:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="Slab Name"/>
                                                 </f:facet>
-                                                <h:outputText value="#{gensl.slabName}"/>
+                                                <h:outputText value="#{gensl.slabeName}"/>
                                             </h:column>
                                             <h:column>
                                                 <f:facet name="header">

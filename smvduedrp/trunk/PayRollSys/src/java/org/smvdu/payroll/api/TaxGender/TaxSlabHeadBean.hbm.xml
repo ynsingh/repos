@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+  <class name="org.smvdu.payroll.api.TaxGender.TaxSlabHeadBean" table="slab_head">
+        
+        <id name="slabHeadCode" type="java.lang.Integer">
+            <column name="sl_head_code" />
+            <generator class="identity"/>
+        </id>
+       
+        <many-to-one name="fyear" class="org.smvdu.payroll.beans.SessionMaster" fetch="select">
+           <column name="sl_session_id" not-null="true"/>
+        </many-to-one>
+        
+        <property name="slabName" type="string">
+            <column name="slab_head_name" not-null="true"/>
+        </property>
+        
+        <property name="startSlabValue" type="int">
+            <column name="sl_start_value" not-null="true"/>
+        </property>
+        
+        <property name="endSlabValue" type="int">
+            <column name="sl_end_value" not-null="true"/>
+        </property>
+        
+        <property name="percent" type="float">
+            <column name="sl_percent" not-null="true"/>
+        </property>
+        
+        <property name="surcharge" type="float">
+            <column name="sl_surcharge" not-null="true"/>
+        </property>
+        
+        <property name="eduCess" type="float">
+            <column name="sl_edu_cess" not-null="true"/>
+        </property>
+        
+        <property name="heduCess" type="float">
+            <column name="sl_hedu_cess" not-null="true"/>
+        </property>
+        
+        <property name="orgcode" type="java.lang.Integer">
+            <column name="sl_orgCode"/>
+        </property>
+        
+        <set name="empSlabCode" inverse="true">
+            <key>
+                <column name="emp_slab_code" not-null="true"/>
+            </key>
+            <one-to-many class="org.smvdu.payroll.api.TaxGender.EmployeeSlabDetail"/>
+        </set>
+  
+  </class> 
+
+</hibernate-mapping>

@@ -43,28 +43,35 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <link rel="stylesheet" type="text/css" href="loginpage.css"/>
+    <%--    <link rel="stylesheet" type="text/css" href="loginpage.css"/>  --%>
         <title>Payroll System | Login</title>
     </head>
     <f:view>
-        <h:panelGrid style="margin-left; margin-left:200px;" columns="1">
-            <h:panelGrid>
-                <h:graphicImage alt="payroll" url="/img/payrollheader.png" style="valign:middle"/>
-                <rich:panel style="background-color:#425C83;height:25px;Color:white">
+        <div class="container">
+        
+                <div class="header" syle="height:20%;">
+                <h:graphicImage alt="payroll" url="/img/payrollheader.png" style="width:100%;"/>
+                <rich:panel style="background-color:#425C83; Color:white">
                <a href="http://172.26.81.189:8080/PayrollSys/" style="color:white;font-family:arial;font-weight:bold;text-decoration:none" onclick="return false;">PAYROLL SYSTEM</a></font>   &nbsp;   
                <a href="http://202.141.40.215:8080/brihaspati/servlet/brihaspati" style="color:white;font-family:arial;font-weight:bold;text-decoration:none">BRIHASPATI</a> &nbsp;
                <a href="http://202.141.40.215/~brihaspati/BGAS/index.php/user/login" style="color:white;font-family:arial;font-weight:bold;text-decoration:none">BGAS</a> &nbsp;
                <a href="http://202.141.40.218:8080/pico/Administration/Index.action" style="color:white;font-family:arial;font-weight:bold;text-decoration:none">PICO</a>  &nbsp;
                <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="color:white;font-family:arial;font-weight:bold;text-decoration:none" onclick="return false;">STUDENT FEES MANAGEMENT SYSTEM</a>
-            </rich:panel>   
-        </h:panelGrid>
-             <h:form>
+               </rich:panel>   
+               </div> 
+             
+        <div class="main-content" style="width:100%; background-color: red;">
+            <div>
             <rich:messages>
                     <f:facet name="errorMarker">
                          <h:graphicImage url="/img/err.png"/>
                      </f:facet>
-                </rich:messages>
-                  <rich:panel header="Important Link" style="width:30%;float:left;text-align:left; height:500px ">
+            </rich:messages>
+            </div>
+            
+            <div class="sidebar" style="float:left; width:20%;">
+                
+                  <rich:panel header="Important Link" style="width:100%;float:left;text-align:left; height:720px ">
                    <br/>
                    <%--<h:outputText value=" Important Link" style="font-weight:bold"/>--%>
                    <a href="adminLogin/OrgMain.jsf" style="font-weight:bold;">Register New Institute</a><br/> 
@@ -74,12 +81,16 @@
                    <a href="docs/ModuleHelp/index.jsp" style="font-weight:bold;" onclick="return false;">HTML Help</a><br/>
                    <a href="adminLogin/brihaspatiMainLogin.jsf" style="font-weight:bold;">Aunthenticate From Brihaspati Server  </a> 
                                     
-            </rich:panel>
-            <rich:panel header="Please Login" style="width:920px;float:left;text-align:left;height:500px"> 
+                  </rich:panel>
+            </div>
+            
+            <div class="main" style="float:left; width:80%;"> 
+             <h:form>    
+                <rich:panel header="Please Login" style="width:100%;float:left;text-align:left;height:720px"> 
                    <%--<h:outputText value=" Please Login"  style=" float:right;text-align:left;font-size:20px;"/>--%>
                     <br/>
                     <br/>
-                    <h:panelGrid columns="2" style="  ">
+                    <h:panelGrid columns="2" style="margin-left:50px; width:30%;">
                      <h:outputText value="Organization Name"/>
                     <h:selectOneMenu id="user" value="#{UserBean.userOrgCode}" >
                     <f:selectItem itemLabel="Administrator" />
@@ -100,12 +111,15 @@
                     </h:panelGrid>
                     <input type="hidden" name="userrole" value="user" />
                                      
-           </rich:panel>
+               </rich:panel>
            </h:form>
-           <rich:panel style="background-color: #425C83;height:25px; text-color:white">
-            <h:outputText value="Developed by SMVD University and IIT Kanpur" style="color:white"/>
+            </div>
+        </div>
+          <h:panelGrid style="width:100%;">
+           <rich:panel style="background-color:#425C83;">
+            <h:outputText value="Developed by SMVD University and IIT Kanpur." style="color:white;"/>
             </rich:panel>
-            </h:panelGrid>   
+           </h:panelGrid>  
         
         <%--            
             <rich:modalPanel id="newuser" height="470" width="400">
@@ -171,6 +185,7 @@
              </h:form>
             </rich:panel>
             </h:panelGrid>
-        </rich:modalPanel>  --%>  
+        </rich:modalPanel>  --%> 
+       </div>
     </f:view>
 </html>

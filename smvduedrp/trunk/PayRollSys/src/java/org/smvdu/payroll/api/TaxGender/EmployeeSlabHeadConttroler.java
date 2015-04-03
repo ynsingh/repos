@@ -51,6 +51,10 @@ public class EmployeeSlabHeadConttroler {
         this.dataGrid = dataGrid;
     }
 
+    public void populate()  {
+        System.err.println("Reloading ... "+genderCode);
+        getLoadGenderSlabValue();
+    }
 
     public void saveGenSlabDetail()
     {
@@ -60,13 +64,13 @@ public class EmployeeSlabHeadConttroler {
             ArrayList<EmployeeSlabDetail> empSlDetails = (ArrayList<EmployeeSlabDetail>) dataGrid.getValue();
             for(EmployeeSlabDetail empsd : empSlDetails)
             {
-                System.out.println("DAta Should Be Write Here : "+empsd.getSlabHeadCode()+" : "+empsd.getSlabeName());
-                if(empsd.isSlabSelected() == true)
+                System.out.println("DAta Should Be Write Here : "+empsd.getSlabCode()+" : "+empsd.getSlabeName());
+                if(empsd.isSlabSelected())
                 {
                     copyEmpSlDetails.add(empsd); 
                 }
             }
-            Exception ex = new EmployeeSlabDetailDB().save(copyEmpSlDetails,this.getGenderCode());
+            Exception ex = new EmployeeSlabDetailDB().save(copyEmpSlDetails, this.getGenderCode());
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Selection Updated", ""));
         }
         catch(Exception ex)

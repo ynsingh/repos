@@ -468,11 +468,26 @@ CREATE TABLE `emp_salary_head_master` (
 # Structure for the `emp_slab_head_master` table : 
 #
 
+/*
 CREATE TABLE `emp_slab_head_master` (
   `emp_gen_code` int(11) default NULL,
   `emp_slab_code` int(11) NOT NULL,
   `emp_slab_orgCode` int(11) default NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
+
+CREATE TABLE `emp_slab_head_master` (
+  `id` int(11) NOT NULL auto_increment,
+  `emp_gen_code` int(11) default NULL,
+  `emp_slab_code` int(11) NOT NULL,
+  `emp_slab_orgCode` int(11) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `emp_gen_code` (`emp_gen_code`),
+  KEY `emp_slab_code` (`emp_slab_code`),
+  CONSTRAINT `gender_code_fk1` FOREIGN KEY (`emp_gen_code`) REFERENCES `ts_gender` (`ts_seq`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `slab_code_fk2` FOREIGN KEY (`emp_slab_code`) REFERENCES `slab_head` (`sl_head_code`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 #
 # Structure for the `emp_tax_master` table : 
@@ -1008,6 +1023,7 @@ CREATE TABLE `session_employee_master` (
 # Structure for the `slab_head` table : 
 #
 
+/*
 CREATE TABLE `slab_head` (
   `sl_head_code` int(11) NOT NULL auto_increment,
   `slab_head_name` varchar(100) default NULL,
@@ -1018,6 +1034,25 @@ CREATE TABLE `slab_head` (
   PRIMARY KEY  (`sl_head_code`),
   UNIQUE KEY `slab_head_name` (`slab_head_name`),
   KEY `sl_orgCode` (`sl_orgCode`),
+  CONSTRAINT `slab_head_fk` FOREIGN KEY (`sl_orgCode`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
+
+CREATE TABLE `slab_head` (
+  `sl_head_code` int(11) NOT NULL auto_increment,
+  `sl_session_id` int(11) NOT NULL,
+  `slab_head_name` varchar(100) NOT NULL,
+  `sl_start_value` int(29) NOT NULL,
+  `sl_end_value` int(11) NOT NULL,
+  `sl_percent` float(9,3) NOT NULL,
+  `sl_surcharge` float(9,3) NOT NULL,
+  `sl_edu_cess` float(9,3) NOT NULL,
+  `sl_hedu_cess` float(9,3) NOT NULL,
+  `sl_orgCode` int(11) NOT NULL,
+  PRIMARY KEY  (`sl_head_code`),
+  UNIQUE KEY `slab_head_name_uq` (`sl_session_id`,`slab_head_name`),
+  KEY `sl_orgCode` (`sl_orgCode`),
+  CONSTRAINT `slab_session_fk1` FOREIGN KEY (`sl_session_id`)       REFERENCES `session_master` (`ss_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `slab_head_fk` FOREIGN KEY (`sl_orgCode`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1170,12 +1205,24 @@ CREATE TABLE `temp_sal_data` (
 # Structure for the `ts_gender` table : 
 #
 
+/*
 CREATE TABLE `ts_gender` (
   `ts_seq` int(11) NOT NULL auto_increment,
   `gender_name` varchar(50) NOT NULL,
   `orgCode` int(11) default '1',
   PRIMARY KEY  (`gender_name`),
   UNIQUE KEY `ts_seq` (`ts_seq`),
+  KEY `orgCode` (`orgCode`),
+  CONSTRAINT `ts_gender_fk` FOREIGN KEY (`orgCode`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
+
+CREATE TABLE `ts_gender` (
+  `ts_seq` int(11) NOT NULL auto_increment,
+  `gender_name` varchar(50) NOT NULL,
+  `orgCode` int(11) default '1',
+  PRIMARY KEY  (`ts_seq`),
+  UNIQUE KEY `gender_name` (`gender_name`),
   KEY `orgCode` (`orgCode`),
   CONSTRAINT `ts_gender_fk` FOREIGN KEY (`orgCode`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

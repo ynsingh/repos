@@ -363,7 +363,57 @@ public class SessionDB {
         }       */
     }
 
+	
+    public ArrayList<SessionMaster> getCurrentSessionItem()
+    {
+   
+        try
+        {
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("from SessionMaster where current = 1 and orgcode = '"+userBean.getUserOrgCode()+"' ");
+            ArrayList<SessionMaster> data = (ArrayList<SessionMaster>)query.list();
+            session.getTransaction().commit();
+            return data;
+        }    
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }
+        
+        /*    ArrayList<SessionMaster> data = new ArrayList<SessionMaster>();
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select * from session_master where ss_current=1 and ss_org_id='"+userBean.getUserOrgCode()+"'");
+            rs = ps.executeQuery();
+            
+            while(rs.next())
+            {
+                SessionMaster sm = new SessionMaster();
+                sm.setCode(rs.getInt(1));
+                sm.setName(rs.getString(2));
+                data.add(sm);
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return data;
 
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }   */
+    }
+	
+	
+	
 
     public ArrayList<SessionMaster> load()  {
       //  ArrayList<SessionMaster> data = new ArrayList<SessionMaster>();

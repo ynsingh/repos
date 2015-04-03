@@ -15,15 +15,15 @@
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>JSP Page</title>
+            <title>Tax Slab Gender Details</title>
             <link type="text/css" rel="stylesheet" href="../bankDetails.css"/>
         </head>
         <body>
-            <rich:panel header="Add Gender">
+            <rich:panel header="Gender Details">
                 <h:form>
                     <h:panelGrid columns="1">
-                        <rich:panel>
-                            <a4j:commandButton value="Add New Gender Detail" onclick="Richfaces.showModalPanel('pnl');"/>
+
+                            <a4j:commandButton value="Add New Gender" onclick="Richfaces.showModalPanel('pnl');"/>
                             <rich:messages  >
                                 <f:facet name="infoMarker">
                                     <h:graphicImage url="/img/success.png"/>
@@ -32,9 +32,9 @@
                                     <h:graphicImage url="/img/err.png"/>
                                 </f:facet>
                             </rich:messages>
-                        </rich:panel>
-                        <rich:panel>
-                            <h:dataTable id="gent" headerClass="headerStyle" rowClasses="rowStyle" value="#{gender.loadGender}" var="gendert">
+
+
+                            <rich:dataTable id="gent"value="#{gender.loadGender}" var="gendert">
                                 <h:column>
                                     <f:facet name="header">
                                         <h:outputText value="Gender Seq."/>
@@ -47,47 +47,40 @@
                                     </f:facet>
                                     <h:outputText value="#{gendert.genderName}"/>
                                 </h:column>
-                            </h:dataTable>
-                        </rich:panel>
-                        <rich:separator/>
+                            </rich:dataTable>
+
                         <%--<rich:panel>
                             <a4j:commandButton value="Update" reRender="gent" action="#{genderConttroler.update}"/>
                         </rich:panel>--%>
                     </h:panelGrid>
                 </h:form>
             </rich:panel>
-            <rich:modalPanel id="pnl" height="250" width="270">
+            <rich:modalPanel id="pnl" height="120" width="270">
+                
                 <f:facet name="header">
-                    <h:panelGroup>
-                        <h:outputText value="Sign In"></h:outputText>
-                    </h:panelGroup>
+                     <h:panelGroup>
+                         <h:outputText value="Add New Gender Detail"></h:outputText>
+                     </h:panelGroup>
                 </f:facet>
+                
                 <f:facet name="controls">
-                    <h:panelGroup>
-                        <h:graphicImage value="img/cross_icon.jpg"/>
-                    </h:panelGroup>
+                     <h:panelGroup>
+                        <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelink"/>
+                        <rich:componentControl for="pnl" attachTo="hidelink" operation="hide" event="onclick"/>
+                     </h:panelGroup>
                 </f:facet>
                 <h:form>
-                    <rich:panel>
-                        <rich:messages  >
-                            <f:facet name="infoMarker">
-                                <h:graphicImage url="/img/success.png"/>
-                            </f:facet>
-                            <f:facet name="errorMarker">
-                                <h:graphicImage url="/img/err.png"/>
-                            </f:facet>
-                        </rich:messages>
-                    </rich:panel>
-                    <rich:panel>
+
                         <h:panelGrid columns="2">
-                            <h:outputText value="Detail"/>
-                            <h:inputText value="#{gender.genderName}" required="true" id="gen"/>
-                            <rich:separator/>
-                            <rich:separator/>
-                            <a4j:commandButton value="Save" action="#{gender.save}" reRender="gent"/>
+                            <h:outputText value="Gender Name"/>
+                            <h:inputText value="#{gender.genderName}" required="true" id="gen" requiredMessage="Please Enter Gender Name"/>
+                        </h:panelGrid></br>
+                            <rich:separator/></br>
+                        <h:panelGrid columns="2">
+                            <a4j:commandButton value="Save" action="#{gender.save}" reRender="gent" onclick="Richfaces.hideModalPanel('pnl');"/>
                             <a4j:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');"/>
-                        </h:panelGrid>
-                    </rich:panel>
+                        </h:panelGrid></br>
+
                 </h:form>
             </rich:modalPanel>
         </body>

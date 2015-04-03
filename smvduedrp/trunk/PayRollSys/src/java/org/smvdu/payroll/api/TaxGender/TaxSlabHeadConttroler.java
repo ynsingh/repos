@@ -46,10 +46,10 @@ public class TaxSlabHeadConttroler {
             {
                 TaxSlabHeadBean taxHeadBean = new TaxSlabHeadBean();
                 taxHeadBean.setSlabHeadCode(rs.getInt(1));
-                taxHeadBean.setSlabName(rs.getString(2));
-                taxHeadBean.setStartSlabValue(rs.getFloat(3));
-                taxHeadBean.setEndSlabValue(rs.getFloat(4));
-                taxHeadBean.setPercent(rs.getFloat(5));
+                taxHeadBean.setSlabName(rs.getString(3));
+                taxHeadBean.setStartSlabValue(rs.getInt(4));
+                taxHeadBean.setEndSlabValue(rs.getInt(5));
+                taxHeadBean.setPercent(rs.getFloat(6));
                 taxHeadValue.add(taxHeadBean); 
 
             }

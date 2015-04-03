@@ -7,6 +7,9 @@ package org.smvdu.payroll.api.TaxGender;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
@@ -15,7 +18,13 @@ import org.smvdu.payroll.module.attendance.LoggedEmployee;
  * @author ERP
  */
 public class GenderDB {
+    
+    private HibernateUtil helper;
+    private Session session;
     private int orgCode;
+    
+    
+    
     public  GenderDB()
     {
                   LoggedEmployee le = (LoggedEmployee) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
@@ -32,7 +41,31 @@ public class GenderDB {
 
     public boolean saveGender(Gender gen)
     {
-        try
+  
+        try { 
+            
+            Gender data = new Gender();
+
+            data.setGenderName(gen.getGenderName());
+            data.setOrgcode(orgCode);
+
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(data);
+            session.getTransaction().commit();
+            return true;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            session.close();
+        }
+        
+        
+    /*     try
         {
             Connection cn;
             cn = new CommonDB().getConnection();
@@ -47,11 +80,34 @@ public class GenderDB {
         {
             ex.printStackTrace();
             return false;
-        }
+        }   */
+        
     }
 
 
     public ArrayList<Gender> loadGenderDetail(){
+    
+        try
+        {
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("from Gender where orgcode = '"+orgCode+"' order by genderCode asc ");
+            ArrayList<Gender> data = (ArrayList<Gender>) query.list();
+            session.getTransaction().commit();
+            return data;
+        }
+        catch(Exception ex)    
+        {
+            session.getTransaction().rollback();
+            ex.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }  
+        
+   
+    /*    
         try
         {
             ArrayList<Gender> genDetail = new ArrayList<Gender>();
@@ -77,6 +133,7 @@ public class GenderDB {
             ex.printStackTrace();
             return null;
         }
-
+          */  
+            
     }
 }

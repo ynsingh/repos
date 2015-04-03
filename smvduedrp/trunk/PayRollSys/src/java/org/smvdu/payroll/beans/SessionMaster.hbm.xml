@@ -6,7 +6,7 @@
             <column name="ss_id" />
             <generator class="identity"/>
         </id>
-       
+        
         <property name="name" type="string">
             <column name="ss_name" length="100" not-null="true" unique="true"/>
         </property>
@@ -24,5 +24,13 @@
         <property name="orgcode" type="java.lang.Integer">
             <column name="ss_org_id"/>
         </property>
+        
+        <set name="slabSession" inverse="true">
+            <key>
+                <column name="sl_session_id" not-null="true"/>
+            </key>
+            <one-to-many class="org.smvdu.payroll.api.TaxGender.TaxSlabHeadBean"/>
+        </set>
+        
   </class>    
 </hibernate-mapping>

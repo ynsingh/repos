@@ -77,20 +77,20 @@
 
             </script>
             </head>
-            <body id="" class="mainpage">
+            <body id="" class="mainpage >
             <a4j:keepAlive beanName="userBeans" ajaxOnly="true"/>
             <a4j:keepAlive beanName="SalaryProcessingSetup" ajaxOnly="true"/>
             <h:form>
-                <rich:panel style="height:150px; width:100%;">
+                <rich:panel id="header" style="width:100%; padding:0px; border-width:0px; ">
                         <div  align="left">
                             <%--<h:graphicImage url="/img/pls1.png"/>--%>
-				<h:graphicImage url="/img/payrollheader.png"/>
+				<h:graphicImage url="/img/payrollheader.png" style="width:100%;"/>
                         </div>
                         <div  align="right">
                             <%--<h:graphicImage url="/img/3_1.PNG" style="margin-top:-100px;"/>--%>
                         </div>
                     </rich:panel>
-                <rich:toolBar width="100%;" height="10px">
+                <rich:toolBar width="100%;" height="25px">
                     <rich:hotKey  key="alt+k" handler="#{rich:component('em')}.expand()"/>
 
                     <rich:dropDownMenu  id="se" value="Setup">
@@ -292,7 +292,7 @@
             <div class="body">
                 <div class="content-area" >
                     <iframe name="ifrm" id="ifrm" src="Home.jsf" style="background-color:#ffffff"
-                            width="1320px;" height="600px">Your browser doesn't support iframes.</iframe>
+                            width="100%;" height="600px">Your browser doesn't support iframes.</iframe>
 
                 </div>
             </div>

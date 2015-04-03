@@ -5,9 +5,13 @@
 package org.smvdu.payroll.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.annotation.Generated;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -115,6 +119,53 @@ public class SessionMaster implements Serializable {
     public void setOrgcode(int orgcode) {
         this.orgcode = orgcode;
     }
+    
+    private SelectItem[] arrayAsItem;
+    
+    public SelectItem[] getArrayAsItem() {
+        ArrayList<SessionMaster> sessions = new SessionDB().load();
+        arrayAsItem = new SelectItem[sessions.size()];
+        for (int i = 0; i < sessions.size(); i++) {
+            SessionMaster ss = sessions.get(i);
+            SelectItem si = new SelectItem(ss.getCode(), ss.getName());
+            arrayAsItem[i] = si;
+        }
+        return arrayAsItem;
+    }
+    
+    public void setArrayAsItem(SelectItem[] arrayAsItem) {
+        this.arrayAsItem = arrayAsItem;
+    }
+    
+    
+    private SelectItem[] currentSessionItem;
+    
+    public SelectItem[] getCurrentSessionItem() {
+        ArrayList<SessionMaster> csess = new SessionDB().getCurrentSessionItem();
+        currentSessionItem = new SelectItem[csess.size()];
+        for (int i = 0; i < csess.size(); i++) {
+            SessionMaster ss = csess.get(i);
+            SelectItem si = new SelectItem(ss.getCode(), ss.getName());
+            currentSessionItem[i] = si;
+        }
+        return currentSessionItem;
+    }
+    
+    public void setCurrentSessionItem(SelectItem[] currentSession) {
+        this.currentSessionItem = currentSession;
+    }
+    
+    
+    private Set slabSession = new HashSet(0);
+
+    public Set getSlabSession() {
+        return slabSession;
+    }
+
+    public void setSlabSession(Set slabSession) {
+        this.slabSession = slabSession;
+    }
+    
     
     
     public void save() {

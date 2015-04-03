@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+  <class name="org.smvdu.payroll.api.TaxGender.Gender" table="ts_gender">
+        
+        <id name="genderCode" type="java.lang.Integer">
+            <column name="ts_seq" />
+            <generator class="identity"/>
+        </id>
+       
+        <property name="genderName" type="string">
+            <column name="gender_name" length="50" not-null="true" unique="true"/>
+        </property>
+                
+        <property name="orgcode" type="java.lang.Integer">
+            <column name="orgCode"/>
+        </property>
+        
+        <set name="empSlabGender" inverse="true">
+            <key>
+                <column name="emp_gen_code" />
+            </key>
+            <one-to-many class="org.smvdu.payroll.api.TaxGender.EmployeeSlabDetail"/>
+        </set>
+        
+    </class>
+</hibernate-mapping>
