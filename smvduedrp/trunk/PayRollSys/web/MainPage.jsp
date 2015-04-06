@@ -77,20 +77,20 @@
 
             </script>
             </head>
-            <body id="" class="mainpage >
+            <body id="" class="mainpage">
             <a4j:keepAlive beanName="userBeans" ajaxOnly="true"/>
             <a4j:keepAlive beanName="SalaryProcessingSetup" ajaxOnly="true"/>
             <h:form>
-                <rich:panel id="header" style="width:100%; padding:0px; border-width:0px; ">
+                <rich:panel style="height:150px; width:100%; padding:0px; border-width:0px;">
                         <div  align="left">
                             <%--<h:graphicImage url="/img/pls1.png"/>--%>
-				<h:graphicImage url="/img/payrollheader.png" style="width:100%;"/>
+				<h:graphicImage url="/img/payrollheader.png"/>
                         </div>
                         <div  align="right">
                             <%--<h:graphicImage url="/img/3_1.PNG" style="margin-top:-100px;"/>--%>
                         </div>
                     </rich:panel>
-                <rich:toolBar width="100%;" height="25px">
+                <rich:toolBar width="100%;" height="10px">
                     <rich:hotKey  key="alt+k" handler="#{rich:component('em')}.expand()"/>
 
                     <rich:dropDownMenu  id="se" value="Setup">
@@ -193,7 +193,6 @@
                         <rich:menuItem  id="re4" onclick="return loadIframe('ifrm','report/ReportExporterMonthlyRoll.jsf?fwdLink=MonthlyPayroll.jsf')" value="Monthly Salary Roll"/>
                         <rich:menuItem  id="re5" onclick="return loadIframe('ifrm','report/ReportExporter.jsf?fwdLink=APF.jsf')" value="Annual PF Report"/>
                         <rich:menuItem  id="re6" onclick="return loadIframe('ifrm','report/ReportExporterConcise.jsf?fwdLink=APF_Compact.jsf')" value="Concise PF Report"/>
-                        <rich:menuItem  id="re7" onclick="return loadIframe('ifrm','report/ReportExporterAttendance.jsf?fwdLink=AttendanceReportMonthly.jsf')" value="Monthly Attendance Report"/>
                     </rich:dropDownMenu>
 
                     <rich:dropDownMenu  id="tr"   value="Tax Reports">

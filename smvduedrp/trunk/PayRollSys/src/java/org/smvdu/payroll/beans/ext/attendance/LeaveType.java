@@ -99,7 +99,9 @@ public LeaveType()
     public int getCode() {
         return code;
     }
-
+    public void setCode(int code) {
+        this.code = code;
+    }
     
     private LeaveType ltype;
 
@@ -111,9 +113,7 @@ public LeaveType()
         this.ltype = ltype;
     }
     
-    public void setCode(int code) {
-        this.code = code;
-    }
+    
 
     public String getName() {
         return name;
@@ -217,7 +217,7 @@ public LeaveType()
         this.name = name;
     }
     
-     public String toString() {
+    public String toString() {
         return name;
     }
     
