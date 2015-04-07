@@ -637,6 +637,8 @@ $width="100%";
 		/* Message for entries related to asset purchase. */
 		$this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
                 $this->messages->add('If TDS is being deducted.Then, Select Party name next to TDS Ledger and make Narration like type@ rate of TDS on payment Amount u/s name e.g. Deduction@1.0300% on Payment Amount 41,540.00 u/s 194C.', 'success');
+	        $this->messages->add('If Assets being Purchasing.Then,Narration like DepreciationRate@xyz% lifetime@xyzYears.', 'success');
+
                     
 		/* Entry Type */
 		$entry_type_id = entry_type_name_to_id($entry_type);

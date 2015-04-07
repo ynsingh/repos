@@ -343,7 +343,7 @@ class Report extends Controller {
 
                 $newdata = array(
                         'budget_over'=>$data,
-                        );
+                      );
                 $this->session->set_userdata($newdata);	
 		// code for searching a given text
 		$text = '';
@@ -362,9 +362,9 @@ class Report extends Controller {
 		}
 		$data['search_by'] = array(
 			"Select" => "Select",
-                        "ERPMIM_Item_Brief_Desc" => "Asset Name",
-                        "IRD_WEF_Date"=> "Date of Purchase",
-			"total_cost" => "Total Cost",
+                        "ERPMIM_Item_Brief_Desc#name" => "Asset Name",
+                        "IRD_WEF_Date#update_date"=> "Date of Purchase",
+			"total_cost#amount" => "Total Cost",
 			"dep_amount" => "Dep.Amount",
 			"curr_value" => "Current Value",
                 );
@@ -716,6 +716,7 @@ class Report extends Controller {
 		
 	function duplicate_entry($ERPMIM_Item_Brief_Desc)
         {
+	
         	 $this->template->set('page_title', 'Purchase Detail');
 		 /*load database pico*/
                  $logndb = $this->load->database('pico', TRUE);
@@ -723,7 +724,22 @@ class Report extends Controller {
                  $this->logndb->select('a.ERPMIM_ID, a.ERPMIM_Depreciation_Percentage, a.ERPMIM_Item_Brief_Desc, b.IRD_Rate, b.IR_Item_ID, b.IRD_WEF_Date');
                  $this->logndb->from('erpm_item_master a, erpm_item_rate b')->where('a.ERPMIM_ID  = b.IR_Item_ID ')->where('a.ERPMIM_Item_Brief_Desc ',$ERPMIM_Item_Brief_Desc );
                  $user_data = $this->logndb->get();
-		 $data['detail'] = $user_data ;
+		 $data['detail'] = $user_data;
+		 if($user_data->num_rows() == 0){
+	                $data['pico'] = '1';
+			$this->db->select('name, id');
+                        $this->db->from('ledgers')->where('name', $ERPMIM_Item_Brief_Desc);
+                        $led_details = $this->db->get();
+			foreach($led_details->result() as $row){
+				$data['led_name'] = $row->name;
+			}
+                        foreach($led_details->result() as $row1){
+				$this->db->from('entry_items')->where('ledger_id', $row->id);
+                                $entry_details = $this->db->get();
+				$data['detail'] = $entry_details;
+	
+			}
+		 }
 		 $this->template->load('template', 'report/duplicate_entry', $data);
                  return ;
 	

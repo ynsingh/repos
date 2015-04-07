@@ -254,7 +254,7 @@ $(document).ready(function() {
 							// line added by Priyanka
 							if($row['name'] == 'Journal'){
 								echo "<li>";
-								echo anchor('entry/show/' . $row['label'], 'Create ' . $row['name'], array('title' => $row['name'] . ' Entries'));
+								echo anchor('entry/add/journal/' . $row['label'], 'Create ' . $row['name'] . ' Entry', array('title' => $row['name'] . ' Entries'));
 								echo  "</li>";
 							}
 						}
