@@ -35,7 +35,7 @@
 	echo form_fieldset('Database Settings', array('class' => "fieldset-auto-width"));
 
 	echo "<p>";
-	echo form_checkbox('create_database', 1, $create_database) . " Create database if it does not exists";
+	echo form_checkbox('create_database', 1, 'checked', $create_database) . " Create database if it does not exists";
 	echo "</p>";
 
 	echo "<p>";
@@ -69,10 +69,6 @@
 	echo "</p>";
 
 	echo form_fieldset_close();
-	echo "</p>";
-
-	echo "<p>";
-	echo "<b>Note: </b>You need to manually carry forward the profit and loss balance to the capital account for the next year.";
 	echo "</p>";
 
 	echo "<p>";
