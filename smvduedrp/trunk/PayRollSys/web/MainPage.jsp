@@ -122,8 +122,9 @@
                         <rich:menuItem  id="sa2" onclick="return loadIframe('ifrm','salary/DefaultSalaryData.jsf')" value="Default Salary values"/>
                         <rich:menuItem  id="sa3" onclick="return loadIframe('ifrm','salary/SalarySettings.jsf')" value="Type wise Salary Head Setting"/>
                         <rich:menuGroup id="sa4"  value="Salary Processing Setup" >
-                            <rich:menuItem id="sa41" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcesswithBudget.jsf')" value="Salary Processing with Budget" disabled="#{SalaryProcessingSetup.inactive}"/>
+                         <%--   <rich:menuItem id="sa41" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcesswithBudget.jsf')" value="Salary Processing with Budget" disabled="#{SalaryProcessingSetup.inactive}"/>
                             <rich:menuItem  id="sa42" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing" disabled="#{SalaryProcessingSetup.active}" />
+                        --%>
                         </rich:menuGroup>
                         <rich:separator/>
                         <rich:menuItem value="Exit"/>
@@ -193,6 +194,8 @@
                         <rich:menuItem  id="re4" onclick="return loadIframe('ifrm','report/ReportExporterMonthlyRoll.jsf?fwdLink=MonthlyPayroll.jsf')" value="Monthly Salary Roll"/>
                         <rich:menuItem  id="re5" onclick="return loadIframe('ifrm','report/ReportExporter.jsf?fwdLink=APF.jsf')" value="Annual PF Report"/>
                         <rich:menuItem  id="re6" onclick="return loadIframe('ifrm','report/ReportExporterConcise.jsf?fwdLink=APF_Compact.jsf')" value="Concise PF Report"/>
+                        <rich:menuItem  id="re8" onclick="return loadIframe('ifrm','report/IndividualAttendanceReport.jsf?fwdLink=AttendanceReportMonthly.jsf')" value="Individual Attendance Report"/>
+                        <rich:menuItem  id="re9" onclick="return loadIframe('ifrm','report/AnnualAttendanceReport.jsf?fwdLink=AttendanceReportMonthly.jsf')" value="Annual Attendance Report"/>
                     </rich:dropDownMenu>
 
                     <rich:dropDownMenu  id="tr"   value="Tax Reports">
@@ -210,7 +213,8 @@
                         <%--  <rich:menuItem onclick="return loadIframe('ifrm', 'tool/ReportTool.jsf')"  value="Report Tool"/> --%>
                         <rich:menuItem action="account/Logout.jsf" value="Logout"/>
                     </rich:dropDownMenu>
-                    <h:commandButton id="lout"  image="img/lout.gif" action="#{UserBean.logout}" />
+                    <h:commandButton id="lout"  image="img/lout.gif" action="#{UserBean.logout}" /> 
+                    <%--  <h:commandButton id="lout"  value="Logout" action="#{UserBean.logout}" /> --%>
                     <rich:toolTip value="Click to Logout" for="lout"/>
                     <h:graphicImage style="visibility:hidden" id="loaderimg" onclick="return loadIframe('ifrm', 'Home.jsf')" width="170px" height="16px" url="/img/waiter.gif" alt="Image"/>
 

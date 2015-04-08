@@ -12,6 +12,7 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.ServletException;
+import org.smvdu.payroll.api.pf.ReportGen.AnnualAttendanceReport;
 import org.smvdu.payroll.api.pf.ReportGen.AttendancePDF;
 import org.smvdu.payroll.beans.setup.Attendance;
 import org.smvdu.payroll.beans.db.AttendanceDB;
@@ -65,6 +66,11 @@ public class AttendanceController {
     public String loadAtt;
     private ArrayList<Attendance> attendancepdf;
     private ArrayList<Attendance> attendancehtml;
+    private ArrayList<Attendance> individualattendancepdf;
+    private String code;
+    private ArrayList<Attendance> individualattendancehtml;
+    private ArrayList<Attendance> annualattendancepdf;
+    private ArrayList<Attendance> annualattendancehtml;
 
    
    /* load selected attendance  */
@@ -113,6 +119,14 @@ public class AttendanceController {
 
     public void setYear(int year) {
         this.year = year;
+    }
+    
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
     
     private SelectItem[] items;
@@ -278,5 +292,71 @@ public class AttendanceController {
     public void setAllAttendanceHTML(ArrayList<Attendance> attendancehtml) {
         this.attendancehtml =attendancehtml;
     }
+    
+         /* load selected Individual attendance report in PDF Formate */
+   public void individualAttendanceReportPDF()
+    {
+       // getIndividualAttendancePDF();
+        individualattendancepdf = new AnnualAttendanceReport().individualAttendancePDF(code, month, year);
+        
+    }
+    
+     public ArrayList<Attendance> getIndividualAttendancePDF() {
+        individualattendancepdf = new AnnualAttendanceReport().individualAttendancePDF(code, month, year);
+        return individualattendancepdf;
+    }
+   
+    public void setIndividualAttendancePDF(ArrayList<Attendance> individualattendancepdf) {
+        this.individualattendancepdf =individualattendancepdf;
+    }
 
+       
+         /* load selected Individual attendance report in HTML Formate */
+   public void individualAttendanceReportHTML()
+    {
+       // getIndividualAttendancePDF();
+        individualattendancehtml = new AnnualAttendanceReport().individualAttendanceHTML(code, month, year);
+        
+    }
+    
+     public ArrayList<Attendance> getIndividualAttendanceHTML() {
+        individualattendancehtml = new AnnualAttendanceReport().individualAttendanceHTML(code, month, year);
+        return individualattendancehtml;
+    }
+   
+    public void setIndividualAttendanceHTML(ArrayList<Attendance> individualattendancehtml) {
+        this.individualattendancehtml =individualattendancehtml;
+    }
+
+   /**        load selected Annual attendance report in PDF Formate 
+   public void annualAttendanceReportPDF()
+    {
+       // getIndividualAttendancePDF();
+        annualattendancepdf = new AnnualAttendanceReport().annualAttendancePDF(code, year);
+        
+    }
+    
+     public ArrayList<Attendance> getAnnualAttendancePDF() {
+        annualattendancepdf = new AnnualAttendanceReport().annualAttendancePDF(code, year);
+        return annualattendancepdf;
+    }
+   
+    public void setAnnualAttendancePDF(ArrayList<Attendance> annualattendancepdf) {
+        this.annualattendancepdf =annualattendancepdf;
+    }
+
+    
+     Load selected annual attendance report in HTML Formate 
+    public void annualAttendanceReportHTML(){
+        annualattendancehtml= new AnnualAttendanceReport().annualAttendanceHTML(code, year);
+    }
+    
+    public ArrayList<Attendance> getAnnualAttendanceHTML(){
+        annualattendancehtml = new AnnualAttendanceReport().annualAttendanceHTML(code, year);
+        return annualattendancehtml;
+    }
+    public void setAnnualAttendanceHTML(ArrayList<Attendance> annualattendancehtml){
+       this.annualattendancehtml = annualattendancehtml; 
+    }
+    **/
 }
