@@ -8,7 +8,9 @@ package org.smvdu.payroll.beans.ext.attendance;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
@@ -211,6 +213,16 @@ public LeaveType()
         this.values = values;
     }
     
+    private Set leaveOrgRecord = new HashSet();
+
+    public Set getLeaveOrgRecord() {
+        return leaveOrgRecord;
+    }
+
+    public void setLeaveOrgRecord(Set leaveOrgRecord) {
+        this.leaveOrgRecord = leaveOrgRecord;
+    }
+    
     
     public LeaveType(String name)
     {
@@ -238,8 +250,31 @@ public LeaveType()
      
     public void save()
     {
-        new LeaveTypeDB().save(this);
-        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "New Value (Leave type) Saved", ""));
+        FacesContext fc = FacesContext.getCurrentInstance();
+        
+        if (this.getName().matches("^[a-zA-Z\\s]*$") == false) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Valid Leave Name. Speacial characters allowed.");
+            fc.addMessage("", message);
+            return;
+        }
+        
+        if (this.getValue() <= 0) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Max Limit must be greater than zero");
+            fc.addMessage("", message);
+            return;
+        }
+        
+        Exception e = new LeaveTypeDB().save(this);
+        if(e==null){
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "New Leave type Saved", ""));
+        }
+        else{
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Leave Type Alredy Exist", ""));
+        }
     }
 
     
@@ -298,7 +333,7 @@ public LeaveType()
             }
                
             
-        }
+        }   
         catch(Exception ex)
         {
             ex.printStackTrace();
@@ -322,7 +357,7 @@ public LeaveType()
             //System.out.println("Seema=inside=="+datacopy);
             new LeaveTypeDB().AddforInstituite(datacopy);
             
-        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Selection Updated", ""));
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Selection Updated", ""));
         }
         catch(Exception ex)
         {

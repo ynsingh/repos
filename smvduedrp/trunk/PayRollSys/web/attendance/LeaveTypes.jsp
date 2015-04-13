@@ -157,9 +157,9 @@
             <h:form>
                     <h:panelGrid columns="2">
                     <h:outputText value="Leave Type"/>
-                    <h:inputText value="#{LeaveTypeBean.name}" />
-                    <h:outputText value="Max Limit(In Days)"/>
-                    <h:inputText value="#{LeaveTypeBean.value}" />
+                    <h:inputText value="#{LeaveTypeBean.name}" required="true" requiredMessage="Please Enter Leave Type" />
+                    <h:outputText value="Max Limit(In Days)" />
+                    <h:inputText value="#{LeaveTypeBean.value}" required="true" requiredMessage="Please Enter Max Limit " />
                      <%--                           
                     <h:outputText value="Checked/Unchecked"/>
                     <h:selectBooleanCheckbox value="#{LeaveTypeBean.checked}"/>--%>

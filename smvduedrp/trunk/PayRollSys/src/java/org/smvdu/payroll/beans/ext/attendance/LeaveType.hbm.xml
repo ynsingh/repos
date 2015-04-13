@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class dynamic-insert="false" dynamic-update="false" mutable="true" name="org.smvdu.payroll.beans.ext.attendance.LeaveType" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="leave_type_master">
+
+    <id name="code" type="java.lang.Integer">
+        <column name="lt_id" />
+        <generator class="identity"/>
+    </id>
+    
+    <property name="name" type="string">
+        <column name="lt_name" length="50" unique="true" />
+    </property>
+    
+    <property name="value" type="java.lang.Integer">
+        <column name="lt_value" length="11" not-null="true"/>
+    </property>  
+    
+    <set name="leaveOrgRecord" inverse="true">
+            <key>
+                <column name="ltr_leave_id" not-null="true"/>
+            </key>
+            <one-to-many class="org.smvdu.payroll.beans.ext.attendance.LeaveTypeOrgRecord"/>
+    </set>   
+        
+  </class>      
+        
+</hibernate-mapping>

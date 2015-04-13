@@ -1654,8 +1654,10 @@ CREATE TABLE employee_education_detail (
 #
 
 CREATE TABLE leavetype_org_record (
+	id int(11) NOT NULL AUTO_INCREMENT,
         ltr_leave_id int(11) NOT NULL,
         ltr_org_id int(11) NOT NULL,
+	PRIMARY KEY (id),
         KEY ltr_leave_id (ltr_leave_id),
         KEY ltr_or_gid (ltr_org_id),
         CONSTRAINT `leavetype_org_record_fk1` FOREIGN KEY (`ltr_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,

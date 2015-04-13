@@ -177,7 +177,7 @@ public class TaxSlabHeadDB {
             session = helper.getSessionFactory().openSession();
             session.beginTransaction();
       //      Query query = session.createQuery("select new TaxSlabHeadBean(slabHeadCode, slabName) from TaxSlabHeadBean left join  TaxSlabHeadBean.fyear  where current = 1 and orgcode='"+orgCode+"'");
-            Query query = session.createQuery("select ts.slabHeadCode, ts.slabName from TaxSlabHeadBean ts left join ts.fyear  where ts.fyear.current = 1 and ts.orgcode='"+orgCode+"'");
+            Query query = session.createQuery("select ts.slabHeadCode, ts.slabName from TaxSlabHeadBean ts left join ts.fyear  where ts.fyear.current = 1 and ts.orgcode='"+orgCode+"' order by ts.slabHeadCode asc");
             List result = query.list();
             
           /*  for (int i = 0; i < result.size(); i++) {

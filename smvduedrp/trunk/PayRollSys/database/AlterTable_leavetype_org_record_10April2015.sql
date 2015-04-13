@@ -1,0 +1,2 @@
+use pl;
+ALTER TABLE leavetype_org_record ADD COLUMN id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT FIRST;

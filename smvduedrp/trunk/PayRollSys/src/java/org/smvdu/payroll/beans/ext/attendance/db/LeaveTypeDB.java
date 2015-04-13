@@ -9,13 +9,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.ext.attendance.LeaveType;
 import org.smvdu.payroll.beans.ext.attendance.LeaveValue;
 import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.beans.ext.attendance.LeaveTypeOrgRecord;
 import org.smvdu.payroll.user.ActiveProfile;
 
 /**
@@ -58,6 +63,9 @@ public class LeaveTypeDB {
     
     private final UserInfo userBean;
     private ActiveProfile info;
+    
+    private HibernateUtil helper;
+    private Session session;
 
     public LeaveTypeDB()   {
         //info = (ActiveProfile)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
@@ -68,6 +76,36 @@ public class LeaveTypeDB {
     }
     
     public Exception update(LeaveType ltype)  {
+      
+        try
+        {
+    
+            session = helper.getSessionFactory().openSession();
+            
+
+            session.beginTransaction();
+
+            LeaveType lt = (LeaveType)session.get(LeaveType.class, ltype.getCode());
+
+            lt.setName(ltype.getName());
+            lt.setValue(ltype.getValue());
+            
+            session.update(lt);
+            session.getTransaction().commit();
+            
+            return null;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
+            session.close();
+        }
+        
+        
+    /*    
         try
         {
             Connection c = new CommonDB().getConnection();
@@ -90,10 +128,38 @@ public class LeaveTypeDB {
         {
             e.printStackTrace();
             return e;
-        }
+        }       */
     }
-    public void save(LeaveType lt)  {
-        try
+   
+    
+    
+    
+    public Exception save(LeaveType lt)  {
+    
+        try{
+           
+            LeaveType data = new LeaveType();
+
+            data.setName(lt.getName());
+            data.setValue(lt.getValue());
+
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(data);
+            session.getTransaction().commit();
+            return null;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e;
+        }
+        finally {
+            session.close();
+        }
+        
+        
+    /*    try
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into leave_type_master(lt_name, lt_value) values(?,?)");
@@ -106,9 +172,34 @@ public class LeaveTypeDB {
         catch(Exception e)
         {
             e.printStackTrace();
-        }
+        }   */
     }
+   
+    
+    
     public ArrayList<LeaveType> getAll()  {
+  
+        
+        try
+        {
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("from LeaveType");
+            ArrayList<LeaveType> data = (ArrayList<LeaveType>) query.list();
+            session.getTransaction().commit();
+            return data;
+        }
+        catch(Exception ex)    
+        {
+            session.getTransaction().rollback();
+            ex.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }  
+        
+    /*    
         try
         {
             
@@ -139,38 +230,111 @@ public class LeaveTypeDB {
             e.printStackTrace();
             return null;
         }
-
-
+            
+            */
     }
     
     public Exception DeleteleaveType(int currentIndex, ArrayList<LeaveType> ltype){
-          try{
-                Connection connection = new CommonDB().getConnection();
-                
-                for(LeaveType lt :ltype )
-                {
-                    if(lt.getCode()== currentIndex){
-                                          
-                        //System.out.println("\n in line 132==deleterecordordcurrentindex=="+lt.getCode());
-               
-                        ps = connection.prepareStatement("delete from leave_type_master where lt_id='"+lt.getCode()+"' and lt_name = '"+lt.getName()+"' ");
-                        ps.executeUpdate();
-                        ps.clearParameters();
-                    }
-                }    
-               
-                ps.close();
-                connection.close(); 
-                return null;   
-          }
-          catch(Exception ex)
-          {
-            ex.printStackTrace();
-            return ex;
-        } 
-       }      
+       
+        
+        try
+        {
+            for(LeaveType lt :ltype )
+            {
+                if(lt.getCode()== currentIndex) { 
+                    session = helper.getSessionFactory().openSession();
+                    session.beginTransaction();
+                    Query query = session.createQuery("delete from LeaveType where code ='"+lt.getCode()+"' and name = '"+lt.getName()+"'");
+                    query.executeUpdate();
+                    session.getTransaction().commit();
+                   
+                }
+            }
+            return null;
+                      
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }
+        
+        
+    /*    
+        try{
+            Connection connection = new CommonDB().getConnection();
+
+            for(LeaveType lt :ltype )
+            {
+                if(lt.getCode()== currentIndex){
+
+                    //System.out.println("\n in line 132==deleterecordordcurrentindex=="+lt.getCode());
+
+                    ps = connection.prepareStatement("delete from leave_type_master where lt_id='"+lt.getCode()+"' and lt_name = '"+lt.getName()+"' ");
+                    ps.executeUpdate();
+                    ps.clearParameters();
+                }
+            }    
+
+            ps.close();
+            connection.close(); 
+            return null;   
+        }
+        catch(Exception ex)
+        {
+          ex.printStackTrace();
+          return ex;
+        }   */
+    }      
 
     public void AddforInstituite (ArrayList<LeaveType> data)  {
+      
+        try{
+        
+        ArrayList<LeaveType> diff = new ArrayList<LeaveType>(data);
+        ArrayList<LeaveType> selected = new LeaveTypeDB().getAllappliedLeave();
+        diff.removeAll(selected);
+        ArrayList<LeaveType> diff2 = new ArrayList<LeaveType>(selected);
+        diff2.removeAll(data);
+        for(LeaveType lt : diff)
+            {
+                session = helper.getSessionFactory().openSession();
+                session.beginTransaction();
+                
+                LeaveTypeOrgRecord ltr = new LeaveTypeOrgRecord();
+                
+                LeaveType leave = new LeaveType();
+                leave.setCode(lt.getCode());
+                
+                ltr.setLeaveId(leave);
+                ltr.setOrgcode(userBean.getUserOrgCode());
+                
+                session.save(ltr);
+                session.getTransaction().commit();
+            }
+        for(LeaveType dt : diff2)
+            {
+                session = helper.getSessionFactory().openSession();
+                session.beginTransaction();
+                Query query = session.createQuery("delete from  LeaveTypeOrgRecord where leaveId = '"+dt.getCode()+"' and orgcode = '"+userBean.getUserOrgCode()+"'");
+                query.executeUpdate();
+                session.getTransaction().commit();                
+            }
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        
+        
+        
+    /*    
         try
         {
             
@@ -204,10 +368,45 @@ public class LeaveTypeDB {
         catch(Exception e)
         {
             e.printStackTrace();
-        }
+        }       */
     }
     
     public ArrayList<LeaveType> getAllappliedLeave()  {
+    
+          try
+        {
+            ArrayList<LeaveType> leaveinfo = new ArrayList<LeaveType>();
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("select lt.code, lt.name, lt.value from LeaveTypeOrgRecord lrt left join lrt.leaveId lt  where lrt.orgcode = '"+userBean.getUserOrgCode()+"'");
+            List result = query.list();
+            
+            for (Iterator it = result.iterator(); it.hasNext(); ) {
+               Object[] myResult = (Object[]) it.next();
+               LeaveType lt = new LeaveType();
+               lt.setCode((Integer) myResult[0]);
+               lt.setName((String) myResult[1]);
+               lt.setValue((Integer) myResult[2]);
+               System.out.println("code : '"+lt.getCode()+"'");
+               System.out.println("Name : '"+lt.getName()+"'");
+         //      System.out.println( "Found " + firstName + " " + lastName );
+               leaveinfo.add(lt);
+            } 
+            
+            session.getTransaction().commit();   
+            return leaveinfo;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }       
+        
+        
+    /*    
         try
         {
             Connection c = new CommonDB().getConnection();
@@ -234,8 +433,9 @@ public class LeaveTypeDB {
         {
             e.printStackTrace();
             return null;
-        }
+        }       */
     }
+    
     public ArrayList<LeaveType> loadLeaveType() {
        try{ 
             ArrayList<LeaveType> allLtypes = new ArrayList<LeaveType>();
@@ -271,6 +471,40 @@ public class LeaveTypeDB {
     }
     
     public boolean LeaveExists ( int leaveid){
+      
+      
+        try
+        {
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("from LeaveTypeOrgRecord lrt where lrt.leaveId.code='"+leaveid+"'");
+            ArrayList<LeaveTypeOrgRecord> data = (ArrayList<LeaveTypeOrgRecord>) query.list();
+            session.getTransaction().commit();
+            if(data.size()>0){
+                return true;
+            }
+            else{
+                return false;
+            }
+            
+            /*   for(LeaveType lt : data) {
+                int s = lt.getCode();
+            }   */
+
+        }
+        catch(Exception ex)    
+        {
+            session.getTransaction().rollback();
+            ex.printStackTrace();
+            return false;
+        }
+        finally {
+            session.close();
+        }  
+        
+        
+        
+    /*   
         try{
             
             Connection c = new CommonDB().getConnection();
@@ -289,7 +523,7 @@ public class LeaveTypeDB {
         catch(Exception ex)
         {
             return false;
-        }
+        }       */
     }
 
 
