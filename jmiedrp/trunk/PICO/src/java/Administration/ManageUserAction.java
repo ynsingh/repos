@@ -338,11 +338,14 @@ public class ManageUserAction extends DevelopmentSupport  {
             //If part saves record for the first time; else parts is for record update
 
             if (erpmusers.getErpmuId() == null) {
-                erpmusers.setErpmuActive("N");
+                //erpmusers.setErpmuActive("N");
+                erpmusers.setErpmuActive("Y");
                 erpmusersDao.save(erpmusers);
-                erpmur.setErpmurActive('N');
+                //erpmur.setErpmurActive('N');
+                erpmur.setErpmurActive('Y');
                 erpmur.setErpmusers(erpmusers);
                 erpmurDao.save(erpmur);
+		message="User Registered Successfully.";
             } else {
                 Erpmusers erpmusers2 = erpmusersDao.findByUserName(erpmusers.getErpmuName());
                 erpmusers2 = erpmusers;
