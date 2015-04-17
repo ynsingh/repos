@@ -30,7 +30,7 @@
 *
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITK.
 *  Modified Date: 7 jan 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
-*  Modified date 27 October 2014, IITK , (omprakashkgp@gmail.com)
+*  Modified date 27 October 2014, IITK , Om Prakash (omprakashkgp@gmail.com) (GUI Main page)
 --%>
 
 <%@page import="org.smvdu.payroll.api.UserOperationBeans.UserBeans"%>
@@ -80,17 +80,18 @@
             <body id="" class="mainpage">
             <a4j:keepAlive beanName="userBeans" ajaxOnly="true"/>
             <a4j:keepAlive beanName="SalaryProcessingSetup" ajaxOnly="true"/>
+            <div style=" margin-left: 10%">
             <h:form>
-                <rich:panel style="height:150px; width:100%; padding:0px; border-width:0px;">
+                <rich:panel style="height:150px; width:90%; padding:0px; border-width:0px;">
                         <div  align="left">
                             <%--<h:graphicImage url="/img/pls1.png"/>--%>
-				<h:graphicImage url="/img/payrollheader.png"/>
+                            <h:graphicImage url="/img/payrollheader.png" width="1246" height="140" style="0" />
                         </div>
                         <div  align="right">
                             <%--<h:graphicImage url="/img/3_1.PNG" style="margin-top:-100px;"/>--%>
                         </div>
                     </rich:panel>
-                <rich:toolBar width="100%;" height="10px">
+                <rich:toolBar width="90%;" height="10px">
                     <rich:hotKey  key="alt+k" handler="#{rich:component('em')}.expand()"/>
 
                     <rich:dropDownMenu  id="se" value="Setup">
@@ -122,9 +123,9 @@
                         <rich:menuItem  id="sa2" onclick="return loadIframe('ifrm','salary/DefaultSalaryData.jsf')" value="Default Salary values"/>
                         <rich:menuItem  id="sa3" onclick="return loadIframe('ifrm','salary/SalarySettings.jsf')" value="Type wise Salary Head Setting"/>
                         <rich:menuGroup id="sa4"  value="Salary Processing Setup" >
-                         <%--   <rich:menuItem id="sa41" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcesswithBudget.jsf')" value="Salary Processing with Budget" disabled="#{SalaryProcessingSetup.inactive}"/>
+                        <rich:menuItem id="sa41" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcesswithBudget.jsf')" value="Salary Processing with Budget" disabled="#{SalaryProcessingSetup.inactive}"/>
                             <rich:menuItem  id="sa42" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing" disabled="#{SalaryProcessingSetup.active}" />
-                        --%>
+                        
                         </rich:menuGroup>
                         <rich:separator/>
                         <rich:menuItem value="Exit"/>
@@ -194,6 +195,7 @@
                         <rich:menuItem  id="re4" onclick="return loadIframe('ifrm','report/ReportExporterMonthlyRoll.jsf?fwdLink=MonthlyPayroll.jsf')" value="Monthly Salary Roll"/>
                         <rich:menuItem  id="re5" onclick="return loadIframe('ifrm','report/ReportExporter.jsf?fwdLink=APF.jsf')" value="Annual PF Report"/>
                         <rich:menuItem  id="re6" onclick="return loadIframe('ifrm','report/ReportExporterConcise.jsf?fwdLink=APF_Compact.jsf')" value="Concise PF Report"/>
+			<rich:menuItem  id="re7" onclick="return loadIframe('ifrm','report/ReportExporterAttendance.jsf?fwdLink=AttendanceReportMonthly.jsf')" value="Monthly Attendance Report"/>
                         <rich:menuItem  id="re8" onclick="return loadIframe('ifrm','report/IndividualAttendanceReport.jsf?fwdLink=AttendanceReportMonthly.jsf')" value="Individual Attendance Report"/>
                         <rich:menuItem  id="re9" onclick="return loadIframe('ifrm','report/AnnualAttendanceReport.jsf?fwdLink=AttendanceReportMonthly.jsf')" value="Annual Attendance Report"/>
                     </rich:dropDownMenu>
@@ -222,7 +224,8 @@
             </h:form>
 
             <div class="sidebar">
-                <rich:panel id="leftpa" >
+                <%-- <rich:panel id="leftpa" >--%>
+                    <rich:panel style="height:563px; width:100%; padding:0px; border-width:0px;">
                     <div class="logo">  </div>
                     <rich:panel>
                         <h:form>
@@ -292,14 +295,21 @@
                     </rich:simpleTogglePanel>
                 </rich:panel>
             </div>
+                    
             <div class="body">
-                <div class="content-area" >
+                 <%-- <div class="content-area" >
                     <iframe name="ifrm" id="ifrm" src="Home.jsf" style="background-color:#ffffff"
                             width="100%;" height="600px">Your browser doesn't support iframes.</iframe>
 
+                </div>--%>
+                 <div class="content-area" >
+                    <iframe name="ifrm" id="ifrm" src="setup/SessionSetup.jsf" style="background-color: whitesmoke "
+                            width="88%;" height="563px">Your browser doesn't support iframes.</iframe>
+
                 </div>
+                             
             </div>
-            <rich:modalPanel id="pnl">
+            <rich:modalPanel id="pnl" >
                 <f:facet name="controls">
                     <h:graphicImage value="/img/cls.png" style="cursor:pointer"
                                     onclick="Richfaces.hideModalPanel('pnl')" />
@@ -433,7 +443,8 @@
                     </h:panelGrid>
                 </h:form>
             </rich:modalPanel>
-
+            <rich:toolBar width="90%;" height="20px"> Developed by : SMVDU Team, and IIT KANPUR Team </rich:toolBar>
+            </dir>
         </body>
     </html>
 </f:view>
