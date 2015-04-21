@@ -50,10 +50,10 @@ $!data.getMessage()
 	#if ($isInstructor=="true")
 		#if($AccessMsg!="")
 			<td align="left" colspan="3">
-				<a href=javascript:popupWin("/brihaspati/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+				<a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
 			<td align="right" colspan="6"> <font color="red" size="4">$AccessMsg  </td>
 		#else
-			<td align="left" colspan="9"> <a href=javascript:popupWin("/brihaspati/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+			<td align="left" colspan="9"> <a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
 
 			
 	        #end
@@ -126,20 +126,20 @@ $!data.getMessage()
 	        #end
         	<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> $brih_content $brih_upload </a></td>
 	#end
+        #if($data.getUser().getUserName() != "guest")
+                #if($tdcolor != "0")
+                        <td>
+                #elseif($tdcolor == "0")
+                        <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0") style=text-decoration:none> $brih_course $Profile_user </a></td>
+        #end
 	#if($tdcolor != "1")
          <td>
          #elseif($tdcolor == "1")
          <td bgcolor="#AFDCEC">
          #end
 	 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> $brih_course $brih_content </a></td>
-	#if($data.getUser().getUserName() != "guest")
-		#if($tdcolor != "0")
-        		<td>
-	        #elseif($tdcolor == "0")
-        		<td bgcolor="#AFDCEC">
-	        #end
-        	<a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0") style=text-decoration:none> $brih_course $Profile_user </a></td>
-	#end
 #end
 #if(($user_role == "teacher_assistant")&&($flag1))
 
@@ -205,7 +205,7 @@ $!data.getMessage()
         ##<td align="left">
 	<td valign="top">
                 #if($dirContent.size()>1)
-                	<table align="left" bgcolor="$ui.tableColor" width=100%>
+                	<table align="right" bgcolor="$ui.tableColor" width=100%>
 			<br>
 	                <tr align="right"> 
 				<td> </td>

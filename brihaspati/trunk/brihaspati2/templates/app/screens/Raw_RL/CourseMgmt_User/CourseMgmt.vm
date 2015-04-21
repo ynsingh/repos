@@ -263,6 +263,23 @@ $!data.getMessage()
 		<td align="right">  $brih_midsem  </td>
         </tr>
 
+               <tr align="right">
+                #if($isInstructor=="true")
+                <td align="right"> <input type="text" size=3 name="classnote" value="$!classnote" ></td>
+                #else
+                <td align="right"> <input type="text" size=3 name="classnote" value="$!classnote" readonly></td>
+                #end
+                <td>$brih_ClassNote</td>
+        </tr>
+        <tr align="right">
+                #if($isInstructor=="true")
+                <td> align="right"><input type="text" size=3 name="assignment" value="$!assignment" ></td>
+                #else
+                <td align="right"> <input type="text" size=3 name="assignment" value="$!assignment" readonly></td>
+                #end
+                <td>  $brih_assignment  </td>
+        </tr>
+
 	<tr>
 		#if($isInstructor=="true")
         	        <td align="right"> <input type="text" size=3 name="quiz" value="$!quiz" ></td>

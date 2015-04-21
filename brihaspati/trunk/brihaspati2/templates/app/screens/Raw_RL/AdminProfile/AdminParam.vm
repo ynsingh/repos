@@ -350,7 +350,7 @@ $!data.getMessage()
    </tr>
    <tr>
 
-      <td colspan=2 bgcolor="$ui.menuColor">	
+      <td colspan=2 bgcolor="$ui.menuColor" align="right">	
 	  <input type="hidden" name="actionName"/>
 	  <input type="reset" class="button-ftextstyle" name="reset" value="$brih_reset"Click ="checkClear(document.frm,this);"/>
           <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
