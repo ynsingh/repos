@@ -295,7 +295,7 @@ class Budget_model extends Model {
 		$budget_q1 = $this->db->get();
 		foreach($budget_q1->result() as $row)
 		{
-			$budget[$counter]['id'] = $row->id;
+			echo $budget[$counter]['id'] = $row->id;
 			$budget[$counter]['code'] = $row->code;
 			$budget[$counter]['budgetname'] = $row->budgetname;
 			$budget[$counter]['bd_balance'] = $row->bd_balance;
@@ -983,5 +983,84 @@ class Budget_model extends Model {
 	 function startsWith($str1, $str2)
         {
                 return !strncmp($str1, $str2, strlen($str2));
-        }			
+        }	
+
+	//Method for budgetaggregation for get budget information of an account @author-sharad23nov@yahoo.com		
+
+       	function get_agg_budgets($accname)
+       	{
+                $CI =& get_instance();
+		//get account detail. 
+
+                $db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accname);
+                $db_name_q = $db1->get();
+                foreach ($db_name_q->result() as $row)
+                {
+                        $db_name = $row->databasename;
+                        $db_username = $row->uname;
+                        $db_password = $row->dbpass;
+                        $host_name = $row->hostname;
+                        $port = $row->port;
+                }
+		try {
+    			$dbcon = new PDO("mysql:host=$host_name;dbname=$db_name", $db_username, $db_password);
+			/*** echo a message saying we have connected ***/
+			//echo 'Connected to database';
+
+
+	                $budget = array();
+        	        $counter = 0;
+                	$main_budget_code = 0;
+
+			//get the value of main budget of an account.
+
+			$mbudget = "select * from budgets where budgetname='Main Budget'";
+			$stmt = $dbcon->query($mbudget);
+			if($stmt != false) 
+			{
+				foreach ($stmt as $row)
+				{
+                                        $budget[$counter]['id'] = $row['id'];
+                                        $budget[$counter]['code'] = $row['code'];
+                                        $budget[$counter]['budgetname'] = $row['budgetname'];
+                                        $budget[$counter]['bd_balance'] = $row['bd_balance'];
+                                        $budget[$counter]['group_id'] = $row['group_id'];
+                                        $budget[$counter]['allowedover'] = $row['allowedover'];
+                                        $budget[$counter]['consume_amount'] = $row['consume_amount'];
+					$counter++;
+				}
+			}
+
+                	//get code for expense
+
+	                $expense_code = '40';
+//			$budgetquery =  "select * from budgets where code <> $expense_code AND code <> '50' order by code asc ";
+//e			$budgetquery =  "select * from budgets where code <> $expense_code order by code asc ";
+			$budgetquery =  "select * from budgets where budgetname <> 'Main Budget' order by code asc ";
+                        $stmt = $dbcon->query($budgetquery);
+                        if($stmt != false)
+                        {
+                                foreach ($stmt as $row)
+                                {
+                                        $budget[$counter]['id'] = $row['id'];
+                                        $budget[$counter]['code'] = $row['code'];
+                                        $budget[$counter]['budgetname'] = $row['budgetname'];
+                                        $budget[$counter]['bd_balance'] = $row['bd_balance'];
+                                        $budget[$counter]['group_id'] = $row['group_id'];
+                                        $budget[$counter]['allowedover'] = $row['allowedover'];
+                                        $budget[$counter]['consume_amount'] = $row['consume_amount'];
+					$counter++;
+                                }
+			}
+			//print_r($budget);	
+			return $budget;
+                }
+                catch(PDOException $e)
+                {
+                        echo $e->getMessage();
+                }
+
+
+        }
 }

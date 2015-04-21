@@ -60,6 +60,7 @@
 			$db1=$this->load->database('login', TRUE);
 			$db1->from('bgasuser')->where('username', $username);
 			$userrec = $db1->get();
+			//$type;
 			foreach($userrec->result() as $row)
                         {
                                 $type=$row->aggtype;
@@ -80,7 +81,7 @@
 				if(check_access('administer')){
 					if($type=='agg')
 					{
-					echo anchor('admin/aggregator', 'Aggregator', array('title' => "Administer", 'class' => 'anchor-link-b'));
+					echo anchor('admin/aggregator', 'Aggregator', array('title' => "Aggregator", 'class' => 'anchor-link-b'));
 					echo " | ";
 					}
 				}
