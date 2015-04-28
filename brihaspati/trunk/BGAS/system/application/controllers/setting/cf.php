@@ -690,7 +690,26 @@ class Cf extends Controller{
                                 $liability->current_liabilities(8,6,'1004',"CF",$data_database_name);
                                 $liability->provisions(157,6,'1005',"CF",$data_database_name);
 
+
+/////////////////////////////////////
+				
+				$this->load->library('reportlist');
+				$liability = new Reportlist();
+				$liability->callschedule(9,'100101',1,'CF',$data_database_name);
+				$liability->callschedule(10,'100102',2,'CF',$data_database_name);
+				$liability->callschedule(6,'1002',4,'CF',$data_database_name);
+
                 		$this->messages->add('xml created'.$data_database_name, 'success');
+
+///////////////////////////////////   /* CF Asset Liability Corporate Format Balance using xml */
+					
+	/*			$this->load->library('reportlist');
+                                $liability = new Reportlist();
+                                $liability->corp_balancesheet(0,1,"CF",$data_database_name);
+                                $asset = new Reportlist();
+                                $asset->corp_balancesheet(0,2,"CF",$data_database_name);
+				$this->messages->add('xml created'.$data_database_name, 'success');*/
+
 
 				/* Account lock */
 			//	$this->db->trans_start()

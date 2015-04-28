@@ -629,5 +629,39 @@ function current_asset_A($led_id)
 	$total1 = $dr_total . "#" . $cr_total;
 	return $total1;
 }
+
+function schedule_1($ledger_id)
+{
+	$c_total = 0.00;	
+	$credit_total = 0.00;
+	$d_total = 0.00;
+	$debit_total = 0.00;
+	$CI =& get_instance();
+        $CI->db->select('entry_id, id, amount, dc');
+        $CI->db->from('entry_items')->where('ledger_id', $ledger_id);
+        $entry_items_q = $CI->db->get();
+        if($entry_items_q->num_rows() > 0)
+        {
+        	$entry_items_result = $entry_items_q->result();
+                foreach ($entry_items_result as $row)
+                {
+                if($row->dc == 'C')
+                {
+		$c_total = $c_total + $row->amount;
+                $credit_total = $credit_total + $row->amount;
+                }
+                else
+                {
+		$d_total = $d_total + $row->amount;
+                $debit_total = $debit_total + $row->amount;
+                }
+                }//foreach
+       }//if
+	$total_a = $c_total . "#" . $d_total;
+	return $total_a;
+}
+
+     
+
 }//main
 ?>
