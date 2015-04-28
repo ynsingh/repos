@@ -523,7 +523,7 @@ class Create extends Controller {
 					$this->messages->add('Added account settings file to list of active accounts.', 'success');
 				}
 
-*/				redirect('admin');
+*/				redirect('admin/manage');
 				return;
 			}
 		}

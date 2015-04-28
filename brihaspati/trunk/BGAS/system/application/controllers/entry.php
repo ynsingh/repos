@@ -981,10 +981,10 @@ $width="100%";
                                 }
 				
 				$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
+				//$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
 				if($data_sanc_letter_date != ""){
 					$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
 				}
-
 				$entry_id = NULL;
 				$uname=$this->session->userdata('user_name');
 	                        $sec_unit=$this->session->userdata('sec_unit_id');

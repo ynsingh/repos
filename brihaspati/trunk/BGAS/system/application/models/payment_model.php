@@ -67,82 +67,114 @@ class Payment_model extends Model {
         function get_all_expense_detail($id)
         {
 		$total1="0";
-                $total2="0";
-                $total3="0";
-                $total4="0";
-                $counter =0;
-                $ledg_id = "";
-                $ledger_id ="";
-                $total="0";
-                $total_amount="";
+        $total2="0";
+        $total3="0";
+        $total4="0";
+        $counter =0;
+        $ledg_id = "";
+        $ledger_id ="";
+        $total="0";
+        $total_amount="";
 		$num_row="";
 		$sum_all="";
 		$sum_total ="";
-                $this->db->select('code')->from('groups')->where('id', $id);
-                $code_result= $this->db->get();
-                $code = $code_result->row();
-                $this->db->select('id')->from('ledgers');
-                foreach( $code as $code1){
-                       $this->db->like('code', $code1);
-               	 }
+        $dr_sum_total = "";
+        $cr_sum_total = "";
+        $cr_sum ="";
+        $dr_total= "";
+        $this->db->select('code')->from('groups')->where('id', $id);
+        $code_result= $this->db->get();
+        $code = $code_result->row();
+        $this->db->select('id')->from('ledgers');
+        foreach( $code as $code1){
+               $this->db->like('code', $code1);
+       	 }
                 
 		$query_result =$this->db->get();
 		$no_row = $query_result->num_rows();
-		if($no_row != 0){
-	
-                	$q_result = $query_result->result();
+		if($no_row != 0)
+        {
+            $q_result = $query_result->result();
 		       		
-				foreach ($q_result as $row)
-				{
-                        		$ledger_id = $row->id;
-                        		$this->db->select('id');
-                        		$this->db->select_sum('amount');
-                        		$this->db->from('entry_items')->where('ledger_id', $ledger_id);
-                        		$result =$this->db->get();
-                        		$amount_result = $result->result();
+			foreach ($q_result as $row)
+			{
+        		$ledger_id = $row->id;
+        		$this->db->select('entry_id,id,dc,amount');
+        		//$this->db->select_sum('amount');
+        		$this->db->from('entry_items')->where('ledger_id', $ledger_id);
+        		$result =$this->db->get();
+        		$entry_result = $result->result();
+                foreach($entry_result as $query_row)
+                {
+                    $entry_id = $query_row->entry_id;
+                    //$sum = $query_row->amount;
+                    $entry_item_id =$query_row->id;
+                    $this->db->select('*')->from('entries')->where('id', $entry_id);
+                    $entries = $this->db->get();
+                    $entries_row = $entries->num_rows();
+                    if($entries_row > 0)
+                    {
+                        /*$this->db->select('id');
+                        $this->db->select_sum('amount');
+                        $this->db->from('entry_items')->where('entry_id', $entry_id);
+                        $result =$this->db->get();
+                        $amount_result = $result->result();
 
-                       			foreach($amount_result as $row1)
-                               		{
-						$entry_item_id=$row1->id;
-                                		$sum = $row1->amount;
-						$sum_total = $sum_total + $sum;
-                                		$this->db->select('amount,fund_id')->from('fund_management')->where('entry_items_id', $entry_item_id);
-                                		$result2 =$this->db->get();
-                                		$fund_result = $result2->result();
+               			foreach($amount_result as $row1)
+                       	{
+        					$entry_item_id=$row1->id;
+                            $sum = $row1->amount;*/
+                           // echo"sum=$sum id=$ledger_id";
+        					//$sum_total = $sum_total + $sum;
+                            $dc = $query_row->dc;
+                            if($dc == "D"){
+                                $dr_sum = $query_row->amount;
+                                $dr_sum_total = $dr_sum_total + $dr_sum;
+                            }else{
+                                $cr_sum = $query_row->amount;
+                                $cr_sum_total = $cr_sum_total + $cr_sum;
+                            }
+                    		$this->db->select('amount,fund_id')->from('fund_management')->where('entry_items_id', $entry_item_id);
+                    		$result2 =$this->db->get();
+                    		$fund_result = $result2->result();
 
-                                		foreach($fund_result as $row2)
-                                		{
-                                        		$fund_id =$row2->fund_id;
-                                        		$fund_code =$this->get_ledger_code($fund_id);
-                                        		$code = substr($fund_code,0,6);
-                                        		
-							if($code == "100101"){
-                                              			$fund_amount = $row2->amount;
-                                                		$total1 = $total1+$fund_amount;
-                                         		}elseif($code == "100102"){
+                    		foreach($fund_result as $row2)
+                    		{
+                        		$fund_id =$row2->fund_id;
+                        		$fund_code =$this->get_ledger_code($fund_id);
+                        		$code = substr($fund_code,0,6);
+                                            		
+        						if($code == "100101")
+                                {
+                          			$fund_amount = $row2->amount;
+                            		$total1 = $total1+$fund_amount;
+                         		}elseif($code == "100102"){
 
-                                                		$fund_amount = $row2->amount;
-                                                		$total2 = $total2+$fund_amount;
-                                         		}elseif($code == "100103"){
+                                		$fund_amount = $row2->amount;
+                                		$total2 = $total2+$fund_amount;
+                         		}elseif($code == "100103"){
 
-                                                		$fund_amount = $row2->amount;
-                                                		$total3 = $total3+$fund_amount;
+                                		$fund_amount = $row2->amount;
+                                		$total3 = $total3+$fund_amount;
 
-                                         		}elseif($code !="100101" && $code !="100102" && $code != "100103"){
+                         		}elseif($code !="100101" && $code !="100102" && $code != "100103"){
 
-                                                		$fund_amount = $row2->amount;
-                                                		$total4 = $total4+$fund_amount;
-							}
-                                         	  }
-					  }
-					}
-				$value1=$total1+$total2+$total3+$total4;
-				$value = $sum_total - $value1;
-				$total2 = $total2+$value;
-                        	 $total_amount = $total1."#".$total2."#".$total3."#".$total4;
-			    }
-	return $total_amount;
-        }
+                                		$fund_amount = $row2->amount;
+                                		$total4 = $total4+$fund_amount;
+        						}
+                            }
+                        //}
+    				}
+                }
+			}
+            $sum_total = $dr_sum_total - $cr_sum_total;
+    		$value1=$total1+$total2+$total3+$total4;
+    		$value = $sum_total - $value1;
+    		$total2 = $total2+$value;
+            $total_amount = $total1."#".$total2."#".$total3."#".$total4;
+		}
+	    return $total_amount;
+    }
 
 
 	function get_all_income_detail($id)
@@ -158,142 +190,169 @@ class Payment_model extends Model {
 		$t3 = "0";
 		$t4 = "0";
 		$t01 = "0";
-                $t02 = "0";
-                $t03 = "0";
-                $t04 = "0";
+        $t02 = "0";
+        $t03 = "0";
+        $t04 = "0";
 		$fund_amount = "";
 		$diff = 0;
 		$transit = 0;
 		$this->db->select('code')->from('groups')->where('id', $id);
-                $code_result= $this->db->get();
-                $code = $code_result->row();
-                $this->db->select('id')->from('ledgers');
-                foreach( $code as $code1){
-                       $this->db->like('code', $code1);
-                 }
-                $query_result =$this->db->get();
-                $no_row = $query_result->num_rows();
-		
-               // if($no_row != 0){
-                        $q_result = $query_result->result();
-                                foreach ($q_result as $row)
-                                {
-                                        $ledger_id = $row->id;
-                                        $this->db->select('id,dc');
-                                        $this->db->select('amount');
-                                        $this->db->from('entry_items')->where('ledger_id', $ledger_id);
-                                        $result =$this->db->get();
-                                        $amount_result = $result->result();					
-                                        foreach($amount_result as $row1)
-                                        {
-						$dc = $row1->dc;
-                                           	if($id == "25")
-						{
-							 $entry_item_id=$row1->id;
-                                                	 $this->db->select('amount,fund_id')->from('fund_management')->where('entry_items_id', $entry_item_id);
-                                                	 $result2 =$this->db->get();
-                                                	 $fund_result = $result2->result();
-							 $n_row = $result2->num_rows();
-							if($n_row >0)
-                                                	{	
-								foreach($fund_result as $row2)
-                                                		{
-                                                        		$fund_id =$row2->fund_id;
-                                                        		$fund_code =$this->get_ledger_code($fund_id);
-                                                        		$code = substr($fund_code,0,6);
-									$code1 = substr($fund_code,0,4);
-									if($code == "100101"){
-                                                                		$fund_amount = $row2->amount;
-                                                                		$total1 = $total1+$fund_amount;
-                                                        		}elseif($code1 == "1002"){
+        $code_result= $this->db->get();
+        $code = $code_result->row();
+        $this->db->select('id')->from('ledgers');
+        foreach( $code as $code1){
+               $this->db->like('code', $code1);
+         }
+        $query_result =$this->db->get();
+        $no_row = $query_result->num_rows();
 
-                                                                		$fund_amount = $row2->amount;
-                                                                		$total2 = $total2+$fund_amount;
-									}
-								 }
-							 }else{
-								if($dc == "C")
-								{
-									$entry_item_id=$row1->id;
-                                                        		$sum = $row1->amount;
-                                                        		$cr_total = $cr_total + $sum;
-								 }elseif($dc == "D"){
-									$entry_item_id=$row1->id;
-                                                        		$sum = $row1->amount;
-                                                        		$cr_total = $cr_total + $sum;
-								}
-							 }
-						  }elseif($dc == "C"){
-						 	$entry_item_id=$row1->id;
-                                                	$sum = $row1->amount;
-							$cr_total = $cr_total + $sum;
+        $q_result = $query_result->result();
+        foreach ($q_result as $row)
+        {
+            $ledger_id = $row->id;
+            $this->db->select('entry_id,id,amount,dc');
+            $this->db->from('entry_items')->where('ledger_id', $ledger_id);
+            $result =$this->db->get();
+            $entry_result = $result->result();
+            foreach($entry_result as $query_row)
+            {
+                $entry_id = $query_row->entry_id;
+                $dc = $query_row->dc;
+                $sum = $query_row->amount;
+                $entry_item_id =$query_row->id;
+                $this->db->select('*')->from('entries')->where('id', $entry_id);
+                $entries = $this->db->get();
+                $entries_row = $entries->num_rows();
+                if($entries_row > 0)
+                {
 
-						  }elseif($dc == "D"){
-							$entry_item_id=$row1->id;
-                                                	$sum = $row1->amount;
-                                                	$dr_total = $dr_total + $sum;
-						  }
-					 }
-				    }
-
-			if($id == "24")
-                  	{
-                        	$this->db->select('id');
-                        	$this->db->from('ledgers');
-                        	$this->db->like('code', '10', 'after');
-				$this->db->not_like('code', '1003', 'after');
-                		$this->db->not_like('code', '1004', 'after');
-                		$this->db->not_like('code', '1005', 'after');
-				$this->db->not_like('code', '1006', 'after');
-				$amount= "";
-                        	$query = $this->db->get();
-                        	$query_result = $query->result();
-                        	foreach($query_result as $row3)
-				{
-					$ledg_id = $row3->id;
-				        $fund_code =$this->get_ledger_code($ledg_id);
-					 $code = substr($fund_code,0,6);
-                                         $code1 = substr($fund_code,0,4);
-					$this->db->select('dc,amount,id')->from('entry_items')->where('ledger_id',$ledg_id)->where('dc','D');		
-					$entry = $this->db->get();
-					$entry_result =$entry->result();
-					foreach($entry_result as $row4)
+                   // $this->db->select('id,dc');
+                   // $this->db->select('amount');
+                   // $this->db->from('entry_items')->where('ledger_id', $ledger_id);
+                   // $result =$this->db->get();
+                   // $amount_result = $result->result();					
+                    //foreach($amount_result as $row1)
+                    //{
+				        //$dc = $row1->dc;
+                    if($id == "25")
 					{
-						if($code == '100101')
-						{
-							$amount = $row4->amount;
-							$t1 = $t1 + $amount;
-						}elseif($code == '100103'){
-							$amount = $row4->amount;
-							$t2 = $t2 + $amount;
-						}elseif($code1 == '1002'){
-							$amount = $row4->amount;
-							$t3 = $t3 +$amount;
-						}elseif($code == '100102'){
-							$amount = $row4->amount;
-							$t4 = $t4 + $amount;
-						}
+                      //  $entry_item_id=$row1->id;
+                        $this->db->select('amount,fund_id')->from('fund_management')->where('entry_items_id', $entry_item_id);
+                        $result2 =$this->db->get();
+                        $fund_result = $result2->result();
+                        $n_row = $result2->num_rows();
+                        if($n_row >0)
+                        {	
+							foreach($fund_result as $row2)
+                            {
+                        		$fund_id =$row2->fund_id;
+                        		$fund_code =$this->get_ledger_code($fund_id);
+                        		$code = substr($fund_code,0,6);
+								$code1 = substr($fund_code,0,4);
+								if($code == "100101"){
+                            		$fund_amount = $row2->amount;
+                            		$total1 = $total1+$fund_amount;
+                    		    }elseif($code1 == "1002"){
+
+                        		$fund_amount = $row2->amount;
+                        		$total2 = $total2+$fund_amount;
+							   }
+						    }
+                        }else{
+						
+                            if($dc == "C")
+						    {
+								//$entry_item_id=$row1->id;
+                        		//$sum = $row1->amount;
+                        		$cr_total = $cr_total + $sum;
+						    }elseif($dc == "D"){
+
+								//$entry_item_id=$row1->id;
+                        		//$sum = $row1->amount;
+                        		$dr_total = $dr_total + $sum;
+						    }
+                        }
+
+                    }elseif($dc == "C"){
+					 	//$entry_item_id=$row1->id;
+                        //$sum = $row1->amount;
+						$cr_total = $cr_total + $sum;
+
+					}elseif($dc == "D"){
+						//$entry_item_id=$row1->id;
+                        //$sum = $row1->amount;
+                        $dr_total = $dr_total + $sum;
 					}
-				}
-				 $fund_amount = $t1 + $t2 + $t3 + $t4;
-				$this->load->model('ledger_model');
-                                $transit= $this->Ledger_model->get_ledger_balance('123');
-				$transit = 0-$transit;
-				if($transit == $fund_amount){
-					$t01 = $t1;
-					$t02 = $t2;
-					$t03 = $t3;
-					$t04 = $t4;	
-				}elseif($transit > $fund_amount){
-				
-					$diff = $transit - $fund_amount;	
+			    }
+            }
+		}
+
+		if($id == "24")
+        {
+        	$this->db->select('id');
+        	$this->db->from('ledgers');
+        	$this->db->like('code', '10', 'after');
+			$this->db->not_like('code', '1003', 'after');
+    		$this->db->not_like('code', '1004', 'after');
+    		$this->db->not_like('code', '1005', 'after');
+			$this->db->not_like('code', '1006', 'after');
+			$amount= "";
+        	$query = $this->db->get();
+        	$query_result = $query->result();
+        	foreach($query_result as $row3)
+			{
+				$ledg_id = $row3->id;
+			    $fund_code =$this->get_ledger_code($ledg_id);
+				$code = substr($fund_code,0,6);
+                $code1 = substr($fund_code,0,4);
+				$this->db->select('dc,amount,id,entry_id')->from('entry_items')->where('ledger_id',$ledg_id)->where('dc','D');		
+				$entry = $this->db->get();
+				$entry_result =$entry->result();
+				foreach($entry_result as $row4)
+				{
+                    $entry_id = $row4->entry_id;
+                    $this->db->select('*')->from('entries')->where('id', $entry_id);
+                    $entries = $this->db->get();
+                    $entries_row = $entries->num_rows();
+                    if($entries_row > 0)
+                    {
+    					if($code == '100101')
+    					{
+    						$amount = $row4->amount;
+    						$t1 = $t1 + $amount;
+    					}elseif($code == '100103'){
+    						$amount = $row4->amount;
+    						$t2 = $t2 + $amount;
+    					}elseif($code1 == '1002'){
+    						$amount = $row4->amount;
+    						$t3 = $t3 +$amount;
+    					}elseif($code == '100102'){
+    						$amount = $row4->amount;
+    						$t4 = $t4 + $amount;
+    					}
+                    }
 				}
 			}
+			$fund_amount = $t1 + $t2 + $t3 + $t4;
+			$this->load->model('ledger_model');
+            $transit= $this->Ledger_model->get_ledger_balance('123');
+			$transit = 0-$transit;
+			if($transit == $fund_amount){
+				$t01 = $t1;
+				$t02 = $t2;
+				$t03 = $t3;
+				$t04 = $t4;	
+			}elseif($transit > $fund_amount){
+			
+				$diff = $transit - $fund_amount;	
+			}
+		}
 		//	echo "tooo$transit";
-			$sum_total = $cr_total - $dr_total;
+		$sum_total = $cr_total - $dr_total;
 		$total = $sum_total . "#" . $total1. "#" . $total2 . "#". $t01. "#" . $t02 . "#" . $t03 . "#" . $t04 . "#".$diff;
 	// }
-	return $total;
+       // echo"$total";
+	   return $total;
 	}	
 
 	function income_xml_data($ledg_id)
@@ -454,38 +513,5 @@ class Payment_model extends Model {
 		}
 		return $db_name;
 	}
-	
-	function db_user_name()
-        {
-                $db_name = "";
-                $CI =& get_instance();
-                $CI->db->from('settings')->where('id', 1);
-                $settings_q = $CI->db->get();
-                $settings= $settings_q->row();
-                $ins_name = $settings->ins_name;
-                $uni_name = $settings->uni_name;
-
-                $date1 = explode("-", $settings->fy_start);
-                $date2 = explode("-", $settings->fy_end);
-                $year_start = $date1[0];
-                $year_end = $date2[0];
-                $curr_year = $year_start . "-" . $year_end;
-
-                $CI =& get_instance();
-                $db = $CI->load->database('login', TRUE);
-                $db->select('databasename, uname, dbpass, hostname, port');
-
-                $db->from('bgasAccData')->where('organization', $ins_name)->where('unit', $uni_name)->where('fyear', $curr_year);
-                $login_q = $db->get();
-                if($login_q->num_rows()>0){
-                        $login = $login_q->row();
-                        $db_name = $login->uname;
-                        $db_pass = $login->dbpass;
-
-                }
-		$val= $db_name.'#'.$db_pass;
-                return $val;
-        }
-
 }
 ?>
