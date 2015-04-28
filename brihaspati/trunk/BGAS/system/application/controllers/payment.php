@@ -1161,8 +1161,8 @@ class Payment extends Controller {
                         $data['approved_amount']['value'] = $this->input->post('approved_amount', TRUE);
                         $data['approved_by']['value'] = $this->input->post('approved_by', TRUE);
                         $data['being']['value'] = $this->input->post('being', TRUE);
-                        $data['payment_mode_active']['value'] = $this->input->post('payment_mode', TRUE);
-			$data['bankcash_active']['value']=$this->input->post('bank_cash',TRUE);
+                        $data['payment_mode_active'] = $this->input->post('payment_mode', TRUE);
+			$data['bankcash_active'] = $this->input->post('bank_cash',TRUE);
                         $data['paid_to']['value'] = $this->input->post('paid_to', TRUE);
                         $data['check_no']['value'] = $this->input->post('check_no', TRUE);
 			$data['secunitid']['value'] = $this->input->post('secunitid', TRUE);

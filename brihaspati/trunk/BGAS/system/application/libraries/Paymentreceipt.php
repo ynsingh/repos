@@ -333,5 +333,53 @@ class paymentreceipt
 	}
 
 
+// added by @kanchan on date 2015 04 10
+// This function send the mail to related user for every transation
+
+        function send_mail($to,$subject,$message)
+        {
+		$CI =& get_instance();
+                $CI->db->select('email_host,email_protocol,email_port,email_username,email_password')->from('settings')->where('id', 1);
+                $settings = $CI->db->get();
+                $settings_q = $settings->result();
+                foreach($settings_q as $row)
+                {
+                $email_protocol = $row->email_protocol;
+                $email_host = $row->email_host;
+                $email_port = $row->email_port;
+                $email_username = $row->email_username;
+                $email_password = $row->email_password;
+                }
+
+                 // Email configuration
+                $config = Array(
+                'protocol' => $email_protocol,
+                'smtp_host' => $email_host,
+                'smtp_port' => $email_port,
+                'smtp_user' => $email_username, // change it to yours
+                'smtp_pass' => $email_password, // change it to yours
+                'mailtype' => 'html',
+                'charset' => 'iso-8859-1',
+                'wordwrap' => TRUE
+                );
+
+                $CI->load->library('Email', $config);
+
+        // Sometimes you have to set the new line character for better result
+                $CI->email->set_newline("\r\n");
+
+        // Set your email information
+
+                $CI->email->from($email_username,"BGAS");
+                $CI->email->to($to);
+		$CI->email->subject($subject);
+                $CI->email->message($message);
+                $result = $CI->email->send();
+                echo $CI->email->print_debugger();
+                return $result;
+        }//send_mail 
+
+                                                                               
+
 }
 ?>

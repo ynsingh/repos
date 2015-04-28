@@ -1269,8 +1269,24 @@ $width="100%";
 			/* Showing success message in show() method since message is too long for storing it in session */
 			$this->logger->write_message("success", "Added " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
 			//redirect('entry/show/' . $current_entry_type['label']);
-			$this->template->load('template', 'entry/add', $data);
-			return;
+			//$this->template->load('template', 'entry/add', $data);
+			//return;
+			
+			 // added by @kanchan
+
+                        $message = "$data_narration";
+                        $subject = "Accounting Transcation";
+                        $sunit_id = $data_secunit;
+                        $s_id = $sunit_id[0];
+                        $this->db->select('email')->from('addsecondparty')->where('sacunit', $s_id);
+                        $query = $this->db->get();
+                        $r_query = $query->row();
+                        $user_email = $r_query->email;
+                        $CI =& get_instance();  
+                        $CI->load->library('paymentreceipt');
+                        if($CI->paymentreceipt->send_mail($user_email,$subject,$message))  
+                        $this->template->load('template', 'entry/add', $data);
+                        return;
 
 		}//end of else
 		return;
@@ -3083,7 +3099,6 @@ $width="100%";
 					$counter++;
 				}
 			}
-
 			/* Preparing message */
 			$message = $this->load->view('entry/emailpreview', $entry_data, TRUE);
 
@@ -3105,7 +3120,7 @@ $width="100%";
 			$this->email->initialize($config);
 
 			/* Sending email */
-			$this->email->from('', 'Webzash');
+			$this->email->from($config['smtp_user'], 'Webzash');
 			$this->email->to($this->input->post('email_to', TRUE));
 			$this->email->subject($current_entry_type['name'] . ' Bill/Voucher No. ' . full_entry_number($entry_type_id, $cur_entry->number));
 			$this->email->message($message);

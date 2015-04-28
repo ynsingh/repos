@@ -221,7 +221,16 @@ class User extends Controller {
 						else{
 						$db1->trans_complete();
 
-                                                        $this->messages->add('Added User Account - ' . $data_user_name . ' success');
+                                                        //$this->messages->add('Added User Account - ' . $data_user_name . ' success');
+					 //added by @kanchan
+
+                                        $message = "You are Added in Brihaspati General Accounting System- $data_user_name  && Your Role is---- $data_user_role";
+                                        $subject = 'User Added';
+                                        $CI =& get_instance();
+                                        $CI->load->library('paymentreceipt');
+
+                                        if($CI->paymentreceipt->send_mail($data_user_email,$subject,$message))
+					$this->messages->add('Added User Account - ' . $data_user_name .  '----Mail Sucessfully send!---'. ' success');
 			
 				 redirect('admin/user/');
 
@@ -484,14 +493,26 @@ class User extends Controller {
                                                 }
                                                 else{
                                                 $db1->trans_complete();
-						         $this->messages->add('Update User Account - ' . $user_name . ' success');
-                                                     
-                                                redirect('admin/user/');
+						$this->messages->add('Update User Account - ' . $user_name . ' success');
 
-                                                 return;
-                                                }
+                                                //added by @kanchan
+                                        	//print_r($user_email);
+
+                                        $data_user_email = $update_data['email'];
+                                        $data_user_name = $update_data['username'];
+
+                                        $message = "Your Account has been Updated/n .................Your username- $data_user_name   Password- $data_user_password Your Role- $data_user_role && Account- $data_accounts_string";
+                                        $subject = 'User Updated';
+                                        $CI =& get_instance();
+                                        $CI->load->library('paymentreceipt');
+                                        if($CI->paymentreceipt->send_mail($data_user_email,$subject,$message))
+                                        {
+                                                redirect('admin/user');
+                                                //return; 
+                                        }
+    
+                                           	}//else
                                     
-
                                         return;
 
 
@@ -551,6 +572,8 @@ class User extends Controller {
 			return;
 		} else {
 			$budget_data = $budget_q->row();
+			$user_email = $budget_data->email;
+                        $user_name = $budget_data->username;
 		}
 			
 			$db1->trans_start();
@@ -569,8 +592,20 @@ class User extends Controller {
                             }
                                else{
                              $db1->trans_complete();
-                             $this->messages->add('delete User Account - ' . $budget_data->username . '.', 'success');
-                                 
+			     $this->messages->add('delete User Account - ' . $budget_data->username . '.', 'success');
+
+			     //added by @kanchan
+
+                                        $message = "Your Account has been deleted from BGAS Account- $user_name";
+                                        $subject = 'User Deleted';
+                                        $CI =& get_instance();
+                                        $CI->load->library('paymentreceipt');
+                                        if($CI->paymentreceipt->send_mail($user_email,$subject,$message))
+                                        {
+                                                redirect('admin/user');
+                                                return;
+                                        }
+
                              redirect('admin/user/');
 
                              return;
