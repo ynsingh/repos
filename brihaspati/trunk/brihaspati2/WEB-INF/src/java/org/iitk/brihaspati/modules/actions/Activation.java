@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /**
  * @(#)Activation.java  
  *  
- *  Copyright (c) 2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2012, 2015 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -42,6 +42,8 @@ import org.iitk.brihaspati.om.UserPref;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iitk.brihaspati.om.UserPrefPeer;
+import org.iitk.brihaspati.om.ForgotpassPeer;
+import org.iitk.brihaspati.om.Forgotpass;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -57,6 +59,7 @@ import java.io.File;
  * Action class for updating the activation status 
  * of user, when user clicks activation link.
  *  @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ *  @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a>
  *  modified date : 01-10-2012, 15-10-2012,06-11-2012(Priyanka)
  */
 
@@ -74,7 +77,10 @@ public class Activation extends VelocityAction{
         {
                 System.gc();
                 String u_mode=rundata.getParameters().getString("mode");         
-		
+	
+		if(u_mode.equals("forgotpass")){
+			changePass(rundata,context);
+		}	
 		if(u_mode.equals("cnfrm_mail"))
 		{
 			EmailVerification everify = new EmailVerification(rundata);
@@ -90,6 +96,54 @@ public class Activation extends VelocityAction{
                 }
         }
 	
+	public void changePass(RunData data, Context context)
+	{
+		Criteria crit = null;
+                String lang=data.getParameters().getString("lang");
+                String LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
+                String e_mail=data.getParameters().getString("email");
+                String a_key=data.getParameters().getString("key");
+                String u_mode=data.getParameters().getString("mode");
+		
+		try{
+                        // select  key corresponding to user id in d_key
+                        crit = new Criteria();
+                        crit.add(ForgotpassPeer.USER_NAME,e_mail);
+                        List list = ForgotpassPeer.doSelect(crit);
+                        String d_key =((Forgotpass)list.get(0)).getRkey();
+                        if ((a_key == d_key) || (a_key.equalsIgnoreCase(d_key)))
+                        {
+				context.put("rky",a_key);
+				context.put("uid",UserUtil.getUID(e_mail));
+				setTemplate(data,"UpdatePass_User.vm");
+                        }
+			else{
+				try{
+                                              str=MultilingualUtil.ConvertedString("oopsAct_msg",LangFile);
+                                              data.setMessage(str);
+                                              data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+                                        }
+                                        catch (Exception ex){
+                                                String msg1 = "ERROR IN getting / matching data";
+                                                ErrorDumpUtil.ErrorLog("User's data is not matched "+ex);
+						data.setMessage("Error in chnage pass forgot pass "+ msg1 +" and Ex "+ex);
+						setTemplate(data,"BrihaspatiLogin.vm");
+                 //                                throw new RuntimeException(msg1,ex);
+                                        }
+	
+			}
+		}
+		catch(IndexOutOfBoundsException e){
+                                String message1 = "Error in matching data (either user name or key ) ";
+				data.setMessage("Error in chnage pass forgot pass "+ message1 +" and Ex "+e);
+				setTemplate(data,"BrihaspatiLogin.vm");
+                                //throw new RuntimeException(message1, e);
+                        }
+                catch(Exception ex){
+                                data.setMessage("Error in setting Key:- "+ex);
+				setTemplate(data,"BrihaspatiLogin.vm");
+                        }
+	}
 
 	public void mailActivation(RunData data, Context context)
         {

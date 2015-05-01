@@ -1,0 +1,77 @@
+#*
+ * @(#)UpdatePass_User.vm
+ * Copyright (c) 2015 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+$page.setTitle("User Change Password")
+$page.setBgColor($ui.bgcolor)
+$!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+</head>
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr>
+	<td><b> $brih_changePassword </td>
+</tr>
+</table>
+##<br>
+<form name=frm method="post" action="$link.setPage("BrihaspatiLogin.vm").setAction("ChangeFgPassword")">
+#if($uName=="guest")
+<table cellspacing=1 cellpadding=5>
+        <tr>
+        <td colspan=2 align="center" bgcolor="$ui.menuColor"><font size=4><b>
+	##You have no permission to view this page 
+	$brih_guestMsg3
+	</b></font></td></tr>
+</table>
+#else
+<table width=100% bgcolor="$ui.tableColor">
+        <tr>
+        #formPasswordCell("$brih_pwdNew" "newpassword" "")
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+        #formPasswordCell("$brih_pwdNewRetype" "retypepassword" "")
+        </tr>
+        <tr>
+        <td>
+          <input type="button" name="eventSubmit_doUpdate" class="button-ftextstyle" value="$brih_submit" onClick="checkPassword(document.frm,this);"/>
+          <input type="reset" name="reset" value="$brih_reset" class="button-ftextstyle" onClick="checkClear(document.frm,this);"/>
+          <input type="hidden" name="actionName">
+          <input type="hidden" name="rankey" value=$rky>
+          <input type="hidden" name="usrid" value=$uid>
+        </td>
+        </tr>
+</table>
+#end
+</form>
+<SCRIPT LANGUAGE="javascript">
+        function checkPassword(frm,field)
+        {
+                if( (frm.newpassword.value!="")  && (frm.retypepassword.value!=""))
+                {
+				if(frm.newpassword.value == frm.retypepassword.value)
+				{
+                                	frm.actionName.value=field.name;
+                                	frm.submit();
+				}
+				else
+				{
+					alert("The values in 'New Password' and 'Retype New Password' fields are not same !!")
+				}
+                }
+                else
+                {
+                        alert("None of the fields can be empty !!");
+                }
+        }
+        function checkClear(frm,field)
+        {
+        	frm.newpassword.value="";
+	        frm.retypepassword.value="";
+        }
+</SCRIPT>

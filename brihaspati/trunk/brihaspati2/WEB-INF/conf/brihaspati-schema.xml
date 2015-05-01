@@ -700,4 +700,12 @@
         	<unique-column name="APPSERVERLOC"/>
 	</unique>
 </table>
+<table name="FORGOTPASS" idMethod="idbroker" description="User Password Retrive">
+        <column name="ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+        <column name="USER_NAME" Type="VARCHAR" size="255"/>
+        <column name="RKEY" Type="VARCHAR" size="255"/>
+        <column name="PASS_DATE" Type="DATE" size="255"/>
+        <column name="EXPIRY_DATE" Type="DATE" size="255" />
+</table>
+
 </database>

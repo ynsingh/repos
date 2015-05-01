@@ -193,6 +193,7 @@ String hdir=System.getProperty("user.home");
 			}
 			context.put("load_flag", load_flag);
 			context.put("active_user", active_user);
+			login_time=(double) Math.round(login_time *100)/100;
 			context.put("login_time", login_time);
 		}
                 catch(Exception e)

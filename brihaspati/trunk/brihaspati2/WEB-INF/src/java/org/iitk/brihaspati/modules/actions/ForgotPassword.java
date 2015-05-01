@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)ForgotPassword.java	
  *
- *  Copyright (c) 2005-2007, 2009, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2007, 2009, 2010,2015 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,6 +36,7 @@ import java.util.Vector;
 import java.util.List; 
 import java.util.Random;
 import java.util.Properties;
+import java.sql.Date;
 
 import org.apache.velocity.context.Context;
 import org.apache.turbine.modules.actions.VelocitySecureAction;
@@ -50,6 +51,7 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil; 
 import org.iitk.brihaspati.modules.utils.UserManagement; 
@@ -58,6 +60,7 @@ import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.om.UserConfiguration;
 import org.iitk.brihaspati.om.HintQuestionPeer;
+import org.iitk.brihaspati.om.ForgotpassPeer;
 import org.iitk.brihaspati.om.HintQuestion;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -68,6 +71,7 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="ynsingh@iitk.ac.in">Y.N.Singh</a>
+ * @author <a href="singhnk@iitk.ac.in">N.K.Singh</a>
  * modified date: 08-07-2010, 16-06-2011
  */
 
@@ -117,18 +121,70 @@ public class ForgotPassword extends VelocitySecureAction
 				{
 					int uid=UserUtil.getUID(loginName);
 					Criteria crit=new Criteria();
-                			crit.add(UserConfigurationPeer.USER_ID,Integer.toString(uid));
-                			crit.add(UserConfigurationPeer.QUESTION_ID,0);
-                	 		List check=UserConfigurationPeer.doSelect(crit);
+                		//	crit.add(UserConfigurationPeer.USER_ID,Integer.toString(uid));
+                		//	crit.add(UserConfigurationPeer.QUESTION_ID,0);
+                	 	//	List check=UserConfigurationPeer.doSelect(crit);
 					
-			 		if((check.size()!=0))
-                         		{
-						msg=MultilingualUtil.ConvertedString("forgotPwd_msg2",LangFile);
-			 			data.setMessage(msg);
-                         			setTemplate(data,"BrihaspatiLogin.vm");
-                         		}//end of inner'if'
-			 		else
-			 		{
+			 	//	if((check.size()!=0))
+                         	//	{
+				//		msg=MultilingualUtil.ConvertedString("forgotPwd_msg2",LangFile);
+			 	//		data.setMessage(msg);
+                         	//		setTemplate(data,"BrihaspatiLogin.vm");
+                         	//	}//end of inner'if'
+			 	//	else
+			 	//	{
+						//write a code for send mail to user with random string
+						//get the full name of user
+						String fulnme=UserUtil.getFullName(UserUtil.getUID(loginName));
+
+						String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                                                Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+
+						String msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
+						msgDear = MailNotification.getMessage_new(msgDear, "", "", "", fulnme);
+						String msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification.newUser.msgBrihAdmin");
+						String msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+						msgRegard = MailNotification.replaceServerPort(msgRegard);
+
+						String subject = MailNotification.subjectFormate("Forgotpassword", "", pr );
+						String messageFormate = MailNotification.getMessage("Forgotpassword", "", pr);
+                                                messageFormate = MailNotification.replaceServerPort(messageFormate);
+//						messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name,"");
+
+
+
+						String randm_n = PasswordUtil.randmPass();
+                                                String str=randm_n+loginName;
+                                                String a_key=EncryptionUtil.createDigest("SHA1",str);
+						String mode="forgotpass";
+						String activationLink=pr.getProperty("brihaspati.Mailnotification.Forgotpassword.activationLink");
+                                                activationLink=MailNotification.getMessage(activationLink, loginName, a_key, mode,"english");
+						activationLink=MailNotification.replaceServerPort(activationLink);
+                                                messageFormate = messageFormate+activationLink;
+						String Mail_msg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, loginName, subject, "", LangFile);
+						if(Mail_msg.equals("Success"))
+                                                                Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
+
+						//set login name and key in database
+						 /** Expiry date get using ExpiryUtil and convert String type to Date type*/
+						String curdate=ExpiryUtil.getCurrentDate("-");
+						Date cdate=Date.valueOf(curdate);
+                        			String Expdate=ExpiryUtil.getExpired(curdate,2);
+			                        Date Expiry_date=Date.valueOf(Expdate);
+
+						crit=new Criteria();
+						crit.add(ForgotpassPeer.USER_NAME,loginName);
+			                        crit.add(ForgotpassPeer.RKEY,a_key);
+                        			crit.add(ForgotpassPeer.PASS_DATE,cdate);
+                        			crit.add(ForgotpassPeer.EXPIRY_DATE,Expiry_date);
+			                        ForgotpassPeer.doInsert(crit);
+
+
+
+						data.setMessage(Mail_msg);
+                                                setTemplate(data,"BrihaspatiLogin.vm");
+
+						/*
 						context.put("status","HintQus");
                         			crit=new Criteria();
                         			crit.addJoin(HintQuestionPeer.QUESTION_ID,UserConfigurationPeer.QUESTION_ID);
@@ -139,7 +195,8 @@ public class ForgotPassword extends VelocitySecureAction
                         			String que=element.getQuestionName();
                         			context.put("qname",que);
                         			context.put("uid",Integer.toString(uid));
-			 		}
+						*/
+		//	 		}
 				}//end of outer'if'
                 		else
                 		{

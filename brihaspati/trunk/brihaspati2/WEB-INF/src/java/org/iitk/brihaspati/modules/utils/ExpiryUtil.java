@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 
 /*@(#)ExpiryUtil.java
- *  Copyright (c) 2004-2006,2011.2012 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2004-2006,2011.2012,2015 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -48,6 +48,7 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 
+import org.iitk.brihaspati.om.ForgotpassPeer;
 import org.iitk.brihaspati.om.CalInformationPeer;
 import org.iitk.brihaspati.om.DbSendPeer;
 import org.iitk.brihaspati.om.DbSend;
@@ -388,13 +389,20 @@ public class ExpiryUtil{
 			* add StudentCrsDisable as string in array for update
 			* table and delete record from specific tables
 			*/
-			String str[]={"CalInfo","DisBoard","News","Notices","Task","Institutedel","StudentCrsDisable","Tweet"};
+			String str[]={"CalInfo","DisBoard","News","Notices","Task","Institutedel","StudentCrsDisable","Tweet","Forgotpass"};
 			Criteria crit=new Criteria();
 			String current_date=getCurrentDate("-");
 			List v=null;
 			for(int i=0;i<str.length;i++)
 			{
-				if(str[i].equals("CalInfo"))
+				if(str[i].equals("Forgotpass"))
+                                {
+                                        crit=new Criteria();
+                                        crit.add(ForgotpassPeer.EXPIRY_DATE,(Object)current_date,crit.LESS_EQUAL);
+                                        ForgotpassPeer.doDelete(crit);
+                                }
+
+				else if(str[i].equals("CalInfo"))
 				{
 					crit=new Criteria();
 					crit.add(CalInformationPeer.EXPIRY_DATE,(Object)current_date,crit.LESS_EQUAL);
