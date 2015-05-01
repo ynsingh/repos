@@ -226,225 +226,6 @@ class Reportlist
                         $this->counter--;
                 }
         }
-
-///////////////////////
-/*
-function account_st_shortCorp($c = 0,$id,$type,$database)
-{
-	$i = 0;
-	$schedulelist2 = "";
-	$prev_sum = "";
-	$CI =& get_instance();
-	$CI->db->from('settings');
-	$detail = $CI->db->get();
-        foreach ($detail->result() as $row)
-        {
-        $date1 = $row->fy_start;
-        $date2 = $row->fy_end;
-        }
-        $fy_start=explode("-",$date1);
-        $fy_end=explode("-",$date2);
-        $curr_year = $fy_start[0] ."-" .$fy_end[0];
-        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
-        $CI->load->model('payment_model');
-        $db = $CI->payment_model->database_name();
-	$this->counter = $c;
-
-
-	if ($this->id != 0)
-	{
-		$id = $this->id;
-		$name = $this->name;
-		$total = $this->total;
-		if(($type == 'view') && ($database == 'NULL'))
-		{		
-		echo "<tr class=\"tr-group\">";
-		echo "<td class=\"td-group\">";
-		echo "&nbsp;" .  $name;
-		echo "</td>";
-		
-		echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
-	     /* code for reading previous year data from xml */
-            /*    $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                $file_name="Corp_balancesheet".$db.$prev_year.".xml";
-                $tt=$acctpath."/".$file_name;
-                if(file_exists($tt))
-                {
-                	$doc = new DomDocument();
-                	$doc->formatOutput = true;
-                	$doc->load($tt);
-                	$xpath = new DomXPath($doc);
-                	$schedule1 = "Corp_balancesheet";
-                	$schedule2 = $schedule1."_Name";
-
-               		$xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
-               		$xpath->query("/".$schedule1."/".$schedule2."/Amount");
-               		$xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-              		$schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
-                 	$schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
-               		$schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-                        $schedulelist1 = @$schedulenode1->item($i)->nodeValue;
-			//	print_r($i);
-                        $schedulelist2 = @$schedulenode2->item($i)->nodeValue;
-               		$schedulelist3 = @$schedulenode3->item($i)->nodeValue;
-               	}
-                	$prev_sum = $prev_sum+$schedulelist2;
-                	$i++;
-               		if($schedulelist2 == 0)
-                	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-               		else
-               		echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
-			echo "</tr>";
-		}//ifview
-
-		if(($type == 'CF') && ($database != 'NULL'))
-		{
-			$t_name = "Corp_balancesheet";
-                        $CI =& get_instance();
-                        $CI->load->model('payment_model');
-                        $data = $CI->payment_model->xml_creation($t_name,$id,$database,$name,$curr_year,$total);
-		}
-		}//if
-		foreach ($this->children_groups as $id => $data)
-		{
-			$this->counter++;
-			$data->account_st_shortCorp($this->counter,$id,$type,$database);
-			$this->counter--;
-			/* code for reading previous year data from xml */
-                    /*    $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        $file_name="Corp_balancesheet".$db.$prev_year.".xml";
-                        $tt=$acctpath."/".$file_name;
-                        if(file_exists($tt))
-                        {
-                                $doc = new DomDocument();
-                                $doc->formatOutput = true;
-                                $doc->load($tt);
-                                $xpath = new DomXPath($doc);
-                                $schedule1 = "Corp_balancesheet";
-                                $schedule2 = $schedule1."_Name";
-
-                                $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
-                                $xpath->query("/".$schedule1."/".$schedule2."/Amount");
-                                $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-                                $schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
-                                $schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
-                                $schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-                                $schedulelist1 = @$schedulenode1->item($i)->nodeValue;
-                                $schedulelist2 = @$schedulenode2->item($i)->nodeValue;
-                                $schedulelist3 = @$schedulenode3->item($i)->nodeValue;
-                        }
-			
-                       //         $prev_sum = $prev_sum+$schedulelist2;
-                                $i++;
-		}
-		if (count($this->children_ledgers) > 0)
-		{
-		$this->counter++;
-		
-		foreach ($this->children_ledgers as $id => $data)
-		{
-			$total = $data['total'];
-			if(($type == 'view') && ($database == 'NULL'))
-			{
-			echo "<tr class=\"tr-ledger\">";
-			echo "<td class=\"td-ledger\">";
-			echo "&nbsp;" . anchor('report/ledgerst/' . $data['id'], $data['name'], array('title' => $data['name'] . ' Ledger Statement', 'style' => 'color:#000000'));
-			echo "</td>";
-			echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
-
-		/* code for reading previous year data from xml */
-           /*        	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                   	$file_name="Corp_balancesheet".$db.$prev_year.".xml";
-                   	$tt=$acctpath."/".$file_name;
-                  	if(file_exists($tt))
-                   	{
-                   		$doc = new DomDocument();
-                     		$doc->formatOutput = true;
-                      		$doc->load($tt);
-                      		$xpath = new DomXPath($doc);
-                      		$schedule1 = "Corp_balancesheet";
-                  		$schedule2 = $schedule1."_Name";
-
-                     		$xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
-                    		$xpath->query("/".$schedule1."/".$schedule2."/Amount");
-                    		$xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-                    		$schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
-                     		$schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
-                  		$schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-                    		$schedulelist1 = @$schedulenode1->item($i)->nodeValue;
-                    		$schedulelist2 = @$schedulenode2->item($i)->nodeValue;
-                   		$schedulelist3 = @$schedulenode3->item($i)->nodeValue;
-                	}
-                        	$prev_sum = $prev_sum+$schedulelist2;
-                        	$i++;
-                        	if($schedulelist2 == 0)
-                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        	else
-                        	echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
-				echo "</tr>";
-			}//ifview
-
-		if(($type == 'CF') && ($database != 'NULL'))
-                {
-                        $t_name = "Corp_balancesheet";
-                        $CI =& get_instance();
-                        $CI->load->model('payment_model');
-                        $data = $CI->payment_model->xml_creation($t_name,$data['id'],$database,$data['name'],$curr_year,$total);
-                }
-		}//foreach
-
-		$this->counter--;
-		
-	}//ifcount
-}
-////////////////@kanchan
-
-function corp_balancesheet($c,$id,$type,$database)
-{
-	
-	$CI = & get_instance();
-        $counter = 1;
-	$liability_total = "";
-	$asset_total = "";
-        $CI->db->from('settings');
-        $detail = $CI->db->get();
-        foreach ($detail->result() as $row)
-        {
-        $date1 = $row->fy_start;
-        $date2 = $row->fy_end;
-        }
-        $fy_start=explode("-",$date1);
-        $fy_end=explode("-",$date2);
-        $curr_year = $fy_start[0] ."-" .$fy_end[0];
-        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
-        $CI->load->model('payment_model');
-        $db = $CI->payment_model->database_name();
-
-	if($id == '2')
-	{
-        	$liability = new Reportlist();
-        	$liability->init(2);
-		$liability->account_st_shortCorp(0,2,$type,$database);
-		$liability_total = $liability->total;
-
-	}
-	if($id == '1')
-	{
-		$asset = new Reportlist();
-		$asset->init(1);
-		$asset->account_st_shortCorp(65,1,$type,$database);
-		$asset_total = $asset->total;
-	}
-	
-		
-	$this->liability_total = $liability_total;
-	$this->asset_total = $asset_total;
-
-
-}*/
-
-//@kanchan
-
 /** Method for displaying Balance Sheet
  * in MHRD format.
  */
@@ -910,15 +691,15 @@ function expense_total($id,$type,$database)
 
 
 //Method for display MHRD format of income ad expenditure @megha pal
-        function income_exp_mhrd($id ,$type,$database)
-        {
-                $total1="";
-                $total2 = "";
-                $total3 ="";
-                $total4 ="";
-                $c ="16";
-                $counter=10;
-                $sum = "0";
+    function income_exp_mhrd($id ,$type,$database)
+    {
+        $total1="";
+        $total2 = "";
+        $total3 ="";
+        $total4 ="";
+        $c ="16";
+        $counter=10;
+        $sum = "0";
 		$sum1 =0;
 		$sum2 =0;
 		$sum3 = 0;
@@ -929,140 +710,142 @@ function expense_total($id,$type,$database)
 		$total09 = 0;
 		$type_total = 0;
 		$income_total = "";
-                $expense_total = "";
+        $expense_total = "";
+        $transit=0;
 		$i=0;
 		$incomelist2 = "";
 		$expenselist2 = "";
 		$CI =& get_instance();
 		$CI->db->from('settings');
-                $detail = $CI->db->get();
-                foreach ($detail->result() as $row)
-                {
-                    $date1 = $row->fy_start;
-                    $date2 = $row->fy_end;
-                }
-                    $fy_start=explode("-",$date1);
-                    $fy_end=explode("-",$date2);
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date_1 = $row->fy_start;
+            $date_2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date_1);
+        $fy_end=explode("-",$date_2);
 
-               	$curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
 		$prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
 
-                $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
-                $main = $CI->db->get();
-                $main_result= $main->result();
+        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+        $main = $CI->db->get();
+        $main_result= $main->result();
 		$income1 = new Reportlist();
-                $income1->init('26');
-                $income_total = $income1->total;
+        $income1->init('26');
+        $income_total = $income1->total;
 		$CI =& get_instance();
-                $CI->load->model('Payment_model');
-                $db = $CI->Payment_model->database_name();
+        $CI->load->model('Payment_model');
+        $db = $CI->Payment_model->database_name();
+        $CI =& get_instance();
+        $CI->load->model('Ledger_model');
+		$transit= $CI->Ledger_model->get_ledger_balance1('123');
+        $transit = 0-$transit;
                 $CI =& get_instance();
 
-                 foreach($main_result as $row){
-                        $name = $row->name;
-                        $code =$row->code;
-                        $ledg_id = $row->id;
-                        echo "<tr class=\"tr-group\">";
-                        echo "<td class=\"td-group\">";
-                        echo "&nbsp;" .  $name;
-                        echo "</td>";
-                        echo "<td class=\"td-group\">";
-                        if($id == 3 && $type == "view" && $database == "NULL" )
+             
+        foreach($main_result as $row)
+        {
+            $name = $row->name;
+            $code =$row->code;
+            $ledg_id = $row->id;
+            echo "<tr class=\"tr-group\">";
+            echo "<td class=\"td-group\">";
+            echo "&nbsp;" .  $name;
+            echo "</td>";
+            echo "<td class=\"td-group\">";
+            if($id == 3 && $type == "view" && $database == "NULL" )
 			{ 
-                        	$counter++;
-                                echo "&nbsp;" . anchor_popup('report2/schedule/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000'));
+                $counter++;
+                echo "&nbsp;" . anchor_popup('report2/schedule/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000'));
+        		echo"</td>";
+				$CI =& get_instance();
+                $CI->load->model('Payment_model');
+                $result = $CI->Payment_model->get_all_income_detail($ledg_id);
+				$my_values = explode('#',$result);
+                $total1 =$my_values[0];
+                $total2 =$my_values[1];
+                $total3 =$my_values[2];
+                $total4 =$my_values[3];
+				$total5 =$my_values[4];
+                $total6 =$my_values[5];
+                $total7 =$my_values[6];
+				$total9=$my_values[7];
 
-                        		echo"</td>";
-					$CI =& get_instance();
-                                        $CI->load->model('Payment_model');
-                                        $result = $CI->Payment_model->get_all_income_detail($ledg_id);
-					$my_values = explode('#',$result);
-                                        $total1 =$my_values[0];
-                                        $total2 =$my_values[1];
-                                        $total3 =$my_values[2];
-                                        $total4 =$my_values[3];
-					$total5 =$my_values[4];
-                                        $total6 =$my_values[5];
-                                        $total7 =$my_values[6];
-					$total9=$my_values[7];
 
-					$CI =& get_instance();
-                                        $CI->load->model('Ledger_model');
-					$transit= $CI->Ledger_model->get_ledger_balance('123');
-                                        $transit = 0-$transit;
+                $income = new Reportlist();
+                $income->init($ledg_id);
+                $total = $income->total;
 
-                                        $income = new Reportlist();
-                                        $income->init($ledg_id);
-                                        $total = $income->total;
-				
-                                        $sum= $sum + $total;
-					$total8=0;
-					if($ledg_id == "24"){
-					     $total = (-$total) + $total4 + $total5 + $total7 + $total6;
+                $sum= $sum + $total;
+				$total8=0;
+				if($ledg_id == "24")
+				{
+				    $total = (-$total) + $total4 + $total5 + $total7 + $total6;
+				    $total07 = $total1 +$total7 +$total07;
+					echo "<td align=\"right\">".money_format('%!i', convert_cur($total4))."</td>";
+					echo "<td align=\"right\">".money_format('%!i', convert_cur($total5))."</td>";
+					echo "<td align=\"right\">".money_format('%!i', convert_cur($total07))."</td>";
+					echo "<td align=\"right\">".money_format('%!i', convert_cur($total6))."</td>";
+					echo "<td align=\"right\">" . convert_amount_dc(-$total) . "</td>";
+					$sum3 = $sum3 + $total07;
+					$this->total3 =$sum3;
+				}elseif($ledg_id == 26){
+					$total= (-$income_total) - $transit;
+					$total09 = $total09 + $total +$total9;
+					echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
+        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
+        			echo"<td align=\"right\">".money_format('%!i',convert_cur($total09))."</td>";
+        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
+        			echo "<td align=\"right\">" . convert_amount_dc(-$total) . "</td>";
+					$sum5 = $sum5 + $total09;
+                    $this->total5 =$sum5;
 
-					     $total07 = $total1 +$total7 +$total07;
-                        		     echo "<td align=\"right\">".money_format('%!i', convert_cur($total4))."</td>";
-                        		     echo "<td align=\"right\">".money_format('%!i', convert_cur($total5))."</td>";
-                        		     echo "<td align=\"right\">".money_format('%!i', convert_cur($total07))."</td>";
-                        		     echo "<td align=\"right\">".money_format('%!i', convert_cur($total6))."</td>";
-				   	     echo "<td align=\"right\">" . convert_amount_dc(-$total) . "</td>";
-					     $sum3 = $sum3 + $total07;
-					     $this->total3 =$sum3;
-					  }elseif($ledg_id == 26){
-						$total= (-$income_total) - $transit;
-						$total09 = $total09 + $total +$total9;
-						echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
-                        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
-                        			echo"<td align=\"right\">".money_format('%!i',convert_cur($total09))."</td>";
-                        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
-                        			echo "<td align=\"right\">" . convert_amount_dc(-$total) . "</td>";
-						$sum5 = $sum5 + $total09;
-                                		$this->total5 =$sum5;
+			    }else{
+					echo "<td align=\"right\">".money_format('%!i',convert_cur($total2))."</td>";
+					echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
+					echo "<td align=\"right\">".money_format('%!i',convert_cur($total1))."</td>";
+					echo "<td align=\"right\">".money_format('%!i',convert_cur($total3))."</td>";
+					echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
+					$sum6 = $sum6 + $total1;
+					$this->total6 = $sum6;
+				}
+				$sum1 = $sum1 + $total4 + $total8 + $total2;
+				$sum2 = $sum2 + $total5 + $total8 + $total8;
+				$sum4 = $sum4 + $total6 +$total8 + $total3;
+				$this->total1 = $sum1;
+        		$this->total2 = $sum2;
+        		$this->total4 = $sum4;
 
-					    }else{
-						echo "<td align=\"right\">".money_format('%!i',convert_cur($total2))."</td>";
-                        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";
-                        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total1))."</td>";
-                        			echo "<td align=\"right\">".money_format('%!i',convert_cur($total3))."</td>";
-						echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
-						$sum6 = $sum6 + $total1;
-						$this->total6 = $sum6;
-					    }
-						$sum1 = $sum1 + $total4 + $total8 + $total2;
-						$sum2 = $sum2 + $total5 + $total8 + $total8;
-						$sum4 = $sum4 + $total6 +$total8 + $total3;
-						$this->total1 = $sum1;
-                                		$this->total2 = $sum2;
-                                		$this->total4 = $sum4;
+				$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+				$file_name="Income".$db.$prev_year.".xml";
+				$tt=$acctpath."/".$file_name;
+				if(file_exists($tt)){
+        				$doc = new DomDocument();
+        				$doc->formatOutput = true;
+        				$doc->load($tt);
+        				$xpath = new DomXPath($doc);
+        				$xpath->query("/Income/Income_Name/Group_Name");
+        				$xpath->query("/Income/Income_Name/Amount");
+        				$xpath->query("/Income/Income_Name/Group_ID");
 
-						$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                				$file_name="Income".$db.$prev_year.".xml";
-                				$tt=$acctpath."/".$file_name;
-                				if(file_exists($tt)){
-                        				$doc = new DomDocument();
-                        				$doc->formatOutput = true;
-                        				$doc->load($tt);
-                        				$xpath = new DomXPath($doc);
-                        				$xpath->query("/Income/Income_Name/Group_Name");
-                        				$xpath->query("/Income/Income_Name/Amount");
-                        				$xpath->query("/Income/Income_Name/Group_ID");
-
-                        				$incomenode1 = $xpath->query("/Income/Income_Name/Group_Name");
-                        				$incomenode2 = $xpath->query("/Income/Income_Name/Amount");
-                        				$incomenode3 = $xpath->query("/Income/Income_Name/Group_ID");
-                        				$incomelist1 = @$incomenode1->item($i)->nodeValue;
-                        				$incomelist2 = @$incomenode2->item($i)->nodeValue;
-                        				$incomelist3 = @$incomenode3->item($i)->nodeValue;
-                				}
-							if ($incomelist2 > 0){
-								$incomelist2 = 0 -  $incomelist2;
-							}	
-                                                      $type_total = $type_total + $incomelist2;
-							$i++;
-						if($incomelist2 == 0)	
-				               	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-						else
-							echo "<td align=\"right\">" . convert_amount_dc($incomelist2) . "</td>";
+        				$incomenode1 = $xpath->query("/Income/Income_Name/Group_Name");
+        				$incomenode2 = $xpath->query("/Income/Income_Name/Amount");
+        				$incomenode3 = $xpath->query("/Income/Income_Name/Group_ID");
+        				$incomelist1 = @$incomenode1->item($i)->nodeValue;
+        				$incomelist2 = @$incomenode2->item($i)->nodeValue;
+        				$incomelist3 = @$incomenode3->item($i)->nodeValue;
+				}
+				if ($incomelist2 > 0){
+					$incomelist2 = 0 -  $incomelist2;
+				}	
+                $type_total = $type_total + $incomelist2;
+				$i++;
+				if($incomelist2 == 0)	
+		               	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+				else
+					echo "<td align=\"right\">" . convert_amount_dc($incomelist2) . "</td>";
 			}			
 	
 			if(($type == "CF") && ($id == 3) && ($database != "NULL"))
@@ -1074,40 +857,37 @@ function expense_total($id,$type,$database)
                         	$data = $CI->Payment_model->xml_creation($t_name,$ledg_id,$database,$name,$curr_year,$total);
 			}
                 
-                        if($id == 4 && $type == "view" && $database == "NULL")
+            if($id == 4 && $type == "view" && $database == "NULL")
 			{
-                                        $c++;
-                       
-                        echo "&nbsp;" . anchor_popup('report2/schedule/' . $code . '/' . $c, $c, array('title' => $name, 'style' => 'color:#000000'));
+                $c++;
+                echo "&nbsp;" . anchor_popup('report2/schedule/' . $code . '/' . $c, $c, array('title' => $name, 'style' => 'color:#000000'));
+                echo"</td>";
+                $CI =& get_instance();
+                $CI->load->model('Payment_model');
+				$CI->db->select('code')->from('groups')->where('id', $ledg_id);
+				$code_result= $CI->db->get();
+				$code = $code_result->row();
+				$CI->db->select('id')->from('ledgers');
+				foreach( $code as $code1){
+	       				$CI->db->like('code', $code1);
+	 			}		
 
-                        echo"</td>";
-                                        $CI =& get_instance();
-                                        $CI->load->model('Payment_model');
-					$CI->db->select('code')->from('groups')->where('id', $ledg_id);
-                			$code_result= $CI->db->get();
-                			$code = $code_result->row();
-                			$CI->db->select('id')->from('ledgers');
-                			foreach( $code as $code1){
-                       				$CI->db->like('code', $code1);
-                 			}		
-
-                			$query_result =$CI->db->get();
-                			$no_row = $query_result->num_rows(); 
-                			if($no_row != 0)
-					{
-                                        	$result = $CI->Payment_model->get_all_expense_detail($ledg_id);
-					
-                                        $my_values = explode('#',$result);
-                                        $total1 =$my_values[0];
-                                        $total2 =$my_values[1];
-                                        $total3 =$my_values[2];
-                                        $total4 =$my_values[3];
-                                        $total="";
-                                        $expense1="";
-                                        $expense = new Reportlist();
-                                        $expense->init($ledg_id);
-                                        $total = $expense->total;
-                                        $sum= $sum + $total;
+    			$query_result =$CI->db->get();
+    			$no_row = $query_result->num_rows(); 
+                if($no_row != 0)
+				{
+                    $result = $CI->Payment_model->get_all_expense_detail($ledg_id);
+                    $my_values = explode('#',$result);
+                    $total1 =$my_values[0];
+                    $total2 =$my_values[1];
+                    $total3 =$my_values[2];
+                    $total4 =$my_values[3];
+                    $total="";
+                    $expense1="";
+                    $expense = new Reportlist();
+                    $expense->init($ledg_id);
+                    $total = $expense->total;
+                    $sum= $sum + $total;
 					$sum1 = $sum1 + $total1;
 					$sum2 = $sum2 + $total2;
 					$sum3 = $sum3 + $total3;
@@ -1115,65 +895,64 @@ function expense_total($id,$type,$database)
 					$this->total1 = $sum1;
 					$this->total2 = $sum2;
 					$this->total3 = $sum3;
-                                        $this->total4 = $sum4;
-                			echo "<td align=\"right\">".money_format('%!i', convert_cur($total1))."</td>";
-                        		echo "<td align=\"right\">".money_format('%!i', convert_cur($total3))."</td>";
-                       			echo "<td align=\"right\">".money_format('%!i', convert_cur($total2))."</td>";
-                        		echo "<td align=\"right\">".money_format('%!i', convert_cur($total4))."</td>";
-                        		echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
-					}else{
-                                        echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
-                                        echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
-                                        echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
-                                        echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
-                                        echo "<td align=\"right\">".convert_amount_dc(0)."</td>";
-                                        }
+                    $this->total4 = $sum4;
+                	echo "<td align=\"right\">".money_format('%!i', convert_cur($total1))."</td>";
+            		echo "<td align=\"right\">".money_format('%!i', convert_cur($total3))."</td>";
+           			echo "<td align=\"right\">".money_format('%!i', convert_cur($total2))."</td>";
+            		echo "<td align=\"right\">".money_format('%!i', convert_cur($total4))."</td>";
+            		echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
+				}else{
+                    echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
+                    echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
+                    echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
+                    echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
+                    echo "<td align=\"right\">".convert_amount_dc(0)."</td>";
+                }
 
-                                                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                                                $file_name="Expense".$db.$prev_year.".xml";
-                                                $tt=$acctpath."/".$file_name;
-                                                if(file_exists($tt)){
-                                                        $doc = new DomDocument();
-                                                        $doc->formatOutput = true;
-                                                        $doc->load($tt);
-                                                        $xpath = new DomXPath($doc);
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                $file_name="Expense".$db.$prev_year.".xml";
+                $tt=$acctpath."/".$file_name;
+                if(file_exists($tt))
+                {
+                    $doc = new DomDocument();
+                    $doc->formatOutput = true;
+                    $doc->load($tt);
+                    $xpath = new DomXPath($doc);
+					$xpath->query("/Expense/Expense_Name/Group_Name");
+					$xpath->query("/Expense/Expense_Name/Amount");
+					$xpath->query("/Expense/Expense_Name/Group_ID");
 
-							 $xpath->query("/Expense/Expense_Name/Group_Name");
-                        				 $xpath->query("/Expense/Expense_Name/Amount");
-                        				 $xpath->query("/Expense/Expense_Name/Group_ID");
+					$expensenode1 = $xpath->query("/Expense/Expense_Name/Group_Name");
+					$expensenode2 = $xpath->query("/Expense/Expense_Name/Amount");
+					$expensenode3 = $xpath->query("/Expense/Expense_Name/Group_ID");
 
-                        				 $expensenode1 = $xpath->query("/Expense/Expense_Name/Group_Name");
-                        				 $expensenode2 = $xpath->query("/Expense/Expense_Name/Amount");
-                        				 $expensenode3 = $xpath->query("/Expense/Expense_Name/Group_ID");
-
-                                                        $expenselist1 = @$expensenode1->item($i)->nodeValue;
-                                                        $expenselist2 = @$expensenode2->item($i)->nodeValue;
-							$expenselist3 = @$expensenode3->item($i)->nodeValue;
-                                                }
-							$type_total = $type_total + $expenselist2;
-                                                        $i++;
+					$expenselist1 = @$expensenode1->item($i)->nodeValue;
+					$expenselist2 = @$expensenode2->item($i)->nodeValue;
+					$expenselist3 = @$expensenode3->item($i)->nodeValue;
+                }
+				
+				$type_total = $type_total + $expenselist2;
+                $i++;
 					
-					if($expenselist2 == 0)
-                        		echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-					else
-					echo "<td align=\"right\">" . convert_amount_dc($expenselist2) . "</td>";
-					
-                        }   
-                  	if($type == "CF" && $id == 4 && $database != "NULL")
+				if($expenselist2 == 0)
+                    echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+				else
+					echo "<td align=\"right\">" . convert_amount_dc($expenselist2) . "</td>";		
+            }
+
+            if($type == "CF" && $id == 4 && $database != "NULL")
 			{
 				$t_name = "Expense";
 				$total = "";
-                                $CI =& get_instance();
-                                $CI->load->model('Payment_model');
-                                $data = $CI->Payment_model->xml_creation($t_name,$ledg_id,$database,$name,$curr_year,$total);
-
-					
+                $CI =& get_instance();
+                $CI->load->model('Payment_model');
+                $data = $CI->Payment_model->xml_creation($t_name,$ledg_id,$database,$name,$curr_year,$total);					
 			}
 		}
 
 		$this->prev_total = $type_total;
-                return $sum;
-        }
+        return $sum;
+    }
 	
 
 
@@ -2099,7 +1878,7 @@ function callschedule($id,$code,$count,$type,$database)
 	}
 
 	function get_IE_schedule($code,$type,$database,$count)
-        {
+    {
 		$i =0;
 		$sum = 0;
 		$sum1 =0;
@@ -2109,26 +1888,26 @@ function callschedule($id,$code,$count,$type,$database)
 		$schedulelist2 ="";
 		$schedulelist3 = "";
 		$CI = & get_instance();
-        	$CI->db->from('settings');
-                $detail = $CI->db->get();
-                foreach ($detail->result() as $row)
-                {
-                    $date1 = $row->fy_start;
-                    $date2 = $row->fy_end;
-                }
-                    $fy_start=explode("-",$date1);
-                    $fy_end=explode("-",$date2);
+    	$CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date1 = $row->fy_start;
+            $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
 
-                $curr_year = $fy_start[0] ."-" .$fy_end[0];
-                $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
 		$CI =& get_instance();
-                $CI->load->model('ledger_model');
-                $id = $CI->ledger_model->get_group_id($code);
+	    $CI->load->model('ledger_model');
+	    $id = $CI->ledger_model->get_group_id($code);
 		$parent = $CI->ledger_model->get_group_name($id);
-                $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
 	//	$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
-                $main = $CI->db->get();
-                $main_result= $main->result();
+        $main = $CI->db->get();
+        $main_result= $main->result();
 		$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
 		$ledger_detail = $CI->db->get();
 		$ledger_result = $ledger_detail->result();
@@ -2137,137 +1916,138 @@ function callschedule($id,$code,$count,$type,$database)
 		$db = $CI->payment_model->database_name();
                               //  echo "</tr>";   
 		
-                foreach($main_result as $row)
-                {
-                        $name = $row->name;
-                        $group_id =$row->id;
+        foreach($main_result as $row)
+        {
+	        $name = $row->name;
+	        $group_id =$row->id;
 			if(($type == 'view') && ($database == 'NULL'))
 			{
 				echo "<tr class=\"tr-group\">";
-                        	echo "<td class=\"td-group\">";
-                        	echo "&nbsp;" .  $name;
-                        	echo "</td>";
+            	echo "<td class=\"td-group\">";
+            	echo "&nbsp;" .  $name;
+            	echo "</td>";
 				$object = new Reportlist();
-                                $object->init($group_id);
-                                $total = $object->total;
+                $object->init($group_id);
+                $total = $object->total;
 				if($group_id == '127'){
-				$CI->load->model('ledger_model');
-                                $transit = $CI->ledger_model->get_ledger_balance('123');
-				$total = $total - $transit;
+					$CI->load->model('ledger_model');
+	                $transit = $CI->ledger_model->get_ledger_balance1('123');
+					$total = $total - $transit;
 				}
 				echo "<td align=\"right\">". convert_amount_dc($total). "</td>";
-                                $sum = $sum + $total;
+	            $sum = $sum + $total;
 
 				/* code for reading previous year data from xml @megha */
 
 				$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                                $file_name="schedule".$count.$db.$prev_year.".xml";
-                                $tt=$acctpath."/".$file_name;
-                                if(file_exists($tt))
+	            $file_name="schedule".$count.$db.$prev_year.".xml";
+	            $tt=$acctpath."/".$file_name;
+	            if(file_exists($tt))
 				{
-                                	$doc = new DomDocument();
-                                        $doc->formatOutput = true;
-                                        $doc->load($tt);
-                                        $xpath = new DomXPath($doc);
+		    		$doc = new DomDocument();
+		            $doc->formatOutput = true;
+		            $doc->load($tt);
+		            $xpath = new DomXPath($doc);
 					$schedule1 = "schedule".$count;
 					$schedule2 = $schedule1."_Name";
-                                        $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+		            $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
 					$xpath->query("/".$schedule1."/".$schedule2."/Amount");
 					$xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
 					$schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
 					$schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
 					$schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-                                        $schedulelist1 = @$schedulenode1->item($i)->nodeValue;
-                                        $schedulelist2 = @$schedulenode2->item($i)->nodeValue;
-                                       	$schedulelist3 = @$schedulenode3->item($i)->nodeValue;
+		            $schedulelist1 = @$schedulenode1->item($i)->nodeValue;
+		            $schedulelist2 = @$schedulenode2->item($i)->nodeValue;
+		           	$schedulelist3 = @$schedulenode3->item($i)->nodeValue;
 				}
-                                
+	                                
 				$prev_sum = $prev_sum + $schedulelist2;
-                                $i++;
-                                if($schedulelist2 == 0)
-                                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                                else
-                                echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
-                       		echo "</tr>";
+	            $i++;
+	            if($schedulelist2 == 0)
+	            	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+	            else
+	            	echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
+	   				echo "</tr>";
 
 				if (($id == '30')||($id == '26'))
-                                {
-                                        $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id)->where('id !=' ,'123');
-				
-                                        $sub_groups = $CI->db->get();
-                                        $sub_group_result = $sub_groups->result();
-                                        foreach($sub_group_result as $row3)
-                                        {
-                                                $name = $row3->name;
-                                                $sub_g_id = $row3->id;
-                                                echo "<tr class=\"tr-ledger\">";
-                                                echo "<td class=\"td-ledger\">";
-                                                echo "&nbsp;&nbsp;&nbsp;&nbsp" .  $name;
-                                                echo "</td>";
-                                                $CI->load->model('ledger_model');
-                                                $total = $CI->ledger_model->get_ledger_balance($sub_g_id);
-                                                echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
+	            {
+		            $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id)->where('id !=' ,'123');
+		            $sub_groups = $CI->db->get();
+		            $sub_group_result = $sub_groups->result();
+		            foreach($sub_group_result as $row3)
+		            {
+		                $name = $row3->name;
+		                $sub_g_id = $row3->id;
+		                echo "<tr class=\"tr-ledger\">";
+		                echo "<td class=\"td-ledger\">";
+		                echo "&nbsp;&nbsp;&nbsp;&nbsp" .  $name;
+		                echo "</td>";
+		                $CI->load->model('ledger_model');
+		                $total = $CI->ledger_model->get_ledger_balance1($sub_g_id);
+		                echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
 
-                                                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                                		$file_name="schedule".$count.$db.$prev_year.".xml";
-                                		$tt=$acctpath."/".$file_name;
-                                		if(file_exists($tt))
-                                		{
-                                        		$doc = new DomDocument();
-                                        		$doc->formatOutput = true;
-                                        		$doc->load($tt);
-                                        		$xpath = new DomXPath($doc);
-                                        		$schedule1 = "schedule".$count;
-                                        		$schedule2 = $schedule1."_Name";
-                                        		$xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
-                                        		$xpath->query("/".$schedule1."/".$schedule2."/Amount");
-                                        		$xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-                                        		$schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
-                                        		$schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
-                                        		$schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-                                        		$schedulelist1 = @$schedulenode1->item($i)->nodeValue;
-                                        		$schedulelist2 = @$schedulenode2->item($i)->nodeValue;
-                                        		$schedulelist3 = @$schedulenode3->item($i)->nodeValue;
-                                		}
+		                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+		    			$file_name="schedule".$count.$db.$prev_year.".xml";
+	            		$tt=$acctpath."/".$file_name;
+	            		if(file_exists($tt))
+	            		{
+	                		$doc = new DomDocument();
+	                		$doc->formatOutput = true;
+	                		$doc->load($tt);
+	                		$xpath = new DomXPath($doc);
+	                		$schedule1 = "schedule".$count;
+	                		$schedule2 = $schedule1."_Name";
+	                		$xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+	                		$xpath->query("/".$schedule1."/".$schedule2."/Amount");
+	                		$xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
+	                		$schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+	                		$schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
+	                		$schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
+	                		$schedulelist1 = @$schedulenode1->item($i)->nodeValue;
+	                		$schedulelist2 = @$schedulenode2->item($i)->nodeValue;
+	                		$schedulelist3 = @$schedulenode3->item($i)->nodeValue;
+	                    }
 						$i++;
 						if($schedulelist2 == 0)
-                                		echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                                		else
-                                		echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
-                                		echo "</tr>";
-                                        }
-                                }
-                	}
+	                		echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+	                	else
+	                		echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
+	                		echo "</tr>";
+	                }
+	            }
+	        }
+
 			if(($type == 'CF')&&($database != 'NULL'))
 			{
 				$t_name = "schedule".$count;
 				$object = new Reportlist();
-                          	$object->init($group_id);
-                            	$total = $object->total;
-				if($group_id == '127'){
-                                $CI->load->model('ledger_model');
-                                $transit = $CI->ledger_model->get_ledger_balance('123');
-                                $total = $total - $transit;
-                                }
+                $object->init($group_id);
+                $total = $object->total;
+				if($group_id == '127')
+				{
+                    $CI->load->model('ledger_model');
+                    $transit = $CI->ledger_model->get_ledger_balance('123');
+                    $total = $total - $transit;
+                }
 
-                                $CI =& get_instance();
-                                $CI->load->model('Payment_model');
-                                $data = $CI->Payment_model->xml_creation($t_name,$group_id,$database,$name,$curr_year,$total);
+                $CI =& get_instance();
+                $CI->load->model('Payment_model');
+                $data = $CI->Payment_model->xml_creation($t_name,$group_id,$database,$name,$curr_year,$total);
 				if(($id == '30') || ($id == '26'))
 				{
 				 	$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id);
-                                        $sub_groups = $CI->db->get();
-                                        $sub_group_result = $sub_groups->result();
-                                        foreach($sub_group_result as $row3)
-                                        {
-                                                $name = $row3->name;
-                                                $sub_g_id = $row3->id;
+	                $sub_groups = $CI->db->get();
+	                $sub_group_result = $sub_groups->result();
+	                foreach($sub_group_result as $row3)
+	                {
+                        $name = $row3->name;
+                        $sub_g_id = $row3->id;
 						$t_name = "schedule".$count;
 						$CI = & get_instance();
 						$CI->load->model('ledger_model');
-                                                $total = $CI->ledger_model->get_ledger_balance($sub_g_id);
-                                		$CI->load->model('Payment_model');
-                                		$data = $CI->Payment_model->xml_creation($t_name,$sub_g_id,$database,$name,$curr_year,$total);
+                        $total = $CI->ledger_model->get_ledger_balance($sub_g_id);
+                        $CI->load->model('Payment_model');
+                        $data = $CI->Payment_model->xml_creation($t_name,$sub_g_id,$database,$name,$curr_year,$total);
 					}
 				}
 			}
@@ -2278,56 +2058,56 @@ function callschedule($id,$code,$count,$type,$database)
 			$ledger_id =$row1->id;
 			if(($type == 'view') && ($database == 'NULL'))
 			{
-                        	echo "<tr class=\"tr-group\">";
-                        	echo "<td class=\"td-group\">";                  
-       				echo "&nbsp;" .  $ledger_name;
-                                echo "</td>";
-                        	$CI =& get_instance();
-                        	$CI->load->model('ledger_model');
-                        	$total1 = $CI->ledger_model->get_ledger_balance($ledger_id);
-                                echo "<td align=\"right\">" . convert_amount_dc($total1) . "</td>";
-                                $sum1 = $sum1 + $total1;
+            	echo "<tr class=\"tr-group\">";
+            	echo "<td class=\"td-group\">";                  
+       			echo "&nbsp;" .  $ledger_name;
+                echo "</td>";
+            	$CI =& get_instance();
+            	$CI->load->model('ledger_model');
+            	$total1 = $CI->ledger_model->get_ledger_balance1($ledger_id);
+	            echo "<td align=\"right\">" . convert_amount_dc($total1) . "</td>";
+	            $sum1 = $sum1 + $total1;
 				$this->ledger_id = $ledger_id;
 				/* code for reading previous year data form xml by 'megha'  */
 
 				$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                                $file_name="schedule".$count.$db.$prev_year.".xml";
-                                $tt=$acctpath."/".$file_name;
-                                if(file_exists($tt))
-                                {
-                                        $doc = new DomDocument();
-                                        $doc->formatOutput = true;
-                                        $doc->load($tt);
-                                        $xpath = new DomXPath($doc);
-                                        $schedule1 = "schedule".$count;
-                                        $schedule2 = $schedule1."_Name";
-                                        $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
-                                        $xpath->query("/".$schedule1."/".$schedule2."/Amount");
-                                        $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-                                        $schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
-                                        $schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
-                                        $schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
-                                        $schedulelist1 = @$schedulenode1->item($i)->nodeValue;
-                                        $schedulelist2 = @$schedulenode2->item($i)->nodeValue;
-                                        $schedulelist3 = @$schedulenode3->item($i)->nodeValue;
-                                }
+                $file_name="schedule".$count.$db.$prev_year.".xml";
+                $tt=$acctpath."/".$file_name;
+                if(file_exists($tt))
+                {
+                    $doc = new DomDocument();
+                    $doc->formatOutput = true;
+                    $doc->load($tt);
+                    $xpath = new DomXPath($doc);
+                    $schedule1 = "schedule".$count;
+                    $schedule2 = $schedule1."_Name";
+                    $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+                    $xpath->query("/".$schedule1."/".$schedule2."/Amount");
+                    $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
+                    $schedulenode1 = $xpath->query("/".$schedule1."/".$schedule2."/Group_Name");
+                    $schedulenode2 = $xpath->query("/".$schedule1."/".$schedule2."/Amount");
+                    $schedulenode3 = $xpath->query("/".$schedule1."/".$schedule2."/Group_ID");
+                    $schedulelist1 = @$schedulenode1->item($i)->nodeValue;
+                    $schedulelist2 = @$schedulenode2->item($i)->nodeValue;
+                    $schedulelist3 = @$schedulenode3->item($i)->nodeValue;
+                }
 				$prev_sum1 = $prev_sum1 + $schedulelist2;
 				$i++;
 				if($schedulelist2 == 0)
-                                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                                else
-                                echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
-                                echo "</tr>";
+                	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                else
+                	echo "<td align=\"right\">" . convert_amount_dc($schedulelist2) . "</td>";
+                	echo "</tr>";
 
 			}
 			if(($type == 'CF') && ($database != 'NULL'))
 			{
-                                $t_name = "schedule".$count;
+                $t_name = "schedule".$count;
 				$CI =& get_instance();
 				$CI->load->model('ledger_model');
-                                $total1 = $CI->ledger_model->get_ledger_balance($ledger_id);
-                                $CI->load->model('Payment_model');
-                                $data = $CI->Payment_model->xml_creation($t_name,$ledger_id,$database,$ledger_name,$curr_year,$total1);
+	            $total1 = $CI->ledger_model->get_ledger_balance($ledger_id);
+	            $CI->load->model('Payment_model');
+                $data = $CI->Payment_model->xml_creation($t_name,$ledger_id,$database,$ledger_name,$curr_year,$total1);
 			}
 		}
 
@@ -2335,7 +2115,8 @@ function callschedule($id,$code,$count,$type,$database)
 		$prev_total = $prev_sum + $prev_sum1;
 		$this->curr_total = $curr_total;
 		$this->prev_total = $prev_total;	
-        }
+    }
+
 	function income_expense_diff()
 	{
 

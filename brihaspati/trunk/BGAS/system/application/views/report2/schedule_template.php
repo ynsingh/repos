@@ -1,8 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	
-	$this->load->library('session');
-        $date1 = $this->session->userdata('date1');
-        $date2 = $this->session->userdata('date2');
+        $this->db->from('settings');
+        $detail = $this->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date1 = $row->fy_start;
+            $date2 = $row->fy_end;
+        }
         $fy_start=explode("-",$date1);
         $fy_end=explode("-",$date2);
 

@@ -818,7 +818,7 @@ class Report2 extends Controller {
 
 	function profitandloss_mhrd()
 	{
-                $this->load->library('session');
+        $this->load->library('session');
 		$this->template->set('page_title', 'Income And Expenditure Statement');
 		$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrd' => 'PrintPreview'));
 
@@ -926,18 +926,6 @@ class Report2 extends Controller {
                 $id = '';
                 $schedule = '';
                 $name = '';
-		$this->db->from('settings');
-                $detail = $this->db->get();
-                foreach ($detail->result() as $row)
-                {
-                        $date1 = $row->fy_start;
-                        $date2 = $row->fy_end;
-                }
-                 $newdata = array(
-                      'date1'  => $date1,
-                      'date2'  => $date2
-                     );
-                $this->session->set_userdata($newdata);
 
                 $data['code'] = $code;
 		$data['count'] = $count;
