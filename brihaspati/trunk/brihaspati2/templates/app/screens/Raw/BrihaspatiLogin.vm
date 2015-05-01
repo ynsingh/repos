@@ -95,7 +95,7 @@ $!msg
 	<table align="left" class="desc"> ## 4
 	<tr><td valign=top> ## 5, 6
 	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
-	&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b> $brih_reg2 $brih_course #if($lang == "marathi") $brih_Of1 #end $brih_list</b></a>
+	&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")"><a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang) style="text-decoration:none"> <b>$brih_reg2 $brih_course #if($lang == "marathi") $brih_Of1 #end $brih_list</b></a>
 <br>
 	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
 &nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1") style="text-decoration:none"><b>$online_online $brih_reg</b> </a>
