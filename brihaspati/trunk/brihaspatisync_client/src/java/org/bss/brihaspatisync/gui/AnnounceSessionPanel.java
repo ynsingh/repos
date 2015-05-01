@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * AnnounceSessionPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 20011 ETRG, IIT Kanpur.
+ * Copyright (c) 2011,2015 ETRG, IIT Kanpur.
  */
 
 import java.awt.BorderLayout;
@@ -72,6 +72,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
         private JComboBox yearBox;
         private JComboBox durationBox;
         private JComboBox repeatBox;
+        
         private JComboBox repeat_for_timeBox;
         private JTextField atRate;
         private JTextField urlText;
@@ -82,19 +83,17 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
         private JCheckBox video;
         private JCheckBox whiteboard;
         private JCheckBox mail_send;
+        
         private JButton annBttn;
 
 	private Vector returnVector=null;
 	private String lectValue;
-	//private ClientObject client_obj=ClientObject.getController();
 	private Log log=Log.getController();
 	private int h=0;
 	private int m=0;
 	private int year=2011;
 	private int month=1;
         private int day=1;
-        
-	
 	private InstructorCSPanel insCSPanel=null;
 
 	/**
@@ -128,20 +127,31 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
                 north_Panel.setBorder(BorderFactory.createLineBorder(Color.black));
 		video=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.VideoCheck")+"</font></html>");
                 video.setBackground(Color.LIGHT_GRAY);
+                
+                video.addActionListener(new ActionListener(){
+                                                public void actionPerformed(ActionEvent er){
+                                                        if(video.isSelected()){
+                                                         new VideoServerConfigure();
+                                                         }          
+                     }                           
+                });
+               
+
                 audio=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.AudioCheck")+"</font></html>");
                 audio.setBackground(Color.LIGHT_GRAY);
                 whiteboard=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.WBCheck")+"</font></html>");
                 whiteboard.setBackground(Color.LIGHT_GRAY);
                 mail_send=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("mail_send")+"</font></html>");
                 mail_send.setBackground(Color.LIGHT_GRAY); 
-                north_Panel.add(new JLabel("                           "));
+                north_Panel.add(new JLabel(" "));
                 north_Panel.add(audio);
                 north_Panel.add(video);
                 north_Panel.add(whiteboard);
 		north_Panel.add(mail_send);
                 whiteboard.setSelected(true);
+        
 		
-                north_Panel.add(new JLabel("                            "));
+                north_Panel.add(new JLabel(""));
 		
 		return north_Panel;
 	}
@@ -361,9 +371,11 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
 					lectValue=null;
                                         return lectValue;
 				}
-				String vedeo="";	
+				String vedeo="";
                        	       	if(video.isSelected()){
+                                
 					vedeo="1";
+                                 
                        		}else{	
 					vedeo="0";
 				}
@@ -427,6 +439,8 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
         	if(ev.getComponent().getName().equals("")){
 		}
 	}
+
+	
 	
 	public void mousePressed(MouseEvent e) {}
         public void mouseReleased(MouseEvent e) {}

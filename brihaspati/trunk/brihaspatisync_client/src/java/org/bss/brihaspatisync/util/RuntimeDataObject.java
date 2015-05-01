@@ -32,12 +32,13 @@ public class RuntimeDataObject {
 	private String proxy_pass="";
 	private String videoServer="127.0.0.1";
 	private String videoServerPort="8090";
+        private String windowbit="64-bit";
 	private long time_delay=1030;
 
-	
-	private String vlcServer="C:\\Program Files\\VideoLAN\\VLC";
-        private String vlcDeviceName="HP Webcam-50";//"Default";
-	
+	private String vlcServer="C:\\Program Files (x86)\\VideoLAN\\VLC";
+     	//private String vlcServer="C:\\Program Files\\VideoLAN\\VLC";
+        private String vlcDeviceName="";
+
         public static RuntimeDataObject getController(){
                 if(obj==null) {
                         obj=new RuntimeDataObject();
@@ -61,7 +62,6 @@ public class RuntimeDataObject {
         public String getVideoServer(){
                 return videoServer;
         }
-	//////////////////////////////////////
 	public void setVLCdeviceName(String value){
                 vlcDeviceName=value;
         }
@@ -78,7 +78,6 @@ public class RuntimeDataObject {
         public String getVLCServer(){
                 return vlcServer;
         }
-	//////////////////
 	
 	public void setProxyHost(String value){
 		proxy_host=value;
@@ -203,6 +202,15 @@ public class RuntimeDataObject {
        	public String getVideoServerPort(){
                return videoServerPort;
        	}
+    
+        public void setwindowbit(String value){
+                windowbit=value;
+        }
+
+        public String getwindowbit(){
+               return windowbit;
+        }
+
 	
 	/*----Video Slider Frame  Timer Set-----*/
 	public void setTimeDelayFrame(int value){

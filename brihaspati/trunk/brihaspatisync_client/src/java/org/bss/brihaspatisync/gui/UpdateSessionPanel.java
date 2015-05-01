@@ -5,7 +5,7 @@ package org.bss.brihaspatisync.gui;
  * UpdateSessionPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur.
+ * Copyright (c) 2011,2015 ETRG, IIT Kanpur.
  */
 import java.awt.Cursor;
 import java.awt.*;
@@ -94,15 +94,13 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         private JCheckBox whiteboard;
 	private JCheckBox mail_send;
         private JButton annBttn;
-
 	private Vector returnVector=null;
 	private String lectValue;
 	private Log log=Log.getController();	
-	//private ClientObject client_obj=ClientObject.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	private ClassLoader clr= this.getClass().getClassLoader();
-	private InstructorCSPanel insCSPanel=null;	
+	private InstructorCSPanel insCSPanel=null;
 
 	protected UpdateSessionPanel(int indexnumber,Vector updatevector,InstructorCSPanel insCSPanel) {
 		this.insCSPanel=insCSPanel;
@@ -113,7 +111,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 mainPanel.add(createSouthPanel(),BorderLayout.SOUTH);
 		setLectureValues(indexnumber,updatevector);
 		frame=new JFrame();
-  		frame.setTitle(Language.getController().getLangValue("UpdateSessionPanel.Title"));                                                                                                            /**Setting the title of the Frame*/
+  		frame.setTitle(Language.getController().getLangValue("UpdateSessionPanel.Title"));                                                                                                           
+                /**Setting the title of the Frame*/
                 frame.getContentPane().add(mainPanel);                           /**Adding panel to the frame*/
                 frame.setSize(850,250);                                          /**Setting the size of the frame*/
                 frame.setVisible(true);                                          /**Showing the frame*/
@@ -174,6 +173,15 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 north_Panel.setBorder(BorderFactory.createLineBorder(Color.black));
                 video=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.VideoCheck")+"</font></html>");
                 video.setBackground(Color.LIGHT_GRAY);
+		video.addActionListener(new ActionListener(){
+                                                public void actionPerformed(ActionEvent er){
+                                                        if(video.isSelected()){
+                                                         new VideoServerConfigure();
+
+
+                               }
+                     }
+                });
                 audio=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.AudioCheck")+"</font></html>");
                 audio.setBackground(Color.LIGHT_GRAY);
                 whiteboard=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.WBCheck")+"</font></html>");
@@ -518,6 +526,9 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 }
 	}
 	
+
+	
+
 	public void mousePressed(MouseEvent e) {}
         public void mouseReleased(MouseEvent e) {}
         public void mouseEntered(MouseEvent e) {}
