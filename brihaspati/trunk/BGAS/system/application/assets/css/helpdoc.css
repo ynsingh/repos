@@ -1,151 +1,211 @@
+/*
+* New Css menu Style 
+*/
 
-/* Base class
-------------------------- */
-.jumbotron {
+
+img {
+width: 100%; 
+
+}
+
+#cssmenu,
+#cssmenu ul,
+#cssmenu ul li,
+#cssmenu ul li a {
+  margin-left: 0%;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  line-height: 1;
+  display: block;
   position: relative;
-  padding: 1px 0px;
-  color: #fff;
-  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#cssmenu {
+  font-family: Roboto, sans-serif;
+}
+#cssmenu > ul {
+  width: 80%;
+  background: #ffffff;
+}
+#cssmenu > ul > li > a {
+  padding: 8px 15px;
+  font-size: 17px;
+font-family: "Times New Roman", Times, serif;
+  color: #ffffff;
+  background:#1C9ECB;
+  font-weight: 700;
+  border: 2px solid #fff;
+  text-decoration: none;
+  -webkit-transition: color .2s ease;
+  -o-transition: color .2s ease;
+  -ms-transition: color .2s ease;
+  transition: color .2s ease;
+}
+#cssmenu > ul > li:hover > a,
+#cssmenu > ul > li > a:hover {
+  color: #222222;
+}
+#cssmenu ul li.has-sub > a::after {
+  position: absolute;
+  right: 15px;
+  display: block;
+  width: 10px;
+  height: 10px;
+  content: "";
+  border-radius: 2px;
+}
+#cssmenu > ul > li.has-sub > a::after {
+  top: 14px;
+  background: #0000CC;
+}
+#cssmenu > ul > li.has-sub:hover > a::after,
+#cssmenu > ul > li.has-sub > a:hover::after {
+  background: #222222;
+}
+#cssmenu ul ul li.has-sub > a::after {
+  top: 13px;
+  background: #ffffff;
+}
+#cssmenu ul ul li.has-sub:hover > a::after,
+#cssmenu ul ul li.has-sub > a:hover::after {
+  background: #dddddd;
+}
+#cssmenu ul li.has-sub > a::before {
+  position: absolute;
+  right: 15px;
+  z-index: 2;
+  display: block;
+  width: 0;
+  height: 0;
+  border: 3px solid transparent;
+  content: "";
+}
+#cssmenu > ul > li.has-sub > a::before {
+  top: 16px;
+  border-left-color: #ffffff;
+}
+#cssmenu ul ul li.has-sub > a::before {
+  top: 15px;
+  border-left-color: #2e353b;
+}
+#cssmenu ul {
+  -webkit-perspective: 600px;
+  -moz-perspective: 600px;
+  perspective: 600px;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+#cssmenu ul ul {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+  width: 180px;
+  background: #1C9ECB;
+  opacity: 0;
+  -moz-transition: opacity 0.2s ease, -moz-transform 0.2s ease;
+  -webkit-transition: opacity 0.2s ease, -webkit-transform 0.2s ease;
+  -ms-transition: opacity 0.2s ease, -ms-transform 0.2s ease;
+  -o-transition: opacity 0.2s ease, -o-transform 0.2s ease;
+  transition: opacity .2s ease, transform .2s ease;
+  -webkit-transform: rotate3d(0, 1, 0, 45deg);
+  -moz-transform: rotate3d(0, 1, 0, 45deg);
+  transform: rotate3d(0, 1, 0, 45deg);
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  transform-origin: left center;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+#cssmenu ul li:hover > ul {
+  left: 100%;
+  opacity: 1;
+  transform: rotate3d(0, 0, 0, 0);
+}
+#cssmenu ul ul::after {
+  position: absolute;
+  left: -8px;
+  top: 14px;
+  z-index: 5;
+  display: block;
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+  border-right-color: #2e353b;
+  content: "";
+}
+#cssmenu ul ul a {
+  border: 2px solid #ffffff;
+  padding: 8px 15px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  -webkit-transition: color .2s ease;
+  -o-transition: color .2s ease;
+  -ms-transition: color .2s ease;
+  transition: color .2s ease;
+}
+#cssmenu ul ul li:hover > a,
+#cssmenu ul ul li a:hover {
+  color: #0000FF;
+}
+
+body{
+	margin: 0px;
+	padding: 0px;
+	width 100%;
+}
+
+.head{
+  background-color: #DDDDDD;
   text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
-  background:  	#0393C5; /* Old browsers */
+  background:   #0393C5; /* Old browsers */
   background: -moz-linear-gradient(25deg,  #0393C5 0%, #0393C5 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#020031), color-stop(100%,#6d3353)); /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(25deg,  #0393C5 0%,#0393C5 100%); /* Chrome10+,Safari5.1+ */
   background: -o-linear-gradient(25deg,  #0393C5 0%,#0393C5 100%); /* Opera 11.10+ */
   background: -ms-linear-gradient(25deg,  #0393C5 0%,#0393C5 100%); /* IE10+ */
   background: linear-gradient(25deg,  #0393C5 0%,#0393C5 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#020031', endColorstr='#6d3353',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
      -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
           box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+	width: 81%;
+        margin-left:345px;
+        margin-top:-23px;
+	height: 100px;
+	background-color: blue;
+	font-size: 50px;
+  	font-weight: bold;
+        text-align:center;
+        letter-spacing: -1px;
+        line-height: 190%; 
 }
-.jumbotron h1 {
-  font-size: 40px;
-  font-weight: bold;
-  letter-spacing: -1px;
-  line-height: 0.5;
-}
-.jumbotron p {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 300%;
-  margin-bottom: 30px;
-}
+.content{
+	width: 100%;
+	background-color:#DDDDDD;
+	float: left;
 
-/* Link styles (used on .masthead-links as well) */
-.jumbotron a {
-  color:#fff;
-  color: rgba(255,255,255,.5);
-  -webkit-transition: all .2s ease-in-out;
-     -moz-transition: all .2s ease-in-out;
-          transition: all .2s ease-in-out;
 }
-.jumbotron a:hover {
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255,255,255,.25);
-}
-/* Subhead (other pages)
-------------------------- */
-.subhead {
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-.subhead h1 {
-  font-size: 60px;
-}
-.subhead p {
-  margin-bottom: 20px;
-}
-.subhead .navbar {
-  display: none;
-}
-
-/* Sidenav for Docs
- * -------------------------------------------------- */
-#left-nav ul li a:hover { background-color:#F0E68C; color: #fff; }
-#left-nav ul li a:visited { color:#800080;}
-#left-nav ul li a:link {color:#0000FF; text-decoration:none;}
-.bs-docs-sidenav {
-  width: 500px;
-  padding: 0;
-  background-color: #C0C0C0;
+.sideleft{
   font-size: 18px;
   font-weight:bold;
-  font-family: "Times New Roman", Times, serif;
-  margin: 0 0 -0.5px;
-  float:left;
+       top: 132px;
+	width:22%;
+	height: 570px;
+	position: fixed;
+	bottom: 10px;
 
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
-  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
-     -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
-          box-shadow: 0 1px 4px rgba(0,0,0,.065);
-}
-.bs-docs-sidenav > li > a {
-  display: block;
-  width: 190px \9;
-  margin: 0 0 -1px;
-  padding: 6px 12px;
-  font-color: #000000;
-  border: 1px solid #e5e5e5;
-}
-.bs-docs-sidenav > li:first-child > a {
-  -webkit-border-radius: 6px 6px 0 0;
-     -moz-border-radius: 6px 6px 0 0;
-          border-radius: 6px 6px 0 0;
-}
-.bs-docs-sidenav > li:last-child > a {
-  -webkit-border-radius: 0 0 6px 6px;
-     -moz-border-radius: 0 0 6px 6px;
-          border-radius: 0 0 6px 6px;
-}
-.bs-docs-sidenav > icon-chevron-right> a {
-  position: relative;
-  z-index: 2;
-  padding: 9px 15px;
-  border: 0;
-  text-shadow: 0 1px 0 rgba(0,0,0,.15);
-  -webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
-     -moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
-          box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
 }
 
-/* Desktop large
-------------------------- */
-@media (min-width: 1200px) {
-  .bs-docs-container {
-    max-width: 970px;
-  }
-  .bs-docs-sidenav {
-    width: 230px;
-  }
-  .bs-docs-sidenav > li > a {
-    width: 230px \9; /* Override the previous IE8-9 hack */
-  }
-
-
-/* Desktop
-------------------------- */
-@media (max-width: 980px) {
-  /* Unfloat brand */
-  body > .navbar-fixed-top .brand {
-    float: left;
-    margin-left: 0;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  /* Inline-block quick links for more spacing */
-  .quick-links li {
-    display: inline-block;
-    margin: 5px;
-  }
-
-  /* When affixed, space properly */
-  .bs-docs-sidenav {
-    top: 0;
-    width: 218px;
-    margin-top: 30px;
-    margin-right: 0;
-  }
+.sideright{
+	width: 80%;
+        min-width:80%;
+	height: 1000px;
+	float: right
+}
