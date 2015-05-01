@@ -104,6 +104,47 @@ class Logo extends Controller {
                         {
                                 $name= $row->name;
                         }
+			//Update Intitute name in bgasAccdata in login table.................
+			$idl='';
+                        $CI =& get_instance();
+                        $CI->db->from('settings')->where('id', 1);
+                        $settings_q = $CI->db->get();
+                        $settings= $settings_q->row();
+                        $ins_name = $settings->ins_name;
+                        $uni_name = $settings->uni_name;
+
+                        $date1 = explode("-", $settings->fy_start);
+                        $date2 = explode("-", $settings->fy_end);
+                        $year_start = $date1[0];
+                        $year_end = $date2[0];
+                        $curr_year = $year_start . "-" . $year_end;
+
+                        $CI =& get_instance();
+                        $db = $CI->load->database('login', TRUE);
+                        $db->select('id');
+                        $db->from('bgasAccData')->where('organization', $ins_name)->where('unit', $uni_name)->where('fyear', $curr_year);
+                        $login_q = $db->get();
+                        foreach ($login_q->result() as $row){
+                                $idl=$row->id;
+                        }
+                        $db->trans_start();
+                        $update_data = array(
+                                'organization' => $data_ins_name,
+                                'unit' => $data_uni_name
+                        );
+                        if (!$db->where('id', $idl)->update('bgasAccData', $update_data))
+                        {
+                                //$this->db1->trans_rollback();
+                                $db->trans_rollback();
+                                $this->messages->add('Error updating Institute and unit name in bgasAccData under login database.', 'error');
+                                $this->logger->write_message("error", "Error updating Institute and unit name in bgasAccData under login database.");
+                                $this->template->load('template', 'setting/logo', $data);
+                                return;
+                        } else {
+                                $db->trans_complete();
+                                $this->messages->add('Institute and unit name updated in bgasAccData under login database.', 'success');
+                        }
+                        $db->close();///////////////////.....................................
 
                         if($size)
                         {
@@ -198,8 +239,8 @@ class Logo extends Controller {
 						}
 			}//else 
 			//get the id of this institute and accounting unit from bgasAccData under login
-			$db1=$this->load->database('login', TRUE);
-			$db1->select('id')->from('bgasAccData')->where('organization',$data_ins_name )->where('unit',$data_uni_name);
+			//$db1=$this->load->database('login', TRUE);
+			/*$db1->select('id')->from('bgasAccData')->where('organization',$data_ins_name )->where('unit',$data_uni_name);
 	                $query = $db1->get();
                 	if ($query->num_rows() > 0){
                        		foreach($query->result() as $row){
@@ -212,10 +253,10 @@ class Logo extends Controller {
 				redirect('setting/logo');
 				return;
                 	}
-
+			*/
 			// update data in bgasAccData under login database
-			//$this->db1->trans_start();
-			$db1->trans_start();
+			//his->db1->trans_start();
+			/*$db1->trans_start();
                         $update_data = array(
                                 'organization' => $data_ins_name,
                                 'unit' => $data_uni_name
@@ -234,7 +275,7 @@ class Logo extends Controller {
                                 $db1->trans_complete();
                                 $this->messages->add('Institute and unit name updated in bgasAccData under login database.', 'success');
 			}
-			$db1->close();
+			$db1->close();*/
 
 		redirect('setting/logo');
 		$this->template->load('template', 'setting/logo', $data);

@@ -491,5 +491,38 @@ class Payment_model extends Model {
 		}
 		return $db_name;
 	}
+	
+	   function db_user_name()
+        {
+                $db_name = "";
+                $CI =& get_instance();
+                $CI->db->from('settings')->where('id', 1);
+                $settings_q = $CI->db->get();
+                $settings= $settings_q->row();
+                $ins_name = $settings->ins_name;
+                $uni_name = $settings->uni_name;
+                $lable_name = $settings->name;
+
+                $date1 = explode("-", $settings->fy_start);
+                $date2 = explode("-", $settings->fy_end);
+                $year_start = $date1[0];
+                $year_end = $date2[0];
+                $curr_year = $year_start . "-" . $year_end;
+                $CI =& get_instance();
+                $db = $CI->load->database('login', TRUE);
+                $db->select('uname, dbpass');
+
+                $db->from('bgasAccData')->where('organization', $ins_name)->where('unit', $uni_name)->where('fyear', $curr_year);
+                $login_q = $db->get();
+                if($login_q->num_rows()>0){
+                        $login = $login_q->row();
+                        $db_name = $login->uname;
+                        $db_pass = $login->dbpass;
+
+                }
+                $val= $db_name.'##'.$db_pass.'##'.$lable_name;
+                return $val;
+        }
+
 }
 ?>

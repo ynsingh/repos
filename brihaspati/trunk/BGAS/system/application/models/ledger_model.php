@@ -722,6 +722,12 @@ var $ledgers = array();
 		/* get from date of previous year */
 		$this->load->library('session');
 		$date1 = $this->session->userdata('date1');
+		$date2 = $this->session->userdata('date2');
+		if($date1==NULL && $date2==NULL){
+                	$date1=2016-04-01;
+			$date2=2016-04-01;
+                }
+		else{
 		$date=explode("-",$date1);
 		$old_year1 = $date[0]-1;
 		$from_date = $old_year1."-".$date[1]."-".$date[2];
@@ -731,7 +737,6 @@ var $ledgers = array();
 		$date1=explode("-",$date2);
 		$old_year1 = $date1[0]-1;
 		$to_date = $old_year1."-".$date1[1]."-".$date1[2];
-
 		/* database connectivity for getting previous year debit amount */
 		$con = @mysql_connect($host_name, $db_username, $db_password);
 		$op_balance = array();
@@ -748,6 +753,7 @@ var $ledgers = array();
 					return $dr_total;
 				}
 			}
+		}
 		}
 	}
 
@@ -798,6 +804,12 @@ var $ledgers = array();
 		/* get from date of previous year */
 		$this->load->library('session');
 		$date1 = $this->session->userdata('date1');
+		$date2 = $this->session->userdata('date2');
+
+		if($date1==NULL && $date2==NULL){
+                        $date1=2016-04-01;
+                        $date2=2016-04-01;
+                }else{
 		$date=explode("-",$date1);
 		$old_year1 = $date[0]-1;
 		$from_date = $old_year1."-".$date[1]."-".$date[2];
@@ -824,6 +836,7 @@ var $ledgers = array();
 				}
 			}			
 		}
+	}
 	}
 
 	/* Return credit total of selected date as positive value in current financial year*/

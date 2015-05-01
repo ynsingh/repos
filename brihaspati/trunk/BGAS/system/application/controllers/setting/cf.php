@@ -23,6 +23,7 @@ class Cf extends Controller{
 		$this->load->helper('file');
 		$this->load->library('accountlist');
 		$this->load->model('Ledger_model');
+                $this->load->model('payment_model');
 		$this->load->model('Setting_model');
 		$this->template->set('page_title', 'Carry forward account');
 
@@ -36,7 +37,9 @@ class Cf extends Controller{
 
 		/* Current settings */
 		$account_data = $this->Setting_model->get_current();
-
+		$db = $this->payment_model->db_user_name();
+	        $db_name = $this->payment_model->database_name();
+                $db_details=explode("##",$db);
 		$ledger_name = $account_data->ledger_name;
                 if($ledger_name == '' || $ledger_name == '0' || $ledger_name == null)
                 {
@@ -62,14 +65,30 @@ class Cf extends Controller{
 		$default_start_ts = $last_year_end_ts + (60 * 60 * 24); /* Adding 24 hours */
 		$default_start = date("Y-m-d 00:00:00", $default_start_ts);
 		$default_end = ($last_year_end_year + 1) . "-" . $last_year_end_month . "-" . $last_year_end_day . " 00:00:00";
+		$start_date = date_mysql_to_php($default_start);
+		$end_date = date_mysql_to_php($default_end);
+		$exp_start_date=explode("/",$start_date);
+		$exp_end_date=explode("/",$end_date);
+		$Pre_year = substr($exp_start_date[2], -2);
+		$last_year = substr($exp_end_date[2], -2);
+		$pre_cf_year=$Pre_year -1;
+		$last_cf_year=$last_year-1;
+		$this_year=$pre_cf_year.$last_cf_year;
+		$match_year=strpbrk($db_name,$pre_cf_year.$last_cf_year); 
+		if($match_year == $this_year){
+	                $new_db_name = chop($db_name,$this_year);
+			$new_db_name= $new_db_name.$Pre_year.$last_year;
+		}else{
+			$new_db_name=$db_name.$Pre_year.$last_year;
 
+		}
 		/* Form fields */
 		$data['account_label'] = array(
 			'name' => 'account_label',
 			'id' => 'account_label',
 			'maxlength' => '30',
 			'size' => '30',
-			'value' => '',
+			'value' => $db_details[2].$Pre_year.$last_year,
 		);
 		$data['account_name'] = array(
 			'name' => 'account_name',
@@ -98,7 +117,7 @@ class Cf extends Controller{
 			'id' => 'database_name',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $new_db_name,
 		);
 
 		$data['database_username'] = array(
@@ -106,7 +125,7 @@ class Cf extends Controller{
 			'id' => 'database_username',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $db_details[0],
 		);
 
 		$data['database_password'] = array(
@@ -114,7 +133,7 @@ class Cf extends Controller{
 			'id' => 'database_password',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $db_details[1],
 		);
 
 		$data['database_host'] = array(
@@ -682,13 +701,7 @@ class Cf extends Controller{
                                 $liability->current_liabilities(8,6,'1004',"CF",$data_database_name);
                                 $liability->provisions(157,6,'1005',"CF",$data_database_name);
 
-				$this->load->library('reportlist');
-                                $liability = new Reportlist();
-                                $liability->callschedule(9,'100101',1,'CF',$data_database_name);
-                                $liability->callschedule(10,'100102',2,'CF',$data_database_name);
-                                $liability->callschedule(6,'1002',4,'CF',$data_database_name);
-                                $this->messages->add('xml created'.$data_database_name, 'success');
-
+                		$this->messages->add('xml created'.$data_database_name, 'success');
 
 				/* Account lock */
 			//	$this->db->trans_start()
