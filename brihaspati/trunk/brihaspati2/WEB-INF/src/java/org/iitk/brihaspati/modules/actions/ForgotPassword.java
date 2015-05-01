@@ -180,8 +180,8 @@ public class ForgotPassword extends VelocitySecureAction
 			                        ForgotpassPeer.doInsert(crit);
 
 
-
-						data.setMessage(Mail_msg);
+						String messfp=MultilingualUtil.ConvertedString("forgotPwd_msg10",LangFile);
+						data.setMessage(messfp+Mail_msg);
                                                 setTemplate(data,"BrihaspatiLogin.vm");
 
 						/*
