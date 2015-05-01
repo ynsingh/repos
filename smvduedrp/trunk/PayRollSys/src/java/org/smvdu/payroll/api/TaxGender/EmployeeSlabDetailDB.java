@@ -1,22 +1,51 @@
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
 package org.smvdu.payroll.api.TaxGender;
-import java.sql.*;
+
+/**
+ *
+ *  Copyright (c) 2010 - 2011 SMVDU, Katra, 2015 IITKanpur.
+ *  All Rights Reserved.
+ *  Redistribution and use in source and binary forms, with or
+ *  without modification, are permitted provided that the following
+ *  conditions are met:
+ *  Redistributions of source code must retain the above copyright
+ *  notice, this  list of conditions and the following disclaimer.
+ *
+ *  Redistribution in binary form must reproduce the above copyright
+ *  notice, this list of conditions and the following disclaimer in
+ *  the documentation and/or other materials provided with the
+ *  distribution.
+ *
+ *
+ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE
+ *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *
+ *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+ *  Modified Date: 30 April 2015, IITK (palseema30@gmail.com)
+ */
+
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.UserInfo;
-import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
-/**
- *
- * @author ERP
- */
+
 public class EmployeeSlabDetailDB {
 
     private int orgCode;
@@ -167,72 +196,50 @@ public class EmployeeSlabDetailDB {
         }   */
     }
     
-    public ArrayList<EmployeeSlabDetail> loadEmployeeSlabDetails(int genCode)
-    {
-         
+    /**method for loading employee slab detail according to gender ex:(super senior, senior citizen male female(U60)) 
+    * @param genCode
+    * @return ArrayList of EmployeeSlabDetail
+    */
+    
+    public ArrayList<EmployeeSlabDetail> loadEmployeeSlabDetails(int genCode){
+        try
+        {
+            
             ArrayList<EmployeeSlabDetail> emplSlabDetails = new ArrayList<EmployeeSlabDetail>();
+            ArrayList<TaxSlabHeadBean> allslab = new TaxSlabHeadDB().loadSlabInfo();
             ArrayList<TaxSlabHeadBean> selected = new TaxSlabHeadDB().loadGenderSlabInfo(genCode);
-     /*      for(TaxSlabHeadBean ta : taxSlabHeadBean)
-            {
-                System.out.println("In Tax Slab Head bean : "+ta.getSlabHeadCode());
-                System.out.println("In Tax Slab Head bean : "+ta.getSlabName());
-                
-            }       */
-            for(TaxSlabHeadBean all : new TaxSlabHeadDB().loadSlabInfo())
+            ArrayList<TaxSlabHeadBean>allfileteredsalb=new ArrayList<TaxSlabHeadBean>(allslab);
+            allfileteredsalb.removeAll(selected);
+            for(TaxSlabHeadBean all : allfileteredsalb)
             {
                 EmployeeSlabDetail empsd = new EmployeeSlabDetail();
-                
-                System.out.println("code is : '"+ all.getSlabHeadCode()+"'");
-                System.out.println("Slab Name is : '"+ all.getSlabName()+"'");
-                
+                //System.out.println("code : '"+ all.getSlabHeadCode()+"'");
+                //System.out.println("Slab Name is : '"+ all.getSlabName()+"'");
                 TaxSlabHeadBean tshb = new TaxSlabHeadBean();
                 tshb.setSlabHeadCode(all.getSlabHeadCode());
                 
                 empsd.setSlabCode(tshb);
                 empsd.setSlabeName(all.getSlabName());
-                
-                System.out.println(selected.contains(all));
-                
-                if((selected.contains(all)))
-                {
-                    System.out.println("Data Should Be Write Here .. hi");
-                    empsd.setSlabSelected(true);
-                }
-                else{
-                System.out.println("Not matched");
-                }
                 emplSlabDetails.add(empsd);
-            }
-
-            return emplSlabDetails; 
-            
-       /*     ArrayList<TaxSlabHeadBean> all = new TaxSlabHeadDB().loadSlabInfo();
-            for(TaxSlabHeadBean a : all)
-            {
+            }   
+            for(TaxSlabHeadBean ss : selected)
+            {   
                 EmployeeSlabDetail empsd = new EmployeeSlabDetail();
-                empsd.setSlabHeadCode(a.getSlabHeadCode());
-                empsd.setSlabName(a.getSlabName());
-                              
-                for(TaxSlabHeadBean item : selected)
-                {
-                    System.out.println(item);
-                    System.out.println(a);
-                    System.out.println(item==a);
-                    if (item==a)
-                    {
-                        System.out.println("Data Should Be Write Here .. hi");
-                        empsd.setSlabSelected(true);
-                        break;
-                    }
-                    else
-                    {
-                        empsd.setSlabSelected(false);
-                    }
-                }
+                TaxSlabHeadBean tshb = new TaxSlabHeadBean();
+                tshb.setSlabHeadCode(ss.getSlabHeadCode());
+                empsd.setSlabSelected(true);
+                empsd.setSlabCode(tshb);
+                empsd.setSlabeName(ss.getSlabName());
                 emplSlabDetails.add(empsd);
+            
             }
-
-            return emplSlabDetails;     */
-       
+            return emplSlabDetails; 
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return null;
+        }   
+    
     }
-}
+}    
