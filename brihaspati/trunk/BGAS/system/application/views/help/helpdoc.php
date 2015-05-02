@@ -63,8 +63,8 @@
 								</li>
 	                        	<li class='has-sub'><a href="#IncomeandExpenditureStatement">Income and Expenditure Statement</a>
 	                            		<ul>
-	                            			<li><a href="#CorporateFormatI&E">Corporate Format I&E</a></li>
-	                                		<li><a href="#MHRDFormatIE">MHRD Format I&E</a></li>
+	                            			<li><a href="#CorporateFormatIE">Corporate Format IE</a></li>
+	                                		<li><a href="#MHRDFormatIE">MHRD Format IE</a></li>
 	                            		</ul>
 								</li>
 	                        	<li><a href="#Payment&Receipt">Payment & Receipt</a></li>
@@ -668,9 +668,9 @@
                                                 </div>
                                         </section>
 
-                                        <section id="CorporateFormatI&E">
+                                        <section id="CorporateFormatIE">
                                         <div class="row-fluid">
-                                        <h2>Corporate Format I&E</h2>
+                                        <h2>Corporate Format IE</h2>
                                         </div>
                                         <div class="row-fluid">
                                         <font size="4">
@@ -692,9 +692,9 @@
 					</div>
 					</section>
 					
-					 <section id="MHRDFormatI&E">
+					 <section id="MHRDFormatIE">
                                         <div class="row-fluid">
-                                        <h2>MHRD Format I&E</h2>
+                                        <h2>MHRD Format IE</h2>
                                         </div>
                                         <div class="row-fluid">
                                         <font size="4">
@@ -704,7 +704,7 @@ The Income and Expenditure has the format as per the recommendation of the MHRD.
 					</ol>
                                         </font>
 <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'mhrdformatI&E.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'mhrdformatIE.png'));
                                         ?>
                                         </div>
                                         </section>
