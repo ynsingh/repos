@@ -24,6 +24,14 @@
 				Manage users and permissions
 			</div>
 		</div>
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php echo anchor('admin/emailSet', 'Manage Mail Settings', array('title' => 'Manage Mail Settings')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                Manage Mail Settings 
+                        </div>
+                </div>
 	</div>
 	<div id="right-col">
 		<div class="settings-container">

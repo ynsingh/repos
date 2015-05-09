@@ -21,7 +21,7 @@
         echo "<p>";
         echo form_submit('submit', 'Update');
         echo " ";
-        echo anchor('admin/user', 'Back', array('title' => 'Back to user list'));
+	echo anchor('admin', 'Back', array('title' => 'Back to admin'));
         echo "</p>";
 
         echo form_close();

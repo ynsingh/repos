@@ -19,7 +19,7 @@ class Welcome extends Controller {
 		$fy_end_date=date_format($date,"d-m-y");
 		$exp_today_date=explode("-",$today_date);
                 $fy_end_date=explode("-",$fy_end_date);
-		if($exp_today_date[1]> $fy_end_date[1] && $exp_today_date[2]> $fy_end_date[2]){
+		if((($exp_today_date[1]> $fy_end_date[1] ) && ($exp_today_date[2]== $fy_end_date[2])) || (($exp_today_date[1]< $fy_end_date[1] )&& ($exp_today_date[2]> $fy_end_date[2]))) {
                         $link = anchor('setting/cf', 'C/F Account', array('class' => 'anchor-link-a'));
 			$this->messages->add('Kindly Carry Forword Your Account By Clicking '.$link.'.', 'success');
 		}

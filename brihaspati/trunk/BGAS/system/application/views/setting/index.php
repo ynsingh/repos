@@ -25,15 +25,15 @@
 				Carry forward account to next year
 			</div>
 		</div>
-		<div class="settings-container">
+<!--		<div class="settings-container">
 			<div class="settings-title">
-				<?php echo anchor('setting/email', 'Email Settings', array('title' => 'Email Settings')); ?>
+				<?php //echo anchor('setting/email', 'Email Settings', array('title' => 'Email Settings')); ?>
 			</div>
 			<div class="settings-desc">
 				Setup outgoing email
 			</div>
 		</div>
-		<div class="settings-container">
+-->		<div class="settings-container">
 			<div class="settings-title">
 				<?php echo anchor('setting/printer', 'Printer Settings', array('title' => 'Printer Settings')); ?>
 			</div>

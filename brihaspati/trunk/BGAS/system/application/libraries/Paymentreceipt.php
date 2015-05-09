@@ -332,25 +332,26 @@ class paymentreceipt
         	}	
 	}
 
-
 // added by @kanchan on date 2015 04 10
 // This function send the mail to related user for every transation
 
         function send_mail($to,$subject,$message)
         {
 		$CI =& get_instance();
-                $CI->db->select('email_host,email_protocol,email_port,email_username,email_password')->from('settings')->where('id', 1);
-                $settings = $CI->db->get();
-                $settings_q = $settings->result();
-                foreach($settings_q as $row)
-                {
-                $email_protocol = $row->email_protocol;
-                $email_host = $row->email_host;
-                $email_port = $row->email_port;
-                $email_username = $row->email_username;
-                $email_password = $row->email_password;
+		$CI->load->library('general');
+		$db1=$CI->load->database('login', TRUE);
+		$db1->select('id,email_protocol,email_host,email_port,email_username,email_password')->from('emailSetting');
+                $emaldata= $db1->get();
+                foreach($emaldata->result() as $row){
+                	$email_protocol = $row->email_protocol;
+	                $email_host = $row->email_host;
+        	        $email_port = $row->email_port;
+                	$email_username = $row->email_username;
+	                $email_password = $row->email_password;
                 }
-
+		$db1->close();
+		//$CI->messages->add('email setting value as ' . $email_protocol.$email_host.$email_port.$email_username.$email_password . '.', 'success');
+//		echo $email_protocol.$email_host.$email_port.$email_username.$email_password;
                  // Email configuration
                 $config = Array(
                 'protocol' => $email_protocol,
@@ -362,24 +363,25 @@ class paymentreceipt
                 'charset' => 'iso-8859-1',
                 'wordwrap' => TRUE
                 );
-
                 $CI->load->library('Email', $config);
 
         // Sometimes you have to set the new line character for better result
-                $CI->email->set_newline("\r\n");
+          //      $CI->email->set_newline("\r\n");
 
         // Set your email information
 
-                $CI->email->from($email_username,"BGAS");
+		$CI->email->from($email_username,"brihspti");
                 $CI->email->to($to);
 		$CI->email->subject($subject);
                 $CI->email->message($message);
                 $result = $CI->email->send();
-                echo $CI->email->print_debugger();
+		if (!$result) {
+   			echo ($CI->email->print_debugger()); 
+		}
+  		else {
+    			echo 'Your e-mail has been sent!';
+  		}
                 return $result;
         }//send_mail 
-
-                                                                               
-
 }
 ?>

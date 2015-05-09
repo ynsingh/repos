@@ -810,7 +810,7 @@ $width="100%";
 			}		
 
 		} 
-		else {
+		else { // use of this
 			for ($count = 0; $count <= 3; $count++)
 			{
 				// line added by Priyanka
@@ -846,7 +846,7 @@ $width="100%";
 	                        $data_secunit = $this->input->post('secunit', TRUE);
                         	$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 				$bank_cash_global = '';
-				$filename=$this->fileupload();
+				$filename=$this->fileupload();// EXPLAIN THE USE
 				$sanc_value = '';
 				$data_sanc_type = $this->input->post('sanc_type', TRUE);
 				if($data_sanc_type != 'select'){
@@ -921,7 +921,7 @@ $width="100%";
                         	        else
                                 	        $data_number = $this->Entry_model->next_entry_number($entry_type_id);
                         //	}
-		
+				$this->messages->add('the value is '+$ledger_data, 'error');	
 				foreach ($data_all_ledger_dc as $id => $ledger_data)
 				{
 					//these lines existed earlier
@@ -3031,7 +3031,21 @@ $width="100%";
 			$current_entry_type = entry_type_info($entry_type_id);
 		}
 
-		$account_data = $this->Setting_model->get_current();
+		//$account_data = $this->Setting_model->get_current();
+                $db1=$this->load->database('login', TRUE);
+                $db1->select('*')->from('emailSetting');
+                $emaildata= $db1->get();
+                $email_q = $emaildata->result();
+		foreach($email_q as $row)
+                {
+                        $email_protocol = $row->email_protocol;
+                        $email_host = $row->email_host;
+                        $email_port = $row->email_port;
+                        $email_username = $row->email_username;
+                        $email_password = $row->email_password;
+                }
+                $db1->close();
+	//	echo $email_port;
 
 		/* Load current entry details */
 		if ( ! $cur_entry = $this->Entry_model->get_entry($entry_id, $entry_type_id))
@@ -3107,13 +3121,14 @@ $width="100%";
 			$config['charset'] = 'utf-8';
 			$config['newline'] = "\r\n";
 			$config['mailtype'] = "html";
-			if ($account_data)
+			if ($email_q)
 			{
 
-				$config['smtp_host'] = $account_data->email_host;
-				$config['smtp_port'] = $account_data->email_port;
-				$config['smtp_user'] = $account_data->email_username;
-				$config['smtp_pass'] = $account_data->email_password;
+				$config['protocol'] = $email_protocol;
+				$config['smtp_host'] = $email_host;
+				$config['smtp_port'] = $email_port;
+				$config['smtp_user'] = $email_username;
+				$config['smtp_pass'] = $email_password;
 			} else {
 				$data['error'] = 'Invalid account settings.';
 			}

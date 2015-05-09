@@ -56,6 +56,7 @@ class User extends Controller {
 	function add()
 	{
 		$this->load->library('validation');
+                $this->load->library('paymentreceipt');
 		$this->template->set('page_title', 'Add user');
 
 		/* Form fields */
@@ -188,24 +189,27 @@ class User extends Controller {
 					$data_accounts_string = implode(",", $data_accounts_valid);
 				}
 				$db1=$this->load->database('login', TRUE);
-			//Check this user exist or not
-			// if not then create account else skip
-	//			{
-          //                      $this->messages->add('Username already exists.', 'error');
-            //                    $this->template->load('admin_template', 'admin/user/add', $data);
-              //                  return;
-	        //                }
-			// Create new user
-				$db1->trans_start();
-				$insert_data = array(
+				$db1->from('bgasuser')->where('username', $data_user_name);
+				$query = $db1->get();
+		                if (!($query->num_rows() < 1)){
+					//Check this user exist or not					
+					$this->messages->add('User Account already exists.', 'error');
+                                        $this->logger->write_message("error", "User Account already exist" . $data_user_name);
+		                        $this->template->load('admin_template', 'admin/user/add', $data);
+                		        return;
+				}
+				else{
+					// if not then create account else skip
+					$db1->trans_start();
+					$insert_data = array(
                                                         'username' => $data_user_name,
                                                         'password'=>md5($data_user_password),
                                                         'email' => $data_user_email,
                                                         'role' =>$data_user_role,
                                                         'status' => $data_user_status,
                                                         'accounts'=>$data_accounts_string
-                                                        );
-				
+                                        );
+					$user_password = $data_user_password;		
 
                                                 if ( ! $db1->insert('bgasuser', $insert_data))
                                                 {
@@ -220,22 +224,16 @@ class User extends Controller {
                                                 }
 						else{
 						$db1->trans_complete();
-
-                                                        //$this->messages->add('Added User Account - ' . $data_user_name . ' success');
 					 //added by @kanchan
-
-                                        $message = "You are Added in Brihaspati General Accounting System- $data_user_name  && Your Role is---- $data_user_role";
-                                        $subject = 'User Added';
-                                        $CI =& get_instance();
-                                        $CI->load->library('paymentreceipt');
-
-                                        if($CI->paymentreceipt->send_mail($data_user_email,$subject,$message))
-					$this->messages->add('Added User Account - ' . $data_user_name .  '----Mail Sucessfully send!---'. ' success');
-			
-				 redirect('admin/user/');
-
+                                        $message = "You are Added in Brihaspati General Accounting System- $data_user_name  && Your Role is- $data_user_role && Your Password is- $user_password";
+                                        $subject = 'User Account created in BGAS ';
+                                        if($this->paymentreceipt->send_mail($data_user_email, $subject, $message))
+						$this->messages->add('Added User Account - ' . $data_user_name .  'Mail Sucessfully send!---'. ' success');
+					redirect('admin/user/');
 					return;	
 					}
+				}
+				$db1->close();
 
 			}
 
@@ -267,7 +265,6 @@ class User extends Controller {
 			}*/
 		}
 		$this->template->load('admin_template', 'admin/user/add', $data);
-		$db1->close();
 		return;
 	}
 
@@ -284,6 +281,8 @@ class User extends Controller {
                              	$user_name = $row->username;       
 				$user_password = $row->password;
 				$user_email = $row->email;
+				$user_account = $row->accounts;
+				$user_role = $row->role;
                                 }
 		
 
@@ -452,7 +451,7 @@ class User extends Controller {
 				$data_user_status = 0;
 			$data_accounts = $this->input->post('accounts', TRUE);
 			//print_r($data_accounts);
-			$this->messages->add("Test=====>".$data_accounts); 
+	//		$this->messages->add("Test=====>".$data_accounts); 
 			/* Forming account querry string */
                         $data_accounts_string = '';
                         if ( ! $data_accounts)
@@ -471,6 +470,7 @@ class User extends Controller {
                                 }
                         }
 			//echo $data_accounts_string;
+	//		echo "gjfgjfgjf$user_name";
 			$this->messages->add($data_accounts_string);
                          $db1->trans_start();
                          $update_data = array(
@@ -496,21 +496,27 @@ class User extends Controller {
 						$this->messages->add('Update User Account - ' . $user_name . ' success');
 
                                                 //added by @kanchan
-                                        	//print_r($user_email);
+				/*	if($user_name != $update_data['username'])
+					$message = "Your username has been Updated/n .Your updated Username- $user_name";
+					if($user_password != $data_user_password)
+					$message = "Your Password has been Updated/n .................Your updated Password- $user_password";
+					if($update_data['role'])
+                                        $message = "Your User Role has been Updated/n .................Your updated Role- $data_user_role";
+					if($user_accounts != $update_data['accounts'])
+                                     */   
+					$message .= "Your User Account data has been Updated./n Your updated Account- $data_accounts_string";
+				//	if($update_data['password'] != $data_user_password)
+				//	{	
 
-                                        $data_user_email = $update_data['email'];
-                                        $data_user_name = $update_data['username'];
-
-                                        $message = "Your Account has been Updated/n .................Your username- $data_user_name   Password- $data_user_password Your Role- $data_user_role && Account- $data_accounts_string";
-                                        $subject = 'User Updated';
-                                        $CI =& get_instance();
-                                        $CI->load->library('paymentreceipt');
-                                        if($CI->paymentreceipt->send_mail($data_user_email,$subject,$message))
+                                        $subject = 'User data Updated';
+                                        $this->load->library('paymentreceipt');
+                                        if($this->paymentreceipt->send_mail($data_user_email,$subject,$message))
                                         {
+						$this->messages->add('Mail Sucessfully send!-' . $user_name . ' success');
                                                 redirect('admin/user');
                                                 //return; 
                                         }
-    
+					
                                            	}//else
                                     
                                         return;
@@ -574,6 +580,7 @@ class User extends Controller {
 			$budget_data = $budget_q->row();
 			$user_email = $budget_data->email;
                         $user_name = $budget_data->username;
+			$user_password = $budget_data->password;
 		}
 			
 			$db1->trans_start();
@@ -596,12 +603,12 @@ class User extends Controller {
 
 			     //added by @kanchan
 
-                                        $message = "Your Account has been deleted from BGAS Account- $user_name";
+                                        $message = "Your Account has been deleted from BGAS Account- $user_name && Your Password is- $user_password";
                                         $subject = 'User Deleted';
-                                        $CI =& get_instance();
-                                        $CI->load->library('paymentreceipt');
-                                        if($CI->paymentreceipt->send_mail($user_email,$subject,$message))
+                                        $this->load->library('paymentreceipt');
+                                        if($this->paymentreceipt->send_mail($user_email,$subject,$message))
                                         {
+						$this->messages->add('Mail Sucessfully send!-' . $user_name . ' success');
                                                 redirect('admin/user');
                                                 return;
                                         }
