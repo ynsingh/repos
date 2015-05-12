@@ -13,13 +13,11 @@ class Welcome extends Controller {
 		$this->load->model('Ledger_model');
 		$this->load->library('accountlist');
 		$this->template->set('page_title', 'Welcome to BGAS');
-		$today_date=date("d-m-y");
-	        $date1= $this->config->item('account_fy_end');
-		$date=date_create($date1);
-		$fy_end_date=date_format($date,"d-m-y");
+		$today_date=date("Y-m-d");
 		$exp_today_date=explode("-",$today_date);
-                $fy_end_date=explode("-",$fy_end_date);
-		if((($exp_today_date[1]> $fy_end_date[1] ) && ($exp_today_date[2]== $fy_end_date[2])) || (($exp_today_date[1]< $fy_end_date[1] )&& ($exp_today_date[2]> $fy_end_date[2]))) {
+	        $date1= $this->config->item('account_fy_end');
+          	$fy_end_date=explode("-",$date1);
+		if((($exp_today_date[1]> $fy_end_date[1] ) && ($exp_today_date[0]== $fy_end_date[0]) && ($this->config->item('account_locked') == 0)) || (($exp_today_date[1]< $fy_end_date[1] )&& ($exp_today_date[0]> $fy_end_date[0])&&($this->config->item('account_locked') == 0))) {
                         $link = anchor('setting/cf', 'C/F Account', array('class' => 'anchor-link-a'));
 			$this->messages->add('Kindly Carry Forword Your Account By Clicking '.$link.'.', 'success');
 		}
