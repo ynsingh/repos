@@ -49,6 +49,11 @@ public class DefaultSalaryDataController {
     private int typecode;
     private ArrayList<SalaryHead> heads;
     private UIData grid;
+    
+    public DefaultSalaryDataController(){
+     
+        
+    }
 
     public UIData getGrid() {
         return grid;

@@ -1,0 +1,2 @@
+use pl;
+ALTER TABLE default_salary_master ADD COLUMN ds_id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT FIRST;

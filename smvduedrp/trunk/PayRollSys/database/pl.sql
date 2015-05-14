@@ -429,11 +429,20 @@ CREATE TABLE `date_master` (
 #
 # Structure for the `default_salary_master` table : 
 #
-
+/*
 CREATE TABLE `default_salary_master` (
   `ds_emp_type` int(11) NOT NULL,
   `ds_sal_head` int(11) default NULL,
   `ds_amount` int(11) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
+
+CREATE TABLE `default_salary_master` (
+  `ds_id` int(11) NOT NULL auto_increment,
+  `ds_emp_type` int(11) NOT NULL,
+  `ds_sal_head` int(11) default NULL,
+  `ds_amount` int(11) default NULL,
+  PRIMARY KEY  (`ds_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 #
@@ -454,7 +463,7 @@ CREATE TABLE `emp_hirarchy_master` (
 #
 # Structure for the `emp_salary_head_master` table : 
 #
-
+/*
 CREATE TABLE `emp_salary_head_master` (
   `st_code` int(11) NOT NULL,
   `st_sal_code` int(11) NOT NULL,
@@ -463,6 +472,19 @@ CREATE TABLE `emp_salary_head_master` (
   KEY `st_code_2` (`st_code`),
   KEY `st_sal_code` (`st_sal_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
+
+CREATE TABLE `emp_salary_head_master` (
+  `id` int(11) NOT NULL auto_increment,
+  `st_code` int(11) NOT NULL,
+  `st_sal_code` int(11) NOT NULL,
+  `st_org_code` int(11) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `st_code` (`st_code`,`st_sal_code`),
+  KEY `st_code_2` (`st_code`),
+  KEY `st_sal_code` (`st_sal_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 #
 # Structure for the `emp_slab_head_master` table : 
@@ -905,7 +927,8 @@ CREATE TABLE `salary_head_master` (
   `sh_formula` varchar(100) default NULL,
   `sh_scalable` tinyint(4) NOT NULL default '0',
   `sh_special` tinyint(4) NOT NULL default '0',
-  `sh_cat` int(11) NOT NULL default '1',
+/*  `sh_cat` int(11) NOT NULL default '1',	*/
+  `sh_cat` tinyint(4) NOT NULL default'1',
   `sh_display` tinyint(4) NOT NULL default '1',
   `sh_type_code` int(11) NOT NULL default '2',
   `sh_process_type` tinyint(4) NOT NULL default '0',
@@ -945,9 +968,11 @@ CREATE TABLE `salary_data` (
 #
 
 CREATE TABLE `salary_formula` (
+  `sf_id` int(11) NOT NULL auto_increment,
   `sf_sal_id` int(11) NOT NULL,
   `sf_sal_formula` varchar(100) NOT NULL,
   `sf_org_id` int(11) default NULL,
+  PRIMARY KEY  (`sp_id`),
   KEY `sf_sal_id` (`sf_sal_id`),
   KEY `sf_org_id` (`sf_org_id`),
   CONSTRAINT `salary_formula_fk` FOREIGN KEY (`sf_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,

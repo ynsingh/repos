@@ -8,6 +8,8 @@ package org.smvdu.payroll.beans.setup;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -238,5 +240,16 @@ public class SalaryGrade {
             e.printStackTrace();
         }
     }
+   
+   private Set defaultSalary = new HashSet();
+
+    public Set getDefaultSalary() {
+        return defaultSalary;
+    }
+
+    public void setDefaultSalary(Set defaultSalary) {
+        this.defaultSalary = defaultSalary;
+    }
+   
 
 }

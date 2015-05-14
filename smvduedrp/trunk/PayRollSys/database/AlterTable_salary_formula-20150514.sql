@@ -1,0 +1,2 @@
+use pl;
+ALTER TABLE salary_formula ADD COLUMN sf_id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT FIRST;

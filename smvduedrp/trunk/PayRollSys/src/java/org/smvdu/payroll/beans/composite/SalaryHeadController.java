@@ -78,7 +78,7 @@ public class SalaryHeadController {
         for(int i=0;i<types.size();i++)
         {
             st = types.get(i);
-            SelectItem si = new SelectItem(st.getCode(), st.getName());
+            SelectItem si = new SelectItem(st.getId(), st.getName());
             category[i] = si;
         }
         return category;
@@ -118,7 +118,7 @@ public class SalaryHeadController {
         for(SalaryHead sh : hs)
         {
             FacesContext fc = FacesContext.getCurrentInstance();
-            if (sh.getSHCode().matches("^[a-zA-Z0-9\\s]*$") == false) {
+            if (sh.getShcode().matches("^[a-zA-Z0-9\\s]*$") == false) {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             message.setSummary("Please Enter Valid Code. No Special Characters are Allowed ");

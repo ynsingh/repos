@@ -8,6 +8,7 @@ package org.smvdu.payroll.beans;
 import java.util.ArrayList;
 import javax.faces.component.UIData;
 import org.smvdu.payroll.beans.db.SalaryFormulaDB;
+import org.smvdu.payroll.beans.setup.SalaryHead;
 
 /**
  *
@@ -53,6 +54,37 @@ public class SalaryFormula {
     private String formula;
     private int salCode = 0;
     private String fields;
+    
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
+    private int orgcode;
+
+    public int getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
+    }
+    
+    private SalaryHead salaryHead;
+
+    public SalaryHead getSalaryHead() {
+        return salaryHead;
+    }
+
+    public void setSalaryHead(SalaryHead salaryHead) {
+        this.salaryHead = salaryHead;
+    }
 
     public String getFields() {
         return fields;

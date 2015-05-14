@@ -5,6 +5,8 @@
 
 package org.smvdu.payroll.beans.setup;
 
+import java.io.Serializable;
+
 /**
  *
  *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
@@ -37,7 +39,62 @@ package org.smvdu.payroll.beans.setup;
 *  Contributors: Members of ERP Team @ SMVDU, Katra
 *
  */
-public class EmployeeTypeSalaryHead extends SalaryHead{
+// public class EmployeeTypeSalaryHead extends SalaryHead{
+public class EmployeeTypeSalaryHead implements Serializable{
+    
+    private int id;                 // this is the primary key of the database table
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    private EmployeeType empTypeCode;       // this represents st_code field of the database table
+
+    public EmployeeType getEmpTypeCode() {
+        return empTypeCode;
+    }
+
+    public void setEmpTypeCode(EmployeeType empTypeCode) {
+        this.empTypeCode = empTypeCode;
+    }
+    
+    private SalaryHead salaryHeadCode;         // this represents st_sal_code field of the database table
+
+    public SalaryHead getSalaryHeadCode() {
+        return salaryHeadCode;
+    }
+
+    public void setSalaryHeadCode(SalaryHead salaryHeadCode) {
+        this.salaryHeadCode = salaryHeadCode;
+    }
+    
+    private int orgcode;
+
+    public int getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
+    }
+    
+ //---------------------------------------------------------------------------------------------------------------------------------------
+ //---------------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    private String salaryHeadName;
+
+    public String getSalaryHeadName() {
+        return salaryHeadName;
+    }
+
+    public void setSalaryHeadName(String salaryHeadName) {
+        this.salaryHeadName = salaryHeadName;
+    }
+            
     private boolean selected;
 
     public boolean isSelected() {
@@ -47,6 +104,5 @@ public class EmployeeTypeSalaryHead extends SalaryHead{
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
-    
 
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.setup.SalaryGrade" table="salary_grade_master">
+    <id name="code" type="java.lang.Integer">
+      <column name="grd_code"/>
+      <generator class="identity"/>
+    </id>
+    <property name="name" type="string">
+      <column length="20" name="grd_name" not-null="true" unique="true"/>
+    </property>
+    <property name="minValue" type="java.lang.Integer">
+      <column default="0" length="11" name="grd_min" not-null="true"/>
+    </property>
+    <property name="maxValue" type="java.lang.Integer">
+      <column default="0" length="11" name="grd_max" not-null="true"/>
+    </property>
+    <property name="gradePay" type="java.lang.Integer">
+      <column default="0" length="11" name="grd_gp" not-null="true"/>
+    </property>
+    <property name="orgcode" type="java.lang.Integer">
+      <column name="grd_org_id"/>
+    </property>
+    <set inverse="true" name="defaultSalary">
+      <key>
+        <column name="ds_emp_type" not-null="true"/>
+      </key>
+      <one-to-many class="org.smvdu.payroll.beans.DefaultSalary"/>
+    </set>
+  </class>
+</hibernate-mapping>

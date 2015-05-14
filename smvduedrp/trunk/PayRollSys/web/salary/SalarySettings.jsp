@@ -71,7 +71,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Salary Head"/>
                             </f:facet>
-                                <h:outputText value="#{head.name}"/>
+                                <h:outputText value="#{head.salaryHeadName}"/>
                             </h:column>
                             
                              <h:column>

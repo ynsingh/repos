@@ -1,0 +1,2 @@
+use pl;
+ALTER TABLE emp_salary_head_master ADD COLUMN id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT FIRST;

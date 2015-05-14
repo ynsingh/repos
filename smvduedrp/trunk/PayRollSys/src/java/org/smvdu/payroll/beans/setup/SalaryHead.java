@@ -7,6 +7,8 @@ package org.smvdu.payroll.beans.setup;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -86,18 +88,163 @@ public class SalaryHead implements Serializable {
 
     public static final int BASIC_SALARY=1;
 
-    private int defaultValue;
-    private int number;
-    private String name;
-    private String alias;
-    private String formula;
-    private boolean special;
-    private boolean type;
-    private boolean display;
-    private boolean processType; // Regular or scheduled
-    private String shcode;
-    private String ledgercode;
 
+    
+    private int number;
+    
+    public int getNumber() {
+        return number;
+    }
+    
+    public void setNumber(int i) {        
+        this.number = i;
+    }
+    
+    
+    private String shcode;
+    
+    public String getShcode() {
+        return shcode;
+    }
+    
+    public void setShcode(String shcode) {
+        this.shcode = shcode;
+    }
+    
+    
+    private String name;
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String string) {
+        this.name = string;
+    }
+    
+    
+    private  boolean under;
+    
+    public boolean isUnder() {
+        return under;
+    }
+    
+    public void setUnder(boolean under) {
+        this.under = under;
+    }
+   
+    
+    private String alias;
+    
+    public String getAlias() {
+        return alias;
+    }
+    
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+    
+    private boolean calculationType;
+    
+    public boolean isCalculationType() {
+        return calculationType;
+    }
+    
+    public void setCalculationType(boolean calculationType) {
+        this.calculationType = calculationType;
+    }
+    
+        
+    private String formula;
+    
+    public String getFormula() {
+        return formula;
+    }
+
+    public void setFormula(String formula) {
+        this.formula = formula;
+    }
+    
+    
+    private boolean scalable;
+
+    public boolean isScalable() {
+        return scalable;
+    }
+
+    public void setScalable(boolean scalable) {
+        this.scalable = scalable;
+    }
+    
+    
+    private boolean special;
+    
+    public boolean isSpecial() {
+        return special;
+    }
+
+    public void setSpecial(boolean special) {
+        this.special = special;
+    }
+    
+    
+    private boolean type;
+    
+    public boolean isType() {
+        return type;
+    }
+
+    public void setType(boolean type) {
+        this.type = type;
+    }
+    
+  
+    private boolean display;
+    
+    public boolean isDisplay() {
+        return display;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
+    }
+    
+    
+    /*  private int typeCode;
+    
+    public int getTypeCode() {
+        return typeCode;
+    }
+
+    public void setTypeCode(int typeCode) {
+        this.typeCode = typeCode;
+    }   */
+    
+    private SalaryTypeMaster typeCode;
+
+    public SalaryTypeMaster getTypeCode() {
+        return typeCode;
+    }
+
+    public void setTypeCode(SalaryTypeMaster typeCode) {
+        this.typeCode = typeCode;
+    }
+    
+    
+    private int typeCodeForDropDown;
+
+    public int getTypeCodeForDropDown() {
+        return typeCodeForDropDown;
+    }
+
+    public void setTypeCodeForDropDown(int typeCodeForDropDown) {
+        this.typeCodeForDropDown = typeCodeForDropDown;
+    }
+    
+  
+    
+    private boolean processType; // Regular or scheduled
+    
     public boolean isProcessType() {
         return processType;
     }
@@ -105,6 +252,64 @@ public class SalaryHead implements Serializable {
     public void setProcessType(boolean processType) {
         this.processType = processType;
     }
+    
+    
+    private String ledgerCode;
+    
+    public String getLedgerCode() {
+        return ledgerCode;
+    }
+    
+    public void setLedgerCode(String ledgercode) {
+        this.ledgerCode = ledgercode;
+    }
+ 
+    private int orgcode;
+
+    public int getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
+    }
+    
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------
+    
+
+    private Set defaultSalary = new HashSet();
+
+    public Set getDefaultSalary() {
+        return defaultSalary;
+    }
+
+    public void setDefaultSalary(Set defaultSalary) {
+        this.defaultSalary = defaultSalary;
+    }
+    
+    
+    private Set salaryFormula = new HashSet();
+
+    public Set getSalaryFormula() {
+        return salaryFormula;
+    }
+
+    public void setSalaryFormula(Set salaryFormula) {
+        this.salaryFormula = salaryFormula;
+    }
+    
+    private Set employeeTypeSalary = new HashSet();
+
+    public Set getEmployeeTypeSalary() {
+        return employeeTypeSalary;
+    }
+
+    public void setEmployeeTypeSalary(Set employeeTypeSalary) {
+        this.employeeTypeSalary = employeeTypeSalary;
+    } 
+    
 
     private String processTypeName;
 
@@ -126,7 +331,7 @@ public class SalaryHead implements Serializable {
     
     
     
-    private int typeCode;
+    
     private SalaryTypeMaster salaryType;
 
     public SalaryTypeMaster getSalaryType() {
@@ -137,22 +342,10 @@ public class SalaryHead implements Serializable {
         this.salaryType = salaryType;
     }
 
-    public int getTypeCode() {
-        return typeCode;
-    }
-
-    public void setTypeCode(int typeCode) {
-        this.typeCode = typeCode;
-    }
+    
     
 
-    public boolean isDisplay() {
-        return display;
-    }
-
-    public void setDisplay(boolean display) {
-        this.display = display;
-    }
+    
     
     
    
@@ -161,43 +354,7 @@ public class SalaryHead implements Serializable {
         this.name = name;
     }
 
-    public boolean isType() {
-        return type;
-    }
-
-    public void setType(boolean type) {
-        this.type = type;
-    }
-    
-
-    public boolean isSpecial() {
-        return special;
-    }
-
-    public void setSpecial(boolean special) {
-        this.special = special;
-    }
-    
-
-    private boolean scalable;
-
-    public boolean isScalable() {
-        return scalable;
-    }
-
-    public void setScalable(boolean scalable) {
-        this.scalable = scalable;
-    }
-    
-
-    public String getFormula() {
-        return formula;
-    }
-
-    public void setFormula(String formula) {
-        this.formula = formula;
-    }
-    
+ 
 
     private int empType;
 
@@ -213,10 +370,10 @@ public class SalaryHead implements Serializable {
         {
             return true;
         }
- else
-        {
-            return false;
- }
+        else
+               {
+                   return false;
+        }
     }
 
     public void setEmpType(int empType) {
@@ -234,10 +391,12 @@ public class SalaryHead implements Serializable {
 
 
     private String underString;
-    private boolean calculationType;
+    
     private String calculationString;
     private SelectItem[] items;
     private ArrayList<SalaryHead> heads;
+    
+    private int defaultValue;
 
     public int getDefaultValue() {
         return defaultValue;
@@ -312,12 +471,10 @@ public class SalaryHead implements Serializable {
         //System.out.println("salary Head=====");
         this.heads = heads;
     }
-    public boolean isCalculationType() {
-        return calculationType;
-    }
+    
     public void save()   {
          FacesContext fc = FacesContext.getCurrentInstance();
-        if (this.getSHCode().matches("^[a-zA-Z0-9\\s]*$") == false) {
+        if (this.getShcode().matches("^[a-zA-Z0-9\\s]*$") == false) {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             message.setSummary("Please Enter Valid Code. No Special Characters are Allowed ");
@@ -346,23 +503,14 @@ public class SalaryHead implements Serializable {
         {
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage("Salary Head Saved : "+name, "Data Saved."));
         }
+        else{
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage("Somthing went wrong"));
+        }
     }
-    public void setCalculationType(boolean calculationType) {
-        this.calculationType = calculationType;
-    }
-    public String getAlias() {
-        return alias;
-    }
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-    public boolean isUnder() {
-        return under;
-    }
-    public void setUnder(boolean under) {
-        this.under = under;
-    }
-    private  boolean under;
+    
+    
+    
+    
     private String error = " <font color='green'>* Salary Head name Cannot be empty </font>";
     private String message ="";
     public String getError() {
@@ -391,32 +539,12 @@ public class SalaryHead implements Serializable {
     public void setMessage(String message) {
         this.message = message;
     }
-    public String getName() {
-        return name;
-    }
-    public void setName(String string) {
-        name = string;
-    }
-    public int getNumber() {
-        return number;
-    }
-    public void setNumber(int i) {        
-        number = i;
-    }
     
-    public String getLedgerCode() {
-        return ledgercode;
-    }
-    public void setLedgerCode(String ledgercode) {
-        this.ledgercode = ledgercode;
-    }
+    
+    
+    
 
-    public String getSHCode() {
-        return shcode;
-    }
-    public void setSHCode(String shcode) {
-        this.shcode = shcode;
-    }
+    
    
     
 }

@@ -5,6 +5,8 @@
 package org.smvdu.payroll.beans;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -38,6 +40,35 @@ import java.io.Serializable;
 *  Contributors: Members of ERP Team @ SMVDU, Katra
 *
  */
-public class SalaryTypeMaster extends BaseBean implements Serializable {
+public class SalaryTypeMaster implements Serializable {
+    
+    private int id;
+    private String name;
+    private Set salaryHead = new HashSet();
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set getSalaryHead() {
+        return salaryHead;
+    }
+
+    public void setSalaryHead(Set salaryHead) {
+        this.salaryHead = salaryHead;
+    }
+
     
 }

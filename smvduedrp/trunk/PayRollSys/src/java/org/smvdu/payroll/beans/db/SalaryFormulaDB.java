@@ -9,10 +9,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.faces.component.UIData;
 import org.smvdu.payroll.beans.SalaryFormula;
 import org.smvdu.payroll.beans.UserInfo;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
+import org.smvdu.payroll.beans.setup.SalaryHead;
 
 /**
  *
@@ -51,6 +57,8 @@ public class SalaryFormulaDB {
     private PreparedStatement ps;
     private ResultSet rs;
     private final UserInfo userBean;
+    private HibernateUtil helper;
+    private Session session;
 
      public SalaryFormulaDB()
      {
@@ -78,7 +86,43 @@ public class SalaryFormulaDB {
         }
     }
     public ArrayList<SalaryFormula> loadFormula()    {
-        try
+  
+         try
+        {
+            ArrayList<SalaryFormula> data = new ArrayList<SalaryFormula>();
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("select sh.number, sh.name, sf.formula from SalaryHead  sh left join sh.salaryFormula sf where sh.calculationType=1");
+            List result = query.list();
+            
+            for (Iterator it = result.iterator(); it.hasNext(); ) {
+                Object[] myResult = (Object[]) it.next();
+                SalaryFormula s = new SalaryFormula();
+                
+                SalaryHead sal = new SalaryHead();
+                sal.setNumber((Integer) myResult[0]);
+                
+                s.setSalaryHead(sal);
+                s.setName((String) myResult[1]);
+                s.setFormula((String) myResult[2]);
+                data.add(s);
+
+            } 
+            
+            session.getTransaction().commit();   
+            return data;
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.close();
+        }       
+        
+        
+        /*    try
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select sh_id,sh_name,sf_sal_formula from  salary_head_master "
@@ -102,9 +146,50 @@ public class SalaryFormulaDB {
         {
             e.printStackTrace();
             return null;
-        }
+        }           */
     }
     public boolean save(UIData data)    {
+     /*  
+        
+         try
+        {
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("delete from SalaryFormula");
+            query.executeUpdate();
+            session.getTransaction().commit();
+            
+            ArrayList<SalaryFormula> sdata = (ArrayList<SalaryFormula>) data.getValue();
+            for(SalaryFormula sf : sdata)
+            {
+                session.beginTransaction();
+
+                SalaryFormula obj = new SalaryFormula();
+                
+                SalaryHead sal = new SalaryHead();
+                sal.setNumber(sf.getSalCode());               
+                obj.setSalaryHead(sal);
+                
+                obj.setFormula(sf.getFormula());
+                
+                session.save(obj);
+                session.getTransaction().commit();
+ 
+            }
+            return true;
+                      
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            session.close();
+        }
+    */  
+        
+        
         try
         {
             Connection c = new CommonDB().getConnection();
@@ -128,9 +213,47 @@ public class SalaryFormulaDB {
             e.printStackTrace();
             return false;
         }
+        
+        
+        
     }
-	public void update(ArrayList<SalaryFormula> sfdata){
-        try
+    
+    public void update(ArrayList<SalaryFormula> sfdata){
+            
+    /*
+         try
+        {
+    
+            session = helper.getSessionFactory().openSession();
+            
+            for(SalaryFormula sf : sfdata)
+            {
+               session.beginTransaction();
+
+                SalaryFormula obj = (SalaryFormula)session.get(SalaryFormula.class, sf.getId());
+
+                SalaryHead sal = new SalaryHead();
+                sal.setNumber(sf.getSalCode());
+                
+                obj.setSalaryHead(sal);
+                obj.setFormula(sf.getFormula());
+  
+                session.update(obj);
+                session.getTransaction().commit();
+            }
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+            
+            
+    */
+            
+            try
         {
         	Connection c = new CommonDB().getConnection();
             	ps=c.prepareStatement("update salary_formula set sf_sal_formula=? where sf_sal_id=? and  sf_org_id= '"+userBean.getUserOrgCode()+"'");
@@ -148,6 +271,8 @@ public class SalaryFormulaDB {
         {
             //Logger.getAnonymousLogger().log(Log., e.getMessage());
         }
+            
+    
     }
 
 }

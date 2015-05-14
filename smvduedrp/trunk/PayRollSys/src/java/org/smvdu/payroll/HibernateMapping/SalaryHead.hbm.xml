@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.setup.SalaryHead" table="salary_head_master">
+    <id name="number" type="java.lang.Integer">
+      <column name="sh_id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="shcode" type="string">
+      <column length="80" name="sh_code" not-null="true"/>
+    </property>
+    <property name="name" type="string">
+      <column length="100" name="sh_name" not-null="true"/>
+    </property>
+    <property name="under" type="java.lang.Boolean">
+      <column name="sh_type"/>
+    </property>
+    <property name="alias" type="string">
+      <column length="10" name="sh_alias"/>
+    </property>
+    <property name="calculationType" type="java.lang.Boolean">
+      <column name="sh_calc_type"/>
+    </property>
+    <property name="formula" type="string">
+      <column length="100" name="sh_formula"/>
+    </property>
+    <property name="scalable" type="java.lang.Boolean">
+      <column name="sh_scalable"/>
+    </property>
+    <property name="special" type="java.lang.Boolean">
+      <column name="sh_special"/>
+    </property>
+    <property name="type" type="java.lang.Boolean">
+      <column name="sh_cat"/>
+    </property>
+    <property name="display" type="java.lang.Boolean">
+      <column name="sh_display"/>
+    </property>
+    <many-to-one class="org.smvdu.payroll.beans.SalaryTypeMaster" fetch="select" name="typeCode">
+      <column name="sh_type_code" not-null="true"/>
+    </many-to-one>
+    <!--    <property name="typeCode" type="java.lang.Integer">
+      <column name="sh_type_code"/>
+    </property>     -->
+    <property name="processType" type="java.lang.Boolean">
+      <column name="sh_process_type"/>
+    </property>
+    <property name="ledgerCode" type="string">
+      <column length="100" name="sh_ledger_code"/>
+    </property>
+    <property name="orgcode" type="java.lang.Integer">
+      <column name="sh_org_id"/>
+    </property>
+    <set inverse="true" name="defaultSalary">
+      <key>
+        <column name="ds_sal_head" not-null="true"/>
+      </key>
+      <one-to-many class="org.smvdu.payroll.beans.DefaultSalary"/>
+    </set>
+    
+    <set inverse="true" name="salaryFormula">
+      <key>
+        <column name="sf_sal_id" not-null="true"/>
+      </key>
+      <one-to-many class="org.smvdu.payroll.beans.SalaryFormula"/>
+    </set>
+    
+    <set inverse="true" name="employeeTypeSalary">
+      <key>
+        <column name="st_sal_code" not-null="true"/>
+      </key>
+      <one-to-many class="org.smvdu.payroll.beans.setup.EmployeeTypeSalaryHead"/>
+    </set>
+    
+  </class>
+</hibernate-mapping>

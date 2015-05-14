@@ -24,6 +24,14 @@
         </property>
         <property name="orgcode" type="java.lang.Integer">
             <column name="emp_org_id"/>
-        </property>    
+        </property>  
+        
+        <set name="empTypeSalaryCode" inverse="true">
+            <key>
+                <column name="st_code" not-null="true"/>
+            </key>
+            <one-to-many class="org.smvdu.payroll.beans.setup.EmployeeTypeSalaryHead"/>
+        </set>
+            
   </class>
 </hibernate-mapping>

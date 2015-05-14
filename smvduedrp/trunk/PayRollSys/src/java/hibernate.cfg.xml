@@ -6,17 +6,22 @@
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.datasource">java:comp/env/jdbc/pl</property>
     <property name="hibernate.show_sql">true</property>
-    <mapping resource="org/smvdu/payroll/beans/SessionMaster.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/beans/setup/Department.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/beans/setup/Designation.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/beans/setup/EmployeeType.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/api/BankDetails/BankProfileDetails.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/beans/setup/SalaryGrade.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/beans/setup/SalaryProcessingSetup.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/api/TaxGender/Gender.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/api/TaxGender/TaxSlabHeadBean.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/api/TaxGender/EmployeeSlabDetail.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/beans/ext/attendance/LeaveType.hbm.xml"/>
-    <mapping resource="org/smvdu/payroll/beans/ext/attendance/LeaveTypeOrgRecode.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SessionMaster.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/Department.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/Designation.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/EmployeeType.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/BankProfileDetails.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryGrade.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryProcessingSetup.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/Gender.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/TaxSlabHeadBean.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/EmployeeSlabDetail.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/LeaveType.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/LeaveTypeOrgRecode.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryHead.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryTypeMaster.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/DefaultSalaryData.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryFormula.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/EmployeeTypeSalaryHead.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

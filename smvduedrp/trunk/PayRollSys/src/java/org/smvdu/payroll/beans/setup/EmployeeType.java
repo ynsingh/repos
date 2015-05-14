@@ -7,6 +7,8 @@ package org.smvdu.payroll.beans.setup;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
@@ -169,7 +171,19 @@ public class EmployeeType implements Serializable{
         dataGrid.setValue(allTypes); 
         return allTypes;
     }
+    
+    private Set empTypeSalaryCode = new HashSet();
 
+    public Set getEmpTypeSalaryCode() {
+        return empTypeSalaryCode;
+    }
+
+    public void setEmpTypeSalaryCode(Set empTypeSalaryCode) {
+        this.empTypeSalaryCode = empTypeSalaryCode;
+    }
+    
+    
+    
     @Override
     public String toString()
     {

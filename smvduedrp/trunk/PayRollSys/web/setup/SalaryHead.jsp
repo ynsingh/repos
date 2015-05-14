@@ -53,7 +53,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Head Code"/>
                             </f:facet>
-                            <rich:inplaceInput value="#{heads.SHCode}" />
+                            <rich:inplaceInput value="#{heads.shcode}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -148,7 +148,7 @@
             <h:form>
                   <h:panelGrid columns="3">
                         <h:outputText value="Salary Head Code"/>
-                        <h:inputText id="shCode" required="true" requiredMessage="Enter Salary Head Code" value="#{SalaryHeadBean.SHCode}" />
+                        <h:inputText id="shCode" required="true" requiredMessage="Enter Salary Head Code" value="#{SalaryHeadBean.shcode}" />
                         <h:message for="shCode" styleClass="error"/>
                         <h:outputText value="Salary Head"/>
                         <h:inputText id="shName" required="true" requiredMessage="Enter Salary Head Name" value="#{SalaryHeadBean.name}" />
@@ -175,7 +175,7 @@
                         </h:selectOneMenu>  
                         <h:outputText value=""/>
                         <h:outputText value="Category"/>
-                        <h:selectOneMenu value="#{SalaryHeadBean.typeCode}">
+                        <h:selectOneMenu value="#{SalaryHeadBean.typeCodeForDropDown}">
                             <f:selectItems  value="#{SalaryHeadControllerBean.category}"/>
                         </h:selectOneMenu>
                         <h:outputText value=""/>
@@ -183,7 +183,7 @@
                         <h:selectBooleanCheckbox value="#{SalaryHeadBean.type}"/>
                    </h:panelGrid>
                     <a4j:commandButton value="Save" styleClass="submit" reRender="headTable"
-                                           action="#{SalaryHeadBean.save}" />
+                                           action="#{SalaryHeadBean.save}" onclick="Richfaces.hideModalPanel('pnl');" />
                     <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
                 </h:form>
         </rich:modalPanel>

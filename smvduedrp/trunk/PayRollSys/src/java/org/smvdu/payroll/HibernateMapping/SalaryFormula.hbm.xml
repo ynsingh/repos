@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.SalaryFormula" table="salary_formula" >
+      
+    <id name="id" type="java.lang.Integer">
+      <column name="sf_id"/>
+      <generator class="identity"/>
+    </id>
+    
+    <many-to-one class="org.smvdu.payroll.beans.setup.SalaryHead" fetch="select" name="salaryHead">
+      <column name="sf_sal_id" not-null="true"/>
+    </many-to-one>
+    
+    <property name="formula" type="string">
+      <column length="100" name="sf_sal_formula" />
+    </property>
+    
+    <property name="orgcode" type="java.lang.Integer">
+      <column length="11" name="sf_org_id" />
+    </property>      
+      
+  </class>    
+</hibernate-mapping>

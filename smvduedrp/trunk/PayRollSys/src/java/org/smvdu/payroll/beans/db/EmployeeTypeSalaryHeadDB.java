@@ -10,7 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.beans.setup.EmployeeType;
 import org.smvdu.payroll.beans.setup.EmployeeTypeSalaryHead;
 import org.smvdu.payroll.beans.setup.SalaryHead;
 
@@ -51,6 +55,9 @@ public class EmployeeTypeSalaryHeadDB {
     private PreparedStatement ps;
     private ResultSet rs;
     private UserInfo userBean;
+    private HibernateUtil helper;
+    private Session session;
+    
 
     public EmployeeTypeSalaryHeadDB() {
         userBean =(UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
@@ -58,7 +65,49 @@ public class EmployeeTypeSalaryHeadDB {
     
     public void save(ArrayList<EmployeeTypeSalaryHead> data,int type)
     {
-       try
+        
+        try
+        {
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("delete from EmployeeTypeSalaryHead where empTypeCode.code = '"+type+"' ");
+            query.executeUpdate();
+            session.getTransaction().commit();
+            
+            for(EmployeeTypeSalaryHead etsh : data)
+            {
+                session.beginTransaction();
+
+                EmployeeTypeSalaryHead EmpSalaryType = new EmployeeTypeSalaryHead();
+                
+                EmployeeType et = new EmployeeType();
+                et.setCode(type);               
+                EmpSalaryType.setEmpTypeCode(et);
+                
+                SalaryHead sh = new SalaryHead();
+                sh.setNumber(etsh.getSalaryHeadCode().getNumber());               
+                EmpSalaryType.setSalaryHeadCode(sh);
+               
+                EmpSalaryType.setOrgcode(userBean.getUserOrgCode());
+                
+                session.save(EmpSalaryType);
+                session.getTransaction().commit();
+ 
+            }
+                      
+        }
+        catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+        } 
+        
+        
+        
+        
+     /*  try
        {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("delete from emp_salary_head_master where st_code=?");
@@ -80,10 +129,45 @@ public class EmployeeTypeSalaryHeadDB {
        catch(Exception e)
        {
            e.printStackTrace();
-       }
+       }        */
     }
 
    public ArrayList<EmployeeTypeSalaryHead> loadHeads(int type) {
+   
+       
+       ArrayList<EmployeeTypeSalaryHead> allheads = new ArrayList<EmployeeTypeSalaryHead>();
+       ArrayList<SalaryHead> selected = new SalaryHeadDB().loadAppliedHeads(type);
+       for(SalaryHead sh : new SalaryHeadDB().loadAllHeads())
+       {
+           EmployeeTypeSalaryHead esh = new EmployeeTypeSalaryHead();
+         
+        //   esh.setNumber(sh.getNumber());
+           SalaryHead sal = new SalaryHead();
+           sal.setNumber(sh.getNumber());
+           
+           esh.setSalaryHeadCode(sal);
+           
+           
+           
+        //   esh.setCalculationType(sh.isCalculationType());
+        //   esh.setUnder(sh.isUnder());
+
+        //   esh.setName(sh.getName());
+           esh.setSalaryHeadName(sh.getName());
+           
+           if(selected.contains(sh))
+           {
+               System.out.println("Hello World");
+               esh.setSelected(true);
+           }
+           allheads.add(esh);
+       }
+       return allheads;
+   }
+       
+       
+       
+    /*   
        ArrayList<EmployeeTypeSalaryHead> allheads = new ArrayList<EmployeeTypeSalaryHead>();
        ArrayList<SalaryHead> selected = new SalaryHeadDB().loadAppliedHeads(type);
        for(SalaryHead sh : new SalaryHeadDB().loadAllHeads())
@@ -102,6 +186,6 @@ public class EmployeeTypeSalaryHeadDB {
        }
        return allheads;
        
-    }
+    }       */
 
 }

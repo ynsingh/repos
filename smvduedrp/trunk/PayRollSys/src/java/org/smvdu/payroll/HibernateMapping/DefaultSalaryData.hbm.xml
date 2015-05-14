@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.DefaultSalary" table="default_salary_master">
+    <id name="id" type="java.lang.Integer">
+      <column name="ds_id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="org.smvdu.payroll.beans.setup.SalaryGrade" fetch="select" name="gradeType">
+      <column name="ds_emp_type" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="org.smvdu.payroll.beans.setup.SalaryHead" fetch="select" name="salaryHead">
+      <column name="ds_sal_head" not-null="true"/>
+    </many-to-one>
+    <property name="amount" type="java.lang.Integer">
+      <column length="11" name="ds_amount" />
+    </property>
+  </class>
+</hibernate-mapping>
