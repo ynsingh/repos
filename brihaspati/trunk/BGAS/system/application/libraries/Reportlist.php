@@ -232,6 +232,8 @@ class Reportlist
  function new_balance_sheet($c,$id1,$type,$database,$i)
  {
  	$CI = & get_instance();
+	 //Get current label.
+        $current_active_account = $CI->session->userdata('active_account');
         $prev_sum = 0;
         $mhrdlist2 = "";
 	$mhrdlist3 = "";
@@ -356,7 +358,7 @@ class Reportlist
         	        echo "<td align=\"right\">" . convert_amount_dc(+$total) . "</td>";
 			// code for reading previous year data from xml
 			$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-               		$file_name="MHRD".$db.$prev_year.".xml";
+               		$file_name="MHRD"."-".$current_active_account."-".$prev_year.".xml";
                		$tt=$acctpath."/".$file_name;
                 	if(file_exists($tt))
 			{
@@ -488,7 +490,7 @@ class Reportlist
                         	echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
 
 				$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-        	                $file_name="MHRD".$db.$prev_year.".xml";
+        	                $file_name="MHRD"."-".$current_active_account."-".$prev_year.".xml";
                 	        $tt=$acctpath."/".$file_name;
                         	if(file_exists($tt))
                         	{
@@ -557,6 +559,8 @@ class Reportlist
 function income_total($id,$type,$database)
 {
 	$CI = & get_instance();
+	//Get current label.
+        $current_active_account = $CI->session->userdata('active_account');
 	$incomelist2 = "";
 	$type_total = "";
 	$i = 0;
@@ -592,7 +596,7 @@ function income_total($id,$type,$database)
         $result1 = $CI->payment_model->income_xml_data($ledg_id);
 
 	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-        $file_name="Income".$db.$prev_year.".xml";
+        $file_name="Income"."-".$current_active_account."-".$prev_year.".xml";
         $tt=$acctpath."/".$file_name;
        	if(file_exists($tt)){
         $doc = new DomDocument();
@@ -620,6 +624,8 @@ function income_total($id,$type,$database)
 function expense_total($id,$type,$database)
 {
 	$CI = & get_instance();
+	//Get current label.
+        $current_active_account = $CI->session->userdata('active_account');
         $expenselist2 = "";
         $type_total = "";
         $i = 0;
@@ -657,7 +663,7 @@ function expense_total($id,$type,$database)
 
 
         $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-        $file_name="Expense".$db.$prev_year.".xml";
+        $file_name="Expense"."-".$current_active_account."-".$prev_year.".xml";
         $tt=$acctpath."/".$file_name;
         if(file_exists($tt)){
         $doc = new DomDocument();
@@ -728,7 +734,8 @@ function expense_total($id,$type,$database)
 
         $curr_year = $fy_start[0] ."-" .$fy_end[0];
 		$prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
-
+	//Get current label.
+	$current_active_account = $CI->session->userdata('active_account');
         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
         $main = $CI->db->get();
         $main_result= $main->result();
@@ -819,7 +826,7 @@ function expense_total($id,$type,$database)
         		$this->total4 = $sum4;
 
 				$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-				$file_name="Income".$db.$prev_year.".xml";
+				$file_name="Income"."-".$current_active_account."-".$prev_year.".xml";
 				$tt=$acctpath."/".$file_name;
 				if(file_exists($tt)){
         				$doc = new DomDocument();
@@ -910,7 +917,7 @@ function expense_total($id,$type,$database)
                 }
 
                 $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                $file_name="Expense".$db.$prev_year.".xml";
+                $file_name="Expense"."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
                 if(file_exists($tt))
                 {
@@ -1153,6 +1160,8 @@ function schedule($c = 1,$id,$code,$count,$type,$database)
 
 	$CI = & get_instance();
         $counter = 1;
+	//Get current label.
+        $current_active_account = $CI->session->userdata('active_account');
         $CI->db->from('settings');
         $detail = $CI->db->get();
         foreach ($detail->result() as $row)
@@ -1244,7 +1253,7 @@ function schedule($c = 1,$id,$code,$count,$type,$database)
 
 		/* code for reading previous year data from xml */
            	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-           	$file_name="schedule".$count.$db.$prev_year.".xml";
+           	$file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
            	$tt=$acctpath."/".$file_name;
            	if(file_exists($tt))
            	{
@@ -1888,6 +1897,8 @@ function callschedule($id,$code,$count,$type,$database)
 		$schedulelist2 ="";
 		$schedulelist3 = "";
 		$CI = & get_instance();
+	//Get current label.
+        $current_active_account = $CI->session->userdata('active_account');
     	$CI->db->from('settings');
         $detail = $CI->db->get();
         foreach ($detail->result() as $row)
@@ -1940,7 +1951,7 @@ function callschedule($id,$code,$count,$type,$database)
 				/* code for reading previous year data from xml @megha */
 
 				$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-	            $file_name="schedule".$count.$db.$prev_year.".xml";
+	            $file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
 	            $tt=$acctpath."/".$file_name;
 	            if(file_exists($tt))
 				{

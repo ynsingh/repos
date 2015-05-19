@@ -373,6 +373,7 @@ class Payment_model extends Model {
 
 	function xml_creation($type,$ledg_id,$database,$name,$curr_year,$total)
 	{
+		 $CI =& get_instance();
 		$counter = "0";
 				if($type == "Income")
 				{
@@ -396,7 +397,7 @@ class Payment_model extends Model {
                                 $doc = new DOMDocument();
                                 $doc->formatOutput = true;
 
-                                $file_name=$type.$database.$curr_year.".xml";
+                                $file_name=$type."-".$database."-".$curr_year.".xml";
                                 $tt=$acctpath."/".$file_name;
 
                                 if(file_exists($tt))

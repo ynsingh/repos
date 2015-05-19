@@ -645,6 +645,7 @@ function additionToFundsDonation()
 function schedule_five($id,$count,$code,$type,$database)
 {
 	$CI = & get_instance();
+	$current_active_account = $CI->session->userdata('active_account');
 	$counter = 1;
         $sum = "";
         $sum1 = "";
@@ -709,7 +710,7 @@ function schedule_five($id,$count,$code,$type,$database)
                 echo "<td align=\"right\">" . convert_amount_dc(-$cr_total1) . "</td>";
 	/* code for reading previous year data from xml */
            $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-           $file_name="schedule".$count.$db.$prev_year.".xml";
+           $file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
            $tt=$acctpath."/".$file_name;
            if(file_exists($tt))
            {
@@ -798,7 +799,7 @@ function schedule_five($id,$count,$code,$type,$database)
 
 	/* code for reading previous year data from xml */
            $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-           $file_name="schedule".$count.$db.$prev_year.".xml";
+           $file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
            $tt=$acctpath."/".$file_name;
            if(file_exists($tt))
            {
@@ -1083,6 +1084,7 @@ function schedule_five($id,$count,$code,$type,$database)
 function current_liabilities($id,$count,$code,$type,$database)
 {
 	$CI = & get_instance();
+	$current_active_account = $CI->session->userdata('active_account');
         $counter = 1;
         $sum = "";
         $sum1 = "";
@@ -1150,7 +1152,7 @@ function current_liabilities($id,$count,$code,$type,$database)
 
 		/* code for reading previous year data from xml */
         	   	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-           		$file_name="schedule".$count.$db.$prev_year.".xml";
+           		$file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
            		$tt=$acctpath."/".$file_name;
            		if(file_exists($tt))
            		{
@@ -1251,7 +1253,7 @@ function current_liabilities($id,$count,$code,$type,$database)
 
 		/* code for reading previous year data from xml */
            		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-           		$file_name="schedule".$count.$db.$prev_year.".xml";
+           		$file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
            		$tt=$acctpath."/".$file_name;
            		if(file_exists($tt))
            		{
@@ -1334,7 +1336,7 @@ function current_liabilities($id,$count,$code,$type,$database)
 
 			 /* code for reading previous year data from xml */
            		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-           		$file_name="schedule".$count.$db.$prev_year.".xml";
+           		$file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
            		$tt=$acctpath."/".$file_name;
            		if(file_exists($tt))
            		{
@@ -1394,6 +1396,7 @@ function current_liabilities($id,$count,$code,$type,$database)
 function provisions($id,$count,$code,$type,$database)
 {
 	$CI = & get_instance();
+	$current_active_account = $CI->session->userdata('active_account');
         $counter = 1;
         $sum = "";
         $sum1 = "";
@@ -1456,7 +1459,7 @@ function provisions($id,$count,$code,$type,$database)
 
 	/* code for reading previous year data from xml */
            $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-           $file_name="schedule".$count.$db.$prev_year.".xml";
+           $file_name="schedule".$count."-". $current_active_account."-".$prev_year.".xml";
            $tt=$acctpath."/".$file_name;
            if(file_exists($tt))
            {
@@ -1870,6 +1873,7 @@ function Investments($id,$type2,$count,$code,$database,$type,$i)
 	$schedulelist2 = "";
 	$schedulelist3 = "";
 	$CI =& get_instance();
+	$current_active_account = $CI->session->userdata('active_account');
 	$CI->db->from('settings');
 	$detail = $CI->db->get();
 	foreach ($detail->result() as $row)
@@ -1921,7 +1925,7 @@ function Investments($id,$type2,$count,$code,$database,$type,$i)
 
 		/* code for reading previous year data from xml */
 	  	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-      		$file_name="schedule".$count.$db.$prev_year.".xml";
+      		$file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
            	$tt=$acctpath."/".$file_name;
            	if(file_exists($tt))
            	{
@@ -2005,7 +2009,7 @@ function Investments($id,$type2,$count,$code,$database,$type,$i)
 		echo"</td>";
 		/* code for reading previous year data from xml */
 	   	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-           	$file_name="schedule".$count.$db.$prev_year.".xml";
+           	$file_name="schedule".$count."-".$prev_year."-".".xml";
            	$tt=$acctpath."/".$file_name;
            	if(file_exists($tt))
            	{
@@ -2175,6 +2179,7 @@ function sub_schedule()
 function fixed_assets($id,$count,$code,$type,$database)
 {
 	$CI = & get_instance();
+	$current_active_account = $CI->session->userdata('active_account');
 	$counter = 1;
 	$count1 = 1;
 	$sum = "";
@@ -2350,7 +2355,7 @@ function fixed_assets($id,$count,$code,$type,$database)
 		
 		/* code for reading previous year data from xml */
                         $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        $file_name="schedule".$count.$db.$prev_year.".xml";
+                        $file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
                         $tt=$acctpath."/".$file_name;
                         if(file_exists($tt))
                         {
@@ -2501,7 +2506,7 @@ function fixed_assets($id,$count,$code,$type,$database)
 
 		 	/* code for reading previous year data from xml */
 	           	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-        	   	$file_name="schedule".$count.$db.$prev_year.".xml";
+        	   	$file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
            	   	$tt=$acctpath."/".$file_name;
            	   	if(file_exists($tt))
            	   	{
@@ -3124,6 +3129,7 @@ function get_schedule($count,$code,$type,$database)
         $schedulelist1 = "";
         $schedulelist3 = "";
         $CI =& get_instance();
+	$current_active_account = $CI->session->userdata('active_account');
         $CI->db->from('settings');
         $detail = $CI->db->get();
         foreach ($detail->result() as $row)
@@ -3170,7 +3176,7 @@ function get_schedule($count,$code,$type,$database)
                       //  $count1 = 9;
                 /* code for reading previous year data from xml */
                         $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        $file_name="schedule".$count.$db.$prev_year.".xml";
+                        $file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
                         $tt=$acctpath."/".$file_name;
                         if(file_exists($tt))
                         {
@@ -3236,7 +3242,7 @@ function get_schedule($count,$code,$type,$database)
                                                         $sum1 = $sum1 + $cr_total;
                 /* code for reading previous year data from xml */
                         $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        $file_name="schedule".$count.$db.$prev_year.".xml";
+                        $file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
                         $tt=$acctpath."/".$file_name;
                         if(file_exists($tt))
                         {
@@ -3319,7 +3325,7 @@ function get_schedule($count,$code,$type,$database)
 			
 				 	/* code for reading previous year data from xml */
 	                        	$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-        	                	$file_name="schedule".$count.$db.$prev_year.".xml";
+        	                	$file_name="schedule".$count."-".$current_active_account."-".$prev_year.".xml";
                 	        	$tt=$acctpath."/".$file_name;
                         		if(file_exists($tt))
                         		{
@@ -3390,6 +3396,7 @@ function loans_advances($count,$code,$type,$database)
 	$schedulelist1 = "";
 	$schedulelist3 = "";
 	$CI =& get_instance();
+	$current_active_account = $CI->session->userdata('active_account');
 	$CI->db->from('settings');
         $detail = $CI->db->get();
         foreach ($detail->result() as $row)
@@ -3435,7 +3442,7 @@ function loans_advances($count,$code,$type,$database)
 			$count1 = 10;
 		/* code for reading previous year data from xml */
                         $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        $file_name="schedule".$count1.$db.$prev_year.".xml";
+                        $file_name="schedule".$count1."-". $current_active_account ."-".$prev_year.".xml";
                         $tt=$acctpath."/".$file_name;
                         if(file_exists($tt))
                         {
@@ -3506,7 +3513,7 @@ function loans_advances($count,$code,$type,$database)
 							$count1 = 10;
 		/* code for reading previous year data from xml */
 			$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        $file_name="schedule".$count1.$db.$prev_year.".xml";
+                        $file_name="schedule".$count1."-". $current_active_account ."-".$prev_year.".xml";
                         $tt=$acctpath."/".$file_name;
                         if(file_exists($tt))
                         {
@@ -3653,6 +3660,7 @@ function loans_advances($count,$code,$type,$database)
 //////////////////////////@kanchan
 function xml_creation($type,$ledg_id,$database,$name,$curr_year,$dr_total,$cr_total)
 {
+	$CI =& get_instance();
  	if($type == "Liability")
         {
         	$liability = new Balancesheet();
@@ -3670,7 +3678,7 @@ function xml_creation($type,$ledg_id,$database,$name,$curr_year,$dr_total,$cr_to
         $doc->formatOutput = true;
         $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
         $file_name="";
-        $file_name=$type.$database.$curr_year.".xml";
+        $file_name=$type."-".$database."-".$curr_year.".xml";
         $tt=$acctpath."/".$file_name;
         if(file_exists($tt))
         {

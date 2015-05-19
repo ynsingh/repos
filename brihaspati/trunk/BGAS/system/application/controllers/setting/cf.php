@@ -35,11 +35,22 @@ class Cf extends Controller{
 			return;
 		}
 
+		//Geting bgasAccData by dblebel.
+                $current_active_account = $this->session->userdata('active_account');
+                $db1=$this->load->database('login', TRUE);
+                $db1->select('databasename, uname, dbpass')->from('bgasAccData')->where('dblable', $current_active_account);
+                $acc_detail=$db1->get();
+                foreach($acc_detail->result() as $rows){
+                        $database=$rows->databasename;
+                        $uname=$rows->uname;
+                        $dbpass=$rows->dbpass;
+                }
+
 		/* Current settings */
 		$account_data = $this->Setting_model->get_current();
-		$db = $this->payment_model->db_user_name();
+		//$db = $this->payment_model->db_user_name();
 	        $db_name = $this->payment_model->database_name();
-                $db_details=explode("##",$db);
+                //$db_details=explode("##",$db);
 		$ledger_name = $account_data->ledger_name;
                 if($ledger_name == '' || $ledger_name == '0' || $ledger_name == null)
                 {
@@ -74,12 +85,12 @@ class Cf extends Controller{
 		$pre_cf_year=$Pre_year -1;
 		$last_cf_year=$last_year-1;
 		$this_year=$pre_cf_year.$last_cf_year;
-		$match_year=strpbrk($db_name,$pre_cf_year.$last_cf_year); 
+		$match_year=strpbrk($database,$pre_cf_year.$last_cf_year); 
 		if($match_year == $this_year){
-	                $new_db_name = chop($db_name,$this_year);
+	                $new_db_name = chop($database,$this_year);
 			$new_db_name= $new_db_name.$Pre_year.$last_year;
 		}else{
-			$new_db_name=$db_name.$Pre_year.$last_year;
+			$new_db_name=$database.$Pre_year.$last_year;
 
 		}
 		/* Form fields */
@@ -88,7 +99,7 @@ class Cf extends Controller{
 			'id' => 'account_label',
 			'maxlength' => '30',
 			'size' => '30',
-			'value' => $db_details[2].$Pre_year.$last_year,
+			'value' => $current_active_account.$Pre_year.$last_year,
 		);
 		$data['account_name'] = array(
 			'name' => 'account_name',
@@ -125,7 +136,7 @@ class Cf extends Controller{
 			'id' => 'database_username',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => $db_details[0],
+			'value' => $uname,
 		);
 
 		$data['database_password'] = array(
@@ -133,7 +144,7 @@ class Cf extends Controller{
 			'id' => 'database_password',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => $db_details[1],
+			'value' => $dbpass,
 		);
 
 		$data['database_host'] = array(
@@ -606,11 +617,11 @@ class Cf extends Controller{
                                         $code = $row->code;
                                         $this->load->library('Reportlist');
                                         $schedule = new Reportlist();
-                                        $schedule->get_IE_schedule($code,"CF",$data_database_name,$count);
+                                        $schedule->get_IE_schedule($code,"CF",$current_active_account.$Pre_year.$last_year,$count);
                                         $count++;
                                 }
 				
-				$this->messages->add('Income schedules xml created'.$data_database_name, 'success');
+				$this->messages->add('Income schedules xml created'.$current_active_account.$Pre_year.$last_year, 'success');
 
 				/* CF Expenditure schedules Balance using xml*/
 				$this->db->select('code')->from('groups')->where('parent_id','4');
@@ -621,11 +632,11 @@ class Cf extends Controller{
 					$code = $row->code;
 					$this->load->library('Reportlist');
                                 	$schedule = new Reportlist();
-                                	$schedule->get_IE_schedule($code,"CF",$data_database_name,$count);
+                                	$schedule->get_IE_schedule($code,"CF",$current_active_account.$Pre_year.$last_year,$count);
 					$count++;
 				}
 				
-				$this->messages->add('Expenditure schedule xml created'.$data_database_name, 'success');	
+				$this->messages->add('Expenditure schedule xml created'.$current_active_account.$Pre_year.$last_year, 'success');	
 		
 				/* Adding org name unit name year and database name in login database */
 			/*	$sy =$last_year_end_year;
@@ -666,42 +677,42 @@ class Cf extends Controller{
 				$this->load->library('Paymentreceipt');
                 		$this->load->library('Reportlist');
                 		$income = new Reportlist();
-                		$income->income_exp_mhrd(3,"CF",$data_database_name);
+                		$income->income_exp_mhrd(3,"CF",$current_active_account.$Pre_year.$last_year);
                 		$expense = new Reportlist();
-                		$expense->income_exp_mhrd(4,"CF" ,$data_database_name);
+                		$expense->income_exp_mhrd(4,"CF" ,$current_active_account.$Pre_year.$last_year);
 
 				$payment = new Paymentreceipt();
-                        	$payment->payment_receipt('Payment', "CF",$data_database_name);
+                        	$payment->payment_receipt('Payment', "CF",$current_active_account.$Pre_year.$last_year);
                         	$receipt = new Paymentreceipt();
-                        	$receipt->payment_receipt('Receipt',"CF",$data_database_name);
-                		$this->messages->add('I/E and Payment/Receipt xml created'.$data_database_name, 'success');
+                        	$receipt->payment_receipt('Receipt',"CF",$current_active_account.$Pre_year.$last_year);
+                		$this->messages->add('I/E and Payment/Receipt xml created'.$current_active_account.$Pre_year.$last_year, 'success');
 
 //////////////////             /* CF Asset Liability MHRD Balance using xml */
 				
 				$this->load->library('reportlist');				
 				$liability = new Reportlist();
-                                $liability->new_balance_sheet(0,2,"CF",$data_database_name,0);
+                                $liability->new_balance_sheet(0,2,"CF",$current_active_account.$Pre_year.$last_year,0);
                                 $asset = new Reportlist();
-                                $asset->new_balance_sheet(6,1,"CF",$data_database_name,9);
+                                $asset->new_balance_sheet(6,1,"CF",$current_active_account.$Pre_year.$last_year,9);
 				
 				$this->load->library('balancesheet');
                                 $asset = new Balancesheet();
-				$asset->get_schedule(9,'2003',"CF",$data_database_name);
-                                $asset->loans_advances(10,'2004',"CF",$data_database_name);
-                                $asset->Investments(21,'Earmarked Funds',8,'200201',$data_database_name,"CF",0);
-                                $asset->Investments(21,'others',8,'200201',$data_database_name,"CF",6);
-                                $asset->Investments(22,'Earmarked Funds',8,'200202',$data_database_name,"CF",12);
-                                $asset->Investments(22,'others',8,'200202',$data_database_name,"CF",18); 
-                                $asset->fixed_assets(14,7,'2001',"CF",$data_database_name);
+				$asset->get_schedule(9,'2003',"CF",$current_active_account.$Pre_year.$last_year);
+                                $asset->loans_advances(10,'2004',"CF",$current_active_account.$Pre_year.$last_year);
+                                $asset->Investments(21,'Earmarked Funds',8,'200201',$current_active_account.$Pre_year.$last_year,"CF",0);
+                                $asset->Investments(21,'others',8,'200201',$current_active_account.$Pre_year.$last_year,"CF",6);
+                                $asset->Investments(22,'Earmarked Funds',8,'200202',$current_active_account.$Pre_year.$last_year,"CF",12);
+                                $asset->Investments(22,'others',8,'200202',$current_active_account.$Pre_year.$last_year,"CF",18); 
+                                $asset->fixed_assets(14,7,'2001',"CF",$current_active_account.$Pre_year.$last_year);
 				
 				$this->load->library('balancesheet');
                                 $liability = new Balancesheet();
-                                $liability->schedule_five('12',5,'100301',"CF",$data_database_name);
-                                $liability->schedule_five('13',5,'100302',"CF",$data_database_name);
-                                $liability->current_liabilities(8,6,'1004',"CF",$data_database_name);
-                                $liability->provisions(157,6,'1005',"CF",$data_database_name);
+                                $liability->schedule_five('12',5,'100301',"CF",$current_active_account.$Pre_year.$last_year);
+                                $liability->schedule_five('13',5,'100302',"CF",$current_active_account.$Pre_year.$last_year);
+                                $liability->current_liabilities(8,6,'1004',"CF",$current_active_account.$Pre_year.$last_year);
+                                $liability->provisions(157,6,'1005',"CF",$current_active_account.$Pre_year.$last_year);
 
-                		$this->messages->add('xml created'.$data_database_name, 'success');
+                		$this->messages->add('xml created'.$current_active_account.$Pre_year.$last_year, 'success');
 
 				/* Account lock */
 			//	$this->db->trans_start()
@@ -726,7 +737,7 @@ class Cf extends Controller{
 				/* Adding account settings to file. Code copied from manage controller /
 				$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
 
-				$con_details_html = '[database]' . '<br />db_type = "' . $data_database_type . '"<br />db_hostname = "' . $data_database_host . '"<br />db_port = "' . $data_database_port . '"<br />db_name = "' . $data_database_name . '"<br />db_username = "' . $data_database_username . '"<br />db_password = "' . $data_database_password . '"<br />';
+				$con_details_html = '[database]' . '<br />db_type = "' . $data_database_type . '"<br />db_hostname = "' . $data_database_host . '"<br />db_port = "' . $data_database_port . '"<br />db_name = "' . $data_database_name . '"<br />db_username = "' . $data_database_username . '"<br />db_password = "' . $data_database_password . '"<br />'r
 
 				/* Writing the connection string to end of file - writing in 'a' append mode /
 				if ( ! write_file($ini_file, $con_details))

@@ -250,11 +250,11 @@ class Create extends Controller {
 			$data_chart_account = $this->input->post('chart_account', TRUE);
 			$ledger_name = '';
 			$liability_ledger_name = '';
-			if($data_chart_account == 'mhrd')
-			{
+			//if($data_chart_account == 'mhrd')
+			//{
 				$ledger_name = 'General Funds';	
 				$liability_ledger_name = 'Balance of net income/expenditure transferred from I/E Account';
-			}
+			//}
 
 			$data_database_type = 'mysql';
 			$data_database_host = $this->input->post('database_host', TRUE);

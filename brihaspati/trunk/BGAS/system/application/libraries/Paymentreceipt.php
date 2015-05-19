@@ -38,7 +38,8 @@ class paymentreceipt
 		$CI->load->library('session');
                 $date1 = $CI->session->userdata('date1');
                 $date2 = $CI->session->userdata('date2');
-		$db = $CI->Payment_model->database_name();
+		//$db = $CI->Payment_model->database_name();
+		$current_active_account = $CI->session->userdata('active_account');
 		if($type == "Payment"){
 		$CI->db->select('name,code,id')->from('groups')->where('parent_id <=',4)->where('parent_id !=',3)->where('parent_id !=',0);
                 $main = $CI->db->get();
@@ -73,7 +74,7 @@ class paymentreceipt
 				
 						//code for writing xml... 
 						$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                                                $file_name="Payment".$db.$prev_year.".xml";
+                                                $file_name="Payment"."-".$current_active_account."-".$prev_year.".xml";
                                                 $tt=$acctpath."/".$file_name;
 						if(file_exists($tt)){
 							$doc = new DomDocument();
@@ -147,7 +148,7 @@ class paymentreceipt
                         			echo "</td>";
                         			echo "<td align=\"right\">" . convert_amount_dc(-$total) . "</td>";
 						$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                                                $file_name="Receipt".$db.$prev_year.".xml";
+                                                $file_name="Receipt"."-".$current_active_account."-".$prev_year.".xml";
                                                 $tt=$acctpath."/".$file_name;
 						if(file_exists($tt)){
 							$doc = new DomDocument();
@@ -224,13 +225,14 @@ class paymentreceipt
 	
 	function xml_creation($type,$ledg_id,$database,$name,$curr_year, $total)
 	{
+		$CI =& get_instance();
 		if($name !=  'Depreciation' && $name !=  'Current Assets' && $name !=  'Committed Fund'){
 		$type1 =$type."_Name";
         	$doc = new DOMDocument();
 	        $doc->formatOutput = true;
 		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
 	        $file_name="";
-        	$file_name=$type.$database.$curr_year.".xml";
+        	$file_name=$type."-".$database."-".$curr_year.".xml";
 	        $tt=$acctpath."/".$file_name;
 		if(file_exists($tt))
         	{	
