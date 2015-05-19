@@ -73,6 +73,8 @@ import javax.servlet.http.HttpServletRequest;
  * @modified date: 14-07-2011 (Shaista);
  * @modified date: 09-08-2012, 25-09-2012, 02-11-2012 (Priyanka)
  * @modified date: 27-12-201 (Shaista);
+ * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 18-05-2015 (Seemanti);
  */
 
 public class MailNotification{
@@ -222,8 +224,9 @@ public class MailNotification{
 		String serverName = "";
                 String serverScheme = TurbineServlet.getServerScheme();
 		String serverPort = TurbineServlet.getServerPort();
-		String filePath = TurbineServlet.getRealPath("../../conf/BrihaspatiServer.properties");
-		serverName = AdminProperties.getValue(filePath,"brihaspatiServerIp");
+		//String filePath = TurbineServlet.getRealPath("../../conf/BrihaspatiServer.properties");
+                String filePath = TurbineServlet.getRealPath("../../webapps/brihaspati2/WEB-INF/conf/"+"/"+"Admin.properties");
+		serverName = AdminProperties.getValue(filePath,"brihaspati.admin.brihaspatiServerIP.value");
 	
 		if(StringUtils.isBlank(serverName))
 			serverName= TurbineServlet.getServerName();

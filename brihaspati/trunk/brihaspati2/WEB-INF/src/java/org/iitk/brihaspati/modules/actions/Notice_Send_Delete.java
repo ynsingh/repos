@@ -103,6 +103,8 @@ import java.text.SimpleDateFormat;
  * @modified date: 28-01-2010
  * @modified date: 08-07-2010, 13-Oct-2010, 21-04-2011, 16-06-2011 (Shaista)
  * @modified date: 24-08-2012 (Sunil Yadav),23-02-2013
+ * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 18-05-2015 (Seemanti);
  */
 public class Notice_Send_Delete extends SecureAction
 {
@@ -593,7 +595,7 @@ public class Notice_Send_Delete extends SecureAction
 			if(fhrole.equals("admin") && htype.equals("Flash Heading")){
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Notification.properties";
 			(new File(path)).delete();
-			AdminProperties.setValue(path,Fheading,"brihaspati.admin.flashHeading.value");
+			AdminProperties.setPropertyValue(path,Fheading,"brihaspati.admin.flashHeading.value");
 			}
 			/**
                         * Check User role and Heading Type
@@ -619,8 +621,8 @@ public class Notice_Send_Delete extends SecureAction
 			* Set Message in Shutdown.Notification properties file
 			* Set ExpiryDate in Shutdown.Notification properties file
 			*/
-                        AdminProperties.setValue(path,ExpiryDate,"brihaspati.admin.ShutdownExpDate.value");
-                        AdminProperties.setValue(path,Fheading,"brihaspati.admin.ShutdownHeading.value");
+                        AdminProperties.setPropertyValue(path,ExpiryDate,"brihaspati.admin.ShutdownExpDate.value");
+                        AdminProperties.setPropertyValue(path,Fheading,"brihaspati.admin.ShutdownHeading.value");
                         }
 			String Fhupdate=MultilingualUtil.ConvertedString("cal_ins",LangFile);
                         data.setMessage(Fhupdate);

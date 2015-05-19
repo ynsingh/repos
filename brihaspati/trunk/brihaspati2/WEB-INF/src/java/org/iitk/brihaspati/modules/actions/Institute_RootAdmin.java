@@ -91,6 +91,8 @@ import org.apache.commons.logging.LogFactory;
  *@Code tested by: (Sharad Singh,kishore kumar shukla)
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modify date: 09-08-2012 (Priyanka)
+ * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 18-05-2015 (Seemanti);
  */
 
 /** class for accepting of a new institute as well institute admin in the brihaspati system
@@ -274,13 +276,13 @@ public class Institute_RootAdmin extends SecureAction_Admin
                                         	*/
                                         	path = "";
                                         	path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instid+"Admin.properties";
-                                        	AdminProperties.setValue(path,conf,"brihaspati.admin.listconfiguration.value");
-                                        	AdminProperties.setValue(path,"365","brihaspati.admin.courseExpiry");
-                                        	AdminProperties.setValue(path,i_domain,"brihaspati.mail.local.domain.name");
-                                        	AdminProperties.setValue(path,"500","brihaspati.admin.quota.value");
-                                        	AdminProperties.setValue(path,"100","brihaspati.user.quota.value");
-                                        	AdminProperties.setValue(path,"45","brihaspati.admin.FaqExpiry");
-                                        	AdminProperties.setValue(path,"365","brihaspati.user.expdays.value");
+                                                AdminProperties.setPropertyValue(path,conf,"brihaspati.admin.listconfiguration.value");
+                                        	AdminProperties.setPropertyValue(path,"365","brihaspati.admin.courseExpiry");
+                                        	AdminProperties.setPropertyValue(path,i_domain,"brihaspati.mail.local.domain.name");
+                                        	AdminProperties.setPropertyValue(path,"500","brihaspati.admin.quota.value");
+                                        	AdminProperties.setPropertyValue(path,"100","brihaspati.user.quota.value");
+                                        	AdminProperties.setPropertyValue(path,"45","brihaspati.admin.FaqExpiry");
+                                        	AdminProperties.setPropertyValue(path,"365","brihaspati.user.expdays.value");
 						
 						/** Removing the institute details from the xml file
 						* if from pending list (InstituteRegistrationList.xml)

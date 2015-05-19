@@ -62,6 +62,8 @@ import org.apache.commons.lang.StringUtils;
  * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @modified date: 22-08-2013
+ * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 18-05-2015 (Seemanti)
  */
 
 
@@ -153,8 +155,10 @@ public class AdminParam extends SecureScreen{
 		String high_traffic = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
                 context.put("highTraffic", high_traffic);
 //------------------------ Getting of brihaspati Server IP  --------------------
-		String filePath = TurbineServlet.getRealPath("../../conf/BrihaspatiServer.properties");
-		String brihServerName = AdminProperties.getValue(filePath,"brihaspatiServerIp");
+	        //String filePath = TurbineServlet.getRealPath("../../conf/BrihaspatiServer.properties");
+                String filePath = TurbineServlet.getRealPath("../../webapps/brihaspati2/WEB-INF/conf/"+"/"+"Admin.properties");
+		String brihServerName = AdminProperties.getValue(filePath,"brihaspati.admin.brihaspatiServerIP.value");
+                ErrorDumpUtil.ErrorLog("Printing the already saved Property file value of brihServerUrl in screen file......"+brihServerName);
                 if(!StringUtils.isBlank(brihServerName))
 			 context.put("brihServer",brihServerName);
 //------------------------ Getting of brihaspati Server IP & Port --------------------
@@ -212,7 +216,7 @@ public class AdminParam extends SecureScreen{
 		//----------------------------------FAQ---------------------------
                  String FaqExp = AdminProperties.getValue(path,"brihaspati.admin.FaqExpiry");
                  context.put("FaqExp",new Integer(FaqExp));
-		//----------------------------------FAQ---------------------------
+                 //----------------------------------FAQ---------------------------
                  String fupldsze = AdminProperties.getValue(path,"services.UploadService.size.max");
 		 long newSize = Long.parseLong(fupldsze);
 		 long fupldszemb = newSize/1024/1024;
@@ -222,8 +226,9 @@ public class AdminParam extends SecureScreen{
 
 		}
 		catch(Exception e) {	
-			data.addMessage(MultilingualUtil.ConvertedString("adm_msg1",LangFile)); 
+			//data.addMessage(MultilingualUtil.ConvertedString("adm_msg1",LangFile)); 
 			//data.addMessage("Some Problem Occured in getting the Parameter Value"); 
+                        data.addMessage(MultilingualUtil.ConvertedString("brih_instadminnote",LangFile));
 		}
 		context.put("afname",user.getFirstName());
 		context.put("alname",user.getLastName());	

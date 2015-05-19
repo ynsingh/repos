@@ -66,8 +66,11 @@ import org.iitk.brihaspati.om.TurbineUserPeer;
  * @modified date: 15-10-2012
  */
 //Last update 19-10-2011(Sunil)
+/**
+ * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 18-05-2015 (Seemanti);
+ */
 
-//public class InstchangeAParam extends SecureAction_Admin{
 public class InstchangeAParam extends SecureAction_Institute_Admin{
 
 	/**
@@ -276,28 +279,23 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
 		//iname=Institute name
 		String path="";	
 		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
-		File fpath = new File(path);
-		if (!fpath.exists()) {
-			fpath.mkdirs();
+		File f = new File(path);
+       		if (!f.exists()) {
+                   f.createNewFile();
 		}
 		StringUtil S = new StringUtil();
 		String prof_update=null;
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){
 			user.setFirstName(AFName);
 			user.setLastName(ALName);
-			//now email will be updated after verification
-			//user.setEmail(eMail);
 			TurbineSecurity.saveUser(user);
-			// for delete the file  and set the value for admin configuration
-		 	(new File(path)).delete();
-			AdminProperties.setValue(path,AdminConf,"brihaspati.admin.listconfiguration.value");
-			AdminProperties.setValue(path,AdminCrsExp,"brihaspati.admin.courseExpiry");
-			AdminProperties.setValue(path,domainNM,"brihaspati.mail.local.domain.name");
-			AdminProperties.setValue(path,aquota,"brihaspati.admin.quota.value");
-			AdminProperties.setValue(path,uquota,"brihaspati.user.quota.value");
-		//	AdminProperties.setValue(path,iquota,"brihaspati.user.iquota.value");
-			AdminProperties.setValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
-			AdminProperties.setValue(path,expdays,"brihaspati.user.expdays.value");// Add by @tej
+			AdminProperties.setPropertyValue(path,AdminConf,"brihaspati.admin.listconfiguration.value");
+			AdminProperties.setPropertyValue(path,AdminCrsExp,"brihaspati.admin.courseExpiry");
+			AdminProperties.setPropertyValue(path,domainNM,"brihaspati.mail.local.domain.name");
+			AdminProperties.setPropertyValue(path,aquota,"brihaspati.admin.quota.value");
+			AdminProperties.setPropertyValue(path,uquota,"brihaspati.user.quota.value");
+		        AdminProperties.setPropertyValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
+			AdminProperties.setPropertyValue(path,expdays,"brihaspati.user.expdays.value");// Add by @tej
 			//setTemplate(data,"Index.vm");
 			//For email verification
 			if(email_msg.equals("Successfull"))
