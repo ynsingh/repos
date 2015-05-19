@@ -45,11 +45,147 @@
     <head>
     <%--    <link rel="stylesheet" type="text/css" href="loginpage.css"/>  --%>
         <title>Payroll System | Login</title>
+        <link rel="stylesheet" type="text/css" href="css/LoginPage.css" /> 
+        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+        <script src="script.js"></script>
+        
     </head>
     <f:view>
         <div class="container">
+            
+            <div class="wrapper">
+            
+                <div class="header">
+
+                    <h:graphicImage alt="payroll" url="/img/payrollheader.png" style="width:100%;"/>
+
+                </div>
+                    
+                    
+                <div class="pageBody">
+            
+                    <div class="menu-wrapper">
+
+                        <div id='cssmenu' class="align-center">
+                            <ul>
+                                <li><a href='http://202.141.40.215:8080/brihaspati/servlet/brihaspati' target="_blank">Brihaspati</a></li>
+                                <li><a href='http://202.141.40.215/~brihaspati/BGAS/index.php/user/login' target="_blank">BGAS</a></li>
+                               <li><a href='#'>PICO</a></li>
+                               <li><a href='#'>Student Fee Management</a></li>
+                            </ul>
+                        </div>
+                    </div>     
+               
+                
+                <!--        <div class="info">
+
+                    <div class="item">
+                        <h4> Brihaspati </h4>
+                    </div>
+
+                    <div class="item">
+                        <h4> BGAS </h4>
+                    </div>
+
+                    <div class="item">
+                        <h4> PICO </h4>
+                    </div>  
+
+                    <div class="item">
+                        <h4> Student Fee Management </h4>
+                    </div>
+
+                </div><!-- end info-->
+                
+                
+                    <div class="loginBody">  
+
+                        <div class="left-column">
+                            <h:form>     
+                                <div class="errMessage">
+                                    <rich:messages>
+                                        <f:facet name="errorMarker">
+                                             <h:graphicImage url="/img/err.png"/>
+                                         </f:facet>
+                                    </rich:messages>
+                                </div>
+
+                                <label>
+                                    <span>Organization :</span>
+                                    <h:selectOneMenu id="user" value="#{UserBean.userOrgCode}" >
+                                                <f:selectItem itemLabel="Administrator" />
+                                                <f:selectItems id="user1" value="#{OrgController.items}"/>
+                                    </h:selectOneMenu>
+                                </label>  
+
+                                <label>
+                                    <span>Email :</span>
+                                    <h:inputText label="User Name" value="#{UserBean.userName}" />
+                                </label>
+
+                                <label>
+                                    <span>Password :</span>
+                                    <h:inputSecret label="Password" value="#{UserBean.password}"/>
+                                </label>
+
+                                <input type="hidden" name="userrole" value="user" />
+
+                                 <label>
+                                    <span>&nbsp;</span>
+
+                                    <h:commandButton  action="#{UserBean.validate}" value="Login" styleClass="button"/><br/>
+
+                                </label>           
+                            </h:form>
+
+                        </div> <!-- end Left Column -->
+
+                        <div class="right-column">
+                            <div class="question">
+                                <h4> Don't have an account?</h4>
+                                <a  href="adminLogin/OrgMain.jsf" >Register Here</a>
+                            </div>
+
+                            <div class="question">
+                                <h4> Forgot Password?</h4>
+                                <a  href="" >Reset it here</a>
+                            </div>
+
+                            <div id='links'>
+                                <ul>
+                                   <li><a href='#'>NMEICT home page</a></li>
+                                   <li><a href='#'>Release Notes</a></li>
+                                   <li><a href='adminLogin/brihaspatiMainLogin.jsf' target="_blank">Brihaspati Server Aunthentication</a></li>
+                                   <li><a href='#'>HTML Help</a></l>
+                                </ul>
+                            </div>
+
+                        </div>  <!-- end Right Column -->
+                    </div> <!-- end of login body -->
+               
+            
+                </div> <!--end page Body -->
         
-                <div class="header" syle="height:20%;">
+                <div class="footer">
+                    <div class="footer-content">
+                
+                        <p> Opensource component development supported by SMVDU, IIT Kanpur, and NMEICT, MHRD</p>
+                        <p> For problems at this site send email to ETRG, IIT Kanpur
+                            For reporting bugs, suggestion, feature request, and maintainence support
+                            post at brihaspati_ERP_mission@yahoogroups.com</p>
+                 <!--       
+                        <div class="secondary-links">
+                            <a href="#" >Brihaspati</a>
+                            <a href="#" >BGAS</a>
+                            <a href="#" >PICO</a>
+                            <a href="#" >Student Fee Management</a>
+                        </div>      -->
+                        <p class="copyright"> © 2015 PayrollSys IITK.</p>
+                   </div>   
+                </div> <!-- end footer-->    
+                   
+        
+          <%--     <div class="header" syle="height:20%;">
                 <h:graphicImage alt="payroll" url="/img/payrollheader.png" style="width:100%;"/>
                 <rich:panel style="background-color:#425C83; Color:white">
                <a href="http://172.26.81.189:8080/PayrollSys/" style="color:white;font-family:arial;font-weight:bold;text-decoration:none" onclick="return false;">PAYROLL SYSTEM</a></font>   &nbsp;   
@@ -58,23 +194,16 @@
                <a href="http://202.141.40.218:8080/pico/Administration/Index.action" style="color:white;font-family:arial;font-weight:bold;text-decoration:none">PICO</a>  &nbsp;
                <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="color:white;font-family:arial;font-weight:bold;text-decoration:none" onclick="return false;">STUDENT FEES MANAGEMENT SYSTEM</a>
                </rich:panel>   
-               </div> 
-             
-        <div class="main-content" style="width:100%; background-color: red;">
-            <div>
-            <rich:messages>
-                    <f:facet name="errorMarker">
-                         <h:graphicImage url="/img/err.png"/>
-                     </f:facet>
-            </rich:messages>
-            </div>
+               </div>   --%>
             
+            
+    <%--     
             <div class="sidebar" style="float:left; width:20%;">
                 
                   <rich:panel header="Important Link" style="width:100%;float:left;text-align:left; height:720px ">
                    <br/>
                    <%--<h:outputText value=" Important Link" style="font-weight:bold"/>--%>
-                   <a href="adminLogin/OrgMain.jsf" style="font-weight:bold;">Register New Institute</a><br/> 
+    <%--                <a href="adminLogin/OrgMain.jsf" style="font-weight:bold;">Register New Institute</a><br/> 
                    <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="font-weight:bold;">NMEICT home page</a><br/>
                    <a href="adminLogin/index.html" style="font-weight:bold;" onclick="return false;">Release Notes</a><br/>
                    <a href="docs/indexnew.html" style="font-weight:bold;" onclick="return false;">User Manual</a><br/>
@@ -82,13 +211,13 @@
                    <a href="adminLogin/brihaspatiMainLogin.jsf" style="font-weight:bold;">Aunthenticate From Brihaspati Server  </a> 
                                     
                   </rich:panel>
-            </div>
+            </div>  --%>
             
-            <div class="main" style="float:left; width:80%;"> 
+       <%--     <div class="main" style="float:left; width:80%;"> 
              <h:form>    
                 <rich:panel header="Please Login" style="width:100%;float:left;text-align:left;height:720px"> 
                    <%--<h:outputText value=" Please Login"  style=" float:right;text-align:left;font-size:20px;"/>--%>
-                    <br/>
+        <%--            <br/>
                     <br/>
                     <h:panelGrid columns="2" style="margin-left:50px; width:30%;">
                      <h:outputText value="Organization Name"/>
@@ -108,13 +237,22 @@
                     <h:outputText value=" " />
                     <a href="#" style="text-decoration:none;alignment-adjust:auto;font-weight:bold;" onclick="return false;">Forgot Password</a><br/>
                     <%--<rich:separator style="align:left;width:800px" />--%>
-                    </h:panelGrid>
+       <%--             </h:panelGrid>
                     <input type="hidden" name="userrole" value="user" />
                                      
                </rich:panel>
            </h:form>
             </div>
-        </div>
+        </div>      --%>
+            
+                
+                
+                
+           
+           
+           
+   <%--    
+       
           <h:panelGrid style="width:100%;">
            <rich:panel style="background-color:#425C83;">
             <h:outputText value="Developed by SMVD University and IIT Kanpur." style="color:white;"/>
@@ -186,6 +324,8 @@
             </rich:panel>
             </h:panelGrid>
         </rich:modalPanel>  --%> 
-       </div>
+
+       </div> <!-- end Wrapper -->                
+      </div> <!-- end Container -->
     </f:view>
 </html>

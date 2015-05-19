@@ -972,7 +972,7 @@ CREATE TABLE `salary_formula` (
   `sf_sal_id` int(11) NOT NULL,
   `sf_sal_formula` varchar(100) NOT NULL,
   `sf_org_id` int(11) default NULL,
-  PRIMARY KEY  (`sp_id`),
+  PRIMARY KEY  (`sf_id`),
   KEY `sf_sal_id` (`sf_sal_id`),
   KEY `sf_org_id` (`sf_org_id`),
   CONSTRAINT `salary_formula_fk` FOREIGN KEY (`sf_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,
