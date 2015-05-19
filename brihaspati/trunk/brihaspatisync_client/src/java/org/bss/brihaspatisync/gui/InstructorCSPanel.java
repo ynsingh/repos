@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * InstructorCSPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011,2012 ETRG, IIT Kanpur
+ * Copyright (c) 2011,2012,2015 ETRG, IIT Kanpur
  */
 
 import java.awt.Cursor;
@@ -16,6 +16,13 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Cursor;
 import java.awt.Color;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JProgressBar;
+import java.awt.Toolkit;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -370,21 +377,9 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		}
 		
 		if(ev.getComponent().getName().equals("reloadLabel.Action")) {
-			StatusPanel.getController().setProcessBar("yes");
-                	try {
-				instCourseCombo_Panel.remove(instCourseCombo);
-		                instCourseCombo=new JComboBox(reloadCourseList());
-			        instCourseCombo.addActionListener(this);
-			        instCourseCombo_Panel.add(instCourseCombo,BorderLayout.CENTER);
-               	        	instCourseCombo_Panel.revalidate();
-				mainPanel.remove(1);
-				mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
-				StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.MessageDialog3"));
-				reloadLabel.setCursor(defaultCursor);
-				reloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                	} catch(Exception ex){ System.out.println("Exception in Reload Action "+this.getClass()+" "+ex.getMessage());  }
-			center_mainPanel.validate();
-                        mainPanel.revalidate();	
+                  
+                        guiworker gui =new guiworker();
+                        gui.execute();
 			StatusPanel.getController().setProcessBar("no");
                 }
 	
@@ -433,6 +428,47 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			StatusPanel.getController().setProcessBar("no");
                 }
 	}
+      
+      public class guiworker extends SwingWorker<Boolean,Void>{
+                        private ClassLoader clr= this.getClass().getClassLoader();
+
+                        JFrame processframe = new JFrame("Please Wait....");
+                        guiworker(){
+                                Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+                                ImageIcon loading = new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif"));
+                                processframe.add(new JLabel("Loading .....",loading, JLabel.CENTER));
+                                processframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                                processframe.setSize(355,100);
+                                processframe.setVisible(true);
+                                processframe.setLocation((((int)dim.getWidth()/2)-190),((int)dim.getHeight()/2)+100);
+                        }
+
+                protected  Boolean doInBackground() throws Exception {
+                                String value;
+                                instCourseCombo_Panel.remove(instCourseCombo);
+                                instCourseCombo=new JComboBox(reloadCourseList());
+                                instCourseCombo_Panel.add(instCourseCombo,BorderLayout.CENTER);
+                                instCourseCombo_Panel.revalidate();
+                                mainPanel.remove(1);
+                                mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
+                                reloadLabel.setCursor(defaultCursor);
+                                reloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                                StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.MessageDialog5"));
+                                return true;
+
+                        }
+
+                protected void done(){
+                                boolean retval = false;
+                                try{
+                                         retval = get();
+                                }catch(Exception e) { System.out.println(e.getMessage());}
+                                if(retval)
+                                processframe.dispose();
+                       StatusPanel.getController().setStatus("Reload Successfully");
+                        }
+        }
+
 	
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}

@@ -32,7 +32,13 @@ import java.util.Vector;
 import java.util.Date;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;
-
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+import java.awt.Toolkit;
+import java.awt.Dimension;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JProgressBar;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on 2008, modified on 2011, modified on 2012 
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a> 
@@ -306,19 +312,47 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
         			}
 			}catch(Exception e){}	 	
 		}else if(ev.getComponent().getName().equals("reloadLabel.Action")) {
-			studentCourseCombo_Panel.remove(studCourseCombo);
-			
-			studCourseCombo=new JComboBox(reloadCourseList());
-	                studCourseCombo.addActionListener(this);
-        	        studentCourseCombo_Panel.add(studCourseCombo,BorderLayout.CENTER);
-			studentCourseCombo_Panel.revalidate();
-			mainPanel.remove(1);
-                       	mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
-			StatusPanel.getController().setStatus("reload Successfully");
+                        guiworker gui =new guiworker();
+                        gui.execute();
+                
 		}
+    
 		StatusPanel.getController().setProcessBar("no");
 	}
-	
+
+       public class guiworker extends SwingWorker<Boolean,Void>{
+                        private ClassLoader clr= this.getClass().getClassLoader();
+                        JFrame processframe = new JFrame("Please Wait....");
+                        guiworker(){
+                                Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+                                ImageIcon loading = new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif"));
+                                processframe.add(new JLabel("Loading .....",loading, JLabel.CENTER));
+                                processframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                                processframe.setSize(355,100);
+                                processframe.setVisible(true);
+                                processframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
+                        }
+                protected  Boolean doInBackground() throws Exception {
+                                String value;
+                                studentCourseCombo_Panel.remove(studCourseCombo);
+                                studCourseCombo=new JComboBox(reloadCourseList());
+                                studentCourseCombo_Panel.add(studCourseCombo,BorderLayout.CENTER);
+                                studentCourseCombo_Panel.revalidate();
+                                mainPanel.remove(1);
+                                mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
+                                StatusPanel.getController().setStatus(Language.getController().getLangValue("StudentCSPanel.MessageDialog1"));
+                                return true;
+                        }
+                protected void done(){
+                                boolean retval = false;
+                                try{
+                                         retval = get();
+                                }catch(Exception e) { System.out.println(e.getMessage());}
+                                if(retval)
+                                processframe.dispose();
+                       StatusPanel.getController().setStatus("Reload Successfully");
+                        }
+        }
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}

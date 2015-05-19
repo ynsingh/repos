@@ -384,6 +384,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 				else {
 					
                                 	ClientObject.setUserName(usernameText.getText());
+                                        StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog7"));
 					guiworker task = new guiworker();
 					task.execute();
                              	}
