@@ -100,8 +100,9 @@ class Create extends Controller {
 			'id' => 'account_currency',
 			'maxlength' => '10',
 			'size' => '10',
-			'value' => '',
+			'value' => 'INR',
 		);
+		
 		$data['account_date_options'] = array(
 			'dd/mm/yyyy' => 'Day / Month / Year',
 			'mm/dd/yyyy' => 'Month / Day / Year',
@@ -121,7 +122,9 @@ class Create extends Controller {
 */
 		$data['chart_account_options'] = array(
 			'mhrd' => 'MHRD Format',
+			'mhrd2015' => 'MHRD Format 2015',
 			'minimal' => 'Minimal',
+			'standard' => 'Corporate Format',
 		);
 /*
 		}
@@ -431,6 +434,9 @@ class Create extends Controller {
 				}
 				elseif ( $data_chart_account == 'mhrd'){
 					$setup_initial_data = read_file('system/application/controllers/admin/mhrdedu.sql');
+				}
+				elseif ( $data_chart_account == 'mhrd2015'){
+					$setup_initial_data = read_file('system/application/controllers/admin/mhrdFormat2015.sql');
 				}
 					//else $data_chart_account is standard
 				elseif ( $data_chart_account == 'standard'){
