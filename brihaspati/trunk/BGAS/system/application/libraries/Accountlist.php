@@ -448,7 +448,8 @@ class Accountlist
 			//echo $this->status;
 			//echo "Test";	
 			if ($this->id <= 4)
-				{echo "&nbsp;<strong>" .  $this->code . "</strong>";
+				{
+					echo "&nbsp;<strong>" .  $this->code . "</strong>";
 				//echo "&nbsp;<strong>" .  $this->status . "</strong>";
 				}
 			else
@@ -456,12 +457,20 @@ class Accountlist
 				//echo "&nbsp;<strong>" .  $this->status . "</strong>";
 				}
 			echo "</td>";
+			$CI = & get_instance();
+			$CI->load->model('group_model');
+			$description = $CI->group_model->get_group_description($this->code);
 			echo "<td class=\"td-group\">";
 			echo $this->print_space($this->counter);
-			if ($this->id <=4)
-				echo "&nbsp;<strong>" .  $this->name. "</strong>";
-			else
-				echo "&nbsp;" .  $this->name;
+			
+			if ($this->id <=4){
+				//echo "&nbsp;<strong>" .  $this->name . "</strong>";
+				echo "&nbsp" . anchor('group/edit/' . $this->id,$this->name, array('title' => $description, 'style' => 'color:#000000; text-decoration:none; cursor:auto;font-weight:bold; '));
+			}
+			else{
+				//echo "&nbsp;" .  $this->name;
+				echo "&nbsp" . anchor('group/edit/' . $this->id,$this->name, array('title' => $description, 'style' => 'color:#000000; text-decoration:none; cursor:auto; '));
+			}
 			echo "</td>";
 			echo "<td>Group Account</td>";
 			echo "<td>-</td>";
@@ -496,13 +505,17 @@ class Accountlist
 			$this->counter++;
 			foreach ($this->children_ledgers as $id => $data)
 			{
+				$i=0;
+				$CI = & get_instance();
+				$CI->load->model('ledger_model');
+				$description = $CI->ledger_model->get_ledger_description($data['code']);
 				echo "<tr class=\"tr-ledger\">";
 				echo "<td class=\"td-ledger\">";
 				echo "&nbsp;" . anchor('report/ledgerst/' . $data['id'], $data['code'], array('title' => $data['code'] . ' Ledger Statement', 'style' => 'color:#000000'));
 				echo "</td>";
 				echo "<td class=\"td-ledger\">";
 				echo $this->print_space($this->counter);
-				echo "&nbsp;" . anchor('report/ledgerst/' . $data['id'], $data['name'], array('title' => $data['name'] . ' Ledger Statement', 'style' => 'color:#000000'));
+				echo "&nbsp&nbsp&nbsp&nbsp;" . anchor('report/ledgerst/' . $data['id'], $data['name'], array('title' => $description, 'style' => 'color:#000000'));	
 				echo "</td>";
 				echo "<td>Ledger Account</td>";
 				echo "<td>" . convert_opening($data['opbalance'], $data['optype']) . "</td>";

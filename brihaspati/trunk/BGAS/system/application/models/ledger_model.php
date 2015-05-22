@@ -12,7 +12,7 @@ var $ledgers = array();
 	function get_all_ledgers()
 	{
 		$options = array();
-		$options[0] = "(Please Select)";
+		$options[0] = "(Please Select):";
 		//$this->db->from('ledgers')->order_by('code', 'asc');
 		$this->db->from('ledgers')->order_by('name', 'asc');
 		$ledger_q = $this->db->get();
@@ -20,18 +20,28 @@ var $ledgers = array();
 		{
 			$cd = $row->code;
 			$nme = $row->name;
+			$des = $row->ledger_description;
 			//if(substr($cd, 0, 2) == 10)
-			if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))			
+			if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity')){			
 				$name = $nme." - L";
+				$name = $name.":".$des;
+			}
 			//if(substr($cd, 0, 2) == 20)
 			if(substr($cd, 0, 2) == $this->get_account_code('Assets'))
+			{
 				$name = $nme." - A";
+				$name = $name.":".$des;
+			}
 			//if(substr($cd, 0, 2) == 30)
-			if(substr($cd, 0, 2) == $this->get_account_code('Incomes'))
+			if(substr($cd, 0, 2) == $this->get_account_code('Incomes')){
 				$name = $nme." - I";
+				$name = $name.":".$des;
+			}
 			//if(substr($cd, 0, 2) == 40)
-			if(substr($cd, 0, 2) == $this->get_account_code('Expenses'))
+			if(substr($cd, 0, 2) == $this->get_account_code('Expenses')){
 				$name = $nme." - E";
+				$name = $name.":".$des;
+			}
 
 			//lines added by Priyanka
 			//$new_id = $row->id."#".$row->code;
@@ -1102,6 +1112,16 @@ var $ledgers = array();
                         return 0;
         }
 
+    function get_ledger_description($code){
+    	$this->db->select('ledger_description');
+        $this->db->from('ledgers')->where('code =', $code);
+        $ledger_result = $this->db->get();
+        if ($ledger = $ledger_result->row())
+                return $ledger->ledger_description;
+        else
+                return 0;
+    }
+
 	  function get_group_id($code)
         {
                 $this->db->select('id');
@@ -1258,7 +1278,7 @@ var $ledgers = array();
                 $heads = $this->db->get();
 //                print_r(sizeof($heads));
                 $options = array();
-                $options[0] ="(Please Select)";
+                $options[0] ="(Please Select):";
                 foreach ($heads->result() as $row1)
                 {
                         $headid=$row1->headid;
@@ -1271,14 +1291,24 @@ var $ledgers = array();
                                         {
                                                 $cd = $row->code;
                                                 $nme = $row->name;
-                                                if(substr($cd, 0, 2) == 10)
+                                                $des = $row->ledger_description;
+                                                if(substr($cd, 0, 2) == 10){
                                                         $name = $nme." - L";
-                                                if(substr($cd, 0, 2) == 20)
+                                                        $name = $name.":".$des;
+                                                }
+                                                if(substr($cd, 0, 2) == 20){
                                                         $name = $nme." - A";
-                                                if(substr($cd, 0, 2) == 30)
+                                                        $name = $name.":".$des;
+                                                }
+                                                if(substr($cd, 0, 2) == 30){
                                                         $name = $nme." - I";
+                                                        $name = $name.":".$des;
+                                                }
                                                 if(substr($cd, 0, 2) == 40)
+                                                {
                                                         $name = $nme." - E";
+                                                        $name = $name.":".$des;
+                                                }
                                                 //echo $row->id;
                                                 $options[$row->id] = $name;
                                         }
@@ -1295,14 +1325,24 @@ var $ledgers = array();
                                         {
                                                 $cd = $row->code;
                                                 $nme = $row->name;
+                                                $des = $row->ledger_description;
                                                 if(substr($cd, 0, 2) == 10)
+                                                {
                                                         $name = $nme." - L";
-                                                if(substr($cd, 0, 2) == 20)
+                                                        $name = $name.":".$des;
+                                                }
+                                                if(substr($cd, 0, 2) == 20){
                                                         $name = $nme." - A";
-                                                if(substr($cd, 0, 2) == 30)
+                                                        $name = $name.":".$des;
+                                                }
+                                                if(substr($cd, 0, 2) == 30){
                                                         $name = $nme." - I";
-                                                if(substr($cd, 0, 2) == 40)
+                                                        $name = $name.":".$des;
+                                                }
+                                                if(substr($cd, 0, 2) == 40){
                                                         $name = $nme." - E";
+                                                        $name = $name.":".$des;
+                                                }
 
                                                 //echo $row->id;
                                                 $options[$row->id] = $name;
@@ -1899,7 +1939,6 @@ var $ledgers = array();
                 }
                 return $options;
         }
-
 	
 }
 

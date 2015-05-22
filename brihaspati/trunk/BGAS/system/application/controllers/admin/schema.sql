@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS groups (
   affects_gross int(1) NOT NULL DEFAULT 0,
   status int(1) NOT NULL DEFAULT 0,
   schedule varchar(10),
+  group_description text,
   UNIQUE(code,name),
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
@@ -20,6 +21,7 @@ CREATE TABLE IF NOT EXISTS ledgers (
   type INT(2) NOT NULL DEFAULT 0,
   reconciliation int(1) NOT NULL,
   lstatus int(1) NOT NULL DEFAULT 0,
+  ledger_description text,
   UNIQUE(code,name),
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;

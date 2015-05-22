@@ -99,7 +99,11 @@ $(document).ready(function() {
         echo "</p>";
         echo form_fieldset_close();
 
-
+        echo "<p>";
+        echo form_label('Group Description', 'group_description');
+        echo "<br />";
+        echo form_textarea($group_description);
+        echo "</p>";
 /*	echo "<p>";
         echo form_label('Group Schedule', 'schedule');
         echo "<br />";

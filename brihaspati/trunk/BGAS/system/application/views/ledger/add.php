@@ -92,6 +92,11 @@ $(document).ready(function() {
         echo form_fieldset_close();
 
 //	if (code.startwith(10|20){ 
+    echo "<p>";
+	echo form_label('Ledger Description', 'ledger_description');
+	echo "<br />";
+	echo form_textarea($ledger_description);
+	echo "</p>";
 	echo "<p>";
 	echo form_label('Opening balance', 'op_balance');
 	echo "<br />";

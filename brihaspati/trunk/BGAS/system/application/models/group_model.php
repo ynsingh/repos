@@ -143,6 +143,19 @@ class Group_model extends Model {
 		
 		return $id;
 	}
+
+	function get_group_description($code)
+	{
+		$this->db->from('groups');
+		$this->db->select('group_description')->where('code', $code);
+		$group = $this->db->get();
+		foreach($group->result() as $row)
+		{
+			$description = $row->group_description;
+		}
+		
+		return $description;
+	}
 }
 
 ?>
