@@ -1,31 +1,30 @@
 #*
  * @(#) RePostAns.vm
- * Copyright (c) 2009,2013 ETRG,IIT Kanpur.
+ * Copyright (c) 2007,2009,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:arvindjss17@gmail.com ">Arvind Pal</a>
- * @modify <a href="mailto:shaistashekh@hotmai.com">  shaista </a>
- * @modify <a href="mailto:tejdgurung20@gmail.com"> Tej Bahadur</a>
- * @date 22-05-09,22-03-2013
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
 
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
+
 #set($lang=$data.getUser().getTemp("lang").toString())
 $!data.getMessage()  
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
         <tr align="right"> <td><b>
-        <a href=$link.setPage("call,Assignment,ASS_subm.vm") style="text-decoration:none"> $brih_assignment  </a>|
-        <a href=$link.setPage("call,Assignment,AssView.vm") style="text-decoration:none">$DisBoard_DB_msg25 $brih_answer</a>  
-        | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a> | 
-        <a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none">$brih_home</a> 
-	</b>
+        <a href=$link.setPage("call,Assignment,AssView.vm") style="text-decoration:none"> </a>
+        $DisBoard_DB_msg25 $brih_answer 
+        |<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>
+        |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a> 
+        |<a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none" >$brih_home</a> 
         </td></tr>
 </table> ##table 1 end
-#if($data.getUser().getTemp("role") != "instructor")
-<table bgcolor="$ui.tableColor" width=100%>
+ <table bgcolor="$ui.tableColor" width=100%>
+ <tr align="right">
+ #if($data.getUser().getTemp("role") != "instructor")
                         #if($tdcolor != "1")
                         <td>
                         #elseif($tdcolor=="1")
@@ -44,38 +43,75 @@ $!data.getMessage()
                         <td bgcolor="#AFDCEC">
                         #end
                         <a href=$link.setPage("call,Assignment,RePostAns.vm").addPathInfo("count","3") style="text-decoration:none"> #if($lang == "hindi") $brih_answer $brih_repost #else $brih_repost $brih_answer #end </a></td>
-</table>
+                <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+#else
+	#if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </a></td>
+        #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor=="2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","2") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </a></td>
+        #if($tdcolor != "5")
+        <td>
+        #elseif($tdcolor=="5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_edit/$brih_delete #else $brih_edit/$brih_delete $brih_assignment #end </a></td>
+	#if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor=="3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","3") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td>
+        #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor=="4")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,Assignment,RePostAns.vm").addPathInfo("count","4") style="text-decoration:none"> #if($lang == "hindi") $brih_answer $brih_repost #else $brih_repost $brih_answer #end </a></td>
+        <td>
+        #if($Status!="Edit")
+        <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Ass.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+        #else
+            <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/EditDelete.html","newWin"); style="text-decoration:none">$brih_help</a>
+        #end
+        </td>
 #end
-		<form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,RePostAns.vm").setAction("Assignments")>
-	<table width=100% bgcolor="$ui.tableColor" cellpadding="2" align="center">
-	<tr bgcolor="$ui.menuColor" align="right">
-		<td>  <SELECT class='drop' name='topicList' onFocus='changeTopic(document.uploadform)' onChange='changeTopic(document.uploadform)'>
-         	<option value="" ></option>
+</tr>
+</table>
+
+<form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,RePostAns.vm").setAction("Assignments")>
+<table width=100% bgcolor="$ui.menuColor">
+	<tr>
+	#if($allTopics.size() >0)
+		<td>$brih_topic $brih_name</td>
+		<td><SELECT class='drop' name='topicList' onFocus=changeTopic(document.uploadform) onChange='changeTopic(document.uploadform)'>
+        	<option value="" ></option>
 		#foreach($topic in $allTopics)
 			<option value="$topic" >$topic</option>
 		#end
 		</SELECT>
 		</td>
-		<td >	<b>	$brih_topic $brih_Of1 $brih_name   </b> </td>
-                </tr>         
-	<tr align="right">
-                ###fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
-		<td> 
-			<input type="file" name="file" size="30%" >
-		</td> 
-		<td> 
-			<font color=RED>*</font> $brih_at_file 
-		</td> 
-        </tr>
-        <tr align="right">
- <td colspan=2 bgcolor="$ui.menuColor">
-                <font face="$ui.sansSerifFonts">
-		<input type="button" name="RePostAns" class="button-ftextstyle"  value="$brih_upload" onClick="checkBlank(document.uploadform,this);"  />
-                               <input type="hidden" name="actionName">             
-                               <input type="hidden" name="date" value=$date />             
-                               <input type="hidden" name="courseid" value=$courseid />             
-		</font>
-        </td>
+        	</tr>         
+		<tr bgcolor="$ui.tableColor">
+        	        #fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
+	        </tr>
+        	<tr>
+	 	<td colspan=2>
+			<input type="button" class="button-ftextstyle" name="RePostAns" value="$brih_upload" onClick="checkBlank(document.uploadform,this);"  />
+		        <input type="hidden" name="actionName">             
+		        <input type="hidden" name="date" value=$date />             
+		        <input type="hidden" name="courseid" value=$courseid />             
+	        </td>
+	#else
+		$brih_noPermissionRepost
+	#end
         </tr>
 </table>
 </form>
@@ -133,5 +169,9 @@ $!data.getMessage()
                 }
         }
 *#
+   function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+        }
 
 </script>

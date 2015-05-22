@@ -9,83 +9,92 @@
 
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("View Marks")
+#set ($lang=$data.getUser().getTemp("lang" ).toString())
 
 <table bgcolor="$ui.tableColor" width=100%>
 <tr align="right">
 <td>
 <font face="$ui.sansSerifFonts"><b>
-$brih_view $brih_marks
-|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
-<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
+#*<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |  #if($lang=="hindi") $brih_marks $brih_view  #else $brih_view $brih_marks #end*#
+
+#if($lang=="hindi") $brih_marks $brih_view  #else $brih_view $brih_marks #end
+|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a>
+|<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
+
+
+
+
 </font>
 </td>
 </tr>
 </table>
+
 <br>
 $!data.getMessage()
 <form enctype="multipart/form-data" >
-    <table align="center" bgcolor="$ui.bgcolor" cellpadding="0">
-	#if($status != "Blank")	
-		<tr align="right">
-			<td> <b><u>$brih_marks $brih_in $course</u><b><br><br> </td>
-		</tr>
-		<tr> <td>
-	      	<table border="1" cellpadding="0" cellspacing="1" align="center">
-		<tr>
+	<table align="center" bgcolor="$ui.bgcolor" cellpadding="0">
+    	#if($status != "Blank")	
+      		<tr>
+		<td>
+      		<b><u>$brih_marks $brih_in $course</u><b><br>
+		</td>
+      		</tr>
+	      	<tr>
+		<table  cellpadding="0" cellspacing="1" align="center">
 		#set($count=0)
-		#foreach($headings in $markHeading)
-      			##<th bgcolor="$ui.tableColor">&nbsp;&nbsp;$heading&nbsp;&nbsp;</th>
-      			#set($count=$count+1)
-      			<tr height="25px" align="right"><td align="center" colspan="5">
-			#set($ct=0)
-			#foreach($ali in $alias)
-				#set($ct=$ct+1)
-				#if($ct==$count)
-					#if($ct!=1)</br></br>
-					#end
-					<a style="font-weight:bold; background:$ui.headerColor;"><b> $ali : $brih_alias $brih_Of1 $brih_name </b></a>
-				#end
-			#end
-			</td></tr>
-                        <div>
-                        <tr align="right">
-			#foreach($heading in $headings)
-				<th bgcolor="$ui.menuColor">&nbsp;&nbsp;$heading&nbsp;&nbsp;</th>
-			#end
-			</tr>
+      		#foreach($headings in $markHeading)
+			#set($count=$count+1)
+			<tr height="25px"><td align="center">
+                       	#set($ct=0)
+                      	#foreach($ali in $alias)
+                      		#set($ct=$ct+1)
+                       		#if($ct==$count)
+                       			#if($ct!=1)</br></br>
+                       			#end
+                                        <a style="font-weight:bold; background:$ui.headerColor;"><b>$brih_alias $brih_name : $ali</b></a>
+                                #end
+                       	#end
+                        </td></tr>
+			<div>
+			<tr>
+                        #foreach($heading in $headings)
+                             	<th bgcolor="$ui.menuColor">&nbsp;&nbsp;$heading&nbsp;&nbsp;</th>
+                        #end
+                        </tr>
 			#set($counter=0)
-			#foreach($marks in $markDetail)
+                        #foreach($marks in $markDetail)
 				#set($counter=$counter+1)
 				#if($counter==$count)
-					<tr align="right">
-					#foreach($mark in $marks)
-						<td align="center" bgcolor="$ui.tableColor">$mark</td>
-					#end
-					</tr>
+                                	<tr>
+                                        #foreach($mark in $marks)
+                                               	<td align="center" bgcolor="$ui.tableColor">$mark</td>
+                                        #end
+                                	</tr>
 				#end
 			#end
 			</div>
 		#end
-		</tr>
-		</table>
-		</td></tr>
+      		</table>
+	      	</tr>
+    	#end
+      	<tr>
+	#if($marksDSize == "0")
+		#if($data.getUser().getTemp("role" ).toString()=="instructor")
+			<td colspan=3> $brih_MarksMsg2 '$UsrName'.</td>
+		#else
+			<td colspan=3> $brih_MarksMsg2 '$data.getUser().getUserName()'.</td>
+		#end
 	#end
-	<tr align="right">
-		#if($Exp == "Exp")
-			<td colspan=3> $brih_MarksMsg4 </td>
-		#end
-		#if($Exp == "MExp")
-			<td colspan=3> 	$brih_MarksMsg3	</td>
-		#end
-		#if($marksDSize == "0")
-			#if($data.getUser().getTemp("role" ).toString()=="instructor")
-				<td colspan=3> 	.$brih_MarksMsg2 '$UsrName' </td>
-			#else
-				<td colspan=3> 	.$brih_MarksMsg2 '$data.getUser().getUserName()' </td>
-			#end
-		#end
-      </tr>	
-    </table>
+	#if($Exp == "MExp")
+		<td colspan=3> $brih_MarksMsg3 </td>
+	#end
+	#if($Exp == "Exp")
+		<td colspan=3> $brih_MarksMsg4 	</td>
+	#end
+      	</tr>	
+    	</table>
 </form>

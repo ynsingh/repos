@@ -82,8 +82,8 @@ $!data.getMessage()
 	#elseif($tdcolor=="2")
 	<td bgcolor="#AFDCEC">
 	#end
-    	<a href=$link.setPage("call,Group_Mgmt,ViewActivity.vm").addPathInfo("count","2") style="text-decoration:none"> $brih_view $brih_activity </a></td>
-	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/joingroupactivity.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+	<td><a href=javascript:popupWin("/brihaspati/docs/joingroupactivity.html","newWin"); style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
+    	<td><a href=$link.setPage("call,Group_Mgmt,ViewActivity.vm").addPathInfo("count","2") style="text-decoration:none"> $brih_view $brih_activity </a></td>
 	#if($tdcolor != "1")
 	<td>
 	#elseif($tdcolor=="1")

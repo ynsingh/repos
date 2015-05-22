@@ -1,28 +1,33 @@
 #*
  * @(#) PostAns.vm 
- * Copyright (c) 2009, 2010,2013ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:arvindjss17@yahoo.co.in ">Arvind Pal</a>
- * @modify <a href="mailto:shaistashekh@hotmail.com "> Shaista </a>
- * @modify <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur </a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 04-04-2011 (Shaista),18-03-2013(Tej)
 *#
+
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
+
 #set($lang=$data.getUser().getTemp("lang").toString())
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
-	<tr align="right"> <td><b>
-        <a href=$link.setPage("call,Assignment,ASS_subm.vm")  style="text-decoration:none"> $brih_assignment  </a> | &nbsp;
-        <a href=$link.setPage("call,Assignment,AssView.vm")  style="text-decoration:none"> </a> $brih_answer $brih_post
-        | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")  style="text-decoration:none"> $coursename </a> |
-        <a href=$link.setPage("call,IndexHome.vm")  style="text-decoration:none">$brih_home</a>
-        </b></td></tr>
+
+        <tr align="right"> <td><b>
+        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>
+        | #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </b>
+        |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a>  
+        |<a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none">$brih_home</a> 
+        ##<a href=$link.setPage("call,Assignment,AssView.vm")> </a> $brih_post $brih_answer  </b>
+        </td></tr>
 </table> ##table 1 end
-<table width=100% bgcolor="$ui.tableColor">
+<table bgcolor="$ui.tableColor" width=100% > ##table 1 start
         <tr>
-        #if($user_role == "instructor")
+ #if($user_role == "instructor" || $user_role == "teacher_assistant")
         #if($tdcolor != "1")
         <td>
         #elseif($tdcolor=="1")
@@ -41,16 +46,29 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_edit/$brih_delete #else  $brih_edit/$brih_delete $brih_assignment #end </a></td>
-                <td><a href=javascript:popupWin("/brihaspati/docs/ViewAss.html","newWin"); style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
+	#if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor=="3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","3") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td>
+        #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor=="4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,RePermission.vm").addPathInfo("count","4") style="text-decoration:none"> $brih_repost  #if($lang == "hindi") $brih_Of #end $Repo_Perm</a></td>
+ 	       <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a></td>
         #else
-                <td><a href=javascript:popupWin("/brihaspati/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+                <td>
+                 <a href=javascript:popupWin("/brihaspati/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
                         #if($tdcolor != "3")
-                         <td>
+                        <td>
                         #elseif($tdcolor=="3")
                         <td bgcolor="#AFDCEC">
                         #end
                         <a href=$link.setPage("call,Assignment,RePostAns.vm").addPathInfo("count","3") style="text-decoration:none"> #if($lang == "hindi") $brih_answer $brih_repost #else $brih_repost $brih_answer #end </a></td>
-                         #if($tdcolor != "2")
+                        #if($tdcolor != "2")
                         <td>
                         #elseif($tdcolor=="2")
                         <td bgcolor="#AFDCEC">
@@ -63,74 +81,81 @@ $!data.getMessage()
                         #end
                         <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment/$brih_answer  $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end</a></td>
         #end
-</tr>
-</table>
 
+        </tr>
+</table> 
 <form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,PostAns.vm").setAction("Assignments")>
-<table width=100% bgcolor="$ui.tableColor">
-<tr align="right"  bgcolor="$ui.menuColor"> 
+<table width=100% bgcolor="$ui.menuColor">
+<tr>
 	#if($user_role ==  "student") 	
-	<td>
+##		<td width=15%> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
+##		<td>
 		 #if($topicnm =="")
-	        	<SELECT class='drop' name='topicList' onFocus='changeTopic(document.uploadform)' onChange='changeTopic(document.uploadform)'>
-        		 	<option value="" ></option>
-				#foreach($topic in $allTopics1)
-					<option value="$topic" >$topic</option>
-				#end
-			</SELECT>
-		 #else
-	                 <input type="text" name="topicList" value="$topicnm" readonly>
-                #end
-	</td>
-	<td width=15%>$brih_topic $brih_Of1 $brih_name</td>
-	#else
-	<td>
-		<input type="button" class="button-ftextstyle" name="Go" value="$brih_go" onClick="checkBlank1(document.uploadform,this);" /> &nbsp;
-		<SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
-                
-		#if($answerfilecheck == "notchecked")
-			<option value="$topicList" >$topicList</option>	
+		 	#if($allTopics1.size() >0)
+				<td width=15%> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
+				<td>
+	        		<SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+			         	<option value="" ></option>
+					#foreach($topic in $allTopics1)
+						<option value="$topic" >$topic</option>
+					#end
+				</SELECT>
+				</td>
+			#end
 		#else
-			<option value=""></option>
-		#end
-                #foreach($topic in $allTopics)
-        	        <option value="$topic">$topic</option>
+			<td width=15%> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
+			<td>
+	                 <input type="text" name="topicList" value="$topicnm" readonly>
+			</td>
                 #end
-                </SELECT>	
-	</td>	
-	<td>$brih_topic $brih_Of1  $brih_name</td>
+	##</td>
+
+	#else
+		<td>$brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
+		<td>
+			<SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+                
+			#if($answerfilecheck == "notchecked")
+				<option value="$topicList" >$topicList</option>	
+			#else
+				<option value=""></option>
+			#end
+	                #foreach($topic in $allTopics)
+        		        <option value="$topic">$topic</option>
+                	#end
+	                </SELECT>	
+			<input type="button" class="button-ftextstyle" name="Go" value="$brih_go" onClick="checkBlank1(document.uploadform,this);" />
+		</td>	
 	#end
 	
 </tr>   
 #if($user_role ==  "student")
-<tr bgcolor="$ui.tableColor" align="right">
-                ###fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
-		<td> <input type="file" name="file" > </td>
-                <td> <font color=RED>*</font> $brih_at_file </td>
-</tr>
-<tr align="right" bgcolor="$ui.menuColor">
-        <td colspan=2>
-        <input type="button" class="button-ftextstyle" name="dosubmit" value="$brih_upload" onClick="checkBlank(document.uploadform,this);"  />
-        </td>
-</tr>
+	 #if($allTopics1.size() >0)
+		<tr bgcolor="$ui.tableColor">
+                	#fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
+		</tr>
+		<tr>
+	        	<td colspan=2>
+        			<input type="button" class="button-ftextstyle" name="dosubmit" value="$brih_upload" onClick="checkBlank(document.uploadform,this);"  />
+		        </td>
+		</tr>
+	#else
+		$brih_noAssignMentDateOver
+	#end
 #else
 	#if($answerfilecheck ==  "notchecked")	      
-	<tr bgcolor="$ui.menuColor" align="right">
-		###fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
-		<td> <input type="file" name="file" > </td>
-                <td> <font color=RED>*</font> $brih_at_file </td>
-
-	</tr>
-	##################<tr bgcolor="$ui.menuColor" align="right">
-	<tr align="right">
-		<td colspan=2>
-		#if($answerfile1 ==  "no")	
-		<input type="button" class="button-ftextstyle" name="dosubmit" value="$brih_upload" onClick="checkBlank(document.uploadform,this);"/>
-		#else
-		<input type="button" class="button-ftextstyle" name="RePostAns" value="$brih_reload" onClick="checkBlank(document.uploadform,this);"/>
-		#end
-		</td>
-        </tr>
+		<tr bgcolor="$ui.tableColor">
+			#fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
+		</tr>
+		<tr bgcolor="$ui.menuColor" >
+			<td colspan=2>
+				#if($answerfile1 ==  "no")	
+					<input type="button" class="button-ftextstyle" name="dosubmit" value="$brih_upload" onClick="checkBlank(document.uploadform,this);"/>
+				#else
+					<input type="button" class="button-ftextstyle" name="RePostAns" value="$brih_reload" onClick="checkBlank(document.uploadform,this);"/>
+				#end
+			</td>
+	        </tr>
 	#end
 #end
 <input type="hidden" name="actionName">             

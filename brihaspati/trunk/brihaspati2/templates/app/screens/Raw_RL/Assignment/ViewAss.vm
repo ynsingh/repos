@@ -5,7 +5,6 @@
  * @author <a href=" mailto:arvindjss17@gmail.com "> Arvind Pal </a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modify <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal </a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 04-04-2011 (Shaista),18-03-2013(Tej)
 *#
@@ -17,93 +16,95 @@
 #set($lang=$data.getUser().getTemp("lang").toString())
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
-        <tr align="right">
-                <td><b>
-                        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>
-                        |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a>
-                        |<a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none" >$brih_home</a>
-
-
+        <tr align="right"> 
+		<td><b>
+        		<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> $brih_assignment</a>
+                        | #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_view #else $brih_view $brih_assignment #end </b>
+	        	|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a> 
+			|<a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none" >$brih_home</a> 
 	        	##<a href=$link.setPage("call,Assignment,AssView.vm")> </a> $brih_view $brih_assignment</b>
         	</td>
 	</tr>
 </table> ##table 1 end
 <table width=100% bgcolor="$ui.tableColor">
 	<tr align="right">
-<td>
-<a href=javascript:popupWin("/brihaspati/docs/ViewAss.html","newWin"); style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
-
-        #if($tdcolor != "5")
-        <td>
-        #elseif($tdcolor=="5")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_edit/$brih_delete #else  $brih_edit/$brih_delete $brih_assignment #end </a></td>
-                
-        #if($tdcolor != "2")
-        <td>
-        #elseif($tdcolor=="2")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","2") style="text-decoration:none">  #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </a></td>
-
-
-        #if($user_role == "instructor")
-        #if($tdcolor != "1")
-        <td>
-        #elseif($tdcolor=="1")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </a></td>
+        #if($user_role == "instructor" || $user_role == "teacher_assistant")
+        	#if($tdcolor != "1")
+	        <td>
+        	#elseif($tdcolor=="1")
+	        <td bgcolor="#AFDCEC">
+        	#end
+	        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </a></td>
+        	#if($tdcolor != "2")
+		<td>
+	        #elseif($tdcolor=="2")
+        	<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","2") style="text-decoration:none">  #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </a></td>
+	        #if($tdcolor != "5")
+        	<td>
+	        #elseif($tdcolor=="5")
+        	<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_edit/$brih_delete #else  $brih_edit/$brih_delete $brih_assignment #end </a></td>
+	        #if($tdcolor != "3")
+	        <td>
+	        #elseif($tdcolor=="3")
+	        <td bgcolor="#AFDCEC">
+	        #end
+		<a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","3") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td>
+	        #if($tdcolor != "4")
+	        <td>
+	        #elseif($tdcolor=="4")
+	        <td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Assignment,RePermission.vm").addPathInfo("count","4") style="text-decoration:none"> $brih_repost  #if($lang == "hindi") $brih_Of #end $Repo_Perm</a></td>
+                	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ViewAss.html","newWin"); style="text-decoration:none">$brih_help</a></td>
         #else
-                        #if($tdcolor != "1")
-                        <td>
-                        #elseif($tdcolor=="1")
-                        <td bgcolor="#AFDCEC">
-                        #end
-                        <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment/$brih_answer  $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end</a></td>
-                        #if($tdcolor != "2")
-                        <td>
-                        #elseif($tdcolor=="2")
-                        <td bgcolor="#AFDCEC">
-                        #end
-			<a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td>
+                <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a></td>
                         #if($tdcolor != "3")
                         <td>
                         #elseif($tdcolor=="3")
                         <td bgcolor="#AFDCEC">
                         #end
                         <a href=$link.setPage("call,Assignment,RePostAns.vm").addPathInfo("count","3") style="text-decoration:none"> #if($lang == "hindi") $brih_answer $brih_repost #else $brih_repost $brih_answer #end </a></td>
-               <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+                        #if($tdcolor != "2")
+                        <td>
+                        #elseif($tdcolor=="2")
+                        <td bgcolor="#AFDCEC">
+                        #end
+			<a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td>
+                        #if($tdcolor != "1")
+                        <td>
+                        #elseif($tdcolor=="1")
+                        <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment/$brih_answer  $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end</a></td>
         #end
 </tr>
 </table>
-<Form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,ViewAss.vm").setAction("Assignments")>   
-<table width=100% bgcolor="$ui.menuColor">
+<Form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,ViewAss.vm").setAction("Assignments").addPathInfo("count","2")>   
 <table width=100% bgcolor="$ui.menuColor">
         <tr align="right">
-        <td align="right">
-        <SELECT name=topicList class="drop" onChange="checkBlank(document.uploadform);">
-        #if($topicList!="")
-                <option value="$topicList" >$topicList</option>
-        #else
-                <option value="" >$brih_select $brih_topic</iption>
+	## #if($user_role == "instructor")
+	#if(($user_role == "instructor")||($user_role == "teacher_assistant"))
+	<td><b>$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</b>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="text" name="GetUser"  size=26 /></td>
         #end
+        <td><b>$brih_topic  #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
+	<SELECT name=topicList class="drop" >
+	#if($topicList!="")
+	        <option value="$topicList" >$topicList</option>
+	#else
+	        <option value="" >$brih_select $brih_topic</option>
+	#end
         #foreach($topic in $allTopics)
-                #if($topic!=$topicList)
-                        <option value="$topic" > $topic </option>
-                #end
+        	#if($topic!=$topicList)
+		        <option value="$topic" > $topic </option>
+		#end
         #end
-           <td><b>$brih_topic  #if($lang == "hindi")  #end $brih_name</b>
-        </SELECT>
-
-
-        ## #if($user_role == "instructor")
-        #if(($user_role == "instructor")||($user_role == "teacher_assistant"))
-##      <td><b>User #if($lang == "hindi")  #end Name</b>&nbsp;&nbsp;&nbsp;&nbsp;
-       <input type="text" name="GetUser"  size=26 onChange="validate1(this)" /></td>
-      <td><b>$brih_usr #if($lang == "hindi")  #end $brih_name</b>&nbsp;&nbsp;&nbsp;&nbsp;
-        #end
+        </SELECT> &nbsp;
+        <input type="button" class="button-ftextstyle" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"  />
         <input type="hidden" name="actionName">
         </td>
 	<td>
@@ -116,7 +117,7 @@ $!data.getMessage()
 			<tr bgcolor="$ui.menuColor" >   
 			<td colspan=10 >
 				<b> $brih_usr  #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
-				<input type="text" name="GetUser" size=26 onChange="validate1(this)"/> &nbsp; 
+				<input type="text" name="GetUser"  size=26 onChange="validate1(this)"  /> &nbsp; 
 			#end
 			##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<tr bgcolor="$ui.tableColor"><b> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name </b> &nbsp;
@@ -144,9 +145,9 @@ $!data.getMessage()
         	<td align="center">  <b> #if($lang == "hindi") $brih_answer $brih_Of1 $brih_view #else $brih_view $brih_answer #end </b> </td>
         	#end
         	#if($datecheck == "ok")
-        	<td align="center">  <b> $brih_post #if($lang == "hindi") $brih_Of #end $brih_Da </b> </td>
+        	<td align="center">  <b> $brih_assignment $brih_post #if($lang == "hindi") $brih_Of #end $brih_Da </b> </td>
         	#end
-        	<td  align="Center"> <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_Da  </b> </td>
+        	<td  align="Center"> <b> $brih_assignment $brih_due #if($lang == "hindi") $brih_Of #end $brih_Da  </b> </td>
 	        <td  align="Center"> <b> $brih_max $brih_marks </b> </td>
 	        <td  align="Center"> <b> $brih_action </b> </td>
         	#if($gradecheck == "ok")
@@ -161,7 +162,7 @@ $!data.getMessage()
                 #foreach($e in $Assignmentlist )
 
                         #if(($e.getAssignmentfile()!= "") && ($stlp == 0))
-			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a> /
+			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a> 
  			#set ($stlp = $stlp + 1)
                         #end
 
@@ -173,7 +174,12 @@ $!data.getMessage()
 			#set ($stlp = $stlp + 1)
 			#end
 		 #end
-	</td></tr>
+		
+		##downloading assignments
+		#if($studentfilecheck == "ok")
+        		<a href="$link.setPage("call,Zipcreate.vm").addPathInfo("dest_folder",$str1)" style="text-decoration:none">/$brih_download $brih_assignment</a>
+		#end
+	</td></tr> 
 	<tr bgcolor="$ui.menuColor">
 		<td align="center"> <b> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name , $brih_full $brih_name , $brih_rollno</b> </td>
 ##		<td align="center">  <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>
@@ -181,13 +187,13 @@ $!data.getMessage()
 		<td align="center">  <b> $brih_answer #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>
 		#end
 		#if($studentfilecheck == "ok")
-		<td align="center">  <b> #if($lang == "hindi") $brih_answer $brih_Of1 $brih_view #else $brih_view $brih_answer #end </b> </td>
-		<td align="center">  <b> $brih_correct $brih_answer $DisBoard_DB_msg25 </b></td> 
+		<td align="center">  <b>  #if($lang == "hindi") $brih_answer $brih_Of1 $brih_view #else $brih_view $brih_answer #end </b> </td>
+		<td align="center"><b> #if($lang == "hindi") $brih_correct $brih_answer $DisBoard_DB_msg25 #else $DisBoard_DB_msg25 $brih_correct $brih_answer #end </b></td>
 		#end
 		#if($datecheck == "ok")
 		<td align="center">  <b> $brih_post #if($lang == "hindi") $brih_Of #end $brih_Da </b> </td>
 		#end
-		<td  align="Center"> <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_Da  </b> </td>
+		<td  align="Center"> <b> $brih_assignment $brih_due #if($lang == "hindi") $brih_Of #end $brih_Da  </b> </td>
 		<td  align="Center"> <b> $brih_max $brih_marks </b> </td>
 		#if($gradecheck == "ok")
 		<td align="center">  <b> $brih_marks  </b> </td>
@@ -199,14 +205,14 @@ $!data.getMessage()
 
 	#end
 	</tr>	
-	## #if($user_role ==  "instructor")
+	##if($user_role ==  "instructor")
 	#if(($user_role ==  "instructor") || ($user_role == "teacher_assistant"))
-	#foreach($e in $Assignmentlist )
-	#if($velocityCount%2==0)
-	<tr bgcolor="$ui.menuColor">
-	#else
-	<tr bgcolor="$ui.tableColor">
-	#end
+		#foreach($e in $Assignmentlist )
+			#if($velocityCount%2==0)
+				<tr bgcolor="$ui.menuColor">
+			#else
+				<tr bgcolor="$ui.tableColor">
+			#end
 		<td width="10%"> $!e.getStudentname() , 
 			#if($e.getStudentname() ==  $e.getFullName()) 
 			#else $!e.getFullName() , 
@@ -228,11 +234,12 @@ $!data.getMessage()
 			#if($!e.getStudentfile() != "")
 				<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getStudentfile())","newWin"); style="text-decoration:none">$brih_view</a> </td>
 				<td width="10%" align="center">
-                                #if($!e.getBoolean())
-					<a href=$link.setPage("call,Assignment,PostCorrectAns.vm").addPathInfo("count","2").addPathInfo("topicname","$topicList").addPathInfo("filename",$e.getStudentfile()) style="text-decoration:none"> $brih_correct $brih_answer $DisBoard_DB_msg25 </a> ##post Ans
+				#if($!e.getBoolean())		
+					<a href=$link.setPage("call,Assignment,PostCorrectAns.vm").addPathInfo("count","2").addPathInfo("topicname","$topicList").addPathInfo("filename",$e.getStudentfile()) style="text-decoration:none">  #if($lang == "hindi") Correct Answer Post #else Post Correct Answer #end </a> ##post Ans
 				#end
 			#else
 				</td><td width="10%">
+	
 			#end
 		</td>
 		#end
@@ -314,8 +321,11 @@ $!data.getMessage()
                 #end
 		<td width="10%" align="Center"> $!e.getAssignmentDuedate() </td>  ## Duedate
                 <td width="10%" align="Center"> $!e.getmaxgrade() </td> ## max grade
-		<td width="10%" align="Center">  <a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2").addPathInfo("topicname","$topicList") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td> ##post Ans
-
+		#if($!e.getPostAnsMode()=="Yes")
+			<td width="10%" align="Center">  <a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2").addPathInfo("topicname","$topicList") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td> ##post Ans
+		#else
+			<td width="10%" align="Center">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </td> ##post Ans
+		#end
 		#if($gradecheck == "ok")
                         <td width="10%" align="Center">
                         #if($!e.getgrade() != "")
@@ -348,10 +358,6 @@ $!data.getMessage()
 
         }
 	
-        function popupWin(urlName,popupName)
-        {
-                window.open(urlName,popupName,"toolbar=yes,scrollbars=yes");
-        }
 </script>
 
 
