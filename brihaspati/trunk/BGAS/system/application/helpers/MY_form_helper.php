@@ -74,7 +74,7 @@ if ( ! function_exists('form_dropdown_fund'))
 		$CI =& get_instance();
                 $CI->load->model('Ledger_model');
 
-                $options = $CI->Ledger_model->get_fund_ledgers();
+                $options = $CI->Ledger_model->get_fund_ledgers1();
 
                 // If no selected state was submitted we will attempt to set it automatically
                 if ( ! ($selected))

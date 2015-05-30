@@ -51,6 +51,67 @@ class Secunit_model extends Model {
 		return $secid_q;
 	}
 
+	// get the opening balance for respective secondary unit 
+	function get_sec_opbal($secunit_id)
+	{
+		$this->db->select('opbal, dc')->from('addsecondparty')->where('sacunit',$secunit_id)->limit(1);
+		$sparty_q = $this->db->get();
+        if ($pname = $sparty_q->row())
+           return array($pname->opbal, $pname->dc);
+		else
+			return array(0, "D");
+
+	}
+
+
+	function get_secop_balance1($sec_unit_id)
+	{
+		list ($op_bal, $op_bal_type) = $this->get_sec_opbal($sec_unit_id);
+
+		$dr_total = $this->get_secdr_total1($sec_unit_id);
+		$cr_total = $this->get_seccr_total1($sec_unit_id);
+		//echo $cr_total."==";
+		$total = float_ops($dr_total, $cr_total, '-');
+
+		if ($op_bal_type == "D")
+			$total = float_ops($total, $op_bal, '+');
+		else
+			$total = float_ops($total, $op_bal, '-');
+		return $total;
+	}
+
+	function get_secdr_total1($sec_unit_id)
+	{
+		$this->load->library('session');
+		$date1 = $this->session->userdata('date1');
+		$date2 = $this->session->userdata('date2');
+
+		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.secunitid', $sec_unit_id)->where('entry_items.dc', 'D');
+		$this->db->where('date >=', $date1);
+	    $this->db->where('date <=', $date2);
+		$dr_total_q = $this->db->get();
+		if ($dr_total = $dr_total_q->row())
+			return $dr_total->drtotal;
+		else
+			return 0;
+	}
+
+	function get_seccr_total1($sec_unit_id)
+	{
+		$this->load->library('session');
+		$date1 = $this->session->userdata('date1');
+		$date2 = $this->session->userdata('date2');
+		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.secunitid', $sec_unit_id)->where('entry_items.dc', 'C');
+		$this->db->where('date >=', $date1);
+		$this->db->where('date <=', $date2);
+		$cr_total_q = $this->db->get();
+		if ($cr_total = $cr_total_q->row())
+			return $cr_total->crtotal;
+		else
+			return 0;
+	}
+
+
 	// get the clossing balance for respective secondary unit 
 	function gel_secclsbal($secunit_id)
 	{
@@ -116,63 +177,63 @@ class Secunit_model extends Model {
 
 	
 	/* get entry name with its ledger type of selected date range */
-	function get_sec_unit_report($entry_id, $entry_type_id, $sec_uni_id)
+	/*function get_sec_unit_report($entry_id, $entry_type_id, $sec_uni_id)
 	{
 		/* Selecting both to show debit side Ledger and credit side Ledger */
-		$current_entry_type = entry_type_info($entry_type_id);
+		/*$current_entry_type = entry_type_info($entry_type_id);
 		$ledger_type = 'C';
 
-		if ($current_entry_type['bank_cash_ledger_restriction'] > 1){
-			$ledger_type = 'D';
-
-		$this->db->select('ledgers.name as name');
-		$this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('entry_items.dc', $ledger_type)->where('entry_items.secunitid', $sec_uni_id);
-		$ledger_q = $this->db->get();
-		if ( ! $ledger = $ledger_q->row())
+		if ($current_entry_type['bank_cash_ledger_restriction'] > 1)
 		{
-			return "(Invalid)";
-		} else {
-			$ledger_multiple = ($ledger_q->num_rows() > 1) ? TRUE : FALSE;
-			$html = '';
-			if ($ledger_multiple)
+			$ledger_type = 'D';
+	
+			$this->db->select('ledgers.name as name');
+			$this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('entry_items.dc', $ledger_type)->where('entry_items.secunitid', $sec_uni_id);
+			$ledger_q = $this->db->get();
+			if ( ! $ledger = $ledger_q->row())
+			{
+				return "(Invalid)";
+			}else{
+				$ledger_multiple = ($ledger_q->num_rows() > 1) ? TRUE : FALSE;
+				$html = '';
+				if($ledger_multiple)
 				{
 					foreach($ledger_q->result() as $row)
 					{
 						$html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $row->name . ' - ' . $ledger_type . "<br>", array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
 					}
-				}
-			else{
-				$html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $ledger->name . ' - ' . $ledger_type . "<br>", array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
+				}else{
+					$html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $ledger->name . ' - ' . $ledger_type . "<br>", array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
 			    }
+
 				$ledger_type = 'D';
-				if ($current_entry_type['bank_cash_ledger_restriction'] > 1)
-	
+
+				if ($current_entry_type['bank_cash_ledger_restriction'] > 1){
 					$ledger_type = 'C';
-					$this->db->select('ledgers.name as name');
-				        $this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('entry_items.dc', $ledger_type);
-				        $ledger_q = $this->db->get();
+				}
 
-				        if ( ! $ledger = $ledger_q->row())
-				        {
-				                return "(Invalid)";
-				        }
-					else {
-						 $ledger_multiple = ($ledger_q->num_rows() > 1) ? TRUE : FALSE;
+				$this->db->select('ledgers.name as name');
+		        $this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('entry_items.dc', $ledger_type);
+		        $ledger_q = $this->db->get();
 
-				                if ($ledger_multiple)
+		        if ( ! $ledger = $ledger_q->row())
+		        {
+		                return "(Invalid)";
+		        }else {
+					$ledger_multiple = ($ledger_q->num_rows() > 1) ? TRUE : FALSE;
+				    if ($ledger_multiple)
+					{
+						foreach($ledger_q->result() as $row)
 						{
-							foreach($ledger_q->result() as $row)
-							{
 							$html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $row->name . ' - ' . $ledger_type . "<br>", array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
-							}
 						}
-				                else
-				                        $html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $ledger->name . ' - ' . $ledger_type, array('title' => 'View ' .  $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
-					     }
-			      }
-			return $html;
+					}else
+				        $html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $ledger->name . ' - ' . $ledger_type, array('title' => 'View ' .  $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
+					}
 			}
+			return $html;
+		}
 		return;
-	}
+	}*/
 }
 ?>

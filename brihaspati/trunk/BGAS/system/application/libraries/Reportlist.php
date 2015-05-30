@@ -787,7 +787,8 @@ function expense_total($id,$type,$database)
 
                 $sum= $sum + $total;
 				$total8=0;
-				if($ledg_id == "24")
+
+				if($name == "Grant and Donations")
 				{
 				    $total = (-$total) + $total4 + $total5 + $total7 + $total6;
 				    $total07 = $total1 +$total7 +$total07;
@@ -798,7 +799,7 @@ function expense_total($id,$type,$database)
 					echo "<td align=\"right\">" . convert_amount_dc(-$total) . "</td>";
 					$sum3 = $sum3 + $total07;
 					$this->total3 =$sum3;
-				}elseif($ledg_id == 26){
+				}elseif($name == "Other Incomes"){
 					$total= (-$income_total) - $transit;
 					$total09 = $total09 + $total +$total9;
 					echo "<td align=\"right\">".money_format('%!i',convert_cur($total8))."</td>";

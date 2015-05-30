@@ -1248,7 +1248,7 @@ $width="100%";
 				'dr_total' => $dr_total,
 				'cr_total' => $cr_total,
 			);
-			$this->messages->add('cr_total'.$cr_total.'dr_total'.$dr_total, 'success');
+			//$this->messages->add('cr_total'.$cr_total.'dr_total'.$dr_total, 'success');
 			if ( ! $this->db->where('id', $entry_id)->update('entries', $update_data))
 			{
 				$this->db->trans_rollback();

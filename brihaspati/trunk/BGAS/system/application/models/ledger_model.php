@@ -1412,12 +1412,12 @@ var $ledgers = array();
 		$this->db->select('name, id, group_id, code');
                 $this->db->from('ledgers');
 		$this->db->like('code', '10', 'after');
-		$this->db->not_like('code', '1003', 'after');
+		//$this->db->not_like('code', '1003', 'after');
 		$this->db->not_like('code', '1004', 'after');
 		$this->db->not_like('code', '1005', 'after');
 		$this->db->not_like('code', '1006', 'after');
-		$this->db->not_like('code', '100102', 'after');
-		$this->db->not_like('code', '100101', 'after');
+		//$this->db->not_like('code', '100102', 'after');
+		//$this->db->not_like('code', '100101', 'after');
 		$query = $this->db->get();
 //		$query1 = $query->result();
 //		print_r($query1);
@@ -1426,6 +1426,80 @@ var $ledgers = array();
 				 $funds[$ledger->id] = $ledger->name;
 				}
 			}
+		return $funds;
+	}
+
+	/* code for getting fund ledgers for all four type of formats @megha */
+	function get_fund_ledgers1()
+	{
+		$funds = array();
+        $funds[0] = 'Select Fund';
+
+       	$capital_code = $this->get_account_code('Capital Funds');
+       	$designated_ear_endowmt = $this->get_account_code('Designated-Earmarked/Endowment Funds');
+       	$designated_earmarked = $this->get_account_code('Designated-Earmarked Funds');
+       	$corpus_code = $this->get_account_code('Corpus');
+       	$own_funds = $this->get_account_code('Own Funds');
+       	$reserves_surplus = $this->get_account_code('Reserves and Surplus');
+       	$earmarked = $this->get_account_code('Earmarked');
+       	$endowment = $this->get_account_code('Endowment Funds-L');
+
+       	if ($own_funds == "")
+       	{
+       		// for mhrd old format 
+       		if($designated_earmarked != "")
+       		{
+       			$this->db->select('name, id, group_id, code');
+                $this->db->from('ledgers');
+				$this->db->like('code', '10', 'after');
+				$this->db->not_like('code', '1003', 'after');
+				$this->db->not_like('code', '1004', 'after');
+				$this->db->not_like('code', '1005', 'after');
+				$this->db->not_like('code', '1006', 'after');
+				$this->db->not_like('code', '100102', 'after');
+				//$this->db->not_like('code', '100101', 'after');
+				$query = $this->db->get();
+				if($query->num_rows() > 0)
+				{
+		            foreach($query->result() as $ledger){
+						 $funds[$ledger->id] = $ledger->name;
+					}
+				}
+       		}else{
+       			$this->db->select('name, id, group_id, code');
+                $this->db->from('ledgers');
+				$this->db->like('code', '10', 'after');
+				//$this->db->not_like('code', '1003', 'after');
+				$this->db->not_like('code', '1004', 'after');
+				$this->db->not_like('code', '1005', 'after');
+				$this->db->not_like('code', '1006', 'after');
+				$this->db->not_like('name', 'Balance of net income/expenditure transferred from I/E Account');
+				$query = $this->db->get();
+				if($query->num_rows() > 0)
+				{
+		            foreach($query->result() as $ledger){
+						 $funds[$ledger->id] = $ledger->name;
+					}
+				}
+       		}
+       	}else{
+       		// for corporate format
+       		$this->db->select('name, id, group_id, code');
+            $this->db->from('ledgers');
+			$this->db->like('code', '10', 'after');
+			//$this->db->not_like('code', '1003', 'after');
+			//$this->db->not_like('code', '1004', 'after');
+			$this->db->not_like('code', '1005', 'after');
+			$this->db->not_like('code', '1006', 'after');
+			$this->db->not_like('code', '1007', 'after');
+			$query = $this->db->get();
+			if($query->num_rows() > 0)
+			{
+	            foreach($query->result() as $ledger){
+					 $funds[$ledger->id] = $ledger->name;
+				}
+			}
+       	}
 		return $funds;
 	}
 

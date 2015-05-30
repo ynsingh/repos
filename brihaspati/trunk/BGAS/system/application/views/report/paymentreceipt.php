@@ -76,34 +76,11 @@
 		
 		echo "<table>";
         	echo "<tr valign=\"top\">";
-	
-		//for Payment side....
+		// for receipts side
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Opening Balance</td><td></td></tr>";
-		echo "<thead><tr><th width=\"$left_width\">Payment (Net)</th><th width=\"$right_width\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"$right_width\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
-                        $payment = new Paymentreceipt();
-                        $payment->payment_receipt('Payment', "view","NULL");
-                        $net_payment_total = float_ops($net_payment_total, $payment->total, '+');
-			$net_prev_payment_total = float_ops($net_prev_payment_total, $payment->prev_total, '+');
-			//previous code
-		/*	foreach ($net_expense_list_q->result() as $row)
-			{
-				$net_expense = new Reportlist();
-				$net_expense->init($row->id);
-				$net_expense->account_st_short(0);
-				$net_expense_total = float_ops($net_expense_total, $net_expense->total, '+');
-				$net_old_expense_total = float_ops($net_old_expense_total, $net_expense->total2, '+');
-			}*/
-		echo "</table>";
-		echo "</td>";//end of payment side....
-		
-		//for Receipt side....
-	/*	$this->db->from('groups')->where('parent_id', 3)->where('affects_gross !=', 1);
-		$net_income_list_q = $this->db->get();*/
-		echo "<td>";
-		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<tr></td><td></td><td></td><td align=\"right\" class=\"bold\">" . convert_amount_dc($tot_op_bal) . "</td></tr>";
+		echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Opening Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($tot_op_bal) . "</td></tr>";
+		//echo "<tr></td><td></td><td></td></tr>";
 		echo "<thead><tr><th width=\"$left_width\">Receipt (Net)</th><th width=\"$right_width\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"$right_width\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 			$receipt = new Paymentreceipt();
                 	$receipt->payment_receipt('Receipt', "view","NULL");
@@ -119,7 +96,29 @@
 				$net_old_income_total = float_ops($net_old_income_total, $net_income->total2, '+');
 			}*/
 		echo "</table>";
-		echo "</td>";//end....
+		echo "</td>";
+
+		//for Payment side....
+		echo "<td>";
+		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
+		echo "<thead><tr><th width=\"$left_width\">Payment (Net)</th><th width=\"$right_width\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"$right_width\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
+                        $payment = new Paymentreceipt();
+                        $payment->payment_receipt('Payment', "view","NULL");
+                        $net_payment_total = float_ops($net_payment_total, $payment->total, '+');
+			$net_prev_payment_total = float_ops($net_prev_payment_total, $payment->prev_total, '+');
+			//previous code
+		/*	foreach ($net_expense_list_q->result() as $row)
+			{
+				$net_expense = new Reportlist();
+				$net_expense->init($row->id);
+				$net_expense->account_st_short(0);
+				$net_expense_total = float_ops($net_expense_total, $net_expense->total, '+');
+				$net_old_expense_total = float_ops($net_old_expense_total, $net_expense->total2, '+');
+			}*/
+		echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Closing Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($ledbalance) . "</td></tr>";
+		echo "</table>";
+		echo "</td>";//end of payment side....
+		
 		//Previous code
 		/*$net_income_total = -$net_income_total; /* Converting to positive value since Cr */
 		/*$net_old_income_total = -$net_old_income_total; /* Converting to positive value since Cr */
@@ -128,7 +127,7 @@
 		//$nettotal = $net_expense_total;
 		//$net_old_total = $net_old_expense_total;
 		//closing of bank and cash account....
-		echo "<tr valign=\"top\" class=\"total-area\">";
+		/*echo "<tr valign=\"top\" class=\"total-area\">";
 		echo "<td>";
                 echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
                 echo "<tr valign=\"top\" class=\"tr-balance\">";
@@ -149,11 +148,24 @@
                 echo "</table>";
                 echo "</td>";
 
-		echo"</tr>";
+		echo"</tr>";*/
 		//end....
 
 		//for Total balance....
+
+		$net_receipt_total = $tot_op_bal + $net_receipt_total;
+		$net_payment_total = $net_payment_total + $ledbalance;
 		echo "<tr valign=\"top\" class=\"total-area\">";
+		echo "<td>";
+		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
+		echo "<tr valign=\"top\" class=\"tr-balance\">";
+		echo "<td width=\"$left_width\" class=\"bold\">Total</td>";
+		echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($net_receipt_total)) . "</td>";
+		echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($net_prev_receipt_total)) . "</td>";
+		echo "</tr>";
+		echo "</table>";
+		echo "</td>";
+
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 		echo "<tr valign=\"top\" class=\"tr-balance\">";
@@ -164,15 +176,6 @@
 		echo "</table>";
 		echo "</td>";
 
-		echo "<td>";
-		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
-		echo "<tr valign=\"top\" class=\"tr-balance\">";
-		echo "<td width=\"$left_width\" class=\"bold\">Total</td>";
-		echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($net_receipt_total)) . "</td>";
-		echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($net_prev_receipt_total)) . "</td>";
-		echo "</tr>";
-		echo "</table>";
-		echo "</td>";
 		echo "</tr>";//end of Total balance....
 	
 		echo "</tr>";
