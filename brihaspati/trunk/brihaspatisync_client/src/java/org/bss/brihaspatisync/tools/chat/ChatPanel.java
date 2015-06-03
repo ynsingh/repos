@@ -154,7 +154,7 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
       		if (e.getKeyCode() == KeyEvent.VK_ENTER){
 			try {
 	         		tf = (JTextField)e.getSource();
-				msg = java.net.URLDecoder.decode(ClientObject.getUserName(),"UTF-8")+" : "+tf.getText();
+				msg = java.net.URLDecoder.decode(ClientObject.getUser_full_name(),"UTF-8")+" : "+tf.getText();
 				if (tf.getText().length() == 0)  return;
          			else {
 					showChatMSG(msg);

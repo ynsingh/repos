@@ -99,6 +99,7 @@ public class UserListPanel extends Thread {
 		user_id.clear();	
 		statusVector.clear();
 		user_full_name.clear();
+		 System.out.println("value of user_full_name in userlistpanel:"+user_full_name);
                 temp_role.clear();
 		try {
 			String str=RuntimeDataObject.getController().getUserList();
@@ -131,11 +132,13 @@ public class UserListPanel extends Thread {
 				user_id.add(k,(String)st.nextToken());
 				statusVector.add(k,st.nextToken().trim());
                 	        user_full_name.add(k,java.net.URLDecoder.decode(st.nextToken().trim()));
+				System.out.println("value of user_full_name1 in userlistpanel:"+user_full_name);
                                 temp_role.add(k,st.nextToken().trim());
 			 } else {
 				user_id.add((String)st.nextToken());
                                 statusVector.add(st.nextToken().trim());
                                 user_full_name.add(java.net.URLDecoder.decode(st.nextToken().trim()));
+				 System.out.println("value of user_full_name2 in userlistpanel:"+user_full_name);
                                 temp_role.add(st.nextToken().trim());
 		                }
 			}
@@ -150,8 +153,11 @@ public class UserListPanel extends Thread {
 		Object elements[][]=new Object[user_id.size()][6];
 		for (int i=0;i<statusVector.size();i++){
 			String user = (String)user_id.get(i);
-			String status=(String)statusVector.get(i);	
-			String fullname=(String)user_full_name.get(i);	
+			String status=(String)statusVector.get(i);
+			String fullname=(String)user_full_name.get(i);
+			if(user.equals(username)){
+			          ClientObject.setUser_full_name(fullname);
+			}
 	    		String temprole = (String)temp_role.get(i);
 			if(role.equals("student")) {
 		        	if((user.equals(username)) && (status.equals("Allow-Permission") || (status.equals ("Get-Permission")))) {

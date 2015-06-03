@@ -9,6 +9,7 @@ package org.bss.brihaspatisync.util;
 
 import java.util.Vector;
 import org.bss.brihaspatisync.http.HttpCommManager;
+import org.bss.brihaspatisync.gui.UserListPanel;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -34,6 +35,7 @@ public class ClientObject {
 	private static String selectedUserlistname="";
 	
 	private static Vector usrNameVector=null;
+	private static String user_full_name="";
 	private static Vector usrStatusVector=null;
 	private static Vector indexServerList=null;
 	private static String parent_ref="";
@@ -121,19 +123,28 @@ public class ClientObject {
          * This method is used to get user name of this client which is used to login authentication from login window.
          */
 	public static String getUserName(){
+	
+        System.out.println("value of usr_name in clientobject:"+usr_name);
 		return usr_name;
 	}
 	
 	public static String getwelcomeUserName(){
                 String name_new=usr_name;
+		 System.out.println("value of name_new in clientobject:"+name_new);
                 try {
                         if(name_new.length()>9){
                                 name_new=name_new.substring(0,7);
+				 System.out.println("value of name_new1 in clientobject:"+name_new);
                                 name_new=name_new+"..";
+				 System.out.println("value of name_new2 in clientobject:"+name_new);
                         }
                 }catch(Exception e){}
+		 System.out.println("value of name_new3 in clientobject:"+name_new);
                 return name_new;
         }
+	
+	
+
 
 	/**
          * This method is used to get user role of this client.
@@ -183,6 +194,11 @@ public class ClientObject {
 	public static Vector getUsrNameVector(){
 		return usrNameVector;
 	}
+	
+	 public static String getUser_full_name(){
+                return user_full_name;
+        }
+
 
 	public static void setIndexServerName(String value){
 		indexServerName=value;
@@ -217,6 +233,11 @@ public class ClientObject {
                         usrNameVector.clear();
                 usrNameVector=value;
         }
+	//Set the user full name
+	public static void setUser_full_name(String value){
+               	user_full_name=value;
+        }
+
 	public static void setLocalIP(String str){
 		localIP=str;
 	}
