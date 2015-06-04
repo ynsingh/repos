@@ -40,7 +40,7 @@ a:hover {
 	margin-left: 10px;
 	margin-right: 10px;
 	padding-right: 10px;
-	width: 90%;
+	width: 100%;
 }
 
 .mainpage .rightbar .logo img {
@@ -108,7 +108,7 @@ a:hover {
 .mainpage .body {
 	position: relative;
 	float:left;
-    width:85%;
+     width:85%;
     padding:0px 0px;
 }
 
@@ -121,7 +121,7 @@ a:hover {
 .mainpage .body .content-area {
 	position: relative;
 	margin: 0px;
-	background-color: #FFF;
+	background-color: #FFFFFF;
 	width: 100%;
 	
 	}
@@ -132,3 +132,8 @@ a:hover {
      border: 0px;
    
  }
+    .pic
+    {
+     margin-right: -2px;
+     margin-left: -2px;
+    }

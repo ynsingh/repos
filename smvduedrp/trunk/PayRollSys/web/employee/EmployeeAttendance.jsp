@@ -66,15 +66,17 @@
                 <a4j:commandLink ajaxSingle="true" reRender="helppnl" onclick="Richfaces.showModalPanel('hnl');" >
                 <h:graphicImage value="/img/help-icon.png" alt="Help" /> 
                 </a4j:commandLink>
-                </div>   
-                 <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add Attendane"/> 
-                 <h:commandButton onclick="Richfaces.showModalPanel('dnl');" value="Upload Attendance"/>
-                 <%-- <h:commandButton onclick="Richfaces.showModalPanel('chk');" value="Check Attendance"/><br/>--%> 
+                </div>  
+                <div>
+                    <div>
+                    <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add Attendane"/> 
+                    <h:commandButton onclick="Richfaces.showModalPanel('dnl');" value="Upload Attendance"/>
+                    </div>
                  <h:form>
-                     <h:commandButton action="#{AttendanceBean.callPage}" value="Check Attendance"/>
+                        <h:commandButton action="#{AttendanceBean.callPage}" value="Check Attendance"/>
                  </h:form>
                  </div>
-                  <rich:separator  style="width:100%;" /><br/> 
+                 <rich:separator  style="width:100%;" /><br/> 
                   <h:form>
                   <h:panelGrid columns="5">
                          <h:outputText value="View Attendance"/>
@@ -82,7 +84,7 @@
                                         <f:selectItem itemValue="0" itemLabel="January"/>
                                         <f:selectItem itemValue="1" itemLabel="February"/>
                                         <f:selectItem itemValue="2" itemLabel="March"/>
-                                        <f:selectItem itemValue="3" itemLabel="Aprial"/>
+                                        <f:selectItem itemValue="3" itemLabel="April"/>
                                         <f:selectItem itemValue="4" itemLabel="May"/>
                                         <f:selectItem itemValue="5" itemLabel="June"/>
                                         <f:selectItem itemValue="6" itemLabel="July"/>
@@ -201,7 +203,7 @@
                                         <f:selectItem itemValue="0" itemLabel="January"/>
                                         <f:selectItem itemValue="1" itemLabel="February"/>
                                         <f:selectItem itemValue="2" itemLabel="March"/>
-                                        <f:selectItem itemValue="3" itemLabel="Aprial"/>
+                                        <f:selectItem itemValue="3" itemLabel="April"/>
                                         <f:selectItem itemValue="4" itemLabel="May"/>
                                         <f:selectItem itemValue="5" itemLabel="June"/>
                                         <f:selectItem itemValue="6" itemLabel="July"/>
@@ -261,7 +263,7 @@
                                         <f:selectItem itemValue="0" itemLabel="January"/>
                                         <f:selectItem itemValue="1" itemLabel="February"/>
                                         <f:selectItem itemValue="2" itemLabel="March"/>
-                                        <f:selectItem itemValue="3" itemLabel="Aprial"/>
+                                        <f:selectItem itemValue="3" itemLabel="April"/>
                                         <f:selectItem itemValue="4" itemLabel="May"/>
                                         <f:selectItem itemValue="5" itemLabel="June"/>
                                         <f:selectItem itemValue="6" itemLabel="July"/>

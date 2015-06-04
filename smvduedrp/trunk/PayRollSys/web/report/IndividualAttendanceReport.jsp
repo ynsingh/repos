@@ -58,7 +58,7 @@
                                         <f:selectItem itemValue="0" itemLabel="January"/>
                                         <f:selectItem itemValue="1" itemLabel="February"/>
                                         <f:selectItem itemValue="2" itemLabel="March"/>
-                                        <f:selectItem itemValue="3" itemLabel="Aprial"/>
+                                        <f:selectItem itemValue="3" itemLabel="April"/>
                                         <f:selectItem itemValue="4" itemLabel="May"/>
                                         <f:selectItem itemValue="5" itemLabel="June"/>
                                         <f:selectItem itemValue="6" itemLabel="July"/>

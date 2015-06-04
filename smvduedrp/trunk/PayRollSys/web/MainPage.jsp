@@ -74,27 +74,28 @@
                     }
                     return true;
                 }
-
+ 
             </script>
+                       
             </head>
+            <div style=" margin-left: 10%; margin-right: 10%; margin-top: 1%">
             <body id="" class="mainpage">
             <a4j:keepAlive beanName="userBeans" ajaxOnly="true"/>
             <a4j:keepAlive beanName="SalaryProcessingSetup" ajaxOnly="true"/>
-            <div style=" margin-left: 10%">
+            
             <h:form>
-                <rich:panel style="height:150px; width:90%; padding:0px; border-width:0px;">
-                        <div  align="left">
-                            <%--<h:graphicImage url="/img/pls1.png"/>--%>
-                            <h:graphicImage url="/img/payrollheader.png" width="1246" height="140" style="0" />
-                        </div>
-                        <div  align="right">
-                            <%--<h:graphicImage url="/img/3_1.PNG" style="margin-top:-100px;"/>--%>
-                        </div>
-                    </rich:panel>
-                <rich:toolBar width="90%;" height="10px">
+                 <h:graphicImage url="/img/payrollheader.png" width="100%" height="100%" />
+                    <%--  <rich:panel style="height:130px; width:100%; padding:0px; border-width:0px;">
+                    <%--<h:graphicImage url="/img/pls1.png" width="100%" height="100%"/>--%>
+                    <%--<h:graphicImage url="/img/payrollheader.png" width="100%" height="100%" />--%>
+                    <%--      <div  align="right">
+                    <%--<h:graphicImage url="/img/3_1.PNG" style="margin-top:-100px;"/>--%>
+                    <%--    </div>
+                    </rich:panel>--%>
+                    <rich:toolBar width="100%;" height="10px" >
                     <rich:hotKey  key="alt+k" handler="#{rich:component('em')}.expand()"/>
 
-                    <rich:dropDownMenu  id="se" value="Setup">
+                    <rich:dropDownMenu  id="se" value="Setup" styleClass="pic" >
                         <rich:menuItem  id="se1"   onclick="return loadIframe('ifrm', 'setup/SessionSetup.jsf')"  value="Financial Years"/>
                         <rich:menuItem  id="se2"  onclick="return loadIframe('ifrm', 'setup/Departments.jsf')"  value="Department"/>
                         <rich:menuItem  id="se3"  onclick="return loadIframe('ifrm', 'setup/Designation.jsf')" value="Designation"/>
@@ -112,13 +113,13 @@
                         <rich:menuItem  id="se11"  onclick="return loadIframe('ifrm', 'attendance/LeaveTypes.jsf')" value="Leave Types"/>
                        
                     </rich:dropDownMenu>
-                    <rich:dropDownMenu id="em"   value="Employee"><%-- rendered="#{readUserTaskList.userTaskId == 'em'}" --%>
+                    <rich:dropDownMenu id="em"   value="Employee" styleClass="pic" ><%-- rendered="#{readUserTaskList.userTaskId == 'em'}" --%>
                         <rich:menuItem id="em1" onclick="return loadIframe('ifrm', 'employee/EmployeeProfile.jsf')"  value="Add Profile"/>
                         <rich:menuItem id="em2" onclick="return loadIframe('ifrm', 'employee/EditEmployeeProfile.jsf')" value="Edit Profile"/>
                         <rich:menuItem id="em3" onclick="return loadIframe('ifrm', 'employee/SearchEmployee.jsf')" value="Search Profiles"/>
                         <rich:menuItem id="em4" onclick="return loadIframe('ifrm', 'employee/EmployeeAttendance.jsf')" value="Employee Attendance"/>
                     </rich:dropDownMenu> 
-                    <rich:dropDownMenu  id="sa"   value="Salary">
+                    <rich:dropDownMenu  id="sa"   value="Salary" styleClass="pic" >
                         <rich:menuItem  id="sa1" onclick="return loadIframe('ifrm','salary/SalaryFormula.jsf')" value="Salary Formula"/>
                         <rich:menuItem  id="sa2" onclick="return loadIframe('ifrm','salary/DefaultSalaryData.jsf')" value="Default Salary values"/>
                         <rich:menuItem  id="sa3" onclick="return loadIframe('ifrm','salary/SalarySettings.jsf')" value="Type wise Salary Head Setting"/>
@@ -130,7 +131,7 @@
                         <rich:separator/>
                         <rich:menuItem value="Exit"/>
                     </rich:dropDownMenu>
-                    <rich:dropDownMenu  id="ad"  value="Administration ">
+                    <rich:dropDownMenu  id="ad"  value="Administration " styleClass="pic" >
                             <rich:menuItem  id="ad1"  onclick="return loadIframe('ifrm','adm/Salary.jsf')" value="Lock Salary"/>
                             <rich:menuGroup id="ad2"  value="Module Management" direction="right-bottom">
                                 <rich:menuItem id="ad21" onclick="return loadIframe('ifrm','userOperation/createUser.jsf')" value="Create New User"/>
@@ -139,7 +140,7 @@
                             </rich:menuGroup>
                     </rich:dropDownMenu>
                     
-                    <rich:dropDownMenu  id="tm"  value="Tax Management">
+                    <rich:dropDownMenu  id="tm"  value="Tax Management" styleClass="pic">
                         <rich:menuItem  id="tm1"    onclick="return loadIframe('ifrm', 'investment/InvestmentCategory.jsf')"  value="Main Head Sections"/>
                         <rich:menuItem  id="tm2"   onclick="return loadIframe('ifrm', 'investment/InvestmentHead.jsf')"  value="Investment Heads"/>
                         <rich:menuItem  id="tm3"   onclick="return loadIframe('ifrm', 'investment/EmployeeInvestment.jsf')" value="Investment Form"/>
@@ -163,14 +164,14 @@
                                 <rich:menuItem onclick="return loadIframe('ifrm', 'attendance/LeaveValue.jsf')"  value="Leave Values Setup"/>
                                 <rich:menuItem onclick="return loadIframe('ifrm', 'attendance/LeaveQuota.jsf')"  value="Leave Quota Setup"/>
                   </rich:dropDownMenu> --%>
-                  <rich:dropDownMenu  id="pf"   value="PF Management">
+                  <rich:dropDownMenu  id="pf"   value="PF Management" styleClass="pic">
                         <rich:menuItem  id="pf1"   onclick="return loadIframe('ifrm', 'pf/OpeningBalance.jsf')"  value="Opening Balance"/>
                         <rich:menuItem  id="pf2"  onclick="return loadIframe('ifrm', 'pf/PFWithdrawal.jsf')"  value="PF Withdrawal"/>
                         <rich:menuItem  id="pf3"  onclick="return loadIframe('ifrm', 'pf/PFAccount.jsf')"  value="PF Account"/>
                     </rich:dropDownMenu>
                     <%--- H R Management-----------------%>
                     
-                    <rich:dropDownMenu  id="hr"   value="HR Management">
+                    <rich:dropDownMenu  id="hr"   value="HR Management" styleClass="pic" >
                         <rich:menuItem id="hr1" onclick="return loadIframe('ifrm', 'employee/EmployeefamilyRecord.jsf')" value="Employee Family Record"/>
                         <rich:menuItem id="hr2" onclick="return loadIframe('ifrm', 'employee/EmployeeServiceHistory.jsf')" value="Employee Service History"/>
                         <rich:menuItem id="hr3" onclick="return loadIframe('ifrm', 'employee/EmployeeQualification.jsf')" value="Employee Education Details"/>
@@ -188,7 +189,7 @@
                     </rich:dropDownMenu>
                                        
                     <%--- H R Management-----------------%>
-                    <rich:dropDownMenu  id="re"   value="Report">
+                    <rich:dropDownMenu  id="re"   value="Report" styleClass="pic">
                         <rich:menuItem  id="re1"  onclick="return loadIframe('ifrm', 'report/ReportExporterBankStatement.jsf?fwdLink=BankStatement.jsf')"  value="Bank Statement"/>
                         <rich:menuItem  id="re2" onclick="return loadIframe('ifrm', 'report/ReportExporterMonthlySlip.jsf?fwdLink=MonthlySalarySingle.jsf')"  value="Monthly Salary Slip"/>
                         <rich:menuItem  id="re3" onclick="return loadIframe('ifrm','salary/MonthlyIndividualGrossSalary.jsf')" value="Individual Gross Salary"/>
@@ -200,7 +201,7 @@
                         <rich:menuItem  id="re9" onclick="return loadIframe('ifrm','report/AnnualAttendanceReport.jsf?fwdLink=AttendanceReportMonthly.jsf')" value="Annual Attendance Report"/>
                     </rich:dropDownMenu>
 
-                    <rich:dropDownMenu  id="tr"   value="Tax Reports">
+                    <rich:dropDownMenu  id="tr"   value="Tax Reports" styleClass="pic" >
                         <rich:menuItem  id="tr1"   onclick="return loadIframe('ifrm','taxreports/TaxReport.jsf')" value="Employee Wise Investments"/>
                         <rich:menuItem  id="tr2"   onclick="return loadIframe('ifrm','taxreports/AnnualTax.jsf')" value="Annual Payable Tax"/>
                         <rich:menuItem  id="tr3"   onclick="return loadIframe('ifrm','taxreports/FinalTaxPayable.jsf')" value="Form 16"/>
@@ -209,7 +210,7 @@
 
                     </rich:dropDownMenu>
 
-                    <rich:dropDownMenu  id="t"   value="Tools">
+                    <rich:dropDownMenu  id="t"   value="Tools" styleClass="pic" >
                         <%--  <rich:menuItem onclick="return loadIframe('ifrm', 'tool/ArrCalculator.jsf')"  value="Arrear Calculator Tool"/> --%>
                         <rich:menuItem  id="t1"  onclick="return loadIframe('ifrm', 'tool/SalaryCopier.jsf')"  value="Salary Copy Tool"/>
                         <%--  <rich:menuItem onclick="return loadIframe('ifrm', 'tool/ReportTool.jsf')"  value="Report Tool"/> --%>
@@ -225,7 +226,7 @@
 
             <div class="sidebar">
                 <%-- <rich:panel id="leftpa" >--%>
-                    <rich:panel style="height:563px; width:100%; padding:0px; border-width:0px;">
+                    <rich:panel style="height:575px; width:100%; padding:0px; border-width:0px;">
                     <div class="logo">  </div>
                     <rich:panel>
                         <h:form>
@@ -297,14 +298,14 @@
             </div>
                     
             <div class="body">
-                 <%-- <div class="content-area" >
+                <%-- <div class="content-area" >
                     <iframe name="ifrm" id="ifrm" src="Home.jsf" style="background-color:#ffffff"
-                            width="100%;" height="600px">Your browser doesn't support iframes.</iframe>
+                            width="100%;" height="575px">Your browser doesn't support iframes.</iframe>
 
                 </div>--%>
                  <div class="content-area" >
                     <iframe name="ifrm" id="ifrm" src="setup/SessionSetup.jsf" style="background-color: whitesmoke "
-                            width="88%;" height="563px">Your browser doesn't support iframes.</iframe>
+                            width="100%;" height="575px">Your browser doesn't support iframes.</iframe>
 
                 </div>
                              
@@ -361,8 +362,6 @@
                     </h:panelGrid>
                 </h:form>
             </rich:modalPanel>
-
-
 
             <rich:modalPanel id="cp">
                 <h:form>
@@ -443,8 +442,9 @@
                     </h:panelGrid>
                 </h:form>
             </rich:modalPanel>
-            <rich:toolBar width="90%;" height="20px"> Developed by : SMVDU Team, and IIT KANPUR Team </rich:toolBar>
-            </dir>
+                <rich:toolBar width="100%;" height="25px" > Developed by : SMVDU Team, and IIT KANPUR Team </rich:toolBar>
+                                 
         </body>
+       </dir>
     </html>
 </f:view>
