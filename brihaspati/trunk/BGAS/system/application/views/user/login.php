@@ -10,6 +10,7 @@
 	echo "<p>";
 	echo form_label('Password', 'user_password');
 	echo "<br />";
+	//echo form_password();
 	echo form_password($user_password);
 	echo "</p>";
 
@@ -19,7 +20,12 @@
 */
 	echo "<p>";
 	echo form_submit('submit', 'Login');
+                echo " ";
+                echo anchor('user/forgotpassword', 'Forgot Password', array('title' => 'Forgot Password'));
 	echo "</p>";
-
 	echo form_close();
+?>
+<?php	echo "</p>";
+
+
 

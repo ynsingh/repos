@@ -46,7 +46,7 @@ class User extends Controller {
 		$data['user_name'] = array(
 			'name' => 'user_name',
 			'id' => 'user_name',
-			'maxlength' => '100',
+			'maxlength' => '255',
 			'size' => '40',
 			'value' => '',
 		);
@@ -137,6 +137,302 @@ class User extends Controller {
 		$db1->close();
 		return;
 	}
+	
+	function forgotpassword()
+	{
+		$this->template->set('page_title', 'Forgot Password');
+		$this->load->helper('string');
+		$this->load->helper('date');
+		$this->load->library('paymentreceipt');
+		/* Form fields */
+                $data['user_name'] = array(
+                        'name' => 'user_name',
+                        'id' => 'user_name',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => '',
+                );
+		/* Form validations */
+                $this->form_validation->set_rules('user_name', 'User name', 'trim|required|min_length[1]|max_length[255]');
+		/* Re-populating form */
+                if ($_POST)
+                {
+                        $data['user_name']['value'] = $this->input->post('user_name', TRUE);
+		}
+		 if ($this->form_validation->run() == FALSE)
+                    {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('user_template', 'user/forgotpassword', $data);
+                        return;
+                }
+		else
+                {
+                        $data_user_name = $this->input->post('user_name', TRUE);
+
+		}
+		/* Create bgasuser table in login database*/
+                $db1=$this->load->database('login', TRUE);
+                /* check if user exist */
+		$db1->select('username')->from('bgasuser')->where('username =', $data_user_name);
+		$query = $db1->get();
+		if (!($query->num_rows() > 0)){
+			$this->messages->add('User Account does not exists.'.$data_user_name, 'error');
+                        $this->logger->write_message("error", "User Account does not exist" . $data_user_name);
+			$this->template->load('user_template', 'user/forgotpassword', $data);
+			$db1->close();
+                        return;
+		}
+		else{
+			// create message
+			$randstr = random_string('alnum', 16);
+			$slug = md5($data_user_name . $randstr);
+			$message = 'To reset your password please click the link below and follow the instructions:'. site_url('user/resetpassword/'. $data_user_name .'/'. $slug) .' <br>If you did not request to reset your password then please just ignore this email and no changes will occur.<br><br> Note: This reset code will expire after two days.';
+			$subject = 'Reset your Password';
+			// send mail to user
+			$this->paymentreceipt->send_mail($data_user_name,$subject,$message);
+			// store key to database
+			$cdate = date("Y-m-d h:i:s");
+			$d=strtotime("+2 Days");
+			$exdate =  date("Y-m-d h:i:s", $d);
+			$db1->trans_start();
+                        $insert_data = array(
+                    		'username' => $data_user_name,
+                                'rkey'=> $slug,
+                                'passdate' => $cdate,
+                                'expdate' => $exdate,
+                         );
+			if ( ! $db1->insert('forgotPass', $insert_data))
+                        {
+	                        $db1->trans_rollback();
+                                $this->messages->add('Error addding User key for forgot password - ' . $data_user_name .'.', 'error');
+                                $this->logger->write_message("error", "Error adding User key for forgot password " . $data_user_name . $cdate . $exdate . $slug );
+				redirect('user/login');
+	                        $db1->close();
+                                return;
+                         }
+                         else{
+	                         $db1->trans_complete();
+				 $this->messages->add('Please check your email to reset password. '. $data_user_name, 'success');
+	                         $this->logger->write_message("success", " Mail send to user for reset password" . $data_user_name);
+				 redirect('user/login');
+	                         $db1->close();
+                                 return;
+                        }
+		}
+	}
+
+	function resetpassword()
+        {
+                $this->template->set('page_title', 'Reset Password');
+                $this->load->helper('string');
+                $this->load->helper('date');
+                $this->load->library('paymentreceipt');
+		$user_nm = $this->uri->segment(3);
+		if(!$user_nm)
+		{
+			$this->messages->add('Invalid reset code ', 'error');
+			$this->template->load('user_template', 'user/forgotpassword', $data);
+                        return;
+		}
+		$hash = $this->uri->segment(4);
+		if(!$hash) 
+		{
+			$this->messages->add('Invalid reset code', 'error');
+			$this->template->load('user_template', 'user/forgotpassword', $data);
+                        return;
+		}
+
+                /* Create bgasuser table in login database*/
+                $db1=$this->load->database('login', TRUE);
+		/* check if user exist */
+                $db1->select('rkey')->from('forgotPass')->where('username =', $user_nm);
+                $query = $db1->get();
+                if (!($query->num_rows() > 0)){
+                        $this->messages->add('User Account with reset key does not exists.'.$user_nm.'and'.$hash, 'error');
+                        $this->logger->write_message("error", "User Account or key  does not exist" . $user_nm);
+			redirect('user/forgotpassword');
+                        $db1->close();
+                        return;
+                }
+                else{
+			// get the values from db and compare with hash
+			foreach($query -> result() as $row){
+				$ukey = $row->rkey;
+			}
+			// if matched then open password window
+			if (!($hash == $ukey)){
+				$this->messages->add('User Account with reset key either does not exists or does not match.', 'error');
+                        	$this->logger->write_message("error", "User Account or key either does not exist or does not match" . $user_nm);
+				redirect('user/forgotpassword');
+        	                $db1->close();
+	                        return;
+			}
+			else{
+			// open password window
+	                /* Form fields */
+	        	        $data['user_name'] = array(
+        	        	        'name' => 'user_name',
+                	        	'id' => 'user_name',
+	                	        'maxlength' => '100',
+        	                	'size' => '40',
+	                	        'value' => '',
+					'readonly'=>'true',
+	        	        );
+		
+				$data['password'] = array(
+                	        	'name' => 'password',
+	                        	'id' => 'password',
+		                        'maxlength' => '100',
+        		                'size' => '40',
+                		        'value' => '',
+		                );
+	
+				$data['cnfpassword'] = array(
+        		                'name' => 'cnfpassword',
+                        		'id' => 'cnfpassword',
+	                        	'maxlength' => '100',
+	        	                'size' => '40',
+        	        	        'value' => '',
+	        	        );
+
+        	        /* Form validations */
+	                	$this->form_validation->set_rules('user_name', 'User name', 'trim|required|min_length[1]|max_length[255]');
+		                $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[1]|max_length[255]');
+        		        $this->form_validation->set_rules('cnfpassword', 'Confirm Password', 'trim|required|min_length[1]|max_length[255]|matches[password]');
+
+                	/* Re-populating form */
+	                	if ($_POST)
+	        	        {
+        	        	        $data['user_name']['value'] = $this->input->post('user_name', TRUE);
+                	        	$data['password']['value'] = $this->input->post('password', TRUE);
+	                	        $data['cnfpassword']['value'] = $this->input->post('cnfpassword', TRUE);
+	        	        }
+        	        	if ($this->form_validation->run() == FALSE)
+	        	        {
+					$data['user_name']['value'] = $user_nm;
+                        		$this->messages->add(validation_errors(), 'error');
+		                        $this->template->load('user_template', 'user/resetpassword', $data);
+        		                return;
+                		}
+	                	else
+	                	{
+                                         $db1->close();
+					 redirect('user/login');
+                                         return;
+				}
+			}
+                }
+        }
+
+
+	function changepasswd()
+        {
+		$this->load->helper('string');
+                $this->load->helper('date');
+                $this->load->library('paymentreceipt');
+		/* Form fields */
+                $data['user_name'] = array(
+                	'name' => 'user_name',
+                        'id' => 'user_name',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => '',
+                        'readonly'=>'true',
+                );
+
+                $data['password'] = array(
+                	'name' => 'password',
+                        'id' => 'password',
+                        'maxlength' => '100',
+                          'size' => '40',
+                                'value' => '',
+                        );
+
+                        $data['cnfpassword'] = array(
+                                'name' => 'cnfpassword',
+                                'id' => 'cnfpassword',
+                                'maxlength' => '100',
+                                'size' => '40',
+                                'value' => '',
+                        );
+
+                        /* Form validations */
+                        $this->form_validation->set_rules('user_name', 'User name', 'trim|required|min_length[1]|max_length[255]');
+                        $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[1]|max_length[255]');
+                        $this->form_validation->set_rules('cnfpassword', 'Confirm Password', 'trim|required|min_length[1]|max_length[255]|matches[password]');
+
+                        /* Re-populating form */
+                        if ($_POST)
+                        {
+                                $data['user_name']['value'] = $this->input->post('user_name', TRUE);
+                                $data['password']['value'] = $this->input->post('password', TRUE);
+                                $data['cnfpassword']['value'] = $this->input->post('cnfpassword', TRUE);
+                        }
+                        if ($this->form_validation->run() == FALSE)
+                        {
+                                $this->messages->add(validation_errors(), 'error');
+                                $this->template->load('user_template', 'user/resetpassword', $data);
+                                return;
+                        }
+                        else
+                        {
+                                // get user name and both password
+                                // check both are same 
+                                $data_user_name = $this->input->post('user_name', TRUE);
+                                $data_password = $this->input->post('password', TRUE);
+				$data_cnfpassword = $this->input->post('cnfpassword', TRUE);
+				
+				/* Create bgasuser table in login database*/
+		                $db1=$this->load->database('login', TRUE);
+
+                                // then reset the password and update in database
+                                $db1->trans_start();
+                                $update_data = array(
+                                        'username' => $data_user_name,
+                                        'password'=> md5($data_cnfpassword),
+                                 );
+                                if ( ! $db1->where('username', $data_user_name)->update('bgasuser', $update_data))
+                                {
+                                        $db1->trans_rollback();
+                                        $this->messages->add('Error updating User Account - ' . $data_user_name . '.', 'error');
+                                        $this->logger->write_message("error", "Error updating password in User Account " . $data_user_name);
+                                        $db1->close();
+					redirect('user/login');
+                                        return;
+                                }
+                                 else{
+                                         $db1->trans_complete();
+                                         $this->messages->add('Your Password reset sucessfully and mail send. Now you can login with new password'. ' success');
+                                         $this->logger->write_message("success", "Updated password in user account called " . $data_user_name );
+                                         // send the mail with  new  password, create message
+                                         $message = 'Your password has been reset. The new password is '.$data_cnfpassword;
+                                         $subject = 'Your updated Password';
+
+                                         // delete the reset code from forgot password table.
+					if ( ! $db1->where('username', $data_user_name)->delete('forgotPass'))
+					{
+						$db1->trans_rollback();
+						$this->messages->add('Error delete User reset key - ' . $data_user_name . '.', 'error');
+	                                        $this->logger->write_message("error", "Error deleting reset in User Account " . $data_user_name);
+						$db1->close();
+						redirect('user/login');
+        	                                return;
+					}
+					else{
+						$db1->trans_complete();
+	                                        $this->messages->add('User reset key is removed from the system'. ' success');
+						$this->logger->write_message("success", "User password reset key is removed from the system " . $data_user_name);
+					}
+	
+                                         // send mail to user
+                                         $this->paymentreceipt->send_mail($data_user_name,$subject,$message);
+                                         $db1->close();
+					 redirect('user/login');
+                                         return;
+                                }
+                        }
+                }
+        
 
 	function logout()
 	{
@@ -177,16 +473,8 @@ class User extends Controller {
                 $db1->select('dblable')->from('bgasAccData');
 		$list = $db1->get();
 
-		//this is old line
-                //if($list->num_rows() > 1)
                 if($list->num_rows() > 0)
                        {
-//                                $this->messages->add('Problem with selection of account label.', 'error');
-  //                              $this->template->load('admin_template', 'admin/manage', $data);
-    //                            return;
-      //                  }
-        //        else
-          //      {
                         foreach($list->result() as $row){
                                 $dlable = $row->dblable;
                                 $data['accounts'][$dlable] = $dlable;

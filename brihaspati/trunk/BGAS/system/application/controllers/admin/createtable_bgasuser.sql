@@ -1,5 +1,7 @@
 use login;
 
+drop table if exists bgasuser;
+
 CREATE TABLE IF NOT EXISTS bgasuser
 (
                         id INTEGER (20)  NOT NULL AUTO_INCREMENT,
@@ -16,6 +18,8 @@ CREATE TABLE IF NOT EXISTS bgasuser
 			
 insert into bgasuser values (1,'admin', md5('admin'),'ynsingh@iitk.ac.in','administrator',1,'*',''); 
 insert into bgasuser values (2,'guest', md5('guest'),'ynsingh@iitk.ac.in','guest',1,'*',''); 
+
+drop table if exists bgasAccData;
 
 CREATE TABLE IF NOT EXISTS bgasAccData
 (
@@ -35,6 +39,8 @@ CREATE TABLE IF NOT EXISTS bgasAccData
 			UNIQUE (dblable)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+drop table if exists aggregateaccounts;
+
 CREATE TABLE IF NOT EXISTS aggregateaccounts
 (
 			id INTEGER (11) NOT NULL AUTO_INCREMENT,
@@ -42,6 +48,8 @@ CREATE TABLE IF NOT EXISTS aggregateaccounts
 			accounts varchar (200) NOT NULL,
 			PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+drop table if exists emailSetting;
 
 CREATE TABLE IF NOT EXISTS emailSetting
 (
@@ -55,3 +63,16 @@ CREATE TABLE IF NOT EXISTS emailSetting
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO emailSetting VALUES (1,'','','','','');
+
+drop table if exists forgotpass;
+
+CREATE TABLE IF NOT EXISTS forgotPass
+(
+                        id INTEGER NOT NULL AUTO_INCREMENT,
+                        username VARCHAR (255) NOT NULL,
+                        rkey VARCHAR (255) NOT NULL,
+                        passdate DATETIME,
+                        expdate DATETIME NOT NULL,
+                        PRIMARY KEY(ID)
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+

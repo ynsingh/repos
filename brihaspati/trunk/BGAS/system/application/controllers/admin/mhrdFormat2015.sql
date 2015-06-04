@@ -755,7 +755,7 @@ INSERT INTO `ledgers` VALUES (486,'40021011',234,'Royalties Paid to Authors','0.
 INSERT INTO `ledgers` VALUES (487,'40021012',234,'Subscription of Journal','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (488,'40021101',235,'Convocation Charges','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (489,'40021201',236,'Animal Feeds','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (490,'40021202',236,'Annual Day Celebration','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (490,'40021202',236,'Annual Day Celebration(Schools/Hostels)','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (491,'40021203',236,'Other Misc. Academic Expenses','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (492,'40021204',236,'Secretarial Assistance','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (493,'40021205',236,'Hiring Charges','0.00','D',0,0,0,'');
