@@ -424,18 +424,31 @@ public class UserInfo implements Serializable {
     public String validate() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        System.out.println("Login : "+request.getParameter("user1")+" :: Login1 : "+request.getParameter("user"));
-        //System.err.println("userrokle : "+value);
         int x = new UserDB().validate(userName, password,userOrgCode,this);
-        System.err.println("Login status : "+x); 
-        if(x == 2)
-        {
-            return "AdminLogin.jsf";
+        //System.err.println("Login status : "+x+":"+userName+":"+password+":"+userOrgCode); 
+        if(x == 2){
+            ActiveProfile ap = new ActiveProfile();
+          /*  ap.setOrgId(userOrgCode);
+            if (profile != null) {
+                ap.setProfile(profile);
+                       
+            }*/
+            currentDate = new CommonDB().getDate();
+            String[] dd = currentDate.split("-");
+            currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
+            currentMonth = Integer.parseInt(dd[1]);
+            currentYear = Integer.parseInt(dd[0]);
+            ap.setMonthName(months[Integer.parseInt(dd[1])] + "," + dd[0]);
+            ap.setMonth(currentMonth);
+            ap.setYear(currentYear);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
+            //return "AdminLogin.jsf";
+            return "SysAdmin.jsf";
         }
         if (x == 3) {
             new UserTaskDB().insertNewTaskList();
             ActiveProfile ap = new ActiveProfile();
-            ap.setOrgId(userOrgCode);
+            ap.setOrgId(userOrgCode);   
             if (profile != null) {
                 ap.setProfile(profile);
             }
@@ -491,8 +504,9 @@ public class UserInfo implements Serializable {
                 ExternalContext extContext = facesContext.getExternalContext(); 
                 if(x == 2)
                 {
-                    extContext.redirect(extContext.getRequestContextPath()+"/AdminLogin.jsf");
-                    //return "AdminLogin.jsf";
+                    //extContext.redirect(extContext.getRequestContextPath()+"/AdminLogin.jsf");
+                    extContext.redirect(extContext.getRequestContextPath()+"/SysAdmin.jsf");
+                    
                 }
                 if (x == 3) {
                     new UserTaskDB().insertNewTaskList();

@@ -751,10 +751,6 @@
             <to-view-id>/portal/Home.jsp</to-view-id>
         </navigation-case>
     </navigation-rule>
-
-
-
-
     <managed-bean>
         <description>
 			fileUploadBean
@@ -974,7 +970,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>taxSlabHead</managed-bean-name>
+        <managed-bean-name>taxSlabHeadBean</managed-bean-name>
         <managed-bean-class>org.smvdu.payroll.api.TaxGender.TaxSlabHeadBean</managed-bean-class>
 
         <managed-bean-scope>request</managed-bean-scope>
