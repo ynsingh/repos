@@ -1306,7 +1306,7 @@ $width="100%";
                         $account_code = $this->Budget_model->get_account_code('Expenses');
                         $finance_cost_code = $this->Budget_model->get_account_code('Finance Costs');
                         $other_expenses_code = $this->Budget_model->get_account_code('Other expenses');
-                        $depreciation_code = $this->Budget_model->get_account_code('Depriciation');
+                        $depreciation_code = $this->Budget_model->get_account_code('Depreciation');
                         $temp = $this->startsWith($code, $account_code);
                         if($temp){
 

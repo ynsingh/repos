@@ -461,8 +461,40 @@ class Cf extends Controller{
                                         $db1->trans_complete();
                                         $this->messages->add('Added Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
                                 }
-                                $db1->close();
 
+                                /* Adding dblable to users in bgasuser */
+
+                                $db1->select('accounts, id')->from('bgasuser');
+                                $account_query = $db1->get();
+                                foreach ($account_query->result() as $row) 
+                                {
+                                 	$accounts = $row->accounts;
+                                 	$id = $row->id;
+                                 	if($accounts != '*')
+                                 	{
+                                 		$acc_array = explode(',', $accounts);
+                                 		//$count = array_count_values($acc_array);
+                                 		if (in_array($current_active_account, $acc_array))
+                                 		{
+											$accounts = $accounts.','.$data_account_label;	
+                                 			$update_data = array(
+                                        		'accounts'=> $accounts
+                                        	);
+
+                                        	if ( ! $db1->where('id', $id)->update('bgasuser', $update_data))
+											{
+												$this->db->trans_rollback();
+												$this->messages->add('Error Updating Accounts in bgasuser.', 'error');
+												$db1->close();
+                                			} else {
+	                                        	$db1->trans_complete();
+	                                        	$this->messages->add('Update Accounts in bgasuser table under login database.', 'success');
+                               				}
+										}
+                                 	}
+                                }
+
+                                $db1->close();
 
 
 				/**************** Importing the C/F Values : START ***************/
@@ -496,10 +528,41 @@ class Cf extends Controller{
 					if (in_array($row->id, $cf_ledgers))
 					{
 						/* Calculating closing balance for previous year */
-						if ($row->id == "2")
+
+						// calculating diff of income expenditure to be transffered @megha
+						$ledger_name = $this->Ledger_model->get_ledger_name($row->id);
+						if ($ledger_name == "Balance of net income/expenditure transferred from I/E Account")
 						{
-							$balance = $this->Ledger_model->get_ledger_balance('2');
-							$cl_balance = $diff + $balance;
+							$balance = $this->Ledger_model->get_ledger_balance($row->id);
+							if($balance < 0){
+								if($diff < 0){
+									$diff = 0 - $diff;
+									$cl_balance = $diff + $balance;
+								}elseif($diff > 0){
+									$balance = 0 - $balance;
+									$cl_balance = $diff + $balance;
+								}else{
+									$cl_balance = $balance;
+								}
+							}elseif($balance > 0){
+								if($diff < 0){
+									$diff = 0 - $diff;
+									$cl_balance = $diff + $balance;
+								}elseif($diff > 0){
+									$cl_balance = $diff - $balance;
+								}else{
+									$cl_balance = $balance;
+								}
+							}else{
+								if($diff < 0){
+									$cl_balance = $diff;
+								}elseif($diff > 0){
+									$cl_balance = $diff;
+								}else{
+									$cl_balance = 0;
+								}
+							}
+
 
 							if (float_ops($cl_balance, 0, '<'))
                                                 	{
@@ -689,7 +752,7 @@ class Cf extends Controller{
 
 //////////////////             /* CF Asset Liability MHRD Balance using xml */
 				
-				$this->load->library('reportlist');				
+			//	$this->load->library('reportlist');				
 				$liability = new Reportlist();
                                 $liability->new_balance_sheet(0,2,"CF",$current_active_account.$Pre_year.$last_year,0);
                                 $asset = new Reportlist();
@@ -705,7 +768,7 @@ class Cf extends Controller{
                                 $asset->Investments(22,'others',8,'200202',$current_active_account.$Pre_year.$last_year,"CF",18); 
                                 $asset->fixed_assets(14,7,'2001',"CF",$current_active_account.$Pre_year.$last_year);
 				
-				$this->load->library('balancesheet');
+		//		$this->load->library('balancesheet');
                                 $liability = new Balancesheet();
                                 $liability->schedule_five('12',5,'100301',"CF",$current_active_account.$Pre_year.$last_year);
                                 $liability->schedule_five('13',5,'100302',"CF",$current_active_account.$Pre_year.$last_year);
@@ -733,9 +796,9 @@ class Cf extends Controller{
 					$this->messages->add('Account carried forward.', 'success');
 				else
 					$this->messages->add('Error carrying forward to new account.', 'error');
-/**
-				/* Adding account settings to file. Code copied from manage controller /
-				$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
+
+				/* Adding account settings to file. Code copied from manage controller */
+/*				$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
 
 				$con_details_html = '[database]' . '<br />db_type = "' . $data_database_type . '"<br />db_hostname = "' . $data_database_host . '"<br />db_port = "' . $data_database_port . '"<br />db_name = "' . $data_database_name . '"<br />db_username = "' . $data_database_username . '"<br />db_password = "' . $data_database_password . '"<br />'r
 

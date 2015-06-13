@@ -241,7 +241,7 @@ var dc = '';
                         	                success: function(bank) {
                                 	                bank_cash = $.trim(bank);
 
-							if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0') || (dc == 'C' && account == 'Income-I')){
+							if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Expense-e') || (dc == 'D' && account == 'Asset' && bank_cash == '0') || (dc == 'C' && account == 'Income-I')){
                                 	       		      $(temp).show();
 		                                        }else{
                 		                                $(temp).hide();
@@ -253,7 +253,7 @@ var dc = '';
                                                                 $(temp2).hide();
                                                         }*/
 
-                                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')||(dc == 'C' && account == 'Liability') || (dc == 'C' && account == 'Income-I')){
+                                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Expense-e') || (dc == 'D' && account == 'Asset' && bank_cash == '0')||(dc == 'C' && account == 'Liability') || (dc == 'C' && account == 'Income-I')){
                                                                 $(temp2).show();
                                                         }else{
                                                                 $(temp2).hide();
@@ -411,7 +411,7 @@ var dc = '';
 			                        url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledgerid,
                         	                success: function(bank) {
                                 		        bank_cash = $.trim(bank);
-		                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0')){
+		                                        if((dc_value == 'D' && account == 'Expense') || (dc == 'D' && account == 'Expense-e') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0')){
                 		                                $(temp).show();
                                 		        }else{
                                                 		$(temp).hide();
@@ -423,7 +423,7 @@ var dc = '';
                                                                 $(temp2).hide();
                                                         }*/
 
-                                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0') || (dc_value == 'C' && account == 'Liability')){
+                                                        if((dc_value == 'D' && account == 'Expense') || (dc == 'D' && account == 'Expense-e') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0') || (dc_value == 'C' && account == 'Liability')){
                                                                 $(temp2).show();
                                                         }else{
                                                                 $(temp2).hide();

@@ -1112,6 +1112,27 @@ var $ledgers = array();
                         return 0;
         }
 
+        function get_id($name)
+        {
+                $this->db->select('id');
+                $this->db->from('ledgers')->where('name =', $name);
+                $ledger_result = $this->db->get();
+                if ($ledger = $ledger_result->row())
+                        return $ledger->id;
+                else
+                        return 0;
+        }
+
+        function get_ledger_name($id)
+        {
+                $this->db->select('name');
+                $this->db->from('ledgers')->where('id =', $id);
+                $ledger_result = $this->db->get();
+                if ($ledger = $ledger_result->row())
+                        return $ledger->name;
+                else
+                        return 0;
+        }
     function get_ledger_description($code){
     	$this->db->select('ledger_description');
         $this->db->from('ledgers')->where('code =', $code);
