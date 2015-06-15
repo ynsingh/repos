@@ -83,7 +83,7 @@ $!data.getMessage()
 </tr>
 <tr bgclor="$ui.menuColor">
         <td align="left" width="50%">$brih_total $brih_trktime $brih_in $brih_course:
-        <td align="left" width="50%"><b>$cctime</b>
+        <td align="left" width="50%"><b>$ctime</b>
 </tr>
 <table width="100%" align="left" cellsapacing="0" cellpadding ="0">
 <tr bgcolor="$ui.menuColor" width="100%">
@@ -129,7 +129,7 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b><i>$brih_most $brih_active $brih_usr</i></b></td></tr>
 <tr bgcolor="$ui.tableColor" colspan="5">
         <td align="left" width="40%"><b>$brih_usr $brih_name</td>
-        <td align="left" width="30%"><b> #if($lang == "marathi")$brih_access $brih_total $brih_nos #else $brih_total $brih_nos $brih_access</td>
+        <td align="left" width="30%"><b> #if($lang == "marathi")$brih_access $brih_total $brih_nos #else $brih_total $brih_nos $brih_access #end</td>
         <td align="left" width="30%"><b>$brih_total $brih_access $brih_time</td>
 </tr>
 <tr bgcolor="$ui.menuColor">

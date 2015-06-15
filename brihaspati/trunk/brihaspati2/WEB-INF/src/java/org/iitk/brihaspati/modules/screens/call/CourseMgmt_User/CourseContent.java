@@ -158,7 +158,8 @@ public class CourseContent extends VelocitySecureScreen{
 				/**
  				 * When user role is instructor then read Xml file for checking guest access for course content.
  				 */ 	
-				if(role.equals("instructor"))
+				//if(role.equals("instructor"));
+                                 if((role.equals("instructor")) || (role.equals("teacher_assistant")));
 				{
 					topicMetaData=null;
 					String Xmlgstaccess=null;
