@@ -144,6 +144,34 @@ class Group_model extends Model {
 		return $id;
 	}
 
+	function get_id($name)
+	{
+		$id = 0;
+		$this->db->from('groups');
+		$this->db->select('id')->where('name', $name);
+		$group = $this->db->get();
+		foreach($group->result() as $row)
+		{
+			$id = $row->id;
+		}
+		
+		return $id;
+	}
+
+	function get_group_name($id)
+	{
+		$name = 0;
+		$this->db->from('groups');
+		$this->db->select('name')->where('id', $id);
+		$group = $this->db->get();
+		foreach($group->result() as $row)
+		{
+			$name = $row->name;
+		}
+		
+		return $name;
+	}
+
 	function get_group_description($code)
 	{
 		$this->db->from('groups');
