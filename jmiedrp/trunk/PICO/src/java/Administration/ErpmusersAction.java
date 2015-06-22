@@ -39,7 +39,8 @@ import org.iitk.brihaspati.modules.utils.security.RemoteAuth;
 import java.util.List;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.iitk.brihaspati.modules.utils.security.RemoteAuth;
-
+import pojo.hibernate.Institutionmaster;
+import pojo.hibernate.InstitutionmasterDAO;
 
 public class ErpmusersAction extends DevelopmentSupport {
 
@@ -58,7 +59,8 @@ public class ErpmusersAction extends DevelopmentSupport {
     private String  erpmu_Name;
     private LanguageMasterDAO LangDao = new LanguageMasterDAO();
     private List<LanguageMaster> LangList = new ArrayList<LanguageMaster>();
-
+    private List<Institutionmaster> imIdList = new ArrayList<Institutionmaster>();
+    private InstitutionmasterDAO imDao = new InstitutionmasterDAO();
 
     public void setMesssge(String message) {
             this.message = message;
@@ -84,8 +86,6 @@ public class ErpmusersAction extends DevelopmentSupport {
      public  List<LanguageMaster> getLangList() {
         return LangList;
     }
-
-    
     public Erpmusers getErpmuser() {
         return erpmuser;
     }
@@ -107,6 +107,13 @@ public class ErpmusersAction extends DevelopmentSupport {
     public void seterpmusersList(List<Erpmusers> erpmusersList) {
         this.erpmusersList = erpmusersList;
     }
+   public void setimIdList(List<Institutionmaster> imIdList) {
+        this.imIdList = imIdList;
+    }
+
+    public List<Institutionmaster> getimIdList() {
+        return this.imIdList;
+    }
 
      @Override
 
@@ -117,8 +124,8 @@ public class ErpmusersAction extends DevelopmentSupport {
             List<Erpmusers> list = erpmusersDao.RetrieveUser(erpmuser.getErpmuName(), erpmuser.getErpmuPassword()); //; //erpmuName);
             
             LangList=LangDao.findAll();
-
-            message = "Welcome to Purchase & Inventory Control System";
+	
+            //message = "Welcome to Purchase & Inventory Control System";
 
             if (list.size() == 0)
             {
@@ -173,7 +180,7 @@ public class ErpmusersAction extends DevelopmentSupport {
                         //message = message + menuName + erpmsmList.get(i).getEsmName();
                     
                         for (int j = 0; j < erpmpFirstLevelList.size(); ++j) {
-                        erpmpSecondLevelList = erpmpDao.findSecondLevelItemsBySubModuleId(erpmsmList.get(i).getErpmSubModuleId(), erpmpFirstLevelList.get(j).getErpmpId(), list.get(0).getErpmuId());                    
+                        erpmpSecondLevelList = erpmpDao.findSecondLevelItemsBySubModuleId(erpmsmList.get(i).getErpmSubModuleId(), erpmpFirstLevelList.get(j).getErpmpId(), list.get(0).getErpmuId());
                         //message = message + "SUB MODULE ID = " + erpmsmList.get(i).getErpmSubModuleId() + "PROGRAM ID = " + erpmpFirstLevelList.get(i).getErpmpId() + "II LEVEL LIST SiZE " + erpmpSecondLevelList.size();
                         int jIncremeneted = j + 1;
                         if (erpmpSecondLevelList.size() == 0) {
@@ -203,20 +210,20 @@ public class ErpmusersAction extends DevelopmentSupport {
                             if("hi".equals(ActionContext.getContext().getLocale().toString()))
                             getSession().setAttribute(menuName,erpmpSecondLevelList.get(k).getErpmpDisplayNameHindi());
                             else
-                                getSession().setAttribute(menuName,erpmpSecondLevelList.get(k).getErpmpDisplayName());
+                            getSession().setAttribute(menuName,erpmpSecondLevelList.get(k).getErpmpDisplayName());
                             getSession().setAttribute(menuHref,erpmpSecondLevelList.get(k).getErpmpHref());
                            //message = message +  " == " + menuName + "Link = " + erpmpSecondLevelList.get(k).getErpmpHref() + "Link Finishes " + erpmpSecondLevelList.get(k).getErpmpDisplayName() + " == ";
 
-                        } //End For k Loop
+                           } //End For k Loop
                         } //End Else
-                    }   //End For j Loop
+			imIdList = imDao.findAll();
+                    	}   //End For j Loop
                         
                 } //End Else*/
                 } //End for i loop
             jobs = addUserJobs(); 
            } //End Else
             list.clear();
- 
            return SUCCESS;
         }
         catch (Exception e) {

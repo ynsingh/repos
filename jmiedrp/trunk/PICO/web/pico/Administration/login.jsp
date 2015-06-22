@@ -44,13 +44,14 @@
                     }
 
                 </script>
-
+		<div id ="mainContent" align="center">   <%-- by Jaivir   --%>
                 <table border="0" width="100%">
                     <tbody>
                         <tr>
-                            <td width="5%"></td>
+                          <%--  <td width="5%"></td>  --%>
                             <td width="30%" valign="top" height="80%" class="textInput">
-                                <b><s:property value="getText('Administration.ImpLinks')"/></b>
+                             <%--   <b><s:property value="getText('Administration.ImpLinks')"/></b>  --%>
+                                <b>What is Purchase and Inventory Control System</b>
                             </td>
 
                             <td width="30%" valign="top" height="80%" class="textInput">
@@ -59,14 +60,14 @@
 
                             <td>
                             </td>
-                            <td width="30%" bgcolor="gainsboro">
-                            </td>
+                       <%--     <td width="30%" bgcolor="gainsboro"> </td> --%>
                         </tr>
                         <tr>
-                            <td width="1%"></td>
-                            <td width="35%" valign="top" height="80%" class="textInput">
+                         <%--   <td width="1%"></td> --%>
+                       <%--     <td width="35%" valign="top" height="80%" class="textInput">  --%>
+                            <td width="30%" valign="top" height="80%" class="textInput">
                                 <br><br>
-                                <a href="http://saksat.as.in"><s:property value="getText('Administration.aboutEDRP')"/></a><br>
+                        <%--        <a href="http://saksat.as.in"><s:property value="getText('Administration.aboutEDRP')"/></a><br>
                                 <a href="http://202.141.40.218/"><s:property value="getText('Administration.EDRPKanpurServices')"/></a><br>
                                 <a href="http://cserp1.amu.ac.in:8080/LibMS/"><s:property value="getText('Administration.LibManageSystemAMU')"/></a><br>
                                 <a href="http://cserp1.amu.ac.in:8080/EMS/"><s:property value="getText('Administration.ElectionMgmtSysAMU')"/></a><br>
@@ -75,7 +76,13 @@
                                 <a href="http://erp.amrita.ac.in:8080/nfes/"><s:property value="getText('Administration.NationalFcltyExpertSys')"/></a><br>
                                 <a href="http://erp.amrita.ac.in:9090/aell/"><s:property value="getText('Administration.EngLanLb')"/></a><br>
                                 <a href="http://180.149.53.46:8084/CMS"><s:property value="getText('Administration.OnlineAddSys')"/></a><br>
-                                <a href="http://14.139.40.226:8084/ePortfolio"><s:property value="getText('Administration.EPortfolio')"/></a>
+                                <a href="http://14.139.40.226:8084/ePortfolio"><s:property value="getText('Administration.EPortfolio')"/></a>    --%>
+				The Purchase and Inventory Control system offers comprehensive 
+				reporting capabilities to keep you on top of inventory status. 
+				It can help you bring about the creation of new or improved purchasing 
+				policies, sales policies, pricing methods and even enhanced customer service.
+				By leveraging Sage BusinessWorks, you have the tools to create an inventory system
+				with the depth to meet needs of your company for years to come. 
                                 <br><br>
                             </td>
 
@@ -109,7 +116,7 @@
                     </s:url>
                     <s:a href="%{localeEN}" >English</s:a>
                     <s:a href="%{localeHI}" >Hindi</s:a>
-                    <s:form id="frmLogin" name="frmLogin" method="post" action="Login"  >
+                    <s:form id="frmLogin" name="frmLogin" method="post" action="Login"  > 
                         <table border="0" cellpadding="4" cellspacing="0" align="center">
                             <tbody>
                                 <tr>
@@ -186,6 +193,7 @@
                     </tr>
                     </tbody>
                 </table>
+            </div> <%-- by Jaivir   --%>
                 <br><br>
         <%--    <s:label label="Application Last Updated On 02-06-2014" labelSeparator=""></s:label>  --%>
                 <br>
