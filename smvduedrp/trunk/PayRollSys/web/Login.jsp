@@ -143,7 +143,10 @@
                         <div class="right-column">
                             <div class="question">
                                 <h4> Don't have an account?</h4>
-                                <a  href="adminLogin/OrgMain.jsf" >Register Here</a>
+                                <a  href="adminLogin/OrgMain.jsf" >Institute Admin Registration</a><br/>
+                                <h:outputText value="For user registration please contact to Institute Admin" style="font-size:12px"/>
+                                <br/>
+                               <%--<a  href="adminLogin/EmployeeProfile.jsf" >Employee Registration</a>--%>
                             </div>
 
                             <div class="question">
@@ -157,6 +160,7 @@
                                    <li><a href='#'>Release Notes</a></li>
                                    <li><a href='adminLogin/brihaspatiMainLogin.jsf' target="_blank">Brihaspati Server Aunthentication</a></li>
                                    <li><a href='#'>HTML Help</a></l>
+                                   
                                 </ul>
                             </div>
 
