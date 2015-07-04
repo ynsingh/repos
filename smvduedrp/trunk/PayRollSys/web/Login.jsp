@@ -110,14 +110,14 @@
                                     </rich:messages>
                                 </div>
 
-                                <label>
+                                <%--            <label>
                                     <span>Organization :</span>
                                     <h:selectOneMenu id="user" value="#{UserBean.userOrgCode}" >
                                                 <f:selectItem itemLabel="Administrator" />
                                                 <f:selectItems id="user1" value="#{OrgController.items}"/>
                                     </h:selectOneMenu>
                                 </label>  
-
+                                --%>
                                 <label>
                                     <span>Email :</span>
                                     <h:inputText label="User Name" value="#{UserBean.userName}" />

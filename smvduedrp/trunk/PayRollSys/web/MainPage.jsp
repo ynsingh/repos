@@ -214,9 +214,15 @@
                         <%--  <rich:menuItem onclick="return loadIframe('ifrm', 'tool/ArrCalculator.jsf')"  value="Arrear Calculator Tool"/> --%>
                         <rich:menuItem  id="t1"  onclick="return loadIframe('ifrm', 'tool/SalaryCopier.jsf')"  value="Salary Copy Tool"/>
                         <%--  <rich:menuItem onclick="return loadIframe('ifrm', 'tool/ReportTool.jsf')"  value="Report Tool"/> --%>
-                        <rich:menuItem action="account/Logout.jsf" value="Logout"/>
+                        <%--    <rich:menuItem action="account/Logout.jsf" value="Logout"/> --%>
                     </rich:dropDownMenu>
-                    <h:commandButton id="lout"  image="img/lout.gif" action="#{UserBean.logout}" /> 
+                    
+                    <rich:dropDownMenu  id="s"   value="Account" styleClass="pic" >
+                        <rich:menuItem  id="s1"  action="#{UserBean.switchAccount}"  value="Switch Account"/>
+                        <rich:menuItem action="#{UserBean.logout}" value="Logout"/>
+                    </rich:dropDownMenu>
+                    
+                    <%--<h:commandButton id="lout"  image="img/lout.gif" action="#{UserBean.logout}" /> --%>
                     <%--  <h:commandButton id="lout"  value="Logout" action="#{UserBean.logout}" /> --%>
                     <rich:toolTip value="Click to Logout" for="lout"/>
                     <h:graphicImage style="visibility:hidden" id="loaderimg" onclick="return loadIframe('ifrm', 'Home.jsf')" width="170px" height="16px" url="/img/waiter.gif" alt="Image"/>

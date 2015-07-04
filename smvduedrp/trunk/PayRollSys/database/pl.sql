@@ -68,7 +68,7 @@ CREATE TABLE `admin_smtp_details` (
 #
 # Structure for the `org_profile` table : 
 #
-
+/*
 CREATE TABLE `org_profile` (
   `org_id` int(11) NOT NULL auto_increment,
   `org_name` varchar(100) NOT NULL,
@@ -102,6 +102,41 @@ CREATE TABLE `org_profile` (
   UNIQUE KEY `org_name_2` (`org_name`),
   UNIQUE KEY `org_email` (`org_email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
+
+CREATE TABLE `org_profile` (
+  `org_id` int(11) NOT NULL auto_increment,
+  `org_name` varchar(100) NOT NULL,
+  `org_tagline` varchar(100) default NULL,
+  `org_email` varchar(100) default NULL,
+  `org_web` varchar(100) default NULL,
+  `org_phone` varchar(35) default NULL,
+  `org_address1` varchar(100) default NULL,
+  `org_address2` varchar(100) default NULL,
+  `org_logo` mediumblob,
+  `org_master_password` varchar(200) default NULL,
+  `org_recovery_id` varchar(200) default NULL,
+  `org_tanno` varchar(20) default NULL,
+  `org_city` varchar(40) default NULL,
+  `org_pincode` int(11) NOT NULL,
+  `org_state` varchar(40) default NULL,
+  `org_ll` int(20) NOT NULL,
+  `org_countrycode` int(11) default NULL,
+  `org_regioncode` int(11) NOT NULL,
+  `org_institutedomain` varchar(20) default NULL,
+  `org_toi` varchar(20) default NULL,
+  `org_affiliation` varchar(40) default NULL,
+  `org_adminfn` varchar(30) default NULL,
+  `org_adminln` varchar(40) default NULL,
+  `org_admindesig` varchar(40) default NULL,
+  `org_reg_noti` int(11) default NULL,
+  `org_status` tinyint(4) default NULL,
+  `org_reg_date` date default NULL,
+  PRIMARY KEY  (`org_id`),
+  UNIQUE KEY `org_name` (`org_name`),
+  UNIQUE KEY `org_name_2` (`org_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 #
 # Structure for the `department_master` table : 
@@ -259,7 +294,7 @@ CREATE TABLE `employee_master` (
 #
 # Structure for the `session_master` table : 
 #
-
+/*
 CREATE TABLE `session_master` (
   `ss_id` int(11) NOT NULL auto_increment,
   `ss_name` varchar(100) NOT NULL,
@@ -269,6 +304,20 @@ CREATE TABLE `session_master` (
   `ss_org_id` int(11) NOT NULL,
   PRIMARY KEY  (`ss_id`),
   UNIQUE KEY `ss_name` (`ss_name`),
+  KEY `ss_org_id` (`ss_org_id`),
+  CONSTRAINT `session_master_fk` FOREIGN KEY (`ss_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
+
+CREATE TABLE `session_master` (
+  `ss_id` int(11) NOT NULL auto_increment,
+  `ss_name` varchar(100) NOT NULL,
+  `ss_start_from` date NOT NULL,
+  `ss_end_to` date NOT NULL,
+  `ss_current` tinyint(4) NOT NULL default '0',
+  `ss_org_id` int(11) NOT NULL,
+  PRIMARY KEY  (`ss_id`),
+  UNIQUE KEY `ss_name` (`ss_name`, `ss_org_id`),
   KEY `ss_org_id` (`ss_org_id`),
   CONSTRAINT `session_master_fk` FOREIGN KEY (`ss_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -405,7 +454,7 @@ CREATE TABLE `client_details` (
 #
 # Structure for the `college_pending_status` table : 
 #
-
+/*
 CREATE TABLE `college_pending_status` (
   `org_code` int(11) default NULL,
   `org_request_status` tinyint(4) default NULL,
@@ -413,6 +462,17 @@ CREATE TABLE `college_pending_status` (
   PRIMARY KEY  (`org_pen_email`),
   KEY `org_code` (`org_code`),
   KEY `org_email` (`org_pen_email`),
+  CONSTRAINT `college_pending_status_fk` FOREIGN KEY (`org_code`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
+
+CREATE TABLE `college_pending_status` (
+  `id` int(11) NOT NULL auto_increment,
+  `org_code` int(11) default NULL,
+  `org_request_status` tinyint(4) default NULL,
+  `org_pen_email` varchar(300) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `org_code` (`org_code`),
   CONSTRAINT `college_pending_status_fk` FOREIGN KEY (`org_code`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1271,11 +1331,20 @@ CREATE TABLE `user_group` (
 #
 # Structure for the `user_group_master` table : 
 #
-
+/*
 CREATE TABLE `user_group_master` (
   `grp_id` int(11) NOT NULL auto_increment,
   `grp_name` varchar(50) NOT NULL,
   PRIMARY KEY  (`grp_id`,`grp_name`),
+  UNIQUE KEY `grp_name` (`grp_name`),
+  KEY `grp_id` (`grp_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
+
+CREATE TABLE `user_group_master` (
+  `grp_id` int(11) NOT NULL auto_increment,
+  `grp_name` varchar(50) NOT NULL,
+  PRIMARY KEY  (`grp_id`),
   UNIQUE KEY `grp_name` (`grp_name`),
   KEY `grp_id` (`grp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1309,7 +1378,7 @@ CREATE TABLE `user_history_master` (
 # Structure for the `user_master` table : 
 #
 
-CREATE TABLE `user_master` (
+/*CREATE TABLE `user_master` (
   `user_id` int(11) NOT NULL auto_increment,
   `user_name` varchar(100) NOT NULL,
   `user_pass` varchar(20) NOT NULL,
@@ -1327,6 +1396,20 @@ CREATE TABLE `user_master` (
   CONSTRAINT `user_master_ibfk_1` FOREIGN KEY (`user_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user_master_ibfk_2` FOREIGN KEY (`user_grp_id`) REFERENCES `user_group_master` (`grp_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+*/
+
+CREATE TABLE `user_master` (
+  `user_id` int(11) NOT NULL auto_increment,
+  `user_name` varchar(100) NOT NULL,
+  `user_pass` varchar(20) NOT NULL,
+  `user_profile_id` int(11) NOT NULL default '0',
+  `login_uid` int(11),
+  `flag` tinyint(4) NOT NULL,
+  PRIMARY KEY  (`user_id`),
+  UNIQUE KEY `user_name` (`user_name`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 #
 # Structure for the `user_registration` table : 
@@ -1534,7 +1617,8 @@ INSERT INTO `user_group_master` (`grp_id`, `grp_name`) VALUES
   (2,'Admin'),
   (3,'Super'),
   (4,'Master User'),
-  (5,'Accounts');
+  (5,'Accounts'),
+  (6, 'Employee');
 COMMIT;
 
 #
@@ -1773,4 +1857,23 @@ CREATE TABLE employee_master_support (
  CONSTRAINT `employee_master_support_emsfk_1` FOREIGN KEY (`code`) REFERENCES `employee_master` (`emp_code`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+CREATE TABLE `user_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  `org_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `role_id` (`role_id`),
+  KEY `org_id` (`org_id`),
+  CONSTRAINT `user_id_fk1` FOREIGN KEY (`user_id`) REFERENCES `user_master` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `role_id_fk2` FOREIGN KEY (`role_id`) REFERENCES `user_group_master` (`grp_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `org_id_fk3` FOREIGN KEY (`org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+INSERT INTO user_master (user_id, user_name, user_pass, flag) VALUES (1, 'payadmin', 'admin123', 1);
+
+INSERT INTO user_roles(user_id, role_id) VALUES(1, 3);
 

@@ -478,7 +478,7 @@ public class SalaryHeadDB {
 
 
     public ArrayList<SalaryHead> loadSelectedHeads(int empType)   {
-        
+    /*    
         try
         {
             ArrayList<SalaryHead> sheads = new ArrayList<SalaryHead>();
@@ -509,9 +509,9 @@ public class SalaryHeadDB {
         finally {
             session.close();
         }       
-        
+         
        
-      /* 
+      */ 
         
         try
         {
@@ -541,7 +541,7 @@ public class SalaryHeadDB {
         {
             e.printStackTrace();
             return null;
-        }       */
+        }       
     }
     
     public ArrayList<SalaryHead> loadSelectedDeductionHeads(int empType)   {

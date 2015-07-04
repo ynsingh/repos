@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIData;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 //import javax.servlet.http.HttpSession;
@@ -18,6 +19,7 @@ import org.smvdu.payroll.beans.db.UserGroupDB;
 import org.smvdu.payroll.user.ActiveProfile;
 import org.smvdu.payroll.user.UserHistory;
 import javax.servlet.http.HttpServletResponse;
+import org.smvdu.payroll.beans.db.InstituteListDB;
 
 /**
  *
@@ -71,7 +73,7 @@ public class UserInfo implements Serializable {
     private String[] months = {"", "JAN", "FEB", "MARCH", "APRIL", "MAY",
         "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"};
     private boolean admin = true;
-    private String userName = "System";
+    private String userName;
     private String password;
     private String pass3;
     private String currentDate;
@@ -408,9 +410,16 @@ public class UserInfo implements Serializable {
         return "em";
     }
     public String logout() {
+        UserDB ud = new UserDB();
+        int id = ud.CheckUserExistInLoginDB(userName);
+        ud.LastLogoutStatusUpdate(id);
         ExternalContext ectx = FacesContext.getCurrentInstance().getExternalContext();
         ectx.invalidateSession();
         return "Login.jsf";
+    }
+    
+    public String switchAccount(){
+        return "WelcomePage.jsf";
     }
 
     public void set() {
@@ -421,10 +430,85 @@ public class UserInfo implements Serializable {
     }
 
 
+//    public String validate() {
+//        FacesContext facesContext = FacesContext.getCurrentInstance();
+//        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+//        int x = new UserDB().validate(userName, password,userOrgCode,this);
+//        //System.err.println("Login status : "+x+":"+userName+":"+password+":"+userOrgCode); 
+//        if(x == 2){
+//            ActiveProfile ap = new ActiveProfile();
+//          /*  ap.setOrgId(userOrgCode);
+//            if (profile != null) {
+//                ap.setProfile(profile);
+//                       
+//            }*/
+//            currentDate = new CommonDB().getDate();
+//            String[] dd = currentDate.split("-");
+//            currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
+//            currentMonth = Integer.parseInt(dd[1]);
+//            currentYear = Integer.parseInt(dd[0]);
+//            ap.setMonthName(months[Integer.parseInt(dd[1])] + "," + dd[0]);
+//            ap.setMonth(currentMonth);
+//            ap.setYear(currentYear);
+//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
+//            //return "AdminLogin.jsf";
+//            return "SysAdmin.jsf";
+//        }
+//        if (x == 3) {
+//            new UserTaskDB().insertNewTaskList();
+//            ActiveProfile ap = new ActiveProfile();
+//            ap.setOrgId(userOrgCode);   
+//            if (profile != null) {
+//                ap.setProfile(profile);
+//            }
+//            
+//            currentDate = new CommonDB().getDate();
+//            String[] dd = currentDate.split("-");
+//            currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
+//            currentMonth = Integer.parseInt(dd[1]);
+//            currentYear = Integer.parseInt(dd[0]);
+//            ap.setMonthName(months[Integer.parseInt(dd[1])] + "," + dd[0]);
+//            ap.setMonth(currentMonth);
+//            ap.setYear(currentYear);
+//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
+//            return "MainPage.jsf";
+//        } 
+//        if (x == 1) {
+//          //  new UserTaskDB().insertNewTaskList();
+//            ActiveProfile ap = new ActiveProfile();
+//            ap.setOrgId(userOrgCode);
+//            if (profile != null) {
+//                ap.setProfile(profile);
+//                       
+//            }
+//            currentDate = new CommonDB().getDate();
+//            String[] dd = currentDate.split("-");
+//            currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
+//            currentMonth = Integer.parseInt(dd[1]);
+//            currentYear = Integer.parseInt(dd[0]);
+//            ap.setMonthName(months[Integer.parseInt(dd[1])] + "," + dd[0]);
+//            ap.setMonth(currentMonth);
+//            ap.setYear(currentYear);
+//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
+//            return "MainPage.jsf";
+//        }
+//        else {
+//            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wrong User Name or Password", ""));
+//            return "Login.jsf";
+//        }
+//
+//        //FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "Main.jsf");
+//    }
+    
+    
     public String validate() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        int x = new UserDB().validate(userName, password,userOrgCode,this);
+    //    int x = new UserDB().validate(userName, password,userOrgCode,this);
+        System.out.println("username and password is provided by the user");
+        System.out.println("Validate method in UserDB is called");
+        int x = new UserDB().validate(userName, password,this);
+        System.out.println("Value returned by the Validate mehod is " +x);
         //System.err.println("Login status : "+x+":"+userName+":"+password+":"+userOrgCode); 
         if(x == 2){
             ActiveProfile ap = new ActiveProfile();
@@ -442,36 +526,20 @@ public class UserInfo implements Serializable {
             ap.setMonth(currentMonth);
             ap.setYear(currentYear);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
+            
+            System.out.println("Redirecting to System Admin page");
             //return "AdminLogin.jsf";
             return "SysAdmin.jsf";
         }
+
         if (x == 3) {
-            new UserTaskDB().insertNewTaskList();
-            ActiveProfile ap = new ActiveProfile();
-            ap.setOrgId(userOrgCode);   
-            if (profile != null) {
-                ap.setProfile(profile);
-            }
-            
-            currentDate = new CommonDB().getDate();
-            String[] dd = currentDate.split("-");
-            currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
-            currentMonth = Integer.parseInt(dd[1]);
-            currentYear = Integer.parseInt(dd[0]);
-            ap.setMonthName(months[Integer.parseInt(dd[1])] + "," + dd[0]);
-            ap.setMonth(currentMonth);
-            ap.setYear(currentYear);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
-            return "MainPage.jsf";
-        } 
-        if (x == 1) {
           //  new UserTaskDB().insertNewTaskList();
             ActiveProfile ap = new ActiveProfile();
-            ap.setOrgId(userOrgCode);
+        /*    ap.setOrgId(userOrgCode);
             if (profile != null) {
                 ap.setProfile(profile);
                        
-            }
+            }   */
             currentDate = new CommonDB().getDate();
             String[] dd = currentDate.split("-");
             currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
@@ -481,15 +549,19 @@ public class UserInfo implements Serializable {
             ap.setMonth(currentMonth);
             ap.setYear(currentYear);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
-            return "MainPage.jsf";
+            System.out.println("Redirecting to Institute Admin page");
+            return "WelcomePage.jsf";
         }
         else {
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wrong User Name or Password", ""));
+            System.out.println("Redirecting to Login page");
             return "Login.jsf";
         }
 
         //FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "Main.jsf");
     }
+    
+    
     public void remoteuservalidate(String useremail,String pass, int userorgCode) {
     //public void remoteuservalidate() {
         try{
@@ -499,7 +571,8 @@ public class UserInfo implements Serializable {
                 FacesContext facesContext = FacesContext.getCurrentInstance();
                 HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
                 System.out.println("Login : "+request.getParameter("user1")+" :: Login1 : "+request.getParameter("user"));
-                int x = new UserDB().validate(userName, password,userOrgCode,this);
+        //        int x = new UserDB().validate(userName, password,userOrgCode,this);
+                int x = new UserDB().validate(userName, password,this);
                 System.err.println("Login status : "+x); 
                 ExternalContext extContext = facesContext.getExternalContext(); 
                 if(x == 2)
@@ -565,4 +638,104 @@ public class UserInfo implements Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+    
+    
+    
+    
+    private ArrayList<UserInfo> collegeList;
+
+    public ArrayList<UserInfo> getCollegeList() {
+        collegeList = new InstituteListDB().loadInstituteDetail();
+        dataGrid.setValue(collegeList);         
+        return collegeList;
+    }
+
+    public void setCollegeList(ArrayList<UserInfo> collegeList) {
+        this.collegeList = collegeList;
+    }
+    
+    private UIData dataGrid;
+
+    public UIData getDataGrid() {
+        return dataGrid;
+    }
+
+    public void setDataGrid(UIData dataGrid) {
+        this.dataGrid = dataGrid;
+    }
+    
+    
+    int currentRecordindex;
+    public int getCurrentRecordindex() {
+        //System.out.println("current index====="+currentRecordindex);
+        return currentRecordindex;
+    }
+ 
+    public void setCurrentRecordindex(int currentRecordindex) {
+        //System.out.println("current index==inset==="+currentRecordindex);
+        this.currentRecordindex = currentRecordindex;
+    }
+    
+    UserInfo editedRecord;
+    public UserInfo getEditedRecord() {
+        System.out.println("Org Code is "+ editedRecord.getUserOrgCode());
+        System.out.println("Org Code is "+ editedRecord.getOrgName());
+        return editedRecord;
+    }
+ 
+    public void setEditedRecord(UserInfo editedRecord) {
+        this.editedRecord = editedRecord;
+    }
+    
+    
+    private SelectItem[] items;             // this is responsile for the dropdown of the gender.
+    public SelectItem[] getItems() {
+         ArrayList<UserInfo> myTypes=new InstituteListDB().loadInstituteDetail();
+         System.out.println("DAta Should Be Write Here");
+        items = new SelectItem[myTypes.size()];
+        for(int i=0;i<myTypes.size();i++)
+        {
+            UserInfo ins =myTypes.get(i);
+            SelectItem si =new SelectItem(ins.userOrgCode, ins.orgName);
+            items[i] = si;
+        }
+        return items;
+    }
+    
+    public String login(){
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        
+            ActiveProfile ap = new ActiveProfile();
+        //    UserInfo ui = new UserInfo();
+            
+            ap.setOrgId(editedRecord.getUserOrgCode());
+            setUserOrgCode(editedRecord.getUserOrgCode());
+     /*
+            InstituteList inst = new InstituteList(code, name   );
+            inst = (InstituteList) dataGrid.getRowData();
+            
+            ActiveProfile ap = new ActiveProfile();            
+            ap.setOrgId(inst.getCode());
+            
+            UserInfo ui = new UserInfo();
+            ui.setUserOrgCode(inst.getCode());
+      */      
+            if (getProfile() != null) {
+                ap.setProfile(getProfile());
+                       
+            }
+            currentDate = new CommonDB().getDate();
+            String[] dd = currentDate.split("-");
+            currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
+            currentMonth = Integer.parseInt(dd[1]);
+            currentYear = Integer.parseInt(dd[0]);
+            ap.setMonthName(months[Integer.parseInt(dd[1])] + "," + dd[0]);
+            ap.setMonth(currentMonth);
+            ap.setYear(currentYear);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
+        
+        return "MainPage.jsf";
+    }
+    
 }

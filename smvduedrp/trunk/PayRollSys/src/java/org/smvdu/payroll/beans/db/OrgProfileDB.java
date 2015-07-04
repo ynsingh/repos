@@ -54,11 +54,47 @@ public class OrgProfileDB {
             return null;
         }
     }
+    
+    
+    public Org loadOrgProfileByName(String name) {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select * from org_profile where org_name=?");
+            ps.setString(1, name);
+            rs=ps.executeQuery();
+            rs.next();
+            Org o = new Org();
+            o.setId(rs.getInt(1));
+            o.setName(rs.getString(2));
+            o.setTagLine(rs.getString(3));
+            o.setEmail(rs.getString(4));
+            o.setWeb(rs.getString(5));
+            o.setPhone(rs.getString(6));
+            o.setAddress1(rs.getString(7));
+            o.setAddress2(rs.getString(8));
+            o.setAdminfn(rs.getString(22));
+            o.setAdminln(rs.getString(23));
+            rs.close();
+            ps.close();
+            c.close();
+            return o;
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    
     public ArrayList<Org> loadOrgs() {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select org_id,org_name from org_profile inner join user_master on org_email = user_name ");
+        //    ps=c.prepareStatement("select org_id,org_name from org_profile inner join user_master on org_email = user_name ");
+            ps=c.prepareStatement("select org_id,org_name from org_profile where org_status = 1");
             rs=ps.executeQuery();
             ArrayList<Org> data = new ArrayList<Org>();
             while(rs.next())

@@ -348,6 +348,69 @@ public class CommonDB {
         }
     }
     
+    public Connection getLoginDBConnection()   {
+       try
+        {
+
+	   String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/dbsetting"+"/dbconf_admin.properties");
+           String url=getValue(path,"login_db_url");
+           String user=getValue(path,"login_db_user");
+           String pass=getValue(path,"login_db_password");
+
+           Connection conn;
+           Class.forName("com.mysql.jdbc.Driver");
+           
+	   conn= DriverManager.getConnection(url,user,pass);
+           return conn;
+        }
+        catch(Exception e)
+        {
+            //ErrorManager.manageError(e);
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    
+   public boolean checkLoginDBExists(){
+
+    try{
+        
+        String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/dbsetting"+"/dbconf_admin.properties");
+        String dbName=getValue(path,"login_db_name");
+        String url=getValue(path,"login_db_url");
+        String user=getValue(path,"login_db_user");
+        String pass=getValue(path,"login_db_password");
+        
+        Class.forName("com.mysql.jdbc.Driver"); //Register JDBC Driver
+
+        System.out.println("Creating a connection to " +dbName);
+        
+        Connection conn;
+        conn = DriverManager.getConnection(url,user,pass); //Open a connection
+
+        ResultSet resultSet = conn.getMetaData().getCatalogs();
+
+        while (resultSet.next()) {
+
+          String databaseName = resultSet.getString(1);
+            if(databaseName.equals(dbName)){
+                System.out.println("Connection is successfuly created with '"+dbName+"' that means database exists ");
+                return true;
+                
+            }
+        }
+        resultSet.close();
+
+    }
+    catch(Exception e){
+        e.printStackTrace();
+    }
+
+    return false;
+  }
+   
+    
    public  String getValue(String path,String key) throws Exception{
          try{
                 InputStream f = new FileInputStream(path);
