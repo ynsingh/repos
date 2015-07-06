@@ -338,11 +338,11 @@ public class ManageUserAction extends DevelopmentSupport  {
             //If part saves record for the first time; else parts is for record update
 
             if (erpmusers.getErpmuId() == null) {
-                //erpmusers.setErpmuActive("N");
-                erpmusers.setErpmuActive("Y");
+                erpmusers.setErpmuActive("N");
+                //erpmusers.setErpmuActive("Y");
                 erpmusersDao.save(erpmusers);
-                //erpmur.setErpmurActive('N');
-                erpmur.setErpmurActive('Y');
+                erpmur.setErpmurActive('N');
+                //erpmur.setErpmurActive('Y');
                 erpmur.setErpmusers(erpmusers);
                 erpmurDao.save(erpmur);
 		message="User Registered Successfully.";
@@ -860,8 +860,9 @@ public String SendMessageToInstitutionAdmin() throws Exception {
 
             Locale locale = ActionContext.getContext().getLocale();
             ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-
+		
             String emailSubject = getsubject();
+		message="sbjct in SendMessageToInstitutionAdmin===="+emailSubject;
             String emailMessage = "<html><head><title>The message and other details are as follows:</title></head><body><table width='500' border='0' align='left' cellpadding='15' cellspacing='0' style='font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10pt; color:#5a5a5a;'><tr><td align='left'><p>" +  message + "</p></td></tr><tr><td align='left'>User's Emails Id: " + getsenderEmailId() + "<br/>User's Contact No: " + getsenderContactNo() + "<br/><br/>THIS IS AN AUTOMATED MESSAGE; PLEASE DO NOT REPLY.</td></tr></table></body></html>";
             sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"),getemailTo(),"", emailSubject, emailMessage);
 

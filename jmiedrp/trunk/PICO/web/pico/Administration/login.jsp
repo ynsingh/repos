@@ -127,12 +127,12 @@
                                 <tr>
                                     <td valign="middle" class="FormContent">
                                         <s:textfield required="true" requiredposition="left" maxLength="50" 
-                                                     name="erpmuser.erpmuName" title="Username" key="Administration.username"/>
+                                                     name="erpmuser.erpmuName" title="Email" key="Administration.email"/>
 
                                         <s:password  required="true" requiredposition="left" maxLength="25" 
                                                      name="erpmuser.erpmuPassword" title="Enter Password" key="Administration.password" />
                                         <s:submit name="login"  key="Administration.LoginBt" />
-                                        <s:submit name="rmtLoin"  action="brihaspatiLogin" key="Administration.LoginBrahaspatiBt"/>
+                               <%--         <s:submit name="rmtLoin"  action="brihaspatiLogin" key="Administration.LoginBrahaspatiBt"/>  --%>
                                     </td>
                                 </tr>
                                 <tr>
