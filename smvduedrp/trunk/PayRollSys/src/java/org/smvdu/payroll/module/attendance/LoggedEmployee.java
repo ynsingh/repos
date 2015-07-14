@@ -6,6 +6,7 @@ package org.smvdu.payroll.module.attendance;
 
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.Employee;
 import org.smvdu.payroll.beans.db.CommonDB;
@@ -186,6 +187,8 @@ public class LoggedEmployee implements Serializable {
         }
 
     }
+    
+    
 
     public String getDate() {
         return date;
@@ -229,14 +232,41 @@ public class LoggedEmployee implements Serializable {
         this.password = password;
     }
 
-    public String logout() {
+    public void logout() {
+        try{
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
-        UserHistory uh = new UserHistory();
-        LoggedEmployee le = (LoggedEmployee) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
-//        uh.setUserId(le.getProfile().getEmpId());
-//        uh.setAction(false);
-//        uh.save();
-        return "EmployeeLogin.jsf";
+       /*UserHistory uh = new UserHistory();
+         LoggedEmployee le = (LoggedEmployee) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
+         uh.setUserId(le.getProfile().getEmpId());
+	 uh.setAction(false);
+         uh.save();
+         return "EmployeeLogin.jsf";*/
+           FacesContext facesContext = FacesContext.getCurrentInstance();
+           ExternalContext extContext = facesContext.getExternalContext(); 
+           extContext.redirect(extContext.getRequestContextPath()+"../Login.jsf");
+        
+        
+        }
+         catch(Exception e)
+        {
+            
+            e.printStackTrace();
+            //return null;
+        }
+    }
+     public void switchAccount() {
+        try{
+           FacesContext facesContext = FacesContext.getCurrentInstance();
+           ExternalContext extContext = facesContext.getExternalContext(); 
+           extContext.invalidateSession();
+           extContext.redirect(extContext.getRequestContextPath()+"../WelcomePage.jsf");
+         
+        }
+        catch(Exception e)
+        {
+            
+            e.printStackTrace();
+        }
     }
 
     public Employee getProfile() {

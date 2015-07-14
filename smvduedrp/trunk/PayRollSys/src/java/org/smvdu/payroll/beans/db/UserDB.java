@@ -312,7 +312,7 @@ public class UserDB {
                 {
                     int userId = rst1.getInt(1);
                     k = 1; 
-                    System.out.println("User is varified in LoginDB and Value of K is changed to 1");
+                    //System.out.println("User is varified in LoginDB and Value of K is changed to 1");
                     LastLoginStatusUpdate(userId);
                 }
                 else
@@ -322,8 +322,8 @@ public class UserDB {
             }
             else
             {
-                System.out.println("LoginDb does not Exist");
-                System.out.println("Varifying Username Password in user_master");
+                //System.out.println("LoginDb does not Exist");
+                //System.out.println("Varifying Username Password in user_master");
                 pst1 = connectPl.prepareStatement("select user_id, user_name, user_pass, flag from user_master where user_name='"+user+"' and user_pass='"+pass+"' and flag='"+1+"'");
                 ResultSet rst1;
                 rst1 = pst1.executeQuery();
@@ -344,34 +344,50 @@ public class UserDB {
                 System.out.println("Verifying Role Of the User...");
                 UserDB ud = new UserDB();
                 int userId = ud.getUserId(user);
-                System.out.println("UserId of the user In User_master is :"+userId);
+                //System.out.println("UserId of the user In User_master is :"+userId);
                 PreparedStatement pst2;
                 pst2 = connectPl.prepareStatement("select role_id from user_roles where user_id='"+userId+"'");
                 ResultSet rst2;
                 rst2 = pst2.executeQuery();
                 ArrayList<Integer> totalRoles = new ArrayList<Integer>();
-                System.out.println("ArrayList is created for containing all the roles for the user");
+                //System.out.println("ArrayList is created for containing all the roles for the user");
                 while(rst2.next())
                 {
                     totalRoles.add(rst2.getInt(1));
-                    System.out.println("Value added in the Role Array is :" +rst2.getInt(1));
+                    //System.out.println("Value added in the Role Array is :" +rst2.getInt(1));
                 }
                 System.out.println("Total size of the role array is :" +totalRoles.size());
                 if(totalRoles.contains(3))
                 {
+                    info.setUserRole("Super");
+                    info.setUserRoleId(3);
                     System.out.println("User is found to be the System Admin and Values of k is changed to 2");
                     k=2; // Admin role exist in the user_role table for user;
                     return k;
                 }
-                else if(totalRoles.contains(4))
+                else if(totalRoles.contains(4) && totalRoles.contains(6))
                 {
+                    System.out.println("User is found to be an Institute Admin and Employee and Values of k is changed to 3");
+                    //info.setUserRole("4,6");
+                    info.setUserRoleId(4);
+                    info.setUserRoleId(6);
+                    k=3; 
+                    return k;
+                }        
+                /*else if(totalRoles.contains(4))
+                {
+                    info.setUserRole("Master User");
+                    info.setUserRoleId(4);
                     System.out.println("User is found to be an Institute Admin and Values of k is changed to 3");
                     k=3; // Institute Admin Role Exist in the user_role table for the user;
                     return k;
-                }
+                }*/
                 else if(totalRoles.contains(6))
                 {
+                    info.setUserRole("Employee");
+                    info.setUserRoleId(6);
                     System.out.println("User is found to be a Normal Employee and Values of k is changed to 4");
+                    //System.out.println("info==role="+info.getUserRoleId());
                     k=4; // Institute Admin Role Exist in the user_role table for the user;
                     return k;
                 }
@@ -435,7 +451,7 @@ public class UserDB {
     
     public void LastLogoutStatusUpdate(int userId){
         try{
-            System.out.println("Updating LastVisitedComponent in UserLastStatus");
+            //System.out.println("Updating LastVisitedComponent in UserLastStatus");
             Connection connection = new CommonDB().getLoginDBConnection();
             PreparedStatement pst;
             pst=connection.prepareStatement("update userlaststatus set lastvisitedcomponent=? where userid=?");
@@ -588,6 +604,207 @@ public class UserDB {
             return -1;
         }
      
-     }     
+     }
+    
+     public int getUserIDfromUserName (String UserName){
+        try
+        {
+            //int userId = 0;
+            Connection connection = new CommonDB().getConnection();
+            PreparedStatement pst;
+            ResultSet rst;
+            pst = connection.prepareStatement("select user_id from user_master where user_name='"+UserName+"' ");
+            rst = pst.executeQuery();
+            rst.next();
+            int userId = rst.getInt(1);
+            //System.out.println("userID==in  getUserIDfromUserName =="+userId+":"+UserName);
+           
+            rst.close();
+            pst.close();
+            connection.close();
+            return userId;
+            
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            return -1;
+        }
+     
+     }
+      public ArrayList<Integer> getuserRole(String userName,int orgId){   
         
+        try
+        {
+            
+            ArrayList<Integer> userRoles = new ArrayList<Integer>();
+            Connection cn = new CommonDB().getConnection();
+            PreparedStatement pst;
+            int uid=getUserIDfromUserName(userName);
+            //System.out.println("userid==in user roles method==="+uid +":"+userName);
+            pst  = cn.prepareStatement("select role_id from user_roles where user_id = '"+uid+"' and  org_id='"+orgId+"'");
+       
+            ResultSet rst;
+            rst = pst.executeQuery();
+            while(rst.next())
+            {
+                UserInfo uroles = new UserInfo();
+                uroles.setUserRoleId(rst.getInt(1));
+                userRoles.add(uroles.getUserRoleId());
+                //System.out.println(" user roles method==lst="+uroles.getUserRoleId()+":"+rst.getInt(1));
+            }
+            rst.close();
+            pst.close();
+            cn.close();
+            return userRoles;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return null;
+        } 
+    }
+      
+      public String getEmpCodefromUserName (String UserName, int orgCode){
+        try
+        {
+            Connection connection = new CommonDB().getConnection();
+            PreparedStatement pst;
+            ResultSet rst;
+            pst = connection.prepareStatement("select emp_code from employee_master where emp_email='"+UserName+"' and emp_org_code='"+orgCode+"' ");
+            rst = pst.executeQuery();
+            //System.out.println("userID==in userrole==="+UserName);
+            rst.next();
+            String empCode = rst.getString(1);
+            //System.out.println("userID==in rmployeecode from username==="+UserName+":"+orgCode+":"+empCode);
+            rst.close();
+            pst.close();
+            connection.close();
+            return empCode;
+            
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+     
+     }
+     public ArrayList<Integer> getuserTotalRole(String userName){   
+        
+        try
+        {
+            
+            ArrayList<Integer> userRoles = new ArrayList<Integer>();
+            Connection cn = new CommonDB().getConnection();
+            PreparedStatement pst;
+            int uid=getUserIDfromUserName(userName);
+            //System.out.println("userid==in user getuserTotalRole method==="+uid +":"+userName);
+            pst  = cn.prepareStatement("select role_id from user_roles where user_id = '"+uid+"'");
+       
+            ResultSet rst;
+            rst = pst.executeQuery();
+            while(rst.next())
+            {
+                UserInfo uroles = new UserInfo();
+                uroles.setUserRoleId(rst.getInt(1));
+                userRoles.add(uroles.getUserRoleId());
+                //System.out.println(" user getuserTotalRole method==lst="+uroles.getUserRoleId()+":"+rst.getInt(1));
+            }
+            rst.close();
+            pst.close();
+            cn.close();
+            return userRoles;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return null;
+        } 
+    } 
+     public ArrayList<UserInfo> getuserTotalOrg(String userName){   
+        
+        try
+        {
+            ArrayList<UserInfo> insDetail = new ArrayList<UserInfo>();
+            Connection cn = new CommonDB().getConnection();
+            PreparedStatement pst;
+            int uid=getUserIDfromUserName(userName);
+            //System.out.println("userid==in user getuserTotalOrg method==="+uid +":"+userName);
+            pst  = cn.prepareStatement("select distinct org_id from user_roles where user_id = '"+uid+"' ");
+          
+            ResultSet rst;
+            rst = pst.executeQuery();
+            while(rst.next())
+            {
+                UserInfo ins = new UserInfo();
+                ins.setUserOrgCode(rst.getInt(1));
+                insDetail.add(ins);
+                //System.out.println(" user total org==="+ins.getUserOrgCode());
+            }
+            //System.out.println(" user total org==="+insDetail);
+            rst.close();
+            pst.close();
+            cn.close();
+            return insDetail;
+         
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return null;
+        } 
+    } 
+     public int getuserOrg(String userName){   
+        
+        try
+        {
+            Connection cn = new CommonDB().getConnection();
+            PreparedStatement pst;
+            ResultSet rst;
+            int uid=getUserIDfromUserName(userName);
+            //System.out.println("userid==in getuserOrg method==="+uid +":"+userName);
+            pst  = cn.prepareStatement("select org_id from user_roles where user_id ='"+uid+"' ");
+            rst = pst.executeQuery();
+            rst.next();
+            int orgcode=rst.getInt(1);
+            //System.out.println("userid==in getuserOrg==="+orgcode);
+            rst.close();
+            pst.close();
+            cn.close();
+            return orgcode;
+         
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return -1;
+        } 
+    } 
+   public  int getRoleExists(String userName ,int orgId){   
+        
+        try
+        {
+            Connection cn = new CommonDB().getConnection();
+            PreparedStatement pst;
+            ResultSet rst;
+            int uid=getUserIDfromUserName(userName);
+            //System.out.println("userid==in getuserOrg method==="+uid +":"+userName);
+            pst  = cn.prepareStatement("select role_id from user_roles where user_id ='"+uid+"' and org_id = '"+orgId+"' ");
+            rst = pst.executeQuery();
+            rst.next();
+            int roleid=rst.getInt(1);
+            //System.out.println("userid==in get active link===="+orgId+":----"+uid+":"+userName+":"+roleid);
+            rst.close();
+            pst.close();
+            cn.close();
+            return roleid;
+         
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return -1;
+        } 
+    } 
+   
+               
 }

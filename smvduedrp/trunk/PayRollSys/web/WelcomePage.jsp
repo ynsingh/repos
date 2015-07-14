@@ -19,6 +19,9 @@
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
             <title>Welcome Page</title>
+            <title>Payroll System | Login</title>
+            <link rel="stylesheet" type="text/css" href="css/LoginPage.css" /> 
+          
             <style>
                 *{
                     margin: 0px;
@@ -75,7 +78,7 @@
                     margin: 0 auto;
                     display: block;
                     position: relative;
-                    padding-top: 6%;
+                    padding-top: 0%;
                     padding-left: 0%;
                     height: 80%;
                     width: 90%;
@@ -224,7 +227,7 @@
             
         </head>
         <body>   
-            <a4j:keepAlive beanName="UserBean" ajaxOnly="true"/>
+           <a4j:keepAlive beanName="UserBean" ajaxOnly="true"/>
             
             <div class="container">
             
@@ -235,123 +238,132 @@
                         <h:graphicImage alt="payroll" url="/img/payrollheader.png" style="width:100%;"/>
 
                     </div>
-                    
-                    
-                    <div class="pageBody">
-                        <div align="right" style="padding-top:50px; padding-right:80px;">
-                            <h:form>
-                            <h:commandButton id="lout"  value="Logout" action="#{UserBean.logout}" />
-                     
+                      
+                    <%--<div class="pageBody">--%>
+            
+                   
+                       <%-- <div style="background-color:#f5dbdb;width:100%;">
+                            <br/>
+                           &nbsp;&nbsp;<h:outputText style="font-size:0.9em;font-color:blue;font-weight:bold;" value="Welcome : #{UserBean.userName}  "/>
+                            <div align="right" style="padding-right:20px;">
+                             <h:form>
+                                 <h:commandButton id="lout"  value="Logout" action="#{UserBean.logout}" />&nbsp;
+                                
+                                
                             </h:form>
+                             </div>   
+                            
+                       </div> --%>
+                          <%--<h:commandButton onclick="Richfaces.showModalPanel('cp');" value="Change Password"/>--%>             
+                    <div class="pageBody">
+                        
+                        
+                         <div class="menu-wrapper">
+
+                        <div id='cssmenu' class="align-center">
+                            <ul>
+                                <li><a href='http://202.141.40.215:8080/brihaspati/servlet/brihaspati' target="_blank">Brihaspati</a></li>
+                                <li><a href='http://202.141.40.215/~brihaspati/BGAS/index.php/user/login' target="_blank">BGAS</a></li>
+                               <li><a href='#'>PICO</a></li>
+                              <%-- <li><a href='#'>Student Fee Management</a></li>--%>
+                            </ul>
                         </div>
+                        
+                    </div> 
+                        
                         <div class="institutes">
+                          <rich:panel style="background-color:#B0C4DE;">
+                            <div style="width:100%;">
+                           <h:outputText style="font-size:1.4em;font-color:blue;font-weight:bold;" value="Welcome : #{UserBean.userName}  "/>
+                                                       
+                       </div>  
+                           <div align="right" style="padding-right:20px;">
+                             <h:form>
+                                 <h:commandButton id="lout"  value=" Logout " action="#{UserBean.logout}" />&nbsp;
+                                
+                                
+                            </h:form>
+                             </div>  
+                          </rich:panel>  
                         <h:form>
                                               
                             <rich:dataTable value="#{UserBean.collegeList}" binding="#{UserBean.dataGrid}"  var="ins" rowKeyVar="row" width="100%"> 
-                                <rich:column>
+                               <%-- <a4j:keepAlive beanName="UserBean" ajaxOnly="true"/>--%>
+                                <%--<a4j:keepAlive beanName="LoggedEmployee" ajaxOnly="true"/>--%>
+                               <%-- <rich:column>
                                     <f:facet name="header" >
                                         <h:outputText value=""/>
                                     </f:facet>
                                     <h:outputText value="#{ins.userOrgCode}"/>
-                                </rich:column>
+                                </rich:column>--%>
                                 <rich:column>
                                     <f:facet name="header" >
                                         <h:outputText value="Institute Name"/>
                                     </f:facet>
-                                    <h:outputText value="#{ins.orgName}"/>
+                                    <h:outputText value="#{ins.orgName}" />
                                 </rich:column>
-                                                                  
+                                                                
                                 <rich:column>
                                     <f:facet name="header">
-                                     <h:outputText value="Login As Admin"/>
+                                     <h:outputText value="Login As Institute Admin"/>
                                     </f:facet>
-                                    <a4j:commandLink  styleClass="no-decor" ajaxSingle="true" immediate="true" action="#{UserBean.login}" value="Click Here">
-                                      <%--  <a4j:commandLink  styleClass="no-decor" ajaxSingle="true" oncomplete="#{rich:component('confirmPane')}.show()">--%>
-                                      <%--    <h:graphicImage value="/img/login1.png" alt="Login" />  --%>
+                                  <%--  <a4j:commandLink  styleClass="no-decor" ajaxSingle="true" immediate="true" action="#{UserBean.login}" value="Click Here" 
+                                                      disabled="#{UserBean.linkActive}" style="color: #{UserBean.linkActive == 'true' ? 'grey':'' }" > --%>
+                                  <a4j:commandLink  styleClass="no-decor" ajaxSingle="true" immediate="true" action="#{UserBean.login}" value="Click Here" 
+                                                     disabled="#{ins.linkActive}"  style="color: #{ins.linkActive == 'true' ? 'grey':'' }" >
+                                  
+                                    <%--onclick="this.disabled=true; #{rich:component('busy')}.show()" oncomplete="this.disabled=false; #{rich:component('busy')}.hide()" execute="@form"> --%>
                                     <a4j:actionparam name="insid" value="#{ins.userOrgCode}" />
                                     <f:setPropertyActionListener value="#{ins}" target="#{UserBean.editedRecord}" />
                                     </a4j:commandLink>
-                                   <%-- <a4j:commandLink styleClass="no-decor" ajaxSingle="true" oncomplete="#{InstituteListController.login}">
-                                        <h:graphicImage value="/img/edit.gif" alt="employee" />--%>
-                                      <%--  <a4j:actionparam name="idfotoatual" value="#{albumslistvalue1.id}" />--%>
-                                        <%--<f:setPropertyActionListener value="#{row}" target="#{InstituteListController.currentRecordindex}" />
-                                        <f:setPropertyActionListener value="#{ins}" target="#{InstituteListController.editedRecord}" />--%>
+                                   
                             
                                    
                                 </rich:column>
-                                
-                                <%--        <rich:column>
+                                <%-- Add by seema ============================ --%>
+                                <rich:column>
                                     <f:facet name="header">
                                      <h:outputText value="Login As Employee"/>
                                     </f:facet>
-                                    <a4j:commandLink  styleClass="no-decor" ajaxSingle="true" immediate="true" action="#{UserBean.login}" value="Click Here">
-                                      <%--  <a4j:commandLink  styleClass="no-decor" ajaxSingle="true" oncomplete="#{rich:component('confirmPane')}.show()">--%>
-                                      <%--    <h:graphicImage value="/img/login1.png" alt="Login" /> --%>
-                                      <%--        <a4j:actionparam name="insid" value="#{ins.userOrgCode}" />
+                                   
+                                     <a4j:commandLink  styleClass="no-decor" ajaxSingle="true" immediate="true" action="#{UserBean.EmployeeLogin}" value="Click Here" 
+                                     oncomplete="#{UserBean.profile == null}; #{rich:component('confirmPane')}.show()"> 
+                                                       
+                                     <a4j:actionparam name="insid" value="#{ins.userOrgCode}" />
                                     <f:setPropertyActionListener value="#{ins}" target="#{UserBean.editedRecord}" />
                                     </a4j:commandLink>
-                                   
-                                      --%>  
-                                      
-                                    <%-- <a4j:commandLink styleClass="no-decor" ajaxSingle="true" oncomplete="#{InstituteListController.login}">
-                                        <h:graphicImage value="/img/edit.gif" alt="employee" />--%>
-                                      <%--  <a4j:actionparam name="idfotoatual" value="#{albumslistvalue1.id}" />--%>
-                                        <%--<f:setPropertyActionListener value="#{row}" target="#{InstituteListController.currentRecordindex}" />
-                                        <f:setPropertyActionListener value="#{ins}" target="#{InstituteListController.editedRecord}" />--%>
-                            
-                                        <%--   
+                                    
                                 </rich:column>
-                                        --%>
-                                
-                                  <%--  <h:commandButton value="Login" action="#{ins.login}"/>--%>
-                             
+                                <%-- ========================= --%>
+                                              
                             </rich:dataTable>
                             
-                                                      
-                             <%--      <label>
-                               <span>Select Institute :</span>
-                                <h:selectOneMenu value="#{UserBean.userOrgCode}">
-                                    <f:selectItems value="#{UserBean.items}"/>
-                                </h:selectOneMenu>
-                            </label>
-                            <label>
-                                <span>&nbsp;</span>
-                                <h:commandButton value="Go" styleClass="button" action="#{UserBean.login}"/></br>
-                            </label> 
-                            
- <rich:modalPanel id="confirmPane" autosized="true"  width="250">
-                                Are you sure you want to delete the row?
-                                <a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;" />
-                                
-                                <a4j:commandButton id="ldbtn1" ajaxSingle="true" reRender="si,empfmlyDetail" value="Delete" action="#{EmployeeBean.deleteRecord}" oncomplete="#{rich:component('confirmPane')}.hide();"/>
+                                 <rich:modalPanel id="confirmPane" autosized="true"  width="400" height="80">
+                                your profile as an employee does not exist. proceed as an Institute Admin and create an employee profile for yourself. 
+                                <br/><br/><a4j:commandButton value="    OK      " onclick="#{rich:component('confirmPane')}.hide(); return false;" style="padding:center;"/>
+                                                          
                                 </rich:modalPanel>
-                             --%>
-                        </h:form>
+                            
+                             </h:form>
 
-
+                            <rich:panel style="background-color:#B0C4DE;" >   </rich:panel>
                         </div>     
                     </div> <%-- end of pageBody --%>
                     
                      <div class="footer">
                     <div class="footer-content">
                 
-                        <p> Opensource component development supported by SMVDU, IIT Kanpur, and NMEICT, MHRD</p>
+                        <p> Opensource component developed by IIT Kanpur, Initially was supported by MHRD.</p>
                         <p> For problems at this site send email to ETRG, IIT Kanpur
                             For reporting bugs, suggestion, feature request, and maintainence support
                             post at brihaspati_ERP_mission@yahoogroups.com</p>
                        
-                <!--        <div class="secondary-links">
-                            <a href="#" >Brihaspati</a>
-                            <a href="#" >BGAS</a>
-                            <a href="#" >PICO</a>
-                            <a href="#" >Student Fee Management</a>
-                        </div>      
-                -->        <p class="copyright"> © 2015 PayrollSys IITK.</p>
+                        <p class="copyright"> © 2015 PayrollSys IITK.</p>
                    </div>   
                 </div> <!-- end footer-->    
                     
                     
-                </div>
+              <%--  </div> --%>
             </div>
         </body>
     </html>

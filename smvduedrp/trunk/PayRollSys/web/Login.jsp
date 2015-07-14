@@ -71,7 +71,7 @@
                                 <li><a href='http://202.141.40.215:8080/brihaspati/servlet/brihaspati' target="_blank">Brihaspati</a></li>
                                 <li><a href='http://202.141.40.215/~brihaspati/BGAS/index.php/user/login' target="_blank">BGAS</a></li>
                                <li><a href='#'>PICO</a></li>
-                               <li><a href='#'>Student Fee Management</a></li>
+                              <%-- <li><a href='#'>Student Fee Management</a></li>--%>
                             </ul>
                         </div>
                     </div>     
@@ -110,14 +110,6 @@
                                     </rich:messages>
                                 </div>
 
-                                <%--            <label>
-                                    <span>Organization :</span>
-                                    <h:selectOneMenu id="user" value="#{UserBean.userOrgCode}" >
-                                                <f:selectItem itemLabel="Administrator" />
-                                                <f:selectItems id="user1" value="#{OrgController.items}"/>
-                                    </h:selectOneMenu>
-                                </label>  
-                                --%>
                                 <label>
                                     <span>Email :</span>
                                     <h:inputText label="User Name" value="#{UserBean.userName}" />
@@ -143,23 +135,23 @@
                         <div class="right-column">
                             <div class="question">
                                 <h4> Don't have an account?</h4>
-                                <a  href="adminLogin/OrgMain.jsf" >Institute Admin Registration</a><br/>
+                                <a  href="adminLogin/OrgMain.jsf" style="font-weight:bold">Institute Admin Registration</a><br/>
                                 <h:outputText value="For user registration please contact to Institute Admin" style="font-size:12px"/>
                                 <br/>
                                <%--<a  href="adminLogin/EmployeeProfile.jsf" >Employee Registration</a>--%>
                             </div>
 
-                            <div class="question">
+                            <%--<div class="question">
                                 <h4> Forgot Password?</h4>
                                 <a  href="" >Reset it here</a>
-                            </div>
+                            </div>--%>
 
                             <div id='links'>
                                 <ul>
-                                   <li><a href='#'>NMEICT home page</a></li>
-                                   <li><a href='#'>Release Notes</a></li>
+                                   <li><a href="http://202.141.40.215/WebApp/wiki/index.php/PayRoll_System">Help Document</a></li>
                                    <li><a href='adminLogin/brihaspatiMainLogin.jsf' target="_blank">Brihaspati Server Aunthentication</a></li>
-                                   <li><a href='#'>HTML Help</a></l>
+                                   <li><a href='#' disabled='true;'>Release Notes</a></li>
+                                   <li><a href="http://www.sakshat.ac.in">NMEICT home page</a></li>
                                    
                                 </ul>
                             </div>
@@ -173,7 +165,7 @@
                 <div class="footer">
                     <div class="footer-content">
                 
-                        <p> Opensource component development supported by SMVDU, IIT Kanpur, and NMEICT, MHRD</p>
+                        <p> Opensource component developed by IIT Kanpur , Intially was supported by MHRD.</p>
                         <p> For problems at this site send email to ETRG, IIT Kanpur
                             For reporting bugs, suggestion, feature request, and maintainence support
                             post at brihaspati_ERP_mission@yahoogroups.com</p>

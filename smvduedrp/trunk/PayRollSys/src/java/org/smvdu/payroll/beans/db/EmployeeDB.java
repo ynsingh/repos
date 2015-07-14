@@ -37,6 +37,7 @@ import org.smvdu.payroll.beans.upload.UploadFile;
 //import org.smvdu.payroll.user.ActiveProfile;
 import org.smvdu.payroll.user.SalaryMessage;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
+import org.smvdu.payroll.user.UserRegistration;
 
 /**
  *
@@ -575,13 +576,13 @@ public class EmployeeDB {
             ps.setInt(26, 1);
             ps.executeUpdate();
             ps.close();
-            ps = c.prepareStatement("insert into employee_login_master values(?,?,?,?)");
+           /* ps = c.prepareStatement("insert into employee_login_master values(?,?,?,?)");
             ps.setString(1, emp.getCode());
             ps.setString(2, emp.getCode());
             ps.setString(3, emp.getCode());
             ps.setInt(4, orgCode);
             ps.executeUpdate();
-            ps.close();
+            ps.close();*/
             c.close();
             return null;
         } catch (Exception e) {
@@ -1234,38 +1235,61 @@ public class EmployeeDB {
         try{
             boolean em=false;
             Connection connection = new CommonDB().getConnection();
-            if (codeExist(emp.getCode())) {
+           /* if (codeExist(emp.getCode())) {
                 //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Code already exist(" + emp.getCode() + ")", "(" + emp.getCode()+ ")"));
+                System.out.println("Employee already exists in  employee_master for "+emp.getCode());
                 return em;
-            }
-            Exception ee =save(emp);
-            Exception ex =saveEmpSupportData(emp);
-            if(ex!=null){
-                ps = connection.prepareStatement("delete from employee_master where emp_code = '"+emp.getCode()+"' and emp_org_code='" +orgCode+ "' ");
-                ps.executeUpdate();
-                ps.close();
-                ps = connection.prepareStatement("delete from employee_login_master where el_id= '"+emp.getCode()+"' and el_org_id='" +orgCode+ "' ");
-                ps.executeUpdate();
-                ps.close();
-                em=false;
-            }
-            else
-            {
-                em=true;
-            }
-            if(ee!=null)
-            {   
-                //System.out.println("emp====code"+emp.getCode());
-                ps = connection.prepareStatement("delete from employee_master_support where id= '"+emp.getEmpId()+"' code = '"+emp.getCode()+"' ");
-                ps.executeUpdate();
-                ps.close();
-                em=false;
+            }*/
+            /* this method follow the common data base machnism for user registration process
+             * and check use exists or not if not then insert the entry.
+             * and also insert the entry in user_master table and user_roles table.
+             */
+            Exception eloginmachanism =new UserRegistration().EmployeeRegistration(emp.getEmail(),emp.getCode(),emp.getPhone(),emp.getName(),"",emp.getAddress(),orgCode);
+            if(eloginmachanism == null){
+                
+                Exception ee =save(emp);
+                Exception ex =saveEmpSupportData(emp);
+                if(ex!=null){
+                    /*if(ex rerturn null) means employee data is properly insert in employee master support table its means proper entry in done
+                    * else means data is not insert in employee_master_support table so delete entry from employee_master
+                    * because for proper employee registration entry insert in  both tables.
+                    */ 
+                    ps = connection.prepareStatement("delete from employee_master where emp_code = '"+emp.getCode()+"' and emp_org_code='" +orgCode+ "' ");
+                    ps.executeUpdate();
+                    ps.close();
+                    /*ps = connection.prepareStatement("delete from employee_login_master where el_id= '"+emp.getCode()+"' and el_org_id='" +orgCode+ "' ");
+                    ps.executeUpdate();
+                    ps.close();
+                    em=false;*/
+                }
+                else
+                {
+                    System.out.println("employee registration entry insert in  both tables for : "+emp.getCode());
+                    em=true;
+                }
+                if(ee!=null)
+                {
+                    /*if(ee rerturn null) means employee data is properly insert in employee master table its means proper entry in done
+                    * else means data is not insert in employee_master table so delete entry from employee_master_support
+                    * because for proper employee registration entry insert in  both tables.
+                    */ 
+                
+                    ps = connection.prepareStatement("delete from employee_master_support where id= '"+emp.getEmpId()+"' code = '"+emp.getCode()+"' ");
+                    ps.executeUpdate();
+                    ps.close();
+                    em=false;
+                }
+                else{
+                    System.out.println("employee registration entry insert in  both tables for : "+emp.getCode());
+                    em=true;
+                }
             }
             else{
-                em=true;
+                System.out.println(" problem in employee registration for  : "+emp.getCode());
+                return em;
             }
             connection.close(); 
-            return em;
+           return em;
         }
         catch (Exception e) {
             e.printStackTrace();
