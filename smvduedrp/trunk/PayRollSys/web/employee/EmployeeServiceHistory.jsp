@@ -31,6 +31,7 @@
 *
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITK.
 *  Modified Date: 4 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*  GUI Modification : 20 June 2015, Om Prakash<omprakashkgp@gmail.com>
 
 --%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
@@ -159,109 +160,87 @@ function highlightAndSelectRow(tr) {
                                 <h:panelGrid id="empserviceDetail" >
                                 <%--<rich:datascroller for="si" maxPages="5" />--%>
                                 <a4j:status onstart="#{rich:component('statPane')}.show()" onstop="#{rich:component('statPane')}.hide()" />
-                                <rich:dataTable  id="si" value="#{EmployeeBean.allServiceRecord}" binding="#{EmployeeBean.dataGrid}" var="empshr" rowKeyVar="row" rows="5" style="width:1200px;" >
+                                <rich:dataTable  id="si" value="#{EmployeeBean.allServiceRecord}" binding="#{EmployeeBean.dataGrid}" var="empshr" rowKeyVar="row" rows="10" style="width:1010px;" >
                                 <rich:column>
                                     <f:facet name="header" >
-                                    <h:outputText value="Sr.No"/>
+                                    <h:outputText value="Sr.No" style="font-size:9px;" />
                                     </f:facet>
-                                    <h:outputText value="#{empshr.srNo}"  />
+                                    <h:outputText value="#{empshr.srNo}" style="font-size:9px;" />
                                     </rich:column>   
                                 <rich:column >
                                     <f:facet name="header">
-                                        <h:outputText styleClass="Label" value="Transaction Type"/>
+                                        <h:outputText styleClass="Label" value="Transaction Type" style="font-size:9px;" />
                                     </f:facet>
-                                    <%--<rich:inplaceInput value="#{empshr.transactiontype}" />--%>
-                                    <h:outputText styleClass="Label" value="#{empshr.transactiontype}"/>
+                                   
+                                    <h:outputText styleClass="Label" value="#{empshr.transactiontype}" style="font-size:9px;" />
                                     </rich:column>
                                 <rich:column >
                                     <f:facet name="header">
-                                        <h:outputText value="To office"/>
+                                        <h:outputText value="To office" style="font-size:9px;" />
                                     </f:facet>
-                                    <h:outputText styleClass="Label" value="#{empshr.tooffice}" />
+                                    <h:outputText styleClass="Label" value="#{empshr.tooffice}" style="font-size:9px;" />
                                  </rich:column>
                                 <rich:column >
                                     <f:facet name="header">
-                                        <h:outputText  value="To which Post"/>
+                                        <h:outputText  value="To which Post" style="font-size:9px;" />
                                     </f:facet>
-                                    <%--<rich:inplaceInput value="#{empshr.towhichpost}" />--%>
-                                    <h:selectOneMenu  value="#{empshr.towhichpost}">
-                                     <f:selectItems value="#{DesignationBean.arrayAsItem}"/>                 
-                                    </h:selectOneMenu>
+                                     <h:outputText  value="#{empshr.towhichpost}" style="font-size:9px;" />                 
+                                   
                                 </rich:column> 
                                 <rich:column >
                                     <f:facet name="header">
-                                        <h:outputText value="Class"/>
+                                        <h:outputText value="Class" style="font-size:9px;" />
                                     </f:facet>
-                                    <h:outputText styleClass="Label" value="#{empshr.empservclass}" />
-                                    <%--<rich:inplaceInput value="#{empshr.empservclass}" />--%>
+                                    <h:outputText styleClass="Label" value="#{empshr.empservclass}" style="font-size:9px;" />
+                                    
                                 </rich:column>
                                 <rich:column >
                                     <f:facet name="header">
-                                        <h:outputText value="Order Number"/>
+                                        <h:outputText value="Order Number" style="font-size:9px;" />
                                     </f:facet>
-                                    <%--<rich:inplaceInput value="#{empshr.ordernum}" />--%>
+                                    
                                     <h:outputText styleClass="Label" value="#{empshr.ordernum}" />
                                 </rich:column>
                                 <rich:column >
                                     <f:facet name="header">
-                                       <h:outputText value="Order Date"/>
+                                       <h:outputText value="Order Date" style="font-size:9px;" />
                                     </f:facet>
-                                         <%--   <rich:calendar enableManualInput="false" converter="dateConverter" showWeekDaysBar="false"
-                                                   showFooter="false" styleClass="special"
-                                                   datePattern="yyyy-MM-dd" id="empod" popup="true"
-                                                   required="true"   requiredMessage="*Enter Order Date  as yyyy-mm-dd"
-                                                   value="#{empshr.orderdate}">
-                                            </rich:calendar>--%>
+                              
                                          <h:outputText styleClass="Label" value="#{empshr.orderdate}" />
                                 </rich:column>
                                 <rich:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Date of Increment" />
+                                        <h:outputText value="Increment Date" style="font-size:9px;" />
                                     </f:facet>
-                                    <%--<rich:calendar enableManualInput="false" converter="dateConverter" showWeekDaysBar="false"
-                                                   showFooter="false" styleClass="special"
-                                                   datePattern="yyyy-MM-dd" id="empDoI" popup="true"
-                                                   required="true"   requiredMessage="*Enter Date of Increment  as yyyy-mm-dd"
-                                                   value="#{empshr.dateofincrement}">
-                                    </rich:calendar>--%>
+                        
                                     <h:outputText styleClass="Label" value="#{empshr.dateofincrement}" />
                                 </rich:column>
                                 <rich:column >
                                     <f:facet name="header" >
-                                        <h:outputText value="Pay Scale"/>
+                                        <h:outputText value="Pay Scale" style="font-size:9px;" />
                                     </f:facet>
-                                    <h:selectOneMenu value="#{empshr.payscale}">
-                                        <f:selectItems value="#{SalaryGradeBean.grades}"/>
-                                    </h:selectOneMenu>
-                                    <%--<h:outputText styleClass="Label" value="#{empshr.payscale}" />--%>
+                                    <h:outputText value="#{empshr.payscale}" style="font-size:9px;" />
+                    
                                 </rich:column> 
                                 <rich:column>
                                     <f:facet name="header" >
-                                        <%--<div style="overflow: hidden;width:50px;word-wrap: break-word; ">--%>
-                                        <h:outputText value="Name of other Department in case of Deputation"/>
-                                        <%--</div>--%>
+                                     
+                                        <h:outputText value="Department for Deputation" style="font-size:9px;" />
+                                        
                                     </f:facet>
-                                     <%--   <rich:inplaceInput value="#{empshr.deputationdept}" />--%>
-                                    <h:selectOneMenu  value="#{empshr.deputationdept}">
-                                    <f:selectItems value="#{DepartmentBean.arrayAsItem}"/>
-                                    </h:selectOneMenu>
-                                    <%-- <h:outputText styleClass="Label" value="#{empshr.deptName}" />--%>
+                                    <h:outputText value="#{empshr.deputationdept}" style="font-size:9px;" />
+                                 
                                 </rich:column> 
                                 <rich:column >
                                     <f:facet name="header" >
-                                    <h:outputText value="Area Type"/>
+                                    <h:outputText value="Area Type" style="font-size:9px;" />
                                     </f:facet>
-                                    <%--<h:selectOneMenu value="#{empshr.areatype}">
-                                    <f:selectItem itemLabel="Hard" itemValue="Hard"/>
-                                    <f:selectItem itemLabel="Tribal" itemValue="Tribal"/>
-                                    <f:selectItem itemLabel="Sub-cader" itemValue="Sub-cader"/>
-                                    <f:selectItem itemLabel="None" itemValue="None"/>
-                                    </h:selectOneMenu>--%>
+                              
                                     <h:outputText styleClass="Label" value="#{empshr.areatype}" />
                                 </rich:column> 
                                 <rich:column>
                                        <f:facet name="header">
-                                           <h:outputText value="Actions"/>
+                                           <h:outputText value="Actions" style="font-size:9px;" />
                                        </f:facet>
                                 <a4j:commandLink  styleClass="no-decor" ajaxSingle="true" oncomplete="#{rich:component('confirmPane')}.show()">
                                 <h:graphicImage value="/img/delete.gif" alt="delete" />
@@ -286,13 +265,21 @@ function highlightAndSelectRow(tr) {
                                 <h:graphicImage value="/img/edit.gif" alt="ai" />
                                  Please wait...
                                 </rich:modalPanel>--%>
+ 
                                 <rich:modalPanel id="confirmPane" autosized="true"  width="250">
+                                <f:facet name="controls">
+                                    <h:panelGroup>
+                                    <h:graphicImage value="/img/close1.png" styleClass="hidelink3" id="hidelink3"/>
+                                    <rich:componentControl for="confirmPane" attachTo="hidelink3" operation="hide" event="onclick"/>
+                                    </h:panelGroup>
+                                </f:facet> 
+                             
                                 Are you sure you want to delete the row?
                                 <a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;" />
                                 <%--<a4j:commandButton value="Delete"  onclick="remove(); return false;" />--%>
                                 <a4j:commandButton id="ldbtn1" ajaxSingle="true" reRender="si,empserviceDetail" value="Delete" action="#{EmployeeBean.deleteServiceHistory}" oncomplete="#{rich:component('confirmPane')}.hide();"/>
                                 </rich:modalPanel>
-                               
+                                                           
                              <%-- <h:panelGroup>
                                   <a4j:commandButton  id="ldbtn2" value="update" action="#{EmployeeBean.updateServiceRecord}"/>
                             </h:panelGroup>
@@ -301,19 +288,25 @@ function highlightAndSelectRow(tr) {
                             </h:panelGroup>--%>
                           </h:form>
 
-                         <rich:modalPanel   id="editPane" autosized="true"  domElementAttachment="parent" width="400" height="170">
+                         <rich:modalPanel   id="editPane" autosized="true"  domElementAttachment="parent" width="400" height="170"> 
+                            <f:facet name="controls">
+                                <h:panelGroup>
+                                <h:graphicImage value="/img/close1.png" styleClass="hidelink1" id="hidelink1"/>
+                                <rich:componentControl for="editPane" attachTo="hidelink1" operation="hide" event="onclick"/>
+                                </h:panelGroup>
+                            </f:facet>            
                           <h:form >
                               <rich:panel header="Edit Employee Service Record ">
                            <h:panelGrid id="editGrid">
                                                
                                     <h:outputText  value="Transaction Type"/>
-                                    <h:inputText id="transType" required="true"
+                                    <h:inputText id="transType" required="true" maxlength="25"
                                                  requiredMessage="Enter Transaction Type."
                                                  styleClass="fields" value="#{EmployeeBean.editedRecord.transactiontype}" >
                                     </h:inputText>
                                     <h:message styleClass="error" for="transType" tooltip="Enter Transaction Type ."/>
                                     <h:outputText styleClass="Label" value="To office"/>
-                                    <h:inputText id="tooffice" required="true" requiredMessage="Enter Office Name." styleClass="fields" value="#{EmployeeBean.editedRecord.tooffice}">
+                                    <h:inputText id="tooffice" required="true" maxlength="25" requiredMessage="Enter Office Name." styleClass="fields" value="#{EmployeeBean.editedRecord.tooffice}">
                                     </h:inputText>
                                     <h:message styleClass="error" for="tooffice" tooltip="Enter Office Name ."/>
                                     
@@ -324,12 +317,12 @@ function highlightAndSelectRow(tr) {
                                     <h:message styleClass="error" for="whichPost" tooltip="Employee Designation. Select From Choices ."/>
                                     
                                     <h:outputText styleClass="Label" value="Class"/>
-                                    <h:inputText id="class" required="true" requiredMessage="Enter Class." styleClass="fields" value="#{EmployeeBean.editedRecord.empservclass}">
+                                    <h:inputText id="class" required="true" maxlength="15" requiredMessage="Enter Class." styleClass="fields" value="#{EmployeeBean.editedRecord.empservclass}">
                                     </h:inputText>
                                     <h:message styleClass="error" for="class" tooltip="Enter Class ."/>
                                     
                                     <h:outputText styleClass="Label" value="Order Number"/>
-                                    <h:inputText id="orderno" required="true" requiredMessage="Enter Order Number." styleClass="fields" value="#{EmployeeBean.editedRecord.ordernum}">
+                                    <h:inputText id="orderno" required="true" maxlength="11" requiredMessage="Enter Order Number." styleClass="fields" value="#{EmployeeBean.editedRecord.ordernum}">
                                     </h:inputText>
                                     <h:message styleClass="error" for="orderno" tooltip="Enter Order Number ."/>
                                                                       
@@ -349,7 +342,7 @@ function highlightAndSelectRow(tr) {
                                                    required="true"   requiredMessage="*Enter Date of Increment as yyyy-mm-dd"
                                                    value="#{EmployeeBean.editedRecord.dateofincrement}">
                                     </rich:calendar>
-                                    <h:message styleClass="error" for="incrementdate" tooltip="Enter Enter Date of Increment ."/>
+                                    <h:message styleClass="error" for="incrementdate" tooltip="Enter Date of Increment ."/>
                                     
                                     <h:outputText styleClass="Label" value="Pay Scale"/>
                                     <h:selectOneMenu styleClass="combo"  id="payscale"  required="true" requiredMessage="Enter Pay Scale." value="#{EmployeeBean.editedRecord.payscale}">
@@ -380,7 +373,13 @@ function highlightAndSelectRow(tr) {
                         </rich:modalPanel>
                         <br />
                 <hr/>
-                <rich:modalPanel id="pnl">
+                <rich:modalPanel id="pnl"> 
+                            <f:facet name="controls">
+                                <h:panelGroup>
+                                <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelink"/>
+                                <rich:componentControl for="pnl" attachTo="hidelink" operation="hide" event="onclick"/>
+                                </h:panelGroup>
+                            </f:facet>
                             <h:form id="addservicerecord">
                                 <rich:panel header="Add Employee Service History ">
                                     <h:column>
@@ -411,13 +410,13 @@ function highlightAndSelectRow(tr) {
                                 </h:column>
                             <h:panelGrid columns="3"  columnClasses="label,field">   
                             <h:outputText  value="Transaction Type"/>
-                                    <h:inputText id="transType" required="true"
+                            <h:inputText id="transType" required="true" maxlength="25"
                                                  requiredMessage="Enter Transaction Type."
-                                                 styleClass="fields" value="#{EmployeeBean.transactiontype}" >
+                                                 styleClass="fields" value="#{EmployeeBean.transactiontype}"  >
                                     </h:inputText>
                                     <h:message styleClass="error" for="transType" tooltip="Enter Transaction Type ."/>
                                     <h:outputText styleClass="Label" value="To office"/>
-                                    <h:inputText id="tooffice" required="true" requiredMessage="Enter Office Name." styleClass="fields" value="#{EmployeeBean.tooffice}">
+                                    <h:inputText id="tooffice" required="true" maxlength="25" requiredMessage="Enter Office Name." styleClass="fields" value="#{EmployeeBean.tooffice}">
                                     </h:inputText>
                                     <h:message styleClass="error" for="tooffice" tooltip="Enter Office Name ."/>
                                     
@@ -430,12 +429,12 @@ function highlightAndSelectRow(tr) {
                                     <h:message styleClass="error" for="whichPost" tooltip="Employee Designation. Select From Choices ."/>
                                     
                                     <h:outputText styleClass="Label" value="Class"/>
-                                    <h:inputText id="class" required="true" requiredMessage="Enter Class." styleClass="fields" value="#{EmployeeBean.empservclass}">
+                                    <h:inputText id="class" required="true"  maxlength="15" requiredMessage="Enter Class." styleClass="fields" value="#{EmployeeBean.empservclass}">
                                     </h:inputText>
                                     <h:message styleClass="error" for="class" tooltip="Enter Class ."/>
                                     
                                     <h:outputText styleClass="Label" value="Order Number"/>
-                                    <h:inputText id="orderno" required="true" requiredMessage="Enter Order Number." styleClass="fields" value="#{EmployeeBean.ordernum}">
+                                    <h:inputText id="orderno" required="true" maxlength="15" requiredMessage="Enter Order Number." styleClass="fields" value="#{EmployeeBean.ordernum}">
                                     </h:inputText>
                                     <h:message styleClass="error" for="orderno" tooltip="Enter Order Number ."/>
                                                                        

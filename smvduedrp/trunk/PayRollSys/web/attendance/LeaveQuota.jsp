@@ -68,7 +68,7 @@
                             </rich:messages>
                         </h:panelGrid>
                         <h:panelGrid columns="2">
-                            <rich:dataTable id="plist" value="#{LeaveQuotaBean.quotas}" binding="#{LeaveQuotaBean.dataGrid}" rowKeyVar="row"  var="head"  rows="10" style="width:800px;">
+                            <rich:dataTable id="plist" value="#{LeaveQuotaBean.quotas}" binding="#{LeaveQuotaBean.dataGrid}" rowKeyVar="row"  var="head"  rows="10" style="width:1015px;">
                             <rich:column>
                             <f:facet name="header">
                                 <h:outputText value="Leave Type"/>

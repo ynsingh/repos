@@ -168,8 +168,8 @@ public class OrgProfileDB {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into org_profile(org_name,"
                     + "org_email,org_web,org_phone,org_address1,"
-                    + "org_master_password, org_city, org_pincode, org_state, org_ll, org_countrycode, org_regioncode, org_institutedomain, org_toi, org_affiliation, org_adminfn, org_adminln, org_admindesig,org_status,org_reg_date) "
-                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'"+0+"','"+new java.sql.Date(dat.getTime())+"')",1);
+                    + "org_master_password, org_city, org_pincode, org_state, org_countrycode, org_institutedomain, org_toi, org_affiliation, org_adminfn, org_adminln, org_admindesig,org_status,org_reg_date) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'"+0+"','"+new java.sql.Date(dat.getTime())+"')",1);
             ps.setString(1, org.getName());
         //    ps.setString(2, org.getTagLine());
             ps.setString(2, org.getEmail());
@@ -181,17 +181,17 @@ public class OrgProfileDB {
         //    ps.setString(9, org.getRecoveryEMailId());
          //   ps.setString(7,org.getTanno());
             ps.setString(7, org.getCity());
-            ps.setInt(8, org.getPincode());
+            ps.setInt(8, Integer.parseInt(org.getPincode()));
             ps.setString(9, org.getState());
-            ps.setInt(10, org.getLl());
-            ps.setString(11, org.getCountryCode());
-            ps.setInt(12, org.getRegionCode());
-            ps.setString(13, org.getInstDomain());
-            ps.setString(14, org.getToi());
-            ps.setString(15, org.getAffiliation());
-            ps.setString(16, org.getAdminfn());
-            ps.setString(17, org.getAdminln());
-            ps.setString(18, org.getAdminDesig());
+           // ps.setInt(10, org.getLl());
+            ps.setString(10, org.getCountryCode());
+            //ps.setInt(12, org.getRegionCode());
+            ps.setString(11, org.getInstDomain());
+            ps.setString(12, org.getToi());
+            ps.setString(13, org.getAffiliation());
+            ps.setString(14, org.getAdminfn());
+            ps.setString(15, org.getAdminln());
+            ps.setString(16, org.getAdminDesig());
 
 
             ps.executeUpdate();

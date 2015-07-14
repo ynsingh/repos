@@ -120,9 +120,9 @@ CREATE TABLE `org_profile` (
   `org_city` varchar(40) default NULL,
   `org_pincode` int(11) NOT NULL,
   `org_state` varchar(40) default NULL,
-  `org_ll` int(20) NOT NULL,
+ /* `org_ll` int(20) NOT NULL,*/
   `org_countrycode` int(11) default NULL,
-  `org_regioncode` int(11) NOT NULL,
+ /*`org_regioncode` int(11) NOT NULL,*/
   `org_institutedomain` varchar(20) default NULL,
   `org_toi` varchar(20) default NULL,
   `org_affiliation` varchar(40) default NULL,

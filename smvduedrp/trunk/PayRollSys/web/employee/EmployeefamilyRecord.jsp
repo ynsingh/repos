@@ -31,6 +31,7 @@
 *
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITK.
 *  Modified Date: 4 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*  GUI Modification : 20 June 2015, Om Prakash<omprakashkgp@gmail.com>
 *
 
 --%>
@@ -124,7 +125,7 @@
                                 
                                 <h:panelGrid  id="empfmlyDetail" columns="6"  columnClasses="label,field">
                                   <a4j:status onstart="#{rich:component('statPane')}.show()" onstop="#{rich:component('statPane')}.hide()" />
-                                  <rich:dataTable id="si"  value="#{EmployeeBean.allFamilyRecord}" binding="#{EmployeeBean.dataGrid}" var="empfr" rowKeyVar="row" rows="5" style="width:1200px;">
+                                  <rich:dataTable id="si"  value="#{EmployeeBean.allFamilyRecord}" binding="#{EmployeeBean.dataGrid}" var="empfr" rowKeyVar="row" rows="10" style="width:1010px;">
                                   <rich:column>
                                     <f:facet name="header" >
                                     <h:outputText value="Sr.No"/>
@@ -138,19 +139,12 @@
                                   <%--  <rich:inplaceInput value="#{empfr.memberName}" />--%>
                                   <h:outputText value="#{empfr.memberName}"/>
                                 </rich:column>
-                                 <rich:column width="15%">
+                                <rich:column width="15%">
                                 <f:facet name="header">
                                 <h:outputText value="Relation"/>
                                 </f:facet>
-                                     <h:selectOneMenu value="#{empfr.relation}">
-                                    <f:selectItem itemLabel="Father" itemValue="Father"/>
-                                    <f:selectItem itemLabel="Mother" itemValue="Mother"/>
-                                    <f:selectItem itemLabel="Wife" itemValue="Wife"/>
-                                    <f:selectItem itemLabel="Husband" itemValue="Husband"/>
-                                    <f:selectItem itemLabel="Son" itemValue="Son"/>
-                                    <f:selectItem itemLabel="Daughter" itemValue="Daughter"/>
-                                </h:selectOneMenu>
-                                </rich:column>
+                                <h:outputText value="#{empfr.relation}"/>
+                                   </rich:column>
                                 <rich:column width="15%" >
                                 <f:facet name="header">
                                <h:outputText styleClass="Label" value="Date of Birth"/>
@@ -162,29 +156,23 @@
                                 <f:facet name="header">
                                 <h:outputText value="Dependent"/>
                                 </f:facet>
-                                      <h:selectOneMenu value="#{empfr.dependent}">
-                                    <f:selectItem itemLabel="Yes" itemValue="Yes"/>
-                                    <f:selectItem itemLabel="No" itemValue="No"/>
-                                </h:selectOneMenu>
+                                <h:outputText value="#{empfr.dependent}"/>
+  
                                 </rich:column>
-                                  <rich:column width="15%">
+                                <rich:column width="15%">
                                 <f:facet name="header">
                                 <h:outputText value="Whether Employed"/>
                                 </f:facet>
-                                      <h:selectOneMenu value="#{empfr.whetherEmployed}">
-                                    <f:selectItem itemLabel="State" itemValue="State"/>
-                                    <f:selectItem itemLabel="Center" itemValue="Center"/>
-                                    <f:selectItem itemLabel="Other" itemValue="Other"/>
-                                    <f:selectItem itemLabel="Unemployed" itemValue="Unemployed"/>
-                                </h:selectOneMenu>
+                                <h:outputText value="#{empfr.whetherEmployed}"/>
+                     
                                 </rich:column>
                                 <rich:column width="15%">
                                 <f:facet name="header">
                                 <h:outputText value="Name of the Department"/>
                                 </f:facet>
-                                 <h:outputText value="#{empfr.deptName}" />
-                                 </rich:column>
-                                 <rich:column>
+                                <h:outputText value="#{empfr.deptName}" />
+                                </rich:column>
+                                <rich:column>
                                     <f:facet name="header">
                                      <h:outputText value="Actions"/>
                                     </f:facet>
@@ -205,7 +193,13 @@
                                </rich:dataTable>                          
                                 </h:panelGrid>
                        
-                                 <rich:modalPanel id="confirmPane" autosized="true"  width="250">
+                                <rich:modalPanel id="confirmPane" autosized="true"  width="250"> 
+                                <f:facet name="controls">
+                                    <h:panelGroup>
+                                    <h:graphicImage value="/img/close1.png" styleClass="hidelink3" id="hidelink3"/>
+                                    <rich:componentControl for="confirmPane" attachTo="hidelink3" operation="hide" event="onclick"/>
+                                    </h:panelGroup>
+                                </f:facet> 
                                 Are you sure you want to delete the row?
                                 <a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;" />
                                 
@@ -222,13 +216,19 @@
                              </h:form>
                                 
                              
-                            <rich:modalPanel id="editPane" autosized="true"  domElementAttachment="parent" width="400" height="170">
+                            <rich:modalPanel id="editPane" autosized="true"  domElementAttachment="parent" width="400" height="170"> 
+                                 <f:facet name="controls">
+                                    <h:panelGroup>
+                                    <h:graphicImage value="/img/close1.png" styleClass="hidelink2" id="hidelink2"/>
+                                    <rich:componentControl for="editPane" attachTo="hidelink2" operation="hide" event="onclick"/>
+                                    </h:panelGroup>
+                                </f:facet>
                             <h:form>
                                 <rich:panel header="Edit Family Record ">
                             <h:panelGrid id="editGrid">
                                 
                             <h:outputText styleClass="Label" value="Family Memeber Name"/>
-                                    <h:inputText id="empfrName" required="true"
+                            <h:inputText id="empfrName" required="true" maxlength="25"
                                                  requiredMessage="Enter Member Name."
                                                  styleClass="fields" value="#{EmployeeBean.editedRecord.memberName}" validator="#{allValidator.validateUserName}">
                                         <rich:ajaxValidator event="onblur"></rich:ajaxValidator>
@@ -272,7 +272,7 @@
                                     <h:message for="whetheremployed" tooltip="Whether Employed."/> 
                                     
                                     <h:outputText value="Name of the Department"/>
-                                    <h:inputText id="dept" styleClass="fields" value="#{EmployeeBean.editedRecord.deptName}"/>
+                                    <h:inputText id="dept" styleClass="fields" maxlength="25" value="#{EmployeeBean.editedRecord.deptName}"/>
                                     <h:message for="dept" tooltip="Department Name"/>
                                  </h:panelGrid> 
                             
@@ -285,10 +285,15 @@
                     
                 
                 <rich:modalPanel id="pnl">
-                            <h:form id="addfamilyrecord">
+                               <f:facet name="controls">
+                                    <h:panelGroup>
+                                    <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelink"/>
+                                    <rich:componentControl for="pnl" attachTo="hidelink" operation="hide" event="onclick"/>
+                                    </h:panelGroup>
+                                </f:facet>
+                                <h:form id="addfamilyrecord">
                                 <rich:panel header="Add Family Record ">
-                                    <h:column>
-                            
+                                <h:column>
                                 <rich:toolTip for="empName" value="Standard Charecter(e.g @,#,$,...etc) Will Not Be Accepted, Length Should Be Three Charecter"/>
                                 <rich:toolTip for="seci" value="Check , If Employee Is Senior Citizen Otherwise Uncheck"/>
                                 <h:panelGroup>
@@ -315,7 +320,7 @@
                                 </h:column>
                             <h:panelGrid   columnClasses="label,field">   
                             <h:outputText styleClass="Label" value="Family Memeber Name"/>
-                                    <h:inputText id="empfrName" required="true"
+                            <h:inputText id="empfrName" required="true" maxlength="25"
                                                  requiredMessage="Enter Member Name."
                                                  styleClass="fields" value="#{EmployeeBean.memberName}" validator="#{allValidator.validateUserName}">
                                         <rich:ajaxValidator event="onblur"></rich:ajaxValidator>
@@ -359,7 +364,7 @@
                                     <h:message for="whetheremployed" tooltip="Whether Employed."/> 
                                     
                                     <h:outputText value="Name of the Department"/>
-                                    <h:inputText id="dept" styleClass="fields" value="#{EmployeeBean.deptName}"/>
+                                    <h:inputText id="dept" styleClass="fields" maxlength="25" value="#{EmployeeBean.deptName}"/>
                                     <h:message for="dept" tooltip="Department Name"/>
                                     </h:panelGrid>
                               

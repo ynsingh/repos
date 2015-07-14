@@ -30,7 +30,7 @@
 *
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITK.
 *  Modified Date: 4AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
-*
+*  GUI Modification : 20 June 2015, Om Prakash<omprakashkgp@gmail.com>
 
 --%>
 
@@ -94,7 +94,7 @@
         <a4j:keepAlive beanName="EmployeeQualification" ajaxOnly="true"/>
         <div class="container_form">
         <rich:panel id="addemplqualdetail" header="Employee Education / Training Details" styleClass="form" style="width:auto;">
-            <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add Education Detail"/>
+            <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add Education Detail"/> &nbsp;
             <h:commandButton onclick="Richfaces.showModalPanel('tnl');" value="Add Training Detail"/>
                 <rich:messages>
                     <f:facet name="infoMarker">
@@ -133,49 +133,49 @@
                             </h:panelGroup>
                         </h:column>
                     </h:panelGrid>
-                   <rich:panel header="Employee Education Deatils">
-                    <h:panelGrid  id="empqualDetail" columns="6"  columnClasses="label,field">
+              <rich:panel header="Employee Education Details" > 
+                    <h:panelGrid  id="empqualDetail" columns="7"  columnClasses="label,field">
                         <a4j:status onstart="#{rich:component('statPane')}.show()" onstop="#{rich:component('statPane')}.hide()" />
-                        <rich:dataTable id="si"  value="#{EmployeeQualification.allQualRecord}"  binding="#{EmployeeQualification.dataGrid}"  var="empqual"  rowKeyVar="row"  rows="5" style="width:1200px;">
-                            <rich:column>
+                        <rich:dataTable id="si"  value="#{EmployeeQualification.allQualRecord}"  binding="#{EmployeeQualification.dataGrid}"  var="empqual"  rowKeyVar="row"  rows="5" style="width:1000px;">
+                            <rich:column width="5%" >
                                 <f:facet name="header" >
-                                    <h:outputText value="Sr.No"/>
+                                    <h:outputText value="Sr.No" style="font-size:10px;" />
                                 </f:facet>
                                     <h:outputText value="#{empqual.srNo}" />
                             </rich:column>   
                             <rich:column  width="20%">
                                 <f:facet name="header">
-                                    <h:outputText styleClass="Label" value="Exam Passed"/>
+                                    <h:outputText styleClass="Label" value="Exam Passed" style="font-size:10px;" />
                                 </f:facet>
                                 <h:outputText styleClass="Label" value="#{empqual.examPassed}"/>
                             </rich:column>
-                            <rich:column  width="20%">
+                            <rich:column  width="25%">
                                 <f:facet name="header">
-                                    <h:outputText styleClass="Label" value="Name of Board/University"/>
+                                    <h:outputText styleClass="Label" value="Name of Board/University" style="font-size:10px;" />
                                 </f:facet>
                                <h:outputText styleClass="Label" value="#{empqual.board}"/>
                             </rich:column>
                             <rich:column width="15%" >
                                 <f:facet name="header">
-                                    <h:outputText styleClass="Label" value="Marks Obtained(in %)"/>
+                                    <h:outputText styleClass="Label" value="Marks Obtained(in %)" style="font-size:10px;" />
                                 </f:facet>
                                 <h:outputText  value="#{empqual.marksObtained}" />
                             </rich:column> 
-                            <rich:column width="15%">
+                            <rich:column width="10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Passing Year"/>
+                                    <h:outputText value="Passing Year" style="font-size:10px;" />
                                 </f:facet>
                                 <h:outputText value="#{empqual.yearOfPassing}"/>
                             </rich:column>
-                            <rich:column width="15%">
+                            <rich:column width="10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Division/Grade"/>
+                                    <h:outputText value="Division/Grade" style="font-size:10px;" />
                                 </f:facet>
                                <h:outputText value="#{empqual.divGrade}" />
                             </rich:column>
-                            <rich:column>
+                            <rich:column width="5%">
                                     <f:facet name="header">
-                                     <h:outputText value="Actions"/>
+                                     <h:outputText value="Actions" style="font-size:10px;" />
                                     </f:facet>
                                     <a4j:commandLink  styleClass="no-decor" ajaxSingle="true" oncomplete="#{rich:component('confirmPane')}.show()">
                                         <h:graphicImage value="/img/delete.gif" alt="delete" />
@@ -195,64 +195,70 @@
                              </rich:dataTable> 
                         </h:panelGrid>
                      
-                         <rich:modalPanel id="confirmPane" autosized="true"  width="250">
+                         <rich:modalPanel id="confirmPane" autosized="true"  width="250"> 
+                              <f:facet name="controls">
+                                    <h:panelGroup>
+                                    <h:graphicImage value="/img/close1.png" styleClass="hidelink3" id="hidelink3"/>
+                                    <rich:componentControl for="confirmPane" attachTo="hidelink3" operation="hide" event="onclick"/>
+                                    </h:panelGroup>
+                               </f:facet> 
                                 Are you sure you want to delete the row?
                                 <a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;" />
                                 
                                 <a4j:commandButton id="ldbtn1" ajaxSingle="true" reRender="si,empqualDetail" value="Delete" action="#{EmployeeQualification.deleteRecord}" oncomplete="#{rich:component('confirmPane')}.hide();"/>
                          </rich:modalPanel>
-                                </rich:panel>
+                               </rich:panel> 
                      </h:form>
                            
                     <h:form>
-                    <rich:panel header="Employee training Details">    
+                 <rich:panel header="Employee training Details"  >   
                     <h:panelGrid  id="emptringDetail" columns="6"  columnClasses="label,field">
-                        <rich:dataTable id="td"   value="#{EmployeeQualification.allTrainingRecord}"  binding="#{EmployeeQualification.dataGrid1}"  var="emptd" rowKeyVar="rowtd" rows="5" style="width:1200px;">
-                            <rich:column>
+                        <rich:dataTable id="td"   value="#{EmployeeQualification.allTrainingRecord}"  binding="#{EmployeeQualification.dataGrid1}"  var="emptd" rowKeyVar="rowtd" rows="5" style="width:1000px;">
+                            <rich:column width="5%">
                                 <f:facet name="header" >
-                                    <h:outputText value="Sr.No"/>
+                                    <h:outputText value="Sr.No" style="font-size:10px;" />
                                 </f:facet>
                                <h:outputText value="#{emptd.srNo}" />
                             </rich:column>   
                             <rich:column  width="20%">
                                 <f:facet name="header">
-                                    <h:outputText styleClass="Label" value="Training Type"/>
+                                    <h:outputText styleClass="Label" value="Training Type" style="font-size:10px;" />
                                 </f:facet>
                                 <h:outputText styleClass="Label" value="#{emptd.trainingType}"/>
                             </rich:column>
                             <rich:column  width="20%">
                                 <f:facet name="header">
-                                    <h:outputText styleClass="Label" value="Topic Name"/>
+                                    <h:outputText styleClass="Label" value="Topic Name" style="font-size:10px;" />
                                 </f:facet>
                                 <h:outputText styleClass="Label" value="#{emptd.topicName}"/>
                             </rich:column>
                             <rich:column width="15%" >
                                 <f:facet name="header">
-                                    <h:outputText styleClass="Label" value="Name of the Institute"/>
+                                    <h:outputText styleClass="Label" value="Name of the Institute" style="font-size:10px;" />
                                 </f:facet>
                                 <h:outputText  value="#{emptd.instituteName}" />
                             </rich:column> 
                             <rich:column width="15%">
                                 <f:facet name="header">
-                                    <h:outputText value="Sponsored by"/>
+                                    <h:outputText value="Sponsored by" style="font-size:10px;" />
                                 </f:facet>
                                 <h:outputText value="#{emptd.sponsoredBy}"/>
                             </rich:column>
-                            <rich:column width="15%">
+                            <rich:column width="10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Date From"/>
+                                    <h:outputText value="Date From" style="font-size:10px;" />
                                 </f:facet>
                                 <h:outputText value="#{emptd.dateFrom}" />
                             </rich:column>
-                            <rich:column width="15%">
+                            <rich:column width="10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Date To"/>
+                                    <h:outputText value="Date To" style="font-size:10px;" />
                                 </f:facet>
                                 <h:outputText value="#{emptd.dateTo}" />
                             </rich:column>
-                            <rich:column>
+                            <rich:column width="5%">
                                     <f:facet name="header">
-                                     <h:outputText value="Actions"/>
+                                     <h:outputText value="Actions" style="font-size:10px;" />
                                     </f:facet>
                                     <a4j:commandLink  styleClass="no-decor" ajaxSingle="true" oncomplete="#{rich:component('confirmPnl')}.show()">
                                         <h:graphicImage value="/img/delete.gif" alt="delete" />
@@ -271,19 +277,31 @@
                           </rich:dataTable> 
                        </h:panelGrid>
                     
-                         <rich:modalPanel id="confirmPnl" autosized="true"  width="250">
+                         <rich:modalPanel id="confirmPnl" autosized="true"  width="250"> 
+                                <f:facet name="controls">
+                                    <h:panelGroup>
+                                    <h:graphicImage value="/img/close1.png" styleClass="hidelink4" id="hidelink4"/>
+                                    <rich:componentControl for="confirmPnl" attachTo="hidelink4" operation="hide" event="onclick"/>
+                                    </h:panelGroup>
+                                </f:facet> 
                                 Are you sure you want to delete the row?
                                 <a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPnl')}.hide(); return false;" />
                                 
                                 <a4j:commandButton  ajaxSingle="true" reRender="td,emptringDetail" value="Delete" action="#{EmployeeQualification.deleteTrainingRecord}" oncomplete="#{rich:component('confirmPnl')}.hide();"/>
                          </rich:modalPanel>
                                 
-                         </rich:panel>     
+                       </rich:panel> 
                      </h:form>     
                             
                                                           
                                       
-                <rich:modalPanel id="editPane" autosized="true"  domElementAttachment="parent" width="400" height="170">
+                <rich:modalPanel id="editPane" autosized="true"  domElementAttachment="parent" width="400" height="170"> 
+                      <f:facet name="controls">
+                                <h:panelGroup>
+                                <h:graphicImage value="/img/close1.png" styleClass="hidelink3" id="hidelink3"/>
+                                <rich:componentControl for="editPane" attachTo="hidelink3" operation="hide" event="onclick"/>
+                                </h:panelGroup>
+                      </f:facet>
                     <h:form>
                         <rich:panel header="Edit Education Detail">
                              <h:panelGrid id="editGrid">
@@ -305,14 +323,14 @@
                                    <f:selectItem itemValue="State board" itemLabel="State board"/>
                                    <f:selectItem itemValue="Other board" itemLabel="Other board"/>
                                    </h:selectOneMenu>
-                                <h:inputText id="univboard" value="#{EmployeeQualification.editedRecord.boardName}" onclick="enatble_text()" immediate="true"/>
+                                <h:inputText id="univboard" maxlength="30" value="#{EmployeeQualification.editedRecord.boardName}" onclick="enatble_text()" immediate="true"/>
                                 <h:message for="board" tooltip="Select name of board/university ."/>
                                 
                                 <h:outputText value="Marks Obtained (in  %)"/>
-                                <h:inputText id="marks" styleClass="fields" value="#{EmployeeQualification.editedRecord.marksObtained}"/>
+                                <h:inputText id="marks" styleClass="fields" maxlength="15" value="#{EmployeeQualification.editedRecord.marksObtained}"/>
                                 <h:message for="marks" tooltip="Marks obtained"/> 
                                 <h:outputText  value="Passing year (YYYY Ex- 1996)"/>
-                                <h:inputText id="pyear" styleClass="fields" required="true" requiredMessage="Enter year of passing" value="#{EmployeeQualification.editedRecord.yearOfPassing}"/>
+                                <h:inputText id="pyear" styleClass="fields" required="true" maxlength="15" requiredMessage="Enter year of passing" value="#{EmployeeQualification.editedRecord.yearOfPassing}"/>
                                 <%--<h:outputText styleClass="Label" value="Passing year"/>
                                     <rich:calendar enableManualInput="false" converter="dateConverter" showWeekDaysBar="false"
                                         showFooter="false" styleClass="special"
@@ -323,7 +341,7 @@
                                     <h:message styleClass="error" for="pyear" tooltip="Enter passing year"/>
                                                                     
                                 <h:outputText value="Division / Grade"/>
-                                <h:inputText id="grade" styleClass="fields" value="#{EmployeeQualification.editedRecord.divGrade}"/>
+                                <h:inputText id="grade" styleClass="fields" maxlength="20" value="#{EmployeeQualification.editedRecord.divGrade}"/>
                                 <h:message for="grade" tooltip="Division or GradeS"/>
                              </h:panelGrid> 
                              <a4j:commandButton value="Store"   action="#{EmployeeQualification.updateRecord}" reRender="qualForm" oncomplete="#{rich:component('editPane')}.hide();"/>
@@ -391,15 +409,15 @@
                                         <f:selectItem itemValue="Other board" itemLabel="Other board"/>
                                     </h:selectOneMenu>
                                     
-                                    <h:inputText id="univboard" value="#{EmployeeQualification.boardName}" onclick="enatble_text()" immediate="true"/>
+                                    <h:inputText id="univboard"  maxlength="35" value="#{EmployeeQualification.boardName}" onclick="enatble_text()" immediate="true"/>
                                     <h:message for="board" tooltip="Select name of board/university ."/>
                                     
                                 <h:outputText value="Marks Obtained (in  %)"/>
-                                <h:inputText id="marks" styleClass="fields"  required="true" requiredMessage=" Enter Marks obtained" value="#{EmployeeQualification.marksObtained}"/>
+                                <h:inputText id="marks" styleClass="fields"  required="true" maxlength="15" requiredMessage=" Enter Marks obtained" value="#{EmployeeQualification.marksObtained}"/>
                                 <h:message for="marks" tooltip="true"/> 
                     
                                 <h:outputText  value="Passing year (YYYY Ex- 1996)"/>
-                                <h:inputText id="pyear" styleClass="fields" required="true" requiredMessage="Enter year of passing" value="#{EmployeeQualification.yearOfPassing}"/>
+                                <h:inputText id="pyear" styleClass="fields" required="true" maxlength="15" requiredMessage="Enter year of passing" value="#{EmployeeQualification.yearOfPassing}"/>
                                 <%--<h:selectOneMenu  id="pyear" value="#{EmployeeQualification.year}">
                                     <f:selectItem value="#{EmployeeQualification.yearList}"/>
                                 </h:selectOneMenu>--%>  
@@ -412,7 +430,7 @@
                                     <h:message styleClass="error" for="pyear" tooltip="true"/>
                                                                     
                                 <h:outputText value="Division / Grade"/>
-                                <h:inputText id="grade" styleClass="fields" required="true" requiredMessage="Enter Division or Grade" value="#{EmployeeQualification.divGrade}"/>
+                                <h:inputText id="grade" styleClass="fields" maxlength="20" required="true" requiredMessage="Enter Division or Grade" value="#{EmployeeQualification.divGrade}"/>
                                 <h:message for="grade" tooltip="true"/>
                     
                               </h:panelGrid>
@@ -424,7 +442,13 @@
                 </rich:modalPanel>
                 
                                 
-                   <rich:modalPanel id="editPnl" autosized="true"  domElementAttachment="parent" width="400" height="170">
+                   <rich:modalPanel id="editPnl" autosized="true"  domElementAttachment="parent" width="400" height="170"> 
+                      <f:facet name="controls">
+                                <h:panelGroup>
+                                <h:graphicImage value="/img/close1.png" styleClass="hidelink2" id="hidelink2"/>
+                                <rich:componentControl for="editPnl" attachTo="hidelink2" operation="hide" event="onclick"/>
+                                </h:panelGroup>
+                      </f:facet>
                     <h:form>
                         <rich:panel header="Edit Training Detail">
                              <h:panelGrid id="editGrid1">
@@ -444,15 +468,15 @@
                                 </h:selectOneMenu>
                                 <h:message for="ttype" tooltip="Select training type"/>                
                                 <h:outputText value="Topic Name"/>
-                                <h:inputText id="topic" styleClass="fields" required="true" requiredMessage="Enter topic name" value="#{EmployeeQualification.editedRecord.topicName}"/>
+                                <h:inputText id="topic" styleClass="fields" maxlength="25" required="true" requiredMessage="Enter topic name" value="#{EmployeeQualification.editedRecord.topicName}"/>
                                 <h:message for="topic" tooltip="true"/> 
                                 
                                 <h:outputText value="Name of the Institute"/>
-                                <h:inputText id="insName" styleClass="fields"  required="true" requiredMessage= "Enter name od the institute" value="#{EmployeeQualification.editedRecord.instituteName}"/>
+                                <h:inputText id="insName" styleClass="fields" maxlength="30" required="true" requiredMessage= "Enter name od the institute" value="#{EmployeeQualification.editedRecord.instituteName}"/>
                                 <h:message for="insName" tooltip="true"/>
                                 
                                 <h:outputText value="Sponsored by"/>
-                                <h:inputText id="sponsby" styleClass="fields" value="#{EmployeeQualification.editedRecord.sponsoredBy}"/>
+                                <h:inputText id="sponsby" styleClass="fields" maxlength="25" value="#{EmployeeQualification.editedRecord.sponsoredBy}"/>
                                 <h:message for="sponsby" tooltip="Enter Sponsored by"/>
                                                     
                                 <h:outputText styleClass="Label" value="Date From"/>
@@ -534,15 +558,15 @@
                                 </h:selectOneMenu>
                                 <h:message for="ttype" tooltip="Select training type"/>                
                                 <h:outputText value="Topic Name"/>
-                                <h:inputText id="topic" styleClass="fields" required="true" requiredMessage="Enter topic name" value="#{EmployeeQualification.topicName}"/>
+                                <h:inputText id="topic" styleClass="fields" maxlength="30" required="true" requiredMessage="Enter topic name" value="#{EmployeeQualification.topicName}"/>
                                 <h:message for="topic" tooltip="true"/> 
                                 
                                 <h:outputText value="Name of the Institute"/>
-                                <h:inputText id="insName" styleClass="fields"  required="true" requiredMessage= "Enter name od the institute" value="#{EmployeeQualification.instituteName}"/>
+                                <h:inputText id="insName" styleClass="fields" maxlength="30" required="true" requiredMessage= "Enter name od the institute" value="#{EmployeeQualification.instituteName}"/>
                                 <h:message for="insName" tooltip="true"/>
                                 
                                 <h:outputText value="Sponsored by"/>
-                                <h:inputText id="sponsby" styleClass="fields" value="#{EmployeeQualification.sponsoredBy}"/>
+                                <h:inputText id="sponsby" styleClass="fields" maxlength="25" value="#{EmployeeQualification.sponsoredBy}"/>
                                 <h:message for="sponsby" tooltip="Enter Sponsored by"/>
                                                     
                                 <h:outputText styleClass="Label" value="Date From"/>

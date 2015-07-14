@@ -103,7 +103,7 @@
                                 </h:column>
                                 </h:panelGrid>
                 <h:panelGrid columns="3" id="leavetypeDetail">
-                <rich:dataTable  id= "si" value="#{LeaveQuotaBean.allotedQuota}" binding="#{LeaveQuotaBean.dataGrid}" var="leave" rowKeyVar="row"  rows="10"  style="width:800px;">
+                <rich:dataTable  id= "si" value="#{LeaveQuotaBean.allotedQuota}" binding="#{LeaveQuotaBean.dataGrid}" var="leave" rowKeyVar="row"  rows="10"  style="width:1015px;">
                 <rich:column>
                     <f:facet name="header">
                         <h:outputText value="LeaveType"/>

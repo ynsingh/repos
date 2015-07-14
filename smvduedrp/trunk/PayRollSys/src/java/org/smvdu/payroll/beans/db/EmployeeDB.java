@@ -70,6 +70,7 @@ import org.smvdu.payroll.user.UserRegistration;
  *
  *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
  *  Modified Date: 4 AUG 2014, 12 FEB 2015, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+ *  GUI Modification : 20 June 2015, Om Prakash<omprakashkgp@gmail.com>
  */
 
 public class EmployeeDB {
@@ -820,9 +821,12 @@ public class EmployeeDB {
             
             Connection c = new CommonDB().getConnection();
             String q ="select esh_emp_id, esh_emp_code, esh_transactiontype,"
-                     + "esh_tooffice, esh_towhichpost, esh_class, esh_ordernumber,"
-                     + "esh_orderdate, esh_dofincrement, esh_payscale, esh_dept_deputation,"
-                     + "esh_areatype from employee_service_history "
+                     + "esh_tooffice, desig_name, esh_class, esh_ordernumber,"
+                     + "esh_orderdate, esh_dofincrement, grd_name, dept_name,"
+                     + "esh_areatype, grd_max, grd_min, grd_gp from employee_service_history "
+                     + "left join department_master on esh_dept_deputation=dept_code "
+                     + "left join designation_master on esh_towhichpost=desig_code "
+                     + "left join salary_grade_master on esh_payscale=grd_code "                    
                      + "where esh_emp_code='"+empCode+"' and esh_org_id='" +orgCode+ "'";
             
             //System.out.println("QUARY : " + q);
@@ -833,7 +837,7 @@ public class EmployeeDB {
             while (rs.next()) {
                 
                 Employee emp = new Employee();
-                
+              
                 emp.setRecordId(rs.getInt(1));
                 emp.setCode(rs.getString(2).trim());
                 emp.setTransactiontype(rs.getString(3).trim());
@@ -843,10 +847,15 @@ public class EmployeeDB {
                 emp.setOrdernum(rs.getInt(7));
                 emp.setOrderdate(rs.getString(8));
                 emp.setDateofincrement(rs.getString(9));
-                emp.setPayscale(rs.getString(10));
+                SalaryGrade sg = new SalaryGrade();
+                sg.setName(rs.getString(10));
+                sg.setMaxValue(rs.getInt(13));
+                sg.setMinValue(rs.getInt(14));
+                sg.setGradePay(rs.getInt(15));
+                emp.setPayscale(sg.toString());
                 emp.setDeputationdept(rs.getString(11));
                 emp.setAreatype(rs.getString(12));
-                //emp.setCurrentrecordindex(rs.getInt(1));
+                // emp.setCurrentrecordindex(rs.getInt(1));
                 emp.setSrNo(k);
                 data.add(emp);
                 k++;
@@ -1389,7 +1398,6 @@ public class EmployeeDB {
             return -1;
         }
     }
-    
-        
+  
 
 }

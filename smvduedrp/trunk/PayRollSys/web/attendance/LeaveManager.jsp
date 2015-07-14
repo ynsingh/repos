@@ -30,6 +30,7 @@
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
 *  Modified Date: 4 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*   GUI Modification : 20 June 2015, Om Prakash<omprakashkgp@gmail.com>
 *
 --%>
 
@@ -72,7 +73,7 @@
             <h:form id="leaveForm">
                 <h:panelGrid columns="3" id="leavetypeDetail">
                 
-                <rich:dataTable  id="llist" value="#{EmployeeLeaveBean.leaveData}" binding="#{EmployeeLeaveBean.dataGrid}" var="leave" rowKeyVar="row" rows="10" style="width:1200px;">
+                <rich:dataTable  id="llist" value="#{EmployeeLeaveBean.leaveData}" binding="#{EmployeeLeaveBean.dataGrid}" var="leave" rowKeyVar="row" rows="10" style="width:1020px;">
                     <rich:column>
                         <f:facet name="header">
                         <h:outputText value="Select"/>
@@ -142,7 +143,14 @@
                <a4j:commandButton value="Apply" action="#{EmployeeLeaveBean.acceptRequest}" reRender="llist, leavetypeDetail"/>
             </h:form>  
             <rich:modalPanel id="pnl">
-                <h:form id="leaverequest">
+                 <f:facet name="controls">
+                                <h:panelGroup>
+                                <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelink"/>
+                                <rich:componentControl for="pnl" attachTo="hidelink" operation="hide" event="onclick"/>
+                                </h:panelGroup>
+                  </f:facet>
+
+                   <h:form id="leaverequest">
                     <rich:panel header="New Leave Request">
                         <h:panelGrid columns="2">
                             <h:outputText value="Employee"/>

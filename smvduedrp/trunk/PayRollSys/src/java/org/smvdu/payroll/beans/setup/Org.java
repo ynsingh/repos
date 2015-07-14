@@ -1,4 +1,4 @@
-/*
+    /*
     * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -78,18 +78,18 @@ public class Org implements Serializable{
     private String address1;
     private String address2;
     private String tagLine;
-    private int id;
+    private int id ;
     private String masterPassword;
     private String recoveryEMailId;
     private String tanno;
     private boolean status;
     private int notificationDay;
     private String city;
-    private int pincode;
+    private String pincode;
     private String state;
-    private int ll;
-    private String countryCode;
-    private int regionCode;
+   // private int ll=0;
+    private String countryCode = "+91";
+  //  private int regionCode = 512;
     private String instDomain;
     private String toi;
     private String affiliation;
@@ -522,7 +522,7 @@ public class Org implements Serializable{
     public void setInstDomain(String instDomain) {
         this.instDomain = instDomain;
     }
-
+    /**
     public int getLl() {
         return ll;
     }
@@ -530,15 +530,15 @@ public class Org implements Serializable{
     public void setLl(int ll) {
         this.ll = ll;
     }
-
-    public int getPincode() {
+    */
+    public String getPincode() {
         return pincode;
     }
 
-    public void setPincode(int pincode) {
+    public void setPincode(String pincode) {
         this.pincode = pincode;
     }
-
+    /*
     public int getRegionCode() {
         return regionCode;
     }
@@ -546,7 +546,7 @@ public class Org implements Serializable{
     public void setRegionCode(int regionCode) {
         this.regionCode = regionCode;
     }
-
+    */
     public String getState() {
         return state;
     }
@@ -695,6 +695,7 @@ public class Org implements Serializable{
 
 
     public void save()  {
+        
         try{
         FacesContext fc=FacesContext.getCurrentInstance();
         /*if(new ServerDetails().getIpList(this.getIpAddress()) == true)
@@ -720,38 +721,93 @@ public class Org implements Serializable{
             fc.addMessage("", message);
             return;
         }
-        if(this.getEmail().trim().matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$") == false)
+        if(this.getAddress1().matches("^[a-zA-Z\\s]*$") == false)
         {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            message.setSummary("Plz Enter Valid Email Address");
+            message.setSummary("Please Enter Valid Institute Address");
             //message.setDetail("First Name Must Be At Least Three Charecter ");
             fc.addMessage("", message);
             return;
         }
+        if(this.getCity().matches("^[a-zA-Z\\s]*$") == false)
+        {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Valid City Name");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
+        if((this.getPincode().matches(".*[0-9].*") == false) || this.getPincode().length()<5)
+        {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Valid Pincode");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
+        
+       //if((this.getPhone().matches(".*[0-9]{7}.*") == false) || this.getPhone().length()!=7)
+        if((this.getPhone().matches(".*[0-9].*") == false) || this.getPhone().length()<10)
+        {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Valid Phone Number");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
+        
+      
         if(this.getWeb().matches("[www]+(\\.[a-z0-9-]+)+") == false)
         {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            message.setSummary("Plz Enter Valid Web Address");
+            message.setSummary("Please Enter Valid Web Address");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
+        if(this.getAdminfn().matches("^[a-zA-Z\\s]*$") == false)
+        {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Institute Admin First Name");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
+        if(this.getAdminln().matches("^[a-zA-Z\\s]*$") == false)
+        {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Institute Admin Last Name");
+            fc.addMessage("", message);
+            return;
+        }
+        if(this.getAdminDesig().matches("^[a-zA-Z\\s]*$") == false)
+        {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Institute Admin Designation ");
+            fc.addMessage("", message);
+            return;
+        }
+          
+        if(this.getEmail().trim().matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$") == false)
+        {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Please Enter Valid Email Address");
             //message.setDetail("First Name Must Be At Least Three Charecter ");
             fc.addMessage("", message);
             return;
         }
         
-        //if((this.getPhone().matches(".*[0-9]{7}.*") == false) || this.getPhone().length()!=7)
-        if((this.getPhone().matches(".*[0-9].*") == false) || this.getPhone().length()<6)
-        {
-            FacesMessage message = new FacesMessage();
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            message.setSummary("Plz Enter Valid Phone Number");
-            //message.setDetail("First Name Must Be At Least Three Charecter ");
-            fc.addMessage("", message);
-            return;
-                    }
-        
         //if((String.valueOf(this.getLl()).matches(".*[0-9]{7}.*") == false) || String.valueOf(this.getLl()).length()!=7)
-        if((String.valueOf(this.getLl()).matches(".*[0-9].*") == false)|| String.valueOf(this.getLl()).length()<6)
+       /*
         {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -760,7 +816,7 @@ public class Org implements Serializable{
             fc.addMessage("", message);
             return;
            }
-       
+       */
         Exception e = new OrgProfileDB().save(this);
         if(e==null)
         {
