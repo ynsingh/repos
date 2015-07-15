@@ -35,6 +35,8 @@
         </action> 
 
         <action name="Login" class="Administration.ErpmusersAction">  
+         <!--   <result name="success">/pico/Administration/showWelcomePage.jsp</result>  -->
+            <result name="success">/pico/Administration/Indexpage.jsp</result> 
             <result name="success">/pico/Administration/showWelcomePage.jsp</result>  
             <result name="error">/pico/Administration/login.jsp</result>
            <result name="input">/pico/Administration/login.jsp</result> 
@@ -1200,6 +1202,12 @@
             <result name="success">/pico/Administration/helpdoc.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/helpdoc.jsp</result>
+        </action>
+        <action name="InstituteList" method="ViewRegisteredInstitutions" class="Administration.ManageUserAction">
+            <interceptor-ref name="AdministrationStack" />
+            <result name="success">/pico/Administration/Indexpage.jsp</result>
+            <result name="error">/pico/Administration/Error.jsp</result>
+            <result name="input">/pico/Administration/Indexpage.jsp</result>
         </action>
     </package>
 </struts>

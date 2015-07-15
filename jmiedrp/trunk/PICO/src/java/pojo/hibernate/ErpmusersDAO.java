@@ -198,7 +198,6 @@ public class ErpmusersDAO  {
             }
      }
 
-
     public String RetrieveSecretQuestion(String ERPMU_Name, String ERPMU_DOB)    {
             Session session = HibernateUtil.getSession();
             try {
@@ -261,7 +260,11 @@ public class ErpmusersDAO  {
                 session.beginTransaction();
                 List <Erpmusers> erpmuserList  =  session.createQuery("select u from Erpmusers u where u.erpmuName=:erpmuName ").
                                                       setParameter("erpmuName",erpmuName).list();
+
+		if(erpmuserList.size()>0)
                 return erpmuserList.get(0);
+		else
+                return null;
             }
             catch (RuntimeException re) {
                 throw re;

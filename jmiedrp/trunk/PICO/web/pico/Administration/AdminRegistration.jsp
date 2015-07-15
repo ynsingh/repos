@@ -28,7 +28,11 @@
             </div>
             <s:property value="message" />
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent">
+            <div id ="mainContent"> 
+		<br>
+		<div align="right">
+                <a href="Index" style="margin-right: 10px"><s:property value="getText('Administration.Home')"/></a>
+                </div>
                 <div style ="background-color: #215dc6;">
                     <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTE ADMINISTRATOR REGISTRATION</p>
                     <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
@@ -78,7 +82,7 @@
                                         <s:textfield requiredposition="left" maxLength="50" size="50" required="true"
                                                      label="Full Name " name="erpmusers.erpmuFullName" title="Enter your full Name" />
                                         <sx:datetimepicker name="erpmusers.erpmuDob" label="Enter Date of Birth Format(dd-MMM-yyyy)" required="true"
-                                                           displayFormat="dd-MMM-yyyy" value="%{'today'}" />
+                                                           displayFormat="dd-MMM-yyyy" value="%{'today'}" /> 
                                         <s:textfield requiredposition="left" maxLength="100" size="100" required="true"
                                                      label="Secret Question" name="erpmusers.erpmuSecretQuestion" title="Enter a secret question" />
                                         <s:textfield requiredposition="left" maxLength="100" size="100" required="true"

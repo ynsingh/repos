@@ -72,13 +72,13 @@ I18n By    : Mohd. Manauwar Alam
                                         <s:submit theme="simple" action="Index"  name="login" value="Go to Login Page"/> --%>
                             <br>
                             <s:textfield requiredposition="left" maxLength="50" size="50"
-                                         key = "Administration.UserOrEmail" name="erpmusers.erpmuName" title="Enter User Name (E-Mail Address)" onchange="RetrieveSQ('RecoverPassword_erpmusers_erpmuName','RecoverPassword_erpmusersdob', 'RecoverPassword_erpmusers_erpmuSecretQuestion');" />
-                            <s:textfield requiredposition="left" maxLength="11" size="11" name="erpmusersdob" key ="Administration.DOByyyymmdd"
+                                         key = "Administration.UserOrEmail" name="erpmusers.erpmuName" title="Enter (E-Mail Address)" />
+                          <%--  <s:textfield requiredposition="left" maxLength="11" size="11" name="erpmusersdob" key ="Administration.DOByyyymmdd"
                                          onchange="RetrieveSQ('RecoverPassword_erpmusers_erpmuName','RecoverPassword_erpmusersdob', 'RecoverPassword_erpmusers_erpmuSecretQuestion');" />
                             <s:textfield name="erpmusers.erpmuSecretQuestion" requiredposition="left" maxLength="100" size="100"
                                          key = "Administration.SecretQuestion"  readonly="true"/>
                             <s:textfield requiredposition="left" maxLength="100" size="100"
-                                         key="Administration.SecretAnswer" name="erpmusers.erpmuSecretAnswer" title="Enter your answer to secret question" />
+                                         key="Administration.SecretAnswer" name="erpmusers.erpmuSecretAnswer" title="Enter your answer to secret question" />  --%>
                             </tr>
                             <tr>
                                 <td>

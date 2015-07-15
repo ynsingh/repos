@@ -713,17 +713,18 @@ public String RecoverPassword() throws Exception {
 
     try {
            //Check if user has filled in all required values
-            if (erpmusers.getErpmuSecretQuestion().contains("Invalid user name or date of birth") ||
+          /*  if (erpmusers.getErpmuSecretQuestion().contains("Invalid user name or date of birth") ||
                 erpmusers.getErpmuSecretQuestion().contains("Please provide values for the above fields")) {
                 message = "Please provide correct values for user name and date of birth";
                 return INPUT;
             }
             else
-            {
+            {*/
                 erpmusersDao = new ErpmusersDAO();
-                Erpmusers erpmu = erpmusersDao.FindByUserNameSecretAnswer(erpmusers.getErpmuName(), erpmusers.getErpmuSecretAnswer());
+                //Erpmusers erpmu = erpmusersDao.FindByUserNameSecretAnswer(erpmusers.getErpmuName(), erpmusers.getErpmuSecretAnswer());
+                Erpmusers erpmu = erpmusersDao.findByUser_Names(erpmusers.getErpmuName());
                 if (erpmu == null) {
-                    message = "Incorrect Answer. Try again";
+                    message = "Incorrect E-mailId.";
                     erpmusers = null;
                     return INPUT;
                 }
@@ -732,16 +733,15 @@ public String RecoverPassword() throws Exception {
                 Locale locale = ActionContext.getContext().getLocale();
                 ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
                 if(!bundle.getString("emailFrom").equals("") && !bundle.getString("emailUser").equals("") && !bundle.getString("emailFromPasswd").equals("")) {
-                    String toEmailAddress = erpmu.getErpmuName();
-                    String emailSubject = "Password for PICO Module";
-                    String emailMessage = "<html><head><title>Your Password Details</title></head><body><table width='500' border='0' align='center' cellpadding='15' cellspacing='0' style='font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt; color:#5a5a5a;'><tr><td align='left'><p>Dear " + erpmu.getErpmuFullName() + ",</p></td></tr><tr><td align='left'><p>Your password is:</p><br/><br/><p>Password: " + erpmu.getErpmuPassword() + "<br /></p><br/><p>Thank you for using this site.<br /></p><br/><br/><p>Regards,<br />Administrator, PICO Module<br /></p><p><br /><br />THIS IS AN AUTOMATED MESSAGE; PLEASE DO NOT REPLY. </p></td></tr></table></body></html>";
-                    sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"), toEmailAddress, "", emailSubject, emailMessage);
-                   // message = "An email containing your password has been sent to you";
-                 message = "An email containing your password has been sent to you";
+                	String toEmailAddress = erpmu.getErpmuName();
+                    	String emailSubject = "Password for PICO Module";
+                    	String emailMessage = "<html><head><title>Your Password Details</title></head><body><table width='500' border='0' align='center' cellpadding='15' cellspacing='0' style='font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt; color:#5a5a5a;'><tr><td align='left'><p>Dear " + erpmu.getErpmuFullName() + ",</p></td></tr><tr><td align='left'><p>Your password is:</p><br/><br/><p>Password: " + erpmu.getErpmuPassword() + "<br /></p><br/><p>Thank you for using this site.<br /></p><br/><br/><p>Regards,<br />Administrator, PICO Module<br /></p><p><br /><br />THIS IS AN AUTOMATED MESSAGE; PLEASE DO NOT REPLY. </p></td></tr></table></body></html>";
+                    	sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"), toEmailAddress, "", emailSubject, emailMessage);
+                 	message = "An email containing your password has been sent to you";
                 }
                 return SUCCESS;
                 }
-            }
+            //}
         }
         catch (Exception e) {
             if (e.getCause().toString().contains("UnknownHostException"))
