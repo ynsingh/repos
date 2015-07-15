@@ -263,13 +263,27 @@ public class Institute_RootAdmin extends SecureAction_Admin
                                         	String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
                                         	String instquota =AdminProperties.getValue(path,"brihaspati.user.iquota.value");
 
-						/**Set institute quota in 'INSTITUTE_QUOTA' table*/
-
-                                        	criteria = new Criteria();
-                                        	criteria.add(InstituteQuotaPeer.INSTITUTE_ID,instid);
-                                        	criteria.add(InstituteQuotaPeer.INSTITUTE_AQUOTA,instquota);
-                                        	InstituteQuotaPeer.doInsert(criteria);
-
+				                /**Incase for the first time if admin profile is yet not set 
+                                                 * and thus institute quota is still holding NULL value,
+                                                 * we assign "100" as default value for the institute quota parameter.
+                                                 * Now set the institute quota in 'INSTITUTE_QUOTA' table.                                                 
+                                                 */
+                                                if(instquota == null)
+                                                {
+                                                   int i_quota = 100;
+                                                   Criteria crit = new Criteria();
+                                                   String str = Integer.toString(i_quota);
+                                                   crit.add(InstituteQuotaPeer.INSTITUTE_ID,instid);
+                                                   crit.add(InstituteQuotaPeer.INSTITUTE_AQUOTA,i_quota);
+                                                   InstituteQuotaPeer.doInsert(crit);
+                                                }
+                                                else
+                                                {
+                                                criteria = new Criteria();
+                                                criteria.add(InstituteQuotaPeer.INSTITUTE_ID,instid);
+                                                criteria.add(InstituteQuotaPeer.INSTITUTE_AQUOTA,instquota);
+                                                InstituteQuotaPeer.doInsert(criteria);
+                                                }
 					 	/**
                                          	* Creating default Institute Admin Profile while accepting Institute admin
                                          	* The values are set as a default value because at initial stage no institute profile exist.

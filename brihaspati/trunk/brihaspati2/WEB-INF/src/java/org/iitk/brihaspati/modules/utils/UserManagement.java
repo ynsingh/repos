@@ -501,8 +501,8 @@ public class UserManagement
 						if(!((new File(path)).exists())){
 							path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 						}
-				                String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
-				                long UQuota=new Long(SpacefPrp).longValue();
+				                //String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
+				                //long UQuota=new Long(SpacefPrp).longValue();
 						int u1=UserUtil.getUID(UName);
 						crit=new Criteria();
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.USER_ID,u1);

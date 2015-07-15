@@ -39,6 +39,13 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.Properties;
 
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.torque.util.Criteria;
+
+
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.commons.mail.Email;
 import org.apache.commons.lang.StringUtils;
@@ -59,9 +66,7 @@ import javax.activation.DataSource;
 import javax.activation.DataHandler;
 import javax.mail.Transport;
 import javax.servlet.http.HttpServletRequest;	
-//import javax.mail.*;
-//import javax.activation.*;
-//import javax.mail.internet.*;
+
 /**
  * This class is used to send the mail for the concerned activity
  * @author <a href=satyapalsingh@gmail.com>Satyapal Singh</a>
@@ -74,7 +79,8 @@ import javax.servlet.http.HttpServletRequest;
  * @modified date: 09-08-2012, 25-09-2012, 02-11-2012 (Priyanka)
  * @modified date: 27-12-201 (Shaista);
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
- * @modified date: 18-05-2015 (Seemanti);
+ * @modified date: 18-05-2015 (Seemanti) ---Path updated from BrihaspatiServer.properties to Admin.properties---
+ * @modified date: 15-07-2015 (Seemanti) ---Addition of 2 methods namely dummySendMail() and mailing()---Modification of existing method sendMail()---
  */
 
 public class MailNotification{
@@ -219,13 +225,12 @@ public class MailNotification{
           * @return String
           */
 
-	 //public static String replaceServerPort(String info,String serverScheme, String serverName, String serverPort) throws Exception {
 	 public static String replaceServerPort(String info) throws Exception {
 		String serverName = "";
                 String serverScheme = TurbineServlet.getServerScheme();
 		String serverPort = TurbineServlet.getServerPort();
 		//String filePath = TurbineServlet.getRealPath("../../conf/BrihaspatiServer.properties");
-                String filePath = TurbineServlet.getRealPath("../../webapps/brihaspati2/WEB-INF/conf/"+"/"+"Admin.properties");
+                String filePath = TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 		serverName = AdminProperties.getValue(filePath,"brihaspati.admin.brihaspatiServerIP.value");
 	
 		if(StringUtils.isBlank(serverName))
@@ -304,216 +309,228 @@ public class MailNotification{
 	 * @return String
 	 */
 
-	public static String sendMail(String message , String mail_id , String subject , String attachedFile, String LangFile, String fileName){
-		
-		String email_new="";
-		String msg = "";
-		boolean flag = false;
-		//ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"\n	mail_id="+mail_id+"\n          subject="+subject+"\n	attachedFile="+attachedFile);
-		ErrorDumpUtil.ErrorLog("\nStarttttttt in MailNotification Class  mail_id======"+mail_id+"\t  message========"+ message, TurbineServlet.getRealPath("/logs/Email.txt"));
-		try{ //try 1
-			 //if(!mail_id.equals("")) {
-			if(StringUtils.isNotBlank(mail_id)){
-				email_new=mail_id;
-			}
+      public static String sendMail(String message , String mail_id , String subject , String attachedFile, String LangFile, String fileName)
+      {           
+	 String msg = "";
+	 try //try 1
+         {
+            /**
+	     * Now all these properties are kept in Admin.properties with different property name created by preapending brihaspati.
+	     * in the beginnig. The code below retrieves all these values.
+	     */
+	    String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+            String mail_smtp=AdminProperties.getValue(path,"brihaspati.mail.smtp.from");
+            String host_name=AdminProperties.getValue(path,"brihaspati.mail.server");
+            String mail_smtp_port=AdminProperties.getValue(path,"brihaspati.mail.smtp.port");
+            /** These username and password are the username used by system to authenticate itself with the smtp server for sending email.
+	     */
+            String mail_uname=AdminProperties.getValue(path,"brihaspati.mail.username");
+            String mail_pass=AdminProperties.getValue(path,"brihaspati.mail.password");
+            String local_domain=AdminProperties.getValue(path,"brihaspati.mail.local.domain.name");
+	    // The properties retrievals end here.
 
-		 	/**
-			 * Earlier, the values were kept in TurbieResources.properties for which commented code was used.
-			 * Retrive value of mail.smtp.from, mail.server and local.domain.name
-                         * from TurbineResources.properties
-                         */
-			/*
-				String mail_smtp=Turbine.getConfiguration().getString("mail.smtp.from","");
-	                	String host_name=Turbine.getConfiguration().getString("mail.server","");
-	                	String mail_uname=Turbine.getConfiguration().getString("mail.username","");
-	                	String mail_pass=Turbine.getConfiguration().getString("mail.password","");
-                        	String local_domain=Turbine.getConfiguration().getString("local.domain.name","");
-			*/
+	    //Invoking mailing() method here.
+            //Below msg string gets updated after executing mailing() method.
+            msg=mailing(message,mail_id,subject,attachedFile,LangFile,fileName,mail_smtp,host_name,mail_smtp_port,mail_uname,mail_pass,local_domain);
+         }
+         catch(Exception ex)
+         {
+            msg=msg+"The error in mail send !!!"+ex;
+         }
+         return(msg);
 
-			/**
-			 * Now all these properties are kept in Admin.properties with different property name created by preapending brihaspati.
-			 * in the beginnig. The code below retrieves all these values.
-			 */
-			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-                        String mail_smtp=AdminProperties.getValue(path,"brihaspati.mail.smtp.from");
-                        String host_name=AdminProperties.getValue(path,"brihaspati.mail.server");
-                        String mail_smtp_port=AdminProperties.getValue(path,"brihaspati.mail.smtp.port");
+      }//End of sendMail()
 
-			/** These username and password are the username used by system to authenticate itself with the smtp server for sending email.
-			 */
-                        String mail_uname=AdminProperties.getValue(path,"brihaspati.mail.username");
-                        String mail_pass=AdminProperties.getValue(path,"brihaspati.mail.password");
+      //This method can be invoked for sending Dummy mail for checking mail sending functionality.	
+      public static boolean dummySendMail(String Message , String u_id , String sub , String attchd_File , String langFile , String filename , RunData data)
+      {  
+         String msg = "";//This string will hold the status whether mail sent or not by using mailing() method defined below.
+         boolean check = false;//This boolean var thus returns true or false.
+         try 
+         {    
+            //Create an object of class ValueObject to retrieve the Runtime Admin Profile parameters.
+            ValueObject value = new ValueObject(data);
+            String s1= value.getMailAuth().getMailFrom();
+            String s2= value.getMailAuth().getMailServ();
+            String s3= value.getMailAuth().getMailServPort();
+            String s4= value.getMailAuth().getMuName();
+            String s5= value.getMailAuth().getMPass();
+            String s6= value.getMailAuth().getDomainNM();
+            msg=mailing(Message,u_id,sub,attchd_File,langFile,filename,s1,s2,s3,s4,s5,s6);//msg string gets updated by invoking mailing() method.	
+            if(msg.equals("Mail Sent Successfully !!"))//if mail sent succesfully,return true. 
+	       check =  true;
+         } 
+         catch(Exception e)
+         { 
+            msg=msg+"Error in sending dummy mail."+e;
+	    ErrorDumpUtil.ErrorLog("\nError in sending dummy mail"+msg, TurbineServlet.getRealPath("/logs/Email.txt"));
+	    check = false;//else return false.
+	 }
+         return check;
+      }//End of dummySendMail()
 
-                        String local_domain=AdminProperties.getValue(path,"brihaspati.mail.local.domain.name");
-			// The properties retrievals end here.
+      
+      public static String mailing(String message , String mail_id, String subject , String attachedFile , String LangFile, String fileName , String mail_smtp , String host_name , String mail_smtp_port , String mail_uname , String mail_pass , String local_domain) 
+      {	 
+         boolean flag = false;
+         String msg = "";
+         try
+         {  
+            
+            String email_new="";
+            if(StringUtils.isNotBlank(mail_id))
+            {
+               email_new = mail_id;
+            }
 
-                        	//if((!mail_smtp.equals("")) && (!mail_smtp.equals(null))){
-                        	if(StringUtils.isNotBlank(mail_smtp)){
-                                        //if((!email_new.equals("")) && (!email_new.equals(null))){
-                                        if(StringUtils.isNotBlank(email_new)){
-                                                Properties l_props = System.getProperties();
-                                                l_props.put("mail.smtp.host", host_name);
-                                                if(!mail_pass.equals("")){
-                                                        l_props.put("mail.smtp.auth", "true");
-                                                }
-                                                if(!mail_smtp_port.equals("25")){
-                                                        l_props.put("mail.smtp.starttls.enable", "true");
-                                                        l_props.put("mail.smtp.port",mail_smtp_port);
-                                                        // Use the following if you need SSL
-                                                        l_props.put("mail.smtp.socketFactory.port", mail_smtp_port);
-                                                        l_props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-                                                        l_props.put("mail.smtp.socketFactory.fallback", "false");
-                                                }
-                                                Session l_session = Session.getDefaultInstance(l_props,  null);
-                                                l_session.setDebug(false);
-						try {
-							MimeMessage l_msg = new MimeMessage(l_session); // Create a New message
-							l_msg.setFrom(new InternetAddress(mail_smtp)); // Set the From address
+            //if((!mail_smtp.equals("")) && (!mail_smtp.equals(null))){
+            if(StringUtils.isNotBlank(mail_smtp))//1st if starts.
+            {
+               //if((!email_new.equals("")) && (!email_new.equals(null))){
+               if(StringUtils.isNotBlank(email_new))//2nd if starts.
+               {
+                  Properties l_props = System.getProperties();
+                  l_props.put("mail.smtp.host", host_name);
+                  if(!mail_pass.equals(""))
+                  {
+                     l_props.put("mail.smtp.auth", "true");
+                  }
+                  if(!mail_smtp_port.equals("25"))
+                  {
+                     l_props.put("mail.smtp.starttls.enable", "true");
+                     l_props.put("mail.smtp.port",mail_smtp_port);
+                     // Use the following if you need SSL
+                     l_props.put("mail.smtp.socketFactory.port", mail_smtp_port);
+                     l_props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                     l_props.put("mail.smtp.socketFactory.fallback", "false");
+                  }
+                  Session l_session = Session.getDefaultInstance(l_props,  null);
+                  l_session.setDebug(false);
+	          try 
+                  {
+	             MimeMessage l_msg = new MimeMessage(l_session); // Create a New message
+		     l_msg.setFrom(new InternetAddress(mail_smtp)); // Set the From address
 				
-							// Setting the "To recipients" addresses
-							l_msg.setRecipients(Message.RecipientType.TO,
+		     // Setting the "To recipients" addresses
+		     l_msg.setRecipients(Message.RecipientType.TO,
+	             InternetAddress.parse(email_new, false));
+	             l_msg.setSubject(subject); // Sets the Subject
 
-							InternetAddress.parse(email_new, false));
-			
-							l_msg.setSubject(subject); // Sets the Subject
-
-							//Create and fill the first message part
-							MimeBodyPart l_mbp = new MimeBodyPart();
-                                                        Multipart l_mp = new MimeMultipart();
-							l_mbp.setContent(message, "text/html");
-                                                       	l_mp.addBodyPart(l_mbp);
-							// Create the Multipart and add bodyparts to it
-							if( !attachedFile.equals("tmp")&&(attachedFile.length() > 0 )) {
-								String tmpStr [] = attachedFile.split(",");
-								if(tmpStr.length >0){
-									for( int k=0; k < tmpStr.length; k++) {
-										MimeBodyPart attachment_Bp = new MimeBodyPart();
-                        		                                        //DataSource source = new FileDataSource(attachedFile);
-                        		                                        DataSource source = new FileDataSource(tmpStr[k]);
-                		                                                attachment_Bp.setDataHandler(new DataHandler(source));
-        		                                                        attachment_Bp.setFileName(attachedFile);
-		                                                        	l_mp.addBodyPart(attachment_Bp);
-										//attachment_Bp = null;
-										//source = null;
-									}
-								}
-                                                        }
-							l_msg.setContent(l_mp);
-							// Set the Date: header
-							java.util.Date date=new java.util.Date();
-							l_msg.setSentDate(date);
-							// Send the message
-							// Transport.send(l_msg);
-							Transport tr = l_session.getTransport("smtp");
-							//Send the message
-							if(!mail_pass.equals("")){
-                                                                if(!mail_smtp_port.equals("25")){
-                                                                        int smtpPortInt = Integer.parseInt(mail_smtp_port);
-                                                                        tr.connect(host_name, smtpPortInt, mail_uname, mail_pass);
-                                                                }
-                                                                else{
-                                                                         tr.connect(host_name, mail_uname, mail_pass);
-                                                                }
-                                                       // Send the message
-                                                      }
-                                                      else{
-								tr.connect();
-                                                      }
-                                                      l_msg.saveChanges();     // don't forget this
-						      ErrorDumpUtil.ErrorLog("\nEnd MailNotification Class mail_id======"+mail_id+"\t  message========"+ message, TurbineServlet.getRealPath("/logs/Email.txt"));
-                                                      tr.sendMessage(l_msg, l_msg.getAllRecipients());
-                                                      tr.close();
-						/**
-						     if( (attachedFile.length() > 0 )) 
-						     		deletingAttachedFile(attachedFile);
-						*/
-							
-						} catch (MessagingException mex) { // Trap the MessagingException Error
-                                                // If here, then error in sending Mail. Display Error message.
-
-                                                msg=msg+"The error in sending Mail Message "+mex.toString();
-						ErrorDumpUtil.ErrorLog("\nThe error in send mail (MailNotification -379) "+msg, TurbineServlet.getRealPath("/logs/Email.txt"));
-						flag = true;
-                                                }
-                                                //msg="Mail send succesfully!!";
-						if(!flag)
-	                                                msg= MultilingualUtil.ConvertedString("mail_msg2",LangFile);
-
-                                        }
-                                        else{
-                                                //msg="Mail can't send since your mail id is null!!";
-                                                msg=msg+MultilingualUtil.ConvertedString("mailNotification_msg2",LangFile);
-                                        }
-                                }
-                                else{
-                                     msg=msg+MultilingualUtil.ConvertedString("mailNotification_msg",LangFile);
-                                }
-
-                }
-                catch(Exception ex)
-                {
-                        msg=msg+"The error in mail send !!!"+ex;
-			ErrorDumpUtil.ErrorLog("\nThe error in send mail (MailNotification) "+msg, TurbineServlet.getRealPath("/logs/Email.txt"));
-			flag = true;
-                }
-
-
-		// msg is a message comes from BrihLang_en.properteis 
-		// message param is real message which is composed by a user.
-		/** getting path for creating EmailSpooling  directory*/
+		     //Create and fill the first message part
+		     MimeBodyPart l_mbp = new MimeBodyPart();
+                     Multipart l_mp = new MimeMultipart();
+		     l_mbp.setContent(message, "text/html");
+                     l_mp.addBodyPart(l_mbp);
+		     // Create the Multipart and add bodyparts to it
+		     if( !attachedFile.equals("tmp")&&(attachedFile.length() > 0 )) 
+                     {
+		        String tmpStr [] = attachedFile.split(",");
+		        if(tmpStr.length >0)
+                        {
+		           for( int k=0; k < tmpStr.length; k++) 
+                           {
+		              MimeBodyPart attachment_Bp = new MimeBodyPart();
+                              //DataSource source = new FileDataSource(attachedFile);
+                              DataSource source = new FileDataSource(tmpStr[k]);
+                              attachment_Bp.setDataHandler(new DataHandler(source));
+        		      attachment_Bp.setFileName(attachedFile);
+		              l_mp.addBodyPart(attachment_Bp);
+			      //attachment_Bp = null;
+			      //source = null;
+			   }
+		        }
+                     }
+		     l_msg.setContent(l_mp);
+		     // Set the Date: header
+		     java.util.Date date=new java.util.Date();
+		     l_msg.setSentDate(date);
+	             // Send the message
+		     // Transport.send(l_msg);
+		     Transport tr = l_session.getTransport("smtp");
+		     //Send the message
+		     if(!mail_pass.equals(""))
+                     {
+                        if(!mail_smtp_port.equals("25"))
+                        {
+                           int smtpPortInt = Integer.parseInt(mail_smtp_port);
+                           tr.connect(host_name, smtpPortInt, mail_uname, mail_pass);
+                        } 
+                        else
+                        {
+                           tr.connect(host_name, mail_uname, mail_pass);
+                        }
+                        // Send the message
+                     }
+                     else
+                     {
+		        tr.connect();
+                     }
+                     l_msg.saveChanges();     // don't forget this
+                     ErrorDumpUtil.ErrorLog("\nEnd MailNotification Class mail_id======"+mail_id+"\t  message========"+ message, TurbineServlet.getRealPath("/logs/Email.txt"));
+                     tr.sendMessage(l_msg, l_msg.getAllRecipients());
+                     tr.close();
+		     /**
+		       if( (attachedFile.length() > 0 )) 
+	                  deletingAttachedFile(attachedFile);
+		      */
+                  } 
+                  catch (MessagingException mex)  // Trap the MessagingException Error
+                  {
+                     // If here, then error in sending Mail. Display Error message.
+                     msg=msg+"The error in sending Mail Message "+mex.toString();
+		     ErrorDumpUtil.ErrorLog("\nThe error in send mail (MailNotification -379) "+msg, TurbineServlet.getRealPath("/logs/Email.txt"));
+		     flag = true;
+                  }
+                  //msg="Mail send succesfully!!";
+	          if(!flag)
+	             msg= MultilingualUtil.ConvertedString("mail_msg2",LangFile);
+               }//End of 2nd if condition.
+               else
+               {
+                  //msg="Mail can't send since your mail id is null!!";
+                  msg=msg+MultilingualUtil.ConvertedString("mailNotification_msg2",LangFile);
+               }
+            }//End of 1st if condition.
+            else
+            {
+               msg=msg+MultilingualUtil.ConvertedString("mailNotification_msg",LangFile);
+            }
+         }
+         catch(Exception ex)
+         {
+            msg=msg+"The error in mail send !!!"+ex;
+            ErrorDumpUtil.ErrorLog("\nThe error in send mail (MailNotification) "+msg, TurbineServlet.getRealPath("/logs/Email.txt"));
+	    //mailSendfailure	
+	    flag = true;
+         }
+                              
+         // msg is a message comes from BrihLang_en.properteis 
+	 // message param is real message which is composed by a user.
+	 /** getting path for creating EmailSpooling  directory*/
 	
-       		//String filePath = TurbineServlet.getRealPath("/EmailSpooling");
-       		String filePath = TurbineServlet.getRealPath("/EmailSpooling");
-		File f = new File(filePath);
-		//String writeinxml = "", searchMailId = "", searchMsg = "";
-		//Vector mailDetail = new Vector();
-		//InstituteFileEntry ifdetail;
-		if(flag){
-			LangFile.trim();
+         String filePath = TurbineServlet.getRealPath("/EmailSpooling");
+	 File f = new File(filePath);
+	 if(flag)
+         {
+	    LangFile.trim();
+            /** This is executed while Langfile is nt coming properly to read message from conf */
 
-			/** This is executed while Langfile is nt coming properly to read message from conf */
+	    if(StringUtils.isBlank(LangFile) || LangFile.equals("english") )  
+	       LangFile = TurbineServlet.getRealPath("/conf")+"BrihLang_en.properties/";
+	    WriteXmlThread.getController().set_Message(filePath, mail_id, subject, message, attachedFile, LangFile, fileName);
+	 }
+	 if(!flag)
+         {
+	    f = new File(filePath+"/"+fileName);
+	    if(f.exists())
+	       f.delete();
+	    if(attachedFile.length()>0)
+	       if(!attachedFile.equals("tmp"))
+	          deletingAttachedFile(attachedFile);
+	 }
+         return(msg);
+      } //mailing() method close.
 
-			if(StringUtils.isBlank(LangFile) || LangFile.equals("english") )  
-				LangFile = TurbineServlet.getRealPath("/conf")+"BrihLang_en.properties/";
-			//WriteXmlThread.getController().set_Message(filePath, mail_id, subject, message, attachedFile, curdate, time, LangFile, fileName);
-			WriteXmlThread.getController().set_Message(filePath, mail_id, subject, message, attachedFile, LangFile, fileName);
-		}
-		if(!flag){
-			f = new File(filePath+"/"+fileName);
-			if(f.exists())
-				f.delete();
-			if(attachedFile.length()>0)
-				if(!attachedFile.equals("tmp"))
-					deletingAttachedFile(attachedFile);
-		/*
-				mailDetail = XMLWriter_EmailSpooling.getEmailSpoolDetails(filePath+"/EmailSpoolFile.xml");
-			if( mailDetail.size() != 0){
-				for(int k=0;k<  mailDetail.size();k++) {
-					ifdetail=(InstituteFileEntry) mailDetail.elementAt(k);
-					searchMailId =  ifdetail.getInstituteEmail().trim();
-                                        searchMsg = ifdetail.getMessage().trim();
-					String searchAttachFile = ifdetail.getAttachFile().trim();
-					if( mail_id.equals(searchMailId) && message.equals(searchMsg) ){
-					
-						//ErrorDumpUtil.ErrorLog("\ninside======mail_id="+mail_id+"\t searchMailId="+searchMailId+"\n  message=="+message+"\t searchMsg=="+searchMsg);
-						 XMLWriter_EmailSpooling.RemoveElement(filePath+"/EmailSpoolFile.xml", mail_id, message);		
-						 if(searchAttachFile.length() >0)
-							if(!searchAttachFile.equals("tmp"))
-		                                                deletingAttachedFile(searchAttachFile);
-
-					}
-				}
-			}
-			if(attachedFile.length()>0)
-				if(!attachedFile.equals("tmp"))
-					deletingAttachedFile(attachedFile);
-		*/
-		}
-			 //mailDetail = null;
-
-                return(msg);
-
-	}// sendMailClose
 
 
 	/**
@@ -522,7 +539,6 @@ public class MailNotification{
 	**/
 	public static void deletingAttachedFile(String attachedFile){
 		
-		//ErrorDumpUtil.ErrorLog("this is deleting attached File"+attachedFile);
 		File f1 = new File(attachedFile);
 		if(f1.exists())
        	        {

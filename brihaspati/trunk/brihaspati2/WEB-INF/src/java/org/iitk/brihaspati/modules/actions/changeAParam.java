@@ -84,6 +84,7 @@ import java.io.FileInputStream;
  * @modified date: 12-03-2013, 16-03-2013, 22-08-2013
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
  * @modified date: 18-05-2015 (Seemanti);
+ * @modified date: 15-07-15 (Seemanti) --- Dummy mail sending functionality updated ---
  */
 
 public class changeAParam extends SecureAction_Admin {
@@ -105,7 +106,7 @@ public class changeAParam extends SecureAction_Admin {
       //Value = ValueObject.create the ValueObject(Data);
       //defaults are set for some of the required fields
       ValueObject value = new ValueObject(data);
-
+      
       //Create path to reach PropertiesFile.
       String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
       if (debug) ErrorDumpUtil.ErrorLog("check!!!!!!!!!!!!PROPERTIES FILE PATH CHECK!!!!!!!!!!!!"+path);  
@@ -114,21 +115,19 @@ public class changeAParam extends SecureAction_Admin {
       MailAuth LocalMailAuth = new MailAuth(path);
       Properties props = new Properties();
       InputStream f = new FileInputStream(path);
-
+      
       if (value.getMailAuth() == null)
       {
          //add log message - some problem in value object and the null object is being returned. 
          ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Some problem in value object and the null mailauth object is being returned! | Date --> "+date+" --> "+TurbineServlet.getServerName(),LogfilePath);
       }       
-
       else if (!(value.getMailAuth().isEqual(LocalMailAuth))) 
       { 
-
-         //This condition is going to check whether the admin profile is to be set for the first time. 
+         //This condition is going to check whether the Admin's profile is to be set for the first time. 
          //Load the propety file through input stream.
          props.load(f);
          
-         //check if the property file has no MailAuth key value except only one  key-value pair ie; "list configuration" ie; for the first time.
+         //check if the property file has no MailAuth key-value pair ie; for the first time.
          if(!props.containsKey("brihaspati.mail.server"))
          {   
             if (!props.containsKey("brihaspati.mail.smtp.port"))
@@ -140,52 +139,72 @@ public class changeAParam extends SecureAction_Admin {
                      if (!props.containsKey("brihaspati.mail.password"))
                      {
                         if (!props.containsKey("brihaspati.mail.local.domain.name"))
-                        {
-                           //Set the mailauth data in Admin.properties file.   
-                           value.getMailAuth().setMailAuth(path);
-                           f.close();            
-                           sb.append("Mail Authentication details updated successfully."+"\n");
+                        {  
+                           //MailNotificationUtility.send a dummy message;
+                           boolean flag1 = (MailNotification.dummySendMail("Dummy mail to check mail sending functionality", value.getMailAuth().getMuName(), "Dummy mail", "", LangFile, "",data));
+                           //If dummy mail functionality does not works.
+                           if(!flag1)
+                           {
+                              String truncated_muName=StringUtils.substringBefore(value.getMailAuth().getMuName(),"@");//Try sending dummy mail using truncated muName.
+                              boolean flag2 = (MailNotification.dummySendMail("Dummy mail to check mail sending functionality", truncated_muName,"Dummy mail", "", LangFile, "",data));
+                              if(!flag2)//If dummy mail functionality again does not works.
+                              {
+                                 ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull mailAuth Configuration updation | Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
+                                 sb.append("Mail Authentication data updation failed."+"\n");
+                              }
+                              else//If dummy mail functionality works here with truncated muName.
+                              {  
+                                 value.getMailAuth().setMailAuth(path);//Set the mail information in Admin.properties file.
+                                 ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull mailAuth Configuration updation | Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
+                                 sb.append("Mail Authentication details updated successfully."+"\n");
+                              }
+                           }         
+                           else//If dummy mail functionality works here with muName.
+                           {  
+                              value.getMailAuth().setMailAuth(path);//Set the mail information in Admin.properties file.
+                              ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull mailAuth Configuration updation| Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
+                              sb.append("Mail Authentication details updated successfully."+"\n");
+                           }
                         }
                      }  
                   }
                }
             }
          }//if end inside else-if of mailauth
-     
-         else
+      
+         else //Updating the mail authentication details.
          {            
             //MailNotificationUtility.send a dummy message;
-            String Mail_msg= (MailNotification.sendMail("Dummy mail to check mail sending functionality", value.getMailAuth().getMuName(), "Dummy mail", "", LangFile, "")).trim();
-            if (debug) ErrorDumpUtil.ErrorLog("!!!!!!!!!!!!PRINT THE VALUE OF MAIL MESSAGE to be send to muName!!!!!!!!!!!"+Mail_msg);
-   
-            if(!Mail_msg.equals("Mail Sent Successfully !!"))
+            boolean flag3 = (MailNotification.dummySendMail("Dummy mail to check mail sending functionality", value.getMailAuth().getMuName(), "Dummy mail", "", LangFile, "",data));
+            //If dummy mail functionality does not works.
+            if(!flag3)
             {
-               String truncated_muName=StringUtils.substringBefore(value.getMailAuth().getMuName(),"@");
-               String Mail_msg1= (MailNotification.sendMail("Dummy mail to check mail sending functionality", truncated_muName,"Dummy mail", "", LangFile, "")).trim();
-               if(debug) ErrorDumpUtil.ErrorLog("!!!!!!!!!!!PRINT THE VALUE OF MAIL MESSAGE to be send to truncated muName!!!!!!!!!!!"+Mail_msg1);
-               if(!Mail_msg1.equals("Mail Sent Succesfully !!"))
+               String truncated_muName=StringUtils.substringBefore(value.getMailAuth().getMuName(),"@");//Try sending dummy mail using truncated muName.
+               boolean flag4 = (MailNotification.dummySendMail("Dummy mail to check mail sending functionality", truncated_muName,"Dummy mail", "", LangFile, "",data));             
+               if(!flag4)//If dummy mail functionality again does not works.
                {
                   //Logger.add date, time, IP address of browser client and message - message send failure in mailAuth config update to log.
                   //Append to MessageString - "Dummy message after mailAuth data updation failed.\n"
                   ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull mailAuth Configuration updation | Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
                   sb.append("Mail Authentication data updation failed."+"\n");
+                  
                }
-               else
+               else //If dummy mail functionality works here with truncated muName.
                { 
-                  value.getMailAuth().setMailAuth(path);
+                  value.getMailAuth().setMailAuth(path);//Set the mail information in Admin.properties file.
 	          //Logger.add date, time, IP address of browser client and message - message was succesfully sent after mailAuth config update, to log.
 	          //Append to MessageString - "Dummy message after mailAuth data updation successful.\n"
                   ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull mailAuth Configuration updation | Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
-                  sb.append("Mail Authentication details updated successfully"+"\n");
+                  sb.append("Mail Authentication details updated successfully."+"\n");
                }
             }
-            else 
+            else //If dummy mail functionality works here with muName.
             {   
-               value.getMailAuth().setMailAuth(path);
+               value.getMailAuth().setMailAuth(path);//Set the mail information in Admin.properties file.
                //Logger.add date, time, IP address of browser client and message - message was successfully sent after mailAuth config update, to log.
                //Append to MessageString - "Dummy message after mailAuth updation successful.\n"
                ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull mailAuth Configuration updation| Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
-               sb.append("Mail Authentication details updated successfully"+"\n");
+               sb.append("Mail Authentication details updated successfully."+"\n");
             }	
          }//else end inside  else-if of mailauth.
 

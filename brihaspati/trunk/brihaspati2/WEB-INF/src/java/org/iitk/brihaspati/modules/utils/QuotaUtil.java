@@ -228,13 +228,23 @@ public class QuotaUtil {
 	         long fdisks =0;
 		 try{
 			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf/Admin.properties";
-        	         String dirName=AdminProperties.getValue(path,"brihaspati.home.dir.value");
-			 if((dirName.equals(""))||(dirName.equals(null))){
-				dirName=System.getProperty("user.home");
+        	         String dirName=AdminProperties.getValue(path,"brihaspati.home.dir.value");                       
+			 /*if( dirName.equals("") || dirName.equals(null) ){
+ 			   dirName=System.getProperty("user.home");
+                           ErrorDumpUtil.ErrorLog("Name of system directory."+dirName);
 			 }
+                          */
+                          /*If Admin profile not set dirName will hold NULL thus we don't use equals() method,
+                           *as it will throw NPE.  
+                           * Correction done by Seemanti.15/07/2015
+                           */
+                         if(dirName == null || dirName.equals(""))
+                         {
+                            dirName=System.getProperty("user.home");
+                         }
 	        	 fdisks = FileSystemUtils.freeSpaceKb(dirName);
 			 fdisks = fdisks/1024;
-			//ErrorDumpUtil.ErrorLog("The space is on the disk "+fdisks +" dir name "+dirName);
+			 //ErrorDumpUtil.ErrorLog("The space is on the disk "+fdisks +" dir name "+dirName);
         	 } catch (Exception ex) {
 				ErrorDumpUtil.ErrorLog("The error in calculating free disk space is on the disk "+ex);
 	             ex.printStackTrace();

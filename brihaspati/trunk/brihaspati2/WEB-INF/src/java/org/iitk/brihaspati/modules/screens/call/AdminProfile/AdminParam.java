@@ -64,6 +64,7 @@ import org.apache.commons.lang.StringUtils;
  * @modified date: 22-08-2013
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
  * @modified date: 18-05-2015 (Seemanti)
+ * @modified date: 14-07-2015 (Seemanti)---Providing default value for Admin Profile parameters from this screen file ---
  */
 
 
@@ -77,26 +78,66 @@ public class AdminParam extends SecureScreen{
                 String loginName=user.getName();
                 int uid=UserUtil.getUID(loginName);
 		String path="";	
-			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+	        path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 		String LangFile=data.getUser().getTemp("LangFile").toString();
 		context.put("tdcolor",data.getParameters().getString("count",""));
 		int usedport = data.getServerPort();
                 context.put("usedport",usedport);
-
 		try{
 		/**
 		 * getting value of configuration parameter 	
 		 * @see AdminProperties in utils
 		 */
+                 //Set these five default parameters for the Admin's Profile.
+                 String PassExp = AdminProperties.getValue(path,"brihaspati.admin.passwordExpiry");
+                 if(PassExp == null || StringUtils.isBlank(PassExp))
+                 {
+                    PassExp="180";
+                 }
+                 context.put("PassExp",PassExp);
+
+                 String hdir = AdminProperties.getValue(path,"brihaspati.home.dir.value");
+                 if(hdir == null || hdir.equals(""))
+                 {
+                 hdir=System.getProperty("user.home");               
+                 }
+                 context.put("hdir",hdir);
+
+                 String mailSpoolingExpiry = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value");
+                 if(!StringUtils.isBlank(mailSpoolingExpiry))
+
+                         context.put("mailSpoolingExpiry",mailSpoolingExpiry);
+                 else
+                         context.put("mailSpoolingExpiry","3");
+
+                 String mailResendTime =  AdminProperties.getValue(path,"brihaspati.admin.spoolMailResendTime.value");
+                 if(!StringUtils.isBlank(mailResendTime))
+                        context.put("spoolingMailResendTime", mailResendTime);
+                 else
+                        context.put("spoolingMailResendTime","60");
+
+                 String iquota = AdminProperties.getValue(path,"brihaspati.user.iquota.value");                 
+                 if(!StringUtils.isBlank(iquota))
+                    context.put("iquota",iquota);
+                 else
+                    context.put("iquota","100");
+                 
+                 String cquota = AdminProperties.getValue(path,"brihaspati.admin.quota.value");
+                 if(!StringUtils.isBlank(cquota))
+                    context.put("cquota",cquota);
+                 else
+                    context.put("cquota","500");
+
+                 String uquota = AdminProperties.getValue(path,"brihaspati.user.quota.value");
+                 if(!StringUtils.isBlank(uquota)) 
+                    context.put("uquota",uquota); 
+                 else
+                    context.put("uquota","100");
+
 		 String AdminConf = AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
 		 context.put("AdminConf",new Integer(AdminConf));
-		 String CrsExp = AdminProperties.getValue(path,"brihaspati.admin.courseExpiry");
+                 String CrsExp = AdminProperties.getValue(path,"brihaspati.admin.courseExpiry");
 		 context.put("CrsExp",new Integer(CrsExp));
-		 String PassExp = AdminProperties.getValue(path,"brihaspati.admin.passwordExpiry");
-		if(StringUtils.isBlank(PassExp)){
-			PassExp="180";
-		}
-                 context.put("PassExp",PassExp);
 		 String mserv = AdminProperties.getValue(path,"brihaspati.mail.server");
 		 context.put("mServer",mserv);
 		 String mServerPort = AdminProperties.getValue(path,"brihaspati.mail.smtp.port");
@@ -110,18 +151,7 @@ public class AdminParam extends SecureScreen{
 		 String domainNm = AdminProperties.getValue(path,"brihaspati.mail.local.domain.name");
 		 context.put("dName",domainNm);
 		 String email = AdminProperties.getValue(path,"brihaspati.mail.email");//admin email(add in turbinr_user)
-		 context.put("eMail","");
-		 String iquota = AdminProperties.getValue(path,"brihaspati.user.iquota.value");
-                 context.put("iquota",iquota);
-		 String cquota = AdminProperties.getValue(path,"brihaspati.admin.quota.value");
-		 context.put("cquota",cquota);
-		 String uquota = AdminProperties.getValue(path,"brihaspati.user.quota.value");
-		 context.put("uquota",uquota);
-		 String hdir = AdminProperties.getValue(path,"brihaspati.home.dir.value");
-		 if(hdir.equals("")){
-			hdir=System.getProperty("user.home");
-		 }
-		 context.put("hdir",hdir);
+		 context.put("eMail",email);
 		 String port = AdminProperties.getValue(path,"brihaspati.spring.port");
                  context.put("port",port);
 		 String dstore = AdminProperties.getValue(path,"brihaspati.admin.datastore.value");
@@ -138,32 +168,17 @@ public class AdminParam extends SecureScreen{
 		 context.put("ldapcate",ldapcat);
 		 String twtexp = AdminProperties.getValue(path,"brihaspati.admin.twtexpiry.value");
                  context.put("twtexp",twtexp);
-
-		 String mailSpoolingExpiry = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value");
-                 if(!StringUtils.isBlank(mailSpoolingExpiry))
-
-                         context.put("mailSpoolingExpiry",mailSpoolingExpiry);
-                else
-                         context.put("mailSpoolingExpiry","3");
-                String mailResendTime =  AdminProperties.getValue(path,"brihaspati.admin.spoolMailResendTime.value");
-                if(!StringUtils.isBlank(mailResendTime))
-                        context.put("spoolingMailResendTime", mailResendTime);
-                else
-                        context.put("spoolingMailResendTime","60");
-		String normal_traffic = AdminProperties.getValue(path,"brihaspati.admin.normalTraffic.value");
-                context.put("normalTraffic", normal_traffic);
-		String high_traffic = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
-                context.put("highTraffic", high_traffic);
-//------------------------ Getting of brihaspati Server IP  --------------------
-	        //String filePath = TurbineServlet.getRealPath("../../conf/BrihaspatiServer.properties");
-                String filePath = TurbineServlet.getRealPath("../../webapps/brihaspati2/WEB-INF/conf/"+"/"+"Admin.properties");
-		String brihServerName = AdminProperties.getValue(filePath,"brihaspati.admin.brihaspatiServerIP.value");
-                ErrorDumpUtil.ErrorLog("Printing the already saved Property file value of brihServerUrl in screen file......"+brihServerName);
-                if(!StringUtils.isBlank(brihServerName))
+		 String normal_traffic = AdminProperties.getValue(path,"brihaspati.admin.normalTraffic.value");
+                 context.put("normalTraffic", normal_traffic);
+		 String high_traffic = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
+                 context.put("highTraffic", high_traffic);
+//------------------------ Getting of brihaspati Server IP  -----------------------------------------------------------------------------------------------------------------
+		 String brihServerName = AdminProperties.getValue(path,"brihaspati.admin.brihaspatiServerIP.value");
+                 if(!StringUtils.isBlank(brihServerName))
 			 context.put("brihServer",brihServerName);
-//------------------------ Getting of brihaspati Server IP & Port --------------------
+//------------------------ Getting of brihaspati Server IP & Port -----------------------------------------------------------------------------------------------------------
 
-		// --------------------------------Telephone Directory------------------
+// --------------------------------Telephone Directory-----------------------------------------------------------------------------------------------------------------------
 	Criteria crt=new Criteria();
         crt.add(TelephoneDirectoryPeer.USER_ID,uid);
         List Telelist=TelephoneDirectoryPeer.doSelect(crt);
@@ -212,11 +227,13 @@ public class AdminParam extends SecureScreen{
                         context.put("othphone",other[4]);
 	}
 	}catch(Exception e){}
-// ---------------------------Telephone Directory------------------------------------
-		//----------------------------------FAQ---------------------------
+// ---------------------------Telephone Directory----------------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------FAQ-------------------------------------------------------------------------------------------------------------------------------------
                  String FaqExp = AdminProperties.getValue(path,"brihaspati.admin.FaqExpiry");
                  context.put("FaqExp",new Integer(FaqExp));
-                 //----------------------------------FAQ---------------------------
+//----------------------------------FAQ--------------------------------------------------------------------------------------------------------------------------------------
+
                  String fupldsze = AdminProperties.getValue(path,"services.UploadService.size.max");
 		 long newSize = Long.parseLong(fupldsze);
 		 long fupldszemb = newSize/1024/1024;
