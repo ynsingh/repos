@@ -108,8 +108,8 @@
                             <rich:menuItem  id="se82"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/TaxSlabName.jsf')" value="Add Slab Details"/>
                             <rich:menuItem  id="se83"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/EmployeeSlabValue.jsf')" value="Employee Slab Details"/>
                         </rich:menuGroup>
-                        <rich:menuItem  id="se9"  onclick="return loadIframe('ifrm', 'account/AddUser.jsf')" value="System User Accounts"/>
-                        <rich:menuItem  id="se10"  onclick="return loadIframe('ifrm', 'setup/SalaryProcessingSetup.jsf')" value="Salary Processing Setup"/>
+                       <%-- <rich:menuItem  id="se9"  onclick="return loadIframe('ifrm', 'account/AddUser.jsf')" value="System User Accounts"/>--%>
+                      <%--  <rich:menuItem  id="se10"  onclick="return loadIframe('ifrm', 'setup/SalaryProcessingSetup.jsf')" value="Salary Processing Setup"/>--%>
                         <rich:menuItem  id="se11"  onclick="return loadIframe('ifrm', 'attendance/LeaveTypes.jsf')" value="Leave Types"/>
                        
                     </rich:dropDownMenu>
@@ -123,22 +123,23 @@
                         <rich:menuItem  id="sa1" onclick="return loadIframe('ifrm','salary/SalaryFormula.jsf')" value="Salary Formula"/>
                         <rich:menuItem  id="sa2" onclick="return loadIframe('ifrm','salary/DefaultSalaryData.jsf')" value="Default Salary values"/>
                         <rich:menuItem  id="sa3" onclick="return loadIframe('ifrm','salary/SalarySettings.jsf')" value="Type wise Salary Head Setting"/>
-                        <rich:menuGroup id="sa4"  value="Salary Processing Setup" >
+                        <rich:menuItem  id="sa4" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing"/>
+                       <%-- <rich:menuGroup id="sa4"  value="Salary Processing Setup" >
                         <rich:menuItem id="sa41" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcesswithBudget.jsf')" value="Salary Processing with Budget" disabled="#{SalaryProcessingSetup.inactive}"/>
                             <rich:menuItem  id="sa42" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing" disabled="#{SalaryProcessingSetup.active}" />
                         
-                        </rich:menuGroup>
+                        </rich:menuGroup>--%>
                         <rich:separator/>
                         <rich:menuItem value="Exit"/>
                     </rich:dropDownMenu>
-                    <rich:dropDownMenu  id="ad"  value="Administration " styleClass="pic" >
+                   <%-- <rich:dropDownMenu  id="ad"  value="Administration " styleClass="pic" >
                             <rich:menuItem  id="ad1"  onclick="return loadIframe('ifrm','adm/Salary.jsf')" value="Lock Salary"/>
                             <rich:menuGroup id="ad2"  value="Module Management" direction="right-bottom">
                                 <rich:menuItem id="ad21" onclick="return loadIframe('ifrm','userOperation/createUser.jsf')" value="Create New User"/>
                                 <rich:menuItem id="ad22" onclick="return loadIframe('ifrm','userOperation/NewUserTask.jsf')" value="Assign Task"/>
                                 <rich:menuItem id="ad23" onclick="return loadIframe('ifrm','userOperation/NewUserTask.jsf')" value="Manage Task"/>
                             </rich:menuGroup>
-                    </rich:dropDownMenu>
+                    </rich:dropDownMenu>--%>
                     
                     <rich:dropDownMenu  id="tm"  value="Tax Management" styleClass="pic">
                         <rich:menuItem  id="tm1"    onclick="return loadIframe('ifrm', 'investment/InvestmentCategory.jsf')"  value="Main Head Sections"/>

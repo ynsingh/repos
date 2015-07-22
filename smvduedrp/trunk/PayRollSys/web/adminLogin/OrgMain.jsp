@@ -236,7 +236,7 @@
                         <label>
                                     <span>Affiliation :</span>
                                     <h:inputText id="instan" value="#{OrgProfileBean.affiliation}"/> 
-                                    <h:outputText value="( University Name ) e.g. UPTU, CSJMU , If no affiliation leave it blanck. " />
+                                    <h:outputText value="( University Name ) e.g. UPTU, CSJMU , If no affiliation leave it blank. " />
                         </label>
                        
                         <label> Please fill the Institute Administrator Details </label> 

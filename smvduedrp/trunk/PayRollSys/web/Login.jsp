@@ -148,10 +148,10 @@
 
                             <div id='links'>
                                 <ul>
-                                   <li><a href="http://202.141.40.215/WebApp/wiki/index.php/PayRoll_System">Help Document</a></li>
-                                   <li><a href='adminLogin/brihaspatiMainLogin.jsf' target="_blank">Brihaspati Server Aunthentication</a></li>
-                                   <li><a href='#' disabled='true;'>Release Notes</a></li>
-                                   <li><a href="http://www.sakshat.ac.in">NMEICT home page</a></li>
+                                   <li><a href="http://202.141.40.215/WebApp/wiki/index.php/PayRoll_System" target="_blank">Help Document</a></li>
+                                   <li><a href='adminLogin/brihaspatiMainLogin.jsf' target="_blank">Brihaspati Server Authentication</a></li>
+                                   <li><a href='http://202.141.40.215/WebApp/wiki/index.php/Release_Notes' target="_blank">Release Notes</a></li>
+                                   <%--<li><a href="http://www.sakshat.ac.in">NMEICT home page</a></li>--%>
                                    
                                 </ul>
                             </div>
