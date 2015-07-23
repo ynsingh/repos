@@ -174,25 +174,53 @@ class General {
 		$logndb = $CI->load->database('login', TRUE);
 		$this->logndb =& $logndb; 
 			
-//		$db=$this->database('login', TRUE);
-//		$db->load->database('login', TRUE);
-                //$CI->db->from('bgasuser');
-                //$CI->db->select('username,password,role,status,accounts')->where('username =', $user_name);
-		//$user_data = $CI->db->get();
+    //$db=$this->database('login', TRUE);
+	//db->load->database('login', TRUE);
+	//$CI->db->from('bgasuser');
+	//$CI->db->select('username,password,role,status,accounts')->where('username =', $user_name);
+	//$user_data = $CI->db->get();
 
-                $this->logndb->from('bgasuser');
-                $this->logndb->select('username,password,role,status,accounts')->where('username =', $user_name);
+		// previous code 19june
+		/* $this->logndb->from('bgasuser');
+		$this->logndb->select('username,password,role,status,accounts')->where('username =', $user_name);
 		$user_data = $this->logndb->get();
 		
-                foreach($user_data->result() as $row)
-                {
-                	$user_name1 = $row->username;
-                        $user_password = $row->password;
-                        $user_account = $row->accounts;
-                        $user_status = $row->status;
-                        $user_role= $row->role;
-                }
+        foreach($user_data->result() as $row)
+        {
+        	$user_name1 = $row->username;
+            $user_password = $row->password;
+            $user_account = $row->accounts;
+            $user_status = $row->status;
+            $user_role= $row->role;
+        }*/
 
+        //$this->logndb->from('bgasuser');
+        //$this->logndb->select('username,password,role,status,accounts')->where('username =', $user_name);
+		//$this->logndb->select('id,username,password,status')->where('username =', $user_name);
+
+		$this->logndb->select('user.id as id,user.username as username, user.password as password,user.status as status,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role');
+		$this->logndb->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid')->where('user.username',$user_name);
+		$user_data = $this->logndb->get();
+        foreach($user_data->result() as $row)
+        {
+			$user_name1 = $row->username;
+            $user_password = $row->password;
+            $user_account = $row->accounts;
+			$user_status = $row->status;
+            $user_role= $row->role;
+            $user_id = $row->id;
+
+		}	
+		//print_r($user_data);
+		/*$this->logndb->select('role,accounts')->from('userrolegroup')->where('userid', $user_id);
+		$query_result = $this->logndb->get();
+		foreach($query_result->result() as $row)
+        {
+            $user_account = $row->accounts;
+            $user_role= $row->role;
+		}
+		echo $user_account;*/
+		//$user_data['accounts'] = $user_account;
 
 		/* User validation */
 //		$ini_file = $CI->config->item('config_path') . "users/" . $user_name . ".ini";
@@ -236,7 +264,10 @@ class General {
 		if ( ! isset($user_account))
 		{
 			$CI->messages->add('Accounts missing from user data.', 'error');
+			$user_data['accounts'] = $user_account;
 		}
+
+		//$user_data['accounts'] = $user_account;
 		return $user_data;
 	}
 

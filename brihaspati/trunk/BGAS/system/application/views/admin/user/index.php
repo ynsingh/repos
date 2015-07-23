@@ -30,39 +30,46 @@ foreach ($users->result()  as $row)
 			$status = isset($active_users['status']) ? $active_users['status'] : "-";
 		}
 	}*/
-					$user_id=$row->id;
-		                        $user_name1 = $row->username;
-                                        $user_email = $row->email;
-                                        $user_role =  $row->role;
-                                        $user_status = $row->status;
-					$user_account = $row->accounts;
-					$user_type = $row->aggtype;
-
+	$user_id=$row->id;
+	$user_name1 = $row->username;
+    $user_email = $row->email;
+    $user_role =  $row->role;
+    $user_status = $row->status;
+	$user_account = $row->accounts;
+	$user_type = $row->aggtype;
+	$user_components = $row->componentreg;
 
 	 echo "<tr class=\"tr-" . $odd_even;
 
 	 echo " tr-active";
 	 echo "\">";
 	 echo "<td>" . $user_name1 . "</td>";
-         echo "<td>" . $user_email . "</td>";
-         echo "<td>" . $user_role . "</td>";
-         echo "<td>" . $user_status . "</td>";
+	 echo "<td>" . $user_email . "</td>";
+	 echo "<td>" . $user_role . "</td>";
+	 echo "<td>" . $user_status . "</td>";
 	 echo "<td>" . $user_account . "</td>";
        
-        echo "<td>" . anchor('admin/user/edit/'.$row->id, 'Edit', array('title' => 'Back to admin')); "</td>";
+    echo "<td>" . anchor('admin/user/edit/'.$row->id, 'Edit', array('title' => 'Back to admin')); "</td>";
 	if(($user_role!="guest") && ($user_name1!="admin"))
-        echo "<td>" . anchor('admin/user/permission/'.$row->id, 'Assign Permission', array('title' => 'Back to admin')); "</td>";
-        if(($user_role=="administrator") ||($user_role=="manager")) 
+    	echo "<td>" . anchor('admin/user/permission/'.$row->id, 'Assign Permission', array('title' => 'Back to admin')); "</td>";
+    
+    if(($user_role=="administrator") ||($user_role=="manager")) 
 	{
 		if($user_type=='agg')
 		{
-                	echo "<td> " . anchor('admin/user/updateaggregator/'.$row->id, 'Update Aggregator', array('title' => 'Back to admin','class' => 'red-link')); "</td>";
+            echo "<td> " . anchor('admin/user/updateaggregator/'.$row->id, 'Update Aggregator', array('title' => 'Back to admin','class' => 'red-link')); "</td>";
 		}
 		else
-		{	echo "<td>" . anchor('admin/user/makeaggregator/'.$row->id, 'Make Aggregator', array('title' => 'Back to admin')); "</td>";
+		{	
+			echo "<td>" . anchor('admin/user/makeaggregator/'.$row->id, 'Make Aggregator', array('title' => 'Back to admin')); "</td>";
 		}
 	}
-	echo "<td>" .anchor('admin/user/delete/'.$row->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Student')), array('class' => "confirmClick", 'title' => "Delete Student")) . "</td>";
+
+	if($user_components == 'BGAS'){
+		echo "<td>" .anchor('admin/user/delete/'.$row->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Student')), array('class' => "confirmClick", 'title' => "You Want To Delete User From Entire System")) . "</td>";
+	}else{
+		echo "<td>" .anchor('admin/user/delete/'.$row->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Student')), array('class' => "confirmClick", 'title' => "Delete User")) . "</td>";
+	}
 //  echo "<td>" .anchor('admin/user/delete/', img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Student')), array('class' => "confirmClick", 'title' => "Delete Student")) . "</td>";
 
 /*	echo "<td>";

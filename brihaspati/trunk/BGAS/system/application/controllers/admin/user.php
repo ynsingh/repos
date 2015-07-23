@@ -37,15 +37,17 @@ class User extends Controller {
 					$data['users'][$ini_label] = $ini_label;
 				}
 			}
-		}*/  
-                $data['users'] = array();
+		}*/
+		$data['users'] = array();
 		$db1=$this->load->database('login', TRUE);
-                $db1->select('id,username,email,role,status,accounts,aggtype')->from('bgasuser');
-
+		$db1->select('user.id as id,user.username as username,user.componentreg as componentreg, user.email as email,user.status as status,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype');
+		$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid'); 
+		
+        //$db1->select('id,username,email,role,status,accounts,aggtype')->from('bgasuser');
 		$query = $db1->get();
-                $config['total_rows'] =$db1->count_all('bgasuser');
+        $config['total_rows'] =$db1->count_all('user');
 
-                $data['users']= $query;
+        $data['users']= $query;
 		$user_id='';
 
 		$this->template->load('admin_template', 'admin/user/index', $data);
@@ -56,8 +58,10 @@ class User extends Controller {
 	function add()
 	{
 		$this->load->library('validation');
-                $this->load->library('paymentreceipt');
+        $this->load->library('paymentreceipt');
 		$this->template->set('page_title', 'Add user');
+
+		$db1=$this->load->database('login', TRUE);
 
 		/* Form fields */
 		$data['user_name'] = array(
@@ -92,6 +96,24 @@ class User extends Controller {
 			"guest" => "guest",
 		);
 
+		$data['mobile'] = array(
+			'name' => 'mobile',
+			'id' => 'mobile',
+			'maxlength' => '10',
+			'size' => '10',
+			'value' => '',
+		);
+
+		$data['component_reg'] = array(
+			'name' => 'component_reg',
+			'id' => 'component_reg',
+			'maxlength' => '100',
+			'size' => '40',
+			'value' => 'BGAS',
+			'readonly'=>'true',
+		);
+
+
 		$data['active_user_role'] = "administrator";
 		$data['user_status'] = TRUE;
 
@@ -104,15 +126,15 @@ class User extends Controller {
 		$db1=$this->load->database('login', TRUE);
 		$db1->select('dblable')->from('bgasAccData');
 		$query = $db1->get();
-                if ($query->num_rows() < 1)
-                {
-                	$this->messages->add('No Account exists.', 'error');
-                        $this->template->load('admin_template', 'admin/manage/add', $data);
-                        return;
-                }
+        if ($query->num_rows() < 1)
+        {
+        	$this->messages->add('No Account exists.', 'error');
+                $this->template->load('admin_template', 'admin/manage/add', $data);
+                return;
+        }
 		else{
 			foreach($query->result() as $row){
-				$data['accounts'][$row -> dblable] = $row -> dblable;
+				$data['accounts'][$row ->dblable] = $row ->dblable;
 			}
 		}
 		$db1->close();
@@ -136,6 +158,8 @@ class User extends Controller {
 			$data['user_name']['value'] = $this->input->post('user_name', TRUE);
 			$data['user_password']['value'] = $this->input->post('user_password', TRUE);
 			$data['user_email']['value'] = $this->input->post('user_email', TRUE);
+			$data['mobile']['value'] = $this->input->post('mobile', TRUE);
+			$data['component_reg']['value'] = $this->input->post('component_reg', TRUE);
 			$data['active_user_role'] = $this->input->post('user_role', TRUE);
 			$data['user_status'] = $this->input->post('user_status', TRUE);
 			$data['accounts_active'] = $this->input->post('accounts', TRUE);
@@ -144,12 +168,11 @@ class User extends Controller {
 		/* Form validations */
 		//$this->form_validation->set_rules('user_name', 'Username', 'trim|required|min_length[2]|max_length[30]|alpha_numeric');
 		$this->form_validation->set_rules('user_name', 'Username', 'trim|required|valid_email');
-
 		$this->form_validation->set_rules('user_password', 'Password', 'trim|required');
 		//$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email');
-
 		$this->form_validation->set_rules('user_role', 'Role', 'trim|required');
+		$this->form_validation->set_rules('mobile', 'Mobile', 'trim');
 		$this->form_validation->set_rules('user_status', 'Active', 'trim');
 
 		/* Validating form */
@@ -166,6 +189,9 @@ class User extends Controller {
 			$data_user_email = $this->input->post('user_email', TRUE);
 			$data_user_role = $this->input->post('user_role', TRUE);
 			$data_user_status = $this->input->post('user_status', TRUE);
+			$data_user_mobile = $this->input->post('mobile', TRUE);
+			$data_user_components = $this->input->post('component_reg', TRUE);
+
 			if ($data_user_status == 1)
 				$data_user_status = 1;
 			else
@@ -179,7 +205,8 @@ class User extends Controller {
 				$this->messages->add('Please select account.', 'error');
 				$this->template->load('admin_template', 'admin/user/add', $data);
 				return;
-			} else {
+			}else{
+				
 				if (in_array('(All Accounts)', $data_accounts))
 				{
 					$data_accounts_string = '*';
@@ -188,54 +215,186 @@ class User extends Controller {
 					$data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
 					$data_accounts_string = implode(",", $data_accounts_valid);
 				}
+
+
+				/* check if username already exist*/
 				$db1=$this->load->database('login', TRUE);
-				$db1->from('bgasuser')->where('username', $data_user_name);
+				$db1->select('id,mobile,componentreg');
+				$db1->from('user')->where('username', $data_user_name);
 				$query = $db1->get();
-		                if (!($query->num_rows() < 1)){
-					//Check this user exist or not					
-					$this->messages->add('User Account already exists.', 'error');
-                                        $this->logger->write_message("error", "User Account already exist" . $data_user_name);
-		                        $this->template->load('admin_template', 'admin/user/add', $data);
-                		        return;
+		        if (!($query->num_rows() < 1))
+		        {
+		        	foreach ($query->result() as $row) {
+		        		
+		        		$compo_reg = $row->componentreg;
+		        		$registered_id = $row->id;
+		        		$registered_mobile = $row->mobile;
+		        	}
+
+		        	$component_array = explode(',', $compo_reg);
+		        	if(in_array('BGAS',$component_array))
+		        	{
+		        		$this->messages->add('User Account already exists for BGAS.', 'error');
+		                $this->logger->write_message("error", "User Account already exist" . $data_user_name);
+				        $this->template->load('admin_template', 'admin/user/add', $data);
+		                return;	
+		        	}else{
+
+		        		$compo_reg = $compo_reg.",BGAS";
+		        		$db1->trans_start();
+
+		        		/* check mobile no. exist is same as entered */
+
+		        		if($registered_mobile == $data_user_mobile){
+		        			$update_data = array(
+			                'componentreg' => $compo_reg	
+							);
+		        		}else{
+		        			$update_data = array(
+			                'componentreg' => $compo_reg,
+			                'mobile' => $data_user_mobile
+			                );
+		        		}						
+
+						if ( ! $db1->where('id', $registered_id)->update('user', $update_data))
+						{
+							$db1->trans_rollback();
+							$this->messages->add('Error in updating User Account - ' .  $data_user_name . '.', 'error');
+							return;
+						}
+						else{
+							$db1->trans_complete();
+
+							$insert_data = array(
+		                        'userid' => $registered_id,
+		                        'role' =>$data_user_role,
+		                        'accounts'=>$data_accounts_string
+	                    	);
+
+							if ( ! $db1->insert('bgasuserrolegroup', $insert_data))
+	                    	{
+
+		                        $db1->trans_rollback();
+		                        $this->messages->add('Error addding User Account in userrolegroup- ' . $data_user_name . '.', 'error');
+		                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+								$this->template->load('admin_template', 'admin/user/add', '');
+		                        return;
+		                    }
+							else{
+								$db1->trans_complete();
+							}	
+						}
+						//added by @kanchan
+		                $message = "You are Added in Brihaspati General Accounting System- $data_user_name  && Your Role is- $data_user_role && With Your Previous Password";
+		                $subject = 'User Account created in BGAS ';
+		                if($this->paymentreceipt->send_mail($data_user_email, $subject, $message))
+						$this->messages->add('Added User Account - ' . $data_user_name .  'Mail Sucessfully send!---'. ' success');
+						redirect('admin/user/');
+						return;	
+		        	}				
 				}
 				else{
-					// if not then create account else skip
-					$db1->trans_start();
+					
+					//added by megha
 					$insert_data = array(
-                                                        'username' => $data_user_name,
-                                                        'password'=>md5($data_user_password),
-                                                        'email' => $data_user_email,
-                                                        'role' =>$data_user_role,
-                                                        'status' => $data_user_status,
-                                                        'accounts'=>$data_accounts_string
-                                        );
+                        'username' => $data_user_name,
+                        'password'=>md5($data_user_password),
+                        'email' => $data_user_email,
+                        //'role' =>$data_user_role,
+                        'componentreg' => $data_user_components,
+                        'mobile' => $data_user_mobile,
+                        'status' => $data_user_status
+                        //'accounts'=>$data_accounts_string
+                    );
+
+
 					$user_password = $data_user_password;		
 
-                                                if ( ! $db1->insert('bgasuser', $insert_data))
-                                                {
+                    if ( ! $db1->insert('user', $insert_data))
+                    {
 
-                                                        $db1->trans_rollback();
-                                                        $this->messages->add('Error addding User Account - ' . $data_user_name . '.', 'error');
+                        $db1->trans_rollback();
+                        $this->messages->add('Error addding User Account - ' . $data_user_name . '.', 'error');
 
-                                                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
-                                                        //$this->template->load('template', 'user/add');
-							$this->template->load('admin_template', 'admin/user/add', '');
-                                                        return;
-                                                }
-						else{
+                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+                        //$this->template->load('template', 'user/add');
+						$this->template->load('admin_template', 'admin/user/add', '');
+                        return;
+                    }
+					else{
+						$bgasuser_id = $db1->insert_id();
 						$db1->trans_complete();
-					 //added by @kanchan
-                                        $message = "You are Added in Brihaspati General Accounting System- $data_user_name  && Your Role is- $data_user_role && Your Password is- $user_password";
-                                        $subject = 'User Account created in BGAS ';
-                                        if($this->paymentreceipt->send_mail($data_user_email, $subject, $message))
-						$this->messages->add('Added User Account - ' . $data_user_name .  'Mail Sucessfully send!---'. ' success');
+
+						$insert_data1 = array(
+	                        'userid' => $bgasuser_id,
+	                        'role' =>$data_user_role,
+	                        'accounts'=>$data_accounts_string
+                    	);
+
+						if ( ! $db1->insert('bgasuserrolegroup', $insert_data1))
+                    	{
+	                        $db1->trans_rollback();
+	                        $this->messages->add('Error addding User Account in userrolegroup- ' . $data_user_name . '.', 'error');
+	                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+							$this->template->load('admin_template', 'admin/user/add', '');
+	                        return;
+	                    }
+						else{
+							$db1->trans_complete();
+						}
+
+						$insert_data2 = array(
+	                        'userid' => $bgasuser_id,
+	                        'mobile' => $data_user_mobile,
+	                        'lang' => "English,"
+	                        'status'=> 1
+                    	);
+
+						if ( ! $db1->insert('userprofile', $insert_data2))
+                    	{
+	                        $db1->trans_rollback();
+	                        $this->messages->add('Error addding User Account in userprofile- ' . $data_user_name . '.', 'error');
+	                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+							$this->template->load('admin_template', 'admin/user/add', '');
+	                        return;
+	                    }
+						else{
+							$db1->trans_complete();
+						}
+
+						$insert_data3 = array(
+	                        'userid' => $bgasuser_id,
+	                        'lastusedlang' => "English",
+	                        'lastloginstatus' =>1,
+	                        'status' => 1
+                    	);
+
+						if ( ! $db1->insert('userlaststatus', $insert_data3))
+                    	{
+	                        $db1->trans_rollback();
+	                        $this->messages->add('Error addding User Account in userlaststatus- ' . $data_user_name . '.', 'error');
+	                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+							$this->template->load('admin_template', 'admin/user/add', '');
+	                        return;
+	                    }
+						else{
+							$db1->trans_complete();
+						}
+
+					}
+					//added by @kanchan
+	                $message = "You are Added in Brihaspati General Accounting System- $data_user_name  && Your Role is- $data_user_role && Your Password is- $user_password";
+	                $subject = 'User Account created in BGAS ';
+	                if($this->paymentreceipt->send_mail($data_user_email, $subject, $message))
+					$this->messages->add('Added User Account - ' . $data_user_name .  'Mail Sucessfully send!---'. ' success');
 					redirect('admin/user/');
 					return;	
-					}
 				}
 				$db1->close();
-
 			}
+		}
+		$this->template->load('admin_template', 'admin/user/add', $data);
+		return;
 
 			//$ini_file = $this->config->item('config_path') . "users/" . $data_user_name . ".ini";
 
@@ -262,38 +421,43 @@ class User extends Controller {
 				$this->messages->add('Added user.', 'success');
 				redirect('admin/user');
 				return;
-			}*/
+			}
 		}
 		$this->template->load('admin_template', 'admin/user/add', $data);
-		return;
+		return;*/
 	}
 
 	function edit($user_id =0)
 	{
 		$this->template->set('page_title', 'Edit user');
 		$user_password='';
+		$user_mobile ='';
+		$user_components ='';
 		$user_email='';
 		$db1=$this->load->database('login', TRUE);
-		$db1->from('bgasuser')->where('id', $user_id);
+		$db1->select('user.username as username, user.email as email,user.password as password,user.mobile as mobile,user.componentreg as componentreg,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype');
+		$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid');
+		$db1->where('user.id',$user_id);
 		$user_name1 = $db1->get();
-		foreach($user_name1->result() as $row)
-                                {
-                             	$user_name = $row->username;       
-				$user_password = $row->password;
-				$user_email = $row->email;
-				$user_account = $row->accounts;
-				$user_role = $row->role;
-                                }
-		
 
+		foreach($user_name1->result() as $row)
+        {
+	        $user_name = $row->username;       
+			$user_password = $row->password;
+			$user_email = $row->email;
+			$user_account = $row->accounts;
+			$user_role = $row->role;
+			$user_mobile = $row->mobile;
+			$user_components = $row->componentreg;
+        }
+		
 		/* Form fields */
 		$data['user_name'] = array(
-                        'name' => 'user_name',
-                        'id' => 'user_name',
-                        'maxlength' => '100',
-                        'size' => '40',
-                        'value' => $user_name,
-		
+            'name' => 'user_name',
+            'id' => 'user_name',
+            'maxlength' => '100',
+            'size' => '40',
+            'value' => $user_name,
 		);
 		
 		$data['user_password'] = array(
@@ -310,6 +474,23 @@ class User extends Controller {
 			'maxlength' => '100',
 			'size' => '40',
 			'value' => $user_email,
+		);
+
+		$data['user_mobile'] = array(
+			'name' => 'user_mobile',
+			'id' => 'user_mobile',
+			'maxlength' => '100',
+			'size' => '40',
+			'value' => $user_mobile,
+		);
+
+		$data['user_components'] = array(
+			'name' => 'user_components',
+			'id' => 'user_components',
+			'maxlength' => '100',
+			'size' => '40',
+			'value' => $user_components,
+			'readonly' => true,
 		);
 
 		$data['user_roles'] = array(
@@ -332,19 +513,19 @@ class User extends Controller {
 		$data['accounts'] = array('(All Accounts)' => '(All Accounts)');
 
 //		$db1=$this->load->database('login', TRUE);
-                $db1->select('dblable')->from('bgasAccData');
-                $query = $db1->get();
-                if ($query->num_rows() < 1)
-                {
-                        $this->messages->add('No Account exists.', 'error');
-                        $this->template->load('admin_template', 'admin/manage/edit', $data);
-                        return;
-                }
-                else{
-                        foreach($query->result() as $row){
-                                $data['accounts'][$row -> dblable] = $row -> dblable;
-                        }
-                }
+        $db1->select('dblable')->from('bgasAccData');
+        $query = $db1->get();
+        if ($query->num_rows() < 1)
+        {
+	        $this->messages->add('No Account exists.', 'error');
+	        $this->template->load('admin_template', 'admin/manage/edit', $data);
+	        return;
+        }
+        else{
+            foreach($query->result() as $row){
+                    $data['accounts'][$row ->dblable] = $row ->dblable;
+            }
+        }
   //              $db1->close;
 /*
 		if ($accounts_list)
@@ -369,6 +550,8 @@ class User extends Controller {
 			$data['active_user_role'] = $this->input->post('user_role', TRUE);
 			$data['user_status'] = $this->input->post('user_status', TRUE);
 			$data['accounts_active'] = $this->input->post('accounts', TRUE);
+			$data['user_components'] = $this->input->post('user_components', TRUE);
+			$data['user_mobile'] = $this->input->post('user_mobile', TRUE);
 		} else {
 			/* Check if user ini file exists 
 			if ( ! get_file_info($ini_file))
@@ -429,6 +612,8 @@ class User extends Controller {
 		$this->form_validation->set_rules('user_password', 'Password', 'trim|required' . $user_id);
 		$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email' . $user_id);
 		$this->form_validation->set_rules('user_role', 'Role', 'trim|required');
+		$this->form_validation->set_rules('user_mobile', 'Mobile No.', 'trim');
+		$this->form_validation->set_rules('user_components', 'Components', 'trim|required');
 		$this->form_validation->set_rules('user_status', 'Active', 'trim');
 
 		/* Validating form */
@@ -445,6 +630,8 @@ class User extends Controller {
 			$data_user_email = $this->input->post('user_email', TRUE);
 			$data_user_role = $this->input->post('user_role', TRUE);
 			$data_user_status = $this->input->post('user_status', TRUE);
+			$data_user_mobile = $this->input->post('user_mobile', TRUE);
+			$data_user_components = $this->input->post('user_components', TRUE);
 			if ($data_user_status == 1)
 				$data_user_status = 1;
 			else
@@ -453,73 +640,79 @@ class User extends Controller {
 			//print_r($data_accounts);
 	//		$this->messages->add("Test=====>".$data_accounts); 
 			/* Forming account querry string */
-                        $data_accounts_string = '';
-                        if ( ! $data_accounts)
-                        {
-                                $this->messages->add('Please select account.', 'error');
-                                $this->template->load('admin_template', 'admin/user/edit', $data);
-                                return;
-                        } else {
-                                if (in_array('(All Accounts)', $data_accounts))
-                                {
-                                        $data_accounts_string = '*';
-                                } else {
-                                        /* Filtering out bogus accounts */
-                                        $data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
-                                        $data_accounts_string = implode(",", $data_accounts_valid);
-                                }
-                        }
+	        $data_accounts_string = '';
+	        if ( ! $data_accounts)
+	        {
+                $this->messages->add('Please select account.', 'error');
+                $this->template->load('admin_template', 'admin/user/edit', $data);
+                return;
+	        } else {
+                if (in_array('(All Accounts)', $data_accounts))
+                {
+                    $data_accounts_string = '*';
+                } else {
+                    /* Filtering out bogus accounts */
+                    $data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
+                    $data_accounts_string = implode(",", $data_accounts_valid);
+	            }
+	        }
 			//echo $data_accounts_string;
 	//		echo "gjfgjfgjf$user_name";
 			$this->messages->add($data_accounts_string);
-                         $db1->trans_start();
-                         $update_data = array(
-                                             'username' => $data_user_name,						 
-					    'password'=>md5($data_user_password),
-                                            'email' => $data_user_email,
-                                            'role' =>$data_user_role,
-                                            'status' => $data_user_status,
-					    'accounts' => $data_accounts_string,	
-                                             );
 
-                         if ( ! $db1->where('id', $user_id)->update('bgasuser', $update_data))
-                           {
+			$db1->trans_start();
+			$update_data = array(
+				'username' => $data_user_name,						 
+				'password'=>md5($data_user_password),
+				'email' => $data_user_email,
+				'status' => $data_user_status,
+				//'accounts' => $data_accounts_string,
+                //'role' =>$data_user_role,
+                'componentreg' => $data_user_components,
+                'mobile' => $data_user_mobile,
+                'status' => $data_user_status	
+			);
 
-                                      $db1->trans_rollback();
-                                      $this->messages->add('Error in updating User Account - ' .  $user_name . '.', 'error');
+			if ( ! $db1->where('id', $user_id)->update('user', $update_data))
+			{
+				$db1->trans_rollback();
+				$this->messages->add('Error in updating User Account - ' .  $user_name . '.', 'error');
+				return;
+			}
+			else{
+				$db1->trans_complete();
+				
+				$update_data1 = array(
+                    'role' =>$data_user_role,
+                    'accounts'=>$data_accounts_string
+            	);
 
-                                                       
-                                                        return;
-                                                }
-                                                else{
-                                                $db1->trans_complete();
-						$this->messages->add('Update User Account - ' . $user_name . ' success');
+				if ( ! $db1->where('userid',$user_id)->update('bgasuserrolegroup',$update_data1))
+            	{
 
-                                                //added by @kanchan
-				/*	if($user_name != $update_data['username'])
-					$message = "Your username has been Updated/n .Your updated Username- $user_name";
-					if($user_password != $data_user_password)
-					$message = "Your Password has been Updated/n .................Your updated Password- $user_password";
-					if($update_data['role'])
-                                        $message = "Your User Role has been Updated/n .................Your updated Role- $data_user_role";
-					if($user_accounts != $update_data['accounts'])
-                                     */   
-					$message .= "Your User Account data has been Updated./n Your updated Account- $data_accounts_string";
-				//	if($update_data['password'] != $data_user_password)
-				//	{	
+                    $db1->trans_rollback();
+                    $this->messages->add('Error in updating User Account - ' . $user_name . '.', 'error');
+                    return;
+                }
+				else{
+					$db1->trans_complete();
+				}
+				$this->messages->add('Update User Account - ' . $user_name . ' success');
 
-                                        $subject = 'User data Updated';
-                                        $this->load->library('paymentreceipt');
-                                        if($this->paymentreceipt->send_mail($data_user_email,$subject,$message))
-                                        {
-						$this->messages->add('Mail Sucessfully send!-' . $user_name . ' success');
-                                                redirect('admin/user');
-                                                //return; 
-                                        }
+                //added by @kanchan   
+				$message = "Your User Account data has been Updated./n Your updated Account- $data_accounts_string";
+                $subject = 'User data Updated';
+                $this->load->library('paymentreceipt');
+                if($this->paymentreceipt->send_mail($data_user_email,$subject,$message))
+                {
+					$this->messages->add('Mail Sucessfully send!-' . $user_name . ' success');
+                    redirect('admin/user');
+                    //return; 
+               	}
 					
-                                           	}//else
+            }//else
                                     
-                                        return;
+            return;
 
 
 			/* Forming account querry string 
@@ -566,63 +759,128 @@ class User extends Controller {
 	function delete($user_id)
 	{
 		$this->template->set('page_title', 'Delete user');
-	//	echo"$user_id";	
 		/* Get the User details */
 		$db1=$this->load->database('login', TRUE);
-		$db1->from('bgasuser')->where('id', $user_id);
-		$budget_q = $db1->get();
-		if ($budget_q->num_rows() < 1)
+
+		$db1->select('username,password,email,componentreg');
+		$db1->from('user');
+		$db1->where('user.id',$user_id);
+        //$user_name1 = $db1->get();
+
+		//$db1->from('user')->where('id', $user_id);
+		$user_q = $db1->get();
+		if ($user_q->num_rows() < 1)
 		{
-			$this->messages->add('Invalid Budget account.', 'error');
+			$this->messages->add('Invalid User.', 'error');
 			redirect('admin/user/');
 			return;
 		} else {
-			$budget_data = $budget_q->row();
-			$user_email = $budget_data->email;
-                        $user_name = $budget_data->username;
-			$user_password = $budget_data->password;
+			$user_data = $user_q->row();
+			$user_email = $user_data->email;
+            $user_name = $user_data->username;
+			$user_password = $user_data->password;
+			$component_reg = $user_data->componentreg;
 		}
 			
+		$component_array = explode(',', $component_reg);
+		if(in_array('BGAS',$component_array) && (count($component_array) >1))
+		{
+			foreach (array_keys($component_array, 'BGAS') as $key) {
+    			unset($component_array[$key]);
+			}
+
+			$component_string = implode(",", $component_array);
 			$db1->trans_start();
+			$update_data = array(
+					'componentreg' => $component_string
+			);
 
-		         if ( ! $db1->delete('bgasuser', array('id' => $user_id)))
-                             {
+			if ( ! $db1->where('id', $user_id)->update('user', $update_data))
+    		{
+	            $db1->trans_rollback();
+    		}else{
+				$db1->trans_complete();
 
-                                $db1->trans_rollback();
-                            	$this->messages->add('Error delete User Account - ' . $budget_data->username . '.', 'error');
+				if ( ! $db1->delete('bgasuserrolegroup', array('userid' => $user_id)))
+		        {
+	        		$db1->trans_rollback();
+		        	$this->messages->add('Error delete User Account from userrolegroup- ' . $user_data->username . '.', 'error');
+		            $this->logger->write_message("error", "Error delete User Account from userrolegroup " . $user_data->username);
+					redirect('admin/user/');
+					return;
+	        	}else{
+	        		$db1->trans_complete();
+	        	}
 
-                                $this->logger->write_message("error", "Error delete User Account " . $budget_data->username);
-                              
-					  redirect('admin/user/');
+	        	if ( ! $db1->delete('aggregateaccounts', array('username' => $user_name)))
+		        {
+	        		$db1->trans_rollback();
+		        	$this->messages->add('Error delete User Account from aggregateaccounts- ' . $user_data->username . '.', 'error');
+		            $this->logger->write_message("error", "Error delete User Account from userrolegroup " . $user_data->username);
+					redirect('admin/user/');
+					return;
+	        	}else{
+	        		$db1->trans_complete();
+	        	}
+		    }
+		}elseif(in_array('BGAS',$component_array) && (count($component_array) == 1))
+		{
+			$db1->trans_start();
+			if ( ! $db1->delete('user', array('id' => $user_id)))
+	        {
 
-                                    return;
-                            }
-                               else{
-                             $db1->trans_complete();
-			     $this->messages->add('delete User Account - ' . $budget_data->username . '.', 'success');
+	            $db1->trans_rollback();
+	        	$this->messages->add('Error delete User Account - ' . $user_data->username . '.', 'error');
+	            $this->logger->write_message("error", "Error delete User Account " . $user_data->username);
+				redirect('admin/user/');
+				return;
+	        }
+	        else{
+	            $db1->trans_complete();
+				 
+				if ( ! $db1->delete('bgasuserrolegroup', array('userid' => $user_id)))
+	        	{
+	        		$db1->trans_rollback();
+		        	$this->messages->add('Error delete User Account from userrolegroup- ' . $user_data->username . '.', 'error');
+		            $this->logger->write_message("error", "Error delete User Account from userrolegroup " . $user_data->username);
+					redirect('admin/user/');
+					return;
+	        	}else{
+	        		$db1->trans_complete();
+	        	}
 
-			     //added by @kanchan
-
-                                        $message = "Your Account has been deleted from BGAS Account- $user_name && Your Password is- $user_password";
-                                        $subject = 'User Deleted';
-                                        $this->load->library('paymentreceipt');
-                                        if($this->paymentreceipt->send_mail($user_email,$subject,$message))
-                                        {
-						$this->messages->add('Mail Sucessfully send!-' . $user_name . ' success');
-                                                redirect('admin/user');
-                                                return;
-                                        }
-
-                             redirect('admin/user/');
-
-                             return;
-                                                }
+	        	if ( ! $db1->delete('aggregateaccounts', array('username' => $user_name)))
+		        {
+	        		$db1->trans_rollback();
+		        	$this->messages->add('Error delete User Account from aggregateaccounts- ' . $user_data->username . '.', 'error');
+		            $this->logger->write_message("error", "Error delete User Account from userrolegroup " . $user_data->username);
+					redirect('admin/user/');
+					return;
+	        	}else{
+	        		$db1->trans_complete();
+	        	}
+	        }
+	    }
+    	$this->messages->add('delete User Account - ' . $user_data->username . '.', 'success');
+		     //added by @kanchan
+        $message = "Your Account has been deleted from BGAS Account- $user_name && Your Password is- $user_password";
+        $subject = 'User Deleted';
+        $this->load->library('paymentreceipt');
+        if($this->paymentreceipt->send_mail($user_email,$subject,$message))
+        {
+			$this->messages->add('Mail Sucessfully send!-' . $user_name . ' success');
+            redirect('admin/user');
+            return;
+        }
+       // redirect('admin/user/');
+       // return;
+        	
 		$db1->close();
-	//	$ini_file = $this->config->item('config_path') . "users/" . $user_name . ".ini";
-	//	$this->messages->add('Delete ' . $ini_file . ' file manually.', 'error');
 		redirect('admin/user');
 		return;
 	}
+
+
         function permission($user_id =0)
         {
                 $user_id;
@@ -633,7 +891,13 @@ class User extends Controller {
                 $data['accounts1'] = array('name' => 'user_name');
                 $user_accounts = array();
                 $db1=$this->load->database('login', TRUE);
-                $db1->from('bgasuser')->where('id', $user_id);
+
+                $db1->select('user.username as username,user.email as email,bgasuserrolegroup.accounts as accounts');
+				$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid');
+				$db1->where('user.id',$user_id);
+	       		//$user_name1 = $db1->get();
+                
+               // $db1->from('user')->where('id', $user_id);
                 $user_name1 = $db1->get();
                 foreach($user_name1->result() as $row)
                 {
@@ -980,44 +1244,43 @@ class User extends Controller {
  	{
 		$this->template->set('page_title', 'Assign Aggregator');
 		$data['accounts1'] = array('name' => 'user_name');
-                $user_accounts = array();
-                $db1=$this->load->database('login', TRUE);
-                $db1->from('bgasuser')->where('id', $user_id);
-                $user_name1 = $db1->get();
+	    $user_accounts = array();
+
+	    $db1=$this->load->database('login', TRUE);
+	    $db1->select('user.username as username,bgasuserrolegroup.role as role');
+		$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid');
+		$db1->where('user.id',$user_id);
+      
+	    $user_name1 = $db1->get();
 		$data['accounts_active'] = array('(All Accounts)');
 		$data['accounts'] = array('(All Accounts)' => '(All Accounts)');
-                foreach($user_name1->result() as $row)
-                {
-                        $user_name = $row->username;
+        foreach($user_name1->result() as $row)
+        {
+            $user_name = $row->username;
 			$userrole = $row->role;
-                        if($user_name=='guest')
-                        {
-                                $this->messages->add('Permission denied.', 'error');
-                                redirect('admin/user');
-                                return;
-                        }
+            if($user_name=='guest')
+            {
+                $this->messages->add('Permission denied.', 'error');
+                redirect('admin/user');
+                return;
+            }
 			$count=0;			
 			$db1->from('bgasAccData');
-                        $bgasacc=$db1->get();
+            $bgasacc=$db1->get();
 
-                        foreach($bgasacc->result() as $row1)
-                        {
-                               $var1=$row1->dblable;
-                               $value[$row1->dblable]=$row1->dblable;
-                               $count++;
- 
-                        }
-				
-                                $data['accounts'] = $value;
-				$data['role'] = $userrole;
-				$data['user_name'] = $user_name;
+            foreach($bgasacc->result() as $row1)
+            {
+                   $var1=$row1->dblable;
+                   $value[$row1->dblable]=$row1->dblable;
+                   $count++;
+            }	
+	        $data['accounts'] = $value;
+			$data['role'] = $userrole;
+			$data['user_name'] = $user_name;
 		}
 		$this->template->load('admin_template', 'admin/user/makeaggregator',$data);
 
 	}
-
-
-
 
 	function aggregatoraccounts($username)
 	{
@@ -1026,75 +1289,83 @@ class User extends Controller {
 			$data['accounts'] = $this->input->post('accounts', TRUE);
 		}
 			$data_accounts = $this->input->post('accounts', TRUE);
-
 			$data_accounts_string = '';
-                        if ( ! $data_accounts)
-                        {
-                                $this->messages->add('Please select account.', 'error');
-                                $this->template->load('admin_template', 'admin/user/edit', $data);
-                                return;
-                        } else {
-                                /*if (in_array('(All Accounts)', $data_accounts))
-                                {
-                                        $data_accounts_string = '*';
-                                } else {*/
-                                        $data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
-                                        $data_accounts_string = implode(",", $data_accounts_valid);
-					$insert_data=array('username'=>$username,'accounts'=>$data_accounts_string);
-					$tablead="aggregateaccounts";
+            if ( ! $data_accounts)
+            {
+                $this->messages->add('Please select account.', 'error');
+                $this->template->load('admin_template', 'admin/user/edit', $data);
+                return;
+            } else {
+	            /*if (in_array('(All Accounts)', $data_accounts))
+	            {
+	                    $data_accounts_string = '*';
+	            } else {*/
+	                    $data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
+	                    $data_accounts_string = implode(",", $data_accounts_valid);
+						$insert_data=array('username'=>$username,'accounts'=>$data_accounts_string);
+						$tablead="aggregateaccounts";
 					
-					//insert valuse in aggregateaccounts
+						//insert valuse in aggregateaccounts
 
-					$db1=$this->load->database('login', TRUE);
-					$db1->insert($tablead, $insert_data);
+						$db1=$this->load->database('login', TRUE);
+						$db1->insert($tablead, $insert_data);
 
-					$tablebgu="bgasuser";
-					$update_data=array('aggtype'=>'agg');
-					$db1->where('username',$username )->update('bgasuser', $update_data);
-					$this->messages->add($username. " has been assigned as an aggreegator for the accounts==> ".$data_accounts_string);
-					redirect('admin/user/');
-	
-                        }
-			
-		
+						//$db1=$this->load->database('login', TRUE);
+						$db1->select('id')->from('user')->where('username',$username);
+						$query_result = $db1->get();
+						foreach($query_result->result() as $row){
+							$userid = $row->id;
+						}
+
+						//$tablebgu="user";
+						$update_data=array('aggtype'=>'agg');
+						$db1->where('userid',$userid )->update('bgasuserrolegroup', $update_data);
+						$this->messages->add($username. " has been assigned as an aggreegator for the accounts==> ".$data_accounts_string);
+						redirect('admin/user/');
+			}
 	}
 
 	function updateaggregator($user_id =0)
  	{
 		$this->template->set('page_title', 'Manage Aggregator Accounts');
 		$data['accounts1'] = array('name' => 'user_name');
-                $user_accounts = array();
-                $db1=$this->load->database('login', TRUE);
-                $db1->from('bgasuser')->where('id', $user_id);
-                $user_name1 = $db1->get();
+        $user_accounts = array();
+        $db1=$this->load->database('login', TRUE);
+
+        $db1->select('user.username as username,bgasuserrolegroup.role as role');
+		$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid');
+		$db1->where('user.id',$user_id);
+        $user_name1 = $db1->get();
+
+        //$db1->from('user')->where('id', $user_id);
+        //$user_name1 = $db1->get();
 		$data['accounts_active'] = array('(All Accounts)');
 		$data['accounts'] = array('(All Accounts)' => '(All Accounts)');
-                foreach($user_name1->result() as $row)
-                {
-                        $user_name = $row->username;
+        foreach($user_name1->result() as $row)
+        {
+            $user_name = $row->username;
 			$userrole = $row->role;
-                        if($user_name=='guest')
-                        {
-                                $this->messages->add('Permission denied.', 'error');
-                                redirect('admin/user');
-                                return;
-                        }
+            if($user_name=='guest')
+            {
+	            $this->messages->add('Permission denied.', 'error');
+	            redirect('admin/user');
+	            return;
+            }
 			$count=0;			
 			$db1->from('bgasAccData');
-                        $bgasacc=$db1->get();
+            $bgasacc=$db1->get();
 			$i=0;
-                        foreach($bgasacc->result() as $row1)
-                        {
-                               $var1=$row1->dblable;
-                               $value[$i]=$row1->dblable;
-                               $count++;
+            foreach($bgasacc->result() as $row1)
+            {
+               $var1=$row1->dblable;
+               $value[$i]=$row1->dblable;
+               $count++;
 				$i++;
- 
-                        }
+            }
 				
-                                $data['accounts'] = $value;
-				$data['role'] = $userrole;
-				$data['user_name'] = $user_name;
+            $data['accounts'] = $value;
+			$data['role'] = $userrole;
+			$data['user_name'] = $user_name;
 		}
 
 		$this->template->load('admin_template', 'admin/user/updateaggregator',$data);
@@ -1103,21 +1374,27 @@ class User extends Controller {
 	function delaggact($username,$del)
 	{
 		$db1=$this->load->database('login', TRUE);
-                $db1->from('aggregateaccounts')->where('username', $username);
-                $agglist = $db1->get();
-                foreach($agglist->result() as $row)
-                {
-                        $aggact = $row->accounts;
-                }
-        	$accarray = array();
-	        $accarray = explode(",", $aggact);
+
+		$db1->select('id')->from('user')->where('username',$username);
+		$query_result = $db1->get();
+		foreach($query_result->result() as $row){
+			$userid = $row->id;
+		}
+        $db1->from('aggregateaccounts')->where('username', $username);
+        $agglist = $db1->get();
+        foreach($agglist->result() as $row)
+        {
+                $aggact = $row->accounts;
+        }
+    	$accarray = array();
+        $accarray = explode(",", $aggact);
         	//print_r($accarray);
 
 	        //Create a merge file name.
 
-        	$length1 = array();
-	        $length2 = array();
-        	$mergefile="";
+		$length1 = array();
+	    $length2 = array();
+		$mergefile="";
 		$acctpath= $this->upload_path1= realpath(BASEPATH.'../acct');
 
 	        //$doc = new DomDocument;
@@ -1167,7 +1444,7 @@ class User extends Controller {
 				$db1->delete('aggregateaccounts', array('username' => $username));
 				$db1->trans_complete();
 				$deldata= array('aggtype' => "");
-				$db1->where('username', $username)->update('bgasuser',$deldata);
+				$db1->where('userid', $userid)->update('bgasuserrolegroup',$deldata);
 				$this->messages->add('Update Aggregate  Account of - - ' . $username . ' success');
 				redirect('admin/user/');
 			}
@@ -1175,22 +1452,22 @@ class User extends Controller {
 			{
 				$del = ",".$del ;	
 				$newagglist = str_replace ($del,"",$aggact);
-	                        $update_data = array('accounts' => $newagglist);
+	            $update_data = array('accounts' => $newagglist);
 			 	$db1->where('username', $username)->update('aggregateaccounts', $update_data);
-                	        $db1->trans_complete();
-                        	$this->messages->add('Update Aggregate  Account of - ' . $username . ' success');
-                        	redirect('admin/user/');
+    	        $db1->trans_complete();
+            	$this->messages->add('Update Aggregate  Account of - ' . $username . ' success');
+            	redirect('admin/user/');
 			}
 		}
 		else
 		{
-                        $del = $del."," ;
-                        $newagglist = str_replace ($del,"",$aggact);
-                        $update_data = array('accounts' => $newagglist);
-                        $db1->where('username', $username)->update('aggregateaccounts', $update_data);
-                        $db1->trans_complete();
-                        $this->messages->add('Update Aggregate  Account of - ' . $username . ' success');
-                        redirect('admin/user/');
+	        $del = $del."," ;
+	        $newagglist = str_replace ($del,"",$aggact);
+	        $update_data = array('accounts' => $newagglist);
+	        $db1->where('username', $username)->update('aggregateaccounts', $update_data);
+	        $db1->trans_complete();
+	        $this->messages->add('Update Aggregate  Account of - ' . $username . ' success');
+	        redirect('admin/user/');
 
 		}
 	}
@@ -1208,7 +1485,7 @@ class User extends Controller {
                 }
 			
                         $add = ",".$add ;
-			$newagglist = $aggact.$add;
+						$newagglist = $aggact.$add;
 			
                         $update_data = array('accounts' => $newagglist);
                         $db1=$this->load->database('login', TRUE);

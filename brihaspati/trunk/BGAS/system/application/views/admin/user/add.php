@@ -20,6 +20,18 @@
 	echo "</p>";
 
 	echo "<p>";
+	echo form_label('Mobile No.', 'mobile');
+	echo "<br />";
+	echo form_input($mobile);
+	echo "</p>";
+
+	echo "<p>";
+	echo form_label('Component Register', 'component_reg');
+	echo "<br />";
+	echo form_input($component_reg);
+	echo "</p>";
+
+	echo "<p>";
 	echo form_label('Role', 'user_role');
 	echo "<br />";
 	echo form_dropdown('user_role', $user_roles, $active_user_role);

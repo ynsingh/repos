@@ -166,7 +166,10 @@ if ( ! function_exists('form_input_ledger'))
         //get role of user
         $user_account_active = $CI->session->userdata('active_account');
         $db1=$CI->load->database('login', TRUE);
-        $db1->select('role')->from('bgasuser')->where('username', $data_user_name);
+        $db1->select('bgasuser.id as id,userrolegroup.role as role');
+        $db1->from('bgasuser')->join('userrolegroup', 'bgasuser.id = userrolegroup.userid')->where('bgasuser.username',$data_user_name);
+        //$user_data = $this->logndb->get();
+        //$db1->select('role')->from('bgasuser')->where('username', $data_user_name);
         $role= $db1->get();
         //$userrole;
         foreach($role->result() as $row)
@@ -394,7 +397,10 @@ if ( ! function_exists('form_input_fund_ledger'))
                 //get role of user
                 $user_account_active = $CI->session->userdata('active_account');
                 $db1=$CI->load->database('login', TRUE);
-                $db1->select('role')->from('bgasuser')->where('username', $data_user_name);
+                //$db1->select('role')->from('bgasuser')->where('username', $data_user_name);
+                $db1->select('user.id as id,bgasuserrolegroup.role as role');
+                $db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid')->where('user.username',$data_user_name);
+        //$user_data = $this->logndb->get();
                 $role= $db1->get();
                 //$userrole;
                 foreach($role->result() as $row)

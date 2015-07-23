@@ -58,14 +58,20 @@
 			echo "<div id=\"admin\">";
 			$username=$this->session->userdata('user_name');
 			$db1=$this->load->database('login', TRUE);
-			$db1->from('bgasuser')->where('username', $username);
+			$db1->select('id')->from('user')->where('username', $username);
+			$query_result = $db1->get();
+			foreach ($query_result->result() as $row) {
+				$userid = $row->id;
+			}
+
+			$db1->from('bgasuserrolegroup')->where('userid', $userid);
 			$userrec = $db1->get();
-			//$type;
+			
 			foreach($userrec->result() as $row)
-                        {
-                                $type=$row->aggtype;
+            {
+                $type=$row->aggtype;
 				$userrole=$row->role;
-                        }
+            }
 
 			
 			if ($this->session->userdata('user_name')) {

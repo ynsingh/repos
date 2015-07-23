@@ -24,6 +24,18 @@
 	echo "</p>";
 
 	echo "<p>";
+	echo form_label('Mobile No.', 'user_mobile');
+	echo "<br />";
+	echo form_input($user_mobile);
+	echo "</p>";
+
+	echo "<p>";
+	echo form_label('Componenet Register', 'user_components');
+	echo "<br />";
+	echo form_input($user_components);
+	echo "</p>";
+
+	echo "<p>";
 	echo form_label('Role', 'user_role');
 	echo "<br />";
 	echo form_dropdown('user_role', $user_roles, $active_user_role);
