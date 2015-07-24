@@ -1,8 +1,8 @@
 use login;
 
-drop table if exists user;
+drop table if exists edrpuser;
 
-CREATE TABLE IF NOT EXISTS user
+CREATE TABLE IF NOT EXISTS edrpuser
 (
 	  id INTEGER (20)  NOT NULL AUTO_INCREMENT,
 	  username VARCHAR (200) NOT NULL,
@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS user
 	  UNIQUE (username)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-insert into user values (1,'admin', md5('admin'),'ynsingh@iitk.ac.in','*','',1);
-insert into user values (2,'guest', md5('guest'),'ynsingh@iitk.ac.in','*','',1);
+insert into edrpuser values (1,'admin', md5('admin'),'ynsingh@iitk.ac.in','*','',1);
+insert into edrpuser values (2,'guest', md5('guest'),'ynsingh@iitk.ac.in','*','',1);
 
 drop table if exists bgasAccData;
 
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS userprofile
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert into userprofile values (1,1,'Y.N.','Singh','','','','English',1);
-insert into userprofile values (1,2,'Guest','','','','','English',1);
+insert into userprofile values (2,2,'Guest','','','','','English',1);
 
 drop table if exists userlaststatus;
 
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS userlaststatus
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert into userlaststatus values (1,1,'English','',1,'','','',1);
-insert into userlaststatus values (1,2,'English','',1,'','','',1);
+insert into userlaststatus values (2,2,'English','',1,'','','',1);
 
 
 drop table if exists aggregateaccounts;
@@ -108,7 +108,7 @@ drop table if exists emailSetting;
 
 CREATE TABLE IF NOT EXISTS emailSetting
 (
-   id INTEGER (11) NOT NULL AUTO_INCREMENT,
+   	id INTEGER (11) NOT NULL AUTO_INCREMENT,
 	email_protocol varchar(9) NOT NULL,
   	email_host varchar(255) NOT NULL,
   	email_port int(5) NOT NULL,

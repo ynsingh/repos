@@ -1,7 +1,5 @@
 use login;
 
-drop table if exists bgasuserrolegroup;
-
 CREATE TABLE IF NOT EXISTS bgasuserrolegroup
 (
 	id INTEGER (20)  NOT NULL AUTO_INCREMENT,
@@ -18,7 +16,6 @@ insert into bgasuserrolegroup
 	SELECT `id`, `role`, `accounts`,`aggtype` 
   	FROM bgasuser;
 
-drop table if exists userprofile;
 
 CREATE TABLE IF NOT EXISTS userprofile
 (
@@ -43,7 +40,6 @@ insert into userprofile
 update userprofile SET `status`=1,`lang`='English';
 
 
-drop table if exists userlaststatus;
 
 CREATE TABLE IF NOT EXISTS userlaststatus
 (
@@ -67,7 +63,7 @@ insert into userlaststatus
 update userlaststatus SET `lastusedlang`='English',`lastloginstatus`=1,`status`=1;
 
 
-RENAME TABLE bgasuser TO user;
+RENAME TABLE bgasuser TO edrpuser;
 
 ALTER TABLE user DROP role, DROP accounts, DROP aggtype;
 ALTER TABLE user
