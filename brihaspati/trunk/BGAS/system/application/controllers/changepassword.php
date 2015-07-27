@@ -24,7 +24,7 @@ class changepassword extends Controller {
 		 $data_user_name= $this->session->userdata('user_name');
 		
 		 $db1=$this->load->database('login', TRUE);
-                 $db1->from('bgasuser');
+                 $db1->from('edrpuser');
                  $db1->select('password')->where('username', $data_user_name);
                  $user_name1 = $db1->get();
                  foreach($user_name1->result() as $row)
@@ -104,7 +104,7 @@ class changepassword extends Controller {
                                                   
                	      );
 
-                      if ( ! $db1->where('username', $data_user_name)->update('bgasuser', $update_data))
+                      if ( ! $db1->where('username', $data_user_name)->update('edrpuser', $update_data))
        	                    {
 
                               $db1->trans_rollback();
