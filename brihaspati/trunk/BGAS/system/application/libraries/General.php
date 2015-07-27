@@ -198,17 +198,17 @@ class General {
         //$this->logndb->select('username,password,role,status,accounts')->where('username =', $user_name);
 		//$this->logndb->select('id,username,password,status')->where('username =', $user_name);
 
-		$this->logndb->select('user.id as id,user.username as username, user.password as password,user.status as status,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role');
-		$this->logndb->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid')->where('user.username',$user_name);
+		$this->logndb->select('edrpuser.id as id,edrpuser.username as username, edrpuser.password as password,edrpuser.status as status, bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role');
+		$this->logndb->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid')->where('edrpuser.username',$user_name);
 		$user_data = $this->logndb->get();
         foreach($user_data->result() as $row)
         {
 			$user_name1 = $row->username;
-            $user_password = $row->password;
-            $user_account = $row->accounts;
+            		$user_password = $row->password;
+		        $user_account = $row->accounts;
 			$user_status = $row->status;
-            $user_role= $row->role;
-            $user_id = $row->id;
+            		$user_role= $row->role;
+            		$user_id = $row->id;
 
 		}	
 		//print_r($user_data);

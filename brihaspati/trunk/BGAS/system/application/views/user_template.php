@@ -58,7 +58,7 @@
 			echo "<div id=\"admin\">";
 			$username=$this->session->userdata('user_name');
 			$db1=$this->load->database('login', TRUE);
-			$db1->select('id')->from('user')->where('username', $username);
+			$db1->select('id')->from('edrpuser')->where('username', $username);
 			$query_result = $db1->get();
 			foreach ($query_result->result() as $row) {
 				$userid = $row->id;

@@ -65,11 +65,11 @@ update userlaststatus SET `lastusedlang`='English',`lastloginstatus`=1,`status`=
 
 RENAME TABLE bgasuser TO edrpuser;
 
-ALTER TABLE user DROP role, DROP accounts, DROP aggtype;
-ALTER TABLE user
+ALTER TABLE edrpuser DROP role, DROP accounts, DROP aggtype;
+ALTER TABLE edrpuser
     ADD COLUMN `componentreg` VARCHAR (200) NOT NULL AFTER `email`,
     ADD COLUMN `mobile` VARCHAR (13) DEFAULT NULL AFTER `componentreg`;
 
-update user set componentreg = '*' where id <3;
-update user set componentreg = 'BGAS' where id >2;
+update edrpuser set componentreg = '*' where id <3;
+update edrpuser set componentreg = 'BGAS' where id >2;
    

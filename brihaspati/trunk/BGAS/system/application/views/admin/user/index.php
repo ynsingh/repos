@@ -32,9 +32,9 @@ foreach ($users->result()  as $row)
 	}*/
 	$user_id=$row->id;
 	$user_name1 = $row->username;
-    $user_email = $row->email;
-    $user_role =  $row->role;
-    $user_status = $row->status;
+	$user_email = $row->email;
+	$user_role =  $row->role;
+	$user_status = $row->status;
 	$user_account = $row->accounts;
 	$user_type = $row->aggtype;
 	$user_components = $row->componentreg;

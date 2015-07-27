@@ -40,12 +40,12 @@ class User extends Controller {
 		}*/
 		$data['users'] = array();
 		$db1=$this->load->database('login', TRUE);
-		$db1->select('user.id as id,user.username as username,user.componentreg as componentreg, user.email as email,user.status as status,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype');
-		$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid'); 
+		$db1->select('edrpuser.id as id,edrpuser.username as username,edrpuser.componentreg as componentreg, edrpuser.email as email,edrpuser.status as status,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype');
+		$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid'); 
 		
         //$db1->select('id,username,email,role,status,accounts,aggtype')->from('bgasuser');
 		$query = $db1->get();
-        $config['total_rows'] =$db1->count_all('user');
+        $config['total_rows'] =$db1->count_all('edrpuser');
 
         $data['users']= $query;
 		$user_id='';
@@ -220,7 +220,7 @@ class User extends Controller {
 				/* check if username already exist*/
 				$db1=$this->load->database('login', TRUE);
 				$db1->select('id,mobile,componentreg');
-				$db1->from('user')->where('username', $data_user_name);
+				$db1->from('edrpuser')->where('username', $data_user_name);
 				$query = $db1->get();
 		        if (!($query->num_rows() < 1))
 		        {
@@ -256,7 +256,7 @@ class User extends Controller {
 			                );
 		        		}						
 
-						if ( ! $db1->where('id', $registered_id)->update('user', $update_data))
+						if ( ! $db1->where('id', $registered_id)->update('edrpuser', $update_data))
 						{
 							$db1->trans_rollback();
 							$this->messages->add('Error in updating User Account - ' .  $data_user_name . '.', 'error');
@@ -310,7 +310,7 @@ class User extends Controller {
 
 					$user_password = $data_user_password;		
 
-                    if ( ! $db1->insert('user', $insert_data))
+                    if ( ! $db1->insert('edrpuser', $insert_data))
                     {
 
                         $db1->trans_rollback();
@@ -346,7 +346,7 @@ class User extends Controller {
 						$insert_data2 = array(
 	                        'userid' => $bgasuser_id,
 	                        'mobile' => $data_user_mobile,
-	                        'lang' => "English,"
+	                        'lang' => "English",
 	                        'status'=> 1
                     	);
 
@@ -435,9 +435,9 @@ class User extends Controller {
 		$user_components ='';
 		$user_email='';
 		$db1=$this->load->database('login', TRUE);
-		$db1->select('user.username as username, user.email as email,user.password as password,user.mobile as mobile,user.componentreg as componentreg,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype');
-		$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid');
-		$db1->where('user.id',$user_id);
+		$db1->select('edrpuser.username as username, edrpuser.email as email,edrpuser.password as password,edrpuser.mobile as mobile,edrpuser.componentreg as componentreg,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype');
+		$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid');
+		$db1->where('edrpuser.id',$user_id);
 		$user_name1 = $db1->get();
 
 		foreach($user_name1->result() as $row)
@@ -667,13 +667,13 @@ class User extends Controller {
 				'email' => $data_user_email,
 				'status' => $data_user_status,
 				//'accounts' => $data_accounts_string,
-                //'role' =>$data_user_role,
-                'componentreg' => $data_user_components,
-                'mobile' => $data_user_mobile,
-                'status' => $data_user_status	
+		                //'role' =>$data_user_role,
+                		'componentreg' => $data_user_components,
+		                'mobile' => $data_user_mobile,
+         		        'status' => $data_user_status	
 			);
 
-			if ( ! $db1->where('id', $user_id)->update('user', $update_data))
+			if ( ! $db1->where('id', $user_id)->update('edrpuser', $update_data))
 			{
 				$db1->trans_rollback();
 				$this->messages->add('Error in updating User Account - ' .  $user_name . '.', 'error');
@@ -683,12 +683,12 @@ class User extends Controller {
 				$db1->trans_complete();
 				
 				$update_data1 = array(
-                    'role' =>$data_user_role,
-                    'accounts'=>$data_accounts_string
-            	);
+                		    'role' =>$data_user_role,
+		                    'accounts'=>$data_accounts_string
+            			);
 
 				if ( ! $db1->where('userid',$user_id)->update('bgasuserrolegroup',$update_data1))
-            	{
+            	{	
 
                     $db1->trans_rollback();
                     $this->messages->add('Error in updating User Account - ' . $user_name . '.', 'error');
@@ -763,8 +763,8 @@ class User extends Controller {
 		$db1=$this->load->database('login', TRUE);
 
 		$db1->select('username,password,email,componentreg');
-		$db1->from('user');
-		$db1->where('user.id',$user_id);
+		$db1->from('edrpuser');
+		$db1->where('edrpuser.id',$user_id);
         //$user_name1 = $db1->get();
 
 		//$db1->from('user')->where('id', $user_id);
@@ -777,7 +777,7 @@ class User extends Controller {
 		} else {
 			$user_data = $user_q->row();
 			$user_email = $user_data->email;
-            $user_name = $user_data->username;
+            		$user_name = $user_data->username;
 			$user_password = $user_data->password;
 			$component_reg = $user_data->componentreg;
 		}
@@ -795,7 +795,7 @@ class User extends Controller {
 					'componentreg' => $component_string
 			);
 
-			if ( ! $db1->where('id', $user_id)->update('user', $update_data))
+			if ( ! $db1->where('id', $user_id)->update('edrpuser', $update_data))
     		{
 	            $db1->trans_rollback();
     		}else{
@@ -826,7 +826,7 @@ class User extends Controller {
 		}elseif(in_array('BGAS',$component_array) && (count($component_array) == 1))
 		{
 			$db1->trans_start();
-			if ( ! $db1->delete('user', array('id' => $user_id)))
+			if ( ! $db1->delete('edrpuser', array('id' => $user_id)))
 	        {
 
 	            $db1->trans_rollback();
@@ -892,9 +892,9 @@ class User extends Controller {
                 $user_accounts = array();
                 $db1=$this->load->database('login', TRUE);
 
-                $db1->select('user.username as username,user.email as email,bgasuserrolegroup.accounts as accounts');
-				$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid');
-				$db1->where('user.id',$user_id);
+                $db1->select('edrpuser.username as username,edrpuser.email as email,bgasuserrolegroup.accounts as accounts');
+				$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid');
+				$db1->where('edrpuser.id',$user_id);
 	       		//$user_name1 = $db1->get();
                 
                // $db1->from('user')->where('id', $user_id);
@@ -1247,9 +1247,9 @@ class User extends Controller {
 	    $user_accounts = array();
 
 	    $db1=$this->load->database('login', TRUE);
-	    $db1->select('user.username as username,bgasuserrolegroup.role as role');
-		$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid');
-		$db1->where('user.id',$user_id);
+	    $db1->select('edrpuser.username as username,bgasuserrolegroup.role as role');
+		$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid');
+		$db1->where('edrpuser.id',$user_id);
       
 	    $user_name1 = $db1->get();
 		$data['accounts_active'] = array('(All Accounts)');
@@ -1311,7 +1311,7 @@ class User extends Controller {
 						$db1->insert($tablead, $insert_data);
 
 						//$db1=$this->load->database('login', TRUE);
-						$db1->select('id')->from('user')->where('username',$username);
+						$db1->select('id')->from('edrpuser')->where('username',$username);
 						$query_result = $db1->get();
 						foreach($query_result->result() as $row){
 							$userid = $row->id;
@@ -1332,9 +1332,9 @@ class User extends Controller {
         $user_accounts = array();
         $db1=$this->load->database('login', TRUE);
 
-        $db1->select('user.username as username,bgasuserrolegroup.role as role');
-		$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid');
-		$db1->where('user.id',$user_id);
+        $db1->select('edrpuser.username as username,bgasuserrolegroup.role as role');
+		$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid');
+		$db1->where('edrpuser.id',$user_id);
         $user_name1 = $db1->get();
 
         //$db1->from('user')->where('id', $user_id);
@@ -1375,7 +1375,7 @@ class User extends Controller {
 	{
 		$db1=$this->load->database('login', TRUE);
 
-		$db1->select('id')->from('user')->where('username',$username);
+		$db1->select('id')->from('edrpuser')->where('username',$username);
 		$query_result = $db1->get();
 		foreach($query_result->result() as $row){
 			$userid = $row->id;

@@ -15,7 +15,7 @@ class User extends Controller {
 		/* Create bgasuser table in login database*/
 		$db1=$this->load->database('login', TRUE);
 		/* check if table exist */
-		$table="user";
+		$table="edrpuser";
 		if($db1->query("SHOW TABLES LIKE '".$table."'")->num_rows()==1){
 			//$this->messages->add('login database with user table exists.', 'success');
 		}
@@ -87,9 +87,9 @@ class User extends Controller {
 			//connect with login database for authentication. The alias is login
 	        //$db1->from('bgasuser');
 	        //$db1->select('username,password,role,status,accounts')->where('username =', $data_user_name);
-	        $db1->select('user.id as id,user.username as username,user.password as password,user.status as status,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role');
-			$db1->from('user')->join('bgasuserrolegroup', 'user.id = bgasuserrolegroup.userid');
-			$db1->where('user.username',$data_user_name);
+	        $db1->select('edrpuser.id as id,edrpuser.username as username,edrpuser.password as password,edrpuser.status as status,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role');
+			$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid');
+			$db1->where('edrpuser.username',$data_user_name);
 	        $user_name1 = $db1->get();
 	        foreach($user_name1->result() as $row)
             {
@@ -219,7 +219,7 @@ class User extends Controller {
 		/* Create bgasuser table in login database*/
         $db1=$this->load->database('login', TRUE);
         /* check if user exist */
-		$db1->select('username')->from('bgasuser')->where('username =', $data_user_name);
+		$db1->select('username')->from('edrpuser')->where('username =', $data_user_name);
 		$query = $db1->get();
 		if (!($query->num_rows() > 0)){
 			$this->messages->add('User Account does not exists.'.$data_user_name, 'error');
@@ -323,20 +323,20 @@ class User extends Controller {
         	        'maxlength' => '100',
                 	'size' => '40',
         	        'value' => '',
-					'readonly'=>'true',
+			'readonly'=>'true',
     	        );
 		
-				$data['password'] = array(
+			$data['password'] = array(
     	        	'name' => 'password',
                 	'id' => 'password',
-                    'maxlength' => '100',
+	                'maxlength' => '100',
 	                'size' => '40',
     		        'value' => '',
 		        );
 	
-				$data['cnfpassword'] = array(
+			$data['cnfpassword'] = array(
 	                'name' => 'cnfpassword',
-	        		'id' => 'cnfpassword',
+	       		'id' => 'cnfpassword',
 	            	'maxlength' => '100',
 	                'size' => '40',
 	    	        'value' => '',
@@ -389,7 +389,7 @@ class User extends Controller {
         );
 
         $data['password'] = array(
-        	'name' => 'password',
+     	  	'name' => 'password',
             'id' => 'password',
             'maxlength' => '100',
             'size' => '40',
@@ -428,7 +428,7 @@ class User extends Controller {
             // check both are same 
             $data_user_name = $this->input->post('user_name', TRUE);
             $data_password = $this->input->post('password', TRUE);
-			$data_cnfpassword = $this->input->post('cnfpassword', TRUE);
+	    $data_cnfpassword = $this->input->post('cnfpassword', TRUE);
 				
 			/* Create bgasuser table in login database*/
 		    $db1=$this->load->database('login', TRUE);
@@ -439,7 +439,7 @@ class User extends Controller {
                 'username' => $data_user_name,
                 'password'=> md5($data_cnfpassword),
              );
-            if ( ! $db1->where('username', $data_user_name)->update('user', $update_data))
+            if ( ! $db1->where('username', $data_user_name)->update('edrpuser', $update_data))
             {
 	            $db1->trans_rollback();
 	            $this->messages->add('Error updating User Account - ' . $data_user_name . '.', 'error');
@@ -461,14 +461,14 @@ class User extends Controller {
 				{
 					$db1->trans_rollback();
 					$this->messages->add('Error delete User reset key - ' . $data_user_name . '.', 'error');
-                    $this->logger->write_message("error", "Error deleting reset in User Account " . $data_user_name);
+             			        $this->logger->write_message("error", "Error deleting reset in User Account " . $data_user_name);
 					$db1->close();
 					redirect('user/login');
-    	            return;
+    	            		return;
 				}
 				else{
 					$db1->trans_complete();
-	                $this->messages->add('User reset key is removed from the system'. ' success');
+	                		$this->messages->add('User reset key is removed from the system'. ' success');
 					$this->logger->write_message("success", "User password reset key is removed from the system " . $data_user_name);
 				}
 	
@@ -542,7 +542,7 @@ class User extends Controller {
 		/* Getting list of files in the config - accounts directory */
 /*		$accounts_list = get_filenames($this->config->item('config_path') . 'accounts');*/
 		$data['accounts'] = array();
-        $db1->select('dblable')->from('bgasAccData');
+     		$db1->select('dblable')->from('bgasAccData');
 		$list = $db1->get();
 
 	    if($list->num_rows() > 0)
@@ -797,8 +797,8 @@ class User extends Controller {
 				'lastname'=>$data_last_name,
 				'address' => $data_user_address,
 				'secmail' => $data_user_sec_mail,
-                'mobile' => $data_user_mobile,
-                'lang' => $data_user_lang	
+     		                'mobile' => $data_user_mobile,
+                		'lang' => $data_user_lang	
 			);
 
 			if ( ! $db1->where('userid', $userid)->update('userprofile', $update_data))
