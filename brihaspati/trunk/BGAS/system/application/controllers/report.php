@@ -971,6 +971,117 @@ class Report extends Controller {
 		return;
 	}
 
+// made by @kanchan
+	function new_mhrd()
+	{
+	
+		$this->load->library('session');
+                $this->db->from('settings');
+                $detail = $this->db->get();
+                foreach ($detail->result() as $row)
+                {
+                        $date1 = $row->fy_start;
+                        $date2 = $row->fy_end;
+                }
+                $newdata = array(
+                      'date1'  => $date1,
+                      'date2'  => $date2
+                     );
+                $this->session->set_userdata($newdata);
+                $this->template->set('page_title', 'Balance Sheet MHRD Format-2015');
+		$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printPreview_schedules/1' => 'Print All Schedules', 'report/pdf/new_mhrd' => 'Download PDF'));
+                $default_end_date;
+
+                /* Form fields */
+                $this->db->from('settings');
+                $detail = $this->db->get();
+                foreach ($detail->result() as $row)
+                {
+                        $date1 = $row->fy_start;
+                        $date2 = $row->fy_end;
+                }
+                $date=explode("-",$date1);
+                $date2 = explode("-", $row->fy_end);
+                $default_start = '01/04/'.$date[0];
+                $default_end = '31/03/'.$date2[0];
+
+                $curr_date = date_today_php();
+                if($curr_date >= $default_end) 
+		{
+                       $default_end_date = $default_end;
+                }
+                else 
+		{
+                        $default_end_date = $curr_date;
+                }
+                $data['entry_date1'] = array(
+                        'name' => 'entry_date1',
+                        'id' => 'entry_date1',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => $default_start,
+                );
+                $data['entry_date2'] = array(
+			 'name' => 'entry_date2',
+                        'id' => 'entry_date2',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => $default_end_date,
+                );
+
+                $data['print_preview'] =FALSE;
+
+                $data_date1 = $default_start;
+                $data_date2 = $default_end_date;
+
+                $date=explode("/",$data_date1);
+                $date1=$date[2]."-".$date[1]."-".$date[0];
+                $date=explode("/",$data_date2);
+                $date2=$date[2]."-".$date[1]."-".$date[0];
+
+                $newdata = array(
+                      'date1'  => $date1,
+                      'date2'  => $date2
+                     );
+                $this->session->set_userdata($newdata);
+                /* Form validations */
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+                /* Repopulating form */
+                if ($_POST)
+                {
+                        $data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+                        $data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);
+                }
+
+                /* Validating form */
+                if ($this->form_validation->run() == FALSE)
+                {
+			$this->messages->add(validation_errors(), 'error');
+                        $this->template->load('template', 'report/new_mhrd', $data);
+                        return;
+                }
+                else
+                {
+                        $data_date1 = $this->input->post('entry_date1', TRUE);
+                        $data_date2 = $this->input->post('entry_date2', TRUE);
+                        $date=explode("/",$data_date1);
+                        $date1=$date[2]."-".$date[1]."-".$date[0];
+                        $date=explode("/",$data_date2);
+                        $date2=$date[2]."-".$date[1]."-".$date[0];
+                        $newdata = array(
+                           'date1'  => $date1,
+                           'date2'  => $date2
+                        );
+                        $this->session->set_userdata($newdata);
+                }
+		$this->template->load('template', 'report/new_mhrd',$data);
+	return;
+	}
+
+
 	function get_code($num, $code)
         {
                         if($num <= 9)
@@ -2917,6 +3028,21 @@ class Report extends Controller {
                         $this->load->view('report/report_template', $data);
                         return;
                 }
+		 if ($statement == "new_balancesheet_2015")
+                {
+                        $curr_date = date_today_php();
+                        $data['report'] = "report/new_balancesheet_2015";
+                        $data['title'] = "Balance Sheet As At ".$date2;
+                        $data['left_width'] = "";
+                        $data['right_width'] = "";
+                        $data['print_preview'] = TRUE;
+                        $data['date'] = $curr_date;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+                        $this->load->view('report/report_template', $data);
+                        return;
+                }
+
 ///////////////////////////////////////////////////////////
 		if ($statement == "schedule")
                 {
@@ -3292,7 +3418,169 @@ class Report extends Controller {
         	return;
 
 	}
-}
+
+	function new_schedule($code,$count)
+	{
+		$this->template->set('schedule', 'true');
+		$data = array();
+                $id = '';
+                $schedule = '';
+                $name = '';
+                $data['code'] = $code;
+                $this->load->model('Group_model');
+                $group_details = $this->Group_model->get_schedule($code);
+                foreach ($group_details as $id => $group)
+                {
+                        $id  = $group['id'];
+                        $name = $group['name'];
+                }
+		if($name == 'Corpus')
+		$name = 'Corpus/Capital Funds';
+		if($name != '' && $id != ''){
+			if($name == 'Investments'){
+			$this->template->set('page_title', 'Schedule - ' . $count . ' ' . 'Investments From Earmarked/Endowments Funds');	
+			}
+			elseif($name == 'Corpus Fund Investments'){
+			$this->template->set('page_title', 'Schedule - ' . 6 . ' ' . 'Investments Others'); 
+			}else{
+                        $this->template->set('page_title', 'Schedule - ' . $count . ' ' . $name);
+			}
+                        $this->session->set_userdata('code', $code);
+                        $this->template->set('nav_links', array('report/download/schedule/'.$count => 'Download CSV', 'report/printpreview/schedule/'. $count => 'Print Preview'));
+                        $data['id'] = $id;
+                }
+                else{
+                        $this->template->set('page_title', 'Schedule - Notes on Accounts');
+                        $this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule' => 'Print Preview'));
+                }
+                if($name == 'Corpus/Capital Funds'){
+                $this->template->load('template', 'new_report/schedule_template_1', $data);
+                return;
+                }
+		elseif($name == 'Designated-Earmarked/Endowment Funds')
+		{
+		 //add child groups and ledgers for the fund
+                        $num_of_childs = $this->Group_model->get_numOfChild($id);
+                        $count = 0;
+
+                        if($num_of_childs > 0){
+                                //get child id, name, code
+                                $this->db->select('id, name, code');
+                                $this->db->from('groups')->where('parent_id', $id);
+                                $group_result = $this->db->get();
+
+                                foreach($group_result->result() as $row){
+                                        $design_earm_funds_group[$count]['id'] = $row->id;
+                                        $design_earm_funds_group[$count]['name'] = $row->name;
+                                        $design_earm_funds_group[$count]['code'] = $row->code;
+                                        $count++;
+                                }
+                        }
+
+                        $num_of_childs = $this->Ledger_model->get_numOfChild($id);
+
+                        if($num_of_childs > 0){
+                                //get child id, name, code
+                                $this->db->select('id, name, code');
+                                $this->db->from('ledgers')->where('group_id', $id);
+                                $ledger_result = $this->db->get();
+
+                                foreach($ledger_result->result() as $row){
+                                        $design_earm_funds_ledger[$count]['id']= $row->id;
+                                        $design_earm_funds_ledger[$count]['name'] = $row->name;
+                                        $design_earm_funds_ledger[$count]['code'] = $row->code;
+					 $count++;
+                                }
+                        }
+
+
+                        //$data['designated_earmarked_funds'] = $design_earm_funds;
+                        $data['designated_earmarked_funds_group'] = $design_earm_funds_group;
+                        $data['designated_earmarked_funds_ledger'] = $design_earm_funds_ledger;
+			$this->template->load('template', 'new_report/schedule_template_2', $data);
+		}elseif($name == 'Current Liabilities & Provisions')
+		{
+		$this->template->load('template', 'new_report/schedule_template_3', $data);
+		}elseif($name == 'Fixed Assets')
+		{
+		$this->template->load('template', 'new_report/schedule_template_4', $data);
+		}  
+		elseif($name == 'Investments')
+		{
+		$this->template->load('template', 'new_report/schedule_template_5', $data);
+		}
+		elseif($name == 'Corpus Fund Investments')
+		{
+		$this->template->load('template', 'new_report/schedule_template_6', $data);
+		} 
+		elseif($name == 'Current Assets')
+		{
+		$this->template->load('template', 'new_report/schedule_template_7', $data);
+		}elseif($name == 'Loans Advances and Deposits')
+		{
+		$this->template->load('template', 'new_report/schedule_template_8', $data);
+		}
+		return;
+	}
+
+	function new_sub_schedule($ledger_id, $ledger_name)
+	{
+                $this->template->set('schedule', 'true');
+               // $this->template->set('page_title', 'ANNEXURE A');
+                $data['id'] = $ledger_id;
+		if($ledger_name == 'Cash in Hand')
+		{
+		$this->template->set('page_title', 'ANNEXURE A');
+                $this->template->load('template', 'new_report/sub_schedule_7', $data);
+		return;
+		}elseif($ledger_name == 'Others Fixed Assets'){
+		$this->template->set('page_title', '<b>Schedule - ' . '4D' . ' ' . 'OTHERS</b>');
+		$this->template->load('template', 'new_report/sub_schedule_4D', $data);
+		return;
+		}elseif($ledger_name == 'Intangible Assets'){
+		$this->template->set('page_title', '<u><b>Schedule - ' . '4C' . ' ' . 'INTANGIBLE ASSETS</b></u>');
+		$this->template->load('template', 'new_report/sub_schedule_4C', $data);
+		return;
+		}elseif($ledger_name == 'Recipts Against Sponsored Projects'){
+		$this->template->set('page_title', '<u><b>Schedule - ' . '3(a)' . ' ' . 'SPONSORED PROJECTS</b></u>');
+                $this->template->load('template', 'new_report/sub_schedule_3a', $data);
+		return;
+		}
+		elseif($ledger_name == 'UGC Sponsored Fellowship'){
+                $this->template->set('page_title', '<u><b>Schedule - ' . '3(b)' . ' ' . 'SPONSORED FELLOWSHIPS AND SCHOLARSHIPS</b></u>');
+                $this->template->load('template', 'new_report/sub_schedule_3b', $data);
+                return;
+		} 
+		elseif($ledger_name == 'Unutilized Grants'){
+                $this->template->set('page_title', '<u><b>Schedule - ' . '3(c)' . ' ' . 'UNUTILISED GRANTS FROM UGC, GOVERNMENT OF INDIA AND STATE GOVERNMENTS</b></u>');
+                $this->template->load('template', 'new_report/sub_schedule_3c', $data);
+                return;
+                }elseif($ledger_name == 'Corpus Fund Investments'){
+                $this->template->set('page_title', '<u><b>Schedule - ' . '5(A)' . ' ' . 'INVESTMENTS FROM EARMARKED/ENDOWMENT FUNDS (FUND WISE)</b></u>');
+                $this->template->load('template', 'new_report/sub_schedule_5', $data);
+                return;
+                }
+
+		return;
+        } 
+
+/*	function inner_sub_schedule($ledger_id,$ledger_name)
+	{
+		echo "kanchan===$ledger_id====$ledger_name";
+		$this->template->set('schedule', 'true');
+		$this->template->set('page_title', '<b>Schedule - ' . '4C(i)' . ' ' . 'PATENTS AND COPYRIGHTS</b>');
+                $data['id'] = $ledger_id;
+
+		if($ledger_name == 'Patents and Copyrights(Patents Granted)')
+		//{
+                //$this->template->set('page_title', '<b>Schedule - ' . '4C(i)' . ' ' . 'PATENTS AND COPYRIGHTS</b>');
+                $this->template->load('template', 'new_report/sub_schedule_4Ci', $data);
+                //return;
+		//}
+	return;
+
+	} */
+}//main
 
 /* End of file report.php */
 /* Location: ./system/application/controllers/report.php */

@@ -408,7 +408,7 @@ class paymentreceipt
         function send_mail($to,$subject,$message)
         {
 		$CI =& get_instance();
-		$CI->load->library('general');
+		//$CI->load->library('general');
 		$db1=$CI->load->database('login', TRUE);
 		$db1->select('id,email_protocol,email_host,email_port,email_username,email_password')->from('emailSetting');
                 $emaldata= $db1->get();
@@ -439,19 +439,20 @@ class paymentreceipt
           //      $CI->email->set_newline("\r\n");
 
         // Set your email information
-
 		$CI->email->from($email_username,"brihspti");
                 $CI->email->to($to);
 		$CI->email->subject($subject);
                 $CI->email->message($message);
-                $result = $CI->email->send();
-		if (!$result) {
-   			echo ($CI->email->print_debugger()); 
-		}
-  		else {
-    			echo 'Your e-mail has been sent!';
+                if(!($CI->email->send()))
+		{
+			$CI->messages->add('Please Set the correct Email Configuration Settings---' . 'error');
+                        return FALSE;
+			}
+  		else{
+			 $CI->messages->add('Your Mail Sucessfully send!---'. ' success');
+			// redirect('admin/user/');
+			 return TRUE;
   		}
-                return $result;
         }//send_mail 
 }
 ?>

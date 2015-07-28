@@ -281,6 +281,10 @@ $(document).ready(function() {
 								 //echo anchor('report/new_balancesheet', 'MHRD Format', array('title' => 'Balance Sheet MHRD Format', 'class' => 'loading'));
 								echo anchor(prep_url( base_url().'index.php/report/new_balancesheet'), 'MHRD Format', 'target="_blank"');
 							echo "</li>";
+							echo "<li>";
+                                                                 echo anchor('report/new_mhrd', 'New MHRD Format', array('title' => 'Balance Sheet MHRD Format-2015', 'class' => 'loading'));
+                                                        echo "</li>";
+
 						 echo "</ul>";
 					echo "</li>";
 				//	echo "<li>"; 

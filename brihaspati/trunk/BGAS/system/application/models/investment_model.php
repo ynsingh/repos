@@ -661,7 +661,44 @@ function schedule_1($ledger_id)
 	return $total_a;
 }
 
-     
+	function merge_Funds()
+	{
+		$capital = new Reportlist1();
+        	$capital->init(5);
+        	$capital_total = $capital->total;
+        	$corpus = new Reportlist1();
+        	$corpus->init(6);
+         	$corpus_total = $corpus->total;
+	 	$liability_total1 = ($capital_total + $corpus_total);
+	 	$total = $liability_total1;
+	 	return $total;
+	} 
+	
+	function newschedule1($ledg_id)
+        {
+                $credit_amount = 0.00;
+                $debit_amount = 0.00;
+                $dr_total = 0.00;
+                $cr_total = 0.00;
+                $CI =& get_instance();
+                $CI->db->select('id,amount,dc')->from('entry_items')->where('ledger_id',$ledg_id);
+                $entry = $CI->db->get();
+                $entry_q = $entry->result();
+                foreach($entry_q as $entry1)
+                {
+                if($entry1->dc == 'D')
+                {
+                $debit_amount = $debit_amount+$entry1->amount;
+                $dr_total = $dr_total+$entry1->amount;
+                }else{
+                $credit_amount = $credit_amount+$entry1->amount;
+                $cr_total = $cr_total+$entry1->amount;
+                }
+                }//foreach
+                $total = $dr_total . "#" . $cr_total;
+                return $total;
+        }
+
 
 }//main
 ?>
