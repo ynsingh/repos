@@ -156,7 +156,7 @@
 		 <p><b><i>
 
 <?php
-
+/*
  	$mysql_hostname = "localhost";
 
     	$mysql_user = "root";
@@ -197,7 +197,7 @@
 
 	    echo "0 resultsgtyhtolhikyklhjrt7yuihjtyjit";
 
-	} */
+	} 
 
 	$conn->close();
 
@@ -229,7 +229,7 @@ if( empty($_SESSION['username']) )
 
                         echo "<input type='submit' value='update'>";
 
-                        }
+                        }*/
 
                 ?>
 
