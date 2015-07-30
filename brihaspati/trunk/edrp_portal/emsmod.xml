@@ -1,0 +1,112 @@
+<CATALOG>
+<COMPONENT>
+<SNO>1. </SNO>
+<MODULE>Create Vote and Candidate:Provides a good GUI for voter.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>-  </SNO>
+<MODULE> candidate list upload, editing and organize.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>-  </SNO>
+<MODULE> candidate list upload, editing and organize.</MODULE>
+</COMPONENT>
+
+<COMPONENT>
+<SNO>2. </SNO>
+<MODULE>Provides an interface for set election information like date.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>-  </SNO>
+<MODULE> Like type.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>-  </SNO>
+<MODULE> Like time duration(Start time and ened time).</MODULE>
+</COMPONENT>
+
+
+<COMPONENT>
+<SNO>3. </SNO>
+<MODULE>Automatic ballot generation:</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>-  </SNO>
+<MODULE> Ballot paper provides radio button in front of each candidate name for various post.</MODULE>
+</COMPONENT>
+
+<COMPONENT>
+<SNO>4. </SNO>
+<MODULE>Counting:</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>-  </SNO>
+<MODULE> This function will do the automatically counting of votes for each candidate.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>5. </SNO>
+<MODULE>Result:</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>-  </SNO>
+<MODULE> When the election is over then the result is prepared automatically.</MODULE>
+</COMPONENT>
+
+<COMPONENT>
+<SNO>6. </SNO>
+<MODULE>Setup election in less than on minutes.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>7. </SNO>
+<MODULE>Build dynamic ballot paper. </MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>8. </SNO>
+<MODULE>Provide a more secure and easier way to vote to your candidate.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>9. </SNO>
+<MODULE>Eliminate collecting and counting ballot paper.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>10.</SNO>
+<MODULE>Result prepare as soon as the voting close.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO></SNO>
+<MODULE>Automatic counting is done.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Financial Years.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Add Department.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Designation.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Employee Type.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Add Bank profile.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Pay Scale.</MODULE>
+</COMPONENT><COMPONENT>
+<SNO> -</SNO>
+<MODULE>Salary Head.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>11.</SNO>
+<MODULE>Tax Report</MODULE>
+</COMPONENT>
+
+
+</CATALOG>

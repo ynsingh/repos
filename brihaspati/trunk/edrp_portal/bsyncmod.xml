@@ -1,0 +1,58 @@
+<CATALOG>
+<COMPONENT>
+<SNO>1. </SNO>
+<MODULE>Instructor interface with full control. </MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>2. </SNO>
+<MODULE>Shared whiteboard.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>3. </SNO>
+<MODULE>Text chat functionalty is available.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>4. </SNO>
+<MODULE>Audio/video communication.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>5. </SNO>
+<MODULE>Desktop sharing.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>6. </SNO>
+<MODULE>Http-tunnel support: can also work behind firewalls.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>7. </SNO>
+<MODULE>Peer-to-peer (p2p) architecture.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>8. </SNO>
+<MODULE>Both multicast and unicast network communication. </MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>9. </SNO>
+<MODULE>Recorder for archiving the lecture sessions.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>10.</SNO>
+<MODULE>Handraise functionalty.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>11.</SNO>
+<MODULE>Student interface with full control after getting permission.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>12.</SNO>
+<MODULE>Platform independent technology.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>13.</SNO>
+<MODULE>Audio Mixer is available (maximum two audio).</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>14.</SNO>
+<MODULE>Video mixeris available (maximum two video).</MODULE>
+</COMPONENT>
+</CATALOG>

@@ -10,10 +10,10 @@
 &#13;
 			Online Public Access Catalog, Serial, Acquisition, Cataloging, Administration and Security, Utility and System SetUp and Web Admin adw&#13;
 			           </INFO>
-    <URL>202.141.40.218:8080/LibMS/&#13;
+    <URL>http://pms.iitk.ernet.in:8081/LibMS/&#13;
 			             </URL>
     <IMG>   &#13;
 				images/libms.gif&#13;
                         </IMG>
   </LBMS>
-<SERVER><URL>http://202.141.40.218:8080/LibMS/</URL></SERVER></CATALOG>
+<SERVER><URL>http://pms.iitk.ernet.in:8081/LibMS/</URL></SERVER></CATALOG>

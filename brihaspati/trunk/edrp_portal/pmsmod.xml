@@ -1,0 +1,106 @@
+<CATALOG>
+<COMPONENT>
+<SNO>1.</SNO>
+<MODULE>Project Management</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>2.</SNO>
+<MODULE>Create, Edit, Disable Projects</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>3.</SNO>
+<MODULE>Project Report i.e. Gantt Charts, Task Evaluation.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>4.</SNO>
+<MODULE>Task Management.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>5.</SNO>
+<MODULE>Create, Edit, Delete tasks.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>6.</SNO>
+<MODULE>Resource Management.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>7.</SNO>
+<MODULE>Manage Users, Roles.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>8.</SNO>
+<MODULE>Organization Management:</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Create organization.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Edit organization.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Delete organization.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>9.</SNO>
+<MODULE>Document Management:</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Upload document.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Download document.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> -</SNO>
+<MODULE>Remove document.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>10.</SNO>
+<MODULE>System administrator functionality.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>11.</SNO>
+<MODULE>Add/edit/disable the project.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>12.</SNO>
+<MODULE>Assign project to a user (project manager).</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>13.</SNO>
+<MODULE>Document uploading/downloading.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>14.</SNO>
+<MODULE>Project status through Gantt chart.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>15.</SNO>
+<MODULE>Overall Control – System statistics.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>16.</SNO>
+<MODULE>Project member functionality.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>17.</SNO>
+<MODULE>Edit Projects – Edit individual project tasks.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>18.</SNO>
+<MODULE>Provide a more secure and easier way to vote to your candidate.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>19.</SNO>
+<MODULE>Eliminate collecting and counting ballot paper.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>20.</SNO>
+<MODULE>Result prepare as soon as the voting close.</MODULE>
+</COMPONENT>
+</CATALOG>

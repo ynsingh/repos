@@ -1,0 +1,138 @@
+<CATALOG>
+<COMPONENT>
+<SNO>1. </SNO>
+<MODULE>Interface for administrator</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Creation of new courses along with primary instructors.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Addition of students - single and multiple.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Modifying passwords and profiles of instructors, students.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Backup operations of courses.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Deletions of courses.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Addition of secondary instructors.</MODULE>
+</COMPONENT>
+<!--COMPONENT>
+<SNO> - </SNO>
+<MODULE>Activation and deactivation of course (depending on whether it is offered in current semester or not.</MODULE>
+</COMPONENT-->
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Adding and removing courses for an user in which he is student.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>2. </SNO>
+<MODULE>Course content upload facility for instructor. The browsing facility  for student.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>3. </SNO>
+<MODULE>Integration of chat tool (Babylon - open source free ware).</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>4. </SNO>
+<MODULE>Integration of white-board tool (Babylon).</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>5. </SNO>
+<MODULE>Task management tool for personal task management.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>6. </SNO>
+<MODULE>Random generation of new password when passwords are forgotten.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>7. </SNO>
+<MODULE>The list of active course is now visible for person not having any login id's.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>8. </SNO>
+<MODULE>The split screen view for list of users created.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>9. </SNO>
+<MODULE>Notification system.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>10.</SNO>
+<MODULE>Dept/ School management system.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>11.</SNO>
+<MODULE>Management of EdRP Application.</MODULE>
+</COMPONENT>
+<!--COMPONENT>
+<SNO>12.</SNO>
+<MODULE>SCORM player implementation  so that SCORM compliance content can be played.</MODULE>
+</COMPONENT-->
+<COMPONENT>
+<SNO>12.</SNO>
+<MODULE>News management system.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>13.</SNO>
+<MODULE>On line registration - Institute, Course with instructor and student.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>14.</SNO>
+<MODULE>Account activation after mail verification</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>15.</SNO>
+<MODULE>Institute telephone directory generation.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>16.</SNO>
+<MODULE>Change password of user.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>17.</SNO>
+<MODULE>Login id is complete email id.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>18.</SNO>
+<MODULE>Edit of entry is not possible</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO></SNO>
+<MODULE></MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>21.</SNO>
+<MODULE></MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>22.</SNO>
+<MODULE></MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>23.</SNO>
+<MODULE></MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>24.</SNO>
+<MODULE></MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>25.</SNO>
+<MODULE></MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>26.</SNO>
+<MODULE></MODULE>
+</COMPONENT>
+</CATALOG>

@@ -9,10 +9,10 @@
 				Payroll System is Perfect Solution for maintenance of Employee Attendance and their Provident Fund, Professional Tax, ESIC etc. Payroll is very easy to operate and handle. System is developed by SMVD University this system will provide complete mechanism for salary computation, salary slip generation. Salary management, Attendance and leave management, Loan and advances processing and a systematic and comprehensive standard based reports. Payroll system will enable users to create customized Salary structure and Salary heads.&#13;
 &#13;
                                     </INFO>
-    <URL>				http://202.141.40.218:8081/PayrollSys/&#13;
+    <URL>				http://202.141.40.218:8080/PayrollSys/&#13;
                                   </URL>
     <IMG>   &#13;
 				images/home/pls.png&#13;
                         </IMG>
   </PAYROL>
-<SERVER><URL>http://202.141.40.218:8081/PayrollSys</URL></SERVER></CATALOG>
+<SERVER><URL>http://202.141.40.218:8080/PayrollSys/</URL></SERVER></CATALOG>

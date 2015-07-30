@@ -1,11 +1,20 @@
+#top {
+ 	clear: both;
+        margin: 0px auto;
+        height: 30px;
+        background: url(images/img03.gif) repeat-x left top;
+        background-size:110px 110px;
+        text-align: center;
+
+}
 
 /** BASIC */
 
 body {
 	margin: 0px;
 	padding: 0px;
-	background: url(images/img02.jpg) repeat-x left top;
-	line-height: 20.5px;
+	background: url(images/img021.jpg) repeat-x left top;
+	line-height: 22.5px;
 	text-align: justify;
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 10pt;
@@ -25,7 +34,7 @@ a:hover {
 }
 
 .list1 {
-	margin: 0;
+erProfilemargin: 0;
 	padding: 0;
 	list-style: none;
 }
@@ -67,14 +76,14 @@ img.left {
 #header h1 {
 	margin: 0px;
 	padding: 20px 0px 0px 0px;
-	text-transform: uppercase;
+	text-transform: none;
 	font-weight: bold;
 	font-size: 43px;
 }
 
 #header h2 {
-	margin: 0 0 0 -80px;
-	padding: 0px 0px 0px 95px;
+	margin: 0 0 0 -3330px;
+	padding: 0px 0px 0px 90px;
 	text-transform: uppercase;
 	font-weight: bold;
 	font-size: 13px;
@@ -103,7 +112,7 @@ img.left {
 	text-decoration: none;
 	text-transform: uppercase;
 	font-weight: bold;
-	font-size: 12px;
+	font-size: 14px;
 	color: #FFFFFF;
 }
 
@@ -117,22 +126,83 @@ img.left {
 	color: #254360;
 }
 
-/** CONTENT */
+/** SecondaryMenu*/
+#link {
+        width: 1080px;
+        margin: 0px auto;
+	background: url(images/img021.jpg) repeat-x left top;
+	margin-top: 25px;
+	height:45px;
+}
 
+#link a {
+        
+        padding: 0px 20px 0px 20px;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 14px;
+        color: #1C364F;
+}
+
+#link a:hover {
+        background: #FFFFFF;
+        color: #254360;
+}
+
+#link .active {
+        background: #FFFFFF;
+        color: #254360;
+}
+
+/** CONTENT */
+#frame{
+
+      width:350px; 
+
+      margin:0px ; 
+
+      border:1px solid #444; 
+
+      height:350px;
+    
+
+     padding-left: 5px;
+
+     padding-right:5px;
+
+}
 #content {
 	width: 1078px;
+        height:480px;
 	margin: 0px auto;
 	padding: 40px 0px 20px 0px;
 }
 
 #columnA {
 	float: right;
-	width: 838px;
-	padding-left: 20px;
-	
+	width: 600px;
 	margin-top: -28px;
 }
-
+#listA {
+        float: right;
+        width: 1077px;
+}
+#listB {
+        float: left;
+        width: 1077px;
+}
+.button {
+  padding:3px;
+  background-color: #CEF6F5;
+  border: 1px solid #666;
+   border-radius: 28px;
+  font-family: Arial; 
+  color:#000;
+  text-decoration:none;
+  float: right;
+  margin-right: 0px;
+  }
 #columnA h2 {
 	height: 22px;
 	border-bottom: 1px dashed #EEEEEE;
@@ -142,8 +212,12 @@ img.left {
 
 #columnB {
 	float: left;
-	width: 200px;
-	margin-top: -28px;
+	width: 400px;
+	margin-top: -45px;
+	height: 580px;
+	background-color: #D0E9FD;
+	border: 1px solid #444;
+	border-radius: 25px;
 }
 
 #columnB h3 {
@@ -163,6 +237,10 @@ img.left {
 	background: url(images/img03.gif) repeat-x left top;
 	background-size:110px 110px;
 	text-align: center;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	width:100%;
 }
 
 #footer p {
@@ -176,7 +254,8 @@ img.left {
 	color: #CCCCCC;
 }
 input {
-    border: 5px solid white; 
+	border-radius: 20px;
+    border: 3px solid white; 
     -webkit-box-shadow: 
       inset 0 0 8px  rgba(0,0,0,0.1),
             0 0 16px rgba(0,0,0,0.1); 
@@ -186,7 +265,47 @@ input {
     box-shadow: 
       inset 0 0 8px  rgba(0,0,0,0.1),
             0 0 16px rgba(0,0,0,0.1); 
-    padding: 15px;
+    padding: 10px;
     background: rgba(255,255,255,0.5);
     margin: 0 0 10px 0;
 }
+
+.submit{
+  padding:3px;
+  background-color: #CEF6F5;
+  border: 1px solid #666;
+   border-radius: 28px;
+  font-family: Arial;
+  color:#000;
+  text-decoration:none;
+  margin-left: 0px;
+
+  }
+.login{
+	border-radius: 20px;
+	height: 300px;
+    	width: 500px;
+	margin-left: 5cm;
+	color: white;
+
+}
+.register{
+	border-radius: 20px;
+        height:565px;
+    	width: 510px;
+        margin-left: 5cm;
+        color: white;
+
+}
+fieldset{
+border-radius: 5px;
+padding: 5px; /*Just to prevent the content from being to close to the corner*/
+}
+.ScrollStyle
+{
+    max-height: 550px;
+    overflow-y: scroll;
+}
+
+
+

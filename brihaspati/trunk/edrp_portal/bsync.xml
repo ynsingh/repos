@@ -12,4 +12,5 @@ The Brihaspatisync is built using java as standalone application. There are five
 images/home/brihsync.png&#13;
 	</IMG>
   	</BRIH>
+<SERVER><URL>https://202.141.40.216:8443/brihaspatisync_client/jnlp/brihaspatisync.jnlp</URL></SERVER>
 	</CATALOG>

@@ -1,5 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<?php include("header.php");
+?>
 <?php
 session_start();
 $xmlDoc = new DOMDocument();
@@ -20,32 +21,8 @@ foreach( $searchNode as $searchNode )
         $xmlNAME = $searchNode->getElementsByTagName( "NAME" );
         $valueNAME= $xmlNAME->item(0)->nodeValue;
 }
-$xmlDoc = new DOMDocument();
-$xmlDoc->load( 'main.xml' );
-$searchNode = $xmlDoc->getElementsByTagName( "CD" );
-
-foreach( $searchNode as $searchNode )
-{
-
-    $xmlAEM = $searchNode->getElementsByTagName( "AEM" );
-    $valueAEM = $xmlAEM->item(0)->nodeValue;
-    $xmlRES = $searchNode->getElementsByTagName( "RES" );
-    $valueRES = $xmlRES->item(0)->nodeValue;
-
-    $xmlCurrentProject = $searchNode->getElementsByTagName( "CP" );
-    $valueCurrentProject = $xmlCurrentProject->item(0)->nodeValue;
-
-}
 ?>
 
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>ERP-MISSION</title>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<link href="default.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
 <script>
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -55,57 +32,63 @@ else
   {// code for IE6, IE5
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.open("GET","main.xml",false);
-xmlhttp.send();
-xmlDoc=xmlhttp.responseXML; 
-var x=xmlDoc.getElementsByTagName("CD");
-var z=xmlDoc.getElementsByTagName("IP");
 xmlhttp.open("GET","ems.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML; 
 var info=xmlDoc.getElementsByTagName("EMS");
 var server=xmlDoc.getElementsByTagName("SERVER");
-xmlhttp.open("GET","headerfooter.xml",false);
-xmlhttp.send();
-xmlDoc=xmlhttp.responseXML; 
-var pro=xmlDoc.getElementsByTagName("PROJECTS");
-var y=xmlDoc.getElementsByTagName("FOOTER");
-
 </script>
+<div id="link">
 
-<div id="header">
-        <h1>ERP MISSION</h1>
-<span style="float:right;color:#333;margin-top:-53px;"> <img src="images/missionlogo.png"  height="98" > </span>
-        <h2></h2>
-</div>
-<div id="menu">
-        <ul>
+<table>
 
-                <li>
-             <script type="text/javascript">
-                for (i=0;i<pro.length;i++)
-                { 
-                document.write("<tr><td><a href=");
-                document.write(pro[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue);
+<tr>
+
+        <script type="text/javascript">
+
+   for (i=0;i<link.length;i++)
+
+        { 
+
+                document.write("<td><a href=");
+
+                document.write(link[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue);
+
                 document.write(">");
-                document.write(pro[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue);
-                document.write("</a></td><td>");
-                        }
-       
- </script>
-<div style="float:right;" >
-                <?php
-if( !empty($_SESSION['username']) )
-{
-echo "<font color=\"white\">Wellcome Admin</font><a href=\"logout.php\">Log Out</a>";
-}
-?>
-</div>
-</li>
-        </ul>
+
+                document.write(link[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue);
+
+                document.write("</a></td>");
+
+        }
+
+        </script>
+
+                       <td>
+
+                        <a href='ems.php'  title='Go To EMS'>CHOME</a>|       
+
+                        </td>
+
+                         <td>
+
+                        <a href='emsmod.php'  title='Go To MODULE OF COMPONENT'>COMPONENT MODULE</a>|       
+
+                        </td>
+
+                         <td>
+
+                        <a href='emsinstlist.php'  title='Go To INSTITUTE LIST'>LIST OF INSTITUTE</a>       
+
+                        </td>
+
+
+
+</tr></table>
+
 </div>
 <div id="content">
-        <div id="columnA">
+         <div style="width:67%; margin-top:-35px;">
                 <h2>                <script type="text/javascript">
                 for (i=0;i<x.length;i++)
                 { 
@@ -118,7 +101,7 @@ echo "<font color=\"white\">Wellcome Admin</font><a href=\"logout.php\">Log Out<
  </script>
 
 </h2>
-                <div style="width:500px">
+                <div>
                 <p>
 		<?php
                 if( empty($_SESSION['username']) )
@@ -137,7 +120,8 @@ echo "<font color=\"white\">Wellcome Admin</font><a href=\"logout.php\">Log Out<
 
                 </p>
                 </div>
-         <span style="float:right;color:#333;margin-top:-120px;"> <script type="text/javascript">
+               </div>
+         <span style="float:right;color:#333;margin-top:-130px;"> <script type="text/javascript">
                 for (i=0;i<x.length;i++)
                 { 
                 document.write("<tr><td><img src=");
@@ -188,77 +172,8 @@ if( empty($_SESSION['username']) )
  </script>
    	
 	<br>
-<?php
-if( !empty($_SESSION['username']) )
-       {
-	  echo "<b>Add Server Here:-</b>";
-         echo "<form action=\"project.php\" method=\"post\">";
-        echo "<input name='filenm' type='hidden' value='ems.xml'/>";
-         echo "<input name='redirect' type='hidden' value='ems.php'/>";
-        echo "<div id=\"my_div\">";
-        echo "</div>";
-        echo "<p>";
-        echo "<textarea name=\"SERVER\" rows=\"2\" cols=\"70\"></textarea>";
-        echo "<br>";
-        echo "<input type='submit'value='ADD'>";
-        echo "</form>";
-}
-
-	echo"</div>";
-if( empty($_SESSION['username']) )
-{
-        echo "<div id=\"columnB\">";
-        echo "<h3>ABOUT ERP MISSION</h3>";
-        echo $valueAEM ;
-        echo "<h3>Responsibilities</h3>";
-        echo $valueRES;
-
-        echo "<h3>CURRENT PROJECTS </h3>";
-        echo $valueCurrentProject;
-        echo "</div>";
-
-}
-else
-{
-        echo "<div id=\"columnB\">";
-        echo "<form action=\"xmlsave.php\" method=\"post\">";
-        echo "<input name='filenm' type='hidden' value='main.xml'/>";
-        echo "<input name='redirect' type='hidden' value='ems.php'/>";
-        echo "<h3>ABOUT ERP MISSION</h3>";
-        echo "<textarea name=\"UserAddress1\" rows=\"9\" cols=\"30\"> $valueAEM </textarea>";
-        echo "<input type='submit'value='update'>";
-        echo "<h3>Responsibilities</h3>";
-        echo "<textarea name=\"UserAddress2\" rows=\"17\" cols=\"30\"> $valueRES </textarea>";
-        echo "<input type='submit'value='update'>";
-
-        echo "<h3>CURRENT PROJECTS </h3>";
-        echo "<textarea name=\"UserAddress3\" rows=\"12\" cols=\"30\"> $valueCurrentProject </textarea>";
-        echo "<ul class=\"list1\">";
-        echo "</ul>";
-        echo "<input type='submit'value='update'>";
-        echo "</form>";
-        echo "</div>";
-}
+</div>
+<?php include("footer.php");
 ?>
-</div>
-<div id="footer">
-<p>
-<script type="text/javascript">
-                for (i=0;i<x.length;i++)
-  { 
-  document.write("<tr><td>");
-  document.write(y[i].getElementsByTagName("p1")[0].childNodes[0].nodeValue);
-        document.write("<br>");
-  document.write(y[i].getElementsByTagName("p2")[0].childNodes[0].nodeValue);
-        document.write("<br>");
-  document.write(y[i].getElementsByTagName("p3")[0].childNodes[0].nodeValue);
-        document.write("<br>");
-  document.write(y[i].getElementsByTagName("p4")[0].childNodes[0].nodeValue);
-  document.write("</td><td>");
-  }
-       
- </script>
-</p>
-</div>
-</html>
+
 

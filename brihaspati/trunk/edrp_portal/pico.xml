@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <CATALOG>
   <PICO>
-    <NAME>Purchase and Inventory Control cacac</NAME>
+    <NAME>Purchase and Inventory Control </NAME>
     <ANAME>&#13;
 			(PICO)&#13;
                         </ANAME>
     <INFO>The Inventory Control system offers comprehensive reporting capabilities to keep you on top of inventory status. It can help you bring about the creation of new or improved purchasing policies, sales policies, pricing methods, and even enhanced customer service. By leveraging Sage BusinessWorks, you have the tools to create an inventory system with the depth to meet your company’s needs for years to come.       </INFO>
-    <URL>http://202.141.40.218:8080/pico/Administration/Index.action&#13;
+    <URL>http://202.141.40.218:8081/pico/Administration/Index.action&#13;
                                     </URL>
     <IMG>   &#13;
 			images/home/PICO.jpg&#13;
                         </IMG>
   </PICO>
-<SERVER><URL>172.26.82.19</URL></SERVER></CATALOG>
+<SERVER><URL>http://202.141.40.218:8081/pico/Administration/Index.action</URL></SERVER></CATALOG>

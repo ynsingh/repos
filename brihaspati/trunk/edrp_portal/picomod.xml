@@ -1,0 +1,115 @@
+<CATALOG>
+<COMPONENT>
+<SNO>1. </SNO>
+<MODULE> Administration Activities</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE> Master Data Creation.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE> Organisational Structure, Users, Work-flow, Committee etc.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>PICO Admin.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Budget Allocation</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>PICO News</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>2. </SNO>
+<MODULE>Pre-Purchase Activities</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Creation of Purchase Items</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Registration of Suppliers</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Item Rate Approval</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Indent Approval</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Creation and Submission of Tender</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Create Purchase Order</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>3. </SNO>
+<MODULE>Purchase </MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Manage Purchase Challan Master</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Purchase Invoice Receipt and Bill</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Manage Purchase Report</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>4. </SNO>
+<MODULE>Inventory</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Manage Issue Item</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Opening Stock</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Receive Issued Items From</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO> - </SNO>
+<MODULE>Manage Return Issued Items.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>5. </SNO>
+<MODULE>Indent Apporovals by concerned authorities.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>6. </SNO>
+<MODULE>Bulid using open source technologies (database, application etc.)</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>7. </SNO>
+<MODULE>Pre defined roles will be requied as default but could be configurable.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>8. </SNO>
+<MODULE>Each acitivity will be based on the privileges defined for the user.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>9. </SNO>
+<MODULE>Budget Allocation to department for purchase.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>10.</SNO>
+<MODULE>Intenal Indent generation to be send to the Purchase Departement.</MODULE>
+</COMPONENT>
+
+</CATALOG>

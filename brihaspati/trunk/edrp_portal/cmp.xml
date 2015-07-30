@@ -1,0 +1,110 @@
+<CATALOG>
+<!--COMPONENT>
+<SNO>1. </SNO>
+<MODULE>Chart of Accounts (Groups and Ledgers) as per the standard and option to add new chart of accounts. </MODULE>
+</COMPONENT-->
+<COMPONENT>
+<SNO>1. </SNO>
+<MODULE>The Chart of Accounts code are auto generated.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>2. </SNO>
+<MODULE>Dynamic Entry Types (Receipt, Payment, Contra, Journal Vouchers, etc).</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>3. </SNO>
+<MODULE>Ledger account reconciliation.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>4. </SNO>
+<MODULE>Tag vouchers - tag based account statement generation.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>5. </SNO>
+<MODULE>Download Reports in CSV, PDF and HTML formats.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>6. </SNO>
+<MODULE>User authentication and roles.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>7. </SNO>
+<MODULE>User Action Logs.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>8. </SNO>
+<MODULE>Full support for MySQL database transactions to maintain data integrity.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>9. </SNO>
+<MODULE>Support for multiple accounts</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>10.</SNO>
+<MODULE>Auto generate account code as per selection of parent account.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>11.</SNO>
+<MODULE>Budget based payment control.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>12.</SNO>
+<MODULE>Configure of over-expenses in three way (fixed, percentage, not allowed).</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>13.</SNO>
+<MODULE>Budget allocation and reallocation.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>14.</SNO>
+<MODULE>Upload institute logo and set name.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>15.</SNO>
+<MODULE>Generate monthly/quarterly/yearly reports ( Receipt, BS, IandE etc).</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>16.</SNO>
+<MODULE>Change password of user.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>17.</SNO>
+<MODULE>login id is complete email id.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>18.</SNO>
+<MODULE>Edit of entry is not possible</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>19.</SNO>
+<MODULE>Setup Income projection.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>20.</SNO>
+<MODULE>Each entry verification by others.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>21.</SNO>
+<MODULE>Day Book and Cash Book generation.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>22.</SNO>
+<MODULE>Fund list with Report (Fund based accounting system).</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>23.</SNO>
+<MODULE>Secondary Accounting Unit list and Reports.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>24.</SNO>
+<MODULE>TDS report </MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>25.</SNO>
+<MODULE>Unspent balance report for plan and non plan with summary report.</MODULE>
+</COMPONENT>
+
+
+
+
+</CATALOG>

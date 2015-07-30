@@ -1,0 +1,48 @@
+<CATALOG>
+<COMPONENT>
+<SNO>1. </SNO>
+<MODULE>Institute Admin Setup.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>2. </SNO>
+<MODULE>New Institute Registraton.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>3. </SNO>
+<MODULE>Leave Management.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>4. </SNO>
+<MODULE>PF Management system.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>5. </SNO>
+<MODULE>Employee Management.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>6. </SNO>
+<MODULE>Providing payslips of Employee.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>7. </SNO>
+<MODULE>Remote aunthication from Brihaspati Server. </MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>8. </SNO>
+<MODULE>Various Report Generation( pdf, html etc)/Text Report.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>9. </SNO>
+<MODULE>Attendance Management.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>10.</SNO>
+<MODULE>Tax Management.</MODULE>
+</COMPONENT>
+<COMPONENT>
+<SNO>11.</SNO>
+<MODULE>Employee Management.</MODULE>
+</COMPONENT>
+
+
+</CATALOG>

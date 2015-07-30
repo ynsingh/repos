@@ -37,7 +37,7 @@
 </PROJECTS>
 <PROJECTS>
 <TITLE>bsync.php</TITLE>
-<NAME>BRIHASPATI SYNC</NAME>
+<NAME>BSYNC</NAME>
 </PROJECTS>
 <PROJECTS>
 <TITLE>sfmc.php</TITLE>
@@ -53,4 +53,23 @@
 <p3>For reporting bugs, suggestion, feature request, and maintainence support</p3>
 <p4>post at brihaspati_ERP_mission@yahoogroups.com</p4>
 </FOOTER>
+<!--<SECONDARYLINK>
+<TITLE>gms.php</TITLE>
+<NAME>CHOME</NAME>
+</SECONDARYLINK>
+<SECONDARYLINK>
+<TITLE>gms.php</TITLE>
+<NAME>LIST OF MODULE</NAME>
+</SECONDARYLINK><SECONDARYLINK>
+<TITLE>gms.php</TITLE>
+<NAME>LIST OF INSTITUTION</NAME>-->
+<!--</SECONDARYLINK><SECONDARYLINK>-->
+<!--<TITLE>gms.php</TITLE>-->
+<!--<NAME>LOGIN</NAME>
+</SECONDARYLINK><SECONDARYLINK>-->
+<!--<TITLE>gms.php</TITLE>-->
+<!--<NAME>REGISTER</NAME>-->
+<!--<input class="button" value="REGISTER" type="submit" />
+<input class="button" value="LOGIN" type="submit" onclick="alert('Hello World!')"/>
+</SECONDARYLINK>-->
 </CATLOG>
