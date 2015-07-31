@@ -638,6 +638,60 @@ class Cf extends Controller{
 					}
 				}
 
+				/* Importing asset_register values */
+				if ($this->db->table_exists('old_asset_register'))
+                                {
+                                        $this->db->from('old_asset_register')->order_by('id','asc');
+                                        $old_asset_register = $this->db->get();
+                                        foreach ($old_asset_register->result() as $row)
+                                        {
+                                                if( ! $newacc->query("INSERT INTO old_asset_register (id, date_of_purchase, code, asset_name, cost, depreciated_value, current_value, Financial_year, asset_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", array($row->id, $row->date_of_purchase, $row->code, $row->asset_name, $row->cost, $row->depreciated_value, $row->current_value, $row->Financial_year, $row->asset_status)))
+                                                {
+                                                        $this->messages->add('Failed to add old_Asset Register.', 'error');
+                                                        $cf_status = FALSE;
+                                                }
+
+                                        }
+
+                                }
+				if ($this->db->table_exists('old_asset_register'))
+                                {
+                                        $this->db->from('new_asset_register')->order_by('id','asc');
+                                        $old_asset_register = $this->db->get();
+                                        foreach ($old_asset_register->result() as $row)
+                                        {
+                                                if( ! $newacc->query("INSERT INTO old_asset_register (id, date_of_purchase, code, asset_name, cost, depreciated_value, current_value, Financial_year, asset_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", array('0', $row->date_of_purchase, $row->code, $row->asset_name, $row->cost, $row->depreciated_value, $row->current_value, $row->Financial_year, $row->asset_status)))
+                                                {
+                                                        $this->messages->add('Failed to add new_Asset Register.', 'error');
+                                                        $cf_status = FALSE;
+                                                }
+
+                                        }
+
+                                }
+
+
+
+
+                               /* Importing depreciation_master values */
+				if ($this->db->table_exists('depreciation_master'))
+                                {
+                                        $this->db->from('depreciation_master')->order_by('id','asc');
+                                        $depreciation_master = $this->db->get();
+                                        foreach ($depreciation_master->result() as $row)
+                                        {
+                                                if( ! $newacc->query("INSERT INTO depreciation_master (id, parent_id, code, name, percentage, life_time) VALUES (?, ?, ?, ?, ?, ?)", array($row->id, $row->parent_id, $row->code, $row->name, $row->percentage, $row->life_time)))
+                                                {
+                                                        $this->messages->add('Failed to add Depreciation master table. ', 'error');
+                                                        $cf_status = FALSE;
+                                                }
+                                        }
+                                }
+
+
+
+
+
 				/* Importing payrollsetup details */
 				if ($this->db->table_exists('payrollsetup'))
 				{		

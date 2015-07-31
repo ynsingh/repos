@@ -436,4 +436,39 @@ CREATE TABLE bill_approval
          sanc_value VARCHAR(255) DEFAULT NULL,
          PRIMARY KEY(bill_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+CREATE TABLE IF NOT EXISTS depreciation_master(
+                        id INTEGER (100)  NOT NULL AUTO_INCREMENT,
+                        parent_id INTEGER (100) NOT NULL,
+			code varchar(100) NOT NULL,
+                        name VARCHAR (255) NOT NULL,
+                        percentage INTEGER (100) NOT NULL,
+			life_time INTEGER (100) NOT NULL,
+                        PRIMARY KEY(id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS old_asset_register(
+                        id INTEGER (100)  NOT NULL AUTO_INCREMENT,
+                        date_of_purchase DATETIME NOT NULL,
+                        code varchar(100) NOT NULL,
+                        asset_name VARCHAR (255) NOT NULL,
+			cost decimal(15,2) NOT NULL DEFAULT '0.00',
+			depreciated_value decimal(15,2) NOT NULL DEFAULT '0.00',
+			current_value decimal(15,2) NOT NULL DEFAULT '0.00',
+			Financial_year VARCHAR(100) NOT NULL,
+			narration text NOT NULL,
+			asset_status int(1) NOT NULL DEFAULT 0,
+                        PRIMARY KEY(id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS new_asset_register(
+                        id INTEGER (100)  NOT NULL AUTO_INCREMENT,
+                        date_of_purchase DATETIME NOT NULL,
+                        code varchar(100) NOT NULL,
+                        asset_name VARCHAR (255) NOT NULL,
+                        cost decimal(15,2) NOT NULL DEFAULT '0.00',
+                        depreciated_value decimal(15,2) NOT NULL DEFAULT '0.00',
+                        current_value decimal(15,2) NOT NULL DEFAULT '0.00',
+                        Financial_year VARCHAR(100) NOT NULL,
+			narration text NOT NULL,
+                        asset_status int(1) NOT NULL DEFAULT 0,
+                        PRIMARY KEY(id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

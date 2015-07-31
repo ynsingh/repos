@@ -42,7 +42,7 @@ $sum=0;
 					$i++;
 				}
 			}else{
-                                $date=date_create($row->update_date);
+                                $date=date_create($row->date_of_purchase);
                                //$date2=Date("d F Y");
                                 //$date3=date_create(" $IRD_WEF_Date");
                                 //$date4=date_create("$date2");
@@ -58,9 +58,9 @@ $sum=0;
                                 /*if($cur_value <= 0)
                                 {*/
                                         echo "<td>" . date_format($date,"Y-m-d")   . "</td>";
-                                        echo "<td>" . $row->amount  . "</td>";
+                                        echo "<td>" . $row->cost  . "</td>";
                                         echo "<td>" .  0  . "</td>";
-					echo "<td>" . $row->amount  . "</td>";
+					echo "<td>" . $row->cost  . "</td>";
                               /*  }
                                 else
                                 {

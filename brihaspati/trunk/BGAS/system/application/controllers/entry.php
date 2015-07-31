@@ -1095,6 +1095,32 @@ $width="100%";
                                 		}else {
                                         		$entry_items_id = $this->db->insert_id();
                                 		}
+						$this->db->from('ledgers')->where('id', $data_ledger_id);
+                                        	$query_q = $this->db->get();
+						foreach($query_q->result() as $row2)
+                                		{
+							$led_name = $row2->name;
+                                        		$led_code = $row2->code;
+                                		}
+                                        	//$is_fixed_asset= startsWith($ledger_code, '2001');
+						$is_asset_code = substr($led_code, 0, 4);
+						
+						if($is_asset_code ==  '2001'){	
+  						$asset_register = array(
+									'asset_name' => $led_name,
+                                                                        'code' =>  $led_code,
+                                                                        'cost' => $data_amount,
+                                                                        'date_of_purchase' => $data_date,
+									'narration' => $data_narration,
+                                                                        );
+
+                                                                        if ( ! $this->db->insert('new_asset_register', $asset_register))
+                                                                        {
+                                                                                $this->db->trans_rollback();
+                                                                                $this->logger->write_message("error", "Error adding Assets");
+                                                                        }
+
+					}
 
 				  	if($data_ledger_dc == 'C'){
                                         	$expense_type = $data_all_expense_type[$id];
@@ -1146,10 +1172,7 @@ $width="100%";
 					$expense_type = $data_all_expense_type[$id];
 					//if($expense_type != 'Capital'){
 					
-					$this->db->from('ledgers')->where('id', $data_ledger_id);
-                                        $query_q = $this->db->get();
-                                        $query_n = $query_q->row();
-                                        $ledger_code = $query_n->code;
+				//	}
 					if(($expense_type !="Select") && ($expense_type !=""))
 					{ 
 						if($expense_type == "Revenue")

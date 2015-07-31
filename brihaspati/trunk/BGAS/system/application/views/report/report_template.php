@@ -9,7 +9,7 @@
 		}
 		else
 		echo "<table border='0' cellpadding='5'class=\"simple-table report-table\" width=\"100%\">";
-		echo "<tr><td align=\"left\">";
+		echo "<tr><td align=\"left\"  width=\"15%\">";
 		$this->db->select('id, name')->from('settings');
                 $ins_id = $this->db->get();
                 foreach( $ins_id->result() as $row)
@@ -51,19 +51,24 @@
 		$from_date = $date1;
 		$to_date = $date2;
 	}
+
 	if($title == 'Income and Expenditure Statement'){
 	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?>
 	<?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $this->config->item('account_ins_name'). "<br>".$title . "</h2><br>";
         echo     "For the period " . $from_date . " to " . $to_date ;
 	}else{
-	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $this->config->item('account_ins_name'). "<br>".$title . "</h2><br>";
+	echo $this->config->item('account_name'); ?><br><?php echo "<td align=\"center\" class=\"bold\" width=\"40%\" >" . "<h2>" . $this->config->item('account_ins_name'). "<br>".$this->config->item('account_address') ."<br>".$title . "</h2><br>";
+//	echo $this->config->item('account_address') . "</td>"; 
 	if(($title != "Balance Sheet")&&($title != "Balance Sheet As At ".$curr_date)&&($title != "Day Statement")){
-
+	if($title = "Depreciation Of Assets"){
+		echo "Depreciation As Today";
+	}else{
 	echo	 "For the period " . $from_date . " to " . $to_date ;
+	}
 	}
 	echo  "</td>" ; 
 	}
-	echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
+	echo "<td align=\"center\" width=\"45%\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
 
 	<?php echo"</table>";?>
 

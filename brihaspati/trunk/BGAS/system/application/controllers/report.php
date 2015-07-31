@@ -329,7 +329,7 @@ class Report extends Controller {
 	function depreciation($period = NULL)
         {
                 $this->load->library('session');
-                $this->template->set('nav_links', array('report/depreciation' => 'Depreciation As Today', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
+                $this->template->set('nav_links', array('report/depreciation' => 'Depreciation As Today', 'report/update' => 'Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
                 $this->template->set('page_title', 'Depreciation Of Assets');
                 $data['left_width'] = "450";
                 $data['right_width'] = "450";
@@ -362,9 +362,9 @@ class Report extends Controller {
 		}
 		$data['search_by'] = array(
 			"Select" => "Select",
-                        "ERPMIM_Item_Brief_Desc#name" => "Asset Name",
-                        "IRD_WEF_Date#update_date"=> "Date of Purchase",
-			"total_cost#amount" => "Total Cost",
+                        "ERPMIM_Item_Brief_Desc#asset_name" => "Asset Name",
+                        "IRD_WEF_Date#date_of_purchase"=> "Date of Purchase",
+			"total_cost#cost" => "Total Cost",
 			"dep_amount" => "Dep.Amount",
 			"curr_value" => "Current Value",
                 );
@@ -597,10 +597,43 @@ class Report extends Controller {
 	function update()
         {
         	$this->template->set('page_title', 'Update Depreciation Rate');
-	       	$this->template->set('nav_links', array( 'report/depreciation' => 'Depreciation As Today', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
-
+	       	$this->template->set('nav_links', array( 'report/depreciation' => 'Depreciation As Today'));
+		$this->load->model('Depreciation_model');
 		$account_code = $this->Budget_model->get_account_code('Fixed Assets');
-                $this->db->select('name, code');
+		$check_asset_register = $this->Depreciation_model->dep_master_details();
+		$counter=0;
+		$counter1=0;
+		$this->dep_master['dep'] = $check_asset_register;
+                foreach ($check_asset_register as $id => $bud)
+                {
+                        $name = 'budget_value'. "_" .$bud['id'];
+                        $this->dep_master[$name] = array(
+                                'name' => $name,
+                                'id' => $bud['id'],
+                                'maxlength' => '100',
+                                'size' => '40',
+                                //'value' => '',
+                                'value' => $bud['percentage'],
+                        );
+                        $counter++;
+                }
+		$this->dep_master1['dep'] = $check_asset_register;
+		foreach ($check_asset_register as $id => $bud1)
+                {
+                        $name1 = 'budget_value'. "_" .$bud1['id'];
+                        $this->dep_master1[$name1] = array(
+                                'name' => $name1,
+                                'id' => $bud1['id'],
+                                'maxlength' => '100',
+                                'size' => '40',
+                                //'value' => '',
+                                'value' => $bud1['life_time'],
+                        );
+                        $counter1++;
+                }
+	
+
+               /*this->db->select('name, code');
                 $this->db->from('ledgers')->where('code LIKE', $account_code.'%');
                 $gross_expense_list_q = $this->db->get();       
 		$counter=0;
@@ -608,7 +641,7 @@ class Report extends Controller {
                         $name=$row1->name;
                         $code=$row1->code;
 			
-                        /*load database pico*/
+                        /*load database pico
                         $logndb = $this->load->database('pico', TRUE);
                         $this->logndb =& $logndb;
                         $this->logndb->select('a.ERPMIM_ID, a.ERPMIM_Depreciation_Percentage, a.ERPMIM_Item_Brief_Desc, b.IRD_Rate, b.IR_Item_ID, b.IRD_WEF_Date');
@@ -637,7 +670,7 @@ class Report extends Controller {
 		$this->depreciation['counter'] = --$counter;
 		$this->ledger_data = ++$counter;
 
-        	/* Repopulating form*/
+        	/* Repopulating form
       	        if ($_POST)
        		{
 			$counter = 0;
@@ -653,9 +686,88 @@ class Report extends Controller {
 				$check--;
 			}				
 				
-        	}
+        	}*/
+		foreach ($this->dep_master['dep'] as $id => $bud)
+                {
+                        $name = 'budget_value'. "_" .$bud['id'];
+                        $this->form_validation->set_rules($name, 'Budget Value', 'trim');
+                }
+		foreach ($this->dep_master1['dep'] as $id => $bud1)
+                {
+                        $name1 = 'budget_value1'. "_" .$bud1['id'];
+                        $this->form_validation->set_rules($name1, 'Budget Value', 'trim');
+                }
+
+
+		 if ($_POST)
+                {
+                        foreach ($this->dep_master['dep'] as $id => $bud)
+                        {
+                                $name = 'budget_value'. "_" .$bud['id'];
+                                $this->dep_master[$name]['value'] = $this->input->post($name, TRUE);
+                        }
+			foreach ($this->dep_master1['dep'] as $id => $bud1)
+                        {
+                                $name1 = 'budget_value1'. "_" .$bud1['id'];
+                                $this->dep_master1[$name1]['value'] = $this->input->post($name1, TRUE);
+                        }
+
+                }
+		if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('template', 'report/update', $this->dep_master);
+                        return;
+                }
+
+		else{
+		foreach ($this->dep_master1['dep'] as $id => $bud1)
+                {
+			  $name1 = 'budget_value1'. "_" .$bud1['id'];
+			$life_time= $this->input->post($name1, TRUE);
+                                echo"---->".$life_time;
+			 $this->db->trans_start();
+                                        $update_data = array(
+                                                'life_time' => $life_time,
+                                                );
+                                         if ( ! $this->db->where('id', $bud1['id'])->update('depreciation_master', $update_data))
+                                         {
+                                                $this->db->trans_rollback();
+                                                $this->messages->add('Percentage of Asset is updated ', 'error');
+                                                $this->template->load('template', 'report/update', $this->dep_master);
+                                                return;
+                                        } else {
+                                                $this->db->trans_complete();
+                                        }
+
+			
+
+		}
+		foreach ($this->dep_master['dep'] as $id => $bud)
+                        {
+                                $name = 'budget_value'. "_" .$bud['id'];
+                                $new_percentage= $this->input->post($name, TRUE);
+			//	echo"!!!!!!!!!!!".$new_percentage;
+				$this->db->trans_start();
+                                        $update_data = array(
+                                                'percentage' => $new_percentage,
+                                                );
+                                         if ( ! $this->db->where('id', $bud['id'])->update('depreciation_master', $update_data))
+                                         {
+                                                $this->db->trans_rollback();
+                                                $this->messages->add('Percentage of Asset is updated ', 'error');
+                                                $this->template->load('template', 'report/update', $this->dep_master);
+                                                return;
+                                        } else {
+                                                $this->db->trans_complete();
+                                        }       
+
+                        }
+
+		}
+
 	
-       		/*Form validations*/
+       		/*Form validations
 		
 		$counter = 0;	
 		for($check = $this->ledger_data; $check > 0; $check--){
@@ -667,9 +779,10 @@ class Report extends Controller {
         		}
 			$counter++;
                         
-		}
+		}*/
+		
 
-		/* vaildating form*/
+		/* vaildating form
         	if ($this->form_validation->run() == FALSE)
         	{
 	                $this->messages->add(validation_errors(), 'error');
@@ -709,8 +822,9 @@ class Report extends Controller {
                     $this->messages->add('Update values.', 'success');
                 }
 
-		$this->logndb->close();
+		$this->logndb->close();*/
 		redirect('report/update');
+	//	$this->template->load('template', 'report/update', $this->dep_master);
              	return;
         }
 		
@@ -727,19 +841,14 @@ class Report extends Controller {
 		 $data['detail'] = $user_data;
 		 if($user_data->num_rows() == 0){
 	                $data['pico'] = '1';
-			$this->db->select('name, id');
-                        $this->db->from('ledgers')->where('name', $ERPMIM_Item_Brief_Desc);
+                        $this->db->from('new_asset_register')->where('asset_name', $ERPMIM_Item_Brief_Desc);
                         $led_details = $this->db->get();
 			foreach($led_details->result() as $row){
-				$data['led_name'] = $row->name;
+				$data['led_name'] = $row->asset_name;
 			}
-                        foreach($led_details->result() as $row1){
-				$this->db->from('entry_items')->where('ledger_id', $row->id);
-                                $entry_details = $this->db->get();
-				$data['detail'] = $entry_details;
+				$data['detail'] = $led_details;
 	
 			}
-		 }
 		 $this->template->load('template', 'report/duplicate_entry', $data);
                  return ;
 	
