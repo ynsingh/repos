@@ -1,4 +1,12 @@
-
+CREATE TABLE IF NOT EXISTS depreciation_master(
+                        id INTEGER (100)  NOT NULL AUTO_INCREMENT,
+                        parent_id INTEGER (100) NOT NULL,
+                        code varchar(100) NOT NULL,
+                        name VARCHAR (255) NOT NULL,
+                        percentage INTEGER (100) NOT NULL,
+                        life_time INTEGER (100) NOT NULL,
+                        PRIMARY KEY(id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('1',0, 200101,'Tangible Assets', 0, 10);
 insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('2',0, 200102,'Intengible assets', 0, 10);

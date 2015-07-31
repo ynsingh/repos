@@ -83,8 +83,11 @@
         $d=strtotime($fy_end_date);
         $fy_end_date= date("Y-m-d", $d);
 
+	$this->db->from('old_asset_register');
+        $asset_register=$this->db->get();
+	if($asset_register->num_rows() != 0){
 	echo "<tr class=\"tr-balance\"><td colspan=\"4\"><b>Previous Year Assets (BGAS)</b></td><td></td></tr>";
-	
+	}
 	$check_asset_register = $CI->Depreciation_model->is_asset_register_exist();
         if($check_asset_register == '1' && $today_date != $fy_end_date){//if2
 		if($search == ''){
@@ -180,9 +183,13 @@
                         }
 		}//if2
 			
-		echo "<tr class=\"tr-balance\"><td colspan=\"4\"><b>Current Year Assets (BGAS)</b></td><td></td></tr>";
-		echo"<tr>";
+		$this->db->from('new_asset_register');
+                $asset_register=$this->db->get();
+		if($asset_register->num_rows() != 0){
+		 echo "<tr class=\"tr-balance\"><td colspan=\"4\"><b>Current Year Assets (BGAS)</b></td><td></td></tr>";
+                echo"<tr>";
 
+		}
 		$amount=0;
 		$net_amount=0;
 		$net_dep_amount=0;
