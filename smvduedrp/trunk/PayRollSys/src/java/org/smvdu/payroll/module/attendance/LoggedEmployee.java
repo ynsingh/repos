@@ -5,15 +5,20 @@
 package org.smvdu.payroll.module.attendance;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.apache.commons.lang.StringUtils;
+import org.smvdu.payroll.api.email.Mail;
 import org.smvdu.payroll.beans.Employee;
+import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.EmployeeDB;
 import org.smvdu.payroll.beans.db.OrgProfileDB;
 import org.smvdu.payroll.user.ActiveProfile;
-import org.smvdu.payroll.user.UserHistory;
 
 /**
  *
@@ -78,12 +83,7 @@ public class LoggedEmployee implements Serializable {
     public void setPassTwo(String passTwo) {
         this.passTwo = passTwo;
     }
-    
-
-    
-
-    
-
+   
     public void setCurrentDay(int currentDay) {
         this.currentDay = currentDay;
     }
@@ -95,6 +95,10 @@ public class LoggedEmployee implements Serializable {
     private String password;
     private String date;
     private Employee profile;
+    private Employee empsuptdata;
+    private String city;
+    private String state;
+    private String address;
 
     public boolean isAdmin() {
         return admin;
@@ -153,13 +157,13 @@ public class LoggedEmployee implements Serializable {
         orgName = new OrgProfileDB().getProfileName(userOrgCode);
     }
 
-    public String invalidate() {
+   /* public String invalidate() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
         new EmployeeLoginController().invalidate(profile.getCode(), new CommonDB().getDate());
-        return "EmployeeLogin.jsf";
-    }
+        return "../Login.jsf";
+    }*/
 
-    public String validate() {
+   /* public String validate() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
         String s = new EmployeeLoginController().validate(loginId, password,userOrgCode);
         if (s != null) {
@@ -186,10 +190,18 @@ public class LoggedEmployee implements Serializable {
             return null;
         }
 
+    }*/
+    
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
     
-    
-
     public String getDate() {
         return date;
     }
@@ -209,19 +221,31 @@ public class LoggedEmployee implements Serializable {
 
     public void changePassword()
     {
-       
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UserInfo userBean =(UserInfo)fc.getExternalContext().getSessionMap().get("UserBean");
+        FacesMessage msg = new FacesMessage();
         if(!passOne.equals(passTwo))
         {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Password doesnot Matches",""));
-             return;
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            msg.setSummary("Password Are Not Matching.....Please Try Again.");
+            fc.addMessage("", msg);
+            return;
+             
         }
-        boolean b = new EmployeeLoginController().changePassword(loginId, passOne);
-
+        boolean b = new EmployeeLoginController().changePassword(userBean.getUserName(), passOne);
         if(b)
         {
             password = passOne;
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Password Changed",""));
+            new Mail().sendMailMessage("New Password",userBean.getUserName(),password);
+            //System.out.print(passOne+":3"+userBean.getUserName()+":"+password);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Password Changed and email has been sent successfully",""));
         }
+        else{
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Passwords Not Changed", "Passwords Not Updated");
+            FacesContext.getCurrentInstance().addMessage("msg", fm);
+            message = "<html><font color='red'>Password Change failed ! </font></html>";
+        }
+        
     }
 
     public String getPassword() {
@@ -241,9 +265,10 @@ public class LoggedEmployee implements Serializable {
 	 uh.setAction(false);
          uh.save();
          return "EmployeeLogin.jsf";*/
-           FacesContext facesContext = FacesContext.getCurrentInstance();
-           ExternalContext extContext = facesContext.getExternalContext(); 
-           extContext.redirect(extContext.getRequestContextPath()+"../Login.jsf");
+        new EmployeeLoginController().invalidate(profile.getCode(), new CommonDB().getDate());
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext extContext = facesContext.getExternalContext(); 
+        extContext.redirect(extContext.getRequestContextPath()+"../Login.jsf");
         
         
         }
@@ -272,11 +297,188 @@ public class LoggedEmployee implements Serializable {
     public Employee getProfile() {
        ActiveProfile ac = (ActiveProfile)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
        profile = ac.getProfile();
-       System.err.println(profile.getEmail());
-        return profile;
+       currentDate = new CommonDB().getDate();
+       String[] dd = currentDate.split("-");
+       currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
+       currentMonth = Integer.parseInt(dd[1]);
+       currentYear = Integer.parseInt(dd[0]);
+       currentDay = Integer.parseInt(dd[2]);
+       return profile;
     }
 
     public void setProfile(Employee profile) {
         this.profile = profile;
     }
+    public Employee getEmpSuptData() {
+        empsuptdata=new EmployeeDB().loadEmpsupportProfile(profile.getCode());
+        return empsuptdata;
+    }
+
+    public void setEmpSuptData(Employee empsuptdata) {
+        this.empsuptdata = empsuptdata;
+                
+    }
+    public String getCity() {
+        if(profile.getAddress()!=null){
+           city=StringUtils.substringBeforeLast(profile.getAddress(), ","); 
+           city=city.substring(city.lastIndexOf(',') + 1);
+        }
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+                
+    }
+    public String getState() {
+        if(profile.getAddress()!=null){
+        //state = profile.getAddress().substring(profile.getAddress().lastIndexOf(',') + 1);
+         state = profile.getAddress().substring(profile.getAddress().lastIndexOf(',') + 1);
+        //System.out.println("value of last string==state=="+state);
+       }
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+                
+    }
+    public String getAddress(){
+        if(profile.getAddress()!=null){
+        address=StringUtils.substringBeforeLast(profile.getAddress(), ",");
+        address =StringUtils.substringBeforeLast(address, ",");
+        //System.out.println("value of last string==address=="+address);
+       }
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+                
+    }
+    public void updateEmpCommInfo()
+    {
+        try{
+            FacesContext fc = FacesContext.getCurrentInstance();
+            UserInfo userBean =(UserInfo)fc.getExternalContext().getSessionMap().get("UserBean");
+            FacesMessage msg = new FacesMessage();
+            address=this.address.trim()+","+this.city.trim()+","+this.state.trim();
+            System.out.println("city:"+city+"state:"+state);
+            Exception ex=new EmployeeLoginController().updateCommInformation(profile.getCode(),profile.getPhone(),address);
+            if(ex == null) {
+                msg.setSeverity(FacesMessage.SEVERITY_INFO);
+                msg.setSummary("Communication Information updated successfully.");
+                fc.addMessage("", msg);
+                
+            }
+            else {
+                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                msg.setSummary("Communication Information not updated.....Please Try Again.");
+                fc.addMessage("", msg);
+                
+            }
+        
+        }
+        catch(Exception e)
+        {
+            
+            e.printStackTrace();
+        }
+    }  
+    String payband;
+    public String getPayBand(){
+       try{
+            PreparedStatement ps;
+            ResultSet rs;
+            Connection c = new CommonDB().getConnection();
+            ps = c.prepareStatement("select grd_name, grd_max, grd_min, grd_gp from salary_grade_master where grd_code='"+profile.getGrade()+"' ");
+            rs = ps.executeQuery();
+            rs.next();
+            payband=rs.getString(1)+"("+rs.getInt(2)+"-"+rs.getInt(3)+") - "+rs.getString(4);
+            System.out.println("value of payscalein getpayband=="+ rs.getString(1)+"("+rs.getInt(2)+"-"+rs.getInt(3)+") - "+rs.getString(4));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        
+       
+        return payband;
+    }
+    
+    String saldeptname;
+    public String getSalDeptName(){
+       // System.out.println("saldeptname====="+this.empsuptdata.getSaldept());
+       saldeptname=getDeptName(getEmpSuptData().getSaldept());
+        
+        return saldeptname;
+    }
+
+    public void setSalDeptName(String saldeptname) {
+        this.saldeptname = saldeptname;
+                
+    }
+    
+    String joineddesig;
+    public String getJoinDesigName(){
+       
+       joineddesig=getDesigName(getEmpSuptData().getJoindesig());
+       return joineddesig;
+    }
+    
+    public void setJoinDesigName(String joineddesig) {
+        this.joineddesig = joineddesig;
+            
+    }
+    
+    String joinedept;
+    public String getJoinDeptName(){
+            joinedept=getDeptName(getEmpSuptData().getJoindept());
+            return joinedept;
+    } 
+    
+    public void setgetJoinDeptName(String joinedept) {
+        this.joinedept = joinedept;
+            
+    }
+    //get depatment name through department code
+    public String getDeptName(int deptcode) {
+        try {
+            PreparedStatement ps;
+            ResultSet rs;
+            Connection c = new CommonDB().getConnection();
+            ps = c.prepareStatement("select dept_name from department_master where dept_code=?"); 
+            ps.setInt(1, deptcode);
+            rs = ps.executeQuery();
+            rs.next();
+            String deptname = rs.getString(1);
+            rs.close();
+            ps.close();
+            c.close();
+            return deptname;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    //get Designation code through designation code
+    public String getDesigName(int desigcode) {
+        try {
+            PreparedStatement ps;
+            ResultSet rs;
+            Connection c = new CommonDB().getConnection();
+            ps = c.prepareStatement("select desig_name from designation_master where desig_code=?"); 
+            ps.setInt(1, desigcode);
+            rs = ps.executeQuery();
+            rs.next();
+            String designame = rs.getString(1);
+            rs.close();
+            ps.close();
+            c.close();
+            return designame;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
 }

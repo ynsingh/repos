@@ -22,6 +22,7 @@ import org.smvdu.payroll.user.UserHistory;
 import javax.servlet.http.HttpServletResponse;
 import org.smvdu.payroll.beans.db.EmployeeDB;
 import org.smvdu.payroll.beans.db.InstituteListDB;
+import org.smvdu.payroll.module.attendance.EmployeeLoginController;
 
 /**
  *
@@ -696,13 +697,13 @@ public class UserInfo implements Serializable {
     
      public String EmployeeLogin() {
          try{
-             ActiveProfile ap = new ActiveProfile();
-            //ap.setOrgId(userOrgCode);
+            ActiveProfile ap = new ActiveProfile();
             ArrayList<Integer> rollesid=new UserDB().getuserTotalRole(userName);
             ArrayList<UserInfo> userorg=new UserDB().getuserTotalOrg(userName); 
             if(rollesid.size() ==1 && userorg.size() == 1){
                 int orgcode=new UserDB().getuserOrg(userName);
                 //System.out.println("employee interface==line 769=="+orgcode);
+                String markatt=new EmployeeLoginController().markAttendance(userName,orgcode);
                 ap.setOrgId(orgcode);
                 setUserOrgCode(orgcode);
                 //System.out.println("employee interface===="+orgcode+":"+userName);
@@ -712,6 +713,7 @@ public class UserInfo implements Serializable {
                 //System.out.println("employee interface=123==="+profile);
             }
             else{
+                String markatt=new EmployeeLoginController().markAttendance(userName,editedRecord.getUserOrgCode());
                 ap.setOrgId(editedRecord.getUserOrgCode());
                 setUserOrgCode(editedRecord.getUserOrgCode());
                 //System.out.println("employee interface===="+editedRecord.getUserOrgCode()+":"+userName);
@@ -726,18 +728,16 @@ public class UserInfo implements Serializable {
             currentMonth = Integer.parseInt(dd[1]);
             currentYear = Integer.parseInt(dd[0]);
             currentDay = Integer.parseInt(dd[2]);
-            //System.out.println("employee interface=123==="+profile);
             ap.setProfile(profile);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
             UserHistory uh = new UserHistory();
             uh.setUserId(profile.getEmpId());
             uh.setAction(true);
             uh.save();
-           //System.out.println(profile.getName() + ", " + profile.getDesigName() + "," + profile.getDeptName() + currentMonthName);
-           FacesContext facesContext = FacesContext.getCurrentInstance();
-           ExternalContext extContext = facesContext.getExternalContext(); 
-           extContext.redirect(extContext.getRequestContextPath()+"portal/EmployeeHome.jsf");
-           return "success" ;
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ExternalContext extContext = facesContext.getExternalContext(); 
+            extContext.redirect(extContext.getRequestContextPath()+"portal/EmployeeHome.jsf");
+            return "success" ;
          }
          catch(Exception e)
         {

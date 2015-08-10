@@ -56,17 +56,19 @@
                         String path = application.getRealPath("/");
 
             %>
-            <rich:panel header="Report Exporter" style="height:70px;">
-                    <rich:panel style="width:230px;float:left;text-align:center">
-                            <form action="<%= forward%>" method="post">
-                            <a4j:commandButton id="exbutton" reRender="pdf" value="ExportAsHTML" onclick="submit();" disabled="false"/>
-                            </form>
-                        </rich:panel>
-                    <rich:panel id="pdf" style="width:230px;float:left;text-align:center">
-                        <h:form>
-                            <h:commandButton value="ExportAsPDF" action="#{reportClass.AnnualPfReport}" disabled="false"/>
-                        </h:form>
-                    </rich:panel>
+            <rich:panel header="Salary Slip of Current Month : #{UserBean.currentMonthName}">
+                <h:panelGrid columns="3" style="text-align:center;padding-left:30%;padding-right:30%" >
+                    <h:form>
+                        <a4j:commandButton value="ExportAsHTML"action="#{reportClass.employeeSalarySlipAsHTML}" disabled="false"/>
+                    </h:form>
+                    <h:form>
+                        <h:commandButton value="ExportAsPDF" action="#{reportClass.employeeSalarySlipAsPDF}" disabled="false"/>
+                    </h:form>
+                   <%-- <h:form>
+                        <h:commandButton value="ExportAsExcel" action="#{reportClass.employeeSalarySlipAsExcel}" disabled="false"/>
+                    </h:form>--%>
+                    
+                </h:panelGrid> 
             </rich:panel>
         </f:view>
     </body>

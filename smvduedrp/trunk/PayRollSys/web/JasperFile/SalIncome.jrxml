@@ -35,7 +35,7 @@ and year(sd_date) = $P{year} and sh_type=1 and sd_emp_code=$P{emp_code}]]>
 				<text><![CDATA[Salary Receipts:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="3" y="15" width="85" height="1"/>
+				<reportElement x="0" y="15" width="80" height="1"/>
 			</line>
 		</band>
 	</pageHeader>

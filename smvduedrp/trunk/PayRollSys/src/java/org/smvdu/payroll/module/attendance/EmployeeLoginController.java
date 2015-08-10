@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.faces.context.FacesContext;
+import org.smvdu.payroll.api.email.Mail;
 import org.smvdu.payroll.beans.db.CommonDB;
 
 /**
@@ -52,15 +53,17 @@ public class EmployeeLoginController {
 
 
 
-    public boolean changePassword(String empId,String newPass)
+    public boolean changePassword(String email,String newPass)
     {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update employee_login_master set el_password=? where "
-                    + "el_login_name=?");
+            /*ps=c.prepareStatement("update employee_login_master set el_password=? where "
+                    + "el_login_name=?");*/
+            ps=c.prepareStatement("update user_master set user_pass=? where "
+                    + "user_name=?");
             ps.setString(1, newPass);
-            ps.setString(2, empId);
+            ps.setString(2, email);
             ps.executeUpdate();
             ps.close();
             c.close();
@@ -82,6 +85,7 @@ public class EmployeeLoginController {
                     + "where att_emp_id=? and att_date=?");
             ps.setString(1, empCode);
             ps.setString(2, date);
+            System.out.println("empCode:==="+empCode+":"+date);
             ps.executeUpdate();
             ps.close();
             c.close();
@@ -92,7 +96,7 @@ public class EmployeeLoginController {
             e.printStackTrace();
         }
     }
-    public String validate(String user,String password,int orgId)  {
+   /* public String validate(String user,String password,int orgId)  {
         try
         {
             String empCode = null;
@@ -130,7 +134,67 @@ public class EmployeeLoginController {
             e.printStackTrace();
             return null;
         }
+    }*/
+    public String markAttendance( String emailId,int orgId)  {
+        try
+        {
+            //String empCode = null;
+            Connection c = new CommonDB().getConnection();
+            /*ps=c.prepareStatement("select el_id,att_id from employee_login_master "
+                    + "left join attendance_master on att_emp_id = el_id and att_date=now()"
+                    + "where el_login_name=? and el_password=? and el_org_id=?");*/
+            ps=c.prepareStatement("select  emp_code,att_id from employee_master "
+                    + "left join attendance_master on att_emp_id = emp_code and att_date=now()"
+                    + "where emp_email=? and emp_org_code=?");
+            //ps.setString(1, empcode);
+            ps.setString(1, emailId);
+            ps.setInt(2, orgId);
+            rs=ps.executeQuery();
+            if(rs.next())
+            {   
+                String code = rs.getString(1);
+                int markId = rs.getInt(2);
+                System.out.println("Emp Code : "+code+", Mark ID "+markId);
+                //empCode=code;
+                if(markId<=0)
+                {
+                    ps.close();
+                    ps=c.prepareStatement("insert into attendance_master(att_emp_id,"
+                        + "att_date,att_time_in,att_time_out) values(?,now(),(now()),(now()))");
+                    ps.setString(1, code);
+                    ps.executeUpdate();
+                }
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return "success";
+        }
+        catch(Exception e)
+        {
+            
+            e.printStackTrace();
+            return null;
+        }
     }
-    
+    public Exception updateCommInformation(String empCode,String phone,String address){
+        try{
+            Connection conn = new CommonDB().getConnection();
+            ps=conn.prepareStatement("update employee_master set emp_phone=?, emp_address=?"
+                    +"where emp_code='"+empCode.trim()+"'");
+            ps.setString(1, phone);
+            ps.setString(2, address);
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+            return null;
+        }
+        catch(Exception e)
+        {
+            
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }

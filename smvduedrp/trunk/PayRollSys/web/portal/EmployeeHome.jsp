@@ -38,17 +38,15 @@
 <%@ taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
 <%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
 <!DOCTYPE html>
-<f:view>
+
 <html>
     <head>
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <%--<title>erp-360 | Welcome</title>--%>
-            <title>PayRollSystem | Welcome</title>
-            <%--<h:graphicImage url="/img/payrollheader.png" width="1246" height="140" style="0" />--%>
+        <title>PayRollSystem | Employee Home</title>
         <link rel="stylesheet" type="text/css" href="../css/reset.css"/>
-        <link rel="stylesheet" type="text/css" href="../css/table.css"/>
-        <link rel="stylesheet" type="text/css" href="../css/layout.css"/>
+        <%--<link rel="stylesheet" type="text/css" href="../css/table.css"/>
+        <link rel="stylesheet" type="text/css" href="../css/layout.css"/>--%>
         <link rel="stylesheet" type="text/css" href="../css/mainpage.css"/>
         <script type="text/javascript">
 
@@ -75,27 +73,38 @@
         </script>
     </head>
     <body id="" class="mainpage">
-         <div style=" margin-left: 10%; margin-right: 10%; margin-top: 1%">
-                <h:graphicImage url="/img/payrollheader.png"   width="100%" height="100%"/>         
+        <f:view>
+            <div style=" margin-left: 10%; margin-right: 10%; margin-top: 1%">
+               <h:graphicImage url="/img/payrollheader.png"   width="100%" height="100%"/>         
                 <rich:panel style="background-color:#f5dbdb;">
-                    <h:panelGrid width="90%" columns="2">
+                    <h:panelGrid width="90%" columns="4">
                         <h:panelGrid width="90%" columns="3">
-                            <h:outputText style="font-size:1.2em;font-color:blue;font-weight:bold;" value="Welcome : #{LoggedEmployee.profile.name}  "/>
+                            <h:outputText style="font-size:1.2em;font-color:blue;font-weight:bold;" value="#{LoggedEmployee.profile.name}  "/>
                             <h:outputText style="font-size:1.2em;font-color:blue;font-weight:bold;" value="Department : #{LoggedEmployee.profile.deptName}"/>
                             <h:outputText style="font-size:1.2em;font-color:blue;font-weight:bold;" value="Designation : #{LoggedEmployee.profile.desigName}"/>
-                            <h:outputText  value="Today :  #{LoggedEmployee.currentDay  },#{LoggedEmployee.currentMonthName}, Attendance Marked"/>
+                            <h:outputText  value="Today :  #{LoggedEmployee.currentDay  } #{LoggedEmployee.currentMonthName}, Attendance Marked"/>
                            
                         </h:panelGrid>
-                        <h:panelGrid >
-                            <h:form>
-                                <%--<h:commandButton id="lout" action="#{LoggedEmployee.logout}"image="/img/lout.gif" value="Logout"/>--%>
-                                <h:commandButton id="lout" action="#{LoggedEmployee.logout}" value="Logout"/>
-                                <%--<rich:toolTip value="Click to Logout" for="lout"/>--%>
-
-                            </h:form>
-                            <h:commandButton onclick="Richfaces.showModalPanel('cp');" value="Change Password"/>
+                        <h:panelGrid style="text-align:right">
                             
-                        </h:panelGrid>
+                            <h:form>
+                                <h:commandButton id="lout" action="#{LoggedEmployee.logout}" value="Logout"/>
+                            </h:form>
+                             <h:commandButton onclick="Richfaces.showModalPanel('cp');" value="Change Password"/>
+                          
+                         <%-- <div class="errMessage">
+                            <h:panelGrid columns="2">
+                                <rich:messages>
+                                    <f:facet name="infoMarker">
+                                        <h:graphicImage url="/img/success.png"/>
+                                    </f:facet>
+                                    <f:facet name="errorMarker">
+                                        <h:graphicImage url="/img/err.png"/>
+                                    </f:facet>
+                                </rich:messages>
+                            </h:panelGrid>
+                        </div>--%>
+                             </h:panelGrid>
                     </h:panelGrid>
                 </rich:panel>
 
@@ -119,7 +128,7 @@
                         <h:form>
                             <h:panelGrid  columns="1">
                                 <h:commandButton onclick="return loadIframe('ifrm', 'UpdateProfile.jsf')" value="Profile"/>
-                                <h:commandButton onclick="return loadIframe('ifrm', '../report/ReportExporter.jsf?fwdLink=SingleMonthlyPayroll.jsf')" value="Monthly Salary Slip"/>
+                                <h:commandButton onclick="return loadIframe('ifrm', '../report/ReportExporter.jsf')" value="Monthly Salary Slip"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'AttendanceReport.jsf')" value="Monthly Attendance Report"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'TimeManager.jsf')" value="My TaskPad"  disabled="true"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'DailyWorkReport.jsf')" value="My daily Worksheet" disabled="true"/>
@@ -136,7 +145,7 @@
                                                                
                             </h:panelGrid>
                         </h:form>
-                        <%--<rich:panel id="setdate" header="User Details">
+                       <%-- <rich:panel id="setdate" header="User Details">
                             <h:form>
                                 <h:outputText value="Current Date | "/>
                                 <h:outputText value="#{LoggedEmpoyee.currentMonthName} "/>
@@ -153,36 +162,61 @@
                         </rich:panel>--%>
 
                     </rich:panel>
-                            <rich:modalPanel id="cp">
-                <h:form>
-                    
-                        <rich:panel header="Change Password">
+                    <rich:modalPanel id="cp"  width="300" height="200" autosized="true" >
+                        <div class="errMessage">
                             <h:panelGrid columns="2">
-                        <h:outputText value="New Password"/>
-                        <h:inputSecret value="#{LoggedEmployee.passOne}"/>
-                        <h:outputText value="Confirm"/>
-                        <h:inputSecret value="#{LoggedEmployee.passTwo}"/>
-                        
-                        </h:panelGrid>
-                         
-                        </rich:panel>
-                    <a4j:commandButton value="Change Password" action="#{LoggedEmployee.changePassword}"/>
-                        <h:commandButton onclick="Richfaces.hideModalPanel('cp');" value="Close"/>
-                    
-                </h:form>
-            </rich:modalPanel>
+                                <rich:messages>
+                                    <f:facet name="infoMarker">
+                                        <h:graphicImage url="/img/success.png"/>
+                                    </f:facet>  
+                                   <f:facet name="errorMarker">
+                                        <h:graphicImage url="/img/err.png"/>
+                                    </f:facet>
+                                </rich:messages>
+                            </h:panelGrid>
+                        </div>
+                        <f:facet name="header">
+                            <h:panelGroup>
+                                <h:outputText value="Change Password"></h:outputText>
+                            </h:panelGroup>
+                        </f:facet>
+                        <f:facet name="controls">
+                            <h:panelGroup>
+                                <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelinkpnl"/>
+                                <rich:componentControl for="cp" attachTo="hidelinkpnl" operation="hide" event="onclick"/>
+                            </h:panelGroup>
+                        </f:facet>
+                     
+                        <h:form>
+                           
+                           <h:panelGrid columns="2" style="text-align:center;padding-left:10%;padding-right:10%" >
+                                <h:outputText value="New Password "/>
+                                <h:inputSecret value="#{LoggedEmployee.passOne}"/>
+                                <h:outputText value="Confirm Password "/>
+                                <h:inputSecret value="#{LoggedEmployee.passTwo}"/>
+                           </h:panelGrid>
+                           <br/>
+                           <rich:separator/> 
+                           <br/>
+                           <h:panelGrid columns="2" style="text-align:center;padding-left:10%;padding-right:10%" >
+                            <a4j:commandButton value="Submit" action="#{LoggedEmployee.changePassword}"/>
+                            <a4j:commandButton value="Close" onclick="#{rich:component('cp')}.hide();"/>
+                            </h:panelGrid>
+                        </h:form>
+                       
+                </rich:modalPanel>
 
                     </div>
                 <div class="body">
                     <div class="content-area" >
-                       <%-- <iframe name="ifrm" id="ifrm" src="AttendanceReport.jsf" style="background-color:#CFDEFF" --%>
-                       <iframe name="ifrm" id="ifrm" src="AttendanceReport.jsf" style="background-color:#CFDEFF"
-                        width="100%" height="600px">Your browser doesn't support iframes.</iframe>
+                        <iframe name="ifrm" id="ifrm" src="UpdateProfile.jsf" style="background-color:#CFDEFF" 
+                        width="100%" height="625px">Your browser doesn't support iframes.</iframe>
                    </div>
                       
                 </div>
                        
            <rich:toolBar width="100%;" height="25px" > Developed by : SMVDU Team, and IIT KANPUR Team </rich:toolBar>
+        </f:view>
        </body>
 </html>
-</f:view>
+
