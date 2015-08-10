@@ -184,6 +184,44 @@ class Group_model extends Model {
 		
 		return $description;
 	}
+
+        function get_group_description_agg($code, $accname)
+        {
+
+                $CI =& get_instance();
+                $db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accname);
+                $accdetail = $db1->get();
+                foreach ($accdetail->result() as $row)
+                {
+                        $db_name = $row->databasename;
+                        $db_username = $row->uname;
+                        $db_password = $row->dbpass;
+                        $host_name = $row->hostname;
+                        $port = $row->port;
+                }
+                try{
+                        $dbcon = new PDO("mysql:host=$host_name;dbname=$db_name", $db_username, $db_password);
+                        $mgroup = "select * from groups where code=$code";
+                        $stmt = $dbcon->query($mgroup);
+
+                        if($stmt != false)
+                        {
+                                foreach ($stmt as $row)
+                                {
+					$description1 = $row['group_description'];
+                                }
+                        }
+                }
+                catch(PDOException $e)
+                {
+                        echo $e->getMessage();
+                }
+
+                return $description1;
+        }
+
+
 }
 
 ?>

@@ -119,7 +119,7 @@ $(document).ready(function() {
 					echo " | ";
 				}
                                 if (check_access('manager')) {
-                                        echo anchor('user/aggregator', 'Aggregator', array('title' => "Administer", 'class' => 'anchor-link-b'));
+                                        echo anchor('user/aggregator', 'Aggregater', array('title' => "Aggregater", 'class' => 'anchor-link-b'));
                                         echo " | ";
                                 }
 

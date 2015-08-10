@@ -1646,8 +1646,6 @@ var $ledgers = array();
                         die($message);
                 }
 
-//			$op_bal_q = mysql_fetch_assoc($result);
-//echo "shobhi";
 		if($result != ''){
                 	while($row = mysql_fetch_assoc($result))
                         {
@@ -1690,7 +1688,7 @@ var $ledgers = array();
                         $host_name = $row->hostname;
                         $port = $row->port;
                 }
-                $con = mysql_connect($host_name, $db_username, $db_password);
+                $con = @mysql_connect($host_name, $db_username, $db_password);
                 $op_balance = array();
                 if($con){
                         $value = mysql_select_db($db_name, $con);
@@ -1748,7 +1746,7 @@ var $ledgers = array();
                         $host_name = $row->hostname;
                         $port = $row->port;
                 }
-                $con = mysql_connect($host_name, $db_username, $db_password);
+                $con = @mysql_connect($host_name, $db_username, $db_password);
                 $op_balance = array();
                 if($con){
                         $value = mysql_select_db($db_name, $con);
@@ -1814,7 +1812,7 @@ var $ledgers = array();
                         $host_name = $row->hostname;
                         $port = $row->port;
                 }
-                $con = mysql_connect($host_name, $db_username, $db_password);
+                $con = @mysql_connect($host_name, $db_username, $db_password);
                 $op_balance = array();
                 if($con){
                         $value = mysql_select_db($db_name, $con);
@@ -1869,7 +1867,7 @@ var $ledgers = array();
                         $host_name = $row->hostname;
                         $port = $row->port;
                 }
-                $con = mysql_connect($host_name, $db_username, $db_password);
+                $con = @mysql_connect($host_name, $db_username, $db_password);
                 $op_balance = array();
                 if($con){
                         $value = mysql_select_db($db_name, $con);
@@ -2045,6 +2043,66 @@ var $ledgers = array();
                 }
                 return $options;
         }
+
+	/** code for Aggregation **/
+
+        function get_ledger_description_agg($code, $accname)
+	{
+/*    	        $this->db->select('ledger_description');
+        	$this->db->from('ledgers')->where('code =', $code);
+	        $ledger_result = $this->db->get();
+        	if ($ledger = $ledger_result->row())
+                	return $ledger->ledger_description;
+        	else
+        	        return 0;
+*/
+                $CI =& get_instance();
+                $db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accname);
+                $accdetail = $db1->get();
+                foreach ($accdetail->result() as $row)
+                {
+                        $db_name = $row->databasename;
+                        $db_username = $row->uname;
+                        $db_password = $row->dbpass;
+                        $host_name = $row->hostname;
+                        $port = $row->port;
+                }
+                try{
+                        $dbcon = new PDO("mysql:host=$host_name;dbname=$db_name", $db_username, $db_password);
+                        $mgroup = "select * from ledgers where code=$code";
+                        $stmt = $dbcon->query($mgroup);
+
+                        if($stmt != false)
+                        {
+                                foreach ($stmt as $row)
+                                {
+                                        $description = $row['ledger_description'];
+                                }
+                        }
+                }
+                catch(PDOException $e)
+                {
+                        echo $e->getMessage();
+                }
+                return $description;
+    	}
+        function get_ledger_balance_agg($ledger_id,$accname)
+        {
+		
+                list ($op_bal, $op_bal_type) = $this->get_op_balance_agg($ledger_id,$accname);
+		$ledger_id;
+                $dr_total = $this->get_dr_total1_agg($ledger_id,$accname);
+                $cr_total = $this->get_cr_total1_agg($ledger_id,$accname);
+                $total = float_ops($dr_total, $cr_total, '-');
+                if ($op_bal_type == "D")
+                        $total = float_ops($total, $op_bal, '+');
+                else
+                        $total = float_ops($total, $op_bal, '-');
+                return $total;
+	
+        }
+
 	
 }
 

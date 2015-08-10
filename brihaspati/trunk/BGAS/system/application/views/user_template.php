@@ -87,7 +87,7 @@
 				if(check_access('administer')){
 					if($type=='agg')
 					{
-					echo anchor('admin/aggregator', 'Aggregator', array('title' => "Aggregator", 'class' => 'anchor-link-b'));
+					echo anchor('admin/aggregator', 'Aggregater', array('title' => "Aggregater", 'class' => 'anchor-link-b'));
 					echo " | ";
 					}
 				}

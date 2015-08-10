@@ -68,7 +68,7 @@ $lngt=strlen($aggact);
 					
 					if($lngt!=0)					
 					{
-                                        	echo anchor('admin/aggregator', 'Aggregator', array('title' => "Administer", 'class' => 'anchor-link-b'));
+                                        	echo anchor('admin/aggregator', 'Aggregater', array('title' => "Aggregater", 'class' => 'anchor-link-b'));
                                         	echo " | ";
 					}
                                 }

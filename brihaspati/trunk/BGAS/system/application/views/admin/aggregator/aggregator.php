@@ -26,13 +26,20 @@
                 <div class="settings-container">
                         <div class="settings-title">
                                 <?php echo anchor('user/aggregatebudget', 'Aggregate Budget'); ?>
-                                <?//php echo anchor('aggregatebudget', 'Aggregate Budget'); ?>
                         </div>
                         <div class="settings-desc">
                                 View aggregate Budget of Multiple accounts selected
                         </div>
                 </div>
 
+                <div class="settings-container">
+                        <div class="settings-title">
+                                <?php echo anchor('user/aggregatechartofaccounts', 'Aggregate Chart of Accounts'); ?>
+                        </div>
+                        <div class="settings-desc">
+                                View aggregate Chart of Multiple accounts selected
+                        </div>
+                </div>
 	</div>
 </div>
 

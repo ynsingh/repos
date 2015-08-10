@@ -821,7 +821,7 @@ class User extends Controller {
 
     function aggregatebudget()
     {
-		$this->load->model('Budget_model');
+	$this->load->model('Budget_model');
         $this->load->helper('array');
         $this->template->set('page_title', 'Aggregate Budget');
 
@@ -841,19 +841,17 @@ class User extends Controller {
         }
         $accarray = array();
         $mergebudgetfile = "";
-		$acctpath= $this->upload_path1= realpath(BASEPATH.'../acct');
+	$acctpath= $this->upload_path1= realpath(BASEPATH.'../acct');
 
         //get the account from aggregateaccounts to create mergeraccount.
 
-	    $accarray = explode(",", $acountlist);
-	    for($i = 0; $i<sizeof($accarray); $i++)
-	    {
-	        $accname = $accarray[$i];
-	        //creation of xml file
-	        //$budgetfilename  = $accname."_budget.xml";
+	$accarray = explode(",", $acountlist);
+	for($i = 0; $i<sizeof($accarray); $i++)
+	{
+		$accname = $accarray[$i];
 	        //create merge file.
 	        $mergebudgetfile = $mergebudgetfile.$accname;
-		}
+	}
         for($i = 0 ; $i<sizeof($accarray); $i++)
         {
 	        $accname=$accarray[$i];
@@ -861,9 +859,9 @@ class User extends Controller {
         	$ttdel=$acctpath."/".$file_name1;
 
         	//deletion of xml file .
-            if (file_exists($ttdel))
+            	if (file_exists($ttdel))
         	        unlink($ttdel);
-		}
+	}
 
         $file_name1=$mergebudgetfile."_budget.xml";
         $ttdel1=$acctpath."/".$file_name1;
@@ -874,8 +872,8 @@ class User extends Controller {
         //path for storing xm file.
         $totalbudget = 0.00;
         $budgetopen = 0.00;
-		$totalconsume = 0.00;
-		$budgetconsume = 0.00;
+	$totalconsume = 0.00;
+	$budgetconsume = 0.00;
 
 
         //code for creating accname_budget.xml file of each accounts.
@@ -888,8 +886,6 @@ class User extends Controller {
             //create merge file.
             //$mergebudgetfile = $mergebudgetfile.$accname;
 
-            $a = 2;
-            $counter = 0;
             $budget_arr = array();
             $final_budget = array();
             //getting budget detail of account.
@@ -905,51 +901,53 @@ class User extends Controller {
 	            $group_id = $bud['group_id'];
 	            $allowedover = $bud['allowedover'];
 	            $consume_amount = $bud['consume_amount'];
-				$noofdigit = strlen($code);
+		    $noofdigit = strlen($code);
 
-                if($code == "50")
-                {
-                    $totalbudget = $totalbudget + $bd_balance;
-					$totalconsume = $totalconsume + $consume_amount;
-                }
-                if($noofdigit == "4")
-                {
-                    $budgetopen = $budgetopen + $bd_balance;
-					$budgetconsume = $budgetconsume + $consume_amount;
-                }
-                $doc = new DOMDocument();
-                $doc->formatOutput = true;
-                $tt=$acctpath."/".$budgetfilename;
+		    if($code == "50")
+                    {
+                    	$totalbudget = $totalbudget + $bd_balance;
+		    	$totalconsume = $totalconsume + $consume_amount;
+                    }
+                    if($noofdigit == "4")
+                    {
+                    	$budgetopen = $budgetopen + $bd_balance;
+			$budgetconsume = $budgetconsume + $consume_amount;
+                    }
+                    $doc = new DOMDocument();
+                    $doc->formatOutput = true;
+                    $tt=$acctpath."/".$budgetfilename;
 
-                if(file_exists($tt))
-                {
-                    $doc->preserveWhiteSpace = false;
-                    $doc->load($tt);
-                    $Budgets = $doc->firstChild;
+		    //append node with attribute in accounts xml file if file already exist
 
-                    $Budget_Name = $doc->createElement('Budget_Name');
+                    if(file_exists($tt))
+                    {
+/*                    	$doc->preserveWhiteSpace = false;
+	                $doc->load($tt);
+                    	$Budgets = $doc->firstChild;
 
-                    $Code = $doc->createElement('Code');
-                    $textNode = $doc->createTextNode($code);
-                    $Code->appendChild($textNode);
-                    $Budget_Name->appendChild($Code);
+                    	$Budget_Name = $doc->createElement('Budget_Name');
 
-                    $Budgetname = $doc->createElement('Budgetname');
-                    $textNode = $doc->createTextNode($budgetname);
-                    $Budgetname->appendChild($textNode);
-                    $Budget_Name->appendChild($Budgetname);
+                    	$Code = $doc->createElement('Code');
+                    	$textNode = $doc->createTextNode($code);
+                    	$Code->appendChild($textNode);
+                    	$Budget_Name->appendChild($Code);
 
-                    $Bd_balance = $doc->createElement('Bd_balance');
-                    $textNode = $doc->createTextNode($bd_balance);
-                    $Bd_balance->appendChild($textNode);
-                    $Budget_Name->appendChild($Bd_balance);
+                    	$Budgetname = $doc->createElement('Budgetname');
+                    	$textNode = $doc->createTextNode($budgetname);
+                    	$Budgetname->appendChild($textNode);
+                    	$Budget_Name->appendChild($Budgetname);
 
-                    $Group_id = $doc->createElement('Group_id');
-                    $textNode = $doc->createTextNode($group_id);
-                    $Group_id->appendChild($textNode);
-                    $Budget_Name->appendChild($Group_id);
+                    	$Bd_balance = $doc->createElement('Bd_balance');
+                    	$textNode = $doc->createTextNode($bd_balance);
+                    	$Bd_balance->appendChild($textNode);
+                    	$Budget_Name->appendChild($Bd_balance);
 
-                    $Allowedover = $doc->createElement('Allowedover');
+                    	$Group_id = $doc->createElement('Group_id');
+                    	$textNode = $doc->createTextNode($group_id);
+                    	$Group_id->appendChild($textNode);
+                    	$Budget_Name->appendChild($Group_id);
+
+                    	$Allowedover = $doc->createElement('Allowedover');
                     $textNode = $doc->createTextNode($allowedover);
                     $Allowedover->appendChild($textNode);
                     $Budget_Name->appendChild($Allowedover);
@@ -964,11 +962,32 @@ class User extends Controller {
                     $handle = fopen($tt, "w");
                     fwrite($handle, $ttt);
                     fclose($handle);
+*/
+	                    $doc->preserveWhiteSpace = false;
+                            $doc->load($tt);
+                            $Budgets = $doc->firstChild;
+                            $Code = $doc->createElement('Code');
+                            $Code->setAttribute('id', $code);
 
-                }
-                else
-                {
-                    $r = $doc->createElement( "Budgets" );
+                            $Code->setAttribute('Budgetname', $budgetname);
+                            $Code->setAttribute('Bd_balance', $bd_balance);
+                            $Code->setAttribute('Group_id', $group_id);
+                            $Code->setAttribute('Allowedover', $allowedover);
+                            $Code->setAttribute('Consume_amount', $consume_amount);
+
+                            $Budgets->appendChild($Code);
+
+                            $ttt=$doc->saveXML();
+                            $handle = fopen($tt, "w");
+                            fwrite($handle, $ttt);
+                            fclose($handle);
+
+
+                    }
+		    ////create account xml file and insert node and attribute in xml .
+                    else
+                    {
+/*                    $r = $doc->createElement( "Budgets" );
                     $doc->appendChild( $r );
                     $b = $doc->createElement( "Budget_Name" );
 
@@ -1000,15 +1019,31 @@ class User extends Controller {
 
                     $doc->save($tt);
                     $doc->saveXML();
-                }
-                $counter++;
+*/
+	                    $r = $doc->createElement( 'Budgets' );
+        	            $doc->appendChild( $r );
+
+                            $Code = $doc->createElement('Code');
+                            $Code->setAttribute('id', $code);
+                            $Code->setAttribute('Budgetname', $budgetname);
+                            $Code->setAttribute('Bd_balance', $bd_balance);
+                            $Code->setAttribute('Group_id', $group_id);
+                            $Code->setAttribute('Allowedover', $allowedover);
+                            $Code->setAttribute('Consume_amount', $consume_amount);
+
+                            $r->appendChild($Code);
+
+                            $doc->save($tt);
+                            $doc->saveXML();
+		   
+                   }
             }
         }
 
-        //merger of budget data of accounts.
+        //merger of budget xml file start.
 
         $length1 = array();
-
+        // get max length of all xml file
         for($i = 0 ; $i<sizeof($accarray); $i++)
         {
 	        $accname=$accarray[$i];
@@ -1019,11 +1054,12 @@ class User extends Controller {
 	        if (file_exists($tt1))
 	        {
 	             $doc->load($tt1);
-		        // count all Liability_Name elements
-		        $len1 = $doc->getElementsByTagName('Budget_Name')->length;
-		        $length1[$i] = $len1;
-            }
+		     // count all <Code/> elements
+		     $len1 = $doc->getElementsByTagName('Budget_Name')->length;
+                }
+		$length1[$i] = $len1;
         }
+/*
         $max1=0;
         if(sizeof($length1)!==0)
         {
@@ -1168,17 +1204,242 @@ class User extends Controller {
                 $doc->saveXML();
             }
         }
+*/
+                //copy the fisrt account xml file in to merge accounts file
+                $max1 = 0;
+                if(sizeof($length1)!==0)
+                {
+                        $max1 = max($length1);
+                }
 
-        $data['accounts'] = $file_name;
-        $data['max'] = $max1;
-		$data['totalbudget'] = $totalbudget;
-		$data['budgetopen'] = $budgetopen;
-		$data['totalconsume'] = $totalconsume;
-		$data['budgetconsume'] = $budgetconsume;
-//      $this->template->load('user_template', 'user/aggregatereports/aggregatebudget',$data);
+                $accist = "";
+                $accist =$accarray[0];
+                $accist = $accist."_budget.xml";
+
+                $mergefilename = $mergebudgetfile."_budget.xml";
+                $ttt1 = $acctpath."/".$accist;
+                $ttt=$acctpath."/".$mergefilename;
+                //echo "MergeFile==>".$ttt;
+                $file = fopen($ttt1, 'rb');
+                $newfile = fopen($ttt, 'wb');
+                while(($line = fgets($file)) !== false) {
+                        fputs($newfile, $line);
+                }
+                fclose($newfile);
+                fclose($file);
+                /************* Merging of Xml *************/
+
+                /* fisrt we will select 2nd account from accountlist(beacuse ist account is already stored in
+                 * megerd account list.then we take ist node from 2nd account and search it in merge account
+                 * Case ist if its found so we just match budgetname if its match so budget name is same otherwise
+                 * budgetname will be combined and merge file will be update with all new attribue.
+                 * Case2nd if its not found append in merge file
+                 */
+                for($j=1;$j<sizeof($accarray);$j++)
+                {
+                        $accname1=$accarray[$j];
+                        $file_name=$accname1."_budget.xml";
+                        $tt=$acctpath."/".$file_name;
+                        $p=0;
+                        for($i=0; $i<$max1; $i++)
+                        {
+                                $doc = new DomDocument();
+                                $doc->formatOutput = true;
+                                $doc->load($tt);
+                                $xpath = new DomXPath($doc);
+
+        //Below two lines are creating problem..find the solution
+        //I have put 0 in place $i ,change it if test not succeed.
+
+                                $budgetcode = $xpath->query("/Budgets/Code");
+                                $Budgetcode = $budgetcode->item($i)->getAttribute('id');
+                                $Budgetname1 = $budgetcode->item($i)->getAttribute('Budgetname');
+                                $Budgetbdbalance = $budgetcode->item($i)->getAttribute('Bd_balance');
+
+                                $Budgetgroupid = $budgetcode->item($i)->getAttribute('Group_id');
+                                $Budgetconsumeamount = $budgetcode->item($i)->getAttribute('Consume_amount');
+                                $flag = false;
+                                //echo $ttt;
+                                $doc1 = new DOMDocument();
+                                $doc1->formatOutput = true;
+                                //$doc1->load($tt1);
+                                $doc1->load($ttdel1);
+                                //print_r($doc1->getElementsByTagName('id'));
+                                $t=0;
+                                foreach ($doc1->getElementsByTagName('Code') as $node)
+                                {
+                                        $node->getAttribute('id');
+                                        if(!($node->getAttribute('id')== $Budgetcode))
+                                        {
+                                                $flag=true;
+                                        }
+                                        else
+                                        {
+                                                $flag=false;
+                                                break;
+                                        }
+
+                                }
+                                if($flag==false)
+                                {
+                                        for($k=0; $k<$max1; $k++)
+                                        {
+                                                $sumbdbalance = 0.00;
+                                                $sumconsumeamt = 0.00;
+
+                                                $xpath1 = new DomXPath($doc1);
+                                                $budgetcode2 = $xpath1->query("/Budgets/Code");
+                                                $Budgetcode2 = $budgetcode2->item($k)->getAttribute('id');
+                                                if($Budgetcode == $Budgetcode2)
+                                                {
+                                                        $Budgetname2 = $budgetcode2->item($k)->getAttribute('Budgetname');
+                                                        if($Budgetname1 == $Budgetname2)
+                                                        {
+                                                                $Budgetname1 = $Budgetname1;
+                                                        }
+                                                        else
+                                                        {
+                                                                $Budgetname1 = $Budgetname1 . "+" .$Budgetname2;
+                                                        }
+                                                        $Budgetbdbalance2 = $budgetcode2->item($k)->getAttribute('Bd_balance');
+                                                        $Budgetconsumeamount2 = $budgetcode2->item($k)->getAttribute('Consume_amount');
+                                                        $sumbdbalance = $Budgetbdbalance + $Budgetbdbalance2;
+                                                        $sumconsumeamt = $Budgetconsumeamount + $Budgetconsumeamount2;
+
+                                                        $budgetcode2->item($k)->setAttribute('Budgetname', $Budgetname1);
+
+                                                        $budgetcode2->item($k)->setAttribute('Bd_balance', $sumbdbalance);
+                                                        $budgetcode2->item($k)->setAttribute('Consume_amount', $sumconsumeamt);
+
+                                                        $tttt = $doc1->saveXML();
+
+                                                        $handle = fopen($ttdel1, "w");
+                                                        fwrite($handle, $tttt);
+                                                        fclose($handle);
+
+
+                                                        break;
+                                                }
+
+
+                                        }
+                                }
+                                else
+                                {
+                                        $Budgets = $doc1->firstChild;
+                                        $Code = $doc1->createElement('Code');
+                                        $Code->setAttribute('id', $Budgetcode);
+
+                                        $Code->setAttribute('Budgetname', $Budgetname1);
+                                        $Code->setAttribute('Bd_balance', $Budgetbdbalance);
+                                        $Code->setAttribute('Group_id', $Budgetgroupid);
+                                        $Code->setAttribute('Allowedover', $allowedover);
+                                        $Code->setAttribute('Consume_amount', $Budgetconsumeamount);
+
+                                        $Budgets->appendChild($Code);
+
+                                        $ttt=$doc1->saveXML();
+                                        $handle = fopen($tt, "w");
+                                        fwrite($handle, $ttt);
+                                        fclose($handle);
+                                }
+                                 
+                        }
+                }
+
+                $data['accounts'] = $ttdel1;
+                $data['max'] = $max1;
+                $data['totalbudget'] = $totalbudget;
+                $data['budgetopen'] = $budgetopen;
+                $data['totalconsume'] = $totalconsume;
+                $data['budgetconsume'] = $budgetconsume;
+                $data['mergebudgetfile'] = $acountlist;
+
+
 	    $this->template->load('user_template', 'user/aggregatebudget',$data);
 	    return ;
     }
+        function aggregatechartofaccounts()
+        {
+                $this->load->library('session');
+                $this->load->model('Ledger_model');
+                $this->template->set('page_title', 'Aggreegate Chart Of Accounts');
+                $this->load->helper('array');
+
+                //get username.
+
+                $username=$this->session->userdata('user_name');
+                $db1=$this->load->database('login', TRUE);
+
+                //get aggregateaccounts string of user.
+
+                $db1->from('aggregateaccounts')->where('username', $username);
+                $userrec = $db1->get();
+                foreach($userrec->result() as $row)
+                {
+                        $acountlist=$row->accounts;
+
+                }
+
+                $accarray = array();
+                $mergebudgetfile = "";
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../acct');
+
+                //get the account from aggregateaccounts to create mergeraccount.
+
+                $accarray = explode(",", $acountlist);
+
+                for($i = 0; $i<sizeof($accarray); $i++)
+                {
+                        $accname = $accarray[$i];
+
+                        //creation of merge xml file
+                        $mergebudgetfile = $mergebudgetfile.$accname;
+                }
+
+                //code for deletion of accounts xml file if exist .
+                $file_name1=$mergebudgetfile."_cof.xml";
+                $ttdel1=$acctpath."/".$file_name1;
+
+                if (file_exists($ttdel1))
+                        unlink($ttdel1);
+
+
+                for($i = 0 ; $i<sizeof($accarray); $i++)
+                {
+                        $accname=$accarray[$i];
+
+                        $file_name1=$accname."_cof.xml";
+                        $ttdel=$acctpath."/".$file_name1;
+
+                        //deletion of xml file .
+
+                        if (file_exists($ttdel))
+                                unlink($ttdel);
+
+                }
+/*
+                $file_name1=$mergebudgetfile."_cof.xml";
+                $ttdel1=$acctpath."/".$file_name1;
+
+                if (file_exists($ttdel1))
+                        unlink($ttdel1);
+*/
+
+
+/*                $total_op = $this->Ledger_model->get_diff_op_balance();
+                if ($total_op > 0)
+                {
+                        $this->messages->add('Difference in Opening Balance is Dr ' . convert_cur($total_op) . '.', 'error');
+                } else if ($total_op < 0) {
+                        $this->messages->add('Difference in Opening Balance is Cr ' . convert_cur(-$total_op) . '.', 'error');
+                }       
+
+*/
+                $data['mergeaccfile'] = $acountlist;
+                $this->template->load('user_template', 'user/aggregatechartofaccounts',$data);
+                return;
+        }
 }
 
 /* End of file user.php */
