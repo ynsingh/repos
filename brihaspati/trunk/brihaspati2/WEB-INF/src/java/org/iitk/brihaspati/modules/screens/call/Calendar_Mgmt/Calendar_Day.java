@@ -256,7 +256,7 @@ public class Calendar_Day extends SecureScreen
 			 * Add IntiuteId for showing event instiute wise.
 			 */
 			crit=new Criteria();
-			crit.add(CalInformationPeer.USER_ID,uid_user);
+			//crit.add(CalInformationPeer.USER_ID,uid_user);
 			crit.add(CalInformationPeer.GROUP_ID,gid);
 			crit.add(CalInformationPeer.INSTITUTE_ID,instituteId);
 			crit.add(CalInformationPeer.P_DATE,(Object)Cdate,crit.EQUAL);
