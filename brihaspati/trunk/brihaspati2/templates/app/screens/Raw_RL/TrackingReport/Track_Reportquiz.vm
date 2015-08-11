@@ -5,7 +5,7 @@
  *
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
- *  @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
+ *
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Tracking Report")
@@ -13,37 +13,41 @@ $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-<table bgcolor="$ui.menuColor" width=100%>
-<tr>
+<table bgcolor="$ui.menuColor" width=100% align="right">
+<tr align="right">
 <td>
         #if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
         <a href=javascript:popupWin("/brihaspati/docs/Trackadminreport.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
         #else
-        <a href=javascript:popupWin("/brihaspati/docs/TrackInstreport.html","newWin");>$brih_help</a><img src="$content.getURI("/images/hand.gif")">
+        <a href=javascript:popupWin("/brihaspati/docs/TrackInstreport.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
         #end
 </td>
-<td align="right">
+<td><b>
 	<font face="$ui.sansSerifFonts">
 	#if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
 	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
         #if($type =="System")
-     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> $brih_tracking $brih_reports</a> | $brih_system $brih_reports
+     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
+        $brih_system #if($lang == "hindi" || $lang == "gujarati") $brih_Of #end $brih_reports
         #end
 	#else
 	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> |
 	#if($type =="user")
-      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> $brih_tracking $brih_reports</a> |$brih_usr $brih_reports
+      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi" || $lang=="marathi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
+        $brih_usr $brih_reports
         #end
         #if($type =="course")
-     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports</a> |$brih_course $brih_reports
+     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi" ||  $lang=="marathi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
+        $brih_course $brih_reports
         #end
         #if($type =="quiz")
-      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> $brih_tracking $brih_reports</a> |$brih_quiz $brih_reports
+      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi" ||  $lang=="marathi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
+        $brih_quiz $brih_reports
         #end
 	#end
 	</font>
-</td>
+</b></td>
 <td align="right">
                 #if( $total_size!=0 )
                         #if( $endIndex < $total_size )
@@ -70,10 +74,14 @@ $!data.getMessage()
 #set($second=["00","05","10","15","20","25","30","35","40","45","50","55"])
 #if($mode == "repoinfo")
 #if($type =="quiz")
-<table  bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
-<tr><td><b><i>$brih_test/$brih_quiz $brih_reports</b></td></tr>
-<tr bgcolor="$ui.menuColor" width="100%">
-        <td width ="100%" colspan="5"><i><b> $brih_select $brih_quiz $brih_for $brih_reports</i></b>
+<table  bgcolor="$ui.tableColor" width="100%" align="right" cellsapacing="0" cellpadding ="0">
+<tr><td><b><i>$brih_test/$brih_quiz #if($lang == "hindi" || $lang == "gujarati") $brih_Of #end $brih_reports</b></td></tr>
+<tr bgcolor="$ui.menuColor" width="100%" align="right">
+        <td width ="100%" colspan="5"><i><b> #if($lang == "hindi" || $lang == "gujarati" || $lang == "marathi") 
+							$brih_reports $brih_for $brih_quiz $brih_select 
+						#else 
+							$brih_select $brih_quiz $brih_for $brih_reports 
+						#end </i></b>
 				#if($value=="noempty")
                                 #foreach($Quiz in $Quizid)
                                 <a href=$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("mode","repoinfo").addPathInfo("type",$type).addPathInfo("usrname",$usrname).addPathInfo("mode1","quizinfo").addPathInfo("quizname",$Quiz.getquizid())>$Quiz.getquizid()</a>
@@ -88,62 +96,78 @@ $!data.getMessage()
 	<tr>$brih_quiz $brih_trackmsg2</tr>
 #else
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%">$brih_quiz $brih_name:</td>
-        <td align="left" width="50%"><b>$quizname</td>
+        <td align="right" width="50%">$brih_quiz #if($lang == "hindi") $brih_Of #end $brih_name:</td>
+        <td align="right" width="50%"><b>$quizname</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%"> $brih_total $brih_trktime $brih_for $brih_quiz:</td>
-        <td align="left" width="50%"><b>$quiztime</td>
+        <td align="right" width="50%"> #if($lang == "hindi" || $lang == "gujarati")
+						$brih_quiz $brih_for $brih_total $brih_trktime 
+					#else 
+						 $brih_total $brih_trktime $brih_for $brih_quiz 
+					#end :</td>
+        <td align="right" width="50%"><b>$quiztime</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%"> $brih_qus $brih_type :</td>
-        <td align="left" width="50%"><b>$Typeofquestion</td>
+        	<td align="right" width="50%">  #if($lang == "hindi" || $lang == "gujarati") 
+						$brih_qus #if ($lang == "hindi") $brih_of2 #end $brih_type 
+					#else 
+						$brih_type $brih_of $brih_qus 
+					#end :</td>
+        <td align="right" width="50%"><b>$Typeofquestion</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%">$brih_total $brih_nos $brih_qus:</td>
-        <td align="left" width="50%"><b>$totalquestion</td>
+        <td align="right" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
+						$brih_qus #if($lang == "hindi") $brih_of #end $brih_total $brih_nos 
+					#else 
+						$brih_total $brih_nos $brih_qus 
+					#end :</td>
+        <td align="right" width="50%"><b>$totalquestion</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%">$brih_marks $brih_per $brih_qus:</td>
-        <td align="left" width="50%"><b>$marksperques</td>
+        <td align="right" width="50%">$brih_marks $brih_per $brih_qus:</td>
+        <td align="right" width="50%"><b>$marksperques</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%"> $brih_nos $brih_qus $brih_attempt:</td>
+        <td align="right" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
+						$brih_attempt $brih_qus $brih_of $brih_nos 
+					#else 
+						$brih_nos $brih_qus $brih_attempt 
+					#end :</td>
 	#if($quizmess =="file")
-        <td align="left" width="50%"><b>$quesattempt</td>
+        <td align="right" width="50%"><b>$quesattempt</td>
 	#end
 	#if($Qmess =="nofile")
-        <td align="left" width="50%"><b>0</td>
+        <td align="right" width="50%"><b>0</td>
 	#end
 </tr>
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%">$brih_pass $brih_marks:</td>
-        <td align="left" width="50%"><b>$passmarks</td>
+        <td align="right" width="50%">$brih_pass $brih_marks:</td>
+        <td align="right" width="50%"><b>$passmarks</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%">$brih_marks $brih_obtained :</td>
+        <td align="right" width="50%">$brih_marks $brih_obtained :</td>
 	#if($quizmess =="file")
-        <td align="left" width="50%"><b>$obtmarks</td>
+        <td align="right" width="50%"><b>$obtmarks</td>
 	#else
-        <td align="left" width="50%"><b>0</td>
+        <td align="right" width="50%"><b>0</td>
 	#end
 </tr>
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%">$brih_result:</td>
+        <td align="right" width="50%">$brih_result:</td>
 	#if($quizmess =="file")
-        <td align="left" width="50%"><b>$pass</td>
+        <td align="right" width="50%"><b>$pass</td>
 	#end
 	#if($Qmess =="nofile")
-        <td align="left" width="50%"><b>$brih_absent</td>
+        <td align="right" width="50%"><b>$brih_absent</td>
 	#end
 </tr>
 <tr bgclor="$ui.menuColor" width="100%">
-        <td align="left" width="50%">$brih_status:</td>
+        <td align="right" width="50%">$brih_status:</td>
 	#if($quizmess =="file")
-        <td align="left" width="50%"><b>$comp</td>
+        <td align="right" width="50%"><b>$comp</td>
 	#end
 	#if($Qmess =="nofile")
-        <td align="left" width="50%"><b>$brih_not $brih_attempt</td>
+        <td align="right" width="50%"><b>$brih_not $brih_attempt</td>
 	#end
 </tr>
 #end
@@ -154,31 +178,29 @@ $!data.getMessage()
 #if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
 #if($type == "System")
 <table  bgcolor="$ui.tableColor" width="100%" >
-<tr align="right">
-<td  bgcolor="$ui.menuColor">
-      $RemoteShow $brih_all $brih_usr
+<tr align="right"><td  bgcolor="$ui.menuColor">
+#if($lang == "hindi" || $lang == "gujarati") $brih_all $brih_usr $RemoteShow #else $RemoteShow $brih_all $brih_usr #end 
 <input type="CHECKBOX" checked="true" name="grouptype" value="showuser" onClick="selecionatudo(true,1)"> 
 </td><br></tr>
-<tr align="right">
-<td  bgcolor="$ui.tableColor">
-         $RemoteShow $brih_all $RemoteInstitute 
+<tr align="right"><td  bgcolor="$ui.tableColor">
+#if($lang == "hindi" || $lang == "gujarati")$brih_all $brih_Institute $RemoteShow #else $RemoteShow $brih_all $RemoteInstitute #end 
 <input type="CHECKBOX"  name="grouptype" value="showinstitute" onClick="selecionatudo(true,2)"> 
 <br></td></tr>
-<tr align="right">
-<td  bgcolor="$ui.menuColor">
- $RemoteShow $brih_all $brih_courses 
+<tr align="right"><td  bgcolor="$ui.menuColor">
+	#if($lang == "hindi" || $lang == "gujarati") 
+		$brih_all $brih_courses $RemoteShow 
+	#else 
+		$RemoteShow $brih_all $brih_courses 
+	#end 
 <input type="CHECKBOX"  name="grouptype" value="showcourse" onClick="selecionatudo(true,2)"> 
 </td></tr>
 </table>
-
 <table  bgcolor="$ui.tableColor" width="100%" align="right" cellsapacing="0" cellpadding ="0">
-<tr bgcolor="$ui.tableColor" width="100%" align="right"><td width="100%" colspan="5"><b>$brih_system $brih_spec</b></td></tr>
-<tr bgcolor="$ui.menuColor" width="100%" align="right">
-
-<tr bgcolor="$ui.menuColor" width="100%" align="right">
+<tr bgcolor="$ui.tableColor" width="100%"><td width="100%" colspan="5"><b>$brih_system #if($lang == "hindi") $brih_Of #end $brih_spec</b></td></tr>
+<tr bgcolor="$ui.menuColor" width="100%">
         <td align="right" width="70%">
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-                 <select class="drop" name="fStart_day">
+                      <select class="drop" name="fStart_day">
                         <option value="$cdays">$cdays
                         #foreach($d in $day)
                                 #if($d!=$cdays)
@@ -188,14 +210,14 @@ $!data.getMessage()
                 </select>
                  &nbsp<b><font size=+1>-</font></b>&nbsp
                  <select class="drop" name="fStart_mon">
-                        <option value="$cmonth">$cmonth
+                	<option value="$cmonth">$cmonth
                                 #foreach($mon in $month)
                                         #if($mon != $cmonth)
                                         <option value="$mon">$mon
                                         #end
                                 #end
                 </select>
-                &nbsp;<b><font size=+1>-</font></b>&nbsp;
+		 &nbsp;<b><font size=+1>-</font></b>&nbsp;
               <select class="drop" name="fStart_year">
                         <option value="$cyear">$cyear
                         #foreach($year in $year_list)
@@ -204,13 +226,12 @@ $!data.getMessage()
                         #end
                         #end
                 </select>
-
-        <td align="right" width="30%"><b>:$brih_start $brih_time </b></td>
          </td>
-</tr>
+        	<td align="right" width="30%"><b>:$brih_start $brih_time</b></td>
+    </tr>
 <tr bgcolor="$ui.tableColor" width="100%">
         <td align="right" width="70%">
-                <select class="drop" name="tStart_day">
+                   <select class="drop" name="tStart_day">
                         <option value="$cdays">$cdays
                         #foreach($d in $day)
                                 #if($d!=$cdays)
@@ -218,19 +239,18 @@ $!data.getMessage()
                                 #end
                         #end
                 </select>
-
-
                  &nbsp<b><font size=+1>-</font></b>&nbsp
                  <select class="drop"  name="tStart_mon">
-                        <option value="$cmonth">$cmonth
+                	<option value="$cmonth">$cmonth
                                 #foreach($mon in $month)
                                         #if($mon != $cmonth)
                                         <option value="$mon">$mon
                                         #end
                                 #end
                 </select>
-                 &nbsp;<b><font size=+1>-</font></b>&nbsp;
-                         <select class="drop" name="tStart_year">
+		 &nbsp;<b><font size=+1>-</font></b>&nbsp;
+
+            <select class="drop" name="tStart_year">
                         <option value="$cyear">$cyear
                         #foreach($year in $year_list)
                         #if($cyear != $year)
@@ -238,8 +258,9 @@ $!data.getMessage()
                         #end
                         #end
                 </select>
-        <td align="right"  width="30%"><b>:$brih_end $brih_time</b></td>
+
          </td>
+	<td align="right" width="30%"><b>:$brih_end $brih_time</b></td>
 </tr>
 </table>
 <table width="100%" align="right" cellsapacing="0" cellpadding ="0">
@@ -256,13 +277,13 @@ $!data.getMessage()
 #end
 #end
 #if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin" && $chktype=="userlog")
-<table width="100%" align="left" cellsapacing="0" cellpadding ="0">
+<table width="100%" align="right" cellsapacing="0" cellpadding ="0">
 #if($grouptype == "showuser")
 <tr bgcolor="$ui.tableColor" width="100%"><td width="100%" colspan="5"><b>$brih_most $brih_active $brih_usr</b></td></tr>
 <tr bgcolor="$ui.menuColor">
-        <td align="left" width="40%"><b>$brih_usrName:</td>
-        <td align="left" width="30%"><b>$brih_total brih_nos $brih_access</td>
-        <td align="left" width="30%"><b>$brih_total $brih_access $brih_trktime</td>
+        <td align="right" width="40%"><b>$brih_usrName:</td>
+        <td align="right" width="30%"><b>$brih_total brih_nos $brih_access</td>
+        <td align="right" width="30%"><b>$brih_total $brih_access $brih_trktime</td>
 <tr>
 #set($count = 1)
 #foreach($uidname in $entry)
@@ -276,9 +297,9 @@ $!data.getMessage()
 #else
 <tr bgcolor="$ui.tableColor">
 #end
-        <td align="left" width="30%"><b>$uidname</td>
-        <td align="left" width="30%"><b>$uidtotal</td>
-        <td align="left" width="30%"><b>$totaltime</td>
+        <td align="right" width="30%"><b>$uidname</td>
+        <td align="right" width="30%"><b>$uidtotal</td>
+        <td align="right" width="30%"><b>$totaltime</td>
         #end
 	#set ( $count3 = $count3+1 )
         #end
@@ -291,9 +312,9 @@ $!data.getMessage()
 #if($grouptype == "showcourse")
 <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_most $brih_active $brih_courses</b></td></tr>
 <tr bgcolor="$ui.tableColor">
-        <td align="left" width="30%"><b>$brih_courseName:</td>
-        <td align="left" width="30%"><b>$brih_total brih_nos $brih_usr $brih_access</td>
-        <td align="left" width="30%"><b>$brih_total $brih_access $brih_trktime</td>
+        <td align="right" width="30%"><b>$brih_courseName:</td>
+        <td align="right" width="30%"><b>$brih_total brih_nos $brih_usr $brih_access</td>
+        <td align="right" width="30%"><b>$brih_total $brih_access $brih_trktime</td>
 <tr>
 #set($count = 1)
 #foreach($cname in $cname)
@@ -307,9 +328,9 @@ $!data.getMessage()
 #else
 <tr bgcolor="$ui.menuColor">
 #end
-        <td align="left" width="30%"><b>$cname</td>
-        <td align="left" width="30%"><b>$ttlname</td>
-        <td align="left" width="30%"><b>$ctime</td>
+        <td align="right" width="30%"><b>$cname</td>
+        <td align="right" width="30%"><b>$ttlname</td>
+        <td align="right" width="30%"><b>$ctime</td>
         #end
 	#set ( $count3 = $count3+1 )
 	#end
@@ -320,7 +341,7 @@ $!data.getMessage()
 </tr>
 #end
 #if($grouptype == "showuser" || $grouptype == "showcourse")
-<tr bgcolor="$ui.tableColor" width="100%"><td align="left" width="100%" colspan="5">
+<tr bgcolor="$ui.tableColor" width="100%"><td align="right" width="100%" colspan="5">
         #if($total_size <= $userConf)
                 <u><font color="white">$brih_first</font></u> &nbsp;
                 <u><font color="white">$brih_pre</font></u> &nbsp;
@@ -344,10 +365,10 @@ $!data.getMessage()
                 #end
 </td></tr>
 </table>
-/table>
+</table>
 #end
 #end
-##</table>
+</table>
 	<input type="hidden" name="actionName" 
         <input type="hidden" name="type" value="$type">
         <input type="hidden" name="mode" value="$mode">

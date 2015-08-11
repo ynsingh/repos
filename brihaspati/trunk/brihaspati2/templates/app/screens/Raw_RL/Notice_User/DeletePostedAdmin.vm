@@ -24,26 +24,20 @@
 $page.setTitle("Admin Home | Communication | Delete Posted Notice")
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
-	<tr><td>
+	<tr align="right"><td>
 	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | 
 	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$brih_Notices</a> | $Notice_DeletePosted_msg1
 	</td></tr>
 </table>
 
-<table align=left bgcolor="$ui.tableColor" width="100%">
-<tr>
-        #if($tdcolor != "1")
-        <td>
-        #elseif($tdcolor == "1")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$Notice_NoticeSend_msg1</a></td>
-	#if($tdcolor != "2")
-        	<td>
-	#elseif($tdcolor == "2")
+<table align="right"  bgcolor="$ui.tableColor" width="100%">
+<tr align="right">
+        #if($tdcolor != "4")
+                <td>
+        #elseif($tdcolor == "4")
                 <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("count","2")>$Notice_DeletePosted_msg1</a></td>
+                <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail").addPathInfo("count","4")>$brih_localmail</a></td>
         #if($tdcolor != "3")
         	<td>
 	#elseif($tdcolor == "3")
@@ -51,19 +45,25 @@ $!data.getMessage()
         #end
         <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("nflag","fh").addPathInfo("count","3")>$brih_flash $brih_heading</a></td>
         ##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("nflag","fh")>$brih_flash $brih_heading</a></td>
-        #if($tdcolor != "4")
-                <td>
-        #elseif($tdcolor == "4")
+	#if($tdcolor != "2")
+        	<td>
+	#elseif($tdcolor == "2")
                 <td bgcolor="#AFDCEC">
         #end
-                <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail").addPathInfo("count","4")>$brih_localmail</a></td>
+        <a href=$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("count","2")>$Notice_DeletePosted_msg1</a></td>
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$Notice_NoticeSend_msg1</a></td>
 </td></tr>
 </table>
 
 <form name="frm" method="Post" action="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").setAction("Notice_Send_Delete")">
 #if($Mas_size!="0")
-<table align="left" width=100% bgcolor="$ui.tableColor">
-<tr>
+<table align="right" width=100% bgcolor="$ui.tableColor">
+<tr align="right">
 	<td>$Notice_Subject</td>
 	<td>$brih_Da</td>
 </tr>

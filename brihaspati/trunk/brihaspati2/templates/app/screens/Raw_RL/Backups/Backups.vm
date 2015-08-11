@@ -151,18 +151,18 @@ $!data.getMessage()
 		#if($lang!="english") $QuestionBank_available $brih_backup $brih_Of $brih_list #else $brih_listOf $QuestionBank_available $brih_backup
 	  	#end 
 	</td></tr>
-	<tr align="right">
+	<tr align="right" colspan="5">
 	        #if($st != "ins")
-		<td>$brih_availableAction</td>
+		<td colspan="5">$brih_availableAction</td>
 	        #end
-                <td> 
+                <td colspan="5"> 
 		#if($lang!="english") 
 		$brih_backup $brih_file $brih_Of1 $brih_name 
 		#else 
 		$brih_name of $brih_backup $brih_file 
 		#end 
 		</td>
-	        <td> $brih_serialNo </td>
+	        <td colspan="5">$brih_serialNo </td>
 	</tr>
 
  #set ($i=1)

@@ -98,7 +98,7 @@ $!data.getMessage()
 	#if($mode=="add")
 		<tr bgcolor="$ui.menuColor" width="100%"><td align="right" width="100%" colspan="5"><b><i> #if($lang =="hindi" || $lang == "gujarati" ) $brih_cat $brih_add #else $brih_add $brih_cat #end <b></i></td></tr>
 			<tr bgcolor="$ui.tableColor" width="100%">
-				<td>
+				<td align="right">
                        			<select class="drop" name="categoryname" size="1"  onFocus=changeTopic(document.frm) onChange=changeTopic(document.frm)>
                        			<option></option>
                        			#foreach($catlist in $entry)
@@ -114,8 +114,8 @@ $!data.getMessage()
 	#end
 	#if($mode=="edit"||$mode=="add")
 		<tr bgcolor="$ui.menuColor">
-               		<td><b><font color=red>*</font>$brih_cat #if($lang == "hindi") $brih_Of1 #end $brih_name:</b></td>
-               		<td><input type="text" size="50" name="catname" onFocus=checkRadio()></td>
+               		<td align="right"><input type="text" size="40" name="catname" onFocus=checkRadio()></td>
+               		<td align="right"><b>:$brih_cat #if($lang == "hindi") $brih_Of1 #end $brih_name</b><font color=red>*</font></td>
                	</tr>
 	#end
 </table>

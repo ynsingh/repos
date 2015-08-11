@@ -21,43 +21,45 @@ $!data.getMessage()
 		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup</a> | $RemoteInstitute $brih_Of1 $brih_backup
 </tr>
 </table>
-<table width=100% bgcolor="$ui.tableColor">
+<table width=100% bgcolor="$ui.tableColor" align="right" colspan="5">
 <tr align="right">
+<td>
 	#if($tdcolor!="5")
-	<td>
+	<td align="right">
 	#elseif($tdcolor=="5")
 	<td bgcolor="#AFDCEC">
 	#end
     	<a href=$link.setPage("call,Backups,InstBackups.vm").addPathInfo("count","5") style=text-decoration:none>$RemoteInstitute $brih_backup</a></td>
 	#if($tdcolor!="4")
-	<td>
+	<td align="right">
 	#elseif($tdcolor=="4")
-	<td bgcolor="#AFDCEC">
+	<td bgcolor="#AFDCEC" align="right">
 	#end
 	<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doGlossaryBackup").addPathInfo("count","4")" style=text-decoration:none >$Glossary $brih_Of1 $brih_backup</td>
 	#if($tdcolor!="3")
-	<td>
+	<td align="right">
 	#elseif($tdcolor=="3")
-	<td bgcolor="#AFDCEC">
+	<td bgcolor="#AFDCEC" align="right">
 	#end
     	<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("mode","blist").addPathInfo("count","3") style=text-decoration:none>$brih_backup $brih_list</a></td>
 	#if($tdcolor!="2")
-	<td>
+	<td align="right">
 	#elseif($tdcolor=="2")
-	<td bgcolor="#AFDCEC">
+	<td bgcolor="#AFDCEC" align="right">
 	#end
 	<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doCompleteBackup").addPathInfo("count","2")" style=text-decoration:none >$brih_system $brih_Of1 $brih_backup</a></td>
 	#if($tdcolor!="1")
-	<td>
+	<td align="right">
 	#elseif($tdcolor=="1")
-	<td bgcolor="#AFDCEC">
+	<td bgcolor="#AFDCEC" align="right">
 	#end
     	<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none > $brih_content $brih_Of1 $brih_backup </a></td>
+</td>
 </tr>
 <form name="frm" method="post" action="$link.setPage("call,Backups,InstBackups.vm").setAction("BackupAction")">
-	<tr align="right">
-	        <td> <input type="submit" class="button-ftextstyle" name="eventSubmit_doCrssearch" value="$brih_search"> </td>
-		<td>
+	<tr align="right" colspan=5>
+	        <td align="right" colspan=5><input type="submit" class="button-ftextstyle" name="eventSubmit_doCrssearch" value="$brih_search"> </td>
+		<td align="right" colspan=5>
                 	<select name="instName" class="drop" size=1 onChange="checkOption(document.frm,this);"/ style="width:300px;">
 			#foreach($name in $instList)
 		                <option value="$name.getInstituteName()" title="$name.getInstituteName()" style="width:275px;">$name.getInstituteName() </option>
@@ -65,13 +67,9 @@ $!data.getMessage()
 	                </select>
         	</td>
 	</tr>
-	<tr bgcolor="$ui.menuColor" align="right">
-        <td colspan=5> 
-                <input type="button" class="button-ftextstyle" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
-		<input type="button" class="button-ftextstyle" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
-	</td>	
-	<td>
-                <select name="courses" class="drop" onChange="selectOption(document.frm,this);" style="width:300px;" />
+	<tr bgcolor="$ui.menuColor" align="right" colspan=5>
+	<td align="right" colspan=5>
+                <select name="courses" class="drop" onChange="selectOption(document.frm,this);" style="width:300px;"/>
                 #foreach($crsname in $crsList)
                 <option value="$crsname.getGroupName()" title="$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()" style="width:275px;">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
                 #end
@@ -79,6 +77,10 @@ $!data.getMessage()
                 <input type="hidden" name="actionName">
                 <input type="hidden" name="count" value="$tdcolor">
          </td>
+        <td colspan=5 align="right"> 
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+	</td>	
 	</tr>
 </form>
 </table>

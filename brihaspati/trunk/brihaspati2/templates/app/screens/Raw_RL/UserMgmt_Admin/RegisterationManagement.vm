@@ -326,7 +326,7 @@ $!data.getMessage()
 <br>
 <br>
 
-<table width=100% bgcolor="$ui.menuColor" align=left>
+<table width=100% bgcolor="$ui.menuColor" align="right">
 #foreach( $e in $Msg )
         <tr bgcolor="$ui.tableColor">
            <td align=center>
@@ -414,9 +414,9 @@ $!data.getMessage()
         </td>
 </tr>
 
-        <tr bgcolor="$ui.menuColor" align="right">
+        <tr bgcolor="$ui.menuColor" align="right" colspan=15> 
          ##<td align=center bgcolor="$ui.menuColor">
-         <td>
+         <td align="right">
          #if($mode!="Search")
          #if($total_size<= $AdminConf)
 

@@ -14,7 +14,16 @@ $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100%>
-<tr><td><b>
+<tr align="right">
+<td align="right">
+        #if($data.getUser().getUserName() == "admin"||$data.getUser().getTemp("role")=="institute_admin")
+        
+       <a href=javascript:popupWin("/brihaspati/docs/Trackadminreport.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+        #else
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/TrackInstreport.html","newWin");>$brih_help</a>
+        #end
+</td>
+<td align="right"><b>
 	<font face="$ui.sansSerifFonts">
 	##if($data.getUser().getUserName() == "admin")
 	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
@@ -24,14 +33,7 @@ $!data.getMessage()
         ##end
 	</font>
 </b></td>
-<td align=right>
-        #if($data.getUser().getUserName() == "admin"||$data.getUser().getTemp("role")=="institute_admin")
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Trackadminreport.html","newWin");>$brih_help</a>
-        #else
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/TrackInstreport.html","newWin");>$brih_help</a>
-        #end
-</td>
-<td align=right>
+<td align="right">
                 #if( $total_size!=0 )
                         #if( $endIndex < $total_size )
                                 #if( $endIndex < $userConf )
@@ -50,13 +52,11 @@ $!data.getMessage()
 </table>
 <br>
 <form name="frm" method="post" action=$link.setPage("call,TrackingReport,TrkReport_Instadmin.vm")>
-<table width=100%  bgcolor="$ui.tableColor">
+<table width=100%  bgcolor="$ui.tableColor" align="right">
 ##<tr><td bgcolor="$ui.menuColor"><b>Select Institute For Report:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="instname" size="1" onChange="Changename(document.frm,this);"/>
-<tr><td><b> #if($lang == "hindi" || $lang == "gujarati") 
-		$brih_reports $brih_for $RemoteInstitute $brih_select 
-	#else 
-		$brih_select $RemoteInstitute $brih_for $brih_reports 
-	#end:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<tr align="right">
+              <td align="right">
+               <b> 
 	<select class="drop" name="instname" size="1" onChange="Changename(document.frm,this);"/>
         <option>$brih_select</option>
                                 #if($data.getUser().getUserName() == "admin")
@@ -66,54 +66,59 @@ $!data.getMessage()
                                 #end
                                 #end
          </select>
+                #if($lang == "hindi" || $lang == "gujarati") 
+		$brih_reports $brih_for $RemoteInstitute $brih_select 
+	#else 
+		:$brih_select $RemoteInstitute $brih_for $brih_reports 
+	#end</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
          </td>
 </tr>
 #if($inst_name!="")
-<table bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
+<table bgcolor="$ui.tableColor" width="100%" align="right" cellsapacing="0" cellpadding ="0">
 <tr width="100%"><td width="100%" colspan="5"><b>$RemoteInstitute $brih_infos</b></td></tr>
-<tr bgcolor="$ui.menuColor" align="left">
-        <td align="left" width="50%">$RemoteInstitute $brih_name:
-        <td align="left" width="50%"><b>$inst_name</b>
+<tr bgcolor="$ui.menuColor" align="right">
+        <td align="right" width="50%"><b>$inst_name</b>
+        <td align="right" width="50%">:$RemoteInstitute $brih_name
 </tr>
 <tr>
-        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
-						$brih_program $brih_Of $brih_total $brih_nos 
-					#else 
-						$brih_total $brih_nos $brih_program 
-					#end :
-	#if($Instproglist.size()==0)
-        <td align="left" width="50%">$brih_program<b></b>
-	#else
-        <td align="left" width="50%"><b>$Instproglist</b>
-	#end
+        <td align="right" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
+                                                $brih_program $brih_Of $brih_total $brih_nos
+                                        #else 
+                                                $brih_total $brih_nos $brih_program
+                                        #end :
+        #if($Instproglist.size()==0)
+        <td align="right" width="50%">$brih_program<b></b>
+        #else
+        <td align="right" width="50%"><b>$Instproglist</b>
+        #end
 </tr>
 <tr bgcolor="$ui.menuColor" >
-        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") $brih_course $brih_Of $brih_total $brih_nos #else $brih_total $brih_nos $brih_course #end:
-        <td align="left" width="50%"><b>$ttlno_Course</b>
+        <td align="right" width="50%"> #if($lang == "hindi" || $lang == "gujarati") $brih_course $brih_Of $brih_total $brih_nos #else $brih_total $brih_nos $brih_course #end:
+        <td align="right" width="50%"><b>$ttlno_Course</b>
 </tr>
 <tr>
-        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
+        <td align="right" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
 					$brih_student $brih_Of $brih_total $brih_nos 
 				#else 
 					$brih_total $brih_nos $brih_student 
 				#end:
-        <td align="left" width="50%"><b>$Studentlist</b>
+        <td align="right" width="50%"><b>$Studentlist</b>
 </tr>
-<tr bgcolor="$ui.menuColor" >
-        <td align="left" width="50%">  #if($lang == "hindi" || $lang == "gujarati") 
+<tr bgcolor="$ui.menuColor" align="right">
+        <td align="right" width="50%">  #if($lang == "hindi" || $lang == "gujarati") 
 						$brih_ins $brih_Of $brih_total $brih_nos 
 					#else 
 						$brih_total $brih_nos $brih_ins 
 					#end :
-        <td align="left" width="50%"><b>$istructorlist</b>
+        <td align="right" width="50%"><b>$istructorlist</b>
 </tr>
 <tr>
-        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati")
+        <td align="right" width="50%"> #if($lang == "hindi" || $lang == "gujarati")
 						$brih_admin($brih_Institute $brih_admin)  $brih_Of $brih_total $brih_nos 
 					#else 
 						$brih_total $brih_nos $brih_admin($RemoteInstitute $brih_admin) 
 					#end :
-        <td align="left" width="50%"><b>$instadmin</b>
+        <td align="right" width="50%"><b>$instadmin</b>
 </tr>
 #end
 </table>

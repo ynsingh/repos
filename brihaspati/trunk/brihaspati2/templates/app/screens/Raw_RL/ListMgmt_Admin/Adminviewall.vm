@@ -240,7 +240,7 @@ $!data.getMessage()
 #end
 #set($count=$count+1)
 #end
-<tr>
+<tr align="right">
 	<td><input class="button-ftextstyle" type="button" name="eventSubmit_doExpire" Value=$brih_delete onClick=" DeleteField(document.frm,this);"></td>
 </tr>
 		<input type="hidden" name="Process" value="delete">
@@ -254,7 +254,7 @@ $!data.getMessage()
 </table>
 </form>
 <br>
-<table width=60%  bgcolor="$ui.tableColor" align=center>
+<table width=60%  bgcolor="$ui.tableColor" align="right">
         #foreach( $entry in $error_Messages )
         <tr bgcolor="$ui.tableHeaderColor">
         <td align=center>

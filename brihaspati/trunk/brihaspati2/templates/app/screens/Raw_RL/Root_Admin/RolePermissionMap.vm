@@ -21,35 +21,19 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang").toString())
 <table  bgcolor="$ui.tableColor" width=100%>
-	<tr bgcolor="$ui.menuColor">
-		<td colspan=14> 
-		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a> |
-		$brih_role #if($lang == "hindi") $brih_Of #end $Repo_Perm $brih_list	
-		</td>
+	<tr bgcolor="$ui.menuColor" align="right">
+                  <td align="right">
+                 <a href=javascript:popupWin("/brihaspati/docs/RolePermissionManagement.html","newWin"); style=text-decoration:none><img src="$content.getURI("/images/Lefthand.gif")"><font size=4>$brih_help</font></a></td>
+                <td align="right">
+                <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a> |
+                $brih_role #if($lang == "hindi") $brih_Of #end $Repo_Perm $brih_list    
+               </td>
 	</tr>
 </table>
 <form name="frm" method="Post" action="$link.setPage("call,Root_Admin,RolePermissionMap.vm").setAction("RolePermissionMap")">
 <table  bgcolor="$ui.tableColor" width=100%>
-	<tr>
-		#if($tdcolor != "1")
-                <td>
-                #elseif($tdcolor == "1")
-                <td bgcolor="#AFDCEC">
-                #end
-		<a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none>$brih_role #if($lang == "hindi") $brih_Of #end $Repo_Perm $brih_list</a></td>
-		#if($tdcolor != "2")
-                <td>
-                #elseif($tdcolor == "2")
-                <td bgcolor="#AFDCEC">
-                #end
-		<a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","role").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "gujarati") $brih_role $brih_add #else  $brih_add $brih_role #end </a></td>
-		#if($tdcolor != "3")
-                <td>
-                #elseif($tdcolor == "3")
-                <td bgcolor="#AFDCEC">
-                #end
-		<a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","perm").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi" || $lang == "gujarati") $Repo_Perm $brih_add  #else $brih_add  $Repo_Perm #end </a></td>
+	<tr align="right">
 		#if($tdcolor != "4")
                 <td>
                 #elseif($tdcolor == "4")
@@ -58,24 +42,49 @@ $!data.getMessage()
                 <a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","map").addPathInfo("count","4") style=text-decoration:none>
 #if($lang == "hindi" || $lang == "gujarati") $brih_role $brih_Of3 $Repo_Perm $brih_map #else $brih_map $brih_role $Repo_Perm #end </a></id>
 
-	</tr>
+		#if($tdcolor != "3")
+                <td>
+                #elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","perm").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi" || $lang == "gujarati") $Repo_Perm $brih_add  #else $brih_add  $Repo_Perm #end </a></td>
+		#if($tdcolor != "2")
+                <td>
+                #elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","role").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "gujarati") $brih_role $brih_add #else  $brih_add $brih_role #end </a></td>
+		
+
+                #if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none>$brih_role #if($lang == "hindi") $brih_Of #end $Repo_Perm $brih_list</a></td>
+
+</tr>
 </table>
 <div class="scroll">
 <table  bgcolor="$ui.tableColor" width=100%>
 	#if($mode=="all")
-      	<tr bgcolor="$ui.menuColor">
-        <td align=center>$brih_role #if($lang == "hindi")  $brih_Of1 #end $brih_name</td>
-        <td align=center>$QuestionBank_available $Repo_Perm #if($lang == "hindi")  $brih_Of1 #end $brih_name</td>
-        <td align=center colspan=2>$brih_availableAction</td>
+      	<tr bgcolor="$ui.menuColor" align="right">
+        <td colspan=2>$brih_role #if($lang == "hindi")  $brih_Of1 #end $brih_name</td>
+        <td>$QuestionBank_available $Repo_Perm #if($lang == "hindi")  $brih_Of1 #end $brih_name</td>
+        <td>$brih_availableAction</td>
         </tr>
 	#set($i=0)
         	#foreach($data1 in $info)
 	        #set($j=0)
         		#foreach($data2 in $info2)
 			        #if($i==$j)
-			        <tr><td>
+#################
+
+                      <tr><td>
 					  $data2.getRoleName()   	
 			        </td><td>
+
+#######################
            ##             <INPUT TYPE="CHECKBOX" NAME="$data" onClick="apprv_rej(this,document.frm);">
 		                        $data1
 			        </td>
@@ -95,24 +104,27 @@ $!data.getMessage()
 		        #end
 	        #set($i=$i+1)
         	#end
-	        <tr bgcolor="$ui.menuColor">
-        	        <td align="left" colspan=14>
-              ##  	<input type="hidden" name="actionName">
-	  ##              <input type="hidden" name="count" value="$tdcolor">
-        	        </td>
-	        </tr> 
+####################################
+                <tr bgcolor="$ui.menuColor">
+                        <td align="right" colspan=14>
+              ##        <input type="hidden" name="actionName">
+          ##              <input type="hidden" name="count" value="$tdcolor">
+                        </td>
+                </tr>
+
+##########################################
 	#end
 ##</table>
 ##<table width=100% bgcolor="$ui.tableColor">
 	#if($mode=="role")
 	<tr><td></td></tr>
-	<tr>
+	<tr align="right">
 		###formCell ("$brih_role $brih_name" "rname" "")
-		<td> $brih_role  #if($lang == "hindi") $brih_Of1 #end $brih_name </td>
 		<td> <input type="text" name="rname" value="" > </td>
+		<td> $brih_role  #if($lang == "hindi") $brih_Of1 #end $brih_name </td>
 	</tr>
 	<tr bgcolor="$ui.menuColor">
-                <td align="left" colspan=14>
+                <td align="right" colspan=14>
                 <input type="hidden" name="actionName" value="eventSubmit_doAddRole">
 		<input type="submit" class="button-ftextstyle" name="eventSubmit_doAddRole" value="$brih_add">
 		</td>
@@ -123,13 +135,13 @@ $!data.getMessage()
 ##<table width=100% bgcolor="$ui.tableColor">
 	#if($mode=="perm")
 	<tr><td></td></tr>
-	<tr>
+	<tr align="right">
 		###formCell ("$Repo_Perm $brih_name" "pname" "")
-		<td> $Repo_Perm #if($lang == "hindi") $brih_Of1 #end  $brih_name </td>
 		<td> <input type="text" name="pname" value="" > </td>
+		<td> $Repo_Perm #if($lang == "hindi") $brih_Of1 #end  $brih_name </td>
 	</tr>
-	<tr bgcolor="$ui.menuColor">
-                <td align="left" colspan=14>
+	<tr bgcolor="$ui.menuColor" align="right">
+                <td align="right" colspan=14>
                 <input type="hidden" name="actionName" value="eventSubmit_doAddPerm">
                 <input type="submit" class="button-ftextstyle" name="eventSubmit_doAddPerm" value="$brih_add">
                 </td>
@@ -140,22 +152,25 @@ $!data.getMessage()
         <td align=center> #if($lang == "hindi" || $lang == "gujarati") $brih_role $brih_Of1 $brih_name $brih_select #else $brih_select $brih_role $brih_name #end </td>
         <td align=center> #if($lang == "hindi" || $lang == "gujarati") $Repo_Perm $brih_Of1 $brih_name $brih_select #else $brih_select $Repo_Perm $brih_name  #end </td>
         </tr>
-        <tr><td>
+        <tr align="right">
+            <td>
+               <select class="drop" name="permi">
+               #foreach($data3 in $perm)
+                        <option value=$data3.getPermissionId()>$data3.getPermissionName()</option>
+               #end
+               </select>
+        </td>
+             <td>
                 <select class="drop" name="role">
                         <option value=$rlid>$rlnme</option>
                 #foreach($data2 in $info2)
                         <option value=$data2.getRoleId()>$data2.getRoleName()</option>
                 #end
                 </select>
-       </td><td>
-               <select class="drop" name="permi">
-               #foreach($data3 in $perm)
-                        <option value=$data3.getPermissionId()>$data3.getPermissionName()</option>
-               #end
-               </select>
-        </td></tr>
+       </td>
+       </tr>
         <tr bgcolor="$ui.menuColor">
-                <td align="left" colspan=14>
+                <td align="right" colspan=14>
                 <input type="hidden" name="actionName">
                 <input type="submit" class="button-ftextstyle"  name="eventSubmit_doAccept" value="$brih_add" onClick="return checkActName(document.frm,this);">
                 <input type="submit" class="button-ftextstyle" name="eventSubmit_doReject" value="$brih_remove" onClick="return checkActName(document.frm,this);">
