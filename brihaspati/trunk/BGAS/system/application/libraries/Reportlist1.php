@@ -570,6 +570,7 @@ class Reportlist1
         return $result;
 	}
 
+    
 
 
 /*	function FixedAsset_A($code,$count)
@@ -1127,4 +1128,602 @@ class Reportlist1
 
 	}
 
+    function income_exp_mhrdnew($id ,$type,$database)
+    {
+        $c =14;
+        $counter=8;
+        $total = "";
+        $sum = "";
+        $CI =& get_instance();
+        $CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date_1 = $row->fy_start;
+            $date_2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date_1);
+        $fy_end=explode("-",$date_2);
+
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+
+        /*Get current label*/
+        $current_active_account = $CI->session->userdata('active_account');
+
+        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+        $main = $CI->db->get();
+        $main_result= $main->result();
+
+        foreach($main_result as $row)
+        {
+            $name = $row->name;
+            $code =$row->code;
+            $ledg_id = $row->id;
+            echo "<tr class=\"tr-group\">";
+            echo "<td class=\"td-group\">";
+            echo "&nbsp;" .  $name;
+            echo "</td>";
+            echo "<td class=\"td-group\" align=\"center\">";
+            if($id == 3 && $type == "view" && $database == "NULL" )
+            {   
+                $counter++;
+                if($counter == 9)
+                echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
+                else
+                echo $counter;
+                echo"</td>";
+                $income = new Reportlist1();
+                $income->init($ledg_id);
+                $total = $income->total;
+                $sum = $sum + $total;
+                $total = 0 - $total;
+                echo "<td align=\"right\">".money_format('%!i', convert_cur($total))."</td>";
+                echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
+                echo"</tr>";
+            }
+                  
+            if($id == 4 && $type == "view" && $database == "NULL")
+            {
+                if($name == 'Depreciation'){
+                    //echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . $c, 4, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
+                    echo 4;
+                }
+                else{
+                $c++;
+                    //if($c == 17){
+                    //    echo $c;
+                    //}else{
+                        echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . $c, $c, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
+                    //}
+                }
+                echo"</td>";
+                $income = new Reportlist1();
+                $income->init($ledg_id);
+                $total = $income->total;
+                $sum = $sum + $total;
+                echo "<td align=\"right\">".money_format('%!i', convert_cur($total))."</td>";
+                echo "<td align=\"right\">".money_format('%!i', convert_cur(0))."</td>";
+                echo"</tr>";               
+            }
+        }        
+    return $sum;
+    }
+
+    function get_exp_schedules($code,$type,$database,$count)
+    {
+
+        $CI = & get_instance();
+        $sum1 = "";
+        $sum = "";
+        $curr_sum_total = "";
+        $curr_plan_sum_total = "";
+        $curr_non_plan_sum_total = "";
+        $curr_sum = "";
+        $curr_plan_total = "";
+        $curr_non_plan_total = "";
+        $current_active_account = $CI->session->userdata('active_account');
+        $CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date1 = $row->fy_start;
+            $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        $CI =& get_instance();
+        $CI->load->model('ledger_model');
+        $id = $CI->ledger_model->get_group_id($code);
+        $parent = $CI->ledger_model->get_group_name($id);
+
+        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+        //$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+        $main = $CI->db->get();
+        $main_result= $main->result();
+        $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+        $ledger_detail = $CI->db->get();
+        $ledger_result = $ledger_detail->result();
+        
+        foreach($main_result as $row)
+        {
+            $cr_total = "";
+            $dr_total = "";
+            $plan_cr_total = "";
+            $nonplan_cr_total = "";
+            $plan_dr_total = "";
+            $nonplan_dr_total = "";
+            $plan_total ="";
+            $non_plan_total =""; 
+            $total = "";
+            $group_name = $row->name;
+            $group_id =$row->id;
+            $group_code = $row->code;
+            if(($type == 'view') && ($database == 'NULL'))
+            {
+                echo "<tr class=\"tr-group\">";
+                echo "<td class=\"td-group\">";
+                if($group_name == "Retirement and Terminal Benefits")
+                    echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $group_code . '/' . '15A', $group_name, array('title' => $group_name, 'style' => 'color:#000000;text-decoration:none;font-weight: bold;'));
+                else
+                echo "&nbsp;" .  $group_name;
+                echo "</td>";
+
+                $CI->db->select('code')->from('groups')->where('id', $group_id);
+                $code_result= $CI->db->get();
+                $code = $code_result->row();
+                $CI->db->select('id')->from('ledgers');
+                foreach( $code as $code1){
+                       $CI->db->like('code', $code1);
+                 }
+                $query_result =$CI->db->get();
+                $no_row = $query_result->num_rows();
+
+                $q_result = $query_result->result();
+                foreach ($q_result as $row)
+                {
+                    $ledger_id = $row->id;
+                    $CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc,entry_items.id as entry_items_id,entries.sanc_type as sanc_type');
+                    $CI->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id);
+                    $CI->db->where('date >=', $date1);
+                    $CI->db->where('date <=', $date2);
+                    $result11 =$CI->db->get();
+                    $entry_result = $result11->result();
+                    foreach($entry_result as $query_row)
+                    {
+                        $dc = $query_row->entry_items_dc;
+                        $sum = $query_row->entry_items_amount;
+                        $entry_item_id =$query_row->entry_items_id;
+                        $sanc_type = $query_row->sanc_type;
+                    
+                        if($sanc_type != "select")
+                        {
+                            if($sanc_type == "plan")
+                            {
+                                if($dc == "C")
+                                {
+                                    $plan_cr_total = $paln_cr_total + $sum;
+                                }elseif($dc == "D"){
+                                    $plan_dr_total = $plan_dr_total + $sum;
+                                }
+
+                            }elseif($sanc_type == "non_plan"){
+                                if($dc == "C")
+                                {
+                                    $nonplan_cr_total = $nonplan_cr_total + $sum;
+                                }elseif($dc == "D"){
+                                    $nonplan_dr_total = $nonplan_dr_total + $sum;
+                                }
+
+                            }
+                        }else{
+
+                            if($dc == "C")
+                            {
+                                $cr_total = $cr_total + $sum;
+                            }elseif($dc == "D"){
+                                $dr_total = $dr_total + $sum;
+                            }
+                        }
+                    }
+                }
+               
+                $nonplan_dr_total = $nonplan_dr_total + $dr_total;
+                $nonplan_cr_total = $nonplan_cr_total + $cr_total;
+
+                $plan_total = $plan_dr_total - $plan_cr_total;
+                $non_plan_total = $nonplan_dr_total - $nonplan_cr_total;
+
+                $total = $plan_total + $non_plan_total; 
+                echo "<td align=\"right\">". convert_amount_dc($plan_total). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc($non_plan_total). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc($total). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                $curr_sum = $curr_sum + $total;
+                $curr_plan_total = $curr_plan_total + $plan_total;
+                $curr_non_plan_total = $curr_non_plan_total + $non_plan_total;
+
+                //echo "curr =$curr_sum plan = $curr_plan_total non = $curr_non_plan_total ";
+
+
+                if ($parent == "Transportations Expenses")
+                {
+                    $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id);
+                    $sub_groups = $CI->db->get();
+                    $sub_group_result = $sub_groups->result();
+                    foreach($sub_group_result as $row3)
+                    {
+                        $sub_g_name = $row3->name;
+                        $sub_g_id = $row3->id;
+                        echo "<tr class=\"tr-ledger\">";
+                        echo "<td class=\"td-ledger\">";
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp" .  $sub_g_name;
+                        echo "</td>";
+                        $CI->load->model('ledger_model');
+                        $sub_g_total = $CI->ledger_model->get_ledger_balance2($sub_g_id);
+                        
+                        $sub_plan_total = $sub_g_total['plan'];
+                        $sub_non_plan_total = $sub_g_total['nonplan'];
+                        
+                        $sub_g_total = $sub_plan_total + $sub_non_plan_total;
+                        echo "<td align=\"right\">" . convert_amount_dc($sub_plan_total) . "</td>"; 
+                        echo "<td align=\"right\">". convert_amount_dc($sub_non_plan_total). "</td>";
+                        echo "<td align=\"right\">". convert_amount_dc($sub_g_total). "</td>";
+                        echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                        echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                        echo "<td align=\"right\">". convert_amount_dc(0). "</td>";                       
+                    }
+                }
+            }
+    
+        }
+        $curr_sum1 = "";
+        $curr_plan_total1 = "";
+        $curr_non_plan_total1 = "";
+        foreach($ledger_result as $row1)
+        {
+            $total1 = "";
+            $ledger_name = $row1->name;
+            $ledger_id =$row1->id;
+            if(($type == 'view') && ($database == 'NULL'))
+            {
+                echo "<tr class=\"tr-group\">";
+                echo "<td class=\"td-group\">";                  
+                echo "&nbsp;".$ledger_name;
+                echo "</td>";
+                $CI =& get_instance();
+                $CI->load->model('ledger_model');
+                $total1 = $CI->ledger_model->get_ledger_balance2($ledger_id);
+                foreach ($total1 as $value){
+                        $plan_total = $value['plan'];
+                        $non_plan_total = $value['nonplan'];
+                }
+                $total1 = $plan_total + $non_plan_total;
+                if($plan_total ==""){
+                    echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                }else{
+                    echo "<td align=\"right\">" . convert_amount_dc($plan_total) . "</td>";
+                }
+                if($non_plan_total == "")
+                {
+                    echo "<td align=\"right\">". convert_amount_dc($non_plan_total == ""). "</td>";
+                }else{
+                    echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                }
+                echo "<td align=\"right\">". convert_amount_dc($total1). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                $curr_sum1 = $curr_sum1 + $total1;
+                $curr_plan_total1 = $curr_plan_total1 + $plan_total;
+                $curr_non_plan_total1 = $curr_non_plan_total1 + $non_plan_total;
+            }           
+        }
+        $curr_sum_total = $curr_sum1 + $curr_sum;
+        $curr_plan_sum_total = $curr_plan_total + $curr_plan_total1;
+        $curr_non_plan_sum_total = $curr_non_plan_total + $curr_non_plan_total1;
+        $this->curr_sum_total = $curr_sum_total;
+        $this->curr_plan_sum_total = $curr_plan_sum_total;
+        $this->curr_non_plan_sum_total = $curr_non_plan_sum_total;
+
+        //echo "total = $curr_sum_total plan= $curr_plan_sum_total nonplan = $curr_non_plan_sum_total";
+    return;
+    }
+
+    function schedule17($code,$type,$database,$count,$var){
+
+        $CI = & get_instance();
+        $sum1 = "";
+        $sum = "";
+        $curr_sum_total = "";
+        $curr_plan_sum_total = "";
+        $curr_non_plan_sum_total = "";
+        $curr_sum = "";
+        $curr_plan_total = "";
+        $curr_non_plan_total = "";
+        $current_active_account = $CI->session->userdata('active_account');
+        $CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date1 = $row->fy_start;
+            $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        $CI =& get_instance();
+        $CI->load->model('ledger_model');
+        $id = $CI->ledger_model->get_group_id($code);
+        $parent = $CI->ledger_model->get_group_name($id);
+
+        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+        //$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+        $main = $CI->db->get();
+        $main_result= $main->result();
+        $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+        $ledger_detail = $CI->db->get();
+        $ledger_result = $ledger_detail->result();
+        
+        foreach($main_result as $row)
+        {
+            $cr_total = "";
+            $dr_total = "";
+            $plan_cr_total = "";
+            $nonplan_cr_total = "";
+            $plan_dr_total = "";
+            $nonplan_dr_total = "";
+            $plan_total ="";
+            $non_plan_total =""; 
+            $total = "";
+            $group_name = $row->name;
+            $group_id =$row->id;
+            if(($type == 'view') && ($database == 'NULL'))
+            {
+                
+                $CI->db->select('code')->from('groups')->where('id', $group_id);
+                $code_result= $CI->db->get();
+                $code = $code_result->row();
+                $CI->db->select('id,name')->from('ledgers');
+                foreach( $code as $code1){
+                       $CI->db->like('code', $code1);
+                 }
+                $query_result =$CI->db->get();
+                $no_row = $query_result->num_rows();
+
+                $q_result = $query_result->result();
+                foreach ($q_result as $row)
+                {
+
+                    $ledger_id = $row->id;
+                    $ledger_name = $row->name;
+
+                    $ledg_plan_cr_total = 0;
+                    $ledg_plan_dr_total = 0;
+
+                    $ledg_nonplan_dr_total = 0;
+                    $ledg_nonplan_cr_total = 0;
+
+                    $ledg_cr_total =0;
+                    $ledg_dr_total = 0;
+
+                    $ledg_plan_total = 0;
+                    $ledg_non_plan_total = 0;
+
+                    $ledg_total = 0;
+                    $CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc,entry_items.id as entry_items_id,entries.sanc_type as sanc_type');
+                    $CI->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id);
+                    $CI->db->where('date >=', $date1);
+                    $CI->db->where('date <=', $date2);
+                    $result11 =$CI->db->get();
+                    $entry_result = $result11->result();
+                    foreach($entry_result as $query_row)
+                    {
+
+                        $dc = $query_row->entry_items_dc;
+                        $sum = $query_row->entry_items_amount;
+                        $entry_item_id =$query_row->entry_items_id;
+                        $sanc_type = $query_row->sanc_type;
+                    
+                        if($sanc_type != "select")
+                        {
+                            if($sanc_type == "plan")
+                            {
+                                if($dc == "C")
+                                {
+                                    $plan_cr_total = $paln_cr_total + $sum;
+                                    $ledg_plan_cr_total = $ledg_paln_cr_total + $sum;
+                                }elseif($dc == "D"){
+                                    $plan_dr_total = $plan_dr_total + $sum;
+                                    $ledg_plan_dr_total = $ledg_plan_dr_total + $sum;
+                                }
+
+                            }elseif($sanc_type == "non_plan"){
+                                if($dc == "C")
+                                {
+                                    $nonplan_cr_total = $nonplan_cr_total + $sum;
+                                    $ledg_nonplan_cr_total = $ledg_nonplan_cr_total + $sum;
+                                }elseif($dc == "D"){
+                                    $nonplan_dr_total = $nonplan_dr_total + $sum;
+                                    $ledg_nonplan_cr_total = $ledg_nonplan_cr_total + $sum;
+                                }
+
+                            }
+                        }else{
+
+                            if($dc == "C")
+                            {
+                                $cr_total = $cr_total + $sum;
+                                 $ledg_cr_total = $ledg_cr_total + $sum;
+                            }elseif($dc == "D"){
+                                $dr_total = $dr_total + $sum;
+                                $ledg_dr_total = $ledg_dr_total + $sum;
+                            }
+                        }
+                    }
+
+                    $ledg_nonplan_dr_total = $ledg_nonplan_dr_total + $ledg_dr_total;
+                    $ledg_nonplan_cr_total = $ledg_nonplan_cr_total + $ledg_cr_total;
+
+                    $ledg_plan_total = $ledg_plan_dr_total - $ledg_plan_cr_total;
+                    $ledg_non_plan_total = $ledg_nonplan_dr_total - $ledg_nonplan_cr_total;
+
+                    $ledg_total = $ledg_plan_total + $ledg_non_plan_total; 
+                    if(($group_name == 'Infrastructure Expenses' && $var == 'A') || ($group_name == 'Communication Expenses' && $var == 'B')){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $ledger_name;
+                        echo "</td>";
+                        echo "<td align=\"right\">". convert_amount_dc($ledg_plan_total). "</td>";
+                        echo "<td align=\"right\">". convert_amount_dc($ledg_non_plan_total). "</td>";
+                        echo "<td align=\"right\">". convert_amount_dc($ledg_total). "</td>";
+                        echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                        echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                        echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                    }
+                }
+                       
+                $nonplan_dr_total = $nonplan_dr_total + $dr_total;
+                $nonplan_cr_total = $nonplan_cr_total + $cr_total;
+
+                $plan_total = $plan_dr_total - $plan_cr_total;
+                $non_plan_total = $nonplan_dr_total - $nonplan_cr_total;
+
+                $total = $plan_total + $non_plan_total; 
+                if(($group_name != 'Infrastructure Expenses') && ($group_name != 'Communication Expenses') && ($var == 'C')){
+                    echo "<tr class=\"tr-group\">";
+                    echo "<td class=\"td-group\">";
+                    echo "&nbsp;" .  $group_name;
+                    echo "</td>";
+                
+                    echo "<td align=\"right\">". convert_amount_dc($plan_total). "</td>";
+                    echo "<td align=\"right\">". convert_amount_dc($non_plan_total). "</td>";
+                    echo "<td align=\"right\">". convert_amount_dc($total). "</td>";
+                    echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                    echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                    echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                }
+                $curr_sum = $curr_sum + $total;
+                    $curr_plan_total = $curr_plan_total + $plan_total;
+                    $curr_non_plan_total = $curr_non_plan_total + $non_plan_total;
+                    //echo "curr =$curr_sum plan = $curr_plan_total non = $curr_non_plan_total ";
+                //}           
+            }
+    
+        }
+        $curr_sum1 = "";
+        $curr_plan_total1 = "";
+        $curr_non_plan_total1 = "";
+        foreach($ledger_result as $row1)
+        {
+            $total1 = "";
+            $ledger_name = $row1->name;
+            $ledger_id =$row1->id;
+            if(($type == 'view') && ($database == 'NULL'))
+            {
+                echo "<tr class=\"tr-group\">";
+                echo "<td class=\"td-group\">";                  
+                echo "&nbsp;"."jhjhfsjhfs".$ledger_name;
+                echo "</td>";
+                $CI =& get_instance();
+                $CI->load->model('ledger_model');
+                $total1 = $CI->ledger_model->get_ledger_balance2($ledger_id);
+                foreach ($total1 as $value){
+                        $plan_total = $value['plan'];
+                        $non_plan_total = $value['nonplan'];
+                }
+                $total1 = $plan_total + $non_plan_total;
+                if($plan_total ==""){
+                    echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                }else{
+                    echo "<td align=\"right\">" . convert_amount_dc($plan_total) . "</td>";
+                }
+                if($non_plan_total == "")
+                {
+                    echo "<td align=\"right\">". convert_amount_dc($non_plan_total == ""). "</td>";
+                }else{
+                    echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                }
+                echo "<td align=\"right\">". convert_amount_dc($total). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                $curr_sum1 = $curr_sum1 + $total1;
+                $curr_plan_total1 = $curr_plan_total1 + $plan_total;
+                $curr_non_plan_total1 = $curr_non_plan_total1 + $non_plan_total;
+            }           
+        }
+        $curr_sum_total = $curr_sum1 + $curr_sum;
+        $curr_plan_sum_total = $curr_plan_total + $curr_plan_total1;
+        $curr_non_plan_sum_total = $curr_non_plan_total + $curr_non_plan_total1;
+        $this->curr_sum_total = $curr_sum_total;
+        $this->curr_plan_sum_total = $curr_plan_sum_total;
+        $this->curr_non_plan_sum_total = $curr_non_plan_sum_total;
+
+        //echo "total = $curr_sum_total plan= $curr_plan_sum_total nonplan = $curr_non_plan_sum_total";
+    return;
+    }
+
+    function schedule9($code,$type,$database,$count,$var)
+    {
+        $CI = & get_instance();
+        $current_active_account = $CI->session->userdata('active_account');
+        $CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date1 = $row->fy_start;
+            $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+
+        $sum = 0;
+        $total1 = 0;
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        $CI =& get_instance();
+        $CI->load->model('ledger_model');
+        $id = $CI->ledger_model->get_group_id($code);
+
+        $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+        $ledger_detail = $CI->db->get();
+        $ledger_result = $ledger_detail->result();
+
+        foreach($ledger_result as $row1)
+        {
+            $total = "";
+            $ledger_code = $row1->code;
+            $ledger_name = $row1->name;
+            $ledger_id =$row1->id;
+
+            $var1 = $CI->ledger_model->get_ledger_var($ledger_code);
+            if(($type == 'view') && ($database == 'NULL'))
+            {
+                echo "<tr class=\"tr-group\">";
+                if($var == $var1)
+                {
+                    echo "<td class=\"td-group\">";                  
+                    echo "&nbsp&nbsp&nbsp;".$ledger_name;
+                    echo "</td>";
+                    
+                    $total = $CI->ledger_model->get_ledger_balance1($ledger_id);
+                    
+                    echo "<td align=\"right\">". convert_amount_dc($total). "</td>";
+                    echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                    $sum = $sum + $total;
+                    $this->sum = $sum;
+                }                
+            }           
+        }
+    $total1 = $sum + $total1;
+    return $total1;
+    }
 }

@@ -120,7 +120,7 @@ var $ledgers = array();
 	function get_all_ledgers_bankcash()
 	{
 		$options = array();
-		$options[0] = "(Please Select)";
+		$options[0] = "(Please Select):";
 		//$this->db->from('ledgers')->where('type', 1)->order_by('code', 'asc');
 		$this->db->from('ledgers')->where('type', 1)->order_by('name', 'asc');
 		$ledger_q = $this->db->get();
@@ -128,18 +128,33 @@ var $ledgers = array();
 		{
 			$cd = $row->code;
                         $nme = $row->name;
+                        $des = $row->ledger_description;
                         //if(substr($cd, 0, 2) == 10)
 			if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))
+                          {
                                 $name = $nme." - L";
+                            	$name = $name.":".$des;
+                        }
                         //if(substr($cd, 0, 2) == 20)
 			if(substr($cd, 0, 2) == $this->get_account_code('Assets'))
+                         {
                                 $name = $nme." - A";
+                         
+                            $name = $name.":".$des;
+                       }
                         //if(substr($cd, 0, 2) == 30)
 			if(substr($cd, 0, 2) == $this->get_account_code('Incomes'))
+                        {
                                 $name = $nme." - I";
+                            $name = $name.":".$des;
+                        }
                         //if(substr($cd, 0, 2) == 40)
 			if(substr($cd, 0, 2) == $this->get_account_code('Expenses'))
+                         {
                                 $name = $nme." - E";
+                         
+                            $name = $name.":".$des;
+                       }
                         $options[$row->id] = $name;
 
 		//	$options[$row->id] = $row->name;
@@ -178,25 +193,39 @@ var $ledgers = array();
 	function get_all_ledgers_nobankcash()
 	{
 		$options = array();
-		$options[0] = "(Please Select)";
+		$options[0] = "(Please Select) :";
 		$this->db->from('ledgers')->where('type !=', 1)->order_by('name', 'asc');
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
 			$cd = $row->code;
                         $nme = $row->name;
+                        $des = $row->ledger_description;
+
                         //if(substr($cd, 0, 2) == 10)
 			if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))
+            {
                                 $name = $nme." - L";
+                            $name = $name.":".$des;
+             }
                         //if(substr($cd, 0, 2) == 20)
 			if(substr($cd, 0, 2) == $this->get_account_code('Assets'))
+              {
                                 $name = $nme." - A";
+                            $name = $name.":".$des;
+               }
                         //if(substr($cd, 0, 2) == 30)
 			if(substr($cd, 0, 2) == $this->get_account_code('Incomes'))
+                {
                                 $name = $nme." - I";
+                            $name = $name.":".$des;
+                 }
                         //if(substr($cd, 0, 2) == 40)
 			if(substr($cd, 0, 2) == $this->get_account_code('Expenses'))
+              {
                                 $name = $nme." - E";
+                                $name = $name.":".$des;
+               }
                         $options[$row->id] = $name;
 
 		//	$options[$row->id] = $row->name;
@@ -207,25 +236,38 @@ var $ledgers = array();
 	function get_all_ledgers_reconciliation()
 	{
 		$options = array();
-		$options[0] = "(Please Select)";
+		$options[0] = "(Please Select):";
 		$this->db->from('ledgers')->where('reconciliation', 1)->order_by('name', 'asc');
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
 			$cd = $row->code;
                         $nme = $row->name;
+                        $des = $row->ledger_description;
                         //if(substr($cd, 0, 2) == 10)
 			if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))
+            {
                                 $name = $nme." - L";
+             					$name = $name.":".$des;
+            }
                         //if(substr($cd, 0, 2) == 20)
 			if(substr($cd, 0, 2) == $this->get_account_code('Assets'))
+             {
                                 $name = $nme." - A";
+                                $name = $name.":".$des;
+              }
                         //if(substr($cd, 0, 2) == 30)
 			if(substr($cd, 0, 2) == $this->get_account_code('Incomes'))
+             {
                                 $name = $nme." - I";
+                            $name = $name.":".$des;
+              }
                         //if(substr($cd, 0, 2) == 40)
 			if(substr($cd, 0, 2) == $this->get_account_code('Expenses'))
+               {
                                 $name = $nme." - E";
+                                $name = $name.":".$des;
+                }
                         $options[$row->id] = $name;
 
 		//	$options[$row->id] = $row->name;
@@ -425,6 +467,36 @@ var $ledgers = array();
 			$total = float_ops($total, $op_bal, '-');
 		return $total;
 	}
+
+	/* get ledger balance for selected date in current financial year and with division of plan & nonplan @megha*/ 
+	function get_ledger_balance2($ledger_id)
+	{
+		list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
+
+		$dr_total = $this->get_dr_total2($ledger_id);
+		$cr_total = $this->get_cr_total2($ledger_id);
+
+		$plan_dr_total = $dr_total['plan'];
+		$non_plan_dr_total = $dr_total['nonplan'];
+			//echo $non_plan_dr_total;
+		
+		$plan_cr_total = $cr_total['plan'];
+		$non_plan_cr_total = $cr_total['nonplan'];
+			//echo "== $non_plan_cr_total";
+		
+		$plan_total = float_ops($plan_dr_total, $plan_cr_total, '-');
+		$non_plan_total = float_ops($non_plan_dr_total, $non_plan_cr_total, '-');
+		//echo " $non_plan_total";
+		
+		if ($op_bal_type == "D")
+			$non_plan_total = float_ops($non_plan_total, $op_bal, '+');
+		else
+			$non_plan_total = float_ops($non_plan_total, $op_bal, '-');
+
+		$total = array('plan' => $plan_total,'nonplan'=> $non_plan_total );
+		return $total;
+	}
+
 	/*get ledger balance of previous year for profit & loss and payment & receipt in selected date*/  
 	function get_old_ledger_balance($ledger_id)
 	{
@@ -687,6 +759,93 @@ var $ledgers = array();
 		else
 			return 0;
 	}
+
+	function get_dr_total2($ledger_id)
+	{
+		$this->load->library('session');
+		$date1 = $this->session->userdata('date1');
+		$date2 = $this->session->userdata('date2');
+
+		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D')->where('entries.sanc_type','select');
+		$this->db->where('date >=', $date1);
+	    $this->db->where('date <=', $date2);
+		$dr_total_q = $this->db->get();
+		$dr_total = $dr_total_q->row();
+		$select_dr_total = $dr_total->drtotal;
+
+		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D')->where('entries.sanc_type','non_plan');
+		$this->db->where('date >=', $date1);
+	    $this->db->where('date <=', $date2);
+		$dr_total_q1 = $this->db->get();
+		$dr_total1 = $dr_total_q1->row();
+		$non_plan_dr_total = $dr_total1->drtotal;
+
+		
+
+		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D')->where('entries.sanc_type','plan');
+		$this->db->where('date >=', $date1);
+	    $this->db->where('date <=', $date2);
+		$dr_total_q2 = $this->db->get();
+		$dr_total2 = $dr_total_q2->row();
+		$plan_dr_total = $dr_total2->drtotal;
+
+		$non_plan_dr_total = $non_plan_dr_total + $select_dr_total;
+
+		//echo "nonplan dr total = $non_plan_dr_total";
+
+		$dr_total = array('plan' => $plan_dr_total,'nonplan' => $non_plan_dr_total );
+
+		/*if( empty( $dr_total ) )
+		{
+		    return 0 ;
+		}else{*/
+			return $dr_total;
+		//}
+	}
+
+
+	function get_cr_total2($ledger_id)
+	{
+		$this->load->library('session');
+		$date1 = $this->session->userdata('date1');
+		$date2 = $this->session->userdata('date2');
+
+		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C')->where('entries.sanc_type','select');
+		$this->db->where('date >=', $date1);
+	    $this->db->where('date <=', $date2);
+		$cr_total_q = $this->db->get();
+		$cr_total = $cr_total_q->row();
+		$select_cr_total = $cr_total->crtotal;
+
+		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C')->where('entries.sanc_type','non_plan');
+		$this->db->where('date >=', $date1);
+	    $this->db->where('date <=', $date2);
+		$cr_total_q1 = $this->db->get();
+		$cr_total1 = $cr_total_q1->row();
+		$non_plan_cr_total = $cr_total1->crtotal;
+
+		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C')->where('entries.sanc_type','plan');
+		$this->db->where('date >=', $date1);
+	    $this->db->where('date <=', $date2);
+		$cr_total_q2 = $this->db->get();
+		$cr_total2 = $cr_total_q2->row();
+		$plan_cr_total = $cr_total2->crtotal;
+
+		$non_plan_cr_total = $non_plan_cr_total + $select_cr_total;
+
+		//echo "nonplan cr total = $non_plan_cr_total";		
+
+		$cr_total = array('plan' => $plan_cr_total,'nonplan' => $non_plan_cr_total );
+
+		/*if( empty( $cr_total ) )
+		{
+		    return 0 ;
+		}else{*/
+			return $cr_total;
+		//}
+	}
+
+
 
 	/* Return debit total of previous year of selected date as positive value */
 	function get_old_dr_total($ledger_id)
@@ -2103,6 +2262,23 @@ var $ledgers = array();
 	
         }
 
+    function get_ledger_var($code){
+
+    	$var = "";
+
+    	if($code == 300102 || $code == 300104 || $code == 300106)
+    		$var = 'B';
+    	elseif($code == 300123 || $code == 300124)
+    		$var = 'D';
+    	elseif($code == 300122 || $code == 300128)
+    		$var = 'E';
+    	elseif ($code == 300109 || $code == 300108 || $code == 300111 || $code == 300112 || $code == 300114 || $code == 300115 || $code == 300105 || $code == 300117 || $code == 300118 || $code == 300125)
+    		$var = 'C';
+    	else
+    		$var = 'A';
+
+    	return $var;
+    } 
 	
 }
 

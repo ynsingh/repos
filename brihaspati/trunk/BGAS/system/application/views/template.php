@@ -52,7 +52,9 @@ if (isset($add_javascript))
 
 <script type="text/javascript">
 /* Loading JQuery Superfish menu */
+
 $(document).ready(function() {
+
 	$("ul.sf-menu").supersubs({ 
 		minWidth:12,
 		maxWidth:27,
@@ -267,6 +269,7 @@ $(document).ready(function() {
 				
 			echo "</li>";
 			echo "<li>";
+				$chart_account = $this->config->item('chart_account');
 				echo anchor('report', 'Reports', array('title' => 'Reports')); 
 				echo "<ul>";
 					echo "<li>";
@@ -278,11 +281,17 @@ $(document).ready(function() {
 								echo anchor(prep_url( base_url().'index.php/report/balancesheet'), 'Corporate Format', 'target="_blank"');
 							echo "</li>";
 							echo "<li>";
+								if($chart_account == "mhrd"){
 								 //echo anchor('report/new_balancesheet', 'MHRD Format', array('title' => 'Balance Sheet MHRD Format', 'class' => 'loading'));
-								echo anchor(prep_url( base_url().'index.php/report/new_balancesheet'), 'MHRD Format', 'target="_blank"');
-							echo "</li>";
-							echo "<li>";
-                                                                 echo anchor('report/new_mhrd', 'New MHRD Format', array('title' => 'Balance Sheet MHRD Format-2015', 'class' => 'loading'));
+								
+								echo anchor(prep_url( base_url().'index.php/report/new_balancesheet'), 'MHRD Format','target="_blank"');
+								}
+								if($chart_account == "mhrd2015"){							
+							//echo "</li>";
+							//echo "<li>";
+                                //echo anchor('report/new_mhrd', 'New MHRD Format', array('title' => 'Balance Sheet MHRD Format-2015', 'class' => 'loading'));
+                                echo anchor(prep_url( base_url().'index.php/report/new_mhrd'), 'MHRD Format 2015','target="_blank"');  
+                                                        }
                                                         echo "</li>";
 
 						 echo "</ul>";
@@ -298,8 +307,16 @@ $(document).ready(function() {
                                                         	echo anchor(prep_url( base_url().'index.php/report/profitandloss'), 'Corporate Format', 'target="_blank"');
                                                         echo "</li>";
                                                         echo "<li>";
+                                                        if($chart_account == "mhrd"){
                                                                // echo anchor('report2/profitandloss_mhrd', 'MHRD Format', array('title' => 'Income & Expenditure', 'class' => 'loading'));
                                                         		echo anchor(prep_url( base_url().'index.php/report2/profitandloss_mhrd'), 'MHRD Format', 'target="_blank"');
+                                                        }
+                                                        //echo "</li>";
+                                                        //echo "<li>";
+                                                        if($chart_account == "mhrd2015"){
+                                                               // echo anchor('report2/profitandloss_mhrd', 'MHRD Format', array('title' => 'Income & Expenditure', 'class' => 'loading'));
+                                                        		echo anchor(prep_url( base_url().'index.php/report2/profitandloss_mhrdnew'), 'MHRD Format 2015', 'target="_blank"');
+                                                        }
                                                         echo "</li>";
                                                   echo "</ul>";
                                          echo "</li>";
