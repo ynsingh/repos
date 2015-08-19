@@ -311,7 +311,10 @@ class Addparty extends Controller {
 			if($code == "07"){
 			$prole="service provider";	
 			}
-			if(($code !="00")&&($code !="01")&&($code !="02")&&($code !="03")&&($code !="04")&&($code !="05")&&($code !="06")&&($code !="07"))
+			if($code == "08"){
+			$prole="alumni/doner";	
+			}
+			if(($code !="00")&&($code !="01")&&($code !="02")&&($code !="03")&&($code !="04")&&($code !="05")&&($code !="06")&&($code !="07")&&($code !="08"))
 			{
                                 $this->messages->add('Please insert the second unit id with given code.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
