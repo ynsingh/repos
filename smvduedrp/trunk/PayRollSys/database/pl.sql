@@ -1483,10 +1483,7 @@ CREATE TABLE `user_task_menu_name` (
 #
 
 INSERT INTO `admin_records` (`seq_id`, `user_id`, `admin_pass`, `flag`, `add_date`) VALUES 
-  (1,'admin','hjhjhj',0,'2012-12-18'),
-  (2,'adminjk','jkljkl',0,'2017-11-17'),
-  (3,'adminjk1','123123',0,'2018-11-18'),
-  (4,'payadmin','admin123',1,'2025-11-25');
+  (1,'admin','admin123',0,'2025-11-25');
 COMMIT;
 
 #
@@ -1873,7 +1870,7 @@ CREATE TABLE `user_roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-INSERT INTO user_master (user_id, user_name, user_pass, flag) VALUES (1, 'payadmin', 'admin123', 1);
+INSERT INTO user_master (user_id, user_name, user_pass, flag) VALUES (1, 'admin', 'admin123', 1);
 
 INSERT INTO user_roles(user_id, role_id) VALUES(1, 3);
 
