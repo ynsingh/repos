@@ -121,6 +121,7 @@ public class ForgotPassword extends VelocitySecureAction
 				{
 					int uid=UserUtil.getUID(loginName);
 					Criteria crit=new Criteria();
+				// the commented code is used for hint question based password recovery. now new url based code active.
                 		//	crit.add(UserConfigurationPeer.USER_ID,Integer.toString(uid));
                 		//	crit.add(UserConfigurationPeer.QUESTION_ID,0);
                 	 	//	List check=UserConfigurationPeer.doSelect(crit);
@@ -171,6 +172,11 @@ public class ForgotPassword extends VelocitySecureAction
 						Date cdate=Date.valueOf(curdate);
                         			String Expdate=ExpiryUtil.getExpired(curdate,2);
 			                        Date Expiry_date=Date.valueOf(Expdate);
+
+						crit=new Criteria();
+                                                crit.add(ForgotpassPeer.USER_NAME,loginName);
+						ForgotpassPeer.doDelete(crit);
+
 
 						crit=new Criteria();
 						crit.add(ForgotpassPeer.USER_NAME,loginName);
