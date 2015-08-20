@@ -267,13 +267,44 @@ class Manage extends Controller {
 
 //		$ini_file = $this->config->item('config_path') . "accounts/" . $database_label . ".ini";
 
+		$db1=$this->load->database('login', TRUE);
+        $db1->select('*')->from('bgasAccData')->where('dblable', $database_label);
+		$query = $db1->get();
+        if ($query->num_rows() < 1)
+        {
+                $this->messages->add('Account with label ' . $database_label . ' does not exists.', 'error');
+                $this->template->load('admin_template', 'admin/manage');
+                return;
+        }
+		else{
+			foreach($query->result() as $row){
+            	$org_name = $row ->organization;
+            	$unit_name= $row ->unit;
+				$database_host = $row ->hostname;
+    	        $database_port = $row ->port;
+                $database_name = $row ->databasename;
+                $database_username = $row ->uname;
+                $database_password = $row ->dbpass;
+            }	
+        }
+
+
+        $data['org_name']=$org_name ;
+        $data['unit_name']= $unit_name;
+		$data['database_host']= $database_host;
+		$data['database_port']= $database_port;
+		$data['database_name']= $database_name;
+		$data['database_username']= $database_username;
+		$data['database_password']= $database_password;
+
 		/* Form fields */
 		$data['database_name'] = array(
 			'name' => 'database_name',
 			'id' => 'database_name',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $database_name,
+			'readonly'=>'true',
 		);
 
 		$data['database_username'] = array(
@@ -281,7 +312,7 @@ class Manage extends Controller {
 			'id' => 'database_username',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $database_username,
 		);
 
 		$data['database_password'] = array(
@@ -289,7 +320,7 @@ class Manage extends Controller {
 			'id' => 'database_password',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $database_password,
 		);
 
 		$data['database_host'] = array(
@@ -297,7 +328,7 @@ class Manage extends Controller {
 			'id' => 'database_host',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' =>  $database_host,
 		);
 
 		$data['database_port'] = array(
@@ -305,7 +336,7 @@ class Manage extends Controller {
 			'id' => 'database_port',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $database_port,
 		);
 		$data['database_label'] = $database_label;
 
@@ -317,98 +348,11 @@ class Manage extends Controller {
 			$data['database_name']['value'] = $this->input->post('database_name', TRUE);
 			$data['database_username']['value'] = $this->input->post('database_username', TRUE);
 			$data['database_password']['value'] = $this->input->post('database_password', TRUE);
-		} else {
-
-			/* check for database label exist */
-                        $db1=$this->load->database('login', TRUE);
-                        $db1->select('*')->from('bgasAccData')->where('dblable', $database_label);
-			$query = $db1->get();
-                        if ($query->num_rows() < 1)
-                        {
-                                $this->messages->add('Account with label ' . $database_label . ' does not exists.', 'error');
-                                $this->template->load('admin_template', 'admin/manage', $data);
-                                return;
-                        }
-			else{
-				$data['org_name']='';
-		                $data['unit_name']='';
-				$data['database_host']='';
-				$data['database_port']='';
-				$data['database_name']='';
-				$data['database_username']='';
-				$data['database_password']='';
-				foreach($query->result() as $row){
-                                	$data['org_name']['value'] = $row -> organization;
-                                	$data['unit_name'] ['value']= $row -> unit;
-					$data['database_host']['value'] = $row -> hostname;
-                        	        $data['database_port']['value'] = $row -> port;
-                	                $data['database_name']['value'] = $row -> databasename;
-        	                        $data['database_username'] ['value']= $row -> uname;
-	                                $data['database_password']['value'] = $row -> dbpass;
-                        	}
-
-			}
-			$db1->close();
 		}
-			/* Check if database ini file exists *
-			if ( ! get_file_info($ini_file))
-			{
-				$this->messages->add('Account settings file labeled ' . $database_label . ' does not exists.', 'error');
-				redirect('admin/manage');
-				return;
-			} else {
-				/* Parsing database ini file *
-				$active_accounts = parse_ini_file($ini_file);
-				if ( ! $active_accounts)
-				{
-					$CI->messages->add('Invalid account settings file', 'error');
-				} else {
-					/* Check if all needed variables are set in ini file *
-					if (isset($active_accounts['db_hostname']))
-						$data['database_host']['value'] = $active_accounts['db_hostname'];
-					else
-						$CI->messages->add('Hostname missing from account settings file', 'error');
-					
-					if (isset($active_accounts['db_port']))
-						$data['database_port']['value'] = $active_accounts['db_port'];
-					else
-						$CI->messages->add('Port missing from account settings file. Default MySQL port is 3306', 'error');
-
-					if (isset($active_accounts['db_name']))
-						$data['database_name']['value'] = $active_accounts['db_name'];
-					else
-						$CI->messages->add('Database name missing from account settings file', 'error');
-
-					if (isset($active_accounts['db_username']))
-						$data['database_username']['value'] = $active_accounts['db_username'];
-					else
-						$CI->messages->add('Database username missing from account settings file', 'error');
-
-					if ( ! isset($active_accounts['db_password']))
-						$CI->messages->add('Database password missing from account settings file', 'error');
-				}
-			}
-		}
+			
 
 		/* Form validations */
 		$this->form_validation->set_rules('database_name', 'Database Name', 'trim|required');
-
-		// get the values from database and displayed
-	/*	$db1=$this->load->database('login', TRUE);
-		$db1->select('organization,unit')->from('bgasAccData')->where('databasename',($this->input->post('database_name', TRUE)));
-		$query = $db1->get();
-		$data['org_name']='';
-		$data['unit_name']='';
-		if ($query->num_rows() > 0){
-			foreach($query->result() as $row){
-				$data['org_name'] = $row -> organization;
-				$data['unit_name'] = $row -> unit; 
-			}
-		}
-		else{
-			 $this->messages->add('Organization name and unit name not exist','error');
-		}
-
 
 		/* Validating form */
 		if ($this->form_validation->run() == FALSE)
@@ -427,50 +371,29 @@ class Manage extends Controller {
 			$data_database_password = $this->input->post('database_password', TRUE);
 
 			$tablebad="bgasAccData";
-                        $db1=$this->load->database('login', TRUE);
-                        $db1->trans_start();
-                        $update_data = array(
-	                        'databasename' =>  $data_database_name,
-                                'uname' => $data_database_username,
-                                'dbpass' => $data_database_password,
-                                'hostname' => $data_database_host,
-                                'port' => $data_database_port,
-                        );
+            $db1=$this->load->database('login', TRUE);
+            $db1->trans_start();
+            $update_data = array(
+                'databasename' =>  $data_database_name,
+                'uname' => $data_database_username,
+                'dbpass' => $data_database_password,
+                'hostname' => $data_database_host,
+                'port' => $data_database_port,
+            );
 			if ( ! $db1->where('dblable', $database_label)->update($tablebad, $update_data))
-                                {
-                                        $db1->trans_rollback();
-                                        $this->messages->add('Error in updating value in  bgasAccData table under login data base ' . $data_database_name . '.', 'error');
-                                        $db1->close();
-                                        $this->template->load('admin_template', 'admin/create', $data);
-                                        return;
-                                } else {
-                                        $db1->trans_complete();
-                                        $this->messages->add('Updating Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
-					redirect('admin/manage');
-					return;
-                        }
-                        $db1->close();
-/*
-
-			$ini_file = $this->config->item('config_path') . "accounts/" . $database_label . ".ini";
-
-			$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
-
-			$con_details_html = '[database]' . '<br />db_type = "' . $data_database_type . '"<br />db_hostname = "' . $data_database_host . '"<br />db_port = "' . $data_database_port . '"<br />db_name = "' . $data_database_name . '"<br />db_username = "' . $data_database_username . '"<br />db_password = "' . $data_database_password . '"<br />';
-
-			/* Writing the connection string to end of file - writing in 'a' append mode *
-			if ( ! write_file($ini_file, $con_details))
-			{
-				$this->messages->add('Failed to edit account settings file. Check if "' . $ini_file . '" file is writable.', 'error');
-				$this->messages->add('You can manually update the text file "' . $ini_file . '" with the following content :<br /><br />' . $con_details_html, 'error');
-				$this->template->load('admin_template', 'admin/manage/edit', $data);
-				return;
-			} else {
-				$this->messages->add('Updated account settings.', 'success');
+            {
+                $db1->trans_rollback();
+                $this->messages->add('Error in updating value in  bgasAccData table under login data base ' . $data_database_name . '.', 'error');
+                $db1->close();
+                $this->template->load('admin_template', 'admin/create', $data);
+                return;
+            } else {
+                $db1->trans_complete();
+                $this->messages->add('Updating Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
 				redirect('admin/manage');
 				return;
-			}
-*/
+            }
+            $db1->close();
 		}
 		return;
 	}
@@ -480,40 +403,39 @@ class Manage extends Controller {
 	function delete($database_label)
 	{
 
-                $db1=$this->load->database('login', TRUE);
+        $db1=$this->load->database('login', TRUE);
 		
 		//get database detail of account
 		$db1->from('bgasAccData')->where('dblable', $database_label);
-               	$accountdetail = $db1->get();
-                foreach ($accountdetail->result() as $row)
-                {
-                        $databasehost=$row->hostname;
-                        $dbname= $row->databasename;
-                        $databaseport=$row->port;
-                        $databaseusername=$row->uname;
-                        $databasepassword=$row->dbpass;
-                }
-		
-                $db1->close();
+       	$accountdetail = $db1->get();
+        foreach ($accountdetail->result() as $row)
+        {
+            $databasehost=$row->hostname;
+            $dbname= $row->databasename;
+            $databaseport=$row->port;
+            $databaseusername=$row->uname;
+            $databasepassword=$row->dbpass;
+        }
+        $db1->close();
 
 	        //call method for taking backup
 	
-		$this->backup_tables($databasehost,$databaseusername,$databasepassword,$dbname);
+		$this->backup_tables($databasehost,$databaseusername,$databasepassword,$dbname,$database_label);
 		redirect('admin/manage');
 		
 		return;
 	}
 	
-	function backup_tables($databasehost,$databaseuser,$databasepassword,$dbname,$tables = '*')
+	function backup_tables($databasehost,$databaseuser,$databasepassword,$dbname,$database_label,$tables = '*')
 	{
-		$con = mysql_connect($databasehost,$databaseuser,$databasepassword);
+		$con = @mysql_connect($databasehost,$databaseuser,$databasepassword);
 		mysql_select_db($dbname,$con);
 
 		//get all of the tables
 		if($tables == '*')
 		{	
 			$tables = array();
-			$result = mysql_query('SHOW TABLES');
+			$result = mysql_query("SHOW TABLES");
 			while($row = mysql_fetch_row($result))
 			{
 				$tables[] = $row[0];
@@ -557,7 +479,7 @@ class Manage extends Controller {
 		
 		//drop the database
 	
-		$link = mysql_connect($databasehost, $databaseuser, $databasepassword);
+		$link = @mysql_connect($databasehost, $databaseuser, $databasepassword);
 		if (!$link) {
 			die('Could not connect: ' . mysql_error());
 		}
@@ -573,46 +495,41 @@ class Manage extends Controller {
 		$db1=$this->load->database('login', TRUE);
 		//$sqldel="DELETE from bgasAccData where databasename='$databaseuser'";
 		//$result = mysql_query($sqldel);
-	
-		$db1->from('bgasAccData')->where('databasename', $dbname);	
-		$accdetail = $db1->get();
-		$dblable;	
-		foreach ($accdetail->result() as $row)
-                {
-                        $dblable=$row->dblable;
-                }
-		$db1->from('bgasuser');
+
+        $db1->select('userid,accounts');
+		$db1->from('bgasuserrolegroup');
 		$query1 = $db1->get();
-                foreach($query1->result() as $row)
-                {
-			$id = $row->id;
-	                $accname = $row->accounts;
-			if (strpos($accname, $dblable) !== false)
+        foreach($query1->result() as $row)
+        {
+			$user_id = $row->userid;
+	        $accname = $row->accounts;
+			if (strpos($accname, $database_label) !== false)
 			{
 				$straccnew="";
-				$dblablenew= $dblable.",";
+				$dblablenew= $database_label.",";
 				if (strpos($accname, $dblablenew) !== false)	
 				{
-					$straccnew=str_replace($dblable.",","",$accname);
+					$straccnew=str_replace($database_label.",","",$accname);
 				}
 				else
 				{
-					$straccnew=str_replace($dblable,"",$accname);
+					$straccnew=str_replace($database_label,"",$accname);
 				}
 				$update_data = array('accounts' => $straccnew);
 
-				$db1->where('id', $id)->update('bgasuser', $update_data);
+				$db1->where('userid', $user_id)->update('bgasuserrolegroup', $update_data);
 			}
                 
 		}
-                //delete the account record from bgasAccData table
 
-                //$db1=$this->load->database('login', TRUE);
+        //delete the account record from bgasAccData table
+
+        //$db1=$this->load->database('login', TRUE);
 		//his->messages->add('value===>'.$dblable);
-                $sqldel="DELETE from bgasAccData where dblable='$dblable'";
-                $result = mysql_query($sqldel);
+        $sqldel="DELETE from `bgasAccData` where `dblable`='$database_label'";
+        $result = mysql_query($sqldel);
 
-		$this->messages->add('Account <b>' .$dblable. '</b> has been deleted Successfully and backup of account is stored in backups directory');
+		$this->messages->add('Account <b>' .$database_label. '</b> has been deleted Successfully and backup of account is stored in backups directory');
 	 	return;	
 	}
 	

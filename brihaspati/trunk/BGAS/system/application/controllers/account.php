@@ -7,7 +7,7 @@ class Account extends Controller {
 		$this->load->model('Ledger_model');
 		$this->template->set('page_title', 'Chart Of Accounts');
 		//$this->template->set('nav_links', array('group/add' => 'Add Group','group/add_fund_group' => 'Add Fund Group', 'ledger/add' => 'Add Ledger'));
-		$this->template->set('nav_links', array('group/add_fund_group' => 'Add Fund Group','ledger/add' => 'Add Ledger'));
+		$this->template->set('nav_links', array('group/add_fund_group' => 'Add Fund Group','group/add_spons_project' => 'Add Sponsored Project / Fellowship','ledger/add' => 'Add Ledger'));
 		/* Calculating difference in Opening Balance */
 		$total_op = $this->Ledger_model->get_diff_op_balance();
 		if ($total_op > 0)

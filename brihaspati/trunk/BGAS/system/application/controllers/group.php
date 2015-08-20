@@ -898,6 +898,301 @@ var $group_code = 0;
 		return;
 	}
 
+	function add_spons_project(){
+
+		/* Check for chart of account */
+		if ($this->config->item('chart_account') != 'mhrd2015')
+		{
+			$this->messages->add('Permission Denied', 'error');
+			redirect('account');
+			return;
+		}
+
+		$chart_account = $this->config->item('chart_account');
+
+		$this->load->library('validation');
+		$this->load->model('Group_model');
+		$this->template->set('page_title', 'New Sponsored Project / Fellowship');
+
+		/* Check for account lock */
+		if ($this->config->item('account_locked') == 1)
+		{
+			$this->messages->add('Account is locked.', 'error');
+			redirect('account');
+			return;
+		}
+
+		/* Form fields */
+				
+		$data['group_name'] = array(
+			'name' => 'group_name',
+			'id' => 'group_name',
+			'maxlength' => '100',
+			'size' => '40',
+			'value' => '',
+		);
+
+		$data['short_name'] = array(
+			'name' => 'short_name',
+			'id' => 'short_name',
+			'maxlength' => '100',
+			'size' => '40',
+			'value' => '',
+		);
+
+		$data['group_parent'] = array(
+			"select" => "Select",
+            "project" => "Recipts Against Sponsored Projects",
+            "fellowship"=> "UGC Sponsored Fellowship/Scholarships",
+			
+        );
+
+		$data['group_parent_active'] = "select";
+		$data['group_description'] = array(
+			'name' => 'group_description',
+			'id' => 'group_description',
+			'cols' => '50',
+			'rows' => '3',
+			'value' => '',
+		);
+
+		/* Form validations */
+
+		$this->form_validation->set_rules('group_name', 'Group Name', 'trim|required|min_length[2]|max_length[100]|unique[groups.name]');
+		$this->form_validation->set_rules('short_name', 'Short Name', 'trim|required|min_length[2]|max_length[100]|unique[fund_group_table.short_name]');
+		$this->form_validation->set_rules('group_description', 'trim');
+		$this->form_validation->set_rules('group_parent', 'trim|required');
+		
+		/* Re-populating form */
+		if ($_POST)
+		{
+			$data['group_name']['value'] = $this->input->post('group_name', TRUE);
+			$data['short_name']['value'] = $this->input->post('short_name', TRUE);
+			$data['group_parent_active'] = $this->input->post('group_parent', TRUE);
+			$data['group_description']['value'] = $this->input->post('group_description', TRUE);
+		}
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'group/add_spons_project', $data);
+			return;
+		}
+		else
+		{
+			$data_name = $this->input->post('group_name', TRUE);
+			$data_short_name = $this->input->post('short_name', TRUE);
+			$data_parent_name = $this->input->post('group_parent', TRUE);
+			$data_group_description = $this->input->post('group_description', TRUE);
+
+			if($data_parent_name == 'select'){
+				$this->messages->add('Please Select a Parent Group.', 'error');
+				$this->template->load('template', 'group/add_spons_project', $data);
+				return;
+			}
+
+			//if($data_name != ""){
+				$this->db->select('id')->from('groups')->where('name LIKE', $data_name . '%');
+				$no_row = $this->db->get()->num_rows();
+				if ( $no_row > 0)
+				{
+					$this->messages->add($data_name .' Project / Fellowship already exists.', 'error');
+					$this->template->load('template', 'group/add_spons_project', $data);
+					return;
+				}
+			//}
+
+			if($data_parent_name == 'project')
+				$data_parent_name ="Recipts Against Sponsored Projects";
+			elseif($data_parent_name == 'fellowship')
+				$data_parent_name ="UGC Sponsored Fellowship/Scholarships";
+
+			$data_parent_id = $this->Group_model->get_id($data_parent_name);
+			/* Check if parent group id present */
+
+			$this->db->select('id')->from('groups')->where('id', $data_parent_id);
+			if ($this->db->get()->num_rows() < 1)
+			{
+				$this->messages->add('Parent group does not exists.'. $data_parent_id."name=".$data_parent_name, 'error');
+				$this->template->load('template', 'group/add_spons_project', $data);
+				return;
+			}
+
+			//$this->db->select('id')->from('groups')->where('parent_id', $data_parent_id);
+			//$query_r = $this->db->get();
+			$a = 0;
+			$b = "";
+			if($data_parent_name == "Recipts Against Sponsored Projects"){
+				$b = 2;
+			}
+			elseif($data_parent_name == "UGC Sponsored Fellowship/Scholarships"){
+				$b = 1;
+			}
+			//foreach ($query_r->result() as $row)
+			$ledger_name = array();
+			$name = array();
+			$name[0] = $data_name." Receipts";
+			$name[1] = $data_name." Expenses";
+			$name[2] = $data_name." Fixed Assets";
+			//{
+			for($a = 0 ; $a <= $b ; $a++)
+			{
+				$num = $this->Group_model->get_numOfChild($data_parent_id);
+				$g_code = $this->Group_model->get_group_code($data_parent_id);
+				
+				$data_group_name = $name[$a];
+				//$a++;
+				
+				if($num == 0)
+				{
+					$data_code = $g_code . '01';
+				} else{
+					$data_code=$this->get_code($num, $g_code);
+				}
+
+				$i=0;
+				do{
+					if($i>0)
+					{
+						//$num=$num+$i;
+						$num = $num + 1;
+						$data_code=$this->get_code($num, $g_code);
+					}			
+					 $this->db->from('ledgers');
+			                    $this->db->select('id')->where('code =',$data_code);
+			                        $ledger_q = $this->db->get();
+					$i++;
+				}while($ledger_q->num_rows()>0);
+				
+				$data_affects_gross = 0;
+
+				$this->db->trans_start();
+				$insert_data = array(
+			      	'code' => $data_code,
+					'name' => $data_group_name,
+					'parent_id' => $data_parent_id,
+					'affects_gross' => $data_affects_gross,
+					'group_description' => $data_group_description,
+				);
+
+				if( ! $this->db->insert('groups', $insert_data))
+				{
+					$this->db->trans_rollback();
+					$this->messages->add('Error addding Group account - ' . $data_group_name . '.', 'error');
+					$this->template->load('template', 'group/add_fund_group', $data);
+					return;
+				}else{
+					//$this->db->trans_complete();
+					$new_parent_id = $this->db->insert_id();
+					$this->db->trans_complete();
+					$this->messages->add('Added Group account - ' . $data_group_name . '.entry_id='.$new_parent_id, 'success');
+				}
+					/*code for adding ledgers under newly created groups*/
+
+					
+				if($data_parent_name == 'Recipts Against Sponsored Projects')
+				{
+					if (strpos($data_group_name,'Receipts') !== false)
+					{
+						$ledger_name[0] = $data_short_name." - Grants in Aids";
+						$ledger_name[1] = $data_short_name." - Interest on Investments";
+						$ledger_name[2] = $data_short_name." - Interest on Savings";
+						$ledger_name[3] = $data_short_name." - Overhead Charges - Income";
+						$ledger_name[4] = $data_short_name." - Seminars/Workshops-Income";
+
+					}elseif(strpos($data_group_name,'Expenses') !== false){
+
+						$ledger_name[0] = $data_short_name." - Consumables Exp";
+						$ledger_name[1] = $data_short_name." - Interest of Deposit in EMF A/c";
+						$ledger_name[2] = $data_short_name." - Man Power Exp";
+						$ledger_name[3] = $data_short_name." - Other Expenditure";
+						$ledger_name[4] = $data_short_name." - Overhead Expenses";
+						$ledger_name[5] = $data_short_name." - Seminar - Workshops Exp";
+						$ledger_name[6] = $data_short_name." - Temp Transfer to Maint. A/c";
+						$ledger_name[7] = $data_short_name." - Travel Exp";
+			
+					}elseif(strpos($data_group_name,'Fixed Assets') !== false){
+
+						$ledger_name[0] = $data_short_name." - Books";
+						$ledger_name[1] = $data_short_name." - Computers& Peripherals";
+						$ledger_name[2] = $data_short_name." - Furniture";
+						$ledger_name[3] = $data_short_name." - General Equipments";
+						$ledger_name[4] = $data_short_name." - Scientific & Laboratory Equipment";
+					}
+				}elseif($data_parent_name == 'UGC Sponsored Fellowship/Scholarships'){
+					
+					if (strpos($data_group_name,'Receipts') !== false)
+					{
+						$ledger_name[0] = $data_short_name." - Grants in Aids";
+						$ledger_name[1] = $data_short_name." - Interest on Investments";
+						$ledger_name[2] = $data_short_name." - Interest on Saving A/c";
+
+					}elseif(strpos($data_group_name,'Expenses') !== false){
+
+						$ledger_name[0] = $data_short_name." - Revenue Expenditure";
+						$ledger_name[1] = $data_short_name." - Revenue Exp(SFIRE)";
+					}
+				}
+
+				$c = 0;
+				$counter = count($ledger_name);
+				for($c = 0 ; $c <= $counter-1 ; $c++)
+				{
+					
+					$ledg_name = $ledger_name[$c];
+
+					$num = $this->Ledger_model->get_numOfChild($new_parent_id);
+	                $l_code = $this->Group_model->get_group_code($new_parent_id);
+
+	                if($num == 0)
+			        {
+	        		    $ledger_code = $l_code . '01';
+	                } else{
+	                    $ledger_code=$this->get_code($num, $l_code);
+			        }
+	        		$d=0;
+
+                	do{
+                    	if($d>0)
+    	                {
+                	        $num = $num + 1;
+    	                	$ledger_code=$this->get_code($num, $l_code);
+            	        }
+                    	$this->db->from('groups');
+    	                $this->db->select('id')->where('code =',$ledger_code);
+            	        $group_q = $this->db->get();
+	                	$d++;
+        	        }while($group_q->num_rows()>0);
+				
+					$this->db->trans_start();
+                    $insert_data1 = array(
+                        'code' => $ledger_code,
+		                'name' => $ledg_name,
+        		        'group_id' => $new_parent_id,
+                		'op_balance' => '0.00',
+                    	'op_balance_dc' => 'C',
+                        'type' => '0',
+    	                'reconciliation' => '0',
+    	        	);
+
+        	        if ( ! $this->db->insert('ledgers', $insert_data1))
+                	{
+    	               	$this->db->trans_rollback();
+                        $this->logger->write_message("error", "Error adding ledgers under group " . $data_parent_name);
+                	} else {
+    	                $this->db->trans_complete();
+        	            //$this->logger->write_message("success", "Added Interest on fund " . $data_name);
+        	            $this->messages->add('Added Ledger - ' . $ledg_name .  '.', 'success');
+            		}
+				}
+				unset($ledger_name);
+			}
+			redirect('account');
+			return;
+		}
+		return;
+	}
+
 }
 
 /* End of file group.php */

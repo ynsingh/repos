@@ -5,7 +5,7 @@ echo $this->session->userdata('active_account');
 echo "</p>";
 
 echo "<table border=0 cellpadding=5 class=\"simple-table manage-account-table\">";
-echo "<thead><tr><th>Label</th><th>Hostname</th><th>Port</th><th>Database</th><th>Username</th><th></th><th></th></tr></thead>";
+echo "<thead><tr><th>Label</th><th>Hostname</th><th>Port</th><th>Database</th><th>Username</th><th></th><th></th><th></th><th></th></tr></thead>";
 echo "<tbody>";
 $odd_even = "odd";
 	$db1=$this->load->database('login', TRUE);

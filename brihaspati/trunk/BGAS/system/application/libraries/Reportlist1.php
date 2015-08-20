@@ -16,7 +16,7 @@ class Reportlist1
 			$this->total = 0;
 
 		}
-		 else {
+		else {
 			$CI->db->from('groups')->where('id', $id)->limit(1);
 			$group_q = $CI->db->get();
 			$group = $group_q->row();
@@ -1168,10 +1168,10 @@ class Reportlist1
             if($id == 3 && $type == "view" && $database == "NULL" )
             {   
                 $counter++;
-                if($counter == 9)
-                echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
-                else
+                if($counter == 10 || $counter == 12)
                 echo $counter;
+                else
+                echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
                 echo"</td>";
                 $income = new Reportlist1();
                 $income->init($ledg_id);
@@ -1191,11 +1191,7 @@ class Reportlist1
                 }
                 else{
                 $c++;
-                    //if($c == 17){
-                    //    echo $c;
-                    //}else{
                         echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . $c, $c, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
-                    //}
                 }
                 echo"</td>";
                 $income = new Reportlist1();
@@ -1216,6 +1212,7 @@ class Reportlist1
         $CI = & get_instance();
         $sum1 = "";
         $sum = "";
+        $str = 'a';
         $curr_sum_total = "";
         $curr_plan_sum_total = "";
         $curr_non_plan_sum_total = "";
@@ -1267,11 +1264,11 @@ class Reportlist1
                 echo "<tr class=\"tr-group\">";
                 echo "<td class=\"td-group\">";
                 if($group_name == "Retirement and Terminal Benefits")
-                    echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $group_code . '/' . '15A', $group_name, array('title' => $group_name, 'style' => 'color:#000000;text-decoration:none;font-weight: bold;'));
+                    echo anchor_popup('report2/IE_schedules/' . $group_code . '/' . '15A', $str.") " .$group_name, array('title' => $group_name, 'style' => 'color:#000000;text-decoration:none;font-weight: bold;'));
                 else
-                echo "&nbsp;" .  $group_name;
+                echo $str.") ".  $group_name;
                 echo "</td>";
-
+                $str++;
                 $CI->db->select('code')->from('groups')->where('id', $group_id);
                 $code_result= $CI->db->get();
                 $code = $code_result->row();
@@ -1394,8 +1391,9 @@ class Reportlist1
             {
                 echo "<tr class=\"tr-group\">";
                 echo "<td class=\"td-group\">";                  
-                echo "&nbsp;".$ledger_name;
+                echo $str.") ".$ledger_name;
                 echo "</td>";
+                $str++;
                 $CI =& get_instance();
                 $CI->load->model('ledger_model');
                 $total1 = $CI->ledger_model->get_ledger_balance2($ledger_id);
@@ -1446,6 +1444,8 @@ class Reportlist1
         $curr_sum = "";
         $curr_plan_total = "";
         $curr_non_plan_total = "";
+        $str = 'a';
+
         $current_active_account = $CI->session->userdata('active_account');
         $CI->db->from('settings');
         $detail = $CI->db->get();
@@ -1459,7 +1459,7 @@ class Reportlist1
 
         $curr_year = $fy_start[0] ."-" .$fy_end[0];
         $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
-        $CI =& get_instance();
+
         $CI->load->model('ledger_model');
         $id = $CI->ledger_model->get_group_id($code);
         $parent = $CI->ledger_model->get_group_name($id);
@@ -1579,8 +1579,9 @@ class Reportlist1
                     if(($group_name == 'Infrastructure Expenses' && $var == 'A') || ($group_name == 'Communication Expenses' && $var == 'B')){
                         echo "<tr class=\"tr-group\">";
                         echo "<td class=\"td-group\">";
-                        echo "&nbsp;" .  $ledger_name;
+                        echo "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp".$str.") " .  $ledger_name;
                         echo "</td>";
+                        $str++;
                         echo "<td align=\"right\">". convert_amount_dc($ledg_plan_total). "</td>";
                         echo "<td align=\"right\">". convert_amount_dc($ledg_non_plan_total). "</td>";
                         echo "<td align=\"right\">". convert_amount_dc($ledg_total). "</td>";
@@ -1600,9 +1601,9 @@ class Reportlist1
                 if(($group_name != 'Infrastructure Expenses') && ($group_name != 'Communication Expenses') && ($var == 'C')){
                     echo "<tr class=\"tr-group\">";
                     echo "<td class=\"td-group\">";
-                    echo "&nbsp;" .  $group_name;
+                    echo "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp".$str.") " .  $group_name;
                     echo "</td>";
-                
+                    $str++;
                     echo "<td align=\"right\">". convert_amount_dc($plan_total). "</td>";
                     echo "<td align=\"right\">". convert_amount_dc($non_plan_total). "</td>";
                     echo "<td align=\"right\">". convert_amount_dc($total). "</td>";
@@ -1630,8 +1631,9 @@ class Reportlist1
             {
                 echo "<tr class=\"tr-group\">";
                 echo "<td class=\"td-group\">";                  
-                echo "&nbsp;"."jhjhfsjhfs".$ledger_name;
+                echo "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp".$str.") ".$ledger_name;
                 echo "</td>";
+                $str++;
                 $CI =& get_instance();
                 $CI->load->model('ledger_model');
                 $total1 = $CI->ledger_model->get_ledger_balance2($ledger_id);
@@ -1697,6 +1699,7 @@ class Reportlist1
         $ledger_detail = $CI->db->get();
         $ledger_result = $ledger_detail->result();
 
+        $c =1;
         foreach($ledger_result as $row1)
         {
             $total = "";
@@ -1711,7 +1714,7 @@ class Reportlist1
                 if($var == $var1)
                 {
                     echo "<td class=\"td-group\">";                  
-                    echo "&nbsp&nbsp&nbsp;".$ledger_name;
+                    echo "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;".$c.".  ".$ledger_name;
                     echo "</td>";
                     
                     $total = $CI->ledger_model->get_ledger_balance1($ledger_id);
@@ -1720,10 +1723,193 @@ class Reportlist1
                     echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
                     $sum = $sum + $total;
                     $this->sum = $sum;
+                    $c++;
                 }                
             }           
         }
     $total1 = $sum + $total1;
     return $total1;
     }
+
+    function get_schedule14($code,$type,$database,$count)
+    {
+        $CI = & get_instance();
+        $num = 1;
+        $current_active_account = $CI->session->userdata('active_account');
+        $CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date1 = $row->fy_start;
+            $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+
+        $sum = 0;
+        $total1 = 0;
+        $counter = 0;
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        $CI =& get_instance();
+        $CI->load->model('ledger_model');
+        $id = $CI->ledger_model->get_group_id($code);
+
+        $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+        $ledger_detail = $CI->db->get();
+        $ledger_result = $ledger_detail->result();
+
+        foreach($ledger_result as $row1)
+        {
+            $total = "";
+            $ledger_code = $row1->code;
+            $ledger_name = $row1->name;
+            $ledger_id =$row1->id;
+            if(($type == 'view') && ($database == 'NULL'))
+            {
+                echo "<tr class=\"tr-group\">";
+               
+                echo "<td class=\"td-group\">";                  
+                echo "&nbsp&nbsp&nbsp;".$num.".  ".$ledger_name;
+                echo "</td>";
+                
+                $total = $CI->ledger_model->get_ledger_balance1($ledger_id);
+                
+                echo "<td align=\"right\">". convert_amount_dc($total). "</td>";
+                echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                $sum = $sum + $total;
+                $this->sum = $sum;
+                $num++;               
+            }           
+        }
+    $total1 = $sum + $total1;
+    return $total1;
+    }
+
+    function get_income_schedule($code,$type,$database,$count)
+    {
+        $i =0;
+        $sum = 0;
+        $sum1 =0;
+        $CI = & get_instance();
+        $c  = 1;
+        $str = 'A';
+        //Get current label.
+        $current_active_account = $CI->session->userdata('active_account');
+        $CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date1 = $row->fy_start;
+            $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        $CI =& get_instance();
+        $CI->load->model('ledger_model');
+        $id = $CI->ledger_model->get_group_id($code);
+        $parent = $CI->ledger_model->get_group_name($id);
+        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+    //  $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+        $main = $CI->db->get();
+        $main_result= $main->result();
+        $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+        $ledger_detail = $CI->db->get();
+        $ledger_result = $ledger_detail->result();
+        //$CI =& get_instance();
+        //$CI->load->model('payment_model');
+        //$db = $CI->payment_model->database_name();
+                              //  echo "</tr>";   
+        
+        foreach($main_result as $row)
+        {
+            $name = $row->name;
+            $group_id =$row->id;
+            if(($type == 'view') && ($database == 'NULL'))
+            {
+                echo "<tr class=\"tr-group\">";
+                if($count ==  13)
+                { 
+                    echo "<td class=\"td-group\" style = font-weight:bold;>";
+                    echo $str.".&nbsp&nbsp" .  $name;
+                }else{
+                    echo "<td class=\"td-group\">";
+                    echo "&nbsp&nbsp;".  $c.". ". $name;
+                    $c++;
+                }
+                echo "</td>";
+                $str++;
+                $object = new Reportlist1();
+                $object->init($group_id);
+                $total = $object->total;
+               echo "<td align=\"right\">". convert_amount_dc($total). "</td>";
+               echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                $sum = $sum + $total;   
+
+                if($name ==  "Income from Land and Building")
+                {
+                    $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id)->where('id !=' ,'123');
+                    $sub_groups = $CI->db->get();
+                    $sub_group_result = $sub_groups->result();
+                    $num = 1;
+                    foreach($sub_group_result as $row3)
+                    {
+                        $ledg_name = $row3->name;
+                        $ledg_id = $row3->id;
+                        echo "<tr class=\"tr-ledger\">";
+                        echo "<td class=\"td-ledger\">";
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp&nbsp&nbsp" . $num.". ". $ledg_name;
+                        echo "</td>";
+                        //$CI->load->model('ledger_model');
+                        $ledg_total = $CI->ledger_model->get_ledger_balance1($ledg_id);
+                        echo "<td align=\"right\">" . convert_amount_dc($ledg_total) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        $num++;
+                    }
+                }                 
+            }
+        }
+        if($count == 13){
+                echo "<tr class=\"tr-group\" style = font-weight:bold;>";
+                echo "<td class=\"td-group\">";                  
+                echo "G. Others";
+                echo "</td><td></td><td></td>";
+                $num = 1;
+        }
+        foreach($ledger_result as $row1)
+        {
+            $ledger_name = $row1->name;
+            $ledger_id =$row1->id;
+            if(($type == 'view') && ($database == 'NULL'))
+            {
+                echo "<tr class=\"tr-group\">";
+                echo "<td class=\"td-group\">"; 
+                if($count == 13){
+                    echo "&nbsp;&nbsp;&nbsp;&nbsp&nbsp&nbsp" .  $num.". ".$ledger_name;
+                    $num ++;
+                }else{               
+                    echo "&nbsp&nbsp;".  $c.". " .$ledger_name;
+                    $c++;
+                }
+                echo "</td>";
+                $CI =& get_instance();
+                $CI->load->model('ledger_model');
+                $total1 = $CI->ledger_model->get_ledger_balance1($ledger_id);
+                echo "<td align=\"right\">" . convert_amount_dc($total1) . "</td>";
+                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                $sum1 = $sum1 + $total1;
+                $this->ledger_id = $ledger_id;
+                
+            }   
+        }
+
+        $curr_total= $sum + $sum1;
+        //$prev_total = $prev_sum + $prev_sum1;
+        $this->curr_total = $curr_total;
+        //$this->prev_total = $prev_total;    
+    }
 }
+

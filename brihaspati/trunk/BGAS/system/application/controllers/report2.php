@@ -431,12 +431,14 @@ class Report2 extends Controller {
                     $title = 'Schedule - Notes on Accounts';
             }
 
-        if($code == '3001') 
+        if($count == 9) 
                 $data['report'] = "report2/schedule_template1";
-        elseif($code == 4003)
+        elseif($count == 17)
         		$data['report'] = "report2/schedule_template3";
-       	elseif($code == 400105)
+       	elseif($count == '15A')
        			$data['report'] = "report2/schedule_template4";
+       	elseif($count == 12 || $count == 13 || $count == 14 || $count == 11)
+       			$data['report'] = "report2/schedule_template5";
        	else
        			$data['report'] = "report2/schedule_template2";
 		$data['title'] = $title;
@@ -1222,13 +1224,15 @@ class Report2 extends Controller {
 
 		$data['print_preview'] = 'FALSE';
 
-		if ($code == '3001'){
+		if ($count == '9'){
 		$this->template->load('template', 'report2/schedule_template1', $data);
-		}elseif($code == '4003'){
+		}elseif($count == '17'){
 
 			$this->template->load('template', 'report2/schedule_template3', $data);
-		}elseif($code == '400105'){
+		}elseif($count == '15A'){
 			$this->template->load('template', 'report2/schedule_template4', $data);
+		}elseif($count == '14' || $count == '13'|| $count == '11'){
+			$this->template->load('template', 'report2/schedule_template5', $data);
 		}else{
 			$this->template->load('template', 'report2/schedule_template2', $data);
 		}
