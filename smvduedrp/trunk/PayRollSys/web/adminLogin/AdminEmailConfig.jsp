@@ -2,6 +2,7 @@
     Document   : AdminEmailConfig
     Created on : Dec 18, 2012, 6:31:38 AM
     Author     : KESU
+GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -18,18 +19,18 @@
             <link type="text/css" rel="stylesheet" href="../bankDetails.css"/>
         </head>
         <body>
-            <rich:panel header="List Of Email Configuration" style="font-size:17px;font-weight:bold;">
+            <rich:panel header="List Of Email Configuration" style="font-size:17px;font-weight:bold; height:320px; width:1290px " >
 
                 <h:panelGrid columns="1" id="adminemail">
                     <a4j:commandButton onclick="Richfaces.showModalPanel('adnew');" value="Add New Admin EmailId Configration"/>
-                    <rich:panel>
+                    <rich:panel style="margin-left:150px;margin-right:150px;border:none;">
                         <rich:messages>
                             <f:facet name="infoMarker">
                                 <h:graphicImage url="/img/success.png"/>
                             </f:facet>
                         </rich:messages>
                         <h:form>
-                            <h:dataTable style="font-size:14px;font-weight:bold;" headerClass="headerStyle" rows="20" rowClasses="rowStyle"  value="#{OrgProfileBean.adminEmailIdList}" binding="#{OrgProfileBean.dataGrid2}"  var="ins">
+                            <rich:dataTable style="font-size:14px;font-weight:bold;width:900px;" rows="9" value="#{OrgProfileBean.adminEmailIdList}" binding="#{OrgProfileBean.dataGrid2}"  var="ins">
                                 <h:column>
                                     <f:facet name="header" >
                                         <h:outputText value="Email ID"/>
@@ -42,17 +43,28 @@
                                     </f:facet>
                                     <h:selectBooleanCheckbox value="#{ins.status}"/> 
                                 </h:column>
-                            </h:dataTable>
+                            </rich:dataTable>
                             <rich:panel>
                                 <a4j:commandButton value="Update" action="#{OrgProfileBean.updateAdminEmail}"/>
                             </rich:panel>
                         </h:form>
                     </rich:panel>
                 </h:panelGrid>
-                <rich:modalPanel label="Add New Administrator" id="adnew">
+                <rich:modalPanel label="Add New Administrator" id="adnew" >
+                     <f:facet name="header">
+                            <h:panelGroup>
+                                <h:outputText value="Add New Admin EmailId Configration"></h:outputText>
+                            </h:panelGroup>
+                            </f:facet>
+                     <f:facet name="controls">
+                         <h:panelGroup>
+                             <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelink"/>
+                             <rich:componentControl for="adnew" attachTo="hidelink" operation="hide" event="onclick"/>
+                         </h:panelGroup>
+                     </f:facet>
                     <h:panelGrid columns="1" id="op">
                         <h:form>
-                            <rich:panel>
+                            <rich:panel style="border:none">
                                 <rich:messages>
                                     <f:facet name="infoMarker">
                                         <h:graphicImage url="/img/success.png"/>

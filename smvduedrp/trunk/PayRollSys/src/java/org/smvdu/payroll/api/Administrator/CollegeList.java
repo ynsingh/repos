@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Scope;
 /**
  *
  * @author KESU
+ * GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
  */
 @ManagedBean
 @RequestScoped
@@ -61,6 +62,7 @@ public class CollegeList {
             pst = cn.prepareStatement("select org_id,org_name,org_web,org_email,org_phone,org_request_status from org_profile left join college_pending_status on org_id=org_code where org_request_status = '"+0+"'");
             
             rst = pst.executeQuery();
+            int k=1;
             while(rst.next())
             {
                 Org o = new Org();
@@ -79,7 +81,9 @@ public class CollegeList {
                     o.setImgUrl("InActive.png"); 
                     o.setStatus(false);  
                 }
-                pendingList.add(o); 
+                o.setSrNo(k);
+                pendingList.add(o);
+                k++;
             }
             return pendingList;
         }
@@ -164,6 +168,7 @@ public class CollegeList {
             
             ResultSet rst = pst.executeQuery();
             String toDate = d.getYear()+"-"+d.getMonth()+"-"+d.getDay();
+            int k=1;
             while(rst.next())
             {
                 if(this.getDateDIff(rst.getString(6), toDate) >= 7)
@@ -187,7 +192,9 @@ public class CollegeList {
                     o.setImgUrl("InActive.png"); 
                     o.setStatus(false);  
                 }
+                o.setSrNo(k);
                 cList.add(o); 
+                k++;
             }
             pst.close();
             rst.close();
@@ -667,16 +674,33 @@ public class CollegeList {
      */
     
     public ArrayList<Org> activeAdminList()
-    {
+    {   
         try
         {
             ArrayList<Org> adminBean = new ArrayList<Org>();
             Connection connection = new CommonDB().getConnection(); 
             PreparedStatement pst;
             ResultSet rst;
-            pst = connection.prepareStatement("select * from admin_records");
+            //pst = connection.prepareStatement("select * from admin_records");
+            pst = connection.prepareStatement("select user_name, flag from user_master left join user_roles on user_roles.user_id=user_master.user_id where role_id='"+3+"'");
+            
             rst = pst.executeQuery();
             while(rst.next())
+            {
+                Org admin =new Org();
+                admin.setAdUserId(rst.getString(1));
+                if(rst.getInt(2)==1){
+                    admin.setStatus(true);
+                    admin.setImgUrl("Active.png");
+                 }
+                if(rst.getInt(2)==0){
+                    admin.setStatus(false);
+                    admin.setImgUrl("InActive.png");
+                }
+                adminBean.add(admin);
+            
+            }
+          /*  while(rst.next())
             {
                 Org admin = new Org();
                 admin.setAdUserId(rst.getString(2)); 
@@ -690,9 +714,9 @@ public class CollegeList {
                     admin.setStatus(false);
                     admin.setImgUrl("InActive.png");
                 }
-                admin.setDate(rst.getString(5)); 
+               // admin.setDate(rst.getString(5)); 
                 adminBean.add(admin); 
-            }
+            }*/
             rst.close();
             pst.close();
             connection.close();
@@ -760,7 +784,7 @@ public class CollegeList {
             int st;
             for(Org adm : admin)
             {
-                System.out.println("ID : "+adm.getAdUserId());
+          //      System.out.println("ID : "+adm.getAdUserId());
                 if(adm.isStatus() == true)
                 {
                     st = 1;
@@ -820,7 +844,9 @@ public class CollegeList {
         try
         {
             java.util.Date date = new java.util.Date();
+            
             java.util.Date dat = new java.util.Date();
+            //System.out.print("date========>"+date+"====dat====>"+dat);
             DateFormat dateFormat;
             dateFormat = new SimpleDateFormat("yy-MM-dd");
             

@@ -31,6 +31,7 @@
 *
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITK.
 *  Modified Date: 4AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*  GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
 
     
 --%>
@@ -49,7 +50,7 @@
         <body class="subpage" id="">
       <a4j:keepAlive beanName="LeaveTypeBean" ajaxOnly="true"/>
         <div class="container_form">
-        <rich:panel style="height:730px;" header="Existing Leaves Types">
+        <rich:panel style="height:320px; width:1290px" header="Existing Leaves Types">
             <h:panelGrid columns="2">
                 <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
                 <rich:messages>
@@ -59,25 +60,25 @@
                 </rich:messages>
             </h:panelGrid>
             <h:form id="leaveForm">
-            <h:panelGrid columns="3" id="leavetypeDetail">
+          <h:panelGrid columns="3" id="leavetypeDetail" style="margin-left:100px;margin-right:100px;" >
             <a4j:status onstart="#{rich:component('statPane')}.show()" onstop="#{rich:component('statPane')}.hide()" />
-            <rich:dataTable id="si" value="#{LeaveTypeBean.leaveValues}" binding="#{LeaveTypeBean.dataGrid}" var="ltt" rowKeyVar="row"  rows="10" style="width:200%;height:600px;" >
+            <rich:dataTable id="si" value="#{LeaveTypeBean.leaveValues}" binding="#{LeaveTypeBean.dataGrid}" var="ltt" rowKeyVar="row" rows="7" style="width:1050px;" >
             
-                <rich:column>
+                    <rich:column>
                             <f:facet name="header">
                                 <h:outputText value="Leave Type"/>
                             </f:facet>
                             <%--<rich:inplaceInput value="#{ltt.name}" />--%>
                             <h:outputText value="#{ltt.name}" />
-                        </rich:column>
+                    </rich:column>
 
-                        <rich:column>
+                    <rich:column>
                             <f:facet name="header">
                                 <h:outputText value="No of Days"/>
                             </f:facet>
                             <%--<rich:inplaceInput value="#{ltt.value}" />--%>
                             <h:outputText value="#{ltt.value}" />
-                        </rich:column>
+                    </rich:column>
                         <%--
                         <rich:column>
                             <f:facet name="header">
@@ -86,7 +87,7 @@
                             <h:selectBooleanCheckbox value="#{ltt.checked}"/>
                         </rich:column>
                         --%>
-                        <h:column>
+                    <h:column>
                             <f:facet name="header">
                                 <h:outputText value="Actions"/>
                             </f:facet>
@@ -100,7 +101,7 @@
                             <f:setPropertyActionListener value="#{ltt}" target="#{LeaveTypeBean.editedRecord}" />
                             
                             </a4j:commandLink>
-                        </h:column>
+                    </h:column>
                         <f:facet name="footer">
                             <rich:datascroller for="si" page="5" />
                         </f:facet>
@@ -122,7 +123,7 @@
              <a4j:commandButton value="Apply" action="#{LeaveTypeBean.print}" reRender="si,leavetypeDetail"/>  --%> 
             </h:form>
                
-           <rich:modalPanel   id="editPnl" autosized="true"  domElementAttachment="parent" width="400" height="170">
+           <rich:modalPanel   id="editPnl" autosized="true"  domElementAttachment="parent" width="400" height="1300">
                 <h:form>
                     <rich:panel header="Edit Employee Service Record ">
                         <h:panelGrid id="editGrid">
@@ -135,7 +136,7 @@
                             <h:selectBooleanCheckbox value="#{LeaveTypeBean.editedRecord.checked}"/>--%>
                             </h:panelGrid>
                             <a4j:commandButton reRender="leaveForm, si, leavetypeDetail" value="Store" action="#{LeaveTypeBean.updateRecord}"  oncomplete="#{rich:component('editPnl')}.hide();" />
-                        <a4j:commandButton value="Cancel" onclick="#{rich:component('editPnl')}.hide(); return false;" />
+                            <a4j:commandButton value="Cancel" onclick="#{rich:component('editPnl')}.hide(); return false;" /> 
                      </rich:panel>
                 </h:form>
           </rich:modalPanel>      

@@ -112,12 +112,22 @@ public class Org implements Serializable{
     private boolean smtpStatus;
     private String hostName;
 
+    private int srNo;
+    
     public String getHostName() {
         return hostName;
     }
 
     public void setHostName(String hostName) {
         this.hostName = hostName;
+    }
+
+    public int getSrNo() {
+        return srNo;
+    }
+
+    public void setSrNo(int srNo) {
+        this.srNo = srNo;
     }
     
     public String getSmtpServerName() {
@@ -347,7 +357,7 @@ public class Org implements Serializable{
          //ip = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getRemoteAddr();
          System.out.println("Ip : "+ipAddress+" : "+request.getRemoteHost());
          port = String.valueOf(request.getServerPort()); 
-         //System.out.println("IP : "+request.get+"port : "+request.getServerPort()); 
+         
      }
 
     public String getOldPassword() {
@@ -369,19 +379,19 @@ public class Org implements Serializable{
     }
      
     public ArrayList<Org> getAdminList() {
-        adminList = new CollegeList().activeAdminList();
-        //System.out.println("\nseema======adminList=====lstadmin="+adminList);
-        dataGrid.setValue(adminList); 
-        //System.out.println("\nseema===========lstadmin="+adminList+"\ndataGrid====="+dataGrid);
-        return adminList;
+       adminList = new CollegeList().activeAdminList();
+      // System.out.println("\nseema===Om===adminList=====lstadmin="+adminList);
+       dataGrid.setValue(adminList); 
+       //System.out.println("\nseema====Om=======lstadmin="+adminList+"\ndataGrid====="+dataGrid);
+       return adminList;
     }
 
     public void setAdminList(ArrayList<Org> adminList) {
         this.adminList = adminList;
     }
-
      
     public String getAdUserId() {
+        //System.out.print("============>"+adUserId);
         return adUserId;
     }
 
@@ -432,7 +442,7 @@ public class Org implements Serializable{
     }
     
     public boolean isStatus() {
-        return status;
+          return status;
     }
 
     public void setStatus(boolean status) {
@@ -447,8 +457,8 @@ public class Org implements Serializable{
         this.notificationDay = notificationDay;
     }
 
-    public String getDate() {
-        return date;
+    public String getDate(){ 
+            return date;
     }
 
     public void setDate(String date) {
@@ -613,7 +623,7 @@ public class Org implements Serializable{
     
 
     public int getId() {
-        return id;
+          return id;
     }
 
     public void setId(int id) {
