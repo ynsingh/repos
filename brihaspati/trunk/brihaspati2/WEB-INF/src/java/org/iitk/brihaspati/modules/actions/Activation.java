@@ -119,7 +119,7 @@ public class Activation extends VelocityAction{
                         }
 			else{
 				try{
-                                              str=MultilingualUtil.ConvertedString("oopsAct_msg",LangFile);
+                                              str=MultilingualUtil.ConvertedString("forgotPwd_msg11",LangFile);
                                               data.setMessage(str);
                                               data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                                         }
