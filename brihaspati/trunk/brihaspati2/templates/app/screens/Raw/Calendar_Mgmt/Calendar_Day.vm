@@ -129,7 +129,7 @@ $!data.getMessage()
 						<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Insert.vm").addPathInfo("day",$day ).addPathInfo("mon",$month_num).addPathInfo("year",$year).addPathInfo("info_id",$element.getInfoId()).addPathInfo("mode","update").addPathInfo("path",$path)><I>$brih_edit</a>
 						</td>
 					#else
-						#if($current_userid == $acc) 
+						#if($current_userid == $acc || $currentRoleId == 2) 
 		   				   <td align=center colspan=2>
 							<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Insert.vm").addPathInfo("day",$day ).addPathInfo("mon",$month_num).addPathInfo("year",$year).addPathInfo("info_id",$element.getInfoId()).addPathInfo("mode","update").addPathInfo("path",$path)><I>$brih_edit</a>
 						   </td>
