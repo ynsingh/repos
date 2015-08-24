@@ -69,8 +69,8 @@ class Entry extends Controller {
 			$this->template->set('page_title', 'Entries Tagged "' . $tag_name . '"');
 		} else if ($entry_type == 'all') {
 			$entry_type_id = 0;
-			$this->template->set('page_title', 'All Entries');
-			$this->template->set('nav_links', array('entry/printallentry/'=> 'PRINT ALL ENTRY'));
+			$this->template->set('page_title', 'All Vouchers');
+			$this->template->set('nav_links', array('entry/printallentry/'=> 'PRINT ALL VOUCHERS'));
 		} else {
 			$entry_type_id = entry_type_name_to_id($entry_type);
 			if ( ! $entry_type_id)
@@ -80,8 +80,8 @@ class Entry extends Controller {
 				return;
 			} else {
 				$current_entry_type = entry_type_info($entry_type_id);
-				$this->template->set('page_title', $current_entry_type['name'] . ' Entries');
-				$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry', 'entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Entry'));
+				$this->template->set('page_title', $current_entry_type['name'] . ' Vouchers');
+				$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Voucher', 'entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Voucher'));
 $width="100%";
 
 			}
@@ -528,7 +528,7 @@ $width="100%";
 			$current_entry_type = entry_type_info($entry_type_id);
 		}
 
-		$this->template->set('page_title', 'View ' . $current_entry_type['name'] . ' Entry');
+		$this->template->set('page_title', 'View ' . $current_entry_type['name'] . ' Voucher');
 
 		/* Load current entry details */
 		if ( ! $cur_entry = $this->Entry_model->get_entry($entry_id, $entry_type_id))
@@ -651,7 +651,7 @@ $width="100%";
 			$current_entry_type = entry_type_info($entry_type_id);
 		}
 
-		$this->template->set('page_title', 'New ' . $current_entry_type['name'] . ' Entry');
+		$this->template->set('page_title', 'New ' . $current_entry_type['name'] . ' Voucher');
 
 
 		/* Form fields */
@@ -1424,7 +1424,7 @@ $width="100%";
 			$current_entry_type = entry_type_info($entry_type_id);
 		}
 
-		$this->template->set('page_title', 'Edit ' . $current_entry_type['name'] . ' Entry');
+		$this->template->set('page_title', 'Edit ' . $current_entry_type['name'] . ' Voucher');
 
 		/* Load current entry details */
 		if ( ! $cur_entry = $this->Entry_model->get_entry($entry_id, $entry_type_id))
@@ -3295,15 +3295,15 @@ $width="100%";
 		$entry_type_id = 0;
 		if ($entry_sort == 'all') {
                         $entry_type_id = 0;
-			$this->template->set('page_title', 'All Entries');
-			$this->template->set('nav_links', array('entry/printallentry' => 'Print All Entry'));
+			$this->template->set('page_title', 'All Vouchers');
+			$this->template->set('nav_links', array('entry/printallentry' => 'Print All Voucher'));
 		}else{	
 		$entry_type_id = entry_type_name_to_id($entry_sort);
 		}
 		if ($entry_sort != 'all') {
 		$current_entry_type = entry_type_info($entry_type_id);
-		$this->template->set('page_title', $current_entry_type['name'] . ' Entries');
-		$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry', 'entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Entry'));
+		$this->template->set('page_title', $current_entry_type['name'] . ' Vouchers');
+		$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Voucher', 'entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Voucher'));
 		}
 		/* Pagination setup */
 		
@@ -3596,7 +3596,7 @@ $width="100%";
 			$current_entry_type = entry_type_info($entry_type_id);
 		}
 
-		$this->template->set('page_title', 'Print ' . $current_entry_type['name'] . ' Entry');
+		$this->template->set('page_title', 'Print ' . $current_entry_type['name'] . ' Voucher');
 
 		/* Form fields */
 		$default_start = '01/04/';
@@ -3711,7 +3711,7 @@ $width="100%";
 			return;
 		}
 
-	        $this->template->set('page_title', 'Print All Entry');
+	        $this->template->set('page_title', 'Print All Voucher');
 
 		/* Form fields */ 
 		$default_start = '01/04/';
@@ -3814,7 +3814,7 @@ $width="100%";
 			$current_entry_type = entry_type_info($entry_type_id);
 		}
 
-		$this->template->set('page_title', 'Verify ' . $current_entry_type['name'] . ' Entry');
+		$this->template->set('page_title', 'Verify ' . $current_entry_type['name'] . ' Voucher');
 
 		/* Load current entry details */
 		if ( ! $cur_entry = $this->Entry_model->get_entry($entry_id, $entry_type_id))
@@ -3934,7 +3934,7 @@ $width="100%";
                         $current_entry_type = entry_type_info($entry_type_id);
                 }
 
-                $this->template->set('page_title', 'New ' . $current_entry_type['name'] . ' Entry');
+                $this->template->set('page_title', 'New ' . $current_entry_type['name'] . ' Voucher');
 
 
                 /* Form fields */

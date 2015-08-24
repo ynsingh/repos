@@ -246,22 +246,22 @@ $(document).ready(function() {
 							echo anchor('entry/show/' . $row['label'], $row['name'], array('title' => $row['name'] . ' Entries'));
 						}
 					} else {
-						echo anchor('entry', 'Entries', array('title' => 'Entries'));
+						echo anchor('entry', 'Vouchers', array('title' => 'Entries'));
 						echo "<ul>";
 						echo "<li>"; 
-							 echo anchor('entry/show/all', 'View All', array('title' => 'All Entries'));
+							 echo anchor('entry/show/all', 'View All Vouchers', array('title' => 'All Entries'));
 						echo "</li>";
 						foreach ($entry_type_all as $id => $row)
 						{
 							// line added by Priyanka
 							if($row['name'] == 'Journal'){
 								echo "<li>";
-								echo anchor('entry/add/journal/' . $row['label'], 'Create ' . $row['name'] . ' Entry', array('title' => $row['name'] . ' Entries'));
+								echo anchor('entry/add/journal/' . $row['label'], 'Create ' . $row['name'] . ' Voucher', array('title' => $row['name'] . ' Entries'));
 								echo  "</li>";
 							}
 						}
 						  echo "<li>";
-                                                        echo anchor('payment/showupload_bill', 'Bill Upload/Voucher Creation', array('title' => 'Bill/Voucher Creation'));
+                                                        echo anchor('payment/showupload_bill', 'Bill Upload / Voucher Creation', array('title' => 'Bill/Voucher Creation'));
                                                 echo "</li>";
 
 						echo "</ul>";

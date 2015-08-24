@@ -69,5 +69,5 @@
 		echo "<br />";
 
 ?> 
-	<input class="hide-print" type="button" onClick="window.print()" value="Print entry">
+	<input class="hide-print" type="button" onClick="window.print()" value="Print Voucher">
 	<input class="hide-print" type="button" onClick="window.back()" value="Back">

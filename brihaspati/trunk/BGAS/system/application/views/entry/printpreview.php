@@ -43,7 +43,7 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 		echo $this->config->item('account_address') . "</td>"; 
 		echo "<td align=\"center\" class=\"bold\" >"."<h4>" . $this->config->item('account_ins_name')."</h4>"."<h2>Brihaspati General Accounting System</h2>";
 		echo "<b>".$current_entry_type['name'];?>
-		Entry
+		Voucher
 		<?php 
 		echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr></table>";?>
 
@@ -170,7 +170,7 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 	</tr>
 	</table>
 	<form>
-	<input class="hide-print" type="button" onClick="window.print()" value="Print entry">
+	<input class="hide-print" type="button" onClick="window.print()" value="Print Voucher">
 	</form>
 </body>
 </html>

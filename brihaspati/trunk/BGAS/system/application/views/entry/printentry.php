@@ -46,7 +46,7 @@
 
 			echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
 			echo "<td>" . date_mysql_to_php_display($row->update_date) . "</td>";
-			echo "<td>" . anchor('entry/view/' . $current_entry_type['label'] . "/" . $row->id, full_entry_number($row->entry_type, $row->number), array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a')) . "</td>";
+			echo "<td>" . anchor('entry/view/' . $current_entry_type['label'] . "/" . $row->id, full_entry_number($row->entry_type, $row->number), array('title' => 'View ' . $current_entry_type['name'] . ' Voucher', 'class' => 'anchor-link-a')) . "</td>";
 
 			echo "<td>";
 			echo $this->Tag_model->show_entry_tag($row->tag_id);
@@ -64,5 +64,5 @@
 		echo "<br />";
 
 ?> 
-	<input class="hide-print" type="button" onClick="window.print()" value="Print entry">
+	<input class="hide-print" type="button" onClick="window.print()" value="Print Voucher">
 	<input class="hide-print" type="button" onClick="window.back()" value="Back">
