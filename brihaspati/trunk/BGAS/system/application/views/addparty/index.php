@@ -1,3 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#change_order").click(function(){
+		                                $.ajax({
+                                        //url: <?php echo '\'' . site_url('ledger/set_group_id') . '/\''; ?> + id,
+                                        url: <?php echo '\'' . site_url('addparty/set_group_id') . '/\''; ?>,
+                                        success: function() {
+                                              location.reload();
+                                        }
+                                 });
+
+    });
+	$("span").click(function(){
+                                                $.ajax({
+                                        //url: <?php echo '\'' . site_url('ledger/set_group_id') . '/\''; ?> + id,
+                                        url: <?php echo '\'' . site_url('addparty/change_order') . '/\''; ?>,
+                                        success: function() {
+                                              location.reload();
+                                        }
+                                 });
+
+    });
+
+	 $("#change_id_order").click(function(){
+                                                $.ajax({
+                                        //url: <?php echo '\'' . site_url('ledger/set_group_id') . '/\''; ?> + id,
+                                        url: <?php echo '\'' . site_url('addparty/change_id_order') . '/\''; ?>,
+                                        success: function() {
+                                              location.reload();
+                                        }
+                                 });
+
+    });
+
+
+});
+</script>
+</head>
+<body>
+
+
+</body>
+</html>
 <?php
 	echo form_open('addparty/show');
 	echo "<p>";
@@ -19,8 +66,9 @@
 <table border=0 cellpadding=5 class="simple-table">
 	<thead>
 		<tr>
-                        <th>Secondary Unit</th>
-                        <th>Party Name</th>
+                        <p><th id="change_id_order">Secondary Unit ID<?php echo img(array('src' => asset_url() . "images/icons/rsz_scrollup.png")); ?></th></p>
+                        <?php echo "<th id=\"change_order\">"."Party Name"." ".img(array('src' => asset_url() . "images/icons/rsz_scrollup.png"))." ". "<span align=\"right\">" . img(array('src' => asset_url() . "images/icons/rsz_scrolldown.png")). ""; ?>
+
                         <th>Party Type</th>
                         <th>Mobile NO.</th>
                         <th>Email Id</th>

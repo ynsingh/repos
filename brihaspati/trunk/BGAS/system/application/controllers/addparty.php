@@ -23,22 +23,38 @@ class Addparty extends Controller {
                 redirect('addparty/show');
                 return;
         }	
+	
 
 	function show()
 	{
+		$this->load->library('session');
+        	$asc_order = $this->session->userdata('order_change');
+		$asc_id_order = $this->session->userdata('order_id_change');
 		$this->template->set('nav_links', array('addparty/add' => 'Add Party'));
 		$this->template->set('page_title', 'Add Party ');
-		$this->db->from('addsecondparty');
+		if($asc_order == '1'){
+		 $this->db->from('addsecondparty')->order_by('partyname', 'asc');
+                $pdetail = $this->db->get();
+                $data['party_detail'] = $pdetail;
+		}else{
+		$this->db->from('addsecondparty')->order_by('id', 'asc');
 		$pdetail = $this->db->get();
 		$data['party_detail'] = $pdetail;
+		}
+		if($asc_id_order == '1'){
+                 $this->db->from('addsecondparty')->order_by('sacunit', 'asc');
+                $pdetail = $this->db->get();
+                $data['party_detail'] = $pdetail;
+                }
 		$data['sbal']=$this->secunit_model->get_all_secclsbal();
 		// code for searching a given text
 		$text = '';
 		$data['search'] = '';
 		$data['search_by'] = array(
 			"Select" => "Select",
-                        "sacunit" => "Secondary Unit",
+                        "sacunit" => "Secondary Unit ID",
                         "partyname"=> "Party Name",
+			"sacunit#1"=> "Party Type",
 			"mobnum"=> "Mobile NO.",
 			"email"=> "Email Id",
 			"bancacnum"=> "Bank A/C No.",
@@ -98,7 +114,30 @@ class Addparty extends Controller {
 		}
 		$field = $data_search_by . '      ' . 'LIKE';
 		$text = $data_text;
+		if($data_search_by == 'sacunit#1'){
+			$field_name=explode("#",$data_search_by);
+			$field = $field_name[0] . '      ' . 'LIKE';
+			if ($text=='student') {
+				$text='01';
+			} elseif ($text == 'clerical staff') {
+		  		$text='02';
+			} elseif($text = 'Technical staff') {
+				$text='03';
+			} elseif($text = 'Supplier') {
+        			$text='04';
+			} elseif($text = 'Admin staff') {
+        			$text='05';
+			} elseif($text = 'Contractor') {
+        			$text='06';
+			} elseif($text = 'Service provider') {
+        			$text='07';
+			} elseif($text = 'Alumni/Doner') {
+   				$text='08';
+			} else{
+				 $this->messages->add('Search proper name of Party Type.', 'error');
+			}
 
+		}
 		$this->db->from('addsecondparty')->where($field, '%' . $text . '%');
 		$pdetail = $this->db->get();
 		$data['party_detail'] = $pdetail;
@@ -110,6 +149,7 @@ class Addparty extends Controller {
 		//$data['abc']=$abc;
 		$data['search'] = $data_search_by;
 		$this->template->load('template', 'addparty/index', $data);
+		$this->session->unset_userdata('order_change');
 		return;
 	}
 	function add()
@@ -805,6 +845,30 @@ class Addparty extends Controller {
                 return;
 
 	}
+
+	 function set_group_id(){
+
+                $this->load->library('session');
+		$this->session->unset_userdata('order_id_change');
+                $this->session->unset_userdata('order_change');
+                $this->session->set_userdata('order_change', '1');
+        }
+
+        function change_order(){
+
+                $this->load->library('session');
+		$this->session->unset_userdata('order_id_change');
+                $this->session->unset_userdata('order_change');
+                $this->session->set_userdata('order_change', '0');
+        }
+	
+	function change_id_order(){
+
+                $this->load->library('session');
+                $this->session->set_userdata('order_id_change', '1');
+        }
+
+
 }
 
 /* End of file create.php */

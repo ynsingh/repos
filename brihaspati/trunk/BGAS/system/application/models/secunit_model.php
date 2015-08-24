@@ -10,7 +10,7 @@ class Secunit_model extends Model {
 	function get_all_secunitid()
 	{
 		$secunitarray = array();
-		$this->db->from('addsecondparty')->order_by('id', 'asc');
+		$this->db->from('addsecondparty')->order_by('partyname', 'asc');
 		$detail_q = $this->db->get();
 		$secunitarray[0] = "selectuid";
 		foreach ($detail_q->result() as $row)
