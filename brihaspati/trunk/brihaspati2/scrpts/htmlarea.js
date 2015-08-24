@@ -1731,7 +1731,7 @@ HTMLArea.getHTML = function(root, outputRoot, editor) {
 		}
 		break;
 	    case 3: // Node.TEXT_NODE
-		if ( !root.previousSibling && !root.nextSibling && root.data.match(/^\s*$/i) ) html = '&nbsp;';
+		if ( !root.previousSibling && !root.nextSibling && root.data.match(/^\s*$/i) ) html = '';
 		else html = HTMLArea.htmlEncode(root.data);
 		break;
 	    case 8: // Node.COMMENT_NODE

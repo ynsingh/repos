@@ -168,6 +168,7 @@ $!data.getMessage()
     <select id="role_id" name="role" class="drop" onChange="ChangeGroup(document.frm,this);"/>
           <option>
           <option value="instructor">$brih_Instructor
+          <option value="teacher_assistant">$bri_ta
           <option value="student">$brih_student
           <option value="group_admin">$brih_groupAdmin
           <option value="author">$brih_author
