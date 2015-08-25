@@ -130,6 +130,8 @@ class Account extends Controller {
 			$data['fy_start'] = date_mysql_to_php(print_value($account_data->fy_start));
 			$data['fy_end'] = date_mysql_to_php(print_value($account_data->fy_end));
 			$data['account_locked'] = print_value($account_data->account_locked);
+			//$data['useremail_status'] = print_value($account_data->useremail_status);
+                        $data['transcationemail_status'] = print_value($account_data->transcationemail_status);
 			//$data['ledger_name'] = print_value($account_data->ledger_name);
 		}
 
@@ -141,6 +143,7 @@ class Account extends Controller {
 		$this->form_validation->set_rules('account_date', 'Date', 'trim|max_length[10]');
 		$this->form_validation->set_rules('account_timezone', 'Timezone', 'trim|max_length[6]');
 		$this->form_validation->set_rules('account_locked', 'Account Locked', 'trim');
+		$this->form_validation->set_rules('transcationemail_status', 'Transcation Mail Sent', 'trim');
 
 //		if($account_data->account_flag == false)
 		//$this->form_validation->set_rules('ledger_name','Ledger Name', 'trim');
@@ -163,6 +166,8 @@ class Account extends Controller {
 //			if($account_data->account_flag == false){
 			$data['ledger_name_active'] = $this->input->post('ledger_name', TRUE);
 			$data['chart_account'] = $this->input->post('chart_account', TRUE);
+			$data['transcationemail_status'] = $this->input->post('transcationemail_status', TRUE);
+
 			//$data['ledger_name_readonly'] = $this->input->post('ledger_name_readonly', TRUE);
                         //$data['account_type'] = $this->input->post('account_type', TRUE);
 			//}
@@ -198,6 +203,11 @@ class Account extends Controller {
 			$data_account_locked = $this->input->post('account_locked', TRUE);
 			if ($data_account_locked != 1)
 				$data_account_locked = 0;
+			
+			$data_transcationemail_status = $this->input->post('transcationemail_status', TRUE);
+                        if ($data_transcationemail_status != 1)
+                                $data_transcationemail_status = 0;
+
 
 			if($account_data->account_flag == 'false')
                                 $data_chart_account = $this->input->post('chart_account', TRUE);
@@ -225,6 +235,7 @@ class Account extends Controller {
 	                                'timezone' => $data_account_timezone,
         	                        'account_locked' => $data_account_locked,
                 	                'ledger_name' => $data_ledger_name,
+					'transcationemail_status' => $data_transcationemail_status,
                         	        'liability_ledger_name' => $data_liability_ledger_name,
 					'chart_account' => $data_chart_account,
 					'account_flag' => 'true'
@@ -240,6 +251,7 @@ class Account extends Controller {
 					'timezone' => $data_account_timezone,
 					'account_locked' => $data_account_locked,
 					'ledger_name' => $data_ledger_name,
+					'transcationemail_status' => $data_transcationemail_status,
 					'liability_ledger_name' => $data_liability_ledger_name
 				);
 			}

@@ -113,6 +113,9 @@ class Startup
 		$CI->config->set_item('account_database_version', $account_d->database_version);
 		$CI->config->set_item('account_ins_name', $account_d->ins_name);
 		$CI->config->set_item('chart_account', $account_d->chart_account);
+		$CI->config->set_item('transcationemail_status', $account_d->transcationemail_status);
+
+		
 		/* Load general application settings */
 		$CI->general->check_setting();
 

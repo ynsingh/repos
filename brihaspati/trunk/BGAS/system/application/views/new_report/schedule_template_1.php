@@ -5,6 +5,8 @@
         $old_dr_total = 0;
         $old_total = 0;
         $opening_balance = 0;
+	$debit_total = "";
+	$credit_total = "";
 	$this->load->library('reportlist1');
 	$this->load->library('reportlist');
 	$count = 1;
@@ -74,15 +76,18 @@
 	$dr_total_1 = $liability1->dr_total1;
         $cr_total_2 = $liability1->cr_total1;
 
-
 	$liability1->get_liabilityschedule('1002',$count);
 	$dr_total_3 = $liability1->dr_total1;
 	$cr_total_4 = $liability1->cr_total1;
-
-	$debit_total = $dr_total_1+$dr_total_3;
-	$credit_total = $cr_total_2+ $cr_total_4;
-
-	$total = $credit_total - $debit_total;
+	$profit = $liability1->profit1;
+	if($profit < 0){
+	$dr_total_3 = $dr_total_3 + (-$profit);
+	}else{
+	$cr_total_4 = $cr_total_4 + ($profit);
+	}
+	$debit_total = ($dr_total_1 + $dr_total_3);
+	$credit_total = ($cr_total_2 + $cr_total_4);
+	$total = $credit_total-$debit_total;
 
 	//Display total for the given schedule
         echo "<tr>";

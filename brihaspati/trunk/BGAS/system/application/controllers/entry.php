@@ -1296,7 +1296,7 @@ $width="100%";
 			//return;
 			
 			 // added by @kanchan
-
+			$transcationemail_status = $this->config->item('transcationemail_status');
                         $message = "$data_narration";
                         $subject = "Accounting Transcation";
                         $sunit_id = $data_secunit;
@@ -1305,9 +1305,12 @@ $width="100%";
                         $query = $this->db->get();
                         $r_query = $query->row();
                         $user_email = $r_query->email;
-                        $CI =& get_instance();  
-                        $CI->load->library('paymentreceipt');
-                        if($CI->paymentreceipt->send_mail($user_email,$subject,$message))  
+			if($transcationemail_status == 1)
+			{
+                        $this->load->library('paymentreceipt');
+                        $this->paymentreceipt->send_mail($user_email,$subject,$message);  
+			return;
+			}
                         $this->template->load('template', 'entry/add', $data);
                         return;
 

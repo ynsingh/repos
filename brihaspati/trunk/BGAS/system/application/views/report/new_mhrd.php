@@ -94,38 +94,38 @@
         echo money_format('%!i', convert_cur(0));
         echo "</td>";
         echo "</tr>";
-        echo "</table>";
-	echo "<br>";
+        //echo "</table>";
+	//echo "<br>";
 
-	echo "<table>";
+	//echo "<table>";
 	echo "<tr>";
-        echo "<td class=\"bold\" style=\"padding-right: 360px\">";
+        echo "<td class=\"bold\" style=\"padding-right: 245px\">";
 	echo "Significant Accounting Policies";
         echo "</td>";
 	//echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
         echo "<td>";
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('notes/display_notes', '23', array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" .anchor_popup('notes/display_notes', '23', array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
         echo "</td>";
-        echo "<td>";
+        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
         echo "</td>";
-        echo "<td>";
+        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
         echo "</td>";
         echo "</tr>";
-	echo "</table>";
-	echo "<br>";
-	echo "<table>";
+	//echo "</table>";
+	//echo "<br>";
+	//echo "<table>";
 	echo "<tr>";
-        echo "<td class=\"bold\" style=\"padding-right: 260px\">";
+        echo "<td class=\"bold\" style=\"padding-right: 154px\">";
         echo "Contingent Liabilities And Notes To Accounts";
         echo "</td>";
         echo "<td>";
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('notes/display_notes', '24', array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". anchor_popup('notes/display_notes', '24', array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
         echo "</td>";
-        echo "<td>";
+        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
         echo "</td>";
-        echo "<td>";
+        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
         echo "</td>";
-
+	echo "</tr>";
         echo "</table>";
 
 

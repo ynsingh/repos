@@ -1,5 +1,5 @@
 <?php
-/*	setlocale(LC_MONETARY, 'en_IN');
+	setlocale(LC_MONETARY, 'en_IN');
         $this->load->library('reportlist1');
 	
         $this->load->library('session');
@@ -77,7 +77,7 @@
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
       	echo "</tr>";
-	echo "</table>"; */
+	echo "</table>"; 
 
 ?>
 

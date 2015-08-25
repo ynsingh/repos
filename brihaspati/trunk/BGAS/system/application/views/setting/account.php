@@ -162,6 +162,18 @@
 	echo "</span>";
 	echo "<span id=\"tooltip-content-1\">If enabled prevents any further modifications to the account. Makes the account read-only.</span>";
 	echo "</p>";
+	//echo "$account_locked";
+/*	echo "<p>";
+        echo "<span id=\"tooltip-target-2\">";
+        echo form_checkbox('useremail_status', 1, $useremail_status) . " User Mail Sent";
+        echo "</span>";
+        echo "<span id=\"tooltip-content-2\">If enabled then mail sent to User. Makes the account read-only.</span>";
+        echo "</p>"; */
+	echo "<p>";
+        echo "<span id=\"tooltip-target-3\">";
+        echo form_checkbox('transcationemail_status', 1, $transcationemail_status) . " Transcation Mail Sent";
+        echo "</span>";
+        echo "<span id=\"tooltip-content-3\">If enabled then mail sent to User. Makes the account read-only.</span>";
 
 	echo "<p>";
 	echo form_submit('submit', 'Update');

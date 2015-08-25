@@ -433,10 +433,7 @@ class paymentreceipt
                 'charset' => 'iso-8859-1',
                 'wordwrap' => TRUE
                 );
-                $CI->load->library('Email', $config);
-
-        // Sometimes you have to set the new line character for better result
-          //      $CI->email->set_newline("\r\n");
+		$mail_messages = $CI->load->library('Email', $config);
 
         // Set your email information
 		$CI->email->from($email_username,"brihspti");
@@ -445,7 +442,8 @@ class paymentreceipt
                 $CI->email->message($message);
                 if(!($CI->email->send()))
 		{
-			$CI->messages->add('Please Set the correct Email Configuration Settings---' . 'error');
+			$CI->messages->add('Your entry is created -' . $mail_messages);
+			//$CI->messages->add('Please Set the correct Email Configuration Settings---' . 'error');
                         return FALSE;
 			}
   		else{

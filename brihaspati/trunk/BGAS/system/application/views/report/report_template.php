@@ -59,7 +59,7 @@
 			echo "<p align=\"center\" class=\"bold\" >" . $this->config->item('account_ins_name')."</p>"; 
 			//"<br>".$this->config->item('account_address') .
 			echo "<p class=\"bold\">".$this->config->item('account_address') . "</p>";
-			echo "<p class=\"bold\">".$title . "</p>";
+			echo "<h3>" . "<p class=\"bold\">".$title . "</p>" . "</h3>";
 			//"<br>".$title . "</h2><br>";
 			//echo $this->config->item('account_address') . "</td>"; 
 			echo"<p>";
