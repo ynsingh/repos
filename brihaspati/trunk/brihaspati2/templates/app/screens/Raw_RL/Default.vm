@@ -63,17 +63,21 @@ $page.setBgColor("$ui.bgcolor")
 			<table style="width:1100px; margin:0px auto;">
            			<tr bgcolor="$ui.menuColor" align="right"> ##4#h tr
               				#if($data.getUser().hasLoggedIn()) ##if(7)
-                 				<td width=100> ##13#h td
+                 				<td width=100> ##15#h td
                    					<a href=$link.setAction("myLogout") style=text-decoration:none> 
 							<center>
                                                         <img src=$content.getURI("/images/lgot.png") style=border:0px solid;><br><font size=2>$brih_logout</font></a></center>
-                 				</td> ##13#h td closed
-						 <td width=100> ##14#h td
+                 				</td> ##15#h td closed
+                                                    <td width=100 class="dt"> ##14#h td
+                                                       <a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All") style=text-decoration:none> <center>
+                                                       <img src=$content.getURI("/images/bookmarkmanger.png") style=border:0px solid;><br><font size=2>$brih_Bookmark</font></a></center>
+                                                       </td>  ##14#h td closed
+						  <td width=100> ##13#h td
                                                       	<a href=$link.setActionEvent("TimetableAction", "doInit").setPage("call,Timetable,Index.vm") style=text-decoration:none><center>
                                                         <img src=$content.getURI("/images/Timetable.png") style=border:0px solid;><br>
                                                         <font size=2>$brih_timetable</font></a></center>
-                                                        </td> ##14#h td closed
-                 				<td width=100> ##15#h td
+                                                        </td> ##13#h td closed
+                 				<td width=100> ##12#h td
             						<a href=$link.setPage("call,Calculator.vm") style=text-decoration:none><center>
                                                         <img src=$content.getURI("/images/calculater.png") style=border:0px solid;><br><font size=2>$brih_calculator</font></a></center>
                                                         </td> ##12#h td closed

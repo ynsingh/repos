@@ -369,41 +369,7 @@ $!data.getMessage()
 ##end of today's task
 	</tr>
 </table>
-## bookmarks##
-<table width="20%" align="right">
-	#if($guest_login=="false")
-		<tr align="right" bgcolor="$ui.menuColor">
-	        <ul>
-        	<td width=20% valign="top"><b><a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none;onmouseover="mopen('m1')" onmouseout="mclosetime()">$brih_My $brih_Bookmark</a></b>
-                <div id="m1" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
-                	<tr bgcolor="$ui.tableColor" align="right"><td width=20% valign="top"><b><li dir="rtl" ><a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All") style=text-decoration:none>$LocalMail_show $brih_all</a></li></b></td><tr>
-	#end
-                        	#if($allTopics.size() > 1)
-                                	## Below line for horizental scrolling is added by shaista
-	                                <div style="width:300px; overflow: auto;">
-                                #end
-                                #foreach ($Allbookmark in $allTopics)
-	                               #if($velocityCount%2==0)
-        	                	      <tr bgcolor="$ui.menuColor" align="right">
-                        	       #else
-		               	               <tr bgcolor="$ui.tableColor" align="right">
-                	                #end
-                        	        #if($Allbookmark.type=="general")
-                                	<td><li dir="rtl"><a href= style=text-decoration:none;"javascript:void(0)"onclick="window.open('$Allbookmark.Url')">$Allbookmark.Topic</a></li></td>
-	                                #end
-        	                        #if($Allbookmark.type=="Course")
-                	                <td> <li dir="rtl"><a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("btname",$Allbookmark.Topic).addPathInfo("bturl",$Allbookmark.Url).addPathInfo("bgroup",$Allbookmark.Name).addPathInfo("stat","view").addPathInfo("stat1","All") style=text-decoration:none>$Allbookmark.Url</a></li></td>
-                        	        #end
-                                	#if($Allbookmark.type=="Course_file")
-	                                <td><li dir="rtl"><a href=javascript:popupWin1("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$Allbookmark.Topic).addPathInfo("dir",$Allbookmark.Name).addPathInfo("type","Bookmarks").addPathInfo("filename",$Allbookmark.Url)","newWin") style=text-decoration:none >$Allbookmark.Url</a></li></td>
-        	                        #end
-                                #end
-		</div>
-		</td>
-	</ul>
-	</tr>
-</table>
-                                <div style="clear:both"></div>
+ <div style="clear:both"></div>
 ##bookmarks ##
 </body>
 <SCRIPT LANGUAGE="javascript">

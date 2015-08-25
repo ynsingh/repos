@@ -121,12 +121,19 @@ $page.setBgColor("$ui.bgcolor")
 							<img src=$content.getURI("/images/Timetable.png") style=border:0px solid;><br>
                                                         <font size=2>$brih_timetable</font></a></center>
                                                         </td> ##13#h td closed
-
-                					<td width=100 class="dt"> ##13#h td
+                                                      #if($data.getUser().getUserName() != "guest")
+                                                       #if($data.getUser().getUserName() != "admin") 
+                                                       <td width=100 class="dt"> ##14#h td
+                                                       <a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All") style=text-decoration:none> <center>
+                                                       <img src=$content.getURI("/images/bookmarks.jpg") style=border:0px solid;><br><font size=2>$brih_Bookmark</font></a></center>
+                                                       </td> ##14#h td closed
+                                                       #end
+                                                       #end
+                                                        <td width=100 class="dt"> ##15#h td
                    					##<a href=$link.setAction("LogoutUser") style=text-decoration:none> 
                                 			<a href=$link.setAction("myLogout") style=text-decoration:none><center>
 		   					<img src=$content.getURI("/images/lgot.png") style=border:0px solid;><br><font size=2>$brih_logout</font></a></center>
-                					</td> ##13#h td closed
+                					</td> ##15#h td closed
              					#end ##end(7)
           				</tr> ##3#d tr closed
         			</table> ##2#d table closed

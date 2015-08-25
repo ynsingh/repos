@@ -19,7 +19,7 @@ $!data.getMessage()
 
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
         <tr> <td><b>
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | #if($lang == "hindi") $brih_Bookmark $brih_add #else $brih_add $brih_Bookmark #end
+        <a href=$link.setPage("Index.vm")>$brih_home</a> | #if($lang == "hindi") $brih_Bookmark $brih_add #else $brih_add $brih_Bookmark #end
      </b></td>
 	<td align="right">
 ##          <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin2("/brihaspati2/docs/Addbookmarks.html","newWin");>$brih_help</a></td>

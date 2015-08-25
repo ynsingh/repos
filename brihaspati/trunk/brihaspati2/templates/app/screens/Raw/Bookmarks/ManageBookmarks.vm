@@ -34,7 +34,7 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
         <tr> <td><b>
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | #if($lang == "hindi") $brih_Bookmark $brih_Of1 $brih_Manage #else $brih_Manage$brih_Bookmark #end </b>
+        <a href=$link.setPage("Index.vm")>$brih_home</a> | #if($lang == "hindi") $brih_Bookmark $brih_Of1 $brih_Manage #else $brih_Manage$brih_Bookmark #end </b>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin2("/brihaspati/docs/ManageBookmarks.html","newWin");>Help</a>
                  <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">| VideoHelp</font></a>
                 </td>
