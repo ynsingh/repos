@@ -151,7 +151,7 @@ function newschedules_model()
                         $CI->db->select('asset_name,cost,depreciated_value,current_value')->from('old_asset_register')->where('asset_name', $ledg_name1);
                         $asset1 = $CI->db->get();
                         $asset_result1 = $asset1->result();
-                        foreach ($asset_result as $rowled1)
+                        foreach ($asset_result1 as $rowled1)
                         {
                                 $asset_name1 = $rowled1->asset_name;
                                 $dep_op_value1 = $rowled1->depreciated_value;

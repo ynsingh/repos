@@ -3553,6 +3553,8 @@ class Report extends Controller {
 	function new_schedule($code,$count)
 	{
 		$this->template->set('schedule', 'true');
+		$design_earm_funds_group = array();
+                $design_earm_funds_ledger = array();
 		$data = array();
                 $id = '';
                 $schedule = '';
@@ -3740,7 +3742,7 @@ class Report extends Controller {
                         else{
                         $title = 'Schedule - Notes on Accounts';
                         }
-			echo "name===$name";
+			//echo "name===$name";
                         if($count == 1)
                         $data['report'] = "new_report/schedule_template_1";
                         elseif($count == 3)
