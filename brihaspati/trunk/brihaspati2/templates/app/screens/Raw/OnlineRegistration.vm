@@ -10,6 +10,8 @@
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
+ * @author <a href="mailto:vijay.pal428@gmail.com">Vijay Bahadur Pal</a>
  * @modidied date: 20-10-2010, 23-12-2010, 11-01-2011, 05-08-2011,10-12-2011,07-02-2012
  * @modified date: 09-08-2012 (Priyanka),31-05-2013,06-06-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
@@ -73,9 +75,31 @@ $!data.getMessage()
 	 		<option value="$name.getInstituteName()" style="width:300px;" title="$name.getInstituteName()">$name.getInstituteName() </option>
 	  	#end
 	  	</select>
+	</td></tr>
+<tr bgcolor="$ui.menuColor">
+	<td> #if($lang =="hindi" || $lang =="marathi") $brih_dept $brih_name $brih_select #else $brih_select $brih_dept $brih_name #end <font color=RED>*</font></td>
+	<td>
+		<select name="deptName" size=1 class="drop" onChange="checkOption(document.frm,this);" style="width:300px;"/>
+		#if($Deptname=="")
+			<option> #if($lang == "hindi") $brih_dept $brih_select #else  $brih_select $brih_dept #end </option>
+		#else
+			<option>$Deptname</option>
+                        <option> #if($lang == "hindi") $brih_dept $brih_select #else  $brih_select $brih_dept #end </option>
+                #end
+                        <option value="" title="Course Without Dept" style="width:275px;">CourseWithoutDept</option>
+                #foreach($name in $deptlist)
+                        <option value="$!name.getName()" title="$!name.getName()" style="width:275px;">$!name.getName()</option>
+                #end
+		</select>
+	</td></tr>
+<tr>
+	<td> #if($lang =="hindi" || $lang =="marathi") $brih_course $brih_name $brih_select #else $brih_select $brih_course $brih_name #end <font color=RED>*</font></td>
+	<td>
 		<select class="drop" id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);" style="width:300px;"/>
 		#foreach($crsname in $courseList)
+			#if ($crsname.getDept() == $Deptname)
 			<option value="$crsname.getGroupName()" style="width:275px;" title="$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
+			#end
 		#end
 		</select>
 	</td>

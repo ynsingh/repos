@@ -56,6 +56,8 @@ import org.iitk.brihaspati.om.InstituteProgram;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">jaivir Singh</a>20092010
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
+ * @author <a href="mailto:vijay.pal428@gmail.com">Vijay Bahadur Pal</a>
  * @modified date:23-12-2010, 11-01-2011
  */
 /**
@@ -82,7 +84,12 @@ public class OnlineRegistration extends VelocityScreen
 			String Val=pp.getString("val","");
 			context.put("Insname",Val);
 			/**
- 			 * Getting list of program according to institute id 
+ 			 * Getting list of Dept according to institute id 
+ 			 */
+			String dept=pp.getString("deptName","");
+                        context.put("Deptname",dept);
+			/**
+ 			 * Getting list of program according to Dept and institute id 
  			 */ 
 			String InsNm=pp.getString("InstName","");
 			int InstId = InstituteIdUtil.getIst_Id(InsNm);
