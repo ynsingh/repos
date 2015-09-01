@@ -32,8 +32,6 @@ import utils.sendMail;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import com.opensymphony.xwork2.ActionContext;
-
-
 /**
  *
  * @author kazim
@@ -460,6 +458,7 @@ public void validate() {
     public String SaveAdminRegistration() throws Exception {
 
         try {
+
             //Set Institution's Email address as Users Name
             im.setImEmailId(erpmusers.getErpmuName());
 
@@ -522,8 +521,17 @@ public void validate() {
 
             //Add InstitutionPrivileges for Administrator
             AddInstituitionPrivilegesForAdmin();
+            Locale locale = ActionContext.getContext().getLocale();
+            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+            if(!bundle.getString("emailFrom").equals("") && !bundle.getString("emailUser").equals("") && !bundle.getString("emailFromPasswd").equals("")) {
+               	String toEmailAddress = erpmusers.getErpmuName();
+               	String emailSubject = "Institute Registration Mail";
+               	String emailMessage = "<html><head><title>Institute Registration Mail</title></head><body><table width='500' border='0' align='center' cellpadding='15' cellspacing='0' style='font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt; color:#5a5a5a;'><tr><td align='left'>The Institute "+im.getImName()+"has been registered in PICO System.</td></tr>"+"<tr><td>Your LoginId is " + erpmusers.getErpmuName() + ",</td></tr><tr><td align='left'>Your password is:<br/>Password: " + erpmusers.getErpmuPassword() + "<br /><br/><tr><td><p>Thank you for using this site.<br /></p><br/><br/><p>Regards,<br />Administrator, PICO Module<br /></p><p><br /><br />THIS IS AN AUTOMATED MESSAGE; PLEASE DO NOT REPLY. </p></td></tr></table></body></html>";
+               	sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"), toEmailAddress, "", emailSubject, emailMessage);
+           }
+            message = "Registration successful, A mail has been send to your mailId containing login name and password";
 
-            message = "Registration successful, Please Login";
+            //message = "Registration successful, Please Login";
             return SUCCESS;
            }
         catch (Exception e) {

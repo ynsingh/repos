@@ -37,7 +37,6 @@
         <action name="Login" class="Administration.ErpmusersAction">  
          <!--   <result name="success">/pico/Administration/showWelcomePage.jsp</result>  -->
             <result name="success">/pico/Administration/Indexpage.jsp</result> 
-            <result name="success">/pico/Administration/showWelcomePage.jsp</result>  
             <result name="error">/pico/Administration/login.jsp</result>
            <result name="input">/pico/Administration/login.jsp</result> 
         </action>
@@ -1144,7 +1143,8 @@
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
-	<action name="ViewUsersList" method="ViewUsersList" class="Administration.ListUserAction"> 
+<!--	<action name="ViewUsersList" method="ViewUsersList" class="Administration.ListUserAction"> -->
+	<action name="ErpmUserList" method="ViewUsersList" class="Administration.ListUserAction"> 
              <result name="success">/pico/Administration/ViewUsersList.jsp</result>  
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/ViewUsersList.jsp</result> 
@@ -1209,5 +1209,6 @@
             <result name="error">/pico/Administration/Error.jsp</result>
             <result name="input">/pico/Administration/Indexpage.jsp</result>
         </action>
+
     </package>
 </struts>

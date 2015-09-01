@@ -27,7 +27,7 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-            <div id="headerbar1">
+            <div id="headerbar1">  
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
                 </div>
                 <hr>
@@ -49,12 +49,12 @@
                     <tbody>
                         <tr>
                           <%--  <td width="5%"></td>  --%>
-                            <td width="30%" valign="top" height="80%" class="textInput">
-                             <%--   <b><s:property value="getText('Administration.ImpLinks')"/></b>  --%>
+                          <%--  <td width="30%" valign="top" height="80%" class="textInput">  --%>
+                             <%--   <b><s:property value="getText('Administration.ImpLinks')"/></b>  
                                 <b>What is Purchase and Inventory Control System</b>
                             </td>
-
-                            <td width="30%" valign="top" height="80%" class="textInput">
+--%>
+                            <td width="30%" valign="top" height="80%" class="textInput">  
                                 <b><s:property value="getText('Administration.PortalNews')"/></b>
                             </td>
 
@@ -64,9 +64,9 @@
                         </tr>
                         <tr>
                          <%--   <td width="1%"></td> --%>
-                       <%--     <td width="35%" valign="top" height="80%" class="textInput">  --%>
+                       <%--     <td width="35%" valign="top" height="80%" class="textInput">  
                             <td width="30%" valign="top" height="80%" class="textInput">
-                                <br><br>
+                                <br><br>       --%>
                         <%--        <a href="http://saksat.as.in"><s:property value="getText('Administration.aboutEDRP')"/></a><br>
                                 <a href="http://202.141.40.218/"><s:property value="getText('Administration.EDRPKanpurServices')"/></a><br>
                                 <a href="http://cserp1.amu.ac.in:8080/LibMS/"><s:property value="getText('Administration.LibManageSystemAMU')"/></a><br>
@@ -77,14 +77,14 @@
                                 <a href="http://erp.amrita.ac.in:9090/aell/"><s:property value="getText('Administration.EngLanLb')"/></a><br>
                                 <a href="http://180.149.53.46:8084/CMS"><s:property value="getText('Administration.OnlineAddSys')"/></a><br>
                                 <a href="http://14.139.40.226:8084/ePortfolio"><s:property value="getText('Administration.EPortfolio')"/></a>    --%>
-				The Purchase and Inventory Control system offers comprehensive 
+			<%--	The Purchase and Inventory Control system offers comprehensive 
 				reporting capabilities to keep you on top of inventory status. 
 				It can help you bring about the creation of new or improved purchasing 
 				policies, sales policies, pricing methods and even enhanced customer service.
 				By leveraging Sage BusinessWorks, you have the tools to create an inventory system
 				with the depth to meet needs of your company for years to come. 
-                                <br><br>
-                            </td>
+                                <br><br> 
+                            </td> --%>
 
 
                             <td width="30%" valign="top">
@@ -138,7 +138,9 @@
                                 <tr>
                                  <td class="textInput"><s:url action="ForgotPassword.action" id="NavigateToURL" ></s:url>
                                   <a href='<s:property value="NavigateToURL"/>'><s:property value="getText('Administration.ForgotPassword')"/></a></td>
-                                    <td class="textInput"><s:url action="AddUser" id="NavigateToURL"></s:url>
+                                </tr>
+				<tr>
+                                   <td class="textInput"><s:url action="AddUser" id="NavigateToURL"></s:url>
                                   <a href='<s:property value="NavigateToURL"/>'><s:property value="getText('Administration.NewUser')"/></a></td>
                                 </tr>
                                 <tr>
@@ -155,11 +157,6 @@
 					<s:url action="ListOfTendersAction.action" id="ListOfTenders"></s:url>
                 			<a href='<s:property value="ListOfTenders"/>'><s:property value="getText('Administration.TenderList')"/> </a>
 				</td></tr>
-				<%--
-				<tr><td colspan="2" class="textInput">
-					<s:url action="ViewUsersList.action" id="NavigateToURL"></s:url>
-                			<a href='<s:property value="NavigateToURL"/>'><s:property value="getText('Administration.UsersList')"/> </a>  
-				</td></tr> --%> 
                             </tbody>
                         </table>
                     </s:form>

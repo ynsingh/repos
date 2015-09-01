@@ -52,16 +52,26 @@
                     <display:table name="ruList" pagesize="15"
                                excludedParams="*"  cellpadding="0"
                                cellspacing="0"  id="doc"
-                               requestURI="/Administration/ViewUsersList.action">
-                   <display:column  class="griddata" title="S.No" sortable="true" headerClass="gridheader">
+                               requestURI="/Administration/ErpmUserList.action">
+                   <display:column  class="griddata" title="S.No" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
                    </display:column>
                    <display:column property="erpmuFullName" title="User Name"
                                     maxLength="20" headerClass="gridheader"
-                                    class="griddata" sortable="true"  /> 
+                                    class="griddata" /> 
                    <display:column property="erpmuName" title="User email"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"  style="width:20%" sortable="true"/>
+                                maxLength="35" headerClass="gridheader"
+                                class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"  style="width:20%"/>
+		  
+		<%--   <display:column paramId="erpmuId" paramProperty="erpmuId"
+                		href="/pico/Administration/EditDetail.action"
+                                headerClass="gridheader" class="griddata" media="html"  value="Edit">
+                   </display:column>
+                   <display:column paramId="erpmuId" paramProperty="erpmuId"
+	                   href="/pico/Administration/ChangePsword.action"
+        	   	   headerClass="gridheader" class="griddata" media="html" value="ChangePassword">
+                   </display:column>
+		--%>		
                 </display:table>
                 </table>
              </s:form>

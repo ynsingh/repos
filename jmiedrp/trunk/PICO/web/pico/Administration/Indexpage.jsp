@@ -47,27 +47,27 @@
                                excludedParams="*"  cellpadding="0"
                                cellspacing="0"  id="doc"
                                requestURI="/Administration/ViewRegisteredInstitutions.action">
-                   <display:column  class="griddata" title="S.No" sortable="true" headerClass="gridheader">
+                   <display:column  class="griddata" title="S.No" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
                    </display:column>
                    <display:column property="imName" title="Institution Name"
                                     maxLength="35" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"  style="width:20%" sortable="true"/>
+                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"  style="width:20%" />
                    <display:column property="imShortName" title="Short Name"
                                     maxLength="10" headerClass="gridheader"
-                                    class="griddata" sortable="true"  />
+                                    class="griddata" />
                    <display:column property="erpmGenMaster.erpmgmEgmDesc" title="Insitute Type"
                                     maxLength="30" headerClass="gridheader"
-                                    class="griddata" sortable="true"/>
+                                    class="griddata" />
                    <display:column property="imEmailId" title="Admin Email Id"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" sortable="true"/>
+                                    class="griddata" />
                    <display:column property="countrymaster.countryName" title="Country"
                                     maxLength="30" headerClass="gridheader"
-                                    class="griddata" sortable="true"/>
+                                    class="griddata" />
                    <display:column property="statemaster.stateName" title="State"
                                     maxLength="35" headerClass="gridheader"
-                                    class="griddata" sortable="true"/>
+                                    class="griddata" />
                 </display:table>
                 </table>
              </s:form>

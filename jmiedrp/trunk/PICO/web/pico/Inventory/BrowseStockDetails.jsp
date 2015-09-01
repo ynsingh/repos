@@ -144,7 +144,7 @@
              </s:form>
              </div>
             <div id="footer">
-                <jsp:include page="footer.jsp" flush="true"></jsp:include>
+                <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
             </div>
         </div>
     </body>
