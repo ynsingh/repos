@@ -1112,6 +1112,7 @@ $width="100%";
                                                                         'cost' => $data_amount,
                                                                         'date_of_purchase' => $data_date,
 									'narration' => $data_narration,
+									'sanc_type' => $data_sanc_type,
                                                                         );
 
                                                                         if ( ! $this->db->insert('new_asset_register', $asset_register))

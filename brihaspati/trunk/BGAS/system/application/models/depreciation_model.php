@@ -37,6 +37,19 @@ class Depreciation_model extends Model {
                 return $options;
         }
 
+	function is_asset_in_depreciation_master_table1($code)
+        {
+                $options = '';
+		$this->db->from('depreciation_master')->where('name'. '  ' . 'LIKE', '%' . $code . '%');
+                $dep_percentage = $this->db->get();
+                foreach ($dep_percentage->result() as $row)
+                {
+                	$options = $row->percentage.'#'.$row->life_time;
+                }
+                return $options;
+        }
+
+
 	function is_asset_in_asset_register($name)
         {
                 $options = '';

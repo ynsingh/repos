@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS old_asset_register(
                         Financial_year VARCHAR(100) NOT NULL,
                         narration text NOT NULL,
                         asset_status int(1) NOT NULL DEFAULT 0,
+			sanc_type VARCHAR (100) NOT NULL,
                         PRIMARY KEY(id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -56,5 +57,6 @@ CREATE TABLE IF NOT EXISTS new_asset_register(
                         Financial_year VARCHAR(100) NOT NULL,
                         narration text NOT NULL,
                         asset_status int(1) NOT NULL DEFAULT 0,
+			sanc_type VARCHAR (100) NOT NULL,
                         PRIMARY KEY(id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
