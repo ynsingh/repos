@@ -44,6 +44,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 31-08-15 (Seemanti)---Retrieval of Runtime Proxy Parameters added---
  */
 
 public class ValueObject{
@@ -54,7 +55,7 @@ public class ValueObject{
    TurbineConfig turbineconfig;
    QuotaConfig quotaconfig;
    AdminConfig adminconfig;
-   private boolean debug=true;
+   private boolean debug=false;
 
    public ValueObject(RunData data){
 
@@ -102,7 +103,7 @@ public class ValueObject{
   
     public void CreateAdminConfig(RunData data) {
       ParameterParser pp = data.getParameters();
-      String a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r;
+      String a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v;
       a = pp.getString("AdminConf","");
       b = pp.getString("AdminCrsExp","");
       c = pp.getString("AdminPassExp","");
@@ -121,7 +122,12 @@ public class ValueObject{
       p = pp.getString("highTraffic");
       q = pp.getString("brihServerUrl");
       r = pp.getString("port","");
-      adminconfig= new AdminConfig(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r);
+      s = pp.getString("proxyIpAdd","");
+      t = pp.getString("proxyPort","");
+      u = pp.getString("proxyUsrnm","");
+      v = pp.getString("proxyPwd","");
+      ErrorDumpUtil.ErrorLog("print___________++++++++++++:::::::::::::"+s);
+      adminconfig= new AdminConfig(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v);
    }
    public AdminConfig getAdminConfig() {
          return adminconfig;

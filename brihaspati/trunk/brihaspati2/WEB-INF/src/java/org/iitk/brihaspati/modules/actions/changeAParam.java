@@ -35,7 +35,6 @@ package org.iitk.brihaspati.modules.actions;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.FileOutputStream;
 import java.util.List;
 import java.lang.StringBuffer;
 import org.apache.commons.lang.StringUtils;
@@ -69,6 +68,7 @@ import org.iitk.brihaspati.modules.utils.TurbineConfig;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import org.iitk.brihaspati.modules.utils.SortedProperties;
 
 /**
  * @author <a href="mailto:nksinghiitk@yahoo.com">Nagendra Kumar Singh</a>
@@ -85,13 +85,14 @@ import java.io.FileInputStream;
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
  * @modified date: 18-05-2015 (Seemanti);
  * @modified date: 15-07-15 (Seemanti) --- Dummy mail sending functionality updated ---
+ * @modified date: 31-08-15 (Seemanti).
  */
 
 public class changeAParam extends SecureAction_Admin {
 
    public changeAParam (){}
    private String LangFile=null;
-   private boolean debug= true;
+   private boolean debug= false;
 
    public void doUpdate(RunData data, Context context) throws Exception {
       User user=data.getUser();
@@ -114,6 +115,7 @@ public class changeAParam extends SecureAction_Admin {
       //Create an object of MailAuth class by calling constructor 2 to retrieve data from PropertiesFile
       MailAuth LocalMailAuth = new MailAuth(path);
       Properties props = new Properties();
+      
       InputStream f = new FileInputStream(path);
       
       if (value.getMailAuth() == null)
@@ -121,12 +123,12 @@ public class changeAParam extends SecureAction_Admin {
          //add log message - some problem in value object and the null object is being returned. 
          ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Some problem in value object and the null mailauth object is being returned! | Date --> "+date+" --> "+TurbineServlet.getServerName(),LogfilePath);
       }       
-      else if (!(value.getMailAuth().isEqual(LocalMailAuth))) 
-      { 
+      else if (!(value.getMailAuth().isEqual(LocalMailAuth)))//Returns true iff runtime and proprties data are not same so as to update mailauth data. 
+      {  
          //This condition is going to check whether the Admin's profile is to be set for the first time. 
          //Load the propety file through input stream.
          props.load(f);
-         
+         f.close(); 
          //check if the property file has no MailAuth key-value pair ie; for the first time.
          if(!props.containsKey("brihaspati.mail.server"))
          {   
@@ -155,7 +157,7 @@ public class changeAParam extends SecureAction_Admin {
                               else//If dummy mail functionality works here with truncated muName.
                               {  
                                  value.getMailAuth().setMailAuth(path);//Set the mail information in Admin.properties file.
-                                 ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull mailAuth Configuration updation | Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
+                                 ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull mailAuth Configuration updation| Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
                                  sb.append("Mail Authentication details updated successfully."+"\n");
                               }
                            }         
@@ -171,7 +173,7 @@ public class changeAParam extends SecureAction_Admin {
                }
             }
          }//if end inside else-if of mailauth
-      
+          
          else //Updating the mail authentication details.
          {            
             //MailNotificationUtility.send a dummy message;
@@ -203,11 +205,10 @@ public class changeAParam extends SecureAction_Admin {
                value.getMailAuth().setMailAuth(path);//Set the mail information in Admin.properties file.
                //Logger.add date, time, IP address of browser client and message - message was successfully sent after mailAuth config update, to log.
                //Append to MessageString - "Dummy message after mailAuth updation successful.\n"
-               ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull mailAuth Configuration updation| Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
+               ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull mailAuth Configuration updation.....| Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
                sb.append("Mail Authentication details updated successfully."+"\n");
             }	
          }//else end inside  else-if of mailauth.
-
       }//End of Else if of mailauth.
 
       else
@@ -238,12 +239,11 @@ public class changeAParam extends SecureAction_Admin {
           sb.append("No change in Quota Configuration Details."+"\n");
       }//end of else of if for quota..
 
-
       //ValueObject.retrieve the AdminConfig from value.
       //AdminConfig LocalAdminConfig = AdminConfig.retreive the AdminConfig from PropertiesFile("Admin.properties")
       AdminConfig LocalAdminConfig = new AdminConfig(path);
       //if Adminconfiguration params from Value and Propeties File are not same then update them in Properties File otherwise show message that "no change in Admin Configuration".
-      if(!(value.getAdminConfig().isEqual(LocalAdminConfig)))
+      if(!(value.getAdminConfig().isEqual(LocalAdminConfig)))//Returns true iff runtime and proprties data are not same so as to update Admin Config data.
       {
          //update the items in AdminConfig in PropertiesFile.
          value.getAdminConfig().setAdminConfig(path);
@@ -269,7 +269,7 @@ public class changeAParam extends SecureAction_Admin {
       //Create path to reach TurbineResources Properties File.
       String TRpath=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"TurbineResources.properties";
       //update the items in TurbineConfig in TurbineResources.properties as well as in Admin.properties.
-      value.getTurbineConfig().setTurbineConfig(TRpath,path);
+       value.getTurbineConfig().setTurbineConfig(TRpath,path,data);
        ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull turbine parameter updation in TurbineResources.properties| Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
       
       //TelObject =ValueObject.retrieve the telephone data object from value;
@@ -280,7 +280,14 @@ public class changeAParam extends SecureAction_Admin {
       }
       //Display the appended string buffer object.
       data.addMessage(sb.toString());
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      /*Perform sorting of Admin.properties file just after all the key-value pairs had been written into it.
+       *For this, invoke the utility method for sorting a proprtyList.
+       */
+      SortedProperties.sortPropertyFile(path,data);
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+     
    }//End of doUpdate()
 
    public void doPerform(RunData data, Context context) throws Exception{

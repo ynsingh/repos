@@ -32,7 +32,8 @@ package org.iitk.brihaspati.modules.utils;
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  */
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.io.IOException;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.RunData;
@@ -48,18 +49,20 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
 
 /**
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 31-08-15 (Seemanti) ---Date of mail Updation added as Key-Value pair---
  */
 
 //Create MailAuth class so as to retrieve  mailauth object.
  public class MailAuth {
 
+   private String mailUpdtnDate;
    private String mailServ;
    private String mailServPort;
    private String mailFrom;
    private String muName;
    private String mPass;
    private String domainNM;
-   private boolean debug=true;
+   private boolean debug=false;
 
    //This constructor 1 retrieves MailAuth data at Runtime! 
    public MailAuth(String a, String b, String c, String d, String e, String f) {
@@ -70,6 +73,7 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
       muName = d;
       mPass = e;
       domainNM = f; 
+      
    }
 
    //This constructor 2 retrieves MailAuth data from PropertiesFile.
@@ -91,13 +95,19 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
    public void setMailAuth(String path) {
    
       try {
-         if(debug) ErrorDumpUtil.ErrorLog("PRINT THE VALUE OF DOMAIN NAME FUNCTION!!!!"+getDomainNM());
+         // Instantiate a Date object
+         Date date = new Date();
+         //formatting date in Java using SimpleDateFormat
+         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+         String Date = DATE_FORMAT.format(date);
+         AdminProperties.setPropertyValue(path,Date,"brihaspati.mail.DateOfMailDataUpdation");
          AdminProperties.setPropertyValue(path,muName,"brihaspati.mail.username");
          AdminProperties.setPropertyValue(path,mPass,"brihaspati.mail.password");
          AdminProperties.setPropertyValue(path,mailServ,"brihaspati.mail.server");
          AdminProperties.setPropertyValue(path,mailServPort,"brihaspati.mail.smtp.port");
          AdminProperties.setPropertyValue(path,mailFrom,"brihaspati.mail.smtp.from");
          AdminProperties.setPropertyValue(path,domainNM,"brihaspati.mail.local.domain.name");
+         AdminProperties.setPropertyValue(path,mailUpdtnDate,"brihaspati.mail.dateOfUpdation");
       }
       catch(Exception e) {
          e.printStackTrace();

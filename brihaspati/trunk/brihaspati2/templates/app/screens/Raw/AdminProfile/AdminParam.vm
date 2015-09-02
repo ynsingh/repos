@@ -11,6 +11,8 @@
  * modified date: 01-01-2013, 
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @modified date: 22-08-2013
+ * @author <a href="mailto:seemanti05@gmail.com">Seemanti</a>
+ * @modified date: 31-08-2015
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
@@ -100,6 +102,22 @@ $!data.getMessage()
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="eMail" value="$!eMail"></font></td>
    </tr>
    <tr bgcolor="$ui.menuColor">
+       <td width=30><font face="$ui.sansSerifFonts"> $brih_proxy $brih_ip $RemoteAddress</td>
+       <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="proxyIpAdd" value="$!proxyIpAdd"></font></td>
+   </tr>   
+   <tr bgcolor="$ui.tableColor">
+       <td width=30><font face="$ui.sansSerifFonts"> $brih_proxy $brih_port</td>
+       <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="proxyPort" value="$!proxyPort"></font></td>
+   </tr>
+   <tr bgcolor="$ui.menuColor">
+       <td width=30><font face="$ui.sansSerifFonts"> $brih_proxy $brih_username</td>
+       <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="proxyUsrnm" value="$!proxyUsrnm"></font></td>
+   </tr>
+   <tr bgcolor="$ui.tableColor">
+       <td width=30><font face="$ui.sansSerifFonts"> $brih_proxy $brih_pwd</td>
+       <td width="50"><font face="$ui.sansSerifFonts"> <input type="password" size="30" name="proxyPwd"  value="$!proxyPwd"></font></td>
+   </tr>
+    <tr bgcolor="$ui.menuColor">
         <td width=30><font face="$ui.sansSerifFonts"> $RemoteInstitute $brih_quota ($brih_qsizegb)</td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="iquota" value="$!iquota"></font></td>
     </tr>
@@ -336,10 +354,10 @@ $!data.getMessage()
    </tr>
    <tr  bgcolor="$ui.menuColor">
 	<td>
-                <font face="$ui.sansSerifFonts">$brih_bri #if($lang == "hindi") $brih_Of1 #end $brih_Url</font>
+                <font face="$ui.sansSerifFonts">$brih_bri #if($lang == "hindi") $brih_Of1 #end $brih_Url <font color=red>*</font> </font>
         </td>
 	<td>
-                <input type="text" name="brihServerUrl" value="$!brihServer" >
+             http://<input type="text" name="brihServerUrl" value="$!brihServer">Eg. 202.141.40.215
         </td>
 
    </tr>

@@ -53,7 +53,8 @@ import org.iitk.brihaspati.om.InstituteQuotaPeer;
 
 
 /**
- *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>i
+ *  @modified date: 31-08-15 (Seemanti)
  */
 
 public class QuotaUtil {
@@ -84,7 +85,7 @@ public class QuotaUtil {
                         }
                 }
 //Create Quota of User in Courses Table
-                String Coursequotasize =AdminProperties.getValue(path,"brihaspati.admin.quota.value");
+                String Coursequotasize =AdminProperties.getValue(path,"brihaspati.user.quotaCourse.value");
                 crit=new Criteria();
                 crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
                 List clst=CoursesPeer.doSelect(crit);

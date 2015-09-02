@@ -32,7 +32,8 @@ package org.iitk.brihaspati.modules.utils;
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  */
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.io.IOException;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.RunData;
@@ -47,6 +48,7 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 
 /**
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 31-08-15 (Seemanti) ---Date of Quota Updation added as Key-Value pair---
  */
 
 //create QuotaConfig class so as to retrieve  quotaconfig object.
@@ -69,7 +71,7 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
    {
    try {
       iquota = AdminProperties.getValue(path,"brihaspati.user.iquota.value");
-      cquota = AdminProperties.getValue(path,"brihaspati.admin.quota.value");
+      cquota = AdminProperties.getValue(path,"brihaspati.user.quotaCourse.value");
       uquota = AdminProperties.getValue(path,"brihaspati.user.quota.value");
     }
     catch(Exception e) {
@@ -80,8 +82,14 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
    //In this method we set and update the QuotaConfig Data in PropertiesFile.
    public void setQuotaConfig(String path){
       try {
+      // Instantiate a Date object
+      Date date = new Date(); 
+      //formatting date in Java using SimpleDateFormat
+      SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+      String Date = DATE_FORMAT.format(date);
+      AdminProperties.setPropertyValue(path,Date,"brihaspati.user.dateOfQuotaUpdation");
       AdminProperties.setPropertyValue(path,iquota,"brihaspati.user.iquota.value");
-      AdminProperties.setPropertyValue(path,cquota,"brihaspati.admin.quota.value");
+      AdminProperties.setPropertyValue(path,cquota,"brihaspati.user.quotaCourse.value");
       AdminProperties.setPropertyValue(path,uquota,"brihaspati.user.quota.value");
       }
       catch(Exception e) {

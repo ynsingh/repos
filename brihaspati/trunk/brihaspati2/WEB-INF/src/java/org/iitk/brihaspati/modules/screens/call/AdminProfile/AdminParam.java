@@ -65,6 +65,7 @@ import org.apache.commons.lang.StringUtils;
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
  * @modified date: 18-05-2015 (Seemanti)
  * @modified date: 14-07-2015 (Seemanti)---Providing default value for Admin Profile parameters from this screen file ---
+ * @modified date: 31-08-15 (Seemanti) ---Proxy Parameters added for Administrator---
  */
 
 
@@ -122,7 +123,7 @@ public class AdminParam extends SecureScreen{
                  else
                     context.put("iquota","100");
                  
-                 String cquota = AdminProperties.getValue(path,"brihaspati.admin.quota.value");
+                 String cquota = AdminProperties.getValue(path,"brihaspati.user.quotaCourse.value");
                  if(!StringUtils.isBlank(cquota))
                     context.put("cquota",cquota);
                  else
@@ -152,7 +153,7 @@ public class AdminParam extends SecureScreen{
 		 context.put("dName",domainNm);
 		 String email = AdminProperties.getValue(path,"brihaspati.mail.email");//admin email(add in turbinr_user)
 		 context.put("eMail",email);
-		 String port = AdminProperties.getValue(path,"brihaspati.spring.port");
+		 String port = AdminProperties.getValue(path,"brihaspati.admin.spring.port");
                  context.put("port",port);
 		 String dstore = AdminProperties.getValue(path,"brihaspati.admin.datastore.value");
 		 context.put("dstore",dstore);
@@ -172,6 +173,14 @@ public class AdminParam extends SecureScreen{
                  context.put("normalTraffic", normal_traffic);
 		 String high_traffic = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
                  context.put("highTraffic", high_traffic);
+                 String proxy_ip = AdminProperties.getValue(path,"brihaspati.admin.ProxyIPaddress.value");
+                 context.put("proxyIpAdd",proxy_ip);
+                 String proxy_port =AdminProperties.getValue(path,"brihaspati.admin.ProxyPort.value");
+                 context.put("proxyPort",proxy_port);
+                 String proxy_usrnm = AdminProperties.getValue(path,"brihaspati.admin.ProxyUsername.value");
+                 context.put("proxyUsrnm",proxy_usrnm);
+                 String proxy_psswd = AdminProperties.getValue(path,"brihaspati.admin.ProxyPassword.value");
+                 context.put("proxyPwd",proxy_psswd);
 //------------------------ Getting of brihaspati Server IP  -----------------------------------------------------------------------------------------------------------------
 		 String brihServerName = AdminProperties.getValue(path,"brihaspati.admin.brihaspatiServerIP.value");
                  if(!StringUtils.isBlank(brihServerName))
@@ -238,9 +247,7 @@ public class AdminParam extends SecureScreen{
 		 long newSize = Long.parseLong(fupldsze);
 		 long fupldszemb = newSize/1024/1024;
 		 String upldsize = Long.toString(fupldszemb);
-		
                  context.put("upldsze",upldsize);
-
 		}
 		catch(Exception e) {	
 			//data.addMessage(MultilingualUtil.ConvertedString("adm_msg1",LangFile)); 

@@ -32,7 +32,8 @@ package org.iitk.brihaspati.modules.utils;
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  */
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.io.IOException;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.RunData;
@@ -47,13 +48,14 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 
 /**
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 31-08-15 (Seemanti) ---Date Of Turbine Data Updation added as Key-Value pair---
  */
 
 //create TurbineConfig class so as to retrieve  turbineconfig object.
 public class TurbineConfig{
 
    private String fileupldsze;
-
+   StringBuffer sb = new StringBuffer();
    //constructor to retrieve TurbineConfig data at Runtime.
    public TurbineConfig(String a) {
       
@@ -61,12 +63,25 @@ public class TurbineConfig{
    }
 
    //Method to set TurbineConfig data in TurbineResource Properties File 
-   public void setTurbineConfig(String TRpath,String path) {
+   public void setTurbineConfig(String TRpath,String path,RunData data) {
       try {
          long bytUplodsze = Long.parseLong(fileupldsze)*1024*1024;//Calculates fileupldsze into bytes & stored in long type variable.
          AdminProperties.setTRValue(TRpath,Long.toString(bytUplodsze),"services.UploadService.size.max");
-         AdminProperties.setPropertyValue(path,Long.toString(bytUplodsze),"services.UploadService.size.max");
-         
+         //iff runtime and property file values are different then only update it otherwise not.
+         String fileupldsze_path = AdminProperties.getValue(path,"services.UploadService.size.max");
+         if(!(Long.toString(bytUplodsze).equals(fileupldsze_path)))
+         {  
+            // Instantiate a Date object
+            Date date = new Date();
+            //formatting date in Java using SimpleDateFormat
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+            String Date = DATE_FORMAT.format(date); 
+            AdminProperties.setPropertyValue(path,Date,"services.UploadService.DateOfTurbineDataUpdation");
+            AdminProperties.setPropertyValue(path,Long.toString(bytUplodsze),"services.UploadService.size.max");
+            sb.append("Turbine Configuration parameter updated successfully."+"\n");
+         }
+         else sb.append("No change in Turbine Configuration parameter."+"\n");
+         data.addMessage(sb.toString());
       }
       catch(Exception e) {
       e.printStackTrace();

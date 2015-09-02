@@ -43,6 +43,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 /**
  *  @author <a href="mailto:richa.tandon1@gamil.com">Richa Tandon</a>
+ *  @modified date: 31-08-15 (Seemanti).--Spring Port Key renamed in Admin.properties---
  **/
 
 public class ViewDocumentViewer extends SecureScreen{
@@ -50,7 +51,7 @@ public class ViewDocumentViewer extends SecureScreen{
                 try{
 			ParameterParser pp=data.getParameters();
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-			String port = AdminProperties.getValue(path,"brihaspati.spring.port");
+			String port = AdminProperties.getValue(path,"brihaspati.admin.spring.port");
                         context.put("port",port);
 			pp.add("str","document");
 			String topic=pp.getString("topic","");

@@ -50,6 +50,7 @@ import java.util.LinkedHashSet;
 
 /**
  *  @author <a href="mailto:vipulpal08@gamil.com">vipul kumar pal</a>
+ *  @modified date: 31-08-15 (Seemanti).--Spring Port Key renamed in Admin.properties---
  */
 
 public class Directory extends SecureScreen{
@@ -60,7 +61,7 @@ public class Directory extends SecureScreen{
                         context.put("AdminConf",AdminConf);
 			String ip = data.getServerName();
 			context.put("ip",ip);
-			String port = AdminProperties.getValue(path,"brihaspati.spring.port");
+			String port = AdminProperties.getValue(path,"brihaspati.admin.spring.port");
 			context.put("port",port);
 			int usedport = data.getServerPort();
 			context.put("usedport",usedport);

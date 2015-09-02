@@ -33,7 +33,8 @@ package org.iitk.brihaspati.modules.utils;
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  */
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.io.IOException;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.RunData;
@@ -48,6 +49,7 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 
 /**
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 31-08-2015 (Seemanti);---Proxy parametrs added---
  */
 
 //Create AdminConfig class so as to retrieve AdminConfig object.
@@ -71,9 +73,13 @@ public class AdminConfig {
    private String highTrafficTime;
    private String brihServerUrl;   
    private String port;
+   private String proxy_ip;
+   private String proxy_port;
+   private String proxy_usrnm;
+   private String proxy_psswd;
 
    //This constructor 1 retrieves AdminConfig data at Runtime! 
-   public AdminConfig(String a,String b,String c,String d,String e,String f,String g, String h, String i, String j, String k, String l,String m,String n,String o,String p,String q,String r) {
+   public AdminConfig(String a,String b,String c,String d,String e,String f,String g, String h, String i, String j, String k, String l,String m,String n,String o,String p,String q,String r,String s,String t,String u,String v) {
 
       AdminConf = a;
       AdminCrsExp = b;
@@ -93,6 +99,10 @@ public class AdminConfig {
       highTrafficTime = p;
       brihServerUrl = q;
       port = r;
+      proxy_ip = s;
+      proxy_port = t;
+      proxy_usrnm = u;
+      proxy_psswd = v;
    }
 
    //This constructor 2 retrieves AdminConfig data from PropertiesFile.
@@ -110,12 +120,16 @@ public class AdminConfig {
          ldapbase=  AdminProperties.getValue(path,"brihaspati.admin.ldapbase.value");
          ldapcate= AdminProperties.getValue(path,"brihaspati.admin.ldapcate.value");
          twtexp= AdminProperties.getValue(path,"brihaspati.admin.twtexpiry.value");
-         mailSpoolResendTime = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value");
-         mailSpoolExpiryDay = AdminProperties.getValue(path,"brihaspati.admin.spoolMailResendTime.value");
+         mailSpoolResendTime = AdminProperties.getValue(path,"brihaspati.admin.spoolMailResendTime.value");
+         mailSpoolExpiryDay = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value");
          normalTrafficTime =  AdminProperties.getValue(path,"brihaspati.admin.normalTraffic.value");
          highTrafficTime = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
          brihServerUrl = AdminProperties.getValue(path,"brihaspati.admin.brihaspatiServerIP.value");
-         port = AdminProperties.getValue(path,"brihaspati.spring.port");
+         port = AdminProperties.getValue(path,"brihaspati.admin.spring.port");
+         proxy_ip = AdminProperties.getValue(path,"brihaspati.admin.ProxyIPaddress.value");
+         proxy_port = AdminProperties.getValue(path,"brihaspati.admin.ProxyPort.value");
+         proxy_usrnm = AdminProperties.getValue(path,"brihaspati.admin.ProxyUsername.value");
+         proxy_psswd = AdminProperties.getValue(path,"brihaspati.admin.ProxyPassword.value");
      } 
      catch(Exception e) {
       e.printStackTrace(); 
@@ -123,38 +137,49 @@ public class AdminConfig {
    }
 
    //This method sets the AdminConfig strings in the Admin.properties file.
-   public void setAdminConfig(String path) {
-
-   try {
-      AdminProperties.setPropertyValue(path,AdminConf,"brihaspati.admin.listconfiguration.value");
-      AdminProperties.setPropertyValue(path,AdminCrsExp,"brihaspati.admin.courseExpiry");
-      AdminProperties.setPropertyValue(path,AdminPassExp,"brihaspati.admin.passwordExpiry");
-      AdminProperties.setPropertyValue(path,hdir,"brihaspati.home.dir.value");
-      AdminProperties.setPropertyValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
-      AdminProperties.setPropertyValue(path,dstore,"brihaspati.admin.datastore.value");
-      AdminProperties.setPropertyValue(path,dstoreurl,"brihaspati.admin.hdfsurl.value");
-      AdminProperties.setPropertyValue(path,authmethod,"brihaspati.admin.authmethod.value");
-      AdminProperties.setPropertyValue(path,ldapurl,"brihaspati.admin.ldapurl.value");
-      AdminProperties.setPropertyValue(path,ldapbase,"brihaspati.admin.ldapbase.value");
-      AdminProperties.setPropertyValue(path,ldapcate,"brihaspati.admin.ldapcate.value");
-      AdminProperties.setPropertyValue(path,twtexp,"brihaspati.admin.twtexpiry.value");
-      AdminProperties.setPropertyValue(path,mailSpoolResendTime, "brihaspati.admin.spoolMailResendTime.value");
-      AdminProperties.setPropertyValue(path,mailSpoolExpiryDay, "brihaspati.admin.mailSpoolingExpiry.value");
-      AdminProperties.setPropertyValue(path,port,"brihaspati.spring.port");
+   public void setAdminConfig(String path) 
+   {
+      try 
+      {
+         //Instantiate a Date object
+         Date date = new Date();
+         //formatting date in Java using SimpleDateFormat
+         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+         String Date = DATE_FORMAT.format(date);
+         AdminProperties.setPropertyValue(path,Date,"brihaspati.admin.adminDateOfUpdation");
+         AdminProperties.setPropertyValue(path,AdminConf,"brihaspati.admin.listconfiguration.value");
+         AdminProperties.setPropertyValue(path,AdminCrsExp,"brihaspati.admin.courseExpiry");
+         AdminProperties.setPropertyValue(path,AdminPassExp,"brihaspati.admin.passwordExpiry");
+         AdminProperties.setPropertyValue(path,hdir,"brihaspati.home.dir.value");
+         AdminProperties.setPropertyValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
+         AdminProperties.setPropertyValue(path,dstore,"brihaspati.admin.datastore.value");
+         AdminProperties.setPropertyValue(path,dstoreurl,"brihaspati.admin.hdfsurl.value");
+         AdminProperties.setPropertyValue(path,authmethod,"brihaspati.admin.authmethod.value");
+         AdminProperties.setPropertyValue(path,ldapurl,"brihaspati.admin.ldapurl.value");
+         AdminProperties.setPropertyValue(path,ldapbase,"brihaspati.admin.ldapbase.value");
+         AdminProperties.setPropertyValue(path,ldapcate,"brihaspati.admin.ldapcate.value");
+         AdminProperties.setPropertyValue(path,twtexp,"brihaspati.admin.twtexpiry.value");
+         AdminProperties.setPropertyValue(path,mailSpoolResendTime, "brihaspati.admin.spoolMailResendTime.value");
+         AdminProperties.setPropertyValue(path,mailSpoolExpiryDay, "brihaspati.admin.mailSpoolingExpiry.value");
+         AdminProperties.setPropertyValue(path,port,"brihaspati.admin.spring.port");
+         AdminProperties.setPropertyValue(path,proxy_ip,"brihaspati.admin.ProxyIPaddress.value");
+         AdminProperties.setPropertyValue(path,proxy_port,"brihaspati.admin.ProxyPort.value");
+         AdminProperties.setPropertyValue(path,proxy_usrnm,"brihaspati.admin.ProxyUsername.value");
+         AdminProperties.setPropertyValue(path,proxy_psswd,"brihaspati.admin.ProxyPassword.value");
      
-      if(normalTrafficTime.equals("")){
-         //in seconds
-         normalTrafficTime = "15";
-      }
-      AdminProperties.setPropertyValue(path,normalTrafficTime,"brihaspati.admin.normalTraffic.value");
+         if(normalTrafficTime.equals("")){
+            //in seconds
+            normalTrafficTime = "15";
+         }
+         AdminProperties.setPropertyValue(path,normalTrafficTime,"brihaspati.admin.normalTraffic.value");
 
-      if(highTrafficTime.equals("")){
-         //in seconds
-         highTrafficTime = "30";
-      }
-      AdminProperties.setPropertyValue(path,highTrafficTime,"brihaspati.admin.highTraffic.value");
+         if(highTrafficTime.equals("")){
+            //in seconds
+            highTrafficTime = "30";
+         }
+         AdminProperties.setPropertyValue(path,highTrafficTime,"brihaspati.admin.highTraffic.value");
          
-      AdminProperties.setPropertyValue(path,brihServerUrl,"brihaspati.admin.brihaspatiServerIP.value");
+         AdminProperties.setPropertyValue(path,brihServerUrl,"brihaspati.admin.brihaspatiServerIP.value");
       }
       catch(Exception e) {
          e.printStackTrace();}
@@ -214,64 +239,110 @@ public class AdminConfig {
    public String getbrihServerUrl(){
       return brihServerUrl;
    }
-
+   public String getProxyIPadd() {
+      return proxy_ip  ;
+   }
+   public String getProxyPort() {
+     return proxy_port ;
+   }
+   public String getProxyUsrnm() {
+     return proxy_usrnm ;
+   }
+   public String getProxyPsswd() {
+     return proxy_psswd ;
+   }
    //This method compares the AdminConfig data from runtime & Admin.properties File to return a boolean value.
-   public boolean isEqual(AdminConfig tmp){
+   public boolean isEqual(AdminConfig tmp)
+   { 
       if( tmp == null)
          return false;
       if(!AdminConf.equals(tmp.getAdminConf()))
-      {   return false;
+      {
+         return false;
       }
       if(!AdminCrsExp.equals(tmp.getAdminCrsExp()))
-      {   return false;
+      {
+         return false;
       }
       if(!AdminPassExp.equals(tmp.getAdminPassExp()))
-      {   return false;
+      {
+         return false;
       }
       if(!hdir.equals(tmp.gethdir()))
-      {   return false;
+      {
+         return false;
       }
       if(!AdminFaqExp.equals(tmp.getAdminFaqExp()))
-      {   return false;
+      {
+         return false;
       }
       if(!dstore.equals(tmp.getdstore()))
-      {   return false;
+      {
+         return false;
       }
       if(!dstoreurl.equals(tmp.getdstoreurl()))
-      {   return false;
+      {
+         return false;
       }
       if(!authmethod.equals(tmp.getauthmethod()))
-      {   return false;
+      { 
+         return false;
       }
       if(!ldapurl.equals(tmp.getldapurl()))
-      {   return false;
+      {
+         return false;
       }
       if(!ldapbase.equals(tmp.getldapbase()))
-      {   return false;
+      {
+         return false;
       }
       if(!ldapcate.equals(tmp.getldapcate()))
-      {   return false;
+      { 
+         return false;
       }
       if(!twtexp.equals(tmp.gettwtexp()))
-      {   return false;
+      { 
+         return false;
       }
       if(!mailSpoolResendTime.equals(tmp.getmailSpoolResendTime()))
-      {   return false;
+      { 
+         return false;
       }
       if(!mailSpoolExpiryDay.equals(tmp.getmailSpoolExpiryDay()))
-      {   return false;
+      { 
+         return false;
       }
       if(!port.equals(tmp.getport()))
-      {   return false;
+      { 
+         return false;
       }
       if(!normalTrafficTime.equals(tmp.getnormalTrafficTime()))
-      {   return false;
+      { 
+         return false;
       }
       if(!highTrafficTime.equals(tmp.gethighTrafficTime()))
-      {   return false;
+      { 
+         return false;
       }
       if(!brihServerUrl.equals(tmp.getbrihServerUrl()))
-      {   return false;
+      { 
+        return false;
+      }
+      if(!proxy_ip.equals(tmp.getProxyIPadd()))
+      {
+        return false;
+      }
+      if(!proxy_port.equals(tmp.getProxyPort()))
+      {
+        return false;
+      }
+       if(!proxy_usrnm.equals(tmp.getProxyUsrnm()))
+      {
+        return false;
+      }
+       if(!proxy_psswd.equals(tmp.getProxyPsswd()))
+      {
+        return false;
       }
       else return true;
    }
