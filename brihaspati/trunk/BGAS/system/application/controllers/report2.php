@@ -437,6 +437,21 @@ class Report2 extends Controller {
         		$data['report'] = "report2/schedule_template3";
        	elseif($count == '15A')
        			$data['report'] = "report2/schedule_template4";
+       	elseif($count == 10){
+       			$this->load->model('Group_model');
+        		//$group_details = $this->Group_model->get_schedule($code);
+
+	    		$group_id = $this->Group_model->get_id('Grant and Donations');    
+
+	    		$this->db->select('name')->from('ledgers')->where('group_id',$group_id);
+			    $query = $this->db->get();
+			    $counter = $query->num_rows();
+			    
+			    $q_result = $query->result();
+			    $data['counter'] = $counter;
+			    $data['q_result'] = $q_result;
+       			$data['report'] = "report2/schedule_template6";
+       	}
        	elseif($count == 12 || $count == 13 || $count == 14 || $count == 11)
        			$data['report'] = "report2/schedule_template5";
        	else
@@ -1106,7 +1121,7 @@ class Report2 extends Controller {
                         $date1 = $row->fy_start;
                         $date2 = $row->fy_end;
                 }
-		 $newdata = array(
+		 		$newdata = array(
                       'date1'  => $date1,
                       'date2'  => $date2
                      );
@@ -1203,6 +1218,18 @@ class Report2 extends Controller {
 		$data['count'] = $count;
         $this->load->model('Group_model');
         $group_details = $this->Group_model->get_schedule($code);
+
+	    $group_id = $this->Group_model->get_id('Grant and Donations');    
+
+	    $this->db->select('name')->from('ledgers')->where('group_id',$group_id);
+	    $query = $this->db->get();
+	    $counter = $query->num_rows();
+	    
+	    $q_result = $query->result();
+
+	    $data['q_result'] = $q_result;
+	    $data['counter'] = $counter;
+
         foreach ($group_details as $id => $group)
         {
             $id  = $group['id'];
@@ -1231,7 +1258,9 @@ class Report2 extends Controller {
 			$this->template->load('template', 'report2/schedule_template3', $data);
 		}elseif($count == '15A'){
 			$this->template->load('template', 'report2/schedule_template4', $data);
-		}elseif($count == '14' || $count == '13'|| $count == '11'){
+		}elseif($count == '10'){
+			$this->template->load('template', 'report2/schedule_template6', $data);
+		}elseif($count == '14' || $count == '13'|| $count == '11' || $count == '12'){
 			$this->template->load('template', 'report2/schedule_template5', $data);
 		}else{
 			$this->template->load('template', 'report2/schedule_template2', $data);

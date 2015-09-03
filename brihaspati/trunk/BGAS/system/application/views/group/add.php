@@ -17,9 +17,9 @@ $(document).ready(function() {
 			$('.parent').show();
 			id = $(this).val();
 			$.ajax({
-                                        url: <?php echo '\'' . site_url('group/set_group_id') . '/\''; ?> + id,
-                                        success: function() {
-						location.reload();
+                    url: <?php echo '\'' . site_url('group/set_group_id') . '/\''; ?> + id,
+                    success: function() {
+					location.reload();
 					}
 			});
 		}

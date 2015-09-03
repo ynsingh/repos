@@ -1324,9 +1324,7 @@ class Reportlist1
             if($id == 3 && $type == "view" && $database == "NULL" )
             {   
                 $counter++;
-                if($counter == 10 || $counter == 12)
-                echo $counter;
-                else
+
                 echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
                 echo"</td>";
                 $income = new Reportlist1();
@@ -2005,7 +2003,7 @@ class Reportlist1
                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
                 $sum = $sum + $total;   
 
-                if($name ==  "Income from Land and Building")
+                if($name ==  "Income from Land and Building" || $name ==  "Interest on Investment" || $name ==  "Interest On Loans")
                 {
                     $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id)->where('id !=' ,'123');
                     $sub_groups = $CI->db->get();
@@ -2017,7 +2015,10 @@ class Reportlist1
                         $ledg_id = $row3->id;
                         echo "<tr class=\"tr-ledger\">";
                         echo "<td class=\"td-ledger\">";
+                        if($name ==  "Income from Land and Building")
                         echo "&nbsp;&nbsp;&nbsp;&nbsp&nbsp&nbsp" . $num.". ". $ledg_name;
+                        else
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp&nbsp&nbsp" . $ledg_name;
                         echo "</td>";
                         //$CI->load->model('ledger_model');
                         $ledg_total = $CI->ledger_model->get_ledger_balance1($ledg_id);
@@ -2066,6 +2067,374 @@ class Reportlist1
         //$prev_total = $prev_sum + $prev_sum1;
         $this->curr_total = $curr_total;
         //$this->prev_total = $prev_total;    
+    }
+
+    function schedule10($code,$type,$database,$count)
+    {
+        $CI =& get_instance();
+        $current_active_account = $CI->session->userdata('active_account');
+        $CI->db->from('settings');
+        $detail = $CI->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date1 = $row->fy_start;
+            $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        
+        
+        if(($type == 'view') && ($database == 'NULL'))
+        {
+
+            $CI->load->model('Group_model');
+            $CI->load->model('Ledger_model');
+
+            $group_id = $CI->Group_model->get_id('Grant and Donations');
+            $CI->db->select('name,id')->from('ledgers')->where('group_id',$group_id);
+            $query = $CI->db->get();
+            $counter = $query->num_rows();
+            
+            $q_result = $query->result();
+            $ledger_id = array();
+            $x = 0;
+            foreach($q_result as $row){
+
+                $ledg_id = $row->id;
+                $ledger_id[$x] = $ledg_id;
+                $x++;
+                //$op_balance = $CI->Ledger_model->get_op_balance($ledger_id);
+                //$dr_total = $CI->Ledger_model->get_dr_total2($ledger_id);
+                //$cr_total = $CI->Ledger_model->get_cr_total2($ledger_id);
+                //$capital_total = $CI->Ledger_model->get_capital_exp_total($ledger_id);
+                //$revenue_total = $CI->Ledger_model->get_revenue_exp_total($ledger_id);
+            }
+            //print_r($ledger_id);
+            $name = array();
+            $name[0] = "Balance B/F";
+            $name[1] = "Add: Receipts during the year";
+            $name[2] = "Total";
+            $name[3] = "Less: Refund to UGC";
+            $name[4] = "Balance";
+            $name[5] = "Less: Utilised for Capital expenditure (A)";
+            $name[6] = "Balance";
+            $name[7] = "Less: utilized for Revenue Expenditure (B)";
+            $name[8] = "Balance C/F (C)";            
+            $groupplan = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'plan');
+            $groupnonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'nonplan');
+            $groupspecific = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'specific_sch');
+            $group1plan = $CI->Ledger_model->get_schedule10_data($ledger_id[1],'plan');
+            $group1nonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[1],'nonplan');
+            $group2plan = $CI->Ledger_model->get_schedule10_data($ledger_id[2],'plan');
+            $group2nonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[2],'nonplan');
+
+            $a =0;
+            do{
+                $plantotal1 = 0;
+                $plantotal2 = 0;
+                $plantotal3 =0;
+
+                $nonplantotal1 = 0;
+                $nonplantotal2 = 0;
+                $nonplantotal3 =0;
+                $planspecifictotal = 0;
+                $plan_total = 0;
+                $non_plan_total = 0;
+                $total = 0;
+
+                if($a == 2 || $a == 4 || $a == 6 || $a == 8)
+                echo "<tr class=\"tr-ledger\" style = font-weight:bold;>";
+                else
+                echo "<tr class=\"tr-group\">";
+                $b =0;
+                $c = ($counter * 2) + 6;
+                do{
+                    if($b == 0){
+                    echo"<td>";
+                    echo $name[$a];
+                    }elseif($b == 1 || $b == (3 + $counter)){
+                        echo "<td align=\"right\">"; 
+                        if($b == 1){
+                            echo money_format('%!i', convert_cur($groupplan[$a]));
+                            $plantotal1 = $groupplan[$a];
+                        }else{
+                            echo money_format('%!i', convert_cur($groupnonplan[$a]));
+                            $nonplantotal1 = $groupnonplan[$a];
+                        }
+                    }elseif($b == 2){
+                        echo "<td align=\"right\">";
+                        echo money_format('%!i', convert_cur($groupspecific[$a]));
+                        $planspecifictotal = $groupspecific[$a];
+
+                    }elseif($b == 3 || $b == (4 + $counter)){
+                        echo "<td align=\"right\">";
+                        if($b == 3){
+                            echo money_format('%!i', convert_cur($group1plan[$a]));
+                            $plantotal2 = $group1plan[$a];
+                        }else{
+                            echo money_format('%!i', convert_cur($group1nonplan[$a]));
+                            $nonplantotal2 = $group1nonplan[$a];
+                        }
+                    }elseif($b == 4 || $b == (5 + $counter)){
+                        echo "<td align=\"right\">";
+                        if($b == 4){
+                            echo money_format('%!i', convert_cur($group2plan[$a]));
+                            $plantotal3 = $group2plan[$a];
+                        }else{
+                            echo money_format('%!i', convert_cur($group2nonplan[$a]));
+                            $nonplantotal3 = $group2nonplan[$a];
+                        }
+                    }elseif($b == 5){
+                        echo "<td align=\"right\">";
+                        $plan_total = $plantotal1 + $plantotal2 + $plantotal3 +$planspecifictotal ;
+                        echo money_format('%!i', convert_cur($plan_total));
+                    }elseif($b == 9){
+                        echo "<td align=\"right\">";
+                        $non_plan_total = $nonplantotal1 + $nonplantotal2 + $nonplantotal3;
+                        echo money_format('%!i', convert_cur($non_plan_total));
+                    }elseif($b == 10){
+                        echo "<td align=\"right\">";
+                        $total = $non_plan_total + $plan_total;
+                        echo money_format('%!i', convert_cur($total));
+                    }else{
+                        echo"<td>";
+                    }
+                    echo"</td>";
+                    $b++;
+                }while($b < $c);
+                echo "</tr>";
+                $a++;
+            }while($a<9);
+        }
+    }
+
+
+    function schedule15A($code,$count)
+    {
+
+        $CI =& get_instance();
+        $CI->load->library('session');
+        $date1 = $CI->session->userdata('date1');
+        $date2 = $CI->session->userdata('date2');
+        $total1 = 0;
+        $total2 = 0;
+        $total = 0;
+        $total4 = 0;
+        $date3 = '2015-04-01 00:00:00';
+        $CI->load->model('Group_model');
+        $CI->load->model('Ledger_model');
+
+        $provision_id = $CI->Group_model->get_id('Provision Received From Other Organisation For Retirement Benefits');
+        $CI->db->select('id,name')->from('ledgers')->where('group_id',$provision_id);
+        $query_result1 = $CI->db->get();
+
+        $group_id = $CI->Group_model->get_id('Retirement and Terminal Benefits');
+        $CI->db->select('id,name')->from('ledgers')->where('group_id',$group_id);
+        $query_result = $CI->db->get();
+
+        $pro_id = $CI->Group_model->get_id('Provision for Retirement Benefit');
+        $CI->db->select('id,name')->from('ledgers')->where('group_id',$pro_id);
+        $query_result2 = $CI->db->get();
+
+        echo "<tr class=\"tr-group\">";
+        echo "<td>"."Opening Balance as on   ". date_mysql_to_php_display($date2) . "</td>";
+        $total_sum1 = array();
+        $i = 0;
+        $op_bal_cr =0;
+        $op_bal_dr =0;
+        foreach($query_result2->result() as $row2){
+            $pro_ledg_id = $row2->id;
+            $pro_ledg_name = $row2->name;
+            $op_bal = $CI->Ledger_model->get_op_balance($pro_ledg_id);
+            if($op_bal[1] ='C'){
+                $op_bal[1] = 'Cr';
+                $op_bal_cr - $op_bal_cr = $op_bal_cr + $op_bal[0];
+            }
+            elseif($op_bal[1] ='D'){
+                $op_bal[1] = 'Dr';
+                $op_bal_dr = $op_bal_dr + $op_bal[0];
+            }
+
+            $total1 = $op_bal_cr - $op_bal_dr;
+            echo"<td align=\"right\">";
+            if($op_bal[0] == 0)
+            echo money_format('%!i', convert_cur($op_bal[0]));
+            else
+            echo $op_bal[1]." ".money_format('%!i', convert_cur($op_bal[0]));
+            echo"</td>";
+            //$total1 = $total1 + $op_bal_total;
+            $total_sum1[$i] = $op_bal[0] ."-". $op_bal[1];
+            $i++;  
+        } 
+        echo"<td align=\"right\">";
+        if($total1 > 0)
+        echo convert_amount_dc(-$total1);
+        else
+           echo convert_amount_dc($total1); 
+        echo"</td>";
+        echo "</tr>";
+
+        echo "<tr class=\"tr-group\">";
+        echo "<td>Addition : Capitalized value of Contributions Received from other Organizations</td>";
+        //echo "</td>";
+        $i = 0;
+        $total_sum2 = array();
+        foreach($query_result1->result() as $row1){
+            $ledg_id = $row1->id;
+            $ledg_bal = $CI->Ledger_model->get_ledger_balance1($ledg_id);
+            echo"<td align=\"right\">";
+            echo convert_amount_dc($ledg_bal);
+            echo"</td>";
+            $total2 = $total2 + $ledg_bal;
+            $total_sum2[$i] = $ledg_bal;
+            $i++;
+        }
+        echo"<td align=\"right\">";
+        echo convert_amount_dc($total2);
+        echo"</td>";
+        echo "</tr>";
+
+        echo "<tr class=\"tr-ledger\" style = font-weight:bold;>";
+        $total3= 0;
+        $total_sum3 = array();
+        $sum_total3 = 0;
+        echo "<td>Total (a)</td>";
+        for($i =0 ; $i<=4 ;$i++)
+        {
+            $total_sum = explode('-', $total_sum1[$i]);
+            $amount = $total_sum[0];
+            $dc = $total_sum[1];
+            if($dc == 'Cr')
+            {
+                $total_sum2[$i] = 0 - $total_sum2[$i];
+                $total3 = $amount + $total_sum2[$i];
+            }else{
+                $total3 = $amount + $total_sum2[$i];
+            }
+            echo"<td align=\"right\">";
+            echo money_format('%!i', convert_cur($total3));
+            echo"</td>";
+            $sum_total3 = $sum_total3 + $total3;
+            $total_sum3[$i] = $total3;
+        }
+        echo"<td align=\"right\">";
+        echo money_format('%!i', convert_cur($sum_total3));
+        echo"</td>";
+        echo "</tr>";
+
+        echo "<tr class=\"tr-group\">";
+        $total4 = 0;
+        $i =0;
+        echo "<td>Less: Actual Payment during the Year (b)</td>";
+        foreach($query_result->result() as $row)
+        {
+            $ledger_id = $row->id;
+            $name = $row->name;
+            if($name == 'Payment of Guatuity' || $name == 'Payment of Leave Encashment' || $name =='Payment of Pension' || $name == 'Payment of DCRG'|| $name == 'Payment of Commutation')
+            {
+                $payment_bal = $CI->Ledger_model->get_ledger_balance1($ledger_id);
+                echo"<td align=\"right\">";
+                echo convert_amount_dc($payment_bal);
+                echo"</td>";
+                $total4 = $total4 + $payment_bal;
+                $total_sum4[$i] = $payment_bal;
+                $i++; 
+            }
+        } 
+        echo"<td align=\"right\">";
+        echo convert_amount_dc($total4);
+        echo"</td>";
+        echo "</tr>";
+
+        echo "<tr class=\"tr-ledger\" style = font-weight:bold;>";
+        $sum_total5 =0;
+        $total_sum5 = array();
+        $total5 =0;
+        echo "<td>Balance Available on 31.03 c (a-b)</td>";
+        for($i =0 ; $i<=4 ;$i++)
+        {
+            $sum_total5 = $total_sum3[$i] - $total_sum4[$i];
+            echo"<td align=\"right\">";
+            echo money_format('%!i', convert_cur($sum_total5));
+            echo"</td>";
+            $total5 = $total5 + $sum_total5;
+            $total_sum5[$i] = $sum_total5;
+        }
+        echo"<td align=\"right\">";
+        echo money_format('%!i', convert_cur($total5));
+        echo"</td>";
+        echo "</tr>";
+
+        echo "<tr class=\"tr-group\">";
+        $total6 = 0;
+        $i =0;
+        $total_sum6 = array();
+        echo "<td>Provision required on 31.03 as per Actuarial Valuation (d)</td>";
+        foreach($query_result2->result() as $row4)
+        {
+            $pro_id = $row4->id;
+            $pro_bal1 = $CI->Ledger_model->get_ledger_balance1($pro_id);
+            echo"<td align=\"right\">";
+            echo convert_amount_dc($pro_bal1);
+            echo"</td>";
+            $total6 = $total6 + $pro_bal1;
+            $total_sum6[$i] = $pro_bal1;
+            $i++;
+        }
+        echo"<td align=\"right\">";
+        echo convert_amount_dc($total6);
+        echo"</td>";
+        echo "</tr>";
+        
+        echo "<tr class=\"tr-ledger\" style = font-weight:bold;>";
+        echo "<td>A. Provision to be made in the Current year (d -c)</td>";
+        $total7 =0;
+        $sum_total7 = 0;
+        $total_sum7 = array();
+        for($i =0 ; $i<=4 ;$i++)
+        {
+            $sum_total7 = (-$total_sum6[$i]) - $total_sum5[$i];
+            echo"<td align=\"right\">";
+            echo money_format('%!i', convert_cur($sum_total7));
+            echo"</td>";
+            $total7 = $total7+ $sum_total7;
+            $total_sum7[$i] = $sum_total7;
+        }
+        echo"<td align=\"right\">";
+        echo money_format('%!i', convert_cur($total7));
+        echo"</td>";
+        echo "</tr>";
+
+        
+        $counter = 'B';
+        foreach ($query_result->result() as $row) 
+        {
+            $name = $row->name;
+            $ledger_id = $row->id;
+            if($name == 'Deposit Linked Insurance Payment' || $name == 'Medical Reimbursement to Retired Employee' || $name == 'Travel to Hometown on Retirement' || $name == 'Contribution to New Pension Scheme')
+            {
+                echo "<tr class=\"tr-group\">";
+                echo "<td colspan=\"6\" >".$counter.". ".$name."</td>";
+                $ledger_bal = $CI->Ledger_model->get_ledger_balance1($ledger_id);
+                echo"<td align=\"right\">";
+                echo money_format('%!i', convert_cur($ledger_bal));
+                echo"</td>";
+                echo "</tr>";
+                $counter++;
+                $total = $total + $ledger_bal;
+            }
+            
+        }
+        $total = $total + $total7;
+        echo "<tr class=\"tr-ledger\" style = font-weight:bold;>";
+        echo "<td colspan=\"6\">Total (A+B+C+D+E)</td>";
+        echo"<td align=\"right\">";
+        echo money_format('%!i', convert_cur($total));
+        echo"</td>";
+        echo "</tr>";
     }
 }
 

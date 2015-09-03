@@ -254,6 +254,31 @@ var $group_code = 0;
 		return $data_code;
 	}
 
+	function get_ledger_code($num, $code)
+    {
+        if($num <= 9)
+            {
+    	        $i = 0;
+                    do{
+            	        $i++;
+                            $data_code = $code . '0' . $num+$i;
+                            $this->db->from('ledgers');
+                            $this->db->select('id')->where('code =',$data_code);
+                            $ledger_q = $this->db->get();
+                    }while($ledger_q->num_rows() > 0);
+            } else{
+                    $i = 0;
+                    do{
+            	        $i++;
+                            $data_code = $code . $num+$i;
+                            $this->db->from('ledgers');
+                            $this->db->select('id')->where('code =',$data_code);
+                            $ledger_q = $this->db->get();
+                    }while($ledger_q->num_rows() > 0);
+           }
+           return $data_code;
+    }
+
 	function edit($id)
 	{
 		$this->template->set('page_title', 'Edit Group');
@@ -852,7 +877,7 @@ var $group_code = 0;
 			        {
 	        		    $investment_code = $l_code . '01';
 	                } else{
-	                    $investment_code=$this->get_code($num, $l_code);
+	                    $investment_code=$this->get_ledger_code($num, $l_code);
 			        }
 	        		$i=0;
 
@@ -860,7 +885,7 @@ var $group_code = 0;
                     	if($i>0)
     	                {
                 	        $num = $num + 1;
-    	                	$investment_code=$this->get_code($num, $l_code);
+    	                	$investment_code=$this->get_ledger_code($num, $l_code);
             	        }
                     	$this->db->from('groups');
     	                $this->db->select('id')->where('code =',$investment_code);

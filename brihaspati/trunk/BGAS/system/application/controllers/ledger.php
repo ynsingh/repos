@@ -161,6 +161,10 @@ var $username;
 					$this->messages->add('Ledger can not be created with this parent. First you have to create a group on clicking "Add Fund Group".', 'error');
 					redirect('account');
 				}
+				if($parent_group_name == "Recipts Against Sponsored Projects" || $parent_group_name == "UGC Sponsored Fellowship/Scholarships"){
+					$this->messages->add('Ledger can not be created with this parent. First you have to create a group on clicking "Add Sponsored Project / Fellowship".', 'error');
+					redirect('account');
+				}
 
 			}
 

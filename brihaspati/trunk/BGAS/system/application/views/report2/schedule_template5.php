@@ -17,10 +17,10 @@
     $object = new Reportlist1();
 	if(!($print_preview))
 	{
-        echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"80%\" >";
+        echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\">";
         echo "<thead><tr><th>Particulars</th><th align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
 	}else{
-		echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
+		echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\">";
         echo "<thead><tr><th>Particulars</th><th align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
 	}
         if($count == 14){

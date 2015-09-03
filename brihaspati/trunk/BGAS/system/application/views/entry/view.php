@@ -18,8 +18,11 @@ $entry_id = "";
 $type = "";
 $fund_id = "";
 $id ="";
-foreach ($cur_entry_ledgers->result() as $row)
+//print_r($cur_entry_ledgers->result());
+foreach ($cur_entry_ledgers->result()as $row)
 {
+
+	//$no_of_row = $cur_entry_ledgers->num_rows();
 	$id = $row->ledger_id;
 	$ledger_code = $this->Ledger_model->get_ledger_code($row->ledger_id);
         //$account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
@@ -29,22 +32,27 @@ foreach ($cur_entry_ledgers->result() as $row)
 		if ($row->dc == "D")
 		{
 		  if(!($temp)){
-			$query = $this->Ledger_model->get_type1($entry_id);
-			$my_values = explode('#',$query);
-			$type =$my_values[0];
-			$name =$my_values[1];
-			echo "<tr class=\"tr-" . $odd_even . "\">";
-            		echo "<td>" . convert_dc($row->dc) . "</td>";
-		        echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
-			echo "<td>Dr " . $row->amount . "</td>";
-			echo "<td></td>";
-			echo "<td> " . $this->Secunit_model->get_secunitname($row->secunitid) . "</td>";
-			echo "<td> " . $this->Secunit_model->get_secunitaddress($row->secunitid) . "</td>";
-			echo "<td> " . $name . "</td>";
-			echo "<td> " . $type . "</td>";
+			$temp1 = $this->Ledger_model->isFundDeduct($row->ledger_id);
+			if(!($temp1))
+			{
+				$query = $this->Ledger_model->get_type1($entry_id);
+				$my_values = explode('#',$query);
+				$type =$my_values[0];
+				$name =$my_values[1];
+				echo "<tr class=\"tr-" . $odd_even . "\">";
+	            		echo "<td>" . convert_dc($row->dc) . "</td>";
+			        echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
+				echo "<td>Dr " . $row->amount . "</td>";
+				echo "<td></td>";
+				echo "<td> " . $this->Secunit_model->get_secunitname($row->secunitid) . "</td>";
+				echo "<td> " . $this->Secunit_model->get_secunitaddress($row->secunitid) . "</td>";
+				echo "<td> " . $name . "</td>";
+				echo "<td> " . $type . "</td>";
+			}
 				
 		     }
 		} else {
+			
 			$type = $this->Ledger_model->get_type($row->ledger_id, $entry_id);
 			echo "<tr class=\"tr-" . $odd_even . "\">";
                         echo "<td>" . convert_dc($row->dc) . "</td>";
@@ -56,6 +64,7 @@ foreach ($cur_entry_ledgers->result() as $row)
 			echo "<td> " . $this->Secunit_model->get_secunitaddress($row->secunitid) . "</td>";
 			echo "<td>"."</td>";
 			echo "<td>".$type."</td>";
+			
 		}
 		echo "</tr>";
 		$odd_even = ($odd_even == "odd") ? "even" : "odd";

@@ -549,7 +549,19 @@ $width="100%";
 		/* Load current entry details */
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
 		$this->db->where('ledger_id !=', $income_id);
+		
 		$cur_entry_ledgers = $this->db->get();
+
+		/*foreach($cur_entry_ledgers->result() as $row){
+			$entry_items_id = $row->id;
+			$this->db->select('id,fund_id,type')->from('fund_management')->where('entry_items_id',$entry_items_id);
+			$query_result = $this->db->get();
+			if($query_result->num_rows() > 0){
+
+			}
+		}*/
+
+
 /*		$row1 = "";
 		foreach($cur_entry_ledgers->result() as $row1)
 			{
@@ -731,10 +743,11 @@ $width="100%";
 		$data['sanc_type'] = array(
 			'select' => 'Select',
 			'plan' => 'Plan',
-			'non_plan' => 'Non Plan'
+			'non_plan' => 'Non Plan',
+			'plan_sfc_scheme' => 'Plan - Specific Schemes'
 		);
 
-		$data['active_sanc_type'] = 'select';		
+		$data['active_sanc_type'] = 'non_plan';		
 
 		$data['plan'] = array(
 			'select' => 'Select',

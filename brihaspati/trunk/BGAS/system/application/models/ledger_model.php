@@ -190,6 +190,16 @@ var $ledgers = array();
 
         }
 
+    function isFundDeduct($ledger_id)
+    {
+    	$this->db->select('id')->from('fund_management')->where('fund_id',$ledger_id)->where('type','Revenue');
+		$query_result = $this->db->get();
+		if($query_result->num_rows() > 0)
+			return true;
+		else 
+			return false;
+    }
+
 	function get_all_ledgers_nobankcash()
 	{
 		$options = array();
@@ -780,7 +790,12 @@ var $ledgers = array();
 		$dr_total1 = $dr_total_q1->row();
 		$non_plan_dr_total = $dr_total1->drtotal;
 
-		
+		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D')->where('entries.sanc_type','plan_sfc_scheme');
+		$this->db->where('date >=', $date1);
+	    $this->db->where('date <=', $date2);
+		$dr_total_q3 = $this->db->get();
+		$dr_total3 = $dr_total_q3->row();
+		$specific_sch_dr_total = $dr_total3->drtotal;
 
 		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D')->where('entries.sanc_type','plan');
 		$this->db->where('date >=', $date1);
@@ -793,7 +808,7 @@ var $ledgers = array();
 
 		//echo "nonplan dr total = $non_plan_dr_total";
 
-		$dr_total = array('plan' => $plan_dr_total,'nonplan' => $non_plan_dr_total );
+		$dr_total = array('plan' => $plan_dr_total,'nonplan' => $non_plan_dr_total ,'specific_sch' => $specific_sch_dr_total);
 
 		/*if( empty( $dr_total ) )
 		{
@@ -831,11 +846,18 @@ var $ledgers = array();
 		$cr_total2 = $cr_total_q2->row();
 		$plan_cr_total = $cr_total2->crtotal;
 
+		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C')->where('entries.sanc_type','plan_sfc_scheme');
+		$this->db->where('date >=', $date1);
+	    $this->db->where('date <=', $date2);
+		$cr_total_q3 = $this->db->get();
+		$cr_total3 = $cr_total_q3->row();
+		$specific_sch_cr_total = $cr_total3->crtotal;
+
 		$non_plan_cr_total = $non_plan_cr_total + $select_cr_total;
 
 		//echo "nonplan cr total = $non_plan_cr_total";		
 
-		$cr_total = array('plan' => $plan_cr_total,'nonplan' => $non_plan_cr_total );
+		$cr_total = array('plan' => $plan_cr_total,'nonplan' => $non_plan_cr_total,'specific_sch' => $specific_sch_cr_total );
 
 		/*if( empty( $cr_total ) )
 		{
@@ -845,6 +867,194 @@ var $ledgers = array();
 		//}
 	}
 
+
+	function get_capital_exp_total($ledger_id)
+	{
+
+		$this->load->library('session');
+        $date1 = $this->session->userdata('date1');
+        $date2 = $this->session->userdata('date2');
+		$non_plan_total = 0;
+		$plan_total = 0;
+		$specific_total =0;
+		$name = $this->get_ledger_name($ledger_id);
+		$this->db->select('name')->from('ledgers')->where('name LIKE','Grants'.'%');
+		if (strpos($name,'UGC') !== false)
+		{
+			$this->db->where('name LIKE','%'.'UGC'.'%');	
+		}elseif(strpos($name,'State Government') !== false) {
+
+			$this->db->where('name LIKE','%'.'State Government'.'%');
+		}elseif(strpos($name,'Government of India') !== false){
+
+			$this->db->where('name LIKE','%'.'Government of India'.'%');
+		}
+
+		$this->db->where('code LIKE','10'.'%');
+		$query_result = $this->db->get();
+		$query_result1 = $query_result->result();
+		foreach($query_result1 as $row)
+		{
+			$fundname = $row->name;
+			$this->db->select('entry_items_id,amount')->from('fund_management')->where('fund_name',$fundname);
+			$this->db->where('type','Capital');
+			$this->db->where('date >=', $date1);
+            $this->db->where('date <=', $date2);
+			$query_result2 = $this->db->get();
+
+			foreach($query_result2->result() as $row1)
+			{
+				$entry_items_id = $row1->entry_items_id;
+				$this->db->select('entries.sanc_type as sanc_type');
+            	$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.id', $entry_items_id);	
+            	$query_result3 = $this->db->get();
+            	foreach($query_result3->result() as $row2)
+				{
+					$sanc_type = $row2->sanc_type;
+
+					if($sanc_type == 'select' || $sanc_type == 'non_plan'){
+						$amount = $row1->amount;
+						$non_plan_total = $non_plan_total + $amount;
+					}elseif($sanc_type == 'plan'){
+						$amount = $row1->amount;
+						$plan_total = $plan_total + $amount;	
+					}elseif($sanc_type == 'plan_sfc_scheme'){
+						$amount = $row1->amount;
+						$specific_total = $specific_total + $amount;
+					}
+				}
+			}
+		}
+
+		//echo $non_plan_total;
+		$capital_total = array('plan' => $plan_total,'nonplan' => $non_plan_total,'specific_sch' => $specific_total);
+		return $capital_total;
+	}
+
+	function get_revenue_exp_total($ledger_id)
+	{
+
+		$this->load->library('session');
+        $date1 = $this->session->userdata('date1');
+        $date2 = $this->session->userdata('date2');
+		$non_plan_total = 0;
+		$plan_total = 0;
+		$specific_total =0;
+		$name = $this->get_ledger_name($ledger_id);
+		$this->db->select('name')->from('ledgers')->where('name LIKE','Grants'.'%');
+		if (strpos($name,'UGC') !== false)
+		{
+			$this->db->where('name LIKE','%'.'UGC'.'%');	
+		}elseif(strpos($name,'State Government') !== false) {
+
+			$this->db->where('name LIKE','%'.'State Government'.'%');
+		}elseif(strpos($name,'Government of India') !== false){
+
+			$this->db->where('name LIKE','%'.'Government of India'.'%');
+		}
+
+		$this->db->where('code LIKE','10'.'%');
+		$query_result = $this->db->get();
+		$query_result1 = $query_result->result();
+		foreach($query_result1 as $row)
+		{
+			$fundname = $row->name;
+			$this->db->select('entry_items_id,amount')->from('fund_management')->where('fund_name',$fundname);
+			$this->db->where('type','Revenue');
+			$this->db->where('date >=', $date1);
+            $this->db->where('date <=', $date2);
+			$query_result2 = $this->db->get();
+
+			foreach($query_result2->result() as $row1)
+			{
+				$entry_items_id = $row1->entry_items_id;
+				$this->db->select('entries.sanc_type as sanc_type');
+            	$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.id', $entry_items_id);	
+            	$query_result3 = $this->db->get();
+            	foreach($query_result3->result() as $row2)
+				{
+					$sanc_type = $row2->sanc_type;
+
+					if($sanc_type == 'select' || $sanc_type == 'non_plan'){
+						$amount = $row1->amount;
+						$non_plan_total = $non_plan_total + $amount;
+					}elseif($sanc_type == 'plan'){
+						$amount = $row1->amount;
+						$plan_total = $plan_total + $amount;	
+					}elseif($sanc_type == 'plan_sfc_scheme'){
+						$amount = $row1->amount;
+						$specific_total = $specific_total + $amount;
+					}
+				}
+			}
+		}
+
+		$revenue_total = array('plan' => $plan_total,'nonplan' => $non_plan_total ,'specific_sch' => $specific_total);
+	}
+
+	function get_schedule10_data($ledger_id, $type){
+
+        $op_balance = $this->get_op_balance($ledger_id);
+        $dr_total = $this->get_dr_total2($ledger_id);
+        $cr_total = $this->get_cr_total2($ledger_id);
+        $capital_total = $this->get_capital_exp_total($ledger_id);
+        $revenue_total = $this->get_revenue_exp_total($ledger_id);
+       // print_r($cr_total);
+        if($type == 'plan'){
+        	$plan = array();
+	        $plan_total1 = $op_balance[0]+ $cr_total['plan'];
+	        $plan_total2  = $plan_total1 - $dr_total['plan'];
+	        $plan_total3 = $plan_total2 - $capital_total['plan'];
+	        $plan_total4 = $plan_total3 - $revenue_total['plan'];
+
+	        $plan[0] = $op_balance[0];
+	        $plan[1] = $cr_total['plan'];
+	        $plan[2] = $plan_total1;
+	        $plan[3] = $dr_total['plan'];
+	        $plan[4] = $plan_total2;
+	        $plan[5] = $capital_total['plan'];
+	        $plan[6] = $plan_total3;
+	        $plan[7] = $revenue_total['plan'];
+	        $plan[8] = $plan_total4;
+
+	        return $plan;
+	    }elseif($type == 'nonplan'){
+	        $nonplan = array();
+	        $nonplan_total1 = $op_balance[0]+ $cr_total['nonplan'];
+	        $nonplan_total2  = $nonplan_total1 - $dr_total['nonplan'];
+	        $nonplan_total3 = $nonplan_total2 - $capital_total['nonplan'];
+	        $nonplan_total4 = $nonplan_total3 - $revenue_total['nonplan'];
+
+	        $nonplan[0] = $op_balance[0];
+	        $nonplan[1] = $cr_total['nonplan'];
+	        $nonplan[2] = $nonplan_total1;
+	        $nonplan[3] = $dr_total['nonplan'];
+	        $nonplan[4] = $nonplan_total2;
+	        $nonplan[5] = $capital_total['nonplan'];
+	        $nonplan[6] = $nonplan_total3;
+	        $nonplan[7] = $revenue_total['nonplan'];
+	        $nonplan[8] = $nonplan_total4;
+
+	        return $nonplan;
+	    }elseif($type == 'specific_sch'){
+	    	$specific_sch = array();
+	    	$specific_total1 = 0 + $cr_total['specific_sch'];
+	        $specific_total2  = $specific_total1 - $dr_total['specific_sch'];
+	        $specific_total3 = $specific_total2 - $capital_total['specific_sch'];
+	        $specific_total4 = $specific_total3 - $revenue_total['specific_sch'];
+
+	    	$specific_sch[0] = 0;
+	    	$specific_sch[1] = $cr_total['specific_sch'];
+	    	$specific_sch[2] = $specific_total1;
+	    	$specific_sch[3] = $dr_total['specific_sch'];
+	    	$specific_sch[4] = $specific_total2;
+	    	$specific_sch[5] = $capital_total['specific_sch'];
+	    	$specific_sch[6] = $specific_total3;
+	    	$specific_sch[7] = $revenue_total['specific_sch'];
+	    	$specific_sch[8] = $specific_total4;
+	    	return $specific_sch;
+	    }
+	}
 
 
 	/* Return debit total of previous year of selected date as positive value */

@@ -572,7 +572,7 @@ var dc = '';
 	$('.sanc-type').change(function() {
                 var name = $('.sanc-type').val();
 		
-		if(name != "select"){
+		if(name == "plan" || name == "non_plan"){
 	                if(name == "plan"){
         	                $('.plan').show();
 				$('.plan-label').show();
