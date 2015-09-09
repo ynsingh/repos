@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.reflector.network.http;
  * @(#)HttpServer.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011-2013 ETRG, IIT Kanpur.
+ * Copyright (c) 2011-2013,2015 ETRG, IIT Kanpur.
  */
 
 import org.bss.brihaspatisync.reflector.util.RuntimeObject;
@@ -15,6 +15,7 @@ import org.bss.brihaspatisync.reflector.network.serverdata.HandraiseAction;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>Created a basic multithreaded HttpServer on 05Feb2011, 31Dec2012
+ * @author <a href="mailto:pradeepmca30@gmail.com"> Pradeep kumar Pal  </a>
  */
 
 public class HttpGetPost {
@@ -40,6 +41,11 @@ public class HttpGetPost {
                         runtimeObject.setMastrerReflecterCourseid(lecture_id);
 			if(data_value[0].startsWith("HandRaiseAction")){
                                	data_value[0]=java.net.URLDecoder.decode(data_value[0]).replaceAll("HandRaiseAction","");
+				if(data_value[0].equals("Allow-Permission"))
+                                      runtimeObject.setAllowPermFlag(true);
+	                        else
+                                      runtimeObject.setAllowPermFlag(false);
+				
 	                        handraiseAction.setValue(data_value[0]);
 			}
 			

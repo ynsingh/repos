@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.reflector.util;
  * RuntimeDataObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2010-2011
+ * Copyright (c) 2010-2011,2015
  */
 
 import java.util.Properties;
@@ -15,6 +15,7 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
+ * @author <a href="mailto:pradeepmca30@gmail.com"> Pradeep Kumar Pal </a>
  */
 
 public class RuntimeObject {
@@ -30,6 +31,7 @@ public class RuntimeObject {
         private static RuntimeObject obj=null;
         private String parent_ref="";
 	private String reflectorrunning="";
+	private boolean allowpermflag=false;
 
 
 	/**
@@ -155,6 +157,15 @@ public class RuntimeObject {
         public String getParentReflector(){
                 return parent_ref;
         }
+	
+	public void setAllowPermFlag(boolean value){
+                allowpermflag=value;
+        }
+
+        public boolean getAllowPermFlag(){
+                return allowpermflag;
+        }
+
 
 }
 

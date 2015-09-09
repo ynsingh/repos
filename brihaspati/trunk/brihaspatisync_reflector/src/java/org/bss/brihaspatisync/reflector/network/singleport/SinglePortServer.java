@@ -3,7 +3,7 @@ package org.bss.brihaspatisync.reflector.network.singleport;
 /**
  * DesktopPostSharing.java
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2013,ETRG, IIT Kanpur.
+ * Copyright (c) 2013,2015ETRG, IIT Kanpur.
  **/
 
 import java.io.IOException;
@@ -26,6 +26,7 @@ import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
+ * @author <a href="mailto:pradeepmca30@gmail.com"> Pradeep kumar Pal </a>
  */
 
 public class SinglePortServer {
@@ -102,10 +103,19 @@ class MyHandler implements HttpHandler {
                                 	        BufferMgt buffer_mgt=StoreBufferMgnObject.getBufferMgtObject(type+lecture_id);
                                         	if( ((bytes.length)>0 ) && (bytes !=null) ) 
                                                 	buffer_mgt.putAudioBytes(bytes,username);
+							//buffer_mgt.putAudioBytes(bytes,username,role);
         	                                byte[] sendbytes=buffer_mgt.sendData_AudioIncreasePointer(username);
                 	                        if((sendbytes.length>0) && (sendbytes !=null)){
-                        	                        responseBody.write(sendbytes);
-                                	        }
+                        	                        responseBody.write(sendbytes);}
+					}else if(type.equals("Student_Audio_Data")) {
+                                                if(!StoreBufferMgnObject.getStatusBufferMgtObject("Audio_Data"+lecture_id))
+                                                        StoreBufferMgnObject.setBufferMgtObject("Audio_Data"+lecture_id,new BufferMgt());
+                                                BufferMgt buffer_mgt=StoreBufferMgnObject.getBufferMgtObject("Audio_Data"+lecture_id);
+                                                if( ((bytes.length)>0 ) && (bytes !=null) )
+                                                        buffer_mgt.putAudioBytes(bytes,username);
+                                                byte[] sendbytes=buffer_mgt.sendData_AudioIncreasePointer(username);
+                                                if((sendbytes.length>0) && (sendbytes !=null)){
+                                                        responseBody.write(sendbytes);}
 					} else if(type.equals("UserList_Data")) {
 						if(runtimeObject.getReflectorRunning().equals("client")) {	
 							if(!StoreBufferMgnObject.getStatusBufferMgtObject(type+lecture_id)){
@@ -127,7 +137,7 @@ class MyHandler implements HttpHandler {
                                                         if(userlist_data.equals(""))
                                                                 userlist_data="nodata";
                                                         responseBody.write(userlist_data.getBytes());
-						} 
+							}
 					} else if(type.equals("Chat_Wb_Data")) {
 						if(!StoreBufferMgnObject.getStatusBufferMgtObject(type+lecture_id)) {
                                                         StoreBufferMgnObject.setBufferMgtObject(type+lecture_id,new BufferMgt());
