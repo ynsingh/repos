@@ -14,6 +14,7 @@ import org.bss.brihaspatisync.gui.UserListPanel;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar Pal </a>
  * This class is used to store objects which are needed in runtime by this client.
  */
 
@@ -123,23 +124,17 @@ public class ClientObject {
          * This method is used to get user name of this client which is used to login authentication from login window.
          */
 	public static String getUserName(){
-	
-        System.out.println("value of usr_name in clientobject:"+usr_name);
 		return usr_name;
 	}
 	
 	public static String getwelcomeUserName(){
                 String name_new=usr_name;
-		 System.out.println("value of name_new in clientobject:"+name_new);
                 try {
                         if(name_new.length()>9){
                                 name_new=name_new.substring(0,7);
-				 System.out.println("value of name_new1 in clientobject:"+name_new);
                                 name_new=name_new+"..";
-				 System.out.println("value of name_new2 in clientobject:"+name_new);
                         }
                 }catch(Exception e){}
-		 System.out.println("value of name_new3 in clientobject:"+name_new);
                 return name_new;
         }
 	

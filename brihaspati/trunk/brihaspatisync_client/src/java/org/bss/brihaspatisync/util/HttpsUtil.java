@@ -301,7 +301,8 @@ public class HttpsUtil{
 									java.util.StringTokenizer st = new java.util.StringTokenizer(str,"$$");
 									while(st.hasMoreTokens()) {
 										sessionList.addElement(st.nextElement().toString());
-									}break;
+									}
+									//break;
         	                                        	}
                 	                        	}
                         	        	}finally {

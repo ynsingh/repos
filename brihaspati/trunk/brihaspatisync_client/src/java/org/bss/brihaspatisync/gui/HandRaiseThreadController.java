@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * HandRaiseThreadController.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur.
+ * Copyright (c) 2011,2015 ETRG, IIT Kanpur.
  */
 
 import org.bss.brihaspatisync.util.ClientObject;
@@ -18,6 +18,7 @@ import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
 /**
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>Created on feb2011	
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Modified on feb2011   
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep Kumar Pal </a>
  */
 
 
@@ -145,6 +146,11 @@ public class HandRaiseThreadController implements Runnable{
 	protected void startPostPermission(boolean flag) {
                 startpostpermission=flag;
         }
+	
+	 public boolean getstartPostPermission() {
+                return startpostpermission;
+        }
+
 	
 	protected void startGetPermission(boolean flag) {
                 startgetpermission=flag;

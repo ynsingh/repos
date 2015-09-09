@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.tools.audio;
  * AudioClient.java
  * 
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2012,2015 ETRG,IIT Kanpur.
  */
 
 import java.util.LinkedList;
@@ -17,6 +17,7 @@ import org.bss.brihaspatisync.network.util.UtilObject;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Oct2011.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified transmit thread.
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar Pal </a>Modified transmit thread.
  */
 
 public class AudioClient implements Runnable {
@@ -76,6 +77,11 @@ public class AudioClient implements Runnable {
 		audiostartstopFlag=startstopflag;
 		au_cap.setflag(startstopflag);	
 	}
+		
+	 public boolean getpostAudio(){
+                return audiostartstopFlag;
+        }
+
 
 	/**
  	 * Transmit audioInputStream to reflector by using HTTP post method.

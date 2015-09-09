@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.network.util;
  * UtilObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008
+ * Copyright (c) 2007-2008,2015
  */
 
 import  java.util.Vector;
@@ -16,6 +16,7 @@ import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep Kumar Pal </a>
  */
 
 public class UtilObject {
@@ -93,8 +94,9 @@ public class UtilObject {
                 type_vector.remove(type);
                 org.bss.brihaspatisync.network.singleport.NetworkController.remove_Ht_Key(type);
         }
-	
+		
 	public synchronized Vector getTypeVector(){
 		return type_vector;
-	}	
+	}
+		
 }

@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.network.singleport;
  * SinglePortClient.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2013, ETRG, IIT Kanpur.
+ * Copyright (c) 2013,2015 ETRG, IIT Kanpur.
  */
 
 import  java.util.Vector;
@@ -14,6 +14,8 @@ import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
+import org.bss.brihaspatisync.tools.audio.AudioClient;
+import org.bss.brihaspatisync.gui.HandRaiseThreadController;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -25,6 +27,7 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
+ * @author <a href="mailto: pradeepmca30@gmail.com" > Pradeep Kumar Pal </a>
  */
 
 public class SinglePortClient implements Runnable {
@@ -109,6 +112,8 @@ public class SinglePortClient implements Runnable {
 							   	byte[] send_data=null;
 						   		if(sendqueue.size()>0)
 							   		send_data=(byte[])sendqueue.remove();
+								if((AudioClient.getController().getpostAudio())&&(!((ClientObject.getUserRole()).equals("instructor"))) )
+                                                                        type ="Student_"+type;
 							   	byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
 								if(receive_data_fromserver.length>73 && (receive_data_fromserver !=null) ) {
 									LinkedList audio_queue=utilobject.getReceiveQueue("Audio_Data");
