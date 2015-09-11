@@ -1,6 +1,5 @@
 <?php include("header.php");
 ?>
-
 <?php
 session_start();
 $xmlDoc = new DOMDocument();
@@ -10,10 +9,10 @@ $searchNode = $xmlDoc->getElementsByTagName( "LIST" );
 foreach( $searchNode as $searchNode )
 {
 
-        $xmlsno = $searchNode->getElementsByTagName( "SNO" );
-        $valuesno = $xmlsno->item(0)->nodeValue;
-        $xmlmod = $searchNode->getElementsByTagName( "IName" );
-        $valuemod= $xmlmod->item(0)->nodeValue;
+       // $xmlsno = $searchNode->getElementsByTagName( "SNO" );
+       // $valuesno = $xmlsno->item(0)->nodeValue;
+        $xmlINS = $searchNode->getElementsByTagName( "IName" );
+        $valueINS= $xmlINS->item(0)->nodeValue;
        }
 ?>
 
@@ -29,7 +28,7 @@ else
 xmlhttp.open("GET","bgaslist.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML; 
-var mod=xmlDoc.getElementsByTagName("LIST");
+var list=xmlDoc.getElementsByTagName("LIST");
 
 
 </script>
@@ -60,21 +59,56 @@ var mod=xmlDoc.getElementsByTagName("LIST");
 </div>
 <div id="content">
 <div id ="columnC">
-        <div style="width:60%; margin-top:-35px; font-size:14px;color:#333;line-height:160%;">
+        <div>
+        <div style="width:60%; margin-top:-35px;font-size:14px;color:#333;line-height:160%;">
+                   <?php
+                 if( empty($_SESSION['username']) )
+                {?>
+
                                <script type="text/javascript">
-                for (i=0;i<mod.length;i++)
+                for (i=0;i<list.length;i++)
                 { 
-                document.write("<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;");
-                document.write(mod[i].getElementsByTagName("SNO")[0].childNodes[0].nodeValue);
-                document.write("</td><td>&nbsp;&nbsp;&nbsp;&nbsp; ");
-                document.write(mod[i].getElementsByTagName("IName")[0].childNodes[0].nodeValue);
-                document.write("</td><tr><br>");
+                document.write("<tr>");
+                document.write("<td>");
+                document.write(list[i].getElementsByTagName("IName")[0].childNodes[0].nodeValue);
+                document.write("<br/></td><tr>");
+                
                 }
  </script>
-		 		</div>
-
+               <?php
+                }else{
+                echo    "<form action=\"project.php\" method=\"post\">";
+                echo    "<input name='filenm' type='hidden' value='bgaslist.xml'/>";
+                echo "<input name='redirect' type='hidden' value='bgaslist.php'/>";
+                echo    "<input name='element' type='hidden' value='LIST'/>";
+                echo "<br>";
+                echo    "<textarea name=\"UserAddress7\" rows=\"30\" cols=\"68\">";
+                $xmlDoc->load( 'bgaslist.xml');
+                $searchNode = $xmlDoc->getElementsByTagName( "LIST" );
+                foreach( $searchNode as $searchNode )
+                {
+                    $xmlINS = $searchNode->getElementsByTagName( "IName" );
+                    $valueINS = $xmlINS->item(0)->nodeValue;
+                  //  echo $valueMOD;
+                    echo str_replace("<br>","\n", $valueINS);
+                }
+                echo"</textarea>";
+                echo    "<input type='submit'value='update'>";
+                }
+                ?>
 <div id ="columnD">
-<div style="width:57%;float:right;margin-top:-56.7%;margin-right:-4.6%">
+<!--div style="width:57%;float:right;margin-top:-56.7%;margin-right:-4.6%"-->
+<?php
+                 if(! empty($_SESSION['username']) )
+                {?>
+<div style="width:56%;float:right;margin-top:-80%;margin-right:-35%">
+ <?php
+                }else{
+?>
+                <div style="width:49%;float:right;margin-top:-101%;margin-right:-28%">
+<?php
+                }
+?>
 <img src="images/home/bgasmod.png" />
                                 </div>
 <?php include("footer.php");

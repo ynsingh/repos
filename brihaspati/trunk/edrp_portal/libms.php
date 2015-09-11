@@ -87,8 +87,8 @@ var server=xmlDoc.getElementsByTagName("SERVER");
                         else
                         {
                 echo    "<form action=\"project.php\" method=\"post\">";
-                echo    "<input name='filenm' type='hidden' value='ems.xml'/>";
-                echo "<input name='redirect' type='hidden' value='ems.php'/>";
+                echo    "<input name='filenm' type='hidden' value='libms.xml'/>";
+                echo "<input name='redirect' type='hidden' value='libms.php'/>";
                 echo    "<textarea name=\"UserAddress1\" rows=\"11\" cols=\"70\">$valueInfo </textarea>";
                 echo    "<input type='submit'value='update'>";
                                 }
@@ -117,12 +117,12 @@ if( empty($_SESSION['username']) )
                         else
                         {
                 echo    "<form action=\"project.php\" method=\"post\">";
-                echo    "<input name='filenm' type='hidden' value='ems.xml'/>";
-                echo    "<input name='element' type='hidden' value='EMS'/>";
+                echo    "<input name='filenm' type='hidden' value='libms.xml'/>";
+                echo    "<input name='element' type='hidden' value='LBMS'/>";
                 echo    "<input name='UserAddress2' type='hidden' value= '$valueUrl'/>";
                 echo    "<input name='UserAddress5' type='hidden' value= '$valueIMG'/>";
                 echo    "<input name='UserAddress4' type='hidden' value= '$valueANAME'/>";
-              echo    "<textarea name=\"UserAddress3\" rows=\"2\" cols=\"70\">$valueNAME </textarea>";
+                echo    "<textarea name=\"UserAddress3\" rows=\"2\" cols=\"70\">$valueNAME </textarea>";
                         echo "<input type='submit'value='update'>";
                         }
                 ?>

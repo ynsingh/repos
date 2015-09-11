@@ -9,8 +9,6 @@ $searchNode = $xmlDoc->getElementsByTagName( "COMPONENT" );
 foreach( $searchNode as $searchNode )
 {
 
-        $xmlsno = $searchNode->getElementsByTagName( "SNO" );
-        $valuesno = $xmlsno->item(0)->nodeValue;
         $xmlmod = $searchNode->getElementsByTagName( "MODULE" );
         $valuemod= $xmlmod->item(0)->nodeValue;
        }
@@ -61,20 +59,63 @@ var mod=xmlDoc.getElementsByTagName("COMPONENT");
 <div id="content">
 <div id ="columnC">
         <div style="width:60%; margin-top:-35px;color:#333;line-height:160%;font-size:14px;">
+                    <?php
+                 if( empty($_SESSION['username']) )
+                {?>
+
                                <script type="text/javascript">
+
                 for (i=0;i<mod.length;i++)
                 { 
-                document.write("<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;");
-                document.write(mod[i].getElementsByTagName("SNO")[0].childNodes[0].nodeValue);
-                document.write("</td><td>&nbsp;&nbsp;&nbsp;&nbsp;");
+                  document.write("<tr>");
+                document.write("<td>");
                 document.write(mod[i].getElementsByTagName("MODULE")[0].childNodes[0].nodeValue);
-                document.write("</td><tr><br>");
+                document.write("<br/></td><tr>");
+
                 }
+
        
  </script>
+
+          <?php
+                }else{
+                echo    "<form action=\"project.php\" method=\"post\">";
+                echo    "<input name='filenm' type='hidden' value='picomod.xml'/>";
+                echo "<input name='redirect' type='hidden' value='picomod.php'/>";
+                echo    "<input name='element' type='hidden' value='COMPONENT'/>";
+                echo "<br>";
+                echo    "<textarea name=\"UserAddress6\" rows=\"30\" cols=\"60\">";
+                $xmlDoc->load( 'picomod.xml' );
+                $searchNode = $xmlDoc->getElementsByTagName( "COMPONENT" );
+                foreach( $searchNode as $searchNode3 )
+                {
+
+                    $xmlMOD = $searchNode3->getElementsByTagName( "MODULE" );
+                    $valueMOD = $xmlMOD->item(0)->nodeValue;
+                  //  echo $valueMOD;
+                    echo str_replace("<br>","\n", $valueMOD);
+
+                }
+                echo"</textarea>";
+                echo    "<input type='submit'value='update'>";
+                }
+                ?>
+
 </div>
 <div id ="columnD">
-<div style="width:57%;float:right;margin-top:-58.7%;margin-right:-6%">
+<?php
+                 if(! empty($_SESSION['username']) )
+                {?>
+<div style="width:56%;float:right;margin-top:-46%;margin-right:-5%">
+ <?php
+                }else{
+?>
+               <div style="width:57%;float:right;margin-top:-60%;margin-right:-6%">
+<?php
+                }
+?>
+
+<!--div style="width:57%;float:right;margin-top:-58.7%;margin-right:-6%"-->
 <img src="images/home/pico.png" />
                                 </div>
 <?php include("footer.php");

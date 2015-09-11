@@ -21,7 +21,7 @@ foreach( $searchNode as $searchNode )
 
 <?php session_start(); ?>
 <?php
-//     include_once "db/connection.php";
+     include_once "db/connection.php";
        
             if (isset($_POST['login'])){
                 if ($_POST['username']!="") {
@@ -89,6 +89,14 @@ foreach( $searchNode as $searchNode )
 </head>
 <div id="top">
 <div id="content" style="margin-top: 0px; padding: 0px 0px 20px 0px;">
+<div style="float:right;" >
+<?php
+if( !empty($_SESSION['username']) )
+{
+?>
+<input class="button" value="LOGOUT" type="submit" onclick="location.href='logout.php'"/>
+<?php } ?>
+</div>
 <input class="button" value="CONTACT US" type="submit" onclick="location.href='contactus.php'"/>
 <input class="button" value="ABOUT US" type="submit"  onclick="location.href='aboutus.php'"/>
 <input class="button" value="HOME" type="submit"  onclick="location.href='index.php'"/>
@@ -124,11 +132,12 @@ var y=xmlDoc.getElementsByTagName("FOOTER");
                 <marquee behavior="scroll" style="height:50px;"  ><font color="white "><h2> Welcome to EdRP Portal</h2></font></marquee>
 </div>
 <div  id="content">
-<?php
+<!--?php
 if( empty($_SESSION['username']) )
 {
-?>     
+?-->     
         <div id="columnB">
+
        <marquee behavior="alternate" direction="up" width=100% height=100% scrollamount="2" text-decoration: "none">
 
         <a href='bgas.php' style="text-decoration: none;" title='Go To BGAS'>&nbsp;&nbsp;BGAS</a> is standard integrated accounting and genral ledger &nbsp;&nbsp;system.<br>
@@ -150,9 +159,9 @@ if( empty($_SESSION['username']) )
        
         </div>
        
-<?php
+<!--?php
 }
-?>
+?-->
 <div style="float:right;color:#333;margin-top:-45px;" class="container" id="columnA">
 <!--input class="button" value= "REGISTER" type="submit" onclick="location.href='registration.php'" /--> 
 <!--input class="button" value="LOGIN"  type="submit" onclick="location.href='Login.php'"/--> 

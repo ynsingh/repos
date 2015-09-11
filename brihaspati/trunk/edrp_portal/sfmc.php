@@ -63,8 +63,8 @@ var server=xmlDoc.getElementsByTagName("SERVER");
                         else
                         {
                 echo    "<form action=\"project.php\" method=\"post\">";
-                echo    "<input name='filenm' type='hidden' value='bgas.xml'/>";
-                echo "<input name='redirect' type='hidden' value='bgas.php'/>";
+                echo    "<input name='filenm' type='hidden' value='sfmc.xml'/>";
+                echo "<input name='redirect' type='hidden' value='sfmc.php'/>";
                 echo    "<textarea name=\"UserAddress1\" rows=\"11\" cols=\"70\">$valueInfo </textarea>";
                 echo    "<input type='submit'value='update'>";
                                 }
@@ -94,6 +94,40 @@ var server=xmlDoc.getElementsByTagName("SERVER");
        
                 </script>
                  </span>
+<?php
+
+if( empty($_SESSION['username']) )
+
+                        {
+
+                        echo $valueNAME ;
+
+                        }
+
+                        else
+
+                        {
+
+                echo    "<form action=\"project.php\" method=\"post\">";
+
+                echo    "<input name='filenm' type='hidden' value='sfmc.xml'/>";
+
+                echo    "<input name='element' type='hidden' value='BRIH'/>";
+
+                echo    "<input name='UserAddress2' type='hidden' value= '$valueUrl'/>";
+
+                echo    "<input name='UserAddress5' type='hidden' value= '$valueIMG'/>";
+
+                echo    "<input name='UserAddress4' type='hidden' value= '$valueANAME'/>";
+
+              echo    "<textarea name=\"UserAddress3\" rows=\"2\" cols=\"70\">$valueNAME </textarea>";
+
+                        echo "<input type='submit' value='update'>";
+
+                        }
+
+                ?>
+
  <?php include("footer.php");
 ?>
 

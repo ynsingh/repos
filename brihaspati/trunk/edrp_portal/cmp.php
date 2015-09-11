@@ -9,8 +9,6 @@ $searchNode = $xmlDoc->getElementsByTagName( "COMPONENT" );
 foreach( $searchNode as $searchNode )
 {
 
-        $xmlsno = $searchNode->getElementsByTagName( "SNO" );
-        $valuesno = $xmlsno->item(0)->nodeValue;
         $xmlmod = $searchNode->getElementsByTagName( "MODULE" );
         $valuemod= $xmlmod->item(0)->nodeValue;
        }
@@ -65,21 +63,65 @@ var link=xmlDoc.getElementsByTagName("SECONDARYLINK");
 <div id ="columnC">
         <div>
         <div style="width:60%; margin-top:-35px;font-size:14px;color:#333;line-height:160%;">
+                   <?php
+                 if( empty($_SESSION['username']) )
+                {?>
+
                                <script type="text/javascript">
                 for (i=0;i<mod.length;i++)
                 { 
-                document.write("<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;");
-                document.write(mod[i].getElementsByTagName("SNO")[0].childNodes[0].nodeValue);
-                document.write("</td><td>&nbsp;&nbsp;&nbsp;&nbsp;");
+                document.write("<tr>");
+                document.write("<td>");
                 document.write(mod[i].getElementsByTagName("MODULE")[0].childNodes[0].nodeValue);
-                document.write("</td><tr><br>");
+                document.write("<br/></td><tr>");
+                
                 }
+
        
  </script>
+ 
+               <?php
+                }else{
+                echo    "<form action=\"project.php\" method=\"post\">";
+                echo    "<input name='filenm' type='hidden' value='cmp.xml'/>";
+                echo "<input name='redirect' type='hidden' value='cmp.php'/>";
+                echo    "<input name='element' type='hidden' value='COMPONENT'/>";
+                echo "<br>";
+                echo    "<textarea name=\"UserAddress6\" rows=\"30\" cols=\"60\">";
+                $xmlDoc->load( 'cmp.xml' );
+                $searchNode = $xmlDoc->getElementsByTagName( "COMPONENT" );
+                foreach( $searchNode as $searchNode )
+                {
+
+                    $xmlMOD = $searchNode->getElementsByTagName( "MODULE" );
+                    $valueMOD = $xmlMOD->item(0)->nodeValue;
+                  //  echo $valueMOD;
+		    echo str_replace("<br>","\n", $valueMOD);
+			   
+		}
+                echo"</textarea>";
+                echo    "<input type='submit'value='update'>";
+                }
+                ?>
+
+                
+
 
 </div>
 <div id ="columnD">
-<div style="width:59%;float:right;margin-top:-52.5%;margin-right:-7.4%">
+<!--div style="width:59%;float:right;margin-top:-52.5%;margin-right:-7.4%"-->
+<?php
+                 if(! empty($_SESSION['username']) )
+                {?>
+<div style="width:56%;float:right;margin-top:-48.5%;margin-right:-4.4%">
+ <?php
+                }else{
+?>
+               <div style="width:59%;float:right;margin-top:-54.5%;margin-right:-7.4%">
+<?php
+                }
+?>
+
 <img src="images/home/bgas.png" />
                                 </div>
 <?php include("footer.php");

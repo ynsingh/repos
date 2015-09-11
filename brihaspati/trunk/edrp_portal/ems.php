@@ -121,7 +121,7 @@ var server=xmlDoc.getElementsByTagName("SERVER");
                 </p>
                 </div>
                </div>
-         <span style="float:right;color:#333;margin-top:-130px;"> <script type="text/javascript">
+         <span style="float:right;color:#333;margin-top:-117px;"> <script type="text/javascript">
                 for (i=0;i<x.length;i++)
                 { 
                 document.write("<tr><td><img src=");

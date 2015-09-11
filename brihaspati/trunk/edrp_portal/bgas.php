@@ -200,7 +200,7 @@
 	} 
 
 	$conn->close();
-
+*/
 if( empty($_SESSION['username']) )
 
                         {
@@ -229,7 +229,7 @@ if( empty($_SESSION['username']) )
 
                         echo "<input type='submit' value='update'>";
 
-                        }*/
+                        }
 
                 ?>
 

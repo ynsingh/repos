@@ -62,8 +62,8 @@ var server=xmlDoc.getElementsByTagName("SERVER");
                         else
                         {
                 echo    "<form action=\"project.php\" method=\"post\">";
-                echo    "<input name='filenm' type='hidden' value='bgas.xml'/>";
-                echo "<input name='redirect' type='hidden' value='bgas.php'/>";
+                echo    "<input name='filenm' type='hidden' value='gms.xml'/>";
+                echo "<input name='redirect' type='hidden' value='gms.php'/>";
                 echo    "<textarea name=\"UserAddress1\" rows=\"11\" cols=\"70\">$valueInfo </textarea>";
                 echo    "<input type='submit'value='update'>";
                                 }
