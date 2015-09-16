@@ -293,7 +293,7 @@ public class Calendar_Display extends SecureScreen{
 				}
 				crit.add(CalInformationPeer.P_DATE,(Object)get_date,crit.EQUAL);
 				crit.add(CalInformationPeer.GROUP_ID,gid);
-				crit.add(CalInformationPeer.USER_ID,user_id);
+		//		crit.add(CalInformationPeer.USER_ID,user_id);
 				crit.add(CalInformationPeer.INSTITUTE_ID,instituteId);
 				List result=CalInformationPeer.doSelect(crit);
 				String all_date="";
