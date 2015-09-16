@@ -198,7 +198,7 @@ public class ErpmusersDAO  {
             }
      }
 
-    public String RetrieveSecretQuestion(String ERPMU_Name, String ERPMU_DOB)    {
+ /*   public String RetrieveSecretQuestion(String ERPMU_Name, String ERPMU_DOB)    {
             Session session = HibernateUtil.getSession();
             try {
                 session.beginTransaction();
@@ -215,7 +215,7 @@ public class ErpmusersDAO  {
             }
      }
 
-
+*/
     public Erpmusers FindByUserNameSecretAnswer(String ERPMU_Name, String Secret_Answer) {
             Session session = HibernateUtil.getSession();            
             try {

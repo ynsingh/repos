@@ -11,24 +11,27 @@
         <property name="erpmuName" type="string">
             <column name="ERPMU_Name" length="50" not-null="true" unique="true" />
         </property>
-        <property name="erpmuPassword" type="string">
+    <!-- <property name="erpmuPassword" type="string">
             <column name="ERPMU_Password" length="50" not-null="true" />
+        </property> -->
+        <property name="erpmuPassword" type="string">
+            <column name="ERPMU_Password" length="155" not-null="true" />
         </property>
-        <property name="erpmuDob" type="date">
+   <!--     <property name="erpmuDob" type="date">
             <column name="ERPMU_DOB" length="10" not-null="true" />
-        </property>
+        </property>   -->
         <property name="erpmuActive" type="string">
             <column name="ERPMU_Active" length="2" not-null="true" />
         </property>
         <property name="erpmuVerifiedBy" type="string">
             <column name="ERPMU_Verified_By" length="50" />
         </property>
-        <property name="erpmuSecretQuestion" type="string">
+     <!--   <property name="erpmuSecretQuestion" type="string">
             <column name="ERPMU_Secret_Question" length="100" />
         </property>
         <property name="erpmuSecretAnswer" type="string">
             <column name="ERPMU_Secret_Answer" length="100" />
-        </property>
+        </property>  -->
         <property name="erpmuFullName" type="string">
             <column name="ERPMU_Full_Name" length="50" not-null="true" />
         </property>

@@ -26,8 +26,8 @@
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
                 <div id="sidebar1">
-                    <jsp:include page="menu.jsp" flush="true"></jsp:include>
-                </div>
+                    <jsp:include page="menu.jsp" flush="true"></jsp:include> 
+                </div> 
 
                 <jsp:include page="jobBar.jsp" flush="true"></jsp:include>
             </div>

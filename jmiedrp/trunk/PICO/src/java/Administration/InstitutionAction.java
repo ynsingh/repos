@@ -99,7 +99,7 @@ public class InstitutionAction extends DevelopmentSupport {
         return statemasterList;
     }
 
-    public void setStatemasterList(List<Statemaster> statemasterList) {
+    public void setStatemasterList(List<Statemaster> statemasterList){ 
         this.statemasterList = statemasterList;
     }
 
@@ -122,6 +122,7 @@ public class InstitutionAction extends DevelopmentSupport {
     @Override
     public String execute() throws Exception {
         try {
+            //imList = imDao.findAll();
             prepare_lovs();
             return SUCCESS;
         } catch (Exception e) {

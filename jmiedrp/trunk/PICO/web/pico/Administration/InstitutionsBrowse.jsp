@@ -43,7 +43,7 @@
                             <display:table name="imList" pagesize="15"
                                            excludedParams="*"  cellpadding="0"
                                            cellspacing="0"  id="doc"
-                                           requestURI="/Administration/BrowseInstitutions.action">
+                                           requestURI="/Administration/ManageInstitutionAction.action">
                                 <display:column  class="griddata" title="S.No" sortable="true" headerClass="gridheader" style="width:6%" >
                                     <c:out> ${doc_rowNum}
                                     </display:column>
@@ -79,8 +79,12 @@
 
                                     </display:column>
                                 </display:table>
+					<s:submit name="btnSubmit" key="Add Institute" action="BrowseInstitutions">
+                            		<s:param name="colspan" value="%{2}" />
+                            		<s:param name="align" value="%{'left'}" />
+                        		</s:submit>	
                         </table>
-                    </s:form>
+                    </s:form>   
                     <br>
                 </div>
                 &nbsp;

@@ -15,11 +15,11 @@ public class Erpmusers  implements java.io.Serializable {
      private Integer erpmuId;
      private String erpmuName;
      private String erpmuPassword;
-     private Date erpmuDob;
+     //private Date erpmuDob;
      private String erpmuActive;
      private String erpmuVerifiedBy;
-     private String erpmuSecretQuestion;
-     private String erpmuSecretAnswer;
+     //private String erpmuSecretQuestion;
+     //private String erpmuSecretAnswer;
      private String erpmuFullName;
      private Set erpmIndentMasters = new HashSet(0);
      private Set userMessagesForUmFromErpmuId = new HashSet(0);
@@ -37,21 +37,23 @@ public class Erpmusers  implements java.io.Serializable {
     }
 
 	
-    public Erpmusers(String erpmuName, String erpmuPassword, Date erpmuDob, String erpmuActive, String erpmuFullName) {
+    //public Erpmusers(String erpmuName, String erpmuPassword, Date erpmuDob, String erpmuActive, String erpmuFullName) {
+    public Erpmusers(String erpmuName, String erpmuPassword, String erpmuActive, String erpmuFullName) {
         this.erpmuName = erpmuName;
         this.erpmuPassword = erpmuPassword;
-        this.erpmuDob = erpmuDob;
+        //this.erpmuDob = erpmuDob;
         this.erpmuActive = erpmuActive;
         this.erpmuFullName = erpmuFullName;
     }
-    public Erpmusers(String erpmuName, String erpmuPassword, Date erpmuDob, String erpmuActive, String erpmuVerifiedBy, String erpmuSecretQuestion, String erpmuSecretAnswer, String erpmuFullName, Set erpmIndentMasters, Set userMessagesForUmFromErpmuId, Set fileMasters, Set fileDetails, Set erpmNewses, Set erpmPurchasechallanMasters, Set erpmPurchaseinvoiceMasters, Set erpmuserroles, Set erpmPoMastersForPomUserId, Set erpmPoMastersForPomApprovedById, Set userMessagesForUmToErpmuId) {
+    //public Erpmusers(String erpmuName, String erpmuPassword, Date erpmuDob, String erpmuActive, String erpmuVerifiedBy, String erpmuSecretQuestion, String erpmuSecretAnswer, String erpmuFullName, Set erpmIndentMasters, Set userMessagesForUmFromErpmuId, Set fileMasters, Set fileDetails, Set erpmNewses, Set erpmPurchasechallanMasters, Set erpmPurchaseinvoiceMasters, Set erpmuserroles, Set erpmPoMastersForPomUserId, Set erpmPoMastersForPomApprovedById, Set userMessagesForUmToErpmuId) {
+    public Erpmusers(String erpmuName, String erpmuPassword, String erpmuActive, String erpmuVerifiedBy, String erpmuFullName, Set erpmIndentMasters, Set userMessagesForUmFromErpmuId, Set fileMasters, Set fileDetails, Set erpmNewses, Set erpmPurchasechallanMasters, Set erpmPurchaseinvoiceMasters, Set erpmuserroles, Set erpmPoMastersForPomUserId, Set erpmPoMastersForPomApprovedById, Set userMessagesForUmToErpmuId) {
        this.erpmuName = erpmuName;
        this.erpmuPassword = erpmuPassword;
-       this.erpmuDob = erpmuDob;
+       //this.erpmuDob = erpmuDob;
        this.erpmuActive = erpmuActive;
        this.erpmuVerifiedBy = erpmuVerifiedBy;
-       this.erpmuSecretQuestion = erpmuSecretQuestion;
-       this.erpmuSecretAnswer = erpmuSecretAnswer;
+       //this.erpmuSecretQuestion = erpmuSecretQuestion;
+       //this.erpmuSecretAnswer = erpmuSecretAnswer;
        this.erpmuFullName = erpmuFullName;
        this.erpmIndentMasters = erpmIndentMasters;
        this.userMessagesForUmFromErpmuId = userMessagesForUmFromErpmuId;
@@ -87,13 +89,13 @@ public class Erpmusers  implements java.io.Serializable {
     public void setErpmuPassword(String erpmuPassword) {
         this.erpmuPassword = erpmuPassword;
     }
-    public Date getErpmuDob() {
+   /* public Date getErpmuDob() {
         return this.erpmuDob;
     }
     
     public void setErpmuDob(Date erpmuDob) {
         this.erpmuDob = erpmuDob;
-    }
+    }*/
     public String getErpmuActive() {
         return this.erpmuActive;
     }
@@ -108,7 +110,7 @@ public class Erpmusers  implements java.io.Serializable {
     public void setErpmuVerifiedBy(String erpmuVerifiedBy) {
         this.erpmuVerifiedBy = erpmuVerifiedBy;
     }
-    public String getErpmuSecretQuestion() {
+   /* public String getErpmuSecretQuestion() {
         return this.erpmuSecretQuestion;
     }
     
@@ -121,7 +123,7 @@ public class Erpmusers  implements java.io.Serializable {
     
     public void setErpmuSecretAnswer(String erpmuSecretAnswer) {
         this.erpmuSecretAnswer = erpmuSecretAnswer;
-    }
+    }*/
     public String getErpmuFullName() {
         return this.erpmuFullName;
     }

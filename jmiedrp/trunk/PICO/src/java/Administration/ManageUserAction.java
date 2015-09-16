@@ -401,7 +401,7 @@ public void validate() {
             if(erpmusers.getErpmuFullName().isEmpty()) {
                 addFieldError("erpmusers.erpmuFullName", "Please enter user's Full Name");
             }
-            if (erpmusers.getErpmuDob().toString().isEmpty()) {
+           /* if (erpmusers.getErpmuDob().toString().isEmpty()) {
                 addFieldError("erpmusers.erpmuDob", "Please enter your date of birth");
             }
             if (erpmusers.getErpmuSecretQuestion().isEmpty()) {
@@ -409,7 +409,7 @@ public void validate() {
             }
             if (erpmusers.getErpmuSecretAnswer().isEmpty()) {
                 addFieldError("erpmusers.erpmuSecretAnswer", "Please answer to your secret question");
-            }
+            }*/
 
             varimList = imDao.findInstByIMName(im.getImName());
             if (!varimList.isEmpty()) {

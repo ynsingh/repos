@@ -61,7 +61,7 @@
                                         <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
                                                      label="Department Name" name="dm.dmName" title="Enter Department Name"  cssClass="textInput"/>
                                         <s:textfield required="true" requiredposition="left" maxLength="10" size="10"
-                                                     label="Department Short Name" name="dm.dmShortName" title="Enter Short Name for InstitutionName"  cssClass="textInput"/>
+                                                     label="Department Short Name" name="dm.dmShortName" title="Enter Short Name for InstitutionName"  cssClass="textInput"/>   
                                         <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
                                                      label="Address" name="im.imAddressLine1" title="Enter Address" cssClass="textInput"/>
                                         <s:textfield required="false" requiredposition="left" maxLength="50" size="50"
@@ -81,12 +81,12 @@
                                                     label="Retype the Password" name="RetypedPassword" title="Reenter password" />
                                         <s:textfield requiredposition="left" maxLength="50" size="50" required="true"
                                                      label="Full Name " name="erpmusers.erpmuFullName" title="Enter your full Name" />
-                                        <sx:datetimepicker name="erpmusers.erpmuDob" label="Enter Date of Birth Format(dd-MMM-yyyy)" required="true"
+                                 <%--       <sx:datetimepicker name="erpmusers.erpmuDob" label="Enter Date of Birth Format(dd-MMM-yyyy)" required="true"
                                                            displayFormat="dd-MMM-yyyy" value="%{'today'}" /> 
                                         <s:textfield requiredposition="left" maxLength="100" size="100" required="true"
                                                      label="Secret Question" name="erpmusers.erpmuSecretQuestion" title="Enter a secret question" />
                                         <s:textfield requiredposition="left" maxLength="100" size="100" required="true"
-                                                     label="Answer to Secret Question" name="erpmusers.erpmuSecretAnswer" title="Enter your answer to secret question" />
+                                                     label="Answer to Secret Question" name="erpmusers.erpmuSecretAnswer" title="Enter your answer to secret question" /> --%>
 
                                     </td>
                                 </tr> <tr>

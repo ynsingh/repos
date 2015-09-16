@@ -329,8 +329,9 @@
 
 
         <!-- ACTIONS RELATED TO INSTITUTION MASTER MANAGEMENT -->
-        <action name="ManageInstitutionAction" class="Administration.InstitutionAction">
-            <result name="success">/pico/Administration/Institution.jsp</result>
+     <!--   <action name="ManageInstitutionAction" class="Administration.InstitutionAction"> -->
+        <action name="BrowseInstitutions" class="Administration.InstitutionAction"> 
+        <result name="success">/pico/Administration/Institution.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
@@ -346,7 +347,8 @@
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
-        <action name="BrowseInstitutions" method="Browse" class="Administration.InstitutionAction">
+      <!--  <action name="BrowseInstitutions" method="Browse" class="Administration.InstitutionAction">  -->
+        <action name="ManageInstitutionAction" method="Browse" class="Administration.InstitutionAction">
             <result name="success">/pico/Administration/InstitutionsBrowse.jsp</result>
         </action>
 

@@ -203,7 +203,8 @@ I18n By    : Mohd. Manauwar Alam
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
 
-                        <s:submit name="btnSubmit" key="Administration.Browse" action="BrowseInstitutions">
+                     <%--   <s:submit name="btnSubmit" key="Administration.Browse" action="BrowseInstitutions">  --%>
+                        <s:submit name="btnSubmit" key="List" action="BrowseInstitutions">
                             <s:param name="colspan" value="%{2}" />
                             <s:param name="align" value="%{'center'}" />
                         </s:submit>
