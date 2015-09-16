@@ -68,10 +68,14 @@ $page.setBgColor("$ui.bgcolor")
 							<center>
                                                         <img src=$content.getURI("/images/lgot.png") style=border:0px solid;><br><font size=2>$brih_logout</font></a></center>
                  				</td> ##15#h td closed
+                                                       #if($data.getUser().getUserName() != "guest")
+                                                       #if($data.getUser().getUserName() != "admin")
                                                     <td width=100 class="dt"> ##14#h td
                                                        <a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All") style=text-decoration:none> <center>
-                                                       <img src=$content.getURI("/images/bookmarkmanger.png") style=border:0px solid;><br><font size=2>$brih_Bookmark</font></a></center>
+                                                       <img src=$content.getURI("/images/bookmarks.jpg") style=border:0px solid;><br><font size=2>$brih_Bookmark</font></a></center>
                                                        </td>  ##14#h td closed
+                                                        #end
+                                                        #end
 						  <td width=100> ##13#h td
                                                       	<a href=$link.setActionEvent("TimetableAction", "doInit").setPage("call,Timetable,Index.vm") style=text-decoration:none><center>
                                                         <img src=$content.getURI("/images/Timetable.png") style=border:0px solid;><br>

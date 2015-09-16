@@ -14,7 +14,7 @@
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
-<table width="100%" bgcolor="$ui.MenuColor">
+<table width="100%">
 #set($lang=$data.getUser().getTemp("lang").toString())
 <tr><td>
 #if($lang == "hindi") 

@@ -21,7 +21,7 @@ $val
 #end
 
 <table bgcolor="$ui.tableColor" width="100%" cellspacing=2>
-	<tr>
+	<tr align="right">
 		<td>$page.setTitle("Home ")
 		<b><a href=$link.setPage("Index.vm")>$brih_home </a> | $brih_eng </b>
 		</td>
@@ -43,7 +43,7 @@ $val
 		<input type="hidden" name="actionName" value="">
 		</td>
 	</tr>
-	<tr>
+	<tr align="right">
 		<td colspan=2 width="30%">
 			<applet archive="Web.jar" code="Search.class"
 			codebase=$codeBase width="540" height="40">

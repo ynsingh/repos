@@ -26,7 +26,7 @@ $!data.getMessage()
 </table>
 ##<BODY BGCOLOR="$ui.bgcolor" alink="#FF6600" vlink="#003366" link="#FF6600">
 ##	<TABLE bgcolor="$ui.menuColor" cellSpacing=0 cellPadding=0 width=649 align=center border="1">
-  <BODY alink="#FF6600" vlink="#003366" link="#FF6600">
+  <BODY>
  	<TABLE bgColor="$ui.tableColor" cellSpacing=0 cellPadding=0 width=100%>
 
 		<TBODY>	<TR><TD>

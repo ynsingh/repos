@@ -18,17 +18,13 @@ $!data.getMessage()
 </head>
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
         <tr align ="right"> 
-	<td align="left">
-		<a href=javascript:popupWin2("/brihaspati2/docs/Addbookmarks.html","newWin");>$brih_help</a>
-	        <img src="$content.getURI("/images/Lefthand.gif")">
-	</td>
 	<td><b>
         <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | $brih_add $brih_Bookmark
 	</b></td>
 	</tr>
 </table> ##table 1 end
 <br>
-<table bgcolor="#e5e5e5" width="100%">
+<table bgcolor="$ui.menuColor" width="100%">
         <tr align="right">
                 <td> ## align="center">
 		<b>
@@ -40,24 +36,24 @@ $!data.getMessage()
 <br>
 <form name="frm" method="post" action=$link.setPage("call,Bookmarks,ManageBookmarks.vm").setAction("Bookmarks").addPathInfo("stat1","All").addPathInfo("Mode","NoBlank")>
 #if($mode =="addBmarks")
-<table bgcolor="#e5e5e5" width=100% > ## table 3 start
-<tr align="right">
-	<td colspan="2"><input type="text"  size="31" name="name"  value=""/></td>
-	<td><b>: $brih_name</b></td>
+<table bgcolor="$ui.menuColor" width=100% > ## table 3 start
+<tr  bgcolor="$ui.tableColor" align="right">
+	<td colspan="2" align="right"><input type="text"  size="31" name="name"  value=""/></td>
+	<td align="right"><b>: $brih_name</b></td>
 </tr>
-<tr align="right">
-	<td colspan="2"> <input type="text"  size="31" name="location"  value="http://"/></td>
-	<td><b>: $brih_Url/$brih_Location </b></td>
+<tr bgcolor="$ui.menuColor" align="right">
+	<td colspan="2" align="right"> <input type="text"  size="31" name="location"  value="http://"/></td>
+	<td align="right"><b>: $brih_Url/$brih_Location </b></td>
 </tr>
-<tr align="right">
-        <td align="left"><input type="button" class="button-ftextstyle" name="eventSubmit_doCreateFolder" value="$brih_new $brih_Folder" onClick="SetDirName(document.frm,this);"/></td>
+<tr bgcolor="$ui.tableColor" align="right" >
+        <td><input type="button" class="button-ftextstyle" name="eventSubmit_doCreateFolder" value="$brih_new $brih_Folder" onClick="SetDirName(document.frm,this);"/></td>
         <td><input type="text"  size="31" name="comment"  value=""/></td>
         <td><b>: $brih_Comment</b></td>
 	<input type="hidden" name="type" value="general">
 </tr>
-<tr align="right">
+<tr bgcolor="$ui.menuColor" align="right">
 	#if($Mode=="NoBlank")
-	<td colspan="2">
+	<td colspan="2" align="right">
                         <select name="foldername" class="drop" size="1" onChange="Changefolder(document.frm,this);"/>
                                 <option>  - $brih_select - </option>
                                 #foreach($bdname in $dirvalue)
@@ -66,56 +62,56 @@ $!data.getMessage()
                                 </option>
                         </select>
          </td>
-        <td><b>: $brih_select $brih_Folder</b></td>
+        <td align="right"><b>: $brih_select $brih_Folder</b></td>
 	#else
-	<td colspan="3"><i><b>$brih_Folder $Res_mess1</b></i></td>
+	<td colspan="3" align="right"><i><b>$brih_Folder $Res_mess1</b></i></td>
 	#end
 
 </tr>
-	<tr align="right"><td colspan="3">
+	<tr bgcolor="$ui.tableColor" align="right"><td align="right" colspan="3">
         	<input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$WikiSave" onClick="checkField(document.frm,this);"/>
 		<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
 	</td></tr>
 </table>
 #end
 #if($mode=="Course" ||$mode=="Course_file")
-<table bgcolor="#e5e5e5" width=100% > ## table 3 start
-<tr align="right">
-	<td><input type="text"  size="31" name="name"  value="$name"/></td>
+<table bgcolor="$ui.menuColor" width=100% align="right" > ## table 3 start
+<tr bgcolor="$ui.tableColor" align="right">
+	<td align="right"><input type="text"  size="31" name="name"  value="$name"/></td>
 	#if($mode=="Course")
-	<td><b> :$brih_course $brih_name</b></td>
+	<td align="right"><b> :$brih_course $brih_name</b></td>
 	#end
 	#if($mode=="Course_file")
-	<td><b> :$brih_title </b></td>
+	<td align="right"><b> :$brih_title </b></td>
 	#end
 </tr>
-<tr align="right">
-	<td><input type="text"  size="31" name="location"  value="$location"/></td>
+<tr align="right"  bgcolor="$ui.menuColor">
+	<td align="right"><input type="text"  size="31" name="location"  value="$location"/></td>
 	#if($mode=="Course")
-	<td><b>: $brih_title </b></td>
+	<td align="right"><b>: $brih_title </b></td>
 	#end
 	#if($mode=="Course_file")
-	<td><b>: $brih_file $brih_name </b></td>
+	<td align="right"><b>: $brih_file $brih_name </b></td>
 	#end
 </tr>
-<tr align="right">
-        <td><input type="text"  size="50" name="comment"  value=""/></td>
-        <td><b>: $brih_Comment</b></td>
+<tr bgcolor="$ui.tableColor" align="right">
+        <td align="right"><input type="text"  size="50" name="comment"  value=""/></td>
+        <td align="right"><b>: $brih_Comment</b></td>
 	##<input type="hidden" name="type" value="Course">
 	<input type="hidden" name="type" value="$mode">
 </tr>
-	<tr align="right"><td> ## align="left">
+	<tr bgcolor="$ui.menuColor" align="right"><td> ## align="left">
         	<input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$WikiSave" onClick="checkField2(document.frm,this);"/>
 		<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
 	</td></tr>
 </table>
 #end
 <br>
-<table  bgcolor="#e5e5e5" width="100%">
+<table bgcolor"$ui.tableColor" width="100%" align="right">
 #if($stat=="Move")
 #if($Mode=="NoBlank")
 <tr align="right">
-        <td> ##align="left">
+        <td align="right">
        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="movedir" size="1" class="drop" onChange="Changedir(document.frm,this);"/>
                                 <option>  - $brih_select - </option>
                                 #foreach($bdname in $dirvalue)
@@ -132,14 +128,14 @@ $!data.getMessage()
 	 <input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
 </td></tr>
 #else
-<td align="center"><b>$brih_Folder $Res_mess1</b></td>
+<td align="right"><b>$brih_Folder $Res_mess1</b></td>
 #end
 #end
 </table>
-<table  bgcolor="#e5e5e5" width="100%">
+<table bgcolor="$ui.menuColor" width="100%">
 #if($stat=="Rename")
 <tr align="right">
-<td> ## align="left">
+<td>
 	<input type="text"  size="31" name="bname"  value=""/>
 	<b><i>$brih_topic $brih_Of3 $brih_Rename <font color="green"> $btname </font>: $brih_Bookmark</i></b>
 </td>
@@ -163,7 +159,7 @@ $!data.getMessage()
 </tr>
 ##</table>
 #else
-<td align="center"><b>$brih_Content $brih_arenotexists</b></td>
+<td align="right"><b>$brih_Content $brih_arenotexists</b></td>
 #end
 #end
 </table>

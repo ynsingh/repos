@@ -28,7 +28,7 @@ $!data.getMessage()
 </head>
 #set($lang=$data.getUser().getTemp("lang").toString())
 
-<table bgcolor="$ui.tableColor" width=100% > ##table 1 start
+<table bgcolor="$ui.menuColor" width=100% > ##table 1 start
         <tr align="right">
 	<td width="30%" align="left">
         #if( $total_size!=0 )
@@ -50,7 +50,7 @@ $!data.getMessage()
 
 </table> ##table 1 end
 <br>
-<table bgcolor="#e5e5e5" width="100%">
+<table bgcolor="$ui.tableColor" width="100%">
         <tr>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td > ##lign="right">
 <a href=javascript:popupWin2("/brihaspati/docs/ManageBookmarks.html","newWin");style=text-decoration:none> $brih_help &nbsp;| </a> &nbsp; 
@@ -66,9 +66,9 @@ $!data.getMessage()
 <br>
 #if($Mode=="NoBlank")
 <form name="frm" method="post" action="$link.setPage("call,Bookmarks,ManageBookmarks.vm")">
-<table  bgcolor="#e5e5e5" width="100%">
+<table  bgcolor="$ui.menuColor" width="100%">
 <tr>
-        <td bgcolor="#e5e5e5" align="right">
+        <td  align="right">
          <input type="button" class="button-ftextstyle" name="search" value="$brih_search" onClick="checkNull(document.frm,this);">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="dirname" class="drop" size="1" onChange="Changedir(document.frm,this);"/>
                                 <option>  - $brih_select - </option>
@@ -84,14 +84,14 @@ $!data.getMessage()
 </tr>
 </table>
 ##if($Mode=="NoBlank")
-<table  bgcolor="#e5e5e5" width="100%">
+<table bgcolor="$ui.tableColor" width="100%">
 <tr align="right">
-        <td bgcolor="#d9e3ec"colspan="4"><b>$brih_availableAction</td>
-        <td bgcolor="#d9e3ec"><b>$brih_Bookmark</b></td>
+        <td  bgcolor="$ui.tableColor"><b>$brih_availableAction</td>
+        <td  bgcolor="$ui.tableColor"><b>$brih_Bookmark</b></td>
 </tr>
 #set ( $count="" )
                 #foreach($btopics in $allTopics)
-<tr bgcolor="#e5e5e5" align="right">
+<tr bgcolor="$ui.menuColor" align="right">
 #if($btopics.type=="general")
 <td><a href="javascript:void(0)"onclick="window.open('$btopics.Url')">$brih_view</a></td>
 #end
@@ -118,7 +118,7 @@ $!data.getMessage()
        		 #end
 </tr>
 </table>
-<table bgcolor="#e5e5e5" width="100%"><tr><td align="right">
+<table  bgcolor="$ui.menuColor" width="100%"><tr><td align="right">
 	#if($stat1!="Search")
 	#if($total_size <= $userConf)
                 <u><font color="white">$brih_first</font></u> &nbsp;
@@ -168,7 +168,7 @@ $!data.getMessage()
 	</td></tr>
 </table>
 #else
-<table bgcolor="#e5e5e5" width="100%">
+<table bgcolor="$ui.tableColor" width="100%">
 <tr><td align="center"><b><font color="blue"> $brih_Bookmark $Res_mess1</font></b></td></tr>
 </table>
 #end

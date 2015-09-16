@@ -22,7 +22,7 @@ $!data.getMessage()
 </table>
 
 ##<BODY BGCOLOR="$ui.tableColor" alink="#FF6600" vlink="#003366" link="#FF6600">
-<BODY alink="#FF6600" vlink="#003366" link="#FF6600">
+<BODY>
 	<TABLE bgColor="$ui.tableColor" cellSpacing=0 cellPadding=0 width=100%>
 		<TBODY>	<TR><TD>
 			<DIV align=center>
