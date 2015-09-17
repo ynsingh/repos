@@ -43,7 +43,7 @@
 		</div>
 		<div class="settings-container">
 			<div class="settings-title">
-				<?php echo anchor('setting/backup/available_backup', 'Available Backup', array('title' => 'Available Backup')); ?>
+				<?php echo anchor('setting/backup/available_backup', 'Create Backups', array('title' => 'Available Backup')); ?>
 			</div>
 			<div class="settings-desc">
 				Available backup of current accounts data

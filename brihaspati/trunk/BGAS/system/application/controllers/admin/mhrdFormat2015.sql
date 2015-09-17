@@ -9,6 +9,7 @@ INSERT INTO `groups` VALUES(6,'1002',2,'Corpus',0,0,0,'Corpus fund denotes a per
 INSERT INTO `groups` VALUES(7,'100201',6,'Corpus-Registartion/Affiliation/Enrolment',0,0,0,'');
 INSERT INTO `groups` VALUES(8,'100202',6,'Corpus-Revenue Expenditure',0,0,0,'');
 INSERT INTO `groups` VALUES(9,'1003',2,'Designated-Earmarked/Endowment Funds',0,0,0,'Funds (or capital) that are set aside to pay for a specific project or event.');
+
 INSERT INTO `groups` VALUES(10,'100301',9,'A D Fund',0,0,0,'');
 INSERT INTO `groups` VALUES(12,'10030101',10,'Opening Balance ADF',0,0,0,'');
 INSERT INTO `groups` VALUES(13,'10030102',10,'Additions ADF',0,0,0,'');
@@ -79,8 +80,9 @@ INSERT INTO `groups` VALUES(77,'10030902',75,'Additions UGC JRF',0,0,0,'');
 INSERT INTO `groups` VALUES(78,'10030903',75,'Income From Investments UGC JRF',0,0,0,'');
 INSERT INTO `groups` VALUES(79,'10030904',75,'Interest on Saving A/C UGC JRF',0,0,0,'');
 INSERT INTO `groups` VALUES(80,'10030905',75,'Other Additions UGC JRF',0,0,0,'');
-INSERT INTO `groups` VALUES(81,'10030906',75,'Revenue Expenditure UGC JRF',0,0,0,'');
-INSERT INTO `groups` VALUES(82,'10030907',75,'Capital Expenditure UGC JRF',0,0,0,'');
+#INSERT INTO `groups` VALUES(81,'10030906',75,'Revenue Expenditure UGC JRF',0,0,0,'');
+#INSERT INTO `groups` VALUES(82,'10030907',75,'Capital Expenditure UGC JRF',0,0,0,'');
+
 INSERT INTO `groups` VALUES(83,'1004',2,'Current Liabilities & Provisions',0,0,0,'');
 INSERT INTO `groups` VALUES(84,'100401',83,'Current Liabilities',0,0,0,'');
 INSERT INTO `groups` VALUES(85,'10040101',84,'Deposit Current Liabilities',0,0,0,'');
@@ -92,15 +94,19 @@ INSERT INTO `groups` VALUES(90,'1004010301',89,'OSL Development',0,0,0,'');
 INSERT INTO `groups` VALUES(91,'1004010302',89,'OSL Maintenance',0,0,0,'');
 INSERT INTO `groups` VALUES(92,'10040104',84,'Other Current Liabilities',0,0,0,'');
 INSERT INTO `groups` VALUES(93,'10040105',84,'Recipts Against Sponsored Projects',0,0,0,'');
-INSERT INTO `groups` VALUES(94,'1004010501',93,'Sponsored Projects Recipts',0,0,0,'');
-INSERT INTO `groups` VALUES(95,'1004010502',93,'Sponsored Projects Expenses',0,0,0,'');
-INSERT INTO `groups` VALUES(96,'1004010503',93,'Sponsored Projects Fixed Assets',0,0,0,'');
+
+#INSERT INTO `groups` VALUES(94,'1004010501',93,'Sponsored Projects Recipts',0,0,0,'');
+#INSERT INTO `groups` VALUES(95,'1004010502',93,'Sponsored Projects Expenses',0,0,0,'');
+#INSERT INTO `groups` VALUES(96,'1004010503',93,'Sponsored Projects Fixed Assets',0,0,0,'');
+
 INSERT INTO `groups` VALUES(97,'10040106',84,'Sundry Creditors',0,0,0,'');
 INSERT INTO `groups` VALUES(98,'1004010601',97,'Goods',0,0,0,'');
 INSERT INTO `groups` VALUES(99,'1004010602',97,'Services',0,0,0,'');
 INSERT INTO `groups` VALUES(100,'10040107',84,'UGC Sponsored Fellowship/Scholarships',0,0,0,'');
-INSERT INTO `groups` VALUES(101,'1004010701',100,'Sponsored Fellowship Recipts',0,0,0,'');
-INSERT INTO `groups` VALUES(102,'1004010702',100,'Sponsored Fellowship Expenses',0,0,0,'');
+
+#INSERT INTO `groups` VALUES(101,'1004010701',100,'Sponsored Fellowship Recipts',0,0,0,'');
+#INSERT INTO `groups` VALUES(102,'1004010702',100,'Sponsored Fellowship Expenses',0,0,0,'');
+
 INSERT INTO `groups` VALUES(103,'10040108',84,'Unutilized Grants',0,0,0,'');
 INSERT INTO `groups` VALUES(104,'1004010801',103,'UGC Grants',0,0,0,'');
 INSERT INTO `groups` VALUES(105,'1004010802',103,'Government of India',0,0,0,'');
@@ -159,7 +165,8 @@ INSERT INTO `groups` VALUES(157,'20020103',154,'Corpus Other approved Securities
 INSERT INTO `groups` VALUES(158,'20020104',154,'Corpus Shares',0,0,0,'');
 INSERT INTO `groups` VALUES(159,'20020105',154,'Corpus Debentures and Bonds',0,0,0,'');
 INSERT INTO `groups` VALUES(160,'20020106',154,'Corpus Other Investment',0,0,0,'');
-INSERT INTO `groups` VALUES(161,'200202',153,'Earmarked Fund Investments',0,0,0,'');
+
+#INSERT INTO `groups` VALUES(161,'200202',153,'Earmarked Fund Investments',0,0,0,'');
 INSERT INTO `groups` VALUES(162,'20020201',161,'EAR Central Government Securities',0,0,0,'');
 INSERT INTO `groups` VALUES(163,'20020202',161,'EAR State Government Securities',0,0,0,'');
 INSERT INTO `groups` VALUES(164,'20020203',161,'EAR Other approved Securities',0,0,0,'');
@@ -172,7 +179,8 @@ INSERT INTO `groups` VALUES(170,'20020302',168,'END State Government Securities'
 INSERT INTO `groups` VALUES(171,'20020303',168,'END Other approved Securities',0,0,0,'');
 INSERT INTO `groups` VALUES(172,'20020304',168,'END Shares',0,0,0,'');
 INSERT INTO `groups` VALUES(173,'20020305',168,'END Debentures and Bonds',0,0,0,'');
-INSERT INTO `groups` VALUES(174,'20020306',168,'END Other Investment',0,0,0,'');
+#INSERT INTO `groups` VALUES(174,'20020306',168,'END Other Investment',0,0,0,'');
+
 INSERT INTO `groups` VALUES(175,'2003',1,'Current Assets',0,0,0,'Cash and other assets that are expected to be converted to cash within a year.');
 INSERT INTO `groups` VALUES(176,'200301',175,'Imprest',0,0,0,'');
 INSERT INTO `groups` VALUES(177,'200302',175,'Postage on Hand',0,0,0,'');
@@ -854,12 +862,11 @@ INSERT INTO `budgets` VALUES (8, '4008', 1, 'Other expenses', 0.00, 'Yearly', 0,
 INSERT INTO `budgets` VALUES (9, '4009', 1, 'Prior Period Expenses', 0.00, 'Yearly', 0,0);
 
 INSERT INTO `projection` VALUES(2, '3001', 1, 'Academic Receipts', 0.00, 'Yearly', 0.00);
-INSERT INTO `projection` VALUES(3, '3001', 1, 'Grant/Subsidies and Donations', 0.00, 'Yearly', 0.00);
+INSERT INTO `projection` VALUES(3, '3002', 1, 'Grant/Subsidies and Donations', 0.00, 'Yearly', 0.00);
 INSERT INTO `projection` VALUES(4, '3003', 1, 'Income from Royalty & Publications', 0.00, 'Yearly', 0.00);
 INSERT INTO `projection` VALUES(5, '3004', 1, 'Interest Earned', 0.00, 'Yearly', 0.00);
 INSERT INTO `projection` VALUES(6, '3005', 1, 'Other Incomes', 0.00, 'Yearly', 0.00);
 INSERT INTO `projection` VALUES(7, '3006', 1, 'Prior Period Income', 0.00, 'Yearly', 0.00);
-
 
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (1, 'receipt', 'Receipt', 'Received in Bank account or Cash account', 1, 1, '', '', 0, 2);
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (2, 'payment', 'Payment', 'Payment made from Bank account or Cash account', 1, 1, '', '', 0, 3);
@@ -867,6 +874,27 @@ INSERT INTO entry_types (id, label, name, description, base_type, numbering, pre
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (4, 'journal', 'Journal', 'Transfer between Non Bank account and Cash account', 1, 1, '', '', 0, 5);
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (5, 'dpayment', 'Expance (Deferred Payment)', 'For immediate booking of payment in foreign currency against letter of credot in INR as per applicable exchange rate', 1, 1, '', '', 0, 6);
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (6, 'dreceipt', 'Income (Deferred Receipt)', 'For immediate booking of receipt in foreign currency against letter of debet in INR as per applicable exchange rate', 1, 1, '', '', 0, 7);
+
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('1',0, 200101,'Tangible Assets', 0, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('2',0, 200102,'Intengible assets', 0, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('3',1, 20010101,'Land', 0, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('4',1, 20010113,'Site Development', 0, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('5',1, 20010104,'Buildings', 2, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('6',1, 20010113,'Raods & Bridges', 2, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('7',1, 20010112,'Tube wells & water supply', 2, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('8',1, 20010113,'Sewerage & Drainage', 2, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('9',1, 20010110,'Electrical Installation and Equipment', 5, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('10',1, 20010105, 'Plant & Machinery', 5, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('11',1, 20010113,'Scientific $ Laboratory Equipment', 8, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('12',1, 20010108, 'Office Equipment', 7.5, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('13',1, 20010113,'Audio Visual Equipment', 7.5, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('14',1, 20010109, 'Computers & Peripherals ', 20, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('15',1, 20010107,'Furniture, Fixtures & fittings', 7.5, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('16',1, 20010106,'Vehicles', 10, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('17',1, 20010111, 'Lib. Books & Scientific Journals', 10, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('18',2, 000000,'E-Journals', 40,  10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('19',2, 000000,'Computer Software', 40, 10);
+insert into depreciation_master (id, parent_id, code, name, percentage, life_time) values ('20',2, 000000,'Patents and Copyrights', 0, 10);
 
 INSERT INTO `tags` VALUES (1,'Royalty','000000','E5F1F4');
 INSERT INTO `tags` VALUES (2,'SALARIES','000000','E5F1F4');

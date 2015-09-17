@@ -45,8 +45,9 @@ class Backup extends Controller {
 
 	function available_backup()
 	{
-		$this->template->set('page_title', 'Available Backup');
-		$this->messages->add('Create backup otherwise backup delete automatically in seven days.', 'success');
+		$this->template->set('nav_links', array('setting/backup/create_backup' => 'Create Backup'));
+//		$this->template->set('page_title', 'Available Backup');
+		$this->messages->add('Download backup otherwise backup delete automatically in seven days.', 'success');
 		$this->template->load('template', 'setting/available_backup');
 		return;
 
@@ -105,9 +106,10 @@ class Backup extends Controller {
 	function delete($filename)
         {
 		//set path where we want to delete file...
+		$this->template->set('nav_links', array('setting/backup/create_backup' => 'Create Backup'));
                 $path=$this->upload_path= realpath(BASEPATH.'../backups');
 		@unlink($path.'/'.$filename);
-		$this->messages->add('Create backup otherwise backup delete automatically in seven days.', 'success');
+		$this->messages->add('Download backup otherwise backup delete automatically in seven days.', 'success');
 		$this->messages->add('Backup file deleted successfully.', 'success');
                 $this->template->load('template', 'setting/available_backup');
                 return;
