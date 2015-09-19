@@ -89,11 +89,14 @@ class User extends Controller {
 		);
 
 		$data['user_roles'] = array(
-			"administrator" => "administrator",
-			"manager"=> "manager",
-			"accountant" => "accountant",
-			"dataentry" => "dataentry",
-			"guest" => "guest",
+			"administrator" => "Administrator",
+			"financeofficer" => "Finance Officer",
+			"manager"=> "Manager",
+			"draccount" =>"DR Account",
+			"accountant" => "Accountant",
+			"araccount" => "AR Account",
+			"dataentry" => "Data Entry Operator",
+			"guest" => "Guest",
 		);
 
 		$data['mobile'] = array(
@@ -454,11 +457,11 @@ class User extends Controller {
 		
 		/* Form fields */
 		$data['user_name'] = array(
-            'name' => 'user_name',
-            'id' => 'user_name',
-            'maxlength' => '100',
-            'size' => '40',
-            'value' => $user_name,
+	            'name' => 'user_name',
+        	    'id' => 'user_name',
+	            'maxlength' => '100',
+        	    'size' => '40',
+	            'value' => $user_name,
 		);
 		
 		$data['user_password'] = array(
@@ -495,11 +498,14 @@ class User extends Controller {
 		);
 
 		$data['user_roles'] = array(
-			"administrator" => "administrator",
-			"manager"=> "manager",
-			"accountant" => "accountant",
-			"dataentry" => "dataentry",
-			"guest" => "guest",
+			"administrator" => "Administrator",
+			"financeofficer" => "Finance Officer",
+                        "manager"=> "Manager",
+                        "draccount" =>"DR Account",
+                        "accountant" => "Accountant",
+                        "araccount" => "AR Account",
+			"dataentry" => "Data Entry Operator",
+			"guest" => "Guest",
 		);
 
 		$data['user_id'] = $user_id;

@@ -77,6 +77,45 @@ if ( ! function_exists('check_access'))
                         'vouchercreation'
 
 		);
+		$permissions['financeofficer'] = array(
+                        'upload logo',
+                        'view entry',
+                        'create entry',
+                        'print entry',
+                        'email entry',
+                        'download entry',
+                        'print selected entry',
+                        'print all entry',
+                        'create ledger',
+                        'edit ledger',
+                        'delete ledger',
+                        'create group',
+                        'edit group',
+                        'delete group',
+                        'create tag',
+                        'edit tag',
+                        'delete tag',
+                        'view reports',
+                        'view log',
+                        'clear log',
+                        'change account settings',
+                        'cf account',
+                        'backup account',
+                        'create budget',
+                        'edit budget',
+                        'delete budget',
+                        'reappropriate budget',
+                        'administer',
+                        'change password',
+                        'create projection',
+                        'reappropriate projection',
+                        'verify entry',
+                        'edit doc',
+                        'bill upload',
+                        'approve/reject',
+                        'vouchercreation'
+
+                );
 		$permissions['manager'] = array(
 			'view entry',
 			'create entry',
@@ -114,6 +153,43 @@ if ( ! function_exists('check_access'))
                         'vouchercreation'
 
 		);
+		$permissions['draccount'] = array(
+                        'view entry',
+                        'create entry',
+                        'print entry',
+                        'print selected entry',
+                        'print all entry',
+                        'email entry',
+                        'download entry',
+                        'create ledger',
+                        'edit ledger',
+                        'delete ledger',
+                        'create group',
+                        'edit group',
+                        'delete group',
+                        'create tag',
+                        'edit tag',
+                        'delete tag',
+                        'view reports',
+                        'view log',
+                        'clear log',
+                        'change account settings',
+                        'cf account',
+                        'backup account',
+                        'create budget',
+                        'edit budget',
+                        'change password',
+                        'delete budget',
+                        'reappropriate budget',
+                        'create projection',
+                        'reappropriate projection',
+                        'verify entry',
+                        'edit doc',
+                        'bill upload',
+                        'approve/reject',
+                        'vouchercreation'
+
+                );
 		$permissions['accountant'] = array(
 			'view entry',
 			'create entry',
@@ -143,6 +219,35 @@ if ( ! function_exists('check_access'))
 			'approve/reject',
 			'vouchercreation'
 		);
+		$permissions['araccount'] = array(
+                        'view entry',
+                        'create entry',
+                        'print entry',
+                        'print selected entry',
+                        'print all entry',
+                        'email entry',
+                        'download entry',
+                        'create ledger',
+                        'edit ledger',
+                        'delete ledger',
+                        'create group',
+                        'edit group',
+                        'delete group',
+                        'create tag',
+                        'edit tag',
+                        'delete tag',
+                        'view reports',
+                        'view log',
+                        'clear log',
+                        'change password',
+                        'create projection',
+                        'reappropriate projection',
+                        'verify entry',
+                        'edit doc',
+                        'bill upload',
+                        'approve/reject',
+                        'vouchercreation'
+                );
 		$permissions['dataentry'] = array(
 			'view entry',
 			'create entry',
