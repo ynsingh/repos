@@ -107,28 +107,52 @@ $!data.getMessage()
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").setAction("AddUser")">
 <table width=100% align=left bgcolor="$ui.tableColor">
 	<tr bgcolor="$ui.menuColor"><td colspan=7><b>$brih_entUsrDetail</b></td></tr>
-	<tr>
-		<td> $brih_select $RemoteInstitute</td>
-		<td><select name="institute" class="drop" onChange="SelectInstName(document.frm,this);"/>
-		#if($instname=="")
-		<option>$brih_select</option>
-		#else
-		<option>$!instname</option>
-		#end
-		#foreach($institutename in $instituteDetail)
-			<option value="$institutename.getInstituteName()">$institutename.getInstituteName()</option>
-		#end
-		</select>
-		<input class="button-ftextstyle" type="submit" name="eventSubmit_doSearch" value="$brih_search"/>
-        	<select id="group_id" name="group" class="drop" onChange="ChangeRole(document.frm,this);"/>
-		<option>$brih_sel_course <font color=RED>*</font></option>
-          		#foreach($name in $courseList)
-          	<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName()
-           		#end
-           	</option>
-          	</select>
-         	</td>
-	</tr>	
+          <tr>
+        <td> #if($lang =="hindi" || $lang =="marathi") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font></td>
+        <td>
+                ##<select name="institute" size=1 class="drop" onChange="SelectInstName(document.frm,this);" style="width:300px;"/>
+                 <select name="institute" size=1 class="drop" onChange="checkOption(document.frm,this);" style="width:300px;"/>
+                #if($instname=="")
+                        <option> #if($lang == "hindi") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
+                #else
+                        <option>$!instname</option>
+                        <option> #if($lang == "hindi") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
+                #end
+                #foreach($institutename in $instituteDetail)
+                        <option value="$institutename.getInstituteName()" style="width:300px;" title="$institutename.getInstituteName()">$institutename.getInstituteName() </option>
+                #end
+                </select>
+        </td></tr>
+      <tr bgcolor="$ui.menuColor">
+        <td> #if($lang =="hindi" || $lang =="marathi") $brih_dept $brih_name $brih_select #else $brih_select $brih_dept $brih_name #end <font color=RED>*</font></td>
+        <td>
+                <select name="deptName" size=1 class="drop" onChange="checkOption(document.frm,this);" style="width:300px;"/>
+                #if($Deptname=="")
+                        <option> #if($lang == "hindi") $brih_dept $brih_select #else  $brih_select $brih_dept #end </option>
+                #else
+                        <option>$Deptname</option>
+                        <option> #if($lang == "hindi") $brih_dept $brih_select #else  $brih_select $brih_dept #end </option>
+                #end
+                        <option value="" title="Course Without Dept" style="width:275px;">CourseWithoutDept</option>
+                #foreach($name in $deptlist)
+                        <option value="$!name.getName()" title="$!name.getName()" style="width:275px;">$!name.getName()</option>
+                #end
+                </select>
+        </td></tr>
+       <tr>
+        <td> #if($lang =="hindi" || $lang =="marathi") $brih_course $brih_name $brih_select #else $brih_select $brih_course $brih_name #end <font color=RED>*</font></td>
+        <td>
+                <select class="drop" id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);" style="width:300px;"/>
+                #foreach($name in $courseList)
+                        #if ($name.getDept() == $Deptname)
+                        <option value="$name.getGroupName()" style="width:275px;" title="$name.getCAlias(): $name.getCourseName()-$name.getUserName()">$name.getCAlias(): $name.getCourseName()-$name.getUserName()</option>
+                        #end
+                #end
+                </select>
+        </td>
+</tr>
+
+
 	<tr bgcolor="$ui.menuColor">	
         ###formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
 	#*<td> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name <font color=red>*</font> </td>
@@ -183,6 +207,8 @@ $!data.getMessage()
         <input type="hidden" name="role_author">
         <input class="button-ftextstyle" type="button" name="eventSubmit_doRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
         <input class="button-ftextstyle" type="Reset" name="Reset" Value="$brih_clear"/>
+        <input type="submit" name="eventSubmit_doSearch" value="Search" id="btnSearch" style="visibility: hidden"/>
+        <input type="hidden" name="instname"/>   
         <input type="hidden" name="count" Value="$tdcolor"/>
         </td>
         </tr>
@@ -788,4 +814,11 @@ face="$ui.sansSerifFonts">$type</font>
         {
                 frm.institute.value=document.frm.institutename.value;
         }
+        function checkOption (frm,field)
+        {
+                frm.instname.value=document.frm.institute.value;
+                document.getElementById('btnSearch').click();
+        }
+
+       
 </SCRIPT>

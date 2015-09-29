@@ -44,6 +44,8 @@ import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.iitk.brihaspati.modules.utils.StringUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.ListManagement;
 
 /**
  * This class is responsible for adding a new user in specified group and 
@@ -145,6 +147,10 @@ public class AddUser extends SecureAction_Admin
 		String LangFile=(String)data.getUser().getTemp("LangFile");
                 ParameterParser pp=data.getParameters();
                 String instName=pp.getString("institute");
+                String instituteId = Integer.toString(InstituteIdUtil.getIst_Id(instName));
+                //Get mapped department list
+                List DeptList=ListManagement.getMapDeptList(instituteId);
+                context.put("deptlist",DeptList);
 		Vector CourseList=InstituteDetailsManagement.InstwiseCourse(instName);
                 if(CourseList.size()!=0){
 			context.put("courseList",CourseList);
@@ -172,8 +178,7 @@ public class AddUser extends SecureAction_Admin
 		else if(action.equals("eventSubmit_doSearch"))
                         doSearch(data,context);
 		else
-		{
-			String str=m_u.ConvertedString("c_msg",LangFile);
+		{       String str=m_u.ConvertedString("c_msg",LangFile);
                         data.setMessage(str);
 		}
 	}

@@ -93,7 +93,9 @@ public class UserManagement_Admin extends SecureScreen_Admin
 			context.put("instituteDetail",instdetail);
 			/** Get Institute name from template and put in context*/
 			String iname=data.getParameters().getString("institute","");
-			context.put("instname",iname);	
+			context.put("instname",iname);
+                        String dept=data.getParameters().getString("deptName","");
+                        context.put("Deptname",dept);
 		}
 		catch(Exception ex){ErrorDumpUtil.ErrorLog("The error in getting Institute Detail !!"+ex);}
 
