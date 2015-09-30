@@ -114,6 +114,16 @@
 				
 				$led_code = $CI->Depreciation_model->get_ledger_parent($row->asset_name);
                                 $master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table($led_code);
+				if($master_group_code == NULL){
+                                        $this->db->select('name');
+                                        $this->db->from('groups')->where('code =', $led_code);
+                                        $group_result = $this->db->get();
+                                        foreach ($group_result->result() as $row1){
+                                                $group_name=$row1->name;
+                                        }
+                                        $master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table1($group_name);
+                                }
+
                                 $exp_dep_percentage=explode("#",$master_group_code);
 				$date = date_mysql_to_php($row->date_of_purchase);
 				$today_date1=date("Y/m/d");
@@ -128,25 +138,24 @@
                                 $days=$get_asset_used_years[0]*365;
                                 $tot_day=$no_of_days-$days;
 				///////////////////////////////////////////////////////////////////////////////////
-				 for($i=1; $i<=$get_asset_used_years[0]; $i++){
-                                        if($i == 1){
-                                                $val=($row->cost*$exp_dep_percentage[0])/100;
+				 for($i=0; $i<=$get_asset_used_years[0]; $i++){
+                                        if($i == 0){
+                                                $depepreciation_on_day=$row->cost*($tot_day/365)*($exp_dep_percentage[0]/100);
+                                                $net_amount= $depepreciation_on_day;
+
+                                        }elseif($i == 1 ){
+						$val=($row->cost*$exp_dep_percentage[0])/100;
                                                 $amount=$row->cost-$val;
                                                 $depepreciation_on_day=$row->cost*($tot_day/365)*($exp_dep_percentage[0]/100);
                                                 $net_amount= $depepreciation_on_day+$amount;
-                                                //$as_on_date_dep=$val+$depepreciation_on_day;
-                                                 //$net_dep_amount= $net_dep_amount+$val;
 
-                                        }else{
+					}else{
 						$val=($amount*$exp_dep_percentage[0])/100;
                                                 $amount=$amount-$val;
                                                 $depepreciation_on_day=$row->cost*($tot_day/365)*($exp_dep_percentage[0]/100);
                                                 $net_amount= $depepreciation_on_day+$amount;
-                                                //$as_on_date_dep=$val+$depepreciation_on_day;
-                                                 //$net_dep_amount= $net_dep_amount+$val;
 					}
 				}
-
 				/////////////////////////////////////////////////////////////////////////////////
 				//if Duplicate entry.............
                                 $this->db->from('old_asset_register')->where('asset_name',$row->asset_name);
@@ -188,6 +197,11 @@
 					}
 					$trim_dep_value = substr($net_amount, 0 ,8);
 					$curr_value=$row->cost-$trim_dep_value ;
+					// Depreciation percentage is null show privious year deprection and add null 0 depreciation this year.
+					if($exp_dep_percentage[0] == 0){
+						$trim_dep_value=$row->depreciated_value;
+						$curr_value=$row->current_value;
+					}
                                         echo "<td>" . "$trim_dep_value" . "</td>";
                                         echo "<td>" . "$curr_value"  . "</td>";
 					if($row->asset_status == '1'){
@@ -252,11 +266,16 @@
                         $tot_day=$no_of_days-$days;
 
 			if($narr[0] != 'DepreciationRate'){
-
 				$led_code = $CI->Depreciation_model->get_ledger_parent($row->asset_name);
 				$master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table($led_code);
 				if($master_group_code == NULL){
-					$master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table1($row->asset_name);
+					$this->db->select('name');
+					$this->db->from('groups')->where('code =', $led_code);
+                			$group_result = $this->db->get();
+					foreach ($group_result->result() as $row1){
+						$group_name=$row1->name;
+					}	
+					$master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table1($group_name);
 				}
                         	$exp_dep_percentage=explode("#",$master_group_code);   
 				$value= $row->cost * $exp_dep_percentage[0]/(100*365);
@@ -269,9 +288,8 @@
 					for($i=0; $i<=$get_asset_used_years[0]; $i++){
 	
 						if($i == 0){
-
 							$val=$row->cost*($no_of_days/365)*($exp_dep_percentage[0]/100);
-							$net_dep_amount= $net_dep_amount+$val;
+							$net_dep_amount= $val;
 						}
 					}
 				}
@@ -299,6 +317,11 @@
 								}
 									$trim_dep_value = substr($net_dep_amount,0, 6);
 									$trim_curr_value=substr($curr_value, 0 , 8);
+									if($val == "0"){
+                                                                                $trim_dep_value=0;
+                                                                                $trim_curr_value=0;
+                                                                        }
+
                                         				echo "<td>" . $trim_dep_value. "</td>";
                                         				echo "<td>" .$trim_curr_value. "</td>";
 									if($row->asset_status == '1'){
@@ -317,21 +340,24 @@
                                                 				$fy_start_date = date_mysql_to_php($this->config->item('account_fy_start'));
                                                 				$fy_st_date=explode("/",$fy_start_date);
                                                 				$fy_year=$fy_st_date[2].$fy_st_date[2]+1;
-                                                				$next_year=$fy_st_date[2]+1;
-                                                				$this->db->trans_start();
-                                                				$insert_data = array(
-                                                					'depreciated_value'=>$curr_value,
-                                                        				'current_value'=>$amount,
-                                                        				'Financial_year'=>$fy_year,
-                                                	 			);
-                                                         			if (  ! $this->db->where('id', $row->id)->update('new_asset_register', $insert_data))
-                                                         			{
-                                                                			$this->db->trans_rollback();
-                                                                			$this->messages->add('Depreciation Percentage value is already added. ', 'error');
-                                                                			return;
-                                                                		}else {
-                                                                			$this->db->trans_complete();
-                                                         			}
+										$last_fy_year=$fy_st_date[2]+1;
+										if($exp_today_date[1] == '31' && $last_fy_year == $exp_today_date[0] ){
+                                                					$next_year=$fy_st_date[2]+1;
+                                                					$this->db->trans_start();
+                                                					$insert_data = array(
+                                                						'depreciated_value'=>$curr_value,
+                                                        					'current_value'=>$amount,
+                                                        					'Financial_year'=>$fy_year,
+                                                	 				);
+                                                         				if (  ! $this->db->where('id', $row->id)->update('new_asset_register', $insert_data))
+                                                         				{
+                                                                				$this->db->trans_rollback();
+                                                                				$this->messages->add('Depreciation Percentage value is already added. ', 'error');
+                                                                				return;
+                                                                			}else {
+                                                                				$this->db->trans_complete();
+                                                         				}
+										}
                                                                 			$count++;
 				}else{
 					 $rate=explode("%",$narr[1]);
@@ -391,7 +417,9 @@
 						$fy_start_date = date_mysql_to_php($this->config->item('account_fy_start'));
                                                 $fy_st_date=explode("/",$fy_start_date);
                                                 $fy_year=$fy_st_date[2].$fy_st_date[2]+1;
-						 $next_year=$fy_st_date[2]+1;
+						$next_year=$fy_st_date[2]+1;
+						$last_fy_year=$fy_st_date[2]+1;
+                                                if($exp_today_date[1] == '31' && $last_fy_year == $exp_today_date[0] ){
                                                         $this->db->trans_start();
                                                          $insert_data = array(
                                                                 'depreciated_value'=>$tot_dep_amount,
@@ -407,7 +435,7 @@
                                                                 $this->db->trans_complete();
                                                          }
                                                                 $count++;
-
+						}
 
 
         	        }

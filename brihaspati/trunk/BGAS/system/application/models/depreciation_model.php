@@ -107,6 +107,25 @@ class Depreciation_model extends Model {
                 return $options;
         }
 
+	 //function get_selected_groups()
+        function get_all_bank_cash()
+        {
+                $options = array();
+                $this->db->from('ledgers');
+                $this->db->where('type', '1');
+                $bank_name = $this->db->get();
+		$name = "--Select--";
+                $options[$name] = "--Select--";
+                foreach ($bank_name->result() as $row)
+                {
+                        $name = "$row->id"."#"."$row->name";
+                        $options[$name] = $row->name;
+                }
+
+                return $options;
+        }
+
+
 
 
 }

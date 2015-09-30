@@ -439,11 +439,9 @@ var $ledgers = array();
 	{
 	       $this->db->select_sum('amount')->from('fund_management')->where('type', "Capital")->where('fund_id', $ledger_id);
 		$total = $this->db->get();
-//		print_r($total);
 		foreach($total->result() as $row){
 			$balance = $row->amount;
 		}
-//		echo"total========>$balance";
 		return $balance;
 	}
 
@@ -2489,6 +2487,20 @@ var $ledgers = array();
 
     	return $var;
     } 
+
+	function get_all_bank_cash_ledgers()
+        {
+		$counter=1;
+                $options = array();
+                $this->db->from('ledgers')->where('type', '1');
+                $tag_q = $this->db->get();
+                foreach ($tag_q->result() as $row)
+                {
+                        $options[$counter] = $row->name;
+			$counter++;
+                }
+                return $options;
+        }
 	
 }
 

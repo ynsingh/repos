@@ -135,6 +135,8 @@ class Report extends Controller {
 
 	function pdf($statement, $id = NULL)
 	{
+		$data['search']='';
+		$this->load->model('Tag_model');
 	        $this->load->helper('pdf_helper');
 		$this->load->library('session');
                 $date1 = $this->session->userdata('date1');
@@ -1984,23 +1986,29 @@ class Report extends Controller {
 	}
 
 	function dayst(){
+		$entry_date1=0;
 		$this->load->library('session');
                 $this->load->helper('text');
                 /* Pagination setup */
                 $this->load->library('pagination');
-
+        	$date1 = $this->session->userdata('date1');
                 $this->template->set('page_title', 'Day Statement');
                 $this->template->set('nav_links', array('report/printpreview/dayst/' => 'Print Preview','report/pdf/dayst/'=> 'Download PDF'));
                 //$this->template->set('nav_links', array('report/download/dayst/'  => 'Download CSV', 'report/printpreview/dayst/' => 'Print Preview', 'report/pdf/dayst/' => 'Download PDF'));
                 $data['width'] = "70%";
 		$data['print_preview'] = FALSE;
-		 $curr_date = date_today_php();
+		if($date1 == NULL){
+		 	$date1= date_today_php();
+		}else{
+			$exp_date=explode("-",$date1);
+                        $date1=$exp_date[2]."/".$exp_date[1]."/".$exp_date[0];
+		}
 		 $data['entry_date1'] = array(
                         'name' => 'entry_date1',
                         'id' => 'entry_date1',
                         'maxlength' => '11',
                         'size' => '11',
-                        'value' => $curr_date,
+                        'value' => $date1,
                 );
                 /* Repopulating form */
 
@@ -2940,12 +2948,14 @@ class Report extends Controller {
 
 	function printpreview($statement, $id = NULL)
 	{
+		$this->load->model('Tag_model');
 		$this->load->library('session');
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
 		$code = $this->session->userdata('code');
 		$search = $this->session->userdata('search');
 		$text = $this->session->userdata('text');
+		$search_by_bank = $this->session->userdata('search');
 		$count = $id;
 		/********************** TRIAL BALANCE *************************/
 		if ($statement == "trialbalance")
@@ -3035,7 +3045,7 @@ class Report extends Controller {
 		}
 		if($statement == "dayst")
                 {
-                 $this->load->helper('text');
+                 	$this->load->helper('text');
                         $data['width'] = "70%";
                         $page_count = 0;
                         /* Pagination setup */
@@ -3047,13 +3057,13 @@ class Report extends Controller {
                         $data['title'] = "Day Statement";
                         $data['entry_date1'] = $date1;
                         $this->load->view('report/report_template', $data);
-                        	$this->session->unset_userdata('date1');
+                        //$this->session->unset_userdata('date1');
                         return;
                 }
 		if($statement == "cashst")
                 {
                  	$this->load->helper('text');
-                        $data['width'] = "70%";
+                        $data['width'] = "100%";
                         $page_count = 0;
                         /* Pagination setup */
                         $this->load->library('pagination');
@@ -3063,6 +3073,7 @@ class Report extends Controller {
                         $data['title'] = "Cash Statement";
 			$data['entry_date1'] = $date1;
                         $data['entry_date2'] = $date2;
+			$data['search']=$search_by_bank;
                         $this->load->view('report/report_template', $data);
                         return;
                 }
@@ -3451,6 +3462,8 @@ class Report extends Controller {
 	}
 
 	function cashst(){
+		$this->load->model('Tag_model');
+		$this->load->model('Depreciation_model');
 		$this->load->library('session');
 		/* Pagination setup */
                 $this->load->library('pagination');
@@ -3494,6 +3507,10 @@ class Report extends Controller {
 			'size' => '11',
 			'value' => $default_end_date,
 		);
+		$data['search']='';
+                $data['search_by'] =$this->Depreciation_model->get_all_bank_cash();
+                $data['search_by_active'] = '';
+
 
                 $data['print_preview'] =FALSE;
 
@@ -3519,7 +3536,9 @@ class Report extends Controller {
 		if ($_POST)
 		{
 			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
-			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);	
+			$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+	
 		} 
 
 		/* Validating form */
@@ -3533,7 +3552,8 @@ class Report extends Controller {
 		{
 			$data_date1 = $this->input->post('entry_date1', TRUE);
 			$data_date2 = $this->input->post('entry_date2', TRUE);
-
+			$data_search_by = $this->input->post('search_by', TRUE);
+			$data['search'] = $data_search_by;
 			$date=explode("/",$data_date1);
 			$date1=$date[2]."-".$date[1]."-".$date[0];
 			$date=explode("/",$data_date2);
@@ -3541,7 +3561,8 @@ class Report extends Controller {
 			
 			$newdata = array(
 	                   'date1'  => $date1,
-        	           'date2'  => $date2
+        	           'date2'  => $date2,
+			   'search'=>$data_search_by 
 	                );
 			$this->session->set_userdata($newdata);
 		}                               
