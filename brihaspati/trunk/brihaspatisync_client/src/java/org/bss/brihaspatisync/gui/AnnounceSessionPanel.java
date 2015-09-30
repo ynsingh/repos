@@ -45,6 +45,7 @@ import java.util.regex.Matcher;
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha Yadav</a> Modified
  * Modify action for announce new session on 20 Dec 2008
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
+ * @author <a href="mailto:chetnatrivedi1990@gmail.com">Chetna Trivedi</a>
  */
 
 public class AnnounceSessionPanel extends JPanel implements MouseListener {
@@ -135,7 +136,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
                                                          }          
                      }                           
                 });
-               
 
                 audio=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.AudioCheck")+"</font></html>");
                 audio.setBackground(Color.LIGHT_GRAY);
@@ -149,7 +149,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
                 north_Panel.add(whiteboard);
 		north_Panel.add(mail_send);
                 whiteboard.setSelected(true);
-        
 		
                 north_Panel.add(new JLabel(""));
 		
@@ -326,7 +325,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
 	               	String st_month=(String)monthBox.getSelectedItem();
                        	String st_day=(String)dayBox.getSelectedItem();
 			int curdate=Integer.parseInt(Integer.toString(year)+Integer.toString(month)+Integer.toString(day));
-	                int intforduedate=Integer.parseInt(st_year+st_month+st_day);
+                        int intforduedate=Integer.parseInt(st_year+Integer.parseInt(st_month)+st_day);
 			boolean check=DateUtil.getController().checkDateInput(st_year,st_month,st_day);
 			if(intforduedate < curdate)
 			{
@@ -414,7 +413,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
 					lectValue =lectValue+"&"+"lectmail_send="+URLEncoder.encode(mail_send1,"UTF-8");
 				} catch(Exception es){}
 			}
-            	}//else
+            	}
 		
 		return lectValue;
      	}
@@ -427,9 +426,9 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
 	}
 	
 	protected JButton getannBttn(){
+		StatusPanel.getController().setStatus(Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog8"));
                 return annBttn;
         }
-
 
  	/**
          * Action for mouse click in Announce Session Panel.
@@ -439,8 +438,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
         	if(ev.getComponent().getName().equals("")){
 		}
 	}
-
-	
 	
 	public void mousePressed(MouseEvent e) {}
         public void mouseReleased(MouseEvent e) {}
@@ -455,8 +452,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
 				indexServer=indexServer.replace("date","");
 				String str[]=indexServer.split(" ");
 				String str1[]=str[0].split("/");
-				
-				
 			
 				year=Integer.parseInt(str1[0]);
 				month=Integer.parseInt(str1[1]);

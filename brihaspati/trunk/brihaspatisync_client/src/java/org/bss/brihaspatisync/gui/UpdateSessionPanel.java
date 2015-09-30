@@ -36,6 +36,7 @@ import java.util.regex.Matcher;
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> Testing for gui.
  * @author <a href="mailto:nehapal2209@gmail.com">Neha Pal</a>Progressbar is added at Update button.
+ * @author <a href="mailto:chetnatrivedi1990@gmail.com">Chetna Trivedi</a>
  */
 
 public class UpdateSessionPanel extends JFrame implements ActionListener, MouseListener{
@@ -177,7 +178,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                                 public void actionPerformed(ActionEvent er){
                                                         if(video.isSelected()){
                                                          new VideoServerConfigure();
-
 
                                }
                      }
@@ -384,7 +384,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                         String st_day=(String)dayBox.getSelectedItem();
 			
                         int curdate=Integer.parseInt(Integer.toString(year)+Integer.toString(month)+Integer.toString(day));
-			int intforduedate=Integer.parseInt(st_year+st_month+st_day);
+			int intforduedate=Integer.parseInt(st_year+Integer.parseInt(st_month)+st_day);
                         boolean check=date.checkDateInput(st_year,st_month,st_day);
                         if(intforduedate < curdate)
                         {
@@ -487,7 +487,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         String  indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
                                         if(HttpsUtil.getIndexingMessage(indexServer)) {
 						/********************* modified ******************************/
-                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));						      
+                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));	
+                                                StatusPanel.getController().setStatus(Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));					      
                          			frame.dispose();
 						guiworker task = new guiworker();
 						task.execute();     
@@ -525,9 +526,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 			StatusPanel.getController().setProcessBar("no");
                 }
 	}
-	
-
-	
 
 	public void mousePressed(MouseEvent e) {}
         public void mouseReleased(MouseEvent e) {}
