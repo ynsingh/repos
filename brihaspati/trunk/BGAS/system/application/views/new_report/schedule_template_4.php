@@ -46,9 +46,8 @@
 	$dep_opening_balanceA = $object->dep_opening_balance;
 	$current_depreciation_amountA = $object->current_depreciation_amount;
 	$total_depreciationA = $object->total_depreciation;
-	$current_yearA = $object->curr_amount;
-//	echo "</table>";
-//	echo "<br>";
+	$current_yearA = $object->curr_amount; 
+
 //	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
 
 	echo "<tr class=\"tr-group\">";
@@ -57,37 +56,47 @@
         	echo "<td class=\"td-group\" align=\"center\">";
                 echo "<strong>TOTAL(A)</strong>";
                 echo "</td>";
+
 		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($opening_balanceA) . "</strong>";
                 echo "</td>";
+
 		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($debit_totalA) . "</strong>";
                 echo "</td>";
+
 		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(-$credit_totalA) . "</strong>";
                 echo "</td>";
+
 		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($closing_balanceA) . "</strong>";
                 echo "</td>";
+
 		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($dep_opening_balanceA) . "</strong>";
                 echo "</td>";
+
 		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($current_depreciation_amountA) . "</strong>";
                 echo "</td>";
+
 		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
+
 		echo "<td align=\"right\">";
 		echo "<strong>" . money_format('%!i', convert_cur($total_depreciationA)) . "</strong>";
-                //echo "<strong>" . convert_amount_dc($total_depreciation1) . "</strong>";
                 echo "</td>";
+
 		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($current_yearA) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
-                echo "</td>";
+                echo "</td>"; 
+		echo "</tr>";
 
 	echo "</table>";
 	echo "<br>";
@@ -114,13 +123,13 @@
         echo "<tr>";
                 echo "<td>S. No.</td>";
                 echo "<td align=\"center\">";
-		echo "<strong>" . "Intangible Assets" . "</strong>";
+		//echo "<strong>" . "Intangible Assets" . "</strong>";
 		foreach($group_result as $row)
 	        {
         	        $group_name = $row->name;
                 	$group_id = $row->id;
-			//if($group_name == 'Intangible Assets')
-                        //echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' .  $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
+			if($group_name == 'Intangible Assets')
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' .  $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
 
         	}
 		echo "</td>";
@@ -152,38 +161,49 @@
         	echo "<td align=\"center\">";
 		echo "<strong>TOTAL(C)</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($opening_balanceC) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($debit_totalC) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(-$credit_totalC) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($closing_balanceC) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($dep_opening_balanceC) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($current_depreciation_amountC) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
 		echo "<strong>" . money_format('%!i', convert_cur($total_depreciationC)) . "</strong>";
                 //echo "<strong>" . convert_amount_dc($total_depreciation1) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($current_yearC) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
 		echo "</td>";
 	echo "</table>";
+
 		echo "<br>";
         	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
 		echo "<tr class=\"tr-group\">";
@@ -202,40 +222,43 @@
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($total_opening_balance) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($total_debit_total) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($total_credit_total) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($total_closing_balance) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($total_dep_opening_balance) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($total_current_depreciation_amount) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
 		echo "<strong>" . money_format('%!i', convert_cur($grand_total_depreciation)) . "</strong>";
-
-                //echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
+
 		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($grand_current_year) . "</strong>";
                 echo "</td>";
+
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
 		echo "</tr>";
 		echo "</table>";
-	
-        	echo "</table>"; 
-
-
 ?>
 
