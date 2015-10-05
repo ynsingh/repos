@@ -7,21 +7,34 @@ function newschedules_model()
 }
 	function fixed_asset($group_id)
 	{
-		$cr_amount = 0.00;
-               	$dr_amount = 0.00;
-		$op_balance = "";
-		$cl_balance = "";
-		$net_total = "";
-		$net_total = "";
+		$cr_amount = 0;
+               	$dr_amount = 0;
+		$op_balance = 0;
+		$op_bal = 0;
+		$op_bal_cr = 0;
+		$op_bal_dr = 0;
+		$cl_balance = 0;
+		$net_total = 0;
+		$net_total = 0;
+		$total = array();
+		
 		$CI = & get_instance();
-        	$CI->db->select('id,name,code,op_balance')->from('ledgers')->where('group_id', $group_id);
+        	$CI->db->select('id,name,code,op_balance,op_balance_dc')->from('ledgers')->where('group_id', $group_id);
         	$ledgers_q = $CI->db->get();
-        	$ledger_result = $ledgers_q->result();
-        	foreach($ledger_result as $row2)
+        	foreach($ledgers_q->result() as $row2)
         	{
 	                $ledger_id = $row2->id;
         	        $ledger_name = $row2->name;
                 	$op_balance = $row2->op_balance;
+			$op_balance_dc = $row2->op_balance_dc;
+
+			if($op_balance_dc == 'C')
+            		{
+                		$op_bal_cr = $op_bal_cr + $op_balance;
+            		}elseif($op_balance_dc == 'D'){
+                		$op_bal_dr = $op_bal_dr + $op_balance;
+            		}
+
 			$CI->db->select('id, amount, dc')->from('entry_items')->where('ledger_id', $ledger_id);
                 	$entry_items_q = $CI->db->get();
                 	$entry_items_result = $entry_items_q->result();
@@ -36,64 +49,600 @@ function newschedules_model()
                 		$dr_amount = $dr_amount + $row5->amount;
                 		}
                 	}//foreach
+			}
 			
 			//Adding opening balance for the ledger head.
-	        	$op_balance = $row2->op_balance;
-			$cl_balance = $op_balance+$dr_amount-$cr_amount;
-			$net_total = ($op_balance + $dr_amount) - $cr_amount;
-			}
-			$total = $op_balance . "#" .  $dr_amount . "#" . $cr_amount . "#" . $cl_balance . "#" . $net_total;
+
+			$op_bal = $op_bal_dr - $op_bal_cr;
+                        if($op_bal > 0){
+                                $op_bal_dc = 'D';
+                        }else{
+                                $op_bal_dc = 'C';
+                        }
+
+			$cl_balance = ($op_bal + $dr_amount - $cr_amount);
+			//$net_total = ($op_balance + $dr_amount) - $cr_amount;
+			$total[0] = $op_bal;
+			$total[1] = $op_bal_dc;
+			$total[2] = $dr_amount;
+			$total[3] = $cr_amount;
+			$total[4] = $cl_balance;
+
 			return $total; 
 
 	}//fixedgroup
 
 	function fixed_assetledg($ledg_id)
 	{
-
 		$cr_amount = 0.00;
                 $dr_amount = 0.00;
+		$op_bal_dr = 0;
+		$op_bal_cr = 0;
+		$ledg_plan_cr_total1 = 0;
+		$ledg_plan_dr_total1 = 0;
+		$ledg_nonplan_dr_total1 = 0;
+		$ledg_nonplan_cr_total1 = 0;
+		
                 $op_balance = "";
                 $cl_balance = "";
 		$net_total = "";
+		$total2 = array();
+
                 $CI = & get_instance();
-                $CI->db->select('id,name,code,op_balance')->from('ledgers')->where('id', $ledg_id);
+                $CI->db->select('id,name,code,op_balance,op_balance_dc')->from('ledgers')->where('id', $ledg_id);
+                $ledgers_q = $CI->db->get();
+                foreach($ledgers_q->result() as $row2)
+                {
+                        $ledger_id = $row2->id;
+                        $ledger_name = $row2->name;
+                        $op_balance = $row2->op_balance;
+			$op_balance_dc = $row2->op_balance_dc;
+
+			if($op_balance_dc == 'C')
+            		{
+                		$op_bal_cr = $op_bal_cr + $op_balance;
+            		}elseif($op_balance_dc == 'D'){
+                		$op_bal_dr = $op_bal_dr + $op_balance;
+            		}
+			
+			$CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc,entry_items.id as entry_items_id,entries.sanc_type as sanc_type');
+                        $CI->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id);
+                        $result12 =$CI->db->get();
+                        $entry_result = $result12->result();
+                        foreach($entry_result as $row5)
+                        {
+                                //print_r($query_row);
+                                $dc = $row5->entry_items_dc;
+                                $sum = $row5->entry_items_amount;
+                                $entry_item_id =$row5->entry_items_id;
+                                $sanc_type = $row5->sanc_type;
+
+				if($dc == 'C')
+                                {
+                                $cr_amount = $cr_amount + $sum;
+                                }
+                                else
+                                {
+                                $dr_amount = $dr_amount + $sum;
+                                } 
+
+
+                                if($sanc_type != "select")
+                                {
+                                        if($sanc_type == "plan")
+                                        {
+                                                if($dc == "C")
+                                                {
+                                                $ledg_plan_cr_total1 = $ledg_plan_cr_total1 + $sum;
+                                                }elseif($dc == "D"){
+                                                $ledg_plan_dr_total1 = $ledg_plan_dr_total1 + $sum;
+                                                }
+                                        }//if
+                                //}//if(!select)
+                                elseif($sanc_type == "non_plan")
+                                {
+                                        if($dc == "C")
+                                        {
+					$ledg_nonplan_cr_total1 = $ledg_nonplan_cr_total1 + $sum;
+                                	}elseif($dc == "D"){
+                                    	$ledg_nonplan_dr_total1 = $ledg_nonplan_dr_total1 + $sum;
+                                	}
+                            	}//elseif
+				}//if(!select)
+
+			}//foreach
+		}//foreach
+
+
+		//Adding opening balance for the ledger head.
+			$op_bal = $op_bal_dr - $op_bal_cr;
+                        if($op_bal > 0){
+                                $op_bal_dc = 'D';
+                        }else{
+                                $op_bal_dc = 'C';
+                        }
+
+			$cl_balance = ($op_bal + $dr_amount - $cr_amount);
+			$cl_balance4a = $op_bal + $ledg_plan_dr_total1 - $ledg_plan_cr_total1;
+			$cl_balance4b = $op_bal + $ledg_nonplan_dr_total1 - $ledg_nonplan_cr_total1;
+			//$net_total = ($op_balance + $dr_amount) - $cr_amount;
+			$total2[0] = $op_bal;
+			$total2[1] = $op_bal_dc;
+			$total2[2] = $dr_amount;
+			$total2[3] = $cr_amount;
+			$total2[4] = $cl_balance;
+			$total2[5] = $ledg_plan_dr_total1;
+			$total2[6] = $ledg_plan_cr_total1;
+			$total2[7] = $ledg_nonplan_dr_total1;
+			$total2[8] = $ledg_nonplan_cr_total1;
+			$total2[9] = $cl_balance4a;
+			$total2[10] = $cl_balance4b;
+
+		return $total2; 
+	}//fixed for children
+
+	function get_old_asset_depvalue($group_id)
+	{
+		$dep_op_value = "";
+		$dep_opening_value1 = 0;
+		$dep_opening_value2 = 0;
+		$old_curr_plan = 0;
+		$old_curr_nonplan = 0;
+                $current_dep_value = "";
+		$old_current_value = "";
+                $total_dep = 0.00;
+		$old_asset_dep = array();
+
+                $CI = & get_instance();
+                $CI->db->select('id,name,code')->from('ledgers')->where('group_id', $group_id);
                 $ledgers_q = $CI->db->get();
                 $ledger_result = $ledgers_q->result();
                 foreach($ledger_result as $row2)
                 {
                         $ledger_id = $row2->id;
                         $ledger_name = $row2->name;
-                        $op_balance = $row2->op_balance;
-                 	$CI->db->select('id, amount, dc')->from('entry_items')->where('ledger_id', $ledger_id);
-                        $entry_items_q = $CI->db->get();
-                        $entry_items_result = $entry_items_q->result();
-			foreach ($entry_items_result as $row5)
+			$CI->db->select('asset_name,cost,depreciated_value,current_value,sanc_type')->from('old_asset_register')->where('asset_name', $ledger_name);
+                        $asset = $CI->db->get();
+                        $asset_result = $asset->result();
+                        foreach ($asset_result as $row3)
                         {
-                        	if($row5->dc == 'C')
-                        	{
-                        	$cr_amount = $cr_amount + $row5->amount;
-                        	}
-                        	else
-                        	{
-                        	$dr_amount = $dr_amount + $row5->amount;
-                        	} 
-			}//foreach
+                                $asset_name = $row3->asset_name;
+                                $dep_op_value = $row3->depreciated_value;
+                                $old_current_amount = $row3->current_value;
+                                $asset_cost = $row3->cost;
+				$sanc_type = $row3->sanc_type;
 
-                //Adding opening balance for the ledger head.
-                $op_balance = $row2->op_balance;
-                $cl_balance = $op_balance+$dr_amount-$cr_amount;
-		$net_total = ($row2->op_balance + $dr_amount) - $cr_amount;
+				if($sanc_type != "select")
+                        	{
+                            		if($sanc_type == "plan")
+                            		{
+						$dep_opening_value1 = $dep_opening_value1 + $dep_op_value;
+						$old_curr_plan = $old_curr_plan + $old_current_amount;
+					}elseif($sanc_type == "non_plan"){
+						$dep_opening_value2 = $dep_opening_value2 + $dep_op_value;
+                                                $old_curr_nonplan = $old_curr_nonplan + $old_current_amount;
+
+                            		}
+				}//if(!select)
+			}//foreach old_asset
                 }
-		$total = $op_balance . "#" .  $dr_amount . "#" . $cr_amount . "#" . $cl_balance .  "#" .$net_total;
-                return $total; 
+		$old_asset_dep[0] = $dep_op_value;
+		$old_asset_dep[1] = $old_current_value;
+		$old_asset_dep[2] = $dep_opening_value1;
+		$old_asset_dep[3] = $old_curr_plan;
+		$old_asset_dep[4] = $old_curr_nonplan;
+		$old_asset_dep[5] = $dep_opening_value2;
+	
+                return $old_asset_dep;
 
-	}//fixed for children
+        }
 
-	function get_dep_value($group_id)
+	function get_new_asset_depvalue($group_id)
 	{
 		$dep_op_value = "";
                 $current_dep_value = "";
+		$dep_opening_value1 = 0;
+		$dep_opening_value2 = 0;
+                $new_curr_plan = 0;
+		$new_curr_nonplan = 0;
+		$new_current_value = "";
                 $total_dep = 0.00;
+                $new_asset_dep = array();
+
+                $CI = & get_instance();
+                $CI->db->select('id,name,code')->from('ledgers')->where('group_id', $group_id);
+                $ledgers_q = $CI->db->get();
+                $ledger_result = $ledgers_q->result();
+                foreach($ledger_result as $row2)
+                {
+                        $ledger_id = $row2->id;
+                        $ledger_name = $row2->name;
+
+                        $CI->db->select('asset_name,cost,depreciated_value,current_value,sanc_type')->from('new_asset_register')->where('asset_name', $ledger_name);
+                        $asset = $CI->db->get();
+                        $asset_result = $asset->result();
+                        foreach ($asset_result as $row4)
+                        {
+				//print_r($row4);
+                                $asset_name = $row4->asset_name;
+                                $dep_op_value = $row4->depreciated_value;
+                                $new_current_amount = $row4->current_value;
+                                $asset_cost = $row4->cost; 
+				$sanc_type = $row4->sanc_type;
+
+                                if($sanc_type != "select")
+                                {
+                                       	if($sanc_type == "plan")
+                                       	{
+                                                $dep_opening_value1 = $dep_opening_value1 + $dep_op_value;
+                                                $new_curr_plan = $new_curr_plan + $new_current_amount;
+                                        }elseif($sanc_type == "non_plan"){
+                                                $dep_opening_value2 = $dep_opening_value2 + $dep_op_value;
+                                                $new_curr_nonplan = $new_curr_nonplan + $new_current_amount;
+
+                                        }
+                                }//if(!select)
+                	}//foreach new_asset
+		}
+		$new_asset_dep[0] = $dep_op_value;
+                $new_asset_dep[1] = $new_current_value;
+		$new_asset_dep[2] = $dep_opening_value1;
+                $new_asset_dep[3] = $new_curr_plan;
+		$new_asset_dep[4] = $new_curr_nonplan;
+		$new_asset_dep[5] = $dep_opening_value2;
+
+                return $new_asset_dep;
+	}
+
+	function get_old_asset_depvalue1($ledg_id)
+	{
+		$dep_op_value = "";
+		$dep_opening_value1 = 0;
+		$dep_opening_value2 = 0;
+		$old_curr_plan = 0;
+		$old_curr_nonplan = 0;
+		$dep_op_value = "";
+                $current_dep_value = "";
+		$old_current_value = "";
+                $total_dep = 0.00;
+		$old_asset_dep = array();
+
+                $CI = & get_instance();
+                $CI->db->select('id,name,code')->from('ledgers')->where('id', $ledg_id);
+                $ledgers_q = $CI->db->get();
+                foreach($ledgers_q->result() as $row2)
+                {
+                        $ledger_id = $row2->id;
+                        $ledger_name = $row2->name;
+			$CI->db->select('asset_name,cost,depreciated_value,current_value,sanc_type')->from('old_asset_register')->where('asset_name', $ledger_name);
+                        $asset = $CI->db->get();
+                        $asset_result = $asset->result();
+                        foreach ($asset_result as $row3)
+                        {
+                                $asset_name = $row3->asset_name;
+                                $dep_op_value = $row3->depreciated_value;
+                                $old_current_value = $row3->current_value;
+                                $asset_cost = $row3->cost;
+				$sanc_type = $row3->sanc_type;
+
+				if($sanc_type != "select")
+                        	{
+                            		if($sanc_type == "plan")
+                            		{
+						$dep_opening_value1 = $dep_opening_value1 + $dep_op_value;
+						$old_curr_plan = $old_curr_plan + $old_current_value;
+					}elseif($sanc_type == "non_plan"){
+						$dep_opening_value2 = $dep_opening_value2 + $dep_op_value;
+                                                $old_curr_nonplan = $old_curr_nonplan + $old_current_value;
+
+                            		}
+				}//if(!select)
+			}//foreach old_asset
+                }
+		$old_asset_dep[0] = $dep_op_value;
+		$old_asset_dep[1] = $old_current_value;
+		$old_asset_dep[2] = $dep_opening_value1;
+		$old_asset_dep[3] = $old_curr_plan;
+		$old_asset_dep[4] = $old_curr_nonplan;
+		$old_asset_dep[5] = $dep_opening_value2;
+                return $old_asset_dep;
+        }
+
+	function get_new_asset_depvalue1($ledg_id)
+	{
+		$dep_op_value = "";
+		$dep_opening_value1 = 0;
+		$dep_opening_value2 = 0;
+                $new_curr_plan = 0;
+		$new_curr_nonplan = 0;
+		$dep_op_value = "";
+                $current_dep_value = "";
+		$new_current_value = "";
+                $total_dep = 0.00;
+                $new_asset_dep = array();
+
+                $CI = & get_instance();
+                $CI->db->select('id,name,code')->from('ledgers')->where('id', $ledg_id);
+                $ledgers_q = $CI->db->get();
+                foreach($ledgers_q->result() as $row2)
+                {
+                        $ledger_id = $row2->id;
+                        $ledger_name = $row2->name;
+
+                        $CI->db->select('asset_name,cost,depreciated_value,current_value,sanc_type')->from('new_asset_register')->where('asset_name', $ledger_name);
+                        $asset = $CI->db->get();
+                        $asset_result = $asset->result();
+                        foreach ($asset_result as $row4)
+                        {
+				//print_r($row4);
+                                $asset_name = $row4->asset_name;
+                                $dep_op_value = $row4->depreciated_value;
+                                $new_current_amount = $row4->current_value;
+                                $asset_cost = $row4->cost; 
+				$sanc_type = $row4->sanc_type;
+
+                                if($sanc_type != "select")
+                                {
+                                       	if($sanc_type == "plan")
+                                       	{
+                                                $dep_opening_value1 = $dep_opening_value1 + $dep_op_value;
+                                                $new_curr_plan = $new_curr_plan + $new_current_amount;
+                                        }elseif($sanc_type == "non_plan"){
+                                                $dep_opening_value2 = $dep_opening_value2 + $dep_op_value;
+                                                $new_curr_nonplan = $new_curr_nonplan + $new_current_amount;
+
+                                        }
+                                }//if(!select)
+                	}//foreach new_asset
+		}
+		$new_asset_dep[0] = $dep_op_value;
+                $new_asset_dep[1] = $new_current_value;
+		$new_asset_dep[2] = $dep_opening_value1;
+                $new_asset_dep[3] = $new_curr_plan;
+		$new_asset_dep[4] = $new_curr_nonplan;
+		$new_asset_dep[5] = $dep_opening_value2;
+                return $new_asset_dep;
+	}
+
+
+	function sub_schedule3a($group_id1)
+	{
+		$CI = & get_instance();
+        	$CI->db->select('id,name,code,op_balance,op_balance_dc')->from('ledgers')->where('group_id', $group_id1);
+        	$ledg_query = $CI->db->get();
+		$op_balance_cr = 0;
+        	$op_balance_dr = 0;
+        	$op_balance = 0;
+        	$opbalance = array();
+        	foreach($ledg_query->result() as $row1)
+        	{
+            		$ledg_id = $row1->id;
+            		$ledg_name = $row1->name;
+			$ledg_op_balance = $row1->op_balance;
+			$ledg_op_balance_dc = $row1->op_balance_dc;
+            		if($ledg_op_balance_dc == 'C')
+            		{
+                	$op_balance_cr = $op_balance_cr + $ledg_op_balance;
+            		}elseif($ledg_op_balance_dc == 'D'){
+                	$op_balance_dr = $op_balance_dr + $ledg_op_balance;
+            		}
+
+        		$op_balance = $op_balance_dr - $op_balance_cr;
+        		if($op_balance > 0){
+            			$op_balance_dc = 'D';
+        		}else{
+            			$op_balance_dc = 'C';
+        		}
+
+        		$opbalance[0] = $op_balance;
+        		$opbalance[1] = $op_balance_dc;
+		}
+        return $opbalance;
+	}
+
+    	function get_project_name($group_name1)
+	{
+        	$project_name = '';
+        	if(strpos($group_name1,'Expenses') !== false)
+        	{
+            		$project_name = str_replace('Expenses','',$group_name1);
+        	}elseif(strpos($group_name1,'Receipts') !== false){
+            		$project_name = str_replace('Receipts','',$group_name1);
+        	}elseif(strpos($group_name1,'Fixed Assets') !== false){
+            		$project_name = str_replace('Fixed Assets','',$group_name1);
+        	}
+
+        return $project_name;
+    	}
+
+    	function get_op_balance($project_name,$id)
+    	{
+		if($id == "93")
+		{
+        	$this->db->select('id')->from('groups')->where('name LIKE',$project_name.'%')->where('code LIKE','10040105%');
+		}elseif($id == "100"){
+		$this->db->select('id')->from('groups')->where('name LIKE',$project_name.'%')->where('code LIKE','10040107%');
+		}
+        	$groups = $this->db->get();
+        	$op_bal_cr = 0;
+        	$op_bal_dr = 0;
+        	$op_bal = 0;
+        	$op_balance1 = array();
+        	foreach($groups->result() as $row)
+        	{
+        		$group_id = $row->id;
+        		$opbalance = $this->sub_schedule3a($group_id);
+        		$group_op_balance = $opbalance[0];
+        		$group_op_balance_dc = $opbalance[1];
+			if($group_op_balance_dc == 'C')
+            		{
+				
+                		$op_bal_cr = $op_bal_cr + $group_op_balance;
+            		}elseif($group_op_balance_dc == 'D'){
+                		$op_bal_dr = $op_bal_dr + $group_op_balance;
+            		}
+        	}
+        		$op_bal = $op_bal_dr - (-$op_bal_cr);
+        		if($op_bal > 0){
+            			$op_bal_dc = 'D';
+        		}else{
+            			$op_bal_dc = 'C';
+        		}
+        		$opbalance1[0] = $op_bal;
+        		$opbalance1[1] = $op_bal_dc;
+			
+
+    	return $opbalance1;
+    	}
+
+	function get_exp_receipt_total($project_name,$id)
+    	{
+		//echo "id=========>$id";
+		$dr_sum_total = "";
+		$cr_sum_total = "";
+		$total = array();
+		$CI =&get_instance();
+        	$CI->load->library('session');
+        	$date1 = $CI->session->userdata('date1');
+        	$date2 = $CI->session->userdata('date2');
+		if($id == "93"){
+        	$CI->db->select('id,name')->from('groups')->where('name LIKE',$project_name.'%')->where('code LIKE','10040105%'); 		 }elseif($id == "100"){
+		$CI->db->select('id,name')->from('groups')->where('name LIKE',$project_name.'%')->where('code LIKE','10040107%');
+		}
+        	$groups = $CI->db->get();
+        	foreach($groups->result() as $row)
+        	{
+            		$group_id = $row->id;
+			$name = $row->name;
+            		$CI->db->select('id,name')->from('ledgers')->where('group_id',$group_id); 
+            		$ledgers = $CI->db->get();
+            		foreach($ledgers->result() as $row1)
+            		{
+               	 		$ledger_id = $row1->id;
+                		$CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc,entry_items.id as entry_items_id');
+                		$CI->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id);
+                		$CI->db->where('date >=', $date1);
+                		$CI->db->where('date <=', $date2);
+                		$entries =$CI->db->get();
+                		$entry_result = $entries->result();
+                		foreach($entry_result as $query_row)
+                		{
+                    			//$entry_item_id =$query_row->entry_items_id;
+                    			$dc = $query_row->entry_items_dc;
+                    			if($dc == "D"){
+                        			$dr_sum = $query_row->entry_items_amount;
+                        			$dr_sum_total = $dr_sum_total + $dr_sum;
+                    			}else{
+                        			$cr_sum = $query_row->entry_items_amount;
+                        			$cr_sum_total = $cr_sum_total + $cr_sum;
+					}
+                		} 
+            		} 
+        	} 
+		$total[0] = $dr_sum_total;
+		$total[1] = $cr_sum_total;
+		
+	return $total;
+    	}
+
+	
+	function plan_sub_schedule4($group_id)
+	{
+                $op_balance4a = 0;
+                $cl_balance4a = 0;
+		$op_bal_dr = 0;
+		$op_bal_cr = 0;
+                $dep_op_value = "";
+                $current_dep_value = "";
+		$ledg_plan_cr_total = 0;
+                $ledg_plan_dr_total = 0;
+                $ledg_nonplan_dr_total = 0;
+               	$ledg_nonplan_cr_total = 0;
+		$total4a = array();
+
+                $total_dep = "";
+		$CI =& get_instance();
+                $CI->db->select('id,name,code,op_balance,op_balance_dc')->from('ledgers')->where('group_id', $group_id);
+                $ledgers_q = $CI->db->get();
+                foreach($ledgers_q->result() as $row2)
+                {
+                        $ledger_id = $row2->id;
+                        $ledger_name = $row2->name;
+			$op_balance = $row2->op_balance;
+			$op_balance_dc = $row2->op_balance_dc;
+			if($op_balance_dc == 'C')
+            		{
+                		$op_bal_cr = $op_bal_cr + $op_balance;
+            		}elseif($op_balance_dc == 'D'){
+                		$op_bal_dr = $op_bal_dr + $op_balance;
+            		}
+
+			$CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc,entry_items.id as entry_items_id,entries.sanc_type as sanc_type');
+                    	$CI->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id);
+                    	$result12 =$CI->db->get();
+                    	$entry_result = $result12->result();
+                    	foreach($entry_result as $query_row)
+                    	{
+				//print_r($query_row);
+                        	$dc = $query_row->entry_items_dc;
+                        	$sum = $query_row->entry_items_amount;
+                        	$entry_item_id =$query_row->entry_items_id;
+                        	$sanc_type = $query_row->sanc_type;
+
+				if($sanc_type != "select")
+                        	{
+                            		if($sanc_type == "plan")
+                            		{
+                                		if($dc == "C")
+                                		{
+                                    		$ledg_plan_cr_total = $ledg_plan_cr_total + $sum;
+                                		}elseif($dc == "D"){
+                                    		$ledg_plan_dr_total = $ledg_plan_dr_total + $sum;
+						}
+					}//if
+                                //}//if(!select)
+				elseif($sanc_type == "non_plan")
+				{
+                                	if($dc == "C")
+                                	{
+                                    	$ledg_nonplan_cr_total = $ledg_nonplan_cr_total + $sum;
+                                	}elseif($dc == "D"){
+                                    	$ledg_nonplan_dr_total = $ledg_nonplan_dr_total + $sum;
+                                	}
+                            	}//elseif
+				}//if(!select)
+
+			}//foreach
+		}//foreach
+			$op_bal = $op_bal_dr - $op_bal_cr;
+                        if($op_bal > 0){
+                                $op_bal_dc = 'D';
+                        }else{
+                                $op_bal_dc = 'C';
+                        }
+                	$cl_balance4a = $op_bal + $ledg_plan_dr_total - $ledg_plan_cr_total;
+			$cl_balance4b = $op_bal + $ledg_nonplan_dr_total - $ledg_nonplan_cr_total;
+
+
+		$total4a[0] = $op_bal;
+		$total4a[1] = $op_bal_dc;
+		$total4a[2] = $ledg_plan_dr_total;
+		$total4a[3] = $ledg_plan_cr_total;
+		$total4a[4] = $ledg_nonplan_dr_total;
+		$total4a[5] = $ledg_nonplan_cr_total;
+		$total4a[6] = $cl_balance4a;
+		$total4a[7] = $cl_balance4b;
+
+	return $total4a; 
+	}
+
+/*	function plan_old_depvalue($child_id)
+	{
+		$dep_op_value = "";
+                $current_dep_value = "";
+		$old_current_value = "";
+                $total_dep = 0.00;
+		$old_asset_dep = array();
 
                 $CI = & get_instance();
                 $CI->db->select('id,name,code')->from('ledgers')->where('group_id', $group_id);
@@ -112,173 +661,318 @@ function newschedules_model()
                                 $dep_op_value = $row3->depreciated_value;
                                 $old_current_value = $row3->current_value;
                                 $asset_cost = $row3->cost;
+			}//foreach old_asset
+                }
+		$old_asset_dep[0] = $dep_op_value;
+		$old_asset_dep[1] = $old_current_value;
+                return $old_asset_dep;
 
-                        $CI->db->select('asset_name,cost,depreciated_value,current_value')->from('new_asset_register')->where('asset_name', $ledger_name);
-                        $asset = $CI->db->get();
-                        $asset_result = $asset->result();
-                        foreach ($asset_result as $row4)
+        } */
+
+/*	function get_dep_value1($child_id)
+        {
+                $dep_op_value = "";
+		$op_balance = 0;
+		$dep_opening_bal = 0;
+		$old_current_value = "";
+                $current_dep_value = "";
+		$new_current_value = "";
+                $total_dep4a = 0.00;
+		$asset_name = "";
+		$current_dep_value4a = "";
+		$total4a1 = array();
+                $CI = & get_instance();
+                $CI->db->select('id,name,code,op_balance,op_balance_dc')->from('ledgers')->where('group_id', $child_id);
+                $ledgers_q4a = $CI->db->get();
+                foreach($ledgers_q4a->result() as $row4a1)
+                {
+                        $ledger_id = $row4a1->id;
+                        $ledger_name = $row4a1->name;
+			$ledger_opbal = $row4a1->op_balance;
+			$ledger_opbal_dc = $row4a1->op_balance_dc;
+			$op_balance_cr = 0;
+        		$op_balance_dr = 0;
+        		$dep_opening_bal = 0;
+                        $CI->db->select('asset_name,cost,depreciated_value,current_value,sanc_type')->from('old_asset_register')->where('asset_name', $ledger_name);
+                        $asset4a1 = $CI->db->get();
+                        foreach ($asset4a1->result() as $row3)
                         {
-                                $asset_name = $row4->asset_name;
-                                $dep_op_value = $row4->depreciated_value;
-                                $new_current_value = $row4->current_value;
-                                $asset_cost = $row4->cost; 
+                                $asset_name = $row3->asset_name;
+				$sanc_type = $row3->sanc_type;
+                                $dep_op_value = $row3->depreciated_value;
+                                $old_current_value = $row3->current_value;
+                                $asset_cost = $row3->cost;
 
-			//Adding opening balance for the ledger head.
-                	$current_dep_value = $old_current_value + $new_current_value;
-                	$total_dep = $dep_op_value + $current_dep_value;
-                }//foreach old_asset
-                }//foreach new_asset
+  		        	//Adding opening balance for the ledger head.
+				//$op_balance = $dep_op_value;
+                        	//$current_dep_value4a = $old_current_value + $new_current_value;
+                        	//$total_dep4a = $op_balance + $current_dep_value4a; 
 		}
-                $total = $dep_op_value . "#" . $current_dep_value . "#" .  $total_dep;
-                return $total;
-		
+		}//foreach
+			$total4a1[0] = $dep_op_value;
+			$total4a1[1] = $old_current_value;
+			//$total4a1[2] = $total_dep4a;
+                return $total4a1; 
+
+        } */
+
+	function schedule2($group_id)
+	{
+		$op_balance = 0;
+		$dr_total = 0;
+		$op_balance_dr = 0;
+		$op_balance_cr = 0;
+		$fund_add = "";
+		$fund_income = "";
+		$sum = 0;
+		$sum1 = 0;
+		$sum2 = 0;
+		$sum3 = 0;
+		$sum4 = 0;
+		$sum5 = 0;
+		$this->load->model('ledger_model');
+		$this->db->select('name,id')->from('groups')->where('parent_id',$group_id);
+                $query = $this->db->get();
+                $q_result = $query->result();
+		$total = array();
+                foreach($q_result as $row)
+                {
+                	$group_id = $row->id;
+			$group_name = $row->name;
+			$this->db->select('name,id')->from('ledgers')->where('group_id',$group_id);
+            		$query1 = $this->db->get();
+            		$q_result1 = $query1->result();
+            		foreach($q_result1 as $row1)
+			{
+                		$ledg_id = $row1->id;
+				$ledg_name = $row1->name;
+                                $this->db->select('fund_name,amount,type')->from('fund_management')->where('fund_id',$ledg_id);
+                                $fund_q = $this->db->get();
+                                foreach($fund_q->result() as $row2)
+                                {
+					$fund_type = $row2->type;
+                                        $fund_amount = $row2->amount;
+					$fund_add = $fund_add + $fund_amount;
+
+					if($fund_type == "Investment")
+					{
+						$fund_income = $row2->amount;
+						$sum = $sum + $fund_income;
+
+					}elseif($fund_type == "Accru"){
+						$fund_accru = $row2->amount;
+                                                $sum1 = $sum1 + $fund_accru;
+
+					}elseif($fund_type == "Earn"){
+                                                $fund_earned = $row2->amount;
+                                                $sum2 = $sum2 + $fund_earned;
+
+                                        }elseif($fund_type == "Capital"){
+                                                $capital_amount = $row2->amount;
+                                                $sum4 = $sum4 + $capital_amount;
+
+                                        }elseif($fund_type == "Revenue"){
+                                                $revenue_amount = $row2->amount;
+                                                $sum5 = $sum5 + $revenue_amount;
+
+                                        }
+
+
+
+				}
+
+				$CI =& get_instance();
+				$CI->load->model('ledger_model');
+				$op_balance = $CI->ledger_model->get_op_balance($ledg_id);
+ 	                       	$opening_data = $op_balance[0];
+				$op_balance_dc = $op_balance[1];
+
+				if($op_balance_dc == 'C')
+            			{
+                			$op_balance_cr = $op_balance_cr + $opening_data;
+            			}elseif($op_balance_dc == 'D'){
+                			$op_balance_dr = $op_balance_dr + $opening_data;
+            			}
+
+                	}
+		}
+			
+			$op_balance = $op_balance_dr - $op_balance_cr;
+        		if($op_balance > 0){
+            			$op_balance_dc = 'D';
+        		}else{
+            			$op_balance_dc = 'C';
+        		}
+
+			$total[0] = $op_balance;
+                        $total[1] = $fund_add;
+			$total[2] = $sum;
+			$total[3] = $sum1;
+			$total[4] = $sum2;
+			$total[6] = $sum4;
+			$total[7] = $sum5;
+			$total[8] = $op_balance_dc;
+
+		return $total;
+
 	}
 
-	 function get_dep_value_ledg($ledg_id)
-        {
-                $dep_op_value1 = "";
-                $current_dep_value1 = "";
-                $total_dep1 = 0.00;
-
-                $CI = & get_instance();
-                $CI->db->select('id,name,code')->from('ledgers')->where('group_id', $ledg_id);
-                $ledgers_q1 = $CI->db->get();
-                $ledger_result1 = $ledgers_q1->result();
-                foreach($ledger_result1 as $rowled)
-                {
-                        $ledg_id1 = $rowled->id;
-                        $ledg_name1 = $rowled->name;
-                        $CI->db->select('asset_name,cost,depreciated_value,current_value')->from('old_asset_register')->where('asset_name', $ledg_name1);
-                        $asset1 = $CI->db->get();
-                        $asset_result1 = $asset1->result();
-                        foreach ($asset_result1 as $rowled1)
-                        {
-                                $asset_name1 = $rowled1->asset_name;
-                                $dep_op_value1 = $rowled1->depreciated_value;
-                                $old_current_value1 = $rowled1->current_value;
-                                $asset_cost1 = $rowled1->cost;
-
-                        $CI->db->select('asset_name,cost,depreciated_value,current_value')->from('new_asset_register')->where('asset_name', $ledg1_name);
-                        $asset2 = $CI->db->get();
-                        $asset_result2 = $asset2->result();
-                        foreach ($asset_result2 as $rowled2)
-                        {
-                                $asset_name1 = $rowled2->asset_name;
-                                $dep_op_value1 = $rowled2->depreciated_value;
-                                $new_current_value1 = $rowled2->current_value;
-                                $asset_cost1 = $rowled2->cost;
-
-                        //Adding opening balance for the ledger head.
-                        $current_dep_value1 = $old_current_value1 + $new_current_value1;
-                        $total_dep1 = $dep_op_value1 + $current_dep_value1;
-                }//foreach old_asset
-                }//foreach new_asset
-                }
-                $total2 = $dep_op_value1 . "#" . $current_dep_value1 . "#" .  $total_dep1;
-                return $total2;
-
-        }
-
-
-
-
-/*	function plan_sub_schedule($child_id)
+/*	function get_capital_total($ledger_id)
 	{
-	//	echo "child_id======$child_id";
-		$cr_amount = 0.00;
-                $dr_amount = 0.00;
-                $op_balance = "";
-                $cl_balance = "";
-                $dep_op_value = "";
-                $current_dep_value = "";
-		$ledg_plan_cr_total = 0;
-                $ledg_plan_dr_total = 0;
-                $ledg_nonplan_dr_total = 0;
-               	$ledg_nonplan_cr_total = 0;
-                $ledg_cr_total =0;
-                $ledg_dr_total = 0;
-                $ledg_plan_total = 0;
-               	$ledg_non_plan_total = 0;
-                $ledg_total = 0;
+		//$CI =& get_insatnce();
+		$this->load->library('session');
+		//$CI->load->model('ledger_model');
+        	$date1 = $this->session->userdata('date1');
+        	$date2 = $this->session->userdata('date2');
+                $non_plan_total = 0;
+                $plan_total = 0;
+		$this->db->select('group_id')->from('ledgers')->where('id', $ledger_id);
+		$query1 = $this->db->get();
+		$group_q = $query1->row();
+		$group_id = $group_q->group_id;
+		
+		$this->db->select('name')->from('groups')->where('id', $group_id);
+                $group_result = $this->db->get();
+                $groups = $group_result->row(); 
+		$group_name = $groups->name;
 
-                $total_dep = "";
-		$CI =& get_instance();
-                $CI->db->select('id,name,code,op_balance')->from('ledgers')->where('group_id', $child_id);
-                $ledgers_q = $CI->db->get();
-                $ledger_result = $ledgers_q->result();
-                foreach($ledger_result as $row2)
+		$this->db->select('entry_items_id,amount')->from('fund_management')->where('fund_id',$ledger_id);
+                $this->db->where('type','Capital');
+                $this->db->where('date >=', $date1);
+            	$this->db->where('date <=', $date2);
+                $query_result2 = $this->db->get();
+		foreach($query_result2->result() as $row1)
                 {
-                        $ledger_id = $row2->id;
-                        $ledger_name = $row2->name;
-                        $op_balance = $row2->op_balance;
-
-			$CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc,entry_items.id as entry_items_id,entries.sanc_type as sanc_type');
-                    	$CI->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id);
-                    	$result11 =$CI->db->get();
-                    	$entry_result = $result11->result();
-                    	foreach($entry_result as $query_row)
-                    	{
-				$plan_dr_total = 0;
-				$plan_cr_total = 0;
-                        	$dc = $query_row->entry_items_dc;
-                        	$sum = $query_row->entry_items_amount;
-                        	$entry_item_id =$query_row->entry_items_id;
-                        	$sanc_type = $query_row->sanc_type;
-
-				if($sanc_type != "select")
-                        	{
-                            		if($sanc_type == "plan")
-                            		{
-                                		if($dc == "C")
-                                		{
-                                    		//$plan_cr_total = $paln_cr_total + $sum;
-                                    		$ledg_plan_cr_total = $ledg_plan_cr_total + $sum;
-                                		}elseif($dc == "D"){
-                                    		//$plan_dr_total = $plan_dr_total + $sum;
-                                    		$ledg_plan_dr_total = $ledg_plan_dr_total + $sum;
-						}
-					}//if
-                                //}//if(!select)
-				elseif($sanc_type == "non_plan")
-				{
-                                	if($dc == "C")
-                                	{
-                                    	//$nonplan_cr_total = $nonplan_cr_total + $sum;
-                                    	$ledg_nonplan_cr_total = $ledg_nonplan_cr_total + $sum;
-					echo "nonplan_dr====$ledg_nonplan_cr_total";
-                                	}elseif($dc == "D"){
-                                    	//$nonplan_dr_total = $nonplan_dr_total + $sum;
-                                    	$ledg_nonplan_cr_total = $ledg_nonplan_cr_total + $sum;
-					echo "nonplan_cr=====$ledg_nonplan_cr_total";
-                                	}
-                            	}//elseif
-				}//if(!select)
+			print_r($row1);
+                	$entry_items_id = $row1->entry_items_id;
+                       	$this->db->select('entries.sanc_type as sanc_type,entry_items.dc as entry_items_dc');
+                	$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.id', $entry_items_id);
+                	$query_result3 = $this->db->get();
+                	foreach($query_result3->result() as $row2)
+                        {
+                      		$sanc_type = $row2->sanc_type;
+                                $dc = $row2->entry_items_dc;
+			}
+		}
 
 
 
-			}//foreach
 
-		}//foreach
+
+	}
+
+	function get_revenue_total($ledger_id)
+        {
+                $this->load->library('session');
+                $date1 = $this->session->userdata('date1');
+                $date2 = $this->session->userdata('date2');
+                $non_plan_total = 0;
+                $plan_total = 0;
+
+
+
+        } */
+
+
+	function get_subschedule3c($group_id,$type)
+	{
+		//$sum = 0;
+		$op_bal_cr = 0;
+        	$op_bal_dr = 0;
+        	$op_bal = 0;
+		$debit_total = 0;
+		$credit_total = 0;
+		//$capital_total = 0;
+		//$revenue_total = 0;
+		$total = array();
+		$this->db->select('name,id')->from('ledgers')->where('group_id',$group_id);
+                $query1 = $this->db->get();
+		$query_q = $query1->result();
+		foreach($query_q as $row1)
+                {
+                        $ledg_id = $row1->id;
+                        $ledg_name = $row1->name;
+
+			 //$capital1 = $this->get_capital_total($ledg_id);
+			$d_total = array();
+			$c_total = array();
+			$capital_total = array();
+			$revenue_total = array();
+
+			$CI =& get_instance();
+                        $CI->load->model('ledger_model');
+                        $op_balance = $CI->ledger_model->get_op_balance($ledg_id);
+			$opening_value = $op_balance[0];
+			$op_balance_dc = $op_balance[1];
+			if($type == "plan")
+                        {
+			$dr_total = $CI->ledger_model->get_dr_total2($ledg_id);
+			$d_total = $dr_total['plan'];
+			$debit_total = $debit_total + $d_total;
+			$cr_total = $CI->ledger_model->get_cr_total2($ledg_id);
+			$c_total = $cr_total['plan'];
+			$credit_total = $credit_total + $c_total;
+			$capital = $CI->ledger_model->get_capital_exp_total($ledg_id);
+			$capital_total = $capital['plan'];
+                        $revenue = $CI->ledger_model->get_revenue_exp_total($ledg_id);
+			$revenue_total = $revenue['plan'];
+			}
+			else
+			{
+                        $dr_total = $CI->ledger_model->get_dr_total2($ledg_id);
+                        $d_total = $dr_total['nonplan'];
+                        $debit_total = $debit_total + $d_total;
+                        $cr_total = $CI->ledger_model->get_cr_total2($ledg_id);
+                        $c_total = $cr_total['nonplan'];
+                        $credit_total = $credit_total + $c_total;
+                        $capital = $CI->ledger_model->get_capital_exp_total($ledg_id);
+                        $capital_total = $capital['nonplan'];
+                        $revenue = $CI->ledger_model->get_revenue_exp_total($ledg_id);
+                        $revenue_total = $revenue['nonplan'];
+			}
+
+			//echo "c_total======$c_total";
+			if($op_balance_dc == 'C')
+            		{
+                		$op_bal_cr = $op_bal_cr + $opening_value;
+            		}elseif($op_balance_dc == 'D'){
+                		$op_bal_dr = $op_bal_dr + $opening_value;
+            		}
+		}
+			$op_bal = $op_bal_dr - $op_bal_cr;
+        		if($op_bal > 0){
+            			$op_bal_dc = 'D';
+        		}else{
+            			$op_bal_dc = 'C';
+        		}
+			
+		$total[0] = $op_bal;
+		$total[1] = $op_bal_dc;
+		$total[2] = $credit_total;
+		$total[3] = $debit_total;
+		$total[4] = $revenue_total;
+		$total[5] = $capital_total;
+	
+		return $total;
+
+	}
+
+/*	function get_capital_total($ledger_id)
+	{
+		$this->load->library('session');
+        	$date1 = $this->session->userdata('date1');
+        	$date2 = $this->session->userdata('date2');
+		$non_plan_total = 0;
+		$plan_total = 0;
+		$specific_total =0;
+		$name = $this->get_ledger_name($ledger_id);	
+	}
+
+	function get_revenue_total()
+	{
 
 	} */
 
-
-/*	function newschedule_2($childg_id)
-	{
-		$op_balance = 0.00;
-                $CI =& get_instance();
-		$CI->db->select('id,name,code,op_balance')->from('ledgers')->where('group_id', $childg_id);
-                $ledgers = $CI->db->get();
-                $ledgers_q = $ledgers->result();
-                foreach($ledgers_q as $ledger1)
-                {
-			$ledg_id = $ledger1->id;
-			$ledg_name = $ledger1->name;
-			$op_balance = $ledger1->op_balance;
-		}
-               	//echo "op_b====$this->op_balance"; 
-                return $op_balance;
-	}//function */
 
 
 }//main

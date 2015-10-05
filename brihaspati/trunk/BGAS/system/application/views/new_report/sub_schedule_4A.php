@@ -34,7 +34,7 @@
                 echo "<td> 31.03.".$fy_end[0]."</td>";
         echo "</tr>";
         $object = new Reportlist1();
-        $object->Nonplan_Fixed_Sub_ScheduleA('2001',4);
+        $object->Plan_Fixed_Sub_ScheduleA('2001',4);
 	$op_balance1 = $object->opening_bal1;
 	$dr_total1 = $object->dr_plan_total1;
 	$cr_total1 = $object->cr_plan_total1;
@@ -99,7 +99,7 @@
         echo "<br>";
 	 echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
         $object = new Reportlist1();
-        $object->Nonplan_Fixed_Sub_ScheduleB(149);
+        $object->Plan_Fixed_Sub_ScheduleB(149);
 	$op_balance2 = $object->opening_bal2;
         $cr_total2 = $object->cr_plan_total2;
         $dr_total2 = $object->dr_plan_total2;
@@ -143,7 +143,7 @@
                 echo "<td> 31.03.".$fy_end[0]."</td>";
         echo "</tr>";
 		$object = new Reportlist1();
-	        $object->Nonplan_Fixed_Sub_ScheduleC(152);
+	        $object->Plan_Fixed_Sub_ScheduleC(152);
 		$op_balance3 = $object->opening_bal3;
         	$dr_total3 = $object->dr_plan_total3;
         	$cr_total3 = $object->cr_plan_total3;

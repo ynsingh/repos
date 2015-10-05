@@ -5,7 +5,7 @@ class Reportlist1
 	{
 		return;
 	}
-
+	
 	function init($id)
 	{
 		$CI =& get_instance();
@@ -625,42 +625,44 @@ class Reportlist1
                 $id = $CI->group_model->get_group_id($code);
                 $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
                 $group_detail = $CI->db->get();
-                $group_result = $group_detail->result();
-                foreach($group_result as $row)
+                foreach($group_detail->result() as $row)
                 {
                         $g_id =$row->id;
                         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$g_id);
                         $child_detail = $CI->db->get();
-			 $child_result = $child_detail->result();
-                        foreach($child_result as $row1)
+                        foreach($child_detail->result() as $row1)
                         {
-                        $group_id =$row1->id;
-                        $group_name = $row1->name;
-                        $CI->load->model('newschedules_model');
-                        $result = $CI->newschedules_model->fixed_asset($group_id,$count);
-                        $value = explode('#', $result);
-                        $opening_bal = $value[0];
-                        $sum = $sum + $opening_bal;
-                        $dr_total = $value[1];
-                        $sum1 = $sum1 + $dr_total;
-                        $cr_total = $value[2];
-                        $sum2 = $sum2 + $cr_total;
-                        $closing_bal = $value[3];
-                        $sum3 = $sum3 + $closing_bal;
-                        $net_total = $value[4];
-                        //echo "net=========$net_total";
-                        $sum7 = $sum7 + $net_total;
-                        //echo "sum7=======$sum7";
-                        $current_year_value = $net_total;
-                        $result1 = $CI->newschedules_model->get_dep_value($group_id);
-                        $value1 = explode('#', $result1);
-                        $dep_op_balance = $value1[0];
-                        $sum4 = $sum4 + $dep_op_balance;
-                        $current_dep_amount = $value1[1];
-                        $sum5 = $sum5 + $current_dep_amount;
-                        $total_depreciation = $value1[2];
-                        $sum6 = $sum6 + $total_depreciation;
+                        	$group_id =$row1->id;
+                        	$group_name = $row1->name;
+                        	$CI->load->model('newschedules_model');
+                        	$value = $CI->newschedules_model->fixed_asset($group_id);
+                        	$opening_bal = $value[0];
+				$opening_bal_dc = $value[1];
+                        	$sum = $sum + $opening_bal;
+              		        $dr_total = $value[2];
+                        	$sum1 = $sum1 + $dr_total;
+                     		$cr_total = $value[3];
+                        	$sum2 = $sum2 + $cr_total;
+               		        $closing_bal = $value[4];
+                        	$sum3 = $sum3 + $closing_bal;
 
+         	                $result1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
+                        	$dep_op_balance = $result1[0];
+                        	$sum4 = $sum4 + $dep_op_balance;
+				$old_dep_amount = $result1[1];
+				
+				$result2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
+                        	$new_dep_amount = $result2[1];
+
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+			$sum5 = $sum5 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum6 = $sum6 + $total_depreciation;
+			$net_total = ($opening_bal + $dr_total) - $cr_total;
+			$sum7 = $sum7 + $net_total;
+			$current_year_value = $net_total;
+			
                         if(($group_id!= 148) && ($group_id!= 149))
                         {
                         echo "<tr class=\"tr-group\">";
@@ -668,31 +670,38 @@ class Reportlist1
                         echo $counter;
                         $counter++;
                         echo "</td>";
-			 echo "<td>";
-                        //if($group_name == 'Others Fixed Assets')
-                        //echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row1->id . '/' . $row1->name, $row1->name, array('title' => $row1->name, 'style' => 'color:#000000'));
-                        //elseif($group_name == 'Land')
-                        //echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row1->id . '/' . $row1->name, $row1->name, array('title' => $row1->name, 'style' => 'color:#000000'));
-                        //else
+			echo "<td>";
+                        if($group_name == 'Others Fixed Assets')
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row1->id . '/' . $row1->name, $row1->name, array('title' => $row1->name, 'style' => 'color:#000000'));
+                        elseif($group_name == 'Land')
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row1->id . '/' . $row1->name, $row1->name, array('title' => $row1->name, 'style' => 'color:#000000'));
+                        else
                         echo "&nbsp;" .  $group_name;
                         echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$opening_bal) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dr_total) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($opening_bal) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($dr_total) . "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$closing_bal) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
                         echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_dep_amount) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
                         echo "<td align=\"right\" width=\"9%\">";
                         echo "0.00";
                         echo "</td>";
                         echo "<td align=\"center\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_year_value) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>"; 
                         }//ifcondition
-                echo "</tr>";
-                        }//childgroup 
+                    }//childgroup 
                 }//foreach group  
                 $this->opening_balance = $sum;
                 $this->debit_total = $sum1;
@@ -701,12 +710,12 @@ class Reportlist1
                 $this->dep_opening_balance = $sum4;
                 $this->current_depreciation_amount = $sum5;
                 $this->total_depreciation = $sum6;
-                $this->curr_amount = $sum7;
-
+                $this->curr_amount = $sum7; 
         }
+
 	function FixedAsset_B($code,$count)
 	{
-		 $sum = 0;
+		$sum = 0;
                 $sum1 = 0;
                 $sum2 = 0;
                 $sum3 = 0;
@@ -714,7 +723,7 @@ class Reportlist1
                 $sum5 = 0;
                 $sum6 = 0;
                 $sum7 = 0;
-                $counter = 18;
+                $counter = 5;
                 $net_total = 0;
                 $CI = & get_instance();
                 //Get current label.
@@ -737,61 +746,78 @@ class Reportlist1
                 $group_result = $group_detail->row();
                 $group_id =$group_result->id;
                 $group_name = $group_result->name;
+
                 $CI->load->model('newschedules_model');
-                $result = $CI->newschedules_model->fixed_asset($group_id, $count);
-                $value = explode('#', $result);
-                $opening_bal = $value[0];
+                $value = $CI->newschedules_model->fixed_asset($group_id, $count);
+		$opening_bal = $value[0];
+                $opening_bal_dc = $value[1];
                 $sum = $sum + $opening_bal;
-                $dr_total = $value[1];
-		 $sum1 = $sum1 + $dr_total;
-                $cr_total = $value[2];
+                $dr_total = $value[2];
+               	$sum1 = $sum1 + $dr_total;
+                $cr_total = $value[3];
                 $sum2 = $sum2 + $cr_total;
-                $closing_bal = $value[3];
+                $closing_bal = $value[4];
                 $sum3 = $sum3 + $closing_bal;
-                //$dep_op_balance = $value[4];
-                //$sum4 = $sum4 + $dep_op_balance;
-                //$current_dep_amount = $value[5];
-                //$sum5 = $sum5 + $current_dep_amount;
-                //$total_depreciation = $value[6];
-                $net_total = $value[4];
-                $sum7 = $sum7 + $net_total;
 
-                $current_year_value = $net_total;
-                $result1 = $CI->newschedules_model->get_dep_value($group_id);
-                $value1 = explode('#', $result1);
-                $dep_op_balance = $value1[0];
+                $result1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
+		$dep_op_balance = $result1[0];
                 $sum4 = $sum4 + $dep_op_balance;
-                $current_dep_amount = $value1[1];
-                $sum5 = $sum5 + $current_dep_amount;
-                $total_depreciation = $value1[2];
-                $sum6 = $sum6 + $total_depreciation;
+                $old_dep_amount = $result1[1];
 
+		$result2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
+		$new_dep_amount = $result2[1];
 
-                echo "<tr class=\"tr-group\">";
-                echo "<td class=\"td-group\" width=\"40\">";
-                echo $counter;
-                echo "</td>";
-                echo "<td class=\"td-group\" width=\"225\">";
-                //if($group_name == 'Capital Work-In-Progress')
-                //echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $group_id . '/' .  $group_name, $group_name, array('title' => $group_name, 'style' => 'color:#000000'));
-                //else
-                echo "&nbsp;" .  $group_name;
-                echo '<b>(B)</b>';
-                echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$opening_bal) . "</td>";
-			 echo "<td align=\"right\">" . convert_amount_dc(+$dr_total) . "</td>";
+                        //Adding opening balance for the ledger head.
+                        $current_depreciation = ($old_dep_amount + $new_dep_amount);
+                        $sum5 = $sum5 + $current_depreciation;
+                        $total_depreciation = $dep_op_balance + $current_depreciation;
+                        $sum6 = $sum6 + $total_depreciation;
+                        $net_total = ($opening_bal + $dr_total) - $cr_total;
+                        $sum7 = $sum7 + $net_total;
+                        $current_year_value = $net_total;
+
+                	echo "<tr class=\"tr-group\">";
+                	echo "<td class=\"td-group\" width=\"40\">";
+                	echo $counter;
+                	echo "</td>";
+			if($count == "4"){
+                	echo "<td class=\"td-group\" width=\"225\">";
+                	if($group_name == 'Capital Work-In-Progress')
+                	echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $group_id . '/' .  $group_name, $group_name, array('title' => $group_name, 'style' => 'color:#000000'));
+                	else
+                	echo "&nbsp;" .  $group_name;
+                	echo '<b>(B)</b>';
+                	echo "</td>";
+			}else{
+			echo "<td class=\"td-group\" width=\"225\">";
+			echo "&nbsp;" .  $group_name;
+                        echo "</td>";
+
+			}
+			
+			echo "<td align=\"right\">" . convert_amount_dc($opening_bal) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($dr_total) . "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$closing_bal) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
                         echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_dep_amount) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
                         echo "<td align=\"right\" width=\"9%\">";
                         echo "0.00";
                         echo "</td>";
                         echo "<td align=\"center\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_year_value) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>"; 
+
                 echo "</tr>";
                 $this->opening_balance = $sum;
                 $this->debit_total = $sum1;
@@ -819,57 +845,71 @@ class Reportlist1
                 //$id = $CI->group_model->get_group_id($code);
                 $CI->db->select('name,code,id')->from('ledgers')->where('group_id',152);
                 $ledger_detail = $CI->db->get();
-                $ledger_result = $ledger_detail->result();
-                foreach($ledger_result as $row)
+                foreach($ledger_detail->result() as $row)
                 {
-                $ledg_id =$row->id;
-                $ledg_name = $row->name;
-                $CI->load->model('newschedules_model');
-                $result = $CI->newschedules_model->fixed_assetledg($ledg_id,$count);
-                $value = explode('#', $result);
-                $opening_bal = $value[0];
-                $sum = $sum + $opening_bal;
-                $dr_total = $value[1];
-                $sum1 = $sum1 + $dr_total;
-                $cr_total = $value[2];
-                $sum2 = $sum2 + $cr_total;
-                $closing_bal = $value[3];
-                $sum3 = $sum3 + $closing_bal;
-                $net_total = $value[4];
-                $sum7 = $sum7 + $net_total;
-                $current_year_value = $net_total;
+                	$ledg_id =$row->id;
+                	$ledg_name = $row->name;
+                	$CI->load->model('newschedules_model');
+                	$result = $CI->newschedules_model->fixed_assetledg($ledg_id);
+			$opening_bal = $result[0];
+			$opening_bal_dc = $result[1];
+                        $sum = $sum + $opening_bal;
+              		$dr_total = $result[2];
+                        $sum1 = $sum1 + $dr_total;
+                     	$cr_total = $result[3];
+                        $sum2 = $sum2 + $cr_total;
+               		$closing_bal = $result[4];
+                        $sum3 = $sum3 + $closing_bal;
 
-                $result1 = $CI->newschedules_model->get_dep_value_ledg($ledg_id);
-                $value1 = explode('#', $result1);
-                $dep_op_balance = $value1[0];
-		 $sum4 = $sum4 + $dep_op_balance;
-                $current_dep_amount = $value1[1];
-                $sum5 = $sum5 + $current_dep_amount;
-                $total_depreciation = $value1[2];
-                $sum6 = $sum6 + $total_depreciation;
+         	        $result1 = $CI->newschedules_model->get_old_asset_depvalue1($ledg_id);
+                        $dep_op_balance = $result1[0];
+                        $sum4 = $sum4 + $dep_op_balance;
+			$old_dep_amount = $result1[1];
+				
+			$result2 = $CI->newschedules_model->get_new_asset_depvalue1($ledg_id);
+                        $new_dep_amount = $result2[1];
 
-                echo "<tr class=\"tr-group\" colspan=\"2\">";
-                 echo "<td class=\"td-group\">";
-                echo $counter;
-                $counter++;
-                echo "</td>";
-                echo "<td class=\"td-group\" width=\"225\">";
-                echo "&nbsp;" .  $ledg_name;
-                echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$opening_bal) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dr_total) . "</td>";
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+			$sum5 = $sum5 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum6 = $sum6 + $total_depreciation;
+			$net_total = ($opening_bal + $dr_total) - $cr_total;
+			$sum7 = $sum7 + $net_total;
+			$current_year_value = $net_total;
+
+                	echo "<tr class=\"tr-group\" colspan=\"2\">";
+                	echo "<td class=\"td-group\">";
+                	echo $counter;
+                	$counter++;
+                	echo "</td>";
+                	echo "<td class=\"td-group\" width=\"225\">";
+                	echo "&nbsp;" .  $ledg_name;
+                	echo "</td>"; 
+
+			echo "<td align=\"right\">" . convert_amount_dc($opening_bal) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($dr_total) . "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$closing_bal) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
                         echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_dep_amount) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
                         echo "<td align=\"right\" width=\"9%\">";
                         echo "0.00";
                         echo "</td>";
                         echo "<td align=\"center\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_year_value) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>"; 
+			
                 echo "</tr>";
                 }//foreach 
                 $this->opening_balance = $sum;
@@ -879,28 +919,180 @@ class Reportlist1
                 $this->dep_opening_balance = $sum4;
                 $this->current_depreciation_amount = $sum5;
                 $this->total_depreciation = $sum6;
-		$this->curr_amount = $sum7;
+		$this->curr_amount = $sum7; 
         }
-/*	function Fixed_Sub_Schedule($code,$count)
+
+	function Fixed_Asset_Others($code,$count)
 	{
 		$counter = 1;
+		$sum = 0;
+		$sum1 = 0;
+		$sum2 = 0;
+		$sum3 = 0;
+		$sum4 = 0;
+		$sum5 = 0;
+		$sum6 = 0;
+		$sum7 = 0;
+
+		$CI = & get_instance();
+                //Get current label.
+                $current_active_account = $CI->session->userdata('active_account');
+                $CI->db->from('settings');
+                $detail = $CI->db->get();
+                foreach ($detail->result() as $row)
+                {
+                $date1 = $row->fy_start;
+                $date2 = $row->fy_end;
+                }
+                $fy_start=explode("-",$date1);
+                $fy_end=explode("-",$date2);
+                $curr_year = $fy_start[0] ."-" .$fy_end[0];
+                $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+
+		$CI->load->model('ledger_model');
+		$group_id = $CI->ledger_model->get_group_id($code);
+		$CI->db->select('id,name')->from('ledgers')->where('group_id', $group_id);
+		$query_r = $CI->db->get();
+		
+		foreach($query_r->result() as $row)
+                {
+                        $ledger_id = $row->id;
+                        $ledger_name = $row->name;
+			echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo $counter;
+                        $counter++;
+                        echo "</td>";
+			echo "<td>";
+                        echo "&nbsp;" .  $ledger_name;
+                        echo "</td>";
+			$CI->load->model('newschedules_model');
+                	$result = $CI->newschedules_model->fixed_assetledg($ledger_id);
+			$opening_bal = $result[0];
+			$opening_bal_dc = $result[1];
+                        $sum = $sum + $opening_bal;
+              		$dr_total = $result[2];
+                        $sum1 = $sum1 + $dr_total;
+                     	$cr_total = $result[3];
+                        $sum2 = $sum2 + $cr_total;
+               		$closing_bal = $result[4];
+                        $sum3 = $sum3 + $closing_bal;
+
+         	        $result1 = $CI->newschedules_model->get_old_asset_depvalue1($ledger_id);
+                        $dep_op_balance = $result1[0];
+                        $sum4 = $sum4 + $dep_op_balance;
+			$old_dep_amount = $result1[1];
+				
+			$result2 = $CI->newschedules_model->get_new_asset_depvalue1($ledger_id);
+                        $new_dep_amount = $result2[1];
+
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+			$sum5 = $sum5 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum6 = $sum6 + $total_depreciation;
+			$net_total = ($opening_bal + $dr_total) - $cr_total;
+			$sum7 = $sum7 + $net_total;
+			$current_year_value = $net_total;  
+
+			echo "<td align=\"right\">" . convert_amount_dc($opening_bal) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($dr_total) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "0.00";
+                        echo "</td>";
+                        echo "<td align=\"center\">";
+                        echo money_format('%!i', convert_cur($total_depreciation));
+                        echo "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>"; 
+			
+                echo "</tr>";
+
+                }//foreach 
+                $this->opening_balance1 = $sum;
+                $this->debit_total1 = $sum1;
+                $this->credit_total1 = $sum2;
+                $this->closing_balance1 = $sum3;
+                $this->dep_opening_balance1 = $sum4;
+                $this->current_depreciation_amount1 = $sum5;
+                $this->total_depreciation1 = $sum6;
+		$this->curr_amount1 = $sum7; 
+
+	}
+
+	function Plan_Fixed_Sub_ScheduleA($code,$count)
+	{
+		$counter = 1;
+		$cr_plan_total = 0;
+		$dr_plan_total = 0;
+		$closing_sum = 0;
+		$sum1 = 0;
+		$sum2 = 0;
+		$sum3 = 0;
+		$sum4 = 0;
+		$sum5 = 0;
+		$sum6 = 0;
+		$sum7 = 0;
+		$current_dep_value4a = 0;
+		$total_dep4a = 0;
+		$dep_opening_value = 0;
+		
 		$CI =& get_instance();
                 $CI->load->model('group_model');
                 $id = $CI->group_model->get_group_id($code);
                 $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
                 $group_detail = $CI->db->get();
-                $group_result = $group_detail->result();
-                foreach($group_result as $row)
+                foreach($group_detail->result() as $row)
                 {
-                        $group_id =$row->id;
-                        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$group_id);
+                        $g_id =$row->id;
+                        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$g_id);
                         $child_detail = $CI->db->get();
-                        $child_result = $child_detail->result();
-                        foreach($child_result as $row1)
+                        foreach($child_detail->result() as $row1)
                         {
-                        $child_id =$row1->id;
-                        $child_name = $row1->name;
-                        if(($child_id!= 148) && ($child_id!= 149))
+                        $group_id =$row1->id;
+                        $group_name = $row1->name;
+			$CI->load->model('newschedules_model');
+	                $result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
+			$opening_balance = $result4a[0];
+			$sum1 = $sum1 + $opening_balance;
+			$opening_bal_dc = $result4a[1];
+                	$plan_dr_amount = $result4a[2];
+			$dr_plan_total = $dr_plan_total + $plan_dr_amount;
+			$plan_cr_amount = $result4a[3];
+			$cr_plan_total = $cr_plan_total + $plan_cr_amount;
+			$closing_bal = $result4a[6];
+                        $sum2 = $sum2 + $closing_bal;
+
+			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
+                        $dep_op_balance = $dep1[2];
+			$dep_opening_value  = $dep_opening_value + $dep_op_balance;
+			$old_dep_amount = $dep1[3];
+				
+			$dep2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
+                        $new_dep_amount = $dep2[3];
+
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+			$sum3 = $sum3 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum4 = $sum4 + $total_depreciation;
+			$net_total = ($opening_balance + $plan_dr_amount) - $plan_cr_amount;
+			$sum5 = $sum5 + $net_total;
+			$current_year_value = $net_total;
+
+                        if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
                         {
                         echo "<tr class=\"tr-group\">";
                         echo "<td class=\"td-group\">";
@@ -908,24 +1100,566 @@ class Reportlist1
                         $counter++;
                         echo "</td>";
 			echo "<td class=\"td-group\" width=\"225\">";
-                	echo "&nbsp;" .  $child_name;
+                	echo "&nbsp;" .  $group_name;
                 	echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-		 	}//ifcondition
-                	echo "</tr>";
-                        }//childgroup
-                }//foreach group
 
-	} */
+			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($plan_dr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(-$plan_cr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "0.00";
+                        echo "</td>";
+                        echo "<td align=\"center\">";
+                        echo money_format('%!i', convert_cur($total_depreciation));
+                        echo "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+
+		 	}//ifcondition
+                    }//childgroup
+                }//foreach group
+		$this->opening_bal1 = $sum1;
+		$this->cr_plan_total1 = $cr_plan_total;
+		$this->dr_plan_total1 = $dr_plan_total;
+		$this->closing_sum1 = $sum2;
+		$this->dep_opening = $dep_opening_value;
+		$this->current_dep_total = $sum3;
+		$this->total_depreciation = $sum4;
+		$this->curr_amount = $sum5;
+
+	}
+
+	function Plan_Fixed_Sub_ScheduleB($id)
+	{
+		$counter = 17;
+		$cr_plan_total = 0;
+		$dr_plan_total = 0;
+		$closing_sum = 0;
+		$sum1 = 0;
+		$sum2 = 0;
+		$sum3 = 0;
+		$sum4 = 0;
+		$sum5 = 0;
+		$sum6 = 0;
+		$sum7 = 0;
+		$current_dep_value4a = 0;
+		$total_dep4a = 0;
+		$dep_opening_value = 0;
+
+		$CI =& get_instance();
+                $CI->db->select('name,code,id')->from('groups')->where('id',$id);
+                $group_detail = $CI->db->get();
+                $group_result = $group_detail->row();
+                $group_id =$group_result->id;
+                $group_name = $group_result->name;
+
+                echo "<tr class=\"tr-group\">";
+                echo "<td class=\"td-group\" width=\"40\">";
+                echo $counter;
+                echo "</td>";
+		echo "<td class=\"td-group\" width=\"225\">";
+                echo "&nbsp;" .  $group_name . "<b>(B)</b>";
+                echo "</td>";
+
+		 	$result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
+			$opening_balance = $result4a[0];
+			$sum1 = $sum1 + $opening_balance;
+			$opening_bal_dc = $result4a[1];
+                	$plan_dr_amount = $result4a[2];
+			$dr_plan_total = $dr_plan_total + $plan_dr_amount;
+			$plan_cr_amount = $result4a[3];
+			$cr_plan_total = $cr_plan_total + $plan_cr_amount;
+			$closing_bal = $result4a[6];
+                        $sum2 = $sum2 + $closing_bal;
+
+			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
+                        $dep_op_balance = $dep1[2];
+			$dep_opening_value  = $dep_opening_value + $dep_op_balance;
+			$old_dep_amount = $dep1[3];
+				
+			$dep2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
+                        $new_dep_amount = $dep2[3];
+
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+			$sum3 = $sum3 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum4 = $sum4 + $total_depreciation;
+			$net_total = ($opening_balance + $plan_dr_amount) - $plan_cr_amount;
+			$sum5 = $sum5 + $net_total;
+			$current_year_value = $net_total;
+
+			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($plan_dr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(-$plan_cr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "0.00";
+                        echo "</td>";
+                        echo "<td align=\"center\">";
+                        echo money_format('%!i', convert_cur($total_depreciation));
+                        echo "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                echo "</tr>";
+		
+		$this->opening_bal2 = $sum1;
+		$this->cr_plan_total2 = $cr_plan_total;
+		$this->dr_plan_total2 = $dr_plan_total;
+		$this->closing_sum2 = $sum2;
+		$this->dep_opening2 = $dep_opening_value;
+		$this->current_dep_total2 = $sum3;
+		$this->total_depreciation2 = $sum4;
+		$this->curr_amount2 = $sum5;
+	}
+
+	function Plan_Fixed_Sub_ScheduleC($id)
+        {
+                $counter = 18;
+		$sum1 = 0;
+		$sum2 = 0;
+		$sum3 = 0;
+		$sum4 = 0;
+		$sum5 = 0;
+		$dr_plan_total = 0;
+		$cr_plan_total = 0;
+		$dep_opening_value = 0;
+                $CI =& get_instance();
+                $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+                $ledger_detail = $CI->db->get();
+                $ledger_result = $ledger_detail->result();
+                foreach($ledger_result as $row)
+                {
+                	$ledg_id =$row->id;
+                	$ledg_name = $row->name;
+                	echo "<tr class=\"tr-group\" colspan=\"2\">";
+               	 	echo "<td class=\"td-group\">";
+                	echo $counter;
+                	$counter++;
+                	echo "</td>";
+                	echo "<td class=\"td-group\" width=\"225\">";
+                	echo "&nbsp;" .  $ledg_name;
+                	echo "</td>";
+
+			//$result4a = $CI->newschedules_model->plan_sub_schedule4($ledg_id);
+			$result4a = $CI->newschedules_model->fixed_assetledg($ledg_id);
+			$opening_balance = $result4a[0];
+			$sum1 = $sum1 + $opening_balance;
+			$opening_bal_dc = $result4a[1];
+                	$plan_dr_amount = $result4a[5];
+			$dr_plan_total = $dr_plan_total + $plan_dr_amount;
+			$plan_cr_amount = $result4a[6];
+			$cr_plan_total = $cr_plan_total + $plan_cr_amount;
+			$closing_bal = $result4a[9];
+                        $sum2 = $sum2 + $closing_bal;
+
+			$dep3 = $CI->newschedules_model->get_old_asset_depvalue1($ledg_id); 
+                        $dep_op_balance = $dep3[2];
+			$dep_opening_value  = $dep_opening_value + $dep_op_balance;
+			$old_dep_amount = $dep3[3];
+			
+			$dep4 = $CI->newschedules_model->get_new_asset_depvalue1($ledg_id);	
+                        $new_dep_amount = $dep4[3];
+
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+			$sum3 = $sum3 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum4 = $sum4 + $total_depreciation;
+			$net_total = ($opening_balance + $plan_dr_amount) - $plan_cr_amount;
+			$sum5 = $sum5 + $net_total;
+			$current_year_value = $net_total;
+
+			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($plan_dr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(-$plan_cr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "0.00";
+                        echo "</td>";
+                        echo "<td align=\"center\">";
+                        echo money_format('%!i', convert_cur($total_depreciation));
+                        echo "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                }//foreach
+
+		$this->opening_bal3 = $sum1;
+		$this->cr_plan_total3 = $cr_plan_total;
+		$this->dr_plan_total3 = $dr_plan_total;
+		$this->closing_sum3 = $sum2;
+		$this->dep_opening3 = $dep_opening_value;
+		$this->current_dep_total3 = $sum3;
+		$this->total_depreciation3 = $sum4;
+		$this->curr_amount3 = $sum5;
+
+	}
+
+
+	function Nonplan_Fixed_Sub_ScheduleA($code,$count)
+	{
+		$counter = 1;
+		$cr_nonplan_total = 0;
+		$dr_nonplan_total = 0;
+		$closing_sum = 0;
+		$sum1 = 0;
+		$sum2 = 0;
+		$sum3 = 0;
+		$sum4 = 0;
+		$sum5 = 0;
+		$sum6 = 0;
+		$sum7 = 0;
+		$current_dep_value4a = 0;
+		$total_dep4a = 0;
+		$dep_opening_value = 0;
+		
+		$CI =& get_instance();
+                $CI->load->model('group_model');
+                $id = $CI->group_model->get_group_id($code);
+                $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+                $group_detail = $CI->db->get();
+                foreach($group_detail->result() as $row)
+                {
+                        $g_id =$row->id;
+                        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$g_id);
+                        $child_detail = $CI->db->get();
+                        foreach($child_detail->result() as $row1)
+                        {
+                        $group_id =$row1->id;
+                        $group_name = $row1->name;
+			$CI->load->model('newschedules_model');
+	                $result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
+			$opening_balance = $result4a[0];
+			$sum1 = $sum1 + $opening_balance;
+			$opening_bal_dc = $result4a[1];
+                	$nonplan_dr_amount = $result4a[4];
+			$dr_nonplan_total = $dr_nonplan_total + $nonplan_dr_amount;
+			$nonplan_cr_amount = $result4a[5];
+			$cr_nonplan_total = $cr_nonplan_total + $nonplan_cr_amount;
+			$closing_bal = $result4a[7];
+                        $sum2 = $sum2 + $closing_bal;
+
+			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
+                        $dep_op_balance = $dep1[5];
+			$dep_opening_value  = $dep_opening_value + $dep_op_balance;
+			$old_dep_amount = $dep1[4];
+				
+			$dep2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
+                        $new_dep_amount = $dep2[4];
+
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+			$sum3 = $sum3 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum4 = $sum4 + $total_depreciation;
+			$net_total = ($opening_balance + $nonplan_dr_amount) - $nonplan_cr_amount;
+			$sum5 = $sum5 + $net_total;
+			$current_year_value = $net_total;
+
+                        if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
+                        {
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo $counter;
+                        $counter++;
+                        echo "</td>";
+			echo "<td class=\"td-group\" width=\"225\">";
+                	echo "&nbsp;" .  $group_name;
+                	echo "</td>";
+
+			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($nonplan_dr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(-$nonplan_cr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "0.00";
+                        echo "</td>";
+                        echo "<td align=\"center\">";
+                        echo money_format('%!i', convert_cur($total_depreciation));
+                        echo "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+
+		 	}//ifcondition
+                    }//childgroup
+                }//foreach group
+		$this->opening_bal1 = $sum1;
+		$this->cr_plan_total1 = $cr_nonplan_total;
+		$this->dr_plan_total1 = $dr_nonplan_total;
+		$this->closing_sum1 = $sum2;
+		$this->dep_opening = $dep_opening_value;
+		$this->current_dep_total = $sum3;
+		$this->total_depreciation = $sum4;
+		$this->curr_amount = $sum5;
+
+	}
+
+	function Nonplan_Fixed_Sub_ScheduleB($id)
+	{
+		$counter = 17;
+		$cr_nonplan_total = 0;
+		$dr_nonplan_total = 0;
+		$closing_sum = 0;
+		$sum1 = 0;
+		$sum2 = 0;
+		$sum3 = 0;
+		$sum4 = 0;
+		$sum5 = 0;
+		$sum6 = 0;
+		$sum7 = 0;
+		$current_dep_value4a = 0;
+		$total_dep4a = 0;
+		$dep_opening_value = 0;
+
+		$CI =& get_instance();
+                $CI->db->select('name,code,id')->from('groups')->where('id',$id);
+                $group_detail = $CI->db->get();
+                $group_result = $group_detail->row();
+                $group_id =$group_result->id;
+                $group_name = $group_result->name;
+
+                echo "<tr class=\"tr-group\">";
+                echo "<td class=\"td-group\" width=\"40\">";
+                echo $counter;
+                echo "</td>";
+		echo "<td class=\"td-group\" width=\"225\">";
+                echo "&nbsp;" .  $group_name . "<b>(B)</b>";
+                echo "</td>";
+
+		 	$result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
+			$opening_balance = $result4a[0];
+			$sum1 = $sum1 + $opening_balance;
+			$opening_bal_dc = $result4a[1];
+                	$nonplan_dr_amount = $result4a[4];
+			$dr_nonplan_total = $dr_nonplan_total + $nonplan_dr_amount;
+			$nonplan_cr_amount = $result4a[5];
+			$cr_nonplan_total = $cr_nonplan_total + $nonplan_cr_amount;
+			$closing_bal = $result4a[7];
+                        $sum2 = $sum2 + $closing_bal;
+
+			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
+                        $dep_op_balance = $dep1[5];
+			$dep_opening_value  = $dep_opening_value + $dep_op_balance;
+			$old_dep_amount = $dep1[4];
+				
+			$dep2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
+                        $new_dep_amount = $dep2[4];
+
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+			$sum3 = $sum3 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum4 = $sum4 + $total_depreciation;
+			$net_total = ($opening_balance + $nonplan_dr_amount) - $nonplan_cr_amount;
+			$sum5 = $sum5 + $net_total;
+			$current_year_value = $net_total;
+
+			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($nonplan_dr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(-$nonplan_cr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "0.00";
+                        echo "</td>";
+                        echo "<td align=\"center\">";
+                        echo money_format('%!i', convert_cur($total_depreciation));
+                        echo "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                echo "</tr>";
+		
+		$this->opening_bal2 = $sum1;
+		$this->cr_plan_total2 = $cr_nonplan_total;
+		$this->dr_plan_total2 = $dr_nonplan_total;
+		$this->closing_sum2 = $sum2;
+		$this->dep_opening2 = $dep_opening_value;
+		$this->current_dep_total2 = $sum3;
+		$this->total_depreciation2 = $sum4;
+		$this->curr_amount2 = $sum5;
+	}
+
+	function Nonplan_Fixed_Sub_ScheduleC($id)
+        {
+                $counter = 18;
+		$sum1 = 0;
+		$sum2 = 0;
+		$sum3 = 0;
+		$sum4 = 0;
+		$sum5 = 0;
+		$dr_plan_total = 0;
+		$cr_plan_total = 0;
+		$dr_nonplan_total  = 0;
+		$cr_nonplan_total = 0;
+		$dep_opening_value = 0;
+                $CI =& get_instance();
+                $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+                $ledger_detail = $CI->db->get();
+                $ledger_result = $ledger_detail->result();
+                foreach($ledger_result as $row)
+                {
+                	$ledg_id =$row->id;
+                	$ledg_name = $row->name;
+                	echo "<tr class=\"tr-group\" colspan=\"2\">";
+               	 	echo "<td class=\"td-group\">";
+                	echo $counter;
+                	$counter++;
+                	echo "</td>";
+                	echo "<td class=\"td-group\" width=\"225\">";
+                	echo "&nbsp;" .  $ledg_name;
+                	echo "</td>";
+
+			//$result4a = $CI->newschedules_model->plan_sub_schedule4($ledg_id);
+			$result4a = $CI->newschedules_model->fixed_assetledg($ledg_id);
+			$opening_balance = $result4a[0];
+			$sum1 = $sum1 + $opening_balance;
+			$opening_bal_dc = $result4a[1];
+                	$nonplan_dr_amount = $result4a[7];
+			$dr_nonplan_total = $dr_nonplan_total + $nonplan_dr_amount;
+			$nonplan_cr_amount = $result4a[8];
+			$cr_nonplan_total = $cr_nonplan_total + $nonplan_cr_amount;
+			$closing_bal = $result4a[10];
+                        $sum2 = $sum2 + $closing_bal;
+
+			$dep3 = $CI->newschedules_model->get_old_asset_depvalue1($ledg_id); 
+                        $dep_op_balance = $dep3[2];
+			$dep_opening_value  = $dep_opening_value + $dep_op_balance;
+			$old_dep_amount = $dep3[4];
+			
+			$dep4 = $CI->newschedules_model->get_new_asset_depvalue1($ledg_id);	
+                        $new_dep_amount = $dep4[4];
+
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+			$sum3 = $sum3 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum4 = $sum4 + $total_depreciation;
+			$net_total = ($opening_balance + $nonplan_dr_amount) - $nonplan_cr_amount;
+			$sum5 = $sum5 + $net_total;
+			$current_year_value = $net_total;
+
+			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($nonplan_dr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(-$nonplan_cr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "0.00";
+                        echo "</td>";
+                        echo "<td align=\"center\">";
+                        echo money_format('%!i', convert_cur($total_depreciation));
+                        echo "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                }//foreach
+
+		$this->opening_bal3 = $sum1;
+		$this->cr_plan_total3 = $cr_nonplan_total;
+		$this->dr_plan_total3 = $dr_nonplan_total;
+		$this->closing_sum3 = $sum2;
+		$this->dep_opening3 = $dep_opening_value;
+		$this->current_dep_total3 = $sum3;
+		$this->total_depreciation3 = $sum4;
+		$this->curr_amount3 = $sum5;
+
+	} 
+
+	function Fixed_Sub_ScheduleCi($code,$count)
+	{
+		$counter = 19;
+                $CI =& get_instance();
+                //$id = $CI->group_model->get_group_id($code);
+                $CI->db->select('name,code,id')->from('ledgers')->where('group_id',152);
+                $ledger_detail = $CI->db->get();
+                $ledger_result = $ledger_detail->result();
+                foreach($ledger_result as $row)
+                {
+                $ledg_id =$row->id;
+                $ledg_name = $row->name;
+                echo "<tr class=\"tr-group\" colspan=\"2\">";
+                echo "<td class=\"td-group\">";
+                echo $counter;
+                $counter++;
+                echo "</td>";
+                echo "<td class=\"td-group\" width=\"225\">";
+
+                if($ledg_name == 'Patents and Copyrights (Patents Granted)')
+		 echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/inner_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
+                else
+                echo "&nbsp;" .  $ledg_name;
+                echo "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+			 echo "</tr>";
+                }//foreach
+        }
 	
 	function Current_liability($id,$code,$count)
 	{
@@ -948,13 +1682,13 @@ class Reportlist1
                 	echo "<td class=\"td-group\">";
                 	echo $counter;
                 	$counter++;
-			//if($group_name == 'Recipts Against Sponsored Projects')
-                        //echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
-                        //elseif($group_name == 'UGC Sponsored Fellowship/Scholarships')
-                        //echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));  
-			//elseif($group_name == 'Unutilized Grants')
-                        //echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));  
-			//else
+			if($group_name == 'Recipts Against Sponsored Projects')
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
+                        elseif($group_name == 'UGC Sponsored Fellowship/Scholarships')
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));  
+			elseif($group_name == 'Unutilized Grants')
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));  
+			else
                 	echo "&nbsp;&nbsp;" . $group_name;
                 	echo "</td>";
 			echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($liability_total) . "</td>";
@@ -1018,32 +1752,352 @@ class Reportlist1
 		$this->liability_total = $sum;
 	}
 
-/*	function sub_schedule_3c()
+	function subschedule_3a($id)
 	{
+		$counter = 1;
+		$sum = 0;
+		$project_name = "";
+		$total_opening = 0;
+		$op_balance_sum = 0;
+		$op_balance_sum1 = 0;
+		$rec_sum = 0;
+		$exp_sum = 0;
+		$total_sum = 0;
+		$closing_sum = 0;
+		$closing_sum1 = 0;		
+
 		$CI =& get_instance();
+        	$CI->load->model('newschedules_model');
+        	$CI->db->select('id,code,name')->from('groups')->where('parent_id', $id);
+        	$group_data1 = $CI->db->get();
+		foreach($group_data1->result() as $row1)
+        	{
+            		$group_name1 = $row1->name;
+            		$group_code1 = $row1->code;
+            		$group_id1 = $row1->id;
+            		$p_name = $CI->newschedules_model->get_project_name($group_name1);
+            		if(!($p_name == $project_name))
+            		{
+                		$project_name = $p_name;         
+                		echo "<tr class=\"tr-group\">";
+                		echo "<td class=\"td-group\" align=\"left\">";
+                		echo $counter;
+                		$counter++;
+                		echo "</td>";
+                		echo "<td align=\"left\">";
+                		echo $project_name;
+                		echo "</td>";
+		 		$opbalance = $CI->newschedules_model->get_op_balance($project_name,$id);
+				
+                		$op_balance = $opbalance[0];
+				//$op_balance_sum = $op_balance_sum + $op_balance;
+                		$op_balance_dc = $opbalance[1];
+
+                		if($op_balance_dc == "D"){
+					echo "<td>";
+                                        echo "</td>";
+                    			echo "<td align=\"right\">" . convert_amount_dc($op_balance) . "</td>";
+					$op_balance_sum = $op_balance_sum + $op_balance;
+                		}else{
+                    			echo "<td align=\"right\">" . convert_amount_dc($op_balance) . "</td>";
+					echo "<td>";
+                                        echo "</td>";
+					$op_balance_sum1 = $op_balance_sum1 + $op_balance;
+                		}
+				
+				$rec_exp_total  = $CI->newschedules_model->get_exp_receipt_total($project_name,$id);
+				$receipt_total = $rec_exp_total[0];
+				$rec_sum = $rec_sum + $receipt_total;
+				$expense_total = $rec_exp_total[1];
+				$exp_sum = $exp_sum + $expense_total;
+				if($op_balance > 0)
+				{
+				$total1 = float_ops($receipt_total, $op_balance, '+');
+				$total_sum = $total_sum + $total1;
+		                }else{
+                	        $total1 = float_ops($receipt_total, $op_balance, '+');
+				$total_sum = $total_sum + $total1;
+				}
+
+				echo "<td align=\"right\">" . convert_amount_dc(+$receipt_total) . "</td>";
+				echo "<td align=\"right\">" . convert_amount_dc($total1) . "</td>";
+				echo "<td align=\"right\">" . convert_amount_dc(-$expense_total) . "</td>";
+
+				$closing_bal = $total1 - $expense_total;
+	                        if($closing_bal > 0){
+                                echo "<td></td>";
+                                echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+                                $closing_sum = $closing_sum + $closing_bal;
+                                }else{
+                                echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+                                echo "<td></td>";
+                                $closing_sum1 = $closing_sum1 + $closing_bal;
+                                }
+
+			}
+
+		}//foreach
+		$this->op_balance1 = $op_balance_sum;
+		$this->op_balance2 = $op_balance_sum1;
+		//$this->op_balance_dc = $op_balance_dc;
+		$this->receipt_total1 = $rec_sum;
+		$this->expense_total1 = $exp_sum;
+		$this->sum_total = $total_sum;
+		$this->closing_bal1 = $closing_sum;
+		$this->closing_bal2 = $closing_sum1;
+
+	}//main
+
+	function subschedule_3b($id)
+	{
+		$counter = 1;
+                $sum = 0;
+		$dr_sum = 0;
+		$cr_sum = 0;
+		$op_bal_sum = 0;
+		$op_bal_sum1 = 0;
+                $project_name = "";
+                $total_opening = 0;
+                $closing_sum = 0;
+		$closing_sum1 = 0;
+                $CI =& get_instance();
+                $CI->load->model('newschedules_model');
+                $CI->db->select('id,code,name')->from('groups')->where('parent_id', $id);
+                $group_data = $CI->db->get();
+                foreach($group_data->result() as $row1)
+                {
+                        $group_name1 = $row1->name;
+                        $group_code1 = $row1->code;
+                        $group_id1 = $row1->id;
+
+                        $p_name = $CI->newschedules_model->get_project_name($group_name1,$id);
+                        if(!($p_name == $project_name))
+                        {
+                                $project_name = $p_name;
+                                echo "<tr class=\"tr-group\">";
+                                echo "<td class=\"td-group\" align=\"left\">";
+                                echo $counter;
+                                $counter++;
+                                echo "</td>";
+                                echo "<td align=\"left\">";
+                                echo $project_name;
+				$opbalance = $CI->newschedules_model->get_op_balance($project_name,$id);
+                                $op_balance = $opbalance[0];
+				//$op_bal_sum = $op_bal_sum + $op_balance;
+                                $op_balance_dc = $opbalance[1];
+				
+				if($op_balance_dc == "D"){
+					echo "<td>";
+                                        echo "</td>";
+                    			echo "<td align=\"right\">" . convert_amount_dc($op_balance) . "</td>";
+					$op_bal_sum = $op_bal_sum + $op_balance;
+                		}else{
+                    			echo "<td align=\"right\">" . convert_amount_dc($op_balance) . "</td>";
+					echo "<td>";
+                                        echo "</td>";
+					$op_bal_sum1 = $op_bal_sum1 + $op_balance;
+                		}
+			$value  = $CI->newschedules_model->get_exp_receipt_total($project_name,$id);
+                        $dr_total = $value[0];
+                        $dr_sum = $dr_sum + $dr_total;
+                        $cr_total = $value[1];
+                        $cr_sum = $cr_sum + $cr_total;
+			echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(+$dr_total) . "</td>";
+
+			$cl_balance = $op_balance + $dr_total - $cr_total;
+			if($cl_balance > 0){
+				echo "<td></td>";
+				echo "<td align=\"right\">" . convert_amount_dc($cl_balance) . "</td>";
+				$closing_sum = $closing_sum + $cl_balance;
+                                }else{
+				echo "<td align=\"right\">" . convert_amount_dc($cl_balance) . "</td>";
+				echo "<td></td>";
+				$closing_sum1 = $closing_sum1 + $cl_balance;
+				}
+                                //$closing_sum = $closing_sum + $cl_balance;
+
+
+			}
+		}//foreach
+		$this->opening_bal1 = $op_bal_sum;
+		$this->opening_bal2 = $op_bal_sum1;
+		$this->debit_total = $dr_sum;
+		$this->credit_total = $cr_sum;
+		$this->cl_bal1 = $closing_sum;
+		$this->cl_bal2 = $closing_sum1;
+	}
+
+	function subschedule_3c()
+	{
+		$total_opening = "";
+		$CI =& get_instance();
+		$CI->load->model('newschedules_model');
+		$id = $CI->Group_model->get_id('Unutilized Grants');
+            	$CI->db->select('name,id')->from('groups')->where('parent_id',$id);
+            	$query = $CI->db->get();
+		$name = array();
+		$n = 0;
+            	$name[0] = "Balance B/F";
+            	$name[1] = "Add: Receipts during the year";
 		echo "<tr>";
-	        echo "<td><strong>A.  Plan grants: Government of India</strong><td>";
-        	echo "</tr>";
+	        echo "<td><strong>A.  Plan grants: Government of India</strong></td>";
+		//do{
+		if($name[0]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[0];
+                        echo "</td>";
+			foreach($query->result() as $row)
+  		        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "105")
+			{
+				$value = $CI->newschedules_model->get_subschedule3c($group_id,'plan');
+				$total_opening = $value[0];
+				$op_balance_dc = $value[1];
+				//$total_dr = $value[2];
+				if($op_balance_dc == 'C'){
+                    			echo "<td align=\"right\">" . convert_amount_dc($total_opening) . "</td>";
+                		}else{
+                    			echo "<td align=\"right\">" . convert_amount_dc($total_opening) . "</td>";
+                		}
+				echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+			echo "</tr>";
+			}//if(id=='')
+			}//foreach
+		}
+
+		  if($name[1]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[1];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "105")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'plan');
+				$total_cr = -($value[2]);
+				echo "<td align=\"right\">" . convert_amount_dc($total_cr) . "</td>";
+				echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+                        }//if($id='')
+			}
+                }
+
+
 		echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "<strong> TOTAL(a)</strong>";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
+		if(($total_opening > 0) && ($total_cr < 0)){
+                $plan_total1 = $total_opening + $total_cr;
+		echo "<td  align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total1) . "</strong>";
+                echo "</td>";
+                }else{
+		$plan_total1 = $total_opening + $total_cr;
+                echo "<td  align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total1) . "</strong>";
+                echo "</td>";
+                }
+
+                echo "<td  align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
-                echo "<td align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
-                echo "</td>";
-      		echo "</tr>";
 		echo "<tr>";
+		//echo "</tr>";
+		$n = 2;
+		$name[2] = "Less Refunds";
+                $name[3] = "Less: Utilized for Revenue Expenditure";
+		$name[4] = "Less: Utilized for Capital expenditure";
+
+		if($name[2]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[2];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "105")
+			{
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'plan');
+				$total_dr = $value[3];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_dr) . "</td>";
+                                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+
+                        echo "</tr>";
+
+                        }//if(id='')
+			}
+                }
+		
+		if($name[3]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[3];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == '105')
+			{
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'plan');
+				$total_revenue = $value[4];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_revenue) . "</td>";
+                                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+
+                        echo "</tr>";
+
+                        }//if
+			}
+                }
+
+		if($name[4]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[4];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "105")
+			{
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'plan');
+				$total_capital = $value[5];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_capital) . "</td>";
+                                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+
+                        //echo "</tr>";
+
+                        }//if
+			}
+                } 
 		echo "</tr>";
 		echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "<strong> TOTAL(b)</strong>";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+		if(($total_dr > 0) && ($total_revenue > 0) && ($total_capital > 0))
+		{
+		$plan_total2 = $total_dr + $total_revenue + $total_capital;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total2) . "</strong>";
                 echo "</td>";
+		}else{
+		$plan_total2 = $total_dr + $total_revenue + $total_capital;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total2) . "</strong>";
+                echo "</td>";
+		}
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
@@ -1051,9 +2105,19 @@ class Reportlist1
 		echo "<td align=\"right\">";
                 echo "Unutilized carried forward(a-b)";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+		if(($plan_total1 > 0) && ($plan_total2 > 0))
+		{
+		$total1 = $plan_total1 - $plan_total2;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($total1) . "</strong>";
                 echo "</td>";
+		}else{
+		$total1 = $plan_total1 + $plan_total2;
+		
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($total1) . "</strong>";
+                echo "</td>";
+		}
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
@@ -1061,26 +2125,161 @@ class Reportlist1
 
 		echo "<tr>";
                 echo "<td><strong>B.  UGC grants: Plans</strong><td>";
+		$n = 5;
+		$name[5] = "Balance B/F";
+                $name[6] = "Add: Receipts during the year";
+		if($name[5]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[5];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "104")
+			{
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'plan');
+				$total_opening1 = $value[0];
+				$op_balance_dc = $value[1];
+				//$total_dr = $value[2];
+				if($op_balance_dc == 'C'){
+                    			echo "<td align=\"right\">" . convert_amount_dc($total_opening1) . "</td>";
+                		}else{
+                    			echo "<td align=\"right\">" . convert_amount_dc($total_opening1) . "</td>";
+                		}
+				echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+				echo "</tr>";
+			}//if
+                        }
+                }
+
+		if($name[6]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[6];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "104")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'plan');
+				$total_cr1 = (-$value[2]);
+				echo "<td align=\"right\">" . convert_amount_dc($total_cr1) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        //echo "</tr>";
+			}//if
+                        }
+                }
+
+
                 echo "</tr>";
                 echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "<strong> TOTAL(c)</strong>";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+		if(($total_opening1 > 0) && ($total_cr1 < 0)){
+                $plan_total3 = $total_opening1 + $total_cr1;
+		echo "<td  align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total3) . "</strong>";
                 echo "</td>";
+                }else{
+		$plan_total3 = $total_opening1 + $total_cr1;
+                echo "<td  align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total3) . "</strong>";
+                echo "</td>";
+                }
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
                 echo "</tr>";
+		echo "<tr>";
+		$n = 7;
+                $name[7] = "Less Refunds";
+                $name[8] = "Less: Utilized for Revenue Expenditure";
+                $name[9] = "Less: Utilized for Capital expenditure";
+
+		if($name[7]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[7];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "104")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'plan');
+				$total_dr1 = $value[3];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_dr1) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+		if($name[8]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[8];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "104")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'plan');
+				$total_revenue1 = $value[4];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_revenue1) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+		if($name[9]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[9];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "104")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'plan');
+				$total_capital1 = $value[5];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_capital1) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        //echo "</tr>";
+			}//if
+                        }
+                }
+
+
+		echo "</tr>";
                 echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "<strong> TOTAL(d)</strong>";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+		if(($total_dr1 > 0) && ($total_revenue1 > 0) && ($total_capital1 > 0))
+		{
+		$plan_total4 = $total_dr1 + $total_revenue1 + $total_capital1;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total4) . "</strong>";
                 echo "</td>";
-		echo "<td colspan=\"2\" align=\"right\">";
+		}else{
+		$plan_total4 = $total_dr1 + $total_revenue1 + $total_capital1;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total4) . "</strong>";
+                echo "</td>";
+		}
+		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
 		echo "</tr>";
@@ -1088,9 +2287,18 @@ class Reportlist1
 		echo "<td align=\"right\">";
                 echo "Unutilized carried forward(c-d)";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+		if(($plan_total3 > 0) && ($plan_total4 > 0))
+		{
+		$total2 = $plan_total3 - $plan_total4;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($total2) . "</strong>";
                 echo "</td>";
+		}else{
+		$total2 = $plan_total3 + $plan_total4;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($total2) . "</strong>";
+                echo "</td>";
+		}
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
@@ -1098,31 +2306,183 @@ class Reportlist1
 
 		echo "<tr>";
                 echo "<td><strong>C.  UGC Grants Non Plan</strong><td>";
+		$n = 10;
+                $name[10] = "Balance B/F";
+                $name[11] = "Add: Receipts during the year";
+
+		if($name[10]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[10];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "104")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'nonplan');
+				$total_opening2 = $value[0];
+				$op_balance_dc = $value[1];
+				//$total_dr = $value[2];
+				if($op_balance_dc == 'C'){
+                    			echo "<td align=\"right\">" . convert_amount_dc($total_opening2) . "</td>";
+                		}else{
+                    			echo "<td align=\"right\">" . convert_amount_dc($total_opening2) . "</td>";
+                		}
+				echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+		if($name[11]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[11];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "104")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'nonplan');
+				$total_cr2 = (-$value[2]);
+				echo "<td align=\"right\">" . convert_amount_dc($total_cr2) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        //echo "</tr>";
+			}//if
+                        }
+                }
+
+
                 echo "</tr>";
                 echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "<strong> TOTAL(e)</strong>";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+		if(($total_opening2 > 0) && ($total_cr2 < 0)){
+                $plan_total5 = $total_opening2 + $total_cr2;
+		echo "<td  align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total5) . "</strong>";
                 echo "</td>";
+                }else{
+		$plan_total5 = $total_opening2 + $total_cr2;
+                echo "<td  align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total5) . "</strong>";
+                echo "</td>";
+                }
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
                 echo "</tr>";
                 echo "<tr>";
+		$n = 12;
+                $name[12] = "Less Refunds";
+                $name[13] = "Less: Utilized for Revenue Expenditure";
+                $name[14] = "Less: Utilized for Capital expenditure";
+
+		if($name[12]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[12];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "104")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'nonplan');
+				$total_dr2 = $value[3];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_dr2) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+		 if($name[13]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[13];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "104")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'nonplan');
+				$total_revenue2 = $value[4];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_revenue2) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+		 if($name[14]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[14];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "104")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'nonplan');
+				$total_capital2 = $value[5];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_capital2) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+
                 echo "</tr>";
                 echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "<strong> TOTAL(f)</strong>";
                 echo "</td>";
+		if(($total_dr2 > 0) && ($total_revenue2 > 0) && ($total_capital2 > 0))
+		{
+		$plan_total6 = $total_dr2 + $total_revenue2 + $total_capital2;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total6) . "</strong>";
+                echo "</td>";
+		}else{
+		$plan_total6 = $total_dr2 + $total_revenue2 + $total_capital2;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total6) . "</strong>";
+                echo "</td>";
+		}
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "</td>";
+	        echo "</tr>";
+
 		echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "Unutilized carried forward(e-f)";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+		if(($plan_total5 > 0) && ($plan_total6 > 0))
+		{
+		$total3 = $plan_total5 - $plan_total6;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($total3) . "</strong>";
                 echo "</td>";
+		}else{
+		$total3 = $plan_total5 + $plan_total6;
+		
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($total3) . "</strong>";
+                echo "</td>";
+		}
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
@@ -1130,31 +2490,179 @@ class Reportlist1
 		
 		echo "<tr>";
                 echo "<td><strong>D.  Grants from State Govt.</strong><td>";
+		$n = 15;
+                $name[15] = "Balance B/F";
+                $name[16] = "Add: Receipts during the year";
+
+		if($name[15]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[15];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "106")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'');
+				$total_opening3 = $value[0];
+				$op_balance_dc = $value[1];
+				//$total_dr = $value[2];
+				if($op_balance_dc == 'C'){
+                    			echo "<td align=\"right\">" . convert_amount_dc($total_opening3) . "</td>";
+                		}else{
+                    			echo "<td align=\"right\">" . convert_amount_dc($total_opening3) . "</td>";
+                		}
+				echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+		 if($name[16]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[16];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "106")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'');
+				$total_cr3 = (-$value[2]);
+				echo "<td align=\"right\">" . convert_amount_dc($total_cr3) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+
                 echo "</tr>";
                 echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "<strong> TOTAL(g)</strong>";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+	 	if(($total_opening3 > 0) && ($total_cr3 < 0)){
+                $plan_total7 = $total_opening3 + $total_cr3;
+		echo "<td  align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total7) . "</strong>";
                 echo "</td>";
+                }else{
+		$plan_total7 = $total_opening3 + $total_cr3;
+                echo "<td  align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total7) . "</strong>";
+                echo "</td>";
+                }	
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
                 echo "</tr>";
                 echo "<tr>";
+		$n = 17;
+                $name[17] = "Less Refunds";
+                $name[18] = "Less: Utilized for Revenue Expenditure";
+                $name[19] = "Less: Utilized for Capital expenditure";
+
+		if($name[17]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[17];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "106")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'');
+				$total_dr3 = $value[3];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_dr3) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+                if($name[18]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[18];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "106")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'');
+				$total_revenue3 = $value[4];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_revenue3) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+		if($name[19]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $name[19];
+                        echo "</td>";
+                        foreach($query->result() as $row)
+                        {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+			if($group_id == "106")
+                        {
+                        	$value = $CI->newschedules_model->get_subschedule3c($group_id,'');
+				$total_capital3 = $value[5];
+				echo "<td align=\"right\">" . convert_amount_dc(+$total_capital3) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "</tr>";
+			}//if
+                        }
+                }
+
+
                 echo "</tr>";
                 echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "<strong> TOTAL(h)</strong>";
                 echo "</td>";
+		if(($total_dr3 > 0) && ($total_revenue3 > 0) && ($total_capital3 > 0))
+		{
+		$plan_total8 = $total_dr3 + $total_revenue3 + $total_capital3;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total8) . "</strong>";
+                echo "</td>";
+		}else{
+		$plan_total8 = $total_dr3 + $total_revenue3 + $total_capital3;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($plan_total8) . "</strong>";
+                echo "</td>";
+		}
+		echo "</tr>";
                 echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "Unutilized carried forward(g-h)";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+	 	if(($plan_total7 > 0) && ($plan_total8 > 0))
+		{
+		$total4 = $plan_total7 - $plan_total8;
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($total4) . "</strong>";
                 echo "</td>";
+		}else{
+		$total4 = $plan_total7 + $plan_total8;
+		
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($total4) . "</strong>";
+                echo "</td>";
+		}	
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
@@ -1164,43 +2672,25 @@ class Reportlist1
 		echo "<td align=\"right\">";
                 echo "*Grand Total (A+B+C+D)";
                 echo "</td>";
-                echo "<td colspan=\"2\" align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
-                echo "</td>";
+	
+		if(($total1 > 0) && ($total2 > 0) && ($total3 > 0) && ($total4 > 0))
+		{		
+		$grand_total = $total1 + $total2 + $total3 + $total4;
                 echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($grand_total) . "</strong>";
+                echo "</td>";
+		}else{
+		$grand_total = $total1 + $total2 + $total3 + $total4;
+		echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc($grand_total) . "</strong>";
+                echo "</td>";
+		}
+		echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
-                echo "</tr>";
-
-
-
+                echo "</tr>"; 
 	}
 		
-	function subschedule_3a()
-	{
-		$counter = 1;
-		$CI =& get_instance();
-		$CI->db->select('id,code,name')->from('groups')->where('parent_id', 93);
-		$main_result = $CI->db->get();
-                $main_q = $main_result->result();
-                foreach($main_q as $row)
-                {
-                	$group_id = $row->id;
-                	$group_name = $row->name;
-                	echo "<tr class=\"tr-group\">";
-                	echo "<td class=\"td-group\" align=\"center\">";
-                	echo $counter;
-                	$counter++;
-			echo "</td>";
-			echo "<td align=\"center\">";
-                	echo "&nbsp;&nbsp;" . $group_name;
-                	echo "</td>";
-
-		}//foreach
-
-
-	}    */
-	
 	function subschedule5($code)
 	{
 		$counter=1;
@@ -2093,7 +3583,7 @@ class Reportlist1
             $CI->load->model('Group_model');
             $CI->load->model('Ledger_model');
 
-            $group_id = $CI->Group_model->get_id('Grant and Donations');
+            $group_id = $CI->Group_model->get_id('Grant/Subsidies and Donations');
             $CI->db->select('name,id')->from('ledgers')->where('group_id',$group_id);
             $query = $CI->db->get();
             $counter = $query->num_rows();
@@ -2102,7 +3592,6 @@ class Reportlist1
             $ledger_id = array();
             $x = 0;
             foreach($q_result as $row){
-
                 $ledg_id = $row->id;
                 $ledger_id[$x] = $ledg_id;
                 $x++;
@@ -2127,6 +3616,7 @@ class Reportlist1
             $groupnonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'nonplan');
             $groupspecific = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'specific_sch');
             $group1plan = $CI->Ledger_model->get_schedule10_data($ledger_id[1],'plan');
+		//print_r($group1plan);
             $group1nonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[1],'nonplan');
             $group2plan = $CI->Ledger_model->get_schedule10_data($ledger_id[2],'plan');
             $group2nonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[2],'nonplan');
@@ -2223,7 +3713,7 @@ class Reportlist1
         $total2 = 0;
         $total = 0;
         $total4 = 0;
-        $date3 = '2015-04-01 00:00:00';
+       // $date3 = '2015-04-01 00:00:00';
         $CI->load->model('Group_model');
         $CI->load->model('Ledger_model');
 
@@ -2249,11 +3739,11 @@ class Reportlist1
             $pro_ledg_id = $row2->id;
             $pro_ledg_name = $row2->name;
             $op_bal = $CI->Ledger_model->get_op_balance($pro_ledg_id);
-            if($op_bal[1] ='C'){
+            if($op_bal[1] =='C'){
                 $op_bal[1] = 'Cr';
                 $op_bal_cr - $op_bal_cr = $op_bal_cr + $op_bal[0];
             }
-            elseif($op_bal[1] ='D'){
+            elseif($op_bal[1] =='D'){
                 $op_bal[1] = 'Dr';
                 $op_bal_dr = $op_bal_dr + $op_bal[0];
             }
@@ -2311,7 +3801,7 @@ class Reportlist1
             {
                 $total_sum2[$i] = 0 - $total_sum2[$i];
                 $total3 = $amount + $total_sum2[$i];
-            }else{
+            }elseif($dc == 'Dr'){
                 $total3 = $amount + $total_sum2[$i];
             }
             echo"<td align=\"right\">";
@@ -2436,5 +3926,363 @@ class Reportlist1
         echo"</td>";
         echo "</tr>";
     }
+
+	function designated_fundA($code,$type,$database,$count)
+	{
+		$op_balance = 0;
+		$total_op_bal = 0;
+		$fund_total = 0;
+		$total_income = 0;
+		$total_intrest = 0;
+		$total_saving = 0;
+		$net_total = 0;
+		
+	
+		$CI =& get_instance();
+		$CI->load->model('newschedules_model');
+        	$current_active_account = $CI->session->userdata('active_account');
+        	$CI->db->from('settings');
+        	$detail = $CI->db->get();
+        	foreach ($detail->result() as $row)
+        	{
+            	$date1 = $row->fy_start;
+            	$date2 = $row->fy_end;
+        	}
+        	$fy_start=explode("-",$date1);
+        	$fy_end=explode("-",$date2);
+        	$curr_year = $fy_start[0] ."-" .$fy_end[0];
+        	$prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+
+		$CI->load->model('Group_model');
+            	$CI->load->model('Ledger_model');
+
+            	$id = $CI->Group_model->get_id('Designated-Earmarked/Endowment Funds');
+            	$CI->db->select('name,id')->from('groups')->where('parent_id',$id);
+            	$query = $CI->db->get();
+            	$counter = $query->num_rows();
+            	$q_result = $query->result();
+            	$group_id = array();
+		$total1 = array();
+                $i = 0;
+
+            	$x = 0;
+		$n = 0;
+		$name = array();
+            	$name[0] = " Opening balance";
+            	$name[1] = " Additions during the year";
+            	$name[2] = " Income from investments made of the funds";
+            	$name[3] = " Accrued Interest on investments/Advances";
+            	$name[4] = " Interest on Savings Bank a/c";
+            	$name[5] = " Other additions (Specify nature)";
+
+		if($name[0]){
+			echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "a)&nbsp;" . $name[0];
+                        echo "</td>";
+		foreach($q_result as $row)
+                {
+                	$group_id = $row->id;
+                	$group_name = $row->name;
+			$value = $CI->newschedules_model->schedule2($group_id);
+                        $opening_balance = $value[0];
+			$op_bal_dc = $value[8];
+			$total_op_bal = $total_op_bal + $opening_balance;
+			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
+		}
+		echo "<td align=\"right\">";
+        	echo "<strong>" . convert_amount_dc($total_op_bal) . "</strong>";
+        	echo "</td>";
+		echo "<td align=\"right\">";
+        	echo "<strong>" . convert_amount_dc(0) . "</strong>";
+        	echo "</td>"; 
+		}//if
+		 if($name[1]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "b)&nbsp;" . $name[1];
+                        echo "</td>";
+                foreach($q_result as $row)
+                {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+                        $value = $CI->newschedules_model->schedule2($group_id);
+			$fund_addition = $value[1];
+			$fund_total = $fund_total + $fund_addition;
+                        echo "<td align=\"right\">" . convert_amount_dc(+$fund_addition) . "</td>";
+                }
+		//echo "fund_add======>$fund_addition=======fund_total=========>$fund_total";
+		echo "<td align=\"right\">";
+        	echo "<strong>" . convert_amount_dc(+$fund_total) . "</strong>";
+       	 	echo "</td>";   
+        	echo "<td align=\"right\">";
+        	echo "<strong>" . convert_amount_dc(0) . "</strong>";
+        	echo "</td>"; 
+                }//if
+
+		 if($name[2]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "c)&nbsp;" . $name[2];
+                        echo "</td>";
+                foreach($q_result as $row)
+                {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+                        $value = $CI->newschedules_model->schedule2($group_id);
+                        $fund_investment_income = $value[2];
+                        $total_income = $total_income + $fund_investment_income;
+                        echo "<td align=\"right\">" . convert_amount_dc(+$fund_investment_income) . "</td>";
+                }
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(+$total_income) . "</strong>";
+                echo "</td>";
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "</td>";
+                }//if
+
+		if($name[3]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "d)&nbsp;" . $name[3];
+                        echo "</td>";
+                foreach($q_result as $row)
+                {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+                        $value = $CI->newschedules_model->schedule2($group_id);
+                        $accru_intrest = $value[3];
+                        $total_intrest = $total_intrest + $accru_intrest;
+                        echo "<td align=\"right\">" . convert_amount_dc(+$accru_intrest) . "</td>";
+                }
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(+$total_intrest) . "</strong>";
+                echo "</td>";
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "</td>";
+                }//if
+
+		if($name[4]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "e)&nbsp;" . $name[4];
+                        echo "</td>";
+                foreach($q_result as $row)
+                {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+                        $value = $CI->newschedules_model->schedule2($group_id);
+                        $earned_intrest = $value[4];
+                        $total_saving = $total_saving + $earned_intrest;
+                        echo "<td align=\"right\">" . convert_amount_dc(+$earned_intrest) . "</td>";
+                }
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(+$total_saving) . "</strong>";
+                echo "</td>";
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "</td>";
+                }//if
+
+		if($name[5]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "f)&nbsp;" . $name[5];
+                        echo "</td>";
+                foreach($q_result as $row)
+                {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+                        $value = $CI->newschedules_model->schedule2($group_id);
+                      //  $accru_intrest = $value[4];
+                      //  $total_intrest = $total_intrest + $accru_intrest;
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                }
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "</td>";
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "</td>";
+                }//if
+		
+		echo "<tr>";
+        	echo "<td class=\"bold\" align=\"center\">";
+        	echo "TOTAL(A)";
+        	echo "</td>";
+		foreach($q_result as $row)
+                {
+                	$group_id = $row->id;
+                        $group_name = $row->name;
+
+			$value = $CI->newschedules_model->schedule2($group_id);
+			$opening_balance = $value[0];
+			$fund_addition = $value[1];
+			$fund_investment_income = $value[2];
+			$accru_intrest = $value[3];
+			$earned_intrest = $value[4];
+
+			//$other_addition = 0;
+			$total = ($opening_balance + $fund_addition + $fund_investment_income + $accru_intrest + $earned_intrest); 
+			echo "<td align=\"right\">";
+		        echo "<strong>" . convert_amount_dc($total) . "</strong>";
+        		echo "</td>";
+			$net_total = $net_total + $total;
+			
+
+		}//foreach
+		$this->net_total1 = $net_total;
+	}
+
+	function designated_fundB($code,$type,$database,$count)
+	{
+		$total_capital_exp = 0;
+		$total_revenue_exp = 0;
+		$net_total1 = 0;
+		$net_total3 = 0;
+
+		$CI =& get_instance();
+                $CI->load->model('newschedules_model');
+                $current_active_account = $CI->session->userdata('active_account');
+                $CI->db->from('settings');
+                $detail = $CI->db->get();
+                foreach ($detail->result() as $row)
+                {
+                $date1 = $row->fy_start;
+                $date2 = $row->fy_end;
+                }
+                $fy_start=explode("-",$date1);
+                $fy_end=explode("-",$date2);
+                $curr_year = $fy_start[0] ."-" .$fy_end[0];
+                $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+
+                $CI->load->model('Group_model');
+                $CI->load->model('Ledger_model');
+
+                $id = $CI->Group_model->get_id('Designated-Earmarked/Endowment Funds');
+                $CI->db->select('name,id')->from('groups')->where('parent_id',$id);
+                $query = $CI->db->get();
+                $counter = $query->num_rows();
+                $q_result = $query->result();
+                $group_id = array();
+                $x = 0;
+
+		$n = 6;
+		$name[6] = " Capital Expenditure";
+                $name[7] = " Revenue Expenditure";
+
+		if($name[6]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "i)&nbsp;" . $name[6];
+                        echo "</td>";
+                foreach($q_result as $row)
+                {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+                        $value = $CI->newschedules_model->schedule2($group_id);
+                        $capital_exp = $value[6];
+                        $total_capital_exp = $total_capital_exp + $capital_exp;
+                        echo "<td align=\"right\">" . convert_amount_dc(+$capital_exp) . "</td>";
+                }
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(+$total_capital_exp) . "</strong>";
+                echo "</td>";
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "</td>";
+                }//if
+
+		if($name[7]){
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "ii)&nbsp;" . $name[7];
+                        echo "</td>";
+                foreach($q_result as $row)
+                {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+                        $value = $CI->newschedules_model->schedule2($group_id);
+                        $revenue_exp = $value[7];
+                        $total_revenue_exp = $total_revenue_exp + $revenue_exp;
+                        echo "<td align=\"right\">" . convert_amount_dc(+$revenue_exp) . "</td>";
+                }
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(+$total_revenue_exp) . "</strong>";
+                echo "</td>";
+                echo "<td align=\"right\">";
+                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "</td>";
+                }//if
+
+		echo "<tr>";
+                echo "<td class=\"bold\" align=\"center\">";
+                echo "TOTAL(B)";
+                echo "</td>";
+                foreach($q_result as $row)
+                {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+
+                        $value = $CI->newschedules_model->schedule2($group_id);
+			$capital_exp = $value[6];
+			$revenue_exp = $value[7];
+                        //$other_addition = 0;
+                        $totalb = ($capital_exp + $revenue_exp);
+                        echo "<td align=\"right\">";
+                        echo "<strong>" . convert_amount_dc($totalb) . "</strong>";
+                        echo "</td>";
+                        $net_total1 = $net_total1 + $totalb;
+
+
+                }//foreach
+	
+		echo "<td align=\"right\">";
+        	echo "<strong>" . convert_amount_dc($net_total1) . "</strong>";
+        	echo "</td>";
+
+        	echo "<td align=\"right\">";
+        	echo "<strong>" . convert_amount_dc(0) . "</strong>";
+        	echo "</td>";
+        	echo "</tr>";	
+
+		echo "<tr>";
+        	echo "<td class=\"bold\" align=\"center\">";
+        	echo "Closing balance at the year end (A - B)";
+        	echo "</td>";
+		foreach($q_result as $row)
+                {
+                        $group_id = $row->id;
+                        $group_name = $row->name;
+
+                        $value = $CI->newschedules_model->schedule2($group_id);
+                        $opening_balance = $value[0];
+                        //$opening_data = $op_balance[0];
+                        $fund_addition = $value[1];
+                        $fund_investment_income = $value[2];
+                        $accru_intrest = $value[3];
+                        $earned_intrest = $value[4];
+			$capital_exp = $value[6];
+                        $revenue_exp = $value[7];
+
+                        //$other_addition = 0;
+                        $totalA = ($opening_balance + $fund_addition + $fund_investment_income + $accru_intrest + $earned_intrest);
+			$totalB = ($capital_exp + $revenue_exp);
+			
+			$net_closing = $totalA - $totalB;
+			echo "<td align=\"right\">";
+        		echo "<strong>" . convert_amount_dc($net_closing) . "</strong>";
+        		echo "</td>";
+			$net_total3 = $net_total3 + $net_closing;
+
+			}//foreach
+
+                //$this->net_total2 = $net_total1;
+		$this->net_total3 = $net_total3;
+
+	}//f 
+
 }
 

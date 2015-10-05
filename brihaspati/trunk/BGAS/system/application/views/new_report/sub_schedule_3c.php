@@ -15,9 +15,9 @@
         $old_dr_total = 0.00;
         $old_cr_total = 0.00;
         echo "<table border=0 class=\"simple-table balance-sheet-table\">";
-        echo "<thead><tr><th></th><th align=\"center\" colspan=\"2\">CURRENT YEAR</th><th align=\"center\" colspan=\"2\">PREVIOUS YEAR</th></tr></thead>";
+        echo "<thead><tr><th></th><th align=\"center\">CURRENT YEAR</th><th align=\"center\">PREVIOUS YEAR</th></tr></thead>";
 	$liability = new Reportlist1();
-        $liability->sub_schedule_3c();
+        $liability->subschedule_3c();
 
 	echo "</table>";
 

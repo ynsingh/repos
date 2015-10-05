@@ -903,19 +903,28 @@ var $ledgers = array();
 			foreach($query_result2->result() as $row1)
 			{
 				$entry_items_id = $row1->entry_items_id;
-				$this->db->select('entries.sanc_type as sanc_type');
+				$this->db->select('entries.sanc_type as sanc_type,entry_items.dc as entry_items_dc');
             	$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.id', $entry_items_id);	
             	$query_result3 = $this->db->get();
             	foreach($query_result3->result() as $row2)
 				{
 					$sanc_type = $row2->sanc_type;
-
+					$dc = $row2->entry_items_dc;
 					if($sanc_type == 'select' || $sanc_type == 'non_plan'){
 						$amount = $row1->amount;
-						$non_plan_total = $non_plan_total + $amount;
+						if($dc == "D"){
+							 $non_plan_total = $non_plan_total + $amount;
+                    				}else{
+							 $non_plan_total = $non_plan_total + $amount;
+						}
 					}elseif($sanc_type == 'plan'){
 						$amount = $row1->amount;
-						$plan_total = $plan_total + $amount;	
+						if($dc == "D"){
+							 $plan_total = $plan_total + $amount;
+                                                }else{
+							 $plan_total = $plan_total + $amount;
+                                                }
+
 					}elseif($sanc_type == 'plan_sfc_scheme'){
 						$amount = $row1->amount;
 						$specific_total = $specific_total + $amount;
@@ -954,6 +963,7 @@ var $ledgers = array();
 		$this->db->where('code LIKE','10'.'%');
 		$query_result = $this->db->get();
 		$query_result1 = $query_result->result();
+		
 		foreach($query_result1 as $row)
 		{
 			$fundname = $row->name;
@@ -965,20 +975,31 @@ var $ledgers = array();
 
 			foreach($query_result2->result() as $row1)
 			{
+				//print_r($row1);
 				$entry_items_id = $row1->entry_items_id;
-				$this->db->select('entries.sanc_type as sanc_type');
+				$this->db->select('entries.sanc_type as sanc_type,entry_items.dc as entry_items_dc');
             	$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.id', $entry_items_id);	
             	$query_result3 = $this->db->get();
             	foreach($query_result3->result() as $row2)
 				{
 					$sanc_type = $row2->sanc_type;
-
+					$dc = $row2->entry_items_dc;
 					if($sanc_type == 'select' || $sanc_type == 'non_plan'){
 						$amount = $row1->amount;
-						$non_plan_total = $non_plan_total + $amount;
+						if($dc == "D"){
+                                                         $non_plan_total = $non_plan_total + $amount;
+                                                }else{
+                                                         $non_plan_total = $non_plan_total + $amount;
+                                                }
+
 					}elseif($sanc_type == 'plan'){
 						$amount = $row1->amount;
-						$plan_total = $plan_total + $amount;	
+						if($dc == "D"){
+                                                         $plan_total = $plan_total + $amount;
+                                                }else{
+                                                         $plan_total = $plan_total + $amount;
+                                                }
+						 
 					}elseif($sanc_type == 'plan_sfc_scheme'){
 						$amount = $row1->amount;
 						$specific_total = $specific_total + $amount;
@@ -988,11 +1009,14 @@ var $ledgers = array();
 		}
 
 		$revenue_total = array('plan' => $plan_total,'nonplan' => $non_plan_total ,'specific_sch' => $specific_total);
+		return $revenue_total;
+
 	}
 
 	function get_schedule10_data($ledger_id, $type){
 
         $op_balance = $this->get_op_balance($ledger_id);
+	//print_r($op_balance);
         $dr_total = $this->get_dr_total2($ledger_id);
         $cr_total = $this->get_cr_total2($ledger_id);
         $capital_total = $this->get_capital_exp_total($ledger_id);

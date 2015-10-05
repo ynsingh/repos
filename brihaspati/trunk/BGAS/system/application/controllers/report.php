@@ -186,7 +186,7 @@ class Report extends Controller {
 		if($statement == "new_mhrd")
                 {
                 $data['report'] = "report/new_mhrd";
-                $data['statement'] = "Balance Sheet MHRD Format-NEW";
+                $data['statement'] = "Balance Sheet MHRD Format-2015";
                 $data['left_width'] = "100";
                 $data['right_width'] = "75";
                 $data['print_preview'] = TRUE;
@@ -1096,10 +1096,9 @@ class Report extends Controller {
 // made by @kanchan
 	function new_mhrd()
 	{
-	
 		$this->load->library('session');
                 $this->template->set('page_title', 'Balance Sheet MHRD Format-2015');
-		$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printPreview_schedules/1' => 'Print All Schedules', 'report/pdf/new_mhrd' => 'Download PDF'));
+		$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdf/new_mhrd' => 'Download PDF'));
 		$data['left_width'] = "300";
                 $data['right_width'] = "125";
                 $data['print_preview'] =FALSE;
@@ -1237,7 +1236,6 @@ class Report extends Controller {
  	        $this->load->library('session');
                 $date1 = $this->session->userdata('date1');
                 $date2 = $this->session->userdata('date2');
-
 		$this->counter = 1;
 		if($c == 2){
 	                $this->template->set('page_title', 'Print All Schedules');
@@ -1262,11 +1260,13 @@ class Report extends Controller {
 			$this->init($check);
 			foreach ($this->children_groups as $id => $row)
 			{
+				print_r($row);
 				$count = 0;
 				$this->id = $row['id'];
+				$this->name = $row['name'];
 				$this->code = $row['code'];
 				if(($this->countDigits($row['code']) == 4) && ($this->id != 0) && ($this->code > 100)  && ($this->code!= '1006') && ($this->code!= '1005') && ($this->code!= '1001')){
-			
+					//	echo "kanchan==========$this->name";
 		/*			print_r($this->id);
 					$this->db->from('groups')->where('parent_id',$this->id);
 	        	        	$child_group_q = $this->db->get();
@@ -1371,9 +1371,12 @@ class Report extends Controller {
 	if($c == 1)
 	{
 		$this->template->load('template', 'report/printPreview', $main);
+		//$this->template->load('template', 'report/printall_schedule', $main);
 		}elseif($c == 2)
 		{
 			$this->load->view('report/print_schedules', $main);
+		//	$this->load->view('report/printall_schedule', $main);
+
 		}
 
                 return;
@@ -3583,6 +3586,16 @@ class Report extends Controller {
                 $data['code'] = $code;
                 $this->load->model('Group_model');
                 $group_details = $this->Group_model->get_schedule($code);
+		$group_id = $this->Group_model->get_id('Designated-Earmarked/Endowment Funds');
+
+            	$this->db->select('name')->from('groups')->where('parent_id',$group_id);
+            	$query = $this->db->get();
+            	$counter = $query->num_rows();
+            	$q_result = $query->result();
+
+            	$data['q_result'] = $q_result;
+            	$data['counter'] = $counter;
+
                 foreach ($group_details as $id => $group)
                 {
                         $id  = $group['id'];
@@ -3617,45 +3630,7 @@ class Report extends Controller {
                 }
 		elseif($name == 'Designated-Earmarked/Endowment Funds')
 		{
-		 //add child groups and ledgers for the fund
-                        $num_of_childs = $this->Group_model->get_numOfChild($id);
-                        $count = 0;
-
-                        if($num_of_childs > 0){
-                                //get child id, name, code
-                                $this->db->select('id, name, code');
-                                $this->db->from('groups')->where('parent_id', $id);
-                                $group_result = $this->db->get();
-
-                                foreach($group_result->result() as $row){
-                                        $design_earm_funds_group[$count]['id'] = $row->id;
-                                        $design_earm_funds_group[$count]['name'] = $row->name;
-                                        $design_earm_funds_group[$count]['code'] = $row->code;
-                                        $count++;
-                                }
-                        }
-
-                        $num_of_childs = $this->Ledger_model->get_numOfChild($id);
-
-                        if($num_of_childs > 0){
-                                //get child id, name, code
-                                $this->db->select('id, name, code');
-                                $this->db->from('ledgers')->where('group_id', $id);
-                                $ledger_result = $this->db->get();
-
-                                foreach($ledger_result->result() as $row){
-                                        $design_earm_funds_ledger[$count]['id']= $row->id;
-                                        $design_earm_funds_ledger[$count]['name'] = $row->name;
-                                        $design_earm_funds_ledger[$count]['code'] = $row->code;
-					 $count++;
-                                }
-                        }
-
-
-                        //$data['designated_earmarked_funds'] = $design_earm_funds;
-                        $data['designated_earmarked_funds_group'] = $design_earm_funds_group;
-                        $data['designated_earmarked_funds_ledger'] = $design_earm_funds_ledger;
-			$this->template->load('template', 'new_report/schedule_template_2', $data);
+		$this->template->load('template', 'new_report/schedule_template_2', $data);
 		}elseif($name == 'Current Liabilities & Provisions')
 		{
 		$this->template->load('template', 'new_report/schedule_template_3', $data);
@@ -3691,10 +3666,18 @@ class Report extends Controller {
 		$this->template->set('page_title', 'ANNEXURE A');
                 $this->template->load('template', 'new_report/sub_schedule_7', $data);
 		return;
+		}elseif($ledger_name == 'Land'){
+                $this->template->set('page_title', '<b>SCHEDULE - ' . '4A' . ' ' . 'PLAN</b>');
+                $this->template->load('template', 'new_report/sub_schedule_4A', $data);
+                return;
 		}elseif($ledger_name == 'Others Fixed Assets'){
 		$this->template->set('page_title', '<b>Schedule - ' . '4D' . ' ' . 'OTHERS</b>');
 		$this->template->load('template', 'new_report/sub_schedule_4D', $data);
 		return;
+		}elseif($ledger_name == 'Capital Work-In-Progress'){
+                $this->template->set('page_title', '<b>SCHEDULE - ' . '4B' . ' ' . 'NON- PLAN</b>');
+                $this->template->load('template', 'new_report/sub_schedule_4B', $data);
+                return;
 		}elseif($ledger_name == 'Intangible Assets'){
 		$this->template->set('page_title', '<u><b>Schedule - ' . '4C' . ' ' . 'INTANGIBLE ASSETS</b></u>');
 		$this->template->load('template', 'new_report/sub_schedule_4C', $data);
@@ -3737,9 +3720,18 @@ class Report extends Controller {
                         $arr = array();
                         $arr['code'] = $code;
                         //print_r($code);
-
                         $this->load->model('Group_model');
                         $group_details = $this->Group_model->get_schedule($code);
+			$group_id = $this->Group_model->get_id('Designated-Earmarked/Endowment Funds');
+
+	                $this->db->select('name')->from('groups')->where('parent_id',$group_id);
+        	        $query = $this->db->get();
+                	$counter = $query->num_rows();
+                	$q_result = $query->result();
+
+                	$data['q_result'] = $q_result;
+                	$data['counter'] = $counter;
+
                         //print_r($group_details);
                         foreach ($group_details as $id => $group)
                         {
@@ -3766,6 +3758,8 @@ class Report extends Controller {
 			//echo "name===$name";
                         if($count == 1)
                         $data['report'] = "new_report/schedule_template_1";
+			if($count == 2)
+			$data['report'] = "new_report/schedule_template_2";
                         elseif($count == 3)
 			 $data['report'] = "new_report/schedule_template_3";
                         elseif($count == 4)
@@ -3789,12 +3783,19 @@ class Report extends Controller {
                         $this->load->view('report/report_template', $data);
                         return;
 
-
-                        //echo "name=====$name";
                 }//if
         }
-	
-	
+
+	function printall_schedules($counter)
+	{
+		$this->template->set('page_title', 'Print All Schedules');
+		$this->load->library('session');
+                $date1 = $this->session->userdata('date1');
+                $date2 = $this->session->userdata('date2');
+		
+		$this->template->load('template', 'report/printall_schedules');
+                return;
+	}
 
 
 /*	function inner_sub_schedule($ledger_id,$ledger_name)

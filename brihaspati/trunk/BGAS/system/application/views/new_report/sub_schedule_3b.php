@@ -9,48 +9,55 @@
         $curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
         $prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
         echo "<br>";
-	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"90%\">";
-        echo "<thead><tr><th align=\"center\"><b>1.<br>S.No.</b></th><th align=\"center\" colsapn=\"4\"><b>2.<br>Name of Sponsor</b></th><th align=\"center\" colspan=\"4\"><b>Opening Balance <br>As On 01.04.".$fy_start[0]."</b></th><th align=\"center\" colspan=\"4\"><b>Transactions <br>During the Year <br>".$curr_year."</b></th><th align=\"center\" colspan=\"4\"><b>Closing Balance <br>As On 31.03.".$fy_end[0]."</b></th></tr></thead>";
-	 echo "<tr><td colspan=\"2\"></td><td align=\"center\" colspan=\"2\"><b>3</b></td><td align=\"center\" colspan=\"2\"><b>4</b></td><td align=\"center\" colspan=\"2\"><b>5</b></td><td align=\"center\" colspan=\"2\"><b>6</b></td><td align=\"center\" colspan=\"2\"><b>7</b></td><td align=\"center\" colspan=\"2\"><b>8</b></td></tr>";
+	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\">";
+	echo "<thead>";
+	echo "<tr><th align=\"left\"><b>Sr No.<br>&nbsp;&nbsp;1.</b></th><th align=\"center\"><b>2.<br>Name of the Sponsor</b></th><th align=\"center\" colspan=\"2\"><b>Opening Balance <br>As On 01.04.".$fy_start[0]."</b></th><th align=\"center\" colspan=\"2\"><b>Transactions <br>During the Year <br>".$curr_year."</b></th><th align=\"center\" colspan=\"2\"><b>Closing Balance <br>As On 31.03.".$fy_end[0]."</b></th></tr>";
+        echo"</thead>";
+        echo "<tr><td></td><td></td><td align=\"center\">Credit</td><td align=\"center\">Debit</td><td align=\"center\">Credit</td><td align=\"center\">Debit</td><td align=\"center\">Credit</td><td align=\"center\">Debit</td></tr>";
 
-        echo "<tr><td></td><td></td><td align=\"center\" colspan=\"2\"><b>CR.</b></td><td align=\"center\" colspan=\"2\"><b>DR.</b></td><td align=\"center\" colspan=\"2\"><b>CR.</b></td><td align=\"center\" colspan=\"2\"><b>DR.</b></td><td align=\"center\" colspan=\"2\"><b>CR.</b></td><td align=\"center\" colspan=\"2\"><b>DR.</b></td></tr>";
-		
+		$liability = new Reportlist1();
+        	$liability->subschedule_3b('100');
+		$op_balance_total1 = $liability->opening_bal1;
+		$op_balance_total2 = -($liability->opening_bal2);
+		$debit_total1 = $liability->debit_total;
+		$credit_total1 = $liability->credit_total;
+		$closing_balance1 = $liability->cl_bal1;
+		$closing_balance2 = -($liability->cl_bal2);
+
 	 	echo "<tr>";
-                        echo "<td align=\"right\" width=\"10%\">";
+                        echo "<td align=\"right\">";
                         echo "</td>";
-
-                        echo "<td align=\"right\" width=\"15%\">";
+                        echo "<td align=\"right\">";
                         echo "<strong>TOTAL</strong>";
                         echo "</td>";
+			
+		//if($op_balance_total < 0){
+        	echo "<td align=\"right\">";
+		echo "<strong>" . convert_amount_dc(-$op_balance_total2) . "</strong>"; 
+		echo "</td>";		
 
-                        echo "<td align=\"right\" colspan=\"2\">";
-                        echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "<td align=\"right\">"; 
+		echo "<strong>" . convert_amount_dc(+$op_balance_total1) . "</strong>";
+		echo "</td>";
+
+                        echo "<td align=\"right\">";
+                        echo "<strong>" . convert_amount_dc(-$credit_total1) . "</strong>";
                         echo "</td>";
 
-                        echo "<td align=\"right\" colspan=\"2\">";
-                        echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                        echo "<td align=\"right\">";
+                        echo "<strong>" . convert_amount_dc(+$debit_total1) . "</strong>";
                         echo "</td>";
 
-                        echo "<td align=\"right\" colspan=\"2\">";
-                        echo "<strong>" . convert_amount_dc(0) . "</strong>";
+			//echo "<td></td>";
+                        echo "<td align=\"right\">";
+                        echo "<strong>" . convert_amount_dc(-$closing_balance2) . "</strong>";
                         echo "</td>";
 
-                        echo "<td align=\"right\" colspan=\"2\">";
-                        echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                        echo "<td align=\"right\">";
+                        echo "<strong>" . convert_amount_dc(+$closing_balance1) . "</strong>";
                         echo "</td>";
-
-			 echo "<td align=\"right\" colspan=\"2\">";
-                        echo "<strong>" . convert_amount_dc(0) . "</strong>";
-                        echo "</td>";
-
-                        echo "<td align=\"right\" colspan=\"2\">";
-                        echo "<strong>" . convert_amount_dc(0) . "</strong>";
-                        echo "</td>";
-
+			//echo "<td></td>";
 		echo "</tr>";
 		echo "</table>";
-
-
-
 ?>
 

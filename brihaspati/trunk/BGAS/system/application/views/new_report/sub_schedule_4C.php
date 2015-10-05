@@ -25,8 +25,8 @@
          {
          	$ledg_id =$row->id;
                 $ledg_name = $row->name;
-		if($ledg_name == 'Patents and Copyrights')
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
+		//if($ledg_name == 'Patents and Copyrights (Patents Granted)')
+                //echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
 
          }
 
