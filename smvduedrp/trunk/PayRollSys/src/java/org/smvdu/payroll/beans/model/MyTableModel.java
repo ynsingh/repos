@@ -102,7 +102,7 @@ public class MyTableModel
        }
        System.out.println("Saving Data ...");
        //new SalaryFormulaDB().save(myGrid);
-       new SalaryFormulaDB().update(datas);
+       //new SalaryFormulaDB().update(datas);
        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Salary formula Updated", ""));
     }
 

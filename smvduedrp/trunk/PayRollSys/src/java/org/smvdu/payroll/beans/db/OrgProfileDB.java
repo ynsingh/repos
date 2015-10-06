@@ -42,6 +42,9 @@ public class OrgProfileDB {
             o.setPhone(rs.getString(6));
             o.setAddress1(rs.getString(7));
             o.setAddress2(rs.getString(8));
+            o.setCity(rs.getString(13));
+            o.setPincode(rs.getString(14));
+            o.setState(rs.getString(15));
             rs.close();
             ps.close();
             c.close();
@@ -119,6 +122,7 @@ public class OrgProfileDB {
     public void update(String name,int code)  {
         try
         {
+            //System.out.println("update method is calling======");
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update org_profile set org_name=? where org_id=? ");
             ps.setString(1, name);

@@ -33,8 +33,8 @@
 *  Modified date 27 October 2014, IITK , Om Prakash (omprakashkgp@gmail.com) (GUI Main page)
 --%>
 
-<%@page import="org.smvdu.payroll.api.UserOperationBeans.UserBeans"%>
-<%@page import="org.smvdu.payroll.beans.setup.SalaryProcessingSetup"%>
+<%--<%@page import="org.smvdu.payroll.api.UserOperationBeans.UserBeans"%>
+<%@page import="org.smvdu.payroll.beans.setup.SalaryProcessingSetup"%>--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
@@ -48,10 +48,14 @@
 
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>Payroll System | Welcome</title>
-            <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+           <%-- <link rel="stylesheet" type="text/css" href="css/reset.css"/>
             <link rel="stylesheet" type="text/css" href="css/table.css"/>
+           <link rel="stylesheet" type="text/css" href="css/subpage.css"/>--%>
+           <link rel="stylesheet" type="text/css" href="css/reset.css"/>
             <link rel="stylesheet" type="text/css" href="css/layout.css"/>
             <link rel="stylesheet" type="text/css" href="css/mainpage.css"/>
+            
+            
 
             <script type="text/javascript">
 
@@ -76,6 +80,18 @@
                 }
  
             </script>
+            <style>
+                .button{
+                    margin-left:25px;
+                    
+                }
+                .contactform{
+                    margin-left:18px;
+                    margin-top:5%;
+                    text-align:center;
+                }
+            </style>
+                
                        
             </head>
             <div style=" margin-left: 10%; margin-right: 10%; margin-top: 1%">
@@ -96,7 +112,7 @@
                     <rich:hotKey  key="alt+k" handler="#{rich:component('em')}.expand()"/>
 
                     <rich:dropDownMenu  id="se" value="Setup" styleClass="pic" >
-                        <rich:menuItem  id="se1"   onclick="return loadIframe('ifrm', 'setup/SessionSetup.jsf')"  value="Financial Years"/>
+                       <rich:menuItem  id="se1"   onclick="return loadIframe('ifrm', 'setup/SessionSetup.jsf')"  value="Financial Years"/>
                         <rich:menuItem  id="se2"  onclick="return loadIframe('ifrm', 'setup/Departments.jsf')"  value="Department"/>
                         <rich:menuItem  id="se3"  onclick="return loadIframe('ifrm', 'setup/Designation.jsf')" value="Designation"/>
                         <rich:menuItem  id="se4"  onclick="return loadIframe('ifrm', 'setup/bankProfile.jsf')" value="Add Bank Profile"/>
@@ -232,6 +248,7 @@
             </h:form>
 
             <div class="sidebar">
+                
                 <%-- <rich:panel id="leftpa" >--%>
                     <rich:panel style="height:575px; width:100%; padding:0px; border-width:0px;">
                     <div class="logo">  </div>
@@ -279,25 +296,34 @@
                         </h:panelGrid>
                         <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Upload Logo" />
                         <h:commandButton onclick="Richfaces.showModalPanel('instData');" value="Update"/>
+                        <rich:messages>
+                            <f:facet name="infoMarker">
+                            <h:graphicImage url="/img/success.png"/>
+                            </f:facet>
+                            <f:facet name="errorMarker">
+                            <h:graphicImage url="/img/err.png"/>
+                            </f:facet>
+                        </rich:messages>
                     </rich:panel>
 
-                    <rich:simpleTogglePanel opened="false" label="User Controls">
+                    <rich:simpleTogglePanel label="User Controls">
                         <h:panelGrid id="usrpnl" columns="2">
-                            <h:outputText value="Welcome"/>
+                            <h:outputText value=""/>
                             <h:outputText value="#{UserBean.profile.name}"/>
                             <h:outputText style="font-weight:bold;" value="Financial Year"/>
                             <h:selectOneMenu value="#{SessionController.sessionName}">
                                 <f:selectItems value="#{SessionController.asItems}"/>
                             </h:selectOneMenu>
-                            <h:outputText id="dp" value=" Date |#{UserBean.currentMonthName} "/>
+                            <h:outputText id="dp" style="font-weight:bold;" value="Date"/>
                             <h:form>
                                 <rich:calendar inputSize="10" value="#{UserBean.currentDate}"
                                                datePattern="yyyy-MM-dd" converter="dateConverter"/>
+                                
                                 <a4j:commandButton reRender="dp" action="#{UserBean.set}" value="Set" />
-                                <h:outputText value=""/>
-                                <a4j:commandButton onclick="Richfaces.showModalPanel('cp');" value="Change Password"/>
-
                             </h:form>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <a4j:commandButton onclick="Richfaces.showModalPanel('cp');" value="Change Password"/>
                             <h:commandButton onclick="Richfaces.showModalPanel('themepanel');" value="Theme"/>
                         </h:panelGrid>
                     </rich:simpleTogglePanel>
@@ -333,58 +359,115 @@
             </rich:modalPanel>
 
 
-            <rich:modalPanel id="instData">
+            <rich:modalPanel id="instData" autosized="true"  domElementAttachment="parent" width="500" height="300">
+                
                 <f:facet name="controls">
-                    <h:graphicImage value="/img/cls.png" style="cursor:pointer"
+                    <h:graphicImage value="/img/close1.png" style="cursor:pointer"
                                     onclick="Richfaces.hideModalPanel('instData')" />
                 </f:facet>
                 <f:facet name="header">
-                    <h:outputText value="Theme Selector" />
+                    <h:outputText value="Update Institute Information" />
                 </f:facet>
                 <h:form>
-                    <h:panelGrid columns="2">
-                        <h:outputText value="Institute Name"/>
-                        <rich:inplaceInput value="#{OrgController.currentOrg.name}"/>
-
-                        <h:outputText value="Tag Line"/>
-                        <rich:inplaceInput value="#{OrgController.currentOrg.tagLine}"/>
-
-                        <h:outputText value="WebSite"/>
-                        <rich:inplaceInput value="#{OrgController.currentOrg.web}"/>
-
-                        <h:outputText value="Adress"/>
-                        <rich:inplaceInput value="#{OrgController.currentOrg.address1}"/>
-
-                        <h:outputText value="City/State"/>
-                        <rich:inplaceInput value="#{OrgController.currentOrg.address2}"/>
-
-                        <h:outputText value="E-Mail"/>
-                        <rich:inplaceInput value="#{OrgController.currentOrg.email}"/>
-
-                        <h:outputText value="Phone"/>
-                        <rich:inplaceInput value="#{OrgController.currentOrg.phone}"/>
-
-                        <h:commandButton action="#{OrgController.currentOrg.update}" value="Update"/>
-                        <a4j:commandButton onclick="Richfaces.hideModalPanel('instData')" value="Close"/>
-                    </h:panelGrid>
+                   
+                    <h:panelGrid columns="3" id="contactform" styleClass="contactform">
+                        <h:outputText styleClass="Label" value="Institute Name"/>
+                        <h:inputText  size="40"  id="instname" requiredMessage="Name can not be empty" required="true" value="#{OrgController.currentOrg.name}"/>
+                        <h:message for="instname" style="color:red" />
+                        <h:outputText styleClass="Label" value="Tag Line"/>
+                        <h:inputText  size="40" id="tline" requiredMessage="" value="#{OrgController.currentOrg.tagLine}"/>
+                        <h:message for="tline" style="color:red" />
+                        <h:outputText styleClass="Label" value="Adress"/>
+                        <h:inputText size="40" id="add1" requiredMessage="Address can not empty" required="true" value="#{OrgController.currentOrg.address1}"/>
+                        <h:message for="add1" style="color:red" />
+                        <h:outputText styleClass="Label" value="City"/>
+                        <h:inputText size="40" id="city" requiredMessage="City can not empty" required="true" value="#{OrgController.currentOrg.city}"/>
+                        <h:message for="city" style="color:red" />
+                        <h:outputText styleClass="Label" value="State"/>
+                            <h:selectOneMenu id="state" requiredMessage="State can not empty " required="true" value="#{OrgController.currentOrg.state}">
+                                <f:selectItem itemLabel="Delhi" itemValue="Delhi"/>
+                                <f:selectItem itemLabel="Haryana" itemValue="Haryana" />
+                                <f:selectItem itemLabel="Punjab" itemValue="Punjab" />
+                                <f:selectItem itemLabel="Chandigarh" itemValue="Chandigarh" />
+                                <f:selectItem itemLabel="Himachal Pradesh" itemValue="Himachal Pradesh" />
+                                <f:selectItem itemLabel="Jammu and Kashmir" itemValue="Jammu and Kashmir" />
+                                <f:selectItem itemLabel="Uttarakhand" itemValue="Uttarakhand" />
+                                <f:selectItem itemLabel="Uttar Pradesh" itemValue="Uttar Pradesh" />
+                                <f:selectItem itemLabel="Rajasthan" itemValue="Rajasthan" />
+                                <f:selectItem itemLabel="Gujarat" itemValue="Gujarat" />
+                                <f:selectItem itemLabel="Goa" itemValue="Goa" />
+                                <f:selectItem itemLabel="Maharastra" itemValue="Maharastra" />
+                                <f:selectItem itemLabel="Madhya Pradesh" itemValue="Madhya Pradesh" />
+                                <f:selectItem itemLabel="Chhattisgarh" itemValue="Chhattisgarh" />
+                                <f:selectItem itemLabel="Andhra Pradesh" itemValue="Andhra Pradesh" />
+                                <f:selectItem itemLabel="Telangana" itemValue="Telangana" />
+                                <f:selectItem itemLabel="Karnataka" itemValue="Karnataka" /> 
+                                <f:selectItem itemLabel="Tamil Nadu" itemValue="Tamil Nadu" />
+                                <f:selectItem itemLabel="Kerala" itemValue="Kerala" />
+                                <f:selectItem itemLabel="Lakshadweep (Islands)" itemValue="Lakshadweep (Islands)" />
+                                <f:selectItem itemLabel="West Bengal" itemValue="West Bengal" />
+                                <f:selectItem itemLabel="Andaman and Nicobar Islands" itemValue="Andaman and Nicobar Islands" />
+                                <f:selectItem itemLabel="Odisha" itemValue="Odisha" />
+                                <f:selectItem itemLabel="Assam" itemValue="Assam" />
+                                <f:selectItem itemLabel="Arunachal Pradesh" itemValue="Arunachal Pradesh" />
+                                <f:selectItem itemLabel="Meghalaya" itemValue="Meghalaya" />
+                                <f:selectItem itemLabel="Manipur" itemValue="Manipur" />
+                                <f:selectItem itemLabel="Mizoram" itemValue="Mizoram" />
+                                <f:selectItem itemLabel="Tripura" itemValue="Tripura" />
+                                <f:selectItem itemLabel="Bihar " itemValue="Bihar " />
+                                <f:selectItem itemLabel="Jharkhand" itemValue="Jharkhand" />
+                            </h:selectOneMenu> 
+                            <h:message for="state" style="color:red" />
+                        <h:outputText styleClass="Label" value="WebSite"/>
+                        <h:inputText size="40" id="webs" requiredMessage="Website can not be empty" required="true" value="#{OrgController.currentOrg.web}" label="Website url">
+                        <f:validator validatorId="UrlValidator"/>    
+                        </h:inputText> 
+                        <h:message for="webs" style="color:red" />
+                        <h:outputText styleClass="Label" value="Pincode"/>
+                        <h:inputText size="40" id="pcode" requiredMessage=" Enter Valid Pincode (e.g. For IIT Kanpur (208016)" required="true" value="#{OrgController.currentOrg.pincode}" label="Pincode">
+                        <f:validateLength minimum="6" maximum="6" />
+                        <f:convertNumber integerOnly="true" type="number" />
+                        </h:inputText>
+                        <h:message for="pcode" style="color:red" />
+                        <h:outputText styleClass="Label" value="Phone"/>
+                        <h:inputText size="40" id="pno" requiredMessage="Please Enter Valid Phone Number ( Area Code + Landline / mobile ) e.g. 512 2597944 / 7000002422 " required="true" value="#{OrgController.currentOrg.phone}" label="Phone">
+                        <f:validateLength minimum="10" maximum="10" />
+                        <f:convertNumber integerOnly="true" type="number" />    
+                        </h:inputText> 
+                        <h:message for="pno" style="color:red" />
+                    </h:panelGrid> 
+                    <br/>
+                    <rich:separator styleClass="button"/> 
+                    <br/>
+                    <h:commandButton styleClass="button" action="#{OrgController.currentOrg.update}" value="Update"/>
+                    <a4j:commandButton  onclick="Richfaces.hideModalPanel('instData')" value="Close"/>
                 </h:form>
             </rich:modalPanel>
 
-            <rich:modalPanel id="cp">
+                    <rich:modalPanel id="cp" width="300" height="240" autosized="true">
+                <f:facet name="controls">
+                    <h:graphicImage value="/img/close1.png" style="cursor:pointer"
+                                    onclick="Richfaces.hideModalPanel('cp')" />
+                </f:facet>
+                <f:facet name="header">
+                    <h:outputText value="Change Password " />
+                </f:facet>
                 <h:form>
-
-                    <rich:panel header="Change Password">
-                        <h:panelGrid columns="2">
-                            <h:outputText value="New Password"/>
-                            <h:inputSecret label="Password" value="#{UserBean.pass1}"/>
-                            <h:outputText value="Confirm Password"/>
-                            <h:inputSecret label="Password" value="#{UserBean.pass2}"/>
-                        </h:panelGrid>
-
-                    </rich:panel>
-                    <a4j:commandButton value="Change Password" action="#{UserBean. editPass}"/>
+                    <%--<h:panelGrid columns="2" id="contact" styleClass="contactform" cellpadding="0" cellspacing="0">--%>
+                    <h:panelGrid columns="3" styleClass="data_entry_form" columnClasses="label,field">
+                        <h:outputText value="New Password"/>
+                        <h:inputSecret id="spass" label="Password" value="#{UserBean.pass1}"/>
+                        <h:message for="npass" style="color:red" />
+                        <h:outputText value="Confirm Password "/>
+                        <h:inputSecret id="cpass" label="Password" value="#{UserBean.pass2}"/>
+                        <h:message for="cpass" style="color:red" />
+                    </h:panelGrid>
+                    <br/>
+                    <rich:separator/> 
+                    <h:panelGrid columns="2" id="con" styleClass="contactform" cellpadding="0" cellspacing="0">
+                    <a4j:commandButton value="Submit" action="#{UserBean.editPass}"/>
                     <h:commandButton onclick="Richfaces.hideModalPanel('cp');" value="Close"/>
-
+                    </h:panelGrid>
                 </h:form>
             </rich:modalPanel>
 

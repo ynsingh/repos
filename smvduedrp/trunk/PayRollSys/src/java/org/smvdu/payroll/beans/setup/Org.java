@@ -6,7 +6,6 @@
 package org.smvdu.payroll.beans.setup;
 
 import java.io.Serializable;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -854,23 +853,24 @@ public class Org implements Serializable{
     public void update()    {
         try
         {
-            copy();
-            System.out.println("Updating ..., Name "+name);
+           
             Connection c = new CommonDB().getConnection();
-            ps= c.prepareStatement("update org_profile set org_tagline=?,org_email=?,org_web=?,org_phone=?,"
-                    + "org_address1=?,org_address2=?,org_name=? where org_id=?");
+            ps= c.prepareStatement("update org_profile set org_tagline=?, org_web=?, org_phone=?,"
+                    + "org_address1=?, org_name=?, org_city=?, org_state=?, org_pincode=?  where org_id=?");
             ps.setString(1, tagLine);
-            ps.setString(2, email);
-            ps.setString(3, web);
-            ps.setString(4, phone);
-            ps.setString(5, address1);
-            ps.setString(6, address2);
-            ps.setString(7, name);
-            ps.setInt(8, id);
+            ps.setString(2, web);
+            ps.setString(3, phone);
+            ps.setString(4, address1);
+            ps.setString(5, name);
+            ps.setString(6, city);
+            ps.setString(7, state);
+            ps.setString(8, pincode);
+            ps.setInt(9, id);
             ps.executeUpdate();
             ps.close();
             c.close();
-            System.out.println("Updated ID "+id);
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Institute information updated successfully", ""));
+            //System.out.println("Updated ID "+id+":"+city+":"+state+":"+pincode);
         }
         catch(Exception e)
         {

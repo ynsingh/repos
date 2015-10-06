@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.faces.component.UIData;
 import org.smvdu.payroll.beans.SalaryFormula;
 import org.smvdu.payroll.beans.UserInfo;
 import javax.faces.context.FacesContext;
@@ -21,10 +20,9 @@ import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.setup.SalaryHead;
 
 /**
- *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
 *  All Rights Reserved.
-**  Redistribution and use in source and binary forms, with or 
+*  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
 *  conditions are met: 
 **  Redistributions of source code must retain the above copyright 
@@ -42,7 +40,7 @@ import org.smvdu.payroll.beans.setup.SalaryHead;
 *  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE 
 *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
 *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
-*  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+*  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR   
 *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
 *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
 *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
@@ -52,13 +50,15 @@ import org.smvdu.payroll.beans.setup.SalaryHead;
 *  Contributors: Members of ERP Team @ SMVDU, Katra
 *  Modified Date: 16 Sep 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *
- */
+*/
+
 public class SalaryFormulaDB {
     private PreparedStatement ps;
     private ResultSet rs;
     private final UserInfo userBean;
     private HibernateUtil helper;
     private Session session;
+    
 
      public SalaryFormulaDB()
      {
@@ -90,7 +90,7 @@ public class SalaryFormulaDB {
          try
         {
             ArrayList<SalaryFormula> data = new ArrayList<SalaryFormula>();
-            session = helper.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("select sh.number, sh.name, sf.formula from SalaryHead  sh left join sh.salaryFormula sf where sh.calculationType=1");
             List result = query.list();
@@ -99,12 +99,15 @@ public class SalaryFormulaDB {
                 Object[] myResult = (Object[]) it.next();
                 SalaryFormula s = new SalaryFormula();
                 
-                SalaryHead sal = new SalaryHead();
-                sal.setNumber((Integer) myResult[0]);
+              //  SalaryHead sal = new SalaryHead();
+                //sal.setNumber((Integer) myResult[0]);
                 
-                s.setSalaryHead(sal);
+                //s.setSalaryHead(sal);
+                
+                s.setSalCode((Integer) myResult[0]);
                 s.setName((String) myResult[1]);
                 s.setFormula((String) myResult[2]);
+                //s.setId((Integer) myResult[3]);
                 data.add(s);
 
             } 
@@ -148,34 +151,55 @@ public class SalaryFormulaDB {
             return null;
         }           */
     }
-    public boolean save(UIData data)    {
-     /*  
-        
-         try
-        {
-            session = helper.getSessionFactory().openSession();
+    /** This method is used to insert and update the formula
+     * @param editedRecord (SalaryFormula object get from jsp file and setter getter method in SalaryFormula bean)
+     * @return boolean 
+     */
+    public boolean save(SalaryFormula editedRecord)    {
+        try{
+            /*get fcode from the database to check that is exists or not
+            * @param editedRecord (SalaryFomula) deatil of selected Head
+            * @see dataExist method
+            * @return int
+            */
+            int fcode= dataExist(editedRecord);
+           // System.out.println("obj=fcode =="+fcode);
+            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("delete from SalaryFormula");
-            query.executeUpdate();
-            session.getTransaction().commit();
-            
-            ArrayList<SalaryFormula> sdata = (ArrayList<SalaryFormula>) data.getValue();
-            for(SalaryFormula sf : sdata)
-            {
-                session.beginTransaction();
-
+            //System.out.println("obj=1 =="+editedRecord.getFormula()+":"+editedRecord.getSalCode());
+            /**update the formula of SalaryHead if exists
+             * update formula according to salaryHead code and orgId 
+             */
+            if(fcode!=-1){
+               //  Transaction tx=session.beginTransaction();  
+                String hql = "update SalaryFormula set formula = :formula where salaryHead.number = :number and orgcode= :orgcode";
+                Query query = session.createQuery(hql);
+                query.setParameter("formula",editedRecord.getFormula());
+                query.setParameter("number", editedRecord.getSalCode());
+                query.setParameter("orgcode", userBean.getUserOrgCode());
+                System.out.println(editedRecord.getFormula()+":"+editedRecord.getSalCode());
+                query.executeUpdate();
+                int rowsAffected = query.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Updated " + rowsAffected + " rows.");
+                } 
+            }     
+            else{
+                /**Insert the formula of SalaryHead if not exists
+                *insert formula according to salaryHead code and orgId 
+                */
+                //System.out.println("obj=in ifcase =="+editedRecord.getFormula()+":"+editedRecord.getSalCode());
                 SalaryFormula obj = new SalaryFormula();
-                
+               
                 SalaryHead sal = new SalaryHead();
-                sal.setNumber(sf.getSalCode());               
+                sal.setNumber(editedRecord.getSalCode());
                 obj.setSalaryHead(sal);
                 
-                obj.setFormula(sf.getFormula());
-                
+                obj.setFormula(editedRecord.getFormula());
+                obj.setOrgcode(userBean.getUserOrgCode());
                 session.save(obj);
-                session.getTransaction().commit();
- 
             }
+            session.getTransaction().commit();
             return true;
                       
         }
@@ -185,94 +209,37 @@ public class SalaryFormulaDB {
             return false;
         }
         finally {
-            session.close();
+            Connection close = session.close();
         }
-    */  
-        
-        
-        try
-        {
-            Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("delete from salary_formula ");
-            ps.executeUpdate();
-            ps.close();
-            ps  = c.prepareStatement("insert into salary_formula values(?,?)");
-            ArrayList<SalaryFormula> sdata = (ArrayList<SalaryFormula>) data.getValue();
-            for(SalaryFormula sf : sdata)
-            {
-                ps.setInt(1, sf.getSalCode());
-                ps.setString(2, sf.getFormula());
-                ps.executeUpdate();
-                ps.clearParameters();
-            }
-            ps.close();
-            return true;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-        
-        
-        
+              
     }
     
-    public void update(ArrayList<SalaryFormula> sfdata){
-            
-    /*
-         try
-        {
+    /** Select SalaryHead code  from SalaryFormula table for the update
+     * if exists return the salary Head code if not exists return -1 
+     * @param editedRecord (SalaryFromula )
+     * @return integer (SalaryHead Code)
+     */
     
-            session = helper.getSessionFactory().openSession();
-            
-            for(SalaryFormula sf : sfdata)
-            {
-               session.beginTransaction();
-
-                SalaryFormula obj = (SalaryFormula)session.get(SalaryFormula.class, sf.getId());
-
-                SalaryHead sal = new SalaryHead();
-                sal.setNumber(sf.getSalCode());
-                
-                obj.setSalaryHead(sal);
-                obj.setFormula(sf.getFormula());
-  
-                session.update(obj);
-                session.getTransaction().commit();
-            }
+    public int dataExist(SalaryFormula editedRecord){
+        try{
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            String hql2 = "from SalaryFormula where salaryHead.number = :salCode and orgcode= :orgcode";
+            Query query1 = session.createQuery(hql2);
+            query1.setParameter("salCode", editedRecord.getSalCode());
+            query1.setParameter("orgcode", userBean.getUserOrgCode());
+            Object queryResult = query1.uniqueResult();
+           // System.out.println("dataexists==query=result="+queryResult.toString());
+            SalaryFormula sfrm = (SalaryFormula) queryResult;
+            //System.out.println("dataexists==sfrm=="+sfrm.getSalaryHead().getNumber());
+            int fcode=sfrm.getSalaryHead().getNumber();
+            session.getTransaction().commit();
+            return fcode;
         }
         catch (Exception e) {
-            session.getTransaction().rollback();
-            e.printStackTrace();
+            return -1;
         }
-        finally {
-            session.close();
-        }
-            
-            
-    */
-            
-            try
-        {
-        	Connection c = new CommonDB().getConnection();
-            	ps=c.prepareStatement("update salary_formula set sf_sal_formula=? where sf_sal_id=? and  sf_org_id= '"+userBean.getUserOrgCode()+"'");
-            	for(SalaryFormula sf : sfdata)
-            	{
-                	ps.setString(1, sf.getFormula());
-                        ps.setInt(2, sf.getSalCode());
-                	ps.executeUpdate();
-                	ps.clearParameters();
-            	}
-            	ps.close();
-            	c.close();
-        }
-        catch(Exception e)
-        {
-            //Logger.getAnonymousLogger().log(Log., e.getMessage());
-        }
-            
-    
+        
     }
-
+        
 }

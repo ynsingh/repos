@@ -1401,7 +1401,7 @@ CREATE TABLE `user_history_master` (
 CREATE TABLE `user_master` (
   `user_id` int(11) NOT NULL auto_increment,
   `user_name` varchar(100) NOT NULL,
-  `user_pass` varchar(20) NOT NULL,
+  `user_pass` varchar(200) NOT NULL,
   `user_profile_id` int(11) NOT NULL default '0',
   `login_uid` int(11),
   `flag` tinyint(4) NOT NULL,

@@ -59,17 +59,17 @@ public class OrgController {
         if(currentOrg==null)
         {
             UserInfo ui = (UserInfo)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
-            if(ui==null)
+            /*if(ui==null)
             {
                 LoggedEmployee le =(LoggedEmployee)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
                 orgCode = le.getUserOrgCode();
-            }
- else
-            {
-                orgCode = ui.getUserOrgCode(); }
+            }*/
+            //else
+            //{
+                orgCode = ui.getUserOrgCode();
+             //}
                 currentOrg = new OrgProfileDB().loadOrgProfile(orgCode);
         }
-        
         return currentOrg;
     }
 

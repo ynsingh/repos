@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -10,10 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
-import org.smvdu.payroll.beans.Employee;
+import org.smvdu.payroll.api.EncryptionUtil;
 import org.smvdu.payroll.beans.UserGroup;
 import org.smvdu.payroll.beans.UserInfo;
-import org.smvdu.payroll.beans.composite.OrgController;
 
 /**
 *
@@ -119,13 +118,39 @@ public class UserDB {
             e.printStackTrace();
         }
     }
-    public boolean editPass(String pass,int x)   {
+    
+    /** This method is used for change password
+     * @param pass(user password)
+     * @param userName 
+     * @return true
+     */
+    public boolean editPass(String pass,String userName)   {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update user_master set user_pass=? where user_id=?");
+            Connection connectionLogin = new CommonDB().getLoginDBConnection();
+            //System.out.println("connectionLogin==="+connectionLogin);
+            pass= new EncryptionUtil().createDigest("MD5",pass);
+            boolean dbExist = new CommonDB().checkLoginDBExists();
+            if(dbExist){
+                //System.out.println("Login Database exist");
+                int id =CheckUserExistInLoginDB(userName);
+                if(id > 0){
+                    PreparedStatement pst = null; 
+                    pst = connectionLogin.prepareStatement("update edrpuser set password=? where username=?");
+                    pst.setString(1, pass);
+                    pst.setString(2, userName);
+                    pst.executeUpdate();
+                    pst.clearParameters();
+                    pst.close();
+                }
+                else{
+                    //System.out.println("Entry not Exist in edrpuser table  for - "+userName);
+                }
+            }
+            ps=c.prepareStatement("update user_master set user_pass=? where user_name=?");
             ps.setString(1, pass);
-            ps.setInt(2, x);
+            ps.setString(2, userName);
             ps.executeUpdate();
             ps.close();
             c.close();
@@ -304,7 +329,8 @@ public class UserDB {
             if(LoginDbExist)
             {  
                 System.out.println("Varifying Username Password in LoginDB");
-                pst1 = connectLogin.prepareStatement("select id, status from bgasuser where username='"+user+"' and password='"+pass+"' and status='"+1+"'");
+                pass=new EncryptionUtil().createDigest("MD5",pass);
+                pst1 = connectLogin.prepareStatement("select id, status from edrpuser where username='"+user+"' and password='"+pass+"' and status='"+1+"'");
                 ResultSet rst1;
                 rst1 = pst1.executeQuery();
                 pst1.clearParameters();
@@ -324,6 +350,7 @@ public class UserDB {
             {
                 //System.out.println("LoginDb does not Exist");
                 //System.out.println("Varifying Username Password in user_master");
+                pass=new EncryptionUtil().createDigest("MD5",pass);
                 pst1 = connectPl.prepareStatement("select user_id, user_name, user_pass, flag from user_master where user_name='"+user+"' and user_pass='"+pass+"' and flag='"+1+"'");
                 ResultSet rst1;
                 rst1 = pst1.executeQuery();
@@ -567,7 +594,7 @@ public class UserDB {
             Connection connection = new CommonDB().getLoginDBConnection();
             PreparedStatement pst;
             ResultSet rst;
-            pst = connection.prepareStatement("select id from bgasuser where username='"+email+"' and status = '"+1+"'");
+            pst = connection.prepareStatement("select id from edrpuser where username='"+email+"' and status = '"+1+"'");
             rst = pst.executeQuery();
             while(rst.next()){
                 userId = rst.getInt(1);

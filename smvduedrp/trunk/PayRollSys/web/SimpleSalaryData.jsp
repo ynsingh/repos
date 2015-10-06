@@ -122,7 +122,7 @@
                 font-family: monospace;
                 font-size: 10px;
             }
-}
+
         </style>
 
     </head>

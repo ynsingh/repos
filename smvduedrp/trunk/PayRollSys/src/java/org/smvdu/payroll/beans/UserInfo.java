@@ -4,14 +4,12 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 //import javax.servlet.http.HttpSession;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
-import org.smvdu.payroll.api.UserTask.ReadUserTaskList;
 import org.smvdu.payroll.api.UserTask.UserTaskDB;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.OrgProfileDB;
@@ -19,7 +17,7 @@ import org.smvdu.payroll.beans.db.UserDB;
 import org.smvdu.payroll.beans.db.UserGroupDB;
 import org.smvdu.payroll.user.ActiveProfile;
 import org.smvdu.payroll.user.UserHistory;
-import javax.servlet.http.HttpServletResponse;
+import org.smvdu.payroll.api.email.Mail;
 import org.smvdu.payroll.beans.db.EmployeeDB;
 import org.smvdu.payroll.beans.db.InstituteListDB;
 import org.smvdu.payroll.module.attendance.EmployeeLoginController;
@@ -332,15 +330,16 @@ public class UserInfo implements Serializable {
 
     public void editPass() {
 
-
-        if (!pass1.equals(pass2)) {
-            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Passwords Doesnot Matches", "Passwords Doesnot Matches");
+        if (!pass1.equals(pass2)){
+            //System.out.println("editpass====="+pass1);
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password Does not Match.....Please Try Again", "Passwords Does not Match");
             FacesContext.getCurrentInstance().addMessage("msg", fm);
             return;
         }
-        boolean b = new UserDB().editPass(pass1, userId);
+        boolean b = new UserDB().editPass(pass1, userName);
         if (b) {
-            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Passwords Changed", "Passwords Updated");
+            new Mail().sendMailMessage("New Password",userName, pass1);
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password Changed and email has been sent successfully", "Password Updated");
             FacesContext.getCurrentInstance().addMessage("msg", fm);
         } else {
             FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Passwords Not Changed", "Passwords Not Updated");

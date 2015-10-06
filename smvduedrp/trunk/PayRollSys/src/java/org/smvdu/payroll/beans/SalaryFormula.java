@@ -6,7 +6,9 @@
 package org.smvdu.payroll.beans;
 
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
+import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.db.SalaryFormulaDB;
 import org.smvdu.payroll.beans.setup.SalaryHead;
 
@@ -52,8 +54,22 @@ public class SalaryFormula {
     
     private String name;
     private String formula;
-    private int salCode = 0;
+    private int salCode;
     private String fields;
+    private int number;
+   // private String sfCode;
+    //private int shval;
+    //private String effectiveDate;
+    //private String entryDate;
+
+    public int getNumber(){
+        return number;
+    }
+    
+    public void setNumber(int number) {        
+        this.number = number;
+    }
+    
     
     private int id;
 
@@ -123,10 +139,6 @@ public class SalaryFormula {
         this.formula = formula;
     }
     
-
-    
-    
-
     public int getSalCode() {
         return salCode;
     }
@@ -150,14 +162,92 @@ public class SalaryFormula {
         name = string;
     }
 
-    public void save()
-            {
-        ArrayList<SalaryFormula> sds =(ArrayList<SalaryFormula>) data.getValue();
+    
+    
+     @Override
+    public String toString()
+    {
+        return name;
+    }
+
+   /* public int getSalVal() {
+        return shval;
+    }
+
+    public void setSalVal(int shval) {
+        this.shval = shval;
+    }
+
+    public String getSFCode() {
+        return sfCode;
+    }
+
+    public void setSFCode(String sfCode) {
+        this.sfCode = sfCode;
+
+    }
+
+
+    public String getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(String effectiveDate) {
+        this.effectiveDate = effectiveDate;
+
+    }
+
+     public String getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(String entryDate) {
+        this.entryDate = entryDate;
+
+    }*/
+
+      int currentRecordindex;
+    public int getCurrentRecordindex() {
+
+        return currentRecordindex;
+    }
+
+    public void setCurrentRecordindex(int currentRecordindex) {
+
+        this.currentRecordindex = currentRecordindex;
+    }
+
+    SalaryFormula editedRecord;
+    public SalaryFormula getEditedRecord() {
+
+        return editedRecord;
+    }
+
+    public void setEditedRecord(SalaryFormula editedRecord) {
+        this.editedRecord = editedRecord;
+    }
+
+    public void save(){
+        /*ArrayList<SalaryFormula> sds =(ArrayList<SalaryFormula>) data.getValue();
+        System.out.println("sds===="+sds);
         for(SalaryFormula sd : sds)
         {
             System.err.println(sd.getName()+" : "+sd.getFormula());
+        }*/
+        /*This method is used to add and update formula of selected head
+        * @param editedRecord (SalaryFomula) deatil of selected Head
+        * @see SalaryFormulaDB().save method
+        * @return boolean
+        */
+        boolean sf = new SalaryFormulaDB().save(editedRecord);
+        if(sf){
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, " Formula Updated successfully ", ""));
         }
-        new SalaryFormulaDB().save(data);
+        else{
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, " Formula  not Updated ", ""));
+            
+        }
+
     }
    
     

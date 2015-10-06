@@ -34,7 +34,10 @@
         <validator-class>org.smvdu.payroll.beans.validator.DateValidator</validator-class>
     </validator>
 
-
+    <validator>
+        <validator-id>UrlValidator</validator-id>
+        <validator-class>org.smvdu.payroll.beans.validator.UrlValidator</validator-class>
+    </validator>
 
     <managed-bean>
         <description>
@@ -1189,5 +1192,5 @@
         <managed-bean-class>org.smvdu.payroll.beans.InstituteList</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean> -->
-    
+        
     </faces-config>
