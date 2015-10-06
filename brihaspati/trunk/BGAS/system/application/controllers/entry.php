@@ -744,7 +744,8 @@ $width="100%";
 			'select' => 'Select',
 			'plan' => 'Plan',
 			'non_plan' => 'Non Plan',
-			'plan_sfc_scheme' => 'Plan - Specific Schemes'
+			'plan_sfc_scheme' => 'Plan - Specific Schemes',
+			'plan_other_scheme' => 'Other Schemes'
 		);
 
 		$data['active_sanc_type'] = 'non_plan';		
@@ -1573,7 +1574,10 @@ $width="100%";
                 $data['sanc_type'] = array(
                         'select' => 'Select',
                         'plan' => 'Plan',
-                        'non_plan' => 'Non Plan'
+                        'non_plan' => 'Non Plan',
+			'plan_sfc_scheme' => 'Plan - Specific Schemes',
+                        'plan_other_scheme' => 'Other Schemes'
+
                 );
 
                 $data['active_sanc_type'] = $cur_entry->sanc_type;

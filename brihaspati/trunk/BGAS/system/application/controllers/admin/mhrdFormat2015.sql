@@ -10,79 +10,6 @@ INSERT INTO `groups` VALUES(7,'100201',6,'Corpus-Registartion/Affiliation/Enrolm
 INSERT INTO `groups` VALUES(8,'100202',6,'Corpus-Revenue Expenditure',0,0,0,'');
 INSERT INTO `groups` VALUES(9,'1003',2,'Designated-Earmarked/Endowment Funds',0,0,0,'Funds (or capital) that are set aside to pay for a specific project or event.');
 
-INSERT INTO `groups` VALUES(10,'100301',9,'A D Fund',0,0,0,'');
-INSERT INTO `groups` VALUES(12,'10030101',10,'Opening Balance ADF',0,0,0,'');
-INSERT INTO `groups` VALUES(13,'10030102',10,'Additions ADF',0,0,0,'');
-INSERT INTO `groups` VALUES(14,'10030103',10,'Income From Investments ADF',0,0,0,'');
-INSERT INTO `groups` VALUES(15,'10030104',10,'Interest on Saving A/C ADF',0,0,0,'');
-INSERT INTO `groups` VALUES(16,'10030105',10,'Other Additions ADF',0,0,0,'');
-INSERT INTO `groups` VALUES(17,'10030106',10,'Revenue Expenditure ADF',0,0,0,'');
-INSERT INTO `groups` VALUES(18,'10030107',10,'Capital Expenditure ADF',0,0,0,'');
-INSERT INTO `groups` VALUES(19,'100302',9,'C G Fund',0,0,0,'');
-INSERT INTO `groups` VALUES(20,'10030201',19,'Opening Balance CGF',0,0,0,'');
-INSERT INTO `groups` VALUES(21,'10030202',19,'Additions CGF',0,0,0,'');
-INSERT INTO `groups` VALUES(22,'10030203',19,'Income From Investments CGF',0,0,0,'');
-INSERT INTO `groups` VALUES(23,'10030204',19,'Interest on Saving A/C CGF',0,0,0,'');
-INSERT INTO `groups` VALUES(24,'10030205',19,'Other Additions CGF',0,0,0,'');
-INSERT INTO `groups` VALUES(25,'10030206',19,'Revenue Expenditure CGF',0,0,0,'');
-INSERT INTO `groups` VALUES(26,'10030207',19,'Capital Expenditure CGF',0,0,0,'');
-INSERT INTO `groups` VALUES(27,'100303',9,'Conveyance Fund',0,0,0,'');
-INSERT INTO `groups` VALUES(28,'10030301',27,'Opening Balance Conveyance ',0,0,0,'');
-INSERT INTO `groups` VALUES(29,'10030302',27,'Additions Conveyance',0,0,0,'');
-INSERT INTO `groups` VALUES(30,'10030303',27,'Income From Investments Conveyance',0,0,0,'');
-INSERT INTO `groups` VALUES(31,'10030304',27,'Interest on Saving A/C Conveyance',0,0,0,'');
-INSERT INTO `groups` VALUES(32,'10030305',27,'Other Additions Conveyance',0,0,0,'');
-INSERT INTO `groups` VALUES(33,'10030306',27,'Revenue Expenditure Conveyance',0,0,0,'');
-INSERT INTO `groups` VALUES(34,'10030307',27,'Capital Expenditure Conveyance',0,0,0,'');
-INSERT INTO `groups` VALUES(35,'100304',9,'Endowment Fund',0,0,0,'');
-INSERT INTO `groups` VALUES(36,'10030401',35,'Opening Balance Endowment',0,0,0,'');
-INSERT INTO `groups` VALUES(37,'10030402',35,'Additions Endowment',0,0,0,'');
-INSERT INTO `groups` VALUES(38,'10030403',35,'Income From Investments Endowment',0,0,0,'');
-INSERT INTO `groups` VALUES(39,'10030404',35,'Interest on Saving A/C Endowment',0,0,0,'');
-INSERT INTO `groups` VALUES(40,'10030405',35,'Other Additions Endowment',0,0,0,'');
-INSERT INTO `groups` VALUES(41,'10030406',35,'Revenue Expenditure Endowment',0,0,0,'');
-INSERT INTO `groups` VALUES(42,'10030407',35,'Capital Expenditure Endowment',0,0,0,'');
-INSERT INTO `groups` VALUES(43,'100305',9,'E L Fund',0,0,0,'');
-INSERT INTO `groups` VALUES(44,'10030501',43,'Opening Balance ELF',0,0,0,'');
-INSERT INTO `groups` VALUES(45,'10030502',43,'Additions ELF',0,0,0,'');
-INSERT INTO `groups` VALUES(46,'10030503',43,'Income From Investments ELF',0,0,0,'');
-INSERT INTO `groups` VALUES(47,'10030504',43,'Interest on Saving A/C ELF',0,0,0,'');
-INSERT INTO `groups` VALUES(48,'10030505',43,'Other Additions ELF',0,0,0,'');
-INSERT INTO `groups` VALUES(49,'10030506',43,'Revenue Expenditure ELF',0,0,0,'');
-INSERT INTO `groups` VALUES(50,'10030507',43,'Capital Expenditure ELF',0,0,0,'');
-INSERT INTO `groups` VALUES(51,'100306',9,'House Building Advance Fund',0,0,0,'');
-INSERT INTO `groups` VALUES(52,'10030601',51,'Opening Balance HBA',0,0,0,'');
-INSERT INTO `groups` VALUES(53,'10030602',51,'Additions HBA',0,0,0,'');
-INSERT INTO `groups` VALUES(54,'10030603',51,'Income From Investments HBA',0,0,0,'');
-INSERT INTO `groups` VALUES(55,'10030604',51,'Interest on Saving A/C HBA',0,0,0,'');
-INSERT INTO `groups` VALUES(56,'10030605',51,'Other Additions HBA',0,0,0,'');
-INSERT INTO `groups` VALUES(57,'10030606',51,'Revenue Expenditure HBA',0,0,0,'');
-INSERT INTO `groups` VALUES(58,'10030607',51,'Capital Expenditure HBA',0,0,0,'');
-INSERT INTO `groups` VALUES(59,'100307',9,'N F Fund',0,0,0,'');
-INSERT INTO `groups` VALUES(60,'10030701',59,'Opening Balance NFF',0,0,0,'');
-INSERT INTO `groups` VALUES(61,'10030702',59,'Additions NFF',0,0,0,'');
-INSERT INTO `groups` VALUES(62,'10030703',59,'Income From Investments NFF',0,0,0,'');
-INSERT INTO `groups` VALUES(63,'10030704',59,'Interest on Saving A/C NFF',0,0,0,'');
-INSERT INTO `groups` VALUES(64,'10030705',59,'Other Additions NFF',0,0,0,'');
-INSERT INTO `groups` VALUES(65,'10030706',59,'Revenue Expenditure NFF',0,0,0,'');
-INSERT INTO `groups` VALUES(66,'10030707',59,'Capital Expenditure NFF',0,0,0,'');
-INSERT INTO `groups` VALUES(67,'100308',9,'R G N Fund',0,0,0,'');
-INSERT INTO `groups` VALUES(68,'10030801',67,'Opening Balance RGNF',0,0,0,'');
-INSERT INTO `groups` VALUES(69,'10030802',67,'Additions RGNF',0,0,0,'');
-INSERT INTO `groups` VALUES(70,'10030803',67,'Income From Investments RGNF',0,0,0,'');
-INSERT INTO `groups` VALUES(71,'10030804',67,'Interest on Saving A/C RGNF',0,0,0,'');
-INSERT INTO `groups` VALUES(72,'10030805',67,'Other Additions RGNF',0,0,0,'');
-INSERT INTO `groups` VALUES(73,'10030806',67,'Revenue Expenditure RGNF',0,0,0,'');
-INSERT INTO `groups` VALUES(74,'10030807',67,'Capital Expenditure RGNF',0,0,0,'');
-INSERT INTO `groups` VALUES(75,'100309',9,'UGC JRF Fund',0,0,0,'');
-INSERT INTO `groups` VALUES(76,'10030901',75,'Opening Balance UGC JRF',0,0,0,'');
-INSERT INTO `groups` VALUES(77,'10030902',75,'Additions UGC JRF',0,0,0,'');
-INSERT INTO `groups` VALUES(78,'10030903',75,'Income From Investments UGC JRF',0,0,0,'');
-INSERT INTO `groups` VALUES(79,'10030904',75,'Interest on Saving A/C UGC JRF',0,0,0,'');
-INSERT INTO `groups` VALUES(80,'10030905',75,'Other Additions UGC JRF',0,0,0,'');
-#INSERT INTO `groups` VALUES(81,'10030906',75,'Revenue Expenditure UGC JRF',0,0,0,'');
-#INSERT INTO `groups` VALUES(82,'10030907',75,'Capital Expenditure UGC JRF',0,0,0,'');
-
 INSERT INTO `groups` VALUES(83,'1004',2,'Current Liabilities & Provisions',0,0,0,'');
 INSERT INTO `groups` VALUES(84,'100401',83,'Current Liabilities',0,0,0,'');
 INSERT INTO `groups` VALUES(85,'10040101',84,'Deposit Current Liabilities',0,0,0,'');
@@ -95,17 +22,10 @@ INSERT INTO `groups` VALUES(91,'1004010302',89,'OSL Maintenance',0,0,0,'');
 INSERT INTO `groups` VALUES(92,'10040104',84,'Other Current Liabilities',0,0,0,'');
 INSERT INTO `groups` VALUES(93,'10040105',84,'Recipts Against Sponsored Projects',0,0,0,'');
 
-#INSERT INTO `groups` VALUES(94,'1004010501',93,'Sponsored Projects Recipts',0,0,0,'');
-#INSERT INTO `groups` VALUES(95,'1004010502',93,'Sponsored Projects Expenses',0,0,0,'');
-#INSERT INTO `groups` VALUES(96,'1004010503',93,'Sponsored Projects Fixed Assets',0,0,0,'');
-
 INSERT INTO `groups` VALUES(97,'10040106',84,'Sundry Creditors',0,0,0,'');
 INSERT INTO `groups` VALUES(98,'1004010601',97,'Goods',0,0,0,'');
 INSERT INTO `groups` VALUES(99,'1004010602',97,'Services',0,0,0,'');
 INSERT INTO `groups` VALUES(100,'10040107',84,'UGC Sponsored Fellowship/Scholarships',0,0,0,'');
-
-#INSERT INTO `groups` VALUES(101,'1004010701',100,'Sponsored Fellowship Recipts',0,0,0,'');
-#INSERT INTO `groups` VALUES(102,'1004010702',100,'Sponsored Fellowship Expenses',0,0,0,'');
 
 INSERT INTO `groups` VALUES(103,'10040108',84,'Unutilized Grants',0,0,0,'');
 INSERT INTO `groups` VALUES(104,'1004010801',103,'UGC Grants',0,0,0,'');
@@ -117,6 +37,8 @@ INSERT INTO `groups` VALUES(109,'100402',83,'Provisions',0,0,0,'');
 INSERT INTO `groups` VALUES(110,'10040201',109,'Provision for Retirement Benefit',0,0,0,'');
 INSERT INTO `groups` VALUES(111,'10040202',109,'Pension Payable',0,0,0,'');
 INSERT INTO `groups` VALUES(112,'10040203',109,'Salary Payable',0,0,0,'');
+INSERT INTO `groups` VALUES(273,'10040204',109,'Provision Received From Other Organisation For Retirement Benefits',0,0,0,'');
+
 INSERT INTO `groups` VALUES(113,'1005',2,'Loan/Borrowings',0,0,0,'It is a debt provided by one entity (organization or individual) to another entity at an interest rate.');
 INSERT INTO `groups` VALUES(114,'100501',113,'Secured',0,0,0,'');
 INSERT INTO `groups` VALUES(115,'10050101',114,'Central Government Secured Loan',0,0,0,'It is a loan in which the borrower pledges some asset (e.g. a car or property) as collateral for the loan, which then becomes a secured debt owed to the Central Government.');
@@ -166,7 +88,7 @@ INSERT INTO `groups` VALUES(158,'20020104',154,'Corpus Shares',0,0,0,'');
 INSERT INTO `groups` VALUES(159,'20020105',154,'Corpus Debentures and Bonds',0,0,0,'');
 INSERT INTO `groups` VALUES(160,'20020106',154,'Corpus Other Investment',0,0,0,'');
 
-#INSERT INTO `groups` VALUES(161,'200202',153,'Earmarked Fund Investments',0,0,0,'');
+INSERT INTO `groups` VALUES(161,'200202',153,'Earmarked Fund Investments',0,0,0,'');
 INSERT INTO `groups` VALUES(162,'20020201',161,'EAR Central Government Securities',0,0,0,'');
 INSERT INTO `groups` VALUES(163,'20020202',161,'EAR State Government Securities',0,0,0,'');
 INSERT INTO `groups` VALUES(164,'20020203',161,'EAR Other approved Securities',0,0,0,'');
@@ -179,7 +101,7 @@ INSERT INTO `groups` VALUES(170,'20020302',168,'END State Government Securities'
 INSERT INTO `groups` VALUES(171,'20020303',168,'END Other approved Securities',0,0,0,'');
 INSERT INTO `groups` VALUES(172,'20020304',168,'END Shares',0,0,0,'');
 INSERT INTO `groups` VALUES(173,'20020305',168,'END Debentures and Bonds',0,0,0,'');
-#INSERT INTO `groups` VALUES(174,'20020306',168,'END Other Investment',0,0,0,'');
+INSERT INTO `groups` VALUES(174,'20020306',168,'END Other Investment',0,0,0,'');
 
 INSERT INTO `groups` VALUES(175,'2003',1,'Current Assets',0,0,0,'Cash and other assets that are expected to be converted to cash within a year.');
 INSERT INTO `groups` VALUES(176,'200301',175,'Imprest',0,0,0,'');
@@ -277,11 +199,15 @@ INSERT INTO `groups` VALUES(270,'400902',268,'Prior Period Administrative Expens
 INSERT INTO `groups` VALUES(271,'400903',268,'Prior Period Establishment Expenses',0,0,0,'');
 INSERT INTO `groups` VALUES(272,'400904',268,'Prior Period Repairs and Maintenance Expenses',0,0,0,'');
 INSERT INTO `ledgers` VALUES (1,'100101',5,'Contributions towards Capital Fund','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (2,'100102',5,'Grants from UGC, Government of India and State Government to the extent utilized for capital expenditure','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (2,'100102',5,'Grants from UGC to the extent utilized for capital expenditure','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (3,'100103',5,'Assets Purchased out of Earmarked Funds','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (4,'100104',5,'Assets Purchased out of Sponsored Projects, where ownership vests in the institution','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (5,'100105',5,'Assets Donated/Gifts Received','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (6,'100106',5,'Other Additions towards Capital Fund','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (589,'100107',5,'Grants from Government of India to the extent utilized for capital expenditure','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (590,'100108',5,'Grants from State Government to the extent utilized for capital expenditure','0.00','D',0,0,0,'');
+
+
 INSERT INTO `ledgers` VALUES (7,'100203',6,'Balance of net income/expenditure transferred from I/E Account','0.00','D',0,0,0,'It includes differnce of income and expenditure which will be transferred at the time of carry forward to next financial year.');
 INSERT INTO `ledgers` VALUES (8,'100204',6,'Contributions towards Corpus Fund','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (9,'100205',6,'Other Addition towards Corpus Fund','0.00','D',0,0,0,'');
@@ -302,6 +228,9 @@ INSERT INTO `ledgers` VALUES (23,'10020210',8,'Corpus-Consultancy Fees','0.00','
 INSERT INTO `ledgers` VALUES (24,'10020211',8,'Corpus-Capital Fund','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (25,'10020212',8,'Corpus-Interest on Investments','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (26,'10020213',8,'Corpus-Interest on Saving A/C','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (591,'10020214',8,'Grants from UGC for Revenue Expenditure','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (592,'10020215',8,'Grants from Government of India for Revenue Expenditure','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (593,'10020216',8,'Grants from State Government for Revenue Expenditure','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (27,'1004010101',85,'Deposit-Seminar/CESP/SSS','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (28,'1004010102',85,'Deposit-Academic Staff College Contributions','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (29,'1004010103',85,'Deposit-Alumni Association Fund','0.00','D',0,0,0,'');
@@ -395,32 +324,12 @@ INSERT INTO `ledgers` VALUES (116,'1004020102',110,'Provision for Leave Encashme
 INSERT INTO `ledgers` VALUES (117,'1004020103',110,'Provision for Pension/ C.V. of Pension','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (118,'1004020104',110,'Provision for DCRG','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (119,'1004020105',110,'Provision for Commutation','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (120,'100401050101',94,'SP-Grants in Aids','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (121,'100401050102',94,'SP-Interest on Investments','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (122,'100401050103',94,'SP-Interest on Savings','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (123,'100401050104',94,'SP-Overhead Charges - Income','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (124,'100401050105',94,'SP-Seminars/Workshops-Income','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (125,'100401050201',95,'SP Consumables Exp','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (126,'100401050202',95,'SP-Interest of Deposit in EMF A/c','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (127,'100401050203',95,'SP Man Power Exp','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (128,'100401050204',95,'SP Other Expenditure','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (129,'100401050205',95,'SP Overhead Expenses','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (130,'100401050206',95,'SP-Seminar - Workshops Exp','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (131,'100401050207',95,'SP-Temp Transfer to Maint. A/c','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (132,'100401050208',95,'SP-Travel Exp','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (133,'100401050301',96,'SP-Books','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (134,'100401050302',96,'SP-Computers& Peripherals','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (135,'100401050303',96,'SP-Furniture','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (136,'100401050304',96,'SP-General Equipments','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (137,'100401050305',96,'SP-Scientific & Laboratory Equipment','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (138,'100401070101',101,'SF-Grant in Aids','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (139,'100401070102',101,'SF-Interest on Investments','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (140,'100401070103',101,'SF-Interest on Saving A/c','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (141,'100401070104',101,'SFI-Grant in Aids','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (142,'100401070105',101,'SFI-Interest on Investments','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (143,'100401070106',101,'SFI-Interest on Savings A/c','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (144,'100401070201',102,'SF-Revenue Expenditure','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (145,'100401070202',102,'SFI-Revenue Expe(SFIRE)','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (580,'1004020401',273,'Provision Received From Other Organisation For Gratuity','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (581,'1004020402',273,'Provision Received From Other Organisation For Leave Encashment','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (582,'1004020403',273,'Provision Received From Other Organisation For Pension/C.V. of Pension','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (583,'1004020404',273,'Provision Received From Other Organisation For DCRG','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (584,'1004020405',273,'Provision Received From Other Organisation For Commutation','0.00','D',0,0,0,'');
+
 INSERT INTO `ledgers` VALUES (146,'100401080101',104,'UGC Capital Grants','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (147,'100401080102',104,'UGC Revenue Grants','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (148,'100401080103',104,'UGCPF-Grant in Aids Fellowship Plan','0.00','D',0,0,0,'');
@@ -599,6 +508,8 @@ INSERT INTO `ledgers` VALUES (322,'300130',202,'Syllabus Fees','0.00','C',0,0,0,
 INSERT INTO `ledgers` VALUES (323,'300131',202,'Laboratry Fees','0.00','C',0,0,0,'');
 INSERT INTO `ledgers` VALUES (324,'300201',203,'UGC Recurring Grand','0.00','C',0,0,0,'');
 INSERT INTO `ledgers` VALUES (325,'300202',203,'Government of India ','0.00','C',0,0,0,'');
+INSERT INTO `ledgers` VALUES (588,'300203',203,'State Government Grants','0.00','C',0,0,0,'');
+
 INSERT INTO `ledgers` VALUES (326,'300301',204,'Income From Royalty','0.00','C',0,0,0,'');
 INSERT INTO `ledgers` VALUES (327,'300302',204,'Income From Sale of Publication','0.00','C',0,0,0,'');
 INSERT INTO `ledgers` VALUES (328,'30040101',206,'Interest on Savings-Bank-SBI','0.00','C',0,0,0,'');
@@ -649,7 +560,12 @@ INSERT INTO `ledgers` VALUES (372,'300510',208,'Career Development Programmes Fe
 INSERT INTO `ledgers` VALUES (373,'300511',208,'Gymkhana Fees','0.00','C',0,0,0,'');
 INSERT INTO `ledgers` VALUES (374,'300512',208,'Festival Fees','0.00','C',0,0,0,'');
 INSERT INTO `ledgers` VALUES (375,'300513',208,'Personal Accident Insurance Fees','0.00','C',0,0,0,'');
-INSERT INTO `ledgers` VALUES (376,'300601',215,'Prior Period Income','0.00','C',0,0,0,'');
+
+INSERT INTO `ledgers` VALUES (376,'300601',215,'PPI Academic Receipts','0.00','C',0,0,0,'');
+INSERT INTO `ledgers` VALUES (585,'300602',215,'PPI Income from Investments ','0.00','C',0,0,0,'');
+INSERT INTO `ledgers` VALUES (586,'300603',215,'PPI Interest earned','0.00','C',0,0,0,'');
+INSERT INTO `ledgers` VALUES (587,'300604',215,'PPI Other Income','0.00','C',0,0,0,'');
+
 INSERT INTO `ledgers` VALUES (377,'3007',3,'Transit Income','0.00','C',0,0,0,'');
 INSERT INTO `ledgers` VALUES (378,'40010101',217,'Basic Pay','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (379,'40010102',217,'CCA','0.00','D',0,0,0,'');
@@ -691,6 +607,9 @@ INSERT INTO `ledgers` VALUES (414,'40010504',221,'Payment of Leave Encashment','
 INSERT INTO `ledgers` VALUES (415,'40010505',221,'Payment of Pension','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (416,'40010506',221,'Travel to Hometown on Retirement','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (417,'40010507',221,'Contribution to New Pension Scheme','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (578,'40010508',221,'Payment of DCRG','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (579,'40010509',221,'Payment of Commutation','0.00','D',0,0,0,'');
+
 INSERT INTO `ledgers` VALUES (418,'40010601',222,'Charge Allowance','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (419,'40010602',222,'Consultancy Fees','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (420,'40010603',222,'Honorarium','0.00','D',0,0,0,'');
