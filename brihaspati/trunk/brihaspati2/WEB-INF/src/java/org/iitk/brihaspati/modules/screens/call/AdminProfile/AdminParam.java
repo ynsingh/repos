@@ -65,7 +65,8 @@ import org.apache.commons.lang.StringUtils;
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
  * @modified date: 18-05-2015 (Seemanti)
  * @modified date: 14-07-2015 (Seemanti)---Providing default value for Admin Profile parameters from this screen file ---
- * @modified date: 31-08-15 (Seemanti) ---Proxy Parameters added for Administrator---
+ * @modified date: 31-08-15 ---Proxy Parameters added for Administrator--- 
+ * @modified date: 07-10-2015 ---Set as first screen iff Admin logins for first time--- (Seemanti)
  */
 
 
@@ -74,8 +75,11 @@ import org.apache.commons.lang.StringUtils;
  */
 
 public class AdminParam extends SecureScreen{
-	public void doBuildTemplate(RunData data, Context context){
-		User user = data.getUser();
+	public void doBuildTemplate(RunData data, Context context)
+        {
+                User user = data.getUser();
+                user.setTemp("role","");
+                user.setTemp("Institute_id","");
                 String loginName=user.getName();
                 int uid=UserUtil.getUID(loginName);
 		String path="";	

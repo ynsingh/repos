@@ -74,6 +74,7 @@ import org.apache.turbine.modules.actions.VelocityAction;
  * 
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ * @modified date : 07-10-2015 (Seemanti Shukla)
  * @version 1.0
  * @since 1.0
  */
@@ -350,13 +351,13 @@ public class LoginUtils{
         public static void SetHintQues(int uid, RunData data){
 		try{
 			/**
-			 * Check for the admin and the guest
+			 * Check whether the uid is neither admin nor guest and thus only the SetHintQues() method should be executed.
 			 */
 			if(uid!=0 && uid!=1)
                                 {
                                         Criteria crit=new Criteria();
                                         crit.add(UserConfigurationPeer.USER_ID,uid);
-                                        crit.add(UserConfigurationPeer.QUESTION_ID,0);
+                                        crit.add(UserConfigurationPeer.QUESTION_ID,0);//Select only those rows whose QUESTION_ID=0 as these are not yet saved the ANSWER.
                                         List check=UserConfigurationPeer.doSelect(crit);
                                         if((check.size()!=0))
                                         {
@@ -406,5 +407,68 @@ public class LoginUtils{
 			}
 
 	}
+   /**
+    * Method for checking if Admin.properties file is holding the mandatory fields or not.
+    * if all necessary parameters are there , return true
+    * else return false.
+    **/
+   public static boolean checkAdminFileEmpty(String path)
+   {  
+      boolean check = false;
+      try 
+      {  
+         String PassExp = null;
+         String mailSpoolingExpiry = null;
+         String mailResendTime = null;
+         String iquota = null;
+         String hdir = null;
+         String ldap_cate = null;
+         String ldap_base = null;
+         String ldap_url = null;
+         String twtexp = null;
+         String normal_traffic = null;
+         String high_traffic = null;
+         PassExp = AdminProperties.getValue(path,"brihaspati.admin.passwordExpiry");
+         mailSpoolingExpiry = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value");
+         mailResendTime = AdminProperties.getValue(path,"brihaspati.admin.spoolMailResendTime.value");
+         iquota = AdminProperties.getValue(path,"brihaspati.user.iquota.value");
+         hdir = AdminProperties.getValue(path,"brihaspati.home.dir.value");
+         ldap_cate = AdminProperties.getValue(path,"brihaspati.admin.ldapcate.value");
+         ldap_base = AdminProperties.getValue(path,"brihaspati.admin.ldapbase.value");
+         ldap_url = AdminProperties.getValue(path,"brihaspati.admin.ldapurl.value");
+         twtexp = AdminProperties.getValue(path,"brihaspati.admin.twtexpiry.value");
+         normal_traffic = AdminProperties.getValue(path,"brihaspati.admin.normalTraffic.value");
+         high_traffic = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
+         if(PassExp != null)
+            check = false;
+         if(mailSpoolingExpiry != null)
+            check = false;
+         if(mailResendTime != null)
+            check =  false;
+         if(iquota != null)
+            check = false;
+         if(hdir != null)
+            check = false;
+         if(ldap_cate != null)
+            check = false;
+         if(ldap_base !=  null)
+            check = false;
+         if(ldap_url !=  null)
+            check = false;
+         if(twtexp !=  null)
+            check = false;
+         if(normal_traffic != null)
+            check = false;
+         if(high_traffic !=  null)
+            check = false;
+         else   
+            check = true;
+      }
+      catch(Exception e)
+      {
+         ErrorDumpUtil.ErrorLog("Error in getting values from Admin.properties file. "+e);
+      }  
+      return check ;
+   }
 
 }//end of class

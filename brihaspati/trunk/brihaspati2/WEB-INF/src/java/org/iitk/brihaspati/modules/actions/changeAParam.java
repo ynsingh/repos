@@ -85,7 +85,7 @@ import org.iitk.brihaspati.modules.utils.SortedProperties;
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
  * @modified date: 18-05-2015 (Seemanti);
  * @modified date: 15-07-15 (Seemanti) --- Dummy mail sending functionality updated ---
- * @modified date: 31-08-15 (Seemanti).
+ * @modified date: 31-08-15,07-10-2015 (Seemanti).
  */
 
 public class changeAParam extends SecureAction_Admin {
@@ -259,18 +259,18 @@ public class changeAParam extends SecureAction_Admin {
       }
 
       //UserInfo = ValueObject.retrieve the userInfo object from value;
-      //if update userInfo successful set userinfo in turbine user database{
-      if (value.getUserInfo().setUserInfo(data)){
-         //Logger.add date, time, IP address of browser client and message - userInfo update in turbine user database, to log.
-         ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull userInfo updation in turbine user database | Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
+      if (value.getUserInfo().setUserInfo(data,path))//if UserInfo from Value and Propeties File are different then update it in Properties File as well as in database.
+       {
+          //Logger.add date, time, IP address of browser client and message - userInfo update in turbine user database, to log.
+           ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull userInfo updation in turbine user database | Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
       }
-
-      //ValueObject.retreive the TurbineConfig object from value;
+      
       //Create path to reach TurbineResources Properties File.
       String TRpath=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"TurbineResources.properties";
+      //ValueObject.retreive the TurbineConfig object from value
       //update the items in TurbineConfig in TurbineResources.properties as well as in Admin.properties.
-       value.getTurbineConfig().setTurbineConfig(TRpath,path,data);
-       ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull turbine parameter updation in TurbineResources.properties| Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
+      value.getTurbineConfig().setTurbineConfig(TRpath,path,data);
+      ErrorDumpUtil.ErrorLog("User Name --> Admin | Operation --> Log update for successfull turbine parameter updation in TurbineResources.properties| Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
       
       //TelObject =ValueObject.retrieve the telephone data object from value;
       //TelDirectoryUtil.update the telephone data for admin in telephone database if different then stored, should return true if updated, else the telephone data function should return false;
@@ -286,7 +286,9 @@ public class changeAParam extends SecureAction_Admin {
        */
       SortedProperties.sortPropertyFile(path,data);
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+      
+      boolean checkprofadmin = false;
+      user.setTemp("checkprofadmin",false);
      
    }//End of doUpdate()
 

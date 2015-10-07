@@ -51,6 +51,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date : 07-10-2015 (Seemanti)
  */
 
 //Create UserInfo class so as to retrieve userinfo data object.
@@ -67,7 +68,7 @@ public class UserInfo {
       eMail =c; 
    }
    //This method sets the UserInfo data in database as TurbineSecurity User if the user information changes else do not updates it.
-   public boolean setUserInfo(RunData data) {
+   public boolean setUserInfo(RunData data,String path) {
       try {
          //Create a stringUtil object to check Invalid characters !!!
          StringUtil S = new StringUtil();
@@ -84,19 +85,28 @@ public class UserInfo {
             String admin_lname =((TurbineUser)list.get(0)).getLastName();
             String admin_email =((TurbineUser)list.get(0)).getEmail();
             //Compare UserInfo Runtime Strings with already saved userinfo strings as in turbine user. 
-            //If changed then set the UserInfo(true) else not(false).
-            if( (!admin_fname.equals(AFName))||(!admin_lname.equals(ALName))||(!admin_email.equals(eMail)) )
+            //If Admin's name is changed then true else false.
+            if( (!(admin_fname.equals(AFName))) || (!(admin_lname.equals(ALName))) )
             {
-               //set user FirstName,LastName & Email.
+               //set user FirstName & LastName.
                user.setFirstName(AFName);
                user.setLastName(ALName);
-               user.setEmail(eMail);
                TurbineSecurity.saveUser(user);
-               sb.append("User Information updated successfully."+"\n");         
+               sb.append("User Name updated successfully."+"\n");
             }
             else sb.append("No change in User Information."+"\n");
+            //If Admin's E-mail changes then true else false.
+            
+            if( ( (admin_email == null) && (eMail != null && !eMail.equals("")) )  ||  ( (!(admin_email.equals(eMail))) && (eMail != null && !eMail.equals("")) ) )
+            {
+               //set user e-mail id.
+               user.setEmail(eMail);
+               TurbineSecurity.saveUser(user);
+               AdminProperties.setPropertyValue(path,eMail,"brihaspati.mail.email");
+               sb.append("E-mail Id updated successfully."+"\n");
+            }
+            data.addMessage(sb.toString());
          }
-         data.addMessage(sb.toString());
       }//End of try block.
       catch(Exception e) {
          ErrorDumpUtil.ErrorLog("The exception in setting UserInfo( FirstName,LastName & Email) in TurbineSecurity !"+e);
