@@ -3049,7 +3049,7 @@ class Report extends Controller {
 		if($statement == "dayst")
                 {
                  	$this->load->helper('text');
-                        $data['width'] = "70%";
+                        $data['width'] = "100%";
                         $page_count = 0;
                         /* Pagination setup */
                         $this->load->library('pagination');

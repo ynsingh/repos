@@ -65,11 +65,21 @@ class Tag_model extends Model {
                 if ($current_entry_type['bank_cash_ledger_restriction'] == 3)
                         $ledger_type = 'D';
 		if($ledger_type == 'D' ){
-
                 	$this->db->select('ledgers.name as name');
                 	$this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('entry_items.dc', $ledger_type)->where('ledgers.name LIKE', '%' . $text . '%');
                 	$ledger_q = $this->db->get();
                 	$html = '';
+			 $ledger_multiple = ($ledger_q->num_rows() > 1) ? TRUE : FALSE;
+                        if ($ledger_multiple)
+                                {
+				foreach ($ledger_q->result() as $ledger)
+                                {
+
+                                $html .= "(" . $ledger->name . ")";
+				  return $html;
+				}
+                                }
+
                 	if( $ledger_q->num_rows() == 1 ) {
                         	foreach ($ledger_q->result() as $ledger)
                         	{
@@ -94,6 +104,17 @@ class Tag_model extends Model {
                         $this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('entry_items.dc', $ledger_type)->where('ledgers.name LIKE', '%' . $text . '%');
                         $ledger_q = $this->db->get();
                         $html = '';
+			 $ledger_multiple = ($ledger_q->num_rows() > 1) ? TRUE : FALSE;
+                        if ($ledger_multiple)
+                                {
+                                foreach ($ledger_q->result() as $ledger)
+                                {
+
+                                $html .= "(" . $ledger->name . ")";
+                                  return $html;
+                                }
+                                }
+
                         if( $ledger_q->num_rows() == 1 ) {
                                 foreach ($ledger_q->result() as $ledger)
                                 {
@@ -112,7 +133,10 @@ class Tag_model extends Model {
                 $led_name = $this->db->get();
 		if ($led_name->num_rows() >= 1)
                 {
-			return $name;
+		foreach ($led_name->result() as $row)
+                {
+			return $row->name;
+		}
 		}else{
 			return 0;
 		}
@@ -122,7 +146,7 @@ class Tag_model extends Model {
         {
                 $counter=1;
                 $options = array();
-                $this->db->from('ledgers')->where('type', '1')->where('name !=', 'Cash in Hand');
+                $this->db->from('ledgers')->where('type', '1')->where('name'. '  ' . 'NOT LIKE', '%' . 'Cash' . '%');
                 $tag_q = $this->db->get();
                 foreach ($tag_q->result() as $row)
                 {
@@ -133,6 +157,37 @@ class Tag_model extends Model {
                 }
                 return $options;
         }
+	
+	function check_type_of_bank($led_name)
+        {
+                $options = array();
+                $this->db->from('ledgers')->where('name', $led_name)->where('name'. '  ' . 'NOT LIKE', '%' . 'Cash' . '%');
+                $tag_q = $this->db->get();
+		if ($tag_q->num_rows() > 0)
+                {
+			return 0;
+		}else{
+			return 1;
+		}
+        }
+             
+		
+	function get_bank_cash_index($led_name)
+        {       
+                $counter=1;
+                $options = array();
+                $this->db->from('ledgers')->where('type', '1')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%');
+                $tag_q = $this->db->get();
+                foreach ($tag_q->result() as $row)
+                {               
+                        if($row->name == $led_name){
+                                $options[$counter] = $row->name;
+                        }
+                        $counter++;
+                }
+                return $options;
+        }
+
 
 	function get_closing_balance($bank_name)
         {
@@ -186,6 +241,78 @@ class Tag_model extends Model {
 
         }
 
+	 function get_bank_of_multiple_entry($entry_id)
+        {
+                $this->db->from('entry_items')->where('entry_id', $entry_id);
+                $entry_items1 = $this->db->get();
+                foreach ($entry_items1->result() as $row1){
+                        $led_id=$row1->ledger_id;
+                        $this->db->select('name');
+                        $this->db->from('ledgers')->where('id', $led_id)->where('type', '1');
+                        $led_detail1 = $this->db->get();
+                        foreach ($led_detail1->result() as $row2)
+                        {
+                             $val=$row2->name;
+	  
+	               }
+		}
+		return $val;		
+        }
+	
+	function get_ledger_of_multiple_entry($bank_id, $entry_id)
+        {
+//		echo"entry_id".$entry_id."bank_id".$bank_id;
+                $this->db->from('entry_items')->where('entry_id', $entry_id)->where('ledger_id', $bank_id)->where('dc =','D');
+                $entry_items1 = $this->db->get();
+		if ($entry_items1->num_rows() >= 1)
+                {
+                        foreach ($entry_items1->result() as $row1){
+                        $id=$row1->entry_id;
+                        $amount=$row1->amount;
+                        $this->db->from('entry_items')->where('entry_id', $id)->where('dc =','C');
+                        $entry_items2 = $this->db->get();
+                        foreach ($entry_items2->result() as $row2){
+                                $ledger_id=$row2->ledger_id;
+                                $this->db->select('name');
+                                $this->db->from('ledgers')->where('id', $ledger_id);
+                                $led_detail1 = $this->db->get();
+                                foreach ($led_detail1->result() as $row3)
+                                {
+                                        $val=$row3->name;
+                                }
+                        }
+                }
+                return $val."#".$amount;
+                }
+
+        }
+	
+	function get_ledger_DR_multiple_entry($bank_id, $entry_id)
+        {
+                $this->db->from('entry_items')->where('entry_id', $entry_id)->where('ledger_id', $bank_id)->where('dc =','C');
+                $entry_items1 = $this->db->get();
+                if ($entry_items1->num_rows() >= 1)
+                {
+                	foreach ($entry_items1->result() as $row1){
+                        $id=$row1->entry_id;
+			$amount=$row1->amount;
+			$this->db->from('entry_items')->where('entry_id', $id)->where('dc =','D');
+                	$entry_items2 = $this->db->get();
+			foreach ($entry_items2->result() as $row2){
+				$ledger_id=$row2->ledger_id;
+                        	$this->db->select('name');
+                        	$this->db->from('ledgers')->where('id', $ledger_id);
+                        	$led_detail1 = $this->db->get();
+                        	foreach ($led_detail1->result() as $row3)
+                        	{
+                             		$val=$row3->name;
+                        	}
+			}
+                }
+                return $val."#".$amount;
+                }
+        }
+	
 
 
 }

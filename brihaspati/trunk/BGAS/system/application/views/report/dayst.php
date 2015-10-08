@@ -59,7 +59,7 @@
 		echo "<table border=\"0\" cellpadding=\"5\" class=\"simple-table ledgerst-table\" width=\"$width\">";
 		$odd_even = "odd";
 
-		 if ( ! $print_preview){
+		 //if ( ! $print_preview){
 			$this->db->select('entry_items.ledger_id as entry_items_ledger_id, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc, ledgers.id as ledgers_id, ledgers.code as ledgers_code, ledgers.name as ledgers_name');
 			$this->db->from('entry_items')->join('ledgers', 'ledgers.id = entry_items.ledger_id');
 			$this->db->where('entry_items.update_date', $date1);
@@ -77,8 +77,8 @@
 				echo "<thead><tr><th>Sr. No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
 
 			}
-		}
-		else {
+		//}
+		/*else {
 			$page_count = 0;
 			$this->db->select('entry_items.ledger_id as entry_items_ledger_id, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc, ledgers.id as ledgers_id, ledgers.code as ledgers_code, ledgers.name as ledgers_name');
 			$this->db->from('entry_items')->join('ledgers', 'ledgers.id = entry_items.ledger_id');
@@ -90,7 +90,7 @@
 			$dayst_q = $this->db->get();
 				echo "<thead><tr><th colspan=\"5\" align=\"center\"> The ledger entry on date ".$date1." </th></tr></thead>";
 				echo "<thead><tr><th>Sr. No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
-		}
+		}*/
 	//	print_r($dayst_q);
 		$i=1;
 		foreach ($dayst_q->result() as $row)

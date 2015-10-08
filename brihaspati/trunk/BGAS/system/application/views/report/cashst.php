@@ -77,6 +77,7 @@
 		$x=1;
 		$counter=1;
 		$check = 1;
+		$bank_cash=0;
 		$this->load->library('session');
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
@@ -107,66 +108,53 @@
 				}
 					$tot_op_bal=$tot_op_bal+$opbalance;
 				$i++;
-			}	
+			}
+				//In search variable both id and name are seperates by #...........	
 				$expload_search=explode("#",$search);
-				$cash_in_hand = $this->Tag_model->cash_in_hand_available('Cash in Hand');
+				$cash_in_hand = $this->Tag_model->cash_in_hand_available('Cash');
 				if($search == NULL || $search == "--Select--"){
-					echo "<thead><tr><th colspan=\"5\" align=\"center\"> The ledger entries between date ".$from_date." to ".$to_date." </th></tr></thead>";
 					//Head Of cash in hand and name of banks................
-					echo "<thead><tr><th width=\"10%\">Date</th><th  width=\"20%\">Ledger Name</th>";
+					echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th>";
 					//First Colomn of Cash in hand.............
-					if($cash_in_hand != '0'){
-						//echo"===";
-						echo"<th width=\"20%\" align=\"center\">".$cash_in_hand."</th>";
-					}
-					foreach ($op_balance->result() as $row1){
-						if($row1->name != 'Cash in Hand'){
-							echo"<th width=\"20%\" align=\"center\">".$row1->name."</th>";
-						}
+					$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
+                			$led_name = $this->db->get();
+                			foreach ($led_name->result() as $row1)
+                			{
+						 echo"<th width=\"20%\" align=\"center\"><b>".$row1->name."</th>";
+						$bank_cash++;	
+                			}
+					$this->db->from('ledgers')->where('name'. '  ' . 'NOT LIKE', '%' . 'Cash' . '%')->where('type', '1');
+                                        $led_name1 = $this->db->get();
+                                        foreach ($led_name1->result() as $row2){
+						echo"<th width=\"20%\" align=\"center\"><b>".$row2->name."</th>";
 					}
 					echo"</tr></thead>";
 					//Opening Balance Of bank........................
-					echo "<thead><tr><th width=\"10%\"></th><th width=\"20%\"></th>";
-						for($count=1; $count<=$i; $count++ ){
-						echo"<th  width=\"20%\" align=\"center\">"."Dr"."</th>"; 
-						}
-						echo"</tr>";
-						echo "<tr class=\"tr-balance\"><td >Opening Balance</td><td></td>";
-						foreach ($op_balance->result() as $row){
-                                                if($row->name == 'Cash in Hand'){
-                                                list ($opbalance, $optype) = $this->Ledger_model->get_op_balance($row->id); /* Opening Balance */
-                                                echo "<td align=\"center\">". convert_dc($optype) ." " .$opbalance."</td>";
-                                                }
-                                                }
+					echo "<thead>";
+						echo "<tr><td><b>Opening Balance</td><td></td>";
+						$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
+                                        	$led_name = $this->db->get();
+                                        	foreach ($led_name->result() as $row1)
+                                        	{
+						list ($opbalance, $optype) = $this->Ledger_model->get_op_balance($row1->id); /* Opening Balance */
+                                                echo "<td align=\"center\">"."<b>". convert_dc($optype) ." " .$opbalance."</td>";
+	
+                                        	}
+                                        	$this->db->from('ledgers')->where('name'. '  ' . 'NOT LIKE', '%' . 'Cash' . '%')->where('type', '1');
+                                        	$led_name1 = $this->db->get();
+                                        	foreach ($led_name1->result() as $row2){
+                                        		list ($opbalance, $optype) = $this->Ledger_model->get_op_balance($row2->id); /* Opening Balance */
+                                                echo "<td align=\"center\">"."<b>". convert_dc($optype) ." " .$opbalance."</td>";
 
-						foreach ($op_balance->result() as $row){
-						if($row->name != 'Cash in Hand'){
-						list ($opbalance, $optype) = $this->Ledger_model->get_op_balance($row->id); /* Opening Balance */
-				 		echo "<td align=\"center\">". convert_dc($optype) ." " .$opbalance."</td>";
-						}
 						}
 					echo"</tr></thead>";
 				}else{
-					 echo "<thead><tr><th colspan=\"3\" align=\"center\"> The ledger entries between date ".$from_date." to ".$to_date." </th></tr></thead>";
-					 echo "<thead><tr><th width=\"10%\">Date</th><th  width=\"20%\">Ledger Name</th>";
-                               		 if($search == 'Cash in Hand'){
-                                		if($cash_in_hand == 'Cash in Hand'){
-                                        		echo"<th width=\"20%\" align=\"center\">".$cash_in_hand."</th>";
-                                		}
-                                	}else{
-                                                echo"<th width=\"20%\" align=\"center\">".$expload_search[1]."</th>";
-					}
-                                        	echo"</tr></thead>";
-
-                                		echo "<thead><tr><th width=\"10%\"></th><th width=\"20%\"></th>";
-                               	 		echo"<th  width=\"20%\" align=\"center\">"."Dr"."</th>";
-                                		echo "<tr class=\"tr-balance\"><td >Opening Balance</td><td>";
-
-						list ($opbalance1, $optype) = $this->Ledger_model->get_op_balance($expload_search[0]); /* Opening Balance */
-                                                echo "<td align=\"center\">". convert_dc($optype) ." " .$opbalance1."</td>";
-
-                                        	echo"</tr></thead>";
-	
+					 echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th>";
+                                         echo"<th width=\"20%\" align=\"center\"><b>".$expload_search[1]."</th>";
+                                	 echo "<tr><td><b>Opening Balance</td><td>";
+					 list ($opbalance1, $optype) = $this->Ledger_model->get_op_balance($expload_search[0]); /* Opening Balance */
+                                         echo "<td align=\"center\"><b>". convert_dc($optype) ." " .$opbalance1."</td>";
+                                         echo"</tr></thead>";
 				}
 				////For Dr- entries......................				
 		
@@ -190,30 +178,39 @@
 							$Cr_val=explode("C",$exp_val[0]);
 							$Dr_val=explode("D",$exp_val[1]);
 							$name=$this->Ledger_model->get_name($Dr_val[1]);
-							$bank_name1=$this->Tag_model->get_all_bank_cash_ledgers($name);
+							$bank_name1=$this->Tag_model->get_bank_cash_index($name);
 							//Get key value by the name of bank for know in which no of colomn ...
 							$key = array_search($name, $bank_name1);
 							$led_name=$this->Ledger_model->get_name($Cr_val[1]);
+							echo"<tr>";
 							if($search == NULL || $search == "--Select--"){
 								echo "<td width=\"10%\">" . date_mysql_to_php_display($row3->date) . "</td>";
                                                         	echo "<td width=\"20%\">";
                                                         	echo $led_name . "<br>";
                                                         	echo "Narration: " . $row3->narration;
                                                         	echo "</td>";
-								if( $name == $cash_in_hand){
-									$key=1;
-                                                         	}else{
-                                                                        $key = $key + 1;
-                                                         	}
                                                          	for($counter=1; $counter <= $key; $counter++){
                                                          		echo "<td align=\"center\">";
                                                          	}
-                                                                	echo $row3->dr_total;
-                                                                	$val=$i-$key;	
-                                                                	for($y=1; $y <= $val; $y++){
-                                                                	echo "<td>";
-                                                                	}
-                                                	}
+                                                                echo $row3->dr_total;
+                                                                $val=$i-$key;	
+                                                                for($y=1; $y <= $val; $y++){
+                                                                echo "<td>";
+                                                                }
+		                                               	}else{
+								              if($expload_search[1] == $name){
+                                                                                echo "<td width=\"10%\">" . date_mysql_to_php_display($row3->date) . "</td>";
+                                                                                echo "<td width=\"20%\">";
+                                                                                echo $led_name . "<br>";
+                                                                                echo "Narration: " . $row3->narration;
+                                                                                echo "</td>";
+                                                                                echo "<td align=\"center\">";
+                                                                                echo $row3->dr_total;
+                                                                      }
+
+
+								}
+								echo"</tr>";
 						}
 								//Set flag if both ledger are bank_cash........
 								if($is_bank_cash==1){
@@ -221,7 +218,6 @@
 								}
 					}
 					 			$is_bank_cash1=0;
-				
 				}
 
 				//////////////////
@@ -231,7 +227,11 @@
 
                         	$entry_q = $this->db->get();
 				foreach ($entry_q->result() as $row){	
-			 		$current_entry_type = entry_type_info($row->entry_type);
+					$this->db->from('entry_items')->where('entry_id', $row->id);
+					$entry_items = $this->db->get();
+					$num_rows=$entry_items->num_rows();
+				/*	if($num_rows == 2){
+			 		$current_entry_type = entry_type_info($row->entry_type);*/
 					$value = '';
                                 	$value = $this->Tag_model->get_entry_name_match1($row->id, $row->entry_type, NULL);
 					//Get bank name by the entry has been made.............
@@ -240,82 +240,73 @@
 						$is_led_bank_cash = $this->Ledger_model->get_ledgers_bankcash($get_led_id);
 						//not run code for contra entry...............
 						if($is_led_bank_cash != '1'){
-							$this->db->from('ledgers')->where('name', $value);
-							$led_id = $this->db->get();
-                                			foreach ($led_id->result() as $row1){
-								$ledger_id=$row1->id;
-							}
-							$this->db->from('entry_items')->where('entry_id', $row->id)->where('ledger_id !=', $ledger_id);
-							$entry_items_detail = $this->db->get();
-                                			foreach ($entry_items_detail->result() as $row2){
-                                        			$entry_items_ledger_id=$row2->ledger_id;
-                                			}
-								$led_name=$this->Ledger_model->get_name($entry_items_ledger_id);
-								$bank_name=$this->Tag_model->get_all_bank_cash_ledgers($led_name);
-								$key = array_search($led_name, $bank_name);
-								echo"<br>";
-                                				if($value != NULL) {
-                                        				$check++;
-                                				}
-								echo"<tr>";	
-								$get_led_id= $this->Ledger_model->get_id($led_name);
-								$is_led_bank_cash = $this->Ledger_model->get_ledgers_bankcash($get_led_id);
-								//if Opposite ledger name is not bank cash
-								if($is_led_bank_cash != '0'){
-									if($search == NULL || $search == "--Select--"){
-                                						echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
-                                						echo "<td>";
-                                						echo $value . "<br>";
-                                						echo "Narration: " . $row->narration;
-                                						echo "</td>";
-										if($cash_in_hand != '0' ){
-											echo "<td align=\"center\">" ;
-										}
-										for($counter=1; $counter <= $key; $counter++){
-                                                                                	echo "<td align=\"center\">";
-                                                                		}
-										echo $row->dr_total;
-										$val=$i-$key;
-                                                                                $val=$val-1;
-                                                                                for($y=1; $y == $val; $y++){
-                                                                                echo "<td>";
-                                                                                }
-	
-									}else{
-										//Search bank name is eual to the bank envolve in making entry...................
-										if($expload_search[1] == $led_name){
-
-											echo "<td width=\"10%\">" . date_mysql_to_php_display($row->date) . "</td>";
-                                                                			echo "<td width=\"20%\">";
-                                                                			echo $value . "<br>";
-                                                                			echo "Narration: " . $row->narration;
-                                                                			echo "</td>";
-                                                                                        echo "<td align=\"center\">" ;
-                                                                                	echo $row->dr_total;
-
-										}
-									}
-								}
+						$led_name=$this->Tag_model->get_bank_of_multiple_entry($row->id);
+						$bank_id= $this->Ledger_model->get_id($led_name);
+						$opp_name=$this->Tag_model->get_ledger_of_multiple_entry($bank_id, $row->id);
+                                                //echo "opp".$opp_name;
+						//Get bank of multiple entry......
+                                                $bank_type=$this->Tag_model->check_type_of_bank($led_name);
+                                                if($bank_type == '0'){
+                                                $bank_name=$this->Tag_model->get_all_bank_cash_ledgers($led_name);
+                                                }else{
+                                                $bank_name=$this->Tag_model-> get_bank_cash_index($led_name);
+                                                }
+                                                $key = array_search($led_name, $bank_name);
+                                                if($bank_type == '0'){
+                                                                        $key=$bank_cash+$key;
+                                                }
+                                                $opposite_name=explode("#",$opp_name);
+                                                //Is mutiple but bank is not cr.....
+                                                if($opposite_name[0] != NULL){
+						if($search == NULL || $search == "--Select--"){
+                                                echo"<tr>";
+                                                echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
+                                                echo "<td>";
+                                                echo $opposite_name[0] . "<br>";
+                                                echo "Narration: " . $row->narration;
+                                                echo "</td>";
+                                                for($counter=1; $counter <= $key; $counter++){
+                                                        echo "<td align=\"center\">";
+                                                }
+                                                echo $opposite_name[1];
+						}else{
+						if($expload_search[1] == $led_name){
+						 echo"<tr>";
+                                                echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
+                                                echo "<td>";
+                                                echo $opposite_name[0] . "<br>";
+                                                echo "Narration: " . $row->narration;
+                                                echo "</td>";
+                                                echo "<td align=\"center\">";
+                                                echo $opposite_name[1];
 						}
+						}
+						}
+                                                echo"</tr>";
+
+
 					}
+				}
 				}
 				//Total Balance ........................
         			echo "<tr class=\"tr-total\"><td>TOTAL </td><td></td></td>";
         			if($search == NULL || $search == "--Select--"){
-                        		foreach ($op_balance->result() as $row){
-                                		if($row->name == 'Cash in Hand'){
-                                        		$amount = $this->Ledger_model->get_dr_total1($row->id);
-                                        		echo "<td  align=\"center\">Dr " . money_format('%!i', convert_cur($amount)) ."</td>";
-                                		}
-                                	}
+					$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
+                                        $led_name = $this->db->get();
+                                        foreach ($led_name->result() as $row1)
+                                        {
+						$amount = $this->Ledger_model->get_dr_total1($row1->id);
+                                                echo "<td align=\"center\">Dr " . money_format('%!i', convert_cur($amount)) ."</td>";
 
-                                 			foreach ($op_balance->result() as $row){
+                                        }
+                                        $this->db->from('ledgers')->where('name'. '  ' . 'NOT LIKE', '%' . 'Cash' . '%')->where('type', '1');
+                                        $led_name1 = $this->db->get();
+                                        foreach ($led_name1->result() as $row2)
+                                        {
+						$amount = $this->Ledger_model->get_dr_total1($row2->id);
+                                                echo "<td align=\"center\">Dr " . money_format('%!i', convert_cur($amount)) ."</td>";
 
-                                 				$amount = $this->Ledger_model->get_dr_total1($row->id);
-                                				if($row->name != 'Cash in Hand'){
-                                 					echo "<td  align=\"center\">Dr " . money_format('%!i', convert_cur($amount)) ."</td>";
-                                				}
-                					}
+                                        }            
         			}else{
                                 	$amount = $this->Ledger_model->get_dr_total1($expload_search[0]);
                                         echo "<td  align=\"center\">Dr " . money_format('%!i', convert_cur($amount)) ."</td>";
@@ -324,34 +315,25 @@
 				echo "<tr><td></td><td></td></td><td></td>";
 		
 				//// For Cr- entries ....................
-				echo "<tr  class=\"tr-total\"><td width=\"10%\">Date</td><td  width=\"20%\">Ledger Name</td>";
+				echo "<tr  class=\"tr-total\"><td width=\"10%\"><b>Date</td><td width=\"20%\"><b>Ledger Name</td>";
 				if($search == NULL || $search == "--Select--"){
+					$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
+				        $led_name = $this->db->get();
+				        foreach ($led_name->result() as $row1)
+        				{
+						echo"<td width=\"20%\" align=\"center\"><b>".$row1->name."</td>";
+        				}
+        				$this->db->from('ledgers')->where('name'. '  ' . 'NOT LIKE', '%' . 'Cash' . '%')->where('type', '1');
+        				$led_name1 = $this->db->get();
+        				foreach ($led_name1->result() as $row2)
+        				{
+						echo"<td width=\"20%\" align=\"center\"><b>".$row2->name."</td>";
+        				}
 
-                                	if($cash_in_hand != '0'){
-                                        	echo"<td width=\"20%\" align=\"center\">".$cash_in_hand."</td>";
-                                	}
-                                		foreach ($op_balance->result() as $row1){
-                                			if($row1->name != 'Cash in Hand'){
-                                        			echo"<td width=\"20%\" align=\"center\">".$row1->name."</td>";
-                                			}
-                                		}
+				}else{
+				  		echo"<td width=\"20%\" align=\"center\"><b>".$expload_search[1]."</td>";
 
-                                				echo"</tr>";
-								echo"<tr  class=\"tr-total\">";
-								echo "<td><td width=\"20%\"></td>";
-                                				for($count=1; $count<=$i; $count++ ){
-                                					echo"<td  width=\"20%\" align=\"center\">"."Cr"."</td>";
-                                				}}else{
-				 					if($search == 'Cash in Hand'){
-                                                				if($cash_in_hand == 'Cash in Hand'){
-                                                        				echo"<th width=\"20%\" align=\"center\">".$cash_in_hand."</th>";
-                                                				}
-                                        				}
-				  							echo"<td width=\"20%\" align=\"center\">".$expload_search[1]."</td>";
-
-		
-
-						}
+				}
 				echo"</tr>";
 
 				//For Contra entries..........
@@ -373,9 +355,21 @@
                                                         $Cr_val=explode("C",$exp_val[0]);
                                                         $Dr_val=explode("D",$exp_val[1]);
                                                         $name=$this->Ledger_model->get_name($Cr_val[1]);
+							$bank_type=$this->Tag_model->check_type_of_bank($name);
+                                                        if($bank_type == '0'){
                                                         $bank_name1=$this->Tag_model->get_all_bank_cash_ledgers($name);
+                                                        }
+							else{
+                                                        $bank_name1=$this->Tag_model-> get_bank_cash_index($name);
+                                                         }
+
                                                         $key = array_search($name, $bank_name1);
                                                         $led_name=$this->Ledger_model->get_name($Dr_val[1]);
+							 if($bank_type == '0'){
+                                                                        $key=$bank_cash+$key;
+                                                                }
+							
+							echo"<tr>";
 							if($search == NULL || $search == "--Select--"){
 	
                                                                	echo "<td width=\"10%\">" . date_mysql_to_php_display($row3->date) . "</td>";
@@ -383,21 +377,17 @@
                                                                	echo $led_name . "<br>";
                                                                	echo "Narration: " . $row3->narration;
                                                                	echo "</td>";
-								if( $name == $cash_in_hand){
-                                                             		echo "<td align=\"center\">" .$row3->dr_total . "</td>";
-                                                               	}else{
-                                                               		$key = $key + 1;
-                                                               	}
                                                                	for($counter=1; $counter <= $key; $counter++){
                                                                		echo "<td align=\"center\">";
                                                                	}
                                                                 	echo $row3->dr_total;
-								 	$val=$i-$key;
-								 	for($y=1; $y == $val; $y++){
-                                                                                echo "<td>";
-                                                                        }
+								$val=$i-$key;
+                                                                for($y=1; $y <= $val; $y++){
+                                                                echo "<td>";
+                                                                }
+
                                                  	}else{
-							//		if($expload_search[1] == $name){
+									if($expload_search[1] == $name){
 										echo "<td width=\"10%\">" . date_mysql_to_php_display($row3->date) . "</td>";
                                                                         	echo "<td width=\"20%\">";
                                                                         	echo $led_name . "<br>";
@@ -405,17 +395,18 @@
                                                                         	echo "</td>";
                                                                                 echo "<td align=\"center\">";
                                                                         	echo $row3->dr_total;
-							//		}
+									}
 
 							}
+										echo"</tr>";
 						}	
         
-                                                                if($is_bank_cash==1){
-                                                                        $is_bank_cash1=1;
-                                                                }
+                                                                		if($is_bank_cash==1){
+                                                                        		$is_bank_cash1=1;
+                                                                		}
                                                                 
                                     }
-                                         			$is_bank_cash1=0;
+                                         					$is_bank_cash1=0;
                                 
                                 }
                                 //////////////////
@@ -424,23 +415,29 @@
             			$this->db->where('date <=', $date2);
                                 $entry_q = $this->db->get();
                                 foreach ($entry_q->result() as $row){
+					$this->db->from('entry_items')->where('entry_id', $row->id);
+                                        $entry_items = $this->db->get();
+                                        $num_rows=$entry_items->num_rows();
+                                        if($num_rows == 2){
 
                                         $current_entry_type = entry_type_info($row->entry_type);
                                         $value = '';
                                         $value = $this->Tag_model->get_entry_name_match($row->id, $row->entry_type, NULL);
 					if($value != NULL){
-                                        	$this->db->from('ledgers')->where('name', $value);
-                                        	$led_id = $this->db->get();
-                                        	foreach ($led_id->result() as $row1){
-                                                	$ledger_id=$row1->id;
-                                        	}
+							$get_led_id= $this->Ledger_model->get_id($value);
+							 $ledger_id= $this->Ledger_model->get_id($value);
                                                 	$this->db->from('entry_items')->where('entry_id', $row->id)->where('ledger_id !=', $ledger_id);
                                                 	$entry_items_detail = $this->db->get();
                                                 	foreach ($entry_items_detail->result() as $row2){
                                                         	$entry_items_ledger_id=$row2->ledger_id;
                                                 	}
 								$led_name=$this->Ledger_model->get_name($entry_items_ledger_id);
+								$bank_type=$this->Tag_model->check_type_of_bank($led_name);
+								if($bank_type == '0'){
                                                                 $bank_name=$this->Tag_model->get_all_bank_cash_ledgers($led_name);
+								}else{
+								$bank_name=$this->Tag_model-> get_bank_cash_index($led_name);
+								}
 								$key = array_search($led_name, $bank_name);	
 								$get_led_id= $this->Ledger_model->get_id($led_name);
                                                                 $is_led_bank_cash = $this->Ledger_model->get_ledgers_bankcash($get_led_id);
@@ -448,6 +445,9 @@
                                 				if($value != NULL) {
                                         				$check++;
                                 				}
+								if($bank_type == '0'){
+									$key=$bank_cash+$key;
+								}
                                 				echo"<tr>";
 								if($is_led_bank_cash != '0'){
 									if($search == NULL || $search == "--Select--"){
@@ -456,14 +456,11 @@
                                 						echo $value . "<br>";
                                 						echo "Narration: " . $row->narration;
                                 						echo "</td>";
-										 if($cash_in_hand != '0' ){
-                                                                                        echo "<td align=\"center\">" ;
-                                                                                }
                                                                                 for($counter=1; $counter <= $key; $counter++){
                                                                                         echo "<td align=\"center\">";
                                                                                 }
                                                                                 echo $row->cr_total;
-										 $val=$i-$key;
+										$val=$i-$key;
                                                                                 $val=$val-1;
                                                                         	for($y=1; $y == $val; $y++){
                                                                               	echo "<td>";
@@ -482,55 +479,114 @@
                                                                 				echo"</tr>";
 							}
 					}
-                                }
+                                }else{
+						//Get bank of multiple entry......
+						$led_name=$this->Tag_model->get_bank_of_multiple_entry($row->id);
+                                                $bank_id= $this->Ledger_model->get_id($led_name);
+						//Get opposite ledger name accept bank name.....
+                                                $opp_name=$this->Tag_model->get_ledger_Dr_multiple_entry($bank_id, $row->id);
+						$bank_type=$this->Tag_model->check_type_of_bank($led_name);
+                                                if($bank_type == '0'){
+                                                $bank_name=$this->Tag_model->get_all_bank_cash_ledgers($led_name);
+                                                }else{
+                                                $bank_name=$this->Tag_model-> get_bank_cash_index($led_name);
+                                                }
+                                                $key = array_search($led_name, $bank_name);
+					 	if($bank_type == '0'){
+                                                                        $key=$bank_cash+$key;
+                                                }
+						$opposite_name=explode("#",$opp_name);
+						//Is mutiple but bank is not cr.....
+						if($opposite_name[0] != NULL){
+						if($search == NULL || $search == "--Select--"){
+						echo"<tr>";
+						echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
+                                                echo "<td>";
+                                                echo $opposite_name[0] . "<br>";
+                                                echo "Narration: " . $row->narration;
+                                                echo "</td>";
+						for($counter=1; $counter <= $key; $counter++){
+                                                	echo "<td align=\"center\">";
+                                                }
+                                                echo $opposite_name[1];
+						 $val=$i-$key;
+                                                $val=$val-1;
+                                                for($y=1; $y == $val; $y++){
+                                                echo "<td></td>";
+                                                }
+
+						}else{
+						if($expload_search[1] == $led_name){
+						 echo"<tr>";
+                                                echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
+                                                echo "<td>";
+                                                echo $opposite_name[0] . "<br>";
+                                                echo "Narration: " . $row->narration;
+                                                echo "</td>";
+                                                echo "<td align=\"center\">";
+                                                echo $opposite_name[1];
+						}
+						}
+						echo"</tr>";
+						}
+
+				}
+		}
 
 	////Total Of Dr amount........
-       echo "<tr class=\"tr-total\"><td>TOTAL </td><td></td>";
+       echo "<tr  class=\"tr-total\"><td>TOTAL </td><td></td>";
        if($search == NULL || $search == "--Select--"){
-       		foreach ($op_balance->result() as $row){
-                	if($row->name == 'Cash in Hand'){
-                        	$amount = $this->Ledger_model->get_cr_total1($row->id);
-                                echo "<td  align=\"center\">Cr " . money_format('%!i', convert_cur($amount)) ."</td>";
-                         }
-                                }
-       foreach ($op_balance->result() as $row){
+	$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
+        $led_name = $this->db->get();
+        foreach ($led_name->result() as $row1)
+        {	
+        	$amount = $this->Ledger_model->get_cr_total1($row1->id);
+                echo "<td  align=\"center\">Cr " . money_format('%!i', convert_cur($amount)) ."</td>";
+        }
+	$this->db->from('ledgers')->where('name'. '  ' . 'NOT LIKE', '%' . 'Cash' . '%')->where('type', '1');
+        $led_name1 = $this->db->get();
+        foreach ($led_name1->result() as $row2)
+        {
+                $amount = $this->Ledger_model->get_cr_total1($row2->id);
+                echo "<td  align=\"center\">Cr " . money_format('%!i', convert_cur($amount)) ."</td>";
+        }
 
-       		$amount = $this->Ledger_model->get_cr_total1($row->id);
-                if($row->name != 'Cash in Hand'){
-
-                	echo "<td  align=\"center\">Cr " . money_format('%!i', convert_cur($amount)) ."</td>";
-
-                  }
-       }}else{
+       }else{
        		$amount = $this->Ledger_model->get_cr_total1($expload_search[0]);
                 echo "<td  align=\"center\">Cr " . money_format('%!i', convert_cur($amount)) ."</td>";
        }
        echo"</tr>";
 
 	//Closing balance .............................
-	echo "<tr class=\"tr-balance\"><td >Closing Balance</td><td></td>";
+	echo "<tr class=\"tr-balance\"><td><b>Closing Balance</td><td></td>";
 	if($search == NULL ||  $search == "--Select--"){
-		 foreach ($op_balance->result() as $row){
-			if($row->name == 'Cash in Hand'){
-                        $amount = $this->Ledger_model->get_ledger_balance($row->id);
-                        echo "<td align=\"center\">". convert_amount_dc($amount) . "</td>";
-			}
-         	}
-		foreach ($op_balance->result() as $row){
-			if($row->name != 'Cash in Hand'){	
-			$amount = $this->Ledger_model->get_ledger_balance($row->id);
-        		echo "<td align=\"center\">". convert_amount_dc($amount) . "</td>";
-			}
-         }}else{
+		  $this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
+        	$led_name = $this->db->get();
+        	foreach ($led_name->result() as $row1)
+        	{
+                	$amount = $this->Ledger_model->get_ledger_balance($row1->id);
+                	echo "<td  align=\"center\"><b>" . convert_amount_dc($amount) ."</td>";
+        	}
+        	$this->db->from('ledgers')->where('name'. '  ' . 'NOT LIKE', '%' . 'Cash' . '%')->where('type', '1');
+       	 	$led_name1 = $this->db->get();
+        	foreach ($led_name1->result() as $row2)
+        	{
+                	$amount = $this->Ledger_model->get_ledger_balance($row2->id);
+                	echo "<td  align=\"center\"><b>" . convert_amount_dc($amount) ."</td>";
+        	}
+
+       }
+       else{
 			$this->db->select('id, name, code');
                         $this->db->from('ledgers')->where('name', $expload_search[1]);
                         $op_balance = $this->db->get();
 			foreach ($op_balance->result() as $row){
 				$amount = $this->Ledger_model->get_ledger_balance($row->id);
 			}
-			 	echo "<td align=\"center\">". convert_amount_dc($amount) . "</td>";
+			 	echo "<td align=\"center\"><b>". convert_amount_dc($amount) . "</td>";
 	}
-	}else{
+	}
+	else{
 		$this->messages->add('Either there is no any bank_cash account or there are no any entry.', 'error');
 	}
 
