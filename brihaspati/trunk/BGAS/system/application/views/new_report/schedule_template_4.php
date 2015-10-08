@@ -129,7 +129,7 @@
         	        $group_name = $row->name;
                 	$group_id = $row->id;
 			if($group_name == 'Intangible Assets')
-                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' .  $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' .  $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
 
         	}
 		echo "</td>";

@@ -140,7 +140,6 @@ class Reportlist1
 		$diff = $this->income_expense_diff();
                 $result1 = explode('#', $diff);
                 $diff_total = -($result1[0]); 
-
                 $counter = 0;
                 $sum = 0;
                 $liability_total1 = 0;
@@ -164,32 +163,31 @@ class Reportlist1
                                 $value = explode('#', $result);
                                 $liability_totalA = $value[0];
 				$liability_total1 = ($liability_totalA + $diff_total);
-		
                                 if($name == 'Corpus')
                                 $name = 'Corpus/Capital Funds';
                         if(($code!=  '1005') && ($code!= '1001') &&  ($code!= '1006'))
                         {
-			echo "<tr class=\"tr-group\">";
-                        echo "<td class=\"td-group\">";
+			echo "<tr class=\"tr-group\" width=\"30%\">";
+                        echo "<td class=\"td-group\" width=\"30%\">";
                         echo "&nbsp;" .  $name;
                         echo "</td>";
                         echo "<td class=\"td-group\">";
                         $counter++;
-                        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_schedule/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000'));
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_schedule/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
                         echo "</td>";
                         if($name!= 'Corpus/Capital Funds')
                         {
-                        echo "<td align=\"right\" colspan=\"3\">" . convert_amount_dc($liability_total) . "</td>";
-                        echo "<td align=\"right\" colspan=\"3\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($liability_total) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
                         }else{
-                        echo "<td align=\"right\" colspan=\"3\">" . convert_amount_dc($liability_total1) . "</td>";
-                        echo "<td align=\"right\" colspan=\"3\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($liability_total1) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>"; 
                         }
-                        }//ifcode
+			echo "</tr>";
+                        }//ifcode 
                         }//foreach
-
                 }//if(id==2)
-
+			
                 if($id == 1)
                 {
                         $counter = 3;
@@ -205,16 +203,16 @@ class Reportlist1
                                 $sum = $sum + $asset_total;
                                 if($name == 'Investments')
 				$name = 'Investments From Earmarked / Endowments Funds';
-                                echo "<tr class=\"tr-group\">";
-                                echo "<td class=\"td-group\">";
+                                echo "<tr class=\"tr-group\" width=\"30%\">";
+                                echo "<td class=\"td-group\" width=\"30%\">";
                                 echo "&nbsp;" .  $name;
                                 echo "</td>";
                                 echo "<td class=\"td-group\">";
                                 $counter++;
-                                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_schedule/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000'));
+                                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_schedule/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
                                 echo "</td>";
-                                echo "<td align=\"right\" colspan=\"3\">" . convert_amount_dc($asset_total) . "</td>";
-                                echo "<td align=\"right\" colspan=\"3\">" . convert_amount_dc(0) . "</td>";
+                                echo "<td align=\"right\">" . convert_amount_dc($asset_total) . "</td>";
+                                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
 				echo "</tr>";
   			        $CI->db->select('id,name,code')->from('groups')->where('parent_id',$ledg_id);
              			$main1 = $CI->db->get();
@@ -228,13 +226,14 @@ class Reportlist1
                 		$asset_total = $asset->total;
                 		if($name == 'Fixed Assets')
                			{
-                		echo "<tr class=\"tr-ledger\">";
-                        	echo "<td class=\"td-ledger\">";
+                		echo "<tr class=\"tr-ledger\" width=\"30%\">";
+                        	echo "<td class=\"td-ledger\" width=\"30%\">";
                         	echo "&nbsp;" .  $group_name;
                         	echo "</td>";
                       		echo "<td></td>";
-                        	echo "<td colspan=\"3\"></td>";
-                        	echo "<td colspan=\"3\"></td>";
+                        	echo "<td></td>";
+                        	echo "<td></td>";
+				echo "</tr>";
                 		}
                			if(($name!= 'Fixed Assets') && ($name!= 'Current Assets') && ($name!= 'Loans Advances and Deposits'))
                 		{
@@ -242,21 +241,22 @@ class Reportlist1
                                 {
                                 	$group_name = 'Investments Others';
                                         $counter = 6;
-                                        echo "<tr class=\"tr-group\">";
-                                        echo "<td class=\"td-group\">";
+                                        echo "<tr class=\"tr-group\" width=\"30%\">";
+                                        echo "<td class=\"td-group\" width=\"30%\">";
                                         echo "&nbsp;" .  $group_name;
                                         echo "</td>";
                                         echo "<td>";
-                                        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_schedule/' . $group_code . '/' . $counter, $counter, array('title' => $group_name, 'style' => 'color:#000000'));
+                                        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_schedule/' . $group_code . '/' . $counter, $counter, array('title' => $group_name, 'style' => 'color:#000000;text-decoration:none;'));
                                         echo "</td>";
-                                        echo "<td align=\"right\" colspan=\"3\">" . convert_amount_dc(0) . "</td>";
-                                        echo "<td align=\"right\" colspan=\"3\">" . convert_amount_dc(0) . "</td>";
+                                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+					echo "</tr>";
                                         }//if
 					}//if(name!='')
                                 }//group foreach   
 			}//child foreach
 		}
-	$this->curr_total = $sum;
+	$this->curr_total = $sum; 
 	}
 
 	function income_expense_diff()
@@ -377,9 +377,9 @@ class Reportlist1
                         $counter++;
 
 			if($group_name == 'Cash in Hand')
-                        echo "&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
+                        echo "&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
                         elseif($group_name == 'Corpus Fund Investments')
-			echo "&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
+			echo "&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
 			else
                         echo "&nbsp;" .  $group_name;
                         echo "</td>";
@@ -672,9 +672,9 @@ class Reportlist1
                         echo "</td>";
 			echo "<td>";
                         if($group_name == 'Others Fixed Assets')
-                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row1->id . '/' . $row1->name, $row1->name, array('title' => $row1->name, 'style' => 'color:#000000'));
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row1->id . '/' . $row1->name, $row1->name, array('title' => $row1->name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
                         elseif($group_name == 'Land')
-                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row1->id . '/' . $row1->name, $row1->name, array('title' => $row1->name, 'style' => 'color:#000000'));
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row1->id . '/' . $row1->name, $row1->name, array('title' => $row1->name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
                         else
                         echo "&nbsp;" .  $group_name;
                         echo "</td>";
@@ -783,7 +783,7 @@ class Reportlist1
 			if($count == "4"){
                 	echo "<td class=\"td-group\" width=\"225\">";
                 	if($group_name == 'Capital Work-In-Progress')
-                	echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $group_id . '/' .  $group_name, $group_name, array('title' => $group_name, 'style' => 'color:#000000'));
+                	echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $group_id . '/' .  $group_name, $group_name, array('title' => $group_name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
                 	else
                 	echo "&nbsp;" .  $group_name;
                 	echo '<b>(B)</b>';
@@ -1323,9 +1323,7 @@ class Reportlist1
 		$this->current_dep_total3 = $sum3;
 		$this->total_depreciation3 = $sum4;
 		$this->curr_amount3 = $sum5;
-
 	}
-
 
 	function Nonplan_Fixed_Sub_ScheduleA($code,$count)
 	{
@@ -1643,7 +1641,7 @@ class Reportlist1
                 echo "<td class=\"td-group\" width=\"225\">";
 
                 if($ledg_name == 'Patents and Copyrights (Patents Granted)')
-		 echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/inner_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
+		 echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/inner_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
                 else
                 echo "&nbsp;" .  $ledg_name;
                 echo "</td>";
@@ -1683,11 +1681,11 @@ class Reportlist1
                 	echo $counter;
                 	$counter++;
 			if($group_name == 'Recipts Against Sponsored Projects')
-                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name,  'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
                         elseif($group_name == 'UGC Sponsored Fellowship/Scholarships')
-                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));  
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";  
 			elseif($group_name == 'Unutilized Grants')
-                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000'));  
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";  
 			else
                 	echo "&nbsp;&nbsp;" . $group_name;
                 	echo "</td>";

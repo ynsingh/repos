@@ -26,17 +26,16 @@
 		<?php echo "</p>";
 		echo form_close();
 	}
-
 	$tot_op_bal='';
 	$this->load->library('Paymentreceipt');
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');
 	$date2 = $this->session->userdata('date2');
 	$cl_bal_bankcash = $this->session->userdata('cl_bal_bankcash');
-
 	$this->db->from('settings');
 	$value = $this->db->get();
-	foreach($value->result() as $row) {
+	foreach($value->result() as $row) 
+	{
 		$fy_start=explode("-",$row->fy_start);
 		$fy_end=explode("-",$row->fy_end);
 	}
@@ -44,14 +43,16 @@
 		$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
         	$this->db->from('ledgers')->where('type', '1');
         	$op_balance = $this->db->get();
-        	foreach ($op_balance->result() as $row){
+        	foreach ($op_balance->result() as $row)
+			{
         		list ($opbalance, $optype) = $this->Ledger_model->get_op_balance($row->id); /* Opening Balance */
 			$ledbalance = $this->Ledger_model->get_ledger_balance1($row->id); /* Ledger Balance */
-        		if($optype == 'C'){
+        		if($optype == 'C')
+			{
         			$opbalance=-$opbalance;
         		}
         			$tot_op_bal=$tot_op_bal+$opbalance;
-        	}
+        		}
 
 	/* check for dates */
 	if($date1 > $date2)
@@ -79,22 +80,12 @@
 		// for receipts side
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Opening Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($tot_op_bal) . "</td></tr>";
-		//echo "<tr></td><td></td><td></td></tr>";
 		echo "<thead><tr><th width=\"$left_width\">Receipt (Net)</th><th width=\"$right_width\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"$right_width\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
+		echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Opening Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($tot_op_bal) . "</td></tr>";
 			$receipt = new Paymentreceipt();
                 	$receipt->payment_receipt('Receipt', "view","NULL");
 			$net_receipt_total = float_ops($net_receipt_total, $receipt->total, '+');
 			$net_prev_receipt_total = float_ops($net_prev_receipt_total, $receipt->prev_total, '+');
-			//Previous code
-		/*	foreach ($net_income_list_q->result() as $row)
-			{
-				$net_income = new Reportlist();
-				$net_income->init($row->id);
-				$net_income->account_st_short(0);
-				$net_income_total = float_ops($net_income_total, $net_income->total, '+');
-				$net_old_income_total = float_ops($net_old_income_total, $net_income->total2, '+');
-			}*/
 		echo "</table>";
 		echo "</td>";
 
@@ -106,19 +97,10 @@
                         $payment->payment_receipt('Payment', "view","NULL");
                         $net_payment_total = float_ops($net_payment_total, $payment->total, '+');
 			$net_prev_payment_total = float_ops($net_prev_payment_total, $payment->prev_total, '+');
-			//previous code
-		/*	foreach ($net_expense_list_q->result() as $row)
-			{
-				$net_expense = new Reportlist();
-				$net_expense->init($row->id);
-				$net_expense->account_st_short(0);
-				$net_expense_total = float_ops($net_expense_total, $net_expense->total, '+');
-				$net_old_expense_total = float_ops($net_old_expense_total, $net_expense->total2, '+');
-			}*/
-		echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Closing Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($ledbalance) . "</td></tr>";
-		echo "</table>";
-		echo "</td>";//end of payment side....
-		
+			echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Closing Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($ledbalance) . "</td></tr>";  
+			echo "</table>";
+			echo "</td>";//end of payment side....
+			echo "</tr>";
 		//Previous code
 		/*$net_income_total = -$net_income_total; /* Converting to positive value since Cr */
 		/*$net_old_income_total = -$net_old_income_total; /* Converting to positive value since Cr */
@@ -175,16 +157,13 @@
 		echo "</tr>";
 		echo "</table>";
 		echo "</td>";
-
-		echo "</tr>";//end of Total balance....
-	
-		echo "</tr>";
-		echo "</table>";
+		echo "</tr>";//end of Total balance....    */
+		echo "</table>"; 
 	}
 	if(! $print_preview)
 	{
 		echo form_open('report/printpreview/paymentreceipt/');
 		echo form_submit('submit', 'Print Preview');
 		echo form_close();
-	}
+	} 
 ?>

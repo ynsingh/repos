@@ -4,7 +4,7 @@
 	setlocale(LC_MONETARY, 'en_IN');
 	if ( ! $print_preview)
         {
-                echo form_open('report/new_balancesheet_2015/');
+                echo form_open('report/new_mhrd/');
                 echo "<p>";
                 echo "<span id=\"tooltip-target-1\">";
                 echo form_label('Entry Date From', 'entry_date1');
@@ -42,8 +42,7 @@
 	echo "<br/>";
 		
 	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-	echo "<thead><tr><th align=\"center\" width=\"40%\">SOURCES OF FUNDS</th><th align=\"center\">Schedule</th><th colspan=\"5\" align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
-
+	echo "<thead><tr><th align=\"center\" width=\"30%\">SOURCES OF FUNDS</th><th align=\"center\">Schedule</th><th align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
 	$this->load->library('reportlist1');
         $liability = new Reportlist1();
 	$income = new Reportlist1();
@@ -51,34 +50,28 @@
         $liability->new_mhrd(2);
 	$curr_total = -$liability->curr_total; 
 	$liability_total1 = $curr_total + $diff_total;
-
 	echo "<tr>";
        	echo "<td class=\"bold\">";
         	echo "Total";
         echo "</td>";
-
         echo "<td></td>";
 
-        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
+        echo "<td align=\"right\" class=\"bold\">";
         echo money_format('%!i', convert_cur($liability_total1));
         echo "</td>";
 
-        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
+        echo "<td align=\"right\" class=\"bold\">";
         echo money_format('%!i', convert_cur(0));
-        echo "</td>";
-
+        echo "</td>"; 
         echo "</tr>";
         echo "</table>";
-
-
 	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-        echo "<thead><tr><th align=\"center\" width=\"40%\">APPLICATION OF FUNDS</th><th align=\"center\">Schedule</th><th colspan=\"5\" align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
+        echo "<thead><tr><th align=\"center\" width=\"30%\">APPLICATION OF FUNDS</th><th align=\"center\">Schedule</th><th align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
 
         $this->load->library('reportlist1');
         $asset = new Reportlist1();
         $asset->new_mhrd(1);
 	$asset_total1 = $asset->curr_total;  
-
         echo "<tr>";
         echo "<td class=\"bold\">";
                 echo "Total";
@@ -86,49 +79,40 @@
 
         echo "<td></td>";
 
-        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
+        echo "<td align=\"right\" class=\"bold\">";
         echo money_format('%!i', convert_cur($asset_total1));
         echo "</td>";
 
-        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
+        echo "<td align=\"right\" class=\"bold\">";
         echo money_format('%!i', convert_cur(0));
         echo "</td>";
-        echo "</tr>";
-        //echo "</table>";
-	//echo "<br>";
+        echo "</tr>"; 
 
-	//echo "<table>";
-	echo "<tr>";
-        echo "<td class=\"bold\" style=\"padding-right: 245px\">";
+ 	echo "<tr>";
+        echo "<td class=\"bold\">";
 	echo "Significant Accounting Policies";
         echo "</td>";
-	//echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
         echo "<td>";
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" .anchor_popup('notes/display_notes', '23', array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" .anchor_popup('notes/display_notes', '23', array('title' => 'Notes On Accounts', 'style' => 'color:#000000;text-decoration:none;'));
         echo "</td>";
-        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
+        echo "<td align=\"right\" class=\"bold\">";
         echo "</td>";
-        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
+        echo "<td align=\"right\" class=\"bold\">";
         echo "</td>";
-        echo "</tr>";
-	//echo "</table>";
-	//echo "<br>";
-	//echo "<table>";
+        echo "</tr>"; 
 	echo "<tr>";
-        echo "<td class=\"bold\" style=\"padding-right: 154px\">";
+        echo "<td class=\"bold\">";
         echo "Contingent Liabilities And Notes To Accounts";
         echo "</td>";
         echo "<td>";
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". anchor_popup('notes/display_notes', '24', array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". anchor_popup('notes/display_notes', '24', array('title' => 'Notes On Accounts', 'style' => 'color:#000000;text-decoration:none;'));
         echo "</td>";
-        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
+        echo "<td align=\"right\" class=\"bold\">";
         echo "</td>";
-        echo "<td colspan=\"3\" align=\"right\" class=\"bold\">";
+        echo "<td align=\"right\" class=\"bold\">";
         echo "</td>";
-	echo "</tr>";
-        echo "</table>";
-
-
+	echo "</tr>"; 
+        echo "</table>"; 
 ?>
 </body>
 </html>
