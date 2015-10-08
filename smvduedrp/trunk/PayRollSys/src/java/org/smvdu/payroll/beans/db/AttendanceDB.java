@@ -8,24 +8,21 @@ package org.smvdu.payroll.beans.db;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.bean.CsvToBean;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.faces.context.FacesContext;
-
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.Attendance;
 import org.smvdu.payroll.user.ActiveProfile;
 import org.smvdu.payroll.beans.upload.UploadFile;
-
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import org.smvdu.payroll.beans.Employee;
+import org.hibernate.Session;
+import java.sql.Connection;
 
 /**
  * Manages Attendance in database.
@@ -58,12 +55,15 @@ import org.smvdu.payroll.beans.Employee;
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
 *   Creation Date: 21 OCT 2014, IITK , Om Prakash(omprakashkgp@gmail.com), Manorama Pal (palseema30@gmail.com)
+*   Hibernate conversion Date : May 2015, Om Prakash<omprakashkgp@gmail.com>  
 */
 public class AttendanceDB {
     
 
     private ActiveProfile info;
     private final UserInfo userBean;
+    private HibernateUtil helper;
+    private Session session;
       
     
     public AttendanceDB()   {
@@ -76,34 +76,7 @@ public class AttendanceDB {
     private PreparedStatement ps;
     private ResultSet rs;
     
-/**
-    public Attendance convert(String code)    {
-        try
-        {
-            Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select att_emp_code,emp_name from employee_attendance_master where att_emp_code=?");
-            ps.setString(1, code);
-            rs =ps.executeQuery();
-            rs.next();
-            Attendance a = new Attendance();
-            a.setCode(rs.getString(1));
-            a.setName(rs.getString(2));
-            rs.close();
-            ps.close();
-            c.close();
-            return a;
-
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    * 
-    
-    */
-    
+   
     /*
     Update Employee Attendance 
     */
@@ -111,7 +84,34 @@ public class AttendanceDB {
         
         try
         {
-            Connection c = new CommonDB().getConnection();
+            session = helper.getSessionFactory().openSession();
+         
+           for(Attendance dp: atts )
+           { 
+               
+                session.beginTransaction();
+                Attendance att = (Attendance)session.get(Attendance.class, dp.getId());
+                att.setId(dp.getId());
+                att.setCode(dp.getCode());
+                att.setPresent(dp.getPresent());
+                att.setLeave(dp.getLeave());
+                att.setOrgcode(userBean.getUserOrgCode()); 
+                session.update(att);
+                session.getTransaction().commit();
+           }
+           
+        }
+        catch (Exception e )
+        {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+             
+        }
+        finally {
+            session.close(); 
+        }
+        
+        /** Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update employee_attendance_master set emp_present=?, emp_leave=?"
                     + " where id=? and att_emp_code=? and org_code=? ");
             for(Attendance dp : atts)
@@ -132,7 +132,7 @@ public class AttendanceDB {
         catch(Exception e)
         {
            e.printStackTrace();
-        }
+        }*/
     }
     
     /**
@@ -176,19 +176,21 @@ public class AttendanceDB {
         
     }
     **/
+    
     /*
     Use for display the selected attendance 
     */
     
     public ArrayList<Attendance> loadAttendances(int month,int year)   {
-       ArrayList<Attendance> data = new ArrayList<Attendance>();
-        try
-        {
-               
+              
+       
+          ArrayList<Attendance> data = new ArrayList<Attendance>();
+            try
+            {     
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select id, att_emp_code, emp_name, emp_present, emp_leave, month, year from employee_attendance_master "
-                     +"left join employee_master on emp_code=att_emp_code where month='"+month+"' and year='"+year+"' and org_code='"+userBean.getUserOrgCode()+"'");
-            
+                   +"left join employee_master on emp_code=att_emp_code where month='"+month+"' and year='"+year+"' and org_code='"+userBean.getUserOrgCode()+"'");
+                         
             rs=ps.executeQuery();
             int k=1;
             while(rs.next())
@@ -201,8 +203,6 @@ public class AttendanceDB {
                 att.setName(emp.getName());
                 att.setPresent(rs.getInt(4));
                 att.setLeave(rs.getInt(5));
-                //att.setMonth(rs.getString(6));
-                //att.setYear(rs.getString(7));
                 att.setSrNo(k);
                 data.add(att);
                 k++;
@@ -219,7 +219,7 @@ public class AttendanceDB {
             return null;
         }
         
-    }
+      }
     
    /*
     Use for save attendance in databases 
@@ -227,7 +227,31 @@ public class AttendanceDB {
     public Exception save(Attendance attName)   {
         try
         {
-            Connection c = new CommonDB().getConnection();
+            Attendance attsave = new Attendance();
+            attsave.setCode(attName.getCode());
+            attsave.setPresent(attName.getPresent());
+            attsave.setLeave(attName.getLeave());
+            attsave.setMonth(attName.getMonth());
+            attsave.setYear(attName.getYear());
+            attsave.setOrgcode(userBean.getUserOrgCode());
+            session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(attsave);
+            session.getTransaction().commit();
+        }
+        catch(Exception e){
+                session.getTransaction().rollback();
+                e.printStackTrace();
+             
+        }
+        finally {
+                session.close(); 
+                    
+         }
+        return null;
+            
+            
+            /* Connection c = new CommonDB().getConnection();
                 ps=c.prepareStatement("insert into employee_attendance_master(att_emp_code, emp_present, emp_leave, month, year, org_code) values(?,?,?,?,?,?)");
            
                 ps.setString(1, attName.getCode());
@@ -248,15 +272,63 @@ public class AttendanceDB {
             e.printStackTrace();
             return e;
         }
-
+            */
+        
     }
    /*
-    Use for upload csv file and save into databases
+    Use for upload csv file and save into databases use hibernate 
     */
     
     public Exception saveFile(UploadFile file)   {
         
-        try
+        try{
+            Attendance a = new Attendance();
+            
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/attend");
+            CSVReader reader = new CSVReader(new FileReader(path+"/"+file.getName()), ',', '\"', 1);
+            ColumnPositionMappingStrategy<Attendance> mappingStrategy 
+                                 = new ColumnPositionMappingStrategy<Attendance>();
+            mappingStrategy.setType(Attendance.class);
+            String[] columns = new String[] {"Code","Present","Leave", "Month", "Year"};
+            mappingStrategy.setColumnMapping(columns);
+        
+            CsvToBean<Attendance> csv = new CsvToBean<Attendance>();
+            List<Attendance> AttendanceList = csv.parse(mappingStrategy, reader);
+            for (int i = 0; i < AttendanceList.size(); i++) 
+            {
+               Attendance Detail = AttendanceList.get(i);
+               int mth = Detail.getMonth(); 
+               int year = Detail.getYear();
+               int days= NumberofDays(mth,year);  
+               int sum=(Detail.getLeave())+(Detail.getPresent());
+               if (sum <= days){
+                    a.setCode(Detail.getCode());
+                    a.setPresent(Detail.getPresent());
+                    a.setLeave(Detail.getLeave());
+                    a.setMonth(Detail.getMonth());
+                    a.setYear(Detail.getYear());
+                    a.setOrgcode(userBean.getUserOrgCode());
+                    session = helper.getSessionFactory().openSession();
+                    session.beginTransaction();
+                    session.save(a);
+                    session.getTransaction().commit();
+                                            
+                 }
+            }
+            reader.close();
+            return null;
+        }
+        catch(Exception ex){
+            session.getTransaction().rollback();
+            ex.printStackTrace();
+            return ex;
+        }
+        finally {
+            session.close();
+        }
+        
+        
+       /* try
         {
             Connection c = new CommonDB().getConnection();
             
@@ -314,11 +386,13 @@ public class AttendanceDB {
             e.printStackTrace();
             return e;
         }
-
+    */
     }
     
-    /*Count the number of days in a selected month */
     
+    /*
+     * Count the number of days in a selected month 
+     */
     public  int NumberofDays(int month, int year){
         try{
             Calendar calendar = Calendar.getInstance();
@@ -368,12 +442,11 @@ public class AttendanceDB {
     */
     
      public ArrayList<Attendance> checkAttendances(int month, int year)   {
-       ArrayList<Attendance> checkdata = new ArrayList<Attendance>();
-      try
-        {
+        ArrayList<Attendance> checkdata = new ArrayList<Attendance>();
+        try
+            {
             
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select emp_code from employee_master left join employee_attendance_master on att_emp_code=emp_code where att_emp_code is null");
             ps=c.prepareStatement(" select emp_code from employee_master where emp_code not in ( select att_emp_code from employee_attendance_master"
                   + " where month=? and year=? and org_code='"+userBean.getUserOrgCode()+"')");
            
@@ -403,15 +476,38 @@ public class AttendanceDB {
         }
         
     }
-       /*
-    Use for save check attendance in databases 
+    /**
+        Use for save check attendance in databases 
     */
     public Exception saveCheckAt(ArrayList<Attendance> checkAt)   {
-        
+                  
         try
         {
-            Connection c = new CommonDB().getConnection();
-            //ArrayList<Attendance> checkboxdata = new ArrayList<Attendance>();
+            ArrayList<Attendance> checkboxdata = new ArrayList<Attendance>();            
+            for(Attendance chatt : checkAt )
+            {
+                session = helper.getSessionFactory().openSession();
+                session.beginTransaction();
+                chatt.setOrgcode(userBean.getUserOrgCode());
+                session.save(chatt);
+                session.getTransaction().commit();
+                
+            }
+            return null;            
+        }
+        catch(Exception e)
+        {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return e; 
+        }
+        finally {
+            session.close();  
+        }   
+            
+        }
+           /** Connection c = new CommonDB().getConnection();
+            ArrayList<Attendance> checkboxdata = new ArrayList<Attendance>();
             ps=c.prepareStatement("insert into employee_attendance_master(att_emp_code, emp_present, emp_leave, month, year, org_code) values(?,?,?,?,?,?) ");
                 for(Attendance check : checkAt)
                 {
@@ -433,9 +529,6 @@ public class AttendanceDB {
         {
             e.printStackTrace();
             return e;
-        }
+        }*/
 
     }
-    
-}
-

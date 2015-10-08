@@ -13,8 +13,11 @@ import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.db.AttendanceDB;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashSet;
+import java.util.Set;
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
+import org.smvdu.payroll.beans.Employee;
 import org.smvdu.payroll.beans.upload.UploadFile;
 
 /**
@@ -52,6 +55,8 @@ import org.smvdu.payroll.beans.upload.UploadFile;
 * */
 
 public class Attendance implements Serializable{
+    
+    public Attendance(){}
 
     private int id;
     private String code;
@@ -61,7 +66,28 @@ public class Attendance implements Serializable{
     private int month;
     private int year;
     private int monthMaxDays;
+    private int orgcode;
+    
+      private Set matchin = new HashSet(0);
+
+    public Set getMatchin() {
+        return matchin;
+    }
+
+    public void setMatchin(Set matchin) {
+        this.matchin = matchin;
+    }
+      
+    public int getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(int orgcode) {
+        this.orgcode = orgcode;
+    }
+    
     public   boolean rememberme;
+    
         
      public void save() {
               FacesContext fc = FacesContext.getCurrentInstance();
@@ -99,6 +125,8 @@ public class Attendance implements Serializable{
         
     }
      
+     
+     
      private int srNo;
      
      public int getId() {
@@ -116,7 +144,8 @@ public class Attendance implements Serializable{
     public void setSrNo(int srNo) {
         this.srNo = srNo;
     }
-        
+
+    
     public String getCode() {
         return code;
     }
@@ -169,6 +198,8 @@ public class Attendance implements Serializable{
     public void setRemember(boolean rememberme) {
       this.rememberme = rememberme;
     }
+    
+  
 
   //upload file --------------------//
 

@@ -23,5 +23,6 @@
     <mapping resource="org/smvdu/payroll/HibernateMapping/DefaultSalaryData.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryFormula.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/HibernateMapping/EmployeeTypeSalaryHead.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/Attendance.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
