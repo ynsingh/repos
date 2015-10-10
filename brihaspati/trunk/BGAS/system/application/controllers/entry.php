@@ -552,50 +552,7 @@ $width="100%";
 		
 		$cur_entry_ledgers = $this->db->get();
 
-		/*foreach($cur_entry_ledgers->result() as $row){
-			$entry_items_id = $row->id;
-			$this->db->select('id,fund_id,type')->from('fund_management')->where('entry_items_id',$entry_items_id);
-			$query_result = $this->db->get();
-			if($query_result->num_rows() > 0){
-
-			}
-		}*/
-
-
-/*		$row1 = "";
-		foreach($cur_entry_ledgers->result() as $row1)
-			{
-			$ledgerid = $row1->ledger_id;
-			$ledger_code = $this->Ledger_model->get_ledger_code($ledgerid);
-			$id = "";
-			$earn_code = $this->Ledger_model->get_account_code('Designated-Earmarked Funds');
-			$capital_code = $this->Ledger_model->get_account_code('Capital Funds');
-                	$corpus_code = $this->Ledger_model->get_account_code('Corpus');
-                	$reserve_code = $this->Ledger_model->get_account_code('General Reserve');
-		//	echo"earn==>>$earn_code cap==>>$capital_code corp==>>$corpus_code reserv==>>$reserve_code";
-
-			if($this->StartsWith($ledger_code, $earn_code) || $this->StartsWith($ledger_code, $capital_code) ||$this->StartsWith($ledger_code, $corpus_code)|| $this->StartsWith($ledger_code, $reserve_code))
-			   {
-				$id = $this->Ledger_model->get_ledger_id($ledger_code);
-				$id1 = $id;
-			   }
-			 }
-			$this->db->from('entry_items')->where('entry_id', $entry_id);
-			$query =$this->db->get();
-			$num_row=$query->num_rows();
-			if($num_row == 4){
-		 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
-                		//exclude Transit Income account and fund entry
-                		$this->db->where('ledger_id !=', $income_id);
-				$this->db->where('ledger_id !=', $id1);
-                		$cur_entry_ledgers1 = $this->db->get();
-				}
-			else{	
-				$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
-                                //exclude Transit Income account
-                                $this->db->where('ledger_id !=', $income_id);
-                                $cur_entry_ledgers1 = $this->db->get();
-				}*/
+		
 		if ($cur_entry_ledgers->num_rows() < 1)
 		{
 			$this->messages->add('Entry has no associated Ledger accounts.', 'error');
@@ -2513,14 +2470,26 @@ $width="100%";
 		$data['entry_cr_total'] =  $cur_entry->cr_total;
 		$data['entry_narration'] = $cur_entry->narration;
 		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
-                $data['back_ref_id'] = $cur_entry->backward_refrence_id;
+        $data['back_ref_id'] = $cur_entry->backward_refrence_id;
 		$data['submitted_by'] = $cur_entry->submitted_by;
-                $data['verified_by'] = $cur_entry->verified_by;
+        $data['verified_by'] = $cur_entry->verified_by;
 
 		/* Getting Ledger details */
-		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
+
+		$this->db->select('id');
+        $this->db->from('ledgers');
+        $this->db->where('name', 'Transit Income');
+        $query = $this->db->get();
+        $income = $query->row();
+        $income_id = $income->id;
+
+		/* Load current entry details */
+		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+		$this->db->where('ledger_id !=', $income_id);
 		$ledger_q = $this->db->get();
-		$counter = 0;
+		$data['ledger_q'] = $ledger_q;
+	/*	$counter = 0;
+
 		$data['ledger_data'] = array();
 		if ($ledger_q->num_rows() > 0)
 		{
@@ -2532,10 +2501,11 @@ $width="100%";
 					'dc' => $row->dc,
 					'amount' => $row->amount,
 					'id'=>$entry_id,
+					'secunitid'=>$row->secunitid,
 				);
 				$counter++;
 			}
-		}
+		}*/
 
 		$this->load->view('entry/printpreview', $data);
 		return;
@@ -4375,16 +4345,48 @@ $width="100%";
 		$data['entry_cr_total'] =  $cur_entry->cr_total;
 		$data['entry_narration'] = $cur_entry->narration;
 		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
-                $data['back_ref_id'] = $cur_entry->backward_refrence_id;
+        $data['back_ref_id'] = $cur_entry->backward_refrence_id;
 		$data['submitted_by'] = $cur_entry->submitted_by;
-                $data['verified_by'] = $cur_entry->verified_by;
+        $data['verified_by'] = $cur_entry->verified_by;
+        $sanc_letter_date = $cur_entry->sanc_letter_date;
+        $data['sanc_letter_no'] = $cur_entry->sanc_letter_no;
+        $sanc_type = $cur_entry->sanc_type;
+        $sanc_value = $cur_entry->sanc_value;
+
+        if($sanc_letter_date != NULL)
+        	$data['sanc_date'] = date_mysql_to_php($sanc_letter_date);
+        else
+        	$data['sanc_date'] ="";
+
+        if($sanc_type != 'select')
+        {
+        	if($sanc_value != "select"){
+        		$data['sanc_type'] = $sanc_type;
+        		$data['sanc_value'] = $sanc_value;
+        	}else{
+        		$data['sanc_type'] = $sanc_type;
+        		$data['sanc_value'] = "";
+        	}
+        }else{
+        	$data['sanc_type'] = "";
+        	$data['sanc_value'] = "";
+        }
+
 
 		/* Getting Ledger details */
+
+		$this->db->select('id');
+        $this->db->from('ledgers');
+        $this->db->where('name', 'Transit Income');
+        $query = $this->db->get();
+        $income = $query->row();
+        $income_id = $income->id;
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
+		$this->db->where('ledger_id !=', $income_id);
 		$ledger_q = $this->db->get();
 		$counter = 0;
 		$data['ledger_data'] = array();
-		if ($ledger_q->num_rows() > 0)
+		/*if ($ledger_q->num_rows() > 0)
 		{
 			foreach ($ledger_q->result() as $row)
 			{
@@ -4397,15 +4399,66 @@ $width="100%";
 				);
 				$counter++;
 			}
+		}*/
+		if ($ledger_q->num_rows() > 0)
+		{
+			foreach ($ledger_q->result() as $row)
+			{
+				$id = $row->ledger_id;
+				$ledger_code = $this->Ledger_model->get_ledger_code($row->ledger_id);
+				$temp = $this->Ledger_model->isFund($ledger_code);
+				$entry_id = $row->id;
+				$dc = $row->dc;
+				if ($row->dc == "D")
+				{
+				  	if(!($temp))
+				  	{
+						$temp1 = $this->Ledger_model->isFundDeduct($row->ledger_id);
+						if(!($temp1))
+						{
+							$query = $this->Ledger_model->get_type1($entry_id);
+							$my_values = explode('#',$query);
+							$type =$my_values[0];
+							$name =$my_values[1];
+
+							$data['ledger_data'][$counter] = array(
+								'dc' => convert_dc($row->dc),
+								'id' => $row->ledger_id,
+								'name' => $this->Ledger_model->get_name($row->ledger_id),
+								'amount' => $row->amount,
+								'secunitid' =>$this->Secunit_model->get_secunitname($row->secunitid),
+								'partyadd' => $this->Secunit_model->get_secunitaddress($row->secunitid),
+								'entry_id'=>$entry_id,
+								'fund_name' => $name,
+								'type' =>$type,
+							);
+							$counter++;
+						}	
+				    }
+				}else{
+					
+					$type = $this->Ledger_model->get_type($row->ledger_id, $entry_id);
+					$data['ledger_data'][$counter] = array(
+						'dc' => convert_dc($row->dc),
+						'id' => $row->ledger_id,
+						'name' => $this->Ledger_model->get_name($row->ledger_id),
+						'amount' => $row->amount,
+						'secunitid' =>$this->Secunit_model->get_secunitname($row->secunitid),
+						'partyadd' => $this->Secunit_model->get_secunitaddress($row->secunitid),
+						'entry_id'=>$entry_id,
+						'fund_name' => '',
+						'type' =>$type,
+					);
+					$counter++;
+				}
+			}
 		}
+		//$data['ledger_q'] = $ledger_q;
 
 		$this->load->view('entry/pdfentry', $data);
 		return;
-
-
 	}
 }
-
 /* End of file entry.php */
 /* Location: ./system/application/controllers/entry.php */
 //check the id of expense in last 

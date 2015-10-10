@@ -772,103 +772,76 @@ var $group_code = 0;
 					$this->messages->add('Added Group info in fund group table.' , 'success');
 				}					
 
-				/*$name_ar = explode(' ', $data_name);
-				$st = "";
-				foreach ($name_ar as $w) {
-				  $st .= $w[0];
-				}*/
-
 				$name = array();
-				$name[0] = "Opening Balance - ".$data_short_name;
-				$name[1] = "Additions - ".$data_short_name;
-				$name[2] = "Income From Investments - ".$data_short_name;
-				$name[3] = "Interest On Saving A/C - ".$data_short_name;
-				$name[4] = "Other Additions - ".$data_short_name;
-				$name[5] = "Revenue Expenditure - ".$data_short_name;
-				$name[6] = "Capital Expenditure - ".$data_short_name;
-
+				//$name[0] = "Opening Balance - ".$data_short_name;
+				$name[0] = "Additions - ".$data_short_name;
+				$name[1] = "Income From Investments - ".$data_short_name;
+				$name[2] = "Interest On Saving A/C - ".$data_short_name;
+				$name[3] = "Other Additions - ".$data_short_name;
+				$name[4] = "Revenue Expenditure - ".$data_short_name;
+				$name[5] = "Capital Expenditure - ".$data_short_name;
+				
 				$a = 0;
 				do{
+					$ledger_name = $name[$a];
 
-					$data_name = $name[$a];
-					/* to create sub group of newly created group */
-					$num = $this->Group_model->get_numOfChild($new_parent_id);
-					$g_code = $this->Group_model->get_group_code($new_parent_id);
-					if($num == 0)
-					{
-						$data_code = $g_code . '01';
-					} else{
-						$data_code=$this->get_code($num, $g_code);
-					}
+					$num = $this->Ledger_model->get_numOfChild($new_parent_id);
+	                $l_code = $this->Group_model->get_group_code($new_parent_id);
 
-					$i=0;
-					do{
-						if($i>0)
-						{
-							$num = $num + 1;
-							$data_code=$this->get_code($num, $g_code);
-						}			
-						$this->db->from('ledgers');
-			            $this->db->select('id')->where('code =',$data_code);
-		                $ledger_q = $this->db->get();
-						$i++;
-					}while($ledger_q->num_rows()>0);
-									
-					$data_affects_gross = 0;
+	                if($num == 0)
+			        {
+	        		    $ledger_code = $l_code . '01';
+	                } else{
+	                    $ledger_code=$this->get_ledger_code($num, $l_code);
+			        }
+	        		$i=0;
 
+                	do{
+                    	if($i>0)
+    	                {
+                	        $num = $num + 1;
+    	                	$ledger_code=$this->get_ledger_code($num, $l_code);
+            	        }
+                    	$this->db->from('groups');
+    	                $this->db->select('id')->where('code =',$ledger_code);
+            	        $group_q = $this->db->get();
+	                	$i++;
+        	        }while($group_q->num_rows()>0);
+				
 					$this->db->trans_start();
-					$insert_data = array(
-				      	'code' => $data_code,
-						'name' => $data_name,
-						'parent_id' => $new_parent_id,
-						'affects_gross' => $data_affects_gross,
-						'group_description' => $data_group_description,
-					);
+                    $insert_data = array(
+                        'code' => $ledger_code,
+		                'name' => $ledger_name,
+        		        'group_id' => $new_parent_id,
+                		'op_balance' => '0.00',
+                    	'op_balance_dc' => 'C',
+                        'type' => '0',
+    	                'reconciliation' => '0',
+    	        	);
 
-					if ( ! $this->db->insert('groups', $insert_data))
-					{
-						$this->db->trans_rollback();
-						$this->messages->add('Error addding Group account - ' . $data_name . ' .', 'error');
-						$this->template->load('template', 'group/add_fund_group', $data);
-						return;
-					} else {
-						$new_group_id = $this->db->insert_id();
-						$this->db->trans_complete();
-						$this->messages->add('Added Group account - ' . $data_name . '.', 'success');
-
-						/* to add group info in fund_group_table */
-						$this->db->trans_start();
-						$insert_data = array(
-					      	'code' => $data_code,
-							'name' => $data_name,
-							'short_name' => $data_short_name,
-							'group_id' => $new_group_id,
-						);
-
-						if ( ! $this->db->insert('fund_group_table', $insert_data))
-						{
-							$this->db->trans_rollback();
-							$this->messages->add('Error addding Group info in fund group table .', 'error');
-							$this->template->load('template', 'group/add_fund_group', $data);
-							return;
-						} else {
-							$this->db->trans_complete();
-							$this->messages->add('Added Group info in fund group table.' , 'success');
-						}				
-					}
-				$a++;
-				}while($a<7);
+        	        if ( ! $this->db->insert('ledgers', $insert_data))
+                	{
+    	               	$this->db->trans_rollback();
+                        $this->logger->write_message("error", "Error adding fund ledger " . $ledger_name);
+                	} else {
+    	                $this->db->trans_complete();
+        	            //$this->logger->write_message("success", "Added Interest on fund " . $data_name);
+        	            $this->messages->add('Added Fund Ledger - ' . $ledger_name . '.', 'success');
+            		}
+            		$a++;
+				}while($a<6);
 
 				/* to create ledgers in earmarked fund investment of newly created group */
 
 				$investment_id = $this->Group_model->get_id('Earmarked Fund Investments');
 
-				$ledger_name[0] = $data_short_name." - Auto Sweep Investment";
-				$ledger_name[1] = $data_short_name." - Investment";
+				$ledger_name1 = array();
+				$ledger_name1[0] = $data_short_name." - Auto Sweep Investment";
+				$ledger_name1[1] = $data_short_name." - Investment";
 
 				$a = 0;
 				do{
-					$ledg_name = $ledger_name[$a];
+					$ledg_name = $ledger_name1[$a];
 
 					$num = $this->Ledger_model->get_numOfChild($investment_id);
 	                $l_code = $this->Group_model->get_group_code($investment_id);

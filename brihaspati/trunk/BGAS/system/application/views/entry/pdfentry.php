@@ -54,7 +54,7 @@
 	table#print-entry-table {
 		border:1px solid #000000;
 		border-collapse: collapse;
-		width:300;
+		width:100%;
 	}
 	
 	table#print-entry-table tr.tr-title {
@@ -119,75 +119,95 @@
 ?>
 
         <table id="print-entry-table" align="center" cellpadding="2">
-                <thead>
-                        <tr class="tr-title" align="center"><th><h4> Ledger Account</h4></th><th><h4 > Dr Amount</h4></th><th><h4> Cr Amount</h4></th></tr>
-                </thead>
-                <tbody>
+            <thead>
+                <tr class="tr-title" align="center"><th><h4> Type</h4></th><th><h4> Ledger Account</h4></th><th><h4 > Dr Amount</h4></th><th><h4> Cr Amount</h4></th><th><h4> Secondary ID</h4></th><th><h4> Party Address</h4></th><th><h4> Fund</h4></th><th><h4> Income/Expense Type</h4></th></tr>
+            </thead>
+            <tbody>
                 <?php
-                        $currency = $this->config->item('account_currency_symbol');
-                        $cheque = "";
-
-                        foreach ($ledger_data as $id => $row)
-                        {
-                                echo "<tr class=\"tr-ledger\">";
-                                if ($row['dc'] == "D")
-                                {
-                                        echo "<td class=\"ledger-name item\">By " . $row['name'] . " </td>";
-                                } else {
-                                        echo "<td class=\"ledger-name item\">To " . $row['name'] . " </td>";
-                                }
-                                if ($row['dc'] == "D")
-                                {
-                                        echo "<td class=\"ledger-dr item\" align=\"center\"> " . $currency . " " . $row['amount'] . "</td>";
-                                        echo "<td class=\"ledger-cr last-item\"></td>";
-                                } else {
-                                        echo "<td class=\"ledger-dr item\"></td>";
-                                        echo "<td class=\"ledger-cr last-item\" align=\"center\"> " . $currency . " " . $row['amount'] . "</td>";
-                                }
-                                echo "</tr>";
-                        }
-                        echo "<tr class=\"tr-total\"><td class=\"total-name\" align=\"left\"> Total</td><td class=\"total-dr\" align=\"center\"> " . $currency . " " .  $entry_dr_total . "</td><td class=\"total-cr\" align=\"center\"> " . $currency . " " . $entry_cr_total . "</td></tr>";?>
-                        </tbody>
-                        </table>
-<?php
-                        $cheque='';
-                        $this->db->select('name,bank_name,update_cheque_no')->from('cheque_print')->where('entry_no',$row['id']);
-                        $ledger_q = $this->db->get();
-                        foreach($ledger_q->result() as $row)
-                        {
-                                $bank_name = $row->bank_name;
-                                $bank[] =$bank_name;
-                                $name= $row->name;
-                                $benif_name[] =$name;
-                                $cheque_no=$row->update_cheque_no;
-                                $cheque[] =$cheque_no;
-                        }
-                                $length=count($cheque);
-
-
-                ?>
-	<?php
-	echo"<br>";
-        echo"<br>";
-        echo"<br>";
-	echo"Narration : ".$entry_narration."<br>";
-	echo"Submitted By : ".$submitted_by."<br>";
-	echo"Verified By : ".$verified_by;
-	?>
-   <?php
-        if($ledger_q->num_rows() > 0){
-                if( $cheque_no != NULL && $name != NULL)
+                $currency = $this->config->item('account_currency_symbol');
+                $cheque = "";
+                foreach ($ledger_data as $id => $row)
                 {
-                        for($i=0; $i<$length; $i++)
-                        {
-                                if($cheque[$i] != 1){
-                              //  echo"<br>";
-                                echo"Bank Name : " . $bank[$i] . "<br>";
-                                echo"Beneficiary Name : " . $benif_name[$i] . "<br>";
-                                echo"Cheque No : " . $cheque[$i] . "<br>";
-                                }
-                        }
+                    echo "<tr class=\"tr-ledger\">";
+                    echo"<td>" .$row['dc']."</td>";
+                    if ($row['dc'] == "Dr")
+                    {
+                            echo "<td class=\"ledger-name item\">By " . $row['name'] . " </td>";
+                    } else {
+                            echo "<td class=\"ledger-name item\">To " . $row['name'] . " </td>";
+                    }
+                    if ($row['dc'] == "Dr")
+                    {
+                            echo "<td class=\"ledger-dr item\" align=\"center\"> " . $currency . " " . $row['amount'] . "</td>";
+                            echo "<td class=\"ledger-cr last-item\"></td>";
+                    } else {
+                            echo "<td class=\"ledger-dr item\"></td>";
+                            echo "<td class=\"ledger-cr last-item\" align=\"center\"> " . $currency . " " . $row['amount'] . "</td>";
+                    }
+                    echo"<td>".$row['secunitid']."</td>";
+                    echo"<td>".$row['partyadd']."</td>";
+                    echo"<td>".$row['fund_name']."</td>";
+                    echo"<td>".$row['type']."</td>";
+                    echo "</tr>";
                 }
+                echo "<tr class=\"tr-total\"><td></td><td class=\"total-name\" align=\"left\"> Total</td><td class=\"total-dr\" align=\"center\"> " . $currency . " " .  $entry_dr_total . "</td><td class=\"total-cr\" align=\"center\"> " . $currency . " " . $entry_cr_total . "</td></tr>";?>
+        	</tbody>
+        </table>
+		<?php
+        $cheque='';
+        $this->db->select('name,bank_name,update_cheque_no')->from('cheque_print')->where('entry_no',$row['entry_id']);
+        $ledger_q = $this->db->get();
+        foreach($ledger_q->result() as $row)
+        {
+            $bank_name = $row->bank_name;
+            $bank[] =$bank_name;
+            $name= $row->name;
+            $benif_name[] =$name;
+            $cheque_no=$row->update_cheque_no;
+            $cheque[] =$cheque_no;
+        }
+        $length=count($cheque);
+        ?>
+		<?php
+		echo"<br>";
+	    echo"<br>";
+	    echo"<br>";
+	    echo"<table>";
+
+	    echo"<tr>";
+		echo"<td>"."Narration : ".$entry_narration."</td>";
+		echo"<td>"."Submitted By : ".$submitted_by."</td>";
+		echo"</tr>";
+
+		echo"<tr>";
+		echo"<td>"."Verified By : ".$verified_by."</td>";
+		echo"<td>"."Tag : "."</td>";
+		echo"</tr>";
+
+		echo"<tr>";
+		echo"<td>"."Sanction Letter No. :".$sanc_letter_no."</td>";
+		echo"<td>"."Sanction Letter Date :".$sanc_date."</td>";
+		echo"</tr>";
+		
+		echo"<tr>";
+		echo"<td>"."Sanction Letter Detail :".$sanc_type." ".$sanc_value."</td>";
+		echo"</tr>";
+		echo"</table>";
+		?>
+   		<?php
+        if($ledger_q->num_rows() > 0){
+            if( $cheque_no != NULL && $name != NULL)
+	        {
+                for($i=0; $i<$length; $i++)
+                {
+                    if($cheque[$i] != 1){
+                  //  echo"<br>";
+                    echo"Bank Name : " . $bank[$i] . "<br>";
+                    echo"Beneficiary Name : " . $benif_name[$i] . "<br>";
+                    echo"Cheque No : " . $cheque[$i] . "<br>";
+                    }
+                }
+	        }
         }
         ?>
 
