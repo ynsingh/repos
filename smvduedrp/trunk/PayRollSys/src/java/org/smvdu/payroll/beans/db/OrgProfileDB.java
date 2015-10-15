@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import org.smvdu.payroll.Admin.ServerDetails;
 import org.smvdu.payroll.api.Administrator.CollegeRequestStatus;
+import org.smvdu.payroll.api.EncryptionUtil;
 import org.smvdu.payroll.api.email.Mail;
 import org.smvdu.payroll.api.email.OrgConformationEmail;
 
@@ -76,8 +77,8 @@ public class OrgProfileDB {
             o.setPhone(rs.getString(6));
             o.setAddress1(rs.getString(7));
             o.setAddress2(rs.getString(8));
-            o.setAdminfn(rs.getString(22));
-            o.setAdminln(rs.getString(23));
+            o.setAdminfn(rs.getString(20));
+            o.setAdminln(rs.getString(21));
             rs.close();
             ps.close();
             c.close();
@@ -181,7 +182,8 @@ public class OrgProfileDB {
             ps.setString(4, org.getPhone());
             ps.setString(5, org.getAddress1());
            // ps.setString(7, org.getAddress2());
-            ps.setString(6, org.getMasterPassword());
+            
+            ps.setString(6, new EncryptionUtil().createDigest("MD5",org.getMasterPassword()));
         //    ps.setString(9, org.getRecoveryEMailId());
          //   ps.setString(7,org.getTanno());
             ps.setString(7, org.getCity());
@@ -196,12 +198,12 @@ public class OrgProfileDB {
             ps.setString(14, org.getAdminfn());
             ps.setString(15, org.getAdminln());
             ps.setString(16, org.getAdminDesig());
-
-
             ps.executeUpdate();
             rs=ps.getGeneratedKeys();
             rs.next();
+           // System.out.println("rs===="+rs);
             int code = rs.getInt(1);
+            //System.out.println("rs==code=="+code);
             ps.close();
             c.close();
             UserInfo info = new UserInfo();
@@ -209,13 +211,13 @@ public class OrgProfileDB {
             info.setUserName(org.getEmail());
             info.setPassword(org.getMasterPassword());
             UserGroup ug = new UserGroup();
-            ug.setId(4);
+            ug.setId(4);    
             info.setGroupCode(4);
             info.setUserOrgCode(code);
             //new UserDB().save(info);
-            new OrgConformationEmail().sendPendingCollegeMail(org);
             new CollegeRequestStatus().saveRequestStatus(org,code,info); 
             new ServerDetails().saveServerDetail(org,code);
+            //new OrgConformationEmail().sendPendingCollegeMail(org);
             return null;
         }
         catch(Exception e)

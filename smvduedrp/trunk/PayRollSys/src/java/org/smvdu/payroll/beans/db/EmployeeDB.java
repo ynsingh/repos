@@ -17,6 +17,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.smvdu.payroll.api.BankDetails.BankProfileDetails;
+import org.smvdu.payroll.api.EncryptionUtil;
 import org.smvdu.payroll.beans.setup.Department;
 import org.smvdu.payroll.beans.setup.Designation;
 import org.smvdu.payroll.beans.Employee;
@@ -1249,11 +1250,16 @@ public class EmployeeDB {
                 System.out.println("Employee already exists in  employee_master for "+emp.getCode());
                 return em;
             }*/
+            
+            /*Get complete hashed password in hex format.
+            *@see EncryptionUtil().
+            */
+            String password=new EncryptionUtil().createDigest("MD5", emp.getCode());
             /* this method follow the common data base machnism for user registration process
-             * and check use exists or not if not then insert the entry.
+             * and check user exists or not if not then insert the entry.
              * and also insert the entry in user_master table and user_roles table.
              */
-            Exception eloginmachanism =new UserRegistration().EmployeeRegistration(emp.getEmail(),emp.getCode(),emp.getPhone(),emp.getName(),"",emp.getAddress(),orgCode);
+            Exception eloginmachanism =new UserRegistration().EmployeeRegistration(emp.getEmail(), password, emp.getPhone(),emp.getName(),"",emp.getAddress(),orgCode,"EmpReg");
             if(eloginmachanism == null){
                 
                 Exception ee =save(emp);

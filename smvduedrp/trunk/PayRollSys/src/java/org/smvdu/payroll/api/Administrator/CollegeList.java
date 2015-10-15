@@ -11,12 +11,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import org.smvdu.payroll.Admin.AdminManagedBean;
+import org.smvdu.payroll.api.EncryptionUtil;
 import org.smvdu.payroll.api.email.OrgConformationEmail;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.OrgProfileDB;
 import org.smvdu.payroll.beans.db.UserDB;
 import org.smvdu.payroll.beans.setup.Org;
+import org.smvdu.payroll.user.UserRegistration;
 import org.springframework.context.annotation.Scope;
 /**
  *
@@ -36,7 +38,7 @@ public class CollegeList {
             UserInfo uf = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
            // Org admin = (Org) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Organization Profile Bean");
             adminUserId = uf.getUserName();
-            System.out.println("ID =======seema: "+adminUserId);
+            //System.out.println("ID =======seema: "+adminUserId);
         }
         catch(Exception ex)
         {
@@ -423,19 +425,11 @@ public class CollegeList {
         {
             
             PreparedStatement pst = null; 
-            PreparedStatement pst1 = null;
-            PreparedStatement pst2 = null;
-            PreparedStatement pst3 = null;
-            PreparedStatement pst4 = null;
-            PreparedStatement pst5 = null;
-            PreparedStatement pst6 = null;
-            PreparedStatement pst7 = null;
-            PreparedStatement pst8 = null;
             PreparedStatement pst9 = null;
             ResultSet rst = null;
             int st;
             String password = null;
-            System.out.println("Total Institutes to be approved are : " +org.size());
+            //System.out.println("Total Institutes to be approved are : " +org.size());
             for(Org or : org)
             {
                 if(or.isStatus() == true)
@@ -447,152 +441,27 @@ public class CollegeList {
                     if(rst.next())
                     {
                         password = rst.getString(1);
+                      //  System.out.println("password first====="+password+":"+or.getAdminfn()+":"+or.getAdminln()+":"+or.getAddress1()+":"+or.getName());
                     }
                     rst.close();
-                    pst.close();
+                    pst.close(); 
+                  
                     
-                    UserDB ud = new UserDB();
-                    int userid = ud.CheckUserExistInUserMaster(or.getEmail());
-                    
-                    System.out.println("User in user_master - " +userid);
-                    
-                    if(!(userid > 0)){
-                            
-                        pst1 = connection.prepareStatement("insert into user_master(user_name,user_pass,user_profile_id,flag) values('"+or.getEmail()+"','"+password+"','"+0+"','"+1+"')");
-                        pst1.executeUpdate();
-                        pst1.clearParameters();
-                        pst1.close();
-                        
-                        System.out.println("Records inserted into user_master for "+or.getEmail());
-                        
-                   //     String loginDB = "logindb";
-                        boolean dbExist = new CommonDB().checkLoginDBExists();
-                        
-                        if(dbExist){
-                            
-                            System.out.println("Login Database exist");
-                            
-                            UserDB user = new UserDB();
-                            int id = user.CheckUserExistInLoginDB(or.getEmail());
-                            
-                            if(!(id > 0))
-                            {
-                            System.out.println("User does not exist in login database");
-                            
-                            Org orginfo =  new OrgProfileDB().loadOrgProfileByName(or.getName());
-                            String component = "payroll";
-                            
-                            pst2 = connectLogin.prepareStatement("insert into bgasuser(username,password,email,componentreg,mobile,status) values('"+or.getEmail()+"','"+password+"','"+or.getEmail()+"','"+component+"','"+or.getPhone()+"','"+1+"')");
-                            pst2.executeUpdate();
-                            pst2.clearParameters();
-                            pst2.close();
-                            
-                            
-                            
-                            System.out.println("Records inserted into bgasuser of LoginDB for "+or.getEmail());    
-                            
-                            int userIdInLoginDB = user.CheckUserExistInLoginDB(or.getEmail());
-                            
-                            System.out.println("User Now exist in Login Database exist with userid " +userIdInLoginDB);
-                            
-                            
-                            
-                            
-                            pst3 = connectLogin.prepareStatement("insert into userprofile(userid,firstname,lastname,address,status) values('"+userIdInLoginDB+"','"+orginfo.getAdminfn()+"','"+orginfo.getAdminln()+"','"+orginfo.getAddress1()+"','"+1+"')");
-                            pst3.executeUpdate();
-                            pst3.clearParameters();
-                            pst3.close();
-                            
-                            System.out.println("Records inserted into userprofile of LoginDB for "+or.getEmail());
-                                                       
-                            }
-                            else
-                            {
-                                System.out.println("Entry already Exist in users of LoginDB for - "+or.getEmail());
-                                
-                                
-                                /*
-                                *   write code for retrieving component details. split that details saprating by commma into
-                                *   an arraylist.
-                                *   if that arraylist contain payroll. than do nothing otherwise insert payroll into that
-                                *   column.
-                                */
-                                
-                                pst4 = connectLogin.prepareStatement("select componentreg from bgasuser where username='"+or.getEmail()+"'");
-                                ResultSet rst4;
-                                rst4 = pst4.executeQuery();
-                                String components = null;
-                                ArrayList<String> totalComponents = new ArrayList<String>();
-                                
-                                while(rst4.next()){
-                                    components = rst4.getString(1);
-                                }
-                                
-                                for (String componentName : components.split(",")){
-                                    totalComponents.add(componentName);
-                                    System.out.println("User is already Registered with "+componentName);
-                                }
-                                
-                                boolean flag = totalComponents.contains("payroll");
-                                if(flag){
-                                    System.out.println("User is already Registered with payroll system");
-                                    System.out.println("Do nothing in LoginDB");
-                                }
-                                else{
-                                    System.out.println("User is first time Registering in Payroll SO insert 'payroll' in Componentreg field in LoginDB");
-                                    
-                                    components = components.concat(",payroll");
-                                    pst5 = connectLogin.prepareStatement("update bgasuser set componentreg=? where username=?");
-                                    pst5.setString(1, components);
-                                    pst5.setString(2, or.getEmail());
-                                    pst5.executeUpdate();
-                                    pst5.clearParameters();
-                                    pst5.close();
-                                    
-                                    System.out.println("payroll is inserted in bgas user in componentreg field");
-                                    
-                                }
-                                
-                            }
-                            
-                        }   
-                    }
-                    
-                    /*
-                    *   User already present in user_master table;
+                    /** this method follow the common data base mechanism for (InstituteAdmin) user registration process
+                    * and check user exists or not if not then insert the entry.
+                    * get institute detail from OrgProfileDB() for profile information.
+                    * @see UserRegistration() and OrgProfileDB().
                     */
-                    else{
-                        System.out.println("Entry already Exist in user_master for - "+or.getEmail());
-                    }
-                    
-                    int UserId = ud.getUserId(or.getEmail());
-                    
-                    pst6 = connection.prepareStatement("insert into user_roles(user_id, role_id, org_id) values('"+UserId+"','"+4+"','"+or.getId()+"')");
-                    pst6.executeUpdate();
-                    pst6.clearParameters();
-                    pst6.close();
-                    
-                    System.out.println("Records inserted into user_roles as Admin for "+or.getEmail());
-                    
-                    pst7 = connection.prepareStatement("insert into user_roles(user_id, role_id, org_id) values('"+UserId+"','"+6+"','"+or.getId()+"')");
-                    pst7.executeUpdate();
-                    pst7.clearParameters();
-                    pst7.close();
-                    
-                    System.out.println("Records inserted into user_roles as Employee for '"+or.getEmail()+"' and OrgId is :'"+or.getId()+"'" );
-                    
-                    pst8 = connection.prepareStatement("update org_profile set org_status = 1 where org_id='"+or.getId()+"'");
-                    pst8.executeUpdate(); 
-                    pst8.clearParameters();
-                    pst8.close();
-                    
-                    System.out.println("Status is set to TRUE for orgnization where org id is : "+or.getId());
-                    
-                    new OrgConformationEmail().sendMail(or);
+                    Org orginfo =  new OrgProfileDB().loadOrgProfileByName(or.getName());
+                    Exception eloginmachanism;
+                    eloginmachanism = new UserRegistration().EmployeeRegistration(or.getEmail(),password,or.getPhone(),orginfo.getAdminfn(),orginfo.getAdminln(),orginfo.getAddress1(),or.getId(),"InstAdminReg");
+                                      
                     pst9 = connection.prepareStatement("delete from college_pending_status where org_code = '"+or.getId()+"'");
+                    //System.out.println("college pending=====entry for delete======"+pst9+"adminfn==="+orginfo.getAdminfn()+"adminln==="+orginfo.getAdminln()+"address---"+orginfo.getAddress1());
                     pst9.executeUpdate();
                     pst9.clearParameters();
                     pst9.close();
+                    //new OrgConformationEmail().sendMail(or);
                     
                 }
                 else
