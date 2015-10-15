@@ -476,6 +476,27 @@ var $ledgers = array();
 		return $total;
 	}
 
+	function get_closing_balance($ledger_id)
+        {
+                $this->load->library('session');
+                $date1 = $this->session->userdata('date1');
+                $date2 = $this->session->userdata('date2');
+
+                list ($op_bal, $op_bal_type) = $this->get_op_closing_balance($ledger_id, $date1, $date2);
+
+                $dr_total = $this->get_dr_total1($ledger_id);
+                $cr_total = $this->get_cr_total1($ledger_id);
+                //echo $cr_total."==";
+                $total = float_ops($dr_total, $cr_total, '-');
+
+                if ($op_bal_type == "D")
+                        $total = float_ops($total, $op_bal, '+');
+                else
+                        $total = float_ops($total, $op_bal, '-');
+                return $total;
+        }
+
+
 	/* get ledger balance for selected date in current financial year and with division of plan & nonplan @megha*/ 
 	function get_ledger_balance2($ledger_id)
 	{
@@ -585,18 +606,87 @@ var $ledgers = array();
 
 	}
 
-	function get_op_balance1($ledger_id, $from_date, $to_date)
+	function get_op_closing_balance($ledger_id, $from_date, $to_date)
 	{
-		$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, c.id, c.op_balance, c.op_balance_dc');
-		$this->db->from('entries a, entry_items b, ledgers c')->where('a.id = b.entry_id')->where('b.ledger_id', $ledger_id);
-		$this->db->where('date >=', $from_date);
-		$this->db->where('date <=', $to_date);
-		$op_bal_q = $this->db->get();
-		if ($op_bal = $op_bal_q->row()) {
-			return array($op_bal->op_balance, $op_bal->op_balance_dc);
-		} else {
-			return array(0, "D");
+		$actual_date='';
+		$flag=0;
+		$fy_start_date=2015-04-01;
+		$exp_from_date=explode("-",$from_date);
+		$previous_date=$exp_from_date[2]-1;
+                $month=$exp_from_date[1]-1;     
+                $previous_month="0"."$month";
+                        
+		if($exp_from_date[2] == 01){
+			if($previous_month == '01' || $previous_month == '05' || $previous_month == '07' || $previous_month == '08' || $previous_month == '10' || $previous_month == '12'){
+				$actual_date=$exp_from_date[0]."-".$previous_month."-"."31";
+			}elseif($previous_month == '02'){
+				$day = "";
+    				/*
+      				since leap year falls ever 4 years so loop for 4 times 
+    				*/
+    				for($i=0; $i<4; $i++)
+    				{
+    					//get day timestamp for feburary 29 for this year
+    					$day =  date("d", mktime(0, 0, 0, 2, 29, date("Y")+$i));	
+    					/*
+    					check if day equals 29. 
+    					If day is 29 then it must be the leap year. if day is 01, then it not a leap year.
+    					*/
+    					if($day == 29)
+    					{
+    						$year = date("Y")+$i;
+    						break;
+    					}
+    				}
+				if( $year == $exp_from_date[0]){
+					$actual_date=$exp_from_date[0]."-".$previous_month."-"."28";
+				}else{
+					$actual_date=$exp_from_date[0]."-".$previous_month."-"."29";
+				}	
+			}elseif($previous_month == '03'){	
+				$flag=1;
+				list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);	
+				$actual_date="2015-04-01";
+			}elseif($previous_month == '06' || $previous_month == '09' || $previous_month == '11' || $previous_month == '04'){
+				$actual_date=$exp_from_date[0]."-".$previous_month."-"."30";
+			}
+		}elseif($exp_from_date[2] > '01' || $exp_from_date[2] < '31'){
+			$previous_date=$exp_from_date[2]-1;
+			$previous_date="0"."$previous_date";	
+			$actual_date=$exp_from_date[0]."-".$exp_from_date[1]."-".$previous_date;
 		}
+		 if($flag != 1){
+                 list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
+                }
+		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
+                $this->db->where('date >=', $fy_start_date);
+                $this->db->where('date <=', $actual_date);
+                $dr_total_q = $this->db->get();
+                if ($dr_total = $dr_total_q->row())
+                        $dr_total=$dr_total->drtotal;
+                else
+                        $dr_total=0;
+		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
+                $this->db->where('date >=', $fy_start_date);
+                $this->db->where('date <=', $actual_date);
+                $cr_total_q = $this->db->get();
+                if ($cr_total = $cr_total_q->row())
+                        $cr_total=$cr_total->crtotal;
+                else
+			$cr_total=0;
+
+                $total = float_ops($dr_total, $cr_total, '-');
+
+                if ($op_bal_type == "D")
+                        $total = float_ops($total, $op_bal, '+');
+                else
+                        $total = float_ops($total, $op_bal, '-');
+		$op_balance=abs($total);	
+		if($total >= 0)
+			$op_type="D";
+		else 
+			$op_type="C";
+		return array($op_balance, $op_type);;
 	}
 	/* get op_balance of previous year database */
 	function get_prev_year_op_balance($ledger_id)
