@@ -52,7 +52,7 @@ class Addparty extends Controller {
 		$data['search'] = '';
 		$data['search_by'] = array(
 			"Select" => "Select",
-                        "sacunit" => "Secondary Unit ID",
+                        "sacunit" => "Party ID",
                         "partyname"=> "Party Name",
 			"sacunit#1"=> "Party Type",
 			"mobnum"=> "Mobile NO.",

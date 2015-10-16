@@ -795,7 +795,7 @@ class Report2 extends Controller {
 		/* Pagination setup */
 		$this->load->library('pagination');
 
-		$this->template->set('page_title', 'Secondary Unit Statement');
+		$this->template->set('page_title', 'Party Statement');
 		$this->template->set('nav_links', array('report2/download/sec_report/' . $sec_uni_id  => 'Download CSV', 'report2/printpreview/sec_report/' . $sec_uni_id => 'Print Preview', 'report2/pdf/sec_report/' . $sec_uni_id => 'Download PDF'));
 		$data['width'] = "70%";
 

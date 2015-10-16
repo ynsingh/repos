@@ -231,7 +231,7 @@ $(document).ready(function() {
 				echo anchor('budgetl', 'Budgets', array('title' => 'Budget accounts'));
 			echo "</li>";
 			echo "<li>";
-				echo anchor('account', 'Accounts', array('title' => 'Chart of accounts')); 
+				echo anchor('account', 'Chart Of Accounts', array('title' => 'Chart of accounts')); 
 			echo "</li>";
 			echo "<li>";
 					/* Showing Entry Type sub-menu */
@@ -370,7 +370,7 @@ $(document).ready(function() {
 						echo anchor('report2/tag','Tag Report', array('title'=>'Tag Report'));
 					echo"</li>";
 					 echo"<li>";
-                                                echo anchor('report2/sec_report','Secondary Unit Report', array('title'=>'Secondary Unit Report'));
+                                                echo anchor('report2/sec_report','Party Report', array('title'=>'Party Report'));
                                         echo"</li>";
 					echo "<li>";
                                                 echo anchor('','Log Report');
@@ -405,7 +405,7 @@ $(document).ready(function() {
                         echo "</li>";
 			echo "<li>";
 				//echo anchor('addparty', 'Secondary Accounting System', array('title' => 'Secondary Accounting System'));
-				echo anchor('addparty', 'Sec Unit Id', array('title' => 'Sec Unit Id'));
+				echo anchor('addparty', 'Party', array('title' => 'Party Id'));
 				echo "<ul>";
 					echo "<li>";
 					echo anchor('addparty/show', 'View Party', array('title' => 'ViewParty'));

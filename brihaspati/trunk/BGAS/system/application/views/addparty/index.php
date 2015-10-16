@@ -66,7 +66,7 @@ $(document).ready(function(){
 <table border=0 cellpadding=5 class="simple-table">
 	<thead>
 		<tr>
-                        <p><th id="change_id_order">Secondary Unit ID<?php echo img(array('src' => asset_url() . "images/icons/rsz_scrollup.png")); ?></th></p>
+                        <p><th id="change_id_order">Party ID<?php echo img(array('src' => asset_url() . "images/icons/rsz_scrollup.png")); ?></th></p>
                         <?php echo "<th id=\"change_order\">"."Party Name"." ".img(array('src' => asset_url() . "images/icons/rsz_scrollup.png"))." ". "<span align=\"right\">" . img(array('src' => asset_url() . "images/icons/rsz_scrolldown.png")). ""; ?>
 
                         <th>Party Type</th>

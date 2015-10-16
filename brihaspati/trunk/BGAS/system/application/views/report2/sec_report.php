@@ -29,7 +29,7 @@
 		echo "</span>";
 		echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		echo form_label('Secondary Unit', 'sec_uni_id');
+		echo form_label('Party Name', 'sec_uni_id');
                 echo " ";
 		echo "&nbsp;&nbsp;&nbsp;";
 		echo form_dropdown_secunit('sec_uni_id', $sec_uni_id);
@@ -232,7 +232,7 @@
 		echo form_close();
 		}	
 	}else{
-		$this->messages->add('Please select the Secondary Unit Name.', 'success');
+		$this->messages->add('Please select the Party Name.', 'success');
 	}
 	/*if ($sec_uni_id != 0)
 	{

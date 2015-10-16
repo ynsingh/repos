@@ -8,7 +8,7 @@
 	
 	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
-	echo form_label('Secondary Accounting UID', 'sacunitid');
+	echo form_label('Party Unique ID', 'sacunitid');
 	echo "<br />";
 	echo "(Faculty - 00, Student - 01, Staff Clerical - 02, Technical staff - 03, Supplier - 04, Admin staff - 05, Contractor - 06, Service provider - 07, Alumni/Doner - 08)";
 	echo "<br />";
