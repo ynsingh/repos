@@ -124,6 +124,7 @@ class User extends Controller {
 
             if ($user_password == $data_user_password)
 			{
+				$this->move_to_archive_auto();
 				$this->messages->add('Logged in as ' . $data_user_name . '.', 'success');
 				$this->session->set_userdata('user_id', $user_id);
 				$this->session->set_userdata('user_name', $data_user_name);
@@ -148,6 +149,8 @@ class User extends Controller {
             		}else{
 						$db1->trans_complete();
 					}
+
+					
 				}else{
 					$db1->trans_start();
             		$insert_data = array(
@@ -1440,6 +1443,65 @@ class User extends Controller {
                 $this->template->load('user_template', 'user/aggregatechartofaccounts',$data);
                 return;
         }
+
+
+
+    function move_to_archive_auto()
+	{
+		$todays_date = date('Y-m-d');
+		$today_date = date_mysql_to_php($todays_date);
+		$db1=$this->load->database('login', TRUE);
+
+		$db1->select('*')->from('authority_map');
+		$authorities = $db1->get();
+
+		foreach ($authorities->result() as $row)
+		{
+			$id = $row->id;
+			$authority_id = $row->authority_id;
+			$user_id = $row->user_id;
+			$map_date = $row->map_date;
+			$till_date = $row->till_date;
+			$auth_type = $row->authority_type;
+
+			$till1_date = date_mysql_to_php($till_date);
+			//$this->messages->add('till date = '.$till_date.'str='.strtotime($till_date).'today date = '.$today_date.'str='.strtotime($today_date), 'error');
+
+			if(strtotime($till1_date) < strtotime($today_date))
+			{
+				if ( ! $db1->delete('authority_map', array('id' => $id)))
+		    	{
+		    		$db1->trans_rollback();
+		        	$this->messages->add('Error Moving Authority Mapping Entry to Authority Archive '.$id.' .', 'error');
+		            $this->logger->write_message("error", 'Error Moving Authority Mapping Entry to Authority Archive '.$id.' .');
+		    	}else{
+
+		    		$db1->trans_complete();
+
+		    		$insert_data = array(
+					'authority_id' => $authority_id,
+					'user_id' => $user_id,
+					'map_date' => $map_date,
+					'till_date' => $till_date,
+					'authority_type' => $auth_type
+					);
+					
+					$db1->trans_start();	
+					if ( ! $db1->insert('authority_archive', $insert_data))
+		        	{
+
+		                $db1->trans_rollback();
+		                $this->messages->add('Error Moving Authority Mapping Entry to Authority Archive '.$id.' .', 'error');
+		                $this->logger->write_message("error", 'Error Moving Authority Mapping Entry to Authority Archive '.$id.' .');
+		            }
+					else{
+						$db1->trans_complete();
+					}
+					$db1->close();
+				}
+			}
+		}
+	}
 }
 
 /* End of file user.php */

@@ -17,16 +17,53 @@ class Startup
 		$CI->load->library('general');
 
 		/* Skip checking if accessing admin section*/
-		if ($CI->uri->segment(1) == "admin")
+		if ($CI->uri->segment(1) == "admin"){
+			$CI->config->set_item('account_date_format', 'dd/mm/yyyy');
+
+			$default_start = '01/04/';
+			$default_end = '31/03/';
+			if (date('n') > 3)
+			{
+				$default_start .= date('Y');
+				$default_end .= date('Y') + 1;
+			} else {
+				$default_start .= date('Y') - 1;
+				$default_end .= date('Y');
+			}
+
+			$default_start = date_php_to_mysql($default_start);
+			$default_end = date_php_to_mysql($default_end);
+			$CI->config->set_item('account_fy_start', $default_start);
+			$CI->config->set_item('account_fy_end', $default_end);
+	
 			return;
+		}
 
 		/* Skip checking if accessing updated page */
 		if ($CI->uri->segment(1) == "update")
 			return;
 
 		/* Skip checking if accessing user section*/
-		if ($CI->uri->segment(1) == "user")
+		if ($CI->uri->segment(1) == "user"){
+			$CI->config->set_item('account_date_format', 'dd/mm/yyyy');
+			$default_start = '01/04/';
+			$default_end = '31/03/';
+			if (date('n') > 3)
+			{
+				$default_start .= date('Y');
+				$default_end .= date('Y') + 1;
+			} else {
+				$default_start .= date('Y') - 1;
+				$default_end .= date('Y');
+			}
+
+			$default_start = date_php_to_mysql($default_start);
+			$default_end = date_php_to_mysql($default_end);
+			$CI->config->set_item('account_fy_start', $default_start);
+			$CI->config->set_item('account_fy_end', $default_end);
+	
 			return;
+		}
 
 		/* Check if user is logged in */
 		if ( ! $CI->session->userdata('user_name'))

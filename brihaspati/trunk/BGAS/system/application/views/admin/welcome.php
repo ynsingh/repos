@@ -25,13 +25,23 @@
 			</div>
 		</div>
 		<div class="settings-container">
-                        <div class="settings-title">
-                                <?php echo anchor('admin/emailSet', 'Manage Mail Settings', array('title' => 'Manage Mail Settings')); ?>
-                        </div>
-                        <div class="settings-desc">
-                                Manage Mail Settings 
-                        </div>
-                </div>
+	        <div class="settings-title">
+	                <?php echo anchor('admin/emailSet', 'Manage Mail Settings', array('title' => 'Manage Mail Settings')); ?>
+	        </div>
+	        <div class="settings-desc">
+	                Manage Mail Settings 
+	        </div>
+        </div>
+
+        <div class="settings-container">
+	        <div class="settings-title">
+	                <?php echo anchor('admin/authorities/auth_allocation', 'Manage Authority Allocation', array('title' => 'Allocate Authorities to Users')); ?>
+	        </div>
+	        <div class="settings-desc">
+	                Allocate Authorities to Users 
+	        </div>
+        </div>
+
 	</div>
 	<div id="right-col">
 		<div class="settings-container">
@@ -51,13 +61,22 @@
 			</div>
 		</div>
 		<div class="settings-container">
-                        <div class="settings-title">
-                                <?php echo anchor('admin/sqlAdmin', 'MySQL Admin Setting', array('title' => 'MySQL Admin Setting')); ?>
-                        </div>
-                        <div class="settings-desc">
-                                MySQL administrator Setting of the application
-                        </div>
-                </div>
+            <div class="settings-title">
+                    <?php echo anchor('admin/sqlAdmin', 'MySQL Admin Setting', array('title' => 'MySQL Admin Setting')); ?>
+            </div>
+            <div class="settings-desc">
+                    MySQL administrator Setting of the application
+            </div>
+        </div>
+
+        <div class="settings-container">
+	        <div class="settings-title">
+	                <?php echo anchor('admin/authorities', 'Manage Authorities', array('title' => 'Manage Authorities')); ?>
+	        </div>
+	        <div class="settings-desc">
+	                Manage Authorities
+	        </div>
+        </div>
 
 	</div>
 </div>
