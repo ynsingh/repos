@@ -543,10 +543,9 @@ var dc = '';
 	echo form_input_date_restrict($entry_date);
 	echo "</span>";
 	echo "<span id=\"tooltip-content-1\">Date format is " . $this->config->item('account_date_format') . ".</span>";
-	echo "</p>";
-
-	echo "<p>";
-        echo "<span id=\"tooltip-target-2\">";
+       
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; 
+	echo "<span id=\"tooltip-target-2\">";
         echo form_label('Forward Reference Id', 'forward_refrence_id');
         echo " ";
         echo form_input($forward_refrence_id);
@@ -560,7 +559,13 @@ var dc = '';
         echo form_input($backward_refrence_id);
         echo "</span>";
         echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related back dated transaction</span>";
-        echo "</p>";
+
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        echo form_label('Vendor/Voucher', 'vendor_number');
+        echo " ";
+        echo form_input($vendor_number);
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        echo"</p>";
 	
 	echo "<p>";
         echo form_label('Sanction Letter No.', 'sanc_letter_no');

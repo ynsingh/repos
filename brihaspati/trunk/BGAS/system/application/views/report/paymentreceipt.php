@@ -27,6 +27,7 @@
 		echo form_close();
 	}
 	$tot_op_bal='';
+	$total_cl_bal='';
 	$this->load->library('Paymentreceipt');
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');
@@ -45,13 +46,14 @@
         	$op_balance = $this->db->get();
         	foreach ($op_balance->result() as $row)
 			{
-        		list ($opbalance, $optype) = $this->Ledger_model->get_op_balance($row->id); /* Opening Balance */
-			$ledbalance = $this->Ledger_model->get_ledger_balance1($row->id); /* Ledger Balance */
+        		list ($opbalance, $optype) = $this->Ledger_model->get_op_closing_balance($row->id, $date1, $date2); /* Opening Balance */
+			$ledbalance = $this->Ledger_model->get_closing_balance($row->id); /* Ledger Balance */
         		if($optype == 'C')
 			{
         			$opbalance=-$opbalance;
         		}
         			$tot_op_bal=$tot_op_bal+$opbalance;
+				$total_cl_bal=$ledbalance+$total_cl_bal;
         		}
 
 	/* check for dates */
@@ -97,7 +99,7 @@
                         $payment->payment_receipt('Payment', "view","NULL");
                         $net_payment_total = float_ops($net_payment_total, $payment->total, '+');
 			$net_prev_payment_total = float_ops($net_prev_payment_total, $payment->prev_total, '+');
-			echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Closing Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($ledbalance) . "</td></tr>";  
+			echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Closing Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($total_cl_bal) . "</td></tr>";  
 			echo "</table>";
 			echo "</td>";//end of payment side....
 			echo "</tr>";
@@ -136,7 +138,7 @@
 		//for Total balance....
 
 		$net_receipt_total = $tot_op_bal + $net_receipt_total;
-		$net_payment_total = $net_payment_total + $ledbalance;
+		$net_payment_total = $net_payment_total + $total_cl_bal;
 		echo "<tr valign=\"top\" class=\"total-area\">";
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";

@@ -321,7 +321,8 @@ $(document).ready(function() {
                                                   echo "</ul>";
                                          echo "</li>";
 					echo "<li>";
-						echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt', 'class' => 'loading'));
+						//echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt', 'class' => 'loading'));
+						echo anchor(prep_url( base_url().'index.php/report/paymentreceipt'), 'Payment & Receipt', 'target="_blank"');
 					echo "</li>";
 					echo "<li>";
 						echo anchor('report/trialbalance', 'Trial Balance', array('title' => 'Trial Balance')); 

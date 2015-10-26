@@ -8,6 +8,9 @@ Bill/Voucher Date : <span class="bold"><?php echo date_mysql_to_php_display($cur
 Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?></span>
 </p>
 
+<p>Vendor/voucher Number : <span class="bold"><?php echo $cur_entry->vendor_voucher_number; ?></span>
+</p>
+
 <table border=0 cellpadding=5 class="simple-table entry-view-table">
 <thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>SecondaryUnit</th><th>Party Address</th><th>Fund</th><th>Income/Expense Type</th></tr></thead>
 <?php
@@ -80,7 +83,20 @@ if ($cur_entry->dr_total != $cur_entry->cr_total)
 <p>Narration : <span class="bold"><?php echo $cur_entry->narration; ?></span></p>
 <p>Sanction Letter No. : <span class="bold"><?php echo $cur_entry->sanc_letter_no; ?></span></p>
 <p>Sanction Letter Date : <span class="bold"><?php echo $cur_entry->sanc_letter_date; ?></span></p>
-<p>Sanction Letter Detail : <span class="bold"><?php echo $cur_entry->sanc_value; ?></span></p>
+<p>Sanction Detail : <span class="bold"><?php  $sanc_type = $cur_entry->sanc_type;
+        if($sanc_type != 'select'){
+                $sanc_value = $cur_entry->sanc_value;
+                if($sanc_value != ""){
+                        echo $cur_entry->sanc_type."  - ".$cur_entry->sanc_value;
+                }else{
+                        echo $cur_entry->sanc_type;
+                }
+        }else{
+                echo "";
+        }
+        ?>
+ 
+ </span></p>
 
 <?php 
 	echo  anchor('entry/verifyentry/' . $current_entry_type['label'] . "/" . $cur_entry->id , "Verify", array('title' => 'Verify ' . $current_entry_type['name'] . ' Entry', 'class' => 'red-link')) ;

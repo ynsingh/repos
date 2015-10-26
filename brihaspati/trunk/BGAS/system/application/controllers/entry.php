@@ -568,7 +568,7 @@ $width="100%";
 
                 $data['forward_reference_id'] = '';
                 $data['backward_reference_id'] = '';
-                $this->db->select('forward_refrence_id, backward_refrence_id, submitted_by, verified_by');
+                $this->db->select('forward_refrence_id, backward_refrence_id, submitted_by, verified_by, vendor_voucher_number, sanc_letter_date');
                 $this->db->from('entries')->where('id', $entry_id)->order_by('id', 'asc');
                 $reference_ids = $this->db->get();
                 if ($reference_ids->num_rows() >0)
@@ -579,6 +579,8 @@ $width="100%";
                                 $data['backward_reference_id'] = $ref->backward_refrence_id;
 				$data['submitted_by'] = $ref->submitted_by;
 				$data['verified_by'] = $ref->verified_by;
+				$data['vendor_voucher_number'] = $ref->vendor_voucher_number;
+				$data['sanc_letter_date'] = $ref->sanc_letter_date;
                         }
                 }
 		$this->template->load('template', 'entry/view', $data);
@@ -631,6 +633,14 @@ $width="100%";
 			'size' => '11',
 			'value' => '',
 		);
+
+		 $data['vendor_number'] = array(
+                        'name' => 'vendor_number',
+                        'id' => 'vendor_number',
+                        'maxlength' => '55',
+                        'size' => '11',
+                        'value' => '',
+                );
 
 		/**
 		 * Refrence Ids have been added for reconciliation purpose.
@@ -735,6 +745,7 @@ $width="100%";
 			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
 		else
 			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
+		$this->form_validation->set_rules('vendor_number', 'vendor/Voucher Number', 'trim|required');
 		$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim');
 		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
@@ -755,7 +766,7 @@ $width="100%";
 		/* Repopulating form */
 		if ($_POST)
 		{
-			
+			$data['vendor_number']['value'] = $this->input->post('vendor_number', TRUE);	
 			$data['entry_number']['value'] = $this->input->post('entry_number', TRUE);
 			$data['entry_date']['value'] = $this->input->post('entry_date', TRUE);
 			$data['entry_narration']['value'] = $this->input->post('entry_narration', TRUE);
@@ -807,6 +818,7 @@ $width="100%";
 			$data_check =+ $this->input->post('check', TRUE);
 			
 				/* Checking for Valid Ledgers account and Debit and Credit Total */
+				
 				$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
 				$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
 				$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
@@ -830,7 +842,7 @@ $width="100%";
 				$data_sanc_letter_no = $this->input->post('sanc_letter_no', TRUE);
 			//	$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
 				$number = $this->input->post('entry_number', TRUE);
-
+				$vendor_number = $this->input->post('vendor_number', TRUE);
 				if ($this->input->post('sanc_letter_date', TRUE)) {
 					$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
 				}
@@ -974,7 +986,8 @@ $width="100%";
 					'sanc_letter_no' => $data_sanc_letter_no,
 					'sanc_letter_date' => $data_sanc_letter_date,
 					'sanc_type' => $data_sanc_type,
-					'sanc_value' => $sanc_value
+					'sanc_value' => $sanc_value,
+					'vendor_voucher_number' => $vendor_number
 				);
 
 				if ( ! $this->db->insert('entries', $insert_data))
@@ -1438,6 +1451,15 @@ $width="100%";
 			'size' => '11',
 			'value' => $cur_entry->number,
 		);
+		
+		$data['vendor_number'] = array(
+                        'name' => 'vendor_number',
+                        'id' => 'vendor_number',
+                        'maxlength' => '55',
+                        'size' => '11',
+                        'value' => $cur_entry->vendor_voucher_number,
+                );
+
 		$data['entry_date'] = array(
 			'name' => 'entry_date',
 			'id' => 'entry_date',
@@ -1737,6 +1759,7 @@ $width="100%";
 			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
 		else
 			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
+		$this->form_validation->set_rules('vendor_number', 'Vendor/Voucher Number', 'trim|required');
 		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
@@ -1757,6 +1780,7 @@ $width="100%";
 		if ($_POST)
 		{
 			$data['entry_number']['value'] = $this->input->post('entry_number', TRUE);
+			$data['vendor_number']['value'] = $this->input->post('vendor_number', TRUE);
 			$data['entry_date']['value'] = $this->input->post('entry_date', TRUE);
 			$data['entry_narration']['value'] = $this->input->post('entry_narration', TRUE);
 			$data['entry_tag'] = $this->input->post('entry_tag', TRUE);
@@ -1812,10 +1836,10 @@ $width="100%";
                                        $sanc_value = $this->input->post('non_plan', TRUE);
                         }
 
-                	$data_sanc_letter_no = $this->input->post('sanc_letter_no', TRUE);
+                	$data_vendor_number = $this->input->post('vendor_number', TRUE);
                         $data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
 			$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
-
+			 $data_sanc_letter_no = $this->input->post('sanc_letter_no', TRUE);
 			$dr_total = 0;
 			$cr_total = 0;
 			$bank_cash_present = FALSE; /* Whether atleast one Ledger account is Bank or Cash account */
@@ -1978,7 +2002,8 @@ $width="100%";
 				'sanc_letter_no' => $data_sanc_letter_no,
                                 'sanc_letter_date' => $data_sanc_letter_date,
                                 'sanc_type' => $data_sanc_type,
-                                'sanc_value' => $sanc_value
+                                'sanc_value' => $sanc_value,
+				'vendor_voucher_number'=> $data_vendor_number
 			);
 			if ( ! $this->db->where('id', $entry_id)->update('entries', $update_data))
 			{
@@ -2473,6 +2498,8 @@ $width="100%";
         $data['back_ref_id'] = $cur_entry->backward_refrence_id;
 		$data['submitted_by'] = $cur_entry->submitted_by;
         $data['verified_by'] = $cur_entry->verified_by;
+		$data['vendor_voucher_number'] = $cur_entry->vendor_voucher_number;
+		 $data['sanc_letter_date'] = $cur_entry->sanc_letter_date;
 
 		/* Getting Ledger details */
 
@@ -3943,6 +3970,16 @@ $width="100%";
                         'size' => '11',
                         'value' => '',
                 );
+		
+		 $data['vendor_number'] = array(
+                        'name' => 'vendor_number',
+                        'id' => 'vendor_number',
+                        'maxlength' => '55',
+                        'size' => '11',
+                        'value' => '',
+                );
+
+
 /*
 		$data['bank_name'] = array(
                         'name' => 'bank_name',
@@ -4052,6 +4089,7 @@ $width="100%";
                         $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
                 else
                         $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
+			$this->form_validation->set_rules('vendor_number', 'Vendor/Voucher Number', 'trim|required');
 			$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim');
                 	$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
                 	$this->form_validation->set_rules('entry_narration', 'trim');
@@ -4077,6 +4115,7 @@ $width="100%";
                 if ($_POST)
                 {
                         $data['entry_number']['value'] = $this->input->post('entry_number', TRUE);
+			$data['vendor_number']['value'] = $this->input->post('vendor_number', TRUE);
                         $data['entry_date']['value'] = $this->input->post('entry_date', TRUE);
                         $data['entry_narration']['value'] = $this->input->post('entry_narration', TRUE);
                         $data['entry_tag'] = $this->input->post('entry_tag', TRUE);
@@ -4144,7 +4183,7 @@ $width="100%";
                         $data_secunit = $this->input->post('secunit', TRUE);
 			$data_cheque = $this->input->post('cheque', TRUE);
                         $data['data_cheque']=$data_cheque;
-
+			$data_vendor_number = $this->input->post('vendor_number', TRUE);	
 			$sanc_value = '';
                         $data_sanc_type = $this->input->post('sanc_type', TRUE);
                         if($data_sanc_type != 'select'){

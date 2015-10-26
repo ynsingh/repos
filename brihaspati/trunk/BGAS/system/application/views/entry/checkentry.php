@@ -638,6 +638,14 @@ var dc = '';
 //	echo "</p>";
 
 //	echo "<p>";
+
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo form_label('Vendor/Voucher', 'vendor_number');
+        echo " ";
+        echo form_input($vendor_number);
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        echo"</p>";
+	
 	echo "<span id=\"tooltip-target-3\">";
         echo form_label('Reference Id', 'backward_refrence_id');
         echo " ";

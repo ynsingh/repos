@@ -9,6 +9,11 @@
 <td id="td_first">Forward Reference Id : <span class="bold" align="left"><?php echo $forward_reference_id; ?></span></td>
 <td id="td_second">Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?></span></td>
 </tr>
+
+<tr>
+<td id="td_first">Vendor/Voucher Number : <span class="bold" align="left"><?php echo $vendor_voucher_number; ?></span></td>
+</tr>
+
 <table border=0 cellpadding=5 class="simple-table entry-view-table" width="70%">
 <thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Secondary Unit</th><th>Party Address</th><th>Fund</th><th>Income/Expense Type</th></tr></thead>
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
@@ -115,7 +120,7 @@ if ($cur_entry->dr_total != $cur_entry->cr_total)
 </tr>
 <tr>
 <td id="td_first">Sanction Letter No. :<span class="bold"><?php echo $cur_entry->sanc_letter_no; ?></span></td>
-<td id="td_second">Sanction Letter Detail : <span class="bold">
+<td id="td_second">Sanction Detail : <span class="bold">
 <?php 
 $sanc_type = $cur_entry->sanc_type;
 if($sanc_type != 'select'){
@@ -137,11 +142,12 @@ if($sanc_type != 'select'){
 
 <?php
 	$sanc_date  = $cur_entry->sanc_letter_date;
-	if($sanc_date != NULL){
-		echo date_mysql_to_php($sanc_date);
+	$exp_date=explode(" ",$sanc_letter_date);
+	if($exp_date[0] == "0000-00-00"){
+		echo" ";
 	}
 	else{
-		echo ""; 
+		echo date_mysql_to_php($sanc_date);
 	}
 	?></span></td>
 </tr>

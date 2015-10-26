@@ -58,6 +58,8 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 				<?php echo $current_entry_type['name']; ?> Bill/Voucher Number : <span class="value"><?php echo full_entry_number($entry_type_id, $entry_number); ?></span>
 				<br>
 				<?php echo $current_entry_type['name']; ?> Bill/Voucher Date : <span class="value"><?php echo $entry_date; ?></span>
+				<br>
+				<?php echo $current_entry_type['name']; ?>Vendor/Voucher Number : <span class="value"><?php echo $vendor_voucher_number; ?></span>
 			</td>
 			<td width="80%">
 				<?php echo $current_entry_type['name']; ?> Forward Reference Id : <span class="value"><?php echo $forward_ref_id; ?></span>
@@ -65,6 +67,7 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
         		<?php echo $current_entry_type['name']; ?> Backward Reference Id : <span class="value"><?php echo $back_ref_id; ?></span>
 				<br>
 			</td>
+
 		</tr>
 	</table>
 	<br>
@@ -149,19 +152,20 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 	<td align=right>
 	<p>Sanction Letter No. : <span class="bold"><?php echo $cur_entry->sanc_letter_no; ?></span></p>
 	<p>Sanction Letter Date : <span class="bold">
-	<?php 
-	$sanc_date  = $cur_entry->sanc_letter_date;
-	if($sanc_date != NULL){
-		echo date_mysql_to_php($sanc_date);
-	}
-	else{
-		echo ""; 
-	}
-	//echo date_mysql_to_php($cur_entry->sanc_letter_date); 
+	<?php
+		 $sanc_date  = $cur_entry->sanc_letter_date;
+        $exp_date=explode(" ",$sanc_letter_date);
+        if($exp_date[0] == "0000-00-00"){
+                echo" ";
+        }
+        else{
+                echo date_mysql_to_php($sanc_date);
+        }
+ 
 	?>
 	</span>
 	</p>
-	<p>Sanction Letter Detail : <span class="bold">
+	<p>Sanction  Detail : <span class="bold">
 	<?php 
 	//echo $cur_entry->sanc_value; 
 	$sanc_type = $cur_entry->sanc_type;
