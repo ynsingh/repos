@@ -1,0 +1,142 @@
+@import url("//fonts.googleapis.com/css?family=Josefin+Sans:300,400,700");
+
+body{
+    font-family:  "Josefin Sans","Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #ffffff; /* Old browsers */
+}
+
+.well{
+    background-color: #fabb1d;
+    background-image: linear-gradient(to bottom, #ffe156, #ffd38c);
+}
+.navbar .nav > li > a:hover,
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover {
+    border-bottom: 3px solid #fcd622;
+}
+
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus{
+    background-color: transparent;
+    color : #fff;
+}
+
+.navbar .nav > li > a{
+    color : white;
+    text-shadow: none;
+    font-weight: bold;
+}
+.navbar .brand{
+    color: white;
+}
+
+.navbar h1 {
+    color :#ffffff;
+    font-weight: bold;  
+}
+
+.btn{
+    -webkit-border-radius: 0 ;
+    -moz-border-radius: 0;
+    border-radius: 0    ;
+}
+
+.navbar-inner{
+    height: 162px;
+    background: #006DCC url(/static/img/navbar.png);
+}
+.space{
+    margin-top:10px;
+}
+.space1{
+    position:relative;
+    top:43px;
+}
+.icon-chevron-right{
+    float:right;
+    margin-top:2px;
+    opacity : 0.25;
+    margin-right:-6px;
+}
+
+.nav-side{
+
+    width:258px;
+    margin:60px,0,0;
+}
+
+.nav-tabs > .active > a{
+    background-color:#0088cc;
+    color:#ffffff;
+}
+
+
+.adjust{
+    position:absolute;
+    right:148px;
+    top:1px; 
+    margin-right:10px;
+    margin-bottom:12px;
+}
+.complete{
+    position : absolute;
+    top:20px;
+    right:135px;
+    font-family: "Josefin Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+    font-weight: bold;
+    color: white;
+}
+
+.complete1{
+    position : absolute;
+    top:5px;
+    right:30px;
+    font-family: "Josefin Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+    font-weight: bold;
+}
+
+.btn-xlarge{
+    padding:15px 200px;
+}
+textarea{
+    margin: 0px; 
+    width: 269px; 
+    height: 88px;
+
+}
+
+input[type="text"]{
+    height: 30px;
+}
+
+.footer{
+    overflow: hidden;
+    color :#fff;
+    background: #006DCC url(/static/img/navbar.png);
+}
+
+.footer a{
+    color : #faf3f3;
+    font-weight: bold;   
+    text-decoration: none;
+}
+
+.footer a:hover{
+    color : white;
+    text-decoration: none;
+}
+
+.lead{
+    font-weight: bold;
+    font-size: 30px;
+    padding : 10px;
+}
+
+    
