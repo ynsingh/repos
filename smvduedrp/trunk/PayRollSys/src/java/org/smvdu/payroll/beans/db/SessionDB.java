@@ -184,18 +184,26 @@ public class SessionDB {
         try
         {
             session = helper.getSessionFactory().openSession();
-            
             session.beginTransaction();
             Query query = session.createQuery("from SessionMaster where current = 1 and orgcode = '"+userBean.getUserOrgCode()+"'");
-            ArrayList<SessionMaster> sess = (ArrayList<SessionMaster>)query.list();
-            SessionMaster data = new SessionMaster();
-            for(SessionMaster s : sess)
-                {
-                    data.setCode(s.getCode());
-                    data.setName(s.getName());
-                }
-            session.getTransaction().commit();        
-            return data;
+	    if (query.list().size() == 0)
+      	    {
+		session.close();
+		session = helper.getSessionFactory().openSession();
+		session.beginTransaction();
+		query = session.createQuery("from SessionMaster where current = 1 and orgcode = '"+userBean.getUserOrgCode()+"'");
+	    }	
+	   
+           ArrayList<SessionMaster> sess = (ArrayList<SessionMaster>)query.list();
+           SessionMaster data = new SessionMaster();
+           for(SessionMaster s : sess)
+           {
+                   data.setCode(s.getCode());
+                   data.setName(s.getName());
+           }
+           session.getTransaction().commit();        
+           return data;
+		
         }    
          
         catch (Exception e) {

@@ -4,7 +4,11 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.datasource">java:comp/env/jdbc/pl</property>
+    <property name="hibernate.connection.datasource">java:comp/env/jdbc/pl</property> 
+<!--<property name="hibernate.connection.url">jdbc:mysql://localhost/pl?autoReconnect=true</property>
+    <property name="hibernate.connection.username">username</property>
+    <property name="hibernate.connection.password">password</property>
+--> 
     <property name="hibernate.show_sql">true</property>
     <mapping resource="org/smvdu/payroll/HibernateMapping/SessionMaster.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/HibernateMapping/Department.hbm.xml"/>

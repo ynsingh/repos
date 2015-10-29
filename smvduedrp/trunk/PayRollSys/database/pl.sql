@@ -1483,7 +1483,7 @@ CREATE TABLE `user_task_menu_name` (
 #
 
 INSERT INTO `admin_records` (`seq_id`, `user_id`, `admin_pass`, `flag`, `add_date`) VALUES 
-  (1,'admin','admin123',0,'2025-11-25');
+  (1,'admin','admin123',1,'2025-11-25');
 COMMIT;
 
 #

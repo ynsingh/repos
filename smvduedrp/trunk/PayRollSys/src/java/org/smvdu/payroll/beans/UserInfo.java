@@ -414,13 +414,24 @@ public class UserInfo implements Serializable {
     {
         return "em";
     }
-    public String logout() {
-        UserDB ud = new UserDB();
-        int id = ud.CheckUserExistInLoginDB(userName);
-        ud.LastLogoutStatusUpdate(id);
-        ExternalContext ectx = FacesContext.getCurrentInstance().getExternalContext();
-        ectx.invalidateSession();
-        return "Login.jsf";
+    public void logout() {
+	try{
+
+        	UserDB ud = new UserDB();
+        	int id = ud.CheckUserExistInLoginDB(userName);
+        	ud.LastLogoutStatusUpdate(id);
+        	ExternalContext ectx = FacesContext.getCurrentInstance().getExternalContext();
+		if(ectx!=null){
+        		ectx.invalidateSession();
+		}
+		ectx.redirect(ectx.getRequestContextPath()+"/Login.jsf");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            //return null;
+        }
+        //return "Login.jsf";
     }
     
     public String switchAccount(){
