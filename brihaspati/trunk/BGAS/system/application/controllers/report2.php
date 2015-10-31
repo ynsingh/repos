@@ -901,8 +901,7 @@ class Report2 extends Controller {
 	{
         $this->load->library('session');
 		$this->template->set('page_title', 'Income And Expenditure Statement');
-		$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrd' => 'PrintPreview'));
-
+		$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrd' => 'PrintPreview', 'aggregation/aggregateincexp' => 'View Aggregate '));
 		$data['left_width'] = "300";
                 $data['right_width'] = "125";
                 $default_end_date;
@@ -1036,8 +1035,8 @@ class Report2 extends Controller {
   //                      $this->template->load('template', 'report2/schedule_template_2',$data);
     //                    return;
 //		}else{
-		      	$this->template->load('template', 'report2/schedule_template', $data);
-                        return;
+	      	$this->template->load('template', 'report2/schedule_template', $data);
+                return;
 //		}
 		return;
 	}
@@ -1107,7 +1106,26 @@ class Report2 extends Controller {
         $this->load->library('session');
         $data['print_preview'] = 'FALSE';
 		$this->template->set('page_title', 'Income And Expenditure Statement');
-		$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview'));
+		//$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview'));
+		$usernameagg = $this->session->userdata('user_name');
+		$db1=$this->load->database('login', TRUE);
+		$db1->select('id','username')->from('edrpuser')->where('username =', $usernameagg);
+		$queryagg = $db1->get();
+                foreach($queryagg -> result() as $row)
+		{
+	                $aggid = $row->id;
+                }
+		$db1->select('aggtype')->from('bgasuserrolegroup')->where('userid =', $aggid);
+		$queryagg1 = $db1->get();
+                foreach($queryagg1 -> result() as $row)
+                {
+                        $aggtype = $row->aggtype;
+                }
+		//$aggtype;
+		if($aggtype == 'agg')
+	                $this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview', 'aggregation/aggregateincexp' => 'ViewAggregate '));
+		else
+			$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview'));
 
 		$data['left_width'] = "300";
                 $data['right_width'] = "125";
