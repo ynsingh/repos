@@ -533,6 +533,15 @@ public class EditContent_Action extends SecureAction
 		String sch3=pp.getString("sch3","null");
                 String sch4=pp.getString("sch4","null");
 		String sch5=pp.getString("sch5","null");
+
+                String section=pp.getString("section","null");
+                String section1=pp.getString("section1","null");
+                String section2=pp.getString("section2","null");
+                String section3=pp.getString("section3","null");
+                String section4=pp.getString("section4","null");
+                String section5=pp.getString("section5","null");
+               
+
 		org.apache.commons.fileupload.FileItem fileItem;
                 fileItem = pp.getFileItem("file");
                 String fileName=fileItem.getName();
@@ -573,7 +582,7 @@ public class EditContent_Action extends SecureAction
 				deletefile.delete();
 			}
 			//if(message1.equals("Successfull")) {
-			XMLWriter_Cms.CourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,assignment,classnote,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3);
+			XMLWriter_Cms.CourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,assignment,classnote,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3,section,section1,section2,section3,section4,section5);
               		msg= MultilingualUtil.ConvertedString("cms_msg",LangFile);
 			if((StringUtils.isNotBlank(fileName)))	
                                 data.addMessage(msg);

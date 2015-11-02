@@ -175,84 +175,96 @@ $!data.getMessage()
 	</tr>
         <tr bgcolor="$ui.menuColor">
 	<td><b>$brih_course $brih_day & $brih_Venue </b></td>
-        <td><table><td>$brih_Day</td><td>$brih_venue</td><td>$brih_time($brih_timeformate)</td>
+        <td><table><td>$brih_Day</td><td>$brih_venue</td><td>$brih_time($brih_timeformate)</td><td>&nbsp;&nbsp;&nbsp;$brih_section</td>
 	<tr>
 
 	#if($isInstructor=="true")
 	<td> <b>$brihMON</td>
-	<td> <input type="text" name="sch" value="$!sch" size="8"></td>
-	<td> <input type="text" name="t" value="$!t" size="8"></td></tr>
+	<td>&nbsp;<input type="text" name="sch" value="$!sch" size="8"></td>
+	<td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t" value="$!t" size="8"></td>
+        <td>&nbsp;&nbsp;<input type="text" name="section" value="$!section" size="8"></td></tr>
 	#else
-		#if(($sch != "") && ($t != ""))
+		#if(($sch != "") && ($t != "") && ($sec != "" ))
 	<td> <b>$brihMON</td>
-        <td> <input type="text" name="sch" value="$!sch" size="8" readonly></td>
-        <td> <input type="text" name="t" value="$!t" size="8" readonly></td></tr>
+        <td>&nbsp;<input type="text" name="sch" value="$!sch" size="8" readonly></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t" value="$!t" size="8" readonly></td>
+        <td>&nbsp;&nbsp;<input type="text" name="section" value="$!section" size="8" ></td></tr>
 		#end
 	#end
 
 	#if($isInstructor=="true")
 	<tr>
         <td> <b>$brihTUE</td>
-        <td> <input type="text" name="sch1" value="$!sch1" size="8"></td>
-        <td> <input type="text" name="t1" value="$!t1" size="8"></td></tr>
+        <td>&nbsp;<input type="text" name="sch1" value="$!sch1" size="8"></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t1" value="$!t1" size="8"></td>
+        <td>&nbsp;&nbsp;<input type="text" name="section1" value="$!section1" size="8"></td></tr>
 	#else
-		 #if(($sch1 != "") && ($t1 != ""))
+		 #if(($sch1 != "") && ($t1 != "") && ($sec1 != "" ))
 	<tr>
         <td> <b>$brihTUE</td>
-        <td> <input type="text" name="sch1" value="$!sch1" size="8" readonly></td>
-        <td> <input type="text" name="t1" value="$!t1" size="8" readonly></td></tr>
+        <td>&nbsp;<input type="text" name="sch1" value="$!sch1" size="8" readonly></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t1" value="$!t1" size="8" readonly></td>
+        <td>&nbsp;&nbsp;<input type="text" name="section1" value="$!section1" size="8"></td></tr>
 		#end
 	#end
 	#if($isInstructor=="true")
 	<tr>
         <td> <b>$brihWED</td>
-        <td> <input type="text" name="sch2" value="$!sch2" size="8"></td>
-        <td> <input type="text" name="t2" value="$!t2" size="8"></td></tr>
+        <td>&nbsp;<input type="text" name="sch2" value="$!sch2" size="8"></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t2" value="$!t2" size="8"></td>
+        <td>&nbsp;&nbsp;<input type="text" name="section2" value="$!section2"  size="8"></td></tr>
 	#else
-		#if(($sch2 != "") && ($t2 != ""))
+		#if(($sch2 != "") && ($t2 != "")&& ($sec2 != "" ))
 	<tr>
         <td> <b>$brihWED</td>
-        <td> <input type="text" name="sch2" value="$!sch2" size="8" readonly></td>
-        <td> <input type="text" name="t2" value="$!t2" size="8" readonly></td></tr>
+        <td>&nbsp;<input type="text" name="sch2" value="$!sch2" size="8" readonly></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t2" value="$!t2" size="8" readonly></td>
+        <td>&nbsp;&nbsp;<input type="text" name="section2" value="$!section2"  size="8"></td></tr>
 		#end
 	#end
 	#if($isInstructor=="true")
 	<tr>
         <td> <b>$brihTHU</td>
-        <td> <input type="text" name="sch3" value="$!sch3" size="8"></td>
-        <td> <input type="text" name="t3" value="$!t3" size="8"></td></tr>
+        <td>&nbsp;<input type="text" name="sch3" value="$!sch3" size="8"></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t3" value="$!t3" size="8"></td>
+        <td>&nbsp;&nbsp;<input type="text"  name="section3" value="$!section3" size="8"></td></tr>
 	#else
-		 #if(($sch3 != "") && ($t3 != ""))
+		 #if(($sch3 != "") && ($t3 != "")&& ($sec3 != "" ))
 	<tr>
         <td> <b>$brihTHU</td>
-        <td> <input type="text" name="sch3" value="$!sch3" size="8" readonly></td>
-        <td> <input type="text" name="t3" value="$!t3" size="8" readonly></td></tr>
+        <td>&nbsp;<input type="text" name="sch3" value="$!sch3" size="8" readonly></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t3" value="$!t3" size="8" readonly></td>
+        <td>&nbsp;&nbsp;<input type="text" name="section3" value="$!section3"  size="8"></td></tr>
 		 #end 
 	#end
 	#if($isInstructor=="true")
 	<tr>
         <td> <b>$brihFRI</td>
-        <td> <input type="text" name="sch4" value="$!sch4" size="8"></td>
-        <td> <input type="text" name="t4" value="$!t4" size="8"></td></tr>
+        <td>&nbsp;<input type="text" name="sch4" value="$!sch4" size="8"></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t4" value="$!t4" size="8"></td>
+        <td>&nbsp;&nbsp;<input type="text" name="section4" value="$!section4"  size="8"></td></tr>
 	#else
-		#if(($sch4 != "") && ($t4 != ""))
+		#if(($sch4 != "") && ($t4 != "")&& ($sec4 != "" ))
 	<tr>
         <td> <b>$brihFRI</td>
-        <td> <input type="text" name="sch4" value="$!sch4" size="8" readonly></td>
-        <td> <input type="text" name="t4" value="$!t4" size="8" readonly></td></tr>
+        <td>&nbsp;<input type="text" name="sch4" value="$!sch4" size="8" readonly></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t4" value="$!t4" size="8" readonly></td>
+        <td>&nbsp;&nbsp;<input type="text" name="section4" value="$!section4" size="8"></td></tr>
 		 #end
 	#end
 	#if($isInstructor=="true")
 	<tr>
         <td> <b>$brihSAT</td>
-        <td> <input type="text" name="sch5" value="$!sch5" size="8"></td>
-        <td> <input type="text" name="t5" value="$!t5" size="8"></td></tr>
+        <td>&nbsp;<input type="text" name="sch5" value="$!sch5" size="8"></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t5" value="$!t5" size="8"></td>
+        <td>&nbsp;&nbsp;<input type="text" name="section5" value="$!section5"  size="8"></td></tr>
 	#else
-		 #if(($sch5 != "") && ($t5 != ""))
+		 #if(($sch5 != "") && ($t5 != "")&& ($sec5 != "" ))
 	<tr>
         <td> <b>$brihSAT</td>
-        <td> <input type="text" name="sch5" value="$!sch5" size="8" readonly></td>
-        <td> <input type="text" name="t5" value="$!t5" size="8" readonly></td></tr>
+        <td>&nbsp;<input type="text" name="sch5" value="$!sch5" size="8" readonly></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="t5" value="$!t5" size="8" readonly></td>
+        <td>&nbsp;&nbsp;<input type="text"  name="section5" value="$!section5" size="8"></td></tr>
 		#end
 	#end
 
@@ -268,6 +280,7 @@ $!data.getMessage()
                 <td> <input type="text" size=3 name="midsem" value="$!midsem" readonly></td>
 		#end
         </tr>
+
 	<tr>
 		<td>  $brih_ClassNote  </td>
 		#if($isInstructor=="true")
@@ -335,7 +348,7 @@ $!data.getMessage()
         	<td align="center" colspan=5>  
 			#if($isInstructor=="true") 
         	     		<input type="button" class="button-ftextstyle" name="eventSubmit_doSelect" value="$brih_submit" onClick="checkField(document.frm,this);"/>&nbsp;
-				<input type="reset" name="Reset" value="$brih_clear" class="button-ftextstyle" />
+				<input type="reset" name="Reset" value="$brih_clear" class="button-ftextstyle"/>
 			#end
 			<input type="hidden" name="actionName">
                 	<input type="hidden" name="count" value="$tdcolor">
@@ -356,5 +369,76 @@ $!data.getMessage()
         function popupWin(urlName,popupName)
         {
                  window.open(urlName,popupName,"toolbar=yes,scrollbars=yes");
-         }
+        }
+function checkBlank(uploadform,field)
+        {
+                editor.setMode("textmode")
+                //if( (uploadform.contentTopic.value!="")  && (uploadform.message.value!="")  && (uploadform.grade.value!="")&& uploadform.file.value!="")
+                if((uploadform.contentTopic.value!="") && (uploadform.grade.value!=""))
+                {
+                        if(uploadform.message.value!="" || uploadform.file.value!="")
+                        {
+                                if(isNumberString(uploadform.grade.value))
+                                {
+                                        alert("Max Grade should be an positive value");
+                                        frm.grade.focus();
+                                        return false;
+                                }
+
+                                var temp=uploadform.message.value+uploadform.contentTopic.value;
+                                if(isString(temp))
+                                {
+
+                                        alert("Please check the special character !!");
+                                        return false;
+                                }
+
+                                uploadform.actionName.value=field.name;
+                                uploadform.submit();
+                        }
+                        else
+                        {
+                                alert("Please fill Instruction field or attach any file !!");
+                        }
+                }else{
+                        alert("Please fill all mandatory  fields. !!");
+                }
+                editor.setMode("wysiwyg")
+        }
+        function checkBlankTest(uploadform,field)
+        {
+                        uploadform.actionName.value=field.name;
+                        uploadform.submit();
+                        alert(uploadform.actionName.value);
+        }
+        function isNumberString(chString)
+        {
+                if(chString.length==0)
+                        return false;
+                var RefString="0123456789&.";
+                for(count=0;count<chString.length;count++)
+                {
+                        var tempChar=chString.charAt(count);
+                        if(RefString.indexOf(tempChar)==-1)
+                        {
+                                return true;
+                        }
+                }
+                return false;
+        }
+        function isString(chString)
+        {
+                if(chString.length==0)
+                        return false;
+                var RefString="~`!&";
+                for(count=0;count<chString.length;count++)
+                {
+                        var tempChar=chString.charAt(count);
+                        if(RefString.indexOf(tempChar)>0)
+                        {
+                                return true;
+                        }
+                }
+                return false;
+        }
 </SCRIPT>

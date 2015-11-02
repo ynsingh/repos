@@ -90,8 +90,8 @@ $!data.getMessage()
 <table align=left width=100% bgcolor="$ui.tableColor">
 <tr>
 	#if($mode=='insert' || $mode=='update')
-		<td><b><font color=RED size="4">*</font><I>$brih_mnd</I></td>
-		<td><b><u><I>$brih_note</I></u></b></td>
+		<td><b><font color=RED size="4">*</font><I>$brih_mnd</td>
+		<td><b><u>$brih_note</u></b></td>
 	#end
 <body bgcolor="$ui.bgcolor">
  	#set($min=["00","05","10","15","20","25","30","35","40","45","50","55"])
@@ -100,15 +100,15 @@ $!data.getMessage()
 <div align="left">
 ##<table align=center bgcolor="$ui.bgcolor" border="1" cellspacing="1" cellpadding="1">
 	<tr bgcolor="$ui.menuColor">
-        	<td><b><I>$brih_Da</I></b></td>
+        	<td><b>$brih_Da</b></td>
 		<td><I>$day - $month_num - $year</I></td>
         </tr>
         <tr>
-		<td bgcolor="$ui.tableColor"><b><I> $brih_info <font color=RED size="4">* </font></I></b></td>
+		<td bgcolor="$ui.tableColor"><b> $brih_info <font color=RED size="4">* </font></b></td>
 		<td><textarea name="detail" cols=40 rows=5></textarea></td>
         </tr>
         <tr bgcolor="$ui.menuColor">
-		<td><b><I>$brih_start $brih_time <font color=RED size="4">* </font></I></b></td>
+		<td><b>$brih_start $brih_time <font color=RED size="4">* </font></b></td>
 		<td>
                 	<select name="Start_hr" class="drop">
 			#foreach($hr in $hour)
@@ -124,7 +124,7 @@ $!data.getMessage()
      		</td>
    	</tr>
        	<tr>
-		<td><b><I>$brih_end $brih_time <font color=RED size="4">* </font></I></b></td>
+		<td><b>$brih_end $brih_time <font color=RED size="4">* </font></b></td>
 		<td>
 			<select name="Last_hr" class="drop">
          		#foreach($hr in $hour)
@@ -160,11 +160,11 @@ $!data.getMessage()
 		<td><I>$day - $month_num - $year<I></td>
         </tr>
         <tr>
-        	<td bgcolor="$ui.tableColor"><b><I> $brih_info <font color=RED size="4">* </font></I></b></td>
+        	<td bgcolor="$ui.tableColor"><b> $brih_info <font color=RED size="4">* </font></b></td>
 		<td><textarea name="detail" cols=40 rows=5>$description</textarea></td>
         </tr>
 	<tr bgcolor="$ui.menuColor">
-		<td><b><I>$brih_start $brih_time</b><I></td>
+		<td><b>$brih_start $brih_time</b></td>
 		<td>
 			<select name="Start_hr" class="drop">
 			<option value="$st_hr">$st_hr
@@ -221,8 +221,8 @@ $!data.getMessage()
 		<input type="hidden" name="path" value=$path>
 		<input type="hidden" name="day" value=$day>
 		<input type="hidden" name="mon" value=$month_num>
-		
 		<input type="hidden" name="year" value=$year>
+                <input type="hidden" name="mow" value=$month_num>
 		<input type="hidden" name="mode" value=$mode>
 		<input type="hidden" name="info_id" value=$info_id>
 </div>

@@ -330,6 +330,60 @@ public class XMLWriter_Cms {
                 	                      		 else
 		                                                v.add(Sch3);
 						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }
+                                                try{
+                                                       NodeList node1 = doc.getElementsByTagName("Sec");
+                                                       node = node1.item(i);
+                                                       String Sec = (String)(node.getFirstChild()).getNodeValue();
+                                                       if(Sec.equals("null"))
+                                                                v.add("");
+                                                       else
+                                                                v.add(Sec);
+                                                }catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); } 
+                                                try{
+                                                       NodeList node1 = doc.getElementsByTagName("Sec1");
+                                                       node = node1.item(i);                        
+                                                       String Sec1 = (String)(node.getFirstChild()).getNodeValue();
+                                                       if(Sec1.equals("null"))
+                                                                v.add("");
+                                                       else
+                                                                v.add(Sec1);
+                                                }catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }
+                                                try{
+                                                       NodeList node1 = doc.getElementsByTagName("Sec2");
+                                                       node = node1.item(i);
+                                                       String Sec2 = (String)(node.getFirstChild()).getNodeValue();
+                                                       if(Sec2.equals("null"))
+                                                                v.add("");
+                                                       else
+                                                                v.add(Sec2);
+                                                }catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }
+                                                try{
+                                                       NodeList node1 = doc.getElementsByTagName("Sec3");
+                                                       node = node1.item(i);
+                                                       String Sec3 = (String)(node.getFirstChild()).getNodeValue();
+                                                       if(Sec3.equals("null"))
+                                                                v.add("");
+                                                       else
+                                                                v.add(Sec3);
+                                                }catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }
+                                                try{
+                                                       NodeList node1 = doc.getElementsByTagName("Sec4");
+                                                       node = node1.item(i);
+                                                       String Sec4 = (String)(node.getFirstChild()).getNodeValue();
+                                                       if(Sec4.equals("null"))
+                                                                v.add("");
+                                                       else
+                                                                v.add(Sec4);
+                                                }catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }
+                                                try{
+                                                       NodeList node1 = doc.getElementsByTagName("Sec5");
+                                                       node = node1.item(i);
+                                                       String Sec5 = (String)(node.getFirstChild()).getNodeValue();
+                                                       if(Sec5.equals("null"))
+                                                                v.add("");
+                                                       else
+                                                                v.add(Sec5);
+                                                }catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);v.add(""); }
 						return v;
                                         }
                                 }
@@ -459,7 +513,7 @@ public class XMLWriter_Cms {
 		}catch(Exception e){ErrorDumpUtil.ErrorLog("Error in updateCourseManageMentSystem "+e.getMessage());}
 		return "";
 	}
-	public static String  CourseManageMentSystem(String filePath,String couse_id,String sch4,String sch5,String mid_sem, String assignment, String classnote,String quiz,String labwork,String end_sem,String instrction,String filename,String labinst,String labinst1,String tute,String tute1,String t,String t1,String t2,String t3,String t4,String t5,String sch,String sch1,String sch2,String sch3){
+	public static String  CourseManageMentSystem(String filePath,String couse_id,String sch4,String sch5,String mid_sem, String assignment, String classnote,String quiz,String labwork,String end_sem,String instrction,String filename,String labinst,String labinst1,String tute,String tute1,String t,String t1,String t2,String t3,String t4,String t5,String sch,String sch1,String sch2,String sch3,String section,String section1,String section2,String section3,String section4,String section5 ){
 		String message="UnSuccessfull";
                 try{
 	               	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -569,8 +623,31 @@ public class XMLWriter_Cms {
                         Text sch3Text = doc.createTextNode(sch3);
                         sch3_e.appendChild(sch3Text);
 
-			
-       	                Cms.appendChild(ip); 
+                        Element sec_e = doc.createElement("Sec");
+                        Text secText = doc.createTextNode(section);
+                        sec_e.appendChild(secText);
+                         
+                        Element sec1_e = doc.createElement("Sec1");
+                        Text sec1Text = doc.createTextNode(section1);
+                        sec1_e.appendChild(sec1Text);
+                        
+                        Element sec2_e = doc.createElement("Sec2");
+                        Text sec2Text = doc.createTextNode(section2);
+                        sec2_e.appendChild(sec2Text);
+
+                        Element sec3_e = doc.createElement("Sec3");
+			Text sec3Text = doc.createTextNode(section3);
+                        sec3_e.appendChild(sec3Text);
+  
+                        Element sec4_e = doc.createElement("Sec4");
+                        Text sec4Text = doc.createTextNode(section4);
+                        sec4_e.appendChild(sec4Text);
+
+                        Element sec5_e = doc.createElement("Sec5");
+                        Text sec5Text = doc.createTextNode(section5);
+                        sec5_e.appendChild(sec5Text);
+       	                
+                        Cms.appendChild(ip); 
 			Cms.appendChild(sch4_e);
 			Cms.appendChild(sch5_e);
                	        Cms.appendChild(courses);
@@ -595,6 +672,12 @@ public class XMLWriter_Cms {
 			Cms.appendChild(sch1_e);
 			Cms.appendChild(sch2_e);
 			Cms.appendChild(sch3_e);
+                        Cms.appendChild(sec_e);
+                        Cms.appendChild(sec1_e);
+                        Cms.appendChild(sec2_e);
+                        Cms.appendChild(sec3_e);
+                        Cms.appendChild(sec4_e);
+                        Cms.appendChild(sec5_e);
                	        root.appendChild(Cms);
                 	message=saveXML(doc,filePath);
                 }catch(Exception ex){

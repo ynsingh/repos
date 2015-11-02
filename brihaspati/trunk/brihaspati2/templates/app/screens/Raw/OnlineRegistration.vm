@@ -86,7 +86,7 @@ $!data.getMessage()
 			<option>$Deptname</option>
                         <option> #if($lang == "hindi") $brih_dept $brih_select #else  $brih_select $brih_dept #end </option>
                 #end
-                        <option value="" title="Course Without Dept" style="width:275px;">CourseWithoutDept</option>
+                        <option value="" title="$brih_courses $brih_without $brih_dept" style="width:275px;">$brih_courses$brih_without$brih_dept</option>
                 #foreach($name in $deptlist)
                         <option value="$!name.getName()" title="$!name.getName()" style="width:275px;">$!name.getName()</option>
                 #end

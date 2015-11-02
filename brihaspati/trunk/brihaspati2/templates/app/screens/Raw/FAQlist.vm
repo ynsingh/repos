@@ -203,7 +203,7 @@ $page.setBgColor("bgcolor")
 		#end
 	#else
 		#if($mode=="alllist")
-		<tr><td align="center"><b><font size="3">$brih_frequently #if($lang == "hindi") $brih_asked1 $brih_qus2 $brih_Of #else  $brih_asked $brih_qus2 #end $brih_category $brih_arenotexists</font></td></tr> 
+		<tr><td align="center"><b><font size="3">$brih_frequently #if($lang == "hindi") $brih_asked1 $brih_qus2 $brih_Of #else  $brih_asked $brih_qus2 #end  $brih_arenotexists</font></td></tr> 
 		#end
 		#if($mode=="list")
 		<tr><td align="center"><b><font size="3"> #if($lang == "hindi") $brih_faqmsg #else  $brih_faqmsg $brih_cat #end </font></td></tr>

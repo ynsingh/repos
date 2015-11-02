@@ -150,6 +150,12 @@ public class CourseMgmt extends SecureScreen {
 				context.put("sch1",v.get(21));
 				context.put("sch2",v.get(22));
 				context.put("sch3",v.get(23));
+                                context.put("section",v.get(24));
+                                context.put("section1",v.get(25));
+                                context.put("section2",v.get(26));
+                                context.put("section3",v.get(27));
+                                context.put("section4",v.get(28));
+                                context.put("section5",v.get(29));
 			}
 			
 		}

@@ -52,7 +52,7 @@ $page.setBgColor("$ui.bgcolor")
 	</tr> ##1#t tr closed
 ##Show ShutDown Notification
 <tr><td colspan=2>
-<iframe id="iframe0" src='$link.setPage("Shutdown.vm").addPathInfo("lang",$lang)' style="height:15px;width:100%; overflow:hidden;" frameborder="0"></iframe>
+<src='$link.setPage("Shutdown.vm").addPathInfo("lang",$lang)' style="height:15px;width:100%; overflow:hidden;">
 </td></tr>
 ##end
 	<tr> ##2#d tr

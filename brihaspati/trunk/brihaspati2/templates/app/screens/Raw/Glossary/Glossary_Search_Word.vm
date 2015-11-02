@@ -43,8 +43,7 @@ $!data.getMessage()
 			<a href="$link.setPage("Index.vm")">$brih_home</a> |
 			#end
 			#set($lang = $data.getUser().getTemp("lang" ).toString())
-			<a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")> #if($lang =="hindi") $brih_word $brih_search #else $brih_search $brih_word #end 
-	</td>
+			<a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")> Glossary </td>
 	</tr>
 </table>
 <table width="100%" bgcolor="$ui.tableColor">
