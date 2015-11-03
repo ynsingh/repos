@@ -4,8 +4,8 @@
  */
 
 /**
- *
  * @author sknaqvi
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 
 package pojo.hibernate;
@@ -18,7 +18,7 @@ import java.util.List;
 public class GenericroleprivilegesDAO  {
 
     public void save(Genericroleprivileges grp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -36,7 +36,7 @@ public class GenericroleprivilegesDAO  {
     }
 
      public void update(Genericroleprivileges grp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -54,7 +54,7 @@ public class GenericroleprivilegesDAO  {
     }
 
     public void delete(Genericroleprivileges grp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -72,7 +72,7 @@ public class GenericroleprivilegesDAO  {
     }
 
     public List<Genericroleprivileges> RetrievePrivilegesForGenericRole(Byte gurId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Genericroleprivileges> plist = session.createQuery("from Genericroleprivileges u where u.genericuserroles.gurId = :gurId")
@@ -91,7 +91,7 @@ public class GenericroleprivilegesDAO  {
                         "u.erpmprogram.erpmpId = :erpmpId and " +
                         "u.genericuserroles.gurId = :gurId";
         
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Genericroleprivileges> plist = session.createQuery(query)

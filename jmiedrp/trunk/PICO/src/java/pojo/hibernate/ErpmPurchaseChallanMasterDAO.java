@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-/*
- *
- * @author Tanvir Ahmed
- */
+
+/**
+  *@author Tanvir Ahmed
+  *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
+  */
 
 package pojo.hibernate;
 
@@ -20,7 +21,7 @@ import org.hibernate.Hibernate;
 public class ErpmPurchaseChallanMasterDAO {
 
     public void save(ErpmPurchasechallanMaster PChallanMast) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -38,7 +39,7 @@ public class ErpmPurchaseChallanMasterDAO {
     }
 
     public void delete(ErpmPurchasechallanMaster PChallanMast) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -56,7 +57,7 @@ public class ErpmPurchaseChallanMasterDAO {
     }
 
     public void update(ErpmPurchasechallanMaster PChallanMast) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -74,7 +75,7 @@ public class ErpmPurchaseChallanMasterDAO {
     }
 
      public ErpmPurchasechallanMaster findBypcmPcmId(Integer pcmPcmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmPurchasechallanMaster PChallanMast  = (ErpmPurchasechallanMaster) session.load(ErpmPurchasechallanMaster.class , pcmPcmId);
@@ -92,7 +93,7 @@ public class ErpmPurchaseChallanMasterDAO {
     }
 
      public ErpmPurchasechallanMaster findByPcmId(Integer pcmPcmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmPurchasechallanMaster> PChallanMast  = session.createQuery("Select u from ErpmPurchasechallanMaster u where u.pcmPcmId = :pcmPcmId").setParameter("pcmPcmId",pcmPcmId).list();
@@ -110,7 +111,7 @@ public class ErpmPurchaseChallanMasterDAO {
     }
 
       public List<ErpmPurchasechallanMaster > findByImId(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
            session.beginTransaction();
            List<ErpmPurchasechallanMaster>  list  =  session.createQuery("Select u from ErpmPurchasechallanMaster  u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
@@ -125,7 +126,7 @@ public class ErpmPurchaseChallanMasterDAO {
     }
 
        public List<ErpmPurchasechallanMaster > findBySupplierId(Integer smId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
            int index;
            session.beginTransaction();
@@ -141,7 +142,7 @@ public class ErpmPurchaseChallanMasterDAO {
     }
 
         public List<String> poListChallan(Short imId, Integer uid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
           session.beginTransaction();
           List<String> list =  session.createQuery("Select new map(u.pcmPcmId as pcmPcmId,u.institutionmaster.imShortName as imShortName,u.subinstitutionmaster.simShortName as simShortName,u.departmentmaster.dmShortName as dmShortName,u.erpmPoMaster.suppliermaster.smName as smName,u.pcmChallanNo as challanNo,u.pcmRecvDate as RecvDate,u.pcmChallanDate as ChallanDate, concat(u.erpmPoMaster.departmentmaster.dmShortName,'/', year(u.erpmPoMaster.pomPoDate),'/', u.erpmPoMaster.pomPoNo) as pono) from ErpmPurchasechallanMaster u where u.institutionmaster.imId = :imId and u.departmentmaster.dmId in "

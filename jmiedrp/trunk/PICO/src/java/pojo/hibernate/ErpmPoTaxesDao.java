@@ -15,7 +15,7 @@ import org.hibernate.Hibernate;
 public class ErpmPoTaxesDao {
 
     public List<ErpmPoTaxes> findByPOMasterID_ItemID(Integer pomPoMasterId , Integer erpmimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
 

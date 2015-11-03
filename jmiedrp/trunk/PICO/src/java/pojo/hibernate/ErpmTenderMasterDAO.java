@@ -5,8 +5,8 @@
 package pojo.hibernate;
 
 /**
- *
  * @author FarazAhmad, Saeed
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 import java.util.List;
 import utils.HibernateUtil;
@@ -19,7 +19,7 @@ public class ErpmTenderMasterDAO {
     private Object erpmuId;
 
     public void save(ErpmTenderMaster erpmtendermaster) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -36,7 +36,7 @@ public class ErpmTenderMasterDAO {
     }
 
     public void delete(ErpmTenderMaster erpmicm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -53,7 +53,7 @@ public class ErpmTenderMasterDAO {
     }
 
     public void update(ErpmTenderMaster erpmtm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -70,7 +70,7 @@ public class ErpmTenderMasterDAO {
     }
 
     public List<ErpmTenderMaster> findByImId(Short ImId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -89,7 +89,7 @@ public class ErpmTenderMasterDAO {
     }
 
     public List<ErpmTenderMaster> findTender(Short ImId, Integer tenType, Integer tenState) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -144,7 +144,7 @@ public class ErpmTenderMasterDAO {
     }
 
     public ErpmTenderMaster findByTenderMasterId(Integer erpmtenderId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmTenderMaster erpmtender = (ErpmTenderMaster) session.load(ErpmTenderMaster.class, erpmtenderId);

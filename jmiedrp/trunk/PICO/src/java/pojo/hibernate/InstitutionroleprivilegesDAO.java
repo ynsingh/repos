@@ -1,6 +1,7 @@
 /**
  *
  * @author sknaqvi
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 
 package pojo.hibernate;
@@ -14,7 +15,7 @@ import java.util.List;
 public class InstitutionroleprivilegesDAO {
 
     public void save(Institutionroleprivileges irp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -32,7 +33,7 @@ public class InstitutionroleprivilegesDAO {
     }
 
     public void update(Institutionroleprivileges irp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -50,7 +51,7 @@ public class InstitutionroleprivilegesDAO {
     }
 
     public void delete(Institutionroleprivileges irp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -68,7 +69,7 @@ public class InstitutionroleprivilegesDAO {
     }
 
     public List<Institutionroleprivileges> findAll() {                      
-        Session session = HibernateUtil.getSession();          
+        Session session = HibernateUtil.getSessionPicoFactory();          
         try {
             session.beginTransaction();
             List<Institutionroleprivileges> list = session.createQuery("select u from Institutionroleprivileges u").list();        
@@ -82,7 +83,7 @@ public class InstitutionroleprivilegesDAO {
 
     //The following function retrieves the Institution Role Privilege record by iupID (The primary key)
     public Institutionroleprivileges findByIupId(Short iupId) {
-        Session session = HibernateUtil.getSession();          
+        Session session = HibernateUtil.getSessionPicoFactory();          
         try {
             session.beginTransaction();
             List<Institutionroleprivileges> list = session.createQuery("select u from Institutionroleprivileges u where u.iupId = :iupId")
@@ -101,7 +102,7 @@ public class InstitutionroleprivilegesDAO {
 
     //The following function prepares a list of Institution Role Privileges for the given Institutional Role
     public List<Institutionroleprivileges> findByiurId(Integer iurId) {                       
-        Session session = HibernateUtil.getSession();          
+        Session session = HibernateUtil.getSessionPicoFactory();          
         try {
             session.beginTransaction();
             List<Institutionroleprivileges> list = session.createQuery("select u from Institutionroleprivileges u where u.institutionuserroles.iurId = :iurId")
@@ -120,7 +121,7 @@ public class InstitutionroleprivilegesDAO {
 
     //The following function returns the instittution role Id contained in IUP_ID
     public Integer findInstitutionRoleForUserProfile(Short iupId) {        
-        Session session = HibernateUtil.getSession();          
+        Session session = HibernateUtil.getSessionPicoFactory();          
         try {
             session.beginTransaction();
             List<Institutionroleprivileges> list  = session.createQuery("select u.institutionuserroles.iurId from Institutionroleprivileges u where u.iupId = :iupId)")
@@ -133,7 +134,7 @@ public class InstitutionroleprivilegesDAO {
     }
 
     public Integer CountRecordsForInstitutionRole(Integer iurId) {        
-        Session session = HibernateUtil.getSession();          
+        Session session = HibernateUtil.getSessionPicoFactory();          
         try {
             session.beginTransaction();
             String list = session.createQuery("select count(u) from Institutionroleprivileges u where u.institutionuserroles.iurId = :iurId")

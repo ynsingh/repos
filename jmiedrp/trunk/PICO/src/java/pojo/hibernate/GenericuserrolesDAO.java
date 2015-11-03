@@ -4,8 +4,8 @@
  */
 
 /**
- *
  * @author sknaqvi
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 
 package pojo.hibernate;
@@ -20,7 +20,7 @@ import java.util.List;
 public class GenericuserrolesDAO {
 
     public void save(Genericuserroles gur) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -38,7 +38,7 @@ public class GenericuserrolesDAO {
     }
 
      public void update(Genericuserroles gur) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -56,7 +56,7 @@ public class GenericuserrolesDAO {
     }
 
     public void delete(Genericuserroles gur) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -74,7 +74,7 @@ public class GenericuserrolesDAO {
     }
 
     public List<Genericuserroles> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();            
             List<Genericuserroles> list = session.createQuery("from Genericuserroles").list();
@@ -86,7 +86,7 @@ public class GenericuserrolesDAO {
     }
 
     public String RetrieveRoleDescription(Byte gurId) {       
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();            
             List<Genericuserroles> list = session.createQuery("from Genericuserroles u where u.gurId = :gurId").setParameter("gurId", gurId).list();
@@ -98,7 +98,7 @@ public class GenericuserrolesDAO {
     }
 
     public Byte RetrieveRoleId(String role) {                        
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();            
             String roleId = session.createQuery("select u.gurId from Genericuserroles u where u.gurRoleName = :role").setParameter("role", role).list().get(0).toString();
@@ -111,7 +111,7 @@ public class GenericuserrolesDAO {
 
     public Genericuserroles findByName(String roleName) {
         String query = "Select u from Genericuserroles u where u.gurRoleName = :roleName";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             
             session.beginTransaction();            

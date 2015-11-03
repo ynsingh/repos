@@ -17,7 +17,8 @@ import utils.HibernateUtil;
 public class BudgettypemasterDAO {
 
     public void save(Budgettypemaster btm) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -34,7 +35,7 @@ public class BudgettypemasterDAO {
     }
 
     public void update(Budgettypemaster btm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -51,7 +52,7 @@ public class BudgettypemasterDAO {
     }
 
     public void delete(Budgettypemaster btm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -68,7 +69,7 @@ public class BudgettypemasterDAO {
     }
 
     public List<Budgettypemaster> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -81,7 +82,7 @@ public class BudgettypemasterDAO {
     }
 
     public Budgettypemaster findBybtmId(Byte btmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             Budgettypemaster btm = (Budgettypemaster) session.load(Budgettypemaster.class, btmId);

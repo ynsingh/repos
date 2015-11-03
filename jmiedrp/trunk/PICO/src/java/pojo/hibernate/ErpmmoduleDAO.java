@@ -4,13 +4,19 @@ package pojo.hibernate;
 import utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import java.util.List;
+
+/**
+ *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
+ */ 
+
+
 
 
 public class ErpmmoduleDAO  {
     public void save(Erpmmodule erpmm) {
-Session session = HibernateUtil.getSession();
+//Session session = HibernateUtil.getSession();
+Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -27,7 +33,7 @@ Session session = HibernateUtil.getSession();
         }    }
 
      public void update(Erpmmodule erpmm) {
-Session session = HibernateUtil.getSession();
+Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -44,7 +50,7 @@ Session session = HibernateUtil.getSession();
         }    }
 
     public void delete(Erpmmodule erpmm) {
-Session session = HibernateUtil.getSession();
+Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -61,7 +67,7 @@ Session session = HibernateUtil.getSession();
         }    }
 
     public List<Erpmmodule> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
 
         try {
             session.beginTransaction();

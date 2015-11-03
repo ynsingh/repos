@@ -17,7 +17,8 @@ import java.util.List;
 public class ErpmIssueSerialDetailDAO {
 
     public void save(ErpmIssueSerialDetail eisd) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -34,7 +35,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public void update(ErpmIssueSerialDetail eisd) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -51,7 +52,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public void delete(ErpmIssueSerialDetail eisd) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -68,7 +69,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public List<ErpmIssueSerialDetail> findByIssueDetID(Integer IsdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
 
@@ -89,7 +90,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public List<ErpmIssueSerialDetail> findSerialNoByIssueDetID(Integer IsdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
 
@@ -110,7 +111,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public ErpmIssueSerialDetail findByErpmissdId(Integer issdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmIssueSerialDetail erpmIssd = (ErpmIssueSerialDetail) session.load(ErpmIssueSerialDetail.class, issdId);
@@ -124,7 +125,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public Integer CountReceiveQty(Integer IsdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             String SQL = ("SELECT count(s) FROM ErpmIssueSerialDetail s WHERE s.issdReceived = TRUE and s.erpmIssueDetail.isdId=:IsdId");
@@ -138,7 +139,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public ErpmIssueSerialDetail findByeisdId(Integer eisdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmIssueSerialDetail eisd1 = (ErpmIssueSerialDetail) session.load(ErpmIssueSerialDetail.class, eisdId);
@@ -150,7 +151,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public List<ErpmIssueSerialDetail> findByEidId(Integer eid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -169,7 +170,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public Integer findCountByIssueDetailId(Integer eid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             String list = session.createQuery("select count(u) from ErpmIssueSerialDetail u where u.erpmIssueDetail.isdId = :eid").setParameter("eid", eid).uniqueResult().toString();
@@ -183,7 +184,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public Integer findCountByIssueDetailIdAndIssueSerialRecieveId(Integer eid, Integer esr) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             String list = session.createQuery("select count(u) from ErpmIssueSerialDetail u where u.erpmIssueDetail.isdId = :eid and u.erpmStockReceived.stId = :esr").setParameter("eid", eid).setParameter("esr", esr).uniqueResult().toString();
@@ -195,7 +196,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public Integer findCountByIssueSerialDetailId(Integer esd) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             String list = session.createQuery("select count(u) from ErpmIssueSerialDetail u where u.issdId = :esd").setParameter("esd", esd).uniqueResult().toString();
@@ -211,7 +212,7 @@ public class ErpmIssueSerialDetailDAO {
   //    public List<ErpmIssueSerialDetail> findListByerpmStockReceivedId(Integer stId) {
 
     public List<ErpmIssueSerialDetail> findListByerpmStockReceivedIdwith_editedserialno(Integer stId) {      
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -269,7 +270,7 @@ public class ErpmIssueSerialDetailDAO {
         }
     }
       public List<ErpmIssueSerialDetail> findListByerpmStockReceivedId(Integer stId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -292,7 +293,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public ErpmIssueSerialDetail findbyissid(Integer issId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -308,7 +309,7 @@ public class ErpmIssueSerialDetailDAO {
   //method to get list of ErpmIssueSerialDetail with formatted serial no
 //    public List<ErpmIssueSerialDetail> findListBydmIdReturnTypeissdReturn(char returntype, int dmId, Boolean bool) {
     public List<ErpmIssueSerialDetail> findListBydmIdReturnTypeissdReturnwit_editedserialno(char returntype, int dmId, Boolean bool) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -363,7 +364,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public List<ErpmIssueSerialDetail> findListBydmIdReturnTypeissdReturn(char returntype, int dmId, Boolean bool) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -385,7 +386,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public ErpmIssueSerialDetail findbystId(Integer stId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueSerialDetail> list = session.createQuery("Select u from ErpmIssueSerialDetail u where u.erpmStockReceived.stId = :stId").setParameter("stId", stId).list();
@@ -400,7 +401,7 @@ public class ErpmIssueSerialDetailDAO {
     }
 
     public Integer findByStockSerialId(Integer stId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueSerialDetail> list = session.createQuery("select u from ErpmIssueSerialDetail u where u.erpmStockReceived.stId = :stId").setParameter("stId", stId).list();

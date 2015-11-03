@@ -5,10 +5,14 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
+/**
+ *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
+ */ 
+
 public class StatemasterDAO {
 
     public void save(Statemaster state) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -26,7 +30,7 @@ public class StatemasterDAO {
     }
 
     public List<Statemaster> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Statemaster> list = session.createQuery("from Statemaster").list();
@@ -39,7 +43,7 @@ public class StatemasterDAO {
     
 
     public List<Statemaster> findByCountryId(Byte countryId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Statemaster> smList = session.createQuery("Select u from Statemaster u where u.countrymaster.countryId = :countryId").setParameter("countryId", countryId).list();
@@ -51,7 +55,7 @@ public class StatemasterDAO {
         }
 
     public List<Statemaster> findByCountryName(String countryName) {        
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Statemaster> smList = session.createQuery("Select u from Statemaster u where u.countrymaster.countryName = :countryName").setParameter("countryName", countryName).list();

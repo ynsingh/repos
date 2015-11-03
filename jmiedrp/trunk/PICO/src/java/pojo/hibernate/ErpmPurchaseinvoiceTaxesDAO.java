@@ -13,8 +13,8 @@ import java.util.List;
 import org.hibernate.Hibernate;
 //import utils.BaseDAO;
 /**
- *
  * @author erp01
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class ErpmPurchaseinvoiceTaxesDAO {
   
@@ -30,7 +30,7 @@ public class ErpmPurchaseinvoiceTaxesDAO {
 //        }
 // }
     public void save(ErpmPurchaseinvoiceTaxes pitax) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -74,7 +74,7 @@ public class ErpmPurchaseinvoiceTaxesDAO {
 
 
     public void delete(ErpmPurchaseinvoiceTaxes pitax) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -102,7 +102,7 @@ public class ErpmPurchaseinvoiceTaxesDAO {
 
 
      public List<ErpmPurchaseinvoiceTaxes>  findBypidPidId(Integer pidPidId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();

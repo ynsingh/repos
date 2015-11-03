@@ -17,7 +17,8 @@ import java.util.List;
 public class DepartmentalBudgetAllocationDAO {
 
     public void save(DepartmentalBudgetAllocation dba) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -34,7 +35,7 @@ public class DepartmentalBudgetAllocationDAO {
     }
 
     public void update(DepartmentalBudgetAllocation dba) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -51,7 +52,7 @@ public class DepartmentalBudgetAllocationDAO {
     }
 
     public void delete(DepartmentalBudgetAllocation dba) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -68,7 +69,7 @@ public class DepartmentalBudgetAllocationDAO {
     }
 
     public List<DepartmentalBudgetAllocation> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -87,7 +88,7 @@ public class DepartmentalBudgetAllocationDAO {
     }
 
     public DepartmentalBudgetAllocation findByDbaId(Integer dbaId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             DepartmentalBudgetAllocation dba = (DepartmentalBudgetAllocation) session.load(DepartmentalBudgetAllocation.class, dbaId);
@@ -100,7 +101,7 @@ public class DepartmentalBudgetAllocationDAO {
     }
 
     public List<DepartmentalBudgetAllocation> findByImId(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -118,7 +119,7 @@ public class DepartmentalBudgetAllocationDAO {
     }
 
     public List<DepartmentalBudgetAllocation> findBySimId(Integer SimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -136,7 +137,7 @@ public class DepartmentalBudgetAllocationDAO {
     }
 
     public List<DepartmentalBudgetAllocation> findForUserSubinstitution(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -154,7 +155,7 @@ public class DepartmentalBudgetAllocationDAO {
     }
 
     public List<DepartmentalBudgetAllocation> findByDMId(Integer dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -172,7 +173,7 @@ public class DepartmentalBudgetAllocationDAO {
     }
 
     public List<DepartmentalBudgetAllocation> findForUserDepartments(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -190,7 +191,7 @@ public class DepartmentalBudgetAllocationDAO {
     }
 
     public DepartmentalBudgetAllocation findForDepartmentBybhmId(short bhmId, Integer dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();

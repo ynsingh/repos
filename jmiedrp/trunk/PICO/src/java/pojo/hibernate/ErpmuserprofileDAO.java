@@ -6,13 +6,12 @@
 package pojo.hibernate;
 
 /**
- *
  * @author kazim
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 import utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import java.util.List;
 
 public class ErpmuserprofileDAO {
@@ -20,7 +19,7 @@ public class ErpmuserprofileDAO {
     public List<Erpmuserprofile> RetrieveUserProfile(String ERPMU_Name, String ERPMU_Password)
     {
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();

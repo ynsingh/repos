@@ -6,10 +6,14 @@ import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Hibernate;
 
+/**
+ *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
+ */ 
+
 public class ErpmuserroleDAO {
 
     public void save(Erpmuserrole erpmur) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -27,7 +31,7 @@ public class ErpmuserroleDAO {
     }
 
      public void update(Erpmuserrole erpmur) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -45,7 +49,7 @@ public class ErpmuserroleDAO {
     }
 
     public void delete(Erpmuserrole erpmur) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -63,7 +67,7 @@ public class ErpmuserroleDAO {
     }
 
     public List<Erpmuserrole> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Erpmuserrole> list = session.createQuery("from Erpmuserrole").list();
@@ -76,7 +80,7 @@ public class ErpmuserroleDAO {
 
 
     public List<Erpmuserrole> findAllInactiveUsers() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         
         try {
             session.beginTransaction();
@@ -96,7 +100,7 @@ public class ErpmuserroleDAO {
         }
 
     public List<Erpmuserrole> findByErpmUserId(Integer erpmurId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         
         try {
             session.beginTransaction();
@@ -110,7 +114,7 @@ public class ErpmuserroleDAO {
 
 
      public Erpmuserrole findByErpmUserRole(Integer erpmurId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         
         try {
             session.beginTransaction();
@@ -130,7 +134,7 @@ public class ErpmuserroleDAO {
 
      
      public Erpmuserrole findDefaultUserRole(Integer erpmurId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
 
         try {
             session.beginTransaction();
@@ -151,7 +155,7 @@ public class ErpmuserroleDAO {
 
 
     public List<Erpmuserrole> findActiveRolesByErpmUserId(Integer erpmurId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
 
         try {
             session.beginTransaction();
@@ -173,7 +177,7 @@ public class ErpmuserroleDAO {
 
      public int  ClearDefaultProfile(Integer erpmurId) {
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
 
         try {
             session.beginTransaction();
@@ -192,7 +196,7 @@ public class ErpmuserroleDAO {
                             + "upper(i.iurName) like '%ADMINISTRATOR%' and "
                             + "r.erpmusers.erpmuId = :erpmuId ";
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             Integer numberofIndentItems  = Integer.parseInt(session.createQuery(SQLQuery).setParameter("erpmuId",erpmuId).uniqueResult().toString());

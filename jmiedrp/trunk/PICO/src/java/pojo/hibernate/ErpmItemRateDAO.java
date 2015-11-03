@@ -22,7 +22,8 @@ import java.util.List;
 public class ErpmItemRateDAO {
 
     public void save(ErpmItemRate itemrate) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -39,7 +40,7 @@ public class ErpmItemRateDAO {
     }
 
     public void delete(ErpmItemRate itemrate) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -56,7 +57,7 @@ public class ErpmItemRateDAO {
     }
 
     public void update(ErpmItemRate itemrate) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -73,7 +74,7 @@ public class ErpmItemRateDAO {
     }
 
  public ErpmItemRate findByirItemRateId(Integer irItemRateId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmItemRate ItemRate = (ErpmItemRate) session.load(ErpmItemRate.class, irItemRateId);
@@ -89,7 +90,7 @@ public class ErpmItemRateDAO {
     }
 
 public ErpmItemRate findItemRateId(Integer irItemRateId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -107,7 +108,7 @@ public ErpmItemRate findItemRateId(Integer irItemRateId) {
     }
 
     public List<ErpmItemRate> findItemRatesForInstitutionAndItem(Short imId, Integer erpmimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             String SQL = "Select u from ErpmItemRate u "
@@ -127,7 +128,7 @@ public ErpmItemRate findItemRateId(Integer irItemRateId) {
 
 //Find items with given item code whose prices have beeen approved in the given date range
  public List<ErpmItemRate> findItemApprovedItems(Integer ErpmimId, Date irdWefDate, Integer erpmgmEgmId, Integer smId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             String SQL = "Select u from ErpmItemRate u "
                 + "where u.erpmItemMaster.erpmimId = :ErpmimId and "
@@ -146,7 +147,7 @@ public ErpmItemRate findItemRateId(Integer irItemRateId) {
     }
 
  public List<ErpmItemRate> findApprovedItemRatesForToday(Integer ErpmimId, Date irdWefDate, String currency, Integer quantity) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             String SQL = "Select u from ErpmItemRate u "

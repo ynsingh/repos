@@ -11,7 +11,8 @@ import org.hibernate.Hibernate;
 public class ErpmCapitalCategoryDao {
 
     public void save(ErpmCapitalCategory erpmcc) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -28,7 +29,7 @@ public class ErpmCapitalCategoryDao {
     }
 
     public void update(ErpmCapitalCategory erpmcc) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -45,7 +46,7 @@ public class ErpmCapitalCategoryDao {
     }
 
     public void delete(ErpmCapitalCategory erpmcc) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -62,7 +63,7 @@ public class ErpmCapitalCategoryDao {
     }
 
     public List<ErpmCapitalCategory> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -79,7 +80,7 @@ public class ErpmCapitalCategoryDao {
     }
 
     public ErpmCapitalCategory findByErpmccId(Integer erpmccId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmCapitalCategory erpmcc = (ErpmCapitalCategory) session.load(ErpmCapitalCategory.class, erpmccId);
@@ -92,7 +93,7 @@ public class ErpmCapitalCategoryDao {
     }
 
     public List<ErpmCapitalCategory> findByImId(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -107,7 +108,7 @@ public class ErpmCapitalCategoryDao {
     }
 
     public List<ErpmCapitalCategory> findForUser(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -122,7 +123,7 @@ public class ErpmCapitalCategoryDao {
     }
 
     public Integer findDuplicateCC(Short imId, String erpmccDesc) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();

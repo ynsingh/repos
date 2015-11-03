@@ -23,7 +23,8 @@ import org.hibernate.SessionFactory;
 public class ErpmIssueDetailDAO {
 
     public void save(ErpmIssueDetail eid) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -40,7 +41,7 @@ public class ErpmIssueDetailDAO {
     }
 
     public void update(ErpmIssueDetail eid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -57,7 +58,7 @@ public class ErpmIssueDetailDAO {
     }
 
      public void delete(ErpmIssueDetail eid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -92,7 +93,7 @@ public class ErpmIssueDetailDAO {
 //Lines added by shobhi
 //method to get issue detail id by issue master id
     public Integer findIsdId(Integer ismId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
                 String SQL = "Select u.isdId from ErpmIssueDetail u where u.erpmIssueMaster.ismId = :ismId";
@@ -108,7 +109,7 @@ public class ErpmIssueDetailDAO {
 
 //method to get item id by issue master id
     public Integer findItemId(Integer ismId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
                 String SQL = "Select u.erpmItemMaster.erpmimId from ErpmIssueDetail u where u.erpmIssueMaster.ismId = :ismId";
                 Integer isdId;
@@ -122,7 +123,7 @@ public class ErpmIssueDetailDAO {
         }
 
      public List<ErpmIssueDetail> findByEimId(Integer eimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -138,7 +139,7 @@ public class ErpmIssueDetailDAO {
     }
 
      public List<ErpmIssueDetail> findByIssueMastId(Integer issueMastId ) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -154,7 +155,7 @@ public class ErpmIssueDetailDAO {
     }
 
      public ErpmIssueDetail findByeidId(Integer eidId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmIssueDetail eidId1  = (ErpmIssueDetail) session.load(ErpmIssueDetail.class , eidId);
@@ -168,7 +169,7 @@ public class ErpmIssueDetailDAO {
     }
 
      public ErpmIssueDetail findisdId(Integer isdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueDetail> list  = session.createQuery("Select u from ErpmIssueDetail u where u.isdId = :isdId").setParameter("isdId",isdId).list();
@@ -181,7 +182,7 @@ public class ErpmIssueDetailDAO {
     }
 
       public List<ErpmIssueDetail> findByEimIdfromView(Integer eimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueDetail> list = session.createQuery("Select u from ViewIssueIndentDetail u where u.ismId = :eimId").setParameter("eimId", eimId).list();
@@ -203,7 +204,7 @@ public class ErpmIssueDetailDAO {
 
 
      public Integer findCountByIssueMasterAndItemId(Integer ismId, Integer itemId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             String list = session.createQuery("select count(u) from ErpmIssueDetail u where u.erpmIssueMaster.ismId = :ismId and u.erpmItemMaster.erpmimId = :itemId").setParameter("ismId", ismId).setParameter("itemId", itemId).uniqueResult().toString();
@@ -214,7 +215,7 @@ public class ErpmIssueDetailDAO {
     }
 
      public ErpmIssueDetail findByisdId(Integer isdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueDetail> list  = session.createQuery("Select u from ErpmIssueDetail u where u.isdId = :isdId").setParameter("isdId",isdId).list();

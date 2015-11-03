@@ -18,7 +18,8 @@ import org.hibernate.Hibernate;
 public class ErpmGenCtrlDao {
 
     public void save(ErpmGenCtrl erpmgctrl) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -35,7 +36,7 @@ public class ErpmGenCtrlDao {
     }
 
     public void update(ErpmGenCtrl erpmgctrl) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -52,7 +53,7 @@ public class ErpmGenCtrlDao {
     }
 
     public void delete(ErpmGenCtrl erpmgctrl) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -69,7 +70,7 @@ public class ErpmGenCtrlDao {
     }
 
     public List<ErpmGenCtrl> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();

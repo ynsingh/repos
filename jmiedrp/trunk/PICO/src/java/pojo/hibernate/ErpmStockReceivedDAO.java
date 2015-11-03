@@ -14,8 +14,8 @@ import org.hibernate.Hibernate;
 //import utils.BaseDAO;
 
 /**
- *
  * @author farah
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class ErpmStockReceivedDAO {
 
@@ -33,7 +33,7 @@ public class ErpmStockReceivedDAO {
 //
 // }
     public void save(ErpmStockReceived esr) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -61,7 +61,7 @@ public class ErpmStockReceivedDAO {
 //        }
 //    }
     public void update(ErpmStockReceived esr) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -89,7 +89,7 @@ public class ErpmStockReceivedDAO {
 //        }
 //    }
     public void delete(ErpmStockReceived esr) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -138,7 +138,7 @@ public class ErpmStockReceivedDAO {
 //        return esrId1;
 //    }
     public ErpmStockReceived findByesrId(Integer esrId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmStockReceived esrId1 = (ErpmStockReceived) session.load(ErpmStockReceived.class, esrId);
@@ -152,7 +152,7 @@ public class ErpmStockReceivedDAO {
     }
 
     public List<ErpmStockReceived> findRemainingStockAsc(Integer itemId, Integer dmId, Integer isdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -178,7 +178,7 @@ public class ErpmStockReceivedDAO {
 //        return list;
 //    }
     public List<ErpmStockReceived> findByItemIdAsc(Integer itemId, Integer dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -204,7 +204,7 @@ public class ErpmStockReceivedDAO {
 //        return list;
 //    }
     public List<ErpmStockReceived> findByItemIdDesc(Integer itemId, Integer dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -229,7 +229,7 @@ public class ErpmStockReceivedDAO {
 //        return list.get(0);
 //   }
     public ErpmStockReceived findbystid(Integer stId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -256,7 +256,7 @@ public class ErpmStockReceivedDAO {
 //   }
    // public ErpmStockReceived findbyStackSerialNo(Integer StackSerialNo) {
      public ErpmStockReceived findbyStockSerialNo(Integer StackSerialNo) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmStockReceived> list = session.createQuery("Select u from ErpmStockReceived u where u.stId = :StackSerialNo").setParameter("StackSerialNo", StackSerialNo).list();
@@ -305,7 +305,7 @@ public class ErpmStockReceivedDAO {
 //
 //    }
     public Integer findMaxSrNo(Integer itemId, Short imId, Integer simId, Integer dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmStockReceived> listRec = session.createQuery("select u from ErpmStockReceived u where u.erpmItemMaster.erpmimId = :itemId and u.institutionmaster.imId =:imId and"
@@ -330,7 +330,7 @@ public class ErpmStockReceivedDAO {
 
 
      public List<ErpmStockReceived> findPCDId(Integer pcdPcdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -346,7 +346,7 @@ public class ErpmStockReceivedDAO {
     }
 
      public List<ErpmStockReceived> findStId_ImId_SimId(Short imId , Integer simId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();

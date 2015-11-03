@@ -14,7 +14,8 @@ import java.util.List;
 
 public class EmployeemasterDAO  {
  public void save(Employeemaster  emp) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -32,7 +33,7 @@ public class EmployeemasterDAO  {
     }
 
     public void update(Employeemaster emp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -50,7 +51,7 @@ public class EmployeemasterDAO  {
     }
 
     public void delete(Employeemaster emp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -68,7 +69,7 @@ public class EmployeemasterDAO  {
     }
 
     public List<Employeemaster> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Employeemaster> list = session.createQuery("select u from Employeemaster u").list();
@@ -80,7 +81,7 @@ public class EmployeemasterDAO  {
     }
 
     public Employeemaster findByempId(int empId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             Employeemaster  emp  = (Employeemaster) session.load(Employeemaster.class , empId);
@@ -94,7 +95,7 @@ public class EmployeemasterDAO  {
     }
 
     public Employeemaster findByEmp_Id(int empId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Employeemaster>  emp  = session.createQuery("Select u from Employeemaster u where u.empId = :empId").setParameter("empId", empId).list();
@@ -106,7 +107,7 @@ public class EmployeemasterDAO  {
     }
 
     public List<Employeemaster> findByImId(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -126,7 +127,7 @@ public class EmployeemasterDAO  {
        }
 
     public List<Employeemaster> findBySImId(int simId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Employeemaster> empList  =  session.createQuery("Select u from Employeemaster u where u.subinstitutionmaster.simId = :simId").setParameter("simId", simId).list();
@@ -139,7 +140,7 @@ public class EmployeemasterDAO  {
 
     public List<Employeemaster> findByDmId(int dmId) {
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Employeemaster> empList  =  session.createQuery("Select u from Employeemaster u where u.departmentmaster.dmId = :dmId").setParameter("dmId", dmId).list();
@@ -155,7 +156,7 @@ public class EmployeemasterDAO  {
         String SQL = "Select u from Employeemaster u where u.institutionmaster.imId in ( " +
                        "Select v.institutionmaster.imId from Erpmuserrole v where v.erpmusers.erpmuId = :user)";
                 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Employeemaster> empList  = session.createQuery(SQL).setParameter("user", user).list();
@@ -168,7 +169,7 @@ public class EmployeemasterDAO  {
         
 
 public Employeemaster findForDepartmentBySimId(int empId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
 	        List<Employeemaster> dba  = session.createQuery("Select u from Employeemaster u where u.empId = :empId").setParameter("empId", empId).list();
@@ -180,7 +181,7 @@ public Employeemaster findForDepartmentBySimId(int empId) {
         }
 
 public List<Employeemaster> findEmployeeForUser(Integer erpmuId,Integer dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
         List<Employeemaster> dimList = session.createQuery("select distinct(u) from Employeemaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.employeemaster.dmId = u.dmId and u.departmentmaster.dmId =:dmId").setParameter("erpmuId", erpmuId).setParameter("dmId",dmId).list();

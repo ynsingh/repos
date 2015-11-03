@@ -9,7 +9,8 @@ import org.hibernate.Hibernate;
 public class ErpmItemMasterDAO {
     
     public void save(ErpmItemMaster erpmim) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -27,7 +28,7 @@ public class ErpmItemMasterDAO {
     }
 
      public void update(ErpmItemMaster erpmim) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -45,7 +46,7 @@ public class ErpmItemMasterDAO {
     }
 
     public void delete(ErpmItemMaster erpmim) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -63,7 +64,7 @@ public class ErpmItemMasterDAO {
     }
 
     public List<ErpmItemMaster> findByImId(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmItemMaster> erpmimList  = session.createQuery("Select u from ErpmItemMaster u where u.institutionmaster.imId = :imId").setParameter("imId",imId).list();            
@@ -79,7 +80,7 @@ public class ErpmItemMasterDAO {
          String SQL =   "Select u from ErpmItemMaster u where " +
                         "u.institutionmaster.imId = :imId and u.erpmimId  in " +
                         "(Select v.erpmItemMaster.erpmimId from ErpmItemRate v where v.suppliermaster.smName = :smName)";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmItemMaster> erpmimList  = session.createQuery(SQL).
@@ -94,7 +95,7 @@ public class ErpmItemMasterDAO {
      }
 
      public ErpmItemMaster findByErpmimId(Integer erpmimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmItemMaster erpmIM  = (ErpmItemMaster) session.load(ErpmItemMaster.class , erpmimId);
@@ -112,7 +113,7 @@ public class ErpmItemMasterDAO {
     }
 
     public List<ErpmItemMaster> findItemsForUserInstitutes(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             //List<ErpmItemMaster> erpmimList  = session.createQuery("Select u from ErpmItemMaster u where u.institutionmaster.imId  in (select r.institutionmaster.imId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId",erpmuId).list();
@@ -138,7 +139,7 @@ public class ErpmItemMasterDAO {
 
 }
      public List<ErpmItemMaster> findByerpmItemCategoryMaster(Integer erpmim) {        
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmItemMaster> erpmicmList  = session.createQuery("Select u from ErpmItemMaster u where  u.erpmItemCategoryMasterByErpmimItemCat3.erpmicmItemId=:erpmim").setParameter("erpmim", erpmim).list();
@@ -159,7 +160,7 @@ public class ErpmItemMasterDAO {
 }
 
     public Boolean hasDuplicate(String erpmuItemBriefDesc, Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmItemMaster> erpmimList  = session.createQuery("Select u from ErpmItemMaster u where u.erpmimItemBriefDesc = :erpmuItemBriefDesc and u.institutionmaster.imId = :imId").setParameter("erpmuItemBriefDesc",erpmuItemBriefDesc).setParameter("imId",imId).list();
@@ -175,7 +176,7 @@ public class ErpmItemMasterDAO {
     }
 
     public ErpmItemMaster findByItemId(Integer itemId){        
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmItemMaster> list  =  session.createQuery("Select u from ErpmItemMaster u where u.erpmimId = :itemId").setParameter("itemId", itemId).list();

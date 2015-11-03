@@ -17,7 +17,8 @@ import java.util.List;
 public class ErpmGeneralTermsDAO {
 
     public void save(ErpmGeneralTerms Gterms) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -34,7 +35,7 @@ public class ErpmGeneralTermsDAO {
     }
 
     public void delete(ErpmGeneralTerms Gterms) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -51,7 +52,7 @@ public class ErpmGeneralTermsDAO {
     }
 
     public void update(ErpmGeneralTerms Gterms) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -69,7 +70,7 @@ public class ErpmGeneralTermsDAO {
     }
 
     public ErpmGeneralTerms findPOtermsforInsituteByGenmasterID(Integer erpmgmEgmId, Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmGeneralTerms gterms = (ErpmGeneralTerms) session.createQuery("Select u from ErpmGeneralTerms u where u.erpmGenMaster.erpmgmEgmId = :erpmgmEgmId and u.institutionmaster.imId = :imId").setParameter("erpmgmEgmId", erpmgmEgmId).setParameter("imId", imId).uniqueResult();
@@ -94,7 +95,7 @@ public class ErpmGeneralTermsDAO {
 //        }
 //    }
     public ErpmGeneralTerms findTermsforInsituteByGenmasterID(Integer erpmgmEgmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -111,7 +112,7 @@ public class ErpmGeneralTermsDAO {
     }
 
     public List<ErpmGeneralTerms> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -127,7 +128,7 @@ public class ErpmGeneralTermsDAO {
     }
 
     public List<ErpmGeneralTerms> findByErpmGmType(short erpmgmEgmType) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -143,7 +144,7 @@ public class ErpmGeneralTermsDAO {
     }
 
     public List<ErpmGeneralTerms> findPOtermsforInsitute(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -159,7 +160,7 @@ public class ErpmGeneralTermsDAO {
     }
 
     public List<ErpmGeneralTerms> findByErpmGmTypebyInsitute(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -175,7 +176,7 @@ public class ErpmGeneralTermsDAO {
     }
 
     public ErpmGeneralTerms findBygtGtid(Integer gtGtid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmGeneralTerms GTerms = (ErpmGeneralTerms) session.load(ErpmGeneralTerms.class, gtGtid);

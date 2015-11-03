@@ -8,6 +8,7 @@ package pojo.hibernate;
 /**
  *
  * @author afreen
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 import utils.HibernateUtil;
 import utils.Page;
@@ -25,7 +26,7 @@ public class PaginationHibDao {
  */
     public Page getPage(int page, String tableName) {
        // Session session = HibernateUtil.getSession().openSession();   
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
 
         try {
             String query = "FROM " + tableName;
@@ -49,7 +50,7 @@ public class PaginationHibDao {
  */
     public int getTotalPages(String tableName) {
        // Session session = HibernateUtil.getSession().openSession();  //.getSession();
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         
         try {
             session.beginTransaction();

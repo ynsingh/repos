@@ -11,7 +11,8 @@ import java.util.List;
 public class ErpmGenMasterDao {
 
     public void save(ErpmGenMaster erpmgm) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -29,7 +30,7 @@ public class ErpmGenMasterDao {
     }
 
      public void update(ErpmGenMaster erpmgm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -47,7 +48,7 @@ public class ErpmGenMasterDao {
     }
 
     public void delete(ErpmGenMaster erpmgm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -65,7 +66,7 @@ public class ErpmGenMasterDao {
     }
 
     public List<ErpmGenMaster> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmGenMaster> list = session.createQuery("from ErpmGenMaster").list();
@@ -78,7 +79,7 @@ public class ErpmGenMasterDao {
     }
 
     public ErpmGenMaster findByErpmGmId(int erpmgmEgmId) {                
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmGenMaster erpmgm  = (ErpmGenMaster) session.load(ErpmGenMaster.class , erpmgmEgmId);
@@ -92,7 +93,7 @@ public class ErpmGenMasterDao {
         }
 
     public List<ErpmGenMaster> findByErpmGmType(short erpmgmEgmType) {       
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmGenMaster> erpmgmlist  = session.createQuery("Select u from ErpmGenMaster u where u.erpmGenCtrl.erpmgcGenType = :erpmgmEgmType order by u.erpmgmEgmDesc")
@@ -110,7 +111,7 @@ public class ErpmGenMasterDao {
 
 
     public Integer findDuplicateGeneralMasterEntry(short erpmgcGenType, String erpmgmEgmDesc) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             Integer matchingRecords  = Integer.parseInt(session.createQuery("Select count(u) from ErpmGenMaster u.erpmGenCtrl.erpmgcGenType = :erpmgcGenType and upper(u.erpmgmEgmDesc) = upper(:erpmgmEgmDesc)").setParameter("erpmgcGenType",erpmgcGenType).setParameter("erpmgmEgmDesc",erpmgmEgmDesc).list().get(0).toString());    return matchingRecords;
@@ -121,7 +122,7 @@ public class ErpmGenMasterDao {
         }
 
     public ErpmGenMaster findByErpmGmDesc(String erpmgmEgmDesc) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmGenMaster> erpmgmlist  = session.createQuery("Select u from ErpmGenMaster u where u.erpmgmEgmDesc = :erpmgmEgmDesc").setParameter("erpmgmEgmDesc",erpmgmEgmDesc).list();
@@ -134,7 +135,7 @@ public class ErpmGenMasterDao {
 
 
     public int findDefaultCurrency(String erpmgmEgmDesc) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmGenMaster> erpmgmlist  = session.createQuery("Select u from ErpmGenMaster u where u.erpmgmEgmDesc = :erpmgmEgmDesc").setParameter("erpmgmEgmDesc",erpmgmEgmDesc).list();
@@ -147,7 +148,7 @@ public class ErpmGenMasterDao {
     
     
     public List<ErpmGenMaster> findErpmGmDescByWFActions(int wfawfdId) {        
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmGenMaster> erpmgmlist  = session.createQuery("SELECT u FROM ErpmGenMaster u, Workflowactions b where u.erpmgmEgmId = b.erpmGenMaster and b.workflowdetail.wfdId = :wfawfdId").setParameter("wfawfdId",wfawfdId).list();
@@ -159,7 +160,7 @@ public class ErpmGenMasterDao {
         }
 
       public List<ErpmGenMaster> findByExpiryType(Short EgmType) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
         List<ErpmGenMaster> erpmgmlist  = session.createQuery("SELECT distinct(u) FROM ErpmGenMaster u where u.erpmGenCtrl.erpmgcGenType =:EgmType").setParameter("EgmType",EgmType).list();

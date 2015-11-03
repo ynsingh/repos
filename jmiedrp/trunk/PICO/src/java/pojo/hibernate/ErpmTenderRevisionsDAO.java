@@ -8,13 +8,13 @@ import org.hibernate.Hibernate;
 import java.util.List;
 
 /**
- *
  * @author wml3
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class ErpmTenderRevisionsDAO {
 
     public void save(ErpmTenderRevisions etr) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -31,7 +31,7 @@ public class ErpmTenderRevisionsDAO {
     }
 
     public void update(ErpmTenderRevisions etr) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -48,7 +48,7 @@ public class ErpmTenderRevisionsDAO {
     }
 
     public void delete(ErpmTenderRevisions etr) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -65,7 +65,7 @@ public class ErpmTenderRevisionsDAO {
     }
 
      public ErpmTenderRevisions findByTRId(Integer etrId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmTenderRevisions etr  = (ErpmTenderRevisions) session.load(ErpmTenderRevisions.class , etrId);
@@ -81,7 +81,7 @@ public class ErpmTenderRevisionsDAO {
         }
 
      public ErpmTenderRevisions findByTRId1(Integer etrId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
            List<ErpmTenderRevisions> list = session.createQuery("select u from ErpmTenderRevisions u where u.trTrId = :etrId").setParameter("etrId", etrId).list();
@@ -102,7 +102,7 @@ public class ErpmTenderRevisionsDAO {
 
 
      public List<ErpmTenderRevisions> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -122,7 +122,7 @@ public class ErpmTenderRevisionsDAO {
     }
 
      public List<ErpmTenderRevisions> findByImId(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -142,7 +142,7 @@ public class ErpmTenderRevisionsDAO {
     }
 
       public Boolean findByRevisionNoAndTenderNo(Integer tenderId, int revisionNo) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();

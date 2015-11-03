@@ -8,7 +8,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script language="JavaScript" type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>
+        <script language="JavaScript" type="text/JavaScript" src="../javaScript/ajax/jquery2.js"></script>  
         <script language="JavaScript" type="text/JavaScript" src="../javaScript/Administration/Budgettypemaster.js"></script>
         <title>ERP Mission - A Project sponsored by NMEICT, MHRD, Govt. of India</title>
         <link href="../css/pico.css" rel="stylesheet" type="text/css" />
@@ -44,7 +44,7 @@
                             <display:table name="dmList" pagesize="15"
                                            excludedParams="*" export="true" cellpadding="0"
                                            cellspacing="0" id="doc"
-                                           requestURI="/Administration/BrowseDepartments.action">
+                                           requestURI="/Administration/BrowseDepartments.action"> 
                                 <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
                                     <c:out> ${doc_rowNum}
                                     </display:column>
@@ -80,9 +80,9 @@
                 </div>
                 &nbsp;
             </div>
-            <div id="footer">
+           <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
-            </div>
+            </div>   
         </div>
     </body>
 </html>

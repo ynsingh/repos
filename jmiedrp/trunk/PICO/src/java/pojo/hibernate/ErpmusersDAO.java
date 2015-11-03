@@ -6,8 +6,8 @@
 package pojo.hibernate;
 
 /**
- *
  * @author kazim
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 import utils.HibernateUtil;
 import org.hibernate.Session;
@@ -15,11 +15,21 @@ import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Hibernate;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 public class ErpmusersDAO  {
+
+
+		//SessionFactory sessionFactory1 = new  Configuration().configure("login.cfg.xml").buildSessionFactory();
+        	//SessionFactory sessionFactory2 = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+
+
     
     public void save(Erpmusers erpmuser) {
-        Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -34,11 +44,12 @@ public class ErpmusersDAO  {
         finally {
             session.close();
         }
-    }
-
+    } 
 
     public void update(Erpmusers erpmuser) {
-        Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -57,7 +68,9 @@ public class ErpmusersDAO  {
 
 
     public void delete(Erpmusers erpmuser) {
-        Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session=sessionp.openSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -76,7 +89,9 @@ public class ErpmusersDAO  {
 
 
     public List<Erpmusers> findAll() {
-        Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -92,7 +107,9 @@ public class ErpmusersDAO  {
         }
 
     public List<Erpmusers> findGUser() {
-        Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -108,7 +125,9 @@ public class ErpmusersDAO  {
         }
 
     public Erpmusers findByUserName(String ERPMU_Name) {
-        Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -128,7 +147,9 @@ public class ErpmusersDAO  {
 
 
      public Erpmusers findByUserId(Integer erpmuId) {
-            Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+            Session session = HibernateUtil.getSessionPicoFactory();
             Transaction tx = null;
             try {
                 tx = session.beginTransaction();
@@ -148,7 +169,9 @@ public class ErpmusersDAO  {
 
      
      public List<Institutionmaster> findForUser(Integer erpmuId)    {
-            Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+            Session session = HibernateUtil.getSessionPicoFactory();
             Transaction tx = null;
             try {
                 tx = session.beginTransaction();
@@ -166,7 +189,9 @@ public class ErpmusersDAO  {
 
 
       public List <Erpmusers> findByforwarededUserId(Integer erpmuId) {
-            Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+            Session session = HibernateUtil.getSessionPicoFactory();
             Transaction tx = null;
             try {
                 tx = session.beginTransaction();
@@ -185,10 +210,12 @@ public class ErpmusersDAO  {
 //List<Erpmusers>
 
       public List<Erpmusers> RetrieveUser(String ERPMU_Name, String ERPMU_Password)    {
-            Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+            Session session = HibernateUtil.getSessionPicoFactory();
             try {
                 session.beginTransaction();
-                List<Erpmusers> list  = session.createQuery("select u from Erpmusers u, Erpmuserrole r where u.erpmuId = r.erpmusers.erpmuId and r.erpmurActive = 'Y' and u.erpmuName=:username and u.erpmuPassword=:password ").
+			  List<Erpmusers> list  = session.createQuery("select u from Erpmusers u, Erpmuserrole r where u.erpmuId = r.erpmusers.erpmuId and r.erpmurActive = 'Y' and u.erpmuName=:username and u.erpmuPassword=:password ").
                                                setParameter("username",ERPMU_Name).setParameter("password",ERPMU_Password).list();
 
                 return list;
@@ -217,7 +244,9 @@ public class ErpmusersDAO  {
 
 */
     public Erpmusers FindByUserNameSecretAnswer(String ERPMU_Name, String Secret_Answer) {
-            Session session = HibernateUtil.getSession();            
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+            Session session = HibernateUtil.getSessionPicoFactory();            
             try {
                 session.beginTransaction();
                 List<Erpmusers> list  = session.createQuery("select u from Erpmusers u where u.erpmuName=:username and u.erpmuSecretAnswer =:useranswer").
@@ -237,7 +266,9 @@ public class ErpmusersDAO  {
      }
         
   public Erpmusers findByUserFullNames(String ERPMU_FullName) {
-            Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+            Session session = HibernateUtil.getSessionPicoFactory();
             try {
                 session.beginTransaction();
                 List <Erpmusers> erpmuserList  =  session.createQuery("select u from Erpmusers u where u.erpmuFullName=:ERPMU_FullName ").
@@ -255,7 +286,9 @@ public class ErpmusersDAO  {
       
 
     public Erpmusers findByUser_Names(String erpmuName) {
-            Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+            Session session = HibernateUtil.getSessionPicoFactory();
             try {
                 session.beginTransaction();
                 List <Erpmusers> erpmuserList  =  session.createQuery("select u from Erpmusers u where u.erpmuName=:erpmuName ").
@@ -280,8 +313,9 @@ public class ErpmusersDAO  {
            String SQL =   "Select distinct(u.erpmusers) from Erpmuserrole u where u.institutionmaster.imId in "         
                         + " (Select v.institutionmaster.imId from Erpmuserrole v where v.erpmusers.erpmuId = :erpmuId)";
 
-
-         Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session=sessionp.openSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
             try {
                 session.beginTransaction();
                 List<Erpmusers> erpmuList = session.createQuery(SQL).setParameter("erpmuId",erpmuId).list();
@@ -295,7 +329,9 @@ public class ErpmusersDAO  {
             }
      }
     public List<Erpmusers> findByErpmUserName(String erpmuName) {
-         Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
             try {
         session.beginTransaction();
         List <Erpmusers> erpmuserList  =  session.createQuery("select u from Erpmusers u where u.erpmuName=:erpmuName ").
@@ -311,7 +347,9 @@ public class ErpmusersDAO  {
     }
 
  public List<Erpmusers> findUserNamebyimid(Integer erpmuId,Short imId) {
-         Session session = HibernateUtil.getSession();
+	//SessionFactory sessionp = new Configuration().configure("pico.cfg.xml").buildSessionFactory();
+        //Session session = sessionp.openSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
             try {
         session.beginTransaction();
         List<Erpmusers> erpmuserList  =  session.createQuery("select distinct(u) from Erpmusers u,Erpmuserrole v,Institutionmaster r where v.erpmusers.erpmuId =:erpmuId and v.institutionmaster.imId=:imId").

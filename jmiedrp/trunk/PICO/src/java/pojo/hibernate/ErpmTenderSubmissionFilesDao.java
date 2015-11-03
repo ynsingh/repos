@@ -10,9 +10,14 @@ import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Hibernate;
 
+/**
+ *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
+ */ 
+
+
 public class ErpmTenderSubmissionFilesDao   {
  public void save(ErpmTenderSubmissionFiles erpmtsf) {
-      Session session = HibernateUtil.getSession();
+      Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx=session.beginTransaction();
@@ -33,7 +38,7 @@ public class ErpmTenderSubmissionFilesDao   {
 
  }
   public void update(ErpmTenderSubmissionFiles erpmtsf) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -50,7 +55,7 @@ public class ErpmTenderSubmissionFilesDao   {
     }
   
 public List< ErpmTenderSubmissionFiles> getListofFile(Integer tsbTsbId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
            
             session.beginTransaction();
@@ -68,7 +73,7 @@ public List< ErpmTenderSubmissionFiles> getListofFile(Integer tsbTsbId) {
     }
        
           public void DeleteSubmissionFile(ErpmTenderSubmissionFiles erpmtsb) {
-               Session session = HibernateUtil.getSession();
+               Session session = HibernateUtil.getSessionPicoFactory();
                Transaction tx = null;
         try {
             tx=session.beginTransaction();
@@ -81,7 +86,7 @@ public List< ErpmTenderSubmissionFiles> getListofFile(Integer tsbTsbId) {
         }
     }
              public ErpmTenderSubmissionFiles findByerpmtsfId(Integer tsbTsbId) {
-                  Session session = HibernateUtil.getSession();
+                  Session session = HibernateUtil.getSessionPicoFactory();
                   Transaction tx = null;
                   tx=session.beginTransaction();
                   int index = 0;

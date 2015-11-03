@@ -8,6 +8,7 @@ package pojo.hibernate;
 /**
  *
  * @author kazim
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 import utils.HibernateUtil;
 import org.hibernate.Session;
@@ -19,7 +20,7 @@ import java.util.List;
 public class InstitutionuserroleDAO {
 
     public void save(Institutionuserroles iur) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -37,7 +38,7 @@ public class InstitutionuserroleDAO {
     }
 
     public void update(Institutionuserroles iur) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -55,7 +56,7 @@ public class InstitutionuserroleDAO {
     }
 
     public void delete(Institutionuserroles iur) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -73,7 +74,7 @@ public class InstitutionuserroleDAO {
     }
 
     public List<Institutionuserroles> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Institutionuserroles> list = session.createQuery("select u from Institutionuserroles u").list();
@@ -85,7 +86,7 @@ public class InstitutionuserroleDAO {
     }
 
     public Institutionuserroles findByIURId(Integer IUR_ID) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             Institutionuserroles iur  =  (Institutionuserroles) session.load(Institutionuserroles.class , IUR_ID);
@@ -99,7 +100,7 @@ public class InstitutionuserroleDAO {
     }
 
     public List<Institutionuserroles> findByInstitutionId(Short IUR_IM_ID) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Institutionuserroles> iurList  =  session.createQuery("select u from Institutionuserroles u where u.institutionmaster.imId = :iurimid ").
@@ -112,7 +113,7 @@ public class InstitutionuserroleDAO {
     }
 
     public Integer  copyGenericRolePrivileges(Byte gurId, Integer iurId, Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             Integer i = session.createSQLQuery("call copy_genericroleprivileges(:gurId,:iurId, :imId)")
                                 .setParameter("gurId", gurId)
@@ -127,7 +128,7 @@ public class InstitutionuserroleDAO {
     }
 
     public Institutionuserroles findInstitutionAdministrator(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             List<Institutionuserroles> iur  =  session.createQuery("select u from Institutionuserroles u where u.institutionmaster.imId = :imId and upper(u.iurName) = 'ADMINISTRATOR'").
                                                         setParameter("imId",imId).list();

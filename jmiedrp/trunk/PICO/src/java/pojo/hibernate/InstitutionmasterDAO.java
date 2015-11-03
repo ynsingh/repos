@@ -10,6 +10,7 @@ package pojo.hibernate;
 /**
  *
  * @author kazim
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 import utils.HibernateUtil;
 import org.hibernate.Session;
@@ -20,7 +21,7 @@ import java.util.List;
 public class InstitutionmasterDAO {
 
     public void save(Institutionmaster im) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -38,7 +39,7 @@ public class InstitutionmasterDAO {
     }
 
     public void update(Institutionmaster im) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -56,7 +57,7 @@ public class InstitutionmasterDAO {
     }
 
     public void delete(Institutionmaster im) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -74,7 +75,7 @@ public class InstitutionmasterDAO {
     }
 
     public List<Institutionmaster> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -93,7 +94,7 @@ public class InstitutionmasterDAO {
 
 
     public Institutionmaster findByImId(Short imId) {
-        Session session = HibernateUtil.getSession();          
+        Session session = HibernateUtil.getSessionPicoFactory();          
         try {
             session.beginTransaction();
             Institutionmaster im  = (Institutionmaster) session.load(Institutionmaster.class , imId);            
@@ -108,7 +109,7 @@ public class InstitutionmasterDAO {
     
     
     public List<Institutionmaster> findInstForUser(Integer erpmuId) {        
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Institutionmaster> imList = session.createQuery("select distinct(u) from Institutionmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.institutionmaster.imId = u.imId").setParameter("erpmuId", erpmuId).list();
@@ -133,7 +134,7 @@ public class InstitutionmasterDAO {
         }
 */
     public Institutionmaster findInstByIMShortName(String imShortName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Institutionmaster> imList = session.createQuery("select distinct(u) from Institutionmaster u where u.imShortName = :imShortName").setParameter("imShortName", imShortName).list();
@@ -146,7 +147,7 @@ public class InstitutionmasterDAO {
         }
 
     public Institutionmaster findInstByIMFullName(String imName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Institutionmaster> imList = session.createQuery("select distinct(u) from Institutionmaster u where u.imName = :imName").setParameter("imName",imName).list();
@@ -158,7 +159,7 @@ public class InstitutionmasterDAO {
         }
 
     public String findDefaultInstByID(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Institutionmaster> imList = session.createQuery("select u from Institutionmaster u where u.imId = :imId").setParameter("imId",imId).list();
@@ -171,7 +172,7 @@ public class InstitutionmasterDAO {
 
 
     public List<Institutionmaster> findInstByIMName(String imName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
         List<Institutionmaster> imList = session.createQuery("select distinct(u) from Institutionmaster u where u.imName = :imName").setParameter("imName",imName).list();
@@ -183,7 +184,7 @@ public class InstitutionmasterDAO {
     }
 
     public List<Institutionmaster> findInstByShortName(String imShortName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
         List<Institutionmaster> imList = session.createQuery("select distinct(u) from Institutionmaster u where u.imShortName = :imShortName").setParameter("imShortName", imShortName).list();

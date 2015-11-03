@@ -11,12 +11,12 @@ import org.hibernate.Hibernate;
 import java.util.List;
 
 /**
- *
  * @author erp03
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class GfrMasterDAO {
      public void save(GfrMaster  GfrMaste) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -34,7 +34,7 @@ public class GfrMasterDAO {
     }
 
     public void update(GfrMaster GfrMaste) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -51,7 +51,7 @@ public class GfrMasterDAO {
         }
     }
  public GfrMaster findBygrfMasterId(int Id) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         GfrMaster grfMaster  = new GfrMaster ();
 
         try {
@@ -69,7 +69,7 @@ public class GfrMasterDAO {
         }
     
     public void delete(GfrMaster  gfrMaster) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -87,7 +87,7 @@ public class GfrMasterDAO {
     }
 
     public List<Budgetheadmaster > findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             List<Budgetheadmaster> list = session.createQuery("select u from Budgetheadmaster  u").list();
@@ -103,7 +103,7 @@ public class GfrMasterDAO {
 
     public Budgetheadmaster  findBybhmId(short bhmId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             Budgetheadmaster  bhm  = (Budgetheadmaster ) session.load(Budgetheadmaster .class , bhmId);
             Hibernate.initialize(bhm);
@@ -115,7 +115,7 @@ public class GfrMasterDAO {
     }
 
  public List<GfrMaster> findListOfgfrMasterForGfrMapping(Short erpmProgramId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
           
             List<GfrMaster> gfrMasterList  =  session.createQuery("Select u from GfrMaster u where u.gfrGfrId NOT IN  (Select m.gfrMaster.gfrGfrId from GfrProgramMapping m where m.erpmprogram.erpmpId = :erpmProgramId)").setParameter("erpmProgramId", erpmProgramId).list();
@@ -129,7 +129,7 @@ public class GfrMasterDAO {
 
 
  public List<GfrMaster> findListOfgfrMaster() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             List<GfrMaster> gfrMasterList  =  session.createQuery("Select u from GfrMaster u ").list();
@@ -142,7 +142,7 @@ public class GfrMasterDAO {
    }
 
  public List<Budgetheadmaster> findforInsitutetBudgetHeadId(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             //int index = 0;
         List<Budgetheadmaster> bhmList  =  session.createQuery("Select u from Budgetheadmaster  u where u.institutionmaster.imId  in (select r.institutionmaster.imId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId",erpmuId).list();

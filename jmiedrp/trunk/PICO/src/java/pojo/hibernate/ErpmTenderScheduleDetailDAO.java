@@ -13,13 +13,13 @@ import java.util.List;
 
 
 /**
- *
  * @author wml3
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class ErpmTenderScheduleDetailDAO {
 
     public void save(ErpmTenderScheduleDetail tscd) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -36,7 +36,7 @@ public class ErpmTenderScheduleDetailDAO {
     }
 
     public void update(ErpmTenderScheduleDetail tscd) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -53,7 +53,7 @@ public class ErpmTenderScheduleDetailDAO {
     }
 
     public void delete(ErpmTenderScheduleDetail tenschdlDet) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -70,7 +70,7 @@ public class ErpmTenderScheduleDetailDAO {
     }
 
     public List<ErpmTenderScheduleDetail> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -87,7 +87,7 @@ public class ErpmTenderScheduleDetailDAO {
     }
 
     public List<ErpmTenderScheduleDetail> findbytscTscId(Integer tscTscId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -106,7 +106,7 @@ public class ErpmTenderScheduleDetailDAO {
 
 
     public ErpmTenderScheduleDetail findBytscdTscdId(Integer tscdTscdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 //            int index = 0;
             session.beginTransaction();
@@ -123,7 +123,7 @@ public class ErpmTenderScheduleDetailDAO {
     }
 
     public List<ErpmTenderScheduleDetail> findByTenderNo_ScheduleNO (Integer tmTmId, Integer tscdTscdId ,int tscdScheduleNo) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -139,7 +139,7 @@ public class ErpmTenderScheduleDetailDAO {
     }
 
     public List<ErpmTenderScheduleDetail> findByTenderNo_ScheduleType(Integer tmTmId, Integer tscdTscdId ,Integer erpmgmEgmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -156,7 +156,7 @@ public class ErpmTenderScheduleDetailDAO {
     }
 
     public List<ErpmTenderScheduleDetail> findByTenderId(Integer tmTmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();

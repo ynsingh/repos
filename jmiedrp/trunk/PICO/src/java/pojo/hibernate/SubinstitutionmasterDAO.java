@@ -7,6 +7,7 @@ package pojo.hibernate;
 /**
  *
  * @author kazim
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 import utils.HibernateUtil;
 import org.hibernate.Session;
@@ -17,7 +18,7 @@ import java.util.List;
 public class SubinstitutionmasterDAO {
 
     public void save(Subinstitutionmaster sim) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -34,7 +35,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public void update(Subinstitutionmaster sim) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -51,7 +52,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public void delete(Subinstitutionmaster sim) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -68,7 +69,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public List<Subinstitutionmaster> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -85,7 +86,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public Subinstitutionmaster findBySimId(Integer simId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             Subinstitutionmaster sim = new Subinstitutionmaster();
             session.beginTransaction();
@@ -99,7 +100,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public List<Subinstitutionmaster> findBysimImId(short simImId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             List<Subinstitutionmaster> list = session.createQuery("select u from Subinstitutionmaster u where u.institutionmaster.imId = :simImId").setParameter("simImId", simImId).list();
             for (int index = 0; index < list.size(); ++index) {
@@ -115,7 +116,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public Subinstitutionmaster findInstBySIMShortName(String simShortName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             List<Subinstitutionmaster> simList = session.createQuery("select distinct(u) from Subinstitutionmaster u where u.simShortName = :simShortName").setParameter("simShortName", simShortName).list();
             return simList.get(0);
@@ -125,7 +126,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public List<Subinstitutionmaster> findSubInstByName(String simName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             List<Subinstitutionmaster> simList = session.createQuery("select distinct(u) from Subinstitutionmaster u where u.simName = :simName").setParameter("simName", simName).list();
             for (int index = 0; index < simList.size(); ++index) {
@@ -140,7 +141,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public List<Subinstitutionmaster> findSubInstByShortName(String simShortName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             List<Subinstitutionmaster> simList = session.createQuery("select distinct(u) from Subinstitutionmaster u where u.simShortName = :simShortName").setParameter("simShortName", simShortName).list();
             for (int index = 0; index < simList.size(); ++index) {
@@ -155,7 +156,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public List<Subinstitutionmaster> findSubInstForUser(Integer erpmuId, short ImId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             List<Subinstitutionmaster> simList = session.createQuery("select distinct(u) from Subinstitutionmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.subinstitutionmaster.simId = u.simId and u.institutionmaster.imId = :ImId").setParameter("erpmuId", erpmuId).setParameter("ImId", ImId).list();
             for (int index = 0; index < simList.size(); ++index) {
@@ -170,7 +171,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public List<Subinstitutionmaster> findSubInstForAdmin(short ImId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             List<Subinstitutionmaster> simList = session.createQuery("select u from Subinstitutionmaster u where u.institutionmaster.imId = :ImId").setParameter("ImId", ImId).list();
             for (int index = 0; index < simList.size(); ++index) {
@@ -186,7 +187,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public String findDefaultSubInsitute(Integer simId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             List<Subinstitutionmaster> imList = session.createQuery("select u from Subinstitutionmaster u where u.simId = :simId").setParameter("simId", simId).list();
             return imList.get(0).getSimName();
@@ -196,7 +197,7 @@ public class SubinstitutionmasterDAO {
     }
 
     public List<Subinstitutionmaster> findAllSubInstForUser(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             String SQL = "select distinct(u) from Subinstitutionmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.subinstitutionmaster.simId = u.simId";
             List<Subinstitutionmaster> simList = session.createQuery(SQL).

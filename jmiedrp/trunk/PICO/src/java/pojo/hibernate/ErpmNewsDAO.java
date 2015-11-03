@@ -22,7 +22,7 @@ import java.util.List;
 public class ErpmNewsDAO {
 
     public void save(ErpmNews erpmNews) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -39,7 +39,7 @@ public class ErpmNewsDAO {
     }
 
     public void update(ErpmNews erpmNews) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -56,7 +56,7 @@ public class ErpmNewsDAO {
     }
 
     public void delete(ErpmNews erpmNews) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -73,7 +73,7 @@ public class ErpmNewsDAO {
     }
 
     public ErpmNews findByNewsId(Integer imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmNews nw  = new ErpmNews ();
@@ -88,7 +88,7 @@ public class ErpmNewsDAO {
 
 
     public List<ErpmNews> findForUser(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 //            int index = 0;
 /*            session.beginTransaction();
@@ -107,7 +107,7 @@ public class ErpmNewsDAO {
     }
 
     public List<ErpmNews> findbyDate(Date date) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 //            int index = 0;
             session.beginTransaction();

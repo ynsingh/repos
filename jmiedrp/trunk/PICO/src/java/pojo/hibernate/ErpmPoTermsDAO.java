@@ -20,7 +20,7 @@ import org.hibernate.Hibernate;
 public class ErpmPoTermsDAO {
 
     public void save(ErpmPoTerms epoterms) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -38,7 +38,7 @@ public class ErpmPoTermsDAO {
     }
 
      public void delete(ErpmPoTerms epoterms) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -56,7 +56,7 @@ public class ErpmPoTermsDAO {
     }
 
       public void update(ErpmPoTerms epoterms) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -74,7 +74,7 @@ public class ErpmPoTermsDAO {
     }
 
       public ErpmPoTerms findBypotPotIds(Integer potPotId){
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmPoTerms terms  = (ErpmPoTerms) session.load(ErpmPoTerms.class , potPotId);
@@ -87,7 +87,7 @@ public class ErpmPoTermsDAO {
   }
 
        public List<ErpmPoTerms>  findByPOMasterId(Integer pomPoMasterId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             
             session.beginTransaction();

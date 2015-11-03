@@ -15,7 +15,8 @@ public class CommitteemasterDAO {
 
 
   public void save(Committeemaster cm) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -33,7 +34,7 @@ public class CommitteemasterDAO {
     }
 
     public void update(Committeemaster cm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -52,7 +53,7 @@ public class CommitteemasterDAO {
 
 
     public void delete(Committeemaster cm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -70,7 +71,7 @@ public class CommitteemasterDAO {
     }
 
     public List<Committeemaster> findAll() {                
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Committeemaster> list = session.createQuery("from Committeemaster").list();
@@ -86,7 +87,7 @@ public class CommitteemasterDAO {
                         + "u.subinstitutionmaster.simId = :simId and "
                         + "u.departmentmaster.dmId = :dmId";
                 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Committeemaster> cmList = session.createQuery(SQL)
@@ -110,7 +111,7 @@ public class CommitteemasterDAO {
     public List<Committeemaster> findCommittees(Short imId, Integer simId) {
         String SQL =    "select u from Committeemaster u where u.institutionmaster.imId = :imId and "
                         + "u.subinstitutionmaster.simId = :simId ";        
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Committeemaster> cmList = session.createQuery(SQL).setParameter("imId", imId).setParameter("simId", simId).list();
@@ -132,7 +133,7 @@ public class CommitteemasterDAO {
 
     public List<Committeemaster> findCommittees(Short imId) {
         String SQL =    "select u from Committeemaster u where u.institutionmaster.imId = :imId";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Committeemaster> cmList = session.createQuery(SQL).setParameter("imId", imId).list();
@@ -153,7 +154,7 @@ public class CommitteemasterDAO {
 
     public Committeemaster findCommitteeById(Integer committeeId) {
         String SQL =    "select u from Committeemaster u where u.committeeId = :committeeId";                     
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Committeemaster> cm = session.createQuery(SQL).setParameter("committeeId", committeeId).list();
@@ -166,7 +167,7 @@ public class CommitteemasterDAO {
 
     public List<Committeemaster> findCommitteeByLevel(Character committeeLevel) {
         String SQL =    "select u from Committeemaster u where u.committeeLevel = :committeeLevel";               
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Committeemaster> cm = session.createQuery(SQL).setParameter("committeeLevel", committeeLevel).list();
@@ -179,7 +180,7 @@ public class CommitteemasterDAO {
 
    public List<Committeemaster> findCommitteeByInstitution(Short imId) {
         String SQL =    "select u from Committeemaster u where u.institutionmaster.imId = :imId";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Committeemaster> cm = session.createQuery(SQL).setParameter("imId", imId).list();
@@ -192,7 +193,7 @@ public class CommitteemasterDAO {
 
    public List<Committeemaster> findCommitteeBySubInstitution(Integer simId) {
         String SQL =    "select u from Committeemaster u where u.subinstitutionmaster.simId = :simId";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Committeemaster> cm = session.createQuery(SQL).setParameter("simId", simId).list();
@@ -205,7 +206,7 @@ public class CommitteemasterDAO {
 
    public List<Committeemaster> findCommitteeByDepartment(Integer dmId) {
         String SQL =    "select u from Committeemaster u where u.departmentmaster.dmId = :dmId";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Committeemaster> cm = session.createQuery(SQL).setParameter("dmId", dmId).list();

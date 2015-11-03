@@ -13,13 +13,13 @@ import org.hibernate.Hibernate;
 //import utils.BaseDAO;
 
 /**
- *
  * Author : Tanvir Ahmed & Saeed-uz-Zama
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class ErpmPurchaseinvoiceMasterDAO {
 
     public void save(ErpmPurchaseinvoiceMaster erpmpim) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -36,7 +36,7 @@ public class ErpmPurchaseinvoiceMasterDAO {
     }
 
     public void update(ErpmPurchaseinvoiceMaster pibm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -53,7 +53,7 @@ public class ErpmPurchaseinvoiceMasterDAO {
     }
 
     public void delete(ErpmPurchaseinvoiceMaster pibmtarget) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -70,7 +70,7 @@ public class ErpmPurchaseinvoiceMasterDAO {
     }
 
     public List<ErpmPurchaseinvoiceMaster> findByImId(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index;
             session.beginTransaction();
@@ -91,7 +91,7 @@ public class ErpmPurchaseinvoiceMasterDAO {
     }
 
     public ErpmPurchaseinvoiceMaster findByErpmId(Integer pibmid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmPurchaseinvoiceMaster pibm = new ErpmPurchaseinvoiceMaster();
@@ -105,7 +105,7 @@ public class ErpmPurchaseinvoiceMasterDAO {
     }
 
     public ErpmPurchaseinvoiceMaster findpimPimId(Integer pimPimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmPurchaseinvoiceMaster> list = session.createQuery("Select u from ErpmPurchaseinvoiceMaster u where u.pimPimId = :pimPimId").setParameter("pimPimId", pimPimId).list();
@@ -124,7 +124,7 @@ public class ErpmPurchaseinvoiceMasterDAO {
     }
 
     public List<ErpmPurchaseinvoiceMaster> findByImId_SimId_SmId_SupplierInvoiceNo_pimPimId(Short imId, Integer simId, Integer smId, String pimSupplierInvoiceNo, Integer pimPimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -139,7 +139,7 @@ public class ErpmPurchaseinvoiceMasterDAO {
     }
 
     public List<ErpmPurchaseinvoiceMaster> findBySupplierName_ChallanNo(Short imId, Integer simId, Integer pimPimId, Integer smId, Integer pcmPcmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -155,7 +155,7 @@ public class ErpmPurchaseinvoiceMasterDAO {
     }
 
     public List<ErpmPurchaseinvoiceMaster> findBySupplierName_SupplierInvoiceNo(Short imId, Integer simId, Integer pimPimId, Integer smId, String pimSupplierInvoiceNo) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();

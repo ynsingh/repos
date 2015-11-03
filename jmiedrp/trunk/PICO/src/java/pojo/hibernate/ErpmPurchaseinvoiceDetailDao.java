@@ -15,11 +15,12 @@ import org.hibernate.Hibernate;
 /**
  *
  * @author Saeed
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class ErpmPurchaseinvoiceDetailDao {
 
     public void save(ErpmPurchaseinvoiceDetail erpmpid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -36,7 +37,7 @@ public class ErpmPurchaseinvoiceDetailDao {
     }
 
     public void update(ErpmPurchaseinvoiceDetail erpmpid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -53,7 +54,7 @@ public class ErpmPurchaseinvoiceDetailDao {
     }
 
     public void delete(ErpmPurchaseinvoiceDetail erpmpid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -70,7 +71,7 @@ public class ErpmPurchaseinvoiceDetailDao {
     }
 
     public ErpmPurchaseinvoiceDetail findByErpId(Integer pidPidId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmPurchaseinvoiceDetail erpmpid = new ErpmPurchaseinvoiceDetail();
@@ -86,7 +87,7 @@ public class ErpmPurchaseinvoiceDetailDao {
     }
 
     public List<ErpmPurchaseinvoiceDetail> findBypimId(Integer pimPimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -102,7 +103,7 @@ public class ErpmPurchaseinvoiceDetailDao {
     }
 
     public List<ErpmPurchaseinvoiceDetail> findBy_pomPoMasterId_ItemId_pidPidId(Integer pomPoMasterId, Integer itemId, Integer pidPidId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -117,7 +118,7 @@ public class ErpmPurchaseinvoiceDetailDao {
     }
 
     public List<ErpmPurchaseinvoiceDetail> findBy_pcmPcmId_ItemId_pidPidId(Integer pcmPcmId, Integer itemId, Integer pidPidId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();

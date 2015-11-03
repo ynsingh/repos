@@ -6,10 +6,14 @@ import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Hibernate;
 
+/**
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
+ */ 
+
 public class ErpmTenderSubmissionDAO {
 
     public void save(ErpmTenderSubmission erpmtsb) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -26,7 +30,7 @@ public class ErpmTenderSubmissionDAO {
     }
 
     public void update(ErpmTenderSubmission erpmtsb) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -43,7 +47,7 @@ public class ErpmTenderSubmissionDAO {
     }
 
     public void delete(ErpmTenderSubmission erpmtsb) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -60,7 +64,7 @@ public class ErpmTenderSubmissionDAO {
     }
 
     public List<ErpmTenderSubmission> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -82,7 +86,7 @@ public class ErpmTenderSubmissionDAO {
     }
 
     public List< ErpmTenderSubmission> findByImId(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -97,7 +101,7 @@ public class ErpmTenderSubmissionDAO {
     }
 
     public ErpmTenderSubmission findByErpmtsbId(Integer tsbTsbId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmTenderSubmission erpmtsb = new ErpmTenderSubmission();
@@ -116,7 +120,7 @@ public class ErpmTenderSubmissionDAO {
     }
 
     public List<ErpmTenderSubmission> findbyId(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -139,7 +143,7 @@ public class ErpmTenderSubmissionDAO {
 
 
 public ErpmTenderSubmission findByTenderSubmissionId(Integer tsbTsbId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
         List<ErpmTenderSubmission> List = session.createQuery("Select u from ErpmTenderSubmission u where u.tsbTsbId = :tsbTsbId").setParameter("tsbTsbId", tsbTsbId).list();

@@ -11,9 +11,10 @@ import org.hibernate.Transaction;
 import java.util.List;
 import org.hibernate.Hibernate;
 //import utils.BaseDAO;
+
 /**
- *
  * @author farah
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 
 public class ErpmTOSDAO  {
@@ -35,7 +36,7 @@ public class ErpmTOSDAO  {
 
 
     public void save(ErpmTempOpeningStock tos) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -68,7 +69,7 @@ public class ErpmTOSDAO  {
 
 
       public void update(ErpmTempOpeningStock tos) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -98,7 +99,7 @@ public class ErpmTOSDAO  {
 //    }
 
        public void delete(ErpmTempOpeningStock tos) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -125,7 +126,8 @@ public class ErpmTOSDAO  {
 
 
 //          public List<ErpmTempOpeningStock> findAll() {
-    public List<ErpmTempOpeningStock> findByImId(Short imId) {                 Session session = HibernateUtil.getSession();
+    public List<ErpmTempOpeningStock> findByImId(Short imId) {
+		Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -143,7 +145,7 @@ public class ErpmTOSDAO  {
     }
 
     public ErpmTempOpeningStock findBytosId(Integer tosId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmTempOpeningStock tos = (ErpmTempOpeningStock)session.load(ErpmTempOpeningStock.class ,tosId);
@@ -157,7 +159,7 @@ public class ErpmTOSDAO  {
     }
 
    public  List<ErpmTempOpeningStock> findByUser_NamesOnly(String erpmuName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();

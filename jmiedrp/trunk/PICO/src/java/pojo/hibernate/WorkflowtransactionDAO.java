@@ -14,11 +14,12 @@ import java.util.List;
 /**
  *
  * @author erp05
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class WorkflowtransactionDAO {
 
     public void save(Workflowtransaction wft) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -35,7 +36,7 @@ public class WorkflowtransactionDAO {
     }
 
     public void update(Workflowtransaction wft) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -53,7 +54,7 @@ public class WorkflowtransactionDAO {
 
 
     public void delete(Workflowtransaction wft) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -70,7 +71,7 @@ public class WorkflowtransactionDAO {
     }
 
     public List<Workflowtransaction> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowtransaction> list = session.createQuery("from Workflowtransaction").list();
@@ -84,7 +85,7 @@ public class WorkflowtransactionDAO {
     //Prepare list of WorkFlow Transaction for a Given Work Id
     public List<Workflowtransaction> findWFTbyWorkId(int wftWorkId) {
         String Query = "Select u from Workflowtransaction u where u.wftWorkId = :wftWorkId";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowtransaction> wftList = session.createQuery(Query).setParameter("wftWorkId", wftWorkId).list();
@@ -105,7 +106,7 @@ public class WorkflowtransactionDAO {
     public Integer countWFTbyWorkId(int wftWorkId) {
         String Query = "Select if(max(u.wftId),max(u.wftId),0)+1 from Workflowtransaction u where u.wftWorkId = :wftWorkId";
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             Integer countWFT = Integer.parseInt(session.createQuery(Query).setParameter("wftWorkId", wftWorkId).uniqueResult().toString());
@@ -117,7 +118,7 @@ public class WorkflowtransactionDAO {
     }
 
     public Workflowtransaction findbyWftId(Integer wftId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             Workflowtransaction wft = (Workflowtransaction) session.createQuery("Select u from Workflowtransaction u where u.wftId = :wftId").setParameter("wftId", wftId);
@@ -141,7 +142,7 @@ public class WorkflowtransactionDAO {
         String Query = "Select if(max(u.wftStage),max(u.wftStage),0)+1 from Workflowtransaction u where u.workflowmaster.wfmId = :wfmId and u.wftWorkId = :wftWorkId";
         Integer stage;
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             stage = Integer.parseInt(session.createQuery(Query).setParameter("wfmId", wfmId).setParameter("wftWorkId", wftWorkId).uniqueResult().toString());
@@ -155,7 +156,7 @@ public class WorkflowtransactionDAO {
         String Query = "Select count(u) from Workflowtransaction u where u.wftWorkId = :wftWorkId";
         Integer stage;
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             stage = Integer.parseInt(session.createQuery(Query).setParameter("wftWorkId", wftWorkId).uniqueResult().toString());
@@ -169,7 +170,7 @@ public class WorkflowtransactionDAO {
         String Query = "Select u.wftDestinationEmail from Workflowtransaction u "
                 + "where u.wftWorkId = :wftWorkId and "
                 + "u.wftDate = (Select max(v.wftDate) from Workflowtransaction v where v.wftWorkId = :wftWorkId)";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             String user = session.createQuery(Query).setParameter("wftWorkId", wftWorkId).uniqueResult().toString();
@@ -191,7 +192,7 @@ public class WorkflowtransactionDAO {
                 + "a.workflowmaster = 25 and a.wftStage in "
                 + "(select max(c.wftStage) from Workflowtransaction c "
                 + "where c.wftWorkId = a.wftWorkId)";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
 
@@ -203,7 +204,7 @@ public class WorkflowtransactionDAO {
     }
 
     public int findWFTByWorkID(int wftWorkId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowtransaction> wftList = session.createQuery("Select u from Workflowtransaction u where u.wftWorkId = :wftWorkId").setParameter("wftWorkId", wftWorkId).list();
@@ -217,7 +218,7 @@ public class WorkflowtransactionDAO {
     public Integer findWorkFlowID(int wftWorkId) {
         String Query = "Select max(u.workflowmaster.wfmId) from Workflowtransaction u where u.wftWorkId = :wftWorkId";
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             Integer workFlowId = Integer.parseInt(session.createQuery(Query).setParameter("wftWorkId", wftWorkId).uniqueResult().toString());

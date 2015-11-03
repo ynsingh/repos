@@ -19,7 +19,8 @@ import java.util.List;
 public class ErpmIndentDetailDAO { //extends BaseDAO {
 
     public void save(ErpmIndentDetail erpmindtdet) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -36,7 +37,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
     }
 
      public void update(ErpmIndentDetail erpmindtdet) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -53,7 +54,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
     }
 
      public ErpmIndentDetail  findByindtDetailId(short indtDetailId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmIndentDetail erpmindtdet = (ErpmIndentDetail) session.load(ErpmIndentDetail.class, indtDetailId);
@@ -68,7 +69,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
     }
 
      public ErpmIndentDetail  findByindtDetailByID(short indtDetailId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIndentDetail> pod  = session.createQuery("Select u from ErpmIndentDetail u where u.indtDetailId = :indtDetailId").setParameter("indtDetailId",indtDetailId).list();
@@ -82,7 +83,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
 
 //made by Shobhi to find indent approved quantity
      public Short findIndApprovedQunatity(Short indtIndentId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
                 String SQL = "Select u.indtApprovedQuantity from ErpmIndentDetail u where u.erpmIndentMaster.indtIndentId = :indtIndentId";
@@ -96,7 +97,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
             }
         }
       public List<ErpmIndentDetail> findByindtIndentId(Short indtIndentId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -117,7 +118,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
        }
 
       public List<ErpmIndentDetail>  findByIndt_indt_mst_Indent_Id(Short Indt_indt_mst_Indent_Id) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -137,7 +138,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
        }
 
       public Integer CountIndentItemsByItemId(Short indtIndentId, Integer erpmimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
            
 	        String Query =   "Select count(u) from ErpmIndentDetail u " +
@@ -158,7 +159,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
       
       //The method below returs the number of Items in the Given Indent
        public Integer  countIndentItems(Short indtentId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
 	        String SQL = "Select count(u) from ErpmIndentDetail u where u.erpmIndentMaster.indtIndentId = :indtentId";
@@ -173,7 +174,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
 
       //The method below returns the Total Estimated Amount Required for Purchase of Items
        public BigDecimal indentValue(Short indtentId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
 	        String SQL = "Select sum(u.indtApproxcost*u.indtQuantity) from ErpmIndentDetail u where u.erpmIndentMaster.indtIndentId = :indtentId";
@@ -189,7 +190,7 @@ public class ErpmIndentDetailDAO { //extends BaseDAO {
 
        //The method below prepares a list of Indemgt Items which are not present in the PO
        public List<ErpmIndentDetail> findRemainingIndentItems(Short indtIndentId, Integer pomPoMasterId) throws Exception {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             String SQL = "Select u from ErpmIndentDetail u "

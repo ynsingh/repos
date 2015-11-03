@@ -17,7 +17,8 @@ import java.util.List;
 public class ErpmIssueReturnDetailDAO {
 
     public void save(ErpmIssueReturnDetail erpmird) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -34,7 +35,7 @@ public class ErpmIssueReturnDetailDAO {
     }
 
     public void update(ErpmIssueReturnDetail erpmird) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -51,7 +52,7 @@ public class ErpmIssueReturnDetailDAO {
     }
 
     public void delete(ErpmIssueReturnDetail erpmird) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -70,7 +71,7 @@ public class ErpmIssueReturnDetailDAO {
 //    public List<ErpmIssueReturnDetail> findListByirmId(Integer irmId) {
    //method to get list of ErpmIssueReturnDetail with formatted serial no    
      public List<ErpmIssueReturnDetail> findListByirmIdwith_editedserialno(Integer irmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueReturnDetail> list = session.createQuery("Select u from ErpmIssueReturnDetail u where u.erpmIssueReturnMaster.irmId = :irmId").setParameter("irmId", irmId).list();
@@ -125,7 +126,7 @@ public class ErpmIssueReturnDetailDAO {
     }
 
   public List<ErpmIssueReturnDetail> findListByirmId(Integer irmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueReturnDetail> list = session.createQuery("Select u from ErpmIssueReturnDetail u where u.erpmIssueReturnMaster.irmId = :irmId").setParameter("irmId", irmId).list();

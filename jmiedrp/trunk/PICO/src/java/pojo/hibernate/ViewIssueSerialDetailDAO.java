@@ -8,6 +8,7 @@ package pojo.hibernate;
 /**
  *
  * @author erp02
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 import java.util.List;
 import utils.HibernateUtil;
@@ -19,7 +20,7 @@ import org.hibernate.Hibernate;
 
 public class ViewIssueSerialDetailDAO {
  public void save(ViewIssueSerialDetail visd) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -37,7 +38,7 @@ public class ViewIssueSerialDetailDAO {
     }
 
     public void update(ViewIssueSerialDetail visd) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -55,7 +56,7 @@ public class ViewIssueSerialDetailDAO {
     }
 
     public void delete(ViewIssueSerialDetail visd) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -73,7 +74,7 @@ public class ViewIssueSerialDetailDAO {
     }
 
     public List<ViewIssueSerialDetail> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<ViewIssueSerialDetail> list = session.createQuery("select u from ViewIssueSerialDetail u").list();
@@ -86,7 +87,7 @@ public class ViewIssueSerialDetailDAO {
     }
 
      public List<ViewIssueSerialDetail> findByEimIdfromView(Integer eimId) {
-         Session session = HibernateUtil.getSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<ViewIssueSerialDetail> list = session.createQuery("Select u from ViewIssueSerialDetail u where ((u.issdId = 0 AND u.isdReceivedQuantity > 0 AND u.isdReceivedQuantity > u.isdReturnedQuantity) OR (u.issdId > 0 AND u.issdReceived = 1 AND u.issdReturned = 0)) AND u.isdIsmId = :eimId").setParameter("eimId", eimId).list();
@@ -98,7 +99,7 @@ public class ViewIssueSerialDetailDAO {
             }
     }
  public ViewIssueSerialDetail findByeidId(Integer eidId) {
-         Session session = HibernateUtil.getSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         ViewIssueSerialDetail eidId1  = (ViewIssueSerialDetail) session.load(ViewIssueSerialDetail.class , eidId);
@@ -111,7 +112,7 @@ public class ViewIssueSerialDetailDAO {
     }
   public ViewIssueSerialDetail findByissdId(Long issdId) {
       
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
 
          issdId=new Long(20);

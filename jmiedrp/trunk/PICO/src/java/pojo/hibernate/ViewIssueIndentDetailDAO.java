@@ -8,6 +8,7 @@ package pojo.hibernate;
 /**
  *
  * @author erp02
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 import java.util.List;
 import utils.HibernateUtil;
@@ -18,7 +19,7 @@ import org.hibernate.Hibernate;
 
 public class ViewIssueIndentDetailDAO {
  public void save(ViewIssueIndentDetail viid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -36,7 +37,7 @@ public class ViewIssueIndentDetailDAO {
     }
 
     public void update(ViewIssueIndentDetail viid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -54,7 +55,7 @@ public class ViewIssueIndentDetailDAO {
     }
 
     public void delete(ViewIssueIndentDetail viid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -98,7 +99,7 @@ public class ViewIssueIndentDetailDAO {
 //    }
     
  public ViewIssueIndentDetail findByeidId(Integer eidId) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         ViewIssueIndentDetail eidId1  = (ViewIssueIndentDetail) session.load(ViewIssueIndentDetail.class , eidId);

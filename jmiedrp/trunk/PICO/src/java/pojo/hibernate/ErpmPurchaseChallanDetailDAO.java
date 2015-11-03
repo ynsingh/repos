@@ -21,7 +21,7 @@ import org.hibernate.Hibernate;
 public class ErpmPurchaseChallanDetailDAO {
 
     public void save(ErpmPurchasechallanDetail PCDetail) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -39,7 +39,7 @@ public class ErpmPurchaseChallanDetailDAO {
     }
 
     public void delete(ErpmPurchasechallanDetail PCDetail) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -57,7 +57,7 @@ public class ErpmPurchaseChallanDetailDAO {
     }
 
     public void update(ErpmPurchasechallanDetail PCDetail) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -75,7 +75,7 @@ public class ErpmPurchaseChallanDetailDAO {
     }
 
     public List<ErpmPurchasechallanDetail> findBypcmPcmId(Integer pcmPcmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -91,7 +91,7 @@ public class ErpmPurchaseChallanDetailDAO {
     }
 
      public ErpmPurchasechallanDetail findBypcdPcdId(Integer pcdPcdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -108,7 +108,7 @@ public class ErpmPurchaseChallanDetailDAO {
     }
 
       public ErpmPurchasechallanDetail findByPCDetailsID(Integer pcdPcdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmPurchasechallanDetail PCDetail  = (ErpmPurchasechallanDetail) session.load(ErpmPurchasechallanDetail.class , pcdPcdId);
@@ -123,7 +123,7 @@ public class ErpmPurchaseChallanDetailDAO {
     }
 
       public List<ErpmPurchasechallanDetail>  findBy_pomPoMasterId_ItemId_chalanId(Integer pomPoMasterId, Integer itemId, Integer pcdPcdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -139,7 +139,7 @@ public class ErpmPurchaseChallanDetailDAO {
     }
 
       public ErpmPurchasechallanDetail findBypcmPcmId_n_ItemId(Integer pcmPcmId, Integer ItemId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
            List<ErpmPurchasechallanDetail> chadetails  = session.createQuery("Select u from ErpmPurchasechallanDetail u where u.erpmPurchasechallanMaster.pcmPcmId = :pcmPcmId and u.erpmItemMaster.erpmimId = :ItemId").setParameter("pcmPcmId", pcmPcmId).setParameter("ItemId", ItemId).list();

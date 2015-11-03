@@ -10,6 +10,7 @@ package pojo.hibernate;
 /**
  *
  * @author erp01
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 
 import utils.HibernateUtil;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 public class GfrProgramMappingDAO {
      public void save(GfrProgramMapping  gfrProgramMapping) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -42,7 +43,7 @@ public class GfrProgramMappingDAO {
     }
 
     public void update(GfrProgramMapping gfrProgramMapping) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -60,7 +61,7 @@ public class GfrProgramMappingDAO {
     }
 
     public void delete(GfrProgramMapping  gfrProgramMapping) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -78,7 +79,7 @@ public class GfrProgramMappingDAO {
     }
 
     public GfrProgramMapping findBygfrProgramMappingId(Integer gpmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         GfrProgramMapping gfrProgramMapping  = new GfrProgramMapping ();
 
         try {
@@ -113,7 +114,7 @@ public class GfrProgramMappingDAO {
 
 
     public List <GfrProgramMapping> findByProgramId(Short programId) {
-            Session session = HibernateUtil.getSession();
+            Session session = HibernateUtil.getSessionPicoFactory();
             Transaction tx = null;
             try {
                 tx = session.beginTransaction();
@@ -133,7 +134,7 @@ public class GfrProgramMappingDAO {
 
 
     public Integer findCountByProgramId(Short programId){
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
             Transaction tx = null;
             try {
                 tx = session.beginTransaction();

@@ -7,9 +7,13 @@ import org.hibernate.Transaction;
 import org.hibernate.Hibernate;
 import java.util.List;
 
+/**
+ *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
+ */ 
+
 public class ErpmprogramDAO {
     public void save(Erpmprogram erpmp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -27,7 +31,7 @@ public class ErpmprogramDAO {
     }
 
     public void update(Erpmprogram erpmp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -46,7 +50,7 @@ public class ErpmprogramDAO {
 
 
         public void delete(Erpmprogram erpmp) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -64,7 +68,7 @@ public class ErpmprogramDAO {
     }
 
     public Erpmprogram findByErpmId(Short erpmId) {
-           Session session = HibernateUtil.getSession();
+           Session session = HibernateUtil.getSessionPicoFactory();
             try {
                 session.beginTransaction();
                 Erpmprogram erpmp  =  (Erpmprogram) session.load(Erpmprogram.class , erpmId);
@@ -79,7 +83,7 @@ public class ErpmprogramDAO {
 
 
         public List<Erpmprogram> findByErpmmId(Integer erpmSubModuleId) {
-           Session session = HibernateUtil.getSession();
+           Session session = HibernateUtil.getSessionPicoFactory();
             
             try {
                 session.beginTransaction();
@@ -96,7 +100,7 @@ public class ErpmprogramDAO {
 
     //The following method prepares a list of programs which have not yet been assigned to a given Instititution Role
     public List<Erpmprogram> findRemainingProgramsForInstitute(Byte erpmmId, Integer InstitutionRole) {
-            Session session = HibernateUtil.getSession();           
+            Session session = HibernateUtil.getSessionPicoFactory();           
             try {
                 session.beginTransaction();
                 List<Erpmprogram> list = session.createQuery("select u from Erpmprogram u where u.erpmsubmodule.erpmmodule.erpmmId = :erpmmId "
@@ -127,7 +131,7 @@ public class ErpmprogramDAO {
                         +   "   where a.erpmprogram.erpmpId = f.erpmpId) ) "
                         +   "   order by a.erpmpOrder";
 
-            Session session = HibernateUtil.getSession();
+            Session session = HibernateUtil.getSessionPicoFactory();
             try {
                 session.beginTransaction();
                 List<Erpmprogram> list = session.createQuery(SQL).
@@ -154,7 +158,7 @@ public class ErpmprogramDAO {
         //older query = "select u from Erpmprogram u "
         //+ "where u.erpmsubmodule.erpmSubModuleId = :erpmSubModuleId and u.erpmprogram.erpmpId = :erpmpId order by erpmpOrder"
         
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
             
             try {
                 session.beginTransaction();
@@ -172,7 +176,7 @@ public class ErpmprogramDAO {
 
     
     public List<Erpmprogram> findItemsBySubModuleId(Integer erpmSubModuleId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
             
             try {
                 session.beginTransaction();
@@ -186,7 +190,7 @@ public class ErpmprogramDAO {
     }
 
  public List<Erpmprogram> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
             
             try {
                 session.beginTransaction();

@@ -19,7 +19,8 @@ import java.util.List;
 public class ErpmIssueMasterDAO {
 
     public void save(ErpmIssueMaster eim) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -36,7 +37,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public void update(ErpmIssueMaster eim) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -53,7 +54,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public void delete(ErpmIssueMaster eim) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -72,7 +73,7 @@ public class ErpmIssueMasterDAO {
 /////Shobhi
     public List<ErpmIssueMaster> findIssueNo(int dmId) {
  
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueMaster> isueList  =  session.createQuery("from ErpmIssueMaster u where u.departmentmasterByIsmFromDepartmentId.dmId = :dmId").setParameter("dmId", dmId).list();
@@ -99,7 +100,7 @@ public class ErpmIssueMasterDAO {
 //    }
 
     public ErpmIssueMaster findByeimId(Integer eimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmIssueMaster eimId1 = (ErpmIssueMaster) session.load(ErpmIssueMaster.class, eimId);
@@ -120,7 +121,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public ErpmIssueMaster findByEimId(Integer eimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueMaster> list = session.createQuery("Select u from ErpmIssueMaster u where u.ismId = :eimId").setParameter("eimId", eimId).list();
@@ -136,7 +137,7 @@ public class ErpmIssueMasterDAO {
 
     public ErpmIssueMaster findCurrentIssueIdByIndent(Short indentId, Integer empId, Integer deptId, String issueNo) {
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -154,7 +155,7 @@ public class ErpmIssueMasterDAO {
 
     public ErpmIssueMaster findCurrentIssueId(Integer empId, Integer deptId, String issueNo) {
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -171,7 +172,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public List<ErpmIssueMaster> findByEmpId(Integer empId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -187,7 +188,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public List<ErpmIssueMaster> findByEmpId2(Integer empId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -203,7 +204,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public List<ErpmIssueMaster> findByInstitutionId(Short instId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -218,7 +219,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public List<ErpmIssueMaster> findByCompId(Integer committeeId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -233,7 +234,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public List<ErpmIssueMaster> findByCompId2(Integer committeeId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -248,7 +249,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public List<ErpmIssueMaster> findIssueMasterListBydmIdandReturnType(char returntype, int dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -271,7 +272,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public Float findLedgerValue(int instId, int subInstId, int deptId, int itemId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
 //            String Query = "SELECT (sum(Recd_Quantity)-(sum(Issue_Quantity)+sum(WriteOff_Quantity))) as Quantity FROM view_item_ledger "
@@ -289,7 +290,7 @@ public class ErpmIssueMasterDAO {
     }
 
     public Float findStockInHand(int itemId, Short indentId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             ErpmIndentMasterDAO indDao = new ErpmIndentMasterDAO();
             ErpmIndentMaster eind = indDao.findIndentMasterId(indentId);

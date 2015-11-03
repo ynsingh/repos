@@ -13,12 +13,13 @@ import org.hibernate.Hibernate;
 /**
  *
  * @author afreen
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 
 public class UserMessageDAO  {
 
     public void save(UserMessage um) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -36,7 +37,7 @@ public class UserMessageDAO  {
     }
 
     public void update(UserMessage um) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -54,7 +55,7 @@ public class UserMessageDAO  {
     }
 
     public void delete(UserMessage  um) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -72,7 +73,7 @@ public class UserMessageDAO  {
     }
 
     public List<UserMessage> findAll() {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<UserMessage> list = session.createQuery("select u from UserMessage  u").list();
@@ -86,7 +87,7 @@ public class UserMessageDAO  {
 
     public UserMessage  findByumId(int umId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         UserMessage  um  = (UserMessage ) session.load(UserMessage.class , umId);
@@ -98,7 +99,7 @@ public class UserMessageDAO  {
             }
     }
  public List<UserMessage> findByUserId(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
              int index = 0;
        session.beginTransaction();
@@ -114,7 +115,7 @@ public class UserMessageDAO  {
             }
    }
 public List<UserMessage> findByUserIdAndReqType(Integer erpmuId,String umReqType) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<UserMessage> umList  =  session.createQuery("Select u from UserMessage u where u.erpmusersByUmToErpmuId.erpmuId = :erpmuId AND u.umReqType=:umReqType").setParameter("erpmuId", erpmuId).setParameter("umReqType", umReqType).list();
@@ -127,7 +128,7 @@ public List<UserMessage> findByUserIdAndReqType(Integer erpmuId,String umReqType
    }
 
 public List<UserMessage> findByUserMessage(Integer umId) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<UserMessage> umList  =  session.createQuery("Select u from UserMessage u where u.umId = :umId").setParameter("umId", umId).list();
@@ -140,7 +141,7 @@ public List<UserMessage> findByUserMessage(Integer umId) {
    }
 
 public Integer countUserMessages(Integer umId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         Integer messageCount  =  Integer.parseInt(session.createQuery("Select count(u) from UserMessage u where u.erpmusersByUmToErpmuId.erpmuId = :umId and u.erpmGenMaster.erpmgmEgmId is null")

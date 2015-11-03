@@ -20,7 +20,8 @@ import java.util.List;
 public class ErpmIssueReceiveDAO  {
 
      public void save(ErpmIssueReceive ir) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -37,7 +38,7 @@ public class ErpmIssueReceiveDAO  {
     }
 
     public void update(ErpmIssueReceive ir) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -54,7 +55,7 @@ public class ErpmIssueReceiveDAO  {
     }
 
      public void delete(ErpmIssueReceive ir) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -71,7 +72,7 @@ public class ErpmIssueReceiveDAO  {
     }
 
     public ErpmIssueReceive findByErpmisrId(Integer isrId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmIssueReceive erpmIsr = (ErpmIssueReceive) session.load(ErpmIssueReceive.class, isrId);
@@ -89,7 +90,7 @@ public class ErpmIssueReceiveDAO  {
     }
 
     public List<ErpmIssueReceive> findReceiveItemsForUserDepartments(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
 

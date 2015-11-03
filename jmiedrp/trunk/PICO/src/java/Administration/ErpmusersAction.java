@@ -6,8 +6,8 @@ package Administration;
 /**
  *
  * @author kazim
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
-
 import com.opensymphony.xwork2.ActionContext;
 import pojo.hibernate.Erpmusers;
 import pojo.hibernate.Erpmuserrole;
@@ -42,6 +42,18 @@ import org.iitk.brihaspati.modules.utils.security.RemoteAuth;
 import pojo.hibernate.Institutionmaster;
 import pojo.hibernate.InstitutionmasterDAO;
 
+import pojo.hibernate.Edrpusers;
+import pojo.hibernate.EdrpusersDAO;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+
 public class ErpmusersAction extends DevelopmentSupport {
 
     private Erpmusers erpmuser;
@@ -61,6 +73,10 @@ public class ErpmusersAction extends DevelopmentSupport {
     private List<LanguageMaster> LangList = new ArrayList<LanguageMaster>();
     private List<Institutionmaster> imIdList = new ArrayList<Institutionmaster>();
     private InstitutionmasterDAO imDao = new InstitutionmasterDAO();
+
+private Edrpusers edrpuser;
+    private List<Edrpusers> edrpusersList = new ArrayList<Edrpusers>();
+    private EdrpusersDAO edrpusersDao = new EdrpusersDAO();
 
     public void setMesssge(String message) {
             this.message = message;
@@ -115,19 +131,24 @@ public class ErpmusersAction extends DevelopmentSupport {
         return this.imIdList;
     }
 
+public Edrpusers getEdrpuser() {
+        return edrpuser;
+    }
+    public void setEdrpuser(Edrpusers edrpuser) {
+        this.edrpuser = edrpuser;
+    }
+
      @Override
 
 
     public String execute() throws Exception {        
        try {
-
             List<Erpmusers> list = erpmusersDao.RetrieveUser(erpmuser.getErpmuName(), erpmuser.getErpmuPassword()); //; //erpmuName);
+		List<Edrpusers> listedrp = edrpusersDao.RetrieveUser(erpmuser.getErpmuName(),erpmuser.getErpmuPassword());
+		//message="testing in erpmuseraction"+"list--"+list.size()+"--listedrp--"+listedrp.size();	
             
             LangList=LangDao.findAll();
-	
-            //message = "Welcome to Purchase & Inventory Control System";
-
-            if (list.size() == 0)
+            if ((list.size() == 0)||(listedrp.size()== 0))
             {
                 message = "Either your account is not yet activated or password is incorrect. Pl. contact your administrator";
                 list.clear();
@@ -135,6 +156,7 @@ public class ErpmusersAction extends DevelopmentSupport {
            }
             else
             {
+		message=message+"else partlisterpmuser=="+list.size();	
                 
                 Erpmuserrole userDefaultRole = erpmuserroleDAO.findDefaultUserRole(list.get(0).getErpmuId());                
                 getSession().setAttribute("isAdministrator", erpmuserroleDAO.isUserAdministrator(list.get(0).getErpmuId()));
@@ -219,16 +241,17 @@ public class ErpmusersAction extends DevelopmentSupport {
 			imIdList = imDao.findAll();
                     	}   //End For j Loop
                         
-                } //End Else*/
+                } //End Else
                 } //End for i loop
             jobs = addUserJobs(); 
-           } //End Else
+           } //End Else 
+	
             list.clear();
            return SUCCESS;
         }
         catch (Exception e) {
             message = message + e.getCause() + "  " + e.getMessage() + Integer.parseInt(getSession().getAttribute("userid").toString());
-            return ERROR;
+	return ERROR;
         }
     }
 public Integer addUserJobs() {
@@ -326,6 +349,26 @@ public String verifyBrihaspatiLogin() {
     return ERROR;
     
 }
+public String Connectivity() throws Exception {
+                try{
+                        Locale locale = ActionContext.getContext().getLocale();
+                        ResourceBundle bundle = ResourceBundle.getBundle("dao", locale);
+                        String  dburl=bundle.getString("pico.jdbc.url");
+                        String  mysqluname=bundle.getString("pico.jdbc.username");
+                        String  mysqlupsswd=bundle.getString("pico.jdbc.password");
+                        Connection conn=DriverManager.getConnection(dburl, mysqluname, mysqlupsswd);
+                        Statement stmt=conn.createStatement();
+                        ResultSet rs=stmt.executeQuery("select * from erpmusers");
+                        while(rs.next())
+                        message=rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3);
+                        conn.close();
+                        return SUCCESS;
+                }
+                catch(Exception e){
+                        message="error in connectivity method";
+                        return ERROR;
+                }
+    }
 
 
 }

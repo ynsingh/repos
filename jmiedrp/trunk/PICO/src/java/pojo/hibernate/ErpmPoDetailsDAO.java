@@ -22,7 +22,7 @@ import java.util.List;
 public class ErpmPoDetailsDAO {
 
     public void save(ErpmPoDetails podetail) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -39,7 +39,7 @@ public class ErpmPoDetailsDAO {
     }
 
     public void delete(ErpmPoDetails podetail) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -56,7 +56,7 @@ public class ErpmPoDetailsDAO {
     }
 
     public void update(ErpmPoDetails podetail) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -74,7 +74,7 @@ public class ErpmPoDetailsDAO {
 
    
     public List<ErpmPoDetails>  findBypomPoMasterId(Integer pomPoMasterId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
 
@@ -100,7 +100,7 @@ public class ErpmPoDetailsDAO {
 //   }
 
     public List<ErpmPoDetails>  findItemListByPoMasterId(Integer pomPoMasterId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
 
@@ -119,7 +119,7 @@ public class ErpmPoDetailsDAO {
 
 
     public Integer  findItemQntyByPOMastId(Integer itemId,Integer pomPoMasterId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
            session.beginTransaction();
@@ -134,7 +134,7 @@ public class ErpmPoDetailsDAO {
 
 
     public ErpmPoDetails findByPODetailsID(Integer podPodetailsId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmPoDetails podetail  = (ErpmPoDetails) session.load(ErpmPoDetails.class , podPodetailsId);
@@ -158,7 +158,7 @@ public class ErpmPoDetailsDAO {
     }
 
     public BigDecimal  findQtyOfItemInPO(Integer pomPoMasterId, Integer erpmimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
              String SQL =  "Select sum(u.podQuantity)+0 from ErpmPoDetails u where "
@@ -177,7 +177,7 @@ public class ErpmPoDetailsDAO {
     }
 
      public ErpmPoDetails findBy_pomPoMasterId_ItemId(Integer pomPoMasterId, Integer itemId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();

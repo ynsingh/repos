@@ -7,12 +7,14 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.Hibernate;
 
-
+/**
+ *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
+ */ 
 
 public class ErpmsubmoduleDAO  {
 
     public void save(Erpmsubmodule erpmsm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -31,7 +33,7 @@ public class ErpmsubmoduleDAO  {
 
 
      public void update(Erpmsubmodule erpmsm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -49,7 +51,7 @@ public class ErpmsubmoduleDAO  {
     }
 
     public void delete(Erpmsubmodule erpmsm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -67,7 +69,7 @@ public class ErpmsubmoduleDAO  {
     }
 
     public List<Erpmsubmodule> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
 
         try {
             session.beginTransaction();
@@ -83,7 +85,7 @@ public class ErpmsubmoduleDAO  {
         }
 
     public List<Erpmsubmodule> findByModuleId(Byte erpmmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Erpmsubmodule> list = session.createQuery("select e from Erpmsubmodule e where e.erpmmodule.erpmmId = :erpmmId order by esmOrder").setParameter("erpmmId", erpmmId).list();
@@ -95,7 +97,7 @@ public class ErpmsubmoduleDAO  {
         }
 
     public List<Erpmsubmodule> findAllParentMenu() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Erpmsubmodule> list = session.createQuery("from Erpmsubmodule u where u.esmName != 'Exit' AND  u.esmName != 'Welcome' order by esmOrder").list();
@@ -108,7 +110,7 @@ public class ErpmsubmoduleDAO  {
         }
     
     public Erpmsubmodule findBySubmoduleId(Integer erpmSubModuleId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
 	        Erpmsubmodule erpmsm  =  new Erpmsubmodule();

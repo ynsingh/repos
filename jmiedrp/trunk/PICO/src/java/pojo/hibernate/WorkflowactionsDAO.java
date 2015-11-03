@@ -2,6 +2,7 @@ package pojo.hibernate;
 /**
  *
  * @author Tanvir Ahmed
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 import java.util.List;
 import utils.HibernateUtil;
@@ -12,7 +13,7 @@ import org.hibernate.Hibernate;
 public class WorkflowactionsDAO {
 
     public void save(Workflowactions wfa) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -30,7 +31,7 @@ public class WorkflowactionsDAO {
     }
 
     public void update(Workflowactions wfa) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -47,7 +48,7 @@ public class WorkflowactionsDAO {
     }
 
     public void delete(Workflowactions wfa) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -64,7 +65,7 @@ public class WorkflowactionsDAO {
     }
 
     public List<Workflowactions> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowactions> list = session.createQuery("from Workflowactions").list();
@@ -78,7 +79,7 @@ public class WorkflowactionsDAO {
     public Workflowactions findWorkflowactionsById(Integer wfaId) {
 
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             String SQL = "select u from Workflowactions u where u.wfaId= :wfaId";
@@ -93,7 +94,7 @@ public class WorkflowactionsDAO {
 
     public List<Workflowactions> findWorkFlowActionsForWFD(Integer wfdId) {
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             String SQL = "select u from Workflowactions u where u.workflowdetail.wfdId= :wfdId";
             int index = 0;
@@ -112,7 +113,7 @@ public class WorkflowactionsDAO {
     //The method below prepares a list of actions permitted for a given work flow at a given stage
     public List<Workflowactions> getStageWorkFlowActions(Integer wfmId, int wfdStage) {
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             String SQL = "select u from Workflowactions u where u.workflowdetail.wfdId = "

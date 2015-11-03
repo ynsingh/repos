@@ -13,11 +13,12 @@ import org.hibernate.Hibernate;
 /**
  *
  * @author afreen
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class SupplierAddressDAO {
 
     public void save(SupplierAddress supad) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -35,7 +36,7 @@ public class SupplierAddressDAO {
     }
 
     public void update(SupplierAddress erpmsm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -53,7 +54,7 @@ public class SupplierAddressDAO {
     }
 
     public void delete(SupplierAddress erpmsm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -71,7 +72,7 @@ public class SupplierAddressDAO {
     }
 
     public void deleteList(List<SupplierAddress> saList) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
            session.delete(saList);
@@ -83,7 +84,7 @@ public class SupplierAddressDAO {
     }
 
     public void deleteSupplierAddresses(Integer smId) {
-         Session session = HibernateUtil.getSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         session.createQuery("delete from SupplierAddress u where u.suppliermaster.smId = :smId").setParameter("smId", smId);
@@ -96,7 +97,7 @@ public class SupplierAddressDAO {
     }
 
     public List<SupplierAddress> findAll() {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<SupplierAddress> list = session.createQuery("from SupplierAddress ").list();
@@ -109,7 +110,7 @@ public class SupplierAddressDAO {
     }
 
     public List<SupplierAddress> findBySupplierId(Integer smId) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<SupplierAddress> saList = session.createQuery("Select u from SupplierAddress u where u.suppliermaster.smId = :smId").setParameter("smId", smId).list();
@@ -127,7 +128,7 @@ public class SupplierAddressDAO {
     }
 
     public SupplierAddress findErpmSMId(Integer smId) {
-         Session session = HibernateUtil.getSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<SupplierAddress> saList = session.createQuery("Select u from SupplierAddress  u where u.suppliermaster.smId = :smId").setParameter("smId", smId).list();
@@ -140,7 +141,7 @@ public class SupplierAddressDAO {
     }
 
     public SupplierAddress findErpmAdIdSMId(Integer smId, Integer adId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<SupplierAddress> saList = session.createQuery("select u from SupplierAddress  u where  u.suppliermaster.smId = :smId and u.supAdId != :adId ").setParameter("smId", smId).setParameter("adId", adId).list();
@@ -152,7 +153,7 @@ public class SupplierAddressDAO {
     }
 
     public SupplierAddress findErpmAdId2SMId(Integer smId, Integer adId, Integer adId2) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<SupplierAddress> saList = session.createQuery("select u from SupplierAddress  u where  u.suppliermaster.smId = :smId and u.supAdId != :adId and u.supAdId != :adId2  ").setParameter("smId", smId).setParameter("adId", adId).setParameter("adId2", adId2).list();
@@ -164,7 +165,7 @@ public class SupplierAddressDAO {
     }
 
     public int findNoOfSMId(Integer smId) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<SupplierAddress> saList = session.createQuery("select u from SupplierAddress  u where  u.suppliermaster.smId = :smId   ").setParameter("smId", smId).list();
@@ -177,7 +178,7 @@ public class SupplierAddressDAO {
     }
 
     public SupplierAddress findByErpmADId(Integer adId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         SupplierAddress supad = (SupplierAddress) session.load(SupplierAddress.class, adId);

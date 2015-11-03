@@ -13,10 +13,11 @@ import org.hibernate.Hibernate;
 /**
  *
  * @author erp02
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class ViewStockReceivedDAO {
     public void save(ViewStockReceived viid) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -34,7 +35,7 @@ public class ViewStockReceivedDAO {
     }
 
     public void update(ViewStockReceived viid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -52,7 +53,7 @@ public class ViewStockReceivedDAO {
     }
 
     public void delete(ViewStockReceived viid) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -70,7 +71,7 @@ public class ViewStockReceivedDAO {
     }
 
     public List<ViewStockReceived> findAll() {
-         Session session = HibernateUtil.getSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<ViewStockReceived> list = session.createQuery("select u from ViewStockReceived u").list();
@@ -89,7 +90,7 @@ public class ViewStockReceivedDAO {
 //        return list;
 //    }
  public ViewStockReceived findByeidId(Integer vsrid) {
-         Session session = HibernateUtil.getSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         ViewStockReceived esrId  = (ViewStockReceived) session.load(ViewStockReceived.class , vsrid);
@@ -102,7 +103,7 @@ public class ViewStockReceivedDAO {
     }
 
  public List<ViewStockReceived> findByPCDetailId(Integer pcDetailId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<ViewStockReceived> list = session.createQuery("Select u from ViewStockReceived u where u.stChallanDetId = :pcDetailId").setParameter("pcDetailId", pcDetailId).list();
@@ -115,7 +116,7 @@ public class ViewStockReceivedDAO {
     }
 
  public ViewStockReceived findByPCDId(Integer pcDetailId) {
-         Session session = HibernateUtil.getSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<ViewStockReceived> list = session.createQuery("Select u from ViewStockReceived u where u.stChallanDetId = :pcDetailId").setParameter("pcDetailId", pcDetailId).list();
@@ -128,7 +129,7 @@ public class ViewStockReceivedDAO {
     }
 
         public ViewStockReceived findByVSRId(Integer stId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<ViewStockReceived> list = session.createQuery("Select u from ViewStockReceived u where u.stId = :stId").setParameter("stId", stId).list();
@@ -142,7 +143,7 @@ public class ViewStockReceivedDAO {
 
 
  public List<ViewStockReceived> findByInvoiceNO_n_ItemId(String stInvoiceNo, int stItemId) {
-         Session session = HibernateUtil.getSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<ViewStockReceived> stkreclist  = session.createQuery("Select u from ViewStockReceived u where u.stInvoiceNo = :stInvoiceNo and u.stItemId = :stItemId").setParameter("stInvoiceNo", stInvoiceNo).setParameter("stItemId", stItemId).list();

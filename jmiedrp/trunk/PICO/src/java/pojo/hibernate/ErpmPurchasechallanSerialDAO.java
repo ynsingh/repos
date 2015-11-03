@@ -16,11 +16,12 @@ import org.hibernate.Hibernate;
 /**
  *
  * @author erp05
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class ErpmPurchasechallanSerialDAO{
 
      public void save(ErpmPurchasechallanSerial PCSerial) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -38,7 +39,7 @@ public class ErpmPurchasechallanSerialDAO{
     }
 
      public void delete(ErpmPurchasechallanSerial PCSerial) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -56,7 +57,7 @@ public class ErpmPurchasechallanSerialDAO{
     }
 
      public void update(ErpmPurchasechallanSerial PCSerial) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();

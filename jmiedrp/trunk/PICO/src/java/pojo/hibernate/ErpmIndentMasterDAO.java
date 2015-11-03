@@ -14,7 +14,8 @@ public class ErpmIndentMasterDAO  {
 
     
     public void save(ErpmIndentMaster erpmindtmast) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -31,7 +32,7 @@ public class ErpmIndentMasterDAO  {
     }
 
     public void update(ErpmIndentMaster erpmindtmast) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -48,7 +49,7 @@ public class ErpmIndentMasterDAO  {
     }
 
     public void delete(ErpmIndentMaster erpmindtmast) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -65,7 +66,7 @@ public class ErpmIndentMasterDAO  {
     }
 
     public List<ErpmIndentMaster> findIndentsForUserDepartments(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             String SQL = "Select u from ErpmIndentMaster u "
@@ -87,7 +88,7 @@ public class ErpmIndentMasterDAO  {
     }
 
     public List<ErpmIndentMaster> findIndentsForUser(Integer erpmuId, String erpmuName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             String SQL = "Select u from ErpmIndentMaster u "
@@ -111,7 +112,7 @@ public class ErpmIndentMasterDAO  {
     }
 
     public ErpmIndentMaster findIndentMasterId(Short indtIndentId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -139,7 +140,7 @@ public class ErpmIndentMasterDAO  {
 
 
      public ErpmIndentMaster findSimIdbyIndentId(Short indtIndentId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -156,7 +157,7 @@ public class ErpmIndentMasterDAO  {
     }
 
       public List<ErpmIndentMaster> findApprovedIndents(String FromDate, String ToDate, Integer userId, String currency) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             String SQL = "Select u from ErpmIndentMaster u where "

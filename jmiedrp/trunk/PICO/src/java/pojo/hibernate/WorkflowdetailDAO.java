@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-/*
+/**
  * @author sknaqvi
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 
 package pojo.hibernate;
@@ -20,7 +21,7 @@ public class WorkflowdetailDAO {
 
 
   public void save(Workflowdetail wfd) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -38,7 +39,7 @@ public class WorkflowdetailDAO {
     }
 
     public void update(Workflowdetail wfd) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -57,7 +58,7 @@ public class WorkflowdetailDAO {
 
 
     public void delete(Workflowdetail wfd) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -75,7 +76,7 @@ public class WorkflowdetailDAO {
     }
 
     public List<Workflowdetail> findAll() {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -90,7 +91,7 @@ public class WorkflowdetailDAO {
 
     public Workflowdetail findWorkFlowDetailById(Integer wfdId) {
        
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
               String SQL =    "select u from Workflowdetail u where u.wfdId= :wfdId";
@@ -106,7 +107,7 @@ public class WorkflowdetailDAO {
 
    public Integer findWorkFlowDetailForWFM(Integer wfmId) {
         
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              String SQL =    "select max(u.wfdStage) from Workflowdetail u where u.workflowmaster.wfmId= :wfmId";
@@ -127,7 +128,7 @@ public class WorkflowdetailDAO {
 
 public List<Workflowdetail> findWorkFlowDetailsForWFM(Integer wfmId) {
        int index = 0;
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
               String SQL =    "select u from Workflowdetail u where u.workflowmaster.wfmId= :wfmId";
@@ -147,7 +148,7 @@ public List<Workflowdetail> findWorkFlowDetailsForWFM(Integer wfmId) {
 
 public Committeemaster findSourceCommittee(int stage, Integer wfmId) {
        
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
               String SQL =    "select u from Workflowdetail u where u.wfdStage = :stage and u.workflowmaster.wfmId= :wfmId";
@@ -164,7 +165,7 @@ public Committeemaster findSourceCommittee(int stage, Integer wfmId) {
 
 public Committeemaster findDestinationCommittee(int stage, Integer wfmId) {
         
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              String SQL =    "select u from Workflowdetail u where u.wfdStage = :stage and u.workflowmaster.wfmId= :wfmId";
@@ -182,7 +183,7 @@ public Committeemaster findDestinationCommittee(int stage, Integer wfmId) {
 
 public int findWorkFlowDetailIdByStage(int stage, Integer wfmId) {
         
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              String SQL =    "select u from Workflowdetail u where u.wfdStage = :stage and u.workflowmaster.wfmId= :wfmId";
@@ -200,7 +201,7 @@ public int findWorkFlowDetailIdByStage(int stage, Integer wfmId) {
 public Integer findLastWorkFlowStage(int wfmId) throws Exception{
         
         
-           Session session = HibernateUtil.getSession();
+           Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              String SQL =    "select if(max(u.wfdStage), max(u.wfdStage), 0)+0 from Workflowdetail u where u.workflowmaster.wfmId= :wfmId";

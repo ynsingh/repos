@@ -20,7 +20,7 @@ import org.hibernate.Hibernate;
 public class ErpmPoLocationsDAO {
 
     public void save(ErpmPoLocations polocation) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -38,7 +38,7 @@ public class ErpmPoLocationsDAO {
     }
 
     public void delete(ErpmPoLocations polocation) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -56,7 +56,7 @@ public class ErpmPoLocationsDAO {
     }
 
     public void update(ErpmPoLocations polocation) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -74,7 +74,7 @@ public class ErpmPoLocationsDAO {
     }
 
     public ErpmPoLocations findBypoLocationsId(Integer poLocationsId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmPoLocations poLocation  = (ErpmPoLocations) session.load(ErpmPoLocations.class , poLocationsId);
@@ -90,7 +90,7 @@ public class ErpmPoLocationsDAO {
     }
 
     public List<ErpmPoLocations> findByPO(Integer pomPoMasterId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             String SQL = "Select u from ErpmPoLocations u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId";
             session.beginTransaction();
@@ -107,7 +107,7 @@ public class ErpmPoLocationsDAO {
     }
 
     public BigDecimal  findDistributedQty(Integer pomPoMasterId, Integer erpmimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             String SQL =    "Select sum(v.qty)+0 from ErpmPoLocations v where "
                      +  "v.erpmPoMaster.pomPoMasterId = :pomPoMasterId and "
@@ -126,7 +126,7 @@ public class ErpmPoLocationsDAO {
     }
 
      public BigDecimal  findDistributedQtyMinusCurrent(Integer pomPoMasterId, Integer erpmimId, Integer poLocationsId ) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             String SQL =    "Select sum(v.qty)+0 from ErpmPoLocations v where "
                      +  "v.erpmPoMaster.pomPoMasterId = :pomPoMasterId and "

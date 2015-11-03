@@ -9,7 +9,8 @@ import org.hibernate.Hibernate;
 public class ErpmItemCategoryMasterDao {
 
     public void save(ErpmItemCategoryMaster erpmicm) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -26,7 +27,7 @@ public class ErpmItemCategoryMasterDao {
     }
 
     public void update(ErpmItemCategoryMaster erpmicm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -43,7 +44,7 @@ public class ErpmItemCategoryMasterDao {
     }
 
     public void delete(ErpmItemCategoryMaster erpmicm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -60,7 +61,7 @@ public class ErpmItemCategoryMasterDao {
     }
 
     public List<ErpmItemCategoryMaster> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmItemCategoryMaster> list = session.createQuery("from ErpmItemCategoryMaster").list();
@@ -72,7 +73,7 @@ public class ErpmItemCategoryMasterDao {
     }
 
     public ErpmItemCategoryMaster findByErpmicmItemId(Integer erpmicmItemId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmItemCategoryMaster erpmicm = (ErpmItemCategoryMaster) session.load(ErpmItemCategoryMaster.class, erpmicmItemId);
@@ -83,7 +84,7 @@ public class ErpmItemCategoryMasterDao {
     }
 
     public List<ErpmItemCategoryMaster> findByErpmicmItemLevel(Short erpmicmItemLevel) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmItemCategoryMaster> erpmicmList = session.createQuery("Select u from ErpmItemCategoryMaster u where u.erpmicmItemLevel = :erpmicmItemLevel").setParameter("erpmicmItemLevel", erpmicmItemLevel).list();
@@ -94,7 +95,7 @@ public class ErpmItemCategoryMasterDao {
     }
 
     public List<ErpmItemCategoryMaster> findByerpmItemCategoryMaster(Integer erpmItemCategoryMaster) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmItemCategoryMaster> erpmicmList = session.createQuery("Select u from ErpmItemCategoryMaster u where u.erpmItemCategoryMaster.erpmicmItemId = :erpmItemCategoryMaster").setParameter("erpmItemCategoryMaster", erpmItemCategoryMaster).list();
@@ -106,7 +107,7 @@ public class ErpmItemCategoryMasterDao {
     }
 
     public List<ErpmItemCategoryMaster> findByerpmItemCategoryMasterforDepreciationMethod(Integer erpmicmItemId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmItemCategoryMaster> erpmicmList = session.createQuery("Select u from ErpmItemCategoryMaster u where u.erpmicmItemId = :erpmicmItemId").setParameter("erpmicmItemId", erpmicmItemId).list();
@@ -118,7 +119,7 @@ public class ErpmItemCategoryMasterDao {
     }
 
     public ErpmItemCategoryMaster findByErpmId(Integer studiD) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmItemCategoryMaster erpmp = (ErpmItemCategoryMaster) session.load(ErpmItemCategoryMaster.class, studiD);
@@ -131,7 +132,7 @@ public class ErpmItemCategoryMasterDao {
     }
 
     public List<ErpmItemCategoryMaster> findByImId(Short ImId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -151,7 +152,7 @@ public class ErpmItemCategoryMasterDao {
     public List<ErpmItemCategoryMaster> findParentCategoryMaster(Short erpmicmItemLevel) {
         Integer val = erpmicmItemLevel - 1;
         Short OneObj = val.shortValue();
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmItemCategoryMaster> erpmicmList = session.createQuery("Select u from ErpmItemCategoryMaster u where u.erpmicmItemLevel = :OneObj").setParameter("OneObj", OneObj).list();

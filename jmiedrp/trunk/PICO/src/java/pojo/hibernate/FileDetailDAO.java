@@ -13,14 +13,14 @@ import org.hibernate.Transaction;
 import org.hibernate.Hibernate;
 
 /**
- *
  * @author sknaqvi
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 
 public class FileDetailDAO {
 
         public void save(FileDetail fd) {
-            Session session = HibernateUtil.getSession();
+            Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -38,7 +38,7 @@ public class FileDetailDAO {
     }
 
      public void update(FileDetail fd) {
-       Session session = HibernateUtil.getSession();
+       Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -56,7 +56,7 @@ public class FileDetailDAO {
     }
 
     public void delete(FileDetail fd) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
          try {
              tx = session.beginTransaction();
@@ -74,7 +74,7 @@ public class FileDetailDAO {
     }
 
     public List<FileDetail> findAll() {
-         Session session = HibernateUtil.getSession();
+         Session session = HibernateUtil.getSessionPicoFactory();
          try {
        session.beginTransaction();
         List<FileDetail> list = session.createQuery("from FileDetail").list();
@@ -87,7 +87,7 @@ public class FileDetailDAO {
     }
 
     public Integer getDespatchNumber(Integer fileId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
               Integer depatchNumber;
        session.beginTransaction();
@@ -105,7 +105,7 @@ public class FileDetailDAO {
     }
 
     public List<FileDetail> getFiles(Integer fileId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
          try {
              session.beginTransaction();
 

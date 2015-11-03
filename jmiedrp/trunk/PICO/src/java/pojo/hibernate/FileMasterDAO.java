@@ -14,8 +14,8 @@ import org.hibernate.Hibernate;
 //import utils.BaseDAO;
 
 /**
- *
  * @author sknaqvi
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class FileMasterDAO {
 
@@ -33,7 +33,7 @@ public class FileMasterDAO {
 
 
     public void save(FileMaster fm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -65,7 +65,7 @@ public class FileMasterDAO {
 
 
     public void update(FileMaster fm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -121,7 +121,7 @@ public class FileMasterDAO {
 
 
      public Integer countFiles(Integer dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             String SQL = "select if(max(u.File_Id), max(u.File_Id), 0) from File_Master u where u.file_dm_id = :dmId";
              Integer countFiles;
@@ -148,7 +148,7 @@ if (countFiles == null)
 //    }
 
       public FileMaster findFile(Integer fileId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
            FileMaster fm = (FileMaster) session.load(FileMaster.class, fileId);

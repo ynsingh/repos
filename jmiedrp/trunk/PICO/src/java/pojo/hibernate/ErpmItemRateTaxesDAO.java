@@ -16,7 +16,8 @@ import java.util.List;
 public class ErpmItemRateTaxesDAO {
 
     public void save(ErpmItemRateTaxes itemratetax) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -33,7 +34,7 @@ public class ErpmItemRateTaxesDAO {
     }
 
     public void delete(ErpmItemRateTaxes itemratetax) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -50,7 +51,7 @@ public class ErpmItemRateTaxesDAO {
     }
 
     public void update(ErpmItemRateTaxes itemratetax) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -67,7 +68,7 @@ public class ErpmItemRateTaxesDAO {
     }
 
     public List<ErpmItemRateTaxes>  findByirItemRateId(Integer irItemRateId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -83,7 +84,7 @@ public class ErpmItemRateTaxesDAO {
     }
 
     public ErpmItemRateTaxes findByirtItemRateTaxesId(Integer irtItemRateTaxesId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmItemRateTaxes itemratetax  = (ErpmItemRateTaxes) session.load(ErpmItemRateTaxes.class , irtItemRateTaxesId);

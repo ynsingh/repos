@@ -19,7 +19,8 @@ import java.util.List;
 public class ErpmIssueReturnMasterDAO {
 
     public void save(ErpmIssueReturnMaster erpmirm) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -36,7 +37,7 @@ public class ErpmIssueReturnMasterDAO {
     }
 
     public void update(ErpmIssueReturnMaster erpmirm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -53,7 +54,7 @@ public class ErpmIssueReturnMasterDAO {
     }
 
     public void delete(ErpmIssueReturnMaster erpmirm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -70,7 +71,7 @@ public class ErpmIssueReturnMasterDAO {
     }
 
     public ErpmIssueReturnMaster findByErpmIrmId(int erpirmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmIssueReturnMaster eimId1 = (ErpmIssueReturnMaster) session.load(ErpmIssueReturnMaster.class, erpirmId);
@@ -83,7 +84,7 @@ public class ErpmIssueReturnMasterDAO {
     }
 
     public List<ErpmIssueReturnMaster> findReturnIssuedItemsForUserInstitutes(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueReturnMaster> erpmirmList = session.createQuery("Select u from ErpmIssueReturnMaster u where u.departmentmaster.dmId  in (select r.departmentmaster.dmId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId", erpmuId).list();
@@ -99,7 +100,7 @@ public class ErpmIssueReturnMasterDAO {
     }
 
     public ErpmIssueReturnMaster findByErpmirmId(int erpmirmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             ErpmIssueReturnMaster eimId1 = (ErpmIssueReturnMaster) session.load(ErpmIssueReturnMaster.class, erpmirmId);
@@ -114,7 +115,7 @@ public class ErpmIssueReturnMasterDAO {
     }
 
     public List<ErpmIssueSerialDetail> findItemserialnoForUser(char returntype, int erpmisdId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueSerialDetail> ErpmisdList = session.createQuery("select u from ErpmIssueSerialDetail u").list();
@@ -128,7 +129,7 @@ public class ErpmIssueReturnMasterDAO {
     }
 
     public List<ErpmIssueMaster> findIssuemasterlist(char returntype, int eimId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueMaster> ErpmimList = session.createQuery("select u from ErpmIssueMaster u").list();
@@ -139,7 +140,7 @@ public class ErpmIssueReturnMasterDAO {
     }
 
     public List<ErpmIssueMaster> findIssuemasterlistfromDmId(int dmid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueMaster> ErpmimList = session.createQuery("select u from ErpmIssueMaster u").list();
@@ -150,7 +151,7 @@ public class ErpmIssueReturnMasterDAO {
     }
 
     public List<ErpmIssueSerialDetail> findItemserialnoForUserfromDmId(int dmid) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<ErpmIssueSerialDetail> ErpmisdList = session.createQuery("select u.erpmStockReceived from ErpmIssueSerialDetail u").list();

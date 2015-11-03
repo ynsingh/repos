@@ -19,7 +19,7 @@ import java.util.List;
 public class ErpmPoMasterDAO {
 
 public void save(ErpmPoMaster pomaster) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
         /*    beginTransaction();
@@ -43,7 +43,7 @@ public void save(ErpmPoMaster pomaster) {
     }
 
     public void delete(ErpmPoMaster pomaster) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -60,7 +60,7 @@ public void save(ErpmPoMaster pomaster) {
     }
 
     public void update(ErpmPoMaster pomaster) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -77,7 +77,7 @@ public void save(ErpmPoMaster pomaster) {
     }
 
     public ErpmPoMaster findBypomPoMasterId(Integer pomPoMasterId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             //ErpmPoMaster pomaster  = (ErpmPoMaster) getSession().load(ErpmPoMaster.class , pomPoMasterId);
@@ -96,7 +96,7 @@ public void save(ErpmPoMaster pomaster) {
     }
 
     public ErpmPoMaster findByPoMasterId(Integer pomPoMasterId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             session.beginTransaction();
@@ -116,7 +116,7 @@ public void save(ErpmPoMaster pomaster) {
     }
 
     public List<ErpmPoMaster> findPOForUserDepartments(Integer erpmuId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             String SQL = "Select u from ErpmPoMaster u "
@@ -137,7 +137,7 @@ public void save(ErpmPoMaster pomaster) {
     }
 
     public Integer findlastPOForDeptInCurrentYear(Integer dmId, Date poDate) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             String SQL  =   " Select if(max(u.pomPoNo),max(u.pomPoNo),0) + 1 from ErpmPoMaster u "
                     +   " where u.departmentmaster.dmId = :dmId and year(u.pomPoDate) = year(:poDate) ";
@@ -152,7 +152,7 @@ public void save(ErpmPoMaster pomaster) {
     }
 
      public ErpmPoMaster findByPONumber(String dmShortName, Integer poYear, Integer PON){
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
 
             String SQL  =   " Select u from ErpmPoMaster u  "
@@ -179,7 +179,7 @@ public void save(ErpmPoMaster pomaster) {
 
      // This method is to get List of Full PO No., used in Purchase Challan and Invoice
     public List<String> poList(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             String SQL = "Select new map(u.pomPoMasterId as poid, "
@@ -203,7 +203,7 @@ public void save(ErpmPoMaster pomaster) {
     }
 
      public List<String> poList2(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             session.beginTransaction();
@@ -219,7 +219,7 @@ public void save(ErpmPoMaster pomaster) {
     }
 
 public List<ErpmPoMaster> findBySupplierId(Integer smId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             int index = 0;
             String SQL = "Select u from ErpmPoMaster u where u.suppliermaster.smId = :smId"

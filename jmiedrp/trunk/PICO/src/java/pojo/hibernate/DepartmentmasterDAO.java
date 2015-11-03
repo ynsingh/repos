@@ -9,7 +9,8 @@ import java.util.List;
 public class DepartmentmasterDAO {
 
     public void save(Departmentmaster dm) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -26,7 +27,7 @@ public class DepartmentmasterDAO {
     }
 
     public void update(Departmentmaster dm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -43,7 +44,7 @@ public class DepartmentmasterDAO {
     }
 
     public void delete(Departmentmaster dm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -60,7 +61,7 @@ public class DepartmentmasterDAO {
     }
 
     public List<Departmentmaster> findAll() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Departmentmaster> list = session.createQuery("from Departmentmaster").list();
@@ -77,7 +78,7 @@ public class DepartmentmasterDAO {
     }
 
     public Departmentmaster findByDmId(Integer dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             Departmentmaster dm = (Departmentmaster) session.load(Departmentmaster.class, dmId);
@@ -94,7 +95,7 @@ public class DepartmentmasterDAO {
     }
 
     public List<Departmentmaster> findBydmSimId(Integer simId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Departmentmaster> list = session.createQuery("select u from Departmentmaster u where u.subinstitutionmaster.simId = :simId order by u.dmName").setParameter("simId", simId).list();            
@@ -111,7 +112,7 @@ public class DepartmentmasterDAO {
     }
 
     public List<Departmentmaster> findByImId(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Departmentmaster> list = session.createQuery("select u from Departmentmaster u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
@@ -128,7 +129,7 @@ public class DepartmentmasterDAO {
     }
 
     public Departmentmaster findDeptByDMShortName(String dmShortName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Departmentmaster> dmList = session.createQuery("select distinct(u) from Departmentmaster u where u.dmShortName = :dmShortName")
@@ -146,7 +147,7 @@ public class DepartmentmasterDAO {
     }
 
     public List<Departmentmaster> findDeptByName(String dmName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Departmentmaster> dmList = session.createQuery("select distinct(u) from Departmentmaster u where u.dmName = :dmName")
@@ -165,7 +166,7 @@ public class DepartmentmasterDAO {
     }
 
     public List<Departmentmaster> findDeptByShortName(String dmShortName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Departmentmaster> dmList = session.createQuery("select distinct(u) from Departmentmaster u where u.dmShortName = :dmShortName")
@@ -184,7 +185,7 @@ public class DepartmentmasterDAO {
     }
 
     public List<Departmentmaster> findDepartmentForUser(Integer erpmuId, Integer simId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Departmentmaster> dmList = session.createQuery("select distinct(u) from Departmentmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.departmentmaster.dmId = u.dmId and u.subinstitutionmaster.simId =:simId order by u.dmName")
@@ -205,7 +206,7 @@ public class DepartmentmasterDAO {
     }
 
     public List<Departmentmaster> findDepartmentForAdmin(Short imId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Departmentmaster> dmList = session.createQuery("select u from Departmentmaster u where u.institutionmaster.imId =:imId")
@@ -225,7 +226,7 @@ public class DepartmentmasterDAO {
     }
 
     public String findDefaultDepartment(Integer dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Departmentmaster> dm = session.createQuery("select u from Departmentmaster u where u.dmId = :dmId")
@@ -239,7 +240,7 @@ public class DepartmentmasterDAO {
 
     public List<Departmentmaster> findAllDepartmentsForUser(Integer erpmuId) {
         String SQL = "select distinct(u) from Departmentmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.departmentmaster.dmId = u.dmId";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Departmentmaster> dmList = session.createQuery(SQL).
@@ -258,7 +259,7 @@ public class DepartmentmasterDAO {
     }
 
     public String findDepartmentShortName(Integer dmId) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             String dmShortName = session.createQuery("select u.dmShortName from Departmentmaster u where u.dmId = :dmId")

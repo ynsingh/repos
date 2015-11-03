@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-/*
+/**
  * @author sknaqvi
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 
 package pojo.hibernate;
@@ -20,7 +21,7 @@ public class WorkflowmasterDAO {
 
 
   public void save(Workflowmaster wfm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -39,7 +40,7 @@ public class WorkflowmasterDAO {
 
 
     public void update(Workflowmaster wfm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -57,7 +58,7 @@ public class WorkflowmasterDAO {
     }
 
     public void delete(Workflowmaster wfm) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -75,7 +76,7 @@ public class WorkflowmasterDAO {
     }
 
     public List<Workflowmaster> findAll() {               
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowmaster> list = session.createQuery("from Workflowmaster").list();
@@ -90,7 +91,7 @@ public class WorkflowmasterDAO {
         String SQL =    "select u from Workflowmaster u where u.institutionmaster.imId = :imId and "
                         + "u.subinstitutionmaster.simId = :simId and "
                         + "u.departmentmaster.dmId = :dmId";        
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowmaster> wfmList = session.createQuery(SQL)
@@ -116,7 +117,7 @@ public class WorkflowmasterDAO {
         String SQL =    "select u from Workflowmaster u where u.institutionmaster.imId = :imId and "
                         + "u.subinstitutionmaster.simId = :simId";
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowmaster> wfmList = session.createQuery(SQL)
@@ -140,7 +141,7 @@ public class WorkflowmasterDAO {
 
     public List<Workflowmaster> findWorkFlowRecords(Short imId) {
         String SQL =    "select u from Workflowmaster u where u.institutionmaster.imId = :imId";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowmaster> wfmList = session.createQuery(SQL).setParameter("imId", imId).list();
@@ -159,7 +160,7 @@ public class WorkflowmasterDAO {
 
     public Workflowmaster findWorkFlowById(Integer wfmId) {
         String SQL =    "select u from Workflowmaster u where u.wfmId = :wfmId";       
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowmaster> wfm = session.createQuery(SQL).setParameter("wfmId", wfmId).list();
@@ -172,7 +173,7 @@ public class WorkflowmasterDAO {
 
     public List<Workflowmaster> findWorkFlowListById(Integer wfmId) {
         String SQL =    "select u from Workflowmaster u where u.wfmId = :wfmId";
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowmaster> wfmList = session.createQuery(SQL).setParameter("wfmId", wfmId).list();
@@ -186,7 +187,7 @@ public class WorkflowmasterDAO {
     public List<Workflowmaster> findByErpmGmID(Integer erpmgmEgmId) {
         String SQL =    "select u from Workflowmaster u where u.erpmGenMaster.erpmgmEgmId = :erpmgmEgmId";
 
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         try {
             session.beginTransaction();
             List<Workflowmaster> wfmTypeList = session.createQuery(SQL).setParameter("erpmgmEgmId", erpmgmEgmId).list();

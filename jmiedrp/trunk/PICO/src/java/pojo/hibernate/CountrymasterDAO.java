@@ -20,7 +20,8 @@ public class CountrymasterDAO  {
 
 
   public void save(Countrymaster con) {
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -39,7 +40,7 @@ public class CountrymasterDAO  {
 
     public List<Countrymaster> findAll() {        
         
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
 
         try {
             session.beginTransaction();
@@ -54,7 +55,7 @@ public class CountrymasterDAO  {
     
 
     public Byte findCountry (String countryName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getSessionPicoFactory();
 
         try {
             session.beginTransaction();
