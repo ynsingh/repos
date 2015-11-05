@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.reflector.buffer_mgt;
  * BufferMgt.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011,2013 ETRG,IIT Kanpur.
+ * Copyright (c) 2011,2013,2015 ETRG,IIT Kanpur.
  */
 
 import java.util.LinkedList;
@@ -14,7 +14,7 @@ import java.util.Vector;
  *@author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  *@author <a href="mailto:meera.knit@gmail.com">Meera Pal </a>
  *@author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
- *@date 19/06/2012
+ *@author <a href="mailto:pradeepmca30@gmail.com">Pradeep Kumar Pal</a>
  */
 
 public class  BufferMgt {
@@ -115,7 +115,8 @@ public class  BufferMgt {
 			int currentOffset = 0;
 			size=audio_data.size(); 
 			if(size>0)
-				audiodata=new byte[(74*size)];
+				audiodata=new byte[(37*size)];
+
 
                         for (int i=0;i<size;i++) {
                                 byte[] currentArray=audio_data.remove();
@@ -142,8 +143,8 @@ public class  BufferMgt {
 	 */
 	public synchronized void putAudioBytes(byte[] data,String user_id){
                 try {
-			for(int i=0;i<data.length;i=i+74) {
-				byte[] audiobytes=java.util.Arrays.copyOfRange(data,i,(i+74));
+			for(int i=0;i<data.length;i=i+37) {
+				byte[] audiobytes=java.util.Arrays.copyOfRange(data,i,(i+37));
 				putByte(audiobytes,user_id);
 			}
                 }catch(Exception e){ System.out.println("Exception in putByte method in BufferMgt class "+e.getMessage()); }

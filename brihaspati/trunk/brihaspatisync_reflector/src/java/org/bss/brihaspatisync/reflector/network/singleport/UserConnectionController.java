@@ -3,7 +3,7 @@ package org.bss.brihaspatisync.reflector.network.singleport;
 /**
  * UserConnectionController.java
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2013,ETRG, IIT Kanpur.
+ * Copyright (c) 2013,2015ETRG, IIT Kanpur.
  **/
 
 import java.util.Map;
@@ -16,7 +16,8 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.*;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
- */
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep Kumar pal  </a>
+ **/
 
 public class UserConnectionController implements Runnable {
 	
@@ -37,7 +38,7 @@ public class UserConnectionController implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
-                        System.out.println(" UserConnectionController start successfully !!");
+                        System.out.println(" UserConnectionController start successfully !!!!!!");
                 }
        	}
 
@@ -49,7 +50,7 @@ public class UserConnectionController implements Runnable {
 			flag=false;
 			runner.stop();
 			runner=null;
-			System.out.println(" UserConnectionController stop successfully !!");
+			System.out.println(" UserConnectionController stop successfully !!!!!!");
 		}
 	}
 		
@@ -102,6 +103,9 @@ public class UserConnectionController implements Runnable {
 									buffer_mgt=StoreBufferMgnObject.getBufferMgtObject("stud_video"+lecture_id);
 									if(buffer_mgt != null)
 	                                                                        buffer_mgt.removeUseridKey(login_name);
+									buffer_mgt=StoreBufferMgnObject.getBufferMgtObject("Student_Audio_Data"+lecture_id);
+                                                                        if(buffer_mgt != null)
+										buffer_mgt.removeUseridKey(login_name);
 									// org.bss.brihaspatisync.reflector.RegisterToIndexServer.request_For_RemoveUser(lecture_id,login_name);
 									} catch(Exception ex){}				
 								}
