@@ -1,10 +1,10 @@
 package org.bss.brihaspatisync.tools.audio;
 
 /**
- * AudioClient.java
+ * StudentAudioClient.java
  * 
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012,2015 ETRG,IIT Kanpur.
+ * Copyright (c) 2015 ETRG,IIT Kanpur.
  */
 
 import java.util.LinkedList;
@@ -15,17 +15,15 @@ import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
 
 /**
- * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Oct2011.
- * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified transmit thread.
- * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar Pal </a>Modified transmit thread.
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar Pal </a>
  */
 
-public class AudioClient implements Runnable {
+public class StudentAudioClient implements Runnable {
 
 	private Thread runner=null;
 	private boolean flag=false;
 	private boolean audiostartstopFlag=false;
-	private static AudioClient audio=null;
+	private static StudentAudioClient audio=null;
 	private AudioCapture au_cap=new AudioCapture();	
 	private UtilObject utilobject=UtilObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
@@ -34,9 +32,9 @@ public class AudioClient implements Runnable {
 	/**
  	 * Controller for the class.
  	 */
-	public static AudioClient getController() {
+	public static StudentAudioClient getController() {
 		if(audio==null)
-			audio=new AudioClient();
+			audio=new StudentAudioClient();
 		return audio;
 	}
 
@@ -48,9 +46,9 @@ public class AudioClient implements Runnable {
 			flag=true;
             		runner = new Thread(this);
             		runner.start();
-			StatusPanel.getController().setaudioClient("yes");
-			utilobject.addType("Audio_Data");
-			System.out.println("AudioClient start successfully !!");
+			StatusPanel.getController().setstudentaudioClient("yes");
+			utilobject.addType("Student_Audio_Data");
+			System.out.println("StudentAudioClient start successfully !!!!!!");
 		}
        }
 
@@ -61,12 +59,12 @@ public class AudioClient implements Runnable {
         	if (runner != null) {
 			flag=false;
             		runner = null;	
-			StatusPanel.getController().setaudioClient("no");
+			StatusPanel.getController().setstudentaudioClient("no");
 			postAudio(false);	
-			utilobject.removeType("Audio_Data");
+			utilobject.removeType("Student_Audio_Data");
 			utilobject.removeReceiveQueue("Audio_Data");
-                        utilobject.removeSendQueue("Audio_Data");	
-			System.out.println("AudioClient stop successfully !!");
+                        utilobject.removeSendQueue("Student_Audio_Data");	
+			System.out.println("StudentAudioClient stop successfully !!!!!!");
       		}
    	}
 
@@ -81,7 +79,6 @@ public class AudioClient implements Runnable {
 	 public boolean getpostAudio(){
                 return audiostartstopFlag;
         }
-
 	*/
 	/**
  	 * Transmit audioInputStream to reflector by using HTTP post method.
@@ -95,7 +92,9 @@ public class AudioClient implements Runnable {
 					/****   send audio data to reflector ****/
 					if(audiostartstopFlag) {
 						java.util.LinkedList audio_buffer=au_cap.getAudioData();
-						int size=audio_buffer.size();byte[] audiodata=null;int currentOffset = 0;
+						int size=audio_buffer.size();
+						byte[] audiodata=null;
+						int currentOffset = 0;
 						if(size>10) {
 							for(int i=0;i<size;i++) {
 								byte[] audioBytes=(byte[])audio_buffer.remove();
@@ -105,33 +104,34 @@ public class AudioClient implements Runnable {
 										audiodata=new byte[((currentArray.length)*size)];
                                 	        			System.arraycopy(currentArray, 0,audiodata, currentOffset,currentArray.length);
                                         				currentOffset += currentArray.length;
-                                				}
+                                					}
+								}
 							}
-						}
-						if(audiodata != null) {
-                        		        	LinkedList send_queue=utilobject.getSendQueue("Audio_Data");
+							if(audiodata != null) {
+                        		        	LinkedList send_queue=utilobject.getSendQueue("Student_Audio_Data");
 	                			        send_queue.addLast(audiodata);
-						} 
-					}else {
-						utilobject.removeSendQueue("Audio_Data");	
+							} 
+					}else{
+						utilobject.removeSendQueue("Student_Audio_Data");	
 					}
 					
 					LinkedList audio_rechive_data=utilobject.getReceiveQueue("Audio_Data");
+
                                         if(audio_rechive_data.size()>0) 
 						AudioPlayer.getController().startThread();
 					else
 						utilobject.removeReceiveQueue("Audio_Data");
-					StatusPanel.getController().setaudioClient("yes");
+					StatusPanel.getController().setstudentaudioClient("yes");
 					} catch(Exception e) { }
 				} else
-					StatusPanel.getController().setaudioClient("no");
+					StatusPanel.getController().setstudentaudioClient("no");
 				runner.yield();
 				//runner.sleep(100);
-			} catch(Exception epe) {StatusPanel.getController().setaudioClient("no"); 	}
+			} catch(Exception epe) {StatusPanel.getController().setstudentaudioClient("no"); 	}
         	}
 		try {
                         stopThread();
-			StatusPanel.getController().setaudioClient("no");
+			StatusPanel.getController().setstudentaudioClient("no");
                 }catch(Exception e){}
 	}
 	

@@ -4,8 +4,10 @@ package org.bss.brihaspatisync;
  * Client.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2012,2015 ETRG,IIT Kanpur.
  */
+
+import java.io.File;
 
 import javax.swing.UIManager;
 import javax.swing.JOptionPane;
@@ -16,8 +18,6 @@ import org.bss.brihaspatisync.gui.MainWindow;
 import org.bss.brihaspatisync.gui.LoginWindow;
 import org.bss.brihaspatisync.gui.MailLogin;
 import javax.swing.UIManager.LookAndFeelInfo;
-
-import java.io.File;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>

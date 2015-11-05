@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.tools.audio;
  * AudioPlayer.java
  * 
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012, 2013 ETRG,IIT Kanpur.
+ * Copyright (c) 2012, 2013.2015 ETRG,IIT Kanpur.
  */
 
 import java.util.LinkedList;
@@ -17,6 +17,7 @@ import org.bss.brihaspatisync.network.util.UtilObject;
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Jan2012.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified run() Method.
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish yadav</a>JSpeex codec integration to decode audio bytes.
+ *  @author <a href="mailto:pradeepmca30@gmail.com">Pradeep Kumar pal</a>
  */
 
 public class AudioPlayer implements Runnable {
@@ -85,10 +86,10 @@ public class AudioPlayer implements Runnable {
 					LinkedList audio_rechive_data=utilobject.getReceiveQueue("Audio_Data");
 	                               	while(audio_rechive_data.size()>0) {
 						byte[] audioBytes=(byte[])audio_rechive_data.remove();
-						for(int i=0;i<audioBytes.length;i=i+74) {
+						for(int i=0;i<audioBytes.length;i=i+37) {
 							if( currentOffset==0 )
 								bigArray=new byte[1280*10];
-        	                                       	byte[] tempbyte=java.util.Arrays.copyOfRange(audioBytes,i,(i+74));
+        	                                       	byte[] tempbyte=java.util.Arrays.copyOfRange(audioBytes,i,(i+37));
 							byte[] decodebytearray=getDecoder(tempbyte);
 							if(decodebytearray != null) {
 								System.arraycopy(decodebytearray, 0,bigArray, currentOffset,decodebytearray.length);

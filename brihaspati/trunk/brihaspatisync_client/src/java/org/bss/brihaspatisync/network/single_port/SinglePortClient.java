@@ -112,14 +112,28 @@ public class SinglePortClient implements Runnable {
 							   	byte[] send_data=null;
 						   		if(sendqueue.size()>0)
 							   		send_data=(byte[])sendqueue.remove();
-								if((AudioClient.getController().getpostAudio())&&(!((ClientObject.getUserRole()).equals("instructor"))) )
-                                                                        type ="Student_"+type;
 							   	byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
-								if(receive_data_fromserver.length>73 && (receive_data_fromserver !=null) ) {
+								if(receive_data_fromserver.length>36 && (receive_data_fromserver !=null) ) {
 									LinkedList audio_queue=utilobject.getReceiveQueue("Audio_Data");
         	                	               	       		audio_queue.addLast(receive_data_fromserver);
 							   	} 
 					    		} catch(Exception e) { System.out.println("Exception in http Client in Audio_Data "+e);}
+						
+						} else if(type.equals("Student_Audio_Data")) {
+                                                        try {
+                                                                LinkedList sendqueue=utilobject.getSendQueue("Student_Audio_Data");
+                                                                byte[] send_data=null;
+                                                                if(sendqueue.size()>0)
+                                                                        send_data=(byte[])sendqueue.remove();
+                                                                //if((AudioClient.getController().getpostAudio())&&(!((ClientObject.getUserRole()).equals("instructor"))) )
+                                                                  //      type ="Student_"+type;
+                                                                byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
+                                                                if(receive_data_fromserver.length>36 && (receive_data_fromserver !=null) ) {
+                                                                        LinkedList audio_queue=utilobject.getReceiveQueue("Audio_Data");
+                                                                        audio_queue.addLast(receive_data_fromserver);
+                                                                }
+                                                        } catch(Exception e) { System.out.println("Exception in http Client in Student_Audio_Data "+e);}
+
 						} else if(type.equals("Desktop_Data")) {
 							try {
 								long l=System.currentTimeMillis();

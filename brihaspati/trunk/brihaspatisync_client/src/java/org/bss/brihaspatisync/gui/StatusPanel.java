@@ -3,7 +3,7 @@ package org.bss.brihaspatisync.gui;
 /**
  * StatusPanel.java
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012, ETRG, IIT Kanpur.
+ * Copyright (c) 2012,2015 ETRG, IIT Kanpur.
  */
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -19,7 +19,7 @@ import org.bss.brihaspatisync.util.ThreadController;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a>
- * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> 
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a>
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav</a> Modified on 10 Dec 2012, Add two method getStatusLabel(), and getAppLabel().
  *
  */
@@ -39,6 +39,7 @@ public class StatusPanel extends JPanel implements Runnable {
 	private JLabel destop =new JLabel();
 	private JLabel httpclient =new JLabel();
 	private JLabel audioclient =new JLabel();
+	private JLabel studentaudioclient=new JLabel();
 	private JLabel processbarlabel =new JLabel();
 
 	private Vector mess=new Vector();
@@ -46,6 +47,7 @@ public class StatusPanel extends JPanel implements Runnable {
 	private Vector destopmess=new Vector();
 	private Vector httpclientmess=new Vector();
 	private Vector audioclientmess=new Vector();
+	private Vector studentaudioclientmess=new Vector();
 	private Vector processbarmess=new Vector();
 
 	private static StatusPanel labe =null;
@@ -56,12 +58,14 @@ public class StatusPanel extends JPanel implements Runnable {
 	private String pptmessage="";
 	private String destmessage="";
 	private String audiomessage="";
+	private String studentaudiomessage="";
 	private String processbarpmessage="";
 	
 	private JPanel desktop_panel=null;
-	private JPanel ppt_panel=null;
+	//private JPanel ppt_panel=null;
 	private JPanel chatwb_panel=null;
 	private JPanel audio_panel=null;
+	private JPanel student_audio_panel=null;
 	private JPanel process_panel=null;
 
 	public StatusPanel() {
@@ -80,13 +84,17 @@ public class StatusPanel extends JPanel implements Runnable {
 			appLabel=new JLabel();
 			appLabel.setText("<html><Font size=3 color=white><b>" +Language.getController().getLangValue("StatusPanel.applicationStatus")+"&nbsp;:&nbsp</b></font></html>");
 			east_panel.add(appLabel);
-			setBackground(new Color(24,116,205));
-			
+			setBackground(new Color(24,16,205));
+		
+			process_panel=new JPanel();
+                        process_panel.setBackground(new Color(24,116,205));
+                        process_panel.add(processbarlabel,flowLayout);
+	
 			desktop_panel=new JPanel();
 			desktop_panel.setBackground(new Color(24,116,205));
 			destop.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.desktopShareStatus")+"</b></font></html>");
 			desktop_panel.add(destop,flowLayout);
-
+			/*
 			ppt_panel=new JPanel();
 			ppt_panel.setBackground(new Color(24,116,205));
 			ppt.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.pptStatus")+"</b></font></html>");
@@ -100,18 +108,29 @@ public class StatusPanel extends JPanel implements Runnable {
                         chatwb_panel.setBackground(new Color(24,116,205));		
 			httpclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.reflectorStatus")+"</b></font></html>");
                         chatwb_panel.add(httpclient,flowLayout);
-			
-	
+			*/
 			audio_panel=new JPanel();
-			audio_panel.setBackground(new Color(24,116,205));
+                        audio_panel.setBackground(new Color(24,116,205));
 			audioclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("UpdateSessionPanel.AudioCheck")+" </b></font></html>");
                         audio_panel.add(audioclient,flowLayout);
 
-			east_panel.add(ppt_panel,flowLayout);
+			student_audio_panel=new JPanel();
+                        student_audio_panel.setBackground(new Color(24,116,205));
+                        studentaudioclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("UpdateSessionPanel.StudentAudioCheck")+" </b></font></html>");
+                        student_audio_panel.add(studentaudioclient,flowLayout);
+			
+			chatwb_panel=new JPanel();
+                        chatwb_panel.setBackground(new Color(24,116,205));              
+                        httpclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.reflectorStatus")+"</b></font></html>");
+                        chatwb_panel.add(httpclient,flowLayout);
+
+			//east_panel.add(ppt_panel,flowLayout);
 			east_panel.add(desktop_panel,flowLayout);
 			east_panel.add(audio_panel,flowLayout);
+			east_panel.add(student_audio_panel,flowLayout);
 			east_panel.add(chatwb_panel,flowLayout);
 			add(east_panel,BorderLayout.EAST);
+			//add(process_panel,BorderLayout.CENTER);
 			add(west_panel,BorderLayout.WEST);
 			add(process_panel,BorderLayout.CENTER);
 			
@@ -122,17 +141,18 @@ public class StatusPanel extends JPanel implements Runnable {
 		statusLabel.setText("<html><Font size=3 color=white><b> "+Language.getController().getLangValue("StatusPanel.loginStatus")+"&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</b></font></html>");
 		appLabel.setText("<html><Font size=3 color=white><b>" +Language.getController().getLangValue("StatusPanel.applicationStatus")+"&nbsp;:&nbsp</b></font></html>");
 		destop.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.desktopShareStatus")+"</b></font></html>");
-		ppt.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.pptStatus")+"</b></font></html>");
-		httpclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.reflectorStatus")+"</b></font></html>");
+		//ppt.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.pptStatus")+"</b></font></html>");
 		audioclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("UpdateSessionPanel.AudioCheck")+" </b></font></html>");
+		studentaudioclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("UpdateSessionPanel.StudentAudioCheck")+" </b></font></html>");
+		httpclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.reflectorStatus")+"</b></font></html>");
 		validate();
                 repaint();
 	}
 
-	public static StatusPanel  getController(){
+	public static StatusPanel getController(){
 		if(labe==null)
 			labe=new StatusPanel();
-		return labe;
+			return labe;
 	}
 
 	public void startStatusPanel(){
@@ -161,8 +181,18 @@ public class StatusPanel extends JPanel implements Runnable {
                                 			audioclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
 		                        	else
                 		                	audioclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
-					} catch(Exception e){System.out.println("Exception in StatusPanel in method  setdestopClient");}
+					} catch(Exception e){System.out.println("Exception in StatusPanel in method  setaudioClient");}
 				}
+				if(studentaudioclientmess.size()>0) {
+                                                String message=studentaudioclientmess.get(0).toString();
+                                                studentaudioclientmess.remove(0);
+					try{
+                                                if(message.equals("yes"))
+                                                        studentaudioclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
+                                                else
+                                                        studentaudioclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
+                                        } catch(Exception e){System.out.println("Exception in StatusPanel in method  setstudentaudioClient");}
+                                }
 				if(destopmess.size()>0 ) {
 					String message=destopmess.get(0).toString();
                                         destopmess.remove(0);
@@ -172,14 +202,16 @@ public class StatusPanel extends JPanel implements Runnable {
                         	       		else
                                 	       		destop.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
 					} catch(Exception e) { System.out.println("Exception in StatusPanel in method  setdestopClient"); }
-				} if(httpclientmess.size()>0) {
+				}
+				if(httpclientmess.size()>0) {
 					String message=httpclientmess.get(0).toString();
                                         httpclientmess.remove(0);
 		                        if(message.equals("yes"))
                 				httpclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
 		                        else
                 		                httpclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
-				} if(pptmess.size()>0) {
+				} 
+				if(pptmess.size()>0) {
 					String message=pptmess.get(0).toString();
                                         pptmess.remove(0);
 		                        if(message.equals("yes"))
@@ -203,7 +235,6 @@ public class StatusPanel extends JPanel implements Runnable {
 						processbarlabel.setText("");
 					}
                                 }
-				
 				try {
 					int sum = 0;	
 					java.util.Hashtable ht=org.bss.brihaspatisync.network.singleport.NetworkController.getHashtable();
@@ -248,6 +279,13 @@ public class StatusPanel extends JPanel implements Runnable {
                         audiomessage=message;
 			audioclientmess.add(message);
 		}
+        }
+
+	public void setstudentaudioClient(String message) {
+                if(!studentaudiomessage.equals(message)) {
+                        studentaudiomessage=message;
+                        studentaudioclientmess.add(message);
+                }
         }
 
 	public void sethttpClient(String message){
