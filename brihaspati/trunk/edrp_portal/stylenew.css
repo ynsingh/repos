@@ -1,0 +1,99 @@
+#theForm{
+	margin:10 auto;
+	width:700px;
+        height:30%;
+	padding: 53px 56px 30px;
+	background:#D0E9FD;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #000000;
+	margin-left:25%;
+        margin-top:4px;
+	margin-bottom:10%;
+}
+#theForm label{
+	display:block;
+	font-weight:bold;
+	text-align:left;
+        font-size:14px;
+	width:140px;
+        margin-left:60px;
+        font-color:#000000;
+	float:left;
+}
+#theForm .small{
+	color:#000000;
+	display:block;
+	font-size:14px;
+	font-weight:normal;
+	text-align:left;
+	width:140px;
+}
+#theForm input{
+	float:left;
+	font-size:12px;
+	padding:4px 2px;
+	border:1px solid #aacfe4;
+	width:283px;
+	margin:2px 0 20px 10px;
+}
+#theForm textarea{
+	float:left;
+	font-size:12px;
+	padding:4px 2px;
+	border:solid 1px #aacfe4;
+	width:200px;
+	margin:2px 0 20px 10px;
+	height: 50px;
+}
+
+#theForm button{
+	clear:both;
+	margin-left:58px;
+	margin-bottom:10px;
+        margin-top:33px;
+}
+
+.red-button {
+	-moz-box-shadow:inset 0px 1px 0px 0px #3399CC;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #3399CC;
+	box-shadow:inset 0px 1px 0px 0px #3399CC;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3399CC;), color-stop(1, #3399CC;) );
+	background:-moz-linear-gradient( center top, #3399CC 5%, #3399CC; 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fe1a00', endColorstr='#ce0100');
+	background-color:#B0B0B0;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #000000;
+	display:inline-block;
+	color:#ffffff;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #3399CC;
+	font: bold 13px arial;
+}.red-button:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ce0100), color-stop(1, #3399CC;) );
+	background:-moz-linear-gradient( center top, #3399CC; 5%, #3399CC; 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ce0100', endColorstr='#3399CC');
+	background-color:#3399CC;;
+}.red-button:active {
+	position:relative;
+	top:1px;
+}
+
+#flyerimage {
+margin-left:20%;
+margin-right:10%;
+margin-top:33px;
+font-size: 150%;
+font-color:#000000;
+}
+
+#message {
+text-align: center;
+font-size: 150%;
+}
+
+
