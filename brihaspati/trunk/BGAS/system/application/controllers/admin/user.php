@@ -107,6 +107,14 @@ class User extends Controller {
 			'value' => '',
 		);
 
+		$data['uidnum'] = array(
+                        'name' => 'uidnum',
+                        'id' => 'uidnum',
+                        'maxlength' => '10',
+                        'size' => '25',
+                        'value' => '',
+                );
+
 		$data['component_reg'] = array(
 			'name' => 'component_reg',
 			'id' => 'component_reg',
@@ -115,6 +123,18 @@ class User extends Controller {
 			'value' => 'BGAS',
 			'readonly'=>'true',
 		);
+
+		$data['category_type'] = array(
+                        "faculty" => "Faculty",
+                        "student" => "Student",
+                        "staff clerical"=> "Staff Clerical",
+                        "technical staff" =>"Technical Staff",
+                        "supplier" => "Supplier",
+                        "admin staff" => "Admin Staff",
+                        "contractor" => "Contractor",
+                        "service provider" => "Service Provider",
+			"alumni/doner" => "Alumni/Donor",
+                );
 
 
 		$data['active_user_role'] = "administrator";
@@ -138,6 +158,7 @@ class User extends Controller {
 		else{
 			foreach($query->result() as $row){
 				$data['accounts'][$row ->dblable] = $row ->dblable;
+			//	print_r($row);
 			}
 		}
 		$db1->close();
@@ -162,6 +183,7 @@ class User extends Controller {
 			$data['user_password']['value'] = $this->input->post('user_password', TRUE);
 			$data['user_email']['value'] = $this->input->post('user_email', TRUE);
 			$data['mobile']['value'] = $this->input->post('mobile', TRUE);
+			$data['uidnum']['value'] = $this->input->post('uidnum', TRUE);
 			$data['component_reg']['value'] = $this->input->post('component_reg', TRUE);
 			$data['active_user_role'] = $this->input->post('user_role', TRUE);
 			$data['user_status'] = $this->input->post('user_status', TRUE);
@@ -175,7 +197,9 @@ class User extends Controller {
 		//$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('user_role', 'Role', 'trim|required');
+		$this->form_validation->set_rules('category_type', 'Category Type', 'trim|required');
 		$this->form_validation->set_rules('mobile', 'Mobile', 'trim');
+		$this->form_validation->set_rules('uidnum', 'UID Number','trim');
 		$this->form_validation->set_rules('user_status', 'Active', 'trim');
 
 		/* Validating form */
@@ -191,8 +215,10 @@ class User extends Controller {
 			$data_user_password = $this->input->post('user_password', TRUE);
 			$data_user_email = $this->input->post('user_email', TRUE);
 			$data_user_role = $this->input->post('user_role', TRUE);
+			$data_category_type = $this->input->post('category_type', TRUE);
 			$data_user_status = $this->input->post('user_status', TRUE);
 			$data_user_mobile = $this->input->post('mobile', TRUE);
+			$data_uidnum = $this->input->post('uidnum', TRUE);
 			$data_user_components = $this->input->post('component_reg', TRUE);
 
 			if ($data_user_status == 1)
@@ -221,8 +247,76 @@ class User extends Controller {
 
 
 				/* check if username already exist*/
+
+				//added by @kanchan
+				 $secunit_id = "";
+				 $prole = $data_category_type;
+				
+                        	  	if($prole == "faculty"){
+                        	  		$secunit_id = "00";
+					}
+				  	if($prole == "student"){
+                        			$secunit_id = "01";
+					}
+                        	  	if($prole == "staff clerical"){
+                       	 			$secunit_id = "02";
+					}
+                        	  	if($prole == "technical staff"){
+                        			$secunit_id = "03";
+					}
+                        		if($prole == "supplier"){
+                        			$secunit_id = "04";
+					}
+                        		if($prole == "admin staff"){
+                        			$secunit_id = "05";
+					}
+                        		if($prole == "contractor"){
+                        			$secunit_id = "06";
+					}
+                        		if($prole == "service provider"){
+                        			$secunit_id = "07";
+					}
+                        		if($prole == "alumni/doner"){
+                        			$secunit_id = "08";
+                        		}
+
+				 $value = $this->insert_data();
+	                         $db_name = $value[0];
+         	                 $host_name = $value[1];
+                	         $db_username = $value[2];
+                        	 $db_password = $value[3];
+				 
+				$number = $this->get_count_num($prole);
+				$secondary_id = $this->get_random_secunitid($secunit_id,$number);
+				//database connectivity for getting data information
+                                $con = @mysql_connect($host_name,$db_username,$db_password);
+                                if($con){
+                                        $value = mysql_select_db($db_name, $con);
+                                	$query = "INSERT INTO addsecondparty(sacunit,u_id,email,mobnum,partyrole) VALUES ('$secondary_id','$data_uidnum','$data_user_email','$data_user_mobile','$data_category_type')";
+					//trigger_error(mysql_error()." in ".$query);
+                                        $val = mysql_query($query);
+
+			/*		if(mysql_num_rows($val) > 0) {
+					$line = mysql_fetch_assoc($val);
+					}
+					//$num = mysql_num_rows($val);
+                                        if($val == 1)
+                                        {
+                                                while($row = mysql_fetch_assoc($query))
+                                                {
+							//$userid = $row['u_id'];
+                                                        //print_r($row);
+                                                }
+
+                                        } */
+
+                             }//ifcon 
+                                        mysql_close($con);
+
+ 
+
 				$db1=$this->load->database('login', TRUE);
-				$db1->select('id,mobile,componentreg');
+				$db1->select('id,mobile,componentreg,category_type');
 				$db1->from('edrpuser')->where('username', $data_user_name);
 				$query = $db1->get();
 		        if (!($query->num_rows() < 1))
@@ -232,6 +326,7 @@ class User extends Controller {
 		        		$compo_reg = $row->componentreg;
 		        		$registered_id = $row->id;
 		        		$registered_mobile = $row->mobile;
+					$category_type = $row->category_type;
 		        	}
 
 		        	$component_array = explode(',', $compo_reg);
@@ -268,10 +363,12 @@ class User extends Controller {
 						else{
 							$db1->trans_complete();
 
+
 							$insert_data = array(
 		                        'userid' => $registered_id,
 		                        'role' =>$data_user_role,
 		                        'accounts'=>$data_accounts_string
+
 	                    	);
 
 							if ( ! $db1->insert('bgasuserrolegroup', $insert_data))
@@ -307,6 +404,7 @@ class User extends Controller {
                         //'role' =>$data_user_role,
                         'componentreg' => $data_user_components,
                         'mobile' => $data_user_mobile,
+			'category_type' => $data_category_type,
                         'status' => $data_user_status
                         //'accounts'=>$data_accounts_string
                     );
@@ -384,6 +482,25 @@ class User extends Controller {
 						else{
 							$db1->trans_complete();
 						}
+				//print_r($data['accounts'][$row->dblable]);
+			/*	$this->db->trans_start();
+				$insert_data_a = array(
+					'email' => $data_user_email,
+					'partyrole' => $data_category_type,
+					'u_id' => $data_uidnum,
+					'mobnum' => $data_user_mobile
+				);
+				if( ! $this->db->insert('addsecondparty', $insert_data_a)){
+				$this->db->trans_rollback();
+				$this->messages->add('Error adding User Account in addsecondparty-', 'error');
+				$this->logger->write_message('error', "Error adding User Account" .$data_user_name);
+				$this->template->load('admin_template' , 'admin/user/add', '');
+				return;
+				}
+				else{
+					$this->db->trans_complete();
+				}   */
+
 
 					}
 					//added by @kanchan
@@ -429,6 +546,172 @@ class User extends Controller {
 		}
 		$this->template->load('admin_template', 'admin/user/add', $data);
 		return;*/
+	}
+
+	//added by @kanchan
+	
+	function insert_data()
+	{
+		$result = array();
+		$db1=$this->load->database('login', TRUE);
+        	$db1->select('*')->from('bgasAccData');
+        	$alist=$db1->get();
+        	if ($alist->num_rows() < 1)
+        	{
+                	$this->messages->add('Problem with selection of account label.', 'error');
+                	$this->template->load('admin_template', 'admin/user/add', $data);
+                	return;
+        	}
+        	else
+        	{
+                	foreach ($alist->result() as $row)
+			{
+                        	$label = $row->dblable;
+                        	$db_name = $row->databasename;
+                        	$host_name = $row->hostname;
+                        	$db_username = $row->uname;
+                        	$db_password = $row->dbpass;
+
+                	}//foreach
+        	}//else
+		$result[0] = $db_name;
+		$result[1] = $host_name;
+		$result[2] = $db_username;
+		$result[3] = $db_password; 
+
+		return $result;
+		
+	}//function
+
+	//made by @kanchan
+	function get_count_num($prole)
+	{
+		$value = $this->insert_data();
+             	$db_name = $value[0];
+                $host_name = $value[1];
+                $db_username = $value[2];
+                $db_password = $value[3];
+
+                //database connectivity for getting data information
+             		$con = @mysql_connect($host_name,$db_username,$db_password);
+                       	if($con){
+                       		$value = mysql_select_db($db_name, $con);
+                                //trigger_error(mysql_error()." in ".$query);
+				if($prole == "faculty"){
+				$cl = "select * from addsecondparty where partyrole = '$prole'";
+                                $val = mysql_query($cl);
+                                if($val != ''){
+                                       while($row = mysql_fetch_assoc($val))
+                                       {
+						$v = $row;
+						$num = mysql_num_rows($val);
+                                        }
+                                }
+				}elseif($prole == "student"){
+				$cl = "select * from addsecondparty where partyrole = '$prole'";
+                                $val = mysql_query($cl);
+                                if($val != ''){
+                                       while($row = mysql_fetch_assoc($val))
+                                       {
+                                                $v = $row;
+						$num = mysql_num_rows($val);
+                                        }
+                                }
+				}elseif($prole == "staff clerical"){
+				$cl = "select * from addsecondparty where partyrole = '$prole'";
+                                $val = mysql_query($cl);
+                                if($val != ''){
+                                       while($row = mysql_fetch_assoc($val))
+                                       {
+                                                $v = $row;
+						$num = mysql_num_rows($val);
+                                        }
+                                }
+				}elseif($prole == "technical staff"){
+                                $cl = "select * from addsecondparty where partyrole = '$prole'";
+                                $val = mysql_query($cl);
+                                if($val != ''){
+                                       while($row = mysql_fetch_assoc($val))
+                                       {
+                                                $v = $row;
+						$num = mysql_num_rows($val);
+                                        }
+                                } 
+				}elseif($prole == "supplier"){
+                                $cl = "select * from addsecondparty where partyrole = '$prole'";
+                                $val = mysql_query($cl);
+                                if($val != ''){
+                                       while($row = mysql_fetch_assoc($val))
+                                       {
+                                                $v = $row;
+						$num = mysql_num_rows($val);
+                                        }
+                                } 
+				}elseif($prole == "admin staff"){
+                                $cl = "select * from addsecondparty where partyrole = '$prole'";
+                                $val = mysql_query($cl);
+                                if($val != ''){
+                                       while($row = mysql_fetch_assoc($val))
+                                       {
+                                                $v = $row;
+						$num = mysql_num_rows($val);
+                                        }
+                                } 
+				}elseif($prole == "contractor"){
+                                $cl = "select * from addsecondparty where partyrole = '$prole'";
+                                $val = mysql_query($cl);
+                                if($val != ''){
+                                       while($row = mysql_fetch_assoc($val))
+                                       {
+                                                $v = $row;
+						$num = mysql_num_rows($val);
+                                        }
+                                }
+				}elseif($prole == "service provider"){
+                                $cl = "select * from addsecondparty where partyrole = '$prole'";
+                                $val = mysql_query($cl);
+                                if($val != ''){
+                                       while($row = mysql_fetch_assoc($val))
+                                       {
+                                                $v = $row;
+						$num = mysql_num_rows($val);
+                                        }
+                                }
+				}elseif($prole == "alumni/doner"){
+                                $cl = "select * from addsecondparty where partyrole = '$prole'";
+                                $val = mysql_query($cl);
+                                if($val != ''){
+                                       while($row = mysql_fetch_assoc($val))
+                                       {
+                                                $v = $row;
+						$num = mysql_num_rows($val);
+                                        }
+				}
+                                }
+				return $num;
+
+			}//if
+
+		//return $num;
+	}
+
+	//made by @kanchan
+	function get_random_secunitid($secunit_id,$number)
+	{
+		$i = 0;
+		do{
+			$i++;
+			$num = sprintf('%08d' , $i);
+			$secunitid = $secunit_id . $num;
+		}while($i <= $number);
+
+	/*	for($i=0;$i<=101;$i++) 
+		{
+        	$number = sprintf('%08d',$i);
+        	$value1 = $secunit . $number;
+        	} */
+
+	return $secunitid;
 	}
 
 	function edit($user_id =0)
@@ -488,6 +771,14 @@ class User extends Controller {
 			'value' => $user_mobile,
 		);
 
+		$data['uidnum'] = array(
+                        'name' => 'uidnum',
+                        'id' => 'uidnum',
+                        'maxlength' => '10',
+                        'size' => '25',
+                        'value' => '',
+                );
+
 		$data['user_components'] = array(
 			'name' => 'user_components',
 			'id' => 'user_components',
@@ -507,6 +798,19 @@ class User extends Controller {
 			"dataentry" => "Data Entry Operator",
 			"guest" => "Guest",
 		);
+
+		$data['category_type'] = array(
+                        "faculty" => "Faculty",
+                        "student" => "Student",
+                        "staff clerical"=> "Staff Clerical",
+                        "technical staff" =>"Technical Staff",
+                        "supplier" => "Supplier",
+                        "admin staff" => "Admin Staff",
+                        "contractor" => "Contractor",
+                        "service provider" => "Service Provider",
+			"alumni/doner" => "Alumni/Donor",
+                );
+
 
 		$data['user_id'] = $user_id;
 		
@@ -559,6 +863,7 @@ class User extends Controller {
 			$data['accounts_active'] = $this->input->post('accounts', TRUE);
 			$data['user_components'] = $this->input->post('user_components', TRUE);
 			$data['user_mobile'] = $this->input->post('user_mobile', TRUE);
+			$data['uidnum']['value'] = $this->input->post('uidnum', TRUE);
 		} else {
 			/* Check if user ini file exists 
 			if ( ! get_file_info($ini_file))
@@ -619,7 +924,9 @@ class User extends Controller {
 		$this->form_validation->set_rules('user_password', 'Password', 'trim|required' . $user_id);
 		$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email' . $user_id);
 		$this->form_validation->set_rules('user_role', 'Role', 'trim|required');
+		$this->form_validation->set_rules('category_type', 'Category Type', 'trim|required');
 		$this->form_validation->set_rules('user_mobile', 'Mobile No.', 'trim');
+		$this->form_validation->set_rules('uidnum', 'UID Number','trim');
 		$this->form_validation->set_rules('user_components', 'Components', 'trim|required');
 		$this->form_validation->set_rules('user_status', 'Active', 'trim');
 
@@ -636,8 +943,10 @@ class User extends Controller {
 			$data_user_password = $this->input->post('user_password', TRUE);
 			$data_user_email = $this->input->post('user_email', TRUE);
 			$data_user_role = $this->input->post('user_role', TRUE);
+			$data_category_type = $this->input->post('category_type', TRUE);
 			$data_user_status = $this->input->post('user_status', TRUE);
 			$data_user_mobile = $this->input->post('user_mobile', TRUE);
+			$data_uidnum = $this->input->post('uidnum', TRUE);
 			$data_user_components = $this->input->post('user_components', TRUE);
 			if ($data_user_status == 1)
 				$data_user_status = 1;
@@ -673,6 +982,7 @@ class User extends Controller {
 				'password'=>md5($data_user_password),
 				'email' => $data_user_email,
 				'status' => $data_user_status,
+				'category_type' => $data_category_type,
 				//'accounts' => $data_accounts_string,
 		                //'role' =>$data_user_role,
                 		'componentreg' => $data_user_components,

@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS edrpuser
 	  password VARCHAR (200) NOT NULL,
 	  email VARCHAR (200) NOT NULL,
 	  componentreg VARCHAR (200) NOT NULL,
+	  category_type VARCHAR (200) NOT NULL,
 	  mobile VARCHAR (13) DEFAULT NULL,
 	  status VARCHAR (200) NOT NULL,
 	  PRIMARY KEY(id),

@@ -30,6 +30,12 @@
 	echo "</p>";
 
 	echo "<p>";
+        echo form_label('UID No.', 'uidnum');
+        echo "<br />";
+        echo form_input($uidnum);
+        echo "</p>";
+
+	echo "<p>";
 	echo form_label('Componenet Register', 'user_components');
 	echo "<br />";
 	echo form_input($user_components);
@@ -40,6 +46,13 @@
 	echo "<br />";
 	echo form_dropdown('user_role', $user_roles, $active_user_role);
 	echo "</p>";
+
+	echo "<p>";
+        echo form_label('Category Type', 'category_type');
+        echo "<br />";
+        echo form_dropdown('category_type', $category_type);
+        echo "</p>";
+
 
 	echo "<p>";
 	echo form_checkbox('user_status', 1, $user_status) . "Active";
