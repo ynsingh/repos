@@ -56,7 +56,7 @@
 		$page_count = $this->input->xss_clean($page_count);
 		if ( ! $page_count)
 			$page_count = "0";
-		$config['base_url'] = site_url('report/ledgerst/' . $sec_uni_id);
+		$config['base_url'] = site_url('report2/sec_report/' . $sec_uni_id);
 		$pagination_counter = $this->config->item('row_count');
 		$config['num_links'] = 10;
 		$config['per_page'] = $pagination_counter;
@@ -291,6 +291,6 @@
 
 
 ?>
-<?php if ( ! $print_preview) { ?>
+<?php if (!$print_preview) { ?>
 <div id="pagination-container"><?php echo $this->pagination->create_links(); ?></div>
 <?php } ?>
