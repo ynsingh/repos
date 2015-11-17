@@ -33,17 +33,18 @@ $!data.getMessage()
         	<tr bgcolor="$ui.menuColor"><td align="left">
 			<a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm").addPathInfo("mode","private").addPathInfo("stat","fromDirectory").addPathInfo("uname",$uname) style=text-decoration:none>$private $area</a>
 		</td>
-		<td align="left">
+</tr>
+<tr bgcolor="$ui.tableColor"><td align="left">
                         <a href=$link.setPage("call,UserMgmt_User,SharedArea.vm") style=text-decoration:none>$shared $area</a>
                 </td>
 		</tr>
 		##<tr bgcolor="$ui.menuColor"><td align="left" colspan=2>
-		<tr><td align="left" colspan=2>
+		<tr bgcolor="$ui.menuColor"><td align="left" colspan=2>
 			<a href=$link.setPage("call,UserMgmt_User,Upload_File.vm") style=text-decoration:none>$brih_upload1</a><br>
 		</tr></td>
 		#if($data.getUser().getTemp("role").toString()=="instructor")
 		##<tr><td align="left" colspan=2>
-		<tr bgcolor="$ui.menuColor"><td align="left" colspan=2>
+		<tr bgcolor="$ui.tableColor"><td align="left" colspan=2>
   			<a href=$link.setPage("call,Repository_Mgmt,PermissionReceive.vm").addPathInfo("status","permissionreceive").addPathInfo("mode","frominstructor") style=text-decoration:none>
 				#if($lang == "english") $brih_view #else $brih_view2 #end  & $brih_delete1 #if($lang == "hindi") $brih_Of #end $Repo_Perm1
 			</a></b>

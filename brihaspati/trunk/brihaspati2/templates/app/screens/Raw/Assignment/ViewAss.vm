@@ -115,7 +115,7 @@ $!data.getMessage()
 			#*if($user_role == "instructor")
 			<tr bgcolor="$ui.menuColor" >   
 			<td colspan=10 >
-				<b> $brih_usr  #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
+				<b> $brih_email #if($lang == "hindi") $brih_Of1 #end $brih_email</b>
 				<input type="text" name="GetUser"  size=26 onChange="validate1(this)"  /> &nbsp; 
 			#end
 			##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -180,7 +180,7 @@ $!data.getMessage()
 		#end
 	</td></tr> 
 	<tr bgcolor="$ui.menuColor">
-		<td align="center"> <b> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name , $brih_full $brih_name , $brih_rollno</b> </td>
+		<td align="center"> <b> $brih_email, $brih_full $brih_name , $brih_rollno</b> </td>
 ##		<td align="center">  <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>
 		#if($anscheck == "ok")
 		<td align="center">  <b> $brih_answer #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>

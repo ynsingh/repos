@@ -120,7 +120,7 @@ $!data.getMessage()
 		<td><input type="text" name="contentTopic" value="$topic" size=26 onChange="validate1(this)"/ readonly> &nbsp;
 		#end
 		#if($mode!="Update")
-		<input type="button" class="button-ftextstyle" name="dosubmitView" value="$QuestionBank_available" onClick="checkBlank1(document.uploadform,this);"/></td>
+		<input type="button" class="button-ftextstyle" name="dosubmitView" value="$brih_topic $QuestionBank_available" onClick="checkBlank1(document.uploadform,this);"/></td>
 		#end
 	</tr>
 	<tr>

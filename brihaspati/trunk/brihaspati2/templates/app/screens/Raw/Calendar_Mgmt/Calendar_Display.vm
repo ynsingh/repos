@@ -53,14 +53,16 @@ $!data.getMessage()
 	<tr>
 		<td>
 		#if(($data.getUser().getUserName() == "admin") || ($path =="personal"))
-		<a href=$link.setPage("call,EventMgmt_Admin,Academic_Event.vm") style=text-decoration:none>$brih_col1</a>
+		<a href=$link.setPage("call,EventMgmt_Admin,Academic_Event.vm") style=text-decoration:none>$brih_col4</a>
 		#end
+</tr>
 		</td>
-		<td><I>* $brih_star</I></td>
-		<td><font color="green"><I>$brih_col2</I></font></td>
-		<td><font color="magenta"><I>$brih_col1</I></font></td>
-		<td><font color="green"><I>(R)$brih_rh</I></font></td> 
-		<td><font color="Gray"><I>$brih_col3</font></I></td>
+		<tr bgcolor="$ui.menuColor">
+		<td>* $brih_star</td>
+		<td><font color="green">$brih_col2</font></td>
+		<td><font color="magenta">$brih_col1</font></td>
+		<td><font color="green">(R)$brih_rh</font></td> 
+		<td><font color="Gray">$brih_col3</font></td>
 	</tr>
 </table>
 
