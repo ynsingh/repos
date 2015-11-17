@@ -56,6 +56,8 @@ import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 /**
  *   This class contains code for all discussions in workgroup
  *   Compose a discussion and reply.
@@ -99,6 +101,26 @@ public class DB extends SecureScreen
 	                context.put("stats",stats);
 			String mode2=data.getParameters().getString("mode2","");
                         context.put("mode2",mode2);
+
+                        /** Using institute name(grpName) we can fetch Institute Id from 'INSTITUTE_ADMIN_REGISTRATION' table and
+                          * store this InstituteId in a String.
+                          * Now we check if institute id is not null or empty then set it as "user" temp variable.  
+                          */ 
+                        String strInstid = null;
+                        Criteria cri=new Criteria();
+                        cri.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,grpName);
+                        List list=InstituteAdminRegistrationPeer.doSelect(cri);
+                        for(int m=0;m<list.size();m++)
+                        {
+                           InstituteAdminRegistration instuser=(InstituteAdminRegistration)(list.get(m));
+                           int instituteid=instuser.getInstituteId();
+                           strInstid = String.valueOf(instituteid);
+                        }
+                        if (strInstid != null && !strInstid.isEmpty())
+                        {
+                           data.getUser().setTemp("Institute_id",strInstid);
+                        }
+
 			int gid=0;
 			if(stats.equals("fromIndex")){
                                 gid=4;
