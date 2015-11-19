@@ -1,5 +1,6 @@
 package ajax;
 
+
 import pojo.hibernate.ErpmIssueMasterDAO;
 import pojo.hibernate.ErpmTenderMasterDAO;
 import pojo.hibernate.Subinstitutionmaster;
@@ -393,7 +394,7 @@ public class AjaxAction extends DevelopmentSupport {
         return Action.SUCCESS;
     }
 
-    public String getSecretQuestion() throws Exception {
+    /*public String getSecretQuestion() throws Exception {
         PrintWriter out = getResponse().getWriter();
 
         //searchValue contains user name; searchValue2 contains user's date of birth
@@ -401,7 +402,7 @@ public class AjaxAction extends DevelopmentSupport {
         outstr = "Invalid user name or date of birth";
         try {
             ErpmusersDAO userDao = new ErpmusersDAO();
-            outstr = userDao.RetrieveSecretQuestion(searchValue, searchValue2);
+            //outstr = userDao.RetrieveSecretQuestion(searchValue, searchValue2);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -411,7 +412,7 @@ public class AjaxAction extends DevelopmentSupport {
         out.close();
 
         return Action.SUCCESS;
-    }
+    }*/
 
     public String getGURDescription() throws Exception {
         PrintWriter out = getResponse().getWriter();

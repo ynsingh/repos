@@ -34,6 +34,10 @@ This email is used for sneding the mail on behalf of administrator to user.
 
 8. Install tomcat 7 and open context file (tomcat/conf/context.xml) and add the content given below-
 
+	<Resource name="jdbc/login" auth="Container" type="javax.sql.DataSource"
+               maxActive="100" maxIdle="10" maxWait="100"
+               username="xxxxx" password="xxxxx" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/login?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
 	<Resource name="jdbc/pico" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="10" maxWait="100"
                username="xxxxx" password="xxxxx" driverClassName="com.mysql.jdbc.Driver"

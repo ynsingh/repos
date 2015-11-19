@@ -11,7 +11,7 @@ public class BaseDAO implements IBaseHibernateDAO {
         //The ndxt line was in use till 06-sep-2012
         //session = HibernateUtil.getSessionFactory().openSession();
         //g  getSessionFactory().openSession(); //HibernateUtil.getSession(); //.openSession();   //getSessionFactory().openSession();
-        session = HibernateUtil.getSession();
+        session = HibernateUtil.getSessionPicoFactory();
         trans = session.beginTransaction();
     }
 

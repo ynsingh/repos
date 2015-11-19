@@ -325,7 +325,7 @@ public class ListOfTendersAction extends DevelopmentSupport {
             ErpmTenderMaster tenMas = tenMasDao.findByTenderMasterId(getSCHEDULEID());
             //tenderScheduleList = tenSchDao.findByTenderId(getSCHEDULEID());
             ///////////////////////by shobhi
-            Session session = HibernateUtil.getSession();
+            Session session = HibernateUtil.getSessionPicoFactory();
         //try {
             int index = 0;
             session.beginTransaction();
