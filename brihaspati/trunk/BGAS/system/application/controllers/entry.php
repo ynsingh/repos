@@ -745,7 +745,7 @@ $width="100%";
 			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
 		else
 			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
-		$this->form_validation->set_rules('vendor_number', 'vendor/Voucher Number', 'trim|required');
+		$this->form_validation->set_rules('vendor_number', 'Vendor Voucher Number', 'trim');
 		$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim');
 		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
@@ -1759,7 +1759,7 @@ $width="100%";
 			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
 		else
 			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
-		$this->form_validation->set_rules('vendor_number', 'Vendor/Voucher Number', 'trim|required');
+		$this->form_validation->set_rules('vendor_number', 'Vendor Voucher Number', 'trim');
 		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
@@ -4089,7 +4089,7 @@ $width="100%";
                         $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
                 else
                         $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
-			$this->form_validation->set_rules('vendor_number', 'Vendor/Voucher Number', 'trim|required');
+			$this->form_validation->set_rules('vendor_number', 'Vendor Voucher Number', 'trim');
 			$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim');
                 	$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
                 	$this->form_validation->set_rules('entry_narration', 'trim');

@@ -641,7 +641,7 @@ var dc = '';
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 	 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-        echo form_label('Vendor/Voucher', 'vendor_number');
+        echo form_label('Vendor Voucher Number', 'vendor_number');
         echo " ";
         echo form_input($vendor_number);
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";

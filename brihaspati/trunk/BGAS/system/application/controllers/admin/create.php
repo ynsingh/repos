@@ -451,7 +451,7 @@ class Create extends Controller {
 					$newacc->query($row);
 					if ($newacc->_error_message() != "")
 					{
-						$this->messages->add('Error initializing basic accounts data.'.$newacc->_error_message(), 'error');
+						$this->messages->add('Error initializing basic accounts data.'.$newacc->_error_message(). $row, 'error');
 						$newacc->trans_rollback();
 						$this->template->load('admin_template', 'admin/create', $data);
 						return;

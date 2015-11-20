@@ -11,11 +11,11 @@
 </tr>
 
 <tr>
-<td id="td_first">Vendor/Voucher Number : <span class="bold" align="left"><?php echo $vendor_voucher_number; ?></span></td>
+<td id="td_first">Vendor Voucher Number : <span class="bold" align="left"><?php echo $vendor_voucher_number; ?></span></td>
 </tr>
 
 <table border=0 cellpadding=5 class="simple-table entry-view-table" width="70%">
-<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Secondary Unit</th><th>Party Address</th><th>Fund</th><th>Income/Expense Type</th></tr></thead>
+<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Party Name</th><th>Party Address</th><th>Fund</th><th>Income/Expense Type</th></tr></thead>
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 $odd_even = "odd";
 $fund = "";

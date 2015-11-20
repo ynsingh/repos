@@ -59,7 +59,7 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 				<br>
 				<?php echo $current_entry_type['name']; ?> Bill/Voucher Date : <span class="value"><?php echo $entry_date; ?></span>
 				<br>
-				<?php echo $current_entry_type['name']; ?>Vendor/Voucher Number : <span class="value"><?php echo $vendor_voucher_number; ?></span>
+				<?php echo $current_entry_type['name']; ?>Vendor Voucher Number : <span class="value"><?php echo $vendor_voucher_number; ?></span>
 			</td>
 			<td width="80%">
 				<?php echo $current_entry_type['name']; ?> Forward Reference Id : <span class="value"><?php echo $forward_ref_id; ?></span>

@@ -8,7 +8,7 @@ Bill/Voucher Date : <span class="bold"><?php echo date_mysql_to_php_display($cur
 Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?></span>
 </p>
 
-<p>Vendor/voucher Number : <span class="bold"><?php echo $cur_entry->vendor_voucher_number; ?></span>
+<p>Vendor Voucher Number : <span class="bold"><?php echo $cur_entry->vendor_voucher_number; ?></span>
 </p>
 
 <table border=0 cellpadding=5 class="simple-table entry-view-table">

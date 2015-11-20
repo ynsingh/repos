@@ -561,7 +561,7 @@ var dc = '';
         echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related back dated transaction</span>";
 
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-        echo form_label('Vendor/Voucher', 'vendor_number');
+        echo form_label('Vendor Voucher Number', 'vendor_number');
         echo " ";
         echo form_input($vendor_number);
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
