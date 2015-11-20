@@ -746,7 +746,7 @@ public class UserInfo implements Serializable {
             uh.save();
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ExternalContext extContext = facesContext.getExternalContext(); 
-            extContext.redirect(extContext.getRequestContextPath()+"portal/EmployeeHome.jsf");
+            extContext.redirect(extContext.getRequestContextPath()+"/portal/EmployeeHome.jsf");
             return "success" ;
          }
          catch(Exception e)

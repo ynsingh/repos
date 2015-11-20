@@ -224,7 +224,7 @@ public class SalaryGradeDB {
         try
         {
           
-            SalaryGrade grade = new SalaryGrade();
+/*            SalaryGrade grade = new SalaryGrade();
             
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
             CSVReader reader = new CSVReader(new FileReader(path+"/"+file.getName()), ',', '\"', 1);
@@ -267,8 +267,8 @@ public class SalaryGradeDB {
             session.close();
         }
             
-            
-            /*  Connection c = new CommonDB().getConnection();
+  */          
+              Connection c = new CommonDB().getConnection();
             
             ps=c.prepareStatement("insert into salary_grade_master(grd_name, grd_max, grd_min, grd_gp, grd_org_id) values(?,?,?,?,?)");
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
@@ -305,7 +305,7 @@ public class SalaryGradeDB {
         {
             e.printStackTrace();
             return e;
-        }               */
+        }               
 
     }       
     

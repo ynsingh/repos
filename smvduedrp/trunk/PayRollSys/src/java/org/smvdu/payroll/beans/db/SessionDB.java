@@ -186,13 +186,13 @@ public class SessionDB {
             session = helper.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("from SessionMaster where current = 1 and orgcode = '"+userBean.getUserOrgCode()+"'");
-	    if (query.list().size() == 0)
-      	    {
-		session.close();
-		session = helper.getSessionFactory().openSession();
-		session.beginTransaction();
-		query = session.createQuery("from SessionMaster where current = 1 and orgcode = '"+userBean.getUserOrgCode()+"'");
-	    }	
+	   // if (query.list().size() == 0)
+      	    //{
+//		session.close();
+//		session = helper.getSessionFactory().openSession();
+//		session.beginTransaction();
+//		query = session.createQuery("from SessionMaster where current = 1 and orgcode = '"+userBean.getUserOrgCode()+"'");
+//	    }	
 	   
            ArrayList<SessionMaster> sess = (ArrayList<SessionMaster>)query.list();
            SessionMaster data = new SessionMaster();
@@ -207,7 +207,7 @@ public class SessionDB {
         }    
          
         catch (Exception e) {
-            session.getTransaction().rollback();
+       //     session.getTransaction().rollback();
             e.printStackTrace();
             return null;
         }

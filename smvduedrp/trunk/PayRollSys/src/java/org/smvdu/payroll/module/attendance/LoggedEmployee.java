@@ -268,7 +268,7 @@ public class LoggedEmployee implements Serializable {
         new EmployeeLoginController().invalidate(profile.getCode(), new CommonDB().getDate());
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext extContext = facesContext.getExternalContext(); 
-        extContext.redirect(extContext.getRequestContextPath()+"../Login.jsf");
+        extContext.redirect(extContext.getRequestContextPath()+"/Login.jsf");
         
         
         }
@@ -284,7 +284,7 @@ public class LoggedEmployee implements Serializable {
            FacesContext facesContext = FacesContext.getCurrentInstance();
            ExternalContext extContext = facesContext.getExternalContext(); 
            extContext.invalidateSession();
-           extContext.redirect(extContext.getRequestContextPath()+"../WelcomePage.jsf");
+           extContext.redirect(extContext.getRequestContextPath()+"/WelcomePage.jsf");
          
         }
         catch(Exception e)
