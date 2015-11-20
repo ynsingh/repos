@@ -24,7 +24,7 @@ $page.setBgColor($ui.bgcolor)
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
 	<font face="$ui.sansSerifFonts">
-	#if($isAdmin=="true")
+	#if($isAdmin=="true"||$isInstructor=="true")
 		$page.setTitle("Home | $course | Course Content | View Content")
 		##<a href=$link.setPage("call,Admin.vm")>$brih_home</a> | $course | <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm")>$brih_course $brih_Content</a> |
 		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> | $course | 
@@ -35,7 +35,7 @@ $page.setBgColor($ui.bgcolor)
 				 $brih_view $brih_content
 			#end
 	#elseif ($isInstructor=="true")
-		$page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $brih_content | $brih_view $brih_content")
+	##	$page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $brih_content | $brih_view $brih_content")
 		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> | 
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | 
 		##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
@@ -47,7 +47,7 @@ $page.setBgColor($ui.bgcolor)
 				 $brih_view  $brih_content
 			#end 
 	#else
- 		$page.setTitle("$brih_home | $course |$brih_course $brih_content | $brih_view $brih_content")
+ 		$page.setTitle("Home | $course | Course Content | View Content")
         	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> | 
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | 
 		<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_content #else $brih_course $brih_content #end </a> |
