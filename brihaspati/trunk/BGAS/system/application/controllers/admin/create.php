@@ -174,9 +174,9 @@ class Create extends Controller {
 		$data['create_database'] = FALSE;
 
 		/* Form validations */
-		$this->form_validation->set_rules('account_label', 'Label', 'trim|required|min_length[2]|max_length[30]|alpha_numeric');
-		$this->form_validation->set_rules('org_name', 'Organisation Name', 'trim|required|min_length[3]|max_length[200]|alpha_numeric');
-		$this->form_validation->set_rules('unit_name', 'Unit Name', 'trim|required|min_length[2]|max_length[200]|alpha_numeric');
+		$this->form_validation->set_rules('account_label', 'Label', 'trim|required|min_length[2]|max_length[30]');
+		$this->form_validation->set_rules('org_name', 'Organisation Name', 'trim|required|min_length[3]|max_length[200]');
+		$this->form_validation->set_rules('unit_name', 'Unit Name', 'trim|required|min_length[2]|max_length[200]');
 		$this->form_validation->set_rules('account_name', 'Account Name', 'trim|required|min_length[2]|max_length[100]');
 		$this->form_validation->set_rules('account_address', 'Account Address', 'trim|max_length[255]');
 		$this->form_validation->set_rules('account_email', 'Account Email', 'trim|valid_email');

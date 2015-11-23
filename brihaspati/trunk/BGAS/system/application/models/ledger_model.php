@@ -1983,7 +1983,7 @@ var $ledgers = array();
                 $this->db->from('ledgers');
 				$this->db->like('code', '10', 'after');
 				//$this->db->not_like('code', '1003', 'after');
-				$this->db->not_like('code', '1004', 'after');
+				//$this->db->not_like('code', '1004', 'after');
 				$this->db->not_like('code', '1005', 'after');
 				$this->db->not_like('code', '1006', 'after');
 				$this->db->not_like('name', 'Balance of net income/expenditure transferred from I/E Account');

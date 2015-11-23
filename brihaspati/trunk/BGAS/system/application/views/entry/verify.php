@@ -82,7 +82,16 @@ if ($cur_entry->dr_total != $cur_entry->cr_total)
 </table>
 <p>Narration : <span class="bold"><?php echo $cur_entry->narration; ?></span></p>
 <p>Sanction Letter No. : <span class="bold"><?php echo $cur_entry->sanc_letter_no; ?></span></p>
-<p>Sanction Letter Date : <span class="bold"><?php echo $cur_entry->sanc_letter_date; ?></span></p>
+<p>Sanction Letter Date : <span class="bold"><?php
+        $sanc_date  = $cur_entry->sanc_letter_date;
+        $exp_date=explode(" ",$sanc_letter_date);
+        if($exp_date[0] == "0000-00-00"){
+                echo" ";
+        }
+        else{
+                echo date_mysql_to_php($sanc_date);
+        }
+        ?></span></p>
 <p>Sanction Detail : <span class="bold"><?php  $sanc_type = $cur_entry->sanc_type;
         if($sanc_type != 'select'){
                 $sanc_value = $cur_entry->sanc_value;

@@ -16,7 +16,7 @@
 $(document).ready(function() {
 //global variable
 var dc = '';
-	for ( var i = 0; i < 5; i++ ) {
+/*	for ( var i = 0; i < 5; i++ ) {
 		index = ".fund-list"+i; 
 		$(index).hide(function(){});
 	}
@@ -384,7 +384,7 @@ var dc = '';
                 var dc_value = $(this).parent().prev().children().attr('value');
                 var dr_name = $(this).parent().next().children().attr('name');          
 
-                $.ajax({
+                /*$.ajax({
                                 url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
                                 success: function(data) {
 
@@ -423,7 +423,7 @@ var dc = '';
                                                                 $(temp2).hide();
                                                         }*/
 
-                                                        if((dc_value == 'D' && account == 'Expense') || (dc == 'D' && account == 'Expense-e') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0') || (dc_value == 'C' && account == 'Liability')){
+                              /*                          if((dc_value == 'D' && account == 'Expense') || (dc == 'D' && account == 'Expense-e') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0') || (dc_value == 'C' && account == 'Liability')){
                                                                 $(temp2).show();
                                                         }else{
                                                                 $(temp2).hide();
@@ -431,7 +431,7 @@ var dc = '';
         	        	                }	
                         		});
 				}
-		});
+		});*/
                 //....	
 
 		//this line existed earlier
@@ -693,7 +693,7 @@ var dc = '';
 
 
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Secondary Unit</th><th></th><th colspan=2></th><th></th><th colspan=2>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Secondary Unit</th><th>Fund</th><th>Type</th><th></th><th colspan=2></th><th></th><th colspan=2>Cur Balance</th></tr></thead>";
 	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Sec Unit Id</th><th></th><th colspan=2>Available Action</th><th>Cur Balance</th></tr></thead>";
 
 	foreach ($ledger_dc as $i => $ledger)
@@ -753,13 +753,15 @@ var dc = '';
 <?php*/
 		$temp = "fund-list".$i;
 		//echo "<td id =\"fund\">" . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, "class = \"".$temp."\"") . "</td>";
-		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp."\"") . "</td>";
-
+		//this line and script commented for show all time fund.....
+		//echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp."\"") . "</td>";
+		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0) . "</td>";
 /*		$temp1 = "type-dropdown".$i;
                 echo "<td>" . form_dropdown_type('income_type[' . $i . ']', isset($income_type[$i]) ? $income_type[$i] : "Select", "class = \"".$temp1."\"") . "</td>";
 */
                 $temp2 = "exp-dropdown".$i;
-                echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select", "class = \"".$temp2."\"") . "</td>";
+                //echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select", "class = \"".$temp2."\"") . "</td>";	
+		echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select") . "</td>";
 
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";

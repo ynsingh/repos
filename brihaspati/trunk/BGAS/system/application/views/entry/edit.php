@@ -115,7 +115,7 @@ var dc = '';
                 //var dr_amount = $(this).val();
 		var dr_amount = $(this).attr('value');
                 var check = 0;
-                $.ajax({
+               /* $.ajax({
                                         url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
                                         success: function(bank) {
                                                 bank_cash = $.trim(bank);
@@ -142,7 +142,7 @@ var dc = '';
                                                         });
                                                 }
                                         }
-                });
+                });*/
 	
 	});
 
@@ -197,7 +197,7 @@ var dc = '';
 		var temp1 = ".type-dropdown"+fund_index;
                 var temp2 = ".exp-dropdown"+fund_index;
 
-		if ($(this).parent().next().children().val() != "0") {
+	/*	if ($(this).parent().next().children().val() != "0") {
                 $.ajax({
                                 url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledger_value,
                                 success: function(data) {
@@ -243,7 +243,7 @@ var dc = '';
 			$(temp).hide();
 			$(temp1).hide();
                         $(temp2).hide();
-		}	
+		}	*/
 
 		var drValue = $(this).parent().next().next().children().attr('value');
                 var crValue = $(this).parent().next().next().next().children().attr('value');
@@ -313,7 +313,7 @@ var dc = '';
 		var temp1 = ".type-dropdown"+fund_index;
                 var temp2 = ".exp-dropdown"+fund_index;
 
-		if(ledgerid > 0){
+	/*	if(ledgerid > 0){
                 $.ajax({
                                 url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
                                 success: function(data) {
@@ -360,7 +360,7 @@ var dc = '';
 			$(temp).hide();
 			$(temp1).hide();
                         $(temp2).hide();
-		}
+		}*/
 
 		if(ledgerid == "0") {
                         $(this).parent().next().children().attr('value', "");
@@ -685,13 +685,14 @@ var dc = '';
 
 		/* code for fund list*/
 		$temp_var = "fund-list".$i;
-		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp_var."\"") . "</td>";
-
+		//echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp_var."\"") . "</td>";
+		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0) . "</td>";
 	/*	$temp1 = "type-dropdown".$i;
                 echo "<td>" . form_dropdown_type('income_type[' . $i . ']', isset($income_type[$i]) ? $income_type[$i] : "Select", "class = \"".$temp1."\"") . "</td>";
 */
                 $temp2 = "exp-dropdown".$i;
-                echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select", "class = \"".$temp2."\"") . "</td>";
+                //echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select", "class = \"".$temp2."\"") . "</td>";
+		echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select") . "</td>";
 
 //		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
 //		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";

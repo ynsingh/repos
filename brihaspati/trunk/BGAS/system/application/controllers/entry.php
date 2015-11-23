@@ -1755,10 +1755,10 @@ $width="100%";
 		$narrat= $cur_entry->narration;
 		$previousvalue="'Credit ledger name'"." ". $creditledgername .',' ."'Debited ledger name'"." ". $debitledgername.','."'Cr Amount'"." " . $cramount.','."'Dr Amount'"."  " . $dramount.','."'Narration' " . $narrat;
 		/* Form validations */
-		if ($current_entry_type['numbering'] == '3')
-			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
-		else
-			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
+		//if ($current_entry_type['numbering'] == '3')
+		//	$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
+		//else
+		//	$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
 		$this->form_validation->set_rules('vendor_number', 'Vendor Voucher Number', 'trim');
 		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
@@ -2095,16 +2095,14 @@ $width="100%";
 	                                        }else{
         	                                        $entry_fund_id = $this->db->insert_id();
                 	                        }
-	
 						//$expense_type = $data_all_expense_type[$id];
         	                        	if($expense_type != "Select" && $expense_type != ""){
-	
         	                                        $this->db->select('name');
                 	                                $this->db->from('ledgers')->where('id', $fund_ledger);
                         	                        $query = $this->db->get();
                                 	                $ledger = $query->row();
                                         	        $ledger_name = $ledger->name;
-
+							$this->db->trans_start();
                                                 	$insert_expense_data = array(
                                                         	'fund_id' => $fund_ledger,
 	                                                        'fund_name' => $ledger_name,
@@ -2118,7 +2116,10 @@ $width="100%";
                 	                                {
                         	                                $this->db->trans_rollback();
                                 	                        $this->logger->write_message("error", "Error adding expenditure details for fund :" . $fund_ledger);
-                                        	        }
+                                        	        }else{
+								$this->db->trans_complete();
+                                                	}
+
                                         	}
 
 	                                        $this->db->select('id');
@@ -2142,7 +2143,10 @@ $width="100%";
                 	                        {
                         	                        $this->db->trans_rollback();
                                 	                $this->logger->write_message("error", "Error adding transit income");
-                                        	}
+                                        	}else{
+                                                                $this->db->trans_complete();
+                                                        }
+
 					}
 					
                                 }//....
@@ -2167,6 +2171,7 @@ $width="100%";
 					return;
 				}else {
                                         $entry_items_id = $this->db->insert_id();
+					 $this->db->trans_complete();
                                 }
 
                                 if($fund_ledger > 0 && $data_ledger_dc == 'C'){
@@ -2192,7 +2197,9 @@ $width="100%";
                                                 {
                                                         $this->db->trans_rollback();
                                                         $this->logger->write_message("error", "Error adding income from investment details for fund :" . $fund_ledger);
-                                                }
+                                                }else{
+                                                                $this->db->trans_complete();
+                                                        }
                                         }
                                 }
 			}
@@ -3135,7 +3142,7 @@ $width="100%";
 			$entry_data['entry_narration'] = $cur_entry->narration;
 			$entry_data['forward_ref_id'] = $cur_entry->forward_refrence_id;
 	                $entry_data['back_ref_id'] = $cur_entry->backward_refrence_id;
-	
+			$entry_data['vendor_voucher_number'] = $cur_entry->vendor_voucher_number;	
 			/* Getting Ledger details */
 			$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
 			$ledger_q = $this->db->get();
@@ -3871,7 +3878,7 @@ $width="100%";
 		$data['forward_reference_id'] = '';
 		$data['backward_reference_id'] = '';
 
-		$this->db->select('forward_refrence_id, backward_refrence_id');
+		$this->db->select('forward_refrence_id, backward_refrence_id, sanc_letter_date');
 		$this->db->from('entries')->where('id', $entry_id)->order_by('id', 'asc');
                 $reference_ids = $this->db->get();
 		if ($reference_ids->num_rows() >0)
@@ -3880,6 +3887,7 @@ $width="100%";
         	        {
 				$data['forward_reference_id'] = $ref->forward_refrence_id;
 	                	$data['backward_reference_id'] = $ref->backward_refrence_id;
+				$data['sanc_letter_date'] = $ref->sanc_letter_date;
 	                }
 		}
 		$this->template->load('template', 'entry/verify', $data);

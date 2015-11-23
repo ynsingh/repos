@@ -11,6 +11,7 @@
 	<p><?php echo $current_entry_type['name']; ?> Forward Reference Id : <strong><?php echo $forward_ref_id; ?></strong></p>
         <p><?php echo $current_entry_type['name']; ?> Backward Reference Id : <strong><?php echo $back_ref_id; ?></strong></p>
 	<p><?php echo $current_entry_type['name']; ?> Bill/Voucher Date : <strong><?php echo $entry_date; ?></strong></p>
+	<p><?php echo $current_entry_type['name']; ?> Vendor/Voucher No : <strong><?php echo $vendor_voucher_number; ?></strong></p>
 	<table border=1 cellpadding=6>
 		<thead>
 			<tr><th align="left">Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th></tr>

@@ -88,7 +88,7 @@ if ( ! function_exists('form_dropdown_fund'))
 
                 if ($extra != '') $extra = ' '.$extra;
 
-                $form = '<select name="'.$name.'"'.$extra.' >';
+                $form = '<select name="'.$name.'"'.$extra.' style="width: 200px;">';
 
                 foreach ($options as $key => $val)
                 {
@@ -244,7 +244,7 @@ if ( ! function_exists('form_input_ledger'))
 
 		if ($extra != '') $extra = ' '.$extra;
 
-		$form = '<select name="'.$name.'"'.$extra.' class="ledger-dropdown">';
+		$form = '<select name="'.$name.'"'.$extra.' class="ledger-dropdown" style="width: 400px;">';
 
 		foreach ($options as $key => $val)
 		{
