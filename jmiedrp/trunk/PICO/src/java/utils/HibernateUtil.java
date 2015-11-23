@@ -1,13 +1,13 @@
-/**
-  *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
-  */
 
 package utils;
 
-//import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.Session;
+
+/**
+  *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
+  */
 
 public class HibernateUtil {
 
@@ -26,4 +26,5 @@ public class HibernateUtil {
     public static Session getSessionPicoFactory() {
         return sessionPicoFactory.openSession();
     }
+
 }

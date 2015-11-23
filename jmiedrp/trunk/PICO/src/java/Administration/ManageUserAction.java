@@ -1,9 +1,5 @@
 package Administration;
 
-/**
- *
- * @author kazim
- */
 import java.util.ArrayList;
 import java.util.List;
 import pojo.hibernate.Countrymaster;
@@ -32,9 +28,13 @@ import utils.sendMail;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import com.opensymphony.xwork2.ActionContext;
+
+import utils.ExceptionLogUtil;
+import utils.HibernateEncryptionUtil;
+
 /**
- *
  * @author kazim
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2015
  */
 public class ManageUserAction extends DevelopmentSupport  {
 
@@ -481,6 +481,8 @@ public void validate() {
 
             //Set User's Status as Active
             erpmusers.setErpmuActive("Y");
+            String encrptdpswd = HibernateEncryptionUtil.createDigest("MD5",erpmusers.getErpmuPassword());
+            erpmusers.setErpmuPassword(encrptdpswd);
 
             //Initialize ErpmuserRole Fields
             erpmur.setErpmusers(erpmusers);
@@ -530,19 +532,24 @@ public void validate() {
                	sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"), toEmailAddress, "", emailSubject, emailMessage);
            }
             message = "Registration successful, A mail has been send to your mailId containing login name and password";
+		ExceptionLogUtil.ExceptionLog("registration message at line 535==="+message);
 
             //message = "Registration successful, Please Login";
             return SUCCESS;
            }
         catch (Exception e) {
-           if (e.getCause().toString().contains("Unique_IM_Name"))
+           if (e.getCause().toString().contains("Unique_IM_Name")){
                message = "Your institute is already registered, please create your account from the link on the main page";
-           else if(e.getCause().toString().contains("Unique_IM_Short_Name"))
+		}
+           else if(e.getCause().toString().contains("Unique_IM_Short_Name")){
                message = "Institution Short Name is already in use, Please choose a different Short Name.";
-           else if(e.getCause().toString().contains("Unique_SIM_Name"))
+	}
+           else if(e.getCause().toString().contains("Unique_SIM_Name")){
                message = "Your College/Faculty/School is already registered, please create your account from the link on the main page";
-           else if(e.getCause().toString().contains("Unique_SIM_Short_Name"))
+	}
+           else if(e.getCause().toString().contains("Unique_SIM_Short_Name")){
                message = "SubInstitution Short Name is already in use, Please choose a different Short Name.";
+	}
            else
                message = "Error is : " + e.getMessage() + e.getCause();
            ctList=cmDao.findAll();

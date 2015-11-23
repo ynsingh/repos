@@ -53,6 +53,8 @@ import java.sql.ResultSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import utils.HibernateEncryptionUtil;
+import utils.ExceptionLogUtil;
 
 public class ErpmusersAction extends DevelopmentSupport {
 
@@ -143,10 +145,12 @@ public Edrpusers getEdrpuser() {
 
     public String execute() throws Exception {        
        try {
-            List<Erpmusers> list = erpmusersDao.RetrieveUser(erpmuser.getErpmuName(), erpmuser.getErpmuPassword()); //; //erpmuName);
-		List<Edrpusers> listedrp = edrpusersDao.RetrieveUser(erpmuser.getErpmuName(),erpmuser.getErpmuPassword());
-		//message="testing in erpmuseraction"+"list--"+list.size()+"--listedrp--"+listedrp.size();	
-            
+           	String hashpswrd=HibernateEncryptionUtil.createDigest("MD5",erpmuser.getErpmuPassword()).trim(); 
+            	//List<Erpmusers> list = erpmusersDao.RetrieveUser(erpmuser.getErpmuName(),erpmuser.getErpmuPassword()); //; //erpmuName);
+            	List<Erpmusers> list = erpmusersDao.RetrieveUser(erpmuser.getErpmuName(),hashpswrd); //; //erpmuName);
+		List<Edrpusers> listedrp = edrpusersDao.RetrieveUser(erpmuser.getErpmuName(),hashpswrd);
+           	ExceptionLogUtil.ExceptionLog("authenticate username in ErpmuserAction--->"+erpmuser.getErpmuName()); 
+           	ExceptionLogUtil.ExceptionLog("authenticate password in ErpmuserAction--->"+erpmuser.getErpmuPassword()); 
             LangList=LangDao.findAll();
             if ((list.size() == 0)||(listedrp.size()== 0))
             {
@@ -156,8 +160,6 @@ public Edrpusers getEdrpuser() {
            }
             else
             {
-		message=message+"else partlisterpmuser=="+list.size();	
-                
                 Erpmuserrole userDefaultRole = erpmuserroleDAO.findDefaultUserRole(list.get(0).getErpmuId());                
                 getSession().setAttribute("isAdministrator", erpmuserroleDAO.isUserAdministrator(list.get(0).getErpmuId()));
 
@@ -250,7 +252,8 @@ public Edrpusers getEdrpuser() {
            return SUCCESS;
         }
         catch (Exception e) {
-            message = message + e.getCause() + "  " + e.getMessage() + Integer.parseInt(getSession().getAttribute("userid").toString());
+            	message = message + e.getCause() + "  " + e.getMessage() + Integer.parseInt(getSession().getAttribute("userid").toString());
+		ExceptionLogUtil.ExceptionLog("Exception in ErpmusersAction at authentication(execute method)-->"+message);
 	return ERROR;
         }
     }
@@ -369,6 +372,5 @@ public String Connectivity() throws Exception {
                         return ERROR;
                 }
     }
-
 
 }
