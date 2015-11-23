@@ -108,8 +108,8 @@
                                              <h:graphicImage url="/img/err.png"/>
                                          </f:facet>
                                     </rich:messages>
-                                </div>
-
+                                </div> 
+ 
                                 <label>
                                     <span>Email :</span>
                                     <h:inputText label="User Name" value="#{UserBean.userName}" />
@@ -122,7 +122,7 @@
 
                                 <input type="hidden" name="userrole" value="user" />
 
-                                 <label>
+                                <label>
                                     <span>&nbsp;</span>
 
                                     <h:commandButton  action="#{UserBean.validate}" value="Login" styleClass="button"/><br/>
@@ -141,13 +141,13 @@
                                <%--<a  href="adminLogin/EmployeeProfile.jsf" >Employee Registration</a>--%>
                             </div>
 
-                            <%--<div class="question">
+                               <%--<div class="question">
                                 <h4> Forgot Password?</h4>
                                 <a  href="" >Reset it here</a>
                             </div>--%>
-
                             <div id='links'>
                                 <ul>
+                                    <li><a href="adminLogin/ForgotPassword.jsf " > Forgot Password </a></li>
                                    <li><a href="http://202.141.40.215/WebApp/wiki/index.php/PayRoll_System" target="_blank">Help Document</a></li>
                                    <li><a href='adminLogin/brihaspatiMainLogin.jsf' target="_blank">Brihaspati Server Authentication</a></li>
                                    <li><a href='http://202.141.40.215/WebApp/wiki/index.php/Release_Notes' target="_blank">Release Notes</a></li>

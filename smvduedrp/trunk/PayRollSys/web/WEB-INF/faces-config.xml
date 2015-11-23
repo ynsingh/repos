@@ -606,6 +606,15 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <description>
+			ForgotPassword Bean
+        </description>
+        <managed-bean-name>ForgotPasswordBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.ForgotPassword</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
     <managed-bean>
         <description>

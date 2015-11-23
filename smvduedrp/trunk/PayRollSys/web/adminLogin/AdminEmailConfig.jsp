@@ -22,7 +22,7 @@ GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
             <rich:panel header="List Of Email Configuration" style="font-size:17px;font-weight:bold; height:320px; width:1290px " >
 
                 <h:panelGrid columns="1" id="adminemail">
-                    <a4j:commandButton onclick="Richfaces.showModalPanel('adnew');" value="Add New Admin EmailId Configration"/>
+                    <a4j:commandButton onclick="Richfaces.showModalPanel('adnew');" value="Add New"/>
                     <rich:panel style="margin-left:150px;margin-right:150px;border:none;">
                         <rich:messages>
                             <f:facet name="infoMarker">
@@ -76,7 +76,7 @@ GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
                             </rich:panel>
                             <rich:panel>
                                 <h:panelGrid columns="2">
-                                    <h:outputText value="User ID"/>
+                                    <h:outputText value="Email ID"/>
                                     <h:inputText value="#{OrgProfileBean.email}"/>
                                     <h:outputText value="Password"/>
                                     <h:inputSecret value="#{OrgProfileBean.adPassword}"/>

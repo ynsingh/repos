@@ -247,6 +247,7 @@ public class CollegeList {
     {
         try
         {
+            
             Connection connection = new CommonDB().getConnection();
             PreparedStatement pst = null; 
             PreparedStatement pst1 = null;
@@ -255,11 +256,13 @@ public class CollegeList {
             {
                 if(or.isStatus() == true)
                 {
+                   // System.out.print("Om1======>"+or.getId());
                     st =1;
                     new OrgConformationEmail().sendMail(or); 
                 }
                 else
                 {
+                    
                     st = 0;
                     new OrgConformationEmail().sendDeActivationCollegeMail(or); 
                 }
@@ -774,7 +777,7 @@ public class CollegeList {
             pst = connection.prepareStatement("select count(user_name) as total from user_master");
             rst = pst.executeQuery();
             rst.next();
-            totalCollege = rst.getInt("total");
+            totalCollege = rst.getInt("total")-1;
             return totalCollege;
         }
         catch(Exception ex)
@@ -794,7 +797,7 @@ public class CollegeList {
             pst = connection.prepareStatement("select count(user_name) as total from user_master where flag = '"+1+"'");
             rst = pst.executeQuery();
             rst.next();
-            totalCollege = rst.getInt("total");
+            totalCollege = rst.getInt("total")-1;
             return totalCollege;
         }
         catch(Exception ex)
@@ -917,7 +920,7 @@ public class CollegeList {
     }
   
     /**
-     * update the Password for user for Specific organisation
+     * update the Password for user for Specific organization
      * @param org
      * @return 
      * 

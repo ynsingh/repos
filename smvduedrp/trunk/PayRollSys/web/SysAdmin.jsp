@@ -127,7 +127,7 @@
                                     </h:column>--%>
                                     <%-- <h:column> --%>
                                 <rich:dropDownMenu id="madmin" value="Manage Administrator " >
-                                <rich:menuItem value="Add New Admin Email ID Config" onclick="return loadIframe('ifrm', 'adminLogin/AdminEmailConfig.jsf')"/>
+                                <rich:menuItem value="Add Admin Email ID Config" onclick="return loadIframe('ifrm', 'adminLogin/AdminEmailConfig.jsf')"/>
                                 <rich:menuItem   value="Add New Administrator" onclick="return loadIframe('ifrm', 'adminLogin/adminList.jsf')" />
                                 <rich:menuItem value="SMTP Configuration" onclick="return loadIframe('ifrm', 'adminLogin/ServerList.jsf')" />
                                             <%-- <rich:menuItem value="Admin Profile " onclick="return loadIframe('ifrm', 'adminLogin/ServerList.jsf')" /> --%>

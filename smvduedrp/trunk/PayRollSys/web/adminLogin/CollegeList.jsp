@@ -2,7 +2,7 @@
     Document   : AdminIframe
     Created on : Dec 13, 2012, 9:13:24 PM
     Author     : KESU
-GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
+    GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -143,7 +143,7 @@ GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
                         </rich:panel>
                         <rich:panel>
                             <h:panelGrid columns="2">
-                                <h:outputText value="User ID"/>
+                                <h:outputText value="Email ID"/>
                                 <h:inputText id="cem" value="#{OrgProfileBean.email}"/>
                                 <h:outputText value="Password"/>
                                 <h:inputSecret value="#{OrgProfileBean.adPassword}"/>
