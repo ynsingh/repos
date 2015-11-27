@@ -102,6 +102,7 @@ $!data.getMessage()
 		<font color=red>$brih_MarksMsg5</font>
 	</td></tr>
 </table>
+<div align="right"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("type","spreadsheet")">$brih_create $brih_sheet</a></div>
 ## Form is created
 <form name="show" method="POST" action="$link.setPage("call,UserMgmt_User,UploadMarks.vm").setAction("UploadMarksAction")">
 #if($show.size()!=0)
@@ -168,12 +169,13 @@ $!data.getMessage()
         <label><b>$brih_file<font color="red">*</font></b></label>
         <input class="browse" type="file" name="file1" id="file1">
         </div>
-<div align="right"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("type","spreadsheet")">$brih_create $brih_sheet</a></div>
+##<div align="right"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("type","spreadsheet")">$brih_create $brih_sheet</a></div>
 </div>
 
 <input class="button-ftextstyle" type="button" name="eventSubmit_doUpload" value="$brih_upload" id="upload"/>
 <input class="button-ftextstyle" type='button' value='$brih_add $brih_marks $brih_file' id='addFile'> 
 <input class="button-ftextstyle" type='button' value='$brih_remove $brih_file' id='removeFile'>
+<input type="reset" class="button-ftextstyle" name="Reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 <input type="hidden" name="actionName" value="eventSubmit_doUpload">
 <input type="hidden" name="type" value="$type">
 </div>

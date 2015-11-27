@@ -47,7 +47,7 @@ $!data.getMessage()
 	#end
 	</b>
    </td>
-	<td width="30%" align="right">
+	<td width="30%" colspan=6 align="right">
 	#if( $total_size!=0 )
 	#if( $endIndex < $total_size )
 		#if( $endIndex < $AdminConf )
@@ -133,10 +133,10 @@ $!data.getMessage()
 #else
 <form name="frm" ENCTYPE="multipart/form-data" method="post" action="$link.setPage("call,Local_Mail,MailTestMessage.vm").setAction("Add")">
 #end
-##<table width=100% align=left bgcolor="$ui.tableColor">
+<table width=100% align=left bgcolor="$ui.tableColor">
 <tr bgcolor="$ui.menuColor">
-	<td colspan=2><b>$brih_searchBy $brih_usrName</b></td>
-        <td colspan=2><b>$brih_match_str </b></td>
+	<td colspan=4><b>$brih_searchBy $brih_usrName</b></td>
+        ##<td colspan=2><b>$brih_match_str </b></td>
         <td><input align=center type="text" name="valueString" value=""></td>
         <td>
         	<input type="button" class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
@@ -170,13 +170,13 @@ $!data.getMessage()
         	        $brih_select $brih_all</b>
                 #end
 </td>
-<td colspan=5>
+##<td colspan=5>
           #set($count="")
 
           #foreach ($heading in $headings)
 		#headerCell($heading)
           #end
-</td>
+##</td>
 </tr>
 #foreach ($urecord in $userlist)
 	#if($userlist.size()%2==0)

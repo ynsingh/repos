@@ -156,6 +156,7 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
         <td colspan=2 align="left">
        		<input type="button" class="button-ftextstyle" name="eventSubmit_doUploadImage" value="$brih_upload" onClick="CheckField(document.frm,this);"/>
+		<input type="reset" class="button-ftextstyle" name="Reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="count" value="$tdcolor"/>
 
