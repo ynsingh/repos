@@ -237,7 +237,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                        	buttonPanel[i].setLayout(new FlowLayout());
                        	buttonPanel[i].setBorder(BorderFactory.createLineBorder(Color.gray));
 			ClassLoader clr= this.getClass().getClassLoader();
-                       	descLabel[i]=new JLabel("<html><Font color=blue><u>"+Language.getController().getLangValue("StudentCSPanel.LectureInfo")+"</u></font></html>",new ImageIcon(clr.getResource("resources/images/info.gif")),0);
+                       	descLabel[i]=new JLabel("<html><Font color=blue><u>"+Language.getController().getLangValue("StudentCSPanel.LectureInfo")+"</u></font></html>",0);//new ImageIcon(clr.getResource("resources/images/info.gif")),0);
 			descLabel[i].addMouseListener(this);
 			descLabel[i].setName("lectureInfo.Action");
 			descLabel[i].setCursor(new Cursor(Cursor.HAND_CURSOR));

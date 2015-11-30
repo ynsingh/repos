@@ -65,7 +65,8 @@ public class JoinSession {
 			String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
 			//get reflector ip from indexing server.
 			String ref_ip  =HttpsUtil.getReflectorAddress(indexServer);
-			if(!(ref_ip.equals(""))) {
+
+			if(!(ref_ip.equals("UnSuccessfull")) || (ref_ip.equals(""))) {
 				if(!(ThreadController.getThreadFlag()))
 			       		ThreadController.setThreadFlag(true);	
 				StatusPanel.getController().sethttpClient("no");
@@ -75,8 +76,12 @@ public class JoinSession {
 				startGUIThread();
 				ThreadController.setReflectorStatusThreadFlag(true);
 	                        ReceiveQueueHandler.getController().start();
-				StatusPanel.getController().setProcessBar("no"); StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog2")); } else {
-				StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	} }catch(Exception ex) {  System.out.println("Exception on Join Session !! "+ex.getMessage());}
+				StatusPanel.getController().setProcessBar("no"); 
+				StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog2"));
+			 } else {
+				StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));
+                        	}
+		}catch(Exception ex) {  System.out.println("Exception on Join Session !! "+ex.getMessage());}
 	}
 
 	/**
