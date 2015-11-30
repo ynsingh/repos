@@ -90,6 +90,7 @@ public class JoinSession {
 			MainWindow mainWindow=MainWindow.getController();
 			mainWindow.setMenuItemText();
 			mainWindow.setMenuText();
+			mainWindow.setMenuText1();
 			mainWindow.getDesktop().removeAll();
                         mainWindow.getDesktop().setBackground(new java.awt.Color(220,220,220));
                         mainWindow.getDesktop().add(new JoinSessionPanel(),BorderLayout.CENTER);
