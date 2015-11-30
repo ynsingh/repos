@@ -54,7 +54,7 @@ $!data.getMessage()
 			<div>
 			<tr>
                         #foreach($heading in $headings)
-                             	<th bgcolor="$ui.menuColor">&nbsp;&nbsp;$heading&nbsp;&nbsp;</th>
+                             	<th bgcolor="$ui.menuColor">$heading</th>
                         #end
                         </tr>
 			#set($counter=0)

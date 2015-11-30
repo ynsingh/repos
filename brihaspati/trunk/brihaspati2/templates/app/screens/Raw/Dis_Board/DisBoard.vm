@@ -27,9 +27,9 @@
 
 $page.setBgColor($ui.bgcolor)
 #if($mode=="compose")
-	$page.setTitle("Home | DiscussionBoard |$LocalMail_MailContent_msg1")
+	$page.setTitle("Home | DiscussionBoard |Compose Message ")
 #else
-	$page.setTitle("Home | $course |Communication | DiscussionBoard |$LocalMail_Reply")
+	$page.setTitle("Home | $course |Communication | DiscussionBoard | Compose Message ")
 #end
 $!data.getMessage()
 
@@ -50,7 +50,7 @@ $!data.getMessage()
 			   <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_communication</a> |
 			   <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style='text-decoration:none'>$DiscussionBoard</a> |
 			   #if($check!="first") 
-				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("count","4").addPathInfo("countTemp","2") style='text-decoration:none'>$LocalMail_MailContent_msg3</a> |</b>
+				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("count","4").addPathInfo("countTemp","2") style='text-decoration:none'>
 			#end
 		   #end
 #end		

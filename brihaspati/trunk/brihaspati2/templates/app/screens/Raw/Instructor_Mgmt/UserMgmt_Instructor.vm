@@ -8,7 +8,7 @@
  * @modify date: 10-12-2011, 07-02-2012
 *#
 
-$page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
+$page.setTitle("Home | $course1 | Instructor Management")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
