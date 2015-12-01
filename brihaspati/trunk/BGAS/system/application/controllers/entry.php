@@ -2432,7 +2432,7 @@ $width="100%";
 		$data['back_ref_id'] = $cur_entry->backward_refrence_id;
 		$data['submitted_by'] = $cur_entry->submitted_by;
                 $data['verified_by'] = $cur_entry->verified_by;
-		
+		$data['vendor_voucher_number'] = $cur_entry->vendor_voucher_number;
 
 		/* Getting Ledger details */
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
@@ -4391,7 +4391,8 @@ $width="100%";
 		$data['entry_dr_total'] =  $cur_entry->dr_total;
 		$data['entry_cr_total'] =  $cur_entry->cr_total;
 		$data['entry_narration'] = $cur_entry->narration;
-		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
+		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;	
+		$data['vendor_voucher_number'] = $cur_entry->vendor_voucher_number;
         $data['back_ref_id'] = $cur_entry->backward_refrence_id;
 		$data['submitted_by'] = $cur_entry->submitted_by;
         $data['verified_by'] = $cur_entry->verified_by;

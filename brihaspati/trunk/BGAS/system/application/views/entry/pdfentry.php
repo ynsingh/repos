@@ -113,6 +113,8 @@
 	echo"<br>";
 	echo"Bill/Voucher Date : ".$entry_date;
 	echo"<br>";
+	echo"Vendor/Voucher Number : ".$vendor_voucher_number;
+
 	echo"<br>";
 	echo"<br>";
 
