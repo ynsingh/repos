@@ -190,6 +190,9 @@ public String FetchCommitteeMaster() throws Exception {
             cmList = cmDAO.findCommittees(cm.getInstitutionmaster().getImId(), cm.getSubinstitutionmaster().getSimId(), cm.getDepartmentmaster().getDmId());
 */
 	cmList = cmDAO.findCommittees(Short.valueOf(getSession().getAttribute("imId").toString()));
+	if(cmList.size()== 0){
+		message= "Committee  not created till now";
+	}
         //Initialize LOV,s
         InitializeitemsLOVs();
 

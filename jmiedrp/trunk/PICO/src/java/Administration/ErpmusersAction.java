@@ -152,7 +152,7 @@ public Edrpusers getEdrpuser() {
            	ExceptionLogUtil.ExceptionLog("authenticate username in ErpmuserAction--->"+erpmuser.getErpmuName()); 
            	ExceptionLogUtil.ExceptionLog("authenticate password in ErpmuserAction--->"+erpmuser.getErpmuPassword()); 
             LangList=LangDao.findAll();
-            if ((list.size() == 0)||(listedrp.size()== 0))
+            if ((list.size() == 0)&&(listedrp.size()== 0))
             {
                 message = "Either your account is not yet activated or password is incorrect. Pl. contact your administrator";
                 list.clear();
@@ -352,25 +352,5 @@ public String verifyBrihaspatiLogin() {
     return ERROR;
     
 }
-public String Connectivity() throws Exception {
-                try{
-                        Locale locale = ActionContext.getContext().getLocale();
-                        ResourceBundle bundle = ResourceBundle.getBundle("dao", locale);
-                        String  dburl=bundle.getString("pico.jdbc.url");
-                        String  mysqluname=bundle.getString("pico.jdbc.username");
-                        String  mysqlupsswd=bundle.getString("pico.jdbc.password");
-                        Connection conn=DriverManager.getConnection(dburl, mysqluname, mysqlupsswd);
-                        Statement stmt=conn.createStatement();
-                        ResultSet rs=stmt.executeQuery("select * from erpmusers");
-                        while(rs.next())
-                        message=rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3);
-                        conn.close();
-                        return SUCCESS;
-                }
-                catch(Exception e){
-                        message="error in connectivity method";
-                        return ERROR;
-                }
-    }
 
 }

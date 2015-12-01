@@ -77,7 +77,7 @@ public class ManageUserAction extends DevelopmentSupport  {
     private String erpmuName;
     private String RetypedPassword;
     private Integer erpmurId;
-    private String erpmusersdob;
+    //private String erpmusersdob;
     private Short imId;
     private String emailTo;
     private String subject;
@@ -207,13 +207,13 @@ public class ManageUserAction extends DevelopmentSupport  {
     }
 
 
-    public String geterpmusersdob() {
+   /* public String geterpmusersdob() {
         return this.erpmusersdob;
     }
 
     public void geterpmusersdob(String erpmusersdob) {
         this.erpmusersdob = erpmusersdob;
-    }
+    }*/
 
     public String getMessage() {
         return this.message;
@@ -309,7 +309,6 @@ public class ManageUserAction extends DevelopmentSupport  {
     @Override
     public String execute() throws Exception {
         try {
-                
             return SUCCESS;
         } catch (Exception e) {
             message = "Exception in -> RegisterUserAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
@@ -325,7 +324,8 @@ public class ManageUserAction extends DevelopmentSupport  {
             return SUCCESS;
         }
         catch (Exception e) {
-            message = "Exception in AddUser method -> ManageUserAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+		message = "Exception in AddUser method -> ManageUserAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+		ExceptionLogUtil.ExceptionLog(message);
             return ERROR;
         }
     }
@@ -334,10 +334,11 @@ public class ManageUserAction extends DevelopmentSupport  {
     public String SaveUser() throws Exception {
         try {
             //If part saves record for the first time; else parts is for record update
-
             if (erpmusers.getErpmuId() == null) {
                 erpmusers.setErpmuActive("N");
                 //erpmusers.setErpmuActive("Y");
+                String encrptdpswd = HibernateEncryptionUtil.createDigest("MD5",erpmusers.getErpmuPassword());
+            	erpmusers.setErpmuPassword(encrptdpswd);
                 erpmusersDao.save(erpmusers);
                 erpmur.setErpmurActive('N');
                 //erpmur.setErpmurActive('Y');
@@ -345,6 +346,7 @@ public class ManageUserAction extends DevelopmentSupport  {
                 erpmurDao.save(erpmur);
 		message="User Registered Successfully.";
             } else {
+		ExceptionLogUtil.ExceptionLog("in else part at line 350=="+erpmusers.getErpmuId());
                 Erpmusers erpmusers2 = erpmusersDao.findByUserName(erpmusers.getErpmuName());
                 erpmusers2 = erpmusers;
                 erpmusersDao.update(erpmusers2);
@@ -354,8 +356,10 @@ public class ManageUserAction extends DevelopmentSupport  {
         } catch (Exception e) {
             if (e.getCause().toString().contains("UNIQUE_ERPMU_Name")) {
                 message = "Sorry, the User Id '" + erpmusers.getErpmuName() + "' is not available. Please try with a different one";
+		ExceptionLogUtil.ExceptionLog("Error in ManageUserAction in catch block--->"+message);
             } else {
                 message = "Exception in Save method -> RegisterUserAxn" + e.getMessage() + "Reported Cause is: " + e.getCause();
+		ExceptionLogUtil.ExceptionLog("Exception in ManageUserAction in catch block--->"+message);
             }
             return ERROR;
         }

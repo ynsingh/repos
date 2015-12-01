@@ -101,12 +101,12 @@ I18n By    : Mohd. Manauwar Alam
                                                  key="Administration.ReTypePassword" name="RetypedPassword" title="Reenter password" />
                                     <s:textfield requiredposition="left" maxLength="50" size="50"
                                                  key = "Administration.FullName" name="erpmusers.erpmuFullName" title="Enter your full Name" />
-                                    <sx:datetimepicker name="erpmusers.erpmuDob" key="Administration.DOByyyymmdd"
+                               <%--     <sx:datetimepicker name="erpmusers.erpmuDob" key="Administration.DOByyyymmdd"
                                                  displayFormat="dd-MMM-yyyy" value="%{'today'}" />
                                     <s:textfield requiredposition="left" maxLength="100" size="100"
                                                  key="Administration.SecretQuestion" name="erpmusers.erpmuSecretQuestion" title="Enter a secret question" />
                                     <s:textfield requiredposition="left" maxLength="100" size="100"
-                                                 key="Administration.SecretAnswer" name="erpmusers.erpmuSecretAnswer" title="Enter your answer to secret question" />
+                                                 key="Administration.SecretAnswer" name="erpmusers.erpmuSecretAnswer" title="Enter your answer to secret question" />   --%>
                                     <s:select key="Administration.InstUserRole" name="erpmur.institutionuserroles.iurId" headerKey="0" headerValue="-- Please Select --" list="iurIdList" listKey="iurId" listValue="iurName" required="true"/>
                                     <s:checkbox name="erpmur.erpmurDefault"  labelposition="left" key="Administration.IsDefaultRole" value="1"/>
                                 </td>
@@ -115,7 +115,7 @@ I18n By    : Mohd. Manauwar Alam
 <%--                                    <s:submit theme="simple" name="btnSubmit" value="Register User"  />
                                     <s:reset theme="simple" name="bthReset" id="btnReset" value="Clear" action = "AddUser"/>
                                     <s:submit theme="simple" name="btnSubmit" value="Exit"   action="Index"/> --%>
-                                    <s:submit theme="simple" name="btnSubmit" key="Administration.RegisterUser"  />
+                                    <s:submit theme="simple" name="btnSubmit" key="Administration.RegisterUser" action ="CreateUser"/>
                                     <s:reset theme="simple" name="bthReset" id="btnReset" key="Administration.Clear" action = "AddUser"/>
                                     <s:submit theme="simple" name="btnSubmit" key="Administration.Home"   action="Index"/>
                         </td><td></td>
