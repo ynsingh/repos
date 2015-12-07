@@ -3,7 +3,11 @@
  * and open the template in the editor.
  */
 package org.smvdu.payroll.api.Administrator;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,10 +20,9 @@ import org.smvdu.payroll.api.email.OrgConformationEmail;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.OrgProfileDB;
-import org.smvdu.payroll.beans.db.UserDB;
 import org.smvdu.payroll.beans.setup.Org;
 import org.smvdu.payroll.user.UserRegistration;
-import org.springframework.context.annotation.Scope;
+import org.smvdu.payroll.user.changePassword;
 /**
  *
  * @author KESU
@@ -513,23 +516,24 @@ public class CollegeList {
     
     
     
-   /**
-    * 
-    * Update Admin records 
+   /**Method for change Admin password
+    * Update user_master and edrpuser in LoginDB.  
     * @param admin
     * @return 
-    * 
     */
     
     public Exception changePass(Org admin)
     {
         try
         {
-            System.out.println("Admin ID : "+adminUserId+admin.getAdPassword());
+           /* System.out.println("Admin ID : "+adminUserId+"\npassword===="+admin.getAdPassword());
             Connection connection = new CommonDB().getConnection();
             PreparedStatement pst; 
             pst = connection.prepareStatement("update admin_records set admin_pass = '"+admin.getAdPassword()+"' where user_id='"+adminUserId+"'and flag='"+1+"'");
-            pst.executeUpdate();
+            pst.executeUpdate();*/
+            String pwd= new EncryptionUtil().createDigest("MD5",admin.getAdPassword());
+            String changepassinDb=new changePassword().changePaswordInLoginDB(pwd, adminUserId);
+            System.out.println("pwd-====="+pwd);
             return null;
         }
         catch(Exception ex)
@@ -925,24 +929,20 @@ public class CollegeList {
      * @return 
      * 
      */
-    
-    public Exception updatePassword(Org org)
+    public Exception updatePassword(Org editedRecord)
     {
         try
         {
             Connection cn = new CommonDB().getConnection();
             PreparedStatement pst;
-            PreparedStatement pst1;
-            cn.setAutoCommit(false); 
-            pst1 = cn.prepareStatement("update user_master set user_pass = '"+org.getAdPassword()+"' where user_name = '"+org.getEmail()+"'");
-            pst = cn.prepareStatement("update org_profile set org_master_password = '"+org.getAdPassword()+"' where org_email = '"+org.getEmail()+"'");
+           // System.out.println("org email====="+editedRecord.getEmail()+"password==="+editedRecord.getAdPassword());
+            String pass= new EncryptionUtil().createDigest("MD5",editedRecord.getAdPassword());
+            String changepassinDb=new changePassword().changePaswordInLoginDB(pass, editedRecord.getEmail());
+            pst = cn.prepareStatement("update org_profile set org_master_password = '"+pass+"' where org_email = '"+editedRecord.getEmail()+"'");
             pst.executeUpdate();
-            pst1.executeUpdate();
             pst.close();
-            pst1.close();
-            cn.commit();
             cn.close();
-            new OrgConformationEmail().sendChangePasswordMail(org); 
+            new OrgConformationEmail().sendChangePasswordMail(editedRecord); 
             return null;
         }
         catch(Exception ex)

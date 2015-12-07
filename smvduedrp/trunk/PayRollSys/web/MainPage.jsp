@@ -444,7 +444,7 @@
                 </h:form>
             </rich:modalPanel>
 
-                    <rich:modalPanel id="cp" width="300" height="240" autosized="true">
+                <rich:modalPanel id="cp" width="500" height="240" autosized="true">
                 <f:facet name="controls">
                     <h:graphicImage value="/img/close1.png" style="cursor:pointer"
                                     onclick="Richfaces.hideModalPanel('cp')" />
@@ -452,21 +452,31 @@
                 <f:facet name="header">
                     <h:outputText value="Change Password " />
                 </f:facet>
+                
                 <h:form>
+                    <rich:messages>
+                        <f:facet name="infoMarker">
+                            <h:graphicImage url="/img/success.png"/>
+                        </f:facet>
+                        <f:facet name="errorMarker">
+                            <h:graphicImage url="/img/err.png"/>
+                        </f:facet>
+                    </rich:messages>
+                    <br/    >
                     <%--<h:panelGrid columns="2" id="contact" styleClass="contactform" cellpadding="0" cellspacing="0">--%>
                     <h:panelGrid columns="3" styleClass="data_entry_form" columnClasses="label,field">
                         <h:outputText value="New Password"/>
-                        <h:inputSecret id="spass" label="Password" value="#{UserBean.pass1}"/>
+                        <h:inputSecret size="30" id="spass" label="Password" value="#{UserBean.pass1}"/>
                         <h:message for="npass" style="color:red" />
                         <h:outputText value="Confirm Password "/>
-                        <h:inputSecret id="cpass" label="Password" value="#{UserBean.pass2}"/>
+                        <h:inputSecret size="30" id="cpass" label="Password" value="#{UserBean.pass2}"/>
                         <h:message for="cpass" style="color:red" />
                     </h:panelGrid>
                     <br/>
-                    <rich:separator/> 
-                    <h:panelGrid columns="2" id="con" styleClass="contactform" cellpadding="0" cellspacing="0">
+                    <%--<rich:separator/> --%>
+                    <h:panelGrid columns="2" id="con" style="padding-left:20%;" cellpadding="0" cellspacing="0">
                     <a4j:commandButton value="Submit" action="#{UserBean.editPass}"/>
-                    <h:commandButton onclick="Richfaces.hideModalPanel('cp');" value="Close"/>
+                    <a4j:commandButton value="Reset" type="reset"/>
                     </h:panelGrid>
                 </h:form>
             </rich:modalPanel>

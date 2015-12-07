@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import org.smvdu.payroll.api.EncryptionUtil;
 import org.smvdu.payroll.beans.UserGroup;
 import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.user.changePassword;
 
 /**
 *
@@ -127,33 +128,8 @@ public class UserDB {
     public boolean editPass(String pass,String userName)   {
         try
         {
-            Connection c = new CommonDB().getConnection();
-            Connection connectionLogin = new CommonDB().getLoginDBConnection();
-            //System.out.println("connectionLogin==="+connectionLogin);
             pass= new EncryptionUtil().createDigest("MD5",pass);
-            boolean dbExist = new CommonDB().checkLoginDBExists();
-            if(dbExist){
-                //System.out.println("Login Database exist");
-                int id =CheckUserExistInLoginDB(userName);
-                if(id > 0){
-                    PreparedStatement pst = null; 
-                    pst = connectionLogin.prepareStatement("update edrpuser set password=? where username=?");
-                    pst.setString(1, pass);
-                    pst.setString(2, userName);
-                    pst.executeUpdate();
-                    pst.clearParameters();
-                    pst.close();
-                }
-                else{
-                    //System.out.println("Entry not Exist in edrpuser table  for - "+userName);
-                }
-            }
-            ps=c.prepareStatement("update user_master set user_pass=? where user_name=?");
-            ps.setString(1, pass);
-            ps.setString(2, userName);
-            ps.executeUpdate();
-            ps.close();
-            c.close();
+            String changepassinDb=new changePassword().changePaswordInLoginDB(pass, userName);
             return true;
         }
         catch(Exception e)

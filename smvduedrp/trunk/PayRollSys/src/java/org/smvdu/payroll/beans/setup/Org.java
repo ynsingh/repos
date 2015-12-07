@@ -14,19 +14,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.context.Flash;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.smvdu.payroll.Admin.AdminManagedBean;
 import org.smvdu.payroll.Admin.ServerDetails;
 import org.smvdu.payroll.api.Administrator.CollegeList;
 import org.smvdu.payroll.beans.composite.OrgController;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.OrgProfileDB;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  *
@@ -955,7 +949,9 @@ public class Org implements Serializable{
             
         }
     }
-     public void changeAdPassword()
+    
+    
+    public void changeAdPassword()
     {
         try
         {
@@ -972,14 +968,14 @@ public class Org implements Serializable{
             if(new CollegeList().changePass(this) == null)
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
-                 message.setSummary("Password Are Updated");
+                 message.setSummary("Password updated successfully");
                  fc.addMessage("", message);
             }
             else
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
-                 message.setSummary("Error...");
-                 fc.addMessage(""+new CollegeList().changePass(this), message); 
+                message.setSummary("Error...");
+                fc.addMessage(""+new CollegeList().changePass(this), message); 
             }
         }
         catch(Exception ex)
@@ -991,7 +987,7 @@ public class Org implements Serializable{
     {
         try
         {
-            System.out.println("Addeing.............");
+            //System.out.println("Addeing.............");
             Exception ex = new CollegeList().adminDB(this);
             if(ex == null)
             {
@@ -1013,7 +1009,6 @@ public class Org implements Serializable{
             FacesMessage message = new FacesMessage();
             
             ArrayList<Org> admin = (ArrayList<Org>) dataGrid.getValue();
-            //System.out.println("\nActive Admin======seema : "+admin);
             int active = 0;
             for(Org ad : admin)
             {
@@ -1181,24 +1176,30 @@ public class Org implements Serializable{
             ex.printStackTrace();
         }
     }
-     public void updatePassword()
+     
+    /**Method for update Password for the Institute Admin */
+    
+    public void updatePassword()
     {
         try
         {
             FacesContext fc = FacesContext.getCurrentInstance();
             FacesMessage message = new FacesMessage();
-           /* Org o = new Org();
-            o = (Org) dataGrid1.getRowData();*/
-            //System.out.println("Email ID : : : "+o.getEmail());
-            //o.setEmailId(o.getEmail());
+            if(!editedRecord.getAdPassword().equals(editedRecord.getAdRePassword()))
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Password Are Not Matching.....Please Try Again.");
+                fc.addMessage("", message);
+                return;
+             
+            }
             
-               Exception ex = new CollegeList().updatePassword(this); 
-               
+            Exception ex = new CollegeList().updatePassword(editedRecord); 
             if(ex == null)
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
-                message.setSummary("College Updated Successfuly");
-                //message.setDetail("First Name Must Be At Least Three Charecter ");
+                message.setSummary("Password updated successfully Mail has been  sent successfuly to : "+editedRecord.getEmail());
+               //message.setDetail("First Name Must Be At Least Three Charecter ");
                 fc.addMessage("", message);
             }
             
@@ -1297,9 +1298,25 @@ public class Org implements Serializable{
             ex.printStackTrace();
         }
     }
-     public void abc()
-     {
-         System.out.println("Email ID : "+this.getEmail());
-     }
-          
+
+    Org editedRecord;
+
+    public Org getEditedRecord() {
+       return editedRecord;
+    }
+
+    public void setEditedRecord(Org editedRecord) {
+        this.editedRecord = editedRecord;
+    }
+
+    private int currentRecordindex;
+
+    public int getCurrentRecordindex() {
+        return currentRecordindex;
+    }
+
+    public void setCurrentRecordindex(int currentRecordindex) {
+        this.currentRecordindex = currentRecordindex;
+    }
+           
 }

@@ -9,35 +9,38 @@
 <%@ taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
 <%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
 <!DOCTYPE html>
-<f:view>
-    <html>
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>JSP Page</title>
-        </head>
-        <body>
-            <rich:panel header="Change Password">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <f:view>
+            <rich:panel header="Change Admin Password">
                 <h:form>
                     <rich:messages>
                         <f:facet name="infoMarker">
-                            <h:graphicImage url="/img/success.png"/>
+                           <h:graphicImage url="/img/success.png"/>
                         </f:facet>
                         <f:facet name="errorMarker">
-                            <h:graphicImage url="/img/err.png"/>
+                           <h:graphicImage url="/img/err.png"/>
                         </f:facet>
                     </rich:messages>
                     <h:panelGrid columns="2">
                         <h:outputText value="New Password"/>
-                        <h:inputSecret value="#{OrgProfileBean.adPassword}"/>
+                        <h:inputSecret size="30" value="#{OrgProfileBean.adPassword}"/>
                         <h:outputText value="Re. Password"/>
-                        <h:inputSecret value="#{OrgProfileBean.adRePassword}"/>
+                        <h:inputSecret size="30" value="#{OrgProfileBean.adRePassword}"/>
+                    </h:panelGrid>
+                    <br/>
+                    <rich:separator/> 
+                    <br/>
+                    <h:panelGrid columns="2" style="padding-left:6%;">
                         <a4j:commandButton value="Change" action="#{OrgProfileBean.changeAdPassword}"/>
                         <a4j:commandButton value="Reset" type="reset"/>
                     </h:panelGrid>
-                    <f:facet name="footer">
-                    </f:facet>
                 </h:form>
             </rich:panel>
-        </body>
-    </html>
-</f:view>
+        </f:view>
+    </body>
+</html>

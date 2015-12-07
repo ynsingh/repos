@@ -1,4 +1,4 @@
-<%-- 
+    <%-- 
     Document   : AdminIframe
     Created on : Dec 13, 2012, 9:13:24 PM
     Author     : KESU
@@ -39,8 +39,8 @@
                                 </rich:messages>
                                 
                                     <rich:dataTable style="font-size:14px;font-weight:bold;width:1050px;" id="upda" rowKeyVar="row" rows="20" value="#{OrgProfileBean.collegeList}" binding="#{OrgProfileBean.dataGrid1}"  var="ins"> 
-                                        <%-- <a4j:keepAlive beanName="OrgProfileBean"/>--%>
-                                       <h:column>
+                                        <a4j:keepAlive beanName="OrgProfileBean" ajaxOnly="true"/>
+                                        <h:column>
                                         <f:facet name="header" >
                                             <h:outputText value="S.No."/>
                                         </f:facet>
@@ -100,12 +100,9 @@
                                         <f:facet name="header" >
                                             <h:outputText value=""/>
                                         </f:facet>
-                                        <a4j:commandButton value="Change Password" onclick="Richfaces.showModalPanel('adnew');"/>
-                                        <%--           <rich:simpleTogglePanel opened="false" switchType="client" label="Change Password" height="90px" width="150">
-                                            <a4j:support event="onexpand" action="#{OrgProfileBean.updatePassword}"/>
-                                            <h:outputText id="iop" value="#{OrgProfileBean.email}"/>
-                                            <a4j:commandButton value="Change" action="#{OrgProfileBean.abc}"/>
-                                        </rich:simpleTogglePanel>--%>
+                                        <a4j:commandButton value="Change Password"  immediate="true" ajaxSingle="true" reRender="editGrid" onclick="Richfaces.showModalPanel('adnew');">
+                                        <f:setPropertyActionListener value="#{ins}" target="#{OrgProfileBean.editedRecord}" />
+                                        </a4j:commandButton>
                                    </h:column>
                                     <f:facet name="footer">
                                     <rich:datascroller for="upda" page="5" />
@@ -127,34 +124,43 @@
                 </rich:panel>
               </a4j:region>
                                      
-            <rich:modalPanel label="Change Password" id="adnew">
+            <rich:modalPanel label="Change Password" id="adnew" width="500" height="200" autosized="true">
                 <a4j:support event="onbeforeshow" action="#{OrgProfileBean.updatePassword}"/>
-                <h:panelGrid columns="1" id="op">
-                    <h:form>
-                        <rich:panel>
-                            <rich:messages>
-                                <f:facet name="infoMarker">
-                                    <h:graphicImage url="/img/success.png"/>
-                                </f:facet>
-                                <f:facet name="errorMarker">
-                                    <h:graphicImage url="/img/err.png"/>
-                                </f:facet>
-                            </rich:messages>
-                        </rich:panel>
-                        <rich:panel>
-                            <h:panelGrid columns="2">
-                                <h:outputText value="Email ID"/>
-                                <h:inputText id="cem" value="#{OrgProfileBean.email}"/>
-                                <h:outputText value="Password"/>
-                                <h:inputSecret value="#{OrgProfileBean.adPassword}"/>
-                                <h:outputText value="Re Password"/>
-                                <h:inputSecret value="#{OrgProfileBean.adRePassword}"/>
-                                <a4j:commandButton reRender="adminemail" value="Submit"  action="#{OrgProfileBean.updatePassword}"/>
-                                <a4j:commandButton onclick="Richfaces.hideModalPanel('adnew');" value="Close"/>
-                            </h:panelGrid>
-                        </rich:panel>
-                    </h:form>
-                </h:panelGrid>
+                <f:facet name="header">
+                    <h:panelGroup>
+                        <h:outputText value="Change Password"></h:outputText>
+                    </h:panelGroup>
+                </f:facet>
+                <f:facet name="controls">
+                    <h:panelGroup>
+                        <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelinkpnl"/>
+                        <rich:componentControl for="adnew" attachTo="hidelinkpnl" operation="hide" event="onclick"/>
+                    </h:panelGroup>
+                </f:facet>
+                <h:form>
+                    <rich:panel>
+                        <rich:messages>
+                            <f:facet name="infoMarker">
+                                <h:graphicImage url="/img/success.png"/>
+                            </f:facet>
+                            <f:facet name="errorMarker">
+                                <h:graphicImage url="/img/err.png"/>
+                            </f:facet>
+                        </rich:messages>
+                        <h:panelGrid id="editGrid" columns="2" style="width:500; height:200;">
+                            <h:outputText value="User ID"/>
+                            <h:outputText value="#{OrgProfileBean.editedRecord.email}"/>
+                            <h:outputText value="Password"/>
+                            <h:inputSecret size="30" value="#{OrgProfileBean.editedRecord.adPassword}"/>
+                            <h:outputText value="Re Password"/>
+                            <h:inputSecret size="30" value="#{OrgProfileBean.editedRecord.adRePassword}"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" style="padding-left:15%;">
+                            <a4j:commandButton reRender="upda" value="Submit"  action="#{OrgProfileBean.updatePassword}"/>
+                            <a4j:commandButton value="Reset" type="reset"/>
+                        </h:panelGrid>
+                    </rich:panel>
+                </h:form>
             </rich:modalPanel>            
         </body>
         </f:view>

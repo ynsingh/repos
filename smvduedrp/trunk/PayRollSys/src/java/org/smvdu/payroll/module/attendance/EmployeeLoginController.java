@@ -9,8 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.faces.context.FacesContext;
-import org.smvdu.payroll.api.email.Mail;
+import org.smvdu.payroll.api.EncryptionUtil;
 import org.smvdu.payroll.beans.db.CommonDB;
+import org.smvdu.payroll.user.changePassword;
 
 /**
  *
@@ -57,16 +58,8 @@ public class EmployeeLoginController {
     {
         try
         {
-            Connection c = new CommonDB().getConnection();
-            /*ps=c.prepareStatement("update employee_login_master set el_password=? where "
-                    + "el_login_name=?");*/
-            ps=c.prepareStatement("update user_master set user_pass=? where "
-                    + "user_name=?");
-            ps.setString(1, newPass);
-            ps.setString(2, email);
-            ps.executeUpdate();
-            ps.close();
-            c.close();
+            newPass= new EncryptionUtil().createDigest("MD5",newPass);
+            String changepassinDb=new changePassword().changePaswordInLoginDB(newPass, email);
             return true;
         }
         catch(Exception e)
@@ -85,7 +78,7 @@ public class EmployeeLoginController {
                     + "where att_emp_id=? and att_date=?");
             ps.setString(1, empCode);
             ps.setString(2, date);
-            System.out.println("empCode:==="+empCode+":"+date);
+            //System.out.println("empCode:==="+empCode+":"+date);
             ps.executeUpdate();
             ps.close();
             c.close();

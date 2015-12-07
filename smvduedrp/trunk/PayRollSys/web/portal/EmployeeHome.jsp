@@ -162,7 +162,7 @@
                         </rich:panel>--%>
 
                     </rich:panel>
-                    <rich:modalPanel id="cp"  width="300" height="200" autosized="true" >
+                    <rich:modalPanel id="cp"  width="500" height="200" autosized="true" >
                         <div class="errMessage">
                             <h:panelGrid columns="2">
                                 <rich:messages>
@@ -186,20 +186,21 @@
                                 <rich:componentControl for="cp" attachTo="hidelinkpnl" operation="hide" event="onclick"/>
                             </h:panelGroup>
                         </f:facet>
-                     
+                        <br/>
                         <h:form>
                            
                            <h:panelGrid columns="2" style="text-align:center;padding-left:10%;padding-right:10%" >
                                 <h:outputText value="New Password "/>
-                                <h:inputSecret value="#{LoggedEmployee.passOne}"/>
+                                <h:inputSecret size="30" value="#{LoggedEmployee.passOne}"/>
                                 <h:outputText value="Confirm Password "/>
-                                <h:inputSecret value="#{LoggedEmployee.passTwo}"/>
+                                <h:inputSecret size="30" value="#{LoggedEmployee.passTwo}"/>
                            </h:panelGrid>
                            <br/>
                            <rich:separator/> 
                            <br/>
-                           <h:panelGrid columns="2" style="text-align:center;padding-left:10%;padding-right:10%" >
+                           <h:panelGrid columns="3" style="text-align:center;padding-left:10%;padding-right:10%" >
                             <a4j:commandButton value="Submit" action="#{LoggedEmployee.changePassword}"/>
+                            <a4j:commandButton value="Reset" type="reset"/>
                             <a4j:commandButton value="Close" onclick="#{rich:component('cp')}.hide();"/>
                             </h:panelGrid>
                         </h:form>
