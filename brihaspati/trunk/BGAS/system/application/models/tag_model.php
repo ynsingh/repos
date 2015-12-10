@@ -243,6 +243,7 @@ class Tag_model extends Model {
 
 	 function get_bank_of_multiple_entry($entry_id)
         {
+		$val='';
                 $this->db->from('entry_items')->where('entry_id', $entry_id);
                 $entry_items1 = $this->db->get();
                 foreach ($entry_items1->result() as $row1){

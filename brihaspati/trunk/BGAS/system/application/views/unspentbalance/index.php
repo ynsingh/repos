@@ -27,8 +27,8 @@ echo "<thead><tr><th>Name Of Available File</th><th>Delete File</th></tr></thead
 echo "<tbody>";
  for($i=0; $i<$arr_len; $i++){
                 $exp_date=explode(",",$file_list[$i]);
-                if($file_list[$i] != 'notesToAccount.txt'){
-                        if($exp_date[1] == ' 2015plan_report.txt'){
+                if($file_list[$i] != 'notesToAccount.txt' || $file_list[$i] != 'BGASInstallationdoc.pdf'){
+                        if(@$exp_date[1] == ' 2015plan_report.txt'){
                         echo "<tr>";
                                 echo"<p>";
 				echo "<td>" . anchor('unspentbalance/view_file/'.$exp_date[0].'/plan_report', $file_list[$i]) . "</td>";

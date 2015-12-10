@@ -31,7 +31,7 @@ echo "<tbody>";
         for($i=0; $i<$arr_len; $i++){
 		$exp_date=explode(",",$file_list[$i]);
 		if($file_list[$i] != 'notesToAccount.txt'){
-			if($exp_date[1] == ' 2015nonplan_report.txt'){
+			if(@$exp_date[1] == ' 2015nonplan_report.txt'){
         		echo "<tr>";
                 		echo"<p>";
 				echo "<td>" . anchor('unspentbalance/view_file/'.$exp_date[0].'/nonplan_report', $file_list[$i]) . "</td>";

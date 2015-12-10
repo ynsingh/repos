@@ -291,6 +291,6 @@
 
 
 ?>
-<?php if (!$print_preview) { ?>
+<?php if (!$print_preview && $sec_uni_id != 0) { ?>
 <div id="pagination-container"><?php echo $this->pagination->create_links(); ?></div>
 <?php } ?>

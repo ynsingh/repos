@@ -56,7 +56,7 @@ echo form_open('ckeditor');
 				if($row->sanc_type == 'plan')
 				$total_plan_exp = float_ops($total_plan_exp, $row1->amount, '+');
 				else
-				$total_nonplan_exp = float_ops($total_nonplan_exp, $row->amount, '+');
+				$total_nonplan_exp = float_ops($total_nonplan_exp, $row1->amount, '+');
 			}
 			//Calculate Income total........
                         if($led_firsttwo_digit == '30')
@@ -90,7 +90,7 @@ echo "<tbody>";
         for($i=0; $i<$arr_len; $i++){
                 $exp_date=explode(",",$file_list[$i]);
                 if($file_list[$i] != 'notesToAccount.txt'){
-                        if($exp_date[1] == ' 2015summary_report.txt'){
+                        if(@$exp_date[1] == ' 2015summary_report.txt'){
                         echo "<tr>";
                                 echo"<p>";
                                 echo "<td>" . anchor('unspentbalance/view_file/'.$exp_date[0].'/summary_report', $file_list[$i]) . "</td>";
