@@ -215,8 +215,10 @@ $t
 					#else
 						#if($traffic =="stop")
 							<input type="submit" class="button-ftextstyle" disabled  name="eventSubmit_doEdit" value="$WikiSave" />
+						<input type="reset" class="button-ftextstyle" name="brih_clear" value="Clear" onClick="window.location.reload(true);"/>
 						#else
 							<input type="submit" class="button-ftextstyle" name="eventSubmit_doEdit" value="$WikiSave" />
+							<input type="reset" class="button-ftextstyle" name="brih_clear" value="Clear" onClick="window.location.reload(true);"/>
 						#end
 					#end
                                         <input type="hidden" name="actionName" >		

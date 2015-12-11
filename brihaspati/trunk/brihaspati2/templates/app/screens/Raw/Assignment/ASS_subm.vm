@@ -180,6 +180,7 @@ $!data.getMessage()
 		<td colspan=2>
 		#if($mode!="Update")
 		<input type="button" class="button-ftextstyle" name="brih_upload" value="$brih_upload" onClick="checkBlank(document.uploadform,this);" />
+                <input type="reset" class="button-ftextstyle" name="brih_clear" value="$brih_clear" onClick="window.location.reload(true);"/>
 		#else
 		<input type="button" class="button-ftextstyle" name="doUpdate" value="$brih_update" onClick="checkBlank(document.uploadform,this);" />
 		<input type="hidden" name="tmpId" value=$tmpId>

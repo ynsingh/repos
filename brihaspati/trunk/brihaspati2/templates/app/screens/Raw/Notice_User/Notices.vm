@@ -358,6 +358,7 @@ $!data.getMessage()
 		  <input type="hidden" name="page" value="flash">
 	        #else
         	  <input type="button" class="button-ftextstyle"  name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/>
+                  <input type="reset" class="button-ftextstyle" name="brih_clear" value="Clear" onClick="window.location.reload(true);"/>
 		  <input type="hidden" name="page" value="notices">
 	        #end
 		  <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.frm,this);"/>

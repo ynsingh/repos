@@ -170,7 +170,8 @@ $!data.getMessage()
                                 <td align=left colspan=2>
                                <font face="$ui sanSerif fonts">
 			     <input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value=$brih_submit onClick="checkNews(document.frm,this);"/>
-			     <input type="button" class="button-ftextstyle" name="reset" value=$brih_reset onClick="clearData(document.frm,this);">
+			    ##<input type="button" class="button-ftextstyle" name="reset" value=$brih_reset onClick="clearData(document.frm,this);">
+			      <input type="button" class="button-ftextstyle" name="reset" value="$brih_reset" onClick="window.location.reload(true);">
 			     <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.frm,this);"/>
 			     <input type="hidden" name="actionName">
 			     <input type="hidden" name="count" value="$tdcolor" >

@@ -19,6 +19,7 @@
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 ## This scripts is used for autosearch EmailId in compose mail. 
 <script type="text/javascript" language="JavaScript" src="$content.getURI("/scrpts/jquery/jquery.min.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/image.resize.js")"></script>
 <script type="text/javascript" language="JavaScript" src="$content.getURI("/scrpts/AutoSuggestUser/jquery.autocomplete.js")"></script>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/AutoSuggestUser/jquery.autocomplete.css")" media="screen"/>
 <script type='text/javascript' src="$content.getURI("$usrfile")"></script>

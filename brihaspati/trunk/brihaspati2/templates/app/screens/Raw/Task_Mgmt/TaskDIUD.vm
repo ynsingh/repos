@@ -387,7 +387,8 @@ a.one:link,a.one:visited
 			<tr><td align=center colspan=2 bgcolor="$ui.menuColor"><font face="$ui sanSerif fonts">
                         	<input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value= $brih_add  onClick="addtask(document.frm,this);"/>
 ##                 		<input type="button" name="Reset" value=Reset>
-				<input type="button" class="button-ftextstyle" name="reset" value=$brih_reset onClick="clearData(document.frm,this);" />    
+				##<input type="button" class="button-ftextstyle" name="reset" value=$brih_reset onClick="clearData(document.frm,this);" />    
+				<input type="reset" class="button-ftextstyle" name="Reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
                                 <input type="hidden" name="actionName">
 				<input type="hidden" name="dd" value="1">
 				<input type="hidden" name="seqno" value="$seqno">

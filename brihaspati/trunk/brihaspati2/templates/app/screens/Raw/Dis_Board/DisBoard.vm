@@ -206,7 +206,9 @@ $!data.getMessage()
 			<input type="hidden" NAME="mode2" value="$mode2">
 			<input type="hidden" NAME="page" value="disboard">
 			##<input type="button" name="eventSubmit_doSend" value="$DisBoard_DB_msg25" onClick="checkBlank(document.uploadform,this);"/>&nbsp;&nbsp	
-			<input type="reset" class="button-ftextstyle" value="$brih_clear" onClick="makeEnable();">
+			##<input type="reset" class="button-ftextstyle" value="$brih_clear" onClick="makeEnable();">
+			<input type="reset" class="button-ftextstyle" name="brih_clear" value="Clear" onClick="window.location.reload(true);"/>
+                      
 			<input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.uploadform,this);"/>
 			</td>
 		</tr>

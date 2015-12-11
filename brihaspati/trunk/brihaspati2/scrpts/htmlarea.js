@@ -1531,7 +1531,7 @@ HTMLArea.cloneObject = function(obj) {
 };
 
 // FIXME!!! this should return false for IE < 5.5
-HTMLArea.checkSupportedBrowser = function() {
+/*HTMLArea.checkSupportedBrowser = function() {
 	if (HTMLArea.is_gecko) {
 		if (navigator.productSub < 20021201) {
 			alert("You need at least Mozilla-1.3 Alpha.\n" +
@@ -1544,8 +1544,26 @@ HTMLArea.checkSupportedBrowser = function() {
 		}
 	}
 	return HTMLArea.is_gecko || HTMLArea.is_ie;
+};*/
+HTMLArea.checkSupportedBrowser = function() { 
+    if (HTMLArea.is_gecko) {
+        if (navigator.productSub < 20021201) {
+            alert("You need at least Mozilla-1.3 Alpha.\n" +
+                  "Sorry, your Gecko is not supported.");
+            return false;
+        }
+        if (navigator.productSub < 20030210) {
+            //alert("Mozilla < 1.3 Beta is not supported!\n" +
+            //      "I'll try, though, but it might not work.");
+            return 'HTMLArea.is_gecko';
+        }
+    }
+    if(HTMLArea.is_safari) {
+        //return false;
+        return 'HTMLArea.is_gecko';
+    }
+    return HTMLArea.is_gecko || HTMLArea.is_ie;
 };
-
 // returns the current selection object
 HTMLArea.prototype._getSelection = function() {
 	if (HTMLArea.is_ie) {

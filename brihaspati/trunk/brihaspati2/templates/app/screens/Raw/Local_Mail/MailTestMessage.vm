@@ -225,7 +225,7 @@ $!data.getmessage()
 <td colspan=5>
 <input type="button" class="button-ftextstyle" name="eventSubmit_doSend" value="$Notice_Send"  onClick="checkValue(document.editform,this);"/>
   #if($status!="reply")
-  	<input type="reset" class="button-ftextstyle" value="$brih_clear"> 
+  	<input type="reset" class="button-ftextstyle" value="$brih_clear" onClick="window.location.reload(true);"> 
   #end
 <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.editform,this);"/>
         <input type="hidden" name="mode1" value="$mode1">
