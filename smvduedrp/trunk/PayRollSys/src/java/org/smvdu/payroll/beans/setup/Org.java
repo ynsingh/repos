@@ -1,7 +1,7 @@
-    /*
-    * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+ /*
+  * To change this template, choose Tools | Templates
+  * and open the template in the editor.
+  */
 
 package org.smvdu.payroll.beans.setup;
 
@@ -24,7 +24,7 @@ import org.smvdu.payroll.beans.db.OrgProfileDB;
 
 /**
  *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ *  *  Copyright (c) 2010 - 2011 - 2015 SMVDU, Katra.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -98,22 +98,7 @@ public class Org implements Serializable{
     private String port;
     private String contextName;
     private boolean ipStatus;
-    private String smtpServerName;
-    private int smtpPort;
-    private String fromEmailId;
-    private String fromPassword;
-    private boolean smtpStatus;
-    private String hostName;
-
     private int srNo;
-    
-    public String getHostName() {
-        return hostName;
-    }
-
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
-    }
 
     public int getSrNo() {
         return srNo;
@@ -122,68 +107,7 @@ public class Org implements Serializable{
     public void setSrNo(int srNo) {
         this.srNo = srNo;
     }
-    
-    public String getSmtpServerName() {
-        return smtpServerName;
-    }
-
-    public void setSmtpServerName(String smtpServerName) {
-        this.smtpServerName = smtpServerName;
-    }
-
-    public int getSmtpPort() {
-        return smtpPort;
-    }
-
-    public void setSmtpPort(int smtpPort) {
-        this.smtpPort = smtpPort;
-    }
-
-    public String getFromEmailId() {
-        return fromEmailId;
-    }
-
-    public void setFromEmailId(String fromEmailId) {
-        this.fromEmailId = fromEmailId;
-    }
-
-    public String getFromPassword() {
-        return fromPassword;
-    }
-
-    public void setFromPassword(String fromPassword) {
-        this.fromPassword = fromPassword;
-    }
-
-    public boolean isSmtpStatus() {
-        return smtpStatus;
-    }
-
-    public void setSmtpStatus(boolean smtpStatus) {
-        this.smtpStatus = smtpStatus;
-    }
-    
-    private ArrayList<Org> smtpDetails;
-    private UIData dataGrid7;
-
-    public UIData getDataGrid7() {
-        return dataGrid7;
-    }
-
-    public void setDataGrid7(UIData dataGrid7) {
-        this.dataGrid7 = dataGrid7;
-    }
-    
-    public ArrayList<Org> getSmtpDetails() {
-        smtpDetails = new CollegeList().getSMTPDetails();
-        dataGrid7.setValue(smtpDetails); 
-        return smtpDetails;
-    }
-
-    public void setSmtpDetails(ArrayList<Org> smtpDetails) {
-        this.smtpDetails = smtpDetails;
-    }
-    
+  
     public boolean isIpStatus() {
         return ipStatus;
     }
@@ -286,8 +210,7 @@ public class Org implements Serializable{
         this.dataGrid1 = dataGrid1;
     }
      
-    //private ArrayList<Empl//>
-    
+      
     private UIData dataGrid4;
 
     public UIData getDataGrid4() {
@@ -525,15 +448,7 @@ public class Org implements Serializable{
     public void setInstDomain(String instDomain) {
         this.instDomain = instDomain;
     }
-    /**
-    public int getLl() {
-        return ll;
-    }
 
-    public void setLl(int ll) {
-        this.ll = ll;
-    }
-    */
     public String getPincode() {
         return pincode;
     }
@@ -541,15 +456,6 @@ public class Org implements Serializable{
     public void setPincode(String pincode) {
         this.pincode = pincode;
     }
-    /*
-    public int getRegionCode() {
-        return regionCode;
-    }
-
-    public void setRegionCode(int regionCode) {
-        this.regionCode = regionCode;
-    }
-    */
     public String getState() {
         return state;
     }
@@ -566,8 +472,6 @@ public class Org implements Serializable{
         this.toi = toi;
     }
 
-
-
     public String getTanno() {
         return tanno;
     }
@@ -576,13 +480,11 @@ public class Org implements Serializable{
         this.tanno = tanno;
     }
 
-
-
     public String getMasterPassword() {
         return masterPassword;
     }
-    
-    
+   
+ 
     private void copy()
     {
         OrgController ui = (OrgController)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("OrgController");
@@ -898,12 +800,13 @@ public class Org implements Serializable{
     
     public void updateAciveInActive()
     {
+        
         try
         {
             ArrayList<Org> orgProf = (ArrayList<Org>) dataGrid1.getValue();
             for(Org o : orgProf)
             {
-                System.out.println(o.getName()+" : "+o.getWeb()+" : "+o.isStatus());
+                System.out.println(o.getId()+":"+o.getName()+" : "+o.getWeb()+" : "+o.isStatus());
             }
             Exception ex = new CollegeList().update(orgProf);
             if(ex == null)
@@ -934,14 +837,14 @@ public class Org implements Serializable{
             if(new CollegeList().changePass(this) == null)
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
-                 message.setSummary("Password Are Updated");
-                 fc.addMessage("", message);
+                message.setSummary("Password Are Updated");
+                fc.addMessage("", message);
             }
             else
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
-                 message.setSummary("Error...");
-                 fc.addMessage(""+new CollegeList().changePass(this), message); 
+                message.setSummary("Error...");
+                fc.addMessage(""+new CollegeList().changePass(this), message); 
             }
         }
         catch(Exception ex)
@@ -1030,14 +933,14 @@ public class Org implements Serializable{
             if(ex == null)
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
-                 message.setSummary("Status Updated...");
-                 fc.addMessage("", message);
+                message.setSummary("Status Updated...");
+                fc.addMessage("", message);
             }
             else
             {
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                 message.setSummary("Status Not Updated.....PleaseTry Again");
-                 fc.addMessage(""+ex , message);
+                message.setSummary("Status Not Updated.....PleaseTry Again");
+                fc.addMessage(""+ex , message);
             }
         }
         catch(Exception ex)
@@ -1067,9 +970,9 @@ public class Org implements Serializable{
             if(active > 1)
             {
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                 message.setSummary("More Than One Email ID  Can't Be Activated...");
-                 fc.addMessage("", message);
-                 return;
+                message.setSummary("More Than One Email ID  Can't Be Activated...");
+                fc.addMessage("", message);
+                return;
             }
             Exception ex = new CollegeList().updateAdminEmailStatus(admin);
             //System.out.println("Active==in last=== Admin arrayliat : "+admin);
@@ -1234,70 +1137,7 @@ public class Org implements Serializable{
              ex.printStackTrace();
          }
      }
-     public void saveSMTPDetails()
-     {
-         try
-         {
-             FacesContext fc = FacesContext.getCurrentInstance();
-            FacesMessage message = new FacesMessage();
-            Exception ex = new CollegeList().saveSMTPDetails(this);
-            if(ex == null)
-            {
-                message.setSeverity(FacesMessage.SEVERITY_INFO);
-                message.setSummary("SMTP Details Added Successfuly");
-                //message.setDetail("First Name Must Be At Least Three Charecter ");
-                fc.addMessage("", message);
-            }
-         }
-         catch(Exception ex)
-         {
-             ex.printStackTrace();
-         }
-     }
-     public void updateAdminSMTP()
-    {
-        try
-        {
-            System.out.println("Up Datong....");
-            FacesContext fc = FacesContext.getCurrentInstance();
-            FacesMessage message = new FacesMessage();
-            
-            ArrayList<Org> admin = (ArrayList<Org>) dataGrid7.getValue();
-            int active = 0;
-            for(Org ad : admin)
-            {
-                if(ad.isSmtpStatus() == true)
-                {
-                    active++;
-                }
-            }
-            System.out.println("Active Admin : "+active);
-            if(active > 1)
-            {
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                 message.setSummary("More Than One SMTP Server  Can't Be Activated...");
-                 fc.addMessage("", message);
-                 return;
-            }
-            Exception ex = new CollegeList().updateAdminSMTP(admin); 
-            if(ex == null)
-            {
-                message.setSeverity(FacesMessage.SEVERITY_INFO);
-                 message.setSummary("SMTP Server Updated...");
-                 fc.addMessage("", message);
-            }
-            else
-            {
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                 message.setSummary("SMTP Server Not Activated.....PleaseTry Again");
-                 fc.addMessage(""+ex , message);
-            }
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-    }
+
 
     Org editedRecord;
 

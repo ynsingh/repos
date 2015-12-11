@@ -29,5 +29,6 @@
     <mapping resource="org/smvdu/payroll/HibernateMapping/EmployeeTypeSalaryHead.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/HibernateMapping/Attendance.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/HibernateMapping/ForgotPassword.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SmtpConfiguration.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

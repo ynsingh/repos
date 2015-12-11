@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="annualAttendanceReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="org_name" class="java.lang.String"/>
+	<parameter name="org_logo" class="java.lang.Object"/>
+        <parameter name="org_code" class="java.lang.Object"/>
+	<parameter name="month" class="java.lang.Integer"/>
+	<parameter name="year" class="java.lang.Integer"/>
+        <parameter name="code" class="java.lang.String"/>
+        <parameter name="empcode" class="java.lang.String"/>
+        <parameter name="empname" class="java.lang.String"/>
+        <parameter name="empdept" class="java.lang.String"/>
+        <parameter name="empdesig" class="java.lang.String"/>
+        <parameter name="monthname" class="java.lang.String"/>
+        
+        <queryString>
+		<![CDATA[SELECT
+    emp_name, dept_name, desig_name, emp_present,emp_leave, month,
+    el_count, lt_name from employee_attendance_master 
+    left join employee_master on emp_code = att_emp_code
+    left join department_master on emp_dept_code = dept_code
+    left join designation_master on emp_desig_code = desig_code
+    left join employee_leave_master on el_emp_code = att_emp_code
+    left join leave_type_master on el_quota_type = lt_id
+    where att_emp_code=$P{code} and year=$P{year} ]]>
+	</queryString>
+        <field name="emp_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_present" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_leave" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="month" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+        <field name="dept_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+ 	<field name="desig_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+        <field name="el_count" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+        <field name="lt_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+               
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="114" splitType="Stretch">
+                    
+			<textField>
+				<reportElement x="120" y="4" width="361" height="22" forecolor="#FF6600"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{org_name}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="51" y="4" width="79" height="53"/>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{org_logo}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="32" width="361" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+                        <textField isBlankWhenNull="true">
+                                <reportElement x="130" y="64" width="361" height="16"/>
+                                <textElement textAlignment="Left" verticalAlignment="Middle">
+                                        <font size="8" isBold="true"/>
+                                </textElement>
+                                <textFieldExpression class="java.lang.String"><![CDATA[$P{code}]]></textFieldExpression>
+                        </textField>
+                        <textField isBlankWhenNull="true">
+                                <reportElement x="372" y="64" width="361" height="16"/>
+                                <textElement textAlignment="Left" verticalAlignment="Middle">
+                                        <font size="8" isBold="true"/>
+                                </textElement>
+                                <textFieldExpression class="java.lang.String"><![CDATA[$F{emp_name}]]></textFieldExpression>
+                        </textField>
+                                   <textField isBlankWhenNull="true">
+                                <reportElement x="130" y="80" width="361" height="16"/>
+                                <textElement textAlignment="Left" verticalAlignment="Middle">
+                                        <font size="8" isBold="true"/>
+                                </textElement>
+                                <textFieldExpression class="java.lang.String"><![CDATA[$F{dept_name}]]></textFieldExpression>
+                        </textField>
+                        <textField isBlankWhenNull="true">
+                                <reportElement x="372" y="80" width="361" height="16"/>
+                                <textElement textAlignment="Left" verticalAlignment="Middle">
+                                        <font size="8" isBold="true"/>
+                                </textElement>
+                                <textFieldExpression class="java.lang.String"><![CDATA[$F{desig_name}]]></textFieldExpression>
+                        </textField>
+                    <line >
+                        <reportElement x="51" y="100" width="451" height="1"/>
+                        <graphicElement>
+                            <pen lineWidth="1"/>
+                        </graphicElement>
+                    </line>
+ 
+                    <staticText>
+				<reportElement x="51" y="64" width="100" height="16"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Code]]></text>
+                    </staticText>
+                    <staticText>
+				<reportElement x="300" y="64" width="100" height="16"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+                    </staticText>
+                    <staticText>
+				<reportElement x="51" y="80" width="100" height="16"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+                    </staticText>
+                    <staticText>
+				<reportElement x="300" y="80" width="100" height="16"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+                    </staticText>
+           
+  		</band>
+	</title>
+         
+
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="51" y="0" width="51" height="20"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sr. No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="0" width="100" height="20"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Month Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="0" width="100" height="20"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Present]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="0" width="200" height="20"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Leave]]></text>
+			</staticText>
+                        
+		</band>
+	</columnHeader>
+       
+	<detail>
+		<band height="20" splitType="Stretch">
+                    	<textField>
+				<reportElement x="51" y="0" width="51" height="20"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="102" y="0" width="100" height="20"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[org.smvdu.payroll.api.pf.ReportGen.AttendancePDF.getMonthName($F{month})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="202" y="0" width="100" height="20"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_present}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="302" y="0" width="200" height="20" />
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement/>
+                                <textFieldExpression  class="java.lang.String"><![CDATA[$F{emp_leave}]]></textFieldExpression>
+				<!--<textFieldExpression  class="java.lang.String"><![CDATA[$F{el_count}+ " = " +($F{lt_name})]]></textFieldExpression>
+                                -->			
+                       </textField>
+                    
+                  </band>
+            
+            </detail>
+            <pageFooter>
+                <band height="114" splitType="Stretch">
+                   <line>
+				<reportElement x="51" y="25" width="451" height="1" />
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+		   </line>
+                    	<textField>
+				<reportElement x="51" y="25" width="200" height="20" />
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+                                        <font size="8" isBold="true"/>
+                                </textElement>
+				
+                                <textFieldExpression  class="java.lang.String"><![CDATA[$F{lt_name}+ " = " +($F{el_count})]]></textFieldExpression>
+                                			
+                       </textField>
+                        
+                </band>
+            </pageFooter>
+  
+</jasperReport>

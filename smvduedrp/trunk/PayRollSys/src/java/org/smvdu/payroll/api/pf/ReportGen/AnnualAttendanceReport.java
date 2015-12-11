@@ -10,8 +10,6 @@ package org.smvdu.payroll.api.pf.ReportGen;
 import java.awt.Image;
 import java.io.File; 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +32,7 @@ import org.smvdu.payroll.user.OrgLogoDB;
 
 /**
 *  Manages Attendance in database.
-*  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*  Copyright (c) 2010 - 2011,2015 SMVDU, Katra.
 *  All Rights Reserved.
 *  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -67,10 +65,10 @@ import org.smvdu.payroll.user.OrgLogoDB;
 public class AnnualAttendanceReport {
    
     
-    
     public AnnualAttendanceReport(){
         
     }
+       
     
     public ArrayList<Attendance> individualAttendancePDF(String code, int month, int year) {
      try
@@ -106,7 +104,7 @@ public class AnnualAttendanceReport {
             exporter1.exportReport();
             servletOutputStream.close();
         } catch (Exception ex) {
-           // throw new ServletException(ex.getMessage(), ex);
+           
             ex.printStackTrace();
         }
         
@@ -129,7 +127,7 @@ public class AnnualAttendanceReport {
                 FacesContext facesContext = FacesContext.getCurrentInstance();
                 String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
                 JasperPrint jasperPrint = JasperFillManager.fillReport(path + File.separator + "JasperFile/individualAttendanceReport.jasper", map, conn);
-                //("=>Om Prakash--->Report of Attendance of Employee Created successful individual basis in HTML formate...");
+                //Report of Attendance of Employee Created successful individual basis in HTML formate...");
                 HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
                 ServletOutputStream servletOutputStream = response.getOutputStream();
                 facesContext.responseComplete();
@@ -147,9 +145,7 @@ public class AnnualAttendanceReport {
         return null;
         
     }
-  /**  private PreparedStatement ps;
-     private ResultSet rs;
-    
+
     public ArrayList<Attendance> annualAttendancePDF(String code, int year) {
          try{
             
@@ -161,21 +157,14 @@ public class AnnualAttendanceReport {
             Image img = new OrgLogoDB().loadLogoImage();
             map.put("org_logo", img);
             map.put("org_name", ub.getOrgName());
-            map.put("title", "Annual Attendance Report of Year "+year);
-            map.put("empcode", "Employee Code");
-            map.put("empname", "Employee Name");
-            map.put("empdesig", "Designation");
-            map.put("empdept", "Department");
+            map.put("title", "Annual Attendance Report of Year, "+year);
             map.put("code", code);
-            for(int k=0;k<12;k++)
-            // map.put("monthname", getMonthName(ub.getCurrentMonth()));
-            System.out.print("=========>" +getMonthName(k));
             map.put("year", year);
             map.put("org_code",ub.getUserOrgCode());
             FacesContext facesContext = FacesContext.getCurrentInstance();
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
             JasperPrint jasperPrint = JasperFillManager.fillReport(path + File.separator + "JasperFile/annualAttendanceReport.jasper", map, cn);
-            //--->Report of Attendance of Employee Created successful Annual basis in pdf formate...");
+            // Report of Attendance of Employee Created successful Annual basis in pdf formate...");
             HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
             ServletOutputStream servletOutputStream = response.getOutputStream();
             facesContext.responseComplete();
@@ -188,8 +177,7 @@ public class AnnualAttendanceReport {
             exporter1.exportReport();
             servletOutputStream.close();
         } catch (Exception ex) {
-           // throw new ServletException(ex.getMessage(), ex);
-            ex.printStackTrace();
+           ex.printStackTrace();
         }
         
         return null;
@@ -197,8 +185,7 @@ public class AnnualAttendanceReport {
     }
     
     public ArrayList<Attendance> annualAttendanceHTML(String code, int year) {
-               System.out.print("hello I am report generater annual basis in HTML==>"+code+", "+year);
-               try{
+           try{
                Connection conn = new CommonDB().getConnection();
                //String path = application.getRealPath("/");
                 UserInfo ub = (UserInfo)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
@@ -206,9 +193,8 @@ public class AnnualAttendanceReport {
                 Image img = new OrgLogoDB().loadLogoImage();
                 map.put("org_logo", img);
                 map.put("org_name", ub.getOrgName());
-                map.put("title", "Annual Attendance Report of Year " +year);
+                map.put("title", "Annual Attendance Report of Year, " +year);
                 map.put("code",code);
-               // map.put("month", month);
                 map.put("year", year);
                 map.put("org_code",ub.getUserOrgCode());
                 FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -227,12 +213,10 @@ public class AnnualAttendanceReport {
                 servletOutputStream.close();
            } 
            catch(Exception ex){
-                
+              ex.printStackTrace();  
           }
         return null;
             
     }
-    **/
-     
-     
+ 
 }

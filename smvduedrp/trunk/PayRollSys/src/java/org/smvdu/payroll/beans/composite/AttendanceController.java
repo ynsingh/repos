@@ -19,7 +19,7 @@ import org.smvdu.payroll.beans.db.AttendanceDB;
 
 /**
  *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ *  *  Copyright (c) 2010 - 2011,2015 SMVDU, Katra.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -48,8 +48,8 @@ import org.smvdu.payroll.beans.db.AttendanceDB;
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
 *
-* IITK , Om Prakash(omprakashkgp@gmail.com), Manorama Pal (palseema30@gmail.com)
-* modified on 29 January 2015 by <omprakashkgp@gmail.com> 
+* Author: Om Prakash<omprakashkgp@gmail.com>, Manorama Pal<palseema30@gmail.com> IITK
+* modified on 29 January 2015 by Om Prakash <omprakashkgp@gmail.com> 
  */
 public class AttendanceController {
     private String data;
@@ -328,7 +328,7 @@ public class AttendanceController {
         this.individualattendancehtml =individualattendancehtml;
     }
 
-   /**        load selected Annual attendance report in PDF Formate 
+    //       load selected Annual attendance report in PDF Formate 
    public void annualAttendanceReportPDF()
     {
        // getIndividualAttendancePDF();
@@ -346,7 +346,7 @@ public class AttendanceController {
     }
 
     
-     Load selected annual attendance report in HTML Formate 
+    // Load selected annual attendance report in HTML Formate 
     public void annualAttendanceReportHTML(){
         annualattendancehtml= new AnnualAttendanceReport().annualAttendanceHTML(code, year);
     }
@@ -358,5 +358,5 @@ public class AttendanceController {
     public void setAnnualAttendanceHTML(ArrayList<Attendance> annualattendancehtml){
        this.annualattendancehtml = annualattendancehtml; 
     }
-    **/
+    
 }

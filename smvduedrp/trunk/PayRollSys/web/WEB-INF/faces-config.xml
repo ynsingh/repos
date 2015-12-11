@@ -618,6 +618,16 @@
 
     <managed-bean>
         <description>
+			SMTP Configuration Bean
+        </description>
+        <managed-bean-name>SmtpConfigBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.SmtpConfiguration</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
 			Investment Plan Bean
         </description>
         <managed-bean-name>InvestmentPlanBean</managed-bean-name>

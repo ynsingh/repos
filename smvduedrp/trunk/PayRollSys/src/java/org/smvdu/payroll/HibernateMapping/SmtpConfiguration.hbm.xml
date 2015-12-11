@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.setup.SmtpConfiguration"  table="admin_smtp_details">
+       <id name="seqId" type="java.lang.Integer">
+            <column name="seq_id" />
+            <generator class="identity"/>
+        </id>
+       
+        <property name="smtpPort" type="int">
+            <column name="smtp_port" not-null="true"/>
+        </property>
+        <property name="fromEmailId" type="string">
+            <column name="auth_emailid" not-null="true"/>
+        </property>
+        <property name="fromPassword" type="string">
+            <column name="auth_password" not-null="true"/>
+        </property>
+        <property name="smtpStatus" type="boolean">
+            <column name="smtp_status" not-null="true"/>
+        </property>
+      
+        <property name="hostName" type="string">
+            <column name="smtp_host_name" not-null="true" />
+        </property>
+        
+  </class>
+</hibernate-mapping>

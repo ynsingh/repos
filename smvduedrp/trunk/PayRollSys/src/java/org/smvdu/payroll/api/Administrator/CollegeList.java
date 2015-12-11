@@ -14,13 +14,16 @@ import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
 import org.smvdu.payroll.Admin.AdminManagedBean;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.api.EncryptionUtil;
 import org.smvdu.payroll.api.email.OrgConformationEmail;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.OrgProfileDB;
 import org.smvdu.payroll.beans.setup.Org;
+import org.smvdu.payroll.beans.setup.SmtpConfiguration;
 import org.smvdu.payroll.user.UserRegistration;
 import org.smvdu.payroll.user.changePassword;
 /**
@@ -28,11 +31,18 @@ import org.smvdu.payroll.user.changePassword;
  * @author KESU
  * GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
  */
+
 @ManagedBean
 @RequestScoped
+
 public class CollegeList {
     Connection cn;
     String adminUserId;
+    
+    private HibernateUtil helper;
+    private org.hibernate.Session sess;
+
+    
     public CollegeList()
     {
         
@@ -1015,11 +1025,19 @@ public class CollegeList {
             return false;
         }
     }
-    public ArrayList<Org> getSMTPDetails()
+    public ArrayList<SmtpConfiguration> getSMTPDetails()
     {
-        try
+        sess = helper.getSessionFactory().openSession();
+        sess.beginTransaction();
+        Query query = sess.createQuery("from SmtpConfiguration");
+        ArrayList<SmtpConfiguration> smtpList = (ArrayList<SmtpConfiguration>) query.list();
+        sess.getTransaction().commit();
+        sess.close();
+        return smtpList;
+
+        /* try
         {
-            ArrayList<Org> smtpList = new ArrayList<Org>();
+            ArrayList<SmtpConfiguration> smtpList = new ArrayList<SmtpConfiguration>();
             Connection cn = new CommonDB().getConnection();
             cn.setAutoCommit(false);
             PreparedStatement pst;
@@ -1028,22 +1046,23 @@ public class CollegeList {
             rst = pst.executeQuery();
             while(rst.next())
             {
-                    Org o = new Org();
-                    o.setSmtpServerName(rst.getString(2));
-                    o.setSmtpPort(rst.getInt(3)); 
-                    o.setFromEmailId(rst.getString(4)); 
-                    o.setFromPassword(rst.getString(5));
-                 if(rst.getInt(6) == 1)
+                    SmtpConfiguration o = new SmtpConfiguration();
+                    //o.setSmtpServerName(rst.getString(2));
+                    o.setSeqId(rst.getInt(1));
+                    o.setSmtpPort(rst.getInt(2)); 
+                    o.setFromEmailId(rst.getString(3)); 
+                    o.setFromPassword(rst.getString(4));
+                 if(rst.getInt(5) == 1)
                 {
                     o.setSmtpStatus(true);
                     o.setImgUrl("Active.png");
                 }
-                if(rst.getInt(6) == 0)
+                if(rst.getInt(5) == 0)
                 {
                     o.setSmtpStatus(false);
                     o.setImgUrl("InActive.png");
                 }
-                    o.setHostName(rst.getString(7)); 
+                    o.setHostName(rst.getString(6)); 
                 smtpList.add(o); 
             }
             rst.close();
@@ -1056,6 +1075,7 @@ public class CollegeList {
             ex.printStackTrace();
             return null;
         }
+     */
     }
    
     /**
@@ -1067,9 +1087,22 @@ public class CollegeList {
      * 
      */
     
-    public Exception saveSMTPDetails(Org o)
+    public Exception saveSMTPDetails(SmtpConfiguration o)
     {
-        try
+        SmtpConfiguration smtpCon = new SmtpConfiguration();
+        smtpCon.setHostName(o.getHostName());
+        smtpCon.setSmtpPort(o.getSmtpPort());
+        smtpCon.setFromEmailId(o.getFromEmailId());
+        smtpCon.setFromPassword(o.getFromPassword());
+        smtpCon.setSmtpStatus(o.isSmtpStatus());
+        sess = helper.getSessionFactory().openSession();
+        sess.beginTransaction();
+        sess.save(smtpCon);
+        sess.getTransaction().commit();
+        sess.close();
+        return null;
+
+       /* try
         {
             Connection cn = new CommonDB().getConnection();
             cn.setAutoCommit(false);
@@ -1077,7 +1110,7 @@ public class CollegeList {
             pst1 = cn.prepareStatement("update admin_smtp_details set smtp_status = '"+0+"' where smtp_status = '"+1+"'");
             pst1.executeUpdate();
             pst1.close();
-            pst = cn.prepareStatement("insert into admin_smtp_details(smtp_name,smtp_port,auth_emailid,auth_password,smtp_status,smtp_host_name) values('"+o.getSmtpServerName()+"','"+o.getSmtpPort()+"','"+o.getFromEmailId()+"','"+o.getFromPassword()+"','"+1+"','"+o.getHostName()+"')");
+            pst = cn.prepareStatement("insert into admin_smtp_details(smtp_port,auth_emailid,auth_password,smtp_status,smtp_host_name) values('"+o.getSmtpPort()+"','"+o.getFromEmailId()+"','"+o.getFromPassword()+"','"+1+"','"+o.getHostName()+"')");
             pst.executeUpdate();
             pst.close();
             cn.commit();
@@ -1089,6 +1122,8 @@ public class CollegeList {
             ex.printStackTrace();
             return ex;
         }
+      */     
+       
     }
     
     /**
@@ -1098,15 +1133,40 @@ public class CollegeList {
      * 
      */
     
-    public Exception updateAdminSMTP(ArrayList<Org> admin)
+    public Exception updateAdminSMTP(ArrayList<SmtpConfiguration> admin)
     {
-        try
+        try{
+            sess = helper.getSessionFactory().openSession();
+            for(SmtpConfiguration adm : admin)
+            {
+                sess.beginTransaction();
+                SmtpConfiguration smtpCon = (SmtpConfiguration) sess.get(SmtpConfiguration.class, adm.getSeqId());
+                smtpCon.setHostName(adm.getHostName());
+                smtpCon.setFromEmailId(adm.getFromEmailId());
+                smtpCon.setFromPassword(adm.getFromPassword());
+                smtpCon.setSmtpPort(adm.getSmtpPort());
+                smtpCon.setSmtpStatus(adm.isSmtpStatus());
+                sess.update(smtpCon);
+                sess.getTransaction().commit();
+            }
+        }
+        catch (Exception e )
+        {
+            sess.getTransaction().rollback();
+            e.printStackTrace();
+             
+        }
+        finally {
+            sess.close(); 
+        }
+        
+     /* try
         {
             Connection cn = new CommonDB().getConnection();
             cn.setAutoCommit(false); 
             PreparedStatement pst = null;
             int st;
-            for(Org adm : admin)
+            for(SmtpConfiguration adm : admin)
             {
                 if(adm.isSmtpStatus() == true)
                 {
@@ -1116,9 +1176,16 @@ public class CollegeList {
                 {
                     st = 0;
                 }
-                pst = cn.prepareStatement("update admin_smtp_details set smtp_status = '"+st+"' where auth_emailid='"+adm.getFromEmailId()+"'");
+                //pst = cn.prepareStatement("update admin_smtp_details set smtp_status = '"+st+"' where auth_emailid='"+adm.getFromEmailId()+"'");
+                pst = cn.prepareStatement("update admin_smtp_details set smtp_host_name=?, auth_password=?, smtp_port=?, auth_emailid=?, smtp_status = '"+st+"' where seq_id='"+adm.getSeqId()+"'");
+                System.out.println("========This is SMTP id =======>"+adm.getSeqId());
+                pst.setString(1, adm.getHostName());
+                pst.setString(2, adm.getFromPassword());
+                pst.setInt(3, adm.getSmtpPort());
+                pst.setString(4, adm.getFromEmailId());
                 pst.executeUpdate();
                 pst.clearParameters();
+                
             }
             pst.close();
             cn.commit();
@@ -1129,6 +1196,8 @@ public class CollegeList {
         {
             return ex;
         }
+       */
+        return null;
     }
     
     public String getSMTPAuthDetails()

@@ -31,45 +31,53 @@ GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
                                 </f:facet>
                             </rich:messages>
                              <h:form>
-                                 <rich:dataTable id="si" style="font-size:14px; width:1050px;"  rows="9" value="#{OrgProfileBean.smtpDetails}" binding="#{OrgProfileBean.dataGrid7}"  var="sm">
+                                 <rich:dataTable id="si" style="font-size:14px; width:1050px;"  rows="9" value="#{SmtpConfigBean.smtpDetails}" binding="#{SmtpConfigBean.dataGrid7}"  var="sm">
                                 <h:column >
                                     <f:facet name="header" >
                                         <h:outputText value="SMTP Name" />
                                     </f:facet>
-                                    <h:outputText value="#{sm.hostName}"/>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header" >
-                                        <h:outputText value=" Server Name "/>
-                                    </f:facet>
-                                    <h:outputText value="#{sm.smtpServerName}"/>
+                                    <rich:inplaceInput value="#{sm.hostName}"/>
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header" >
                                         <h:outputText value=" SMTP Port "/>
                                     </f:facet>
-                                    <h:outputText value="#{sm.smtpPort}"/>
+                                    <rich:inplaceInput value="#{sm.smtpPort}"/>
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header" >
                                         <h:outputText value=" From / Authentication ID "/>
                                     </f:facet>
-                                    <h:outputText value="#{sm.fromEmailId}"/>
+                                    <h:inputText value="#{sm.fromEmailId}"/>
                                 </h:column>
+                                <h:column>
+                                    <f:facet name="header" >
+                                        <h:outputText value=" Password "/>
+                                    </f:facet>
+                                    <h:inputSecret value="#{sm.fromPassword}"/>
+                                </h:column>
+
                                 <h:column>
                                     <f:facet name="header" >
                                         <h:outputText value=" Check / Uncheck "/>
                                     </f:facet>
                                     <h:selectBooleanCheckbox value="#{sm.smtpStatus}"/>
                                 </h:column>
+                                <h:column>
+                                  <f:facet name="header" >
+                                        <h:outputText value="  "/>
+                                  </f:facet>
+
+                                    <h:commandButton value="Update" action="#{SmtpConfigBean.updateAdminSMTP}" />
+                                </h:column>
                                      <%--   <f:facet name="footer">
                             <rich:datascroller for="si" page="5" />
                         </f:facet>--%>
 
                             </rich:dataTable>
-                            <rich:panel>
+                            <%--    <rich:panel>
                             <a4j:commandButton value="Update" reRender="smd" action="#{OrgProfileBean.updateAdminSMTP}"/>
-                            </rich:panel>
+                            </rich:panel> --%>
                          </h:form> 
                          </rich:panel>
                  </h:panelGrid>
@@ -236,16 +244,16 @@ GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
                                         <h:panelGrid columns="2">
                                             
                                             <h:outputText value="SMTP Name"/>
-                                            <h:inputText requiredMessage="Please Enter the SMTP name " required="true" value="#{OrgProfileBean.hostName}"/>
-                                            <h:outputText value="Host Name"/>
-                                            <h:inputText required="true" requiredMessage="Please Enter the Host Name" value="#{OrgProfileBean.smtpServerName}"/>
+                                            <h:inputText requiredMessage="Please Enter the SMTP name " required="true" value="#{SmtpConfigBean.hostName}"/>
+                                            <%-- <h:outputText value="Host Name"/>
+                                            <h:inputText required="true" requiredMessage="Please Enter the Host Name" value="#{OrgProfileBean.smtpServerName}"/>--%>
                                             <h:outputText value="Port"/>
-                                            <h:inputText required="true" value="#{OrgProfileBean.smtpPort}"/>
+                                            <h:inputText required="true" value="#{SmtpConfigBean.smtpPort}"/>
                                             <h:outputText value="From / Authentication ID"/>
-                                            <h:inputText value="#{OrgProfileBean.fromEmailId}"/>
+                                            <h:inputText value="#{SmtpConfigBean.fromEmailId}"/>
                                             <h:outputText value="Password"/>
-                                            <h:inputSecret value="#{OrgProfileBean.fromPassword}"/>
-                                            <a4j:commandButton reRender="smd" value="Save"  action="#{OrgProfileBean.saveSMTPDetails}"/>
+                                            <h:inputSecret value="#{SmtpConfigBean.fromPassword}"/>
+                                            <a4j:commandButton reRender="smd" value="Save"  action="#{SmtpConfigBean.saveSMTPDetails}"/>
                                             <a4j:commandButton onclick="Richfaces.hideModalPanel('adnew');" value="Close"/>
                                         </h:panelGrid>
                                     </rich:panel>

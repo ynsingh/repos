@@ -55,14 +55,14 @@ CREATE TABLE `admin_email_config` (
 
 CREATE TABLE `admin_smtp_details` (
   `seq_id` int(11) NOT NULL auto_increment,
-  `smtp_name` varchar(300) NOT NULL,
+ /* `smtp_name` varchar(300) NOT NULL,*/
   `smtp_port` int(11) default NULL,
   `auth_emailid` varchar(300) default NULL,
   `auth_password` varchar(100) default NULL,
   `smtp_status` tinyint(4) default NULL,
   `smtp_host_name` varchar(200) default NULL,
-  PRIMARY KEY  (`smtp_name`),
-  UNIQUE KEY `seq_id` (`seq_id`)
+  PRIMARY KEY  (`seq_id`),
+  UNIQUE KEY `smtp_host_name` (`smtp_host_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 #
