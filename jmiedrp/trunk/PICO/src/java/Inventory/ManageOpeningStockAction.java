@@ -35,6 +35,7 @@ import utils.DateUtilities;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import utils.DevelopmentSupport;
 import pojo.hibernate.GfrProgramMappingDAO;
+import utils.ExceptionLogUtil;
 
 public class ManageOpeningStockAction extends DevelopmentSupport {
 
@@ -702,8 +703,10 @@ public class ManageOpeningStockAction extends DevelopmentSupport {
         try {
             setVarBatchID(erpmuser.getErpmuName());
             tosList = tosDAO.findByUser_NamesOnly(erpmuser.getErpmuName());
+		if(tosList.size()==0){
+			message= "Stock details not found";
+		}	
             ErpmuList = erpmusersDao.findUserNamebyimid((Integer.valueOf(getSession().getAttribute("userid").toString())), (Short.valueOf(getSession().getAttribute("imId").toString())));
-
             return SUCCESS;
 
         } catch (Exception e) {
@@ -760,6 +763,7 @@ public class ManageOpeningStockAction extends DevelopmentSupport {
     @SkipValidation
     public String export() throws Exception {
         try {
+			message="Please select BatchId and then click on Fetch Stock Details";
             ErpmuList = erpmusersDao.findUserNamebyimid((Integer.valueOf(getSession().getAttribute("userid").toString())), (Short.valueOf(getSession().getAttribute("imId").toString())));
             return SUCCESS;
         } catch (Exception e) {

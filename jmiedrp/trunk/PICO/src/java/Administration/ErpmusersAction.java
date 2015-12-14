@@ -241,6 +241,7 @@ public Edrpusers getEdrpuser() {
                            } //End For k Loop
                         } //End Else
 			imIdList = imDao.findAll();
+			message=Integer.toString(imIdList.size());
                     	}   //End For j Loop
                         
                 } //End Else

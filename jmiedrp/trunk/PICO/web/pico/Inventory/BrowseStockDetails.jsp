@@ -38,7 +38,7 @@
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent"> <br><br>
                 <p align="center"><s:label value="BROWSE STOCK DETAILS" cssClass="pageHeading"/></p>
-                <p align="center"><s:property value="message" /></p>
+                <p align="center"><s:property value="message" /></p> 
                 <s:form name="frmStockDetails" action="SaveStockDetailsAction">
                     <s:hidden name="tos.tosId" />
 
@@ -83,15 +83,16 @@
             </div>
 
              <div id ="mainContent" align="center">
-             <s:form name="frmStockDetailsBrowse"  action="SaveStockDetailsAction">
+             <s:form name="frmStockDetailsBrowse"  action="SaveStockDetailsAction"> 
                   <s:hidden name="varBatchID" />
-                
                  <table width="80%" border="1" cellspacing="0" cellpadding="0" align="center" >
                     <tr><td>
+			<%--
                              <display:table name="tosList" pagesize="15"
                                excludedParams="*" export="true" cellpadding="0"
                                cellspacing="0" id="doc"
-                               requestURI="/Inventory/FetchStockDetails">
+                               requestURI="/Inventory/FetchStockDetails">  --%>
+                             <display:table name="tosList" pagesize="15" id="doc" requestURI="/Inventory/FetchStockDetails"> 
                          <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
                             <c:out> ${doc_rowNum}
                          </display:column>

@@ -35,18 +35,15 @@
 
 		<div style ="background-color: #215dc6;">
                     <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.RegInstList')" /></p> 
-                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
-
+		<div align="right">Registered Institute : <s:property value="message" /> </div>
                 <div style="border: solid 1px #000000; background: gainsboro">
             	<s:form name="frmInstitutionsBrowse">                                                     
-                 <s:property value="message" />
-                
                  <table border="0" cellspacing="0" cellpadding="0" align="center">
                     <display:table name="imIdList" pagesize="15"
                                excludedParams="*"  cellpadding="0"
                                cellspacing="0"  id="doc"
-                               requestURI="/Administration/ViewRegisteredInstitutions.action">
+                               requestURI="/Administration/InstituteList.action">
                    <display:column  class="griddata" title="S.No" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
                    </display:column>
@@ -69,7 +66,7 @@
                                     maxLength="35" headerClass="gridheader"
                                     class="griddata" />
                 </display:table>
-                </table>
+                </table> 
              </s:form>
              <br>
                 </div>

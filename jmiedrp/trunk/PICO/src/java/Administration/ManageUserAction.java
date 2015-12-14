@@ -848,8 +848,8 @@ public String RecoverPassword() throws Exception {
 public String ViewRegisteredInstitutions() throws Exception {
     try{
         //Prepare list of Institutions
-        imIdList = imDao.findAll();        
-        
+        imIdList = imDao.findAll();
+        message=Integer.toString(imIdList.size());
         return SUCCESS;
     }
     catch (Exception e) {

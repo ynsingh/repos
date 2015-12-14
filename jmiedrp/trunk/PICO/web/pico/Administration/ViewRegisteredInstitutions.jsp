@@ -33,11 +33,10 @@
                 </div>
                 <div style ="background-color: #215dc6;">
                     <p align="center" class="pageHeading" style="color: #ffffff">REGISTERED INSTITUTIONS LIST</p>
-                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
                 </div>
+                <div align="right">Registered Institute : <s:property value="message" /> </div>
                 <div style="border: solid 1px #000000; background: gainsboro">
             <s:form name="frmInstitutionsBrowse">                                                     
-                 <s:property value="message" />
                 
                  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                     <display:table name="imIdList" pagesize="15"
