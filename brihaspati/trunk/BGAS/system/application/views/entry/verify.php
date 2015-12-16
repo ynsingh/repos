@@ -12,7 +12,7 @@ Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?>
 </p>
 
 <table border=0 cellpadding=5 class="simple-table entry-view-table">
-<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>SecondaryUnit</th><th>Party Address</th><th>Fund</th><th>Income/Expense Type</th></tr></thead>
+<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Party Name</th><th>Party Address</th><th>Fund</th><th>Income/Expense Type</th></tr></thead>
 <?php
 $fund = "";
 $entry_id = "";

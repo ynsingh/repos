@@ -486,7 +486,7 @@ var $username;
 
 		/* Form fields */
 
-/*		$data['ledger_code'] = array(
+		$data['ledger_code'] = array(
 			'name' => 'ledger_code',
 			'id' => 'ledger_code',
 			'maxlength' => '100',
@@ -494,7 +494,7 @@ var $username;
 			'value' => $ledger_data->code,
 			'readonly' => 'readonly',
 		);
-*/
+
 		$data['ledger_name'] = array(
 			'name' => 'ledger_name',
 			'id' => 'ledger_name',
@@ -545,7 +545,7 @@ var $username;
 		$data['reconciliation'] = $ledger_data->reconciliation;
 
 		/* Form validations */
-//		$this->form_validation->set_rules('ledger_code', 'Ledger code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[ledgers.code.' . $id . ']');
+		$this->form_validation->set_rules('ledger_code', 'Ledger code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[ledgers.code.' . $id . ']');
 		$this->form_validation->set_rules('ledger_name', 'Ledger name', 'trim|required|min_length[2]|max_length[100]|uniquewithid[ledgers.name.' . $id . ']');
 		//$this->form_validation->set_rules('ledger_group_id', 'Parent group', 'trim|required');
 		$this->form_validation->set_rules('ledger_description', 'trim');
@@ -555,7 +555,7 @@ var $username;
 		/* Re-populating form */
 		if ($_POST)
 		{
-//			$data['ledger_code']['value'] = $this->input->post('ledger_code', TRUE);
+			$data['ledger_code']['value'] = $this->input->post('ledger_code', TRUE);
 			$data['ledger_name']['value'] = $this->input->post('ledger_name', TRUE);
 			//$data['ledger_group_active'] = $this->input->post('ledger_group_id', TRUE);
 			$data['ledger_description']['value'] = $this->input->post('ledger_description', TRUE);
@@ -574,7 +574,7 @@ var $username;
 		else
 		{
                         $data_group_id=0;
-//			$data_code = $this->input->post('ledger_code', TRUE);
+			$data_code = $this->input->post('ledger_code', TRUE);
 			$data_name = $this->input->post('ledger_name', TRUE);
 			//echo $data_group_id = $this->input->post('ledger_group_id', TRUE);
 			//$data_group_name = $this->input->post('ledger_group_id', TRUE);
@@ -588,7 +588,7 @@ var $username;
 	
 		//	$Array = explode("#", $data_group_name);
                   //      $data_group_id = $Array[1];
-            $data_ledger_description = $this->input->post('ledger_description', TRUE);
+            		$data_ledger_description = $this->input->post('ledger_description', TRUE);
 			$data_op_balance = $this->input->post('op_balance', TRUE);
 			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
 			$data_id = $id;
@@ -675,6 +675,19 @@ var $username;
                        		}while($group_q->num_rows()>0);
 			}
 	*/
+			if (substr($data_code, 0, 2) == '30'){
+				$data_op_balance=0.00;
+				$data_op_balance_dc='C';
+				$data_ledger_type=0;
+				$data_reconciliation=0;
+			}
+			if (substr($data_code, 0, 2) == '40'){
+                                $data_op_balance=0.00;
+                                $data_op_balance_dc='D';
+                                $data_ledger_type=0;
+                                $data_reconciliation=0;
+                        }
+
 			$this->db->trans_start();
 			$update_data = array(
 				'code' => $data_code,

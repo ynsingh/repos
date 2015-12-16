@@ -37,6 +37,12 @@ $(document).ready(function() {
 	echo "</p>";
 
 	echo "<p>";
+	echo form_label('Ledger code', 'ledger_code');
+	echo "<br />";
+	echo form_input($ledger_code);
+	echo "</p>";
+
+	echo "<p>";
 	echo form_label('Parent group', 'ledger_group_id');
 	echo "<br />";
 	//echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active,"class=\"ledger-parent\"");
@@ -111,6 +117,8 @@ $(document).ready(function() {
     echo "<br />";
     echo form_textarea($ledger_description);
     echo "</p>";
+//		$string = strval($ledger_code);
+//	if (substr($string, 0, 2) == '10'){
 	echo "<p>";
 	echo form_label('Opening balance', 'op_balance');
 	echo "<br />";
@@ -135,7 +143,7 @@ $(document).ready(function() {
 	echo "</span>";
 	echo "<span id=\"tooltip-content-3\">If enabled account can be reconciled from Reports > Reconciliation</span>";
 	echo "</p>";
-
+//	}
 	echo "<p>";
 	echo form_hidden('ledger_id', $ledger_id);
 	echo form_submit('submit', 'Update');

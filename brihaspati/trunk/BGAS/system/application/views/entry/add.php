@@ -693,7 +693,7 @@ var dc = '';
 
 
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Secondary Unit</th><th>Fund</th><th>Type</th><th></th><th colspan=2></th><th></th><th colspan=2>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Party Name</th><th>Fund</th><th>Type</th><th></th><th colspan=2></th><th></th><th colspan=2>Cur Balance</th></tr></thead>";
 	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Sec Unit Id</th><th></th><th colspan=2>Available Action</th><th>Cur Balance</th></tr></thead>";
 
 	foreach ($ledger_dc as $i => $ledger)

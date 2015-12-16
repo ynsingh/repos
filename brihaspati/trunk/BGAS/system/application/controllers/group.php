@@ -327,15 +327,15 @@ var $group_code = 0;
 
 //		$data['groupid'] = $id;
 		/* Form fields */
-/*		$data['group_code'] = array(
+		$data['group_code'] = array(
 			'name' => 'group_code',
 			'id' => 'group_code',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $group_data->code,
 			'readonly' => 'readonly',
 		);
-*/
+
 		$data['group_name'] = array(
 			'name' => 'group_name',
 			'id' => 'group_name',
@@ -369,7 +369,7 @@ var $group_code = 0;
                 );
 */
 		/* Form validations */
-//		$this->form_validation->set_rules('group_code', 'Group code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[groups.code.' . $id . ']');
+		$this->form_validation->set_rules('group_code', 'Group code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[groups.code.' . $id . ']');
 		$this->form_validation->set_rules('group_name', 'Group name', 'trim|required|min_length[2]|max_length[100]|uniquewithid[groups.name.' . $id . ']');
 		$this->form_validation->set_rules('group_parent', 'Parent group', 'trim|required|is_natural_no_zero');
 		$this->form_validation->set_rules('group_description', 'trim');
@@ -378,7 +378,7 @@ var $group_code = 0;
 		/* Re-populating form */
 		if ($_POST)
 		{
-//			$data['group_code']['value'] = $this->input->post('group_code', TRUE);
+			$data['group_code']['value'] = $this->input->post('group_code', TRUE);
 			$data['group_name']['value'] = $this->input->post('group_name', TRUE);
 			$data['group_parent_active'] = $this->input->post('group_parent', TRUE);
 			$data['group_description']['value'] = $this->input->post('group_description', TRUE);
@@ -394,7 +394,7 @@ var $group_code = 0;
 		}
 		else
 		{
-//			$data_code = $this->input->post('group_code', TRUE);
+			$data_code = $this->input->post('group_code', TRUE);
 			$data_name = $this->input->post('group_name', TRUE);
 			$data_parent_id = $this->input->post('group_parent', TRUE);
 			$data_id = $id;

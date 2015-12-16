@@ -616,7 +616,7 @@ var dc = '';
 	$val='';
 	echo "<table class=\"entry-table\">";
 	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th colspan=4 align=\"center\">Available Selections</th></tr></thead>";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th>Sec Unit Name</th><th colspan=4 align=\"center\">Available Selections</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th>Party Name</th><th colspan=4 align=\"center\">Available Selections</th></tr></thead>";
 	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th></th><th colspan=2>Actions</th><th>Cur Balance</th></tr></thead>";
 	$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$entry_id);
         $ledger_q = $this->db->get();

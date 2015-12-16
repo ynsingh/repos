@@ -33,9 +33,13 @@ $(document).ready(function() {
 	echo "<p>";
 	echo form_label('Group name', 'group_name');
 	echo "<br />";
-
-
 	echo form_input($group_name);
+	echo "</p>";
+
+	echo "<p>";
+	echo form_label('Group code', 'group_code');
+	echo "<br />";
+	echo form_input($group_code);
 	echo "</p>";
 
 	echo "<p>";

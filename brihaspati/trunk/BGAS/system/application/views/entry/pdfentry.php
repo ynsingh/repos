@@ -122,7 +122,7 @@
 
         <table id="print-entry-table" align="center" cellpadding="2">
             <thead>
-                <tr class="tr-title" align="center"><th><h4> Type</h4></th><th><h4> Ledger Account</h4></th><th><h4 > Dr Amount</h4></th><th><h4> Cr Amount</h4></th><th><h4> Secondary ID</h4></th><th><h4> Party Address</h4></th><th><h4> Fund</h4></th><th><h4> Income/Expense Type</h4></th></tr>
+                <tr class="tr-title" align="center"><th><h4> Type</h4></th><th><h4> Ledger Account</h4></th><th><h4 > Dr Amount</h4></th><th><h4> Cr Amount</h4></th><th><h4> Party Name</h4></th><th><h4> Party Address</h4></th><th><h4> Fund</h4></th><th><h4> Income/Expense Type</h4></th></tr>
             </thead>
             <tbody>
                 <?php

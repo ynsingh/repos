@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS edrpuser
 	  UNIQUE (username)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-insert into edrpuser values (1,'admin', md5('admin'),'ynsingh@iitk.ac.in','*','',1);
-insert into edrpuser values (2,'guest', md5('guest'),'ynsingh@iitk.ac.in','*','',1);
+insert into edrpuser values (1,'admin', md5('admin'),'ynsingh@iitk.ac.in','*','','',1);
+insert into edrpuser values (2,'guest', md5('guest'),'ynsingh@iitk.ac.in','*','','',1);
 
 drop table if exists bgasAccData;
 
