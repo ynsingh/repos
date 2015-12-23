@@ -26,7 +26,7 @@ var $username;
 		$this->template->set('page_title', 'New Ledger');
 		$this->load->library('accountlist');
 		$this->load->library('session');
-        $asset = new Accountlist();
+        	$asset = new Accountlist();
 
 		/* Check access */
 		if ( ! check_access('create ledger'))
@@ -57,8 +57,8 @@ var $username;
 		$chart_account = $this->config->item('chart_account');
 		$ledger_name = '';	
 		$sess_ledger_name = $this->session->userdata('ledger_name');
-	    if($sess_ledger_name)
-        	$ledger_name = $sess_ledger_name;
+	    	if($sess_ledger_name)
+        		$ledger_name = $sess_ledger_name;
 
 		$data['ledger_name'] = array(
 			'name' => 'ledger_name',
@@ -89,7 +89,7 @@ var $username;
 		$ledger_group_name = $this->session->userdata('group_name');
 		$ledger_group = $ledger_group_name.'#'.$ledger_group_id;
 		if($ledger_group)
-            $data['ledger_group_active'] = $ledger_group;
+            		$data['ledger_group_active'] = $ledger_group;
 		else
 			$data['ledger_group_active'] = 0;
 	
@@ -134,11 +134,11 @@ var $username;
 			$data_ledger_description = $this->input->post('ledger_description', TRUE);
 
 			/*$this->db->select('id')->from('groups')->where('name',$data_group_name);
-            $group_parent_qn = $this->db->get();
-            foreach ($group_parent_qn->result() as $row1)
-            {
-                $data_group_id=$row1->id;
-            }*/
+           		$group_parent_qn = $this->db->get();
+		        foreach ($group_parent_qn->result() as $row1)
+            		{
+                		$data_group_id=$row1->id;
+            		}*/
 			$Array = explode("#", $data_group_name);
 			$data_group_id = $Array[1];
 
@@ -198,28 +198,42 @@ var $username;
 			/* The following code has been moved to view */
 
 			$num = $this->Ledger_model->get_numOfChild($data_group_id);
-            $l_code = $this->Group_model->get_group_code($data_group_id);
+            		$l_code = $this->Group_model->get_group_code($data_group_id);
                       
 			if($num == 0)
-            {
-                $data_code = $l_code . '01';
-            } else{
-                $data_code=$this->get_code($num, $l_code);
-            }
+            		{
+                		$data_code = $l_code . '01';
+            		} else{
+                		$data_code=$this->get_code($num, $l_code);
+            		}
 
 			$i=0;	
-            do{
-	            if($i>0)
-	            {
-	                //$num=$num+$i;
+            		do{
+	            		if($i>0)
+	            		{
+	                		//$num=$num+$i;
 					$num = $num + 1;
-	                $data_code=$this->get_code($num, $l_code);
-	            }
-	            $this->db->from('groups');
-	            $this->db->select('id')->where('code =',$data_code);
-	            $group_q = $this->db->get();
-	            $i++;
-            }while($group_q->num_rows()>0);
+	                		$data_code=$this->get_code($num, $l_code);
+	            		}
+	            		$this->db->from('groups');
+	            		$this->db->select('id')->where('code =',$data_code);
+	            		$group_q = $this->db->get();
+	            		$i++;
+            		}while($group_q->num_rows()>0);
+			
+			if (substr($data_code, 0, 2) == '30'){
+                                $data_op_balance=0.00;
+                                $data_op_balance_dc='C';
+                                $data_ledger_type=0;
+                                $data_reconciliation=0;
+                        }
+                        if (substr($data_code, 0, 2) == '40'){
+                                $data_op_balance=0.00;
+                                $data_op_balance_dc='D';
+                                $data_ledger_type=0;
+                                $data_reconciliation=0;
+                        }
+
 		
 			$this->db->trans_start();
 			$insert_data = array(
@@ -248,125 +262,125 @@ var $username;
 				//return;
 				//}
 				//get group code
-                $this->db->select('code')->from('groups')->where('id', $data_group_id);
-    	        $group_q = $this->db->get();
-            	$group = $group_q->row();
-                $group_code = $group->code;
-                if($chart_account == "mhrd"){
-	                $designated_code = $this->Budget_model->get_account_code('Designated-Earmarked Funds');
-	    	        $restricted_code = $this->Budget_model->get_account_code('Restricted Funds');
+                		$this->db->select('code')->from('groups')->where('id', $data_group_id);
+    	        		$group_q = $this->db->get();
+            			$group = $group_q->row();
+                		$group_code = $group->code;
+                		if($chart_account == "mhrd"){
+	                		$designated_code = $this->Budget_model->get_account_code('Designated-Earmarked Funds');
+	    	        		$restricted_code = $this->Budget_model->get_account_code('Restricted Funds');
 				}elseif($chart_account == "minimal"){
 					$designated_code = $this->Budget_model->get_account_code('Designated-Earmarked/Endowment Funds');
-	    	        $restricted_code = $this->Budget_model->get_account_code('Restricted Funds');
+	    	        		$restricted_code = $this->Budget_model->get_account_code('Restricted Funds');
 				}
 
-        	    if(($designated_code != '' && $this->startsWith($group_code, $designated_code)) || ($restricted_code != '' && $this->startsWith($group_code, $restricted_code)))
+        	    		if(($designated_code != '' && $this->startsWith($group_code, $designated_code)) || ($restricted_code != '' && $this->startsWith($group_code, $restricted_code)))
 				{
 					$income_ledger_name = 'Interest on fund '.$data_name;
 					$income_code = '';
 	
 					$num = $this->Ledger_model->get_numOfChild($data_group_id);
-	                $l_code = $this->Group_model->get_group_code($data_group_id);
+	                		$l_code = $this->Group_model->get_group_code($data_group_id);
 
-	                if($num == 0)
-			        {
-	        		    $income_code = $l_code . '01';
-	                } else{
-	                    $income_code=$this->get_code($num, $l_code);
-			        }
-	        		$i=0;
+	                		if($num == 0)
+			        	{
+	        		    		$income_code = $l_code . '01';
+	                		} else{
+	                    			$income_code=$this->get_code($num, $l_code);
+			        	}
+	        			$i=0;
 
-                	do{
-                    	if($i>0)
-    	                {
-        	                //$num=$num+$i;
-                	        $num = $num + 1;
-    	                	$income_code=$this->get_code($num, $l_code);
-            	        }
-                    	$this->db->from('groups');
-    	                $this->db->select('id')->where('code =',$income_code);
-            	        $group_q = $this->db->get();
-	                	$i++;
-        	        }while($group_q->num_rows()>0);
+                			do{
+                    				if($i>0)
+    	                			{
+        	                			//$num=$num+$i;
+                	        			$num = $num + 1;
+    	                				$income_code=$this->get_code($num, $l_code);
+            	        			}
+                    				$this->db->from('groups');
+    	                			$this->db->select('id')->where('code =',$income_code);
+            	        			$group_q = $this->db->get();
+	                			$i++;
+        	        		}while($group_q->num_rows()>0);
 				
 					$this->db->trans_start();
-                    $insert_data = array(
-                        'code' => $income_code,
-		                'name' => $income_ledger_name,
-        		        'group_id' => $data_group_id,
-                		'op_balance' => '0.00',
-                    	'op_balance_dc' => $data_op_balance_dc,
-                        'type' => $data_ledger_type,
-    	                'reconciliation' => $data_reconciliation,
-    	        	);
+                    			$insert_data = array(
+                        			'code' => $income_code,
+		                		'name' => $income_ledger_name,
+        		        		'group_id' => $data_group_id,
+                				'op_balance' => '0.00',
+                    				'op_balance_dc' => $data_op_balance_dc,
+                        			'type' => $data_ledger_type,
+    	                			'reconciliation' => $data_reconciliation,
+    	        			);
 
-        	        if ( ! $this->db->insert('ledgers', $insert_data))
-                	{
-    	               	$this->db->trans_rollback();
-                        $this->logger->write_message("error", "Error adding Interest on fund " . $data_name);
-                	} else {
-    	                $this->db->trans_complete();
-        	            $this->logger->write_message("success", "Added Interest on fund " . $data_name);
-            		}
+        	        		if ( ! $this->db->insert('ledgers', $insert_data))
+                			{
+    	               				$this->db->trans_rollback();
+                        			$this->logger->write_message("error", "Error adding Interest on fund " . $data_name);
+                			} else {
+    	                			$this->db->trans_complete();
+        	            			$this->logger->write_message("success", "Added Interest on fund " . $data_name);
+            				}
 
 					$fd_ledger_name = 'Fixed Deposit for '.$data_name;
-        	       	$fd_code = '';
+        	       			$fd_code = '';
 					$current_asset_code = $this->Budget_model->get_account_code('Current Assets');
 					
 					$this->db->select('id')->from('groups')->where('code', $current_asset_code);
-                    $group_q = $this->db->get();
-	                $group = $group_q->row();
-    		        $current_asset_id = $group->id;
+                    			$group_q = $this->db->get();
+	                		$group = $group_q->row();
+    		        		$current_asset_id = $group->id;
 	
-                    $num = $this->Ledger_model->get_numOfChild($current_asset_id);
-	                $l_code = $this->Group_model->get_group_code($current_asset_id);
+                    			$num = $this->Ledger_model->get_numOfChild($current_asset_id);
+	                		$l_code = $this->Group_model->get_group_code($current_asset_id);
 
-        	        if($num == 0)
-                	{
-                        $fd_code = $l_code . '01';
-                    } else{
-                        $fd_code=$this->get_code($num, $l_code);
-	                }
-        	        $i=0;
+        	        		if($num == 0)
+                			{
+                        			$fd_code = $l_code . '01';
+                    			} else{
+                        			$fd_code=$this->get_code($num, $l_code);
+	                		}
+        	        		$i=0;
 
-                	do{
-                    	if($i>0)
-                        {
-                            //$num=$num+$i;
-                            $num = $num + 1;
-	                        $fd_code=$this->get_code($num, $l_code);
-            	        }
-                    	$this->db->from('groups');
-                        $this->db->select('id')->where('code =',$fd_code);
-                        $group_q = $this->db->get();
-                        $i++;
-        	        }while($group_q->num_rows()>0);
+                			do{
+                    				if($i>0)
+                        			{
+                            				//$num=$num+$i;
+                            				$num = $num + 1;
+	                        			$fd_code=$this->get_code($num, $l_code);
+            	        			}
+                    				$this->db->from('groups');
+                        			$this->db->select('id')->where('code =',$fd_code);
+                        			$group_q = $this->db->get();
+                        			$i++;
+        	        		}while($group_q->num_rows()>0);
 	
-                    $this->db->trans_start();
-	                $insert_data = array(
-    	                'code' => $fd_code,
-            	        'name' => $fd_ledger_name,
-                    	'group_id' => $current_asset_id,
-                        'op_balance' => '0.00',
-                        'op_balance_dc' => 'D',
-                        'type' => $data_ledger_type,
-    	                'reconciliation' => $data_reconciliation,
-                	);
+                    			$this->db->trans_start();
+	                		$insert_data = array(
+    	                			'code' => $fd_code,
+            	        			'name' => $fd_ledger_name,
+                    				'group_id' => $current_asset_id,
+                        			'op_balance' => '0.00',
+                        			'op_balance_dc' => 'D',
+                        			'type' => $data_ledger_type,
+    	                			'reconciliation' => $data_reconciliation,
+                			);
 
-	                if ( ! $this->db->insert('ledgers', $insert_data))
-	                {
-	                    $this->db->trans_rollback();
-	    	            $this->logger->write_message("error", "Error adding FD Ledger account for " . $data_name);
-	            	} else {
-                    	$this->db->trans_complete();
-                        $this->logger->write_message("success", "Added FD Ledger account for " . $data_name);
+	                		if ( ! $this->db->insert('ledgers', $insert_data))
+	                		{
+	                    			$this->db->trans_rollback();
+	    	            			$this->logger->write_message("error", "Error adding FD Ledger account for " . $data_name);
+	            			} else {
+                    				$this->db->trans_complete();
+                        			$this->logger->write_message("success", "Added FD Ledger account for " . $data_name);
 						//redirect('account');
-        	            //return;
-                    }
+        	            			//return;
+                    			}
 				}
 				redirect('account');
-                return;	
-            }
+                		return;	
+            		}
 		}
 		return;
 	}

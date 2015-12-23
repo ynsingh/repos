@@ -1,0 +1,14 @@
+delete from groups where id=103;
+delete from groups where id=104;
+delete from groups where id=105;
+delete from groups where id=106;
+delete from groups where id=106;
+delete from ledgers where id=146;
+delete from ledgers where id=147;
+delete from ledgers where id=148;
+delete from ledgers where id=149;
+delete from ledgers where id=150;
+delete from ledgers where id=151;
+delete from ledgers where id=152;
+delete from ledgers where id=153;
+delete from ledgers where id=154;

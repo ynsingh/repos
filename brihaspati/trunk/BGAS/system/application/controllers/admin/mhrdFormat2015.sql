@@ -27,11 +27,6 @@ INSERT INTO `groups` VALUES(98,'1004010601',97,'Goods',0,0,0,'');
 INSERT INTO `groups` VALUES(99,'1004010602',97,'Services',0,0,0,'');
 INSERT INTO `groups` VALUES(100,'10040107',84,'UGC Sponsored Fellowship/Scholarships',0,0,0,'');
 
-INSERT INTO `groups` VALUES(103,'10040108',84,'Unutilized Grants',0,0,0,'');
-INSERT INTO `groups` VALUES(104,'1004010801',103,'UGC Grants',0,0,0,'');
-INSERT INTO `groups` VALUES(105,'1004010802',103,'Government of India',0,0,0,'');
-INSERT INTO `groups` VALUES(106,'1004010803',103,'State Goverment',0,0,0,'');
-INSERT INTO `groups` VALUES(107,'1004010804',103,'DBT Grant',0,0,0,'');
 INSERT INTO `groups` VALUES(108,'10040109',84,'Any Other Liabilities',0,0,0,'');
 INSERT INTO `groups` VALUES(109,'100402',83,'Provisions',0,0,0,'');
 INSERT INTO `groups` VALUES(110,'10040201',109,'Provision for Retirement Benefit',0,0,0,'');
@@ -330,15 +325,6 @@ INSERT INTO `ledgers` VALUES (582,'1004020403',273,'Provision Received From Othe
 INSERT INTO `ledgers` VALUES (583,'1004020404',273,'Provision Received From Other Organisation For DCRG','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (584,'1004020405',273,'Provision Received From Other Organisation For Commutation','0.00','D',0,0,0,'');
 
-INSERT INTO `ledgers` VALUES (146,'100401080101',104,'UGC Capital Grants','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (147,'100401080102',104,'UGC Revenue Grants','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (148,'100401080103',104,'UGCPF-Grant in Aids Fellowship Plan','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (149,'100401080201',105,'Govt Capital Grants','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (150,'100401080202',105,'Govt Revenue Grants','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (151,'100401080301',106,'State Govt Capital Grants','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (152,'100401080302',106,'State Govt Revenue Grants','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (153,'100401080401',107,'DBT Capital Grants Plan','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (154,'100401080402',107,'DBT Revenue Grants Plan','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (155,'2001010101',133,'Culverts','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (156,'2001010102',133,'Land Ledger','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (157,'2001010201',134,'Construction of Cycle Track','0.00','D',0,0,0,'');
