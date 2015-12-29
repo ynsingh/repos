@@ -156,8 +156,8 @@
         	</tbody>
         </table>
 		<?php
-        $cheque='';
-        $this->db->select('name,bank_name,update_cheque_no')->from('cheque_print')->where('entry_no',$row['entry_id']);
+        $cheque='';	
+        $this->db->select('name,bank_name,update_cheque_no')->from('cheque_print')->where('entry_no',$entry_number);
         $ledger_q = $this->db->get();
         foreach($ledger_q->result() as $row)
         {

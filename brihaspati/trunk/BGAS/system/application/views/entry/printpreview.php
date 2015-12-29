@@ -124,6 +124,21 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 				echo "</tr>";
 				$odd_even = ($odd_even == "odd") ? "even" : "odd";
 			}
+			$this->db->select('name,bank_name,ledger_id, update_cheque_no')->from('cheque_print')->where('entry_no',$row->entry_id);
+		        $ledger_q = $this->db->get();
+		        $no_of_row=$ledger_q->num_rows();
+		        if($no_of_row > 0){
+		        	foreach($ledger_q->result() as $row)
+		        	{
+		                	$bank_name = $row->bank_name;
+		                	$ledger_id = $row->ledger_id;
+		                	$name= $row->name;
+		                	$cheque_no= $row->update_cheque_no;
+      			        	$cheque[] =$cheque_no;
+        			}
+                			$length=count($cheque);
+        		}
+
 			echo "<tr class=\"tr-total\"><td></td><td class=\"total-name\">Total</td><td class=\"total-dr\">" . $currency . " " .  $entry_dr_total . "</td><td class=\"total-cr\">" . $currency . " " . $entry_cr_total . "</td></tr>";
 			
 		?>
@@ -148,6 +163,30 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 		Submitted By : <span class="value"><?php echo $submitted_by; ?></span>
         <br>
         Verified By : <span class="value"><?php echo $verified_by; ?></span>
+	<br>
+	<?php
+        if($ledger_q->num_rows() > 0){
+                if( $cheque_no != NULL && $name != NULL)
+                {
+                        echo "<p>";
+                        echo "Bank Name :" . $bank_name . "</br>";
+                        echo "</p>";
+                        echo "<p>";
+                        echo "Beneficiary Name :" . $name . "</br>";
+                        echo "</p>";
+                        for($i=0; $i<$length; $i++)
+                        {
+                                if($cheque[$i] != 1){
+                                        echo "<p>";
+                                        echo "Cheque No :" . $cheque[$i] . "</br>";
+                                        echo "</p>";
+                                }
+                        }
+                }
+        }
+
+?>
+
 	</td>
 	<td align=right>
 	<p>Sanction Letter No. : <span class="bold"><?php echo $cur_entry->sanc_letter_no; ?></span></p>

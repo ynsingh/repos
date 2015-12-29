@@ -320,6 +320,10 @@ var dc = '';
                                             //    $("#ch_no").show();
                                               //  $(".bank_value").show();
                                                 rowid.parent().next().next().next().children().attr('disabled', 'disabled');
+						rowid.parent().next().next().next().next().children().attr('disabled', 'disabled');
+                                                rowid.parent().next().next().next().next().next().children().attr('disabled', 'disabled');
+                                                rowid.parent().next().next().next().next().next().next().children().attr('disabled', 'disabled');
+
                                           	}
          				//Define Entry Types.........
                                         if(dc == 'C' && bank_cash == '1')

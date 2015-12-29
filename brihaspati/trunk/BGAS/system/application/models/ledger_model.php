@@ -1922,7 +1922,7 @@ var $ledgers = array();
 	//	$income_code = $this->get_account_code('Liabilities and Owners Equity');
 	//	$general_code = $this->get_account_code('General Funds');
          //       $capital_code = $this->get_account_code('capital Funds');
-		$this->db->select('name, id, group_id, code');
+		$this->db->select('name, id, group_id, code')->order_by('name', 'asc');
                 $this->db->from('ledgers');
 		$this->db->like('code', '10', 'after');
 		//$this->db->not_like('code', '1003', 'after');
@@ -1962,7 +1962,7 @@ var $ledgers = array();
        		// for mhrd old format 
        		if($designated_earmarked != "")
        		{
-       			$this->db->select('name, id, group_id, code');
+       			$this->db->select('name, id, group_id, code')->order_by('name', 'asc');
                 $this->db->from('ledgers');
 				$this->db->like('code', '10', 'after');
 				$this->db->not_like('code', '1003', 'after');
@@ -1979,7 +1979,7 @@ var $ledgers = array();
 					}
 				}
        		}else{
-       			$this->db->select('name, id, group_id, code');
+       			$this->db->select('name, id, group_id, code')->order_by('name', 'asc');
                 $this->db->from('ledgers');
 				$this->db->like('code', '10', 'after');
 				//$this->db->not_like('code', '1003', 'after');
@@ -1997,8 +1997,8 @@ var $ledgers = array();
        		}
        	}else{
        		// for corporate format
-       		$this->db->select('name, id, group_id, code');
-            $this->db->from('ledgers');
+       		$this->db->select('name, id, group_id, code')->order_by('name', 'asc');
+            	$this->db->from('ledgers');
 			$this->db->like('code', '10', 'after');
 			//$this->db->not_like('code', '1003', 'after');
 			//$this->db->not_like('code', '1004', 'after');

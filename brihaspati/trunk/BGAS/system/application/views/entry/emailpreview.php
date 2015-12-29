@@ -40,8 +40,42 @@
 			}
 			echo "<tr><td>Total</td><td>" . $currency . " " .  $entry_dr_total . "</td><td>" . $currency . " " . $entry_cr_total . "</td></tr>";
 		?>
+		  <?php
+        $cheque='';
+        $this->db->select('name,bank_name,update_cheque_no')->from('cheque_print')->where('entry_no',$entry_number);
+        $ledger_q = $this->db->get();
+        foreach($ledger_q->result() as $row)
+        {
+            $bank_name = $row->bank_name;
+            $bank[] =$bank_name;
+            $name= $row->name;
+            $benif_name[] =$name;
+            $cheque_no=$row->update_cheque_no;
+            $cheque[] =$cheque_no;
+        }
+        $length=count($cheque);
+
+        ?>
+
 		</tbody>
 	</table>
+	 <?php
+        if($ledger_q->num_rows() > 0){
+            if( $cheque_no != NULL && $name != NULL)
+                {
+                for($i=0; $i<$length; $i++)
+                {
+                    if($cheque[$i] != 1){
+                  //  echo"<br>";
+                    echo"Bank Name : " . $bank[$i] . "<br>";
+                    echo"Beneficiary Name : " . $benif_name[$i] . "<br>";
+                    echo"Cheque No : " . $cheque[$i] . "<br>";
+                    }
+                }
+                }
+        }
+        ?>
+
 	<br />
 	<p>Narration : <span class="value"><?php echo $entry_narration; ?></p>
 	<br />
