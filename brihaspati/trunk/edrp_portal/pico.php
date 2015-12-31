@@ -66,7 +66,7 @@ var server=xmlDoc.getElementsByTagName("SERVER");
 </div>
 
 <div id="content">
-               <div style="width:67%; margin-top:-35px;">
+               <div style="width:67%; margin-top:-26px;">
        
                 <h2>                <script type="text/javascript">
                 for (i=0;i<x.length;i++)
@@ -148,8 +148,12 @@ if( empty($_SESSION['username']) )
                 document.write(">");
                 document.write("PICO SERVER"+count);
                 document.write("</a></td><td><br>");
-                        }
+          
+              }
  </script>
+
+<br>
+<embed src="uploads/pico.pdf" width="700px" height="500px">
    <br>	
 </div>
 <?php include("footer.php");

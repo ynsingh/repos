@@ -60,7 +60,7 @@ var link=xmlDoc.getElementsByTagName("SECONDARYLINK");
 </div>
 <div id="content">
         <div id ="columnC">
-        <div style="width:60%; margin-top:-35px; line-height:160%;font-size:14px;color:#333;">
+        <div style="width:60%; margin-top:-10px; line-height:160%;font-size:14px;color:#333;">
                 <?php
                  if( empty($_SESSION['username']) )
                 {?>

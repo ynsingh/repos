@@ -49,7 +49,7 @@
 
 <div id="content">
 
-        <div style="width:67%; margin-top:-35px;">
+        <div style="width:67%; margin-top:-26px;">
 
                 <h2>                <script type="text/javascript">
 
@@ -266,10 +266,9 @@ if( empty($_SESSION['username']) )
 
 
  </script>
-
-   <br>
-
+<embed src="uploads/bgas.pdf" width="700px" height="500px">
 </div>
+</a>
  <?php include("footer.php");
 ?>
       

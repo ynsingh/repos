@@ -84,11 +84,13 @@
 }
 
 #flyerimage {
-margin-left:20%;
+margin-left:22%;
 margin-right:10%;
 margin-top:33px;
 font-size: 150%;
 font-color:#000000;
+height: 100px;
+margin-bottom:20px;
 }
 
 #message {

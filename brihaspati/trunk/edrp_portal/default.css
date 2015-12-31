@@ -129,9 +129,9 @@ img.left {
 /** SecondaryMenu*/
 #link {
         width: 1080px;
-        margin: 0px auto;
+        margin: -25px auto;
 	background: url(images/img021.jpg) repeat-x left top;
-	margin-top: 25px;
+	margin-top: -25px;
 	height:45px;
 }
 
@@ -174,7 +174,7 @@ img.left {
 }
 #content {
 	width: 1078px;
-        height:480px;
+        height: 817px;
 	margin: 0px auto;
 	padding: 40px 0px 20px 0px;
 }

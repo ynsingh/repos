@@ -53,7 +53,7 @@ var link=xmlDoc.getElementsByTagName("SECONDARYLINK");
 </script>
 
 <div id="content">
-                <div style="width:67%; margin-top:-11px;">
+                <div style="width:67%; margin-top:-65px;">
                 <h2>                <script type="text/javascript">
                 for (i=0;i<x.length;i++)
                 { 

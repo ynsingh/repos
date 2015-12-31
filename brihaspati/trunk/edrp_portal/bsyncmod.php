@@ -56,7 +56,7 @@ var mod=xmlDoc.getElementsByTagName("COMPONENT");
 </div>
 <div id="content">
 <div id ="columnC">
-        <div style="width:60%; margin-top:-35px;font-size:14px;color:#333;">
+        <div style="width:60%; margin-top:-15px;font-size:14px;color:#333;">
                   <?php
                  if( empty($_SESSION['username']) )
                 {?>

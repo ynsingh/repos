@@ -63,7 +63,7 @@ var link=xmlDoc.getElementsByTagName("SECONDARYLINK");
 <div id="content">
 <div id ="columnC">
         <div>
-        <div style="width:60%; margin-top:-35px;font-size:14px;color:#333;line-height:160%;">
+        <div style="width:60%; margin-top:-11px;font-size:14px;color:#333;line-height:160%;">
                    <?php
                  if( empty($_SESSION['username']) )
                 {?>
@@ -107,7 +107,7 @@ var link=xmlDoc.getElementsByTagName("SECONDARYLINK");
  <?php
                 }else{
 ?>
-                <div style="width:49%;float:right;margin-top:-3%;margin-right:-37%">
+                <div style="width:49%;float:right;margin-top:-4%;margin-right:-37%">
 <?php
                 }
 ?>

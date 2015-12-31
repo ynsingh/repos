@@ -87,7 +87,7 @@ var server=xmlDoc.getElementsByTagName("SERVER");
 </div>
 
 <div id="content">
-              <div style="width:67%; margin-top:-35px;">
+              <div style="width:67%; margin-top:-26px;">
                <h2>                <script type="text/javascript">
                 for (i=0;i<x.length;i++)
                 { 
@@ -171,7 +171,9 @@ if( empty($_SESSION['username']) )
                 document.write("</a></td><td><br>");
                         }
  </script>
-   <br>
+<br>
+<embed src="uploads/brihaspati.pdf" width="700px" height="500px">
+   <br> <br> <br> <br> <br> <br>  
 <?php include("footer.php");
 ?>
 

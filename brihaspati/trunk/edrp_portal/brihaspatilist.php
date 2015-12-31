@@ -57,7 +57,7 @@ var list=xmlDoc.getElementsByTagName("LIST");
 <div id="content">
 <div id ="columnC">
         <div>
-        <div style="width:47%; margin-top:-35px;font-size:14px;color:#333;line-height:160%;">
+        <div style="width:47%; margin-top:-10px;font-size:14px;color:#333;line-height:160%;">
                    <?php
                  if( empty($_SESSION['username']) )
                 {?>

@@ -103,9 +103,21 @@ foreach( $searchNode as $searchNode )
 </head>
 <div id="top">
 <div id="content" style="margin-top: 0px; padding: 0px 0px 20px 0px;">
+<?php
+if( !empty($_SESSION['username']) )
+{
+?>
+<input class="button" value="LOGOUT" type="submit" onclick="location.href='logout.php'"/>
+<input class="button" value="UPLOAD BROCHURE" type="submit" onclick="location.href='uploadflyer.php'"/>
+<?php } ?>
+<input class="button" value="VIEW BROCHURE" type="submit"  onclick="location.href='viewflyer.php'"/>
 <input class="button" value="CONTACT US" type="submit" onclick="location.href='contactus.php'"/>
 <input class="button" value="ABOUT US" type="submit"  onclick="location.href='aboutus.php'"/>
 <input class="button" value="HOME" type="submit"  onclick="location.href='index.php'"/>
+
+
+
+
 </div>
 
 </div>

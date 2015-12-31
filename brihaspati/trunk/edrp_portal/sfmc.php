@@ -1,7 +1,5 @@
  <?php include("header.php");
 ?>
-
-
 <?php
 session_start();
 $xmlDoc = new DOMDocument();
@@ -41,7 +39,7 @@ var server=xmlDoc.getElementsByTagName("SERVER");
 </script>
 
 <div id="content">
-           <div style="width:67%; margin-top:-15px;">
+           <div style="width:67%; margin-top:-65px;">
                 <h2>                <script type="text/javascript">
                 for (i=0;i<x.length;i++)
                 { 

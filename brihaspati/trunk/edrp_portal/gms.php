@@ -40,7 +40,7 @@ var server=xmlDoc.getElementsByTagName("SERVER");
 </script>
 
 <div id="content">
-                <div style="width:67%; margin-top:-1px;">
+                <div style="width:67%; margin-top:-60px;">
                 <h2>                <script type="text/javascript">
                 for (i=0;i<x.length;i++)
                 { 
