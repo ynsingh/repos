@@ -7,7 +7,7 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
-$page.setTitle("$brih_home | $course | $brih_Wiki |  $brih_edit $brih_Wiki $WikiPage")
+$page.setTitle("Home | $course | Wiki |  Edit Wiki Page")
 $page.setBgColor("#ffffff")
 $!data.getMessage()
 <head>

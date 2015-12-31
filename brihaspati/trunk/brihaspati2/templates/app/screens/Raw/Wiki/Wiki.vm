@@ -6,7 +6,7 @@
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-$page.setTitle(" $brih_home | $course | $brih_Wiki")
+$page.setTitle(" Home | $course | Wiki")
 $page.setBgColor("#ffffff")
 #set($lang=$data.getUser().getTemp("lang").toString())
 

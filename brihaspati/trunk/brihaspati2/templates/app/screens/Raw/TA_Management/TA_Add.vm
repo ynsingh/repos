@@ -6,7 +6,7 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
-$page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
+$page.setTitle("Home | $course1 | Teacher Management")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())

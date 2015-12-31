@@ -7,7 +7,7 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
-$page.setTitle("$brih_home|$course|$brih_Wiki | $Wikimain5")
+$page.setTitle("Home|$course|Wiki | Control Wiki")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <style type="text/css"> input{ width:170px; } </style>

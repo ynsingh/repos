@@ -7,7 +7,7 @@
  *#
 
 
-$page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
+$page.setTitle("Home | $course1 | Teacher Assistant")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())

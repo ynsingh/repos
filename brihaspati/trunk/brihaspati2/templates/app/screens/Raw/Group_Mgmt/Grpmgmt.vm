@@ -30,7 +30,7 @@
 #if($data.getUser().getTemp("modulename6") == "6")
 	#set($flag1=true)
 #end
-$page.setTitle("Home | $courseName | $brih_grpmgmt")
+$page.setTitle("Group Management ")
 $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
