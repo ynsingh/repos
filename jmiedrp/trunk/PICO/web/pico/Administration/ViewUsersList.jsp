@@ -40,14 +40,10 @@
                 <br>
                 <div style ="background-color: #215dc6;">
                     <p align="center" class="pageHeading" style="color: #ffffff"><s:property value="getText('Administration.UsersList')" /></p>
-                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p> 
                 </div>
-			<table><tr>
-			<td align="center"><s:property value="message"/> <br></td>
-			</tr></table>
                 <div style="border: solid 1px #000000; background: gainsboro">
              	<s:form name="frmUserListBrowse">  
-                <s:property value="message" /> 
+             <%--   <s:property value="message" /> --%>
                  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                     <display:table name="ruList" pagesize="15"
                                excludedParams="*"  cellpadding="0"
@@ -62,16 +58,11 @@
                    <display:column property="erpmuName" title="User email"
                                 maxLength="35" headerClass="gridheader"
                                 class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"  style="width:20%"/>
-		  
-		<%--   <display:column paramId="erpmuId" paramProperty="erpmuId"
-                		href="/pico/Administration/EditDetail.action"
-                                headerClass="gridheader" class="griddata" media="html"  value="Edit">
-                   </display:column>
                    <display:column paramId="erpmuId" paramProperty="erpmuId"
 	                   href="/pico/Administration/ChangePsword.action"
         	   	   headerClass="gridheader" class="griddata" media="html" value="ChangePassword">
                    </display:column>
-		--%>		
+				
                 </display:table>
                 </table>
              </s:form>
