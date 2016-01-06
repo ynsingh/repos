@@ -21,7 +21,7 @@ public class DateValidation {
             int dateValue = Integer.parseInt(bit1[0]) - Integer.parseInt(bit[0]);
             System.out.println("Date Of Birth : "+dateOfBirth);
             //flag = new DateValidation().dateOfResiValidation(dateOfBirth, dateOfJoining, dateOfReg);
-            if((((Integer.parseInt(bit1[0])-Integer.parseInt(bit[0]))<23) ||
+            if((((Integer.parseInt(bit1[0])-Integer.parseInt(bit[0]))<18) ||
                     ( Integer.parseInt(bit1[0]) == Integer.parseInt(bit[0]))))
             {
              return false;

@@ -40,8 +40,8 @@ public class EMployeeMonthSlipPDF {
     public void MonthlySlipOfEmployee()
     {
         try{
-            //JasperToXml abc=new JasperToXml();
-            //abc.jasperfileresult();
+  //          JasperToXml abc=new JasperToXml();
+//            abc.jasperfileresult();
             cn = new CommonDB().getConnection();
             HashMap map = new HashMap();
             UserInfo ub = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
@@ -50,6 +50,7 @@ public class EMployeeMonthSlipPDF {
             map.put("year", ub.getCurrentYear());
             Image img = new OrgLogoDB().loadLogoImage();
             map.put("org_logo", img);
+	    map.put("org_id", ub.getUserOrgCode());
             map.put("org_title", "Salary Slip for the Month of " + ub.getCurrentMonthName());
             FacesContext facesContext = FacesContext.getCurrentInstance();
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");

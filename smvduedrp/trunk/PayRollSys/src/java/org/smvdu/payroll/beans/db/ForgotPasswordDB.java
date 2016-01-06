@@ -134,7 +134,7 @@ public class ForgotPasswordDB {
                          l_mbp.setContent("<html>" 
                                     +"<font style='color:#4B4B4B;font-size:12px;font-weight:bold;'>User ID / EmailID : '"+fp.getEmail()+"'</font><br><br>"    
                                     +"<font style='color:#4B4B4B;font-size:13px;'>Click Following Link At Billow</font><br><br><hr>"
-                                    +"<font style='color:red;font-size:13px;font-weight:bold;'>"+"<a href='"+activationLink+"'>"+activationLink+"'</a>"+"</font><br><hr>"
+                                    +"<font style='color:red;font-size:13px;font-weight:bold;'>"+"<a href='"+activationLink+"'>"+activationLink+"</a>"+"</font><br><hr>"
                           + "<br><br><br><font style='color:#4B4B4B;font-size:15px;font-weight:bold;'>Thanks And Regards</font><br>"
                           + "<font style='color:#4B4B4B;font-size:15px;font-weight:bold;'>Payroll Administration<br></font>" 
                           + "<image src="+path+File.separator+"img/pls1.png/></html>","text/html");
