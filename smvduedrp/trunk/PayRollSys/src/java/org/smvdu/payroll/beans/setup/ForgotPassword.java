@@ -209,12 +209,10 @@ public class ForgotPassword implements Serializable{
             newpasswd = this.password;
             if(fpdb.changePassword(useremail, newpasswd))
             {
-                new Mail().getMailMessage(newpasswd, servername); 
+               new ForgotPasswordDB().sendUpdatePasswordMail(this,useremail);
+                //new Mail().sendMailMessage("Your PayrollSys Password has been changed ", useremail, newpasswd);
                 callLoginPage();
                 FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "New Password has been  sent successfuly ", ""));
-                // context.addMessage(clientId, message);
-                //  externalContext.getFlash().setKeepMessages(true);
-                // return "../Login.jsf?faces-redirect=true";
                 new ForgotPasswordDB().deleteEntry(rkey1);
             }
             else

@@ -31,7 +31,7 @@
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
 *  Modified Date: 02 Dec 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
-*
+*  Om Prakash omprakashkgp@gmail.com
 --%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
@@ -147,7 +147,7 @@
                             </div>--%>
                             <div id='links'>
                                 <ul>
-                                    <li><a href="adminLogin/ForgotPassword.jsf " > Forgot Password </a></li>
+                                    <li><a href="adminLogin/ForgotPassword.jsf " > Forgot Password? </a></li>
                                    <li><a href="http://202.141.40.215/WebApp/wiki/index.php/PayRoll_System" target="_blank">Help Document</a></li>
                                    <li><a href='adminLogin/brihaspatiMainLogin.jsf' target="_blank">Brihaspati Server Authentication</a></li>
                                    <li><a href='http://202.141.40.215/WebApp/wiki/index.php/Release_Notes' target="_blank">Release Notes</a></li>

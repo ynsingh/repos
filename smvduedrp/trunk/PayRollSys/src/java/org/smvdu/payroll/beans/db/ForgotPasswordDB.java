@@ -1,4 +1,4 @@
-    /*
+        /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -89,11 +89,12 @@ public class ForgotPasswordDB {
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
             HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
             url = request.getRequestURL().toString();
-            String ipAddress = request.getRemoteAddr();
+           // String ipAddress = request.getRemoteAddr();
+            String ipAddress = String.valueOf(request.getServerName());
             String sport = String.valueOf(request.getServerPort()); 
             rkey=UUID.randomUUID().toString();
             activationLink = "http://"+ipAddress+":"+sport+"/adminLogin"+"/ResetPassword.jsf"+"?rkey="+rkey;  
-            System.out.printf("Request URL==========>"+activationLink);
+            //System.out.printf("Request URL==========>"+activationLink);
             String fromEmail = new String();
             String fromPassword = new String();
             String smtpHostName;
@@ -385,5 +386,70 @@ public class ForgotPasswordDB {
         }
         
     }
+      /*
+       *    this method is using for sending updeted password to user 
+       *   after password reset process completed 
+       */
+       public boolean sendUpdatePasswordMail(ForgotPassword fp, String to)  {
+              try
+              {
+                  String fromEmail = new String();
+                  String fromPassword = new String();
+                  String smtpHostName;
+                  int port;
+                  final String[] f = new CollegeList().getSMTPAuthDetails().split("-");
+                  port = Integer.parseInt(f[0]);
+                  fromEmail = f[1];
+                  fromPassword = f[2];
+                  smtpHostName = f[3];
+                  Properties props = new Properties();
+                  props.put("mail.smtp.host", smtpHostName); 
+                  props.put("mail.stmp.user", fromEmail);
+                  //To use TLS
+                  props.put("mail.smtp.auth", "true");
+                  props.put("mail.smtp.starttls.enable", "true");
+                  props.put("mail.smtp.password", fromPassword);
+                  props.put("mail.smtp.port",String.valueOf(port)); 
+                  Session session = Session.getDefaultInstance(props, new Authenticator() {
+                                     @Override
+                                     protected PasswordAuthentication getPasswordAuthentication() {
+                                             String username = f[1];
+                                             String password = f[2];
+                                               return new PasswordAuthentication(username, password);
+                                     }
+                                  });
+                    // System.out.println("==send new password 2==========>"+fromEmail+""+smtpHostName+"to====>"+to);
+                    String from = f[1];
+                    String subject = "Payroll Adminstrator";
+                    MimeMessage msg = new MimeMessage(session);
+                    try {
+                        msg.setFrom(new InternetAddress(from));
+                        msg.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(to));
+                        msg.setSubject(subject);
+                        msg.setContent("<html>" 
+                                    +"<font style='color:#4B4B4B;font-size:13px;font-weight:bold;'>Email :"+to+ " , Your New Password is : "
+                          + fp.getNewpasswd()+"<br><br><font style='color:#4B4B4B;font-size:15px;font-weight:bold;'>Thanks And Regard<br>Payroll Administration</font></font><br><hr>" 
+                          + "</html>","text/html"); 
+                        Transport transport = session.getTransport("smtp");
+                        transport.connect();
+                        msg.saveChanges();     // don't forget this
+                        transport.sendMessage(msg, msg.getAllRecipients());
+                        transport.close();
+                        
+                   }  catch(Exception exc) 
+                   {
+                        System.out.println(exc);
+                   }
+                  return true;
+              }
+              catch(Exception e)
+              {
+                  e.printStackTrace();
+                  return false;
+              }
+    }
+
+    
+    
 }    
 
