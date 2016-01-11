@@ -341,12 +341,23 @@ $width="100%";
 			}
 			else {
 				// id, forward ref.id, backward ref.id and number should be a number
-				if($data_search_by == "id" || $data_search_by == "forward_refrence_id" || $data_search_by == "backward_refrence_id" || $data_search_by == "number") {
+				//if($data_search_by == "id" || $data_search_by == "forward_refrence_id" || $data_search_by == "backward_refrence_id" || $data_search_by == "number") {
+				if($data_search_by == "id" || $data_search_by == "forward_refrence_id" || $data_search_by == "backward_refrence_id") {
 					$search_text = $data_text;
 					if(! ctype_digit($data_text)) {
 						$this->messages->add('Please enter a number.', 'error');
 						redirect('entry/' . $data['entry_path']);
 					}
+				}
+				if($data_search_by == "number")
+				{
+					$search_text = $data_text;
+					// voucher number should be either alphanumeric or numeric
+					if((! ctype_alpha($data_text))|| (! is_numeric($data_text))) {
+                                                $this->messages->add('Please enter alphanumeric or numeric value.', 'error');
+                                                redirect('entry/' . $data['entry_path']);
+                                        }
+
 				}
 				if($data_search_by == "entry_type")
 				{
@@ -855,9 +866,8 @@ $width="100%";
 				$duplicate = $this->Entry_model->check_duplicacy($number,$entry_type_id);
 				if ($duplicate) {
 					$this->messages->add('Voucher No. Already Exist. Please Input a Different Voucher No.', 'error');
-                 //   $this->template->load('template', 'entry/add');
-					
-                    return;
+                			//   $this->template->load('template', 'entry/add');
+					return;
 				}
 
 				if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
@@ -1233,11 +1243,13 @@ $width="100%";
                                         	
 					}
 					}
-					if ($data_cheque[$id] == 1 )
+					//if ($data_cheque[$id] == 1 )
+					if ($data_cheque[$id] != 2 )
 					{
                                                 $insert_cheque_data = array(
                                                         'ledger_id' => $data_ledger_id,
                                                         'entry_no' => $entry_id,
+							'paymentreceiptby' => $data_cheque[$id],
                                                         'update_cheque_no' => $data_cheque[$id],
 							'secunitid' => $secunitid
                                                 );
@@ -1434,7 +1446,7 @@ $width="100%";
               //                  $name= $row->name;
                 //                }
 
-		
+	
 
                 if(($loginname==$submittername) && ($loginname != 'admin')){
                         $this->messages->add('Submitter can not verify own entry');
@@ -3447,13 +3459,25 @@ $width="100%";
 				$this->messages->add('Please select search type from dropdown list.', 'error');
 			}
 			else {
-				if($data_search_by == "id" || $data_search_by == "forward_refrence_id" || $data_search_by == "backward_refrence_id" || $data_search_by == "number") {
+				//if($data_search_by == "id" || $data_search_by == "forward_refrence_id" || $data_search_by == "backward_refrence_id" || $data_search_by == "number") {
+				if($data_search_by == "id" || $data_search_by == "forward_refrence_id" || $data_search_by == "backward_refrence_id" ) {
 					// id, forward ref.id, backward ref.id and number should be a number
 					if(! ctype_digit($data_text)) {
 						$this->messages->add('Please enter a number.', 'error');
 						redirect('entry/' . $data['entry_path']);
 					}
 				}
+				if($data_search_by == "number")
+                                {
+                                        $search_text = $data_text;
+                                        // voucher number should be either alphanumeric or numeric
+                                        if((! ctype_alpha($data_text))|| (! is_numeric($data_text))) {
+                                                $this->messages->add('Please enter alphanumeric or numeric value.', 'error');
+                                                redirect('entry/' . $data['entry_path']);
+                                        }
+
+                                }
+
 				if($data_search_by == "entry_type")
 				{
 					// entry type should be alphabatic

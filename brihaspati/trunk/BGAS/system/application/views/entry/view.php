@@ -167,7 +167,7 @@ if($sanc_type != 'select'){
                 	{
 				if($cheque[$i] != 1){
                         		echo "<p>";
-                        		echo "Cheque No :" . $cheque[$i] . "</br>";
+                        		echo "Cheque/DD/BT No :" . $cheque[$i] . "</br>";
                         		echo "</p>";
 				}
 			}
@@ -205,7 +205,7 @@ if($sanc_type != 'select'){
 	if($cheque_print_status == 0 && $cheque_bounce_status == 0)
 	{
 	echo " | ";
-	        echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
+	        echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Cheque/DD/BT', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
 	        echo"<br>";
 
 	}
@@ -213,7 +213,7 @@ if($sanc_type != 'select'){
 	if($cheque_print_status == 1 && $cheque_bounce_status == 0 || $cheque_print_status == 1 && $cheque_bounce_status == 1)
 	{
 	echo " | ";
-	echo anchor('entry/cheque_bounce/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Cancle Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
+	echo anchor('entry/cheque_bounce/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Cancle Cheque/DD/BT', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
 
 	}
 

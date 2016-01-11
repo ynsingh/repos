@@ -1503,12 +1503,13 @@ class Payment extends Controller {
                                 }
 			}*/
 //for print cheque
-				if($payment_mode =='cheque'){
+				if($payment_mode !='cash'){
 					$this->db->trans_start();
                                         $insert_data=array(
                                         'ledger_id' =>$id,
 					'entry_no' =>$entry_id,
 					'update_cheque_no'=>'1',
+					'paymentreceiptby' => $payment_mode,
                                         );
                                         if ( ! $this->db->insert('cheque_print', $insert_data))
                                         {

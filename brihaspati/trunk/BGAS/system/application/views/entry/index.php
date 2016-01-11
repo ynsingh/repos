@@ -116,30 +116,30 @@
                         				if($cheque_print_status == 0 && $cheque_bounce_status == 0)
                         				{
 			
-                                				echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+                                				echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque/DD/BT', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
 								echo"<br>";
 					
                         				}
 							//Print cheque if bounced..........
                         				if($cheque_print_status == 1 && $cheque_bounce_status == 0 || $cheque_print_status == 1 && $cheque_bounce_status == 1)
                         				{
-                               				echo anchor('entry/cheque_bounce/' .  $current_entry_type['label'] . "/" . $row->id, 'Cancle Cheque', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+                               				echo anchor('entry/cheque_bounce/' .  $current_entry_type['label'] . "/" . $row->id, 'Cancle Cheque/DD/BT', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
 							
 							}
 							
 				}
 	}elseif( $no_of_row > 1){
-	foreach($ledger_q->result() as $row1)
-        {
-        	$ledger_id= $row1->ledger_id;
-        	$update_chequ_no=$row1->update_cheque_no;
-        }
-        if($ledger_id != NULL &&  $update_chequ_no != NULL)
-        {
-        	if($update_chequ_no != '0'){
-        		echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+		foreach($ledger_q->result() as $row1)
+        	{
+        		$ledger_id= $row1->ledger_id;
+        		$update_chequ_no=$row1->update_cheque_no;
+        	}
+        	if($ledger_id != NULL &&  $update_chequ_no != NULL)
+        	{
+        		if($update_chequ_no != '0'){
+        			echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque/DD/BT', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
         		}
-        }
+        	}
 
 	}else{
 		 		echo "Cash";

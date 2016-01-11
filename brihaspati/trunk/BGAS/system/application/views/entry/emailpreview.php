@@ -69,7 +69,7 @@
                   //  echo"<br>";
                     echo"Bank Name : " . $bank[$i] . "<br>";
                     echo"Beneficiary Name : " . $benif_name[$i] . "<br>";
-                    echo"Cheque No : " . $cheque[$i] . "<br>";
+                    echo"Cheque/DD/BT No : " . $cheque[$i] . "<br>";
                     }
                 }
                 }
