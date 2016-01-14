@@ -1790,7 +1790,15 @@ class Report extends Controller {
 	{
 		$this->load->library('session');
 		$this->template->set('page_title', 'Payment & Receipt');
-		$this->template->set('nav_links', array('report/download/paymentreceipt' => 'Download CSV', 'report/printpreview/paymentreceipt' => 'Print Preview', 'report/pdf/paymentreceipt' => 'Download PDF'));
+        $username = $this->session->userdata('user_name');
+        $db1=$this->load->database('login', TRUE);
+        $db1->select('username')->from('aggregateaccounts')->where('username =', $username);
+        $getuser = $db1->get();
+        if ($getuser->num_rows() > 0)
+            $this->template->set('nav_links', array('report/download/paymentreceipt' => 'Download CSV', 'report/printpreview/paymentreceipt' => 'Print Preview', 'report/pdf/paymentreceipt' => 'Download PDF','aggregation/aggregatepayrec' => 'View Aggregate '));
+        else
+            $this->template->set('nav_links', array('report/download/paymentreceipt' => 'Download CSV', 'report/printpreview/paymentreceipt' => 'Print Preview', 'report/pdf/paymentreceipt' => 'Download PDF'));
+
 		$data['left_width'] = "300";
 		$data['right_width'] = "125";
 		$default_end_date;

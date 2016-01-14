@@ -5,11 +5,12 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Aggreegate_model extends Model {
+    function Aggreegate_model()
+    {
+        parent::Model();
+    }
 
-	function User_model()
-	{
-		parent::Model();
-	}
+
     function get_op_balance_agg($ledger_id,$accname)
     {
         $CI =& get_instance();

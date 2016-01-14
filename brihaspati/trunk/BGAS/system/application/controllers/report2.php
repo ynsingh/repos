@@ -901,7 +901,15 @@ class Report2 extends Controller {
 	{
         $this->load->library('session');
 		$this->template->set('page_title', 'Income And Expenditure Statement');
-		$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrd' => 'PrintPreview', 'aggregation/aggregateincexp' => 'View Aggregate '));
+        $username = $this->session->userdata('user_name');
+        $db1=$this->load->database('login', TRUE);
+        $db1->select('username')->from('aggregateaccounts')->where('username =', $username);
+        $getuser = $db1->get();
+        if ($getuser->num_rows() > 0)
+            $this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrd' => 'PrintPreview', 'aggregation/aggregateincexp' => 'View Aggregate '));
+        else
+		    $this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrd' => 'PrintPreview'));
+
 		$data['left_width'] = "300";
                 $data['right_width'] = "125";
                 $default_end_date;
