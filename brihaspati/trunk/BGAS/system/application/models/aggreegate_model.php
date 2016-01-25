@@ -205,7 +205,96 @@ class Aggreegate_model extends Model {
         {
             echo $e->getMessage();
         }
-
     }
+
+    /* Return debit total of balancesheet for multiple accounts for aggregation */
+
+    function get_balancesheet_dr_total_agg($ledger_id,$accname)
+    {
+        $db_name ='';
+        $db_username ='';
+        $db_password ='';
+        $host_name ='';
+        $port ='';
+        $db_name ='';
+
+        $this->load->library('session');
+
+        $CI =& get_instance();
+        $db1=$CI->load->database('login', TRUE);
+        $db1->from('bgasAccData')->where('dblable', $accname);
+        $db_name_q = $db1->get();
+        foreach ($db_name_q->result() as $row)
+        {
+            $db_name = $row->databasename;
+            $db_username = $row->uname;
+            $db_password = $row->dbpass;
+            $host_name = $row->hostname;
+            $port = $row->port;
+        }
+        $op_balance = array();
+        $dbcon = new PDO("mysql:host=$host_name;dbname=$db_name", $db_username, $db_password);
+        try
+        {
+            $abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$ledger_id' and entry_items.dc = 'D'";
+            $stmt = $dbcon->query($abc);
+            if($stmt != false)
+            {
+                foreach ($stmt as $row)
+                {
+                    $dr_total = $row['sum(amount)'];                
+                    return $dr_total;
+                }
+            }
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+        
+    }
+    /* Return credit total of balancesheet for multiple accounts for aggregation */
+/*
+    function get_balancesheet_cr_total_agg($ledger_id,$accname)
+    {
+        $this->load->library('session');
+        $db_name ='';
+        $db_username ='';
+        $db_password ='';
+        $host_name ='';
+        $port ='';
+        $CI =& get_instance();
+        $db1=$CI->load->database('login', TRUE);
+        $db1->from('bgasAccData')->where('dblable', $accname);
+        $db_name_q = $db1->get();
+        foreach ($db_name_q->result() as $row)
+        {
+            $db_name = $row->databasename;
+            $db_username = $row->uname;
+            $db_password = $row->dbpass;
+            $host_name = $row->hostname;
+            $port = $row->port;
+        }
+        $op_balance = array();
+        $dbcon = new PDO("mysql:host=$host_name;dbname=$db_name", $db_username, $db_password);
+        try
+        {
+            $abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$ledger_id' and entry_items.dc = 'C'";
+            $stmt = $dbcon->query($abc);
+            if($stmt != false)
+            {
+                foreach ($stmt as $row)
+                {
+                    $cr_total = $row['sum(amount)'];
+                    return $cr_total;
+                }
+            }
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+
+*/
 }
 ?>
