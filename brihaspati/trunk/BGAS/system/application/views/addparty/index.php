@@ -77,6 +77,7 @@ $(document).ready(function(){
 			<th>Branch Name</th>
 			<th>IFSC Code</th>
 			<th>PAN No.</th>
+			<th>UID No.</th>
 			<th>TAN No.</th>
                         <th>Service Tax No.</th>
 			<th>VAT No.</th>
@@ -102,6 +103,7 @@ $(document).ready(function(){
                         echo "<td>" . $row->branchname . "</td>";
                         echo "<td>" . $row->ifsccode . "</td>";
                         echo "<td>" . $row->pan . "</td>";
+                        echo "<td>" . $row->u_id . "</td>";
                         echo "<td>" . $row->tan . "</td>";
                         echo "<td>" . $row->staxnum . "</td>";
                         echo "<td>" . $row->vat . "</td>";

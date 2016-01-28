@@ -5,7 +5,7 @@ class User extends Controller {
 	function User()
 	{
 		parent::Controller();
-
+		$this->load->model('upload_model');
 		/* Check access */
 		if ( ! check_access('administer'))
 		{
@@ -43,11 +43,11 @@ class User extends Controller {
 		$db1->select('edrpuser.id as id,edrpuser.username as username,edrpuser.componentreg as componentreg, edrpuser.email as email,edrpuser.status as status,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype');
 		$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid'); 
 		
-        //$db1->select('id,username,email,role,status,accounts,aggtype')->from('bgasuser');
+        	//$db1->select('id,username,email,role,status,accounts,aggtype')->from('bgasuser');
 		$query = $db1->get();
-        $config['total_rows'] =$db1->count_all('edrpuser');
+        	$config['total_rows'] =$db1->count_all('edrpuser');
 
-        $data['users']= $query;
+        	$data['users']= $query;
 		$user_id='';
 
 		$this->template->load('admin_template', 'admin/user/index', $data);
@@ -103,15 +103,15 @@ class User extends Controller {
 			'name' => 'mobile',
 			'id' => 'mobile',
 			'maxlength' => '10',
-			'size' => '10',
+			'size' => '40',
 			'value' => '',
 		);
 
 		$data['uidnum'] = array(
                         'name' => 'uidnum',
                         'id' => 'uidnum',
-                        'maxlength' => '10',
-                        'size' => '25',
+                        'maxlength' => '12',
+                        'size' => '40',
                         'value' => '',
                 );
 
@@ -149,12 +149,12 @@ class User extends Controller {
 		$db1=$this->load->database('login', TRUE);
 		$db1->select('dblable')->from('bgasAccData');
 		$query = $db1->get();
-        if ($query->num_rows() < 1)
-        {
-        	$this->messages->add('No Account exists.', 'error');
-                $this->template->load('admin_template', 'admin/manage/add', $data);
-                return;
-        }
+        	if ($query->num_rows() < 1)
+        	{
+        		$this->messages->add('No Account exists.', 'error');
+                	$this->template->load('admin_template', 'admin/manage/add', $data);
+                	return;
+        	}
 		else{
 			foreach($query->result() as $row){
 				$data['accounts'][$row ->dblable] = $row ->dblable;
@@ -288,29 +288,16 @@ class User extends Controller {
 				 
 				$number = $this->get_count_num($prole);
 				$secondary_id = $this->get_random_secunitid($secunit_id,$number);
+			//	$secondary_id = $number;
 				//database connectivity for getting data information
                                 $con = @mysql_connect($host_name,$db_username,$db_password);
                                 if($con){
                                         $value = mysql_select_db($db_name, $con);
-                                	$query = "INSERT INTO addsecondparty(sacunit,u_id,email,mobnum,partyrole) VALUES ('$secondary_id','$data_uidnum','$data_user_email','$data_user_mobile','$data_category_type')";
+                                	$query = "INSERT INTO addsecondparty(sacunit,u_id,email,mobnum,partyrole) value('$secondary_id','$data_uidnum','$data_user_email','$data_user_mobile','$data_category_type')";
 					//trigger_error(mysql_error()." in ".$query);
                                         $val = mysql_query($query);
-
-			/*		if(mysql_num_rows($val) > 0) {
-					$line = mysql_fetch_assoc($val);
-					}
-					//$num = mysql_num_rows($val);
-                                        if($val == 1)
-                                        {
-                                                while($row = mysql_fetch_assoc($query))
-                                                {
-							//$userid = $row['u_id'];
-                                                        //print_r($row);
-                                                }
-
-                                        } */
-
-                             }//ifcon 
+					//$this->messages->add('insert values in party table'.$val, 'error');
+                             	}//ifcon 
                                         mysql_close($con);
 
  
@@ -319,40 +306,40 @@ class User extends Controller {
 				$db1->select('id,mobile,componentreg,category_type');
 				$db1->from('edrpuser')->where('username', $data_user_name);
 				$query = $db1->get();
-		        if (!($query->num_rows() < 1))
-		        {
-		        	foreach ($query->result() as $row) {
-		        		
-		        		$compo_reg = $row->componentreg;
-		        		$registered_id = $row->id;
-		        		$registered_mobile = $row->mobile;
-					$category_type = $row->category_type;
-		        	}
-
-		        	$component_array = explode(',', $compo_reg);
-		        	if(in_array('BGAS',$component_array))
+		        	if (!($query->num_rows() < 1))
 		        	{
-		        		$this->messages->add('User Account already exists for BGAS.', 'error');
-		                $this->logger->write_message("error", "User Account already exist" . $data_user_name);
-				        $this->template->load('admin_template', 'admin/user/add', $data);
-		                return;	
-		        	}else{
+		        		foreach ($query->result() as $row) {
+		        		
+		        			$compo_reg = $row->componentreg;
+		        			$registered_id = $row->id;
+		        			$registered_mobile = $row->mobile;
+						$category_type = $row->category_type;
+		        		}
 
-		        		$compo_reg = $compo_reg.",BGAS";
-		        		$db1->trans_start();
-
-		        		/* check mobile no. exist is same as entered */
-
-		        		if($registered_mobile == $data_user_mobile){
-		        			$update_data = array(
-			                'componentreg' => $compo_reg	
-							);
+		        		$component_array = explode(',', $compo_reg);
+		        		if(in_array('BGAS',$component_array))
+		        		{
+		        			$this->messages->add('User Account already exists for BGAS.', 'error');
+		               			$this->logger->write_message("error", "User Account already exist" . $data_user_name);
+				        	$this->template->load('admin_template', 'admin/user/add', $data);
+		                		return;	
 		        		}else{
-		        			$update_data = array(
-			                'componentreg' => $compo_reg,
-			                'mobile' => $data_user_mobile
-			                );
-		        		}						
+
+		        			$compo_reg = $compo_reg.",BGAS";
+		        			$db1->trans_start();
+
+		        			/* check mobile no. exist is same as entered */
+
+		        			if($registered_mobile == $data_user_mobile){
+		        				$update_data = array(
+			                		'componentreg' => $compo_reg	
+							);
+		        			}else{
+		        				$update_data = array(
+			               			'componentreg' => $compo_reg,
+			                		'mobile' => $data_user_mobile
+			                		);
+		        			}						
 
 						if ( ! $db1->where('id', $registered_id)->update('edrpuser', $update_data))
 						{
@@ -363,159 +350,158 @@ class User extends Controller {
 						else{
 							$db1->trans_complete();
 
-
 							$insert_data = array(
-		                        'userid' => $registered_id,
-		                        'role' =>$data_user_role,
-		                        'accounts'=>$data_accounts_string
+		                        			'userid' => $registered_id,
+		                        			'role' =>$data_user_role,
+		                       				'accounts'=>$data_accounts_string
 
-	                    	);
+	                    				);
 
 							if ( ! $db1->insert('bgasuserrolegroup', $insert_data))
-	                    	{
+	                    				{
 
-		                        $db1->trans_rollback();
-		                        $this->messages->add('Error addding User Account in userrolegroup- ' . $data_user_name . '.', 'error');
-		                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+		                        			$db1->trans_rollback();
+		                        			$this->messages->add('Error addding User Account in userrolegroup- ' . $data_user_name . '.', 'error');
+		                        			$this->logger->write_message("error", "Error adding User Account " . $data_user_name);
 								$this->template->load('admin_template', 'admin/user/add', '');
-		                        return;
-		                    }
+		                        			return;
+		                    			}
 							else{
 								$db1->trans_complete();
 							}	
 						}
 						//added by @kanchan
-		               /* $message = "You are Added in Brihaspati General Accounting System<br>Username- $data_user_name <br> && User Role is- $data_user_role  With Your Previous Password";
-		                $subject = 'User Account created in BGAS ';
-		                if($this->paymentreceipt->send_mail($data_user_email, $subject, $message))
+		               			/* $message = "You are Added in Brihaspati General Accounting System<br>Username- $data_user_name <br> && User Role is- $data_user_role  With Your Previous Password";
+		                		$subject = 'User Account created in BGAS ';
+		                		if($this->paymentreceipt->send_mail($data_user_email, $subject, $message))
 						$this->messages->add('Added User Account - ' . $data_user_name .  'Mail Sucessfully send!---'. ' success');
-				*/
+						*/
 						redirect('admin/user/');
 						return;	
-		        	}				
+		        		}				
 				}
 				else{
 					
 					//added by megha
 					$insert_data = array(
-                        'username' => $data_user_name,
-                        'password'=>md5($data_user_password),
-                        'email' => $data_user_email,
-                        //'role' =>$data_user_role,
-                        'componentreg' => $data_user_components,
-                        'mobile' => $data_user_mobile,
-			'category_type' => $data_category_type,
-                        'status' => $data_user_status
-                        //'accounts'=>$data_accounts_string
-                    );
+                        			'username' => $data_user_name,
+                        			'password'=>md5($data_user_password),
+                        			'email' => $data_user_email,
+                        			//'role' =>$data_user_role,
+                        			'componentreg' => $data_user_components,
+                        			'mobile' => $data_user_mobile,
+						'category_type' => $data_category_type,
+                        			'status' => $data_user_status
+                        			//'accounts'=>$data_accounts_string
+                    			);
 
 
 					$user_password = $data_user_password;		
 
-                    if ( ! $db1->insert('edrpuser', $insert_data))
-                    {
+                    			if ( ! $db1->insert('edrpuser', $insert_data))
+                    			{
 
-                        $db1->trans_rollback();
-                        $this->messages->add('Error addding User Account - ' . $data_user_name . '.', 'error');
+                        			$db1->trans_rollback();
+                        			$this->messages->add('Error addding User Account - ' . $data_user_name . '.', 'error');
 
-                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
-                        //$this->template->load('template', 'user/add');
+                        			$this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+                        			//$this->template->load('template', 'user/add');
 						$this->template->load('admin_template', 'admin/user/add', '');
-                        return;
-                    }
+                        			return;
+                    			}
 					else{
 						$bgasuser_id = $db1->insert_id();
 						$db1->trans_complete();
 
 						$insert_data1 = array(
-	                        'userid' => $bgasuser_id,
-	                        'role' =>$data_user_role,
-	                        'accounts'=>$data_accounts_string
-                    	);
+	                        			'userid' => $bgasuser_id,
+	                       				'role' =>$data_user_role,
+	                        			'accounts'=>$data_accounts_string
+                    				);
 
 						if ( ! $db1->insert('bgasuserrolegroup', $insert_data1))
-                    	{
-	                        $db1->trans_rollback();
-	                        $this->messages->add('Error addding User Account in userrolegroup- ' . $data_user_name . '.', 'error');
-	                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+                    				{
+	                      				$db1->trans_rollback();
+	                        			$this->messages->add('Error addding User Account in userrolegroup- ' . $data_user_name . '.', 'error');
+	                        			$this->logger->write_message("error", "Error adding User Account " . $data_user_name);
 							$this->template->load('admin_template', 'admin/user/add', '');
-	                        return;
-	                    }
+	                        			return;
+	                    			}
 						else{
 							$db1->trans_complete();
 						}
 
 						$insert_data2 = array(
-	                        'userid' => $bgasuser_id,
-	                        'mobile' => $data_user_mobile,
-	                        'lang' => "English",
-	                        'status'=> 1
-                    	);
+	                        			'userid' => $bgasuser_id,
+	                        			'mobile' => $data_user_mobile,
+	                        			'lang' => "English",
+	                        			'status'=> 1
+                    				);
 
 						if ( ! $db1->insert('userprofile', $insert_data2))
-                    	{
-	                        $db1->trans_rollback();
-	                        $this->messages->add('Error addding User Account in userprofile- ' . $data_user_name . '.', 'error');
-	                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+                    				{
+	                        			$db1->trans_rollback();
+	                        			$this->messages->add('Error addding User Account in userprofile- ' . $data_user_name . '.', 'error');
+	                        			$this->logger->write_message("error", "Error adding User Account " . $data_user_name);
 							$this->template->load('admin_template', 'admin/user/add', '');
-	                        return;
-	                    }
+	                        			return;
+	                    			}
 						else{
 							$db1->trans_complete();
 						}
 
 						$insert_data3 = array(
-	                        'userid' => $bgasuser_id,
-	                        'lastusedlang' => "English",
-	                        'lastloginstatus' =>1,
-	                        'status' => 1
-                    	);
+	                        			'userid' => $bgasuser_id,
+	                        			'lastusedlang' => "English",
+	                        			'lastloginstatus' =>1,
+	                        			'status' => 1
+                    				);
 
 						if ( ! $db1->insert('userlaststatus', $insert_data3))
-                    	{
-	                        $db1->trans_rollback();
-	                        $this->messages->add('Error addding User Account in userlaststatus- ' . $data_user_name . '.', 'error');
-	                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+                    				{
+	                        			$db1->trans_rollback();
+	                        			$this->messages->add('Error addding User Account in userlaststatus- ' . $data_user_name . '.', 'error');
+	                        			$this->logger->write_message("error", "Error adding User Account " . $data_user_name);
 							$this->template->load('admin_template', 'admin/user/add', '');
-	                        return;
-	                    }
+	                        			return;
+	                    			}
 						else{
 							$db1->trans_complete();
 						}
-				//print_r($data['accounts'][$row->dblable]);
-			/*	$this->db->trans_start();
-				$insert_data_a = array(
-					'email' => $data_user_email,
-					'partyrole' => $data_category_type,
-					'u_id' => $data_uidnum,
-					'mobnum' => $data_user_mobile
-				);
-				if( ! $this->db->insert('addsecondparty', $insert_data_a)){
-				$this->db->trans_rollback();
-				$this->messages->add('Error adding User Account in addsecondparty-', 'error');
-				$this->logger->write_message('error', "Error adding User Account" .$data_user_name);
-				$this->template->load('admin_template' , 'admin/user/add', '');
-				return;
-				}
-				else{
-					$this->db->trans_complete();
-				}   */
+						//print_r($data['accounts'][$row->dblable]);
+						/*	$this->db->trans_start();
+						$insert_data_a = array(
+							'email' => $data_user_email,
+							'partyrole' => $data_category_type,
+							'u_id' => $data_uidnum,
+							'mobnum' => $data_user_mobile
+						);
+						if( ! $this->db->insert('addsecondparty', $insert_data_a)){
+							$this->db->trans_rollback();
+							$this->messages->add('Error adding User Account in addsecondparty-', 'error');
+							$this->logger->write_message('error', "Error adding User Account" .$data_user_name);
+							$this->template->load('admin_template' , 'admin/user/add', '');
+							return;
+						}
+						else{
+							$this->db->trans_complete();
+						}   */
 
 
 					}
 					//added by @kanchan
-	                $message = "<b>You are Added in Brihaspati General Accounting System</b><br>Username- $data_user_name<br>Your Role- $data_user_role <br> Your Password- $user_password";
-	                $subject = 'User Account created in BGAS ';
-	                if($this->paymentreceipt->send_mail($data_user_email, $subject, $message))
-					$this->messages->add('Added User Account - ' . $data_user_name . ' success');
-					redirect('admin/user/');
-					return;	
+	                		$message = "<b>You are Added in Brihaspati General Accounting System</b><br>Username- $data_user_name<br>Your Role- $data_user_role <br> Your Password- $user_password";
+	                		$subject = 'User Account created in BGAS ';
+	                		if($this->paymentreceipt->send_mail($data_user_email, $subject, $message))
+						$this->messages->add('Added User Account - ' . $data_user_name . ' success');
+						redirect('admin/user/');
+						return;	
+					}
+					$db1->close();
 				}
-				$db1->close();
 			}
-		}
-		$this->template->load('admin_template', 'admin/user/add', $data);
-		return;
+			$this->template->load('admin_template', 'admin/user/add', $data);
+			return;
 
 			//$ini_file = $this->config->item('config_path') . "users/" . $data_user_name . ".ini";
 
@@ -543,9 +529,9 @@ class User extends Controller {
 				redirect('admin/user');
 				return;
 			}
-		}
-		$this->template->load('admin_template', 'admin/user/add', $data);
-		return;*/
+			}
+			$this->template->load('admin_template', 'admin/user/add', $data);
+			return;*/
 	}
 
 	//added by @kanchan
@@ -554,7 +540,10 @@ class User extends Controller {
 	{
 		$result = array();
 		$db1=$this->load->database('login', TRUE);
-        	$db1->select('*')->from('bgasAccData');
+		//Get current label.
+                $current_active_account = $this->session->userdata('active_account');
+		$db1->select('*')->from('bgasAccData')->where('dblable', $current_active_account);
+     //   	$db1->select('*')->from('bgasAccData');
         	$alist=$db1->get();
         	if ($alist->num_rows() < 1)
         	{
@@ -586,6 +575,7 @@ class User extends Controller {
 	//made by @kanchan
 	function get_count_num($prole)
 	{
+		$num="";
 		$value = $this->insert_data();
              	$db_name = $value[0];
                 $host_name = $value[1];
@@ -593,106 +583,23 @@ class User extends Controller {
                 $db_password = $value[3];
 
                 //database connectivity for getting data information
-             		$con = @mysql_connect($host_name,$db_username,$db_password);
-                       	if($con){
-                       		$value = mysql_select_db($db_name, $con);
-                                //trigger_error(mysql_error()." in ".$query);
-				if($prole == "faculty"){
-				$cl = "select * from addsecondparty where partyrole = '$prole'";
-                                $val = mysql_query($cl);
-                                if($val != ''){
-                                       while($row = mysql_fetch_assoc($val))
-                                       {
-						$v = $row;
-						$num = mysql_num_rows($val);
-                                        }
+             	$con = @mysql_connect($host_name,$db_username,$db_password);
+                if($con){
+                       	$value = mysql_select_db($db_name, $con);
+                        //trigger_error(mysql_error()." in ".$query);
+			//if($prole == "faculty"){
+			$cl = "select * from addsecondparty where partyrole = '$prole'";
+                        $val = mysql_query($cl);
+                        if($val != ''){
+                        	while($row = mysql_fetch_assoc($val))
+                                {
+					$v = $row;
+					$num = mysql_num_rows($val);
                                 }
-				}elseif($prole == "student"){
-				$cl = "select * from addsecondparty where partyrole = '$prole'";
-                                $val = mysql_query($cl);
-                                if($val != ''){
-                                       while($row = mysql_fetch_assoc($val))
-                                       {
-                                                $v = $row;
-						$num = mysql_num_rows($val);
-                                        }
-                                }
-				}elseif($prole == "staff clerical"){
-				$cl = "select * from addsecondparty where partyrole = '$prole'";
-                                $val = mysql_query($cl);
-                                if($val != ''){
-                                       while($row = mysql_fetch_assoc($val))
-                                       {
-                                                $v = $row;
-						$num = mysql_num_rows($val);
-                                        }
-                                }
-				}elseif($prole == "technical staff"){
-                                $cl = "select * from addsecondparty where partyrole = '$prole'";
-                                $val = mysql_query($cl);
-                                if($val != ''){
-                                       while($row = mysql_fetch_assoc($val))
-                                       {
-                                                $v = $row;
-						$num = mysql_num_rows($val);
-                                        }
-                                } 
-				}elseif($prole == "supplier"){
-                                $cl = "select * from addsecondparty where partyrole = '$prole'";
-                                $val = mysql_query($cl);
-                                if($val != ''){
-                                       while($row = mysql_fetch_assoc($val))
-                                       {
-                                                $v = $row;
-						$num = mysql_num_rows($val);
-                                        }
-                                } 
-				}elseif($prole == "admin staff"){
-                                $cl = "select * from addsecondparty where partyrole = '$prole'";
-                                $val = mysql_query($cl);
-                                if($val != ''){
-                                       while($row = mysql_fetch_assoc($val))
-                                       {
-                                                $v = $row;
-						$num = mysql_num_rows($val);
-                                        }
-                                } 
-				}elseif($prole == "contractor"){
-                                $cl = "select * from addsecondparty where partyrole = '$prole'";
-                                $val = mysql_query($cl);
-                                if($val != ''){
-                                       while($row = mysql_fetch_assoc($val))
-                                       {
-                                                $v = $row;
-						$num = mysql_num_rows($val);
-                                        }
-                                }
-				}elseif($prole == "service provider"){
-                                $cl = "select * from addsecondparty where partyrole = '$prole'";
-                                $val = mysql_query($cl);
-                                if($val != ''){
-                                       while($row = mysql_fetch_assoc($val))
-                                       {
-                                                $v = $row;
-						$num = mysql_num_rows($val);
-                                        }
-                                }
-				}elseif($prole == "alumni/doner"){
-                                $cl = "select * from addsecondparty where partyrole = '$prole'";
-                                $val = mysql_query($cl);
-                                if($val != ''){
-                                       while($row = mysql_fetch_assoc($val))
-                                       {
-                                                $v = $row;
-						$num = mysql_num_rows($val);
-                                        }
-				}
-                                }
-				return $num;
+                        }
+		}//if
 
-			}//if
-
-		//return $num;
+		return $num;
 	}
 
 	//made by @kanchan
@@ -704,13 +611,6 @@ class User extends Controller {
 			$num = sprintf('%08d' , $i);
 			$secunitid = $secunit_id . $num;
 		}while($i <= $number);
-
-	/*	for($i=0;$i<=101;$i++) 
-		{
-        	$number = sprintf('%08d',$i);
-        	$value1 = $secunit . $number;
-        	} */
-
 	return $secunitid;
 	}
 
@@ -728,15 +628,15 @@ class User extends Controller {
 		$user_name1 = $db1->get();
 
 		foreach($user_name1->result() as $row)
-        {
-	        $user_name = $row->username;       
+        	{
+	        	$user_name = $row->username;       
 			$user_password = $row->password;
 			$user_email = $row->email;
 			$user_account = $row->accounts;
 			$user_role = $row->role;
 			$user_mobile = $row->mobile;
 			$user_components = $row->componentreg;
-        }
+        	}
 		
 		/* Form fields */
 		$data['user_name'] = array(
@@ -824,19 +724,19 @@ class User extends Controller {
 		$data['accounts'] = array('(All Accounts)' => '(All Accounts)');
 
 //		$db1=$this->load->database('login', TRUE);
-        $db1->select('dblable')->from('bgasAccData');
-        $query = $db1->get();
-        if ($query->num_rows() < 1)
-        {
-	        $this->messages->add('No Account exists.', 'error');
-	        $this->template->load('admin_template', 'admin/manage/edit', $data);
-	        return;
-        }
-        else{
-            foreach($query->result() as $row){
-                    $data['accounts'][$row ->dblable] = $row ->dblable;
-            }
-        }
+       		$db1->select('dblable')->from('bgasAccData');
+        	$query = $db1->get();
+        	if ($query->num_rows() < 1)
+        	{
+	        	$this->messages->add('No Account exists.', 'error');
+	        	$this->template->load('admin_template', 'admin/manage/edit', $data);
+	        	return;
+        	}
+        	else{
+            		foreach($query->result() as $row){
+                    		$data['accounts'][$row ->dblable] = $row ->dblable;
+            		}
+        	}
   //              $db1->close;
 /*
 		if ($accounts_list)

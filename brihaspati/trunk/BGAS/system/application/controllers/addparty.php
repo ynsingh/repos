@@ -6,7 +6,8 @@ class Addparty extends Controller {
 	{
 		parent::Controller();
 		$this->load->model('secunit_model');
-
+		$this->load->library('session');
+		$this->load->model('upload_model');
 		/* Check access */
 		if ( ! check_access('create entry'))
 		{
@@ -27,13 +28,13 @@ class Addparty extends Controller {
 
 	function show()
 	{
-		$this->load->library('session');
+		//$this->load->library('session');
         	$asc_order = $this->session->userdata('order_change');
 		$asc_id_order = $this->session->userdata('order_id_change');
 		$this->template->set('nav_links', array('addparty/add' => 'Add Party'));
 		$this->template->set('page_title', 'Add Party ');
 		if($asc_order == '1'){
-		 $this->db->from('addsecondparty')->order_by('partyname', 'asc');
+		$this->db->from('addsecondparty')->order_by('partyname', 'asc');
                 $pdetail = $this->db->get();
                 $data['party_detail'] = $pdetail;
 		}else{
@@ -42,7 +43,7 @@ class Addparty extends Controller {
 		$data['party_detail'] = $pdetail;
 		}
 		if($asc_id_order == '1'){
-                 $this->db->from('addsecondparty')->order_by('sacunit', 'asc');
+                $this->db->from('addsecondparty')->order_by('sacunit', 'asc');
                 $pdetail = $this->db->get();
                 $data['party_detail'] = $pdetail;
                 }
@@ -62,6 +63,7 @@ class Addparty extends Controller {
 			"branchname"=> "Branch Name",
 			"ifsccode"=> "IFSC Code",
 			"pan"=> "PAN No.",
+			"u_id" => "UID No.",
 			"tan"=> "TAN No.",
 			"staxnum"=> "Service Tax No.",
 			"vat"=> "VAT No.",
@@ -104,7 +106,7 @@ class Addparty extends Controller {
 			redirect('addparty/index');
 		}
 		else {
-			if($data_search_by == "partyname" || $data_search_by == "mobnum" || $data_search_by == "bancacnum" || $data_search_by == "ifsccode" || $data_search_by == "pan" || $data_search_by == "tan" || $data_search_by == "staxnum" || $data_search_by == "vat" || $data_search_by == "gst" )
+			if($data_search_by == "partyname" || $data_search_by == "mobnum" || $data_search_by == "bancacnum" || $data_search_by == "ifsccode" || $data_search_by == "pan" ||  $data_search_by == "u_id" || $data_search_by == "tan" || $data_search_by == "staxnum" || $data_search_by == "vat" || $data_search_by == "gst" )
 			{
 				if(! ctype_alnum($data_text)) {
 					$this->messages->add('Please enter alphanumeric value.', 'error');
@@ -152,33 +154,50 @@ class Addparty extends Controller {
 		$this->session->unset_userdata('order_change');
 		return;
 	}
+
+
 	function add()
 	{
 		$this->load->library('form_validation');
 		$this->template->set('page_title', 'Add Party');
-
+           
+               // $this->load->library('image_lib');
+		
 		/* Form fields */
 		$data['pname'] = array(
 			'name' => 'pname',
 			'id' => 'pname',
-			'maxlength' => '30',
-			'size' => '25',
+			'maxlength' => '255',
+			'size' => '40',
 			'value' => '',
 		);
 
-		$data['sacunitid'] = array(
+/*		$data['sacunitid'] = array(
 			'name' => 'sacunitid',
 			'id' => 'sacunitid',
 			'maxlength' => '10',
 			'size' => '25',
 			'value' => '',
-		);
+		); */
+		
+		$data['partyrole'] = array(
+                        "faculty" => "Faculty",
+                        "student" => "Student",
+                        "staff clerical"=> "Staff Clerical",
+                        "technical staff" =>"Technical Staff",
+                        "supplier" => "Supplier",
+                        "admin staff" => "Admin Staff",
+                        "contractor" => "Contractor",
+                        "service provider" => "Service Provider",
+                        "alumni/doner" => "Alumni/Donor",
+                );
+
 
 		$data['mnumber'] = array(
                         'name' => 'mnumber',
                         'id' => 'mnumber',
-                        'maxlength' => '12',
-                        'size' => '25',
+                        'maxlength' => '13',
+                        'size' => '40',
                         'value' => '',
                 );
 
@@ -186,7 +205,7 @@ class Addparty extends Controller {
                         'name' => 'accountemail',
                         'id' => 'accountemail',
                         'maxlength' => '100',
-                        'size' => '25',
+                        'size' => '40',
                         'value' => '',
                 );
 
@@ -194,91 +213,103 @@ class Addparty extends Controller {
 			'name' => 'address',
 			'id' => 'address',
 			'rows' => '5',
-			'cols' => '40',
+			'cols' => '51',
 			'value' => '',
 		);
 		$data['bacnumber'] = array(
                         'name' => 'bacnumber',
                         'id' => 'bacnumber',
-                        'maxlength' => '17',
-                        'size' => '25',
+                        'maxlength' => '20',
+                        'size' => '40',
                         'value' => '',
                 );
 		$data['bankname'] = array(
                         'name' => 'bankname',
                         'id' => 'bankname',
-                        'maxlength' => '200',
-                        'size' => '25',
+                        'maxlength' => '250',
+                        'size' => '40',
                         'value' => '',
                 );
 		$data['branchname'] = array(
                         'name' => 'branchname',
                         'id' => 'branchname',
                         'maxlength' => '200',
-                        'size' => '25',
+                        'size' => '40',
                         'value' => '',
                 );
 		$data['ifsccode'] = array(
                         'name' => 'ifsccode',
                         'id' => 'ifsccode',
-                        'maxlength' => '200',
-                        'size' => '25',
+                        'maxlength' => '25',
+                        'size' => '40',
                         'value' => '',
                 );
 		$data['bankaddress'] = array(
 			'name' => 'bankaddress',
 			'id' => 'bankaddress',
 			'rows' => '5',
-			'cols' => '40',
+			'cols' => '51',
 			'value' => '',
 		);
 		$data['pannum'] = array(
                         'name' => 'pannum',
                         'id' => 'pannum',
                         'maxlength' => '10',
-                        'size' => '25',
+                        'size' => '40',
+                        'value' => '',
+                );
+
+
+		$data['uidnum'] = array(
+                        'name' => 'uidnum',
+                        'id' => 'uidnum',
+                        'maxlength' => '12',
+                        'size' => '40',
                         'value' => '',
                 );
 		$data['tannum'] = array(
                         'name' => 'tannum',
                         'id' => 'tannum',
-                        'maxlength' => '10',
-                        'size' => '25',
+                        'maxlength' => '15',
+                        'size' => '40',
                         'value' => '',
                 );
 		$data['stnum'] = array(
                         'name' => 'stnum',
                         'id' => 'stnum',
-                        'maxlength' => '10',
-                        'size' => '25',
+                        'maxlength' => '25',
+                        'size' => '40',
                         'value' => '',
                 );
 		$data['vatnum'] = array(
                         'name' => 'vatnum',
                         'id' => 'vatnum',
-                        'maxlength' => '10',
-                        'size' => '25',
+                        'maxlength' => '25',
+                        'size' => '40',
                         'value' => '',
                 );
 		$data['gstnum'] = array(
                         'name' => 'gstnum',
                         'id' => 'gstnum',
-                        'maxlength' => '10',
-                        'size' => '25',
+                        'maxlength' => '25',
+                        'size' => '40',
                         'value' => '',
                 );
 		 $data['opbal'] = array(
                         'name' => 'opbal',
                         'id' => 'opbal',
                         'maxlength' => '15',
-                        'size' => '25',
+                        'size' => '35',
                         'value' => '',
                 );
+
 		$data['op_balance_dc'] = "D";
 		/* Form validations */
-		$this->form_validation->set_rules('pname', 'Party Name', 'trim|required|min_length[2]|max_length[30]');
-		$this->form_validation->set_rules('sacunitid', 'Secondary Accounting Unit', 'trim|required|max_length[10]');
-		$this->form_validation->set_rules('mnumber', 'Mobile Number');
+		$this->form_validation->set_rules('pname', 'Party Name', 'trim|required|min_length[2]|max_length[255]');
+		$this->form_validation->set_rules('partyrole', 'Party Category', 'trim|required');
+
+		//$this->form_validation->set_rules('sacunitid', 'Secondary Accounting Unit', 'trim|required|max_length[10]');
+		$this->form_validation->set_rules('mnumber', 'Mobile Number','trim |max_length[13]');
 		$this->form_validation->set_rules('accountemail', 'Account Email', 'trim|valid_email');
 		$this->form_validation->set_rules('address', 'Address', 'trim');
 		$this->form_validation->set_rules('bacnumber', 'Bank Account Number', 'trim');
@@ -286,7 +317,8 @@ class Addparty extends Controller {
 		$this->form_validation->set_rules('branchname', 'Branch Name','trim');
 		$this->form_validation->set_rules('ifsccode', 'IFSC Code','trim');
 		$this->form_validation->set_rules('bankaddress', 'Bank Address','trim');
-		$this->form_validation->set_rules('pannum', 'PAN Number','trim');
+		$this->form_validation->set_rules('pannum', 'PAN Number','trim  |max_length[10]');
+		$this->form_validation->set_rules('uidnum', 'UID Number','trim  |max_length[12]');
 		$this->form_validation->set_rules('tannum', 'TAN Number','trim');
 		$this->form_validation->set_rules('stnum', 'Service Tax Number','trim');
 		$this->form_validation->set_rules('vatnum', 'VAT Number','trim');
@@ -297,7 +329,7 @@ class Addparty extends Controller {
 		if ($_POST)
 		{
 			$data['pname']['value'] = $this->input->post('pname', TRUE);
-			$data['sacunitid']['value'] = $this->input->post('sacunitid', TRUE);
+			//$data['sacunitid']['value'] = $this->input->post('sacunitid', TRUE);
 			$data['mnumber']['value'] = $this->input->post('mnumber', TRUE);
 			$data['accountemail']['value'] = $this->input->post('accountemail', TRUE);
 			$data['address']['value'] = $this->input->post('address', TRUE);
@@ -307,6 +339,7 @@ class Addparty extends Controller {
 			$data['ifsccode']['value'] = $this->input->post('ifsccode', TRUE);
 			$data['bankaddress']['value'] = $this->input->post('bankaddress', TRUE);
 			$data['pannum']['value'] = $this->input->post('pannum', TRUE);
+			$data['uidnum']['value'] = $this->input->post('uidnum', TRUE);
 			$data['tannum']['value'] = $this->input->post('tannum', TRUE);
 			$data['stnum']['value'] = $this->input->post('stnum', TRUE);
 			$data['vatnum']['value'] = $this->input->post('vatnum', TRUE);
@@ -324,9 +357,42 @@ class Addparty extends Controller {
 		}
 		else
 		{
-			$prole="";
-			$data_sacunitid= $this->input->post('sacunitid', TRUE);
-			$code = substr($data_sacunitid, 0, 2);
+			$data_partyrole = $this->input->post('partyrole', TRUE);
+
+                        if($data_partyrole == "faculty"){
+                        	$secunit_id = "00";
+                        }
+                        if($data_partyrole == "student"){
+                       		$secunit_id = "01";
+                        }
+                       	if($data_partyrole == "staff clerical"){
+                       		$secunit_id = "02";
+                        }
+                        if($data_partyrole == "technical staff"){
+                      		$secunit_id = "03";
+                       	}
+                   	if($data_partyrole == "supplier"){
+                       		$secunit_id = "04";
+                        }
+                        if($data_partyrole == "admin staff"){
+                      		$secunit_id = "05";
+                       	}
+                       	if($data_partyrole == "contractor"){
+                        	$secunit_id = "06";
+                        }
+                      	if($data_partyrole == "service provider"){
+                        	$secunit_id = "07";
+                        }
+                        if($data_partyrole == "alumni/doner"){
+                        	$secunit_id = "08";
+                        }
+
+			//$CI =& get_instance();
+                       // $this->load->model('Upload_model');
+                        $number = $this->upload_model->get_count_num($data_partyrole);
+                        $secondary_id = $this->upload_model->get_random_secunitid($secunit_id,$number); 
+ 
+		/*	$code = substr($data_sacunitid, 0, 2);
 			if($code == "00"){
 			$prole="faculty";	
 			}
@@ -360,6 +426,8 @@ class Addparty extends Controller {
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
+
+			$data_sacunitid = $this->input->post('sacunit', TRUE);*/
 			$data_pname = $this->input->post('pname', TRUE);
                         $data_mnumber = $this->input->post('mnumber', TRUE);
                         $data_accountemail = $this->input->post('accountemail', TRUE);
@@ -370,38 +438,29 @@ class Addparty extends Controller {
                         $data_ifsccode = $this->input->post('ifsccode', TRUE);
                         $data_bankaddress = $this->input->post('bankaddress', TRUE);
                         $data_pannum = $this->input->post('pannum', TRUE);
+			$data_uidnum = $this->input->post('uidnum', TRUE);
                         $data_tannum = $this->input->post('tannum', TRUE);
                         $data_stnm = $this->input->post('stnum', TRUE);
                         $data_vatnum = $this->input->post('vatnum', TRUE);
                         $data_gstnum = $this->input->post('gstnum', TRUE);
                         $data_opbal = $this->input->post('opbal', TRUE);
 			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
-			if(strlen($data_sacunitid) < 10){
-                                $this->messages->add('second account unit should be 10 digits.', 'error');
-                                $this->template->load('template', 'addparty/add', $data);
-                                return;
-			}
+			
 			if($data_mnumber !=""){
 			if(strlen($data_mnumber) < 10){
-                                $this->messages->add('Mobile Number should be 10 digits.', 'error');
+                                $this->messages->add('Mobile Number should be 10 or 13 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
 			}
 			if($data_bacnumber !=""){
-			if(strlen($data_bacnumber) < 13){
-                                $this->messages->add('Bank A/C number should be between 13 and 17 digits.', 'error');
+			if((strlen($data_bacnumber) < 13)|| (strlen($data_bacnumber) > 20)){
+                                $this->messages->add('Bank A/C number should be between 13 and 20 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
 			}
-			if($data_bacnumber !=""){
-			if(strlen($data_bacnumber) > 17){
-                                $this->messages->add('Bank A/C number should be between 13 and 17 digits.', 'error');
-                                $this->template->load('template', 'addparty/add', $data);
-                                return;
-			}
-			}
+			
 			if($data_ifsccode !=""){
 			if(strlen($data_ifsccode) < 10){
                                 $this->messages->add('IFSC code should be 10 digits.', 'error');
@@ -416,30 +475,37 @@ class Addparty extends Controller {
                                 return;
 			}
 			}
+			if($data_uidnum != ""){
+			if(strlen($data_uidnum) < 12){
+                                $this->messages->add('UID should be 12 digits.', 'error');
+                                $this->template->load('template', 'addparty/add', $data);
+                                return;
+                        }
+			}
 			if($data_tannum !=""){
 			if(strlen($data_tannum) < 10){
-                                $this->messages->add('TAN should be 10 digits.', 'error');
+                                $this->messages->add('TAN should be 10 to 15 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
 			}
 			if($data_stnm !=""){
-			if(strlen($data_stnm) < 10){
-                                $this->messages->add('Service tax number should be 10 digits.', 'error');
+			if(strlen($data_stnm) < 15){
+                                $this->messages->add('Service tax number should be 15 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
 			}
 			if($data_vatnum !=""){
-			if(strlen($data_vatnum) < 10){
-                                $this->messages->add('VAT number should be 10 digits.', 'error');
+			if(strlen($data_vatnum) < 20){
+                                $this->messages->add('VAT number should be 20 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
 			}
 			if($data_gstnum !=""){
-			if(strlen($data_gstnum) < 10){
-                                $this->messages->add('GST number should be 10 digits.', 'error');
+			if(strlen($data_gstnum) < 20){
+                                $this->messages->add('GST number should be 20 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
@@ -448,20 +514,21 @@ class Addparty extends Controller {
 	                $pdetail = $this->db->get();
 			foreach ($pdetail->result() as $row)
 	                {
-				$sacunit=$row->sacunit;
+				//$sacunit=$row->sacunit;
 				$emailid=$row->email;
 				$acnum=$row->bancacnum;
 				$pan=$row->pan;
+				$uid=$row->u_id;
 				$tan=$row->tan;
 				$stnumber=$row->staxnum;
 				$vat=$row->vat;
 				$gst=$row->gst;
-				if($sacunit == $data_sacunitid)
+		/*		if($sacunit == $data_sacunitid)
 				{
                         		$this->messages->add(' Party with sunitid ' .$data_sacunitid. ' already exist. ', 'error');
                 			$this->template->load('template', 'addparty/add', $data);
                         		return;
-				}
+				}*/
 				if($data_accountemail !=""){
 				if($emailid == $data_accountemail)
 				{
@@ -485,6 +552,14 @@ class Addparty extends Controller {
                 			$this->template->load('template', 'addparty/add', $data);
                         		return;
 				}
+				}
+				if($data_uidnum !=""){
+                                if($uid == $data_uidnum)
+                                {
+                                        $this->messages->add(' Party with UID Number ' .$data_uidnum. ' already exist. ', 'error');
+                                        $this->template->load('template', 'addparty/add', $data);
+                                        return;
+                                }
 				}
 				if($data_tannum !=""){
 				if($tan == $data_tannum)
@@ -519,9 +594,24 @@ class Addparty extends Controller {
 				}
 				}
                 	}
+ 			//For Create Folder Automatically Under The BGAS Folder.  
+       			$this->upload_path= realpath(BASEPATH.'../');
+        		if (!is_dir($this->upload_path . "/uploads/scopy")) {
+                		$result = mkdir($this->upload_path . "/uploads/scopy",0777,true);
+        		}//end
+			$this->upload_path= realpath(BASEPATH.'../uploads/scopy');
+			
+			if (($_FILES['panfile']['name']!='')&&($data_pannum !='')){
+				$this->upload_model->scancopy_fileupload('panfile',$data_pannum,$secondary_id);
+			}
+			if (($_FILES['uidfile']['name']!='')&&($data_uidnum !=''))
+				$this->upload_model->scancopy_fileupload('uidfile',$data_uidnum,$secondary_id);
+			if (($_FILES['bankfile']['name']!='')&&($data_bacnumber !=''))
+				$this->upload_model->scancopy_fileupload('bankfile',$data_bacnumber,$secondary_id);
+
 			$this->db->trans_start();
 			$insert_data=array(
-				'sacunit' =>$data_sacunitid,
+				'sacunit' =>$secondary_id,
 				'partyname' =>$data_pname,
 				'mobnum' =>$data_mnumber,
 				'email' =>$data_accountemail, 
@@ -533,14 +623,18 @@ class Addparty extends Controller {
 				'ifsccode' =>$data_ifsccode,
 				'bankaddress' =>$data_bankaddress,
 				'pan' =>$data_pannum,
+				'u_id' =>$data_uidnum,
 				'tan' =>$data_tannum,
 				'staxnum' =>$data_stnm,
-				'partyrole' =>$prole,
+				'partyrole' =>$data_partyrole,
 				'vat' =>$data_vatnum,
 				'gst' =>$data_gstnum,
 				'opbal' =>$data_opbal,
-				'dc'=>$data_op_balance_dc
+				'dc'=>$data_op_balance_dc,
+//				'scopy_pan' =>$filename,
 			);
+			
+			$sunitid = $insert_data['sacunit'];
 
 			if ( ! $this->db->insert('addsecondparty', $insert_data))
                         {
@@ -552,9 +646,9 @@ class Addparty extends Controller {
                         }
 			else {
                                         $this->db->trans_complete();
-                                        $this->messages->add(' Party Name ' . $data_pname . ' added successfully. ');
-                                        $this->logger->write_message(' Party ' . $data_pname . ' added successfully. ');
-                			redirect('addparty/show');
+					$this->messages->add(' Party Name ' . $data_pname . ' added successfully. ');
+                                        $this->logger->write_message(' Party ' . $data_pname . ' added successfully. ');		
+                			redirect('addparty/add');
                 			return;
                         }
 
@@ -573,16 +667,30 @@ class Addparty extends Controller {
                 $data['pname'] = array(
                         'name' => 'pname',
                         'id' => 'pname',
-                        'maxlength' => '30',
-                        'size' => '25',
+                        'maxlength' => '255',
+                        'size' => '40',
                         'value' => $update_detail->partyname,
                 );
+
+		$data['partyrole'] = array(
+                        'value' => $update_detail->partyrole,
+
+                );
+
+		$data['sacunit'] = array(
+			'name' => 'sacunit',
+			'id' => 'sacunit',
+			'maxlength' => '10',
+			'size' => '40',
+			'readonly'=>'true',
+			'value' => $update_detail->sacunit,
+		);
 
                 $data['mnumber'] = array(
                         'name' => 'mnumber',
                         'id' => 'mnumber',
-                        'maxlength' => '12',
-                        'size' => '25',
+                        'maxlength' => '13',
+                        'size' => '40',
                         'value' => $update_detail->mobnum,
                 );
 				
@@ -590,7 +698,7 @@ class Addparty extends Controller {
                         'name' => 'accountemail',
                         'id' => 'accountemail',
                         'maxlength' => '100',
-                        'size' => '25',
+                        'size' => '40',
                         'value' => $update_detail->email,
                 );
 
@@ -598,21 +706,21 @@ class Addparty extends Controller {
                         'name' => 'address',
                         'id' => 'address',
                         'rows' => '5',
-                        'cols' => '40',
+                        'cols' => '51',
                         'value' => $update_detail->address,
                 );
                 $data['bacnumber'] = array(
                         'name' => 'bacnumber',
                         'id' => 'bacnumber',
-                        'maxlength' => '17',
-                        'size' => '25',
+                        'maxlength' => '20',
+                        'size' => '40',
                         'value' => $update_detail->bancacnum ,
                 );
                 $data['bankname'] = array(
                         'name' => 'bankname',
                         'id' => 'bankname',
-                        'maxlength' => '200',
-                        'size' => '25',
+                        'maxlength' => '250',
+                        'size' => '40',
                         'value' => $update_detail->bankname,
                 );
 		
@@ -620,69 +728,79 @@ class Addparty extends Controller {
                         'name' => 'branchname',
                         'id' => 'branchname',
                         'maxlength' => '200',
-                        'size' => '25',
+                        'size' => '40',
                         'value' => $update_detail->branchname,
                 );
                 $data['ifsccode'] = array(
                         'name' => 'ifsccode',
                         'id' => 'ifsccode',
-                        'maxlength' => '200',
-                        'size' => '25',
+                        'maxlength' => '25',
+                        'size' => '40',
                         'value' => $update_detail->ifsccode,
                 );
                 $data['bankaddress'] = array(
                         'name' => 'bankaddress',
                         'id' => 'bankaddress',
                         'rows' => '5',
-                        'cols' => '40',
+                        'cols' => '51',
                         'value' => $update_detail->bankaddress,
                 );
                 $data['pannum'] = array(
                         'name' => 'pannum',
                         'id' => 'pannum',
                         'maxlength' => '10',
-                        'size' => '25',
+                        'size' => '40',
                         'value' => $update_detail->pan,
                 );
+
+		$data['uidnum'] = array(
+                        'name' => 'uidnum',
+                        'id' => 'uidnum',
+                        'maxlength' => '12',
+                        'size' => '40',
+                        'value' => $update_detail->u_id,
+                );
+
                 $data['tannum'] = array(
                         'name' => 'tannum',
                         'id' => 'tannum',
-                        'maxlength' => '10',
-                        'size' => '25',
+                        'maxlength' => '15',
+                        'size' => '40',
                         'value' => $update_detail->tan,
                 );
                 $data['stnum'] = array(
                         'name' => 'stnum',
                         'id' => 'stnum',
-                        'maxlength' => '10',
-                        'size' => '25',
+                        'maxlength' => '25',
+                        'size' => '40',
                         'value' => $update_detail->staxnum,
                 );
                 $data['vatnum'] = array(
                         'name' => 'vatnum',
                         'id' => 'vatnum',
-                        'maxlength' => '10',
-                        'size' => '25',
+                        'maxlength' => '25',
+                        'size' => '40',
                         'value' => $update_detail->vat,
                 );
                 $data['gstnum'] = array(
                         'name' => 'gstnum',
                         'id' => 'gstnum',
-                        'maxlength' => '10',
-                        'size' => '25',
+                        'maxlength' => '25',
+                        'size' => '40',
                         'value' => $update_detail->gst,
                 );
 		 $data['opbal'] = array(
                         'name' => 'opbal',
                         'id' => 'opbal',
                         'maxlength' => '15',
-                        'size' => '25',
+                        'size' => '35',
                         'value' => $update_detail->opbal,
                 );
 		$data['sunitid'] = $sunitid;
 		$data['op_balance_dc'] = $update_detail->dc;
 		/* Form validations */
 		$this->form_validation->set_rules('pname', 'Party Name', 'trim|required|min_length[2]|max_length[30]');
+		$this->form_validation->set_rules('partyrole', 'Party Category', 'trim|required');
 		$this->form_validation->set_rules('mnumber', 'Mobile Number');
 		$this->form_validation->set_rules('accountemail', 'Account Email', 'trim|valid_email');
 		$this->form_validation->set_rules('address', 'Address', 'trim');
@@ -692,6 +810,7 @@ class Addparty extends Controller {
 		$this->form_validation->set_rules('ifsccode', 'IFSC Code','trim');
 		$this->form_validation->set_rules('bankaddress', 'Bank Address','trim');
 		$this->form_validation->set_rules('pannum', 'PAN Number','trim');
+		$this->form_validation->set_rules('uidnum', 'UID Number','trim');
 		$this->form_validation->set_rules('tannum', 'TAN Number','trim');
 		$this->form_validation->set_rules('stnum', 'Service Tax Number','trim');
 		$this->form_validation->set_rules('vatnum', 'VAT Number','trim');
@@ -711,6 +830,7 @@ class Addparty extends Controller {
 			$data['ifsccode']['value'] = $this->input->post('ifsccode', TRUE);
 			$data['bankaddress']['value'] = $this->input->post('bankaddress', TRUE);
 			$data['pannum']['value'] = $this->input->post('pannum', TRUE);
+			$data['uidnum']['value'] = $this->input->post('uidnum', TRUE);
 			$data['tannum']['value'] = $this->input->post('tannum', TRUE);
 			$data['stnum']['value'] = $this->input->post('stnum', TRUE);
 			$data['vatnum']['value'] = $this->input->post('vatnum', TRUE);
@@ -738,6 +858,7 @@ class Addparty extends Controller {
                         $data_ifsccode = $this->input->post('ifsccode', TRUE);
                         $data_bankaddress = $this->input->post('bankaddress', TRUE);
                         $data_pannum = $this->input->post('pannum', TRUE);
+			$data_uidnum = $this->input->post('uidnum', TRUE);
                         $data_tannum = $this->input->post('tannum', TRUE);
                         $data_stnm = $this->input->post('stnum', TRUE);
                         $data_vatnum = $this->input->post('vatnum', TRUE);
@@ -753,19 +874,13 @@ class Addparty extends Controller {
 			}
 			}
 			if($data_bacnumber !=""){
-			if(strlen($data_bacnumber) < 13){
-                                $this->messages->add('Bank A/C number should be between 13 and 17 digits.', 'error');
+			if((strlen($data_bacnumber) < 13) || (strlen($data_bacnumber) > 20)){
+                                $this->messages->add('Bank A/C number should be between 13 and 20 digits.', 'error');
                                 $this->template->load('template', 'addparty/edit', $data);
                                 return;
 			}
 			}
-			if($data_bacnumber !=""){
-			if(strlen($data_bacnumber) > 17){
-                                $this->messages->add('Bank A/C number should be between 13 and 17 digits.', 'error');
-                                $this->template->load('template', 'addparty/edit', $data);
-                                return;
-			}
-			}
+		
 			if($data_ifsccode !=""){
 			if(strlen($data_ifsccode) < 10){
                                 $this->messages->add('IFSC code should be 10 digits.', 'error');
@@ -780,6 +895,14 @@ class Addparty extends Controller {
                                 return;
 			}
 			}
+
+			if($data_uidnum != ""){
+			if(strlen($data_uidnum) < 12){
+                                $this->messages->add('UID should be 12 digits.', 'error');
+                                $this->template->load('template', 'addparty/add', $data);
+                                return;
+                        }
+			}
 			if($data_tannum !=""){
 			if(strlen($data_tannum) < 10){
                                 $this->messages->add('TAN should be 10 digits.', 'error');
@@ -788,22 +911,22 @@ class Addparty extends Controller {
 			}
 			}
 			if($data_stnm !=""){
-			if(strlen($data_stnm) < 10){
-                                $this->messages->add('Service tax number should be 10 digits.', 'error');
+			if(strlen($data_stnm) < 15){
+                                $this->messages->add('Service tax number should be 15 digits.', 'error');
                                 $this->template->load('template', 'addparty/edit', $data);
                                 return;
 			}
 			}
 			if($data_vatnum !=""){
-			if(strlen($data_vatnum) < 10){
-                                $this->messages->add('VAT number should be 10 digits.', 'error');
+			if(strlen($data_vatnum) < 20){
+                                $this->messages->add('VAT number should be 20 digits.', 'error');
                                 $this->template->load('template', 'addparty/edit', $data);
                                 return;
 			}
 			}
 			if($data_gstnum !=""){
-			if(strlen($data_gstnum) < 10){
-                                $this->messages->add('GST number should be 10 digits.', 'error');
+			if(strlen($data_gstnum) < 20){
+                                $this->messages->add('GST number should be 20 digits.', 'error');
                                 $this->template->load('template', 'addparty/edit', $data);
                                 return;
 			}
@@ -821,6 +944,7 @@ class Addparty extends Controller {
 				'ifsccode' =>$data_ifsccode,
 				'bankaddress' =>$data_bankaddress,
 				'pan' =>$data_pannum,
+				'u_id' =>$data_uidnum,
 				'tan' =>$data_tannum,
 				'staxnum' =>$data_stnm,
 				'vat' =>$data_vatnum,
@@ -848,7 +972,7 @@ class Addparty extends Controller {
 
 	 function set_group_id(){
 
-                $this->load->library('session');
+                //$this->load->library('session');
 		$this->session->unset_userdata('order_id_change');
                 $this->session->unset_userdata('order_change');
                 $this->session->set_userdata('order_change', '1');
@@ -856,7 +980,7 @@ class Addparty extends Controller {
 
         function change_order(){
 
-                $this->load->library('session');
+               // $this->load->library('session');
 		$this->session->unset_userdata('order_id_change');
                 $this->session->unset_userdata('order_change');
                 $this->session->set_userdata('order_change', '0');
@@ -864,11 +988,9 @@ class Addparty extends Controller {
 	
 	function change_id_order(){
 
-                $this->load->library('session');
+               // $this->load->library('session');
                 $this->session->set_userdata('order_id_change', '1');
         }
-
-
 }
 
 /* End of file create.php */
