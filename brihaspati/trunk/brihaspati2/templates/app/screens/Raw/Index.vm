@@ -89,25 +89,28 @@ $!data.getMessage()
                 #end*#
                 #if($Role7=="InstituteAdminRole")
                 <tr><td align="center" colspan="7">
-
+		<style=text-decoration:none><img border=0 src="$content.getURI("/images/admin.png")">
                 <a href=$link.setPage("call,InstituteAdmin.vm").addPathInfo("role","institute_admin") style=text-decoration:none>$instituteHome</a>
                 </td></tr>
                 #end
 
                 #if($Role2=="InstructorRole")
                 <tr><td align="center" colspan="7">
+                <style=text-decoration:none><img border=0 src="$content.getURI("/images/teacher1.png")">
                 <a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","instructor").addPathInfo("lang",$lang) style=text-decoration:none>$brih_instructorHome</a>
                 </td></tr>
                 #end
 
                 #if($Role8=="TeacherAssistantRole")
                 <tr><td align="center" colspan="7">
+                <style=text-decoration:none><img border=0 src="$content.getURI("/images/teacherassistant.png")">
                 <a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","teacher_assistant").addPathInfo("lang",$lang) style=text-decoration:none>$bri_ta_home</a>
                 </td></tr>
                 #end
 
                 #if($Role3=="StudentRole")
                 <tr><td align="center" colspan="7">
+                <style=text-decoration:none><img border=0 src="$content.getURI("/images/student1.png")">
                 <font size="4">
                 <a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","student").addPathInfo("lang",$lang) style=text-decoration:none><b>$brih_studentHome</b></a>
                 </td></tr></font>

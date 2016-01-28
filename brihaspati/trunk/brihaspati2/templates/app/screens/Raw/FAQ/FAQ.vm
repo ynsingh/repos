@@ -155,14 +155,14 @@ $!data.getMessage()
 <form name="frm" method="post" action=$link.setPage("call,FAQ,FAQ.vm").setAction("FAQ")>
 ##creating link add faq,favorite and unfavorite faq
 <table width="100%" bgcolor="$ui.tableColor">
-		<tr bgcolor="$ui.menuColor" width="100%"><td width="25%"><b>$brih_cat : $category</b>
+		<tr bgcolor="$ui.menuColor" width="100%"><td width="35%"><b>$brih_cat : $category</b>
 		&nbsp;&nbsp;&nbsp;&nbsp;<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ #if($lang == "hindi") $brih_Of #end $brih_list</a></td>
 #if($modeedit!="edit")
-	<td width="25%" align="center"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("modeadd","ques").addPathInfo("category",$category).addPathInfo("mode","alllist")"> #if($lang == "hindi" || $lang== "gujarati") $brih_FAQ $brih_add #else $brih_add $brih_FAQ #end </a></td>
+	<td width="20%" align="center"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("modeadd","ques").addPathInfo("category",$category).addPathInfo("mode","alllist")"> #if($lang == "hindi" || $lang== "gujarati") $brih_FAQ $brih_add #else $brih_add $brih_FAQ #end </a></td>
 #end
 		#if($modeadd!="ques")
 		#if($user_role == "instructor")
-		<td width="25%" align="center"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("stat","addfav").addPathInfo("category",$category)">$brih_fav $brih_FAQ</a></td>
+		<td width="20%" align="center"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("stat","addfav").addPathInfo("category",$category)">$brih_fav $brih_FAQ</a></td>
 		<td width="25%" align="center"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("stat","unfav").addPathInfo("category",$category)">$brih_select $brih_fav $brih_FAQ</a></td>
 		#end
 		#end
