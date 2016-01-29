@@ -176,6 +176,8 @@ $!data.getMessage()
 					<option value="student">$brih_student
 				#elseif($st.Rolename=="instructor")
 					<option value="instructor">$brih_Instructor
+				#elseif($st.Rolename=="teacher_assistant")
+                                        <option value="teacher_assistant">$bri_ta
 				#elseif($st.Rolename=="group_admin")
 					<option value="group_admin">$brih_groupAdmin
 				#elseif($st.Rolename=="author")
@@ -187,6 +189,9 @@ $!data.getMessage()
 	  		#if($st.Rolename!="instructor")
 	          		<option value="instructor">$brih_Instructor
 			 #end
+			#if($st.Rolename!="teacher_assistant")
+                                <option value="teacher_assistant">$bri_ta
+                         #end   
 			 #if($st.Rolename!="student")
 		         	<option value="student">$brih_student
 	  		 #end

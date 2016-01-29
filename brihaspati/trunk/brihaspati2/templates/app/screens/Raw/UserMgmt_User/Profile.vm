@@ -17,6 +17,7 @@ $page.setTitle("Change Profile")
 $page.setBgColor($ui.bgcolor)
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type= "text/javascript" src = "/brihaspati/scrpts/countries.js"></script>
 </head>
 
 <table bgcolor="$ui.menuColor" width=100%>
@@ -171,16 +172,19 @@ $!data.getMessage()
 				#end
 				</td>
                         </tr>
-
+	<td> Select Country</td>
+       <td> <select id="country"  name ="country"></select></td>
+       <tr> <td>Select State</td>
+        <td><select id ="state" name ="state"></select><td></tr>
         <tr>
            #formCell("$brih_address" "address" "$!address")
          </tr>
-        <tr>
+        #*<tr>
            #formCell("$Inst_state" "state" "$!state")
          </tr>
         <tr>
            #formCell("$brih_country" "country" "$!country")
-         </tr>
+         </tr>*#
         <tr>
            #formCell("$brih_dept" "department" "$!department")
          </tr>
@@ -319,6 +323,9 @@ $!data.getMessage()
           </tr>
      </table>
 </form>
+<script language="javascript">
+                populateCountries("country", "state");
+        </script>
 
 <SCRIPT LANGUAGE="javascript">
         function checkAnswer(frm,field)
