@@ -2,25 +2,31 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="pojo.hibernate.Edrpusers" table="edrpuser">
+    <class name="pojo.hibernate.Edrpuserprofile" table="userprofile">
         <id name="edrpuId" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <property name="edrpuName" type="string">
-            <column name="username" length="50" not-null="true" unique="true" />
+        <property name="edrpuName" type="int">
+            <column name="userid" not-null="true" unique="true" />
         </property>
+        <property name="edrpufName" type="string">
+            <column name="firstname" length="255" not-null="true" />
+        </property> 
         <property name="edrpuPassword" type="string">
-            <column name="password" length="155" not-null="true" />
+            <column name="lastname" length="255" not-null="true" />
         </property>
         <property name="edrpuEmail" type="string">
-            <column name="email" length="50" not-null="true" />
+            <column name="address" length="50" not-null="true" />
         </property>
         <property name="componentreg" type="string">
-            <column name="componentreg" length="50" not-null="true"/>
+            <column name="secmail" length="50" not-null="true"/>
         </property>
         <property name="mobile" type="string">
             <column name="mobile" length="50" />
+        </property>
+        <property name="lang" type="string">
+            <column name="lang" length="50" not-null="true" />
         </property>
         <property name="status" type="string">
             <column name="status" length="50" not-null="true" />

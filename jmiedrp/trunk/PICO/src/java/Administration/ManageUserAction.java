@@ -2,6 +2,7 @@ package Administration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 import pojo.hibernate.Countrymaster;
 import pojo.hibernate.CountrymasterDAO;
 import pojo.hibernate.Departmentmaster;
@@ -31,6 +32,12 @@ import com.opensymphony.xwork2.ActionContext;
 
 import utils.ExceptionLogUtil;
 import utils.HibernateEncryptionUtil;
+import pojo.hibernate.EdrpusersDAO;
+import pojo.hibernate.Edrpusers;
+import pojo.hibernate.EdrpuserprofileDAO;
+import pojo.hibernate.Edrpuserprofile;
+import pojo.hibernate.EdrpuserlaststatusDAO;
+import pojo.hibernate.Edrpuserlaststatus;
 
 /**
  * @author kazim
@@ -40,7 +47,15 @@ public class ManageUserAction extends DevelopmentSupport  {
 
     private Erpmusers erpmusers;
     private ErpmusersDAO erpmusersDao = new ErpmusersDAO();
+    private EdrpusersDAO edrpusersDao = new EdrpusersDAO();
+    private Edrpusers edrpusers = new Edrpusers();
+    
+    private EdrpuserprofileDAO edrpuserprofileDao = new EdrpuserprofileDAO();
+    private Edrpuserprofile edrpuserprofile = new Edrpuserprofile();
 
+    private EdrpuserlaststatusDAO edrpuserlaststatusDao = new EdrpuserlaststatusDAO();
+    private Edrpuserlaststatus edrpuserlaststatus = new Edrpuserlaststatus();
+    
     private Erpmuserrole erpmur = new Erpmuserrole();
     private ErpmuserroleDAO erpmurDao = new ErpmuserroleDAO();
 
@@ -205,7 +220,27 @@ public class ManageUserAction extends DevelopmentSupport  {
     public List<Institutionuserroles> getiurIdList() {
         return this.iurIdList;
     }
+    public Edrpusers getedrpusers() {
+        return this.edrpusers;
+    }
 
+    public void setedrpusers(Edrpusers edrpusers) {
+        this.edrpusers = edrpusers;
+    }
+    public Edrpuserprofile getedrpuserprofile() {
+        return this.edrpuserprofile;
+    }
+
+    public void setedrpuserprofile(Edrpuserprofile edrpuserprofile) {
+        this.edrpuserprofile = edrpuserprofile;
+    }
+    public Edrpuserlaststatus getedrpuserlaststatus() {
+        return this.edrpuserlaststatus;
+    }
+
+    public void setedrpuserlaststatus(Edrpuserlaststatus edrpuserlaststatus) {
+        this.edrpuserlaststatus = edrpuserlaststatus;
+    }
 
    /* public String geterpmusersdob() {
         return this.erpmusersdob;
@@ -504,7 +539,38 @@ public void validate() {
             //Save Department's Record
             dmDao.save(dm);
             //Save ErpmUsers Record
-            erpmusersDao.save(erpmusers);
+            erpmusersDao.save(erpmusers); 
+	String name=erpmusers.getErpmuName();				
+	String fname=erpmusers.getErpmuFullName();
+	Integer uid=erpmusers.getErpmuId();
+	edrpusers.setEdrpuName(name);					
+	edrpusers.setEdrpuPassword(encrptdpswd);					
+	edrpusers.setEdrpuEmail(name);					
+	edrpusers.setComponentreg("pico");					
+	edrpusers.setMobile("");					
+	edrpusers.setStatus("1");					
+        edrpusersDao.save(edrpusers);
+	
+	edrpuserprofile.setEdrpuName(uid);			
+	edrpuserprofile.setEdrpufName(name);		
+	edrpuserprofile.setEdrpuPassword("");			
+	edrpuserprofile.setEdrpuEmail("");			
+	edrpuserprofile.setComponentreg(name);			
+	edrpuserprofile.setMobile("");			
+	edrpuserprofile.setLang("English");			
+	edrpuserprofile.setStatus("1");			
+        edrpuserprofileDao.save(edrpuserprofile); 
+	
+	Date date = new Date();
+	edrpuserlaststatus.setEdrpuName(uid);			
+	edrpuserlaststatus.setEdrpufName("English");			
+	edrpuserlaststatus.setEdrpuPassword("PICO");			
+	edrpuserlaststatus.setEdrpuEmail("1");			
+	edrpuserlaststatus.setComponentreg("PICO");			
+	edrpuserlaststatus.setMobile(date);			
+	edrpuserlaststatus.setLang(date);			
+	edrpuserlaststatus.setStatus("1");			
+        edrpuserlaststatusDao.save(edrpuserlaststatus);
 
             //Add InstitutionUserRole  based on geneeric roles for the institution
             GenericuserrolesDAO gurDao = new GenericuserrolesDAO();
@@ -754,7 +820,7 @@ public String RecoverPassword() throws Exception {
                 if(!bundle.getString("emailFrom").equals("") && !bundle.getString("emailUser").equals("") && !bundle.getString("emailFromPasswd").equals("")) {
                 	String toEmailAddress = erpmu.getErpmuName();
                     	String emailSubject = "Password for PICO Module";
-                    	String emailMessage = "<html><head><title>Your Password Details</title></head><body><table width='500' border='0' align='center' cellpadding='15' cellspacing='0' style='font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt; color:#5a5a5a;'><tr><td align='left'><p>Dear " + erpmu.getErpmuFullName() + ",</p></td></tr><tr><td align='left'><p>Your password is:</p><br/><br/><p>Password: " + erpmu.getErpmuPassword() + "<br /></p><br/><p>Thank you for using this site.<br /></p><br/><br/><p>Regards,<br />Administrator, PICO Module<br /></p><p><br /><br />THIS IS AN AUTOMATED MESSAGE; PLEASE DO NOT REPLY. </p></td></tr></table></body></html>";
+                    	String emailMessage = "<html><head><title>Your Password Details</title></head><body><table width='500' border='0' align='center' cellpadding='15' cellspacing='0' style='font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt; color:#5a5a5a;'><tr><td align='left'><p>Dear "+ erpmu.getErpmuFullName() + ",</p></td></tr><tr><td align='left'><p>Your password is:</p><br/><br/><p>Password: " + erpmu.getErpmuPassword() + "<br /></p><br/><p>Thank you for using this site.<br /></p><br/><br/><p>Regards,<br />Administrator, PICO Module<br /></p><p><br /><br />THIS IS AN AUTOMATED MESSAGE; PLEASE DO NOT REPLY. </p></td></tr></table></body></html>";
                     	sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"), toEmailAddress, "", emailSubject, emailMessage);
                  	message = "An email containing your password has been sent to you";
                 }

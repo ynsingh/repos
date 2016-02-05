@@ -1,41 +1,48 @@
 package pojo.hibernate;
 // Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
-/**
- *
- *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2016
- */ 
+
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import utils.ExceptionLogUtil;
 
-public class Edrpusers  implements java.io.Serializable {
+/**
+ *
+ *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2016
+ */ 
+
+public class Edrpuserlaststatus  implements java.io.Serializable {
 
 
 	private Integer edrpuId;
+	private int edrpUserid;
 	private Erpmusers erpmusers;
-	private String edrpuName;
+	private int edrpuName;
+	private String edrpufName;
 	private String edrpuPassword;
 	private String edrpuEmail;
 	private String componentreg;
-	private String mobile;
+	private Date mobile;
 	private String status;
+	private Date lang;
 
-	public Edrpusers() {
+	public Edrpuserlaststatus() {
 	}
 
-	public Edrpusers(String erpmuName, String erpmuPassword, String edrpuEmail) {
+	public Edrpuserlaststatus(int erpmuName, String erpmuPassword, String edrpuEmail) {
         	this.edrpuName = edrpuName;
         	this.edrpuPassword = edrpuPassword;
         	this.edrpuEmail = edrpuEmail;
     	}
-	public Edrpusers(Erpmusers erpmusers, String edrpuName, String edrpuPassword, String componentreg, String mobile, String status) {
-		this.erpmusers = erpmusers;
+	public Edrpuserlaststatus(int edrpuName,String edrpufName, String edrpuPassword,String edrpuEmail, String componentreg, Date mobile, Date lang, String status) {
        		this.edrpuName = edrpuName;
+       		this.edrpufName = edrpufName;
 		this.edrpuPassword = edrpuPassword;
+		this.edrpuEmail = edrpuEmail;
 		this.componentreg = componentreg;
 		this.mobile = mobile;
+		this.lang = lang;
 		this.status = status;
     }
    
@@ -45,11 +52,17 @@ public class Edrpusers  implements java.io.Serializable {
     public void setEdrpuId(Integer edrpuId) {
         this.edrpuId = edrpuId;
     }
-    public String getEdrpuName() {
+    public int getEdrpUserId() {
+        return this.edrpUserid;
+    }
+    public void setEdrpUserId(int edrpUserid) {
+        this.edrpUserid = edrpUserid;
+    }
+    public int getEdrpuName() {
         return this.edrpuName;
     }
     
-    public void setEdrpuName(String edrpuName) {
+    public void setEdrpuName(int edrpuName) {
         this.edrpuName = edrpuName;
     }
     public String getEdrpuPassword() {
@@ -75,20 +88,31 @@ public class Edrpusers  implements java.io.Serializable {
         this.componentreg = componentreg;
     }
 
-    public String getMobile() {
+    public Date getMobile() {
         return this.mobile;
     }
     
-    public void setMobile(String mobile) {
+    public void setMobile(Date mobile) {
         this.mobile = mobile;
     }
 
     public String getStatus() {
         return this.status;
     }
-    
     public void setStatus(String status) {
         this.status = status;
+    }
+    public Date getLang() {
+        return this.lang;
+    }
+    public void setLang(Date lang) {
+        this.lang = lang;
+    }
+    public String getEdrpufName() {
+        return this.edrpufName;
+    }
+    public void setEdrpufName(String edrpufName) {
+        this.edrpufName = edrpufName;
     }
 }
 

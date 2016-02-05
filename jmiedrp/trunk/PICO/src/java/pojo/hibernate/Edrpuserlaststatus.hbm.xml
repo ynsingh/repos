@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="pojo.hibernate.Edrpuserlaststatus" table="userlaststatus">
+        <id name="edrpuId" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="edrpuName" type="int">
+            <column name="userid" not-null="true" unique="true" />
+        </property>
+        <property name="edrpufName" type="string">
+            <column name="lastusedlang" length="255" not-null="true" />
+        </property> 
+        <property name="edrpuPassword" type="string">
+            <column name="lastlogincomponent" length="255" not-null="true" />
+        </property>
+        <property name="edrpuEmail" type="string">
+            <column name="lastloginstatus" length="255" not-null="true" />
+        </property>
+        <property name="componentreg" type="string">
+            <column name="lastvisitedcomponent" length="255" not-null="true"/>
+        </property>
+        <property name="mobile" type="date">
+            <column name="lastlogindate" />
+        </property>
+        <property name="lang" type="date">
+            <column name="lastpasswordchangedate" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="25" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

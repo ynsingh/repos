@@ -10,32 +10,37 @@ import java.util.HashSet;
 import java.util.Set;
 import utils.ExceptionLogUtil;
 
-public class Edrpusers  implements java.io.Serializable {
+public class Edrpuserprofile  implements java.io.Serializable {
 
 
 	private Integer edrpuId;
+	private int edrpUserid;
 	private Erpmusers erpmusers;
-	private String edrpuName;
+	private int edrpuName;
+	private String edrpufName;
 	private String edrpuPassword;
 	private String edrpuEmail;
 	private String componentreg;
 	private String mobile;
 	private String status;
+	private String lang;
 
-	public Edrpusers() {
+	public Edrpuserprofile() {
 	}
 
-	public Edrpusers(String erpmuName, String erpmuPassword, String edrpuEmail) {
+	public Edrpuserprofile(int erpmuName, String erpmuPassword, String edrpuEmail) {
         	this.edrpuName = edrpuName;
         	this.edrpuPassword = edrpuPassword;
         	this.edrpuEmail = edrpuEmail;
     	}
-	public Edrpusers(Erpmusers erpmusers, String edrpuName, String edrpuPassword, String componentreg, String mobile, String status) {
-		this.erpmusers = erpmusers;
+	public Edrpuserprofile(int edrpuName,String edrpufName, String edrpuPassword,String edrpuEmail, String componentreg, String mobile, String lang, String status) {
        		this.edrpuName = edrpuName;
+       		this.edrpufName = edrpufName;
 		this.edrpuPassword = edrpuPassword;
+		this.edrpuEmail = edrpuEmail;
 		this.componentreg = componentreg;
 		this.mobile = mobile;
+		this.lang = lang;
 		this.status = status;
     }
    
@@ -45,11 +50,17 @@ public class Edrpusers  implements java.io.Serializable {
     public void setEdrpuId(Integer edrpuId) {
         this.edrpuId = edrpuId;
     }
-    public String getEdrpuName() {
+    public int getEdrpUserId() {
+        return this.edrpUserid;
+    }
+    public void setEdrpUserId(int edrpUserid) {
+        this.edrpUserid = edrpUserid;
+    }
+    public int getEdrpuName() {
         return this.edrpuName;
     }
     
-    public void setEdrpuName(String edrpuName) {
+    public void setEdrpuName(int edrpuName) {
         this.edrpuName = edrpuName;
     }
     public String getEdrpuPassword() {
@@ -86,9 +97,20 @@ public class Edrpusers  implements java.io.Serializable {
     public String getStatus() {
         return this.status;
     }
-    
     public void setStatus(String status) {
         this.status = status;
+    }
+    public String getLang() {
+        return this.lang;
+    }
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+    public String getEdrpufName() {
+        return this.edrpufName;
+    }
+    public void setEdrpufName(String edrpufName) {
+        this.edrpufName = edrpufName;
     }
 }
 

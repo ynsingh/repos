@@ -2,8 +2,8 @@
 package pojo.hibernate;
 
 /**
- *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2016
  *
+ *@author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>2016 
  */
 import utils.HibernateUtil;
 import org.hibernate.Session;
@@ -14,12 +14,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import utils.ExceptionLogUtil;
 
-public class EdrpusersDAO  {
+public class EdrpuserprofileDAO  {
 
 
 
     
-    public void save(Edrpusers edrpuser) {
+    public void save(Edrpuserprofile edrpuser) {
         Session session = HibernateUtil.getSessionLoginFactory();
         Transaction tx = null;
         try {
@@ -38,7 +38,7 @@ public class EdrpusersDAO  {
     }
 
 
-    public void update(Edrpusers edrpuser) {
+    public void update(Edrpuserprofile edrpuser) {
         Session session = HibernateUtil.getSessionLoginFactory();
         Transaction tx = null;
         try {
@@ -57,7 +57,7 @@ public class EdrpusersDAO  {
     }
 
 
-    public void delete(Edrpusers edrpuser) {
+    public void delete(Edrpuserprofile edrpuser) {
         Session session = HibernateUtil.getSessionLoginFactory();
         Transaction tx = null;
         try {
@@ -75,34 +75,4 @@ public class EdrpusersDAO  {
         }
     }
 
-
-    public List<Edrpusers> findAll() {
-        Session session = HibernateUtil.getSessionLoginFactory();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            List<Edrpusers> list = session.createQuery("select u from Edrpusers u").list();
-		Hibernate.initialize(list);
-            return list;
-        }
-        catch (RuntimeException re) {
-                throw re;
-        }
-        finally {
-            session.close();
-            }
-        }
-      public List<Edrpusers> RetrieveUser(String username, String password){
-
-		Session session = HibernateUtil.getSessionLoginFactory();
-            	try {
-			session.beginTransaction();
-                	List<Edrpusers> list  = session.createQuery("select u from Edrpusers u where u.edrpuName=:username and u.edrpuPassword=:password ").
-                                               setParameter("username",username).setParameter("password",password).list();
-                	return list;
-            	}
-            	finally {
-			session.close();
-            	}
-     }
 }
