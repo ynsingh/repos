@@ -64,7 +64,7 @@
         echo "<br />";
         echo form_input($tannum);
         echo "</span>";
-        echo "<span id=\"tooltip-content-6\">Tan should be 13 digits</span>";   
+        echo "<span id=\"tooltip-content-6\">Tan should be 10 to 15 digits</span>";   
         echo "</p>";
 
 	echo "<p>";
@@ -73,7 +73,7 @@
         echo "<br />";
         echo form_input($gstnum);
         echo "</span>";
-        echo "<span id=\"tooltip-content-9\">GST Number should be 12 digit</span>";     
+        echo "<span id=\"tooltip-content-9\">GST Number should be 20 digit</span>";     
         echo "</p>";
 
 	echo "<p>";
@@ -98,7 +98,7 @@
         echo "<br />";
         echo form_input($bacnumber);
 	echo "</span>";
-	echo "<span id=\"tooltip-content-3\">Bank A/C Number should be between 13 and 25 digit</span>";	
+	echo "<span id=\"tooltip-content-3\">Bank A/C Number should be between 13 and 20 digit</span>";	
 	echo form_upload("bankfile");
         echo "<br />";
         echo "</p>";
@@ -146,7 +146,7 @@
         echo "<br />";
         echo form_input($vatnum);
         echo "</span>";
-        echo "<span id=\"tooltip-content-8\">Vat Number should be 10 digit</span>";
+        echo "<span id=\"tooltip-content-8\">Vat Number should be 20 digit</span>";
         echo "</p>";
 	
 	echo "<p>";
@@ -155,7 +155,7 @@
 	echo "<br />";
 	echo form_input($stnum);
 	echo "</span>";
-	echo "<span id=\"tooltip-content-7\">Service Tax Number should be 10 digit</span>";	
+	echo "<span id=\"tooltip-content-7\">Service Tax Number should be 15 digit</span>";	
 	echo "</p>";
 	
 	echo "</tr>";

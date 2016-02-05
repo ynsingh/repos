@@ -462,8 +462,8 @@ class Addparty extends Controller {
 			}
 			
 			if($data_ifsccode !=""){
-			if(strlen($data_ifsccode) < 10){
-                                $this->messages->add('IFSC code should be 10 digits.', 'error');
+			if(strlen($data_ifsccode) < 11){
+                                $this->messages->add('IFSC code should be 11 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
