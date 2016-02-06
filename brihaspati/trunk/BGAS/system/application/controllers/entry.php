@@ -1113,7 +1113,10 @@ $width="100%";
                                                                         {
                                                                                 $this->db->trans_rollback();
                                                                                 $this->logger->write_message("error", "Error adding Assets");
-                                                                        }
+                                                                        }else {
+                                        					$asset_id = $this->db->insert_id();
+                                					}
+
 
 					}
 
@@ -1240,6 +1243,54 @@ $width="100%";
                                                                 $this->db->trans_rollback();
                                                                 $this->logger->write_message("error", "Error adding expenditure details for fund in fund management:" . $fund_ledger);
 							}
+							//////////
+							$this->db->from('ledgers')->where('id', $fund_ledger);
+                                                	$query_q = $this->db->get();
+                                                	foreach($query_q->result() as $row2)
+                                                	{
+                                                        	$led_name = $row2->name;
+                                                        	$led_code = $row2->code;
+                                                	}
+                                                        	$is_asset_code = substr($led_code, 0, 4);
+                                                        	$is_asset_code1 = substr($led_code, 0, 8);
+                                                        	//$this->db->select('id');
+                                                        	//$this->db->from('new_asset_register')->where('asset_name', $data_ledger_id)->where('date_of_purchase', $data_date);
+                                                        	//$asset_id = $this->db->get();
+                                                        	//$id1 = $asset_id->row();
+
+                                                        if($is_asset_code1 ==  '10040105'){
+
+                                                        $asset_register = array(
+                                                                        'asset_id' => $asset_id,
+                                                                        'project_name' => $led_name,
+                                                                        'code' =>  $led_code,
+                                                                        'date_of_purchase' => $data_date,
+                                                                        );
+
+                                                                        if ( ! $this->db->insert('new_sponsored_asset_register', $asset_register))
+                                                                        {
+                                                                                $this->db->trans_rollback();
+                                                                                $this->logger->write_message("error", "Error adding Assets in sponsored project.");
+                                                                        }
+                                                        }
+
+                                                        if($is_asset_code ==  '1001' || $is_asset_code ==  '1002' || $is_asset_code ==  '1003'){
+
+                                                        $asset_register = array(
+                                                                        'asset_id' => $asset_id,
+                                                                        'fund_name' => $led_name,
+                                                                        'code' =>  $led_code,
+                                                                        'date_of_purchase' => $data_date,
+                                                                        );
+
+                                                                        if ( ! $this->db->insert('new_fund_asset_register', $asset_register))
+                                                                        {
+                                                                                $this->db->trans_rollback();
+                                                                                $this->logger->write_message("error", "Error adding fund in fund asset register.");
+                                                                        }
+
+                                                        }
+
                                         	
 					}
 					}

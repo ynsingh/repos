@@ -11,7 +11,13 @@
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo form_input($text);
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo"OR";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo form_label('Asset Type', 'asset_type');
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        echo form_dropdown('asset_type', $asset_type, $asset_type_active);
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
 	echo form_submit('submit', 'Search');
 	echo " ";
 	echo "</p>";
@@ -31,8 +37,7 @@
 		$inputpreferences   = array( 'name'        => 'commentflag',
 		                     'id'          => 'commentflag',
 		                     'value'       => 'N',
-				     'checked'     => $budget_over,
-				                        
+				     'checked'     => true,
 		                     );
 		
 		echo form_checkbox($inputpreferences) . " Straight Line Method"; 
@@ -65,13 +70,10 @@
 		echo "<span id=\"tooltip-content-3\">Calculate Depreciation With Sum-Of-Years-Digits Method.</span>";
 		echo "</p>";
    	}
-     	$gross_expense_total = 0;
-	echo "<table border=0 cellpadding=6 class=\"simple-table balance-sheet-table\" width=\"80%\">";
-	echo "<thead><tr><th>Asset Name</th><th>Date of Purchase</th><th>Total Cost (Rs/-)</th><th>Dep.Amount (Rs/-)</th><th>Current Value (Rs/-)</th><th>Write Off Status</th></tr></thead>";
+	echo "<table border=0 cellpadding=6 class=\"simple-table balance-sheet-table\" width=\"100%\">";
+	echo "<thead><tr><th><b>Asset Name</th><th><b>Date of Purchase</th><th><b>Total Cost (Rs/-)</th><th><b>Dep.Amount (Rs/-)</th><th><b>Current Value (Rs/-)</th><th><b>Write Off Status</th><th><b>Sanction Type</th><th><b>Fund/Project Name</th></tr></thead>";
 	echo "<tbody>";
 	$CI =& get_instance();
-	$amount_total=0;
-	$counter=0;
 	$count=0;
 	$amount=0;
         $net_amount=0;
@@ -79,8 +81,6 @@
         $net_dep_amount1=0;
         $tot_dep_amount=0;
 	$i=1;
-	$check = 1;
-	$cost=0;
 	$val=explode("#",$field);
 	$b = trim($text);
 	$today_date=date("Y-m-d");
@@ -88,93 +88,175 @@
         $d=strtotime($fy_end_date);
         $fy_end_date= date("Y-m-d", $d);
 
-	$this->db->from('old_asset_register');
+	$this->db->select();
+        $this->db->from('old_asset_register');
+        $this->db->distinct();
+        $this->db->group_by("asset_name");
         $asset_register=$this->db->get();
-	if($asset_register->num_rows() != 0){
-	echo "<tr class=\"tr-balance\"><td colspan=\"4\"><b>Previous Year Assets (BGAS)</b></td><td></td></tr>";
-	}
 	$check_asset_register = $CI->Depreciation_model->is_asset_register_exist();
         if($check_asset_register == '1' && $today_date != $fy_end_date){//if2
 		if($search == ''){
-			$this->db->from('old_asset_register');
-                       	$asset_register=$this->db->get();
-		}else{
-			if($search == "IRD_WEF_Date#date_of_purchase"){
-			$exp_date=explode("/",$b);
-			$b=$exp_date[2]."-".$exp_date[1]."-".$exp_date[0]." "."00:00:00";
-		}
-			$this->db->from('old_asset_register')->where($val[1], '%' . $b . '%');
+			$this->db->select();
+                        $this->db->from('old_asset_register');
+                        $this->db->distinct();
+                        $this->db->group_by("asset_name");
                         $asset_register=$this->db->get();
-			if($asset_register->num_rows() < 0){
-				$this->messages->add('Entry not found.', 'error');
-                                redirect('report/depreciation');
-			}	
-		}
-                	foreach ($asset_register->result() as $row){
-				
-				$led_code = $CI->Depreciation_model->get_ledger_parent($row->asset_name);
-                                $master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table($led_code);
-				if($master_group_code == NULL){
-                                        $this->db->select('name');
-                                        $this->db->from('groups')->where('code =', $led_code);
-                                        $group_result = $this->db->get();
-                                        foreach ($group_result->result() as $row1){
-                                                $group_name=$row1->name;
-                                        }
-                                        $master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table1($group_name);
-                                }
-
-                                $exp_dep_percentage=explode("#",$master_group_code);
-				$date = date_mysql_to_php($row->date_of_purchase);
-				$today_date1=date("Y/m/d");
-				$date1=date_create($today_date1);
-                                $date2=date_create($row->date_of_purchase);
-                                $diff=date_diff($date1,$date2);
-                                $no_of_days=$diff->format("%a days");
-                                //how many years till now
-                                $years=$no_of_days/365;
-                                $check_year=is_int($years);//check year is in integer
-                                $get_asset_used_years=explode(".", $years);
-                                $days=$get_asset_used_years[0]*365;
-                                $tot_day=$no_of_days-$days;
-				///////////////////////////////////////////////////////////////////////////////////
-				 for($i=0; $i<=$get_asset_used_years[0]; $i++){
-                                        if($i == 0){
-                                                $depepreciation_on_day=$row->cost*($tot_day/365)*($exp_dep_percentage[0]/100);
-                                                $net_amount= $depepreciation_on_day;
-
-                                        }elseif($i == 1 ){
-						$val=($row->cost*$exp_dep_percentage[0])/100;
-                                                $amount=$row->cost-$val;
-                                                $depepreciation_on_day=$row->cost*($tot_day/365)*($exp_dep_percentage[0]/100);
-                                                $net_amount= $depepreciation_on_day+$amount;
-
-					}else{
-						$val=($amount*$exp_dep_percentage[0])/100;
-                                                $amount=$amount-$val;
-                                                $depepreciation_on_day=$row->cost*($tot_day/365)*($exp_dep_percentage[0]/100);
-                                                $net_amount= $depepreciation_on_day+$amount;
-					}
+		}elseif($b != NULL && $val[1] != NULL){
+			if($search == "IRD_WEF_Date#date_of_purchase"){
+				$exp_date=explode("/",$b);
+				@$b=$exp_date[2]."-".$exp_date[1]."-".$exp_date[0]." "."00:00:00";
+			}
+				if($asset_type_value == 'all_asset'){
+					$this->db->select();
+                                	$this->db->from('old_asset_register')->where($val[1], '%' . $b . '%');
+                                	$this->db->distinct();
+                                	$this->db->group_by("asset_name");
+                                	$asset_register=$this->db->get();
 				}
-				/////////////////////////////////////////////////////////////////////////////////
-				//if Duplicate entry.............
-                                $this->db->from('old_asset_register')->where('asset_name',$row->asset_name);
-                                $asset_register1=$this->db->get();
-                                if($asset_register1->num_rows() > 1){
-                                        $this->db->select_sum('cost');
-                                        $this->db->from('old_asset_register')->where('asset_name',$row->asset_name);
-                                        $asset_register2=$this->db->get();
-                                        foreach ($asset_register2->result() as $row2){
-                                        }
-					$count++;
+			  if($asset_type_value == 'project_asset'){
+				if($search == "IRD_WEF_Date#date_of_purchase"){
+					$this->db->select('old_asset_register.asset_name as asset_name, old_asset_register.date_of_purchase as date_of_purchase, old_asset_register.cost as cost, old_asset_register.sanc_type as sanc_type, old_asset_register.id as id, old_asset_register.narration as narration, old_asset_register.asset_status as asset_status');
+                                        $this->db->from('old_sponsored_asset_register')->join('old_asset_register', 'old_sponsored_asset_register.asset_id = old_asset_register.id')->where('old_asset_register.'.$val[1], '%' . $b . '%');  
+                                        $asset_register=$this->db->get();
+				}else{
+                                        $this->db->select('old_asset_register.asset_name as asset_name, old_asset_register.date_of_purchase as date_of_purchase, old_asset_register.cost as cost, old_asset_register.sanc_type as sanc_type, old_asset_register.id as id, old_asset_register.narration as narration, old_asset_register.asset_status as asset_status');
+                                        $this->db->from('old_sponsored_asset_register')->join('old_asset_register', 'old_sponsored_asset_register.asset_id = old_asset_register.id')->where($val[1], '%' . $b . '%');
+                                        $asset_register=$this->db->get();
+				}
+
+			}elseif($asset_type_value == 'fund_asset'){
+				if($search == "IRD_WEF_Date#date_of_purchase"){
+                                        $this->db->select('old_asset_register.asset_name as asset_name, old_asset_register.date_of_purchase as date_of_purchase, old_asset_register.cost as cost, old_asset_register.sanc_type as sanc_type, old_asset_register.id as id, old_asset_register.narration as narration, old_asset_register.asset_status as asset_status');
+                                        $this->db->from('old_sponsored_asset_register')->join('old_asset_register', 'old_sponsored_asset_register.asset_id = old_asset_register.id')->where('old_asset_register.'.$val[1], '%' . $b . '%');
+                                        $asset_register=$this->db->get();
+				}else{
+                                        $this->db->select('old_asset_register.asset_name as asset_name, old_asset_register.date_of_purchase as date_of_purchase, old_asset_register.cost as cost, old_asset_register.sanc_type as sanc_type, old_asset_register.id as id, old_asset_register.narration as narration, old_asset_register.asset_status as asset_status');
+                                        $this->db->from('old_fund_asset_register')->join('old_asset_register', 'old_fund_asset_register.asset_id = old_asset_register.id')->where($val[1], '%' . $b . '%');
+                                        $asset_register=$this->db->get();
+				}
+                      	}elseif($asset_type_value == 'plan'){
+				$this->db->select();
+                      		$this->db->from('old_asset_register')->where('sanc_type', 'plan')->where($val[1], '%' . $b . '%');
+                      		$this->db->distinct();
+                      		$this->db->group_by("asset_name");
+                      		$asset_register=$this->db->get();
+                      	}elseif($asset_type_value == 'non_plan'){
+                                $this->db->select();
+                                $this->db->from('old_asset_register')->where('sanc_type', 'non_plan')->where($val[1], '%' . $b . '%');
+                                $this->db->distinct();
+                                $this->db->group_by("asset_name");
+                                $asset_register=$this->db->get();
+                        }
+	
+		}elseif($b != NULL && $val[1] == NULL){
+			$this->messages->add('Please Select Any Option From Dropdown.', 'error');
+			redirect('report/depreciation');
+		}else{
+                                if($asset_type_value == 'project_asset'){
+                                        $this->db->select('old_asset_register.asset_name as asset_name, old_asset_register.date_of_purchase as date_of_purchase, old_asset_register.cost as cost, old_asset_register.sanc_type as sanc_type, old_asset_register.id as id, old_asset_register.narration as narration, old_asset_register.asset_status as asset_status');
+                                        $this->db->from('old_sponsored_asset_register')->join('old_asset_register', 'old_sponsored_asset_register.asset_id = old_asset_register.id');
+                                        $asset_register=$this->db->get();
+                                }elseif($asset_type_value == 'fund_asset'){
+                                        $this->db->select('old_asset_register.asset_name as asset_name, old_asset_register.date_of_purchase as date_of_purchase, old_asset_register.cost as cost, old_asset_register.sanc_type as sanc_type, old_asset_register.id as id, old_asset_register.narration as narration, old_asset_register.asset_status as asset_status');
+                                        $this->db->from('old_fund_asset_register')->join('old_asset_register', 'old_fund_asset_register.asset_id = old_asset_register.id');
+                                        $asset_register=$this->db->get();
+                                }elseif($asset_type_value == 'plan'){
+                                        $this->db->select();
+                                        $this->db->from('old_asset_register')->where('sanc_type', 'plan');
+                                        $this->db->distinct();
+                                        $this->db->group_by("asset_name");
+                                        $asset_register=$this->db->get();
+                                }elseif($asset_type_value == 'non_plan'){
+                                        $this->db->select();
+                                        $this->db->from('old_asset_register')->where('sanc_type', 'non_plan');
+                                        $this->db->distinct();
+                                        $this->db->group_by("asset_name");
+                                        $asset_register=$this->db->get();
                                 }
 
+                }
+		if($asset_register->num_rows() != 0){
+                	echo "<tr class=\"tr-balance\"><td colspan=\"8\"><b>Previous Year Assets (BGAS)</b></td></tr>";
+        	}
 
-                                if($get_asset_used_years[0] == $exp_dep_percentage[1]){
+                foreach ($asset_register->result() as $row){
+			$fund_name='';			
+			$led_code = $CI->Depreciation_model->get_ledger_parent($row->asset_name);
+                        $master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table($led_code);
+			if($master_group_code == NULL){
+                        	$this->db->select('name');
+                                $this->db->from('groups')->where('code =', $led_code);
+                                $group_result = $this->db->get();
+                                foreach ($group_result->result() as $row1){
+                                	$group_name=$row1->name;
+                                }
+                                        $master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table1($group_name);
+                        }
 
-                                        $this->db->trans_start();
-                                        $update_data = array(
-                                        	'asset_status'=>'1',
+                                	$exp_dep_percentage=explode("#",$master_group_code);
+					$date = date_mysql_to_php($row->date_of_purchase);
+					$today_date1=date("Y/m/d");
+					$date1=date_create($today_date1);
+                                	$date2=date_create($row->date_of_purchase);
+                                	$diff=date_diff($date1,$date2);
+                                	$no_of_days=$diff->format("%a days");
+					//echo"No.of.days==>".$no_of_days;
+                                	//how many years till now
+                                	$years=$no_of_days/365;
+                                	$check_year=is_int($years);//check year is in integer
+                                	$get_asset_used_years=explode(".", $years);
+                                	$days=$get_asset_used_years[0]*365;
+                                	$tot_day=$no_of_days-$days;
+					///////////////////////////////////////////////////////////////////////////////////
+				 	for($i=0; $i<=$get_asset_used_years[0]; $i++){
+						//echo"****";
+						//print_r($get_asset_used_years[0]);
+						//echo"<br>";
+                                        	if($i == 0){
+                                                	$depepreciation_on_day=$row->cost*($tot_day/365)*($exp_dep_percentage[0]/100);
+                                                	$net_amount= $depepreciation_on_day;
+
+                                        	}elseif($i == 1 ){
+
+							//echo"-->";
+							$val=($row->cost*$exp_dep_percentage[0])/100;
+                                                	$amount=$row->cost-$val;
+                                                	$depepreciation_on_day=$row->cost*($tot_day/365)*($exp_dep_percentage[0]/100);
+                                                	$net_amount= $depepreciation_on_day+$amount;
+
+						}else{
+							$val=($amount*$exp_dep_percentage[0])/100;
+                                                	$amount=$amount-$val;
+                                                	$depepreciation_on_day=$row->cost*($tot_day/365)*($exp_dep_percentage[0]/100);
+                                                	$net_amount= $depepreciation_on_day+$amount;
+						}
+					}
+					/////////////////////////////////////////////////////////////////////////////////
+					//if Duplicate entry.............
+                                	$this->db->from('old_asset_register')->where('asset_name',$row->asset_name);
+                                	$asset_register1=$this->db->get();
+                                	if($asset_register1->num_rows() > 1){
+                                        	$this->db->select_sum('cost');
+                                        	$this->db->from('old_asset_register')->where('asset_name',$row->asset_name);
+                                        	$asset_register2=$this->db->get();
+                                        	foreach ($asset_register2->result() as $row2){
+                                        	}
+                                	}
+					//Get Fund/Project name.....
+                                        $this->db->from('old_fund_asset_register')->where('asset_id',$row->id);
+                                        $funds=$this->db->get();
+                                        foreach ($funds->result() as $row4){
+                                        	$fund_name=$row4->fund_name;
+                                        }
+                                        $this->db->from('old_sponsored_asset_register')->where('asset_id',$row->id);
+                                        $project=$this->db->get();
+                                        foreach ($project->result() as $row5){
+                                         $fund_name=$row5->project_name;
+                                         }
+                                	if($get_asset_used_years[0] == $exp_dep_percentage[1]){
+                                        	$this->db->trans_start();
+                                        	$update_data = array(
+                                        		'asset_status'=>'1',
                                                 );
                                                 if ( ! $this->db->where('id', $row->id)->update('old_asset_register', $update_data))
                                                 {
@@ -184,65 +266,143 @@
                                                                 $this->db->trans_complete();
                                                 }
 
-                                 }
-                                 echo"<tr>";
-					if($count == 1 || $count == 0){
-                                        echo "<td>". $row->asset_name ."</td>";
-                                        echo "<td>" . $date . "</td>";
-					if($asset_register1->num_rows() > 1){
-                                        echo "<td>".$row2->cost."</td>";
-					}else{
-					echo "<td>".$row->cost."</td>";
-
-					}
-					$trim_dep_value = substr($net_amount, 0 ,8);
-					$curr_value=$row->cost-$trim_dep_value ;
-					// Depreciation percentage is null show privious year deprection and add null 0 depreciation this year.
-					if($exp_dep_percentage[0] == 0){
-						$trim_dep_value=$row->depreciated_value;
-						$curr_value=$row->current_value;
-					}
-                                        echo "<td>" . "$trim_dep_value" . "</td>";
-                                        echo "<td>" . "$curr_value"  . "</td>";
-					if($row->asset_status == '1'){
-						echo "<td>";
-						echo"Write Off Item";
-						echo "</td>";
-					}else{
-						echo "<td>";
-						echo"In Use";
-						echo "</td>";
-
-					}
-					}
-					if($count > 1 ){
-						$count=0;
-					}
+                                 	}
+                                 				echo"<tr>";
+								if($asset_register1->num_rows() > 1)
+                                                                echo "<td>".anchor('report/duplicate_entry/'. $row->asset_name."/old" ,$row->asset_name  , array('title' => $row->asset_name , 'style' => 'color:#000000'))."</td>" ;
+                                                                else
+                                                                echo "<td>".$row->asset_name."</td>";
+                                        			echo "<td>" . $date . "</td>";
+								if($asset_register1->num_rows() > 1){
+                                        				echo "<td>".$row2->cost."</td>";
+								}else{
+									echo "<td>".$row->cost."</td>";
+								}
+									if($asset_register1->num_rows() > 1){
+										echo "<td>"."---"."</td>"; 
+										echo "<td>"."---"."</td>"; 
+										echo "<td>"."---"."</td>";
+										echo "<td>"."---"."</td>";
+										echo "<td>"."---"."</td>";
+									}else{
+									$trim_dep_value = substr($net_amount, 0 ,8);
+									$curr_value=$row->cost-$trim_dep_value ;
+									// Depreciation percentage is null show privious year deprection and add null 0 depreciation this year.
+									if($exp_dep_percentage[0] == 0){
+										$trim_dep_value=$row->depreciated_value;
+										$curr_value=$row->current_value;
+									}
+                                        					echo "<td>" . "$trim_dep_value" . "</td>";
+                                        					echo "<td>" . "$curr_value"  . "</td>";
+										if($row->asset_status == '1'){
+											echo "<td>";
+											echo"Write Off Item";
+											echo "</td>";
+										}else{
+											echo "<td>";
+											echo"In Use";
+											echo "</td>";
+										}
+										echo "<td>".$row->sanc_type."</td>";
+										echo "<td>".$fund_name."</td>";
+									}
                         }
 		}//if2
-			
+		$val=explode("#",$field);
+		$this->db->select();
 		$this->db->from('new_asset_register');
-                $asset_register=$this->db->get();
-		if($asset_register->num_rows() != 0){
-
-			echo "<tr class=\"tr-balance\"><td colspan=\"4\"><b>Current Year Assets (BGAS)</b></td><td></td></tr>";
-                	echo"<tr>";
-
-		}
-		$this->db->from('new_asset_register');
+		$this->db->distinct();
+		$this->db->group_by("asset_name");
                 $asset_register=$this->db->get();
 		if($search == ''){
-			$this->db->from('new_asset_register');
+			$this->db->select();
+                	$this->db->from('new_asset_register');
+                	$this->db->distinct();
+                	$this->db->group_by("asset_name");
                 	$asset_register=$this->db->get();
-                	}else{
-				if($search == "IRD_WEF_Date#date_of_purchase"){
-                	}
-                        	$this->db->from('new_asset_register')->where($val[1], '%' . $b . '%');
+                }elseif($b != NULL){
+			if($search == "IRD_WEF_Date#date_of_purchase"){
+                	}	
+				if($asset_type_value == 'all_asset'){
+				$this->db->select();
+                		$this->db->from('new_asset_register')->where($val[1], '%' . $b . '%');
+                		$this->db->distinct();
+                		$this->db->group_by("asset_name");
                         	$asset_register=$this->db->get();
+				}     
+				if($asset_type_value == 'project_asset'){
+					if($search == "IRD_WEF_Date#date_of_purchase"){
+						$this->db->select('new_asset_register.asset_name as asset_name, new_asset_register.date_of_purchase as date_of_purchase, new_asset_register.cost as cost, new_asset_register.sanc_type as sanc_type, new_asset_register.id as id, new_asset_register.narration as narration, new_asset_register.asset_status as asset_status');
+                                        	$this->db->from('new_sponsored_asset_register')->join('new_asset_register', 'new_sponsored_asset_register.asset_id = new_asset_register.id')->where('new_asset_register.'.$val[1], '%' . $b . '%');
+                                        	$asset_register=$this->db->get();
+                        		}else{
+
+						$this->db->select('new_asset_register.asset_name as asset_name, new_asset_register.date_of_purchase as date_of_purchase, new_asset_register.cost as cost, new_asset_register.sanc_type as sanc_type, new_asset_register.id as id, new_asset_register.narration as narration, new_asset_register.asset_status as asset_status');
+                                        	$this->db->from('new_sponsored_asset_register')->join('new_asset_register', 'new_sponsored_asset_register.asset_id = new_asset_register.id')->where($val[1], '%' . $b . '%');
+						$asset_register=$this->db->get();
+					}
+                                }elseif($asset_type_value == 'fund_asset'){
+					if($search == "IRD_WEF_Date#date_of_purchase"){
+                                                $this->db->select('new_asset_register.asset_name as asset_name, new_asset_register.date_of_purchase as date_of_purchase, new_asset_register.cost as cost, new_asset_register.sanc_type as sanc_type, new_asset_register.id as id, new_asset_register.narration as narration, new_asset_register.asset_status as asset_status');
+                                                $this->db->from('new_sponsored_asset_register')->join('new_asset_register', 'new_sponsored_asset_register.asset_id = new_asset_register.id')->where('new_asset_register.'.$val[1], '%' . $b . '%');         
+                                                $asset_register=$this->db->get();
+                                        }else{
+	
+                                        $this->db->select('new_asset_register.asset_name as asset_name, new_asset_register.date_of_purchase as date_of_purchase, new_asset_register.cost as cost, new_asset_register.sanc_type as sanc_type, new_asset_register.id as id, new_asset_register.narration as narration, new_asset_register.asset_status as asset_status');
+                                        $this->db->from('new_fund_asset_register')->join('new_asset_register', 'new_fund_asset_register.asset_id = new_asset_register.id')->where($val[1], '%' . $b . '%');
+                                        $asset_register=$this->db->get();
+					}
+                                }elseif($asset_type_value == 'plan'){
+                                        $this->db->select();
+                                        $this->db->from('new_asset_register')->where('sanc_type', 'plan')->where($val[1], '%' . $b . '%');
+                                        $this->db->distinct();
+                                        $this->db->group_by("asset_name");
+                                        $asset_register=$this->db->get();
+                                }elseif($asset_type_value == 'non_plan'){
+                                        $this->db->select();
+                                        $this->db->from('new_asset_register')->where('sanc_type', 'non_plan');
+                                        $this->db->distinct();
+                                        $this->db->group_by("asset_name")->where($val[1], '%' . $b . '%');
+                                        $asset_register=$this->db->get();
+                                }
+
+ 
+	
+                }elseif($b != NULL && $val[1] == NULL){
+			$this->messages->add('Please Select Any Option From Dropdown', 'error');
+                        redirect('report/depreciation');
+                }else{
+			if($asset_type_value != 'all_asset'){
+				if($asset_type_value == 'project_asset'){
+					$this->db->select('new_asset_register.asset_name as asset_name, new_asset_register.date_of_purchase as date_of_purchase, new_asset_register.cost as cost, new_asset_register.sanc_type as sanc_type, new_asset_register.id as id, new_asset_register.narration as narration, new_asset_register.asset_status as asset_status');
+                        		$this->db->from('new_sponsored_asset_register')->join('new_asset_register', 'new_sponsored_asset_register.asset_id = new_asset_register.id');
+					$asset_register=$this->db->get();	
+				}elseif($asset_type_value == 'fund_asset'){
+					$this->db->select('new_asset_register.asset_name as asset_name, new_asset_register.date_of_purchase as date_of_purchase, new_asset_register.cost as cost, new_asset_register.sanc_type as sanc_type, new_asset_register.id as id, new_asset_register.narration as narration, new_asset_register.asset_status as asset_status');
+                                        $this->db->from('new_fund_asset_register')->join('new_asset_register', 'new_fund_asset_register.asset_id = new_asset_register.id');
+                                        $asset_register=$this->db->get();
+				}elseif($asset_type_value == 'plan'){
+					$this->db->select();
+                                	$this->db->from('new_asset_register')->where('sanc_type', 'plan');
+                                	$this->db->distinct();
+                                	$this->db->group_by("asset_name");
+                                	$asset_register=$this->db->get();
+				}elseif($asset_type_value == 'non_plan'){
+					$this->db->select();
+                                        $this->db->from('new_asset_register')->where('sanc_type', 'non_plan');
+                                        $this->db->distinct();
+                                        $this->db->group_by("asset_name");
+                                        $asset_register=$this->db->get();
+				}	
+			}
+		}
+		if($asset_register->num_rows() != 0){
+                        echo "<tr class=\"tr-balance\"><td colspan=\"8\"><b>Current Year Assets (BGAS)</b></td></tr>";
+                        echo"<tr>";
                 }
 
 		foreach ($asset_register->result() as $row){
-
+			$fund_name='';
 			$narration=$row->narration;
                         $narr=explode("@",$narration);
                         $date = date_mysql_to_php($row->date_of_purchase); 
@@ -253,7 +413,6 @@
                         $fy_st_date=explode("/",$fy_start_date);
                         $fy_year=$fy_st_date[2].$fy_st_date[2]+1;
                         $next_year=$fy_st_date[2]+1;
-
                         $date1=date_create($today_date1);
                         $date2=date_create($row->date_of_purchase);
                         $diff=date_diff($date1,$date2);
@@ -264,7 +423,6 @@
                         $get_asset_used_years=explode(".", $years);
                         $days=$get_asset_used_years[0]*365;
                         $tot_day=$no_of_days-$days;
-
 			if($narr[0] != 'DepreciationRate'){
 				$led_code = $CI->Depreciation_model->get_ledger_parent($row->asset_name);
 				$master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table($led_code);
@@ -277,7 +435,7 @@
 					}	
 					$master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table1($group_name);
 				}
-                        	$exp_dep_percentage=explode("#",$master_group_code);   
+                        	$exp_dep_percentage=explode("#",$master_group_code);  
 				$value= $row->cost * $exp_dep_percentage[0]/(100*365);
 				$today_date1=date("Y/m/d");
 				$dep_value_till_now=$no_of_days*$value;
@@ -295,6 +453,7 @@
 				}
 
 							$curr_value=$row->cost-$net_dep_amount;
+							//if multiple entry with same asset_name then cost will be total.....
 							$this->db->from('new_asset_register')->where('asset_name',$row->asset_name);
                                 			$asset_register1=$this->db->get();
                                 			if($asset_register1->num_rows() > 1){
@@ -303,12 +462,25 @@
                                         			$asset_register2=$this->db->get();
                                         			foreach ($asset_register2->result() as $row3){
                                         			}
-                                        			$counter++;
                                 			}
-							if($counter == 0 || $counter == 1){
+							//Get Fund/Project name.....
+                                                        $this->db->from('new_fund_asset_register')->where('asset_id',$row->id);
+                                                        $funds=$this->db->get();
+                                                        	foreach ($funds->result() as $row4){
+									$fund_name=$row4->fund_name;
+                                                        	}
+								$this->db->from('new_sponsored_asset_register')->where('asset_id',$row->id);
+                                                        	$project=$this->db->get();
+								foreach ($project->result() as $row5){
+                                                                	$fund_name=$row5->project_name;
+                                                        	}
+
 								echo"<tr>";
-								echo "<td>";echo anchor('report/duplicate_entry/'. $row->asset_name ,$row->asset_name  , array('title' => $row->asset_name , 'style' => 'color:#000000')) ;
-                                        			echo "</td>";
+								if($asset_register1->num_rows() > 1)
+								echo "<td>".anchor('report/duplicate_entry/'. $row->asset_name ."/new",$row->asset_name  , array('title' => $row->asset_name , 'style' => 'color:#000000'))."</td>" ;
+								else
+								echo "<td>".$row->asset_name."</td>";
+	
                                         			echo "<td>" . $date . "</td>";
 								if($asset_register1->num_rows() > 1){
 									echo "<td>".$row3->cost."</td>";
@@ -321,9 +493,16 @@
                                                                                 $trim_dep_value=0;
                                                                                 $trim_curr_value=0;
                                                                         }
-
+									if($asset_register1->num_rows() > 1){
+									echo "<td>" . "---". "</td>";
+                                                                        echo "<td>" ."---". "</td>";
+									echo "<td>" . "---". "</td>";
+                                                                        echo "<td>" ."---". "</td>";
+									echo "<td>" . "---". "</td>";
+									}else{
                                         				echo "<td>" . $trim_dep_value. "</td>";
                                         				echo "<td>" .$trim_curr_value. "</td>";
+									
 									if($row->asset_status == '1'){
 										echo "<td>";
 										echo"Write Off Item";
@@ -333,14 +512,17 @@
 										echo"In Use";
 										echo "</td>";
                                         				}
-							}
-						//	$counter=$counter-1;
+										echo "<td>".$row->sanc_type."</td>";
+										echo "<td>".$fund_name."</td>";
+
+									}
 					 					//If today date is 31-march then calculate depreciation.
                                                 				$exp_today_date=explode("-",$today_date);
                                                 				$fy_start_date = date_mysql_to_php($this->config->item('account_fy_start'));
                                                 				$fy_st_date=explode("/",$fy_start_date);
                                                 				$fy_year=$fy_st_date[2].$fy_st_date[2]+1;
 										$last_fy_year=$fy_st_date[2]+1;
+										//echo"$fy_year";
 										if($exp_today_date[1] == '31' && $last_fy_year == $exp_today_date[0] ){
                                                 					$next_year=$fy_st_date[2]+1;
                                                 					$this->db->trans_start();
@@ -387,7 +569,6 @@
                                                 $asset_register2=$this->db->get();
                                                 foreach ($asset_register2->result() as $row4){
                                                 }
-                                        $counter++;
                                         }
 
 					echo"<tr>";
@@ -408,6 +589,7 @@
 						echo"In Use";
 						echo "</td>";
                                         	}
+						echo "<td>".$row->sanc_type."</td>";
 
 					}
 
@@ -439,7 +621,8 @@
 
 
         	        }
-		  if($search == ''){
+
+		  if($search == '' || $asset_type_value != NULL && $b == NULL){
 		    		//load database pico
                         	$logndb = $this->load->database('pico', TRUE);
                         	$this->logndb =& $logndb;
@@ -458,7 +641,7 @@
 						$timestamp = strtotime($IRD_WEF_Date); 
 						$new_date = date('d/m/Y', $timestamp);
 						echo "<tr>";
-						echo "<td>" . anchor('report/duplicate_entry/'. $ERPMIM_Item_Brief_Desc,$ERPMIM_Item_Brief_Desc , array('title' => $ERPMIM_Item_Brief_Desc , 'style' => 'color:#000000')) . "</td>";
+						echo "<td>" .$ERPMIM_Item_Brief_Desc. "</td>";
 						echo "<td>" . $new_date . "</td>";
 						$value =$this->Ledger_model->get_asset_amount($row1->ERPMIM_Item_Brief_Desc);
 						$my_values = explode('#',$value['key']);
@@ -471,32 +654,38 @@
 						echo "<td>";
 						echo"In Use";
 						echo "</td>";
+						echo "<td>"."---"."</td>";
+						echo "<td>"."---"."</td>";
 						echo "</tr>";
-						$i++;
 					}
 				}
 					//$this->logndb->close();
 					//}
 		}else {
-	/*		if($search == "Select")
-			{
-				$this->messages->add('Please select search type from drop down list.', 'error');
-				redirect('report/depreciation');				
-			}
-			else {
-				if($search == "ERPMIM_Item_Brief_Desc#name" || $search == "IRD_WEF_Date#update_date" || $search == "total_cost#amount"){
-                                $val=explode("#",$field);
-                                }
-				$b = trim($text);
+					//if($search == "ERPMIM_Item_Brief_Desc#asset_name" || $search == "IRD_WEF_Date#update_date" || $search == "total_cost#cost"){
+                                	$val=explode("#",$field);
+					$b = trim($text);
 					//load database pico
 		                	$logndb = $this->load->database('pico', TRUE);
 		                	$this->logndb =& $logndb;
 					if($search != "total_cost" && $search != "dep_amount" && $search != "curr_value") {
-					$val = explode('#',$field);
-		                	$this->logndb->select('a.ERPMIM_ID, a.ERPMIM_Depreciation_Percentage, a.ERPMIM_Item_Brief_Desc, b.IRD_Rate, b.IR_Item_ID, b.IRD_WEF_Date');
-		                	$this->logndb->from('erpm_item_master a, erpm_item_rate b')->where('a.ERPMIM_ID  = b.IR_Item_ID ')->where('a.'.$val[0],$b);
-		                	//$this->logndb->group_by("ERPMIM_Item_Brief_Desc");
-		                	$user_data = $this->logndb->get();
+						if($search == 'total_cost#cost' || $search == 'IRD_WEF_Date#date_of_purchase'){
+							if($search == 'total_cost#cost'){
+								$val[0]='IRD_Rate';
+							}else{
+								$val = explode('#',$field);
+								$exp_date=explode("/",$b);
+                                				@$b=$exp_date[2]."-".$exp_date[1]."-".$exp_date[0];
+							}
+							$this->logndb->select('a.ERPMIM_ID, a.ERPMIM_Depreciation_Percentage, a.ERPMIM_Item_Brief_Desc, b.IRD_Rate, b.IR_Item_ID, b.IRD_WEF_Date');
+                                                	$this->logndb->from('erpm_item_master a, erpm_item_rate b')->where('a.ERPMIM_ID  = b.IR_Item_ID ')->where('b.'.$val[0] . ' LIKE','%' . $b . '%');
+                                                	$user_data = $this->logndb->get();
+						}else{
+							$val = explode('#',$field);
+		                			$this->logndb->select('a.ERPMIM_ID, a.ERPMIM_Depreciation_Percentage, a.ERPMIM_Item_Brief_Desc, b.IRD_Rate, b.IR_Item_ID, b.IRD_WEF_Date');
+		                			$this->logndb->from('erpm_item_master a, erpm_item_rate b')->where('a.ERPMIM_ID  = b.IR_Item_ID ')->where('a.'.$val[0] . ' LIKE','%' . $b . '%');
+		                			$user_data = $this->logndb->get();
+						}
 					}
 					else {
 				        	$this->logndb->select('a.ERPMIM_ID, a.ERPMIM_Depreciation_Percentage, a.ERPMIM_Item_Brief_Desc, b.IRD_Rate, b.IR_Item_ID, b.IRD_WEF_Date');
@@ -505,6 +694,7 @@
 				        	$user_data = $this->logndb->get();
 					}
 					if($user_data->num_rows() > 0){
+						echo "<tr class=\"tr-balance\"><td colspan=\"4\"><b>Current Year Assets (PICO)</b></td><td></td></tr>";
 						foreach($user_data->result() as $row1)
 				                {
 							$value =$this->Ledger_model->get_asset_amount($row1->ERPMIM_Item_Brief_Desc);
@@ -540,25 +730,27 @@
 								}
 							}
 							 $ERPMIM_Item_Brief_Desc= $row1->ERPMIM_Item_Brief_Desc;
-							 $IRD_WEF_Date=$row1->IRD_WEF_Date;
 							 $IRD_Rate= $row1->IRD_Rate;
+							
 							if($total_cost != NULL && $dep_amt != NULL && $curr_value != NULL && $ERPMIM_Item_Brief_Desc != NULL) {
 								 echo "<tr>";
-								 echo "<td>" . $i . '.' . "</td>";
 								 echo "<td>" . anchor('report/duplicate_entry/'. $ERPMIM_Item_Brief_Desc,$ERPMIM_Item_Brief_Desc , array('title' => $ERPMIM_Item_Brief_Desc . ' duplicate_entry', 'style' => 'color:#000000')) . "</td>";
-							 	 echo "<td>" . date_format($IRD_WEF_Date,"d/m/Y"). "</td>";
+							 	 echo "<td>" . $row1->IRD_WEF_Date. "</td>";
 								 echo "<td>" . $total_cost  . "</td>";
 								 echo "<td>" . $dep_amt  . "</td>";
 								 echo "<td>" . $curr_value  . "</td>";
+								 echo "<td>";
+                                                		 echo"In Use";
+                                                		 echo "</td>";
+                                                		 echo "<td>"."---"."</td>";
+                                                                 echo "<td>"."---"."</td>";
 								 echo "</tr>";
-								 $i++;
-								$check++;
 							}
-						}
+						//}
 					}
 					$this->logndb->close();
 				//}
-				if($check == "1" && $search == "ERPMIM_Item_Brief_Desc")
+		/*		if($check == "1" && $search == "ERPMIM_Item_Brief_Desc")
 				{
 					$this->messages->add($text . ' is not found.', 'error');
 					redirect('report/depreciation');
@@ -567,8 +759,8 @@
 				{
 					$this->messages->add($text . ' is not found.', 'error');
 					redirect('report/depreciation');
-				}
-			}*/
+				}*/
+			}
 		}
 echo"</table>";				
 /*	if($check == "1" && $search == "total_cost"){

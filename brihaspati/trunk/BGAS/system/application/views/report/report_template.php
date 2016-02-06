@@ -67,7 +67,7 @@
 			{
 				if($title == "Depreciation Of Assets"){
 					echo "Depreciation As Today";
-				}else{
+				}elseif($title != "Depreciation Rate"){
 					echo	 "For the period " . $from_date . " to " . $to_date ;
 				}
 			}

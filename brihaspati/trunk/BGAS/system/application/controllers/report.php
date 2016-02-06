@@ -14,9 +14,15 @@ class Report extends Controller {
 	function Report()
 	{
 		parent::Controller();
+		$this->load->model('Setting_model');
 		$this->load->model('Ledger_model');
 		$this->load->model('Budget_model');
 		$this->load->model('Group_model');
+		$this->load->model('Depreciation_model');
+		$this->load->model('Tag_model');
+	        $this->load->helper('pdf_helper');
+		$this->load->library('session');
+
 		/* Check access */
 		if ( ! check_access('view reports'))
 		{
@@ -37,7 +43,6 @@ class Report extends Controller {
 	
 	function balancesheet($period = NULL )
 	{
-		$this->load->library('session');
 		$this->template->set('page_title', 'Balance Sheet');
 		$this->template->set('nav_links', array('report/download/balancesheet' => 'Download CSV', 'report/printpreview/balancesheet' => 'Print Preview', 'report/pdf/balancesheet' => 'Download PDF'));
 		$data['left_width'] = "300";
@@ -136,9 +141,6 @@ class Report extends Controller {
 	function pdf($statement, $id = NULL)
 	{
 		$data['search']='';
-		$this->load->model('Tag_model');
-	        $this->load->helper('pdf_helper');
-		$this->load->library('session');
                 $date1 = $this->session->userdata('date1');
                 $date2 = $this->session->userdata('date2');
 		$code = $this->session->userdata('code');
@@ -341,24 +343,12 @@ class Report extends Controller {
 	 
 	function depreciation($period = NULL)
         {
-                $this->load->library('session');
+
                 $this->template->set('nav_links', array('report/depreciation' => 'Depreciation As Today', 'report/update' => 'Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
                 $this->template->set('page_title', 'Depreciation Of Assets');
                 $data['left_width'] = "450";
                 $data['right_width'] = "450";
                 $data['print_preview'] =FALSE;
-                $data['budget_over'] = TRUE;
-		
-                if($_POST)
-                {
-                	$data['budget_over'] = $this->input->post('budget_over', TRUE);
-                }
-
-                $newdata = array(
-                        'budget_over'=>$data,
-                      );
-                $this->session->set_userdata($newdata);	
-		// code for searching a given text
 		$text = '';
 		$data['search'] = '';
 		$data['gross_expense_list_q'] = '';
@@ -378,10 +368,19 @@ class Report extends Controller {
                         "ERPMIM_Item_Brief_Desc#asset_name" => "Asset Name",
                         "IRD_WEF_Date#date_of_purchase"=> "Date of Purchase",
 			"total_cost#cost" => "Total Cost",
-			"dep_amount" => "Dep.Amount",
-			"curr_value" => "Current Value",
+			//"dep_amount" => "Dep.Amount",
+			//"curr_value" => "Current Value",
                 );
 		$data['search_by_active'] = '';
+
+		$data['asset_type'] = array(
+                                "all_asset" => "All asset",
+                                "project_asset"=> "project asset",
+                                "fund_asset"=> "fund asset",
+                                "plan"=> "Plan",
+                                "non_plan"=> "Non plan",
+                );
+                $data['asset_type_active'] = '';
 
 		$data['text'] = array(
 			'name' => 'text',
@@ -393,12 +392,15 @@ class Report extends Controller {
 		if ($_POST)
 		{
 			$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+			$data['asset_type_active']['value'] = $this->input->post('asset_type', TRUE);
 			$data['text']['value'] = $this->input->post('text', TRUE);
 		}
 		/* Form validation */
 
-		$this->form_validation->set_rules('search_by', 'Search By', 'trim|required');
-		$this->form_validation->set_rules('text', 'Text', 'trim|required');
+		$this->form_validation->set_rules('search_by', 'Search By', 'trim');
+		$this->form_validation->set_rules('asset_type', 'Asset Type', 'trim');
+		$this->form_validation->set_rules('text', 'Text', 'trim');
+
 		/* Validating form */
 
 		if ($this->form_validation->run() == FALSE)
@@ -409,9 +411,11 @@ class Report extends Controller {
 		}
 		else
 		{
+			$data_asset_type = $this->input->post('asset_type', TRUE);
 			$data_search_by = $this->input->post('search_by', TRUE);
 			$data_text = $this->input->post('text', TRUE);
 		}
+
 		//if text is negative
                 if(abs($data_text) == -1) {
                         $this->messages->add('Text should be a positive value.', 'error');
@@ -424,7 +428,7 @@ class Report extends Controller {
 				redirect('report/depreciation');
 			}
 		}
-		if($data_search_by == "IRD_WEF_Date") {
+		if($data_search_by == "data_search_byIRD_WEF_Date#date_of_purchase") {
 			$search_text = $data_text;
 			// if date is single digit
 			if(ctype_digit($data_text)) {
@@ -518,11 +522,12 @@ class Report extends Controller {
 		}
 		$newrange = array(
                         'search'=>$data_search_by,
-                        'text'=>$data_text
+                        'text'=>$data_text,
+			'asset_type_value'=>$data_asset_type
                         );
                 $this->session->set_userdata($newrange);	
 		$data['search'] = $data_search_by;
-		//$data['text'] = $data_text;
+		$data['asset_type_value'] = $data_asset_type;
 		$this->template->load('template', 'report/depreciation', $data);
                 return;
         }
@@ -610,8 +615,8 @@ class Report extends Controller {
 	function update()
         {
         	$this->template->set('page_title', 'Update Depreciation Rate');
-	       	$this->template->set('nav_links', array( 'report/depreciation' => 'Depreciation As Today'));
-		$this->load->model('Depreciation_model');
+	       	$this->template->set('nav_links', array( 'report/depreciation' => 'Depreciation As Today', 'report/printpreview/dep_update' => 'Print Preview'));
+		$this->dep_master['print_preview'] =FALSE;
 		$account_code = $this->Budget_model->get_account_code('Fixed Assets');
 		$check_asset_register = $this->Depreciation_model->dep_master_details();
 		$counter=0;
@@ -738,7 +743,6 @@ class Report extends Controller {
                 {
 			  $name1 = 'budget_value1'. "_" .$bud1['id'];
 			$life_time= $this->input->post($name1, TRUE);
-                                echo"---->".$life_time;
 			 $this->db->trans_start();
                                         $update_data = array(
                                                 'life_time' => $life_time,
@@ -836,14 +840,18 @@ class Report extends Controller {
                 }
 
 		$this->logndb->close();*/
+		$newrange = array(
+                        'dep'=>$this->dep_master,
+                        );
+                $this->session->set_userdata($newrange);
+
 		redirect('report/update');
 	//	$this->template->load('template', 'report/update', $this->dep_master);
              	return;
         }
 		
-	function duplicate_entry($ERPMIM_Item_Brief_Desc)
+	function duplicate_entry($ERPMIM_Item_Brief_Desc,$type)
         {
-	
         	 $this->template->set('page_title', 'Purchase Detail');
 		 /*load database pico*/
                  $logndb = $this->load->database('pico', TRUE);
@@ -856,12 +864,22 @@ class Report extends Controller {
 	                $data['pico'] = '1';
                         $this->db->from('new_asset_register')->where('asset_name', $ERPMIM_Item_Brief_Desc);
                         $led_details = $this->db->get();
-			foreach($led_details->result() as $row){
-				$data['led_name'] = $row->asset_name;
+			if($type == "new"){
+				$data['new_asset_register'] = '2';
+				foreach($led_details->result() as $row){
+					$data['led_name'] = $row->asset_name;
+				}
+					$data['detail'] = $led_details;
+			}elseif($type == "old"){
+				$this->db->from('old_asset_register')->where('asset_name', $ERPMIM_Item_Brief_Desc);
+                        	$asset_details = $this->db->get();
+                                $data['old_asset_register'] = '3';
+                               	foreach($asset_details->result() as $row){
+                                       	$data['led_name'] = $row->asset_name;
+                               	}
+                                       	$data['detail'] = $asset_details;
 			}
-				$data['detail'] = $led_details;
-	
-			}
+		}
 		 $this->template->load('template', 'report/duplicate_entry', $data);
                  return ;
 	
@@ -1096,7 +1114,6 @@ class Report extends Controller {
 // made by @kanchan
 	function new_mhrd()
 	{
-		$this->load->library('session');
                 $this->template->set('page_title', 'Balance Sheet MHRD Format-2015');
 		$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdf/new_mhrd' => 'Download PDF'));
 		$data['left_width'] = "300";
@@ -1233,7 +1250,6 @@ class Report extends Controller {
 	 */
 	function printPreview_schedules($c = 1)
 	{
- 	        $this->load->library('session');
                 $date1 = $this->session->userdata('date1');
                 $date2 = $this->session->userdata('date2');
 		$this->counter = 1;
@@ -1681,7 +1697,6 @@ class Report extends Controller {
 		$this->template->set('page_title', 'Schedule - ' . $ledger_name);
 		$this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule/' => 'Print Preview'));
                 $data['id'] = $ledger_id;
-		$this->load->model('Setting_model');
                 $data['start_date'] = $this->Setting_model->get_from_settings('fy_start');
                 $data['end_date'] = $this->Setting_model->get_from_settings('fy_end');
 		$this->template->load('template', 'report/sub_schedule_template', $data);
@@ -1690,7 +1705,6 @@ class Report extends Controller {
 
 	function profitandloss($period = NULL)
 	{
-		$this->load->library('session');
 		$this->template->set('page_title', 'Income And Expenditure Statement');
 		$this->template->set('nav_links', array('report/download/profitandloss' => 'Download CSV', 'report/printpreview/profitandloss' => 'Print Preview', 'report/pdf/profitandloss' => 'Download PDF'));
 		$data['left_width'] = "300";
@@ -1895,7 +1909,6 @@ class Report extends Controller {
 
 	function trialbalance($period = NULL)
 	{
-		$this->load->library('session');
 		$this->template->set('page_title', 'Trial Balance');
 		$this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdf/trialbalance' => 'Download PDF'));
 		
@@ -2057,7 +2070,6 @@ class Report extends Controller {
 	}
 	function ledgerst($ledger_id = 0)
 	{
-		$this->load->library('session');
 		$this->load->helper('text');
 		/* Pagination setup */
 		$this->load->library('pagination');
@@ -2293,7 +2305,6 @@ class Report extends Controller {
 
 	function download($statement, $id = NULL)
 	{
-		$this->load->library('session');
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
 
@@ -2959,14 +2970,17 @@ class Report extends Controller {
 
 	function printpreview($statement, $id = NULL)
 	{
-		$this->load->model('Tag_model');
-		$this->load->library('session');
+//		$this->load->model('Tag_model');
+//		$this->load->library('session');
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
 		$code = $this->session->userdata('code');
 		$search = $this->session->userdata('search');
 		$text = $this->session->userdata('text');
+	//	$dep = $this->session->userdata('dep');
 		$search_by_bank = $this->session->userdata('search');
+		$asset_type_value = $this->session->userdata('asset_type_value');
+		
 		$count = $id;
 		/********************** TRIAL BALANCE *************************/
 		if ($statement == "trialbalance")
@@ -3025,22 +3039,37 @@ class Report extends Controller {
 			return;
 		}
 
+		if ($statement == "dep_update")
+                {
+                        $data['report'] = "report/update";
+                        $data['title'] = "Depreciation Rate";
+                        $data['print_preview'] = TRUE;
+                        $data['left_width'] = "";
+                        $data['right_width'] = "";
+//                	$check_asset_register = $this->Depreciation_model->dep_master_details();
+			$data['dep']=$this->Depreciation_model->dep_master_details();
+                        $this->load->view('report/report_template', $data);
+                        return;
+                }
+		
 		if ($statement == "depreciation")
                 {
-			$field = $search . '      ' . 'LIKE';
+                        $field = $search . '      ' . 'LIKE';
                         $data['report'] = "report/depreciation";
                         $data['title'] = "Depreciation Of Assets";
                         $data['print_preview'] = TRUE;
                         $data['left_width'] = "";
                         $data['right_width'] = "";
-                        $data['search'] = $search;	
-                        $data['text'] = $text;			
-                        $data['field'] = $field;					
+                        $data['asset_type_value'] = $asset_type_value;
+                        $data['search'] = $search;
+                        $data['text'] = $text;
+                        $data['field'] = $field;
                         $this->load->view('report/report_template', $data);
-			$this->session->unset_userdata('search');
-			$this->session->unset_userdata('text');
+                        $this->session->unset_userdata('search');
+                        $this->session->unset_userdata('text');
                         return;
                 }
+
 
 		if ($statement == "paymentreceipt")
 		{
@@ -3473,9 +3502,6 @@ class Report extends Controller {
 	}
 
 	function cashst(){
-		$this->load->model('Tag_model');
-		$this->load->model('Depreciation_model');
-		$this->load->library('session');
 		/* Pagination setup */
                 $this->load->library('pagination');
 		$this->template->set('page_title', 'Cash Reports');
@@ -3716,8 +3742,6 @@ class Report extends Controller {
 	//made by @kanchan
         function printpreview1($statement, $id = NULL)
         {
-                $this->load->library('session');
-                $this->load->model('Tag_model');
                 $date1 = $this->session->userdata('date1');
                 $date2 = $this->session->userdata('date2');
                 $code = $this->session->userdata('code');
@@ -3797,7 +3821,6 @@ class Report extends Controller {
 	function printall_schedules($counter)
 	{
 		$this->template->set('page_title', 'Print All Schedules');
-		$this->load->library('session');
                 $date1 = $this->session->userdata('date1');
                 $date2 = $this->session->userdata('date2');
 		

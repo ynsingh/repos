@@ -479,3 +479,37 @@ CREATE TABLE IF NOT EXISTS new_asset_register(
 			sanc_type VARCHAR (100) NOT NULL,
                         PRIMARY KEY(id)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS new_fund_asset_register(
+                        id INTEGER (100)  NOT NULL AUTO_INCREMENT,
+                        asset_id INTEGER (100)  NOT NULL,
+                        date_of_purchase DATETIME NOT NULL,
+                        code varchar(100) NOT NULL,
+                        fund_name VARCHAR (255) NOT NULL,
+                        PRIMARY KEY(id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS new_sponsored_asset_register(
+                        id INTEGER (100)  NOT NULL AUTO_INCREMENT,
+                        asset_id INTEGER (100)  NOT NULL,
+                        date_of_purchase DATETIME NOT NULL,
+                        code varchar(100) NOT NULL,
+                        project_name VARCHAR (255) NOT NULL,
+                        PRIMARY KEY(id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS old_fund_asset_register(
+                        id INTEGER (100)  NOT NULL AUTO_INCREMENT,
+                        asset_id INTEGER (100)  NOT NULL,
+                        date_of_purchase DATETIME NOT NULL,
+                        code varchar(100) NOT NULL,
+                        fund_name VARCHAR (255) NOT NULL,
+                        PRIMARY KEY(id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS old_sponsored_asset_register(
+                        id INTEGER (100)  NOT NULL AUTO_INCREMENT,
+                        asset_id INTEGER (100)  NOT NULL,
+                        date_of_purchase DATETIME NOT NULL,
+                        code varchar(100) NOT NULL,
+                        project_name VARCHAR (255) NOT NULL,
+                        PRIMARY KEY(id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

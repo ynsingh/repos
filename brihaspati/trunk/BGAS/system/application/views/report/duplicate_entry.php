@@ -2,13 +2,16 @@
 
 
  echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"80%\">";
- echo "<thead><tr><th>Asset Name</th><th>Date of Purchase</th><th>Cost</th><th>Dep.Amount</th><th>Current Value</th></tr></thead>";
+ echo "<thead><tr><th>Asset Name</th><th>Date of Purchase</th><th>Cost</th><th>Dep.Amount</th><th>Current Value</th><th>Write Off Status</th><th>Sanction Type</th><th>Fund/Project Name</th></tr></thead>";
         echo "<tbody>";
 $this->load->model('Depreciation_model');
 $i=1;
 $sum=0;
 @$val=$pico;
+$new_asset_register='';
+$old_asset_register='';
 $net_amount=0;
+$fund_name='';
 $CI =& get_instance();
 		foreach ($detail->result()  as $row)
 		{			
@@ -45,6 +48,7 @@ $CI =& get_instance();
 					$i++;
 				}
 			}else{
+				$fund_name='';
 				$led_code = $CI->Depreciation_model->get_ledger_parent($row->asset_name);
                                 $master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table($led_code);
 				$exp_dep_percentage=explode("#",$master_group_code);
@@ -64,6 +68,18 @@ $CI =& get_instance();
                                                 $net_amount=$row->cost*($tot_day/365)*($exp_dep_percentage[0]/100);
                                         }
                                 }
+				//Get Fund/Project name.....
+                                $this->db->from('new_fund_asset_register')->where('asset_id',$row->id);
+                                $funds=$this->db->get();
+                                foreach ($funds->result() as $row1){
+                                	$fund_name=$row1->fund_name;
+                                }
+                                        $this->db->from('new_sponsored_asset_register')->where('asset_id',$row->id);
+                                        $project=$this->db->get();
+                                        foreach ($project->result() as $row2){
+                                 	       $fund_name=$row2->project_name;
+                                        }
+
 				$curr_value=$row->cost-$net_amount;
                                 $trim_dep_value = substr($net_amount,0, 6);
 	                        $trim_curr_value = substr($curr_value,0, 8);
@@ -74,6 +90,10 @@ $CI =& get_instance();
                                         echo "<td>" . $row->cost  . "</td>";
                                         echo "<td>" . $trim_dep_value  . "</td>";
 					echo "<td>" . $trim_curr_value  . "</td>";
+					echo "<td>" . "---"  . "</td>";
+                                        echo "<td>" . $row->sanc_type . "</td>";
+                                        echo "<td>" . $fund_name . "</td>";
+
 
 			}
 		}

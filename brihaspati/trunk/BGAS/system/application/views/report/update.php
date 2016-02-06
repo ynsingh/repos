@@ -1,11 +1,14 @@
 <?php
- echo form_open('report/update' );
-	
-	
-        echo "<table  border=0 cellpadding=4 class=\"simple-table account-table\" width=\"70%\">";
-        
-        echo "<thead><tr><th>Asset Name  </th><th>Percentage in (%)</th><th>Life Time (Years)</th></tr></thead>";
-		  echo "<tr class=\"tr-balance\"><td colspan=\"4\"><b>Tangible Assets</b></td></tr>";
+if(!$print_preview) {
+	echo form_open('report/update' );
+}	
+	if(!$print_preview) 
+       	 echo "<table border=0 cellpadding=6 class=\"simple-table balance-sheet-table\" width=\"80%\">"; 
+	else
+	echo "<table border=0 cellpadding=6 class=\"simple-table balance-sheet-table\" width=\"100%\">";
+
+        echo "<thead><tr><th><b>Asset Name  </th><th><b>Percentage in (%)</th><th><b>Life Time (Years)</th></tr></thead>";
+  	echo "<tr class=\"tr-balance\"><td colspan=\"4\"><b>Tangible Assets</b></td></tr>";
 /*	$this->db->from('depreciation_master')->where('parent_id', 1);
                 $depreciation_master=$this->db->get();
 		foreach ($depreciation_master->result() as $row)
@@ -69,6 +72,9 @@
         {
                 foreach ($dep as $id => $data)
                       {
+			if($data['name'] == 'E-Journals'){
+				echo "<tr class=\"tr-balance\"><td colspan=\"4\"><b>Intengible assets</b></td></tr>";	
+			}
 			 echo "<tr>";
                                         echo "<td>" . $data['name'] . "</td>";
                                         echo "<td>";
@@ -110,9 +116,11 @@
 		
 	echo "</table>";
    	echo "<p>";
+	if(!$print_preview) {
         echo form_submit('submit', 'Submit');
         echo " ";
         echo anchor('report/depreciation', 'Back', 'Back to the Depreciation');
         echo "</p>";
+	}
  echo form_close();
 ?>
