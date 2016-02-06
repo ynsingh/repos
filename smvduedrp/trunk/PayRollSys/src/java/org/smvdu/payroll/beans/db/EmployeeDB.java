@@ -471,7 +471,7 @@ public class EmployeeDB {
                     + "emp_email='" + emp.getEmail() + "',emp_dob='" + emp.getDob() + "',emp_doj='" + emp.getDoj() + "',emp_bank_accno='" + emp.getBankAccNo() + "',emp_pf_accno='" + emp.getPfAccNo() + "',emp_pan_no='" + emp.getPanNo() + "',"
                     + "emp_salary_grade='" + emp.getGrade() + "',emp_basic='" + emp.getCurrentBasic() + "',emp_father='" + emp.getFatherName() + "',emp_title='" + emp.getTitle() + "',emp_exp='" + emp.getExperience() + "',emp_qual='" + emp.getQualification() + "',"
                     + "emp_yop='" + emp.getYearOfPassing() + "',emp_prev_emp='" + emp.getYearOfPassing() + "',emp_address='" + emp.getAddress() + "',emp_active = '" + empstatus + "',"
-                    + "bank_ifsc_code='" + employee.getBankIFSCcode().trim() + "',emp_bank_status='" + empstatus + "', dor = '"+emp.getDateOfResig()+"',emp_leaving = '"+emp.getEmpLeaDate()+"',emp_noti_day = '"+emp.getEmpNotDay()+"', citizen='"+emp.getGenDetailCode()+"' where emp_code='" + emp.getCode().trim() + "' and emp_org_code='" + orgCode + "'");
+                    + "bank_ifsc_code='" + employee.getBankIFSCcode().trim() + "',emp_bank_status='" + empstatus + "', dor = '"+emp.getDateOfResig()+"',emp_leaving = '"+emp.getEmpLeaDate()+"',emp_noti_day = '"+emp.getEmpNotDay()+"', citizen='"+emp.getGenDetailCode()+"',emp_aadhaar_no='"+emp.getAadhaarNo()+"' where emp_code='" + emp.getCode().trim() + "' and emp_org_code='" + orgCode + "'");
             ps.executeUpdate();
             //System.out.println("DAta Should Be Write Here ...employeedb.............");
             ps.executeUpdate();
@@ -536,8 +536,8 @@ public class EmployeeDB {
                     + "emp_dept_code,emp_desig_code,emp_type_code,emp_phone,"
                     + "emp_email,emp_dob,emp_doj,emp_bank_accno,emp_pf_accno,emp_pan_no,"
                     + "emp_salary_grade,emp_gender,emp_org_code,emp_father,emp_basic,emp_title,"
-                    + "emp_exp,emp_qual,emp_yop,emp_prev_emp,emp_address,emp_active,bank_ifsc_code,emp_bank_status) "
-                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "emp_exp,emp_qual,emp_yop,emp_prev_emp,emp_address,emp_active,bank_ifsc_code,emp_bank_status,emp_aadhaar_no) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             ps.setString(1, emp.getCode());
             ps.setString(2, emp.getName());
             if(emp.getDept()!=0)
@@ -576,6 +576,7 @@ public class EmployeeDB {
             ps.setInt(24, 1);
             ps.setString(25, emp.getBankIFSCcode().trim());
             ps.setInt(26, 1);
+            ps.setString(27, emp.getAadhaarNo());
             ps.executeUpdate();
             ps.close();
            /* ps = c.prepareStatement("insert into employee_login_master values(?,?,?,?)");
@@ -1259,7 +1260,7 @@ public class EmployeeDB {
              * and check user exists or not if not then insert the entry.
              * and also insert the entry in user_master table and user_roles table.
              */
-            Exception eloginmachanism =new UserRegistration().EmployeeRegistration(emp.getEmail(), password, emp.getPhone(),emp.getName(),"",emp.getAddress(),orgCode,"EmpReg");
+            Exception eloginmachanism =new UserRegistration().EmployeeRegistration(emp.getEmail(), password, emp.getPhone(),emp.getName(),"",emp.getAddress(),emp.getCategoryT(),orgCode,"EmpReg");
             if(eloginmachanism == null){
                 
                 Exception ee =save(emp);

@@ -19,6 +19,7 @@ import org.smvdu.payroll.Admin.AdminManagedBean;
 import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.api.EncryptionUtil;
 import org.smvdu.payroll.api.email.OrgConformationEmail;
+import org.smvdu.payroll.beans.Employee;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.OrgProfileDB;
@@ -468,9 +469,11 @@ public class CollegeList {
                     * get institute detail from OrgProfileDB() for profile information.
                     * @see UserRegistration() and OrgProfileDB().
                     */
+                    Employee emp = new Employee();
+                    
                     Org orginfo =  new OrgProfileDB().loadOrgProfileByName(or.getName());
                     Exception eloginmachanism;
-                    eloginmachanism = new UserRegistration().EmployeeRegistration(or.getEmail(),password,or.getPhone(),orginfo.getAdminfn(),orginfo.getAdminln(),orginfo.getAddress1(),or.getId(),"InstAdminReg");
+                    eloginmachanism = new UserRegistration().EmployeeRegistration(or.getEmail(),password,or.getPhone(),orginfo.getAdminfn(),orginfo.getAdminln(),orginfo.getAddress1(),emp.getCategoryT(),or.getId(),"InstAdminReg");
                                       
                     pst9 = connection.prepareStatement("delete from college_pending_status where org_code = '"+or.getId()+"'");
                     //System.out.println("college pending=====entry for delete======"+pst9+"adminfn==="+orginfo.getAdminfn()+"adminln==="+orginfo.getAdminln()+"address---"+orginfo.getAddress1());

@@ -399,6 +399,27 @@
                                         <h:message for="ban" tooltip="*"/>
                                         <h:outputText styleClass="Label" value="Bank Name "/>
                                         <h:inputText onclick="active"  value="#{EmployeeBean.bankIFSCcode}" styleClass="fields" id="bankInfo"/>
+                                        <h:message for="address" tooltip="*"/>
+
+                                        <h:outputText styleClass="Label" value="Aadhaar No. "/>
+                                        <h:inputText maxlength="13" value="#{EmployeeBean.aadhaarNo}" styleClass="fields" id="aadharInfo"/>
+                                        <h:message for="address" tooltip="*"/>
+                                    
+                                        <h:outputText styleClass="Lable" value="Category Type"/>
+                                        <h:selectOneMenu  styleClass="categT" id="empCategT" value="#{EmployeeBean.categoryT}">
+                                            <f:selectItem itemValue="00" itemLabel="Faculty"/>
+                                            <f:selectItem itemValue="01" itemLabel="Student"/>
+                                            <f:selectItem itemValue="02" itemLabel="Staff Clerical"/>
+                                            <f:selectItem itemValue="03" itemLabel="Technical staff"/>
+                                            <f:selectItem itemValue="04" itemLabel="Supplier"/>
+                                            <f:selectItem itemValue="05" itemLabel="Admin staff"/>
+                                            <f:selectItem itemValue="06" itemLabel="Contractor"/>
+                                            <f:selectItem itemValue="07" itemLabel="Service provider"/>
+                                            <f:selectItem itemValue="08" itemLabel="Alumni/Doner"/>
+                                      
+                                        </h:selectOneMenu>
+                                   
+                                   
                                         <rich:suggestionbox  for="bankInfo" var="bif" fetchValue="#{bif.bankIFSCCode}" suggestionAction="#{EmployeeBean.getBankSuggestion}">
                                             <h:column>
                                                 <f:facet name="header" >

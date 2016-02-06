@@ -534,6 +534,15 @@ public class Employee implements Serializable {
                 fc.addMessage("", message);
                 return;
             }
+            if(this.getAadhaarNo().matches(".*[0-9]{10}.*") == false || this.getAadhaarNo().length()!=12)
+            {
+                FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid Aadhaar Number");
+                fc.addMessage("", message);
+                return;
+            }
+            
             if(this.getBankAccNo().trim().matches(".*[0-9].*") == false)
             {
                 FacesMessage message = new FacesMessage();
@@ -855,6 +864,26 @@ public class Employee implements Serializable {
         }
     }
     
+    private String aadhaarNo;
+    private String categoryT;
+
+    public String getAadhaarNo() {
+        return aadhaarNo;
+    }
+
+    public void setAadhaarNo(String aadhaarNo) {
+        this.aadhaarNo = aadhaarNo;
+    }
+
+    public String getCategoryT() {
+        return categoryT;
+    }
+
+    public void setCategoryT(String categoryT) {
+        this.categoryT = categoryT;
+    }
+    
+    
     /**
      * This method load the employee data
      * @param empcode
@@ -999,6 +1028,16 @@ public class Employee implements Serializable {
                 fc.addMessage("", message);
                 return;
             }
+            
+            if(this.getAadhaarNo().matches(".*[0-9]{10}.*") == false || this.getAadhaarNo().length()!=12)
+            {
+                //FacesMessage message = new FacesMessage();
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Plz Enter Valid Aadhaar Number");
+                fc.addMessage("", message);
+                return;
+            }
+            
             String emc = ""+this.getCode();
             if (emc.matches("^[a-z0-9A-Z\\s]*$") == false){
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -1529,7 +1568,7 @@ public class Employee implements Serializable {
      public String getPayscale() {
         return payscale;
     }
-
+    
     public void setPayscale(String payscale) {
         this.payscale = payscale;
     }
@@ -1550,6 +1589,7 @@ public class Employee implements Serializable {
         this.areatype = areatype;
     }
     
+        
     
     int currentRecordindex;
     public int getCurrentRecordindex() {

@@ -18,7 +18,7 @@ import org.smvdu.payroll.beans.db.UserDB;
  */
 public class UserRegistration {
     
-    public Exception EmployeeRegistration(String emailId,String password,String phoneno,String firstname,String lastname,String address,int orgId,String userType)
+    public Exception EmployeeRegistration(String emailId,String password,String phoneno,String firstname,String lastname,String address,String categoryT,int orgId,String userType)
     {
        
         Connection connection = new CommonDB().getConnection();
@@ -47,7 +47,7 @@ public class UserRegistration {
                     if(!(id > 0)){
                         //System.out.println("User does not exist in login database");
                         String component = "payroll";
-                        pst1 = connectionLogin.prepareStatement("insert into edrpuser(username,password,email,componentreg,mobile,status) values('"+emailId+"','"+password+"','"+emailId+"','"+component+"','"+phoneno+"','"+1+"')");
+                        pst1 = connectionLogin.prepareStatement("insert into edrpuser(username,password,email,componentreg,category_type,mobile,status) values('"+emailId+"','"+password+"','"+emailId+"','"+component+"','"+categoryT+"','"+phoneno+"','"+1+"')");
                         pst1.executeUpdate();
                         pst1.clearParameters();
                         pst1.close();

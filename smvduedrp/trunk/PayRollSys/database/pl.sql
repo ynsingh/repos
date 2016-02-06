@@ -275,6 +275,7 @@ CREATE TABLE `employee_master` (
   `emp_leaving` varchar(100) default NULL,
   `emp_noti_day` int(11) default NULL,
   `citizen` tinyint(4) default NULL,
+  `emp_aadhaar_no` varchar(100) default NULL,	
   PRIMARY KEY  (`emp_code`),
   UNIQUE KEY `emp_id` (`emp_id`),
   UNIQUE KEY `emp_code_org` (`emp_code`,`emp_org_code`),
