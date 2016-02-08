@@ -262,7 +262,7 @@ public class Assignments extends SecureAction
                                 String fileName1=fileItem.getName();
 				TopicMetaDataXmlReader topicMetaData;
 				if(StringUtils.isNotBlank(fileName1)){
-				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt")||fileName1.endsWith(".docx")||fileName1.endsWith(".pptx"))
+				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt")||fileName1.endsWith(".docx")||fileName1.endsWith(".pptx")||fileName1.endsWith(".ppt")||fileName1.endsWith(".odx")||fileName1.endsWith(".odp"))
                                 	{//if1
                                         /**
                                         * Select the Topic Name According to Course Id
@@ -676,7 +676,7 @@ public class Assignments extends SecureAction
 
 		//		ErrorDumpUtil.ErrorLog("aaaa    "+fileName1);
                                 
-				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt")||fileName1.endsWith(".docx")||fileName1.endsWith(".pptx"))
+				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt")||fileName1.endsWith(".docx")||fileName1.endsWith(".pptx")||fileName1.endsWith(".ppt")||fileName1.endsWith(".odx")||fileName1.endsWith(".odp")||fileName1.endsWith(".xls")||fileName1.endsWith(".xlsx"))
                                 {
 					int startIndex=fileName1.lastIndexOf(".")+1;
                                         String fileExt="."+fileName1.substring(startIndex);
@@ -810,7 +810,8 @@ public class Assignments extends SecureAction
                         FileItem fileItem;
                         fileItem = pp.getFileItem("file");
                         String fileName1=fileItem.getName();
-                        if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt")||fileName1.endsWith(".docx")||fileName1.endsWith(".pptx"))
+         //               if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt")||fileName1.endsWith(".docx")||fileName1.endsWith(".pptx"))
+                        if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt")||fileName1.endsWith(".docx")||fileName1.endsWith(".pptx")||fileName1.endsWith(".ppt")||fileName1.endsWith(".odx")||fileName1.endsWith(".odp")||fileName1.endsWith(".xls")||fileName1.endsWith(".xlsx"))
                         {
 				int startIndex=fileName1.lastIndexOf(".")+1;
                                 String fileExt="."+fileName1.substring(startIndex);
