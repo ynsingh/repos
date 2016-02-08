@@ -59,7 +59,7 @@
 	<?php
 	 	echo"<table width=\"500\" id=\"print-entry-table\">";
                 echo"<thead>";
-                echo"<tr class=\"tr-title\"><th>Payee Name</th><th>Bank Name</th><th>Amount</th><th>Cheque No</th><th>Cheque Print Date</th></tr>";
+                echo"<tr class=\"tr-title\"><th>Payee Name</th><th>Bank Name</th><th>Amount</th><th>Cheque/DD/BT No</th><th>Cheque Print Date</th></tr>";
                 echo"</thead>";
                 echo"<tbody>";
 

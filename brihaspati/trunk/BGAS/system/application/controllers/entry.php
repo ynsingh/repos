@@ -1004,7 +1004,7 @@ $width="100%";
 				{
 					$this->db->trans_rollback();
 					$this->messages->add('Error addding Entry.', 'error');
-					$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry");
+					$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry 1");
 					$this->template->load('template', 'entry/add', $data);
 					return;
 				} else {
@@ -1083,7 +1083,7 @@ $width="100%";
                                 		{
                                         		$this->db->trans_rollback();
                                         		$this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
-                                        		$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
+                                        		$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 2 " . "[id:" . $data_ledger_id . "]");
                                         		$this->template->load('template', 'entry/add', $data);
                                         		return;
                                 		}else {
@@ -1112,7 +1112,7 @@ $width="100%";
                                                                         if ( ! $this->db->insert('new_asset_register', $asset_register))
                                                                         {
                                                                                 $this->db->trans_rollback();
-                                                                                $this->logger->write_message("error", "Error adding Assets");
+                                                                                $this->logger->write_message("error", "Error adding Assets 3");
                                                                         }else {
                                         					$asset_id = $this->db->insert_id();
                                 					}
@@ -1161,7 +1161,7 @@ $width="100%";
                                                 	if ( ! $this->db->insert('fund_management', $insert_income_data))
                                                 	{
                                                         	$this->db->trans_rollback();
-                                                        	$this->logger->write_message("error", "Error adding income from investment details for fund :" . $data_ledger_id);
+                                                        	$this->logger->write_message("error", "Error adding income from investment details for fund  4:" . $data_ledger_id);
                                                 	}	
                                                 }
                                         } 
@@ -1194,7 +1194,7 @@ $width="100%";
         		                                		if ( ! $this->db->insert('entry_items', $insert_fund_data))
 			                                  		{
                 		                             			$this->db->trans_rollback();
-	                        	                     			$this->logger->write_message("error", "Error adding fund id:" . $fund_ledger);
+	                        	                     			$this->logger->write_message("error", "Error adding fund id 5:" . $fund_ledger);
                         	        	       			}else {
                                  			     			$entry_fund_id = $this->db->insert_id();
 	                                	             		}
@@ -1219,7 +1219,7 @@ $width="100%";
                                                      			if ( ! $this->db->insert('entry_items', $insert_income_data))
                                                         		{
                                                             			$this->db->trans_rollback();
-                                                            			$this->logger->write_message("error", "Error adding transit income");
+                                                            			$this->logger->write_message("error", "Error adding transit income 6");
                                                         		}
 						//	}	
 						}  
@@ -1241,7 +1241,7 @@ $width="100%";
                                                         if ( ! $this->db->insert('fund_management', $insert_expense_data))
                                                         {
                                                                 $this->db->trans_rollback();
-                                                                $this->logger->write_message("error", "Error adding expenditure details for fund in fund management:" . $fund_ledger);
+                                                                $this->logger->write_message("error", "Error adding expenditure details for fund in fund management 7:" . $fund_ledger);
 							}
 							//////////
 							$this->db->from('ledgers')->where('id', $fund_ledger);
@@ -1292,10 +1292,11 @@ $width="100%";
                                                         }
 
                                         	
+						}
 					}
-					}
-					//if ($data_cheque[$id] == 1 )
-					if ($data_cheque[$id] != 2 )
+					
+//					if (($data_cheque[$id] == 1 )||($data_cheque[$id] == 3 ) ||($data_cheque[$id] == 4 ) ||($data_cheque[$id] == 5 ) ||($data_cheque[$id] == 6 )||($data_cheque[$id] == 7 ))
+					if (in_array($data_cheque[$id], array(1, 3, 4, 5, 6, 7)))
 					{
                                                 $insert_cheque_data = array(
                                                         'ledger_id' => $data_ledger_id,
@@ -1308,7 +1309,7 @@ $width="100%";
                                                 {
                                                         $this->db->trans_rollback();
                                                         $this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
-                                                        $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
+                                                        $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 8" . "[id:" . $data_ledger_id . "]");
                                                         $this->template->load('template', 'entry/add', $data);
                                                         return;
                                                 }//if inner
@@ -1324,7 +1325,7 @@ $width="100%";
 			{
 				$this->db->trans_rollback();
 				$this->messages->add('Error updating Entry total.', 'error');
-				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed updating debit and credit total");
+				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed updating debit and credit total 9");
 				$this->template->load('template', 'entry/add', $data);
 				return;
 			}

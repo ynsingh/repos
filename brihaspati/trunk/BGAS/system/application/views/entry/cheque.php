@@ -91,7 +91,7 @@
 
 	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
-	echo form_label('Cheque No', 'cheque_no');
+	echo form_label('Cheque/DD/BT No', 'cheque_no');
 	echo "&nbsp;&nbsp;";
 	echo " ";
 	echo form_input($cheque_no);
@@ -118,7 +118,7 @@
 	echo"</span>";
 	}else{
         	echo "<table  border=0 cellpadding=6 class=\"simple-table account-table\">";
-        	echo "<thead><tr><th>Cheque Status</th><th>Date</th><th>Bank Name </th><th>Payee Name</th><th>Amount</th><th>Cheque No</th><th>Cheque Type</th><th>Record Save</th><th>Display Cheque</th></tr></thead>";
+        	echo "<thead><tr><th>Cheque Status</th><th>Date</th><th>Bank Name </th><th>Payee Name</th><th>Amount</th><th>Cheque/DD/BT No</th><th>Cheque Type</th><th>Record Save</th><th>Display Cheque</th></tr></thead>";
 		$i=0;
         	foreach($cheque_bounce->result() as $row)
         	{
