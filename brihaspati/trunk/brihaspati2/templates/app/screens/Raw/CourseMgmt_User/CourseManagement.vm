@@ -224,7 +224,7 @@ $page.setTitle("Home | $course | Course management")
          <td colspan=4>
          <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
         <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
-        <SELECT class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+        <SELECT id="topic" class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
           <option></option>
         #foreach($topic in $allTopics)
                 <option>$topic</option>
@@ -244,7 +244,7 @@ $page.setTitle("Home | $course | Course management")
          <td colspan=6>
          <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
         <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
-        <SELECT class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform) class="drop">
+        <SELECT id="topic" class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform) class="drop">
           <option></option>
         #foreach($topic in $allTopics)
                 <option>$topic</option>
@@ -360,6 +360,8 @@ $page.setTitle("Home | $course | Course management")
 	function contentChange(frm)
         {
                 document.uploadform.contentTopic.value="";
+                var eID = document.getElementById("topic");
+                eID.options[0].selected="true";
 	}
         function validate(uploadform,field)
         {

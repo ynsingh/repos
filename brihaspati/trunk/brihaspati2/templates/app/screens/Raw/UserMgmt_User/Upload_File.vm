@@ -136,9 +136,16 @@ $!data.getMessage()
 		}
 	}
 </script>
-##<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_User,Upload_File.vm").setAction("UserAreaAction")">
+<script language="JavaScript">
+function setRadio(elmt,form)
+{
+    form.contentTopic.value = "";
+    form.contentTopic.focus();
+    var eID = document.getElementById("topic");
+    eID.options[0].selected="true";
+}
+</script>
 <form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_User,Upload_File.vm").setAction("UserAreaAction").addPathInfo("mode","uarea")">
-  ##<div align="left">
     <table align=left bgcolor="$ui.tableColor" width=100%>
       #if ($errorTemplate)
       <tr>
@@ -159,21 +166,16 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
 		<img src="$content.getURI("/images/hand.gif")"><font color="red">$brih_UploadMsg</font>
 	</tr>
-##<br><br>
       <tr>
       <td align=left>
-	<input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
-	<SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+	<input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform); onClick=setRadio(this,this.form); >$brih_Exist $brih_topic
+	<SELECT id="topic" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
 	  <option></option>
 	  #foreach($topic in $allTopics)
 		<option>$topic</option>
 	  #end
 	</SELECT>
-	##</td>
-	##</tr>
-	##<tr>
-	##<td>
-	<input type="RADIO" name=topicExisting value="NEWTOPIC" ><b>$brih_new $brih_topic</b>
+	<input type="RADIO" name=topicExisting value="NEWTOPIC" onClick=setRadio(this,this.form); ><b>$brih_new $brih_topic</b>
 	</td>
 	</tr>
       <tr bgcolor="$ui.menuColor">
