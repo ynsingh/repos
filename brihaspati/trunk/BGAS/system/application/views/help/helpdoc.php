@@ -21,13 +21,17 @@
 	                    <li><a href="#AboutBrihaspatiGeneralAccontingSystem">About Brihaspati General Acconting System</a></li>
 	                    <li class='has-sub'><a href="#Administrator(Home)">Administrator(Home)</a>
 	                    	<ul>
-	                        	<li><a href="#ChangeAccount">Change Account</a></li>
-	                                <li><a href="#CreateAccount">Create Account</a></li>
-	                                <li><a href="#ManageAccounts">Manage Accounts</a></li>
-	                                <li><a href="#ManageUsers">Manage Users</a></li>
+					<li><a href="#ChangeAccount">Change Account</a></li>
+					<li><a href="#CreateAccount">Create Account</a></li>
+                                        <li><a href="#ManageAccounts">Manage Accounts</a></li>
+					<li><a href="#ManageUsers">Manage Users</a></li>
+					<li><a href="#ManageMailSetting">Manage Mail Setting</a></li>
+	                        	<li><a href="#ManageAuthorityAllocation">Manage Authority Allocation</a></li>
 	                                <li><a href="#MySQLAdminSetting">MySQL Admin Setting</a></li>
+					<li><a href="#ManageAuthority">Manage Authority</a></li>
 	                   		</ul>
 	                    </li>
+<li><a href="#Profile">Profile</a></li>
 	                    <li><a href="#AccountsFunctionality">Accounts Functionality</a></li>
 	                    <li><a href="#Dashboard">Dashboard</a></li>
 	                    <li class='has-sub'><a href="#Budget">Budget</a>
@@ -40,11 +44,11 @@
 	                        </ul>
 	                    </li>
 
-	                    <li><a href="#Accounts"><i class="icon-chevron-right"></i>Accounts</a></li> 
-	                    <li class='has-sub'><a href="#Entries">Entries</a>
+	                    <li><a href="#Accounts"><i class="icon-chevron-right"></i>Chart of Accounts</a></li> 
+	                    <li class='has-sub'><a href="#Vouchers">Vouchers</a>
 	                        <ul>
-	    		                <li><a href="#ViewAll">View All</a></li>
-	    		                <li><a href="#CreateJournal">Create Journal</a></li>
+	    		                <li><a href="#ViewAllVouchers">View All Vouchers</a></li>
+	    		                <li><a href="#CreateJournalVoucher">Create Journal Voucher</a></li>
 	    		                <li class='has-sub'><a href="#BillUpload/VoucherCreation">Bill Upload / Voucher Creation</a>
 	                                <ul>
 	        		                	<li><a href="#ViewBill">View Bill</a></li>
@@ -58,13 +62,13 @@
 	                        	<li class='has-sub'><a href="#BalanceSheet">Balance Sheet</a>
 	                       			<ul>
 	                                	<li><a href="#CorporateFormat">Corporate Format</a></li>
-	                                	<li><a href="#MHRDFormat">MHRD Format</a></li>
+	                                	<li><a href="#MHRDFormat">MHRD Format 2015</a></li>
 	                            	</ul>
 								</li>
 	                        	<li class='has-sub'><a href="#IncomeandExpenditureStatement">Income and Expenditure Statement</a>
 	                            		<ul>
 	                            			<li><a href="#CorporateFormatIE">Corporate Format IE</a></li>
-	                                		<li><a href="#MHRDFormatIE">MHRD Format IE</a></li>
+	                                		<li><a href="#MHRDFormatIE">MHRD Format IE 2015</a></li>
 	                            		</ul>
 								</li>
 	                        	<li><a href="#Payment&Receipt">Payment & Receipt</a></li>
@@ -74,14 +78,20 @@
 	                        	<li><a href="#Depreciationastoday">Depreciation as Today</a></li>
 	                        	<li><a href="#DayBook">Day Book</a></li>
 	                        	<li><a href="#CashBook">Cash Book</a></li>
-                                        <li><a href="#UnspentBalance">Unspent Balance</a></li>
+                                        <li class='has-sub'><a href="#UnspentBalance">Unspent Balance</a>
+                                          <ul>
+						<li><a href="#PlanReport">Plan Report</a></li>
+                                                <li><a href="#Non-PlanReport">Non-Plan Report</a></li>
+                                             <li><a href="#SummaryReport">Summary Report</a></li>
 	                   		</ul>
 	                    </li> 
+                             </ul>
+                             </li>
 	                    <li class='has-sub'><a href="#OtherReport">Other Report</a> 
 	                        <ul>
 			                	<li><a href="#FundList">Fund List</a></li>
 			           	 		<li><a href="#TagReport">Tag Report</a></li>
-			                	<li><a href="#SecondaryUnitStatement">Secondary Unit Statement</a></li>
+			                	<li><a href="#PartyReport">Party Report</a></li>
 			                	<li class='has-sub'><a href="#LogReport">Log Report</a>
 							        <ul>
 									<li><a href="#ChartofAccountLog">Chart of Account Log</a></li>
@@ -98,16 +108,16 @@
 							<ul>
 								<li><a href="#AccountSettings">Account Settings</a></li>
 								<li><a href="#C/FAccount">C/F Account</a></li>
-								<li><a href="#EmailSettings">Email Settings</a></li>
+								<!--li><a href="#EmailSettings">Email Settings</a></li-->
 								<li><a href="#PrinterSettings">Printer Settings</a></li>
-								<li><a href="#AvailableBackup">Available Backup</a></li>
+								<li><a href="#CreateBackup">Create Backup</a></li>
 								<li><a href="#Tags">Tags</a></li>
 								<li><a href="#EntryTypes">Entry Types</a></li>
 				                <li><a href="#UploadLogo">Upload Logo</a></li>
 			         		</ul>
 	                    </li>
 	                    <li><a href="#PayrollSetup">Payroll Setup</a></li>
-	                    <li class='has-sub'><a href="#SecUnitID">Sec Unit ID</a>
+	                    <li class='has-sub'><a href="#Party">Party</a>
 	                        <ul>
 					 			<li><a href="#ViewParty">View Party</a></li>
 			                 	<li><a href="#AddParty">AddParty</a></li>
@@ -137,7 +147,6 @@
 						</font>
 					</div>
 					</section>
-
 
 					<section id="Administrator(Home)">
 						<div class="row-fluid">
@@ -331,19 +340,54 @@
 							?>
 						</div>
 					</section>
-				
+ <section id="ManageMailSetting">
+                                                <div class="row-fluid">
+                                                        <h2>Manage Mail Setting</h2>
+                                                </div>
 
-					<section id="MySQLAdminSetting">
-						<div class="row-fluid">
-							<h2>MySQL Admin Setting</h2>
-						</div>
+                                                <div class="row-fluid">
+                                                        <font size="4">
+                                                                <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+This link for setting email configuration. You can select Email Protocol than Enter Email Hostname, Email Port, Email Username, Email Password (Leave empty if you dont not want to change password) then cilck on update button.
+</p>
+                                                                </ol>
+                                                        </font>
+<?php
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'managemailsetting.png'));
+                                                        ?>
 
-						<div class="row-fluid">
-							<font size="4">
-								<ol>
-									<p align="justify" STYLE="line-height: 150%">
-									This link is to username & password & save into a file in BGAS/config/accounts named as sqladmin.ini.
-									</p>
+			</div>
+                                        </section>
+ <section id="ManageAuthorityAllocation">
+                                                <div class="row-fluid">
+                                                        <h2>Manage Authority Allocation</h2>
+                                                </div>
+
+                                                <div class="row-fluid">
+                                                        <font size="4">
+                                                                <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+This link to provide Allocate Authorities to Users. From here we can see all list of authorities with User Name, User Email, From Date, Till Date.
+</p>
+                                                                </ol>
+                                                        </font>
+<?php
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'manageauthorityallocation.png'));
+
+                                                        ?>
+
+				<section id="MySQLAdminSetting">
+				<div class="row-fluid">
+					<h2>MySQL Admin Setting</h2>
+				</div>
+
+				<div class="row-fluid">
+					<font size="4">
+						<ol>
+								<p align="justify" STYLE="line-height: 150%">
+								This link is to username & password & save into a file in BGAS/config/accounts named as sqladmin.ini.
+								</p>
 								</ol>
 							</font>	
 							<?php
@@ -351,6 +395,39 @@
 							?>
 						</div>
 					</section>
+<section id="ManageAuthority">
+                                                <div class="row-fluid">
+                                                        <h2>Manage Authority</h2>
+                                                </div>
+
+                                                <div class="row-fluid">
+                                                        <font size="4">
+                                                                <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+This link to provide to add Authority to Users. From here we can see all list of Authority Name, Authority Nick Name, Authority Email.
+</p>
+                                                                </ol>
+                                                        </font>
+<?php
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'manageauthority.png'));
+
+                                                        ?>
+ <section id="Profile">
+                                                                <div class="row-fluid">
+                                                                        <h2>Profile</h2>
+                                                                </div>
+                                                                <div class="row-fluid">
+                                                                        <font size="4">
+                                                                                <ol>
+                                                                                        <p align="justify" STYLE="line-height: 150%">
+User Profile display of personal data associted with specific user.  From here user see Login Information and Other Information.
+</p>
+                                                                </ol>
+                                                        </font>
+<?php
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'profile.png'));
+
+                                                        ?>
 				
 					<section id="AccountsFunctionality">
 						<div class="row-fluid">
@@ -374,8 +451,6 @@
 							</section>
 						</div>
 					</section>
-				
-
 					<section id="Budget">
 						<div class="row-fluid">
 							<h2>Budget</h2>
@@ -394,8 +469,6 @@
 							?>
 						</div>
 					</section>
-					
-
 					<section id="AddBudget">
 						<div class="row-fluid">
 							<h2>Add Budget</h2>
@@ -412,8 +485,6 @@
 							?>
 						</div>
 					</section>
-					
-
 					<section id="ReappropriateBudget">
 					<div class="row-fluid">
 					<h2>Reappropriate Budget</h2>
@@ -487,9 +558,9 @@
 					</section>
 					
 
-					<section id="Accounts">
+					<section id="ChartofAccounts">
 					<div class="row-fluid">
-					<h2>Accounts</h2>
+					<h2>Chart of Accounts</h2>
 					</div>
 					<div class="row-fluid">
 					<font size="4">
@@ -505,9 +576,9 @@
 					</section>
 					
 
-					<section id="Entries">
+					<section id="Vouchers">
 					<div class="row-fluid">
-					<h2>Entries</h2>
+					<h2>Vouchers</h2>
 					</div>
 					<div class="row-fluid">
 					<font size="4">
@@ -520,9 +591,9 @@
 					</section>
 					
 
-					<section id="ViewAll">
+					<section id="ViewAllVouchers">
 					<div class="row-fluid">
-					<h2>View All</h2>
+					<h2>View All Vouchers</h2>
 					</div>
 					<div class="row-fluid">
 					<font size="4">
@@ -538,9 +609,9 @@
 					</section>
 					
 
-					<section id="CreateJournal">
+					<section id="CreateJournalVoucher">
 					<div class="row-fluid">
-					<h2>Create Journal</h2>
+					<h2>Create Journal Voucher</h2>
 					</div>
 					<div class="row-fluid">
 					<font size="4">
@@ -611,8 +682,6 @@
 						</div>
 					</div>
 					</section>
-
-					
 					<section id="BalanceSheet">
 						<div class="row-fluid">                               
 							<h2>Balance Sheet</h2>
@@ -642,9 +711,9 @@
 					</section>
 
 
-					<section id="MHRDFormat">
+					<section id="MHRDFormat2015">
 					<div class="row-fluid">
-					<h2>MHRD Format</h2>
+					<h2>MHRD Format 2015</h2>
 					</div>
 					<div class="row-fluid">
 					<font size="4">
@@ -692,9 +761,9 @@
 					</div>
 					</section>
 					
-					 <section id="MHRDFormatIE">
+					 <section id="MHRDFormatIE2015">
                                         <div class="row-fluid">
-                                        <h2>MHRD Format IE</h2>
+                                        <h2>MHRD Format IE 2015</h2>
                                         </div>
                                         <div class="row-fluid">
                                         <font size="4">
@@ -765,8 +834,6 @@ The Income and Expenditure has the format as per the recommendation of the MHRD.
 					?>
 					</div>
 					</section>
-					
-
 					<section id="Reconciliation">
 					<div class="row-fluid">
 					<h2> Reconciliation</h2>
@@ -848,6 +915,58 @@ This Report shows the non-plan, plan, and summary of balance.  Which is spend du
                                         ?>
                                         </div>
                                         </section>
+					<section id="PlanReport">
+                                        <div class="row-fluid">
+                                        <h2>Plan Report</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                        <font size="4">
+                                        <ol>
+                                        <p align="justify" STYLE="line-height: 150%">
+The plan report is about the total plan expenditure made during in finencial year.
+</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'PlanReport.png'));
+                                        ?>
+                                        </div>
+                                        </section>
+<section id="Non-PlanReport">
+                                        <div class="row-fluid">
+                                        <h2>Non-Plan Report</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                        <font size="4">
+                                        <ol>
+                                        <p align="justify" STYLE="line-height: 150%">
+Non-Plan report is showing report of grant in aid under non-plan.  The amount which is sanctioned and Released by the MHRD.
+
+</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'NonPlanReport.png'));
+                                        ?>
+                                        </div>
+                                        </section>
+		
+					<section id="SummaryReport">
+                                        <div class="row-fluid">
+                                        <h2>Summary Report</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                        <font size="4">
+                                        <ol>
+                                        <p align="justify" STYLE="line-height: 150%"0>
+Summary Report showing the Opening and Closing balance of plan & non plan expenditure and inspent balance during the year.
+
+</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'SummaryReport.png'));
+                                        ?>
+                                        </div>
+                                        </section>
+
 					<section id="OtherReport">
 					<div class="row-fluid">
 					<h2>Other Report</h2>
@@ -891,9 +1010,9 @@ This Report shows the non-plan, plan, and summary of balance.  Which is spend du
 					</section>
 					
 
-					<section id="SecondaryUnitStatement">
+					<section id="PartyReport">
 					<div class="row-fluid">
-					<h2>Secondary Unit Statement</h2>
+					<h2>Party Report</h2>
 					</div>
 					<div class="row-fluid">
 					<font size="4">
@@ -1058,7 +1177,7 @@ This Report shows the non-plan, plan, and summary of balance.  Which is spend du
 					</section>
 					
 
-					<section id="EmailSettings">
+					<!--section id="EmailSettings">
 					<div class="row-fluid">
 						<h2>Email Settings</h2>
 					</div>
@@ -1067,8 +1186,8 @@ This Report shows the non-plan, plan, and summary of balance.  Which is spend du
 						<ol>	
 						<p align="justify" STYLE="line-height: 150%">
 						By Filling all email setting data we can setup outgoing email. Leave empty if you dont not want to change password.
-						You need to use the following gmail settings in Settings--> Email Settings.
-						</ol>
+						You need to use the following gmail settings in Settings Email Settings.-->
+						<!--/ol>
 						</font>
 						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
 						<table border="1" style="width:500px">
@@ -1104,7 +1223,7 @@ This Report shows the non-plan, plan, and summary of balance.  Which is spend du
 						?>
 						</BR></P>
 					</div>
-					</section>
+					</section-->
 					
 
 					<section id="PrinterSettings">
@@ -1125,9 +1244,9 @@ This Report shows the non-plan, plan, and summary of balance.  Which is spend du
 					</section>
 					
 
-					<section id="AvailableBackup">
+					<section id="CreateBackup">
 					<div class="row-fluid">
-					<h2>Available Backup</h2>
+					<h2>Create Backup</h2>
 					</div>
 					<div class="row-fluid">
 					<font size="4">
@@ -1215,9 +1334,9 @@ This Report shows the non-plan, plan, and summary of balance.  Which is spend du
 					</section>
 					
 
-					<section id="SecUnitID">
+					<section id="Party">
 					<div class="row-fluid">
-					<h2>Sec Unit ID</h2>
+					<h2>Party</h2>
 					<font size="4">
 					</font>
 					</div>
