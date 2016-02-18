@@ -1,11 +1,9 @@
 package org.bss.brihaspatisync.gui;
-
-
 /**
  * UpdateSessionPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011,2015 ETRG, IIT Kanpur.
+ * Copyright (c) 2011,2015,2016 ETRG, IIT Kanpur.
  */
 import java.awt.Cursor;
 import java.awt.*;
@@ -488,12 +486,10 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         if(HttpsUtil.getIndexingMessage(indexServer)) {
 						/********************* modified ******************************/
                                                 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));	
-                                                StatusPanel.getController().setStatus(Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));					      
-                         			frame.dispose();
+                                                StatusPanel.getController().setStatus(Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));					      		
+	                 			frame.dispose();
 						guiworker task = new guiworker();
 						task.execute();     
-                                               
-                                               
                                           }else
                                           	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog6"));
                                   }
@@ -531,7 +527,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         public void mouseReleased(MouseEvent e) {}
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
-
+	
         public class guiworker extends SwingWorker<Boolean,Void>{
                 	JFrame processframe = new JFrame("Please Wait....");
                         guiworker(){
@@ -546,7 +542,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
      
 		protected  Boolean doInBackground() throws Exception {
 				JScrollPane courselist = new JScrollPane();
-				//InstructorCSPanel inscspanel = new InstructorCSPanel();
 				courselist= insCSPanel.showLecture(ClientObject.getSessionList(ClientObject.getInstCourseList(),ClientObject.getIndexServerName()));
 				insCSPanel.getmainPanel().remove(1);
 		        	try{
@@ -558,16 +553,15 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 	}
 
 	 	protected void done(){
-	 			boolean retval = false;
+	 			boolean status = false;
 	 			try{
-	 				 retval = get();
+	 				 status = get();
 	 			}catch(Exception e) { System.out.println(e.getMessage());}
-	 			if(retval)
+	 			if(status)
                         	processframe.dispose();
-                                
      			}
 	}
-
+	
 	private void getTimeIndexingServer() {
                 try {
   			String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getTimeIndexingServer();

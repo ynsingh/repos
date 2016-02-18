@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * StudentCSPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011,2015 ETRG, IIT Kanpur.
+ * Copyright (c) 2011,2015,2016 ETRG, IIT Kanpur.
  */
 
 import java.awt.BorderLayout;
@@ -44,6 +44,7 @@ import javax.swing.JProgressBar;
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for signalling.
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep Kumar Pal </a>update guiworker class.
  */
 
 public class StudentCSPanel extends JPanel implements ActionListener, MouseListener{
@@ -262,7 +263,6 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		// Action for Combobox
 		StatusPanel.getController().setProcessBar("yes");
   		if(e.getSource()==studCourseCombo) {
 			
@@ -279,18 +279,15 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 			center_mainPanel.validate();
                         mainPanel.revalidate();
     		}
-		// Action for Join button
 		try{
                        	for(int i=0;i<runButton.length;i++){
                                	if(e.getSource()==runButton[i]){	
 					StatusPanel.getController().setProcessBar("yes");
 					lect_id=courseid.get(i).toString();
-					// store this lect_id in client objects for later use by this client.
                                         ClientObject.setLectureID(lect_id);
                                         ClientObject.setLectureInfo(lectinfoVector);
                                         ClientObject.setLectureInfoIndex(i);
 
-					// store role in client objects for later use by this client.
 					if(!((ClientObject.getUserRole()).equals("student")))
                                                 ClientObject.setUserRole("student");
                                        	new JoinSession(lect_id, "student");
@@ -312,16 +309,15 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
         			}
 			}catch(Exception e){}	 	
 		}else if(ev.getComponent().getName().equals("reloadLabel.Action")) {
-                        guiworker gui =new guiworker();
+			guiworker gui =new guiworker();
                         gui.execute();
-                
 		}
     
 		StatusPanel.getController().setProcessBar("no");
 	}
-
-       public class guiworker extends SwingWorker<Boolean,Void>{
-                        private ClassLoader clr= this.getClass().getClassLoader();
+	
+        public class guiworker extends SwingWorker<Boolean,Void> implements ActionListener {
+               	private ClassLoader clr= this.getClass().getClassLoader();
                         JFrame processframe = new JFrame("Please Wait....");
                         guiworker(){
                                 Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
@@ -336,6 +332,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                                 String value;
                                 studentCourseCombo_Panel.remove(studCourseCombo);
                                 studCourseCombo=new JComboBox(reloadCourseList());
+				studCourseCombo.addActionListener(this);
                                 studentCourseCombo_Panel.add(studCourseCombo,BorderLayout.CENTER);
                                 studentCourseCombo_Panel.revalidate();
                                 mainPanel.remove(1);
@@ -344,15 +341,54 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                                 return true;
                         }
                 protected void done(){
-                                boolean retval = false;
+				
+                                boolean status = false;
                                 try{
-                                         retval = get();
+                                         status = get();
                                 }catch(Exception e) { System.out.println(e.getMessage());}
-                                if(retval)
+                                if(status)
+				
                                 processframe.dispose();
                        StatusPanel.getController().setStatus("Reload Successfully");
-                        }
+                }
+		
+		public void actionPerformed(ActionEvent e) {
+                	StatusPanel.getController().setProcessBar("yes");
+                	if(e.getSource()==studCourseCombo) {
+
+                        	JComboBox combo = (JComboBox)e.getSource();
+                        	mainPanel.remove(1);
+                        	if(((String)combo.getSelectedItem()).equals("--Show All--")){
+                                	Vector courseName=ClientObject.getStudCourseList();
+                                	mainPanel.add(showLecture(ClientObject.getSessionList(courseName,ClientObject.getIndexServerName())),BorderLayout.CENTER);
+                        	}else{
+                                	Vector courseName=new Vector();
+                                	courseName.addElement((String)combo.getSelectedItem());
+                                	mainPanel.add(showLecture(ClientObject.getSessionList(courseName,ClientObject.getIndexServerName())),BorderLayout.CENTER);
+                        	}
+                        	center_mainPanel.validate();
+                        	mainPanel.revalidate();
+                	}
+                	try{
+                        	for(int i=0;i<runButton.length;i++){
+                                	if(e.getSource()==runButton[i]){
+                                        	StatusPanel.getController().setProcessBar("yes");
+                                        	lect_id=courseid.get(i).toString();
+                                        	ClientObject.setLectureID(lect_id);
+                                        	ClientObject.setLectureInfo(lectinfoVector);
+                                        	ClientObject.setLectureInfoIndex(i);
+
+                                        	if(!((ClientObject.getUserRole()).equals("student")))
+                                                	ClientObject.setUserRole("student");
+                                        	new JoinSession(lect_id, "student");
+                                	}
+                        	}
+                	}catch(Exception ex) { System.out.println("Error in load session in "+this.getClass()+"  "+ex.getMessage()); }
+                	StatusPanel.getController().setProcessBar("no");
+        	}
+		
         }
+	
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}

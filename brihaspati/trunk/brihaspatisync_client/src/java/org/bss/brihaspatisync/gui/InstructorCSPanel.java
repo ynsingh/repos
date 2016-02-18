@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * InstructorCSPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011,2012,2015 ETRG, IIT Kanpur
+ * Copyright (c) 2011,2012,2015,2016 ETRG, IIT Kanpur
  */
 
 import java.awt.Cursor;
@@ -50,7 +50,7 @@ import org.apache.commons.codec.binary.BinaryCodec;
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified ActionListener and MouseListener for signalling
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
- * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> testing for gui.
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> update guiworker method@2016
  */
  
 public class InstructorCSPanel extends JPanel implements ActionListener, MouseListener{
@@ -118,10 +118,11 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		north_mainPanel.add(instLabel,gbc);
 
 		/**
-		 * get Course list form clienmt object class.
+		 * Get Course list form client object class.
 		 */		
 		instCourseCombo=new JComboBox(reloadCourseList());
 		instCourseCombo.addActionListener(this);	
+		instCourseCombo.setName("instCourseCombo.Action");
 		instCourseCombo_Panel.add(instCourseCombo,BorderLayout.CENTER);
 		gbc.gridx = 1;
                 gbc.gridy = 0;
@@ -145,7 +146,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		gbc.gridx = 2;
                 gbc.gridy = 0;
                 north_mainPanel.add(reload_Panel,gbc);
-
 
 		announceLabel=new JLabel("<html><b><font color=black>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceNewSession")+"</font></b></html>");
 		announceLabel.setEnabled(false);		
@@ -273,17 +273,17 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
 			/********************************MODIFIED BY PRATIBHA*********************/
 
-                 //       if((instCourseCombo.getSelectedItem()).equals("--Show All--")){
+                        //if((instCourseCombo.getSelectedItem()).equals("--Show All--")){
                                 upLabel[i]=new JLabel("<html><Font color=black><u>"+Language.getController().getLangValue("InstructorCSPanel.Update")+"</u></font></html>");
                                 upLabel[i].setEnabled(false);
                                 upLabel[i].removeMouseListener(this);
-                       // }
-		//	else{
+                        //}
+			//else{
                                 upLabel[i]=new JLabel("<html><Font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.Update")+"</u></font></html>");
                                 upLabel[i].addMouseListener(this);
                 		upLabel[i].setName("Update.Action");
                                 upLabel[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
-                  //      }
+                        //}
 			
                         /******************************************************************************/
 			buttonPanel[i].add(upLabel[i]);
@@ -307,9 +307,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
         public void actionPerformed(ActionEvent e) {
 		
-		// Action for Combobox on selecting particular Course
                 if(e.getSource()==instCourseCombo){
-			
                        	JComboBox combo = (JComboBox)e.getSource();
                   	mainPanel.remove(1);
 			if(((String)combo.getSelectedItem()).equals("--Show All--")){
@@ -350,9 +348,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 					String str[]=lect_id.split("-");
 					lect_id=str[0];
 					MainWindow.getController().setCouseid(str[1]);
-					// store this lect_id in client objects for later use by this client.
 					ClientObject.setLectureID(lect_id);	
-					// store role in client objects for later use by this client.
 					if(!((ClientObject.getUserRole()).equals("instructor")))
                                                 ClientObject.setUserRole("instructor");
 					new JoinSession(lect_id,"instructor");
@@ -363,11 +359,11 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		} catch(Exception exc) { System.out.println("Exception in open GUI "+this.getClass()+"  "+exc.getMessage()); }
         }
 
-	// Modified for signalling
 	public void mouseClicked(MouseEvent ev) {
 		
-		// Action for Announce Button
 		if(ev.getComponent().getName().equals("announceLabel.Action")){
+			
+			System.out.println("instuctorcspanel888888");
 			StatusPanel.getController().setProcessBar("yes");
                         announceLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			announceLabel.setCursor(busyCursor);
@@ -375,15 +371,16 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         announceLabel.setCursor(defaultCursor);
 			StatusPanel.getController().setProcessBar("no");
 		}
-		
+			
 		if(ev.getComponent().getName().equals("reloadLabel.Action")) {
-                  
-                        guiworker gui =new guiworker();
+			
+			System.out.println("instuctorcspanel999999999");
+                 	StatusPanel.getController().setProcessBar("yes"); 
+			guiworker gui =new guiworker();
                         gui.execute();
 			StatusPanel.getController().setProcessBar("no");
-                }
-	
-		// Action for Lecture Info button
+		}			
+
 		if(ev.getComponent().getName().equals("lectureInfo.Action")) {
 			StatusPanel.getController().setProcessBar("yes");
 			try{
@@ -396,7 +393,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 	 		StatusPanel.getController().setProcessBar("no");
 		}
 		
-		// Action for Update button
                 if(ev.getComponent().getName().equals("Update.Action")) {
 			StatusPanel.getController().setProcessBar("yes");
 			try{
@@ -409,7 +405,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                 	}catch(Exception e){ System.out.println("Exception in updateInfo Action "+this.getClass()+" "+e.getMessage()); }
 			StatusPanel.getController().setProcessBar("no");
                 }
-		//action for update button
 		if(ev.getComponent().getName().equals("Cancle.Action")){
 			StatusPanel.getController().setProcessBar("yes");
                         try{
@@ -419,8 +414,8 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                                         int choice = JOptionPane.showOptionDialog(null,"Do you really want to cancel this lecture", "Cancel", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
                                         if(choice == JOptionPane.YES_OPTION)
 						cancleLecture(i);
-					}//if
-				} //for
+					}
+				} 
 				mainPanel.remove(1);
 				mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
 	     			mainPanel.revalidate();
@@ -428,10 +423,9 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			StatusPanel.getController().setProcessBar("no");
                 }
 	}
-      
-      public class guiworker extends SwingWorker<Boolean,Void>{
-                        private ClassLoader clr= this.getClass().getClassLoader();
-
+     
+        public class guiworker extends SwingWorker<Boolean,Void> implements ActionListener{
+               private ClassLoader clr= this.getClass().getClassLoader();
                         JFrame processframe = new JFrame("Please Wait....");
                         guiworker(){
                                 Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
@@ -442,41 +436,90 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                                 processframe.setVisible(true);
                                 processframe.setLocation((((int)dim.getWidth()/2)-190),((int)dim.getHeight()/2)+100);
                         }
-
-                protected  Boolean doInBackground() throws Exception {
-                                String value;
-                                instCourseCombo_Panel.remove(instCourseCombo);
-                                instCourseCombo=new JComboBox(reloadCourseList());
-                                instCourseCombo_Panel.add(instCourseCombo,BorderLayout.CENTER);
-                                instCourseCombo_Panel.revalidate();
-                                mainPanel.remove(1);
-                                mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
-                                reloadLabel.setCursor(defaultCursor);
-                                reloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                                StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.MessageDialog5"));
+                protected Boolean doInBackground() throws Exception {
+				try{
+                                	instCourseCombo_Panel.remove(instCourseCombo);
+                                	instCourseCombo=new JComboBox(reloadCourseList());
+					instCourseCombo.addActionListener(this);
+                                	instCourseCombo_Panel.add(instCourseCombo,BorderLayout.CENTER);
+                                	instCourseCombo_Panel.revalidate();
+                                	mainPanel.remove(1);
+                                	mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
+                                	reloadLabel.setCursor(defaultCursor);
+                                	reloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                                	StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.MessageDialog5"));
+				} catch(Exception ex){ System.out.println("Exception in Reload Action "+this.getClass()+" "+ex.getMessage());  }
+				center_mainPanel.validate();
+				mainPanel.revalidate();
                                 return true;
-
-                        }
-
+                }
                 protected void done(){
-                                boolean retval = false;
+				boolean status = false;
                                 try{
-                                         retval = get();
+                                         status = get();
                                 }catch(Exception e) { System.out.println(e.getMessage());}
-                                if(retval)
-                                processframe.dispose();
-                       StatusPanel.getController().setStatus("Reload Successfully");
-                        }
-        }
+                                if(status)
+				processframe.dispose();
+                       		StatusPanel.getController().setStatus("Reload Successfully");
 
-	
+               }
+		public void actionPerformed(ActionEvent e) {
+                	if(e.getSource()==instCourseCombo){
+                        	JComboBox combo = (JComboBox)e.getSource();
+                        	mainPanel.remove(1);
+                        	if(((String)combo.getSelectedItem()).equals("--Show All--")){
+                                	announceLabel.setEnabled(false);
+                                	announceLabel.setText("<html><b><font color=black>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</font></b></html>");
+                                	//announceLabel.removeMouseListener(this);
+                                	Vector courseVec=ClientObject.getInstCourseList();
+                                	String str=courseVec.get(0).toString();
+                                	courseVec.clear();
+                                	String str1[]=str.split(",");
+                                	for(int i=0;i<str1.length;i++){
+                                        	courseVec.add(str1[i]);
+                                	}
+					mainPanel.add(showLecture(ClientObject.getSessionList(courseVec,ClientObject.getIndexServerName())),BorderLayout.CENTER);
+                        	}else if(((String)combo.getSelectedItem()).equals("noCourse")){
+                                	announceLabel.setEnabled(false);
+                                	StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.msg"));
+                        	}else {
+                                	announceLabel.setEnabled(true);
+                                	announceLabel.setText("<html><b><font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</u></font></b></html>");
+                                	//announceLabel.addMouseListener(this);
+                                	Vector courseName=new Vector();
+                                	ClientObject.setCourseForAnnounce((String)combo.getSelectedItem());
+                                	course_id=(String)combo.getSelectedItem();
+                                	courseName.addElement(course_id);
+                                	mainPanel.add(showLecture(ClientObject.getSessionList(courseName,ClientObject.getIndexServerName())),BorderLayout.CENTER);
+                        	}
+                        	center_mainPanel.validate();
+                        	mainPanel.revalidate();
+                	}
+			try {
+                        	for(int i=0;i<join.length;i++){
+                                	if(e.getSource()==join[i]) {
+                                        	StatusPanel.getController().setProcessBar("yes");
+                                        	String lect_id=courseid.get(i).toString();
+                                        	String str[]=lect_id.split("-");
+                                        	lect_id=str[0];
+                                        	MainWindow.getController().setCouseid(str[1]);
+                                        	ClientObject.setLectureID(lect_id);
+                                        	if(!((ClientObject.getUserRole()).equals("instructor")))
+                                                	ClientObject.setUserRole("instructor");
+                                        	new JoinSession(lect_id,"instructor");
+                                        	ClientObject.setLectureInfo(lectinfoVector);
+                                        	ClientObject.setLectureInfoIndex(i);
+                                	}
+                        	}
+                	} catch(Exception exc) { System.out.println("Exception in open GUI "+this.getClass()+"  "+exc.getMessage()); }
+        	}
+	}
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 
 	public void mouseEntered(MouseEvent e) {	
 		if(e.getComponent().getName().equals("announceLabel.Action"))
 			 announceLabel.setText("<html><b><font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</u></font></b></html>");
-
 	}
 
 	public void mouseExited(MouseEvent e){
@@ -522,6 +565,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 	protected JComboBox getinstCourseCombo(){
                 return instCourseCombo;
         }
+	
 
 	private void getTimeIndexingServer() {
                 try {
@@ -542,7 +586,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         }
                 }catch(Exception e){ System.out.println("Exception in getTimeIndexingServer() "+this.getClass()+"  "+e.getMessage());}
         }
-
+	
 	private String decrypt(String encryptedData) throws Exception {
 		String decryptedValue = new String(org.apache.commons.codec.binary.Base64.decodeBase64(encryptedData.getBytes()));
                 return decryptedValue;
