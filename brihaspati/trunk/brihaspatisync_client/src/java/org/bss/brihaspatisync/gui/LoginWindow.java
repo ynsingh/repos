@@ -3,7 +3,7 @@ package org.bss.brihaspatisync.gui;
  * LoginWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012,2013,2015 ETRG,IIT Kanpur.
+ * Copyright (c) 2012,2013,2015,2016 ETRG,IIT Kanpur.
  */
 import java.awt.Color;
 import java.awt.Cursor;
@@ -36,15 +36,21 @@ import java.lang.Object;
 import javax.swing.JProgressBar;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.beans.*;
+import java.util.Random;
+import java.util.*;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha</a> Modified this class for signalling. 
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
- * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> testing
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> update@ swingworker class.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a> last modified in 
  */
 
-public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener{
+public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener,PropertyChangeListener{
 	
 	private JPanel loginGUIPanel;
 	
@@ -84,7 +90,10 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	
 	private ClassLoader clr= this.getClass().getClassLoader();
 	private String[] languages={"English","Hindi","Bhojpuri","Arabic","Greek","Persian","Russian","French","Spanish","Dutch","Nepali","German","Italian","Urdu","Gujarati"}; //"Tamil","Telugu","Japanese","Korean","Bangala","Chinese"
-
+	
+	private JProgressBar progressBar;
+	private JTextArea taskOutput;
+        private Task task;
 	/**
 	 * Constructor detail and 
 	 * Create GUI for LoginWindow
@@ -370,6 +379,9 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private void checkUserNamePasswd() {  
 		try {
                         submitButton.setCursor(busyCursor);
+			task = new Task();
+                        task.addPropertyChangeListener(this);
+                        task.execute();
                         if((usernameText.getText().equals("")) && (passwordField.getText().equals(""))) {
                                 StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog3"));
                                 submitButton.setCursor(defaultCursor); 
@@ -385,48 +397,86 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 					
                                 	ClientObject.setUserName(usernameText.getText());
                                         StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog7"));
-					guiworker task = new guiworker();
-					task.execute();
+					//Task task = new Task();
+                                        //task.addPropertyChangeListener(this);
+                                        //task.execute();					
                              	}
                          }
                        			
 		} catch(Exception e) { System.out.println(this.getClass()+ " "+e.getMessage());}
 	}
+	
+	public void propertyChange(PropertyChangeEvent evt) {
+                if ("progress" == evt.getPropertyName()) {
+                int progress = (Integer) evt.getNewValue();
+                progressBar.setValue(progress);
+                taskOutput.append(String.format("Completed %d%% of task.\n",task.getProgress()));
+                }
+        }
 
-	public class guiworker extends SwingWorker<CourseSessionWindow,Void>{
 
-		JFrame processframe = new JFrame("Please Wait....");
- 			guiworker(){
+	public class Task extends SwingWorker<CourseSessionWindow,Void>implements PropertyChangeListener{
+
+		JFrame progressframe = new JFrame("Please Wait....");
+ 		Task(){
 			Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-			ImageIcon loading = new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif"));
-        		processframe.add(new JLabel("Loading .....",loading, JLabel.CENTER));
-        		processframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        		processframe.setSize(355,100);
-        		processframe.setVisible(true);
-			//processframe.setUndecorated(false);
-			//processframe.setResizeable(false);
-			//processframe.setLocationRelativeTo(null);
-			processframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
+			progressframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                        progressframe.setSize(355,100);
+                        progressframe.setVisible(true);
+			progressframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
+			progressBar = new JProgressBar(0, 100);
+                        progressBar.setValue(0);
+                        progressBar.setStringPainted(true);
+                        taskOutput = new JTextArea(5, 20);
+                        taskOutput.setMargin(new Insets(5,5,5,5));
+                        taskOutput.setEditable(false);
+                        JPanel panel = new JPanel();
+                        panel.add(progressBar);
+                        progressframe.add(panel, BorderLayout.PAGE_START);
+                        progressframe.add(new JScrollPane(taskOutput), BorderLayout.CENTER);
+                        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
   		}
 
 		protected CourseSessionWindow doInBackground() throws Exception {
-			CourseSessionWindow csw = new CourseSessionWindow();
-    			return csw;
+			Random random = new Random();
+                        int progress = 0;
+                        setProgress(0);
+                        while (progress < 100) {
+				try {
+                                	Thread.sleep(random.nextInt(1000));
+                                        progress += random.nextInt(10);
+                                	setProgress(Math.min(progress, 100));
+                                        CourseSessionWindow csw = new CourseSessionWindow();
+                                        return csw;
+                                  } catch (Exception e) { System.out.println(e.getMessage());}
+			}
+			return null;
   		}
 
 		protected void done() {
-    			processframe.dispose();
+    			taskOutput.append("Done!\n");
+			progressframe.dispose();
     			mainWindow.setMenuItemText();
     			mainWindow.getDesktop().removeAll();
     			mainWindow.getDesktop().setBackground(new Color(220,220,220));	
 			try{	
 				mainWindow.getDesktop().add(get());
-			}catch(Exception e){ System.out.println(e.getMessage());
+			}catch(Exception e){ System.out.println(e.getMessage());}
+			mainWindow.getContainer().add(mainWindow.getDesktop(),BorderLayout.CENTER);
+			mainWindow.getContainer().validate();
+			mainWindow.getContainer().repaint();	
+        		StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
+			Toolkit.getDefaultToolkit().beep();
+                	setCursor(null);
 		}
-		mainWindow.getContainer().add(mainWindow.getDesktop(),BorderLayout.CENTER);
-		mainWindow.getContainer().validate();
-		mainWindow.getContainer().repaint();	
-        	StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
-		}
-	} /*end guiworkerclass*/
+	//} /*end guiworkerclass*/
+
+		public void propertyChange(PropertyChangeEvent evt) {
+        		if ("progress" == evt.getPropertyName()) {
+            		int progress = (Integer) evt.getNewValue();
+            		progressBar.setValue(progress);
+            		taskOutput.append(String.format("Completed %d%% of task.\n",task.getProgress()));
+        		}
+    		}
+	}
 }

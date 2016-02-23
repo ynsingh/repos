@@ -43,8 +43,15 @@ import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;
 import javax.swing.JOptionPane; 
-
 import org.apache.commons.codec.binary.BinaryCodec;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.beans.*;
+import java.util.Random;
+import java.util.*;
+
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Creadted on 2008, Modified on 2011, modified by 2012. 
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a> 
@@ -53,7 +60,7 @@ import org.apache.commons.codec.binary.BinaryCodec;
  * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> update guiworker method@2016
  */
  
-public class InstructorCSPanel extends JPanel implements ActionListener, MouseListener{
+public class InstructorCSPanel extends JPanel implements ActionListener, MouseListener,PropertyChangeListener{
 	
         private int cur_h=0;
         private int cur_m=0;
@@ -93,6 +100,11 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
 	private ClassLoader clr= this.getClass().getClassLoader();
 	private String course_id="";
+	
+	private JProgressBar progressBar;
+        private JButton startButton;
+	private JTextArea taskOutput;
+        private Task task;
 
 	/**
 	 * Creating gui for the InstructorCSPanle
@@ -363,7 +375,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		
 		if(ev.getComponent().getName().equals("announceLabel.Action")){
 			
-			System.out.println("instuctorcspanel888888");
 			StatusPanel.getController().setProcessBar("yes");
                         announceLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			announceLabel.setCursor(busyCursor);
@@ -374,10 +385,12 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			
 		if(ev.getComponent().getName().equals("reloadLabel.Action")) {
 			
-			System.out.println("instuctorcspanel999999999");
                  	StatusPanel.getController().setProcessBar("yes"); 
-			guiworker gui =new guiworker();
-                        gui.execute();
+			//guiworker gui =new guiworker();
+                        //gui.execute();
+			task = new Task();
+                        task.addPropertyChangeListener(this);
+                        task.execute();
 			StatusPanel.getController().setProcessBar("no");
 		}			
 
@@ -423,11 +436,20 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			StatusPanel.getController().setProcessBar("no");
                 }
 	}
+	public void propertyChange(PropertyChangeEvent evt) {
+                        if ("progress" == evt.getPropertyName()) {
+                                int progress = (Integer) evt.getNewValue();
+                                progressBar.setValue(progress);
+                                taskOutput.append(String.format("Completed %d%% of task.\n",task.getProgress()));
+                        }
+         }
+
      
-        public class guiworker extends SwingWorker<Boolean,Void> implements ActionListener{
+        public class Task extends SwingWorker<Boolean,Void> implements ActionListener,PropertyChangeListener{
                private ClassLoader clr= this.getClass().getClassLoader();
-                        JFrame processframe = new JFrame("Please Wait....");
-                        guiworker(){
+                        JFrame progressframe = new JFrame("Please Wait....");
+                        Task(){
+				/*
                                 Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
                                 ImageIcon loading = new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif"));
                                 processframe.add(new JLabel("Loading .....",loading, JLabel.CENTER));
@@ -435,10 +457,36 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                                 processframe.setSize(355,100);
                                 processframe.setVisible(true);
                                 processframe.setLocation((((int)dim.getWidth()/2)-190),((int)dim.getHeight()/2)+100);
+				Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+				*/
+                        	progressframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                        	progressframe.setSize(355,100);
+                        	progressframe.setVisible(true);
+				Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+                        	progressframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
+                        	progressBar = new JProgressBar(0, 100);
+                        	progressBar.setValue(0);
+                        	progressBar.setStringPainted(true);
+                        	taskOutput = new JTextArea(5, 20);
+                        	taskOutput.setMargin(new Insets(5,5,5,5));
+                        	taskOutput.setEditable(false);
+                        	JPanel panel = new JPanel();
+                        	panel.add(progressBar);
+                        	progressframe.add(panel, BorderLayout.PAGE_START);
+                        	progressframe.add(new JScrollPane(taskOutput), BorderLayout.CENTER);
+                        	setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
                         }
                 protected Boolean doInBackground() throws Exception {
+				Random random = new Random();
+                        	int progress = 0;
+                        	setProgress(0);
+                        	while (progress < 100) {
 				try{
-                                	instCourseCombo_Panel.remove(instCourseCombo);
+                                	Thread.sleep(random.nextInt(1000));
+                                        progress += random.nextInt(10);
+	                                setProgress(Math.min(progress, 100));
+        	                        String value;
+					instCourseCombo_Panel.remove(instCourseCombo);
                                 	instCourseCombo=new JComboBox(reloadCourseList());
 					instCourseCombo.addActionListener(this);
                                 	instCourseCombo_Panel.add(instCourseCombo,BorderLayout.CENTER);
@@ -448,21 +496,30 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                                 	reloadLabel.setCursor(defaultCursor);
                                 	reloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                                 	StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.MessageDialog5"));
+					return true;
 				} catch(Exception ex){ System.out.println("Exception in Reload Action "+this.getClass()+" "+ex.getMessage());  }
 				center_mainPanel.validate();
 				mainPanel.revalidate();
-                                return true;
+			} return false;
                 }
                 protected void done(){
+				taskOutput.append("Done!\n");
 				boolean status = false;
-                                try{
+        			try{
                                          status = get();
                                 }catch(Exception e) { System.out.println(e.getMessage());}
                                 if(status)
-				processframe.dispose();
+				progressframe.dispose();
                        		StatusPanel.getController().setStatus("Reload Successfully");
-
-               }
+                	}
+		public void propertyChange(PropertyChangeEvent evt) {
+		        if ("progress" == evt.getPropertyName()) {
+            			int progress = (Integer) evt.getNewValue();
+            			progressBar.setValue(progress);
+            			taskOutput.append(String.format("Completed %d%% of task.\n",task.getProgress()));
+        		}
+    		}
+		
 		public void actionPerformed(ActionEvent e) {
                 	if(e.getSource()==instCourseCombo){
                         	JComboBox combo = (JComboBox)e.getSource();

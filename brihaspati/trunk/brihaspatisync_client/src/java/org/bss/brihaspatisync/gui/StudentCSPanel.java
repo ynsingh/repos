@@ -39,6 +39,13 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JProgressBar;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.beans.*;
+import java.util.Random;
+import java.util.*;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on 2008, modified on 2011, modified on 2012 
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a> 
@@ -47,7 +54,7 @@ import javax.swing.JProgressBar;
  * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep Kumar Pal </a>update guiworker class.
  */
 
-public class StudentCSPanel extends JPanel implements ActionListener, MouseListener{
+public class StudentCSPanel extends JPanel implements ActionListener, MouseListener,PropertyChangeListener{
 
         private int cur_h=0;
         private int cur_m=0;
@@ -86,6 +93,11 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	private static StudentCSPanel studcspanel=null;
+	
+	private JProgressBar progressBar;
+        private JButton startButton;
+        private JTextArea taskOutput;
+        private Task task;
 
 	/**
 	 * Creating GUI for StudentCSPanle
@@ -309,47 +321,97 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
         			}
 			}catch(Exception e){}	 	
 		}else if(ev.getComponent().getName().equals("reloadLabel.Action")) {
-			guiworker gui =new guiworker();
+			/*guiworker gui =new guiworker();
                         gui.execute();
+			*/
+			task = new Task();
+                        task.addPropertyChangeListener(this);
+                        task.execute();
+
 		}
     
 		StatusPanel.getController().setProcessBar("no");
 	}
 	
-        public class guiworker extends SwingWorker<Boolean,Void> implements ActionListener {
+	public void propertyChange(PropertyChangeEvent evt) {
+                        if ("progress" == evt.getPropertyName()) {
+                                int progress = (Integer) evt.getNewValue();
+                                progressBar.setValue(progress);
+                                taskOutput.append(String.format("Completed %d%% of task.\n",task.getProgress()));
+                        }
+        }
+	
+        public class Task extends SwingWorker<Boolean,Void> implements ActionListener,PropertyChangeListener {
                	private ClassLoader clr= this.getClass().getClassLoader();
-                        JFrame processframe = new JFrame("Please Wait....");
-                        guiworker(){
-                                Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+                        JFrame progressframe = new JFrame("Please Wait....");
+                        Task(){
+                                //Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+				/*
                                 ImageIcon loading = new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif"));
                                 processframe.add(new JLabel("Loading .....",loading, JLabel.CENTER));
                                 processframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                                 processframe.setSize(355,100);
                                 processframe.setVisible(true);
                                 processframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
+				*/
+				progressframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                                progressframe.setSize(355,100);
+                                progressframe.setVisible(true);
+                                Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+                                progressframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
+                                progressBar = new JProgressBar(0, 100);
+                                progressBar.setValue(0);
+                                progressBar.setStringPainted(true);
+                                taskOutput = new JTextArea(5, 20);
+                                taskOutput.setMargin(new Insets(5,5,5,5));
+                                taskOutput.setEditable(false);
+                                JPanel panel = new JPanel();
+                                panel.add(progressBar);
+                                progressframe.add(panel, BorderLayout.PAGE_START);
+                                progressframe.add(new JScrollPane(taskOutput), BorderLayout.CENTER);
+                                setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
                         }
-                protected  Boolean doInBackground() throws Exception {
-                                String value;
-                                studentCourseCombo_Panel.remove(studCourseCombo);
-                                studCourseCombo=new JComboBox(reloadCourseList());
-				studCourseCombo.addActionListener(this);
-                                studentCourseCombo_Panel.add(studCourseCombo,BorderLayout.CENTER);
-                                studentCourseCombo_Panel.revalidate();
-                                mainPanel.remove(1);
-                                mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
-                                StatusPanel.getController().setStatus(Language.getController().getLangValue("StudentCSPanel.MessageDialog1"));
-                                return true;
-                        }
+                protected Boolean doInBackground() throws Exception {
+				Random random = new Random();
+                                int progress = 0;
+                                setProgress(0);
+                                while (progress < 100) {
+                                try{
+					Thread.sleep(random.nextInt(1000));
+                                	progress += random.nextInt(10);
+                                	setProgress(Math.min(progress, 100));
+                                	studentCourseCombo_Panel.remove(studCourseCombo);
+                                	studCourseCombo=new JComboBox(reloadCourseList());
+					studCourseCombo.addActionListener(this);
+                                	studentCourseCombo_Panel.add(studCourseCombo,BorderLayout.CENTER);
+                                	studentCourseCombo_Panel.revalidate();
+                                	mainPanel.remove(1);
+                                	mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
+                                	StatusPanel.getController().setStatus(Language.getController().getLangValue("StudentCSPanel.MessageDialog1"));
+                                	return true;
+				} catch(Exception ex){ System.out.println("Exception in Reload Action "+this.getClass()+" "+ex.getMessage());  }
+                                center_mainPanel.validate();
+                                mainPanel.revalidate();
+                        } return false;
+                }
                 protected void done(){
-				
+				taskOutput.append("Done!\n");
                                 boolean status = false;
                                 try{
                                          status = get();
                                 }catch(Exception e) { System.out.println(e.getMessage());}
                                 if(status)
 				
-                                processframe.dispose();
+                                progressframe.dispose();
                        StatusPanel.getController().setStatus("Reload Successfully");
+                }
+		
+                public void propertyChange(PropertyChangeEvent evt) {
+                        if ("progress" == evt.getPropertyName()) {
+                                int progress = (Integer) evt.getNewValue();
+                                progressBar.setValue(progress);
+                                taskOutput.append(String.format("Completed %d%% of task.\n",task.getProgress()));
+                        }
                 }
 		
 		public void actionPerformed(ActionEvent e) {

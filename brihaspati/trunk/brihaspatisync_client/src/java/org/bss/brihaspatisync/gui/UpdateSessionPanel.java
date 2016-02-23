@@ -27,17 +27,23 @@ import org.bss.brihaspatisync.network.Log;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.beans.*;
+import java.util.Random;
+import java.util.*;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for Signalling.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>  Modified for GUI on 13 Jun 2011
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
- * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> Testing for gui.
+ * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> Update@ Please wait function. 
  * @author <a href="mailto:nehapal2209@gmail.com">Neha Pal</a>Progressbar is added at Update button.
  * @author <a href="mailto:chetnatrivedi1990@gmail.com">Chetna Trivedi</a>
  */
 
-public class UpdateSessionPanel extends JFrame implements ActionListener, MouseListener{
+public class UpdateSessionPanel extends JFrame implements ActionListener, MouseListener,PropertyChangeListener{
 
 	private JFrame frame=null;
 
@@ -100,6 +106,11 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	private ClassLoader clr= this.getClass().getClassLoader();
 	private InstructorCSPanel insCSPanel=null;
+	
+	private JProgressBar progressBar;
+        private JButton startButton;
+        private JTextArea taskOutput;
+        private Task task;
 
 	protected UpdateSessionPanel(int indexnumber,Vector updatevector,InstructorCSPanel insCSPanel) {
 		this.insCSPanel=insCSPanel;
@@ -488,11 +499,14 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                                 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));	
                                                 StatusPanel.getController().setStatus(Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));					      		
 	                 			frame.dispose();
-						guiworker task = new guiworker();
-						task.execute();     
+						//guiworker task = new guiworker();
+						//task.execute();     
+						task = new Task();
+                        			task.addPropertyChangeListener(this);
+                        			task.execute();
                                           }else
                                           	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog6"));
-                                  }
+                                 }
                                   else{
 					System.out.println("insufficient indexServer name in UpdateSession :" + indexServerName);
                                 //annBttn.setCursor(defaultCursor);
@@ -522,15 +536,25 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 			StatusPanel.getController().setProcessBar("no");
                 }
 	}
+	
+	public void propertyChange(PropertyChangeEvent evt) {
+                        if ("progress" == evt.getPropertyName()) {
+                                int progress = (Integer) evt.getNewValue();
+                                progressBar.setValue(progress);
+                                taskOutput.append(String.format("Completed %d%% of task.\n",task.getProgress()));
+                        }
+        }
+
 
 	public void mousePressed(MouseEvent e) {}
         public void mouseReleased(MouseEvent e) {}
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
 	
-        public class guiworker extends SwingWorker<Boolean,Void>{
-                	JFrame processframe = new JFrame("Please Wait....");
-                        guiworker(){
+        public class Task extends SwingWorker<Boolean,Void> implements PropertyChangeListener{
+                	JFrame progressframe = new JFrame("Please Wait....");
+                        Task(){
+				/*
                         	Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
                         	ImageIcon loading = new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif"));
                         	processframe.add(new JLabel("Loading .....",loading, JLabel.CENTER));
@@ -538,9 +562,35 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                         	processframe.setSize(355,100);
                         	processframe.setVisible(true);
                         	processframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
+				*/
+				progressframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                                progressframe.setSize(355,100);
+                                progressframe.setVisible(true);
+                                Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+                                progressframe.setLocation((((int)dim.getWidth()/2)-102),((int)dim.getHeight()/2)+100);
+                                progressBar = new JProgressBar(0, 100);
+                                progressBar.setValue(0);
+                                progressBar.setStringPainted(true);
+                                taskOutput = new JTextArea(5, 20);
+                                taskOutput.setMargin(new Insets(5,5,5,5));
+                                taskOutput.setEditable(false);
+                                JPanel panel = new JPanel();
+                                panel.add(progressBar);
+                                progressframe.add(panel, BorderLayout.PAGE_START);
+                                progressframe.add(new JScrollPane(taskOutput), BorderLayout.CENTER);
+                                //setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
                 	}
      
 		protected  Boolean doInBackground() throws Exception {
+				Random random = new Random();
+                                int progress = 0;
+                                setProgress(0);
+                                while (progress < 100) {
+				Thread.sleep(random.nextInt(1000));
+                                progress += random.nextInt(10);
+				setProgress(Math.min(progress, 100));
+                                try{
+
 				JScrollPane courselist = new JScrollPane();
 				courselist= insCSPanel.showLecture(ClientObject.getSessionList(ClientObject.getInstCourseList(),ClientObject.getIndexServerName()));
 				insCSPanel.getmainPanel().remove(1);
@@ -550,16 +600,28 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 	        insCSPanel.getmainPanel().revalidate();
                         	insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
 				return true;
-                	}
+				} catch(Exception ex){ System.out.println("Exception in Reload Action "+this.getClass()+" "+ex.getMessage());  }
+                        } return false;
+                }
 
 	 	protected void done(){
-	 			boolean status = false;
+				taskOutput.append("Done!\n");
+                                boolean status = false;
 	 			try{
 	 				 status = get();
 	 			}catch(Exception e) { System.out.println(e.getMessage());}
 	 			if(status)
-                        	processframe.dispose();
-     			}
+                        	progressframe.dispose();
+     		}
+	
+		public void propertyChange(PropertyChangeEvent evt) {
+                        if ("progress" == evt.getPropertyName()) {
+                                int progress = (Integer) evt.getNewValue();
+                                progressBar.setValue(progress);
+                                taskOutput.append(String.format("Completed %d%% of task.\n",task.getProgress()));
+                        }
+                }
+
 	}
 	
 	private void getTimeIndexingServer() {
