@@ -2,7 +2,7 @@ package org.iitk.brihaspatisync;
 
 /*@(#)ProcessRequest.java
  * See licence file for usage and redistribution terms
- * Copyright (c) 2007-2008, 2013.
+ * Copyright (c) 2007-2008,2013,2016
  * All Rights Reserved.
  */
 
@@ -40,11 +40,10 @@ import org.iitk.brihaspatisync.om.LecturePeer;
 import org.iitk.brihaspatisync.om.UrlConection;
 import org.iitk.brihaspatisync.om.UrlConectionPeer;
 
-
-
  /**
   * @author <a href="mailto:ayadav@iitk.ac.in"> Ashish Yadav </a>
-  * @author <a href="mailto:@arvindjss17@gmail.com"> Arvind Pal </a>
+  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
+  * @author <a href="mailto:pradeepmca30@gmail.com"> Pradeep Kumar Pal </a>
   */
 
 public class ProcessRequest extends HttpServlet {
@@ -236,22 +235,17 @@ TBD - code to be updated as per the above logic.
 			 **/
 			try {
 				String username=request.getParameter("username");
-				ServerLog.log("value of username in logout request of PR:"+username);
 				String lectID=request.getParameter("lectID");
-				  ServerLog.log("value of lectID in logout request of PR:"+lectID);
 				String ipAddress=InetAddress.getByName(request.getRemoteAddr()).toString();
-				  ServerLog.log("value of ipAddress in logout request of PR:"+ipAddress);
-				 String publicip =(InetAddress.getByName(request.getRemoteAddr())).toString();
-				  String privateip = publicip;
+				String publicip =(InetAddress.getByName(request.getRemoteAddr())).toString();
+				String privateip = publicip;
 				String reflector_ip  =request.getParameter("reflectorIP");
 
 				/** Remove Entry from the peer list from LecturePeer.xml */
 				if(!(lectID.equals(""))) {
 					PeerManager.removePeer(lectID,username);
-					//ServerLog.log("inside logout request");
 					ReflectorStatusManager.updateStatusPeer(ipAddress.replace("/",""), lectID);
 				}
-				//out.println("Successfull");	
 			} catch(Exception e) { ServerLog.log("Exception in logout in ProcessRequest class"+e.getMessage()); }
 		}
 		else if(reqType.equals("getCourse")) {
@@ -365,7 +359,15 @@ TBD - code to be updated as per the above logic.
 				String logintime=ServerUtil.getSystemDateTime();
                                 logintime=logintime.substring(4,20);
 				String proxy="NO";	
-			//	message=ReflectorStatusManager.Register(user,lect_id,role);  
+				String insAV=ServerUtil.getAVStatus(sessionid);
+                                String[] array = insAV.split(",");
+                                String ins_audio_string= array[1];
+                                String video_string= array[2];
+                                String[] array1 = ins_audio_string.split("=");
+                                String[] array2 = video_string.split("=");
+                                String ins_audio= array1[1];
+                                String video= array2[1];
+				
 				message=ReflectorStatusManager.Register(sessionid,publicip,privateip,role);  
 				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not available !!")) && (!message.equals("Reflector have insufficient Load !!")) ) {
 					String ref_ip=message;
@@ -374,7 +376,7 @@ TBD - code to be updated as per the above logic.
                 	                        ref_ip=str1[0].replaceAll("current","");
 						str1=null;
 						String first_lst_name=ProcessRequestMethods.getFullName(user);	
-						String msg=PeerManager.createPeer(sessionid,publicip,user,role,status,publicip,proxy,ref_ip,first_lst_name);
+						String msg=PeerManager.createPeer(sessionid,publicip,user,role,status,publicip,proxy,ref_ip,first_lst_name,ins_audio,video);
 					}
        				}
 				String av_status=ServerUtil.getAVStatus(sessionid);

@@ -2,7 +2,7 @@ package org.iitk.brihaspatisync;
 
 /*@(#)LecturePeerNode.java
  * See licence file for usage and redistribution terms
- * Copyright (c) 2007-2008, 2013,2015 All Rights Reserved.
+ * Copyright (c) 2007-2008, 2013,2015,2016 All Rights Reserved.
  */
 
 import java.util.Vector;
@@ -32,6 +32,7 @@ import org.iitk.brihaspatisync.util.ServerLog;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
+ * @author <a href="mailto:pradeepmca30@gmail.com"> Pradeep Kumar Pal </a>
  */
 
 public class PeerManager {
@@ -65,7 +66,7 @@ public class PeerManager {
 	/*	
          * This Method Returns Parent Peer's IPAddress for Peer Connection .and also increase load of this parent peer.
          */
-	protected static String createPeer(String lect_id, String publicIP,String user,String role,String status,String privateIP,String proxy,String ref_ip,String first_lst_name) {
+	protected static String createPeer(String lect_id, String publicIP,String user,String role,String status,String privateIP,String proxy,String ref_ip,String first_lst_name,String ins_audio,String video) {
 		String message="";
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -84,12 +85,14 @@ public class PeerManager {
 	                	       	peer.setAttribute("Reflector",ref_ip);
 	        	                peer.setAttribute("PrivateIP",privateIP);
         	        	       	peer.setAttribute("Proxy",proxy);
+					peer.setAttribute("INS_AUD",ins_audio);
+                                        peer.setAttribute("VIDEO",video);
 	                	       	root.appendChild(peer);
 		                        saveXML(doc,getFile(lect_id));
 					message="Write succfully";	
 				} else {
 					removePeer(lect_id,user);	
-					createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip,first_lst_name);
+					createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip,first_lst_name,ins_audio,video);
 				}
       			} else   ServerLog.log("Exception in insert value to xml file "); 
 		} catch(Exception e){ ServerLog.log(" Exception in getFile method of PeerManager class "+e.getMessage()+"get==>"+e); }
@@ -132,12 +135,8 @@ public class PeerManager {
                 String message="";
 		int count=0;
 		try{
-			//DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                        //DocumentBuilder builder = factory.newDocumentBuilder();
-                        //Document doc = builder.parse(getFile(lect_id));
 			NodeList nodelist = getNodeList(getFile(sessionid)); 
 			count =  nodelist.getLength();
-			//return Integer.toString(count);
 			}catch ( Exception e ) { ServerLog.log(" Exception in updateLoad method of PeerManager class "+e.getMessage()); }
 			 return Integer.toString(count);
  		}
@@ -167,7 +166,6 @@ public class PeerManager {
                 } catch( Exception e ) { ServerLog.log(" Exception in searchUserName method of PeerManager class "+e.getMessage()); }
 		return flag;
         }
-
 
 	/**
 	 * This method is set to remove peer from peer list and decrease load of parent peer. 
