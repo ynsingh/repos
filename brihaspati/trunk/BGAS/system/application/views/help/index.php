@@ -3,6 +3,9 @@
 	<ul>
 	<li><a href="#general-1" class="anchor-link-a">How do I enable / disable logging ?</a></li>
 	<li><a href="#general-2" class="anchor-link-a">What is account lock and how do I enable / disable it ?</a></li>
+	<li><a href="#general-3" class="anchor-link-a">How to update BGAS from Repository?</a></li>
+        <li><a href="#general-4" class="anchor-link-a">After update what will we do?</a></li>
+
 	</ul>
 </li>
 <li><span class="qa-heading">Printing</span>
@@ -31,6 +34,17 @@
 	<a name="print-1"></a>
 	<div class="qa-question">Q. What is account lock and how do I enable / disable it ?</div>
 	<div class="qa-answer">Once a account is locked it cannot be modified any further, it becomes read-only. Click on "Settings" in Main Menu and then select "Account Settings". You need to check / uncheck the option called "Account Locked" (in the bottom) to enable or disable the account lock respectively.<br /><br />Note: If account is locked you can see a messages 'Account is currently locked to prevent any further modifications.' in the account dashboard.</div>
+</div>
+<div class="qa-section" id="general-3">
+        <a name="print-1"></a>
+        <div class="qa-question">Q. How to update BGAS from Repository?</div>
+        <div class="qa-answer">(1) Go to inside BGAS directory.<br />(2) Write svn update press enter.</div>
+</div>
+
+<div class="qa-section" id="general-4">
+        <a name="print-1"></a>
+        <div class="qa-question">Q. After update what will do?</div>
+        <div class="qa-answer">(1) After successful update there are three condition.<br />(2) If any conflict comes first resolove it first conflict. <br /> (3) If any sql file comes under sql script folder then run this sql file with appropriate database.<br />(4) If no conflict and no sql file comes under sql script folder then do nothing and start using the system.</div>
 </div>
 
 <div class="qa-section" id="print-1">
