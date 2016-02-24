@@ -445,7 +445,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
          }
 
      
-        public class Task extends SwingWorker<Boolean,Void> implements ActionListener,PropertyChangeListener{
+        public class Task extends SwingWorker<Boolean,Void> implements ActionListener,MouseListener,PropertyChangeListener{
                private ClassLoader clr= this.getClass().getClassLoader();
                         JFrame progressframe = new JFrame("Please Wait....");
                         Task(){
@@ -527,7 +527,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         	if(((String)combo.getSelectedItem()).equals("--Show All--")){
                                 	announceLabel.setEnabled(false);
                                 	announceLabel.setText("<html><b><font color=black>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</font></b></html>");
-                                	//announceLabel.removeMouseListener(this);
+                                	announceLabel.removeMouseListener(this);
                                 	Vector courseVec=ClientObject.getInstCourseList();
                                 	String str=courseVec.get(0).toString();
                                 	courseVec.clear();
@@ -542,7 +542,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         	}else {
                                 	announceLabel.setEnabled(true);
                                 	announceLabel.setText("<html><b><font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</u></font></b></html>");
-                                	//announceLabel.addMouseListener(this);
+                                	announceLabel.addMouseListener(this);
                                 	Vector courseName=new Vector();
                                 	ClientObject.setCourseForAnnounce((String)combo.getSelectedItem());
                                 	course_id=(String)combo.getSelectedItem();
@@ -570,7 +570,33 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         	}
                 	} catch(Exception exc) { System.out.println("Exception in open GUI "+this.getClass()+"  "+exc.getMessage()); }
         	}
-	}
+
+		public void mouseClicked(MouseEvent ev) {
+                if(ev.getComponent().getName().equals("announceLabel.Action")){
+
+                        StatusPanel.getController().setProcessBar("yes");
+                        announceLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                        announceLabel.setCursor(busyCursor);
+                        announceNewSession();
+                        announceLabel.setCursor(defaultCursor);
+                        StatusPanel.getController().setProcessBar("no");
+                	}
+		}
+		
+		public void mousePressed(MouseEvent e) {}
+        	public void mouseReleased(MouseEvent e) {}
+
+        	public void mouseEntered(MouseEvent e) {
+                	if(e.getComponent().getName().equals("announceLabel.Action"))
+                        	announceLabel.setText("<html><b><font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</u></font></b></html>");
+        	}
+
+        	public void mouseExited(MouseEvent e){
+                	if(e.getComponent().getName().equals("announceLabel.Action"))
+                        	announceLabel.setText("<html><b><font color=blue>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</font></b></html>");
+        	}
+	}//end of swingworker class
+
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 
