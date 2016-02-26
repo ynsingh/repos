@@ -524,6 +524,21 @@ class Payment_model extends Model {
                 $val= $db_name.'##'.$db_pass.'##'.$lable_name;
                 return $val;
         }
+	
+	 function get_cheque_no($entry_id){
+		$cheque_no='';
+                $this->db->select('update_cheque_no')->from('cheque_print')->where('entry_no',$entry_id);
+                $ledger_q = $this->db->get();
+                $no_of_row=$ledger_q->num_rows();
+                if($no_of_row > 0){
+                        foreach($ledger_q->result() as $row)
+                        {
+                                $cheque_no= $row->update_cheque_no;
+                        }
+                }
+                return $cheque_no;
+        }
+
 
 }
 ?>

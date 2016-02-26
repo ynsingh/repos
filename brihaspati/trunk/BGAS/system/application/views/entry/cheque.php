@@ -108,6 +108,8 @@
 
 	echo"<p id=\"submit\">";	
 	echo"<br>";
+	echo anchor('entry', 'Back', array('title' => 'Back to settings'));
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;";
         echo form_submit('submit', 'Save');
         echo "&nbsp;&nbsp;&nbsp;&nbsp; ";
        	echo form_submit('submit', 'Display Cheque');
@@ -287,6 +289,9 @@
         		echo"<td>";
         		echo form_dropdown('cheque_type', $cheque_type, $active_cheque_type, "class = \"type_dropdown\"");
         		echo "</td>";
+
+			echo anchor('entry', 'Back', array('title' => 'Back to settings'));
+        		echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 
         		echo"<td>";
         		echo"<p id=\"submit\">";

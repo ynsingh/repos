@@ -57,10 +57,10 @@ class Account extends Controller {
 			$data_search_by = $this->input->post('search_by', TRUE);
 			$data_text = $this->input->post('text', TRUE);
 		}
-		if(gmp_sign($data_text) == -1) {
+		/*if(gmp_sign($data_text) == -1) {
 			$this->messages->add('Text should be a positive value.', 'error');
 			redirect('account/index');
-		}
+		}*/
 		if($data_search_by == "code")
 		{
 			$text = '';

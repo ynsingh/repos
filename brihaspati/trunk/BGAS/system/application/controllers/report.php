@@ -19,6 +19,7 @@ class Report extends Controller {
 		$this->load->model('Budget_model');
 		$this->load->model('Group_model');
 		$this->load->model('Depreciation_model');
+		$this->load->model('Payment_model');
 		$this->load->model('Tag_model');
 	        $this->load->helper('pdf_helper');
 		$this->load->library('session');
@@ -2200,6 +2201,63 @@ class Report extends Controller {
 
 		$this->template->set('page_title', 'Reconciliation');
 		/* Check if path is 'all' or 'pending' */
+		 $default_end_date;
+
+                /* Form fields */
+                $this->db->from('settings');
+                $detail = $this->db->get();
+                foreach ($detail->result() as $row)
+                {
+                        $date1 = $row->fy_start;
+                        $date2 = $row->fy_end;
+                }
+                $date=explode("-",$date1);
+                $date2 = explode("-", $row->fy_end);
+                $default_start = '01/04/'.$date[0];
+                $default_end = '31/03/'.$date2[0];
+
+                $curr_date = date_today_php();
+                if($curr_date >= $default_end) {
+                        $default_end_date = $default_end;
+                }
+                else {
+                        $default_end_date = $curr_date;
+                }
+
+                 $data['entry_date1'] = array(
+                        'name' => 'entry_date1',
+                        'id' => 'entry_date1',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => $default_start,
+                );
+                $data['entry_date2'] = array(
+                        'name' => 'entry_date2',
+                        'id' => 'entry_date2',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => $default_end_date,
+                );
+
+		 $data['text'] = array(
+                        'name' => 'text',
+                        'id' => 'text',
+                        'maxlength' => '40',
+                        'size' => '10',
+                        'value' => '',
+                );
+
+                /* Repopulating form */
+                if ($_POST)
+                {
+                        $data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+                        $data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);
+			$data['text']['value'] = $this->input->post('text', TRUE);
+                }
+	
+		$this->form_validation->set_rules('entry_date1', 'From Date', 'trim');
+                $this->form_validation->set_rules('entry_date2', 'To Date', 'trim');
+		 $this->form_validation->set_rules('text', 'Text', 'trim');
 		
 		$data['show_all'] = FALSE;
 		$data['print_preview'] = FALSE;
@@ -2239,10 +2297,15 @@ class Report extends Controller {
 
 		if ($_POST)
 		{
+
+
 			/* Check if Ledger account is changed or reconciliation is updated */
-			if ($_POST['submit'] == 'Submit')
+			if ($_POST['submit'] == 'Get')
 			{
 				$ledger_id = $this->input->post('ledger_id', TRUE);
+				if($ledger_id == 0){
+					$this->messages->add('Please Select Ledger account.', 'error');
+
 				if ($this->input->post('show_all', TRUE))
 				{
 					redirect('report/reconciliation/all/' . $ledger_id);
@@ -2250,6 +2313,7 @@ class Report extends Controller {
 				} else {
 					redirect('report/reconciliation/pending/' . $ledger_id);
 					return;
+				}
 				}
 			} else if ($_POST['submit'] == 'Update') {
 
@@ -2271,6 +2335,7 @@ class Report extends Controller {
 					$this->template->load('template', 'report/reconciliation', $data);
 					return;
 				} else {
+			
 					/* Updating reconciliation date */
 					foreach ($data_reconciliation_date as $id => $row)
 					{
@@ -2296,8 +2361,75 @@ class Report extends Controller {
 					}
 					$this->messages->add('Updated reconciliation.', 'success');
 					$this->logger->write_message("success", 'Updated reconciliation.');
+					 if ($this->input->post('show_all', TRUE))
+                                {
+                                        redirect('report/reconciliation/all/' . $ledger_id);
+                                        return;
+                                } else {
+                                        redirect('report/reconciliation/pending/' . $ledger_id);
+                                        return;
+                                }
+
 				}
 			}
+				if ($this->form_validation->run() == FALSE)
+                                {
+                                        $this->messages->add(validation_errors(), 'error');
+                                        $this->template->load('template', 'report/reconciliation', $data);
+                                        return;
+                                } else {
+
+					$data_date1 = $this->input->post('entry_date1', TRUE);
+                                        $data_date2 = $this->input->post('entry_date2', TRUE);
+					$data_text = $this->input->post('text', TRUE);
+					$data['value']=$data_text;
+					if($data_date1==NULL && $data_date2 == NULL){
+					$data_date1=$default_start;
+					$data_date2=$default_end_date; 
+
+					}
+
+                        }
+					$ledger_id = $this->input->post('ledger_id', TRUE);
+					if ($reconciliation_type == 'all')
+                			{
+                        			$data['reconciliation_type'] = 'all';
+                        			$data['show_all'] = TRUE;
+                        			if ($ledger_id > 0)
+                                		$this->template->set('nav_links', array('report/download/reconciliation/' . $ledger_id . '/all'  => 'Download CSV', 'report/printpreview/reconciliation/' . $ledger_id . '/all' => 'Print Preview','report/pdf/reconciliation/'. $ledger_id . '/all' => 'Download PDF'));
+                			} else if ($reconciliation_type == 'pending') {
+                        			$data['reconciliation_type'] = 'pending';
+                        			$data['show_all'] = FALSE;
+                        			if ($ledger_id > 0)
+                                		$this->template->set('nav_links', array('report/download/reconciliation/' . $ledger_id . '/pending'  => 'Download CSV', 'report/printpreview/reconciliation/' . $ledger_id . '/pending'  => 'Print Preview','report/pdf/reconciliation/'. $ledger_id . '/pending' => 'Download PDF'));
+                			} 
+					$date=explode("/",$data_date1);
+                        		$date1=$date[2]."-".$date[1]."-".$date[0];
+                        		$date=explode("/",$data_date2);
+                        		$date2=$date[2]."-".$date[1]."-".$date[0];
+                        		$newdata = array(
+                           			'date1'  => $date1,
+                           			'date2'  => $date2,
+						'cheque' => $data_text,
+                        		);
+                        		$this->session->set_userdata($newdata);
+					$data['ledger_id'] = $ledger_id;
+					if($data_text != NULL){
+					if(! ctype_digit($data_text)) {
+                                		$this->messages->add('Cheque No should be numeric.', 'error');
+					}
+					}elseif($data_text == NULL){
+						$ledger_id = $this->input->post('ledger_id', TRUE);
+                                		if ($this->input->post('show_all', TRUE))
+                                		{       
+                                        		redirect('report/reconciliation/all/' . $ledger_id);
+                                        		return;
+                                		}else{
+                                        		redirect('report/reconciliation/pending/' . $ledger_id);
+                                        		return;
+                                		} 
+                        		}
+
 		}
 		$this->template->load('template', 'report/reconciliation', $data);
 		return;
@@ -2977,7 +3109,7 @@ class Report extends Controller {
 		$code = $this->session->userdata('code');
 		$search = $this->session->userdata('search');
 		$text = $this->session->userdata('text');
-	//	$dep = $this->session->userdata('dep');
+		$val = $this->session->userdata('cheque');
 		$search_by_bank = $this->session->userdata('search');
 		$asset_type_value = $this->session->userdata('asset_type_value');
 		
@@ -3188,7 +3320,7 @@ class Report extends Controller {
 				redirect('report/reconciliation/' . $reconciliation_type);
 				return;
 			}
-
+			$data['value']=$val;
 			$data['report'] = "report/reconciliation";
 			$data['title'] = "Reconciliation Statement for '" . $this->Ledger_model->get_name($data['ledger_id']) . "'";
 			$data['print_preview'] = TRUE;

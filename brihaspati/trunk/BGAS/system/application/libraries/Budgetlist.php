@@ -42,7 +42,7 @@ class Budgetlist
 		$CI =& get_instance();
 		if ($id == 0)
                 {
-			$CI->db->from('budgets');
+			$CI->db->from('budgets')->order_by('code', 'asc');
 		
 			$budget_q = $CI->db->get();
 			
@@ -188,37 +188,81 @@ class Budgetlist
 			 */
 			$account_code = 0;
 			$main_budget_code = 0;
+			foreach ($this->budget as $id => $data)
+                        {
+                        	$CI =& get_instance();
+                                $CI->db->from('groups');
+                                $CI->db->select('code')->where('name =', 'Expenses');
+                                $groups_q = $CI->db->get();
+                                foreach ($groups_q->result() as $row)
+                                	$account_code = $row->code;
+
+                                        //get code of 'Main Budget'
+                                        $CI->db->from('budgets');
+                                        $CI->db->select('code')->where('budgetname','Main Budget');
+                                        $main_budget = $CI->db->get();
+                                        foreach($main_budget->result() as $row)
+                                                $main_budget_code = $row->code;
+                                        //if($data['code'] < 10000 && $data['code'] != '50' &&  $data['code'] != $account_code){
+                                        if($data['code'] < 10000 && $data['code'] != $main_budget_code &&  $data['code'] != $account_code){
+						//echo"===>".$data['bd_balance'].$data['name'].$this->consumed_amount;
+                                                $this->sum = $this->sum + $data['bd_balance'];
+                                                $this->consumed_amount = $this->consumed_amount + $data['consume'];
+                                        }
+
+                                        //if($data['code'] == '50')
+                                        if($data['code'] == $main_budget_code)
+                                        {
+                                                $this->main_budget_amount = $data['bd_balance'];
+                                        }
+					if($data['name'] == 'Main Budget'){
+                                        //"$this->counter++ ";
+                                        echo "<tr class=\"tr-ledger\">";
+                                        echo "<td class=\"td-ledger\">";
+                                        echo "&nbsp;" .  $data['code'];
+                                        //echo "&nbsp;" . anchor('report/ledgerst/' . $data['id'], $data['code'], array('title' => $data['code'] . ' Ledger Statement', 'style' => 'color:#000000'));
+                                        echo "</td>";
+                                        echo "<td class=\"td-group\">";
+                                        echo $this->print_space($this->counter);
+                                        echo "&nbsp;" .  $data['name'];
+                                        echo "</td>";
+                                        //echo "<td>Group Account</td>";
+                                        echo "<td>";
+                                        echo $this->print_space($this->counter);
+                                        echo "&nbsp;" .  $data['type'];
+                                        echo "</td>";
+                                        echo "<td>";
+                                        echo $this->print_space($this->counter);
+                                        echo "&nbsp;" .  money_format('%!i', $data['bd_balance']);
+                                        echo "</td>";
+                                        echo "<td>";
+                                        echo $this->print_space($this->counter);
+                                        echo "&nbsp;" .  $data['over'];
+                                        echo " </td>";
+                                        $available_amount=$data['bd_balance'] - $data['consume'];
+
+                                        echo "<td>";
+                                        echo $this->print_space($this->counter);
+                                        echo "&nbsp;" .  money_format('%!i',$available_amount);
+                                        echo " </td>";
+
+                                        //if(!($data['code'] == '50'))
+                                        if(!($data['code'] == $main_budget_code))
+                                        {
+                                                        echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $data['id'] , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
+                                        }
+                                        //echo " &nbsp;" . anchor('budget/delete/' . $data['id'], img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Budget')), array('class' => "confirmClick", 'title' => "Delete Budget")) . "</td>";
+                                echo "</tr>";
+
+                                }
+			}
+
 			if (count($this->budget) > 0)
 			{
 				$this->counter++;
 				foreach ($this->budget as $id => $data)
                 		{
-					$CI =& get_instance();
-					$CI->db->from('groups');
-					$CI->db->select('code')->where('name =', 'Expenses');
-		                        $groups_q = $CI->db->get();
-		                        foreach ($groups_q->result() as $row)
-						$account_code = $row->code;
-
-					//get code of 'Main Budget'
-					$CI->db->from('budgets');
-					$CI->db->select('code')->where('budgetname','Main Budget');
-					$main_budget = $CI->db->get();
-					foreach($main_budget->result() as $row)
-						$main_budget_code = $row->code;	
-
-					//if($data['code'] < 10000 && $data['code'] != '50' &&  $data['code'] != $account_code){
-					if($data['code'] < 10000 && $data['code'] != $main_budget_code &&  $data['code'] != $account_code){
-						$this->sum = $this->sum + $data['bd_balance'];
-						$this->consumed_amount = $this->consumed_amount + $data['consume'];
-					}
-                        
-					//if($data['code'] == '50')
-					if($data['code'] == $main_budget_code)
-					{
-						$this->main_budget_amount = $data['bd_balance'];
-					}
-	
+					if($data['name'] != 'Main Budget'){	
 					//"$this->counter++ ";
 					echo "<tr class=\"tr-ledger\">";
                         	        echo "<td class=\"td-ledger\">";
@@ -256,7 +300,7 @@ class Budgetlist
 					}
 					//echo " &nbsp;" . anchor('budget/delete/' . $data['id'], img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Budget')), array('class' => "confirmClick", 'title' => "Delete Budget")) . "</td>";
         	                echo "</tr>";
-				
+				}
                 		}
 				$this->counter--;
 
