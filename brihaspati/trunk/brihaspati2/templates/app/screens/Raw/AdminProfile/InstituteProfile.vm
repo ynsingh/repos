@@ -21,6 +21,7 @@ $!data.getMessage()
         <option value=+>+</option>
 #end
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type= "text/javascript" src = "/brihaspati/scrpts/countries.js"></script>
 <table bgcolor="$ui.tableColor" width=100%>
 <tr bgcolor="$ui.menuColor">
 	<td>
@@ -79,11 +80,11 @@ $!data.getMessage()
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminFaqExp" value="$!FaqExp"></font></td>
     </tr>
 ##-------------------------------------student expiry days----added by @Tej--------------
-   <tr bgcolor="$ui.menuColor">
+   <tr bgcolor="$ui.tableColor">
 	<td width=30><font face="$ui.sansSerifFont">$brih_student $brih_course $brih_expiry</td>
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="expdays" value="$!expdays"></font></td>
    </tr>
-	<tr>
+	<tr bgcolor="$ui.menuColor">
                                 <td>$brih_officeno</td>
                                 <td><select class="drop" name="Offprefix">
                                         #if($!offprefix=="+")
@@ -110,7 +111,7 @@ $!data.getMessage()
                                 #end
                                 </td>
                         </tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.tableColor">
 				<td>$brih_mobileno</td>
                                 <td><select class="drop" name="Mobprefix">
                                         #if($!mobprefix=="+")
@@ -137,7 +138,7 @@ $!data.getMessage()
                                 #end
                                 </td>
                         </tr>
-                        <tr>
+                        <tr bgcolor="$ui.menuColor">
                                 <td>$brih_homeno</td>
                                 <td><select class="drop" name="Homeprefix">
                                         #if($!homeprefix=="+")
@@ -164,7 +165,7 @@ $!data.getMessage()
                                 #end
 			</td>
                         </tr>
-                        <tr bgcolor="$ui.menuColor">
+                        <tr bgcolor="$ui.tableColor">
                                 <td>$brih_otherno</td>
 				<td><select class="drop" name="Othprefix">
                                         #if($!othprefix=="+")
@@ -191,24 +192,24 @@ $!data.getMessage()
                                 #end
                                 </td>
                         </tr>
-	<tr>
+	<tr bgcolor="$ui.menuColor">
            #formCell("$brih_address" "address" "$!address")
         </tr>
-        <tr bgcolor="$ui.menuColor">
-           #formCell("$Inst_state" "state" "$!state")
+	<tr><td width=30>$brih_country</td>
+       	<td width="50"><select class="drop" id="country"  name ="country"</select></td>
+       	</tr>
+       	<tr bgcolor="$ui.menuColor"><td width=30>$Inst_state</td>
+        <td width="50"><select class="drop" id ="state" name ="state"></select></td>
         </tr>
         <tr>
-           #formCell("$brih_country" "country" "$!country")
-        </tr>
-        <tr bgcolor="$ui.menuColor">
            #formCell("$brih_dept" "department" "$!department")
         </tr>
-        <tr>
+        <tr bgcolor="$ui.menuColor">
            #formCell("$Inst_designation" "designation" "$!designation")
         </tr>
 		
    <tr>
-      <td colspan=2 bgcolor="$ui.menuColor">	
+      <td colspan=2 bgcolor="$ui.tableColor">	
 	  <input type="hidden" name="actionName">
           <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
 	  <input type="reset" class="button-ftextstyle" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
@@ -218,7 +219,9 @@ $!data.getMessage()
    </tr>
 </form>
 </table>
-
+<script language="javascript">
+                populateCountries("country", "state");
+        </script>
 <SCRIPT LANGUAGE="javascript">
 function checkValues(frm,field)
 {

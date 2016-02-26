@@ -70,6 +70,7 @@ public class XMLWriter_InstituteRegistration {
 	 *@param address (String)
 	 *@param city (String)
 	 *@param pincode (String)
+	 *@param country (String)
 	 *@param state (String)
 	 *@param landlineno (String)
 	 *@param domain (String)
@@ -88,7 +89,7 @@ public class XMLWriter_InstituteRegistration {
 	 *@param flag (String)
 	 *return String
 	 */
-	public static String  InstituteRegistrationListXml(String filePath,String name,String address,String city,String pincode,String state,String landlineno,String domain,String type,String affiliation,String website,String regDate,String expDate,String fname,String lname,String email,String designation,String username,String password,String activation,String flag){//last two parameters added by Priyanka
+	public static String  InstituteRegistrationListXml(String filePath,String name,String address,String city,String pincode,String country,String state,String landlineno,String domain,String type,String affiliation,String website,String regDate,String expDate,String fname,String lname,String email,String designation,String username,String password,String activation,String flag){//last two parameters added by Priyanka
 		String message="UnSuccessfull";
                 try{
 			//Create instance of DocumentBuilderFactory
@@ -123,6 +124,11 @@ public class XMLWriter_InstituteRegistration {
 			Element instpincode = doc.createElement("Pincode");
                         Text pincodeText = doc.createTextNode(pincode);
                         instpincode.appendChild(pincodeText);
+			
+			Element instcountry = doc.createElement("Country");
+                        Text countryText = doc.createTextNode(country);
+                        instcountry.appendChild(countryText);
+
 
 			Element inststate = doc.createElement("State");
                         Text stateText = doc.createTextNode(state);
@@ -194,8 +200,9 @@ public class XMLWriter_InstituteRegistration {
        	                institute.appendChild(instname); 
        	                institute.appendChild(instaddress); 
        	                institute.appendChild(instcity); 
-       	                institute.appendChild(instpincode); 
-       	                institute.appendChild(inststate); 
+       	                institute.appendChild(instpincode);
+			institute.appendChild(instcountry);
+       	                institute.appendChild(inststate);
        	                institute.appendChild(instlandline); 
        	                institute.appendChild(instdomain); 
        	                institute.appendChild(insttype); 
@@ -391,6 +398,7 @@ public class XMLWriter_InstituteRegistration {
                                                 String addr=getTagValue("Address",eElement);
                                                 String city=getTagValue("City",eElement);
                                                 String pcode=getTagValue("Pincode",eElement);
+						String country=getTagValue("Country",eElement);
                                                 String state=getTagValue("State",eElement);
                                                 String llno=getTagValue("LandLineNo",eElement);
                                                 String domain=getTagValue("Domain",eElement);
@@ -409,6 +417,7 @@ public class XMLWriter_InstituteRegistration {
                                                 InstfileEntry.setInstituteAddress(addr);
                                                 InstfileEntry.setInstituteCity(city);
                                                 InstfileEntry.setInstitutePincode(pcode);
+						InstfileEntry.setInstituteCountry(country);
                                                 InstfileEntry.setInstituteState(state);
                                                 InstfileEntry.setInstituteLandLineNo(llno);
                                                 InstfileEntry.setInstituteDomain(domain);
@@ -467,6 +476,7 @@ public class XMLWriter_InstituteRegistration {
                                                 		String addr=getTagValue("Address",eElement);
                                                 		String city=getTagValue("City",eElement);
                                                 		String pcode=getTagValue("Pincode",eElement);
+								String country=getTagValue("Country",eElement);
                                                 		String state=getTagValue("State",eElement);
                                                 		String llno=getTagValue("LandLineNo",eElement);
                                                 		String type=getTagValue("Type",eElement);
@@ -484,6 +494,7 @@ public class XMLWriter_InstituteRegistration {
                                                 		InstfileEntry.setInstituteAddress(addr);
                                                 		InstfileEntry.setInstituteCity(city);
                                                 		InstfileEntry.setInstitutePincode(pcode);
+								InstfileEntry.setInstituteCountry(country);
                                                 		InstfileEntry.setInstituteState(state);
                                                 		InstfileEntry.setInstituteLandLineNo(llno);
                                                 		InstfileEntry.setInstituteDomain(domain);

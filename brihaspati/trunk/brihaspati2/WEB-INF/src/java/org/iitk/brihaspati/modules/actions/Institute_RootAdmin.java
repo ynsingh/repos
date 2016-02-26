@@ -169,6 +169,7 @@ public class Institute_RootAdmin extends SecureAction_Admin
                                                 String i_address =ifdetail.getInstituteAddress();
                                                 String i_city =ifdetail.getInstituteCity();
                                                 String i_pincode =ifdetail.getInstitutePincode();
+						String i_country =ifdetail.getInstituteCountry();
                                                 String i_state =ifdetail.getInstituteState();
                                                 String i_landline =ifdetail.getInstituteLandLineNo();
                                                 String i_domain =ifdetail.getInstituteDomain();
@@ -192,6 +193,7 @@ public class Institute_RootAdmin extends SecureAction_Admin
                                                 criteria.add(InstituteAdminRegistrationPeer.INSTIUTE_ADDRESS,i_address);
                                                 criteria.add(InstituteAdminRegistrationPeer.CITY,i_city);
                                                 criteria.add(InstituteAdminRegistrationPeer.PINCODE,i_pincode);
+						criteria.add(InstituteAdminRegistrationPeer.COUNTRY,i_country);
                                                 criteria.add(InstituteAdminRegistrationPeer.STATE,i_state);
                                                 criteria.add(InstituteAdminRegistrationPeer.LANDLINE_NO,i_landline);
                                                 criteria.add(InstituteAdminRegistrationPeer.INSTITUTE_DOMAIN,i_domain);
@@ -538,6 +540,7 @@ public class Institute_RootAdmin extends SecureAction_Admin
 		String instadd=pp.getString("IADDRESS");
 		String instcity=pp.getString("ICITY");
 		String instpincode=pp.getString("IPINCODE");
+		String instcountry=pp.getString("ICOUNTRY");
 		String inststate=pp.getString("ISTATE");
 		String instlandln=pp.getString("ILANDLINE");
 		String instdomain=pp.getString("IDOMAIN");
@@ -570,7 +573,8 @@ public class Institute_RootAdmin extends SecureAction_Admin
 			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instname);	
 			crit.add(InstituteAdminRegistrationPeer.INSTIUTE_ADDRESS,instadd);	
 			crit.add(InstituteAdminRegistrationPeer.CITY,instcity);	
-			crit.add(InstituteAdminRegistrationPeer.PINCODE,instpincode);	
+			crit.add(InstituteAdminRegistrationPeer.PINCODE,instpincode);
+			crit.add(InstituteAdminRegistrationPeer.COUNTRY,instcountry);
 			crit.add(InstituteAdminRegistrationPeer.STATE,inststate);	
 			crit.add(InstituteAdminRegistrationPeer.LANDLINE_NO,instlandln);	
 			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_DOMAIN,instdomain);	

@@ -12,7 +12,6 @@ var reason = "";
     reason += validateIAddress(frm.IADDRESS);
     reason += validateICity(frm.ICITY);
     reason += validatePincode(frm.IPINCODE);
-    reason += validateState(frm.ISTATE);
     reason += validateCountryCode(frm.ccode);
     reason += validateRegionCode(frm.rcode);
     reason += validatePhoneNumber(frm.phnumber);
@@ -77,16 +76,6 @@ function validatePincode(fld){
         } else{
 		fld.style.background = 'White';
 	}
-        return error;
-}
-function validateState(fld){
-        var error="";
-        if (fld.value.length == 0) {
-                fld.style.background = 'Yellow';
-                error="* You havn't enterd State name.\n";
-        }else{
-                fld.style.background = 'White';
-        }
         return error;
 }
 function validateCountryCode(fld){

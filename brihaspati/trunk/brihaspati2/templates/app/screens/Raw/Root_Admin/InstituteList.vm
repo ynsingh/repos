@@ -117,6 +117,7 @@ $!data.getMessage()
         <td>$RemoteInstitute $brih_name</td>
 	<td>$RemoteInstitute $RemoteAddress</td>
 	<td>$Inst_city</td>
+        <td>$brih_country</td>
 	<td>$Inst_state</td>
         <td>$Inst_landline</td>
         <td>$RemoteInstitute $brih_domain</td>
@@ -145,6 +146,9 @@ $!data.getMessage()
 		</td>
 		<td>		
 			$details.getInstituteCity()
+		</td>
+		<td>
+                        $details.getInstituteCountry()
 		</td>
 		<td>
 			$details.getInstituteState()

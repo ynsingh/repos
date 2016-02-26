@@ -21,6 +21,7 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type= "text/javascript" src = "/brihaspati/scrpts/countries.js"></script>
 #macro(option1)
         <option value=+>+</option>
         <option value=0>0</option>
@@ -141,7 +142,7 @@ $!data.getMessage()
    </tr>
    <tr bgcolor="$ui.tableColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_upload $brih_size ($quota_sze)</td>	
-	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="upldsze" value="$!upldsze"></font></td>
+	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="upldsze" value="$!upldsze"></font></td>
    </tr>
 ##--------------------------------------Tweet expiry---------------------
 	<tr bgcolor="$ui.menuColor">
@@ -177,7 +178,7 @@ $!data.getMessage()
                                 #end
                                 </td>
                         </tr>
-	<tr bgcolor="$ui.tableColor">
+	<tr bgcolor="$ui.menuColor">
                                 <td><font face="$ui.sansSerifFonts">$brih_mobileno</font></td>
                                 <td><select class="drop" name="Mobprefix">
                                         #if($!mobprefix=="+")
@@ -204,7 +205,7 @@ $!data.getMessage()
                                 #end
                                 </td>
                         </tr>
-                        <tr bgcolor="$ui.menuColor">
+                        <tr bgcolor="$ui.tableColor">
                                 <td><font face="$ui.sansSerifFonts">$brih_homeno</font></td>
                                 <td><select class="drop" name="Homeprefix">
                                         #if($!homeprefix=="+")
@@ -231,7 +232,7 @@ $!data.getMessage()
                                 #end
 			</td>
                         </tr>
-                        <tr bgcolor="$ui.tableColor">
+                        <tr bgcolor="$ui.menuColor">
                                 <td>$brih_otherno</td>
                                 <td><select class="drop" name="Othprefix">
                                         #if($!othprefix=="+")
@@ -259,25 +260,29 @@ $!data.getMessage()
                                 </td>
                         </tr>
  
-	<tr bgcolor="$ui.menuColor">
+	<tr bgcolor="$ui.tableColor">
 		#formCell("$brih_address" "address" "$!address")
 	</tr>
 	##<tr bgcolor="$ui.menuColor">
-	<tr>
+	#*<tr>
         	#formCell("$Inst_state" "state" "$!state")
         </tr>
 	<tr bgcolor="$ui.menuColor">
         	#formCell("$brih_country" "country" "$!country")
+        </tr>*#
+	 <tr bgcolor="$ui.menuColor"><td width=30>$brih_country</td>
+       <td width="50"><select class="drop" id="country"  name ="country"</select></td>
+       </tr>
+       <tr><td width=30>$Inst_state</td>
+        <td width="50"><select class="drop" id ="state" name ="state"></select></td>
         </tr>
-	##<tr bgcolor="$ui.menuColor">
-	<tr>
+	<tr bgcolor="$ui.menuColor">
         	#formCell("$brih_dept" "department" "$!department")
         </tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr>
         	#formCell("$Inst_designation" "designation" "$!designation")
         </tr>
-	##<tr bgcolor="$ui.menuColor">
-	<tr>
+	<tr bgcolor="$ui.menuColor">
         <td>
                 <font face="$ui.sansSerifFonts">$brih_spring $brih_port $brih_No</font>
         </td>
@@ -285,7 +290,7 @@ $!data.getMessage()
                 <input type="text" id="port" title="Please use port like 80XX" name="port" value="$!port" maxlength="4" onkeypress="return isNumberKey(event)" >
         </td>
         </tr>
-	<tr bgcolor="$ui.menuColor">
+	<tr>
 	<td> <font face="$ui.sansSerifFonts">$brih_data $brih_storage $brih_option</font></td>
 	<td> 
 
@@ -371,6 +376,9 @@ $!data.getMessage()
    </tr>
 </form>
 </table>
+<script language="javascript">
+                populateCountries("country", "state");
+        </script>
 
 <SCRIPT LANGUAGE="javascript">
 

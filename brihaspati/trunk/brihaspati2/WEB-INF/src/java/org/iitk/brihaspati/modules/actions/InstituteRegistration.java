@@ -85,7 +85,7 @@ import org.apache.commons.logging.LogFactory;
 public class InstituteRegistration extends VelocitySecureAction
 {
 	private Log log = LogFactory.getLog(this.getClass());
-	private String institutename = "", instituteaddress = "", institutecity = "" ,institutepincode = "", institutestate = "", institutelandline = "", institutedomain = "", institutetype = "", instituteaffiliation = "", institutewebsite = "", instituteadminfname = "", instituteadminlname = "", instituteadminemail = "", instituteadmindesignation = "", instituteadminusername = "", instituteadminpassword = "", instituteregisterdate = "" ;
+	private String institutename = "", instituteaddress = "", institutecity = "" ,institutepincode = "",institutecountry = "", institutestate = "", institutelandline = "", institutedomain = "", institutetype = "", instituteaffiliation = "", institutewebsite = "", instituteadminfname = "", instituteadminlname = "", instituteadminemail = "", instituteadmindesignation = "", instituteadminusername = "", instituteadminpassword = "", instituteregisterdate = "" ;
 	
 	 Properties pr ;
          String fileName=new String();
@@ -150,7 +150,7 @@ public class InstituteRegistration extends VelocitySecureAction
                                 institutecity = parameterparser.getString("ICITY");
 				//pincode must be 6 digit
 				institutepincode = parameterparser.getString("IPINCODE");
-
+				institutecountry = parameterparser.getString("ICOUNTRY");
                                 institutestate = parameterparser.getString("ISTATE");
                                 String ccode = parameterparser.getString("ccode");
                                 String rcode = parameterparser.getString("rcode");
@@ -253,13 +253,13 @@ public class InstituteRegistration extends VelocitySecureAction
                                 		Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", instituteadminemail, subject, "", Lang);
 				
 						//...............
-						String writeinxml=XMLWriter_InstituteRegistration.InstituteRegistrationListXml(filepath,institutename,instituteaddress,institutecity,institutepincode,institutestate,institutelandline,institutedomain,institutetype,instituteaffiliation,institutewebsite,curdate,"2020-12-01",instituteadminfname,instituteadminlname,instituteadminemail,instituteadmindesignation,adminusername,instpassword,a_key,flag1);
+						String writeinxml=XMLWriter_InstituteRegistration.InstituteRegistrationListXml(filepath,institutename,instituteaddress,institutecity,institutepincode,institutecountry,institutestate,institutelandline,institutedomain,institutetype,instituteaffiliation,institutewebsite,curdate,"2020-12-01",instituteadminfname,instituteadminlname,instituteadminemail,instituteadmindesignation,adminusername,instpassword,a_key,flag1);
 						rundata.setMessage(mu.ConvertedString("cnfrm_mail",Lang));
 					   }//if
 					   else
 					   {
 						flag1="1";
-						String writeinxml=XMLWriter_InstituteRegistration.InstituteRegistrationListXml(filepath,institutename,instituteaddress,institutecity,institutepincode,institutestate,institutelandline,institutedomain,institutetype,instituteaffiliation,institutewebsite,curdate,"2020-12-01",instituteadminfname,instituteadminlname,instituteadminemail,instituteadmindesignation,adminusername,instpassword,"",flag1);
+						String writeinxml=XMLWriter_InstituteRegistration.InstituteRegistrationListXml(filepath,institutename,instituteaddress,institutecity,institutepincode,institutecountry,institutestate,institutelandline,institutedomain,institutetype,instituteaffiliation,institutewebsite,curdate,"2020-12-01",instituteadminfname,instituteadminlname,instituteadminemail,instituteadmindesignation,adminusername,instpassword,"",flag1);
 
 						 // Maintain Log
                                                 java.util.Date date= new java.util.Date();

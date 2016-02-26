@@ -50,6 +50,7 @@ public class InstituteFileEntry
 	private String instaddr;
 	private String city;
 	private String pcode;
+	private String country;
 	private String state;
         private String landlineno;
         private String instdomain;
@@ -200,6 +201,14 @@ public class InstituteFileEntry
         public String getInstituteLandLineNo()
         {
                 return landlineno;
+        }
+	public void setInstituteCountry(String country)
+        {
+                this.country=country;
+        }
+        public String getInstituteCountry()
+        {
+                return country;
         }
 	public void setInstituteState(String state)
         {
