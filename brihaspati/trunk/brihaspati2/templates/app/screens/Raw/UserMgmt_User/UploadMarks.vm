@@ -141,6 +141,7 @@ $!data.getMessage()
         <tr><td><label><b>$brih_alias<font color="red">*</font></b></label></td><td> <input type="text" name="alias" value=""></td>
         <td>
         <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$WikiSave" onClick="exportDataToTextarea(document.show,this)";>
+         <button type="cancel" class="button-ftextstyle" onclick="window.location='call,UserMgmt_User,UploadMarks.vm';return false;">Cancel</button>
 </td></tr>
 #else
 <tr><td>

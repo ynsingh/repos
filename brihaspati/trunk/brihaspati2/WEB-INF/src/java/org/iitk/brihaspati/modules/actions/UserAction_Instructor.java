@@ -561,7 +561,10 @@ public class UserAction_Instructor extends SecureAction_Instructor
                         String E=pp.getString("E","");
                         String courseid=(String)user.getTemp("course_id","");
                         String xmlPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid);
+			msg1=MultilingualUtil.ConvertedString("c_msg5",LangFile);
+			data.setMessage(msg1);
                         File xmlFile=new File(xmlPath+"/configuregrade.xml");
+
                         //File xmlFile1=new File(xmlPath+"/configuregrade.xml");
                         //xmlFile1.delete();
                         xmlFile.delete();

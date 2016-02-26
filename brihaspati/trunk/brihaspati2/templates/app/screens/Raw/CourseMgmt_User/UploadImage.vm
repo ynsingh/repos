@@ -181,23 +181,24 @@ $!data.getMessage()
         </tr>
         <tr>
 	        <td> <font size=2><b> $brih_a </b></font></td>
-		<td><input type="text" name=A  size=10 value=$!percentage ></td>
+		<td><input type="text" name=A  size=10 onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength = "2" value=$!percentage ></td>
+		<span id="error" style="color: Red; display: none">*Please Enter Numeric Values Only</span>
         </tr>
         <tr bgcolor="$ui.tableColor">
 		<td><font size=2><b> $brih_b </b></font></td>
-                <td><input type="text" name=B  size=10 value=$!percentage1 ></td>
+                <td><input type="text" name=B  size=10 onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength = "2" value=$!percentage1 ></td>
         </tr>
 	<tr>
 		<td><font size=2><b> $brih_c </b></font></td>
-                <td><input type="text" name=C size=10 value=$!percentage2 ></td>
+                <td><input type="text" name=C size=10 onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength = "2" value=$!percentage2 ></td>
 	</tr>
 	<tr bgcolor="$ui.tableColor">
                 <td><font size=2><b> $brih_d </b></font></td>
-                <td><input type="text" name=D  size=10 value=$!percentage3 ></td>
+                <td><input type="text" name=D  size=10 onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength = "2" value=$!percentage3 ></td>
         </tr>
 	<tr>
                 <td><font size=2><b> $brih_e </b></font></td>
-                <td><input type="text" name=E  size=10 value=$!percentage4 ></td>
+                <td><input type="text" name=E  size=10 onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength = "2" value=$!percentage4 ></td>
         </tr>
 	<tr bgcolor="$ui.tableColor" >
 		<td colspan=2 align="left">
@@ -292,3 +293,14 @@ $!data.getMessage()
                 return false;
         }	
 </SCRIPT>
+<script type="text/javascript">
+        var specialKeys = new Array();
+        specialKeys.push(8); //Backspace
+        function IsNumeric(e) {
+            var keyCode = e.which ? e.which : e.keyCode
+            var ret = ((keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) != -1);
+            document.getElementById("error").style.display = ret ? "none" : "inline";
+        return ret
+
+}
+    </script>
