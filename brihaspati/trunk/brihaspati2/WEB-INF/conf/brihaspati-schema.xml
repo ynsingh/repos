@@ -277,6 +277,7 @@
          <column name="DUE_DATE" required="true" type="DATE"/>
 	 <column name="PER_DATE" required="true" type="DATE"/>
 	 <column name="GRADE" required="true" size="3" type="INTEGER"/>
+	 <column name="PUBLSH_STATUS" required="true" size="1" type="VARCHAR" DEFAULT="0"/>
 	<unique>
                 <unique-column name="ASSIGN_ID"/>
         </unique>

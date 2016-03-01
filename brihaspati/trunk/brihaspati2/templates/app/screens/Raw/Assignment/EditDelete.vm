@@ -104,17 +104,31 @@ $!data.getMessage()
 			<td width="2%" align="Center"> $i  </td>  ## Serial Number
 			<td width="10%" align="Center"> $!e.getStudentname()  </td>  ##get topic name in student name
 			<td width="10%" align="Center">   ##  Assignment file
-			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$e.getStudentfile()).addPathInfo("filename",$e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment</a>
+			#if($e.getAssignmentfile() == "")
+			#else
+				<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$e.getStudentfile()).addPathInfo("filename",$e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment</a>
+			#end
+			#if ($e.getRollNo() == "")
+			#else
+			        <a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$e.getRollNo()).addPathInfo("date",$e.getAssignmentdate()).addPathInfo("user",$e.getFullName()).addPathInfo("TopicName",$e.getStudentname())","newWin"); style="text-decoration:none">$brih_instruction</a>
+			#end
+			
 			</td>
   			<td width="20%" align="Center"> $!e.getDuedate() </td>
 			<td width="10%" align="Center"> $!e.getmaxgrade() </td> 
 			<td width="10%" align="Center"> 
 				#if($e.getBoolean() == true)
 					<font color="skyblue"> Update </font>
+				
 				#else
 					<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("mode","Update").addPathInfo("cid",$!e.getStudentfile()).addPathInfo("filename",$e.getAssignmentfile()).addPathInfo("tmpId", $e.getAssignmentId()) style="text-decoration:none">$brih_update</a>&nbsp; &nbsp;
 				#end
 				<a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("topic", $!e.getStudentname()).addPathInfo("cid", $!e.getStudentfile()).setAction("Assignments").addPathInfo("actionName","eventSubmit_doDelete") onclick="javascript:return confirm('Do you want to delete this Assignment')" style="text-decoration:none"><b>$brih_delete</b></a>
+				#if($e.getPubstatus() == "1")
+				<a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("astat", $!e.getPubstatus()).addPathInfo("cid", $!e.getAssignmentId()).setAction("Assignments").addPathInfo("actionName","eventSubmit_doPublish") onclick="javascript:return confirm('Do you want to Publish this Assignment')" style="text-decoration:none"><b>$brih_publish</b></a>
+				#else
+				<a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("astat", $!e.getPubstatus()).addPathInfo("cid", $!e.getAssignmentId()).setAction("Assignments").addPathInfo("actionName","eventSubmit_doPublish") onclick="javascript:return confirm('Do you want to Unpublish this Assignment')" style="text-decoration:none"><b>$brih_unpublish</b></a>
+				#end
 			</td>
 	#set($i=$i+1)
 	#end	

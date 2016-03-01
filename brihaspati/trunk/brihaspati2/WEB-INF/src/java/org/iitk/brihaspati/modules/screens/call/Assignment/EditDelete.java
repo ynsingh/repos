@@ -71,6 +71,10 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
+import org.iitk.brihaspati.modules.utils.NewsDetail;
+import org.iitk.brihaspati.om.NewsPeer;
+import org.iitk.brihaspati.om.News;
+
 	/**
 	 *   This class contains code for disply all assignment
 	 *   only instructor and do update/delete
@@ -147,6 +151,7 @@ public class EditDelete extends  SecureScreen
 				*/
                                 Assignment element=(Assignment)(u.get(i));
                                 String Assid=(element.getAssignId());
+				String pubst=(element.getPublshStatus());
                                 if(Assid.startsWith(courseid))
                                 {
 					//////////////////////////////
@@ -154,13 +159,15 @@ public class EditDelete extends  SecureScreen
 					//ErrorDumpUtil.ErrorLog(" Assid ==="+ Assid );
 					AssignmentDetail assignmentdetail=new AssignmentDetail();
 					TopicMetaDataXmlReader topicmetadata = null;
+
+					// This block for the grade file
 					try{
 						Vector gradeList=new Vector();
-						//TopicMetaDataXmlReader topicMetaData;
-						topicmetadata=new TopicMetaDataXmlReader(Assign+"/"+Assid+"/__Gradefile.xml");
-                        			gradeList = topicmetadata.getAssignmentDetails1();
 			                        File f2= new File(Assign+"/"+Assid+"/__Gradefile.xml");
                         			if(f2.exists()){
+							//TopicMetaDataXmlReader topicMetaData;
+							topicmetadata=new TopicMetaDataXmlReader(Assign+"/"+Assid+"/__Gradefile.xml");
+	                        			gradeList = topicmetadata.getAssignmentDetails1();
 			                               	//ErrorDumpUtil.ErrorLog("Grade size in else Grade=="+ gradeList.size());
                         				if(gradeList!=null){
 								assignmentdetail.setBoolean(true);
@@ -170,42 +177,94 @@ public class EditDelete extends  SecureScreen
 							assignmentdetail.setBoolean(false);
 					
 					}	
-					catch(Exception e){}
-					//////////////////////////////
+					catch(Exception ex){data.setMessage("Error in reading grade file under editdelete assignment screen " + ex);}
+					// This block for assignment file 
 					String topicname=(element.getTopicName());
                                         String str2=(element.getTopicName());
 		                        Vector Assignmentlist=new Vector();
 					//TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(Assign+"/"+Assid+"/__file.xml");
-					topicmetadata=new TopicMetaDataXmlReader(Assign+"/"+Assid+"/__file.xml");
-		                        Assignmentlist=topicmetadata.getAssignmentDetails(); //Grade
 					String filegrade=""; //Assignment File
 					String fileAssignment=""; //Due Date
 					String filedate="";
-					for(Object val : Assignmentlist) {
-	                                	String filereader =((FileEntry)val).getfileName();
-                                        	String username=((FileEntry)val).getUserName();
-					       	if(filereader.startsWith("AssignmentFile")||StringUtils.isBlank(filereader))
-                                        	{
-                                                	fileAssignment=filereader;
-                                                	filegrade =((FileEntry)val).getGrade();
-                                                	filedate  =((FileEntry)val).getDuedate();
-							break;
-                                        	}
+					try{
+						File f2= new File(Assign+"/"+Assid+"/__file.xml");
+						if(f2.exists()){
+							topicmetadata=new TopicMetaDataXmlReader(Assign+"/"+Assid+"/__file.xml");
+				                        Assignmentlist=topicmetadata.getAssignmentDetails(); //Grade
+							for(Object val : Assignmentlist) {
+	                                			String filereader =((FileEntry)val).getfileName();
+		                                        	String username=((FileEntry)val).getUserName();
+							       	if(filereader.startsWith("AssignmentFile")||StringUtils.isBlank(filereader))
+                                		        	{
+                                                			fileAssignment=filereader;
+									if(filereader.startsWith("AssignmentFile")){
+                		                                		filegrade =((FileEntry)val).getGrade();
+                                		                		filedate  =((FileEntry)val).getDuedate();
+									}
+									break;
+                		                        	}
+							}		
+						}
+						else{
+							filegrade =Integer.toString(element.getGrade());
+							filedate  =(element.getDueDate()).toString();
+					
+						}
 					}
-					//////////////////////////////
+					catch (Exception ex){data.setMessage("Error in reading assignment file under editdelete assignment screen  "+Assignmentlist +"-"+topicmetadata +"-" + ex);}
+					// This block for the Instruction set
+					
+					int gid=GroupUtil.getGID(courseid);
+                                	String g_Id=Integer.toString(gid);
+                                	crit=new Criteria();
+                                	crit.add(NewsPeer.GROUP_ID,gid);
+                                	List news=NewsPeer.doSelect(crit);
+					String news_id="", senderName="",pdate="";
+//                                	Vector entry=new Vector();
+                                	for(int j=0;j<news.size();j++)
+                                	{
+                                        //	String news_title=new String(((News)news.get(j)).getNewsTitle());
+                                        	String news_desc=new String(((News)news.get(j)).getNewsDescription());
+
+                                        	boolean flag=StringUtils.contains(news_desc, topicname);
+                                        //ErrorDumpUtil.ErrorLog("bool return from screen file----"+flag);
+                                                if(flag)
+                                                {
+                                        	         News ele=(News)(news.get(j));
+                                                        // String news_subject=(ele.getNewsTitle());
+                                                         news_id=Integer.toString(ele.getNewsId());
+                                                         int userId=(ele.getUserId());
+                                                         senderName=UserUtil.getLoginName(userId);
+                                                         Date pd=ele.getPublishDate();
+                                                         pdate=pd.toString();
+							 break;
+                                                       //  NewsDetail newsD=new NewsDetail();
+                                                       //  newsD.setNews_Subject(news_subject);
+                                                       //  newsD.setNews_ID(news_id);
+                                                     //    newsD.setSender(senderName);
+                                                   //      newsD.setPDate(pdate);
+                                                 //        entry.add(newsD);
+                                                }
+                                        }
+                                       // context.put("detail",entry);
+                                       
 					//AssignmentDetail assignmentdetail=new AssignmentDetail();
+
 					assignmentdetail.setAssignmentId(id);
-					//////////////////////////////
 					assignmentdetail.setStudentname(topicname);
 					assignmentdetail.setStudentfile(Assid);
 					assignmentdetail.setAssignmentfile(fileAssignment);
 					assignmentdetail.setDuedate(filedate);
 					assignmentdetail.setmaxgrade(filegrade);
+					assignmentdetail.setPubstatus(pubst);
+					assignmentdetail.setRollNo(news_id);
+					assignmentdetail.setFullName(senderName);
+					assignmentdetail.setAssignmentdate(pdate);
 					w.add(assignmentdetail);
 				}//if
                         }//for
 			context.put("Assignmentlist",w);
 		} //try
-                catch(Exception e){ }
+                catch(Exception e){data.setMessage("Error in screen under edit delete assignment" + e); }
         }
 }

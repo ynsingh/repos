@@ -59,6 +59,7 @@ public class AssignmentDetail
         private String AssignmentId;
         private String FullName;
         private String RollNo;
+        private String Pubstatus;
         private boolean tmpBool;
 	
 	public void setBoolean(boolean  tmpBool){
@@ -77,6 +78,16 @@ public class AssignmentDetail
         {
                 return FullName;
         }
+
+	public void setPubstatus(String pubst )
+        {
+                this.Pubstatus=pubst;
+        }
+        public String getPubstatus()
+        {
+                return Pubstatus;
+        }
+
 
 	public void setRollNo(String RollNo)
         {

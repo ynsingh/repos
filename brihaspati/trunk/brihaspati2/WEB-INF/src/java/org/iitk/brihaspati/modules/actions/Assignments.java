@@ -125,6 +125,11 @@ public class Assignments extends SecureAction
                         String year=pp.getString("Start_year");
                         String month=pp.getString("Start_mon");
                         String day=pp.getString("Start_day");
+                        String pubst=pp.getString("publish");
+			if (pubst == "0")
+				pubst="0";
+			else
+				pubst="1";
 
 			/**
                         *Get mode for update and delete Assingnment
@@ -326,6 +331,7 @@ public class Assignments extends SecureAction
                                                 crit1.add(AssignmentPeer.DUE_DATE,Post_date);
                                                 crit1.add(AssignmentPeer.PER_DATE,Post_date);
                                                 crit1.add(AssignmentPeer.GRADE,Grade);
+                                                crit1.add(AssignmentPeer.PUBLSH_STATUS,pubst);
 						//ErrorDumpUtil.ErrorLog("I am here 289 ====>"+mode + agroup_name + courseid + DB_subject1 + Cur_date + Post_date + Post_date + Grade);
 						if (mode.equals("Update")) {
 //							ErrorDumpUtil.ErrorLog("In Assignment Update====>");
@@ -455,6 +461,7 @@ public class Assignments extends SecureAction
                                                 crit1.add(AssignmentPeer.DUE_DATE,Post_date);
                                                 crit1.add(AssignmentPeer.PER_DATE,Post_date);
                                                 crit1.add(AssignmentPeer.GRADE,Grade);
+						crit1.add(AssignmentPeer.PUBLSH_STATUS,pubst);
 //						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+agroup_name);
 //						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+mode + agroup_name + courseid + DB_subject1 + Cur_date + Post_date + Post_date + Grade);
 //						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+crit1);
@@ -866,7 +873,7 @@ public class Assignments extends SecureAction
                                 //data.setMessage("The file for uploading should have '.txt' extension !! ");
 			}
                 }//try
-                catch(Exception ex) {    }
+                catch(Exception ex) { data.setMessage("The error in  RePostAns under  Assignment action  !!"+ex);   }
         }
 	/**
         * Place all the data object in the context for use in the template.
@@ -883,21 +890,21 @@ public class Assignments extends SecureAction
                         String msg="";
 				
                         ParameterParser pp=data.getParameters();
-                        String DB_subject1=pp.getString("topicList");
+                        String DB_subject1=pp.getString("topicList","");
                         context.put("topicList",DB_subject1);
 			String mode=pp.getString("mode","");
                         context.put("mode",mode);
 
-                        String username1=pp.getString("topicList1");
+                        String username1=pp.getString("topicList1","");
                         context.put("topicList1",username1);
-                        String newgrade=pp.getString("newgrade");
+                        String newgrade=pp.getString("newgrade","");
                         context.put("newgrade",newgrade);
                         User user=data.getUser();
-                        String GetUser=pp.getString("GetUser");
+                        String GetUser=pp.getString("GetUser","");
                         context.put("GetUser",GetUser);
                         String username=user.getName();
                         String courseid=(String)user.getTemp("course_id","");
-                        String DB_subject=pp.getString("contentTopic");
+                        String DB_subject=pp.getString("contentTopic","");
                         if(DB_subject.length()!=0)
                         {
                                 Criteria crit=new Criteria();
@@ -918,7 +925,7 @@ public class Assignments extends SecureAction
 				}
                         }
                 }
-                catch(Exception ex) {    }
+                catch(Exception ex) { data.setMessage("The error in dosubmitView under  Assignment action  !!"+ex);   }
 	}
 	
 	/**
@@ -1463,6 +1470,42 @@ public class Assignments extends SecureAction
                	context.put("topicList",topicList);
 
         }
+
+	/**
+	 *  This method is invoked when publish or unpublish action called 
+	 *  @param data RunData
+	 *  @param context Context
+	 *  @exception Exception, a generic exception
+	 *  @return nothing
+	 **/
+	public void PubUnpub(RunData data,Context context)
+        {
+		try{
+			String LangFile=data.getUser().getTemp("LangFile").toString();
+	                ParameterParser pp=data.getParameters();
+        	        String assid=pp.getString("cid","");
+                	String asspubst=pp.getString("astat","");
+			if (asspubst.equals("0"))
+				asspubst="1";
+			else
+				asspubst="0";
+	                /**
+			 * Update status Assingnment in database 
+			 **/
+
+	                Criteria crit=new Criteria();
+                	crit.add(AssignmentPeer.ID, assid);
+	                crit.add(AssignmentPeer.PUBLSH_STATUS, asspubst);
+        	        AssignmentPeer.doUpdate(crit);
+			if (asspubst.equals("0"))
+				data.setMessage(MultilingualUtil.ConvertedString("assignment_msg20",LangFile));
+			else
+				data.setMessage(MultilingualUtil.ConvertedString("assignment_msg21",LangFile));
+		}
+		catch (Exception ex){data.setMessage("Error in publish /unpublish assignment" + ex);}
+		
+        }
+
 	
 	public void doPerform(RunData data,Context context)
         {       try
@@ -1480,6 +1523,7 @@ public class Assignments extends SecureAction
                                 do_submit(data,context);
                         else if(action.equals("RePostAns"))
                                 RePostAns(data,context);
+				//for do search
                         else if(action.equals("dosubmitView"))
                                 dosubmitView(data,context);
                         else if(action.equals("PostGrade"))
@@ -1492,6 +1536,8 @@ public class Assignments extends SecureAction
                                 MarkUpload(data,context);
 			else if(action.equals("Go"))
                                 Go(data,context);
+			else if(action.equals("eventSubmit_doPublish"))
+                                PubUnpub(data,context);
                         else
                         {       String LangFile=data.getUser().getTemp("LangFile").toString();
                                 String msg=MultilingualUtil.ConvertedString("action_msg",LangFile);

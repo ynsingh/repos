@@ -82,7 +82,7 @@ import org.iitk.brihaspati.modules.utils.NewsDetail;
 	 *   @author  <a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
 	 *   @author  <a href="smita37uiet@gmail.com">smita Pal</a>
 	 *   @author  <a href="Tej Bahadur@gmail.com">Tej Bahadur</a>
-	 * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+	 *   @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
 	 * @modified date: 31-03-2014(Dewanshu Singh)
 	*/
 
@@ -122,6 +122,8 @@ public class ViewAss extends  SecureScreen
 
 			Criteria crit=new Criteria();
                         crit.add(AssignmentPeer.GROUP_NAME,courseid);
+			if(Role.equals("student"))
+				crit.add(AssignmentPeer.PUBLSH_STATUS,0);
                         List u=AssignmentPeer.doSelect(crit);
                         for(int i=0;i<u.size();i++)
                         {
@@ -146,6 +148,10 @@ public class ViewAss extends  SecureScreen
 			if((Role.equals("instructor"))||(Role.equals("teacher_assistant"))){	
                         	String GetUser =pp.getString("GetUser","");
 				Criteria crit3=new Criteria();
+				// if topic list is null and getuser have the value
+				// then get the user id for that user and give the list
+				// of assignment that he has uploaded and pending assignment.
+				// else
                         	crit3.add(TurbineUserGroupRolePeer.GROUP_ID,uid);
                         	crit3.and(TurbineUserGroupRolePeer.ROLE_ID,3);
                         	List v3=TurbineUserGroupRolePeer.doSelect(crit3);
@@ -247,7 +253,7 @@ public class ViewAss extends  SecureScreen
 
 					/**
 					 * Getting the filename,  through xml file
-					 *@see TopicMetaDataXmlReader in Util.
+					 * @see TopicMetaDataXmlReader in Util.
 					 */
 					
 					String filereader =((FileEntry) Assignmentlist.elementAt(c)).getfileName();
@@ -274,7 +280,7 @@ public class ViewAss extends  SecureScreen
 						studentfilecheck="ok";
 						/**
                         	                * Getting the Due Date,UserName,  through xml file
-                                	        *@see TopicMetaDataXmlReader in Util.
+                                	        * @see TopicMetaDataXmlReader in Util.
                                         	*/
 						
 						duedate =((FileEntry) Assignmentlist.elementAt(c)).getDuedate();
@@ -283,7 +289,7 @@ public class ViewAss extends  SecureScreen
 					        try{
 							
 	                                        /**
-        	                                *@see TopicMetaDataXmlReader in Util.
+        	                                * @see TopicMetaDataXmlReader in Util.
                 	                        */
 							
         	                                TopicMetaDataXmlReader topicmetadata1=null;
@@ -299,7 +305,7 @@ public class ViewAss extends  SecureScreen
                                                        		{
                                                   	     		/**
                                                        			* Getting the username  through xml file
-                                                       			*@see TopicMetaDataXmlReader in Util.
+                                                       			* @see TopicMetaDataXmlReader in Util.
                                                        			*/
 										
 									String filereader1 =((FileEntry) Assignmentlist1.elementAt(intgrade)).getUserName();
@@ -324,9 +330,9 @@ public class ViewAss extends  SecureScreen
 					      	catch(Exception e){     }
                         		} //end else
 				}// for
-			// get the full of student 
+				// get the full of student 
 				String stFName=UserUtil.getFullName(UserUtil.getUID(studentname));
-			// Get the roll no of this student		
+				// Get the roll no of this student		
 				String  stRlNo=CourseProgramUtil.getUserRollNo(studentname,courseid);
 
 				Date date1 = new Date();

@@ -170,13 +170,14 @@ $!data.getMessage()
 		#end
 	</tr>
         <tr bgcolor="$ui.menuColor">
-			#if($mode!="Update")
-        	                #fileUpload ("<b> $brih_at_file </b> " "file")
-			#else
-                        	#fileUpload ("<b> $brih_at_file </b> " "file")
-			#end
+                #fileUpload ("<b> $brih_at_file<font color=RED> * </font> </b> " "file")
 	</tr>
 	<tr>
+		<td> <b>$brih_publish</b></td>
+		<td><INPUT TYPE="CHECKBOX" name="publish" value="0" checked>  </td>
+		
+	</tr>
+	<tr bgcolor="$ui.menuColor">
 		<td colspan=2>
 		#if($mode!="Update")
 		<input type="button" class="button-ftextstyle" name="brih_upload" value="$brih_upload" onClick="checkBlank(document.uploadform,this);" />
@@ -212,10 +213,10 @@ $!data.getMessage()
         {
 		editor.setMode("textmode")
                 //if( (uploadform.contentTopic.value!="")  && (uploadform.message.value!="")  && (uploadform.grade.value!="")&& uploadform.file.value!="")
-		if((uploadform.contentTopic.value!="") && (uploadform.grade.value!=""))
+		if((uploadform.contentTopic.value!="") && (uploadform.grade.value!="") && (uploadform.file.value!=""))
                 {
-			if(uploadform.message.value!="" || uploadform.file.value!="")
-                        {
+		//	if(uploadform.message.value!="" || uploadform.file.value!="")
+                  //      {
 	                        if(isNumberString(uploadform.grade.value))
         	                {
                 	                alert("Max Grade should be an positive value");
@@ -233,13 +234,27 @@ $!data.getMessage()
 
                         	uploadform.actionName.value=field.name;
 	                        uploadform.submit();
+		//	}
+                     //   else
+                     //   {
+                     //           alert("Please fill Instruction field or attach any file !!");
+                     //   }		
+                }
+		else
+		{
+			if((uploadform.contentTopic.value!="") && (uploadform.grade.value!=""))
+			{
+				if(uploadform.file.value == "")
+				{
+                         	        alert("Please attach any ( doc, txt, pdf etc) file. ");
+                                	frm.file.focus();
+	                         	return false;
+                        	}
 			}
-                        else
-                        {
-                                alert("Please fill Instruction field or attach any file !!");
-                        }		
-                }else{
-                        alert("Please fill all mandatory  fields. !!");
+			else 
+			{ 
+				alert("Please fill all mandatory  fields () !!"); 
+			}
 		}
 		editor.setMode("wysiwyg")
         }
