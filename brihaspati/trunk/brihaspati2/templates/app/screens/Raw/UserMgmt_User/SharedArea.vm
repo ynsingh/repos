@@ -10,7 +10,7 @@
 
 
 $page.setBgColor($ui.bgcolor)
-$page.setTitle("$brih_home |$personal $area |$shared $area")
+$page.setTitle("Home |Personal area | Shared area")
 $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>

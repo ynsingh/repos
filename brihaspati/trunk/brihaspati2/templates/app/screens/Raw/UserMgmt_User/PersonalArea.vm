@@ -9,7 +9,7 @@
  *#
 
 $page.setBgColor($ui.bgcolor)
-$page.setTitle("$personal $area")
+$page.setTitle("Home | Personal area")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 

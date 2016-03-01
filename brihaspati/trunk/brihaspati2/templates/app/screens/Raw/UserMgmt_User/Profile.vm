@@ -53,7 +53,7 @@ $!data.getMessage()
 	 #end
 	<tr>
                                 <td>$brih_officeno</td>
-                                <td><select name="Offprefix" class="drop">
+                                <td colspan =3><select name="Offprefix" class="drop">
 					#if($!offprefix=="+")
                                         	#option1()
                                         #else
@@ -84,7 +84,7 @@ $!data.getMessage()
         <tr>
                                 <td>$brih_mobileno</td>
 
-                                <td><select name="Mobprefix" class="drop">
+                                <td colspan =3><select name="Mobprefix" class="drop">
                                         #if($!mobprefix=="+")
                                         	#option1()
                                         #else   
@@ -115,7 +115,7 @@ $!data.getMessage()
                         <tr>
                                 <td>$brih_homeno</td>
 
-                                <td><select name="Homeprefix" class="drop">
+                                <td colspan =3><select name="Homeprefix" class="drop">
 					#if($!homeprefix=="+")
                                         	#option1()
                                         #else
@@ -145,7 +145,7 @@ $!data.getMessage()
                         <tr>
                                 <td>$brih_otherno</td>
 
-                                <td><select name="Othprefix" class="drop">
+                                <td colspan =3><select name="Othprefix" class="drop">
 					#if($!othprefix=="+")
                                         	#option1()
                                         #else
@@ -172,13 +172,15 @@ $!data.getMessage()
 				#end
 				</td>
                         </tr>
-	<td> Select Country</td>
-       <td> <select id="country"  name ="country"></select></td>
-       <tr> <td>Select State</td>
-        <td><select id ="state" name ="state"></select><td></tr>
         <tr>
            #formCell("$brih_address" "address" "$!address")
          </tr>
+	<tr><td width=30>$brih_country</td>
+        <td width="50"><select class="drop" id="country"  name ="country"</select></td>
+        </tr>
+        <tr><td width=30>$Inst_state</td>
+        <td width="50"><select class="drop" id ="state" name ="state"></select></td>
+        </tr>
         #*<tr>
            #formCell("$Inst_state" "state" "$!state")
          </tr>

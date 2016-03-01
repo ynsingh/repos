@@ -11,7 +11,7 @@
 </head>
 
 $page.setBgColor($ui.bgcolor)
-$page.setTitle("$brih_file $brih_upload")
+$page.setTitle("Home | Personal Area | Upload Content ")
 $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
 
