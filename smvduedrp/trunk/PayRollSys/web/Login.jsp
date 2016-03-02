@@ -31,7 +31,7 @@
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
 *  Modified Date: 02 Dec 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
-*  Om Prakash omprakashkgp@gmail.com
+*  Modified Date: Feb 2016, Om Prakash omprakashkgp@gmail.com  IITK
 --%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
@@ -151,6 +151,9 @@
                                    <li><a href="http://202.141.40.215/WebApp/wiki/index.php/PayRoll_System" target="_blank">Help Document</a></li>
                                    <li><a href='adminLogin/brihaspatiMainLogin.jsf' target="_blank">Brihaspati Server Authentication</a></li>
                                    <li><a href='http://202.141.40.215/WebApp/wiki/index.php/Release_Notes' target="_blank">Release Notes</a></li>
+                                   <li><a href="usermanual/payAdmin/adminInterface.html">User Manual of Admin Interface</a></li>
+                                   <li><a href="usermanual/instAdmin/instAdminInterface.html">User Manual of Institute Admin Interface</a></li>
+                                   <li><a href="usermanual/payrollEmp/employeeInterface.html">User Manual of Employee Interface</a></li>
                                    <%--<li><a href="http://www.sakshat.ac.in">NMEICT home page</a></li>--%>
                                    
                                 </ul>

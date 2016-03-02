@@ -72,7 +72,7 @@ import org.smvdu.payroll.user.ActiveProfile;
  *
  *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
  *  Modified Date: 4 AUG 2014, 17 Jan 2015 IITK  IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
- *
+ *  Date 06-02-2016, Aadhar No and Category type,  Om Prakash omprakashkgp@gmail.com  IITK 
  */
 public class Employee implements Serializable {
 
@@ -534,7 +534,8 @@ public class Employee implements Serializable {
                 fc.addMessage("", message);
                 return;
             }
-            if(this.getAadhaarNo().matches(".*[0-9]{10}.*") == false || this.getAadhaarNo().length()!=12)
+            //if(this.getAadhaarNo().trim().matches(".*[0-9].*") == false || this.getAadhaarNo().length()!=12)
+            if(this.getAadhaarNo().trim().matches(".*[0-9]{12}.*") == false)
             {
                 FacesMessage message = new FacesMessage();
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -1029,7 +1030,7 @@ public class Employee implements Serializable {
                 return;
             }
             
-            if(this.getAadhaarNo().matches(".*[0-9]{10}.*") == false || this.getAadhaarNo().length()!=12)
+            if(this.getAadhaarNo().trim().matches(".*[0-9].*") == false || this.getAadhaarNo().length()!=12)
             {
                 //FacesMessage message = new FacesMessage();
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);

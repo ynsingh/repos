@@ -402,9 +402,11 @@
                                         <h:message for="address" tooltip="*"/>
 
                                         <h:outputText styleClass="Label" value="Aadhaar No. "/>
-                                        <h:inputText maxlength="13" value="#{EmployeeBean.aadhaarNo}" styleClass="fields" id="aadharInfo"/>
-                                        <h:message for="address" tooltip="*"/>
-                                    
+                                        <h:inputText maxlength="12" value="#{EmployeeBean.aadhaarNo}" styleClass="fields" id="aadharInfo">
+                                                <f:convertNumber integerOnly="true" type="number" />
+                                        </h:inputText>       
+                                        <rich:toolTip value="Enter Aadhaar Number, character are not allowed " for="aadharInfo"/>
+                                                                            
                                         <h:outputText styleClass="Lable" value="Category Type"/>
                                         <h:selectOneMenu  styleClass="categT" id="empCategT" value="#{EmployeeBean.categoryT}">
                                             <f:selectItem itemValue="00" itemLabel="Faculty"/>
