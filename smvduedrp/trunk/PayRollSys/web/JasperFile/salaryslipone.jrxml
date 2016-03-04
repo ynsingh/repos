@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="salaryslipone"
-              language="groovy" 
-              pageWidth="595" 
-              pageHeight="642" 
-              columnWidth="555" 
-              leftMargin="20" 
-              rightMargin="20" 
-              topMargin="10" 
-              bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="salaryslipone" language="groovy" pageWidth="595" pageHeight="800" columnWidth="555" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="42"/>
+	<!--<style name="NotRotated" mode="Opaque" forecolor="#FF33CC" hAlign="Center" vAlign="Middle" rotation="None" fontName="Curlz MT" fontSize="40"/>-->
+	<subDataset name="dataset1"/>
 	<parameter name="month" class="java.lang.Integer"/>
 	<parameter name="year" class="java.lang.Integer"/>
-        <parameter name="emp_code" class="java.lang.String"/>
-        <parameter name="org_id" class="java.lang.Integer"/>
+	<parameter name="emp_code" class="java.lang.String"/>
+	<parameter name="org_id" class="java.lang.Integer"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["H:\\Active Java\\Payrroll_dev_jsf\\web\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="org_name" class="java.lang.String"/>
 	<parameter name="org_title" class="java.lang.String"/>
 	<parameter name="org_logo" class="java.lang.Object"/>
-	
 	<queryString>
 		<![CDATA[SELECT distinct
      employee_master.`emp_code` AS employee_master_emp_code,
@@ -26,7 +22,7 @@
      department_master.`dept_name` AS department_master_dept_name,
      designation_master_A.`desig_name` AS designation_master_A_desig_name,
      employee_master.`emp_pan_no` AS employee_master_emp_pan_no,
-     employee_master.`emp_id` AS employee_master_emp_id,emp_bank_accno,es_gross,
+     employee_master.`emp_id` AS employee_master_emp_id,emp_bank_accno,es_gross,bank_name,bank_address,
      employee_master.`emp_salary_grade` AS employee_master_emp_salary_grade,
      
      
@@ -41,8 +37,9 @@ employee_salary_summery left join
      left JOIN `designation_master` designation_master ON employee_master.`emp_desig_code` = designation_master.`desig_code`
      left JOIN `designation_master` designation_master_A ON employee_master.`emp_desig_code` = designation_master_A.`desig_code`
      left JOIN `salary_grade_master` salary_grade_master ON salary_grade_master.`grd_code` = employee_master.`emp_salary_grade`
+     left JOIN `bankprofile` bankprofile on bankprofile.`bank_ifsc_code` = employee_master.`bank_ifsc_code`
      where es_month = $P{month} and es_year = $P{year} and es_org_id = $P{org_id} and es_code = $P{emp_code}]]>
-    	</queryString>
+	</queryString>
 	<field name="employee_master_emp_code" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -55,63 +52,61 @@ employee_salary_summery left join
 	<field name="designation_master_A_desig_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-        <field name="emp_bank_accno" class="java.lang.String">
+	<field name="emp_bank_accno" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-        <field name="employee_master_emp_pan_no" class="java.lang.String">
+	<field name="employee_master_emp_pan_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-        <field name="es_gross" class="java.lang.Integer"/>
-        <field name="employee_master_emp_salary_grade" class="java.lang.Integer"/>
+	<field name="bank_name" class="java.lang.String"/>
+	<field name="bank_address" class="java.lang.String"/>
+	<field name="es_gross" class="java.lang.Integer"/>
+	<field name="employee_master_emp_salary_grade" class="java.lang.Integer"/>
 	<field name="salary_grade_master_grd_code" class="java.lang.Integer"/>
 	<field name="salary_grade_master_grd_max" class="java.lang.Integer"/>
 	<field name="salary_grade_master_grd_min" class="java.lang.Integer"/>
 	<field name="salary_grade_master_grd_gp" class="java.lang.Integer"/>
-       
-        <variable name="totalD" class="java.lang.Integer"/>
+	<variable name="totalD" class="java.lang.Integer"/>
 	<variable name="totalS" class="java.lang.Integer"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<detail>
-		<band height="343" splitType="Stretch">
+		<band height="500" splitType="Stretch">
 			<textField>
 				<reportElement x="150" y="69" width="50" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{employee_master_emp_code}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{employee_master_emp_code}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="400" y="69" width="177" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{employee_master_emp_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{employee_master_emp_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="150" y="83" width="128" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{department_master_dept_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{department_master_dept_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="400" y="83" width="155" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation_master_A_desig_name}]]></textFieldExpression>
-			</textField                     >
-                        <textField>
+				<textFieldExpression><![CDATA[$F{designation_master_A_desig_name}]]></textFieldExpression>
+			</textField>
+			<textField>
 				<reportElement x="150" y="111" width="128" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{employee_master_emp_pan_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{employee_master_emp_pan_no}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="23" y="125" width="550" height="1"/>
+				<reportElement x="23" y="125" width="532" height="1"/>
 			</line>
 			<staticText>
 				<reportElement x="24" y="69" width="110" height="14"/>
@@ -141,8 +136,8 @@ employee_salary_summery left join
 				</textElement>
 				<text><![CDATA[Designation:]]></text>
 			</staticText>
-                        <subreport>
-				<reportElement x="29" y="130" width="221" height="213"/>
+			<subreport>
+				<reportElement x="24" y="152" width="126" height="299"/>
 				<subreportParameter name="emp_code">
 					<subreportParameterExpression><![CDATA[$F{employee_master_emp_code}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -154,10 +149,10 @@ employee_salary_summery left join
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="totalS" toVariable="totalS"/>
-				<subreportExpression class="java.lang.String"><![CDATA["SalIncome.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["SalIncome.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement x="260" y="130" width="225" height="213"/>
+				<reportElement x="172" y="152" width="363" height="289"/>
 				<subreportParameter name="emp_code">
 					<subreportParameterExpression><![CDATA[$F{employee_master_emp_code}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -169,36 +164,29 @@ employee_salary_summery left join
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="totalD" toVariable="totalD"/>
-				<subreportExpression class="java.lang.String"><![CDATA["SalDeduct.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["SalDeduct.jasper"]]></subreportExpression>
 			</subreport>
 			<textField>
 				<reportElement x="103" y="6" width="328" height="18" forecolor="#FF6600"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{org_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{org_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="103" y="28" width="328" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{org_title}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{org_title}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="150" y="97" width="128" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_bank_accno}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{emp_bank_accno}]]></textFieldExpression>
 			</textField>
-			<!--<textField>
-				<reportElement x="308" y="97" width="155" height="14"/>
-				<textElement>
-					<font size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_type_name}]]></textFieldExpression>
-			</textField>-->
 			<staticText>
 				<reportElement x="300" y="97" width="60" height="14"/>
 				<textElement>
@@ -213,64 +201,67 @@ employee_salary_summery left join
 				</textElement>
 				<text><![CDATA[Bank A/C No.:]]></text>
 			</staticText>
-                        <staticText>
+			<staticText>
 				<reportElement x="24" y="111" width="81" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PAN:]]></text>
 			</staticText>
-                       <!-- <staticText>
-				<reportElement x="300" y="97" width="81" height="14"/>
-				<textElement>
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[]]></text>
-			</staticText>-->
-                        <image onErrorType="Icon">
+			<image onErrorType="Icon">
 				<reportElement x="24" y="6" width="79" height="58"/>
 				<imageExpression class="java.awt.Image"><![CDATA[$P{org_logo}]]></imageExpression>
 			</image>
-			<!--<textField pattern="MMMMM dd, yyyy">
-				<reportElement x="431" y="8" width="100" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>-->
-                        <textField>
+			<textField>
 				<reportElement x="400" y="97" width="80" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{salary_grade_master_grd_min}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{salary_grade_master_grd_min}]]></textFieldExpression>
 			</textField>
-                        <line>
+			<line>
 				<reportElement x="430" y="104" width="5" height="1"/>
 			</line>
-                        <textField>
+			<textField>
 				<reportElement x="440" y="97" width="55" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression  class="java.lang.String"><![CDATA[$F{salary_grade_master_grd_gp}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{salary_grade_master_grd_gp}]]></textFieldExpression>
 			</textField>
-                       <line>
+			<line>
 				<reportElement x="470" y="104" width="5" height="1"/>
 			</line>
-                        <textField>
+			<textField>
 				<reportElement x="480" y="97" width="55" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{salary_grade_master_grd_max}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{salary_grade_master_grd_max}]]></textFieldExpression>
 			</textField>
-                       
+			<line>
+				<reportElement x="24" y="140" width="531" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="24" y="124" width="163" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EARNINGS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="125" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEDUCTIONS]]></text>
+			</staticText>
 		</band>
 	</detail>
-        
 	<columnFooter>
-		<band height="42">
+		<band height="250">
 			<staticText>
-				<reportElement x="23" y="0" width="120" height="20"/>
+				<reportElement x="23" y="0" width="164" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -279,16 +270,32 @@ employee_salary_summery left join
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Gross Salary]]></text>
+				<text><![CDATA[Gross Salary :]]></text>
 			</staticText>
-			<line>
-				<reportElement x="0" y="26" width="555" height="1"/>
-				<graphicElement>
-					<pen lineStyle="Dashed"/>
-				</graphicElement>
-			</line>
 			<textField>
-				<reportElement x="143" y="0" width="107" height="20"/>
+				<reportElement x="75" y="0" width="107" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{totalS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="187" y="0" width="188" height="20"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Total Deduction :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="255" y="0" width="107" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{totalD}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="375" y="0" width="173" height="20"/>
 				<box leftPadding="3" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -296,21 +303,44 @@ employee_salary_summery left join
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Net Salary :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="435" y="0" width="107" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{es_gross}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{es_gross}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="177" width="524" height="27"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Salary Credited to Your Bank Account,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="169" width="200" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{bank_name} == null) ? "" : $F{bank_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="260" y="0" width="225" height="20"/>
-				<box leftPadding="3" rightPadding="2">
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{es_gross}]]></textFieldExpression>
+				<reportElement x="150" y="169" width="200" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{bank_address} == null) ? "" : $F{bank_address}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="24" y="31" width="524" height="23"/>
+				<text><![CDATA[ADVANCES OUTSTANDING]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="24" y="54" width="524" height="112"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["AdvancesOutstanding.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</columnFooter>
 </jasperReport>
