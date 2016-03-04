@@ -15,7 +15,7 @@ $!data.getMessage()
 
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
-<table  bgcolor="$ui.menuColor" width=100%>
+<table  bgcolor="$ui.menuColor" width=99%>
 <tr>
 	 <td>
 	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
@@ -74,7 +74,7 @@ $!data.getMessage()
 </tr>
 #if($entry.size() !=0)
 
-       <tr bgcolor="$ui.menuColor">
+       <tr bgcolor="$ui.menuColor" width=100%>
                 <td align=center>
                         <b> $brih_select </b>
                 </td>
@@ -87,9 +87,7 @@ $!data.getMessage()
 		<td align=center>
 			<b> $brih_last $brih_name </b>
 		</td>
-		<td align=center>
-			<b> $online_organisation </b>
-		</td>
+		 <input type="hidden" name="$online_organisation" value="$!e.getGrpmgmtType()">
                 <td align=center>
                         <b> $brih_email </b>
                 </td>
@@ -99,9 +97,7 @@ $!data.getMessage()
 		<td align=center>
                         <b> $brih_program </b>
                 </td>
-                <td align=center>
-                        <b> $brih_course $brih_ID </b>
-                </td>
+                <input type="hidden" name="$brih_course $brih_ID" value="$!e.getStatus()">
                 <td align=center>
                         <b> $brih_role</b>
                 </td>
@@ -114,8 +110,7 @@ $!data.getMessage()
                         ##<INPUT TYPE="CHECKBOX" NAME=$e.getMSubject() VALUE="" onClick="addDeleteList(this,document.frm);">
                         <INPUT TYPE="CHECKBOX" NAME=$GpUsrEmail VALUE="" onClick="addDeleteList(this,document.frm);">
                 </td>
-                <td >
- 
+                <td>
                         $!e.getSender()
                 </td>
 		<td>
@@ -123,13 +118,11 @@ $!data.getMessage()
 		</td>
 		<td>
 			$!e.getPermission()
-		</td>
-		<td>
-			$!e.getGrpmgmtType()
-		</td>
+		</td>	
+		<input type="hidden" name="$online_organisation" value="$!e.getGrpmgmtType()">
+			##$!e.getGrpmgmtType()
                 <td>
                         $!e.getMSubject()
- 
                 </td>
 		<td>
                         $!e.getRollno()
@@ -137,10 +130,8 @@ $!data.getMessage()
 		<td>
                         $!e.getPrgCode()
                 </td>
-                <td>
-                        $!e.getStatus()
-                </td>
- 
+		<input type="hidden" name="$brih_course $brih_ID" value="$!e.getStatus()">
+                       ## $!e.getStatus()
                 <td>
                         $!e.getMsgID()
                 </td>

@@ -87,6 +87,7 @@ $!data.getMessage()
                 <table width="100%"> ## table 7 start
                         <tr><td>
                           <input type="button" class="button-ftextstyle" name="eventSubmit_doCreate_resrepo" value="$WikiCreate" onClick="checkField(document.frm,this);"/>
+                          <input type="reset" class="button-ftextstyle" name="brih_clear" value="Clear" onClick="window.location.reload(true);"/>
                            <input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
                         </tr></td>
                 </table> ## end of table 7

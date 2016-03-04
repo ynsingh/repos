@@ -41,6 +41,7 @@ $!data.getMessage()
 	</tr>
 	<tr>
 	<td>
+
         <table width=100% >
         #foreach($author in $authorvalue)
 	<tr>
@@ -64,6 +65,8 @@ $!data.getMessage()
         #end
         </table>
 	</td>
+<table bgcolor="$ui.menuColor" width=100%>
+<tr><td><b>$Repo_PermmNo1</td></tr></b>
 #if($status == "fromDirectory" || $status == "fromSubDirectory")
 <td>
        <table width=100%>
