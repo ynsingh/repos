@@ -675,7 +675,7 @@ function schedule_1($ledger_id)
 	} 
 	
 	function newschedule1($ledg_id)
-        {
+    {
                 $credit_amount = 0.00;
                 $debit_amount = 0.00;
                 $dr_total = 0.00;
@@ -697,8 +697,20 @@ function schedule_1($ledger_id)
                 }//foreach
                 $total = $dr_total . "#" . $cr_total;
                 return $total;
-        }
+    }
 
+    function mergingoffunds($accname)
+    {
+        $capital = new Aggregatereportlist();
+        $capital->init(5,$accname);
+        $capital_total = $capital->total;
+        $corpus = new Aggregatereportlist();
+        $corpus->init(6,$accname);
+        $corpus_total = $corpus->total;
+        $liability_total1 = ($capital_total + $corpus_total);
+        $total = $liability_total1;
+        return $total;
+    }
 
 }//main
 ?>

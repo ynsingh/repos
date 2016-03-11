@@ -17,13 +17,13 @@ class Aggregatereportlist
 	//var $check = 0;
 
 	var $dr_total = 0;
-        var $cr_total = 0;
-        var $old_dr_total = 0;
-        var $old_cr_total = 0;
-        var $netpl = 0;
-        var $netpl_old = 0;
+    var $cr_total = 0;
+    var $old_dr_total = 0;
+    var $old_cr_total = 0;
+    var $netpl = 0;
+    var $netpl_old = 0;
 	var $prevYearDB = "";
-        var $old_total = 0;
+    var $old_total = 0;
 	var $opening_balance = 0;
 	var $opening_balance_prev = 0;
 	//var $opening_balance_type = "";
@@ -48,173 +48,167 @@ class Aggregatereportlist
 	{
 		$CI =& get_instance();
 		$db1=$CI->load->database('login', TRUE);
-		
+	    	
 		//get database detail of account
 
 		$db1=$CI->load->database('login', TRUE);
-                $db1->from('bgasAccData')->where('dblable', $accname);
-                $accdetail = $db1->get();
-                foreach ($accdetail->result() as $row)
-                {
-                        $databasehost=$row->hostname;
-			$databasename= $row->databasename;
-                        $databaseport=$row->port;
-                        $databaseusername=$row->uname;
-	                $databasepassword=$row->dbpass;
-	                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+        $db1->from('bgasAccData')->where('dblable', $accname);
+        $accdetail = $db1->get();
+        foreach ($accdetail->result() as $row)
+        {
+            $databasehost=$row->hostname;
+	        $databasename= $row->databasename;
+            $databaseport=$row->port;
+            $databaseusername=$row->uname;
+	        $databasepassword=$row->dbpass;
+	        $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
 
-                if ($new_link)
-                {
-                	$db_selected = mysql_select_db($databasename, $new_link);
-                	if ($db_selected) {
-
-		if ($id == 0)
-		{
-			$this->id = 0;
-			$this->name = "None";
-			$this->total = 0;
-
-		}
-		else {
-                        $query = sprintf("select * from groups where id=$id limit 1");
-                        $result = mysql_query($query);
-                        if (!$result) {
+            if ($new_link)
+            {
+                $db_selected = mysql_select_db($databasename, $new_link);
+               	    if ($db_selected) 
+                    {
+                		if ($id == 0)
+		                {
+        		        	$this->id = 0;
+        		        	$this->name = "None";
+                			$this->total = 0;
+		                }
+        		        else 
+                        {
+                            $query = sprintf("select * from groups where id=$id limit 1");
+                            $result = mysql_query($query);
+                            if (!$result) {
                                 $message  = 'Invalid query: ' . mysql_error() . "\n";
                                 $message .= 'Whole query: ' . $query;
                                 die($message);
                         }
-                        while ($row = mysql_fetch_assoc($result)) {
-
-  				$this->id=$row['id'];
-                                $this->name=$row['name'];
-                                $this->code=$row['code'];
-				$this->total = 0;
+                        while ($row = mysql_fetch_assoc($result)) 
+                        {
+          				    $this->id=$row['id'];
+                            $this->name=$row['name'];
+                            $this->code=$row['code'];
+            				$this->total = 0;
 	                        $this->total2 = 0;
-
                         }
-
-		}
-		//}//end of account loop
-		if($this->status==0)
-		{
-			$new_code = substr($this->code, 0, $this->code < 0 ? 3 : 2);
-			if($new_code == 10 || $new_code == 20)
-			{
-				$this->add_sub_groups($accname);
-				$this->add_balancesheet_sub_ledgers($accname);
-			}
-			elseif($new_code == 30 || $new_code == 40)
-			{
-				
-				$this->add_sub_groups($accname);
-				$this->add_income_expense_sub_ledgers($accname);
-			}
-		}
-	
-		}
-		}
-		}
-
+		            }
+		            if($this->status==0)
+		            {
+        			    $new_code = substr($this->code, 0, $this->code < 0 ? 3 : 2);
+    		        	if($new_code == 10 || $new_code == 20)
+    			        {
+            				$this->add_sub_groups($accname);
+		            		$this->add_balancesheet_sub_ledgers($accname);
+			            }
+			            elseif($new_code == 30 || $new_code == 40)
+			            {
+				            $this->add_sub_groups($accname);
+            				$this->add_income_expense_sub_ledgers($accname);
+	    		        }
+		            }
+		        }
+		    }
+	    }
 	}//end of init
 
 	function add_sub_groups($accname)
 	{
 		$CI =& get_instance();
 		$query1 = sprintf("SELECT * from groups where parent_id=$this->id");
-                $result1 = mysql_query($query1);
-                        if (!$result1) {
-
-                                $message  = 'Invalid query: ' . mysql_error() . "\n";
-                                $message .= 'Whole query: ' . $query1;
-                                die($message);
-                        }
+        $result1 = mysql_query($query1);
+        if (!$result1) 
+        {
+            $message  = 'Invalid query: ' . mysql_error() . "\n";
+            $message .= 'Whole query: ' . $query1;
+            die($message);
+        }
 		$counter = 0;
-                while($row = mysql_fetch_assoc($result1)) {
-                        $id=$row['id'];
-                        $this->children_groups[$counter] = new Aggregatereportlist();
-                        $this->children_groups[$counter]->init($id,$accname);
-                        $this->total = float_ops($this->total, $this->children_groups[$counter]->total, '+');
-
-                        $counter++;
-                }
+        while($row = mysql_fetch_assoc($result1)) 
+        {
+            $id=$row['id'];
+            $this->children_groups[$counter] = new Aggregatereportlist();
+            $this->children_groups[$counter]->init($id,$accname);
+            $this->total = float_ops($this->total, $this->children_groups[$counter]->total, '+');
+            $counter++;
+        }
 
 	}//end of add subgroup.
 
 	function add_balancesheet_sub_ledgers($accname)
 	{
-			
 		$CI =& get_instance();
 		$CI->load->model('Ledger_model');
-                $db1=$CI->load->database('login', TRUE);
-                $db1->from('bgasAccData')->where('dblable', $accname);
-                $accdetail = $db1->get();
-                foreach ($accdetail->result() as $row)
+        $db1=$CI->load->database('login', TRUE);
+        $db1->from('bgasAccData')->where('dblable', $accname);
+        $accdetail = $db1->get();
+        foreach ($accdetail->result() as $row)
+        {
+            $databasehost=$row->hostname;
+            $databasename= $row->databasename;
+            $databaseport=$row->port;
+            $databaseusername=$row->uname;
+            $databasepassword=$row->dbpass;
+            $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+            if ($new_link)
+            {
+                $db_selected = mysql_select_db($databasename, $new_link);
+                if ($db_selected) 
                 {
-                        $databasehost=$row->hostname;
-                        $databasename= $row->databasename;
-                        $databaseport=$row->port;
-                        $databaseusername=$row->uname;
-                        $databasepassword=$row->dbpass;
-                        $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
-                        if ($new_link)
-                        {
-                        $db_selected = mysql_select_db($databasename, $new_link);
-                        if ($db_selected) {
-				$messages;
-                        }
-                        }
-
+				    $messages;
                 }
+            }
+        }
 		$queryleg = sprintf("SELECT * from ledgers where group_id=$this->id");
 		$result2 = mysql_query($queryleg);
-                if (!$result2) {
-	                $message  = 'Invalid query: ' . mysql_error() . "\n";
-                        $message .= 'Whole query: ' . $query;
-                        die($message);
-                }
+        if (!$result2) 
+        {
+	        $message  = 'Invalid query: ' . mysql_error() . "\n";
+            $message .= 'Whole query: ' . $query;
+            die($message);
+        }
 		$counter = 0;
-		while ($row = mysql_fetch_assoc($result2)) {
-                	$this->children_ledgers[$counter]['id']=$row['id'];
-                        $this->children_ledgers[$counter]['name']=$row['name'];
-                        $this->children_ledgers[$counter]['code']=$row['code'];
+		while ($row = mysql_fetch_assoc($result2)) 
+        {
+            $this->children_ledgers[$counter]['id']=$row['id'];
+            $this->children_ledgers[$counter]['name']=$row['name'];
+            $this->children_ledgers[$counter]['code']=$row['code'];
 			$this->children_ledgers[$counter]['total'] = $CI->Ledger_model->get_balancesheet_ledger_balance_agg($row['id'],$accname);
 			list ($this->children_ledgers[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_op_balance_agg($row['id'],$accname);
 			$this->total = float_ops($this->total, $this->children_ledgers[$counter]['total'], '+');
 		}
-			$counter++;
+		$counter++;
 	}
 
 	function add_income_expense_sub_ledgers($accname)
 	{
-		$CI =& get_instance();
-                $db1=$CI->load->database('login', TRUE);
-                $db1->from('bgasAccData')->where('dblable', $accname);
-                $accdetail = $db1->get();
-                foreach ($accdetail->result() as $row)
-                {
-                        $databasehost=$row->hostname;
-                        $databasename= $row->databasename;
-                        $databaseport=$row->port;
-                        $databaseusername=$row->uname;
-                        $databasepassword=$row->dbpass;
-                        $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
-                        if ($new_link)
-                        {
-                        $db_selected = mysql_select_db($databasename, $new_link);
-                        if ($db_selected) {
-
-                        }
-                        }
-
+	    $CI =& get_instance();
+        $db1=$CI->load->database('login', TRUE);
+        $db1->from('bgasAccData')->where('dblable', $accname);
+        $accdetail = $db1->get();
+        foreach ($accdetail->result() as $row)
+        {
+            $databasehost=$row->hostname;
+            $databasename= $row->databasename;
+            $databaseport=$row->port;
+            $databaseusername=$row->uname;
+            $databasepassword=$row->dbpass;
+            $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+            if ($new_link)
+            {
+                $db_selected = mysql_select_db($databasename, $new_link);
+                if ($db_selected) {
                 }
+            }
+        }
 		$CI->load->model('Ledger_model');
-                $queryleg = sprintf("SELECT * from ledgers where group_id=$this->id");
-                $result2 = mysql_query($queryleg);
-                if (!$result2) {
-                        $message  = 'Invalid query: ' . mysql_error() . "\n";
-                        $message .= 'Whole query: ' . $query;
-                        die($message);
-                }
+        $queryleg = sprintf("SELECT * from ledgers where group_id=$this->id");
+        $result2 = mysql_query($queryleg);
+        if (!$result2) 
+        {
+            $message  = 'Invalid query: ' . mysql_error() . "\n";
+            $message .= 'Whole query: ' . $query;
+            die($message);
+        }
 		$counter = 0;
 		while ($row = mysql_fetch_assoc($result2)) 
 		{
@@ -267,54 +261,57 @@ class Aggregatereportlist
 			$this->counter--;
 		}
 	}
-
+    
 	/* Display balancesheet in MHRD format */		
-        function new_balance_sheet($c =0,$accname)
-        {
-		$check = 0;
-                $this->counter = $c;
+    
+    function new_balance_sheet($c =0,$accname)
+    {
+        $check = 0;
+        $this->counter = $c;
 		$amt="";
-                $CI =& get_instance();
+        $CI =& get_instance();
 
-                //get database detail of account
+        //get database detail of account
 
-                $db1=$CI->load->database('login', TRUE);
-                $db1->from('bgasAccData')->where('dblable', $accname);
-                $accdetail = $db1->get();
-                //$CI->messages->add("Test");
-                foreach ($accdetail->result() as $row)
+        $db1=$CI->load->database('login', TRUE);
+        $db1->from('bgasAccData')->where('dblable', $accname);
+        $accdetail = $db1->get();
+        //$CI->messages->add("Test");
+        foreach ($accdetail->result() as $row)
+        {
+            $databasehost=$row->hostname;
+            $databasename= $row->databasename;
+            $databaseport=$row->port;
+            $databaseusername=$row->uname;
+            $databasepassword=$row->dbpass;
+            $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+            if ($new_link)
+            {
+               	$db_selected = mysql_select_db($databasename, $new_link);
+				if ($db_selected) 
                 {
-                        $databasehost=$row->hostname;
-                        $databasename= $row->databasename;
-                        $databaseport=$row->port;
-                        $databaseusername=$row->uname;
-                        $databasepassword=$row->dbpass;
-                        $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
-                        if ($new_link)
-                        {
-                        	$db_selected = mysql_select_db($databasename, $new_link);
-				if ($db_selected) {
-
-                        	}
-                        }
                 }
+            }
+        }
 		$CI =& get_instance();
-                $CI->load->model('Setting_model');
-                $ledger_name = $CI->Setting_model->get_from_settings_agg('ledger_name',$accname);
+        $CI->load->model('Setting_model');
+        $ledger_name = $CI->Setting_model->get_from_settings_agg('ledger_name',$accname);
 		$nodigit = $this->countDigits();
 		$codedigit = $this->code;		
-		if(($this->countDigits() == 4) && ($this->id != 0) && ($this->code > 100)){
-				if($this->name == 'Unrestricted Funds'){
-					$check++;
-					//$this->check++;
-				}else{
-					$check = 0;
-                                        //$this->check = 0;
-				}
+		if(($this->countDigits() == 4) && ($this->id != 0) && ($this->code > 100))
+        {
+		    if($this->name == 'Unrestricted Funds'){
+			$check++;
+		}
+        else
+        {
+		    $check = 0;
+	    }
 	
-			if($check == 0){
-				$this->counter++;
-				/* Get Balance of net income/(expenditure) for 'this' ledger head*/
+		if($check == 0){
+		$this->counter++;
+		
+		/* Get Balance of net income/(expenditure) for 'this' ledger head*/
 	                        //if($c == 2){
 				if($ledger_name == $this->name){
 					$income = new Aggregatereportlist();
@@ -437,9 +434,9 @@ class Aggregatereportlist
 	
 				$Liability_Name = $doc->createElement('Liability_Name');
 
-    				$group_name = $doc->createElement('Group_Name');
+    			$group_name = $doc->createElement('Group_Name');
 				$textNode = $doc->createTextNode($this->name);
-    				$group_name->appendChild($textNode);
+    			$group_name->appendChild($textNode);
 				$Liability_Name->appendChild($group_name);
 			
 				$code_no = $doc->createElement('Code_No');
@@ -447,6 +444,7 @@ class Aggregatereportlist
 				$code_no->appendChild($textNode1);
 				$Liability_Name->appendChild($code_no);
 
+                                //echo $amt;
                                 $amount = $doc->createElement('Amount');
                                 $textNode2 = $doc->createTextNode($amt);
                                 $amount->appendChild($textNode2);
@@ -519,9 +517,9 @@ class Aggregatereportlist
 	
 				$Liability_Name = $doc->createElement('Assets_Name');
 
-    				$group_name = $doc->createElement('Group_Name');
+    			$group_name = $doc->createElement('Group_Name');
 				$textNode = $doc->createTextNode($this->name);
-    				$group_name->appendChild($textNode);
+    			$group_name->appendChild($textNode);
 				$Liability_Name->appendChild($group_name);
 			
 				$code_no = $doc->createElement('Code_No');
@@ -529,20 +527,20 @@ class Aggregatereportlist
 				$code_no->appendChild($textNode1);
 				$Liability_Name->appendChild($code_no);
 
-                                $amount = $doc->createElement('Amount');
-                                $textNode2 = $doc->createTextNode($amt);
-                                $amount->appendChild($textNode2);
-                                $Liability_Name->appendChild($amount);
+                $amount = $doc->createElement('Amount');
+                $textNode2 = $doc->createTextNode($amt);
+                $amount->appendChild($textNode2);
+                $Liability_Name->appendChild($amount);
 
-                                $codenu = $doc->createElement('Code_Nu');
-                                $textNode3 = $doc->createTextNode($this->code);
-                                $codenu->appendChild($textNode3);
-                                $Liability_Name->appendChild($codenu);
+                $codenu = $doc->createElement('Code_Nu');
+                $textNode3 = $doc->createTextNode($this->code);
+                $codenu->appendChild($textNode3);
+                $Liability_Name->appendChild($codenu);
 
-                                $counter = $doc->createElement('Counter');
-                                $textNode4 = $doc->createTextNode($this->countDigits());
-                                $counter->appendChild($textNode4);
-                                $Liability_Name->appendChild($counter);
+                $counter = $doc->createElement('Counter');
+                $textNode4 = $doc->createTextNode($this->countDigits());
+                $counter->appendChild($textNode4);
+                $Liability_Name->appendChild($counter);
 
 				$Liabilities->appendChild($Liability_Name);
 	
@@ -564,7 +562,7 @@ class Aggregatereportlist
                                 $code_no = $doc->createElement( "Code_No");
                                 $code_no->appendChild($doc->createTextNode($this->counter));
                                 $b->appendChild( $code_no );
-
+                    
                                 $amount = $doc->createElement( "Amount");
                                 $amount->appendChild($doc->createTextNode($amt));
                                 $b->appendChild( $amount );
@@ -572,13 +570,15 @@ class Aggregatereportlist
                                 $codenu = $doc->createElement('Code_Nu');
                                 $textNode3 = $doc->createTextNode($this->code);
                                 $codenu->appendChild($textNode3);
-				$b->appendChild( $codenu );
+                				$b->appendChild( $codenu );
 
                                 $counter = $doc->createElement('Counter');
                                 $textNode4 = $doc->createTextNode($this->countDigits());
                                 $counter->appendChild($textNode4);
-				$b->appendChild( $counter );
-			
+				                $b->appendChild( $counter );
+//////
+                                
+////
                                 $r->appendChild( $b );
 
                                 $doc->save($tt);
@@ -589,7 +589,6 @@ class Aggregatereportlist
 
 		foreach ($this->children_groups as $id => $data)
                 {
-			echo "";
                         $len = $data->countDigits();
                         $this->counter = $data->new_balance_sheet($this->counter,$accname);
   
@@ -597,8 +596,8 @@ class Aggregatereportlist
 		//}
                 return $this->counter;
         }//end of new balancesheet
-	
 
+        	
         function countDigits()
         {
                 //preg_match_all( "/[0-9]/", $str, $arr );
@@ -1426,5 +1425,340 @@ class Aggregatereportlist
 
                 return $this->counter;
 	}
-}
+        
+    function balancesheet($id,$accname)
+    {
+        $diff = $this->income_expense_diff($accname);
+        $result1 = explode('#', $diff);
+        $diff_total = -($result1[0]);
+        $counter = 0;
+        $sum = 0;
+        $liability_total1 = 0;
+        $CI =& get_instance();
+        $CI =& get_instance();
+        $db1=$CI->load->database('login', TRUE);
+        $db1->from('bgasAccData')->where('dblable', $accname);
+        $accdetail = $db1->get();
+        foreach ($accdetail->result() as $row)
+        {
+            $db_name = $row->databasename;
+            $db_username = $row->uname;
+            $db_password = $row->dbpass;
+            $host_name = $row->hostname;
+            $port = $row->port;
+        }
+        $dbcon = new PDO("mysql:host=$host_name;dbname=$db_name", $db_username, $db_password);
+        try
+        {
+            $selectrecord = "select name,code,id,parent_id from groups where parent_id=$id";
+            $stmt = $dbcon->query($selectrecord);
 
+            if($id == 2)
+            {
+                //$counter = 0;
+                if($stmt != false)
+                {
+                    foreach ($stmt as $row)
+                    {
+                        $name = $row['name'];
+                        $code = $row['code'];
+                        $ledg_id = $row['id'];
+                        $liability = new Aggregatereportlist();
+                        $liability->init($row['id'],$accname);
+                        $liability_total = $liability->total;
+                        $sum = $sum + $liability_total;
+                        $CI->load->model('investment_model');
+                        $result = $CI->investment_model->mergingoffunds($accname);
+                        $value = explode('#',$result);
+                        $liability_totalA = $value[0];
+                        $liability_total1 = ($liability_totalA + $diff_total);
+                        //$temp;
+                        if($name == 'Corpus')
+                            $name = 'Corpus/Capital Funds';
+                        if(($code!=  '1005') && ($code!= '1001') &&  ($code!= '1006'))
+                        {
+                            $counter = $counter+1;
+                            if($name!= 'Corpus/Capital Funds')
+                            {
+                                $temp = $liability_total;
+                            }
+                            else
+                            {
+                                $temp = $liability_total1;
+                            }
+                       // }//ifcode 
+
+                            $acctpath= $this->upload_path1= realpath(BASEPATH.'../acct');
+                            $file_name="";
+                            $doc = new DOMDocument();
+                            $doc->formatOutput = true;
+                            $file_name=$accname."_Liabilty.xml";
+                            $tt=$acctpath."/".$file_name;
+                            if(file_exists($tt))
+                            {
+                                $doc->preserveWhiteSpace = false;
+                                $doc->load($tt);
+                                $Liabilities = $doc->firstChild;
+                                $Liability_Name = $doc->createElement('Liability_Name');
+    
+                                $group_name = $doc->createElement('Group_Name');
+                                $textNode = $doc->createTextNode($name);
+                                $group_name->appendChild($textNode);
+                                $Liability_Name->appendChild($group_name);
+    
+                                $code_no = $doc->createElement('Code_No');
+                                $textNode1 = $doc->createTextNode($counter);
+                                $code_no->appendChild($textNode1);
+                                $Liability_Name->appendChild($code_no);
+    
+                                $amount = $doc->createElement('Amount');
+                                $textNode2 = $doc->createTextNode($temp);
+                                $amount->appendChild($textNode2);
+                                $Liability_Name->appendChild($amount);
+    
+                                $codenu = $doc->createElement('Code_Nu');
+                                $textNode3 = $doc->createTextNode($code);
+                                $codenu->appendChild($textNode3);
+                                $Liability_Name->appendChild($codenu);
+                                $Liabilities->appendChild($Liability_Name);
+    
+                                $ttt=$doc->saveXML();
+                                $handle = fopen($tt, "w");
+                                fwrite($handle, $ttt);
+                                fclose($handle);
+                            }
+                            else
+                            {
+                                $r = $doc->createElement( "Liabilities" );
+                                $doc->appendChild( $r );
+                                $b = $doc->createElement( "Liability_Name" );
+    
+                                $group_name = $doc->createElement( "Group_Name" );
+                                $group_name->appendChild($doc->createTextNode($name));
+                                $b->appendChild( $group_name );
+    
+                                $code_no = $doc->createElement( "Code_No");
+                                $code_no->appendChild($doc->createTextNode($counter));
+                                $b->appendChild( $code_no );
+    
+                                $amount = $doc->createElement( "Amount");
+                                $amount->appendChild($doc->createTextNode($temp));
+                                $b->appendChild( $amount );
+
+                                $codenu = $doc->createElement('Code_Nu');
+                                $textNode3 = $doc->createTextNode($code);
+                                $codenu->appendChild($textNode3);
+                                $b->appendChild( $codenu );
+                                
+                                $r->appendChild( $b );
+
+                                $doc->save($tt);
+                                $doc->saveXML();
+                            }//end of accounts liabilty xml file creation
+                        }
+                    }
+                }//foreach
+            }//if(id==2)
+
+            if($id == 1)
+            {
+                $counter = 3;
+                if($stmt != false)
+                {
+                    foreach ($stmt as $row)
+             
+                    {
+                        $name = $row['name'];
+                        $code = $row['code'];
+                        $ledg_id = $row['id'];
+                        $parent_id = $row['parent_id'];
+                        $asset = new Aggregatereportlist();
+                        $asset->init($row['id'],$accname);
+                        $asset_total = $asset->total;
+                        $sum = $sum + $asset_total;
+
+                        $acctpath= $this->upload_path1= realpath(BASEPATH.'../acct');
+                        $file_name="";
+
+                        $doc = new DOMDocument();
+                        $doc->formatOutput = true;
+
+                        $file_name=$accname."_Assets.xml";
+                        $tt=$acctpath."/".$file_name;
+
+                        //echo "Total--->".$asset_total;
+                        if($name == 'Investments')
+                            $name = 'Investments From Earmarked / Endowments Funds';
+                        $counter = $counter +1;
+                        $temp = $asset_total;
+
+                                        if(file_exists($tt))
+                                        {
+                                            $doc->preserveWhiteSpace = false;
+                                            $doc->load($tt);
+                                            $Budgets = $doc->firstChild;
+                                            $Assets_Name = $doc->createElement('Assets_Name');
+                                            //$Code->setAttribute('id', $row['id']);
+                                            $Assets_Name->setAttribute('code', $code);
+                                            $Assets_Name->setAttribute('name', $name);
+                                            $Assets_Name->setAttribute('schedule', $counter);
+                                            $Assets_Name->setAttribute('amount', $temp);
+
+
+                                            $Budgets->appendChild($Assets_Name);
+
+                                            $ttt=$doc->saveXML();
+                                            $handle = fopen($tt, "w");
+                                            fwrite($handle, $ttt);
+                                            fclose($handle);
+                                        }
+                                        else
+                                        {
+                                            $r = $doc->createElement( 'Liabilities' );
+                                            $doc->appendChild( $r );
+
+                                            $Assets_Name = $doc->createElement('Assets_Name');
+                                            $Assets_Name->setAttribute('code', $code);
+                                            $Assets_Name->setAttribute('name', $name);
+                                            $Assets_Name->setAttribute('schedule', $counter);
+                                            $Assets_Name->setAttribute('amount', $temp);
+                                            $r->appendChild($Assets_Name);
+
+                                            $doc->save($tt);
+                                            $doc->saveXML();
+
+                                        }//if
+
+
+
+
+                        $selectrecord1 = "select id,name,code from groups where parent_id = $ledg_id";
+                        $stmt1 = $dbcon->query($selectrecord1);
+                        if($stmt1 != false)    
+                        {
+                            foreach ($stmt1 as $row1)
+                            {
+                                $group_name = $row1['name'];
+                                $group_id = $row1['id'];
+                                $group_code = $row1['code'];
+                                $asset = new Aggregatereportlist();
+                                $asset->init($row1['id'],$accname);
+                                $asset_total = $asset->total;
+
+                                if($name == 'Fixed Assets')
+                                {
+                                    $group_name;
+                                        if(file_exists($tt))
+                                        {
+                                            $doc->preserveWhiteSpace = false;
+                                            $doc->load($tt);
+                                            $Budgets = $doc->firstChild;
+                                            $Assets_Name = $doc->createElement('Assets_Name');
+                                            //$Code->setAttribute('id', $row['id']);
+                                            $Assets_Name->setAttribute('code', $group_code);
+                                            $Assets_Name->setAttribute('name', $group_name);
+                                            $Assets_Name->setAttribute('schedule', $counter);
+                                            $Assets_Name->setAttribute('amount', '');
+
+
+                                            $Budgets->appendChild($Assets_Name);
+
+                                            $ttt=$doc->saveXML();
+                                            $handle = fopen($tt, "w");
+                                            fwrite($handle, $ttt);
+                                            fclose($handle);
+                                        }
+                                        else
+                                        {
+                                            $r = $doc->createElement( 'Liabilities' );
+                                            $doc->appendChild( $r );
+
+                                            $Assets_Name = $doc->createElement('Assets_Name');
+                                            $Assets_Name->setAttribute('code', $group_code);
+                                            $Assets_Name->setAttribute('name', $group_name);
+                                            $Assets_Name->setAttribute('schedule', $counter);
+                                            $Assets_Name->setAttribute('amount', '');
+                                            $r->appendChild($Assets_Name);
+
+                                            $doc->save($tt);
+                                            $doc->saveXML();
+
+                                        }//if
+
+                                }
+                    
+                                if(($name!= 'Fixed Assets') && ($name!= 'Current Assets') && ($name!= 'Loans Advances and Deposits'))
+                                {
+                                    if($group_name == 'Corpus Fund Investments')
+                                    {
+                                        $group_name = 'Investments Others';
+                                        $counter = 6;
+                                        $temp = 0;
+
+                                        if(file_exists($tt))
+                                        {
+                                            $doc->preserveWhiteSpace = false;
+                                            $doc->load($tt);
+                                            $Budgets = $doc->firstChild;
+                                            $Assets_Name = $doc->createElement('Assets_Name');
+                                            //$Code->setAttribute('id', $row['id']);
+                                            $Assets_Name->setAttribute('code', $code);
+                                            $Assets_Name->setAttribute('name', $group_name);
+                                            $Assets_Name->setAttribute('schedule', $counter);
+                                            $Assets_Name->setAttribute('amount', $temp);
+
+
+                                            $Budgets->appendChild($Assets_Name);
+
+                                            $ttt=$doc->saveXML();
+                                            $handle = fopen($tt, "w");
+                                            fwrite($handle, $ttt);
+                                            fclose($handle);
+                                        }
+                                        else
+                                        {
+                                            $r = $doc->createElement( 'Liabilities' );
+                                            $doc->appendChild( $r );
+
+                                            $Assets_Name = $doc->createElement('Assets_Name');
+                                            $Assets_Name->setAttribute('code', $code);
+                                            $Assets_Name->setAttribute('name', $name);
+                                            $Assets_Name->setAttribute('schedule', $counter);
+                                            $Assets_Name->setAttribute('amount', '');
+                                            $r->appendChild($Assets_Name);
+
+                                            $doc->save($tt);
+                                            $doc->saveXML();
+
+                                        }//if
+                                    }//if(name!='')
+                                }//if Fixed Assets
+                            }//for each
+                          }//if stmt   
+//                        }
+//                    }
+                   }
+                }
+            }
+        }//try
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+        $this->curr_total = $sum;
+    }
+
+    function income_expense_diff($accname)
+    {
+        $income = new Aggregatereportlist();
+        $income->init('3',$accname);
+        $total = $income->total;
+        $expense = new Aggregatereportlist();
+        $expense->init('4',$accname);
+        $total1 = $expense->total;
+        $total = 0 - $total;
+        $diff = $total - $total1;
+        return $diff;
+    }
+
+}

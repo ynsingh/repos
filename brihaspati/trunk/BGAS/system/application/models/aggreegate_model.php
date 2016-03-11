@@ -87,11 +87,6 @@ class Aggreegate_model extends Model {
                     $cr_total = $row['sum(amount)'];
                 }
             }
-           // echo $dr_total."---". $cr_total; echo "<br>";
-            //echo $total;
-            //$total = float_ops($dr_total, $cr_total, '-');
-            //echo $total;
-            //echo $op_bal;echo "<br>";
             $total = '';
             if ($op_bal_type == "D")
                 $total = float_ops($total, $op_bal, '+');
@@ -104,8 +99,6 @@ class Aggreegate_model extends Model {
                 $op_type="D";
             else
                 $op_type="C";
-            
-            //echo $op_balance;            
             
             return array($op_balance, $op_type);;
         }
@@ -254,7 +247,6 @@ class Aggreegate_model extends Model {
         
     }
     /* Return credit total of balancesheet for multiple accounts for aggregation */
-/*
     function get_balancesheet_cr_total_agg($ledger_id,$accname)
     {
         $this->load->library('session');
@@ -289,12 +281,13 @@ class Aggreegate_model extends Model {
                     return $cr_total;
                 }
             }
+        $dbcon = null;
         }
         catch(PDOException $e)
         {
             echo $e->getMessage();
         }
+    }
 
-*/
 }
 ?>
