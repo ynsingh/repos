@@ -50,7 +50,7 @@ import java.util.*;
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a> last modified in 
  */
 
-public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener,PropertyChangeListener{
+public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener, PropertyChangeListener {
 	
 	private JPanel loginGUIPanel;
 	
@@ -102,7 +102,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		super(Language.getController().getLangValue("LoginWindow.Title"),true,false,false,true);
 		setFrameIcon(new ImageIcon(clr.getResource("resources/images/login.png")));
 		/**
-		 * This block of code is use to fixed Logo image in Login Panen .
+		 * This block of code is use to fixed Logo image in Login Panel.
 		 */  
 		
 		JLabel imageLabel = new JLabel(new ImageIcon(clr.getResource("resources/images/Title.jpg")));
@@ -379,9 +379,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private void checkUserNamePasswd() {  
 		try {
                         submitButton.setCursor(busyCursor);
-			task = new Task();
-                        task.addPropertyChangeListener(this);
-                        task.execute();
                         if((usernameText.getText().equals("")) && (passwordField.getText().equals(""))) {
                                 StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog3"));
                                 submitButton.setCursor(defaultCursor); 
@@ -397,9 +394,9 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 					
                                 	ClientObject.setUserName(usernameText.getText());
                                         StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog7"));
-					//Task task = new Task();
-                                        //task.addPropertyChangeListener(this);
-                                        //task.execute();					
+                                        task = new Task();
+                                        task.addPropertyChangeListener(this);
+                                        task.execute();
                              	}
                          }
                        			
