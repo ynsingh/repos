@@ -194,11 +194,8 @@ $page.setTitle("Home | $course | Course management")
         </table>
 #end
 ######################################
- ## Upload.vm
-##<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,Upload.vm").setAction("UploadAction")">
 <form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,CourseManagement.vm").setAction("UploadAction")">
 <table width="100%" align="left">
-    ##<table width=100% align=left bgcolor="$ui.tableColor" cellpadding="0">
       #if ($errorTemplate)
       <tr>
         <td colspan="4">
@@ -217,10 +214,16 @@ $page.setTitle("Home | $course | Course management")
       #end
         <tr width=100% bgcolor="$ui.menuColor">
                 <img src="$content.getURI("/images/hand.gif")"><font color="red">$brih_UploadMsg</font>
+        </tr><br>
+        <tr width=100% bgcolor="$ui.menuColor">
+                <img src="$content.getURI("/images/hand.gif")"><font color="red">$brih_UploadMsg1</font>
+        </tr><br>
+        <tr width=100% bgcolor="$ui.menuColor">
+                <img src="$content.getURI("/images/hand.gif")"><font color="red">$brih_UploadMsg2</font>
         </tr>
 	
 	#if(($user_role == "instructor")||(($user_role == "teacher_assistant")&&($flag)))
-      <tr width=100% bgcolor="$ui.tableColor">
+        <tr width=100% bgcolor="$ui.tableColor">
          <td colspan=4>
          <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
         <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
@@ -229,7 +232,7 @@ $page.setTitle("Home | $course | Course management")
         #foreach($topic in $allTopics)
                 <option>$topic</option>
           #end
-        </SELECT>
+        </SELECT>&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="RADIO" name=topicExisting value="NEWTOPIC" onClick=contentChange(document.uploadform)>$brih_new $brih_topic
         </td>
         ##</tr>
@@ -255,12 +258,10 @@ $page.setTitle("Home | $course | Course management")
 	</tr>	
 	#end
       <tr bgcolor="$ui.menuColor" width=100%>
-        ##formCell ("Topic Name" "contentTopic" "")
         <td>
         <b><font face="$ui.sansSerifFonts">$brih_topic #if($lang=="hindi")  #end $brih_name</font> </b>
         </td>
         <td>
-	##<textarea name="contentTopic" rows=2 cols=35 onFocus=checkRadio()></textarea>
         <input type="text" name=contentTopic onFocus=checkRadio() size=30>
         </td>
 	<td colspan=2>
@@ -275,59 +276,78 @@ $page.setTitle("Home | $course | Course management")
         </td>
 	</tr>
       <tr bgcolor="$ui.tableColor">
-              #fileUpload ("1. &nbsp; $brih_at_file " "file1")</td><td></td>#fileUpload ("6.&nbsp; $brih_at_file  &nbsp;" "file6")
+       <td>Select File(s) to Upload:</td>
+       <td colspan=5><input type="file" class="browse" id="myFile" name="uploaded_Files" multiple size="50" onchange="AddUploadedFilesList(document.uploadform,this)";> </td>
       </tr>
-      <tr bgcolor="$ui.menuColor">
-              #fileUpload ("2. &nbsp; $brih_at_file " "file2")</td><td></td>#fileUpload ("7.&nbsp; $brih_at_file  &nbsp;" "file7")
-      </tr>
-      <tr bgcolor="$ui.tableColor">
-              #fileUpload ("3. &nbsp; $brih_at_file " "file3")</td><td></td>#fileUpload ("8.&nbsp; $brih_at_file  &nbsp;" "file8")
-      </tr>
-      <tr bgcolor="$ui.menuColor">
-              #fileUpload ("4. &nbsp; $brih_at_file " "file4")</td><td></td>#fileUpload ("9.&nbsp; $brih_at_file  &nbsp;" "file9")
-        </tr>
-	<tr bgcolor="$ui.tableColor">
-              #fileUpload ("5. &nbsp; $brih_at_file " "file5")</td><td></td>#fileUpload ("10.&nbsp; $brih_at_file  &nbsp;" "file10")
-      </tr>
-
-#*      <tr>
-        <td bgcolor="$ui.tableColor">
-        <b><font face="$ui.sansSerifFonts">Topic Description </font> </b>
-        </td>
-        <td>
-        <font face="$ui.sansSerifFonts"><textarea name="topicDescription" rows=5 cols=60></textarea></font>
-        </td>
-      </tr>
-*#
-#*    <tr>
-        <td bgcolor="$ui.tableColor">
-        <b><font face="$ui.sansSerifFonts">File Information </font> </b>
-        </td>
-        <td>
-        <font face="$ui.sansSerifFonts"><textarea name="fileDescription" rows=5 cols=60></textarea></font>
-        </td>
-      </tr>
-*#
+      <table width=100% bgcolor="$ui.tableColor"cellpadding=0 cellspacing=2>
       <tr>
-        <td colspan=5 align="left" bgcolor="$ui.buttonBoxColor">
+         <td><p id="file_info"></p></td>
+      </tr>
+      </table>
+      <tr>
+         <td colspan=5 align="center" bgcolor="$ui.buttonBoxColor">
           #*
             Check for a mode, the update and delete buttons
             shouldn't appear when inserting a new user.
           *#
-	<font face="$ui.sansSerifFonts">
-
-          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
-	<input type="reset" class="button-ftextstyle" name="Reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
-        <input type="hidden" name="actionName" value="">
-        <input type="hidden" name="count" value="$tdcolor">
-
-          </font>
-        </td>
+   	    <font face="$ui.sansSerifFonts">
+               <input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
+	       <input type="reset" class="button-ftextstyle" name="Reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+               <input type="hidden" name="actionName" value="">
+               <input type="hidden" name="count" value="$tdcolor">
+            </font>
+         </td>
       </tr>
-    </table>
+   </table>
 </form>
 
 <SCRIPT language="JavaScript">
+
+   function AddUploadedFilesList(uploadform,field)
+   {
+      var x = document.getElementById("myFile");
+      var txt = "";
+      if ('files' in x)
+      { 
+         if (x.files.length == 0)
+         {
+            txt = "Select one or more files.";
+         }
+         else
+         { 
+            for (var i = 0; i < x.files.length; i++)
+            {
+               txt += "<br><strong>" + (i+1) + ". </strong>";
+               var file = x.files[i];
+               if ('name' in file)
+               {
+                  txt +=  file.name + ",";
+               }
+               if ('size' in file)
+               {
+                  txt += "(" + file.size + " bytes" + ")<br>";
+               }
+            }
+         }
+      }
+      else
+      {
+         if (x.value == "") 
+         {
+            txt += "Select one or more files.";
+         }
+         else
+         {
+            txt += "The files property is not supported by your browser!";
+            txt  += "<br>The path of the selected file: " + x.value;
+         }
+      }
+      document.getElementById("file_info").innerHTML = txt;
+   }
+   function checkClear(frm,field)
+   {
+       document.getElementById("file_info").innerHTML = "";
+   }
         function popupWin(url,popupName)
         {
                 Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
@@ -397,6 +417,7 @@ $page.setTitle("Home | $course | Course management")
                         alert("Topic Name Can not Empty !!");
                 }
         }
+
 	function showTextBox() {
         if ($('#check').is(':checked')) {
             $("#textboxDiv").show();

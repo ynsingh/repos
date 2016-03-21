@@ -102,18 +102,17 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
  */
 
 public class UploadAction extends SecureAction
-
 {
-    /**
+   /**
     * This method responsible for uploadng of files
     * @param data Rundata
     * @param context Context
     */
-    private String LangFile=null;
-    private Log log = LogFactory.getLog(this.getClass());
+   private String LangFile=null;
+   private Log log = LogFactory.getLog(this.getClass());
 
-    public void doUpload(RunData data, Context context)
-    {
+   public void doUpload(RunData data, Context context)
+   {
 /* psuedocode description
  *     get the username from RunData, current course from context, ContentTopic, publishFlag from the parameterparser.
  *     get the list of files uploaded in the course.
@@ -145,358 +144,321 @@ public class UploadAction extends SecureAction
  *         Remove the files from temporary space.
  *     }
  */
-              
-	try{
-		User user=data.getUser();
-		String uName=user.getName();
-		int uid=UserUtil.getUID(uName);
-		String fullName = UserUtil.getFullName(uid);
-		LangFile=(String)user.getTemp("LangFile");
-		String courseHome=(String)user.getTemp("course_id","");
-		ParameterParser pp=data.getParameters();
-		String contentTopic=pp.getString("contentTopic","").replaceAll("\\s+", "");
-		String location=pp.getString("course","");
-		String Pub=pp.getString("publish","");
-		context.put("pub",Pub);
-		String sendMail = pp.getString("sendMail","");
-		Vector new_files_uploaded=new Vector();
-		XmlWriter xmlWriter=null;
-		int instituteId=Integer.parseInt(data.getUser().getTemp("Institute_id").toString());
-		if(contentTopic.equals(""))
-		{
-			String Mu_msg=MultilingualUtil.ConvertedString("uploadAction_msg ",LangFile);
-			context.put("errorMess",Mu_msg);
-			return;
-		}	
-		if(contentTopic.indexOf('/')!=-1 || contentTopic.indexOf("\\")!=-1)
-		{
-			String Mu_msg1=MultilingualUtil.ConvertedString("uploadAction_msg1",LangFile);
-			context.put("errorMess",Mu_msg1);
-			return;
-		}
-		context.put("errorMess","");
-		String dateOfCreation=(new java.util.Date()).toString();
-		String dateOfModification="";
-		String coursesRealPath=TurbineServlet.getRealPath("/Courses");
-		String tempFile[]=new String[10];
-		FileItem fileItem;
-		File f=null;
-		File topicDir=new File(coursesRealPath+"/"+courseHome+"/Content/"+contentTopic);
-		File tDir=new File(coursesRealPath+"/"+courseHome+"/Content/");
-		String Path=coursesRealPath+"/"+courseHome+"/Content/"+contentTopic;
-		String way=coursesRealPath+"/"+courseHome+"/Content/";
-		String filePath="";
-		f=new File(topicDir.getPath()+"/Unpublished/");
-	
-		/** Put the check for file storage system get value from configuration file
- 		*   on the basis set the path of storage area
-		**/
-                String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-                String dstore = AdminProperties.getValue(path,"brihaspati.admin.datastore.value");
-                String hdfsurl = AdminProperties.getValue(path,"brihaspati.admin.hdfsurl.value");
-                if(StringUtils.isBlank(dstore)){
-                        dstore="Local";
-                }
-
-		/**
- 		 * check guest access for course inside database
- 		 */
-		int gid = GroupUtil.getGID(courseHome);
-		Criteria crit = new Criteria();
-		crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
-		crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
-		crit.add(TurbineUserGroupRolePeer.USER_ID,0);
-		List v=TurbineUserGroupRolePeer.doSelect(crit);	
-
-	//check for available quota space and return true if space available
-	//	String gname=GroupUtil.getGroupName(uid,2);
-		long dirS=QuotaUtil.getDirSizeInMegabytes(new File(coursesRealPath+"/"+courseHome));
-	//	ErrorDumpUtil.ErrorLog(" The dirs is "+ Long.toString(dirS)+ "C Name "+gname+ " C Home "+courseHome );
-                boolean check=QuotaUtil.CompareQuotainCourse(dirS,courseHome);
-		//ErrorDumpUtil.ErrorLog(" The Compare quota in course is "+check);
-                if(check){
-		try
-		{
-			if(!Pub.equals("Publish"))	
-				filePath = f.getPath()+"/";
+   try
+   {
+      User user=data.getUser();
+      String uName=user.getName();
+      int uid=UserUtil.getUID(uName);
+      String fullName = UserUtil.getFullName(uid);
+      LangFile=(String)user.getTemp("LangFile");
+      String courseHome=(String)user.getTemp("course_id","");
+      ParameterParser pp=data.getParameters();
+      String contentTopic=pp.getString("contentTopic","").replaceAll("\\s+", "");
+      String location=(String)user.getTemp("course_name");
+      String Pub=pp.getString("publish","");
+      context.put("pub",Pub);
+      String sendMail = pp.getString("sendMail","");
+      Vector new_files_uploaded=new Vector();
+      XmlWriter xmlWriter=null;
+      int instituteId=Integer.parseInt(data.getUser().getTemp("Institute_id").toString());
+      if(contentTopic.equals(""))
+      {
+         String Mu_msg=MultilingualUtil.ConvertedString("uploadAction_msg ",LangFile);
+	 context.put("errorMess",Mu_msg);
+	 return;
+      }	
+      if(contentTopic.indexOf('/')!=-1 || contentTopic.indexOf("\\")!=-1)
+      {
+         String Mu_msg1=MultilingualUtil.ConvertedString("uploadAction_msg1",LangFile);
+	 context.put("errorMess",Mu_msg1);
+	 return;
+      }
+      context.put("errorMess","");
+      String dateOfCreation=(new java.util.Date()).toString();
+      String dateOfModification="";
+      String coursesRealPath=TurbineServlet.getRealPath("/Courses");
+      String tempFile[]=new String[10];
+      File f=null;
+      File topicDir=new File(coursesRealPath+"/"+courseHome+"/Content/"+contentTopic);
+      File tDir=new File(coursesRealPath+"/"+courseHome+"/Content/");
+      String Path=coursesRealPath+"/"+courseHome+"/Content/"+contentTopic;
+      String way=coursesRealPath+"/"+courseHome+"/Content/";
+      String filePath="";
+      f=new File(topicDir.getPath()+"/Unpublished/");
+      /** Put the check for file storage system get value from configuration file
+       *   on the basis set the path of storage area
+       **/
+      String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+      String dstore = AdminProperties.getValue(path,"brihaspati.admin.datastore.value");
+      String hdfsurl = AdminProperties.getValue(path,"brihaspati.admin.hdfsurl.value");
+      if(StringUtils.isBlank(dstore))
+      {
+         dstore="Local";
+      }
+      /**
+       * check guest access for course inside database
+       */
+      int gid = GroupUtil.getGID(courseHome);
+      Criteria crit = new Criteria();
+      crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
+      crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+      crit.add(TurbineUserGroupRolePeer.USER_ID,0);
+      List v=TurbineUserGroupRolePeer.doSelect(crit);	
+      //check for available quota space and return true if space available
+      long dirS=QuotaUtil.getDirSizeInMegabytes(new File(coursesRealPath+"/"+courseHome));
+      //ErrorDumpUtil.ErrorLog(" The dirs is "+ Long.toString(dirS)+ "C Name "+gname+ " C Home "+courseHome );
+      boolean check=QuotaUtil.CompareQuotainCourse(dirS,courseHome);
+      if(check)
+      {
+         try
+	 {
+	    if(!Pub.equals("Publish"))	
+	       {
+               filePath = f.getPath()+"/";
+               }
+	    else
+               {
+	       filePath = topicDir.getPath()+"/";
+               }
+	    try
+	    {
+	       File dFile=new File(tDir+"/"+"coursecontent__des.xml");
+	       Vector dc=new Vector();
+	       boolean flag=false;
+	       if(dFile.exists()) //If coursecontent_des.xml file already exists.
+               {  
+                  //Create Topic MetaDataXmlReader object to access get File Details.
+		  TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(way+"/"+"coursecontent__des.xml");
+                  dc=topicMetaData.getFileDetailsModify();
+		  for(int i=0;i<dc.size();i++)
+                  {
+		     String st=((FileEntry) dc.elementAt(i)).getName();
+		     String guestaccess=((FileEntry) dc.elementAt(i)).getGuestAccess();
+		     if(st.equals(contentTopic))//check if topic entered is same as already existing one.
+                     {
+		        flag=true;
+			if(v.size()==0)//If guest permission is enabled.
+			   xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"true");
 			else
-				filePath = topicDir.getPath()+"/";
-			
-			//f.mkdirs();
-			try
-			{
-			//File dFile=new File(tDir+"/"+"content__des.xml");
-			File dFile=new File(tDir+"/"+"coursecontent__des.xml");
-			Vector dc=new Vector();
-			boolean flag=false;	
-			if(dFile.exists()){
-				//TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(way+"/"+"content__des.xml");
-				TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(way+"/"+"coursecontent__des.xml");
-                                dc=topicMetaData.getFileDetailsModify();
-				for(int i=0;i<dc.size();i++){
-					String st=((FileEntry) dc.elementAt(i)).getName();
-					String guestaccess=((FileEntry) dc.elementAt(i)).getGuestAccess();	
-					if(st.equals(contentTopic)){
-						flag=true;
-						if(v.size()==0)
-							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"true");
-						else
-							//xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"false");
-							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,guestaccess);
-                       				xmlWriter.writeXmlFile();
-					}
-				}
-				if(!flag){
-                        		//xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"content");
-                        		xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
-					if(v.size()==0)
-	   					TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"true");
-					else
-						TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"false");
-                       			xmlWriter.writeXmlFile();
-				}
-			}
-			else{	
-				TopicMetaDataXmlWriter.writeWithRootOnly(dFile.getAbsolutePath());
-				if(contentTopic.length()>0){
-                        		//xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"content");
-                        		xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
-					if(v.size()==0)
-                                                TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"true");
-                                        else
-                                                TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"false");
-                       			xmlWriter.writeXmlFile();
-                       		}
-                       	}
-                       	//xmlWriter.writeXmlFile();
-			}//try
-		catch(FileUploadException ex)
-		{
-			ErrorDumpUtil.ErrorLog("Error in writing topic in xml"+ex);
-			data.setMessage("See ExceptionLog");
-		}
-			int successfulUploadFilesCount=0;
-			int totalFilesEntries=0;
-			Vector failedFiles=new Vector();
-			String upldmsg="";
-
-			boolean flag1=false;
-			for(int count=0;count<10;count++)
-			{
-				boolean fileExists=false;
-				fileItem=pp.getFileItem("file"+(count+1));
-				//ErrorDumpUtil.ErrorLog("fitm in uploadaction at line 180=="+fileItem);
-				if(fileItem!=null && fileItem.getSize() != 0)
-				{
-					String temp=fileItem.getName();
-					if(!temp.equals(contentTopic+"__des.xml"))
-					{
-						int index=temp.lastIndexOf("\\");
-						++totalFilesEntries;
-						fileExists=false;
-						tempFile[count]=temp.substring(index+1);
-						File uploadedFileInUnpub=new File(f,tempFile[count]);
-						File uploadedFileInTopicDir=new File(topicDir,tempFile[count]);
-						if(uploadedFileInUnpub.exists() || uploadedFileInTopicDir.exists() || (temp.indexOf(',')!=-1) )
-						{
-							fileExists=true;
-							failedFiles.addElement(tempFile[count]);
-						}
-						if(fileExists)
-						continue;
-						++successfulUploadFilesCount;
-						new_files_uploaded.addElement(tempFile[count]);
-	
-						//if start data storage on Local disk
-						if((StringUtils.equalsIgnoreCase(dstore,"Local"))||(StringUtils.equalsIgnoreCase(dstore,"Both"))){
-							long fsize=fileItem.getSize()/1024/1024;
-							long uquota=QuotaUtil.getCrsQuota(courseHome);
-							uquota= uquota - dirS;
-							long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
-							//ErrorDumpUtil.ErrorLog("The different value of quota parameter in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace +"I ID "+instituteId);
-							if((uquota>fsize)&&(disSpace>fsize))
-							{
-                                	        		f.mkdirs();
-	                                	        	flag1=true;
-        	                				if(flag1)
-								{
-									String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
-                	                                                String fospath=filePath+tempFile[count];
-                        	                                        writeData(descfilepath, fileItem, fospath);
-        	       	        	                        }
-	                                	        }
-							else{
-								//data.setMessage("");
-								data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg5",LangFile));
-							}
-							System.gc();
-						}//if disk storage local
-						if((StringUtils.equalsIgnoreCase(dstore,"HDFS"))||(StringUtils.equalsIgnoreCase(dstore,"Both"))){
-							// write the code here for storing data in hdfs file system
-							// check name node is running is running or not
-							boolean serverOn=false;
-							if(StringUtils.isNotBlank(hdfsurl)){
-			        	                	try {
-	                        			        	URL myURL = new URL(hdfsurl);
-					                                HttpURLConnection connection = (HttpURLConnection)myURL.openConnection();
-        		                			        connection.setDoOutput(true);
-					                                connection.setRequestMethod("POST");
-                        					        connection.connect();
-			        		                        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                        					                serverOn=true;
-                                					}
-		                        			}
-					                        catch (MalformedURLException e) {
-                			       			        data.setMessage("The problem in connecting to server "+e);
-				        	                }
-                        					catch (IOException e) {
-			                		                data.setMessage("The problem in connecting to server (IO exception) "+e);
-                        					}
-								 // then write the name of file in xml file
-								if(serverOn){
-								// set the location of the file
-									if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
-										f.mkdirs();
-										String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
-	                                        		                String fospath=filePath+tempFile[count];
-                                                        			writeData(descfilepath, fileItem, fospath);
-									}
-									HDFSClient.mkdir(filePath);
-									HDFSClient.addFile(filePath+temp, filePath);
-									if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
-										(new File(filePath+temp)).delete();
-									}
-							 	}
-                	        				else{
-				                        	        data.setMessage("The problem in connecting to server due to either network failure or server/service down");
-	                        				}
-							}//if url is not blank
-							else{
-								ErrorDumpUtil.ErrorLog("The hdfs server url is blank so file is not stored on distributed server");
-								data.setMessage("The hdfs server url is blank so file is not stored on distributed server");
-							}
-	                			}//if end data storage on hdfs
-					}
-					else
-					{
-						upldmsg=temp+" "+MultilingualUtil.ConvertedString("topicUpload_msg",LangFile);
-						//data.addMessage(upldmsg);
-					}
-				}//fileTiem	
-			}//count
-			String courseName = CourseUtil.getCourseName(courseHome);	
-			String Mail_msg = "";
-			if(flag1){	
-			if(Pub.equals("Publish"))
-			{
-				if(new_files_uploaded.size()!=0)
-                       		{
-                               		for(int k=0;k<new_files_uploaded.size();k++)
-                               		{
-                                       		String fileName=new_files_uploaded.get(k).toString();
-                               			xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(Path,contentTopic);
-                                       		TopicMetaDataXmlWriter.appendFileElement(xmlWriter,fileName,fileName,dateOfCreation);
-                       				xmlWriter.writeXmlFile();
-				//boolean courseModified = true;
-				Date d=new Date();
-				updateLastModified(courseHome,d);
-                               		}//for
-                       		}//if
-				
-				if(sendMail.equals("sendMail")){
-					try{
-					String newText=pp.getString("text1","");
-					int roleId[]={2,3};
-					int userId[]={uid,0};
-					crit = new Criteria();
-			                crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
-			                crit.addIn(TurbineUserGroupRolePeer.ROLE_ID,roleId);
-			                crit.andNotIn(TurbineUserGroupRolePeer.USER_ID,userId);
-			                List v1=TurbineUserGroupRolePeer.doSelect(crit);				
-					if(v1.size() >0){
-						//String courseName = CourseUtil.getCourseName(courseHome);	
-						for(int i=0; i < v1.size(); i ++) {
-							int usrId =((TurbineUserGroupRole) v1.get(i)).getUserId();
-							crit = new Criteria();
-							crit.add(TurbineUserPeer.USER_ID, usrId);
-							List usrList = TurbineUserPeer.doSelect(crit);
-							String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
-							//Mail_msg=  MailNotificationThread.getController().set_Message(newText+"\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
-							Mail_msg=  MailNotificationThread.getController().set_Message("\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+" ." +"the Information regarding the upload is as given below ."+"<br>"+newText +"."+"<br>"+fullName, "", "", "", userEmail, "Course content uploaded", "", LangFile);
-						}
-						if(Mail_msg.equals("Success")) {
-							crit = new Criteria();
-        	                                        crit.add(TurbineUserPeer.USER_ID, uid);
-                	                                List usrList = TurbineUserPeer.doSelect(crit);
-	                       	                        String senderEmail = ((TurbineUser) usrList.get(0)).getEmail();
-        						//Mail_msg=  MailNotificationThread.getController().set_Message(newText+"\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", senderEmail, "Course content uploaded", "", LangFile);
-							Mail_msg=  MailNotificationThread.getController().set_Message("\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+ " . "+"the Information regarding the upload is as given below"+"<br>"+newText+"."+"<br>"+ fullName, "", "", "", senderEmail, "Course content uploaded", "", LangFile);
-							Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
-							data.addMessage(Mail_msg);
-						}
-					}
-					}
-					catch(Exception e) { ErrorDumpUtil.ErrorLog("Exception in Upload Action class on 411 line "+e.getMessage());}
-				}
-			}//ifpublish
-			}//ifflag1
+			   //If guest permission is not enabled.
+			   xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,guestaccess);
+                       	xmlWriter.writeXmlFile();//
+		     }
+		  }
+		  if(!flag)//If topic entered at runtime by user is new .....
+                  {
+                     xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
+		     if(v.size()==0)
+	   	        TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"true");
+		     else
+		        TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"false");
+                     xmlWriter.writeXmlFile();
+		  }
+	       }
+	       else//If coursecontent_des.xml file donot exists...
+	 	  TopicMetaDataXmlWriter.writeWithRootOnly(dFile.getAbsolutePath());
+		  if(contentTopic.length()>0)
+                  {
+                     xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
+		  if(v.size()==0)
+                     TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"true");
+                  else
+                     TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location,"false");
+                  xmlWriter.writeXmlFile();
+                  }
+               }
+      	    catch(FileUploadException ex)
+	    {
+	       data.setMessage("See ExceptionLog");
+	    }
+	    int successfulUploadFilesCount=0;
+	    int totalFilesEntries=0;
+	    Vector failedFiles=new Vector();
+	    String upldmsg="";
+            FileItem[] fileItem = pp.getFileItems("uploaded_Files");//Get files to store in fileitem's object.
+            int itm_sz= fileItem.length;
+            String str = Integer.toString(itm_sz);
+            ErrorDumpUtil.ErrorLog("fitm size in uploadaction ======="+str);
+            //String temp1=fileItem[0].getName();
+            //ErrorDumpUtil.ErrorLog("file item 1 ......"+temp1);
+            boolean flag1=false;
+	    for(int count=0;count<itm_sz;count++)
+	    {  
+	       boolean fileExists=false;
+	       //fileItem=pp.getFileItem("file"+(count+1));
+	       //if(fileItem!=null && fileItem.getSize() != 0)
+	       if(fileItem[count]!=null && fileItem[count].getSize() != 0)
+	       {
+	          String temp=fileItem[count].getName();
+		  if(!temp.equals(contentTopic+"__des.xml"))
+		  {  
+		     int index=temp.lastIndexOf("\\");
+		     ++totalFilesEntries;
+		     fileExists=false;
+		     tempFile[count]=temp.substring(index+1);
+		     File uploadedFileInUnpub=new File(f,tempFile[count]);
+		     File uploadedFileInTopicDir=new File(topicDir,tempFile[count]);
+		     if(uploadedFileInUnpub.exists() || uploadedFileInTopicDir.exists() || (temp.indexOf(',')!=-1) )
+		     {
+		        fileExists=true;
+			failedFiles.addElement(tempFile[count]);
+	             }
+		     if(fileExists)
+		        continue;
+	             ++successfulUploadFilesCount;
+		     new_files_uploaded.addElement(tempFile[count]);
+		     //if start data storage on Local disk
+		     if((StringUtils.equalsIgnoreCase(dstore,"Local"))||(StringUtils.equalsIgnoreCase(dstore,"Both")))
+                     {
+		        //long fsize=fileItem.getSize()/1024/1024;
+		        long fsize=fileItem[count].getSize()/1024/1024;
+                        String myString = Long.toString(fsize);                 
+		        long uquota=QuotaUtil.getCrsQuota(courseHome);
+		        uquota= uquota - dirS;
+                        String myStringfor_uquota = Long.toString(uquota);
+		        long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
+                        String myStringfor_disSpace = Long.toString(disSpace);
+		        if((uquota>fsize)&&(disSpace>fsize))
+		        {
+                           f.mkdirs();//Make a directory named as Unpublished.
+	                   flag1=true;
+        	           if(flag1)
+			   {
+			      String descfilepath=topicDir+"/"+contentTopic+"__des.xml";//get path of topic's xml file.
+                	      String fospath=filePath+tempFile[count];//filePath(path till topic's folder)
+                              writeData(descfilepath, fileItem, fospath, count);
+        	       	   }
+	                }
 			else
-				data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));
-			if(successfulUploadFilesCount>0) 
-			{	
-				String userRole = (String) user.getTemp("role");
-				if(userRole.equals("student")){
-					String insEmail = CourseUtil. getCourseInstrEmail(courseHome);
-					Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded by student named "+fullName +"in "+courseName+".", "", "", "", insEmail, "Course content is uploaded by student named "+fullName, "", LangFile);
-				}
-				if(successfulUploadFilesCount==totalFilesEntries)
-				{
-				// all the entries given were uploaded successfully
-				context.put("uploadStatus","full");	
-				}
-				else
-				{
-				// some of the entries given were uploaded successfully
-				context.put("uploadStatus","partial");	
-				context.put("failedFiles",failedFiles);
-		
-				}
+                        {
+			   data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg5",LangFile));
 			}
-			else
-			{	
-			// nothing was uploaded
-			context.put("uploadStatus","nothing");	
-			context.put("totalFilesEntries",(new TotalFileCount(totalFilesEntries) ) );
-			context.put("failedFiles",failedFiles);
+			System.gc();
+		     }//if disk storage local
+		  }//if temp equals content topic_des.xml
+		  else
+		  {
+		     upldmsg=temp+" "+MultilingualUtil.ConvertedString("topicUpload_msg",LangFile);
+		     //data.addMessage(upldmsg);
+	          }
+	       }//if ends here ..fileitem
+	    }// for loop end count
+               
+	       String courseName = CourseUtil.getCourseName(courseHome);	
+	       String Mail_msg = "";
+	       if(flag1)
+               {  
+	          if(Pub.equals("Publish"))
+		  {  
+		     if(new_files_uploaded.size()!=0)
+                     {  
+                        for(int k=0;k<new_files_uploaded.size();k++)
+                        {
+                           String fileName=new_files_uploaded.get(k).toString();
+                           xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(Path,contentTopic);
+                           TopicMetaDataXmlWriter.appendFileElement(xmlWriter,fileName,fileName,dateOfCreation);
+                       	   xmlWriter.writeXmlFile();
+			   Date d=new Date();
+			   updateLastModified(courseHome,d);
+                        }//for
+                     }//if
+		  if(sendMail.equals("sendMail"))
+                  {
+		     try
+                     {
+		        String newText=pp.getString("text1","");
+			int roleId[]={2,3};
+			int userId[]={uid,0};
+			crit = new Criteria();
+			crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
+			crit.addIn(TurbineUserGroupRolePeer.ROLE_ID,roleId);
+			crit.andNotIn(TurbineUserGroupRolePeer.USER_ID,userId);
+			List v1=TurbineUserGroupRolePeer.doSelect(crit);				
+			if(v1.size() >0)
+                        {
+			   //String courseName = CourseUtil.getCourseName(courseHome);	
+			   for(int i=0; i < v1.size(); i ++) 
+                           {
+  			      int usrId =((TurbineUserGroupRole) v1.get(i)).getUserId();
+			      crit = new Criteria();
+			      crit.add(TurbineUserPeer.USER_ID, usrId);
+			      List usrList = TurbineUserPeer.doSelect(crit);
+			      String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
+			      //Mail_msg=  MailNotificationThread.getController().set_Message(newText+"\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
+			      Mail_msg=  MailNotificationThread.getController().set_Message("\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+" ." +"the Information regarding the upload is as given blow ."+"<br>"+newText +"."+"<br>"+fullName, "", "", "", userEmail, "Course content uploaded", "", LangFile);
+			   }
+			   if(Mail_msg.equals("Success")) 
+                           {
+			      crit = new Criteria();
+        	              crit.add(TurbineUserPeer.USER_ID, uid);
+                	      List usrList = TurbineUserPeer.doSelect(crit);
+	                      String senderEmail = ((TurbineUser) usrList.get(0)).getEmail();
+        		      //Mail_msg=  MailNotificationThread.getController().set_Message(newText+"\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", senderEmail, "Course content uploaded", "", LangFile);
+			      Mail_msg=  MailNotificationThread.getController().set_Message("\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+ " . "+"the Information regarding the upload is as given blow"+"<br>"+newText+"."+"<br>"+ fullName, "", "", "", senderEmail, "Course content uploaded", "", LangFile);
+			      Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
+			      data.addMessage(Mail_msg);
+			   }
 			}
-			/*}//ifflag1
-			else
-			data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));*/
-			if(StringUtils.isNotBlank(upldmsg)){
-				context.put("tmpupload","uploadXmlMsg");		
-				context.put("XmlMsg",upldmsg);
-			}
-			//Maintain Log
-			String loginName = user.getName();
-                        String strInstId =  (String)user.getTemp("Institute_id","");
-                        String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
-                        String gName=data.getUser().getTemp("course_id").toString();
-                        log.info("Course content has been uploaded by --> "+loginName +" | Institute Name -->"+instName +" | Course Name -->"+gName + " | IP Address --> "+data.getRemoteAddr());
-
-		}//try
-		catch(FileUploadException ex)
-		{
-			data.addMessage("The Error in Upload a file"+ex);
-		}
-	 }//if 
-         else{
-			data.setMessage(MultilingualUtil.ConvertedString("qmgmt_msg3",LangFile));
-	}
-	}//try
-	catch(Exception ex)
-	{
-		data.addMessage("The Error in Uploading in Course contents !!"+ex);
-	}
+	             }
+		     catch(Exception e) { ErrorDumpUtil.ErrorLog("Exception in Upload Action class on 411 line "+e.getMessage());}
+		  }
+	       }//ifpublish
+	 }//ifflag1
+	 else
+	    data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));
+	    if(successfulUploadFilesCount>0) 
+	    {	
+	       String userRole = (String) user.getTemp("role");
+	       if(userRole.equals("student"))
+               {
+		  String insEmail = CourseUtil. getCourseInstrEmail(courseHome);
+		  Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded by student named "+fullName +"in "+courseName+".", "", "", "", insEmail, "Course content is uploaded by student named "+fullName, "", LangFile);
+	       }
+	       if(successfulUploadFilesCount==totalFilesEntries)
+	       {
+	          // all the entries given were uploaded successfully
+		  context.put("uploadStatus","full");	
+	       }
+	       else
+	       {
+	          // some of the entries given were uploaded successfully
+		  context.put("uploadStatus","partial");	
+		  context.put("failedFiles",failedFiles);
+	       }
+	    }
+	    else
+	    {	
+	       //nothing was uploaded
+	       context.put("uploadStatus","nothing");	
+	       context.put("totalFilesEntries",(new TotalFileCount(totalFilesEntries) ) );
+	       context.put("failedFiles",failedFiles);
+	    }
+	    if(StringUtils.isNotBlank(upldmsg))
+            {
+	       context.put("tmpupload","uploadXmlMsg");		
+	       context.put("XmlMsg",upldmsg);
+	    }
+	    //Maintain Log
+	    String loginName = user.getName();
+            String strInstId =  (String)user.getTemp("Institute_id","");
+            String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
+            String gName=data.getUser().getTemp("course_id").toString();
+            log.info("Course content has been uploaded by --> "+loginName +" | Institute Name -->"+instName +" | Course Name -->"+gName + " | IP Address --> "+data.getRemoteAddr());
+   	 }//try
+	 catch(FileUploadException ex)
+	 {
+	    data.addMessage("The Error in Upload a file"+ex);
+	 }
+      }//if 
+      else
+      {
+         data.setMessage(MultilingualUtil.ConvertedString("qmgmt_msg3",LangFile));
+      }	
+   }//try
+   catch(Exception ex)
+   {
+      data.addMessage("The Error in Uploading in Course contents !!"+ex);
+   }
 }//do
 		/**
                  * This method is responsble for wrting data to local disk location
@@ -506,18 +468,21 @@ public class UploadAction extends SecureAction
                  * @return boolean return true or false
                  */
 	
-	 public boolean writeData(String descfilepath, FileItem fileItem, String fospath){
+	 public boolean writeData(String descfilepath, FileItem[] fileItem, String fospath,int count){
                         boolean wd=false;
                 try{
                         File descFile= new File(descfilepath);
                         if(!descFile.exists())
-                        TopicMetaDataXmlWriter.writeWithRootOnly(descFile.getAbsolutePath());
+                        {
+                            TopicMetaDataXmlWriter.writeWithRootOnly(descFile.getAbsolutePath());
+                        }
                         int readCount;
-                        InputStream is=fileItem.getInputStream();
+                        InputStream is =fileItem[count].getInputStream();
                         FileOutputStream fos=new FileOutputStream(fospath);
                         byte[] buf=new byte[4*1024];
+                        String s = new String(buf);
                         while((readCount=is.read(buf)) !=-1)
-                        {
+                         {      String str2 = Integer.toString(readCount); 
                                 fos.write(buf,0,readCount);
                         }
                         fos.close();
