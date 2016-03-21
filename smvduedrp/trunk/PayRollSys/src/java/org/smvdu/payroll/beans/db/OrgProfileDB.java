@@ -10,7 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.ArrayList; 
+import java.util.Date;
 import org.smvdu.payroll.Admin.ServerDetails;
 import org.smvdu.payroll.api.Administrator.CollegeRequestStatus;
 import org.smvdu.payroll.api.EncryptionUtil;
@@ -165,7 +166,11 @@ public class OrgProfileDB {
             DateFormat dateFormat;
             dateFormat = new SimpleDateFormat("yy-MM-dd");
             
-            /*int month = date.getMonth();
+            /*
+            java.util.Date date=new java.util.Date();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            System.out.println("Today date is====================> "+dateFormat.format(date));
+            int month = date.getMonth();
             int year = date.getYear();
             int day = date.getDate();*/
             String d = String.valueOf(date.getDate())+"-"+String.valueOf(date.getMonth())+"-"+String.valueOf(date.getDate());
@@ -217,7 +222,7 @@ public class OrgProfileDB {
             //new UserDB().save(info);
             new CollegeRequestStatus().saveRequestStatus(org,code,info); 
             new ServerDetails().saveServerDetail(org,code);
-            //new OrgConformationEmail().sendPendingCollegeMail(org);
+            new OrgConformationEmail().sendPendingCollegeMail(org);
             return null;
         }
         catch(Exception e)
@@ -234,7 +239,7 @@ public class OrgProfileDB {
             Connection cn = new CommonDB().getConnection();
             PreparedStatement pst;
             pst = cn.prepareStatement("update college_pending_status set org_request_status = '"+1+"' where org_pen_email= '"+emailid+"'");
-            pst.executeUpdate();
+                        pst.executeUpdate();
             pst.close();
             cn.close();
             return true;

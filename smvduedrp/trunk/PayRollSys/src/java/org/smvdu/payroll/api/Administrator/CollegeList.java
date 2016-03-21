@@ -31,6 +31,7 @@ import org.smvdu.payroll.user.changePassword;
  *
  * @author KESU
  * GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
+ * Modified date 21 March 2016
  */
 
 @ManagedBean
@@ -480,7 +481,7 @@ public class CollegeList {
                     pst9.executeUpdate();
                     pst9.clearParameters();
                     pst9.close();
-                    //new OrgConformationEmail().sendMail(or);
+                    new OrgConformationEmail().sendMail(or);
                     
                 }
                 else
@@ -791,10 +792,11 @@ public class CollegeList {
             Connection connection = new CommonDB().getConnection();
             PreparedStatement pst;
             ResultSet rst;
-            pst = connection.prepareStatement("select count(user_name) as total from user_master");
+            //pst = connection.prepareStatement("select count(user_name) as total from user_master");
+            pst = connection.prepareStatement("select count(org_name) as total from org_profile");
             rst = pst.executeQuery();
             rst.next();
-            totalCollege = rst.getInt("total")-1;
+            totalCollege = rst.getInt("total");
             return totalCollege;
         }
         catch(Exception ex)
@@ -811,10 +813,11 @@ public class CollegeList {
             Connection connection = new CommonDB().getConnection();
             PreparedStatement pst;
             ResultSet rst;
-            pst = connection.prepareStatement("select count(user_name) as total from user_master where flag = '"+1+"'");
+           // pst = connection.prepareStatement("select count(user_name) as total from user_master where flag = '"+1+"'");
+            pst = connection.prepareStatement("select count(org_name) as total from org_profile where org_status = '"+1+"'");
             rst = pst.executeQuery();
             rst.next();
-            totalCollege = rst.getInt("total")-1;
+            totalCollege = rst.getInt("total");
             return totalCollege;
         }
         catch(Exception ex)
@@ -831,7 +834,8 @@ public class CollegeList {
             Connection connection = new CommonDB().getConnection();
             PreparedStatement pst;
             ResultSet rst;
-            pst = connection.prepareStatement("select count(user_name) as total from user_master where flag='"+0+"'");
+            //pst = connection.prepareStatement("select count(user_name) as total from user_master where flag='"+0+"'");
+            pst = connection.prepareStatement("select count(org_name) as total from org_profile where org_status = '"+0+"'");
             rst = pst.executeQuery();
             rst.next();
             totalCollege = rst.getInt("total");

@@ -25,7 +25,8 @@
                             <h:graphicImage value="/img/#{userConformationBeans.imageUrl}"/>
                             <h:outputText value="#{userConformationBeans.message}" style="font-style:Arial;font-size:18px;font-weight:bold;"/>
                         </h:panelGroup>
-                        <h:commandLink  value="#{userConformationBeans.eventPage}" action="#{userConformationBeans.redirect}"/> 
+                        <%-- <h:commandLink  value="#{userConformationBeans.eventPage}" action="#{userConformationBeans.redirect}"/> --%>
+                        <div> <a href="../Login.jsf"><h2> Click here for Login/Registration </h2> </a> </div>
                     </h:panelGrid>
                 </rich:panel>
                 <rich:panel style="height:430px;">
