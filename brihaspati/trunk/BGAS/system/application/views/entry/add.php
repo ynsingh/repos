@@ -14,24 +14,7 @@
 
 
 $(document).ready(function() {
-//global variable
-var dc = '';
-/*	for ( var i = 0; i < 5; i++ ) {
-		index = ".fund-list"+i; 
-		$(index).hide(function(){});
-	}
-
-	/*cheque field hide and show functionality*/
- /**       $(".cheque-item").hide(function(){
-                });
-                $(".bank_value").hide(function(){
-                });
-                                $("#ch_no").hide(function(){
-                                        });
-                                        $(".ledger-dropdown").change(function(){
-                                                                                        
-                                        });
-**/
+	var dc = '';
 	/* javascript floating point operations */
 	var jsFloatOps = function(param1, param2, op) {
 		param1 = param1 * 100;
@@ -79,8 +62,8 @@ var dc = '';
 
 	/* Calculating Dr and Cr total */
 	$('.dr-item').live('change', function() {
+		
 		var drTotal = 0;
-
 		$("table tr .dr-item").each(function() {
 			var curDr = $(this).attr('value');
 			curDr = parseFloat(curDr);
@@ -89,6 +72,7 @@ var dc = '';
 			drTotal = jsFloatOps(drTotal, curDr, '+');
 		});
 		$("table tr #dr-total").text(drTotal);
+			
 		var crTotal = 0;
 		$("table tr .cr-item").each(function() {
 			var curCr = $(this).attr('value');
@@ -104,13 +88,15 @@ var dc = '';
 			$("table tr #cr-total").css("background-color", "#FFFF99");
 			$("table tr #dr-diff").text("-");
 			$("table tr #cr-diff").text("");
-		} else {
+		} 
+		else {
 			$("table tr #dr-total").css("background-color", "#FFE9E8");
 			$("table tr #cr-total").css("background-color", "#FFE9E8");
 			if (jsFloatOps(drTotal, crTotal, '>')) {
 				$("table tr #dr-diff").text("");
 				$("table tr #cr-diff").text(jsFloatOps(drTotal, crTotal, '-'));
-			} else {
+			} 
+			else {
 				$("table tr #dr-diff").text(jsFloatOps(crTotal, drTotal, '-'));
 				$("table tr #cr-diff").text("");
 			}
@@ -126,34 +112,32 @@ var dc = '';
 		var check = 0;
 
                 $.ajax({
-                                        url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
-                                        success: function(bank) {
-                                                bank_cash = $.trim(bank);
-						if(bank_cash == 0){
-							var first_index = dr_name.lastIndexOf("[");
-                                		        var last_index = dr_name.lastIndexOf("]"); 
-                		                        var fund_index = dr_name.substring(first_index+1, last_index);                                               				       		temp = ".fund-list"+fund_index;
-							var fund_ledger_id = $(temp).val();
+            		url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
+                       	success: function(bank) {
+                        	bank_cash = $.trim(bank);
+				if(bank_cash == 0){
+					var first_index = dr_name.lastIndexOf("[");
+                                	var last_index = dr_name.lastIndexOf("]"); 
+                		        var fund_index = dr_name.substring(first_index+1, last_index);                                               				       		temp = ".fund-list"+fund_index;
+					var fund_ledger_id = $(temp).val();
 					
-							if(fund_ledger_id != 0)
-			                                        check = 1;
-							$.ajax({
-			                                        url: <?php echo '\'' . site_url('entry/fund_balance/') . '/\''; ?> + fund_ledger_id,
-                        	        		        success: function(data){
-                                	                		fund_amount = $.trim(data);
-			                                                fund_amount = parseFloat(fund_amount);
-                        			                        if (isNaN(fund_amount))
-                                                			        fund_amount = 0;
-			                                                if(jsFloatOps(dr_amount, fund_amount, '>') && check == 1){
-						                                alert("Amount payable is more than the available fund. ("+fund_amount+")");
-                        						}
-                                                	
-                        			                }
-			                                });
-						}
-                                        }
-                });
-                //...
+					if(fund_ledger_id != 0)
+			                       	check = 1;
+					$.ajax({
+			                	url: <?php echo '\'' . site_url('entry/fund_balance/') . '/\''; ?> + fund_ledger_id,
+                        	 		success: function(data){
+                                	        	fund_amount = $.trim(data);
+			                             	fund_amount = parseFloat(fund_amount);
+                        			      	if (isNaN(fund_amount))
+                                          			fund_amount = 0;
+			                            	if(jsFloatOps(dr_amount, fund_amount, '>') && check == 1){
+						  		alert("Amount payable is more than the available fund. ("+fund_amount+")");
+                        				}
+                				}					
+					});
+				}
+                	}
+   		});
 	});
 
 	$('.cr-item').live('change', function() {
@@ -519,6 +503,7 @@ var dc = '';
 	 * @author Priyanka Rawat	
 	 */
 	$('#fund').live('change', function(){
+	//$('#fund').change(function(){
                         var fund_ledger_id = $(this).children().val();
 		//	var fund_amount = 0;
 			var fund_name = $(this).children().attr('name');
@@ -613,6 +598,10 @@ var dc = '';
 
 </script>
 <?php
+	/**
+		Changes position of Vendor Voucher Number and Bill/Voucher Number
+		added Purchase Order No. by @RAHUL
+	*/
 	echo "<p align=\"right\">"; 
 	//echo anchor_popup('help/entry', 'Help'.img(array('src' => asset_url() . "images/icons/tip.png", 'alt' => 'Help')));?>
 	<a href=javascript:popupWin(<?php echo '\'' . site_url('help/entry') . '\''; ?>,"newWin");><img src="<?php echo  asset_url(); ?>images/icons/hand.gif" />Help</a>
@@ -620,13 +609,14 @@ var dc = '';
 
 	echo form_open('entry/checkentry/' . $current_entry_type['label']."/".$check);
 	echo "<p>";
-	echo "<span id=\"tooltip-target-1\">";
-	echo form_label('Bill/Voucher Number', 'entry_number');
-	echo " ";
-	echo $current_entry_type['prefix'] . form_input($entry_number) . $current_entry_type['suffix'];
-	echo "</span>";
-	echo "<span id=\"tooltip-content-1\">Leave Bill/Voucher Number empty for auto numbering</span>";
+	echo form_label('Vendor Voucher Number', 'vendor_number');
+        echo " ";
+        echo form_input($vendor_number);
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo form_label('Purchase Order Number', 'purchase_order_no');
+        echo " ";
+        echo form_input($purchase_order_no);
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 	echo "<span id=\"tooltip-target-2\">";
 	echo form_label('Bill/Voucher Date', 'entry_date');
@@ -644,9 +634,12 @@ var dc = '';
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 	 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-        echo form_label('Vendor Voucher Number', 'vendor_number');
+	echo "<span id=\"tooltip-target-1\">";
+        echo form_label('Bill/Voucher Number', 'entry_number');
         echo " ";
-        echo form_input($vendor_number);
+        echo $current_entry_type['prefix'] . form_input($entry_number) . $current_entry_type['suffix'];
+        echo "</span>";
+        echo "<span id=\"tooltip-content-1\">Leave Bill/Voucher Number empty for auto numbering</span>";
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo"</p>";
 

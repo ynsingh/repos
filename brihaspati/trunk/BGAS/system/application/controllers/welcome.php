@@ -55,10 +55,19 @@ class Welcome extends Controller {
 		$expense->init(4);
 		$data['expense_total'] = $expense->total;
 
-		/* Getting Log Messages */
+		//Code for Notifications on Dashboard added by @RAHUL	
+                $user = $this->session->userdata('user_name');
+ 		$this->db->select('bill_voucher_create.id as id, bill_voucher_create.submitted_by as submitted_by, bill_voucher_create.expense_type as expense_type, bill_voucher_create.total_amount as total_amount');
+                $this->db->from('bill_approval_status')->join('bill_voucher_create', 'bill_approval_status.bill_no = bill_voucher_create.id')->where('status',NULL);
+		if ( ! check_access('administer'))
+		{
+			$this->db->where('forward_to',$user);
+		}		
+                $data['aut_q'] = $this->db->get();	
 		$data['logs'] = $this->logger->read_recent_messages();
 		$this->template->load('template', 'welcome', $data);
 		return;
+
 	}
 }
 

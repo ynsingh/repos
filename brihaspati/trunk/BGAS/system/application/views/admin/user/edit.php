@@ -1,4 +1,15 @@
 <?php
+	/**
+                Firstname and Lastname field is added.
+                GUI modifications(Table alignment).
+        */
+        //added by @RAHUL
+	echo "<table width=\"100%\">";
+        echo "<tr valign=\"top\">";
+
+        echo "<td>";
+        echo "<table width=\"50%\">";
+        echo "<tr>";
 
 	echo form_open('admin/user/edit/' . $user_id);
 
@@ -24,10 +35,30 @@
 	echo "</p>";
 
 	echo "<p>";
+        echo form_label('Firstname', 'user_firstname');
+        echo "<br />";
+        echo form_input($user_firstname);
+        echo "</p>";
+
+        echo "<p>";
+        echo form_label('Lastname', 'user_lastname');
+        echo "<br />";
+        echo form_input($user_lastname);
+        echo "</p>";
+
+	echo "<p>";
 	echo form_label('Mobile No.', 'user_mobile');
 	echo "<br />";
 	echo form_input($user_mobile);
 	echo "</p>";
+
+	echo "</tr>";
+        echo "</table>";
+        echo "</td>";
+
+        echo "<td>";
+        echo "<table width=\"50%\">";
+        echo "<tr>";
 
 	echo "<p>";
         echo form_label('UID No.', 'uidnum');
@@ -64,6 +95,13 @@
 	echo form_multiselect('accounts[]', $accounts, $accounts_active);
 	echo "</p>";
 
+	echo "</tr>";
+        echo "</table>";
+        echo "</td>";
+
+        echo "</tr>";
+        echo "</table>";
+
 	echo "<p>";
 	echo form_submit('submit', 'Update');
 	echo " ";
@@ -71,4 +109,4 @@
 	echo "</p>";
 
 	echo form_close();
-
+?>

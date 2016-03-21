@@ -629,7 +629,9 @@ $width="100%";
 			$this->messages->add('Invalid Entry type.', 'error');
 			redirect('entry/show/all');
 			return;
-		} else {
+		} 
+		else 
+		{
 			$current_entry_type = entry_type_info($entry_type_id);
 		}
 
@@ -649,6 +651,14 @@ $width="100%";
                         'name' => 'vendor_number',
                         'id' => 'vendor_number',
                         'maxlength' => '55',
+                        'size' => '11',
+                        'value' => '',
+                );
+		//A new field Purchase Order No. added by @RAHUL
+		$data['purchase_order_no'] = array(
+                        'name' => 'purchase_order_no',
+                        'id' => 'purchase_order_no',
+                        'maxlength' => '100',
                         'size' => '11',
                         'value' => '',
                 );
@@ -757,6 +767,7 @@ $width="100%";
 		else
 			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
 		$this->form_validation->set_rules('vendor_number', 'Vendor Voucher Number', 'trim');
+		$this->form_validation->set_rules('purchase_order_no', 'Purchase Order Number', 'trim');
 		$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim');
 		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
@@ -778,6 +789,7 @@ $width="100%";
 		if ($_POST)
 		{
 			$data['vendor_number']['value'] = $this->input->post('vendor_number', TRUE);	
+			$data['purchase_order_no']['value'] = $this->input->post('purchase_order_no', TRUE);	
 			$data['entry_number']['value'] = $this->input->post('entry_number', TRUE);
 			$data['entry_date']['value'] = $this->input->post('entry_date', TRUE);
 			$data['entry_narration']['value'] = $this->input->post('entry_narration', TRUE);
@@ -854,6 +866,7 @@ $width="100%";
 			//	$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
 				$number = $this->input->post('entry_number', TRUE);
 				$vendor_number = $this->input->post('vendor_number', TRUE);
+				$purchase_order_no = $this->input->post('purchase_order_no', TRUE);
 				if ($this->input->post('sanc_letter_date', TRUE)) {
 					$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
 				}
@@ -869,6 +882,17 @@ $width="100%";
                 			//   $this->template->load('template', 'entry/add');
 					return;
 				}
+				/**
+				*Code for validation of unique Vendor Voucher No.
+				*/
+				//added by @RAHUL
+				$duplicate_vendor_no = $this->Entry_model->check_vendor_no($vendor_number);
+                                if ($duplicate_vendor_no) {
+                                        $this->messages->add('Vendor Voucher No. Already Exist. Please Input a Different Vendor Voucher No.', 'error');
+                                        //   $this->template->load('template', 'entry/add');
+                                        return;
+                                }
+
 
 				if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
                 	        {
@@ -997,7 +1021,8 @@ $width="100%";
 					'sanc_letter_date' => $data_sanc_letter_date,
 					'sanc_type' => $data_sanc_type,
 					'sanc_value' => $sanc_value,
-					'vendor_voucher_number' => $vendor_number
+					'vendor_voucher_number' => $vendor_number,
+					'purchase_order_no' => $purchase_order_no
 				);
 
 				if ( ! $this->db->insert('entries', $insert_data))
@@ -2458,7 +2483,6 @@ $width="100%";
 		$this->load->model('Setting_model');
 		$this->load->model('Ledger_model');
 
-		/* Check access */
 		if ( ! check_access('download entry'))
 		{
 			$this->messages->add('Permission denied.', 'error');
@@ -2466,7 +2490,6 @@ $width="100%";
 			return;
 		}
 
-		/* Entry Type */
 		$entry_type_id = entry_type_name_to_id($entry_type);
 		if ( ! $entry_type_id)
 		{
@@ -2477,7 +2500,6 @@ $width="100%";
 			$current_entry_type = entry_type_info($entry_type_id);
 		}
 
-		/* Load current entry details */
 		if ( ! $cur_entry = $this->Entry_model->get_entry($entry_id, $entry_type_id))
 		{
 			$this->messages->add('Invalid Entry.', 'error');
@@ -2485,40 +2507,32 @@ $width="100%";
 			return;
 		}
 		$data['cur_entry'] = $cur_entry;
-		$data['entry_type_id'] = $entry_type_id;
-		$data['current_entry_type'] = $current_entry_type;
-		$data['entry_number'] =  $cur_entry->number;
-		$data['entry_date'] = date_mysql_to_php_display($cur_entry->date);
-		$data['entry_dr_total'] =  $cur_entry->dr_total;
-		$data['entry_cr_total'] =  $cur_entry->cr_total;
-		$data['entry_narration'] = $cur_entry->narration;
-		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
-		$data['back_ref_id'] = $cur_entry->backward_refrence_id;
-		$data['submitted_by'] = $cur_entry->submitted_by;
+                $data['entry_type_id'] = $entry_type_id;
+                $data['current_entry_type'] = $current_entry_type;
+                $data['entry_number'] =  $cur_entry->number;
+                $data['entry_date'] = date_mysql_to_php_display($cur_entry->date);
+                $data['entry_dr_total'] =  $cur_entry->dr_total;
+                $data['entry_cr_total'] =  $cur_entry->cr_total;
+                $data['entry_narration'] = $cur_entry->narration;
+                $data['forward_ref_id'] = $cur_entry->forward_refrence_id;
+                $data['back_ref_id'] = $cur_entry->backward_refrence_id;
+                $data['submitted_by'] = $cur_entry->submitted_by;
                 $data['verified_by'] = $cur_entry->verified_by;
-		$data['vendor_voucher_number'] = $cur_entry->vendor_voucher_number;
+                $data['vendor_voucher_number'] = $cur_entry->vendor_voucher_number;
+		$data['sanc_letter_date'] = $cur_entry->sanc_letter_date;
 
-		/* Getting Ledger details */
-		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
-		$ledger_q = $this->db->get();
-		$counter = 0;
-		$data['ledger_data'] = array();
-		if ($ledger_q->num_rows() > 0)
-		{
-			foreach ($ledger_q->result() as $row)
-			{
-				$data['ledger_data'][$counter] = array(
-					'id' => $row->ledger_id,
-					'name' => $this->Ledger_model->get_name($row->ledger_id),
-					'dc' => $row->dc,
-					'amount' => $row->amount,
-					'id'=>$entry_id,
-				);
-				$counter++;
-			}
-		}
+		$this->db->select('id');
+                $this->db->from('ledgers');
+                $this->db->where('name', 'Transit Income');
+                $query = $this->db->get();
+                $income = $query->row();
+                $income_id = $income->id;
 
-		/* Download Entry */
+                $this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+                $this->db->where('ledger_id !=', $income_id);
+                $ledger_q = $this->db->get();
+                $data['ledger_q'] = $ledger_q;
+
 		$file_name = $current_entry_type['name'] . '_entry_' . $cur_entry->number . ".html";
 		$download_data = $this->load->view('entry/downloadpreview', $data, TRUE);
 		force_download($file_name, $download_data);
@@ -2566,44 +2580,26 @@ $width="100%";
 		$data['entry_cr_total'] =  $cur_entry->cr_total;
 		$data['entry_narration'] = $cur_entry->narration;
 		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
-        $data['back_ref_id'] = $cur_entry->backward_refrence_id;
+        	$data['back_ref_id'] = $cur_entry->backward_refrence_id;
 		$data['submitted_by'] = $cur_entry->submitted_by;
-        $data['verified_by'] = $cur_entry->verified_by;
+        	$data['verified_by'] = $cur_entry->verified_by;
 		$data['vendor_voucher_number'] = $cur_entry->vendor_voucher_number;
-		 $data['sanc_letter_date'] = $cur_entry->sanc_letter_date;
+		$data['sanc_letter_date'] = $cur_entry->sanc_letter_date;
 
 		/* Getting Ledger details */
 
 		$this->db->select('id');
-        $this->db->from('ledgers');
-        $this->db->where('name', 'Transit Income');
-        $query = $this->db->get();
-        $income = $query->row();
-        $income_id = $income->id;
+        	$this->db->from('ledgers');
+        	$this->db->where('name', 'Transit Income');
+        	$query = $this->db->get();
+        	$income = $query->row();
+        	$income_id = $income->id;
 
 		/* Load current entry details */
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
 		$this->db->where('ledger_id !=', $income_id);
 		$ledger_q = $this->db->get();
 		$data['ledger_q'] = $ledger_q;
-	/*	$counter = 0;
-
-		$data['ledger_data'] = array();
-		if ($ledger_q->num_rows() > 0)
-		{
-			foreach ($ledger_q->result() as $row)
-			{
-				$data['ledger_data'][$counter] = array(
-					'id' => $row->ledger_id,
-					'name' => $this->Ledger_model->get_name($row->ledger_id),
-					'dc' => $row->dc,
-					'amount' => $row->amount,
-					'id'=>$entry_id,
-					'secunitid'=>$row->secunitid,
-				);
-				$counter++;
-			}
-		}*/
 
 		$this->load->view('entry/printpreview', $data);
 		return;
@@ -3166,7 +3162,21 @@ $width="100%";
 			redirect('entry/show/' . $current_entry_type['label']);
 			return;
 		}
-
+		//$data['cur_entry'] = $cur_entry;
+		//added by @RAHUL
+		$data['sanc_type'] = $cur_entry->sanc_type;
+                $data['sanc_value'] = $cur_entry->sanc_value;
+                $data['entry_date'] = date_mysql_to_php_display($cur_entry->date);
+                $data['entry_dr_total'] =  $cur_entry->dr_total;
+                $data['entry_cr_total'] =  $cur_entry->cr_total;
+                $data['entry_narration'] = $cur_entry->narration;
+                $data['verified_by'] = $cur_entry->verified_by;
+                $data['vendor_voucher_number'] = $cur_entry->vendor_voucher_number;
+                $data['sanc_letter_date'] = $cur_entry->sanc_letter_date;
+		$data['sanc_letter_no'] = $cur_entry->sanc_letter_no;
+		$data['tag_id'] = $cur_entry->tag_id;
+		$data['submitted_by'] = $cur_entry->submitted_by;
+		//
 		$data['entry_type_id'] = $entry_type_id;
 		$data['current_entry_type'] = $current_entry_type;
 		$data['entry_id'] = $entry_id;
@@ -3197,6 +3207,15 @@ $width="100%";
 		}
 		else
 		{
+			//added by @RAHUL
+			$entry_data['tag_id'] = $cur_entry->tag_id;
+			$entry_data['sanc_type'] = $cur_entry->sanc_type;
+                	$entry_data['sanc_value'] = $cur_entry->sanc_value;
+			$entry_data['sanc_letter_no'] = $cur_entry->sanc_letter_no;
+                	$entry_data['verified_by'] = $cur_entry->verified_by;
+                	$entry_data['sanc_letter_date'] = $cur_entry->sanc_letter_date;
+			$entry_data['submitted_by'] = $cur_entry->submitted_by;
+			//
 			$entry_data['entry_type_id'] = $entry_type_id;
 			$entry_data['current_entry_type'] = $current_entry_type;
 			$entry_data['entry_number'] =  $cur_entry->number;
@@ -3208,27 +3227,45 @@ $width="100%";
 	                $entry_data['back_ref_id'] = $cur_entry->backward_refrence_id;
 			$entry_data['vendor_voucher_number'] = $cur_entry->vendor_voucher_number;	
 			/* Getting Ledger details */
+
+		/*	$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+                	$this->db->where('ledger_id !=', $income_id);
+                	$ledger_q = $this->db->get();
+                	$data['ledger_q'] = $ledger_q;*/
+
 			$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
 			$ledger_q = $this->db->get();
-			$counter = 0;
-			$entry_data['ledger_data'] = array();
-			if ($ledger_q->num_rows() > 0)
-			{
-				foreach ($ledger_q->result() as $row)
-				{
-					$entry_data['ledger_data'][$counter] = array(
-						'id' => $row->ledger_id,
-						'name' => $this->Ledger_model->get_name($row->ledger_id),
-						'dc' => $row->dc,
-						'amount' => $row->amount,
-					);
-					$counter++;
-				}
-			}
+			$entry_data['ledger_data'] = $ledger_q;
+			
+			//Code for attachement file added by @RAHUL
+			$this->db->select('id, name')->from('settings');
+        		$ins_id = $this->db->get();
+        		foreach( $ins_id->result() as $row_1)	
+        		{
+                		$row1 = $row_1->name;
+        		}
+        		$this->upload_path= realpath(BASEPATH.'../uploads/logo');
+        		$file_list = get_filenames($this->upload_path);
+        		if ($file_list)
+        		{
+                		foreach ($file_list as $row_2)
+                		{
+                        		$ext = substr(strrchr($row_2, '.'), 1);
+                        		$my_values = explode('.',$row_2);
+                        		if($my_values[0] == $row1)
+                        		{
+						$attchfile = $this->upload_path."/".$row1.".".$ext;
+                        		}
+                		}
+        		}
+
+
 			/* Preparing message */
 			$message = $this->load->view('entry/emailpreview', $entry_data, TRUE);
 
 			/* Getting email configuration */
+			$config['encrypt_name']     = true;
+        		$config['wordwrap'] = TRUE;
 			$config['smtp_timeout'] = '30';
 			$config['charset'] = 'utf-8';
 			$config['newline'] = "\r\n";
@@ -3251,6 +3288,8 @@ $width="100%";
 			$this->email->to($this->input->post('email_to', TRUE));
 			$this->email->subject($current_entry_type['name'] . ' Bill/Voucher No. ' . full_entry_number($entry_type_id, $cur_entry->number));
 			$this->email->message($message);
+			//Attachement of file added by @RAHUL
+			$this->email->attach($attchfile);
 			if ($this->email->send())
 			{
 				$data['message'] = "Email sent.";
@@ -4469,61 +4508,55 @@ $width="100%";
 		$data['entry_narration'] = $cur_entry->narration;
 		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;	
 		$data['vendor_voucher_number'] = $cur_entry->vendor_voucher_number;
-        $data['back_ref_id'] = $cur_entry->backward_refrence_id;
+        	$data['back_ref_id'] = $cur_entry->backward_refrence_id;
 		$data['submitted_by'] = $cur_entry->submitted_by;
-        $data['verified_by'] = $cur_entry->verified_by;
-        $sanc_letter_date = $cur_entry->sanc_letter_date;
-        $data['sanc_letter_no'] = $cur_entry->sanc_letter_no;
-        $sanc_type = $cur_entry->sanc_type;
-        $sanc_value = $cur_entry->sanc_value;
+        	$data['verified_by'] = $cur_entry->verified_by;
+        	$sanc_letter_date = $cur_entry->sanc_letter_date;
+        	$data['sanc_letter_no'] = $cur_entry->sanc_letter_no;
+        	$sanc_type = $cur_entry->sanc_type;
+        	$sanc_value = $cur_entry->sanc_value;
+		
+		/*Check for Sanction Letter Date*/
+		//added by @RAHUL
+		if(($sanc_letter_date == NULL)||($sanc_letter_date == "0000-00-00 00:00:00"))
+		{
+			$data['sanc_date'] = "";
+		}
+		else
+		{
+			$data['sanc_date'] = date_mysql_to_php($sanc_letter_date);
+		}
 
-        if($sanc_letter_date != NULL)
-        	$data['sanc_date'] = date_mysql_to_php($sanc_letter_date);
-        else
-        	$data['sanc_date'] ="";
-
-        if($sanc_type != 'select')
-        {
-        	if($sanc_value != "select"){
-        		$data['sanc_type'] = $sanc_type;
-        		$data['sanc_value'] = $sanc_value;
+		/*Check for Sanction Type and Sanction Value*/
+                //added by @RAHUL
+        	if($sanc_type != 'select')
+        	{
+        		if($sanc_value != "select"){
+        			$data['sanc_type'] = $sanc_type;
+        			$data['sanc_value'] = $sanc_value;
+        		}else{
+        			$data['sanc_type'] = $sanc_type;
+        			$data['sanc_value'] = "";
+        		}
         	}else{
-        		$data['sanc_type'] = $sanc_type;
+        		$data['sanc_type'] = "";
         		$data['sanc_value'] = "";
         	}
-        }else{
-        	$data['sanc_type'] = "";
-        	$data['sanc_value'] = "";
-        }
 
 
 		/* Getting Ledger details */
 
 		$this->db->select('id');
-        $this->db->from('ledgers');
-        $this->db->where('name', 'Transit Income');
-        $query = $this->db->get();
-        $income = $query->row();
-        $income_id = $income->id;
+        	$this->db->from('ledgers');
+        	$this->db->where('name', 'Transit Income');
+        	$query = $this->db->get();
+        	$income = $query->row();
+        	$income_id = $income->id;
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
 		$this->db->where('ledger_id !=', $income_id);
 		$ledger_q = $this->db->get();
 		$counter = 0;
 		$data['ledger_data'] = array();
-		/*if ($ledger_q->num_rows() > 0)
-		{
-			foreach ($ledger_q->result() as $row)
-			{
-				$data['ledger_data'][$counter] = array(
-					'id' => $row->ledger_id,
-					'name' => $this->Ledger_model->get_name($row->ledger_id),
-					'dc' => $row->dc,
-					'amount' => $row->amount,
-					'id'=>$entry_id,
-				);
-				$counter++;
-			}
-		}*/
 		if ($ledger_q->num_rows() > 0)
 		{
 			foreach ($ledger_q->result() as $row)
@@ -4558,7 +4591,7 @@ $width="100%";
 							);
 							$counter++;
 						}	
-				    }
+				    	}
 				}else{
 					
 					$type = $this->Ledger_model->get_type($row->ledger_id, $entry_id);
@@ -4577,7 +4610,7 @@ $width="100%";
 				}
 			}
 		}
-		//$data['ledger_q'] = $ledger_q;
+		$data['ledger_q'] = $ledger_q;
 
 		$this->load->view('entry/pdfentry', $data);
 		return;

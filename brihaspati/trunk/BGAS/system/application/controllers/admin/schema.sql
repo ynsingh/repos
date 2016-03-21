@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS budgets (
   group_id int(11) NOT NULL,
   budgetname varchar(100) NOT NULL,
   bd_balance decimal(15,2) DEFAULT '0.00',
+  approval_amount decimal(15,2) NOT NULL DEFAULT '0.00', 
   type varchar(50) NOT NULL,
   allowedover varchar(10) NOT NULL DEFAULT 0,
   consume_amount decimal(15,2)NOT NULL DEFAULT '0.00',
@@ -84,6 +85,7 @@ CREATE TABLE IF NOT EXISTS entries (
   sanc_type VARCHAR(255) DEFAULT NULL,
   sanc_value VARCHAR(255) DEFAULT NULL,
   vendor_voucher_number varchar(55) DEFAULT NULL,
+  purchase_order_no varchar(100) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
@@ -441,6 +443,52 @@ CREATE TABLE bill_approval
          sanc_value VARCHAR(255) DEFAULT NULL,
          PRIMARY KEY(bill_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS bill_approval_status
+(
+        id int(11) NOT NULL AUTO_INCREMENT,
+        bill_no VARCHAR(255) NOT NULL ,
+        forward_from varchar(255) NOT NULL,
+        forward_to varchar(255) NOT NULL,
+        forward_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+        approval_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+        approval_amount decimal(15,2) NOT NULL DEFAULT '0.00',
+        approved_by varchar(255),
+	authority_name varchar(255),
+        status VARCHAR (25),
+        comments text,
+        PRIMARY KEY(id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS bill_voucher_create
+(
+        id int(11) NOT NULL AUTO_INCREMENT,
+        purchase_order_no varchar (100) NOT NULL ,
+        supplier_bill_no VARCHAR (100) NOT NULL,
+        submit_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+        submitted_by VARCHAR (100) NOT NULL ,
+        submitter_id VARCHAR (100) NOT NULL,
+        bill_name VARCHAR (100) NOT NULL,
+        expense_type VARCHAR (100) NOT NULL,
+        total_amount decimal(15,2) NOT NULL DEFAULT '0.00',
+        narration text,
+        decision VARCHAR (25) NOT NULL DEFAULT 'HOLD',
+        entry_id    INTEGER (11) NOT NULL DEFAULT '0',
+        vc_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+        bank_cash_account VARCHAR (100) NOT NULL DEFAULT 'NO',
+        mode_of_payment VARCHAR (50) NOT NULL DEFAULT 'NO',
+        payment_status VARCHAR (10) NOT NULL DEFAULT 'HOLD',
+        payment_date  DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+        party_id VARCHAR(10) DEFAULT NULL,
+        fund_id  INTEGER(11) DEFAULT NULL,
+        expenditure_type VARCHAR(100) DEFAULT NULL,
+        sanc_type VARCHAR(255) DEFAULT NULL,
+        sanc_value VARCHAR(255) DEFAULT NULL,
+        current_location VARCHAR(255) DEFAULT NULL,
+        UNIQUE (purchase_order_no, supplier_bill_no),
+        PRIMARY KEY(id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
 CREATE TABLE IF NOT EXISTS depreciation_master(
                         id INTEGER (100)  NOT NULL AUTO_INCREMENT,
                         parent_id INTEGER (100) NOT NULL,
@@ -468,7 +516,7 @@ CREATE TABLE IF NOT EXISTS old_asset_register(
 CREATE TABLE IF NOT EXISTS new_asset_register(
                         id INTEGER (100)  NOT NULL AUTO_INCREMENT,
                         date_of_purchase DATETIME NOT NULL,
-                        code varchar(100) NOT NULL,
+			code varchar(100) NOT NULL,
                         asset_name VARCHAR (255) NOT NULL,
                         cost decimal(15,2) NOT NULL DEFAULT '0.00',
                         depreciated_value decimal(15,2) NOT NULL DEFAULT '0.00',

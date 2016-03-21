@@ -263,6 +263,10 @@ $(document).ready(function() {
 						  echo "<li>";
                                                         echo anchor('payment/showupload_bill', 'Bill Upload / Voucher Creation', array('title' => 'Bill/Voucher Creation'));
                                                 echo "</li>";
+						//Link of multiple verification added by @RAHUL 
+                        			echo "<li>";
+                        			echo anchor('payment2/showupload_bill_approval', 'Bill Upload / Voucher Creation With Multiple Varification', array('title' => 'Bill/Voucher Creation'));
+                        			echo "</li>";
 
 						echo "</ul>";
 					}

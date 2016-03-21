@@ -43,6 +43,50 @@ tr.total-area {
 	background-color: #F8F8F8;
 }
 
+.simple-table-notice {
+        font-size:14px;
+        border-collapse:collapse;
+        text-align:left;
+	
+}
+
+.simple-table-notice th {
+        font-weight:normal;
+        color:#000000;
+        padding:6px 3px;
+        border-bottom:1px solid #999999;
+        border-top:1px solid #999999;
+        background-color:#EEEEEE;
+	
+}
+
+.simple-table-notice td {
+        border-bottom:1px solid #BBBBBB;
+        color:#000000;
+        padding:8px 8px 8px 8px;
+	
+}
+
+.simple-table-notice tr.tr-active {
+        background-color:#FFFFE6;
+}
+.simple-table-notice tr.tr-group td {
+        background-color:#FFFF99;
+}
+
+.simple-table-notice tr.tr-total {
+        background-color:#FFFFE6;
+}
+
+.simple-table-notice a.red-link {
+        color:#FF0000;
+}
+
+tr.total-area {
+        background-color: #F8F8F8;
+}
+
+
 /******************************************************************************/
 /****************************** ENTRY TABLE ***********************************/
 /******************************************************************************/
@@ -189,6 +233,10 @@ tr.total-area {
 	padding:10px;
 	border-top:1px solid #BBBBBB;
 }
+.dashboard-notification-footer {
+        padding:10px;
+        border-top:1px solid #BBBBBB;
+}
 
 .ledgerst-table td {
 
@@ -236,4 +284,7 @@ tr.total-area {
 
 .manage-account-table td {
 	padding-right: 20px;
+}
+.manage-notice-table td {
+        padding-right: 5px;
 }

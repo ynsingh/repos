@@ -290,10 +290,30 @@ var $ledgers = array();
 		$this->db->from('ledgers')->where('id', $ledger_id)->limit(1);
 		$ledger_q = $this->db->get();
 		if ($ledger = $ledger_q->row())
+		{
 			return $ledger->name;
+		}
 		else
+		{
 			return "(Error)";
+		}
 	}
+
+	//Program to get code of ledger from ledger id. added by @RAHUL
+	function get_code($ledger_id)
+        {
+                $this->db->from('ledgers')->where('id', $ledger_id)->limit(1);
+                $ledger_q = $this->db->get();
+                if ($ledger = $ledger_q->row())
+                {
+                        return $ledger->code;
+                }
+                else
+                {
+                        return "(Error)";
+                }
+        }
+
 	// to search ledger account in entries
 	function get_entry_name_match($entry_id, $entry_type_id, $text)
 	{
@@ -453,9 +473,13 @@ var $ledgers = array();
 		$cr_total = $this->get_cr_total($ledger_id);
 		$total = float_ops($dr_total, $cr_total, '-');
 		if ($op_bal_type == "D")
+		{
 			$total = float_ops($total, $op_bal, '+');
+		}
 		else
+		{
 			$total = float_ops($total, $op_bal, '-');
+		}
 		return $total;
 	}
 
@@ -1536,9 +1560,13 @@ var $ledgers = array();
 		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
 		$dr_total_q = $this->db->get();
 		if ($dr_total = $dr_total_q->row())
+		{
 			return $dr_total->drtotal;
+		}	
 		else
+		{
 			return 0;
+		}
 	}
 
 	/* Return credit total as positive value */
@@ -1547,9 +1575,13 @@ var $ledgers = array();
 		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
 		$cr_total_q = $this->db->get();
 		if ($cr_total = $cr_total_q->row())
+		{
 			return $cr_total->crtotal;
+		}
 		else
+		{
 			return 0;
+		}
 	}
 
 	/* Delete reconciliation entries for a Ledger account */
@@ -1917,28 +1949,22 @@ var $ledgers = array();
 	}
 	function get_fund_ledgers()
 	{
-		 $funds = array();
+		$funds = array();
                 $funds[0] = 'Select Fund';
-	//	$income_code = $this->get_account_code('Liabilities and Owners Equity');
-	//	$general_code = $this->get_account_code('General Funds');
-         //       $capital_code = $this->get_account_code('capital Funds');
 		$this->db->select('name, id, group_id, code')->order_by('name', 'asc');
                 $this->db->from('ledgers');
 		$this->db->like('code', '10', 'after');
-		//$this->db->not_like('code', '1003', 'after');
 		$this->db->not_like('code', '1004', 'after');
 		$this->db->not_like('code', '1005', 'after');
 		$this->db->not_like('code', '1006', 'after');
-		//$this->db->not_like('code', '100102', 'after');
-		//$this->db->not_like('code', '100101', 'after');
 		$query = $this->db->get();
-//		$query1 = $query->result();
-//		print_r($query1);
-		 if($query->num_rows() > 0){
-                        foreach($query->result() as $ledger){
+		if($query->num_rows() > 0)
+		{
+                        foreach($query->result() as $ledger)
+			{
 				 $funds[$ledger->id] = $ledger->name;
-				}
 			}
+		}
 		return $funds;
 	}
 
@@ -2021,18 +2047,39 @@ var $ledgers = array();
                 $options = array();
                 $options[0] = 'Please Select';
                 //$this->db->from('ledgers');
-                $this->db->from('ledgers')->select('id,name')->where('code LIKE', '40%')->order_by('name', 'asc');
+                $this->db->from('ledgers')->select('id,code,name')->where('code LIKE', '40%')->order_by('name', 'asc');
                 $ledger_q = $this->db->get();
               //  $counter = 0;
                 foreach ($ledger_q->result() as $row)
                 {
-                        $new_id = "$row->id"."."."$row->name";
+                        $new_id = "$row->code"."."."$row->name";
                         $options[$new_id]=$row->name;
 
                 }
                 return $options;
         }
-
+	
+	//This function returns name of ledger according to its code. added by @RAHUL
+	function get_idwise_ledgers($legd_id)
+        {
+                $this->db->from('ledgers')->where('code', $legd_id)->limit(1);
+                $sparty_q = $this->db->get();
+                if ($pname = $sparty_q->row())
+                        return $pname->id;
+                else
+                        return;
+        }
+	
+	//This function returns id of fund according to its name. added by @RAHUL
+	function get_funding_id_wise_ledgers($fu_id)
+        {
+                $this->db->from('ledgers')->where('name', $fu_id)->limit(1);
+                $spa_rty_q = $this->db->get();
+                if ($pname = $spa_rty_q->row())
+                        return $pname->id;
+                else
+                        return;
+        }
 
 	function startsWith($str1, $str2)
         {

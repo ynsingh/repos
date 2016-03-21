@@ -1,102 +1,217 @@
-<div id="dashboard-summary">
-	<div id="dashboard-welcome-back" class="dashboard-item">
-		<div class="dashboard-title">Account Details</div>
-		<div class="dashboard-content">
-			<table class="dashboard-summary-table">
-				<tbody>
-					<tr>
-					<!--	<td><div>Welcome back, <strong><?php echo $this->config->item('account_name'); ?> !</strong></div></td>-->
-						<td><div>Welcome back, <strong>
-                                                <?php
-                                                if (check_access('administer'))
-                                                echo $this->config->item('account_name');
-                                                else
-                                                echo $this->session->userdata('user_name');
-                                                ?> ! 
-                                                </strong></div></td>
-					</tr>
-					<tr>
-						<td><div>Account for Financial Year <strong><?php echo date_mysql_to_php_display($this->config->item('account_fy_start')) . " - " . date_mysql_to_php_display($this->config->item('account_fy_end')); ?></strong></div></td>
-					</tr>
-					<?php if ($this->config->item('account_locked') == 1) { ?>
-						<tr>
-							<td><div>Account is currently <strong>locked</strong> to prevent any further modifications.</div></td>
-						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	<div class="clear"></div>
-	<div id="dashboard-cash-bank" class="dashboard-item">
-		<div class="dashboard-title">Bank and Cash accounts</div>
-		<div class="dashboard-content">
-			<?php
-				if ($bank_cash_account)
-				{
-					echo "<table class=\"dashboard-cashbank-table\">";
-					echo "<tbody>";
-					foreach ($bank_cash_account as $id => $row)
-					{
-						echo "<tr>";
-						echo "<td>" . anchor('report/ledgerst/' . $row['id'], $row['name'], array('title' => $row['name'] . ' Statement')) . "</td>";
-						echo "<td>" . convert_amount_dc($row['balance']) . "</td>";
-						echo "</tr>";
-					}
-					echo "</tbody>";
-					echo "</table>";
-				} else {
-					echo "You have not created any bank or cash account";
-				}
-			?>
-		</div>
-	</div>
-	<div id="dashboard-summary" class="dashboard-item">
-		<div class="dashboard-title">Account Summary</div>
-		<div class="dashboard-content">
-			<?php
-				echo "<table class=\"dashboard-summary-table\">";
-				echo "<tbody>";
-				echo "<tr><td>Assets Total</td><td>" . convert_amount_dc($asset_total) . "</td></tr>";
-				echo "<tr><td>Liabilities Total</td><td>" . convert_amount_dc($liability_total) . "</td></tr>";
-				echo "<tr><td>Incomes Total</td><td>" . convert_amount_dc($income_total) . "</td></tr>";
-				echo "<tr><td>Expenses Total</td><td>" . convert_amount_dc($expense_total) . "</td></tr>";
-				echo "</tbody>";
-				echo "</table>";
-			?>
-		</div>
-	</div>
-</div>
-<?php if (check_access('view log')) { ?>
-	<div id="dashboard-log">
-		<div id="dashboard-recent-log" class="dashboard-log-item">
-			<div class="dashboard-log-title">Recent Activity</div>
-			<div class="dashboard-log-content">
-				<?php
-				if ($logs)
-				{
-					echo "<ul id=\"recent-activity-list\">";
-					foreach ($logs->result() as $row)
-					{
-						echo "<li>" . $row->message_title . "</li>";
-					}
-					echo "</ul>";
-				} else {
-					echo "No Recent Activity";
-				}
-				?>
-			</div>
-			<?php
-				if ($logs)
-				{
-					echo "<div class=\"dashboard-log-footer\">";
-					echo "<span>";
-					echo anchor("log", "more...", array('class' => 'anchor-link-a'));
-					echo "</span>";
-				}
-			?>
-			</div>
-		</div>
-	</div>
-<?php } ?>
-<div class="clear"></div>
+<?php
+	/*GUI Modification(table alignment) and added new table Notifications by @RAHUL */
+        echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
+        echo "<tr valign=\"top\">";
+
+        echo "<td>";
+        echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
+
+        echo "<tr>";
+        echo "<td style=\"padding: 0px 8px 8px 20px;\">";
+        echo "<table width=\"100%\" border=\"1\" style=\"color: black; border-collapse:collapse; border:1px solid #BBBBBB;\">";
+        
+	echo "<tr style=\"text-align:center; font-weight:bold; background-color:#66C1E6;\">";
+        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+        echo "Account Details";
+        echo "</td>";
+        echo "</tr>";
+
+	echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+	echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
+	
+	echo "<tr>";
+	echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+	echo $this->config->item('account_name');
+        echo "</td>";
+        echo "</tr>";
+	
+	echo "<td style=\"padding: 8px 8px 8px 20px;\">Welcome back,<strong>";
+	if( check_access('administer'))
+	{
+        	echo $this->config->item('account_name');
+	}
+      	else
+	{
+      		echo $this->session->userdata('user_name');
+	}
+	echo "</strong></td>";
+	
+	echo "<tr>";
+        echo "<td style=\"padding: 8px 8px 8px 20px;\">Account for Financial Year<strong>";
+	echo date_mysql_to_php_display($this->config->item('account_fy_start')) . " - " . date_mysql_to_php_display($this->config->item('account_fy_end'));
+        echo "</strong></td></tr>";
+	
+	if ($this->config->item('account_locked') == 1)
+	{
+		echo "<tr>";
+        	echo "<td>Account is currently<strong>locked</strong>to prevent any further modifications.</td>";
+		echo "</tr>";
+	}
+
+	echo "</table>";
+	echo "</td>";
+
+	echo "</table>";
+        echo "</td>";
+        echo "</tr>";
+
+        echo "<tr>";
+        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+        echo "<table width=\"100%\" border=\"1\" style=\"color: black; border-collapse:collapse; border:1px solid #BBBBBB;\">";
+        echo "<tr style=\"text-align:center; font-weight:bold; background-color:#66C1E6;\">";
+        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+        echo "Bank and Cash accounts";
+        echo "</td>";
+        echo "</tr>";
+
+	echo "<td>";
+        echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
+     	if ($bank_cash_account)
+     	{
+        	echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+            	echo "<tbody>";
+          	foreach ($bank_cash_account as $id => $row)
+              	{
+            		echo "<tr>";
+             		echo "<td style=\"padding: 8px 8px 8px 20px;\">" . anchor('report/ledgerst/' . $row['id'], $row['name'], array('title' => $row['name'] . ' Statement')) . "</td>";
+               		echo "<td style=\"padding: 8px 8px 8px 20px;\">" . convert_amount_dc($row['balance']) . "</td>";
+                 	echo "</tr>";
+          	}
+         	echo "</tbody>";
+         	echo "</table>";
+     	}
+     	else
+  	{
+    		echo "You have not created any bank or cash account";
+      	}
+	echo "</table";
+	echo "</td>";
+ 
+	echo "</table>";
+        echo "</td>";
+        echo "</tr>";
+
+        echo "<tr>";
+        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+        echo "<table width=\"100%\" border=\"1\" style=\"color: black; border-collapse:collapse; border:1px solid #BBBBBB;\">";
+        echo "<tr style=\"text-align:center; font-weight:bold; background-color:#66C1E6;\">";
+        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+	echo "Account Summary";
+        echo "</td>";
+        echo "</tr>";
+
+	echo "<td>";
+        echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
+	echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+        echo "<tbody>";
+      	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">Assets Total</td><td>" . convert_amount_dc($asset_total) . "</td></tr>";
+        echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">Liabilities Total</td><td>" . convert_amount_dc($liability_total) . "</td></tr>";
+     	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">Incomes Total</td><td>" . convert_amount_dc($income_total) . "</td></tr>";
+        echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">Expenses Total</td><td>" . convert_amount_dc($expense_total) . "</td></tr>";
+     	echo "</tbody>";
+	echo "</table>";
+	echo "</td>";
+
+        echo "</table>";
+        echo "</td>";
+        echo "</tr>";
+
+        echo "</table>";
+        echo "</td>";
+
+        if(check_access('view log'))
+        {
+                echo "<td style=\"padding: 0px 8px 8px 20px;\">";
+                echo "<table width=\"100%\" height=\"100%\" border=\"1\" style=\"color:black; border-collapse:collapse; border:1px solid #BBBBBB;\">";
+
+                echo "<tr style=\"text-align:center; font-weight:bold; background-color:#66C1E6;\">";
+                echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+                echo "Recent Activity";
+                echo "</td>";
+                echo "</tr>";
+
+                echo "<tr>";
+                echo "<td>";
+		echo "<div style=\"overflow-y:scroll; height:400px\">";
+                if ($logs)
+                {
+                        echo "<ul style=\"margin-left:30px; padding:0px; list-style-type:disc; \">";
+                        foreach ($logs->result() as $row)
+                        {
+                                echo "<li>" . $row->message_title . "</li>";
+                        }
+                        echo "</ul>";
+                }
+                else
+                {
+                        echo "No Recent Activity";
+                }
+                echo "</div>";
+                echo "</td>";
+                echo "</tr>";
+
+                echo "<tr>";
+                echo "<td style=\"padding:10px; border-top:1px solid #BBBBBB; \">";
+                if ($logs)
+                {
+                        echo "<span>";
+                        echo anchor("log", "more...", array('class' => 'anchor-link-a'));
+                        echo "</span>";
+                }
+                echo "</td>";
+                echo "</tr>";
+
+                echo "</table>";
+                echo "</td>";
+        }
+
+        echo "<td style=\"padding: 0px 8px 8px 20px;\">";
+        echo "<table width=\"100%\" border=\"1\" style=\"color: black; border-collapse:collapse; border:1px solid #BBBBBB;\">";
+        echo "<tr style=\"text-align:center; font-weight:bold; background-color:#66C1E6;\">";
+        echo "<td colspan=\"4\" style=\"padding: 8px 8px 8px 20px;\">";
+        echo "Notifications";
+        echo "</td>";
+        echo "</tr>";
+
+	echo "<td>";
+	echo "<div style=\"overflow-y:scroll; height:440px\">";
+	echo "<table width=\"100%\" border=\"0\">";
+        echo "<tr style=\"background-color:#EEEEEE; text-align:center;\">";
+        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+        echo "<b>Submitted By</b>";
+        echo "</td>";
+        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+        echo "<b>Expense Type</b>";
+        echo "</td>";
+        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+	echo "<b>Total Amount</b>";
+        echo "</td>";
+        echo "<td>";
+        echo "</td>";
+        echo "</tr>";
+        foreach ($aut_q->result() as $row)
+        {
+		echo "<tr>";
+                echo"<td style=\"padding: 8px 8px 8px 20px;\">";
+                echo  $row->submitted_by;
+                echo"</td>";
+                echo"<td style=\"padding: 8px 8px 8px 20px;\">";
+                echo  $row->expense_type;
+                echo"</td>";
+                echo"<td style=\"padding: 8px 8px 8px 20px;\">";
+                echo  $row->total_amount;
+                echo"</td>";
+                echo"<td style=\"padding: 8px 8px 8px 20px;\">";
+                echo  anchor('payment2/p2billapproval/' .  $row->id , "Bill Pending For Your Action", array('title' => 'Approve,reject ' ));
+                echo"</td>";
+                echo"</tr>";
+        }
+	echo "</table>";
+	echo "</td>";
+
+        echo "</table>";
+        echo "</td>";
+
+        echo "</tr>";
+        echo "</table>";
+?>

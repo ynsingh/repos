@@ -23,7 +23,9 @@ class User_model extends Model {
 			}
 			$db1->close();
 			$name = $firstname. " ".$lastname;
-		}else{
+		}
+		else
+		{
 			$name = '';
 		}
 		return $name;
@@ -31,7 +33,7 @@ class User_model extends Model {
 
 	function get_user_email($id)
 	{
-		$name = 0;
+		$user_email = '';
 		$db1=$this->load->database('login', TRUE);
 		$db1->from('edrpuser');
 		$db1->select('email')->where('id', $id);
@@ -45,20 +47,44 @@ class User_model extends Model {
 
 	}
 
+	//Returns id of user according to email. added by @RAHUL
+	function get_user_id($email)
+        {
+                $user_id = '';
+                $db1=$this->load->database('login', TRUE);
+                $db1->from('edrpuser');
+                $db1->select('id')->where('username', $email);
+                $group = $db1->get();
+                foreach($group->result() as $row)
+                {
+                        $user_id = $row->id;
+                }
+                $db1->close();
+                return $user_id;
+
+        }
+
 	function get_all_users()
 	{
 		$db1=$this->load->database('login', TRUE);
 		$options = array();
-	    $options[0] = 'Please Select';
-	    $db1->from('edrpuser')->select('id,username,email')->where("(componentreg='*' OR componentreg='BGAS')", NULL, FALSE);
-	    $user_q = $db1->get();
-	    foreach ($user_q->result() as $row)
-	    {
-	            $user_id = $row->id;
-	            $options[$user_id]=$row->username;
-
-	    }
-	    return $options;
+	    	$options[0] = 'Please Select';
+	    	$db1->from('edrpuser')->select('id,username,email')->where("(componentreg='*' OR componentreg='BGAS')", NULL, FALSE);
+	    	$user_q = $db1->get();
+	    	foreach ($user_q->result() as $row)
+	    	{
+	            	$user_id = $row->id;
+	            	$options[$user_id]=$row->username;
+		}
+	    	return $options;
 	}
+	
+	//Returns name according to email. added by @RAHUL
+	function get_user_name_femail($email)
+        {
+       		$fids = $this->get_user_id($email);
+		$fname = $this->get_user_name($fids);
+		return $fname;
+	}	
 }
 ?>

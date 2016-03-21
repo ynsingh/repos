@@ -127,7 +127,7 @@ ul#pagination-flickr {
 /********************************* DASHBOARD **********************************/
 
 #dashboard-summary {
-	width:500px;
+	width:229px;
 	float:left;
 }
 
@@ -137,14 +137,15 @@ ul#pagination-flickr {
 	float:left;
 	border: 1px solid #BBBBBB;
 	margin-bottom:20px;
-	width:500px;
+	width:229px;
 }
 
 .dashboard-title {
-	color: #464646;
-	background-color:#EEEEEE;
+	color: #000000;
+	background-color:#66C1E6;
 	padding:8px;
 	font-weight:bold;
+	text-align:center;
 }
 
 .dashboard-content {
@@ -153,8 +154,8 @@ ul#pagination-flickr {
 
 #dashboard-log {
 	float:left;
-	width:450px;
-	margin-left:20px;
+	width:229px;
+	margin-left:10px;
 }
 
 .dashboard-log-item {
@@ -167,14 +168,39 @@ ul#pagination-flickr {
 }
 
 .dashboard-log-title {
-	color: #464646;
-	background-color:#EEEEEE;
+	color: #000000;
+	background-color:#66C1E6;
 	padding:8px;
 	font-weight:bold;
+	text-align:center;
 }
 
 .dashboard-log-content {
 	padding:8px;
+}
+#dashboard-notifications {
+        float:right;
+        width:9px;
+
+}
+.dashboard-notifications-item {
+        -moz-border-radius:3px 3px 3px 3px;
+        border-radius:3px 3px 3px 3px;
+        float:right;
+        border: 1px solid #BBBBBB;
+        margin-right:187%;
+        width:470px;
+}
+.dashboard-notifications-title {
+        color: #000000;
+        background-color:#66C1E6;
+        padding:8px;
+        font-weight:bold;
+	text-align:center;
+}
+
+.dashboard-notifications-content {
+        padding:0px;
 }
 
 /******************************* TAGS *****************************************/

@@ -22,6 +22,8 @@ class User extends Controller {
 		$this->load->helper('file');
 		$this->template->set('page_title', 'Manage users');
 		$this->template->set('nav_links', array('admin/user/add' => 'Add user'));
+                $this->load->model('Authority_model');
+                $this->load->model('User_model');
 
 		/* Getting list of files in the config - users directory 
 		$users_list = get_filenames($this->config->item('config_path') . 'users');
@@ -87,6 +89,25 @@ class User extends Controller {
 			'size' => '40',
 			'value' => '',
 		);
+                /**
+		*Two new fields(Firstname and Lastname) are added.
+		*/
+		//added by @RAHUL
+                $data['user_firstname'] = array(
+                        'name' => 'user_firstname',
+                        'id' => 'user_firstname',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => '',
+                );
+
+                $data['user_lastname'] = array(
+                        'name' => 'user_lastname',
+                        'id' => 'user_lastname',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => '',
+                );
 
 		$data['user_roles'] = array(
 			"administrator" => "Administrator",
@@ -182,6 +203,9 @@ class User extends Controller {
 			$data['user_name']['value'] = $this->input->post('user_name', TRUE);
 			$data['user_password']['value'] = $this->input->post('user_password', TRUE);
 			$data['user_email']['value'] = $this->input->post('user_email', TRUE);
+			//Repopulating fields(firstname and lastname) added by @RAHUL
+                        $data['user_firstname']['value'] = $this->input->post('user_firstname', TRUE);
+                        $data['user_lastname']['value'] = $this->input->post('user_lastname', TRUE);
 			$data['mobile']['value'] = $this->input->post('mobile', TRUE);
 			$data['uidnum']['value'] = $this->input->post('uidnum', TRUE);
 			$data['component_reg']['value'] = $this->input->post('component_reg', TRUE);
@@ -196,6 +220,9 @@ class User extends Controller {
 		$this->form_validation->set_rules('user_password', 'Password', 'trim|required');
 		//$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email');
+		//Validation of fields(firstname and lastname) added by @RAHUL
+                $this->form_validation->set_rules('user_firstname', 'Firstname', 'trim|required');
+                $this->form_validation->set_rules('user_lastname', 'Lastname', 'trim|required');
 		$this->form_validation->set_rules('user_role', 'Role', 'trim|required');
 		$this->form_validation->set_rules('category_type', 'Category Type', 'trim|required');
 		$this->form_validation->set_rules('mobile', 'Mobile', 'trim');
@@ -214,6 +241,8 @@ class User extends Controller {
 			$data_user_name = $this->input->post('user_name', TRUE);
 			$data_user_password = $this->input->post('user_password', TRUE);
 			$data_user_email = $this->input->post('user_email', TRUE);
+                        $data_user_firstname = $this->input->post('user_firstname', TRUE);
+                        $data_user_lastname = $this->input->post('user_lastname', TRUE);
 			$data_user_role = $this->input->post('user_role', TRUE);
 			$data_category_type = $this->input->post('category_type', TRUE);
 			$data_user_status = $this->input->post('user_status', TRUE);
@@ -432,12 +461,14 @@ class User extends Controller {
 						}
 
 						$insert_data2 = array(
-	                        			'userid' => $bgasuser_id,
-	                        			'mobile' => $data_user_mobile,
-	                        			'lang' => "English",
-	                        			'status'=> 1
-                    				);
 
+	                        'userid' => $bgasuser_id,
+                                'firstname' => $data_user_firstname,
+                                'lastname' => $data_user_lastname,
+	                        'mobile' => $data_user_mobile,
+	                        'lang' => "English",
+	                        'status'=> 1
+                    	);
 						if ( ! $db1->insert('userprofile', $insert_data2))
                     				{
 	                        			$db1->trans_rollback();
@@ -621,9 +652,11 @@ class User extends Controller {
 		$user_mobile ='';
 		$user_components ='';
 		$user_email='';
+		$user_firstname='';
+		$user_lastname='';
 		$db1=$this->load->database('login', TRUE);
-		$db1->select('edrpuser.username as username, edrpuser.email as email,edrpuser.password as password,edrpuser.mobile as mobile,edrpuser.componentreg as componentreg,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype');
-		$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid');
+		$db1->select('edrpuser.username as username, edrpuser.email as email,edrpuser.password as password,edrpuser.mobile as mobile,edrpuser.componentreg as componentreg,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype, userprofile.firstname as firstname, userprofile.lastname as lastname');
+		$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid')->join('userprofile', 'edrpuser.id = userprofile.userid');
 		$db1->where('edrpuser.id',$user_id);
 		$user_name1 = $db1->get();
 
@@ -636,6 +669,8 @@ class User extends Controller {
 			$user_role = $row->role;
 			$user_mobile = $row->mobile;
 			$user_components = $row->componentreg;
+			$user_firstname = $row->firstname;
+                	$user_lastname = $row->lastname;
         	}
 		
 		/* Form fields */
@@ -687,6 +722,27 @@ class User extends Controller {
 			'value' => $user_components,
 			'readonly' => true,
 		);
+		/**
+                *Two new fields(Firstname and Lastname) are added.
+                */
+                //added by @RAHUL
+
+		$data['user_firstname'] = array(
+                        'name' => 'user_firstname',
+                        'id' => 'user_firstname',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => $user_firstname,
+                );
+
+                $data['user_lastname'] = array(
+                        'name' => 'user_lastname',
+                        'id' => 'user_lastname',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => $user_lastname,
+                );
+
 
 		$data['user_roles'] = array(
 			"administrator" => "Administrator",
@@ -764,6 +820,9 @@ class User extends Controller {
 			$data['user_components'] = $this->input->post('user_components', TRUE);
 			$data['user_mobile'] = $this->input->post('user_mobile', TRUE);
 			$data['uidnum']['value'] = $this->input->post('uidnum', TRUE);
+			//Repopulating fields(firstname and lastname) added by @RAHUL
+			$data['user_firstname']['value'] = $this->input->post('user_firstname', TRUE);
+			$data['user_lastname']['value'] = $this->input->post('user_lastname', TRUE);
 		} else {
 			/* Check if user ini file exists 
 			if ( ! get_file_info($ini_file))
@@ -829,6 +888,9 @@ class User extends Controller {
 		$this->form_validation->set_rules('uidnum', 'UID Number','trim');
 		$this->form_validation->set_rules('user_components', 'Components', 'trim|required');
 		$this->form_validation->set_rules('user_status', 'Active', 'trim');
+		//Validation of fields(firstname and lastname) added by @RAHUL
+		$this->form_validation->set_rules('user_firstname', 'firstname', 'trim|required' . $user_id);
+		$this->form_validation->set_rules('user_lastname', 'lastname', 'trim|required' . $user_id);
 
 		/* Validating form */
 		if ($this->form_validation->run() == FALSE)
@@ -848,6 +910,8 @@ class User extends Controller {
 			$data_user_mobile = $this->input->post('user_mobile', TRUE);
 			$data_uidnum = $this->input->post('uidnum', TRUE);
 			$data_user_components = $this->input->post('user_components', TRUE);
+			$data_user_firstname = $this->input->post('user_firstname', TRUE);
+			$data_user_lastname = $this->input->post('user_lastname', TRUE);
 			if ($data_user_status == 1)
 				$data_user_status = 1;
 			else
@@ -911,7 +975,22 @@ class User extends Controller {
                 		}
 				else{
 					$db1->trans_complete();
+					$update_data2 = array(
+                                    	'firstname' =>$data_user_firstname,
+                                    	'lastname'=>$data_user_lastname
+                                );
+
+                                if ( ! $db1->where('userid',$user_id)->update('userprofile',$update_data2))
+                                {
+                                $db1->trans_rollback();
+                                $this->messages->add('Error in updating User Account - ' . $user_name . '.', 'error');
+                                return;
+                                }
+                                else{
+                                        $db1->trans_complete();
+
 				}
+			}			
 					//$this->messages->add('Update User Account - ' . $user_name . ' success');
 
                 //added by @kanchan   
