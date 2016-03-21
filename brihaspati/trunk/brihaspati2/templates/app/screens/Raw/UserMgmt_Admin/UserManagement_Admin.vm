@@ -128,13 +128,14 @@ $!data.getMessage()
         <td>
                 <select name="deptName" size=1 class="drop" onChange="checkOption(document.frm,this);" style="width:300px;"/>
                 #if($Deptname=="")
+			<option value="" title="$brih_courses $brih_without $brih_dept" style="width:275px;">$brih_courses$brih_without$brih_dept</option>
                         <option> #if($lang == "hindi") $brih_dept $brih_select #else  $brih_select $brih_dept #end </option>
                 #else
                         <option>$Deptname</option>
                         <option> #if($lang == "hindi") $brih_dept $brih_select #else  $brih_select $brih_dept #end </option>
                 #end
-                        <option value="" title="Course Without Dept" style="width:275px;">CourseWithoutDept</option>
-                #foreach($name in $deptlist)
+                	<option value="" title="$brih_courses $brih_without $brih_dept" style="width:275px;">$brih_courses$brih_without $brih_dept</option>
+			#foreach($name in $deptlist)
                         <option value="$!name.getName()" title="$!name.getName()" style="width:275px;">$!name.getName()</option>
                 #end
                 </select>

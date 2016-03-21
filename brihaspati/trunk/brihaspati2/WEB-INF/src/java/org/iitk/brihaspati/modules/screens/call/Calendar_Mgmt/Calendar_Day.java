@@ -276,6 +276,7 @@ public class Calendar_Day extends SecureScreen
 			 * delete their own course entries. In personalised calendar the events
 			 * of the user logged will be displayed.
                         */
+			if(cal_detail.size()>0){
 			for(int i=0;i<cal_detail.size();i++)
 			{
 				CalInformation element=(CalInformation)cal_detail.get(i);
@@ -298,6 +299,10 @@ public class Calendar_Day extends SecureScreen
 					}
 					context.put("primary_instructor",isPrimaryInstructor);
 				}
+			}
+			}
+			else{
+				 data.setMessage("There is no event");
 			}
 
 			/**
