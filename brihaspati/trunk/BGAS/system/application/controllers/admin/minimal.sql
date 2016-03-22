@@ -2,7 +2,7 @@ INSERT INTO `groups` VALUES (1,'20',0,'Application of Funds',0,0,0,'');
 INSERT INTO `groups` VALUES (2,'10',0,'Sources of Funds',0,0,0,'');
 INSERT INTO `groups` VALUES(3,'30',0,'Incomes',0,0,0,'');
 INSERT INTO `groups` VALUES(4,'40',0,'Expenditure',0,0,0,'');
-INSERT INTO `budgets` VALUES (1, '50', 0, 'Main Budget', 0.00, 'Yearly', 0,0);
+INSERT INTO `budgets` VALUES (1, '50', 0, 'Main Budget', 0.00, 0.00,'Yearly', 0,0);
 INSERT INTO `projection` VALUES(1, '60', 0, 'Target Projection', 0.00, 'Yearly', 0.00);
 
 INSERT INTO `groups` VALUES(5,'1001',2,'Capital Funds',0,0,0,'Money set aside for the purchase of capital or fixed assets, such as land, factories or manufacturing equipment.');
@@ -38,14 +38,14 @@ INSERT INTO `ledgers` VALUES (1,'100101',5,'Contributions towards Capital Fund',
 INSERT INTO `ledgers` VALUES (2,'100201',6,'Balance of net income/expenditure transferred from I/E Account','0.00','D',0,0,0,' It includes differnce of income and expenditure which will be transferred at the time of carry forward to next financial year.');
 INSERT INTO `ledgers` VALUES (3,'100202',6,'Contributions towards Corpus Fund','0.00','D',0,0,0,'It contains a permanent fund kept for the basic expenditures needed for the administration and survival of the organization.');
 
-INSERT INTO `budgets` VALUES (2, '4001', 1, 'Staff Payments and Benefits(Establishment Expenses)', 0.00, 'Yearly', 0,0);
-INSERT INTO `budgets` VALUES (3, '4002', 1, 'Academic Expenses', 0.00, 'Yearly', 0,0);
-INSERT INTO `budgets` VALUES (4, '4003', 1, 'Administrative and General expenses', 0.00, 'Yearly', 0,0);
-INSERT INTO `budgets` VALUES (5, '4004', 1, 'Transportations Expenses', 0.00, 'Yearly', 0,0);
-INSERT INTO `budgets` VALUES (6, '4005', 1, 'Repairs and Maintenance', 0.00, 'Yearly', 0,0);
-INSERT INTO `budgets` VALUES (7, '4006', 1, 'Finance Costs', 0.00, 'Yearly', 0,0);
-INSERT INTO `budgets` VALUES (8, '4008', 1, 'Other expenses', 0.00, 'Yearly', 0,0);
-INSERT INTO `budgets` VALUES (9, '4009', 1, 'Prior Period Expenses', 0.00, 'Yearly', 0,0);
+INSERT INTO `budgets` VALUES (2, '4001', 1, 'Staff Payments and Benefits(Establishment Expenses)', 0.00, 0.00,'Yearly', 0,0);
+INSERT INTO `budgets` VALUES (3, '4002', 1, 'Academic Expenses', 0.00, 0.00,'Yearly', 0,0);
+INSERT INTO `budgets` VALUES (4, '4003', 1, 'Administrative and General expenses', 0.00, 0.00,'Yearly', 0,0);
+INSERT INTO `budgets` VALUES (5, '4004', 1, 'Transportations Expenses', 0.00, 0.00,'Yearly', 0,0);
+INSERT INTO `budgets` VALUES (6, '4005', 1, 'Repairs and Maintenance', 0.00, 0.00,'Yearly', 0,0);
+INSERT INTO `budgets` VALUES (7, '4006', 1, 'Finance Costs', 0.00, 0.00,'Yearly', 0,0);
+INSERT INTO `budgets` VALUES (8, '4008', 1, 'Other expenses', 0.00, 0.00,'Yearly', 0,0);
+INSERT INTO `budgets` VALUES (9, '4009', 1, 'Prior Period Expenses', 0.00, 0.00,'Yearly', 0,0);
 
 INSERT INTO `projection` VALUES(2, '3001', 1, 'Academic Receipts', 0.00, 'Yearly', 0.00);
 INSERT INTO `projection` VALUES(3, '3002', 1, 'Grant/Subsidies and Donations', 0.00, 'Yearly', 0.00);
