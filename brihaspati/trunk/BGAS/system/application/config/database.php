@@ -38,7 +38,7 @@ $active_group = "default";
 $active_record = TRUE;
 
 $db['default']['hostname'] = "127.0.0.1";
-$db['default']['username'] = "root";
+$db['default']['username'] = "";
 $db['default']['password'] = "";
 $db['default']['database'] = "";
 $db['default']['dbdriver'] = "mysql";
@@ -51,7 +51,7 @@ $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_general_ci";
 
 $db['login']['hostname'] = "127.0.0.1";
-$db['login']['username'] = "root";
+$db['login']['username'] = "";
 $db['login']['password'] = "";
 $db['login']['database'] = "login";
 $db['login']['dbdriver'] = "mysql";
