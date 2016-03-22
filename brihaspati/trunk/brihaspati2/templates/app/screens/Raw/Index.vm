@@ -117,16 +117,19 @@ $!data.getMessage()
                 #end
                 #if($Role4=="GAdminRole")
                 <tr><td align="center" colspan="7">
+                <style=text-decoration:none><img border=0 src="$content.getURI("/images/groupadmin.png")">
                 <a href=$link.setPage("call,IndexHome.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_groupAdmin  $brih_home</a>
                 </td></tr>
                 #end
                 #if($Role5=="AuthorRole") 
                 <tr><td align="center" colspan="7">
+		<style=text-decoration:none><img border=0 src="$content.getURI("/images/author.png")">
                 <a href=$link.setPage("call,Repository_Mgmt,Author.vm").addPathInfo("role","Author").addPathInfo("count","1") style=text-decoration:none>$brih_authorHome</a>
                 </td></tr>
                 #end   
                 #if($Role9=="ParentRole")
                 <tr><td align="center" colspan="7">
+                <style=text-decoration:none><img border=0 src="$content.getURI("/images/parent.png")">
                 <a href=$link.setPage("call,ParentChildList.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_parent $brih_home</a>
                 </td></tr>
                 #end

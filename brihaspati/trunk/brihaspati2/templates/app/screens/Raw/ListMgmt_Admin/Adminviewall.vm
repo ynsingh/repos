@@ -16,6 +16,7 @@ $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<div class="scroll">
 <font face="$ui.sansSerifFonts"> $!mmessage</font>
 ##<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
 
@@ -180,6 +181,7 @@ $!data.getMessage()
     </td>
  </tr>
 </table>
+</div>
  #end
 #if($noList=="nolist")
 <table align=left><tr><td>$!infrmtn</td></tr></table>
