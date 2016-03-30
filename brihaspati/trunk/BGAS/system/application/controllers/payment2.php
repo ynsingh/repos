@@ -1476,6 +1476,7 @@ class Payment2 extends Controller {
                                 $secunit_id = $vouch_fill->party_id; 
                                 $exp_ty_pe = $vouch_expenditur_tp;
 				$f_und = $data['fund']['value']; 
+				//$f_und = $fu_nd; 
 				$entry_type_id = 2;
 				$number = $this->Entry_model->next_entry_number($entry_type_id);
                                 $this->db->trans_start();
@@ -1509,7 +1510,8 @@ class Payment2 extends Controller {
 				 	$entry_id = $this->db->insert_id();
 					$this->logger->write_message("success", "Added journal Bill/Voucher No.".$number."[id :".$entry_id."].By".$username);
                                  }
-                                 if(($f_und == '0') && ($exp_ty_pe == 'Select'))
+                                 //if((($f_und == '0') && ($exp_ty_pe == 'Select')) || (($f_und == '0') && ($exp_ty_pe != 'Select')))
+                                 if((($f_und == 'None') && ($exp_ty_pe == 'Select')) || (($f_und == 'None') && ($exp_ty_pe != 'Select')))
 				 {
 				 	$insert_ledger_data = array(
                                         	'entry_id' => $entry_id,
@@ -1822,7 +1824,14 @@ class Payment2 extends Controller {
                 $data['fun_d_id']= $fund_id1;
                 $data['narrate']= $narr1;
 		$data['vc_date']=$show->vc_date;
-		$data['submitter_id']=$subm_id;
+		if($subm_id == '')
+		{
+			$data['submitter_id']="Administer";
+		}
+		else
+		{
+			$data['submitter_id']=$subm_id;
+		}
                 $data['mode_of_payment']=  $show->mode_of_payment;
 		$data['expense_type']=$show->expense_type;
 		$data['bank_cash_account']=$show->bank_cash_account;
@@ -1939,7 +1948,15 @@ class Payment2 extends Controller {
                 $data['rejected_by'] = $for_opt1;
                 $data['narrate']= $narr1;
 		$data['vc_date']=$show1->approval_date;
-		$data['submitter_id']=$subm_id;
+		if($subm_id == '')
+                {
+                        $data['submitter_id']="Administer";
+                }
+                else
+                {
+                        $data['submitter_id']=$subm_id;
+                }
+		//$data['submitter_id']=$subm_id;
                 $data['mode_of_payment']=$prntmodpym;
 		$data['expense_type']=$show->expense_type;
 		$data['bank_cash_account']=$prntbcaccn;

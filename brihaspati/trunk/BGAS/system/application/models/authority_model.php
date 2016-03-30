@@ -75,11 +75,11 @@ class Authority_model extends Model {
                  	$auth_id = $row->useremail."`".$row->firstname." ".$row->lastname."(".$row->name."/".$row->authoritytype.")";
 			if ($row->authoritytype == 'full')
 			{
-                       		$options[$auth_id]=$row->name.'/'.$row->firstname.$row->lastname;
+                       		$options[$auth_id]=$row->name.'/'.$row->firstname." ".$row->lastname;
 			}
 			else
 			{
-				$options[$auth_id]=$row->authoritytype."&nbsp &nbsp".$row->name.'/'.$row->firstname.$row->lastname;
+				$options[$auth_id]=$row->authoritytype."&nbsp &nbsp".$row->name.'/'.$row->firstname." ".$row->lastname;
 			}
                 }
                 $options[0] = 'Please Select';

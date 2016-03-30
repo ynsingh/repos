@@ -249,6 +249,7 @@ class User extends Controller {
 			$data_user_mobile = $this->input->post('mobile', TRUE);
 			$data_uidnum = $this->input->post('uidnum', TRUE);
 			$data_user_components = $this->input->post('component_reg', TRUE);
+			$data_full_name = $data_user_firstname." ".$data_user_lastname;
 
 			if ($data_user_status == 1)
 				$data_user_status = 1;
@@ -322,7 +323,7 @@ class User extends Controller {
                                 $con = @mysql_connect($host_name,$db_username,$db_password);
                                 if($con){
                                         $value = mysql_select_db($db_name, $con);
-                                	$query = "INSERT INTO addsecondparty(sacunit,u_id,email,mobnum,partyrole) value('$secondary_id','$data_uidnum','$data_user_email','$data_user_mobile','$data_category_type')";
+                                	$query = "INSERT INTO addsecondparty(sacunit,partyname,u_id,email,mobnum,partyrole) value('$secondary_id','$data_full_name','$data_uidnum','$data_user_email','$data_user_mobile','$data_category_type')";
 					//trigger_error(mysql_error()." in ".$query);
                                         $val = mysql_query($query);
 					//$this->messages->add('insert values in party table'.$val, 'error');

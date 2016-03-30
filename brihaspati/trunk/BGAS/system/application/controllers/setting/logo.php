@@ -160,6 +160,11 @@ class Logo extends Controller {
 					{
 						unlink($this->upload_path.'/'.$file_list[$count]);  
 					}
+					$newrep_lace = str_replace('_', ' ', $my_values[0]);
+                                	if(($newrep_lace == $name) && ($my_values[0] != $name))
+					{
+						unlink($this->upload_path.'/'.$file_list[$count]);
+					}
 				}
 				}else
                         	{

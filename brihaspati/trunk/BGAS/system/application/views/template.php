@@ -183,6 +183,15 @@ $(document).ready(function() {
                                 echo"&nbsp;&nbsp;&nbsp;&nbsp;";
                                 echo $this->config->item('account_ins_name');
                                 }
+				$newrep_lace = str_replace('_', ' ', $my_values[0]);
+                                if(($newrep_lace == $row1) && ($my_values[0] != $row1))
+                                {
+                                	echo img(array('src' => base_url() . "uploads/logo/" . $my_values[0].'.'.$ext));
+                                	echo "<br/>";
+                                	echo"&nbsp;&nbsp;&nbsp;&nbsp;";
+                                	echo $this->config->item('account_ins_name');
+                                }
+
                         }
                 }
                 else{

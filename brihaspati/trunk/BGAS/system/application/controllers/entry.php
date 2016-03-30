@@ -3256,6 +3256,11 @@ $width="100%";
                         		{
 						$attchfile = $this->upload_path."/".$row1.".".$ext;
                         		}
+					$newrep_lace = str_replace('_', ' ', $my_values[0]);
+                        		if(($newrep_lace == $row1) && ($my_values[0] != $row1))
+                        		{
+						$attchfile = $this->upload_path."/".$my_values[0].".".$ext;
+                        		}
                 		}
         		}
 
@@ -3284,7 +3289,8 @@ $width="100%";
 			$this->email->initialize($config);
 
 			/* Sending email */
-			$this->email->from($config['smtp_user'], 'Webzash');
+			//$this->email->from($config['smtp_user'], 'Webzash');
+			$this->email->from($config['smtp_user'], 'Brihaspati');
 			$this->email->to($this->input->post('email_to', TRUE));
 			$this->email->subject($current_entry_type['name'] . ' Bill/Voucher No. ' . full_entry_number($entry_type_id, $cur_entry->number));
 			$this->email->message($message);

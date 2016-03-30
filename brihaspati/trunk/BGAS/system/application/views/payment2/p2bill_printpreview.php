@@ -48,6 +48,13 @@
                                 echo "<td align=\"center\">";
                                 echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
                         }
+			$newrep_lace = str_replace('_', ' ', $my_values[0]);
+                     	if(($newrep_lace == $row1) && ($my_values[0] != $row1))
+                    	{
+				echo "<td align=\"center\">";
+                  		echo img(array('src' => base_url() . "uploads/logo/" . $my_values[0].'.'.$ext));
+             		}
+
                 }
         }
         else
