@@ -36,6 +36,9 @@
                        <f:facet name="infoMarker">
                             <h:graphicImage url="/img/success.png"/>
                        </f:facet>
+			<f:facet name="errorMarker">
+                            <h:graphicImage url="/img/err.png"/>
+                       </f:facet>
                     </rich:messages>
                     <h:panelGrid columns="3">
                         <rich:dataTable  style="width:800px;" binding="#{InvestmentHeadBean.dataGrid}"
@@ -52,7 +55,7 @@
                                 </f:facet>
                                 <rich:inplaceInput value="#{dept.name}" />
                             </rich:column>
-                            <rich:column width="25%" sortable="true" sortBy="#{dept.underGroupName}"  id="group">
+                            <rich:column width="15%" sortable="true" sortBy="#{dept.underGroupName}"  id="group">
                                 <f:facet name="header">
                                     <h:outputText  value="Under"/>
                                 </f:facet>
@@ -64,6 +67,12 @@
                                 </f:facet>
                                  <rich:inplaceInput value="#{dept.details}" />
                             </rich:column>
+			    <rich:column width="10%">
+                                <f:facet name="header">
+                                    <h:outputText  value="Tax Benefit"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox value="#{dept.benefit}"/>
+                            </rich:column>
                         </rich:dataTable>
                         </h:panelGrid>
                     <a4j:commandButton action="#{InvestmentHeadBean.update}" value="Update"/>
@@ -72,21 +81,32 @@
                 </rich:panel>
                 <br />
                 <hr/>
-                <rich:modalPanel id="pnl">
-                <h:form>
-                    <rich:panel header="Add New Investment Head">
-
-                        <h:panelGrid
-                            columns="5"
+                <%----<rich:modalPanel id="pnl">--%>
+		<rich:modalPanel width="500" height="240" autosized="true" id="pnl">
+                    <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="Add New Investment Head"></h:outputText>
+                        </h:panelGroup>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <h:panelGroup>
+                            <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelink"/>
+                            <rich:componentControl for="pnl" attachTo="hidelink" operation="hide" event="onclick"/>
+                         </h:panelGroup>
+                    </f:facet>
+                    <h:form>
+                        <h:panelGrid 
+                            columns="3"
                             styleClass="data_entry_form"
-                            columnClasses="label,field">                            
+                            columnClasses="label,field" style="width:300px;height:130px;">                            
                             <h:outputText styleClass="Label" value="New Head"/>
                             <h:inputText id="headName" required="true" requiredMessage="Enter New Investment Head Name" value="#{InvestmentHeadBean.name}"/>
                             <h:message for="headName" styleClass="error"/>
                     <h:outputText styleClass="Label" value="Under"/>
-                    <h:selectOneMenu value="#{InvestmentHeadBean.underGroupCode}">
+                    <h:selectOneMenu id="undersec" value="#{InvestmentHeadBean.underGroupCode}">
                         <f:selectItems value="#{InvestmentTypeController.asItems}"/>
                     </h:selectOneMenu>
+                    <h:message for="underse" styleClass="error"/>
                     <h:outputText styleClass="Label"  value="Tax Benefit"/>
                     <h:selectBooleanCheckbox id="txtBenefit" value="#{InvestmentHeadBean.benefit}">
                     </h:selectBooleanCheckbox>
@@ -94,10 +114,10 @@
                     <h:outputText styleClass="Label"  value="Details"/>
                     <h:inputText  value="#{InvestmentHeadBean.details}"/>
                     <h:message for="detail" styleClass="error"/>
-                    <h:commandButton value="Save" action="#{InvestmentHeadBean.save}" />
-                    <h:commandButton onclick="Richfaces.hideModalPanel('pnl');" value="Close"/>
                     </h:panelGrid>
-                    </rich:panel>
+                        <h:commandButton value="Save" action="#{InvestmentHeadBean.save}" />&nbsp;
+                    <h:commandButton onclick="Richfaces.hideModalPanel('pnl');" value="Close"/>
+                    
                 </h:form>
                 </rich:modalPanel>
             </f:view>

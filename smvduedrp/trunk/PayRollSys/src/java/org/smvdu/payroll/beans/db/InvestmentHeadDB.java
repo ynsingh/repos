@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.composite.SessionController;
@@ -118,27 +119,67 @@ public class InvestmentHeadDB {
         }
 
     }
-    public Exception save(InvestmentHead ih)   {
+    public Exception save(InvestmentHead ih){
+	if(check(ih)==true){
+         	try
+        	{
+            		Connection c = new CommonDB().getConnection();
+            		ps=c.prepareStatement("insert into investment_heads(ih_name,ih_benefit,"
+                    		+ "ih_details,ih_under,ih_org_id) values(?,?,?,?,?)",1);
+            		ps.setString(1, ih.getName().toUpperCase());
+            		ps.setBoolean(2, ih.isBenefit());
+            		ps.setString(3, ih.getDetails());
+            		ps.setInt(4, ih.getUnderGroupCode());
+            		ps.setInt(5, userBean.getUserOrgCode());
+            		ps.executeUpdate();
+            		ps.close();
+            		c.close();
+            		return null;
+        	}
+        	catch(Exception e)
+        	{
+            		e.printStackTrace();
+            		return e;
+        	}
+	}
+	 //}
+        else
+        {
+          FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Investment head already added", ""));
+          return null;
+        }
+
+
+    }
+
+	public boolean check(InvestmentHead ih)   {
+        boolean flag=true;
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("insert into investment_heads(ih_name,ih_benefit,"
-                    + "ih_details,ih_under,ih_org_id) values(?,?,?,?,?)",1);
-            ps.setString(1, ih.getName().toUpperCase());
-            ps.setBoolean(2, ih.isBenefit());
-            ps.setString(3, ih.getDetails());
-            ps.setInt(4, ih.getUnderGroupCode());
-            ps.setInt(5, userBean.getUserOrgCode());
-            ps.executeUpdate();
+            ps=c.prepareStatement("select ih_name,ih_details,ih_under"
+                    + " from investment_heads where ih_org_id='"+userBean.getUserOrgCode()+"'");
+            rs=ps.executeQuery();
+            ArrayList<InvestmentHead> data = new ArrayList<InvestmentHead>();
+            while(rs.next())
+            {
+                if((rs.getString(1).equalsIgnoreCase(ih.getName())) && (rs.getString(2).equalsIgnoreCase(ih.getDetails())) && (rs.getInt(3)==ih.getUnderGroupCode()))
+                {
+                 flag=false;
+                 break;
+                }
+            }
+            rs.close();
             ps.close();
             c.close();
-            return null;
+            return flag;
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            return e;
+            return false;
         }
-
     }
+
+	
 }

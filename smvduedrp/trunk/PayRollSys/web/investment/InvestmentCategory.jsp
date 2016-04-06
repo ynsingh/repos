@@ -40,9 +40,9 @@
                        <h:graphicImage url="/img/err.png"/>
                        </f:facet>
                     </rich:messages>
-                    <h:panelGrid columns="3">
-                     <rich:dataTable  style="width:800px;" binding="#{InvestmentTypeController.dataGrid}"
-                                      value="#{InvestmentTypeController.types}" var="dept">
+                    <h:panelGrid columns="5">
+                    <rich:dataTable  style="width:800px;" binding="#{InvestmentTypeController.dataGrid}"
+                        value="#{InvestmentTypeController.types}" var="dept">
                                              
                             <rich:column width="5%">
                                 <f:facet name="header">
@@ -75,28 +75,37 @@
                 </rich:panel>
                 <br />
                 <hr/>
-                <rich:modalPanel id="pnl">
-                <h:form>
-                    <rich:panel header="Add New Investment Category">
+                <rich:modalPanel id="pnl"  width="500" height="240" autosized="true">
+                    <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="Add New Investment Category"></h:outputText>
+                        </h:panelGroup>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <h:panelGroup>
+                            <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelink"/>
+                            <rich:componentControl for="pnl" attachTo="hidelink" operation="hide" event="onclick"/>
+                         </h:panelGroup>
+                    </f:facet>
+                    <h:form>
                         <h:panelGrid
                             columns="3"
                             styleClass="data_entry_form"
-                            columnClasses="label,field">                            
+                            columnClasses="label,field" style="width:300px;height:130px;">                            
                             <h:outputText styleClass="Label" value="New Category"/>
                             <h:inputText id="headName" required="true" requiredMessage="Enter New Investment Category Name" value="#{InvestmentTypeBean.name}"/>
                             <h:message for="headName" styleClass="error"/>
                     
-                    <h:outputText styleClass="Label"  value="Maximum Allowed"/>
-                    <h:inputText id="txtBenefit" value="#{InvestmentTypeBean.maxLimit}"/>
+                            <h:outputText styleClass="Label"  value="Maximum Allowed"/>
+                            <h:inputText id="txtBenefit" value="#{InvestmentTypeBean.maxLimit}"/>
                     
-                    <h:message for="Percent Deduction" styleClass="error"/>
-                    <h:outputText styleClass="Label"  value="Details"/>
-                    <h:inputText value="#{InvestmentTypeBean.effectivePercentage}"/>
-                    <h:commandButton value="Save" action="#{InvestmentTypeBean.save}" />
-                    <h:commandButton onclick="Richfaces.hideModalPanel('pnl');" value="Close"/>
-                    </h:panelGrid>
-                    </rich:panel>
-                </h:form>
+                            <h:message for="Percent Deduction" styleClass="error"/>
+                            <h:outputText styleClass="Label"  value="Details"/>
+                            <h:inputText value="#{InvestmentTypeBean.effectivePercentage}"/>
+                        </h:panelGrid><br> &nbsp;
+                        <h:commandButton value="Save" action="#{InvestmentTypeBean.save}" />&nbsp;
+                        <h:commandButton onclick="Richfaces.hideModalPanel('pnl');" value="Close"/>   
+                    </h:form>
                 </rich:modalPanel>
             </f:view>
         </div>

@@ -171,7 +171,7 @@ public class EmployeeTaxDB {
         return data;
     }
 
-    public float getTaxAmount(String empCode) {
+   /* public float getTaxAmount(String empCode) {
         try {
             System.out.println("Code ET : " + empCode);
             Connection c = new CommonDB().getConnection();
@@ -193,7 +193,7 @@ public class EmployeeTaxDB {
             e.printStackTrace();
             return 0;
         }
-    }
+    }*/
 
     // integration of tax of every month
     public boolean updateTDSSalryData(ArrayList<ExtendedMonth> months, String empCode) {
@@ -217,7 +217,7 @@ public class EmployeeTaxDB {
         }
     }
 
-    public boolean save(EmployeeTax et, TaxController tac) {
+    /*public boolean save(EmployeeTax et, TaxController tac) {
         try {
             Connection c = new CommonDB().getConnection();
             ps = c.prepareStatement("delete from emp_tax_master where et_emp_id=? and et_year = ? and et_sess_id='" + sessionId.getCurrentSession() + "'");
@@ -247,7 +247,7 @@ public class EmployeeTaxDB {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
     public void savingTr(int amount, String empCode) // add saving function
     {
@@ -275,4 +275,79 @@ public class EmployeeTaxDB {
             ex.printStackTrace();
         }
     }
+
+    public boolean add(EmployeeTax et, TaxController tac) {
+        boolean exist=false;
+        try {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select exists(select * from emp_tax_master where et_emp_id=? and et_sess_id=? and et_org_code=? and et_quater=?)");
+            ps.setString(1, et.getName());
+            ps.setInt(2,et.getSession());
+            ps.setInt(3,userBean.getUserOrgCode());
+            ps.setInt(4,et.getQuater());
+            rs=ps.executeQuery();
+            if(rs.next())
+            {
+             exist=rs.getBoolean(1);
+            }
+            ps.close();
+            rs.close();
+            if(exist){
+            ps = c.prepareStatement("delete from emp_tax_master where et_emp_id=? and et_sess_id=? and et_org_code=? and et_quater=?");
+            ps.setString(1, et.getName());
+            ps.setInt(2,et.getSession());
+            ps.setInt(3,userBean.getUserOrgCode());
+            ps.setInt(4,et.getQuater());
+            ps.executeUpdate();
+            ps.close();
+            }
+
+            ps = c.prepareStatement("insert into emp_tax_master(et_emp_id,et_year, "
+                    + "et_amount,et_educess,et_sess_id,et_org_code,et_quater,et_effective,et_percent) values(?,?,?,?,?,?,?,?,?)");
+            ps.setString(1, et.getName());
+            ps.setInt(2, userBean.getCurrentYear());
+            ps.setDouble(3, et.getTaxAmount());
+            ps.setFloat(4, et.getEducess());
+            ps.setInt(5, et.getSession());
+            ps.setInt(6, userBean.getUserOrgCode());
+            ps.setInt(7, et.getQuater());
+            ps.setInt(8, 0);
+            ps.setInt(9, 0);
+            ps.executeUpdate();
+
+            ps.close();
+            c.close();
+            return true;
+	 }
+            catch (Exception e) {
+            e.printStackTrace();
+            return false;
+           }
+    }
+
+    public float getTaxAmount(String empCode) {
+        try {
+            System.out.println("Code ET : " + empCode);
+            Connection c = new CommonDB().getConnection();
+            ps = c.prepareStatement("select et_amount from emp_tax_master where "
+                    + "et_emp_id=? and et_year=? ");
+            ps.setString(1, empCode);
+            ps.setInt(2, userBean.getCurrentYear());
+            rs = ps.executeQuery();
+            float amount = 0;
+            if (rs.next()) {
+                amount = rs.getFloat(1);
+            }
+
+            rs.close();
+            ps.close();
+            c.close();
+            return amount;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+	
+
 }

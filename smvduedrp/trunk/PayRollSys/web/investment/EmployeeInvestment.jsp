@@ -30,6 +30,14 @@
             <f:view>
                 <rich:panel header="Investment Form">                    
                     <h:form id="investmentheads">
+			 <rich:messages>
+                        <f:facet name="infoMarker">
+                            <h:graphicImage url="/img/success.png"/>
+                        </f:facet>
+                        <f:facet name="errorMarker">
+                            <h:graphicImage url="/img/err.png"/>
+                        </f:facet>
+                        </rich:messages>
                         <h:panelGrid columns="4">
                             <h:outputText value="Employee Code"/>
                             <h:inputText id="empcCode" value="#{EmployeeInvestmentController.empCode}"/>
@@ -49,7 +57,7 @@
                                               binding="#{EmployeeInvestmentController.dataGrid}" 
                                               value="#{EmployeeInvestmentController.investments}" var="dept">
 
-                                <rich:column width="40%" >
+                               <%-- <rich:column width="40%" >
                                     <f:facet name="header">
                                         <h:outputText  value="Details Of saving"/>
                                     </f:facet>
@@ -66,7 +74,37 @@
                                         <h:outputText  value="Amount Paid "/>
                                     </f:facet>
                                     <h:inputText value="#{dept.amount}" />
-                                </rich:column>                          
+                                </rich:column> --%>
+				<rich:column width="50%" >
+                                    <f:facet name="header">
+                                        <h:outputText  value="Details Of saving"/>
+                                    </f:facet>
+                                    <h:outputText value="#{dept.investmentHead}" />
+                                </rich:column>
+                                <rich:column width="20%" >
+                                    <f:facet name="header">
+                                        <h:outputText  value="Section"/>
+                                    </f:facet>
+                                    <h:outputText value="#{dept.investmentUnder}" />
+                                </rich:column>
+                                <rich:column width="20%" >
+                                    <f:facet name="header">
+                                        <h:outputText  value="Amount Paid "/>
+                                    </f:facet>
+                                    <h:inputText value="#{dept.actualInvestment}" />
+                                </rich:column>
+                                 <rich:column width="20%" >
+                                    <f:facet name="header">
+                                        <h:outputText  value="Max Limit "/>
+                                    </f:facet>
+                                    <h:outputText value="#{dept.maxLimitAmount}" />
+                                </rich:column>
+                                 <rich:column width="20%" >
+                                    <f:facet name="header">
+                                        <h:outputText  value="Net Savings "/>
+                                    </f:facet>
+                                    <h:outputText value="#{dept.netSavings}" />
+                               </rich:column>
                             </rich:dataTable>
                         </h:panelGrid>
                         <h:commandButton value="Update" action="#{EmployeeInvestmentController.update}"/>

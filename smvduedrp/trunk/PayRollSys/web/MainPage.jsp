@@ -123,6 +123,7 @@
                             <rich:menuItem  id="se81"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/Gender.jsf')" value="Add Gender Details"/>
                             <rich:menuItem  id="se82"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/TaxSlabName.jsf')" value="Add Slab Details"/>
                             <rich:menuItem  id="se83"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/EmployeeSlabValue.jsf')" value="Employee Slab Details"/>
+ 			    <%--<rich:menuItem  id="se84"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/TaxCalculationType.jsf')" value="Calculation Type Details"/>--%>
                         </rich:menuGroup>
                        <%-- <rich:menuItem  id="se9"  onclick="return loadIframe('ifrm', 'account/AddUser.jsf')" value="System User Accounts"/>--%>
                       <%--  <rich:menuItem  id="se10"  onclick="return loadIframe('ifrm', 'setup/SalaryProcessingSetup.jsf')" value="Salary Processing Setup"/>--%>

@@ -1202,7 +1202,28 @@
         <managed-bean-class>org.smvdu.payroll.beans.upload.UploadFile</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+   
+    <managed-bean>
+        <description>
+                        TaxCalculationType
+        </description>
+        <managed-bean-name>TaxCalculationType</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.TaxCalculationType</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>
+                        TaxCalculationTypeController
+        </description>
+        <managed-bean-name>TaxCalculationTypeController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.TaxCalculationTypeController</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+ 
   <!--  <managed-bean>
         <description>
 			InstituteListController

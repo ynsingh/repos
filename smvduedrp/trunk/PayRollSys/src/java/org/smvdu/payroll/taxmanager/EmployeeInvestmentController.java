@@ -103,12 +103,15 @@ public class EmployeeInvestmentController {
         ArrayList<EmployeeInvestment> data = (ArrayList<EmployeeInvestment>)dataGrid.getValue();
         for(EmployeeInvestment ei : data)
         {
-            System.out.println(ei.getCode()+","+ei.getName()+" : "+ei.getAmount());
+            //System.out.println(ei.getCode()+","+ei.getName()+" : "+ei.getAmount());
         }
-        new EmployeeInvestmentDB().update(data, empCode);
-        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Record Updated", ""));
+        //new EmployeeInvestmentDB().update(data, empCode);
+        //FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Record Updated", ""));
+	 if(new EmployeeInvestmentDB().update(data, empCode))
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Investment record updated", ""));
+        else
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Investment record not updated", ""));
+
     }
-    
-    
 
 }

@@ -41,11 +41,20 @@ import org.smvdu.payroll.beans.BaseBean;
  */
 public class EmployeeTax extends BaseBean {
     
-    
-    private float amount;
+   
+    private String name;
+    private float TaxAmount;
+    private float netSaving;
+    private float educess;
+    private float higheducess;
+    private float surcharge;
+    private int quater;
+    private int session;
+	 
+   /* private float amount;
     public float netSaving;
-     private float effectiveIe;
-     private float educesse;
+    private float effectiveIe;
+    private float educesse;
 
     public float getEducesse() {
         return educesse;
@@ -85,8 +94,63 @@ public class EmployeeTax extends BaseBean {
     
     
    
-    
-    
+    */
+   public float getTaxAmount() {
+        return TaxAmount;
+    }
+
+    public void setTaxAmount(float TaxAmount) {
+        this.TaxAmount = TaxAmount;
+    }
+
+    public float getEducess() {
+        return educess;
+    }
+
+    public void setEducess(float educess) {
+        this.educess = educess;
+    }
+
+    public float getHigheducess() {
+        return higheducess;
+    }
+
+    public void setHigheducess(float higheducess) {
+        this.higheducess = higheducess;
+    }
+
+    public float getSurcharge() {
+        return surcharge;
+    }
+
+    public void setSurcharge(float surcharge) {
+        this.surcharge = surcharge;
+    }
+  public float getNetSaving() {
+        return netSaving;
+    }
+
+    public void setNetSaving(float netSaving) {
+        System.out.println("Net Saving In Employee  : "+netSaving);
+        this.netSaving = netSaving;
+    }
+
+    public int getQuater() {
+        return quater;
+    }
+
+    public void setQuater(int quater) {
+        this.quater = quater;
+    }
+
+    public int getSession() {
+        return session;
+    }
+
+    public void setSession(int session) {
+        this.session = session;
+    }
+ 
     
 
 }

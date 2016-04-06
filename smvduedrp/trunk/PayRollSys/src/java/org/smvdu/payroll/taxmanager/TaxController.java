@@ -5,10 +5,10 @@
 
 package org.smvdu.payroll.taxmanager;
 
-import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
+
 
 /**
  *
@@ -44,17 +44,25 @@ import javax.faces.context.FacesContext;
  */
 public class TaxController {
 
-
+    
     private UIData datagrid;
     private String empId;
     private float netIncome;
-    private float taxPercent;
     private float netTax;
     private float taxableAmount;
-    private int effectiveInv = 0;
     private float educess;
+    private float higheducess;
+    private float surcharge;
     private float actualCalc;
+    private float netSavings=0;
+    private float previousTax=0;
+    private float balanceTax=0;
+    TaxCalculatorDB taxDb = new TaxCalculatorDB();
+    EmployeeTaxDB et = new EmployeeTaxDB();
+    EmployeeTax emt = new EmployeeTax();
 
+
+/*
     public float getActualCalc() {
       actualCalc = new TaxCalculatorDB().getActualCalc(this.getEmpId());
         
@@ -65,7 +73,7 @@ public class TaxController {
     public void setActualCalc(float actualCalc) {
         this.actualCalc = actualCalc;
     }
-
+*/
     public float getEducess() {
       educess = Math.abs(netTax * 2)/100;
         return educess;
@@ -79,7 +87,7 @@ public class TaxController {
    
 
 
-    TaxCalculatorDB taxDb = new TaxCalculatorDB();
+    /*TaxCalculatorDB taxDb = new TaxCalculatorDB();
 
 
     public int getEffectiveInv() {
@@ -106,9 +114,22 @@ public class TaxController {
         System.out.println("Total Taxable Amount : in set "+taxableAmount);
         this.taxableAmount = taxableAmount;
     }
+*/
+ public float getTaxableAmount() {
+        if(netIncome>netSavings)
+            this.setTaxableAmount(netIncome-netSavings);
+            else
+            this.setTaxableAmount(0);
+        return taxableAmount;
+    }
+
+    public void setTaxableAmount(float taxableAmount) {
+        this.taxableAmount = taxableAmount;
+    }
+
     public float getNetTax() {
-        netTax = taxDb.getTaxValue();
-        System.out.println("Tax Value : get : "+netTax);
+       // netTax = taxDb.getTaxValue();
+        //System.out.println("Tax Value : get : "+netTax);
         //netTax = (Math.abs((netIncome-netSaving)*taxPercent))/100;
         return netTax;
     }
@@ -118,9 +139,9 @@ public class TaxController {
     }
 
 
-    private float netSaving=0;
+    
 
-    public float getTaxPercent() {
+   /* public float getTaxPercent() {
         taxPercent = taxDb.getTaxPercent((int)this.getTaxableAmount());
         return taxPercent;
     }
@@ -130,10 +151,10 @@ public class TaxController {
 
         this.taxPercent = taxPercent;
     }
+*/
 
-
-    public float getNetSaving() {
-        if(taxBeans==null)
+    public float getNetSavings() {
+       /* if(taxBeans==null)
         {
             taxBeans = new TaxCalculatorDB().loadAnnualStat(empId);
         }
@@ -143,20 +164,20 @@ public class TaxController {
         //et.setSaving(netSaving);
         emt.setNetSaving(netSaving);
         emt.setSaving(netSaving);
-        emt.setEducesse(educess);
-        return netSaving;
+        emt.setEducesse(educess);*/
+        return netSavings;
     }
 
-    public void setNetSaving(float netSaving) {
-        System.out.println("Net Saving In Tax in set : "+netSaving);
-        this.netSaving = netSaving;
+    public void setNetSavings(float netSavings) {
+        //System.out.println("Net Saving In Tax in set : "+netSavings);
+        this.netSavings = netSavings;
     }
 
 
     public float getNetIncome() {
         
         
-        System.out.println("Total NetIncome : "+netIncome);
+        //System.out.println("Total NetIncome : "+netIncome);
         return netIncome;
     }
 
@@ -173,7 +194,24 @@ public class TaxController {
         this.empId = empId;
     }
 
-    private ArrayList<TaxCalculatorBean> taxBeans;
+ public float getPreviousTax() {
+        return previousTax;
+    }
+
+    public void setPreviousTax(float previousTax) {
+        this.previousTax = previousTax;
+    }
+
+    public float getBalanceTax() {
+        return balanceTax;
+    }
+
+    public void setBalanceTax(float balanceTax) {
+        this.balanceTax = balanceTax;
+    }
+
+
+   /* private ArrayList<TaxCalculatorBean> taxBeans;
 
     public UIData getDatagrid() {
         return datagrid;
@@ -220,7 +258,51 @@ public class TaxController {
 
  }
     }
+*/
+     public void loadData(){
+        if(empId!=null)
+        {
+            this.setEmpId(empId);
+           // System.out.println("month===line 269=="+empId);
+            this.setNetIncome(taxDb.SalaryCalculation(empId));
+            this.setNetSavings((float)taxDb.InvestmentCalculation(empId));
+            taxableAmount=this.getTaxableAmount();
+            //System.out.println("month===line 274=="+taxableAmount);
+            this.setNetTax(taxDb.getTax(empId, taxableAmount));
+            this.previousTax=taxDb.getPaidTax(empId);
+            this.setBalanceTax(netTax-previousTax);
+            int month=taxDb.getMonth();
+            if(month%3==1)
+               this.add();
+            if(this.netSavings==0 && this.getNetTax()>0)
+            {
+              FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Investment information not present", ""));
+            }
+        }
+    }
+ public void add()
+    {
+        emt.setName(empId);
+        emt.setTaxAmount(balanceTax);
+        emt.setNetSaving(netSavings);
+        emt.setEducess(this.getEducess());
+        int quater=taxDb.getRequiredQuater()-1;
+        if(quater==0)
+            quater=4;
+        emt.setQuater(quater);
+        emt.setSession(taxDb.getRequiredSession());
+        emt.setHigheducess(higheducess);
+        emt.setSurcharge(surcharge);
+        boolean b = et.add(emt,this);
+        if(b)
+        {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Tax Information for last quater saved", ""));
+        }
+        else
+        {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tax Information for last quater not saved", ""));
+        }
+    }
 
-
-
+   
 }

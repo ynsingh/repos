@@ -43,6 +43,7 @@ public class TaxCalculatorBean {
     private String investmentHead;
     private int actualAmount;
     private float percentDeduction;
+    private float netSavings=0;
 
     public float getPercentDeduction() {
         return percentDeduction;
@@ -62,10 +63,6 @@ public class TaxCalculatorBean {
         TaxCalculatorBean.totalInvestment = totalInvestment;
     }
     
-   
-    
-
-
     private int headCode;
     private int empId;
 
@@ -135,6 +132,13 @@ public class TaxCalculatorBean {
     public void setInvestmentHead(String investmentHead) {
         this.investmentHead = investmentHead;
     }
-    
+    public float getNetSavings() {
+        return netSavings;
+    }
 
+    public void setNetSavings(float netSavings) {
+        this.netSavings = netSavings;
+    }
+
+	
 }

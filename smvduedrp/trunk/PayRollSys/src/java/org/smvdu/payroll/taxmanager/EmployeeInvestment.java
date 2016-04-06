@@ -40,7 +40,7 @@ import java.io.Serializable;
 *
  */
 public class EmployeeInvestment implements Serializable{
-    private float amount;
+   /* private float amount;
     
     private int code;
     private String name;
@@ -79,7 +79,83 @@ public class EmployeeInvestment implements Serializable{
 
     public void setAmount(float amount) {
         this.amount = amount;
+    }*/
+
+     private int headCode;
+    private int empId;
+    private String empCode;
+    private String investmentHead;
+    private int actualInvestment;
+    private int maxLimitAmount;
+    private float netSavings;
+    private String investmentUnder;
+
+
+    public int getEmpId() {
+        return empId;
     }
+
+    public void setEmpId(int empId) {
+        this.empId = empId;
+    }
+
+    public String getEmpCode() {
+        return empCode;
+    }
+
+    public void setEmpCode(String empCode) {
+        this.empCode = empCode;
+    }
+
+
+    public String getInvestmentUnder() {
+        return investmentUnder;
+    }
+
+    public void setInvestmentUnder(String investmentUnder) {
+        this.investmentUnder = investmentUnder;
+    }
+
+    public String getInvestmentHead() {
+        return investmentHead;
+    }
+
+    public void setInvestmentHead(String investmentHead) {
+        this.investmentHead = investmentHead;
+    }
+    public int getHeadCode() {
+        return headCode;
+    }
+
+    public void setHeadCode(int headCode) {
+        this.headCode = headCode;
+    }
+
+    public int getActualInvestment() {
+        return actualInvestment;
+    }
+
+    public void setActualInvestment(int actualInvestment) {
+        this.actualInvestment = actualInvestment;
+    }
+
+
+    public int getMaxLimitAmount() {
+        return maxLimitAmount;
+    }
+
+    public void setMaxLimitAmount(int maxLimitAmount) {
+        this.maxLimitAmount = maxLimitAmount;
+    }
+
+    public float getNetSavings() {
+        return netSavings;
+    }
+
+    public void setNetSavings(float netSavings) {
+        this.netSavings = netSavings;
+    }
+
     
 
 }

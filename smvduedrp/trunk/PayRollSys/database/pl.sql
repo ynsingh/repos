@@ -591,11 +591,12 @@ CREATE TABLE `emp_slab_head_master` (
 CREATE TABLE `emp_tax_master` (
   `et_emp_id` varchar(50) NOT NULL,
   `et_year` int(11) NOT NULL,
-  `et_amount` float(9,3) NOT NULL,
+  `et_quater` int(3) NOT NULL DEFAULT 1,	
+  `et_amount` float(9,3) NOT NULL DEFAULT 0,
   `et_id` int(11) NOT NULL auto_increment,
   `et_effective` int(11) NOT NULL,
   `et_percent` double(15,2) NOT NULL,
-  `et_educess` float(9,2) NOT NULL,
+  `et_educess` float(9,2) NOT NULL DEFAULT 0,
   `et_sess_id` int(11) NOT NULL,
   `et_org_code` int(11) NOT NULL,
   PRIMARY KEY  (`et_id`),
@@ -1886,4 +1887,20 @@ CREATE TABLE `user_roles` (
 INSERT INTO user_master (user_id, user_name, user_pass, flag) VALUES (1, 'admin', 'admin123', 1);
 
 INSERT INTO user_roles(user_id, role_id) VALUES(1, 3);
+
+#
+# Structure for the `org_tax_calc_type` table : 
+#
+
+CREATE TABLE `org_tax_calc_type` ( 
+  `ct_id` int(11) NOT NULL auto_increment,
+  `ct_calctype` varchar(50) NOT NULL DEFAULT NULL,
+  `ct_sess_id` int(11) NOT NULL,
+  `ct_org_code` int(11) NOT NULL,
+   PRIMARY KEY  (`ct_id`), 
+   KEY `ct_sess_id` (`ct_sess_id`), 
+   KEY `ct_org_code` (`ct_org_code`),
+   CONSTRAINT `org_tax_calc_type_fk2` FOREIGN KEY (`ct_sess_id`) REFERENCES `session_master` (`ss_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+   CONSTRAINT `org_tax_calc_type_fk4` FOREIGN KEY (`ct_org_code`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE
+)  ENGINE=InnoDB DEFAULT CHARSET=latin1; 
 

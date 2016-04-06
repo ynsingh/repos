@@ -50,8 +50,11 @@
                        <f:facet name="infoMarker">
                             <h:graphicImage url="/img/success.png"/>
                        </f:facet>
+			<f:facet name="errorMarker">
+                            <h:graphicImage url="/img/err.png"/>
+                       </f:facet>
                     </rich:messages>
-            <h:panelGrid columns="3">
+            	<h:panelGrid columns="4">
                 <h:outputText value="Employee Code"/>
                 <h:inputText id="empcCode" value="#{TaxControllerBean.empId}"/>
                  <rich:suggestionbox for="empcCode" var="abc" fetchValue="#{abc.code}"  suggestionAction="#{SearchBean.getSuggestion}">
@@ -62,9 +65,12 @@
                                         <h:outputText value="#{abc.code}"/>
                                     </h:column>
                                 </rich:suggestionbox>
-                <a4j:commandButton rendered="sume" value="Submit" onclick="submit();" reRender="dtable"/>
+		<a4j:commandButton value="Submit" action="#{TaxControllerBean.loadData}" reRender="a"/>
+                <%--<a4j:commandButton rendered="sume" value="Submit" onclick="submit();" reRender="dtable"/>--%>
             </h:panelGrid>
         </h:form>
+	<br>
+<%--
         <h:panelGrid columns="2">
         <rich:dataTable id="dTable" value="#{TaxControllerBean.taxBeans}" binding="#{TaxControllerBean.datagrid}" var="tax">
            
@@ -116,5 +122,31 @@
 
 
         </h:panelGrid>
+    </rich:panel>--%>
+
+	<h:panelGrid id="a" style="width:100%;">
+            <rich:panel  header="Tax Summery">
+                <h:form>
+                    <h:inputHidden value="#{TaxControllerBean.empId}"/>
+                    <h:panelGrid  style="width:400px;" columns="2">
+                    <h:outputText value="Net Income"style="font-weight:bold;font-size:13px;"/>
+                    <h:outputText value="#{TaxControllerBean.netIncome}" style="font-size:13px;"/>
+                    <h:outputText value="Net Savings"  style="font-weight:bold;font-size:13px;"/>
+                    <h:outputText value="#{TaxControllerBean.netSavings}" style="font-size:13px;"/>
+                    <h:outputText value="Total Tax" style="font-weight:bold;font-size:13px;"/>
+                    <h:outputText value="#{TaxControllerBean.netTax}" style="font-size:13px;" />
+                    <h:outputText value="Total previous Tax" style="font-weight:bold;font-size:13px;"/>
+                    <h:outputText value="#{TaxControllerBean.previousTax}"style="font-size:13px;" />
+                    <h:outputText value="Total balance Tax" style="font-weight:bold;font-size:13px;"/>
+                    <h:outputText value="#{TaxControllerBean.balanceTax}" style="font-size:13px;"/>
+                    </h:panelGrid>
+                </h:form>
+            </rich:panel>
+             <h:outputText value="* Total Investment exceeds total eraning"  style="foreground-color:red;"
+                           rendered="#{TaxControllerBean.netIncome<TaxBean.totalInvestment}"/>
+
+
+        </h:panelGrid>
     </rich:panel>
+
 </f:view>
