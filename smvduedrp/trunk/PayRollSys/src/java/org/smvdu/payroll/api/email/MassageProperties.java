@@ -9,12 +9,17 @@ package org.smvdu.payroll.api.email;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Properties;
 import javax.faces.context.FacesContext;
+import org.smvdu.payroll.beans.db.CommonDB;
 
 /**
 **
-*  Copyright (c) 2010 - 2011,2016 SMVDU, Katra.
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*  Copyright (c) 2016 ETRG, IITK
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -50,6 +55,9 @@ public class MassageProperties {
  public MassageProperties() {
     }
 
+ /*
+ This mathad is use for get properties massages 
+ */
         
 public String getPropertieValue(String strin)
 {
@@ -70,6 +78,30 @@ public String getPropertieValue(String strin)
             e.getStackTrace();
         }
         return prop.getProperty(strin);
+}
+
+/*
+    This mathod is used for get User Name from database
+*/
+
+public String getUserName(String fpmail){
+         try{
+                Connection connection = new CommonDB().getConnection();
+                PreparedStatement pst;
+                ResultSet rst;
+                pst = connection.prepareStatement("select emp_name from employee_master where emp_email='"+fpmail+"'");
+                rst = pst.executeQuery();
+                rst.next();
+                String uname = rst.getString(1);
+                return uname;
+                      
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return null;
+        }
+
 }
 
 }

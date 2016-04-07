@@ -1,4 +1,4 @@
-        /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -31,18 +31,20 @@ import org.hibernate.Query;
 import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.api.Administrator.CollegeList;
 import org.smvdu.payroll.api.EncryptionUtil;
+import org.smvdu.payroll.api.email.MassageProperties;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.ForgotPassword;
 
 
 /**
 *
-*  Copyright (c) 2010 - 2011.2014 SMVDU, Katra.
+*  Copyright (c) 2010, 2011, 2014 SMVDU Katra.
+*  Copyright (c) 2015, 2016 ETRG, IITK.
 *  All Rights Reserved.
-**  Redistribution and use in source and binary forms, with or 
+** Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
 *  conditions are met: 
-**  Redistributions of source code must retain the above copyright 
+** Redistributions of source code must retain the above copyright 
 *  notice, this  list of conditions and the following disclaimer. 
 * 
 *  Redistribution in binary form must reproduce the above copyright
@@ -89,12 +91,13 @@ public class ForgotPasswordDB {
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
             HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
             url = request.getRequestURL().toString();
-           // String ipAddress = request.getRemoteAddr();
+            // String ipAddress = request.getRemoteAddr();
             String ipAddress = String.valueOf(request.getServerName());
             String sport = String.valueOf(request.getServerPort()); 
             rkey=UUID.randomUUID().toString();
             activationLink = "http://"+ipAddress+":"+sport+"/adminLogin"+"/ResetPassword.jsf"+"?rkey="+rkey;  
-            //System.out.printf("Request URL==========>"+activationLink);
+            //System.out.printf("Request URL==========>"+url);
+            String serverUrl="http://"+ipAddress+":"+sport+"/index.jsp";
             String fromEmail = new String();
             String fromPassword = new String();
             String smtpHostName;
@@ -122,22 +125,26 @@ public class ForgotPasswordDB {
                                   });
             String to = fp.getEmail();
             String from = f[1];
-            String subject = "Payroll Password Reset Mail !";
+            //String subject = "Payroll Password Reset Mail !";
+            MassageProperties msgprop = new MassageProperties();
             MimeMessage msg = new MimeMessage(session);
             try {
                   msg.setFrom(new InternetAddress(from));
                   msg.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(to));
-                  msg.setSubject(subject);
+                  //msg.setSubject(subject);
+                  msg.setSubject(msgprop.getPropertieValue("fgtp4"));
                   MimeBodyPart l_mbp = new MimeBodyPart();
                   Multipart l_mp = new MimeMultipart();
                                   
                   l_mbp.setContent("","text/html");
                          l_mbp.setContent("<html>" 
-                                    +"<font style='color:#4B4B4B;font-size:12px;font-weight:bold;'>User ID / EmailID : '"+fp.getEmail()+"'</font><br><br>"    
-                                    +"<font style='color:#4B4B4B;font-size:13px;'>Click Following Link At Billow</font><br><br><hr>"
+                                    +"<font style='color:#4B4B4B;font-size:14px;font-weight:bold;'>"+msgprop.getPropertieValue("fgtp3")+""+msgprop.getUserName(to)+"<br><br>"
+                                    +"<font style='color:#4B4B4B;font-size:14px;font-weight:bold;'>"+msgprop.getPropertieValue("fgtp1")+"</font><br><br>"    
+                                    +"<font style='color:#4B4B4B;font-size:14px;'>"+msgprop.getPropertieValue("fgtp2")+"</font><br><br><hr>"
                                     +"<font style='color:red;font-size:13px;font-weight:bold;'>"+"<a href='"+activationLink+"'>"+activationLink+"</a>"+"</font><br><hr>"
-                          + "<br><br><br><font style='color:#4B4B4B;font-size:15px;font-weight:bold;'>Thanks And Regards</font><br>"
-                          + "<font style='color:#4B4B4B;font-size:15px;font-weight:bold;'>Payroll Administration<br></font>" 
+                          + "<br><br><font style='color:#4B4B4B;font-size:14px;font-weight:bold;'>"+msgprop.getPropertieValue("fgtp7")+"</font><br>"
+                          + "<br><font style='color:#4B4B4B;font-size:14px;font-weight:bold;'> "+msgprop.getPropertieValue("fgtp8") +" "+serverUrl+"</font><br> "       
+                          + "<br><br><br><font style='color:#4B4B4B;font-size:15px;font-weight:bold;'>"+msgprop.getPropertieValue("reg")+"<br></font>" 
                           + "<image src="+path+File.separator+"img/pls1.png/></html>","text/html");
                   l_mp.addBodyPart(l_mbp);
                   msg.setContent(l_mp);
@@ -420,15 +427,19 @@ public class ForgotPasswordDB {
                                   });
                     // System.out.println("==send new password 2==========>"+fromEmail+""+smtpHostName+"to====>"+to);
                     String from = f[1];
-                    String subject = "Payroll Adminstrator";
+                    //String subject = "Payroll Adminstrator";
+                    MassageProperties msgprop = new MassageProperties();
                     MimeMessage msg = new MimeMessage(session);
                     try {
                         msg.setFrom(new InternetAddress(from));
                         msg.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(to));
-                        msg.setSubject(subject);
+                      //  msg.setSubject(subject);
+                        msg.setSubject(msgprop.getPropertieValue("fgtp5"));
                         msg.setContent("<html>" 
-                                    +"<font style='color:#4B4B4B;font-size:13px;font-weight:bold;'>Email :"+to+ " , Your New Password is : "
-                          + fp.getNewpasswd()+"<br><br><font style='color:#4B4B4B;font-size:15px;font-weight:bold;'>Thanks And Regard<br>Payroll Administration</font></font><br><hr>" 
+                                    +"<font style='color:#4B4B4B;font-size:14px;font-weight:bold;'>"+msgprop.getPropertieValue("fgtp3")+""+msgprop.getUserName(to)+"<br><br>"
+                                    +"<font style='color:#4B4B4B;font-size:14px;font-weight:bold;'>"+msgprop.getPropertieValue("fgtp6")+" <br><br>"
+                                    +"<font style='color:#4B4B4B;font-size:14px;font-weight:bold;'>"+msgprop.getPropertieValue("reg6")+""+to+ " , "+msgprop.getPropertieValue("fgtp9")+": "
+                          + fp.getNewpasswd()+"<br><br><font style='color:#4B4B4B;font-size:15px;font-weight:bold;'><br>"+msgprop.getPropertieValue("reg")+" </font></font><br>" 
                           + "</html>","text/html"); 
                         Transport transport = session.getTransport("smtp");
                         transport.connect();
