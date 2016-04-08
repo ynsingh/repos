@@ -192,33 +192,40 @@
 	echo"<table>";
 	echo"<tr>";
 	echo"<td>Approved By :</td>";
-	$this->db->select('id')->from('entries')->where('number',$entry_number);
+/*	$this->db->select('id')->from('entries')->where('number',$entry_number);
 	$entry_approv = $this->db->get();
 	$entry_approv1 = $entry_approv->row();
-	$entry_approv_id = $entry_approv1->id;
-        $this->db->select('id')->from('bill_voucher_create')->where('entry_id',$entry_approv_id);
+	$entry_approv_id = $entry_approv1->id;*/
+        $this->db->select('id')->from('bill_voucher_create')->where('entry_id',$ent_ryid);
         $ent_ry = $this->db->get();
         $ent_ry1 = $ent_ry->row();
-       	$ent_ry2 = $ent_ry1->id;
-        $e_ntr = "Approved";
-        $this->db->select('authority_name')->from('bill_approval_status')->where('bill_no',$ent_ry2)->where('status',$e_ntr);
-        $ent_ry3 = $this->db->get();
-        if($ent_ry3->num_rows() > 0)
+	if ($ent_ry->num_rows() > 0)
         {
-                foreach($ent_ry3->result() as $row_3)
-                {
-                        $e_ntr1 = $row_3->authority_name;
-                        $authnme = explode('/',$e_ntr1);
-                        $authnme1[] = $authnme[0].")";
-                }
-                foreach($authnme1 as $key => $value)
-                {
-                        echo "<td>".$value."</td>";
-                }
-        }
+       		$ent_ry2 = $ent_ry1->id;
+        	$e_ntr = "Approved";
+        	$this->db->select('authority_name')->from('bill_approval_status')->where('bill_no',$ent_ry2)->where('status',$e_ntr);
+        	$ent_ry3 = $this->db->get();
+        	if($ent_ry3->num_rows() > 0)
+        	{
+                	foreach($ent_ry3->result() as $row_3)
+                	{
+                        	$e_ntr1 = $row_3->authority_name;
+                        	$authnme = explode('/',$e_ntr1);
+                        	$authnme1[] = $authnme[0].")";
+                	}
+                	foreach($authnme1 as $key => $value)
+                	{
+                        	echo "<td>".$value."</td>";
+                	}
+        	}
+        	else
+        	{
+        		echo "<td></td>";
+        	}
+	}
         else
         {
-        	echo "</td>";
+                echo "<td></td>";
         }
 	echo"</tr>";
 	echo"</table>";

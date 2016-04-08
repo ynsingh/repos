@@ -351,7 +351,8 @@ class Authorities extends Controller {
 
 		/* Form validations */
 		$this->form_validation->set_rules('map_date', 'Authority Allocation Date', 'trim|required|is_date|is_date_within_range');
-		$this->form_validation->set_rules('till_date', 'Till Date', 'trim|required|is_date|is_date_within_range');
+		//$this->form_validation->set_rules('till_date', 'Till Date', 'trim|required|is_date|is_date_within_range');
+		$this->form_validation->set_rules('till_date', 'Till Date', 'trim|required|is_date');
 
 		/* Repopulating form */
 		if ($_POST)

@@ -260,11 +260,11 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 	echo "<b>Submitted By</b> : "."<span class=\"value\">".$submitted_by."</span>";
         echo " <br>";
 	echo "<b>Approved By</b> : "."<span class=\"value\">";
-       	$this->db->select('id')->from('entries')->where('number',$entry_number);
+       /*	$this->db->select('id')->from('entries')->where('number',$entry_number);
        	$entry_approv = $this->db->get();
       	$entry_approv1 = $entry_approv->row();
-     	$entry_approv_id = $entry_approv1->id;
-      	$this->db->select('id')->from('bill_voucher_create')->where('entry_id',$entry_approv_id);
+     	$entry_approv_id = $entry_approv1->id;*/
+      	$this->db->select('id')->from('bill_voucher_create')->where('entry_id',$ent_ryid);
       	$ent_ry = $this->db->get();
       	$ent_ry1 = $ent_ry->row();
 	if ($ent_ry->num_rows() > 0)
@@ -272,6 +272,7 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
       		$ent_ry2 = $ent_ry1->id;
     		$e_ntr = "Approved";
       		$this->db->select('authority_name')->from('bill_approval_status')->where('bill_no',$ent_ry2)->where('status',$e_ntr);
+      		//$this->db->select('authority_name')->from('bill_approval_status')->where('bill_no',$ent_ryid)->where('status',$e_ntr);
      		$ent_ry3 = $this->db->get();
      		if($ent_ry3->num_rows() > 0)
      		{

@@ -76,9 +76,9 @@ class Entry_model extends Model {
 	*Code to check duplicacy of Vendor Voucher Number
 	*/
 	//added by @RAHUL
-	function check_vendor_no($vendor_no)
+	function check_vendor_no($vendor_no,$purchase_order_no)
         {
-                $this->db->from('entries')->where('vendor_voucher_number',$vendor_no);
+                $this->db->from('entries')->where('vendor_voucher_number',$vendor_no)->where('purchase_order_no',$purchase_order_no);
                 $number_q = $this->db->get();
                 $rows = $number_q->num_rows();
                 if ($rows > 0)

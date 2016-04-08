@@ -886,10 +886,11 @@ $width="100%";
 				*Code for validation of unique Vendor Voucher No.
 				*/
 				//added by @RAHUL
-				$duplicate_vendor_no = $this->Entry_model->check_vendor_no($vendor_number);
+				$duplicate_vendor_no = $this->Entry_model->check_vendor_no($vendor_number,$purchase_order_no);
                                 if ($duplicate_vendor_no) {
-                                        $this->messages->add('Vendor Voucher No. Already Exist. Please Input a Different Vendor Voucher No.', 'error');
-                                        //   $this->template->load('template', 'entry/add');
+                                        $this->messages->add('Vendor Voucher No. : <b>'.$vendor_number.'</b> for Purchase Order No. : <b>'.$purchase_order_no.'</b> is already Exist. Please Input a Different Vendor Voucher No.', 'error');
+					redirect('entry/add/'.$entry_type);
+                                        //$this->template->load('template', 'entry/add');
                                         return;
                                 }
 
@@ -2506,6 +2507,7 @@ $width="100%";
 			redirect('entry/show/' . $current_entry_type['label']);
 			return;
 		}
+		$data['ent_ryid'] = $cur_entry->id;
 		$data['cur_entry'] = $cur_entry;
                 $data['entry_type_id'] = $entry_type_id;
                 $data['current_entry_type'] = $current_entry_type;
@@ -2571,6 +2573,7 @@ $width="100%";
 			return;
 		}
 		
+		$data['ent_ryid'] = $cur_entry->id;
 		$data['cur_entry'] = $cur_entry;
 		$data['entry_type_id'] = $entry_type_id;
 		$data['current_entry_type'] = $current_entry_type;
@@ -3164,6 +3167,7 @@ $width="100%";
 		}
 		//$data['cur_entry'] = $cur_entry;
 		//added by @RAHUL
+		$data['ent_ryid'] = $cur_entry->id;
 		$data['sanc_type'] = $cur_entry->sanc_type;
                 $data['sanc_value'] = $cur_entry->sanc_value;
                 $data['entry_date'] = date_mysql_to_php_display($cur_entry->date);
@@ -3208,6 +3212,7 @@ $width="100%";
 		else
 		{
 			//added by @RAHUL
+			$entry_data['ent_ryid'] = $cur_entry->id;
 			$entry_data['tag_id'] = $cur_entry->tag_id;
 			$entry_data['sanc_type'] = $cur_entry->sanc_type;
                 	$entry_data['sanc_value'] = $cur_entry->sanc_value;
@@ -4070,6 +4075,11 @@ $width="100%";
                         return;
                 }
 
+		/* Message for entries related to asset purchase. */
+                $this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
+                $this->messages->add('If TDS is being deducted.Then, Select Party name next to TDS Ledger and make Narration like type@ rate of TDS on payment Amount u/s name e.g. Deduction@1.0300% on Payment Amount 41,540.00 u/s 194C.', 'success');
+                $this->messages->add('If Assets being Purchasing.Then,Narration like DepreciationRate@xyz% lifetime@xyzYears.', 'success');
+
                 /* Entry Type */
                 $entry_type_id = entry_type_name_to_id($entry_type);
                 if ( ! $entry_type_id)
@@ -4104,6 +4114,14 @@ $width="100%";
                         'name' => 'vendor_number',
                         'id' => 'vendor_number',
                         'maxlength' => '55',
+                        'size' => '11',
+                        'value' => '',
+                );
+
+		$data['purchase_order_no'] = array(
+                        'name' => 'purchase_order_no',
+                        'id' => 'purchase_order_no',
+                        'maxlength' => '100',
                         'size' => '11',
                         'value' => '',
                 );
@@ -4219,6 +4237,7 @@ $width="100%";
                 else
                         $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
 			$this->form_validation->set_rules('vendor_number', 'Vendor Voucher Number', 'trim');
+			$this->form_validation->set_rules('purchase_order_no', 'Purchase Order Number', 'trim');
 			$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim');
                 	$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
                 	$this->form_validation->set_rules('entry_narration', 'trim');
@@ -4245,6 +4264,7 @@ $width="100%";
                 {
                         $data['entry_number']['value'] = $this->input->post('entry_number', TRUE);
 			$data['vendor_number']['value'] = $this->input->post('vendor_number', TRUE);
+			$data['purchase_order_no']['value'] = $this->input->post('purchase_order_no', TRUE);
                         $data['entry_date']['value'] = $this->input->post('entry_date', TRUE);
                         $data['entry_narration']['value'] = $this->input->post('entry_narration', TRUE);
                         $data['entry_tag'] = $this->input->post('entry_tag', TRUE);
@@ -4323,6 +4343,7 @@ $width="100%";
                         }
 
                         $data_sanc_letter_no = $this->input->post('sanc_letter_no', TRUE);
+                        $purchase_order_no = $this->input->post('purchase_order_no', TRUE);
                         $data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
 
                         $dr_total = 0;
@@ -4504,7 +4525,7 @@ $width="100%";
 			redirect('entry/show/' . $current_entry_type['label']);
 			return;
 		}
-
+		$data['ent_ryid'] = $cur_entry->id;
 		$data['entry_type_id'] = $entry_type_id;
 		$data['current_entry_type'] = $current_entry_type;
 		$data['entry_number'] =  $cur_entry->number;
