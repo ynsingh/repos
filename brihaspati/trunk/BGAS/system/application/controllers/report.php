@@ -1911,7 +1911,8 @@ class Report extends Controller {
 	function trialbalance($period = NULL)
 	{
 		$this->template->set('page_title', 'Trial Balance');
-		$this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdf/trialbalance' => 'Download PDF'));
+		//$this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdf/trialbalance' => 'Download PDF'));
+        $this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdf/trialbalance' => 'Download PDF','aggregation/aggregatetrialbalance' => 'View Aggregate '));
 		
 		$data['width'] = "70%";
 		$default_end_date;

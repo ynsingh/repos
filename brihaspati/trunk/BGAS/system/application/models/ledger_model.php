@@ -97,7 +97,7 @@ var $ledgers = array();
 			}
 			foreach ($ledger->result() as $row)
 			{
-				$cd = $row->code;
+				echo $cd = $row->code;
 				$nme = $row->name;
 				//if(substr($cd, 0, 2) == 10)
 				if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))
@@ -2662,7 +2662,100 @@ var $ledgers = array();
                 }
                 return $options;
         }
-	
+/* get ledgers till date @sharad23nov@yahoo.com */
+    function get_all_ledgers1_agg($date1,$date2,$accname)
+    {
+        
+        $CI =& get_instance();
+        $db1=$CI->load->database('login', TRUE);
+        $db1->from('bgasAccData')->where('dblable', $accname);
+        $accdetail = $db1->get();
+        foreach ($accdetail->result() as $row)
+        {
+            $db_name = $row->databasename;
+            $db_username = $row->uname;
+            $db_password = $row->dbpass;
+            $host_name = $row->hostname;
+            $port = $row->port;
+        }
+        $dbcon = new PDO("mysql:host=$host_name;dbname=$db_name", $db_username, $db_password);
+        try
+        {
+            $options = array();
+            $options[0] = "(Please Select)";
+
+            $ledgerrecord = "select a.id, a.date, b.entry_id, b.ledger_id, c.id, c.name, c.code  from entries a, entry_items b, ledgers c where a.id = b.entry_id AND b.ledger_id = c.id order by c.code" ;
+//AND a.date >= $date1 AND a.date <=$date2 asc by c.code"; 
+            $stmt = $dbcon->query($ledgerrecord);
+            if($stmt != false)
+            {
+                foreach ($stmt as $row)
+                {
+                    $lcode = $row['code'];
+                    $lname = $row['name'];
+                    if(substr($lcode, 0, 2) == $this->get_account_code_agg('Liabilities and Owners Equity',$accname))
+                        $name = $lname." - L";
+                    if(substr($lcode, 0, 2) == $this->get_account_code_agg('Assets',$accname))
+                        $name = $lname." - A";
+                    if(substr($lcode, 0, 2) == $this->get_account_code_agg('Incomes',$accname))
+                        $name = $lname." - I";
+                    if(substr($lcode, 0, 2) == $this->get_account_code_agg('Expenses',$accname))
+                        $name = $lname." - E";
+                    $options[$row['id']] = $name." ( ".$lcode." )" ;
+                }
+                
+            }
+            return $options;
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+
+    }
+
+/* get account code according to name @sharad23nov@yahoo.com */        
+    function get_account_code_agg($account_name,$accname)
+    {
+        $CI =& get_instance();
+        $db1=$CI->load->database('login', TRUE);
+        $db1->from('bgasAccData')->where('dblable', $accname);
+        $accdetail = $db1->get();
+        foreach ($accdetail->result() as $row)
+        {
+            $db_name = $row->databasename;
+            $db_username = $row->uname;
+            $db_password = $row->dbpass;
+            $host_name = $row->hostname;
+            $port = $row->port;
+        }
+        $dbcon = new PDO("mysql:host=$host_name;dbname=$db_name", $db_username, $db_password);
+        try
+        {
+            if($account_name == 'Expenses')
+                $account_name = 'Expenditure';
+            if($account_name == 'Liabilities and Owners Equity')
+                $account_name = 'Sources of Funds';
+            if($account_name == 'Assets')
+                $account_name = 'Application of Funds';
+            
+            $groupsel = "select code from groups where name = '$account_name'";
+                        
+            $stmt = $dbcon->query($groupsel);
+            if($stmt != false)
+            {
+                foreach ($stmt as $row)
+                {
+                    return $row['code'];
+                }
+            }
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+
+    }
 }
 
 ?>

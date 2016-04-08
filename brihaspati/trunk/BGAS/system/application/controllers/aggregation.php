@@ -7,6 +7,7 @@ class Aggregation extends Controller {
         return;
     }
 
+    /**** Aggregation of Income and Expence of Accounts ****/
 
 	function aggregateincexp()
 	{
@@ -784,6 +785,232 @@ class Aggregation extends Controller {
         //end of payment merge
 		$this->template->load('template', 'aggregation/aggregatepayrec1',$data);
 	}
+    /**** Aggregation of Income and Expence of Accounts ****/
+
+    function aggregatetrialbalance()
+    {
+        $this->load->library('session');
+        $username = $this->session->userdata('user_name');
+        $data['username'] = $username;
+        $this->template->set('page_title', 'Aggregation of Trial Balances ');
+        //$this->template->load('user_template', 'aggregation/aggregateincexp',$data);
+        $this->template->load('template', 'aggregation/aggregatetrialbalance',$data);
+        return;
+    }
+    
+    function aggregatetrialbalance1()
+    {
+        $this->load->library('session');
+        $username = $this->session->userdata('user_name');
+        $this->template->set('page_title', 'Aggregation of Trial Balances ');
+
+        $this->db->from('settings');
+        $detail = $this->db->get();
+        foreach ($detail->result() as $row)
+        {
+            $date1 = $row->fy_start;
+            $date2 = $row->fy_end;
+        }
+        $date=explode("-",$date1);
+        $date2 = explode("-", $row->fy_end);
+        $default_start = '01/04/'.$date[0];
+        $default_end = '31/03/'.$date2[0];
+
+
+        $date=explode("/",$default_start);
+        $date1=$date[2]."-".$date[1]."-".$date[0];
+        $date=explode("/",$default_end);
+        $date2=$date[2]."-".$date[1]."-".$date[0];
+        $accarray = array();
+        $max1 = 0;  
+        $mergetrbfile ;
+        //$data = array();
+        if ($_POST)
+        {
+            $data['accounts'] = $this->input->post('accounts', TRUE);
+            $acctpath= $this->upload_path1= realpath(BASEPATH.'../acct');
+            $this->load->model('Ledger_model');
+            //$mergefile = "";
+
+            $accarray = array();
+            $accarray1 = array();
+            $tem = 0;
+            $te = 0;
+            $temp_dr_total = 0;
+            $temp_cr_total = 0;
+            $total_cl_bal = 0;
+            $total_op_bal = 0;
+            foreach ($data['accounts'] as $key => $value)
+            {
+                $accname = $value;
+                $file_name1 = $username."_".$accname."_trbal.xml";
+                $ttdel1 = $acctpath."/".$file_name1;
+
+                    //deletion of xml file .
+                if (file_exists($ttdel1))
+                    unlink($ttdel1);
+
+
+                $accarray[$tem] = $value;
+                $tem = $tem + 1;
+                $all_ledgers = $this->Ledger_model->get_all_ledgers1_agg($date1, $date2,$accname);
+                $odd_even = "odd";
+                foreach ($all_ledgers as $ledger_id => $ledger_name)
+                {
+                    if ($ledger_id == 0) continue;
+                    
+                    list ($opbal_amount, $opbal_type) = $this->Ledger_model->get_op_balance_agg($ledger_id,$accname);
+                    if($opbal_type == 'D')
+                        $new_opbal_amount = $opbal_amount;
+                    else
+                        $new_opbal_amount = -$opbal_amount;
+                    $total_op_bal = float_ops($total_op_bal, $new_opbal_amount, '+');
+
+                    $clbal_amount = $this->Ledger_model->get_ledger_balance_agg($ledger_id,$accname);
+                    $total_cl_bal = float_ops($total_cl_bal, $clbal_amount, '+');
+
+                    $dr_total = $this->Ledger_model->get_dr_total1_agg($ledger_id,$accname);
+                    if ($dr_total)
+                    {
+                        money_format('%!i', $dr_total);
+                        $temp_dr_total = float_ops($temp_dr_total, $dr_total, '+');
+                    } 
+                    else 
+                    {
+                        $dr_total = "0";
+                    }
+                    $cr_total = $this->Ledger_model->get_cr_total1_agg($ledger_id,$accname);
+                    if ($cr_total)
+                    {
+                         money_format('%!i', $cr_total);
+                        $temp_cr_total = float_ops($temp_cr_total, $cr_total, '+');
+                    } 
+                    else 
+                    {
+                        $cr_total = "0";
+                    }
+                    //$odd_even = ($odd_even == "odd") ? "even" : "odd";
+    
+                    //creation of trial balances xml file of accounts.
+                
+                    $this->load->library('session');
+                    $username = $this->session->userdata('user_name');
+                    
+                    $trbalancefile = $username."_".$accname."_trbal.xml";
+                    $doc = new DOMDocument();
+                    $doc->formatOutput = true;
+                    $tt = $acctpath."/".$trbalancefile;
+                    if(file_exists($tt))
+                    {
+                        $doc->preserveWhiteSpace = false;
+                        $doc->load($tt);
+                        $Tbalance = $doc->firstChild;
+                        $Code = $doc->createElement('Code');
+                        $Code->setAttribute('id', $ledger_id);
+                        $Code->setAttribute('name', $ledger_name);
+                        $Code->setAttribute('opbalance', convert_opening($opbal_amount, $opbal_type));
+                        $Code->setAttribute('clbalance', convert_amount_dc($clbal_amount));
+                        $Code->setAttribute('drtotal', $dr_total);
+                        $Code->setAttribute('crtotal', $cr_total);
+
+                        $Tbalance->appendChild($Code);
+
+                        $ttt=$doc->saveXML();
+                        $handle = fopen($tt, "w");
+                        fwrite($handle, $ttt);
+                        fclose($handle);
+                    }
+                    else
+                    {
+                        $r = $doc->createElement( 'Tbalance' );
+                        $doc->appendChild( $r );
+                        $Code = $doc->createElement('Code');
+
+
+                        $Code->setAttribute('id', $ledger_id);
+                        $Code->setAttribute('name', $ledger_name);
+                        $Code->setAttribute('opbalance', convert_opening($opbal_amount, $opbal_type));
+                        $Code->setAttribute('clbalance', convert_amount_dc($clbal_amount));
+                        $Code->setAttribute('drtotal', $dr_total);
+                        $Code->setAttribute('crtotal', $cr_total);
+                        
+                        $r->appendChild($Code);
+                        $doc->save($tt);
+                        $doc->saveXML();
+                    }
+                }
+            $odd_even = ($odd_even == "odd") ? "even" : "odd";
+            }
+            $mergedel = $username."_trbal.xml";
+            $ttdel2 = $acctpath."/".$mergedel;
+
+                    //deletion of xml file .
+            if (file_exists($ttdel2))
+                unlink($ttdel2);
+
+            /**** Merger of accounts xml file ****/
+
+                // get max length of accounts xml file  around all xml file
+
+            $length1 = array();
+            $len1 = 0;
+            for($i = 0 ; $i<sizeof($accarray); $i++)
+            {
+                $accname=$accarray[$i];
+
+                $file_name1=$username."_".$accname."_trbal.xml";
+                $tt1=$acctpath."/".$file_name1;
+
+                $doc1 = new DomDocument;
+                if (file_exists($tt1))
+                {
+                    $doc1->load($tt1);
+
+                    // count all <Code/> elements
+                    $len1 = $doc1->getElementsByTagName('Code')->length;
+                    //print_r($doc1->getElementsByTagName('Code'));
+
+                }
+                $length1[$i] = $len1;
+            }   
+            
+            
+            if(sizeof($length1)!==0)
+            {
+                $max1 = max($length1);
+            }
+
+            //storing all data of ist account in merge file.
+
+            $accist = "";
+            $accist =$username."_".$accarray[0];
+            $accist1 = $accist."_trbal.xml";
+
+            $mergetrbfile = $username."_trbal.xml";
+
+            //copying ist account xml file data into a merge xml file
+
+            $ttt1 = $acctpath."/".$accist1;
+            $ttt2=$acctpath."/".$mergetrbfile;
+            $file1 = fopen($ttt1, 'rb');
+            $newfile1 = fopen($ttt2, 'wb');
+            while(($line1 = fgets($file1)) !== false)
+            {
+                fputs($newfile1, $line1);
+            }
+            fclose($newfile1);
+            fclose($file1);
+        }
+        $data['mergetrbfile'] = $mergetrbfile;
+        $data['username'] = $username;
+        $data['max1'] = $max1;
+        $data['width'] = "80%";
+        $data['netopbal'] = convert_amount_dc($total_op_bal);
+        $data['netclbal'] = convert_amount_dc($total_cl_bal);
+        $data['netdrtotal'] = money_format('%!i', convert_cur($temp_dr_total));
+        $data['netcrtotal'] = money_format('%!i', convert_cur($temp_cr_total)); 
+        $this->template->load('template', 'aggregation/aggregatetrialbalance1',$data);
+    }
 }
 
 /* End of file aggregation.php */
