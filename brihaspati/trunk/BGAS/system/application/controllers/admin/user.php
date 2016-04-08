@@ -62,6 +62,7 @@ class User extends Controller {
 		$this->load->library('validation');
         	$this->load->library('paymentreceipt');
 		$this->template->set('page_title', 'Add user');
+		$this->load->model('userverify_model');
 
 		$db1=$this->load->database('login', TRUE);
 
@@ -411,7 +412,8 @@ class User extends Controller {
 		        		}				
 				}
 				else{
-					
+					$randstr = random_string('alnum', 16);
+                                        $confirm_code = md5($data_user_name . $randstr);
 					//added by megha
 					$insert_data = array(
                         			'username' => $data_user_name,
@@ -421,12 +423,14 @@ class User extends Controller {
                         			'componentreg' => $data_user_components,
                         			'mobile' => $data_user_mobile,
 						'category_type' => $data_category_type,
-                        			'status' => $data_user_status
+                        			'status' => $data_user_status,
+						'verification_code'=>$confirm_code,
+						'is_verified'=>''
                         			//'accounts'=>$data_accounts_string
                     			);
 
 
-					$user_password = $data_user_password;		
+					//$user_password = $data_user_password;		
 
                     			if ( ! $db1->insert('edrpuser', $insert_data))
                     			{
@@ -522,12 +526,17 @@ class User extends Controller {
 
 					}
 					//added by @kanchan
-	                		$message = "<b>You are Added in Brihaspati General Accounting System</b><br>Username- $data_user_name<br>Your Role- $data_user_role <br> Your Password- $user_password";
+	                /*		$message = "<b>You are Added in Brihaspati General Accounting System</b><br>Username- $data_user_name<br>Your Role- $data_user_role <br> Your Password- $user_password";
 	                		$subject = 'User Account created in BGAS ';
-	                		if($this->paymentreceipt->send_mail($data_user_email, $subject, $message))
+	                		if($this->paymentreceipt->send_mail($data_user_email, $subject, $message))*/
+
+					//@date added in 07-03-2016-----
+					if($this->userverify_model->send_Verification_Email($data_user_email,$data_user_name,$data_user_password,$confirm_code))
+					{
 						$this->messages->add('Added User Account - ' . $data_user_name . ' success');
 						redirect('admin/user/');
 						return;	
+					}//if
 					}
 					$db1->close();
 				}

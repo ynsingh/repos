@@ -12,12 +12,14 @@ CREATE TABLE IF NOT EXISTS edrpuser
 	  category_type VARCHAR (200) NOT NULL,
 	  mobile VARCHAR (13) DEFAULT NULL,
 	  status VARCHAR (200) NOT NULL,
+	  verification_code  varchar(32) NOT NULL,
+	  is_verified int(1) NOT NULL 
 	  PRIMARY KEY(id),
 	  UNIQUE (username)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-insert into edrpuser values (1,'admin', md5('admin'),'ynsingh@iitk.ac.in','*','','',1);
-insert into edrpuser values (2,'guest', md5('guest'),'ynsingh@iitk.ac.in','*','','',1);
+insert into edrpuser values (1,'admin', md5('admin'),'ynsingh@iitk.ac.in','*','','',1,'NULL',1);
+insert into edrpuser values (2,'guest', md5('guest'),'ynsingh@iitk.ac.in','*','','',1,'NULL',1);
 
 drop table if exists bgasAccData;
 

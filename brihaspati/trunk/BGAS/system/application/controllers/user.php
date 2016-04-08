@@ -90,6 +90,7 @@ class User extends Controller {
 	        	$db1->select('edrpuser.id as id,edrpuser.username as username,edrpuser.password as password,edrpuser.status as status,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role');
 			$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid');
 			$db1->where('edrpuser.username',$data_user_name);
+			$db1->where('edrpuser.is_verified',1);
 	        	$user_name1 = $db1->get();
 	        	foreach($user_name1->result() as $row)
             		{
@@ -273,7 +274,65 @@ class User extends Controller {
             		}
 		}
 	}
+	function verify()
+        {
+                // get url parameters
+                $this->load->helper('url');
+                $user_email = $this->uri->segment(3);
+                $verification_code = $this->uri->segment(4);
 
+                //get email from db 
+                $db1=$this->load->database('login', TRUE);
+                $db1->select('username')->from('edrpuser')->where('username', $user_email);
+                $query = $db1->get();
+                // verify to email      
+		if (!($query->num_rows() > 0)){
+                         $this->messages->add('Your account does not exist Please contact to administrator' ,'');
+                         $this->logger->write_message("success", "Your account does not exist Please contact to administrator" . $user_email);
+			 $db1->close();
+			 redirect('user/login');
+		}
+		else{
+			$this->load->model('userverify_model');
+                	$this->load->library('paymentreceipt');		
+			//get the hash value which belongs to given email from database
+                	$confirm_code1 = $this->userverify_model->get_hash_value($user_email); 
+			//check whether the input hash value matches the hash value retrieved from the database
+                        if($verification_code == $confirm_code1){  
+				//update the status of the user as verified
+                       		$active_status = $this->userverify_model->verifyEmailAddress($verification_code); 
+                       		if ($active_status == 1)
+                       		{
+                                	$subject = "Your BGAS account verified";
+                                	$message ='Your Account is now verified.<br><br>Now You can Login Here:<br>' . base_url();
+                                	$this->paymentreceipt->send_mail($user_email,$subject,$message);
+                                	$this->messages->add('Your account is activated. An Email is sent to your Email-Id and Please you can login now' ,'success');
+                                	$this->logger->write_message("success", "Your account is activated and Please login now" . $user_email);
+			 		$db1->close();
+					redirect('user/login');
+                                	return;
+
+                        	}
+                        	else
+                        	{
+                         		$this->messages->add('Your account is not activated. Please contact to administrator' ,'');
+                         		$this->logger->write_message("success", "Your account is not activated Please contact to administrator" . $user_email);
+			 		$db1->close();
+					redirect('user/login');
+                         		return;
+                        	} 
+                        }
+                        else
+                        {
+                        	$this->messages->add('Your account is already verified' ,'');
+                        	$this->logger->write_message("success", "Your account is already verified or activated. Please contact to administrator." . $user_email);
+
+				$db1->close();
+				redirect('user/login');
+                        	return;
+			}
+                }
+	}
 	function resetpassword()
     	{
         	$this->template->set('page_title', 'Reset Password');
