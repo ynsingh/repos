@@ -78,7 +78,8 @@ $!data.getMessage()
       </tr>
       <tr bgcolor="$ui.tableColor">
         <td> $brih_mobileno <span style="color:red;">*</span></td>
-        <td>  <input type="text" name="mobileno" value=""> </td>
+        <td><input type="text" name="mobileno" value="" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength = "10"></td>
+      <span id="error" style="color: Red; display: none">*$brih_mobilemsg</span>
       </tr>
 	#if($mode == "instructor")
 		<input type="hidden" name="stu_userName" value=$stu_userName>
@@ -202,4 +203,15 @@ $(document).ready(function(){
 
 
 </script>
+<script type="text/javascript">
+        var specialKeys = new Array();
+        specialKeys.push(8); //Backspace
+        function IsNumeric(e) {
+            var keyCode = e.which ? e.which : e.keyCode
+            var ret = ((keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) != -1);
+            document.getElementById("error").style.display = ret ? "none" : "inline";
+        return ret
+
+}
+    </script>
 
