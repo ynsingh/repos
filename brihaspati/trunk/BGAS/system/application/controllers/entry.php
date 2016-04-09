@@ -742,6 +742,8 @@ $width="100%";
 			'select' => 'Select',
 			'General OH:35' => 'General OH:35',
 			'General OH:31' => 'General OH:31',
+			'Plan NER OH:31' => 'Plan NER OH:31',
+			'Plan NER OH:35' => 'Plan NER OH:35',
 			'SCSP OH:35' => 'SCSP OH:35',
 			'SCSP OH:31' => 'SCSP OH:31',
 			'TSP OH:35' => 'TSP OH:35',
@@ -4212,6 +4214,8 @@ $width="100%";
                         'select' => 'Select',
                         'General OH:35' => 'General OH:35',
                         'General OH:31' => 'General OH:31',
+                        'Plan NER OH:31' => 'Plan NER OH:31',
+                        'Plan NER OH:35' => 'Plan NER OH:35',
                         'SCSP OH:35' => 'SCSP OH:35',
                         'SCSP OH:31' => 'SCSP OH:31',
                         'TSP OH:35' => 'TSP OH:35',
@@ -4642,6 +4646,7 @@ $width="100%";
 		$this->load->view('entry/pdfentry', $data);
 		return;
 	}
+
 }
 /* End of file entry.php */
 /* Location: ./system/application/controllers/entry.php */

@@ -73,19 +73,43 @@ class Entry_model extends Model {
 	}
 
 	/**
-	*Code to check duplicacy of Vendor Voucher Number
+	* Code to check duplicacy of Vendor Voucher Number
+	* false entry allowed, true entry stoped
 	*/
 	//added by @RAHUL
 	function check_vendor_no($vendor_no,$purchase_order_no)
         {
-                $this->db->from('entries')->where('vendor_voucher_number',$vendor_no)->where('purchase_order_no',$purchase_order_no);
-                $number_q = $this->db->get();
-                $rows = $number_q->num_rows();
-                if ($rows > 0)
-                        return true;
+		$vendor_no1 = $vendor_no;
+		$purchase_order_no1 = $purchase_order_no;
+		if($vendor_no1 == '' && $purchase_order_no == '')
+		{
+			return false;
+		}
+		elseif($purchase_order_no == '' && $vendor_no1 != '')
+		{
+			$this->db->from('entries')->where('vendor_voucher_number',$vendor_no1);
+                        $number_q1 = $this->db->get();
+                        $rows1 = $number_q1->num_rows();
+                        if ($rows1 > 0)
+                                return true;
+                        else
+                                return  false;
 
-                else
-                        return  false;
+		}
+		elseif($vendor_no1 == '' && $purchase_order_no1 != '')
+		{
+                                return  false;
+		}
+		else
+		{
+                	$this->db->from('entries')->where('vendor_voucher_number',$vendor_no1)->where('purchase_order_no',$purchase_order_no1);
+                	$number_q = $this->db->get();
+                	$rows = $number_q->num_rows();
+                	if ($rows > 0)
+                        	return true;
+                	else
+                        	return  false;
+		}
         }
 
 
