@@ -302,10 +302,10 @@ if ( ! function_exists('form_dropdown_exptype'))
 {
         function form_dropdown_exptype($name, $selected = NULL, $extra = '')
         {
-                $options = array("Select" => "Select Type", "Capital" => "Capital Expenditure", "Revenue" => "Revenue Expenditure", "Earn" => "Earned Interest", "Accru" => "Accrued Interest", "Investment" => "Investment");
+                $options = array("Select" => "Select Type", "Capital" => "Capital Expenditure", "Revenue" => "Revenue Expenditure", "Earn" => "Earned Interest", "Accru" => "Accrued Interest", "Investment" => "Investment", "Corpus-Income" => "Corpus-Income", "Capital-Income" => "Capital-Income");
 
                 // If no selected state was submitted we will attempt to set it automatically
-                if ( ! ($selected == "Capital" || $selected == "Revenue" || $selected == "Accru" || $selected == "Earn" || $selected == "Investment"))
+                if ( ! ($selected == "Capital" || $selected == "Revenue" || $selected == "Accru" || $selected == "Earn" || $selected == "Investment" || $selected == "Corpus-Income" || $selected == "Capital-Income"))
                 {
                         // If the form name appears in the $_POST array we have a winner!
                         if (isset($_POST[$name]))
@@ -376,9 +376,11 @@ if ( ! function_exists('form_dropdown_secunit'))
 
                 foreach ($options as $key => $val)
                 {
+
                         $key = (string) $key;
                         $sel = ($key == $selected) ? ' selected="selected"' : '';
                         $form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
+                        //$form .= '<option value="'.$key.'"'.$sel.'>'.(string) $name."</option>\n";
                 }
 
                 $form .= '</select>';

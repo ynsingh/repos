@@ -111,6 +111,8 @@
 	echo"Bill/Voucher Date : ".$entry_date;
 	echo"<br>";
 	echo"Vendor/Voucher Number : ".$vendor_voucher_number;
+	echo"<br>";
+	echo"Purchase Order Number : ".$purchase_order_number;
 
 	echo"<br>";
 	echo"<br>";

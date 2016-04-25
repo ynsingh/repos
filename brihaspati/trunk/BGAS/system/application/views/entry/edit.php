@@ -537,7 +537,43 @@ var dc = '';
 
 	echo form_open('entry/edit/' . $current_entry_type['label'] . "/" . $entry_id);
 	echo "<p>";
-	echo form_label('Bill/Voucher Number', 'entry_number');
+	echo form_label('Vendor Voucher Number', 'vendor_number');
+        echo " ";
+        echo form_input($vendor_number);
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+	echo form_label('Purchase Order Number', 'purchase_order_no');
+        echo " ";
+        echo form_input($purchase_order_no);
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	
+	echo "<span id=\"tooltip-target-2\">";
+        echo form_label('Bill/Voucher Date', 'entry_date');
+        echo " ";
+        echo form_input_date_restrict($entry_date);
+        echo "</span>";
+        echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
+        echo "     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ";
+
+        echo "<span id=\"tooltip-target-3\">";
+        echo form_label('Reference Id', 'backward_refrence_id');
+        echo " ";
+        echo form_input($backward_refrence_id);
+        echo "</span>";
+        echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related back dated transaction</span>";
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        echo "<span id=\"tooltip-target-1\">";
+        echo form_label('Bill/Voucher Number', 'entry_number');
+        echo " ";
+        echo $current_entry_type['prefix'] . form_input($entry_number) . $current_entry_type['suffix'];
+        echo "</span>";
+        echo "<span id=\"tooltip-content-1\">Leave Bill/Voucher Number empty for auto numbering</span>";
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        echo"</p>";
+
+	/*echo form_label('Bill/Voucher Number', 'entry_number');
 	echo " ";
 	echo $current_entry_type['prefix'] . form_input($entry_number) . $current_entry_type['suffix'];
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -569,7 +605,7 @@ var dc = '';
         echo " ";
         echo form_input($vendor_number);
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-        echo"</p>";
+        echo"</p>";*/
 	
 	echo "<p>";
         echo form_label('Sanction Letter No.', 'sanc_letter_no');
@@ -600,6 +636,10 @@ var dc = '';
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
         echo "</p>";
 
+	echo "(A - Asset, L - Libility, I - Income , E - Expenditure)";
+    	echo"</br>";
+
+
 /*	
 		echo "<span class=\"bank_value\">";
                 echo form_label('Bank Name', 'bank_name');
@@ -620,7 +660,7 @@ var dc = '';
 	$val='';
 	echo "<table class=\"entry-table\">";
 	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th colspan=4 align=\"center\">Available Selections</th></tr></thead>";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th>Party Name</th><th colspan=4 align=\"center\">Available Selections</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th>Party Name</th><th>Fund</th><th>Type</th></tr></thead>";
 	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th></th><th colspan=2>Actions</th><th>Cur Balance</th></tr></thead>";
 	$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$entry_id);
         $ledger_q = $this->db->get();
@@ -684,6 +724,9 @@ var dc = '';
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
 		echo "<td id = \"dc\">" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "0") . "</td>";
 		echo "<td>" . form_input($secondaryid) . "</td>";
+		//echo "<td>" . form_dropdown_secunit('sunitid[' . $i . ']', isset($sunitid[$i]) ? $sunitid[$i] : 0) . "</td>";
+//		echo "<td>" . form_dropdown_secunit('secunit[' . $i . ']', isset($secondaryid) ? $secondaryid : 0) . "</td>";
+		//echo "<td>" . form_dropdown_secunit('secunit[' . $i . ']', isset($secunit[$i]) ? $secunit[$i] : 0) . "</td>";
 			
 		//echo "<td>" . form_input($cheque) . "</td>";
 

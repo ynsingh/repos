@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS edrpuser
 	  mobile VARCHAR (13) DEFAULT NULL,
 	  status VARCHAR (200) NOT NULL,
 	  verification_code  varchar(32) NOT NULL,
-	  is_verified int(1) NOT NULL 
+	  is_verified int(1) NOT NULL, 
 	  PRIMARY KEY(id),
 	  UNIQUE (username)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;

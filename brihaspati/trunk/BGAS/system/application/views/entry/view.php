@@ -11,6 +11,7 @@
 
 	<tr>
 	<td id="td_first">Vendor Voucher Number : <span class="bold" align="left"><?php echo $vendor_voucher_number; ?></span></td>
+	<td id="td_second">Purchase Order Number : <span class="bold"><?php echo $purchase_order_number; ?></span></td>
 	</tr>
 
 <table border=0 cellpadding=5 class="simple-table entry-view-table" width="70%">
@@ -46,7 +47,7 @@
 					echo "<tr class=\"tr-" . $odd_even . "\">";
 	            			echo "<td>" . convert_dc($row->dc) . "</td>";
 					//display code of ledger added by @RAHUL
-			        	echo "<td>" . $this->Ledger_model->get_code($row->ledger_id).'.'.$this->Ledger_model->get_name($row->ledger_id) . "</td>";
+			        	echo "<td>" . $this->Ledger_model->get_code($row->ledger_id).'. '.$this->Ledger_model->get_name($row->ledger_id) . "</td>";
 					echo "<td>Dr " . $row->amount . "</td>";
 					echo "<td></td>";
 					echo "<td> " . $this->Secunit_model->get_secunitname($row->secunitid) . "</td>";
@@ -61,8 +62,7 @@
 			$type = $this->Ledger_model->get_type($row->ledger_id, $entry_id);
 			echo "<tr class=\"tr-" . $odd_even . "\">";
                         echo "<td>" . convert_dc($row->dc) . "</td>";
-                        echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
-
+                        echo "<td>" . $this->Ledger_model->get_code($row->ledger_id).'. '.$this->Ledger_model->get_name($row->ledger_id) . "</td>";
 			echo "<td></td>";
 			echo "<td>Cr " . $row->amount . "</td>";
 			echo "<td> " . $this->Secunit_model->get_secunitname($row->secunitid) . "</td>";

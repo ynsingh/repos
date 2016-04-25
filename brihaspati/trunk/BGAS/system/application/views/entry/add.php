@@ -111,7 +111,8 @@ $(document).ready(function() {
 		var dr_amount = $(this).val();
 		var check = 0;
 
-                $.ajax({
+			/*********************Function written just below in comments is creating problem******************************/
+                /*$.ajax({
             		url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
                        	success: function(bank) {
                         	bank_cash = $.trim(bank);
@@ -137,7 +138,7 @@ $(document).ready(function() {
 					});
 				}
                 	}
-   		});
+   		});*/
 	});
 
 	$('.cr-item').live('change', function() {
@@ -502,6 +503,7 @@ $(document).ready(function() {
 	 * Check fund availability code
 	 * @author Priyanka Rawat	
 	 */
+//comment by 
 	$('#fund').live('change', function(){
 	//$('#fund').change(function(){
                         var fund_ledger_id = $(this).children().val();
@@ -524,7 +526,8 @@ $(document).ready(function() {
 					var fund_amount = $.trim(data);
 		//			alert("djgdj");
 					if (jsFloatOps(dr_amount, fund_amount, '>')) {
-                 			       alert("Amount payable is more than the available fund. ("+fund_amount+")");
+                 			       //alert("Amount payable is more than the available fund. ("+fund_amount+")");
+                 			       alert("Fund Balance is : "+fund_amount);
                 			}
 				}
 	                });
@@ -689,7 +692,7 @@ $(document).ready(function() {
 
 
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Party Name</th><th>Fund</th><th>Type</th><th></th><th colspan=2></th><th></th><th colspan=2>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Party Name</th><th>Fund</th><th>Type</th><th>Add row</th><th>Delete row</th><th colspan=2>Cur Balance</th></tr></thead>";
 	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Sec Unit Id</th><th></th><th colspan=2>Available Action</th><th>Cur Balance</th></tr></thead>";
 
 	foreach ($ledger_dc as $i => $ledger)

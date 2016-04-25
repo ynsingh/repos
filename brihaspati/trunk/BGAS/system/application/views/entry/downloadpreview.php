@@ -108,6 +108,8 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 	echo $current_entry_type['name']."Forward Reference Id : "."<span class=\"value\">".$forward_ref_id."</span>";
         echo "<br>";
         echo $current_entry_type['name']."Backward Reference Id : "."<span class=\"value\">".$back_ref_id."</span>";
+        echo "<br>";
+        echo $current_entry_type['name']."Purchase Order Number : "."<span class=\"value\">".$purchase_order_number."</span>";
         echo "</td>";
 
 	echo "</tr>";
