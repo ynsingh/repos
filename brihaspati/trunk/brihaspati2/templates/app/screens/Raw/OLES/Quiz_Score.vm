@@ -33,10 +33,10 @@ $!data.getMessage()
         #if(($role=="instructor")||(($user_role == "teacher_assistant")&&($flag)))
          <a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style='text-decoration:none'>$brih_quiz </a> | 
         #elseif(($role=="student")||(($user_role == "teacher_assistant")&&($flag==false)))
-        	#if($!type=="practice")
-        		<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice") style='text-decoration:none'>$brih_quiz </a> | 
+        	#if($!type=="attempt")
+        		<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","attempt") style='text-decoration:none'>$brih_quiz </a> | 
         	#else
-        	      <a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3").addPathInfo("type","practice") style='text-decoration:none'>$brih_quiz </a> | 
+        	      <a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","3").addPathInfo("type","attempt") style='text-decoration:none'>$brih_quiz </a> | 
         	#end
 
         #end 

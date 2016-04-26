@@ -17,7 +17,7 @@ $page.setBgColor("#ffffff")
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 #set($flag=false)
-$!data.getMessage()
+##$!data.getMessage()
 <table width=100%  bgcolor="$ui.menuColor">
 <tr><td>
 	<b>	<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |
@@ -93,10 +93,12 @@ $!data.getMessage()
 </table>
 	##Drop down list to select a quiz
 <table align="left" width="100%" bgcolor="$ui.tableColor">
+#if($quizList.size()!=0)
 	<tr bgcolor="$ui.menuColor">
 		<td  align="left">
 	      		<b>$brih_select  $brih_quiz</b>
 	   </td>
+#end
 	   	<td  align="left" >
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
@@ -113,12 +115,16 @@ $!data.getMessage()
 					&nbsp;&nbsp;&nbsp;
 						#end
 				#else
+<td bgcolor="$ui.menuColor" align="center" width="100%">
 					$!data.getMessage() !!!!
 				#end	
+</td>
 	        	#else
+<td bgcolor="$ui.menuColor" align="center" width="100%">
 	        		$!data.getMessage() !!!!
 	        	#end
 		</td>
+</td>
 	</tr>
 </table>	
 ##</tr>

@@ -25,8 +25,8 @@ $!data.getMessage()
 	<td>
 	<b>
 	<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |	
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> |  
-        <a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard") style='text-decoration:none'>$brih_quiz </a> | $brih_reports $brih_card 
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> | 
+	<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","4").addPathInfo("type","attempt") style='text-decoration:none'>$brih_quiz </a> | $brih_reports $brih_card  
     </td>
 ## Creating the links for help regarding FAQ 
 	<td align=right>

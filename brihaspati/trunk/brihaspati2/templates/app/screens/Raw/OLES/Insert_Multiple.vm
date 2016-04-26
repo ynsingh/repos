@@ -99,13 +99,13 @@ $!data.getMessage()
       <textarea name="Question" rows=3 cols=50 #if($mode=="View") readonly #end >$!Ques</textarea >
      </td>
  </tr>
-  <tr bgcolor="$ui.tableColor"> 
+  <tr bgcolor="$ui.menuColor"> 
 	#formCell("$brih_option $brih_a" "op1" "$!opt1")
  </tr> 
   <tr> 
 	#formCell("$brih_option $brih_b" "op2" "$!opt2")
  </tr> 
-  <tr bgcolor="$ui.tableColor"> 
+  <tr bgcolor="$ui.menuColor"> 
 	#formCell("$brih_option $brih_c" "op3" "$!opt3")
  </tr> 
   <tr> 
@@ -118,7 +118,7 @@ $!data.getMessage()
  </tr>
  #end
  #end
-  <tr bgcolor="$ui.tableColor"> 
+  <tr bgcolor="$ui.menuColor"> 
   	<td width=30% align="centre"> 
     	<b><font face="$ui.sansSerifFonts"> #if($lang=="hindi") $brih_answer #else Answer #end</font></i>
    	</td>

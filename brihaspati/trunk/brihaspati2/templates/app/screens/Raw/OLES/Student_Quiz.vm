@@ -19,7 +19,7 @@ $page.setBgColor("#ffffff")
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 #set($flag=false)
 
-$!data.getMessage()
+##$!data.getMessage()
 <table width=100%  bgcolor="$ui.menuColor">
 <tr><td>
 	<b>	<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |
@@ -96,10 +96,12 @@ $!data.getMessage()
 </table>
 	##Drop down list to select a quiz
 <table align="left" width="100%" bgcolor="$ui.tableColor">
+#if($quizList.size()!=0)
 	<tr bgcolor="$ui.menuColor">
 		<td align="left">
 	      		<b>$brih_select  $brih_quiz</b>
 	   </td>
+#end
 	   	<td  align="left">
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
@@ -109,11 +111,15 @@ $!data.getMessage()
 	        				#end
 	        			</select> &nbsp;&nbsp;&nbsp;&nbsp;
 				#else
+			<td bgcolor="$ui.menuColor" align="center" width="100%">
 					$!data.getMessage() !!!!
 				#end	
+</td>
 	        	#else
+			<td bgcolor="$ui.menuColor" align="center" width="100%">
 	        		$!data.getMessage() !!!!
 	        	#end
+</td>
 		</td>
 	</tr>
 	#if($type!="practice")
@@ -128,6 +134,7 @@ $!data.getMessage()
 			#end
 		#end
 	#end
+#if($quizList.size()!=0)
 	<tr bgcolor="$ui.menuColor">
 		<td align=left colspan="2">
 			#if($type=="practice")
@@ -135,6 +142,7 @@ $!data.getMessage()
         	#else
 	        	<input type="button" name="eventSubmit_attemptQuiz" class="button-ftextstyle" value="$brih_startquiz" onClick="confirmQuizStart(document.frm,this,'$securityData','$ip');">
 	        #end
+#end
 		</td>
 	</tr>
 </table>	
