@@ -1116,7 +1116,9 @@ class Report extends Controller {
 	function new_mhrd()
 	{
                 $this->template->set('page_title', 'Balance Sheet MHRD Format-2015');
-		$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdf/new_mhrd' => 'Download PDF'));
+		//$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdf/new_mhrd' => 'Download PDF'));
+		$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdf/new_mhrd' => 'Download PDF','aggregation/aggregatebalancesheet' => 'View Aggregate Balacesheet'));
+
 		$data['left_width'] = "300";
                 $data['right_width'] = "125";
                 $data['print_preview'] =FALSE;
