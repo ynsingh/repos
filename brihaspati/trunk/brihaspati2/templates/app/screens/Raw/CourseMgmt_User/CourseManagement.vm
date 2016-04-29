@@ -11,6 +11,7 @@
   @author <a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
  * @modified date: 30-03-2010
  * @modified date: 15-02-2011, 20-04-2012,04-10-2012, 04-01-2013 (Shaista)
+ * @modified date: 25-04-2016 (Seemanti)
 *#
 
 $page.setTitle("Home | $course | Course management")
@@ -262,7 +263,7 @@ $page.setTitle("Home | $course | Course management")
         <b><font face="$ui.sansSerifFonts">$brih_topic #if($lang=="hindi")  #end $brih_name</font> </b>
         </td>
         <td>
-        <input type="text" name=contentTopic onFocus=checkRadio() size=30>
+        <input type="text" id = "tpcTxt" name=contentTopic onFocus=checkRadio() size=30>
         </td>
 	<td colspan=2>
                 <div style="display:none;" id="textboxDiv">
@@ -307,14 +308,43 @@ $page.setTitle("Home | $course | Course management")
    {
       var x = document.getElementById("myFile");
       var txt = "";
+      var max = $max_sz;
+      var message1 = "Maximum no. of file(s) upload allowed is";
+      var message2 = "If you want to continue for uploading first";
+      var message3 = "files then press OK otherwise press Cancel";
       if ('files' in x)
       { 
          if (x.files.length == 0)
          {
             txt = "Select one or more files.";
          }
-         else
-         { 
+         else if (x.files.length > $max_sz) ##if number of files uploaded are more than max_upload_size ,Then upload only first 10 files otherwise re-upload files
+         {
+            if(confirm(""+message1 +'  ' +max +' . ' +message2 +' ' +max +' ' +message3))
+            {
+               ##Take only first 10 files out of all and upload them.
+               for (var i = 0; i < $max_sz ; i++)
+               {
+                  txt += "<br><strong>" + (i+1) + ". </strong>";
+                  var file = x.files[i];
+                  if ('name' in file)
+                  {
+                     txt +=  file.name + ",";
+                  }
+                  if ('size' in file)
+                  {
+                  txt += "(" + file.size + " bytes" + ")<br>";
+                  }
+               }
+            }
+            else ##returned false ie; "Cancel" is clicked.
+            {
+               document.getElementById("tpcTxt").value= "" ;
+               document.getElementById("myFile").value= "" ;
+            }
+         }
+         else ##if number of files uploaded are less than or equal to max_upload_size.
+         {
             for (var i = 0; i < x.files.length; i++)
             {
                txt += "<br><strong>" + (i+1) + ". </strong>";
@@ -330,6 +360,7 @@ $page.setTitle("Home | $course | Course management")
             }
          }
       }
+      
       else
       {
          if (x.value == "") 

@@ -64,6 +64,11 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  *@author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  */
+/**
+ *  @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ *  @modified date: 25-04-2016 (Seemanti);Get Max. Upload file parameter from Institute Admin's Profile. 
+ */
+
 
 public class CourseManagement extends SecureScreen
 {
@@ -85,7 +90,6 @@ public class CourseManagement extends SecureScreen
 			int eid=0;
 			ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                  }
-
                 String dir=(String)user.getTemp("course_id");
                 context.put("course",(String)user.getTemp("course_name"));
 		String counter=pp.getString("count","");
@@ -145,7 +149,21 @@ public class CourseManagement extends SecureScreen
                 }
                 long remlmt=tlmt-unpdir;
                 context.put("aSize",(remlmt));
-		ErrorDumpUtil.ErrorLog("asize at line 112=="+remlmt);
+                String instituteid=user.getTemp("Institute_id").toString();
+                String path = data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
+                //Get the Maximum File size parameter from Institute Admin's propeties file 
+                String MaxFileUpldno = AdminProperties.getValue(path,"brihaspati.user.maxFileUploadSize.value");
+                //If properties file didn't had this parameter then set it equal to 10.
+                if(MaxFileUpldno ==null || MaxFileUpldno.equals("") )
+                {  ErrorDumpUtil.ErrorLog("Hii i am screen......7");////////////////////////////////// 
+                   int mxUpld = 10 ;
+                   String MaxFileUpld_no = Integer.toString(mxUpld);
+                   AdminProperties.setPropertyValue(path,MaxFileUpld_no,"brihaspati.user.maxFileUploadSize.value");
+                   context.put("max_sz",(MaxFileUpld_no));
+                } 
+                else//Otherwise fetch the existing value of this parameter from properties file.
+                   context.put("max_sz",(MaxFileUpldno));
+		//ErrorDumpUtil.ErrorLog("asize at line 112=="+remlmt);
 
 	}
 	catch(Exception e)

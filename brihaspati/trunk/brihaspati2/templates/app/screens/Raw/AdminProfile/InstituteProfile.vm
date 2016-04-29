@@ -5,7 +5,7 @@
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modify date: 25-02-2011, 19-10-2011
  * @author <a href="mailto:vipulk@iitk.ac.in">vipul pal</a>
- * @modify date:
+ * @modify date: 25-04-2016 , (Seemanti)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
@@ -84,7 +84,11 @@ $!data.getMessage()
 	<td width=30><font face="$ui.sansSerifFont">$brih_student $brih_course $brih_expiry</td>
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="expdays" value="$!expdays"></font></td>
    </tr>
-	<tr bgcolor="$ui.menuColor">
+   <tr bgcolor="$ui.menuColor">
+      <td width=30><font face="$ui.sansSerifFont">Maximum Upload File Number (Max. limit is 50) <font color=red>*</font> </td>
+      <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="Max_File_upld_no" value="$!Max_File_upld_no"></font></td>
+   </tr>
+	<tr bgcolor="$ui.tableColor">
                                 <td>$brih_officeno</td>
                                 <td><select class="drop" name="Offprefix">
                                         #if($!offprefix=="+")
@@ -111,7 +115,7 @@ $!data.getMessage()
                                 #end
                                 </td>
                         </tr>
-        <tr bgcolor="$ui.tableColor">
+        <tr bgcolor="$ui.menuColor">
 				<td>$brih_mobileno</td>
                                 <td><select class="drop" name="Mobprefix">
                                         #if($!mobprefix=="+")
@@ -138,7 +142,7 @@ $!data.getMessage()
                                 #end
                                 </td>
                         </tr>
-                        <tr bgcolor="$ui.menuColor">
+                        <tr bgcolor="$ui.tableColor">
                                 <td>$brih_homeno</td>
                                 <td><select class="drop" name="Homeprefix">
                                         #if($!homeprefix=="+")
@@ -165,7 +169,7 @@ $!data.getMessage()
                                 #end
 			</td>
                         </tr>
-                        <tr bgcolor="$ui.tableColor">
+                        <tr bgcolor="$ui.menuColor">
                                 <td>$brih_otherno</td>
 				<td><select class="drop" name="Othprefix">
                                         #if($!othprefix=="+")
@@ -192,24 +196,24 @@ $!data.getMessage()
                                 #end
                                 </td>
                         </tr>
-	<tr bgcolor="$ui.menuColor">
+	<tr bgcolor="$ui.tableColor">
            #formCell("$brih_address" "address" "$!address")
         </tr>
-	<tr><td width=30>$brih_country</td>
+	<tr bgcolor="$ui.menuColor"><td width=30>$brih_country</td>
        	<td width="50"><select class="drop" id="country"  name ="country"</select></td>
        	</tr>
-       	<tr bgcolor="$ui.menuColor"><td width=30>$Inst_state</td>
+       	<tr bgcolor="$ui.tableColor"><td width=30>$Inst_state</td>
         <td width="50"><select class="drop" id ="state" name ="state"></select></td>
         </tr>
-        <tr>
+        <tr bgcolor="$ui.menuColor">
            #formCell("$brih_dept" "department" "$!department")
         </tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.tableColor">
            #formCell("$Inst_designation" "designation" "$!designation")
         </tr>
 		
    <tr>
-      <td colspan=2 bgcolor="$ui.tableColor">	
+      <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName">
           <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
 	  <input type="reset" class="button-ftextstyle" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
@@ -225,7 +229,7 @@ $!data.getMessage()
 <SCRIPT LANGUAGE="javascript">
 function checkValues(frm,field)
 {
-	if((frm.AFName.value!="") && (frm.ALName.value!="") && (frm.AdminConf.value!="") && (frm.AdminFaqExp.value!="") && (frm.expdays.value!=""))
+	if((frm.AFName.value!="") && (frm.ALName.value!="") && (frm.AdminConf.value!="") && (frm.AdminFaqExp.value!="") && (frm.expdays.value!="") && (frm.Max_File_upld_no.value!=""))
         {
 		if(frm.AdminConf.value>=1 && frm.AdminConf.value<=100)
 		{
@@ -237,16 +241,20 @@ function checkValues(frm,field)
 		                        {
 						if(isNumberString(frm.AdminFaqExp.value))
 						{
-				                      	if(isNumberString(frm.expdays.value) && (frm.expdays.value>=1 ))
-                       				        {	
-								frm.actionName.value=field.name;
-                                				frm.submit();
-							}
-							else
-                                                        {
-        			                                 alert("Student Course Expiry Days should be greater then 0 !!!");         
-                                              	        }       
-	
+                                                      if(isNumberString(frm.Max_File_upld_no.value) && (frm.Max_File_upld_no.value>=1) && (frm.Max_File_upld_no.value<=50))
+                                                      {
+				                               if(isNumberString(frm.expdays.value) && (frm.expdays.value>=1 ))
+                       				               {	
+							     	   frm.actionName.value=field.name;
+                                				   frm.submit();
+							       }
+							       else
+                                                               {
+        			                                   alert("Student Course Expiry Days should be greater then 0 !!!");         
+                                              	               }       
+	                                              }
+                                                      else
+                                                               alert("Please ensure that Maximum File Upload size value is greater than 0 and less than or equal to 50");
 						}
                         		}
                         	}

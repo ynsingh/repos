@@ -69,6 +69,7 @@ import org.iitk.brihaspati.om.TurbineUserPeer;
 /**
  * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
  * @modified date: 18-05-2015 (Seemanti);
+ * @modified date: 25-04-2016 (Seemanti);Get Max. Upload file size from user and set into Institute Admin's properties file. 
  */
 
 public class InstchangeAParam extends SecureAction_Institute_Admin{
@@ -129,7 +130,8 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
 		String AdminFaqExp=pp.getString("AdminFaqExp","");
 		//Expiry Days
 		String expdays = pp.getString("expdays","");
-
+                String Max_File_upld_no = pp.getString("Max_File_upld_no","");
+                ErrorDumpUtil.ErrorLog(" value of parameteer ..........."+Max_File_upld_no);
 		String name=AFName+ALName;
                 String address=pp.getString("address");
                 String state=pp.getString("state");
@@ -215,7 +217,6 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
                                 tele.add(TelephoneDirectoryPeer.DEPARTMENT, department);
                                 tele.add(TelephoneDirectoryPeer.DESIGNATION, designation);
 				tele.add(TelephoneDirectoryPeer.INSTITUTE_ID,instid);
-				ErrorDumpUtil.ErrorLog("i m here");
                                 if(offdirectory.equals("Public")){
                                         String PubOffNo="1-"+officeno;
                                         tele.add(TelephoneDirectoryPeer.OFFICE_NO, PubOffNo);
@@ -296,6 +297,7 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
 			AdminProperties.setPropertyValue(path,uquota,"brihaspati.user.quota.value");
 		        AdminProperties.setPropertyValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
 			AdminProperties.setPropertyValue(path,expdays,"brihaspati.user.expdays.value");// Add by @tej
+                        AdminProperties.setPropertyValue(path,Max_File_upld_no,"brihaspati.user.maxFileUploadSize.value");
 			//setTemplate(data,"Index.vm");
 			//For email verification
 			if(email_msg.equals("Successfull"))

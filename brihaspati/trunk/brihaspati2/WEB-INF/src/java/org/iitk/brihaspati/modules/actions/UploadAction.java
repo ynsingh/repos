@@ -99,6 +99,7 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date:30-Apr-2012(Richa)(Guest access enable/disable)
  * @modified date: 04-Jan-2013 (Shaista) Sending Mail on Upload Content.
+ * @modified date:25-04-2016 (Seemanti) Multiple File Uploading at one go implementation.
  */
 
 public class UploadAction extends SecureAction
@@ -177,7 +178,12 @@ try
    String dateOfCreation=(new java.util.Date()).toString();
    String dateOfModification="";
    String coursesRealPath=TurbineServlet.getRealPath("/Courses");
-   String tempFile[]=new String[10];
+   String instituteid=user.getTemp("Institute_id").toString();
+   String path1 = data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
+   //Get the Maximum File size parameter from Institute Admin's propeties file and use it to define the size of Array below.
+   String Max_File_upld_no = AdminProperties.getValue(path1,"brihaspati.user.maxFileUploadSize.value");
+   int sz = Integer.parseInt(Max_File_upld_no);
+   String tempFile[]=new String[sz];
    //FileItem fileItem;
    File f=null;
    File topicDir=new File(coursesRealPath+"/"+courseHome+"/Content/"+contentTopic);
@@ -278,7 +284,17 @@ try
          FileItem[] fileItem = pp.getFileItems("uploaded_Files");//Get files to store in fileitem's object.
          int itm_sz= fileItem.length;
 	 boolean flag1=false;
-	 for(int count=0;count<itm_sz;count++)
+         int counter;
+         //get upload file size parameter(Max_File_upld_no) from properties file as "sz".
+         if (itm_sz <= sz)//Means user has uploaded files less than or equal to max. allowed size.
+         {
+            counter = itm_sz;
+         }
+         else//Means user has uploaded files more than max. allowed size.So allow only first "sz" no. of files.
+         {
+            counter = sz;
+         }
+	 for(int count=0;count<counter;count++)
 	 {
 	    boolean fileExists=false;
 	    //ErrorDumpUtil.ErrorLog("fitm in uploadaction at line 180=="+fileItem);
@@ -286,7 +302,7 @@ try
 	    {
 	       String temp=fileItem[count].getName();
 	       if(!temp.equals(contentTopic+"__des.xml"))
-	       {
+               {
 	          int index=temp.lastIndexOf("\\");
 		  ++totalFilesEntries;
 		  fileExists=false;
@@ -380,15 +396,15 @@ try
 		        ErrorDumpUtil.ErrorLog("The hdfs server url is blank so file is not stored on distributed server");
 			data.setMessage("The hdfs server url is blank so file is not stored on distributed server");
 	             }
-	             }//if end data storage on hdfs
-		  }
-		  else
-		  {
-		     upldmsg=temp+" "+MultilingualUtil.ConvertedString("topicUpload_msg",LangFile);
+	          }//if end data storage on hdfs
+               }
+	       else
+	       {
+	          upldmsg=temp+" "+MultilingualUtil.ConvertedString("topicUpload_msg",LangFile);
 		     //data.addMessage(upldmsg);
-		  }
-	       }//fileTiem	
-	    }//count
+	       }
+	    }//fileTiem	
+	 }//count
 	    String courseName = CourseUtil.getCourseName(courseHome);	
 	    String Mail_msg = "";
 	    if(flag1)

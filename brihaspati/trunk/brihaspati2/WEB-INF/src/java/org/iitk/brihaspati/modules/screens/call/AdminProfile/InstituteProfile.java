@@ -57,6 +57,10 @@ import org.apache.turbine.util.parser.ParameterParser;
 /**
  * Loads the template page for Institute Administrator
  */
+/**
+ * @author <a href="mailto:seemanti05@gmail.com">Seemanti Shukla</a>
+ * @modified date: 25-04-2016 (Seemanti);Add Max. Upload file parameter into Institute Admin's Profile. 
+ *  */
 
 //public class InstituteProfile extends SecureScreen
 public class InstituteProfile extends SecureScreen{
@@ -95,6 +99,7 @@ public class InstituteProfile extends SecureScreen{
                         context.put("uquota","100");
                         context.put("FaqExp","45");
                         context.put("expdays","210");
+                        context.put("Max_File_upld_no","10");
                 }
 		String LangFile=user.getTemp("LangFile").toString();
 		context.put("tdcolor",data.getParameters().getString("count",""));
@@ -176,10 +181,19 @@ public class InstituteProfile extends SecureScreen{
 		*/
 		String expdays = AdminProperties.getValue(path,"brihaspati.user.expdays.value");
 		context.put("expdays",expdays);
+                String Max_File_upld_no = AdminProperties.getValue(path,"brihaspati.user.maxFileUploadSize.value");
+                //If properties file didn't had this parameter then set it equal to 10.
+                if(Max_File_upld_no ==null || Max_File_upld_no.equals("") )
+                {  
+                   int mxUpld = 10 ;
+                   String MaxFileUpld_no = Integer.toString(mxUpld);
+                   AdminProperties.setPropertyValue(path,MaxFileUpld_no,"brihaspati.user.maxFileUploadSize.value");
+                   context.put("Max_File_upld_no",Max_File_upld_no);
+                }
+                else//Otherwise fetch the existing value of this parameter from properties file.
+                   context.put("Max_File_upld_no",Max_File_upld_no);
 		}
 		catch(Exception e) {	
-			//data.addMessage(MultilingualUtil.ConvertedString("adm_msg1",LangFile)); 
-			//data.addMessage("Some Problem Occured in getting the Parameter Value"); 
 			data.addMessage(MultilingualUtil.ConvertedString("brih_instadminnote",LangFile));
 		}
 		context.put("afname",user.getFirstName());
