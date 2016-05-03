@@ -4,26 +4,142 @@
  */
 package org.smvdu.payroll.user;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
+import java.util.UUID;
+import javax.faces.context.FacesContext;
+import javax.mail.Authenticator;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.servlet.http.HttpServletRequest;
+import org.smvdu.payroll.api.Administrator.CollegeList;
+import org.smvdu.payroll.api.email.MassageProperties;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.UserDB;
 
 /**
+  *
+ * Copyright (c) 2010 - 2011 SMVDU, Katra.
+ * Copyright (c) 2014 - 2016 ETRG, IITK.
+ *  All Rights Reserved.
+ *  Redistribution and use in source and binary forms, with or 
+ *  without modification, are permitted provided that the following 
+ *  conditions are met: 
+ *  Redistributions of source code must retain the above copyright 
+ *  notice, this  list of conditions and the following disclaimer. 
+ * 
+ *  Redistribution in binary form must reproduce the above copyright
+ *  notice, this list of conditions and the following disclaimer in 
+ *  the documentation and/or other materials provided with the 
+ *  distribution. 
+ * 
+ * 
+ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED 
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ *  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE 
+ *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
+ *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * 
+ * 
+ *  Contributors: Members of ERP Team @ SMVDU, Katra
  *
  * @author Seema Pal
+ * User Verification code added by Om Prakash<omprakashkgp@gmail.com> IITK, 19 April 2016.
  */
 public class UserRegistration {
+    private String vcode;
+    private String userverificationlink;
     
     public Exception EmployeeRegistration(String emailId,String password,String phoneno,String firstname,String lastname,String address,String categoryT,int orgId,String userType)
     {
-       
-        Connection connection = new CommonDB().getConnection();
-        Connection connectionLogin = new CommonDB().getLoginDBConnection();
-        try{
+            String url = new String();
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
+            HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+            url = request.getRequestURL().toString();
+            String ipAddress = String.valueOf(request.getServerName());
+            String sport = String.valueOf(request.getServerPort());
+            //String dir = String.valueOf(request.getServletPath());
+            vcode=UUID.randomUUID().toString().replaceAll("-", "");
+            userverificationlink = "http://"+ipAddress+":"+sport+"/adminLogin"+"/UserVerification.jsf"+"?vcode="+vcode+"&email="+emailId;  
+            //System.out.printf("User Verificvation URL==========>"+userverificationlink);
+            String serverUrl="http://"+ipAddress+":"+sport+"/index.jsp";
+            String fromEmail = new String();
+            String fromPassword = new String();
+            String smtpHostName;
+            int port;
+            final String[] f = new CollegeList().getSMTPAuthDetails().split("-");
+            port = Integer.parseInt(f[0]);
+            fromEmail = f[1];
+            fromPassword = f[2];
+            smtpHostName = f[3];
+            Properties props = new Properties();
+            props.put("mail.smtp.host", smtpHostName); 
+            props.put("mail.stmp.user", fromEmail);
+                //To use TLS
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.password", fromPassword);
+            props.put("mail.smtp.port",String.valueOf(port)); 
+            Session session = Session.getDefaultInstance(props, new Authenticator() {
+                                     @Override
+                                     protected PasswordAuthentication getPasswordAuthentication() {
+                                             String username = f[1];
+                                             String password = f[2];
+                                               return new PasswordAuthentication(username, password);
+                                     }
+                                  });
+            String to = emailId;
+            String from = f[1];
+            
+            MassageProperties msgprop = new MassageProperties();
+            MimeMessage msg = new MimeMessage(session);
+
+            Connection connection = new CommonDB().getConnection();
+            Connection connectionLogin = new CommonDB().getLoginDBConnection();
+            try {
+                  msg.setFrom(new InternetAddress(from));
+                  msg.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(to));
+                  //msg.setSubject(subject);
+                  msg.setSubject(msgprop.getPropertieValue("uveri1"));
+                  MimeBodyPart l_mbp = new MimeBodyPart();
+                  Multipart l_mp = new MimeMultipart();
+                                  
+                  l_mbp.setContent("","text/html");
+                         l_mbp.setContent("<html>" 
+                                    +"<font style='color:#4B4B4B;font-size:14px;font-weight:bold;'>"+msgprop.getPropertieValue("fgtp3")+""+to+"<br><br>"
+                                    +"<font style='color:#4B4B4B;font-size:14px;font-weight:bold;'>"+msgprop.getPropertieValue("uveri2")+"</font><br><br>"    
+                                    +"<font style='color:#4B4B4B;font-size:14px;'>"+msgprop.getPropertieValue("uveri3")+"</font><br><br><hr>"
+                                    +"<font style='color:red;font-size:13px;font-weight:bold;'>"+"<a href='"+userverificationlink+"'>"+userverificationlink+"</a>"+"</font><br><hr>"
+                          + "<br><br><font style='color:#4B4B4B;font-size:14px;font-weight:bold;'>"+msgprop.getPropertieValue("fgtp7")+"</font><br>"
+                          + "<br><font style='color:#4B4B4B;font-size:14px;font-weight:bold;'> "+msgprop.getPropertieValue("fgtp8") +" "+serverUrl+"</font><br> "       
+                          + "<br><br><br><font style='color:#4B4B4B;font-size:15px;font-weight:bold;'>"+msgprop.getPropertieValue("reg")+"<br></font>" 
+                          + "<image src="+path+File.separator+"img/pls1.png/></html>","text/html");
+                  l_mp.addBodyPart(l_mbp);
+                  msg.setContent(l_mp);
+            Date date=new Date();
+            
+            //Connection connection = new CommonDB().getConnection();
+            // Connection connectionLogin = new CommonDB().getLoginDBConnection();
+            //  try{
             PreparedStatement pst = null; 
             PreparedStatement pst1 = null; 
             PreparedStatement pst2 = null; 
@@ -34,7 +150,8 @@ public class UserRegistration {
             int userid = ud.CheckUserExistInUserMaster(emailId);
             //System.out.println("User in user_master - " +userid);
             if(!(userid > 0)){
-                pst = connection.prepareStatement("insert into user_master(user_name,user_pass,user_profile_id,flag) values('"+emailId+"','"+password+"','"+0+"','"+1+"')");
+              //  pst = connection.prepareStatement("insert into user_master(user_name,user_pass,user_profile_id,flag) values('"+emailId+"','"+password+"','"+0+"','"+1+"')");
+                pst = connection.prepareStatement("insert into user_master(user_name,user_pass,user_profile_id,flag,verification_code,is_verified) values('"+emailId+"','"+password+"','"+0+"','"+0+"','"+vcode+"','"+0+"')");
                 pst.executeUpdate();
                 pst.clearParameters();
                 pst.close();
@@ -47,10 +164,21 @@ public class UserRegistration {
                     if(!(id > 0)){
                         //System.out.println("User does not exist in login database");
                         String component = "payroll";
-                        pst1 = connectionLogin.prepareStatement("insert into edrpuser(username,password,email,componentreg,category_type,mobile,status) values('"+emailId+"','"+password+"','"+emailId+"','"+component+"','"+categoryT+"','"+phoneno+"','"+1+"')");
+                        //pst1 = connectionLogin.prepareStatement("insert into edrpuser(username,password,email,componentreg,category_type,mobile,status) values('"+emailId+"','"+password+"','"+emailId+"','"+component+"','"+categoryT+"','"+phoneno+"','"+1+"')");
+                        pst1 = connectionLogin.prepareStatement("insert into edrpuser(username,password,email,componentreg,category_type,mobile,status,verification_code,is_verified) values('"+emailId+"','"+password+"','"+emailId+"','"+component+"','"+categoryT+"','"+phoneno+"','"+0+"','"+vcode+"','"+0+"')");
                         pst1.executeUpdate();
                         pst1.clearParameters();
                         pst1.close();
+                       // System.out.print("msg for sending mail body1=======>"+msg);
+                        msg.setSentDate(date);
+                        Transport transport = session.getTransport("smtp");
+                        transport.connect();
+                        msg.saveChanges();     // don't forget this
+                        transport.sendMessage(msg, msg.getAllRecipients());
+                        //transport.send(msg);
+                        transport.close();            
+                        //System.out.print("msg for sending mail body2=======>"+msg);
+
                         //System.out.println("Records inserted into bgasuser of LoginDB for "+emailId);    
                         int userIdInLoginDB = ud.CheckUserExistInLoginDB(emailId);
                         //System.out.println("User Now exist in Login Database exist with userid " +userIdInLoginDB);
@@ -96,8 +224,8 @@ public class UserRegistration {
                      }//close else part if user exists in userLogindb           
                 }//close if condition userLogin db exists     
             } //close if condtion when user is not exists in user master table
-            
-           /*User already exists in user_master table;*/
+                       
+            /*User already exists in user_master table;*/
             else{
                 System.out.println("Entry already Exist in user_master for - "+emailId);
                 System.out.println("Do nothing in user master table");
@@ -121,10 +249,11 @@ public class UserRegistration {
                     adduser_role = AddUserRole(emailId, orgId,"InstAdminReg",UserId );
                 }    
             }
-                
+           
             connection.close();
             connectionLogin.close();        
-            return null;  
+            return null;
+
        } 
         catch (SQLException e)
         {
@@ -291,6 +420,45 @@ public class UserRegistration {
             return -1;
         } 
     } 
-
-       
+    /*
+     Use for update user login status when clicking on verification link.   
+    */
+    
+    public boolean updateUserVerification(String email, String vcode)
+    {
+        try
+        {   
+            String sc=null;
+            Connection c = new CommonDB().getConnection();
+            Connection connectionLogin = new CommonDB().getLoginDBConnection();
+            PreparedStatement pst;
+            PreparedStatement pst1;
+            pst=c.prepareStatement("update user_master set flag='"+1+"', verification_code='"+sc+"', is_verified='"+1+"' where "
+                    + "user_name=? and verification_code=?");
+            pst.setString(1, email);
+            pst.setString(2, vcode);
+            pst.executeUpdate();
+            pst.close();
+            
+            boolean dbExist = new CommonDB().checkLoginDBExists();
+            if(dbExist){
+                //System.out.println("This is updating status of Login Db ====>"+email);
+                pst1=connectionLogin.prepareStatement("update edrpuser set status='"+1+"', verification_code='"+sc+"', is_verified='"+1+"' where "
+                    + "username=? and verification_code=?");
+                pst1.setString(1, email);
+                pst1.setString(2, vcode);
+                pst1.executeUpdate();
+                pst1.close();
+            }
+            c.close();
+            connectionLogin.close();
+            return true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
 }

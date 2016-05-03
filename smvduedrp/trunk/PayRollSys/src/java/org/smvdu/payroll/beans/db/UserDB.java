@@ -18,6 +18,7 @@ import org.smvdu.payroll.user.changePassword;
 /**
 *
 *  Copyright (c) 2010 - 2011.2014 SMVDU, Katra.
+*  Copyright (c) 2016 ETRG, IITK.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -46,6 +47,7 @@ import org.smvdu.payroll.user.changePassword;
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra,IITkanpur.
 *  Modified Date: 26 feb 2014, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
+* Om Prakash <omprakashkgp@gmail.com> IITK 19 April 2016
 */
 
 public class UserDB {
@@ -547,7 +549,8 @@ public class UserDB {
             Connection connection = new CommonDB().getConnection();
             PreparedStatement pst;
             ResultSet rst;
-            pst = connection.prepareStatement("select user_id from user_master where user_name='"+email+"' and flag = '"+1+"'");
+            //pst = connection.prepareStatement("select user_id from user_master where user_name='"+email+"' and flag = '"+1+"'");
+            pst = connection.prepareStatement("select user_id from user_master where user_name='"+email+"' and flag = '"+0+"'");
             rst = pst.executeQuery();
             while(rst.next()){
                 userId = rst.getInt(1);
@@ -570,7 +573,8 @@ public class UserDB {
             Connection connection = new CommonDB().getLoginDBConnection();
             PreparedStatement pst;
             ResultSet rst;
-            pst = connection.prepareStatement("select id from edrpuser where username='"+email+"' and status = '"+1+"'");
+            //pst = connection.prepareStatement("select id from edrpuser where username='"+email+"' and status = '"+1+"'");
+            pst = connection.prepareStatement("select id from edrpuser where username='"+email+"' and status = '"+0+"'");
             rst = pst.executeQuery();
             while(rst.next()){
                 userId = rst.getInt(1);

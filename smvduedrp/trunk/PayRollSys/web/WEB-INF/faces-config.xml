@@ -1223,6 +1223,15 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <description>
+			User Verification Bean
+        </description>
+        <managed-bean-name>UserVerificationBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.UserVerification</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
  
   <!--  <managed-bean>
         <description>

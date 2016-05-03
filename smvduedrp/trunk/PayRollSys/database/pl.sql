@@ -1419,6 +1419,8 @@ CREATE TABLE `user_master` (
   `user_profile_id` int(11) NOT NULL default '0',
   `login_uid` int(11),
   `flag` tinyint(4) NOT NULL,
+  `verification_code` varchar(36) NOT NULL,
+  `is_verified` int(1) NOT NULL,	
   PRIMARY KEY  (`user_id`),
   UNIQUE KEY `user_name` (`user_name`),
   KEY `user_id` (`user_id`)
