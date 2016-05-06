@@ -1886,7 +1886,7 @@ CREATE TABLE `user_roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-INSERT INTO user_master (user_id, user_name, user_pass, flag) VALUES (1, 'admin', 'admin123', 1);
+INSERT INTO user_master (user_id, user_name, user_pass, flag) VALUES (1, 'admin', '0192023a7bbd73250516f069df18b500', 1);
 
 INSERT INTO user_roles(user_id, role_id) VALUES(1, 3);
 
@@ -1896,7 +1896,7 @@ INSERT INTO user_roles(user_id, role_id) VALUES(1, 3);
 
 CREATE TABLE `org_tax_calc_type` ( 
   `ct_id` int(11) NOT NULL auto_increment,
-  `ct_calctype` varchar(50) NOT NULL DEFAULT NULL,
+  `ct_calctype` varchar(50) DEFAULT NULL,
   `ct_sess_id` int(11) NOT NULL,
   `ct_org_code` int(11) NOT NULL,
    PRIMARY KEY  (`ct_id`), 
