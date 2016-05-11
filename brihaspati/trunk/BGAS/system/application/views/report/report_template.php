@@ -5,27 +5,47 @@
 <div id = "top">
 	<div id="logo">
 	<div id="logo1">
-		<?php
+	<?php
 		$this->db->select('id, name')->from('settings');
-	    $ins_id = $this->db->get();
-	    foreach( $ins_id->result() as $row)
-	    {
-	            $row1 = $row->name;
-	    }
-	    $this->upload_path= realpath(BASEPATH.'../uploads/logo');
-	    $file_list = get_filenames($this->upload_path);
-	    if ($file_list)
-	    {
-		    foreach ($file_list as $row2)
-		    {
-		        $ext = substr(strrchr($row2, '.'), 1);
-		        $my_values = explode('.',$row2);
-		        if($my_values[0] == $row1)
-		        {
-		        	echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
-		        }
-		    }
-	    }
+	    	$ins_id = $this->db->get();
+	    	foreach( $ins_id->result() as $row)
+	    	{
+	       		$row1 = $row->name;
+	    	}
+	    	$this->upload_path= realpath(BASEPATH.'../uploads/logo');
+	    	$file_list = get_filenames($this->upload_path);
+		if ($file_list)
+        	{
+                	foreach ($file_list as $row2)
+                	{
+                        	$ext = substr(strrchr($row2, '.'), 1);
+                        	$my_values = explode('.',$row2);
+                        	if($my_values[0] == $row1)
+                        	{
+                                	echo "<td align=\"center\">";
+                                	echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
+                        	}
+                        	$newrep_lace = str_replace('_', ' ', $my_values[0]);
+                        	if(($newrep_lace == $row1) && ($my_values[0] != $row1))
+                        	{
+                                	echo "<td align=\"center\">";
+                                	echo img(array('src' => base_url() . "uploads/logo/" . $my_values[0].'.'.$ext));
+                        	}
+                	}
+        	}
+
+	    //if ($file_list)
+	    //{
+		    //foreach ($file_list as $row2)
+		    //{
+		        //$ext = substr(strrchr($row2, '.'), 1);
+		        //$my_values = explode('.',$row2);
+		        //if($my_values[0] == $row1)
+		        //{
+		        	//echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
+		        //}
+		    //}
+	    //}
 	    echo "<br>";
 	    echo $this->config->item('account_name');
 		?>

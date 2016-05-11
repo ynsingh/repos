@@ -3,7 +3,7 @@
 
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');
-//	$start_date = $this->session->userdata('startdate');
+	//$start_date = $this->session->userdata('startdate');
 	//$this->load->model('Ledger_model');
 	if ( ! $print_preview)
 	{
@@ -21,15 +21,16 @@
 		echo "</p>";
 		echo form_close();
 	}
+	
 	/* Pagination configuration */
-//	if ( ! $print_preview)
-//	{		
+	if ( ! $print_preview)
+	{		
 		$this->load->library('pagination');
 		$page_count = (int)$this->uri->segment(4);
 		$page_count = $this->input->xss_clean($page_count);
 		if ( ! $page_count)
 			$page_count = "0";
-		$config['base_url'] = site_url('report/dayst/');
+		$config['base_url'] = site_url('report/dayst/all');
 		$pagination_counter = $this->config->item('row_count');
 		$config['num_links'] = 10;
 		$config['per_page'] = $pagination_counter;
@@ -54,31 +55,32 @@
 		$config['last_tag_open'] = '<li class="last">';
 		$config['last_tag_close'] = '</li>';
 		$this->pagination->initialize($config);
-
-//	}
+	//}
 		echo "<table border=\"0\" cellpadding=\"5\" class=\"simple-table ledgerst-table\" width=\"$width\">";
 		$odd_even = "odd";
 
-		 //if ( ! $print_preview){
-			$this->db->select('entry_items.ledger_id as entry_items_ledger_id, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc, ledgers.id as ledgers_id, ledgers.code as ledgers_code, ledgers.name as ledgers_name');
-			$this->db->from('entry_items')->join('ledgers', 'ledgers.id = entry_items.ledger_id');
-			$this->db->where('entry_items.update_date', $date1);
-		//	$this->db->not_like('ledgers.code', '10','after');
-		//	$this->db->not_like('ledgers.code','20', 'after');
-			//$this->db->order_by('entry_items.id', 'asc');
-			$this->db->limit($pagination_counter, $page_count);		
-			$dayst_q = $this->db->get();
-			if( $dayst_q->num_rows() < 1 )
-				{
-					$this->messages->add('There is no ledger entry on ' . $date1 . ' date.', 'success');
-				}
-			else {
-				echo "<thead><tr><th colspan=\"5\" align=\"center\"> The ledger entry on date ".$date1." </th></tr></thead>";
-				echo "<thead><tr><th>Sr. No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
+		//if ( ! $print_preview){
+		$this->db->select('entry_items.ledger_id as entry_items_ledger_id, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc, ledgers.id as ledgers_id, ledgers.code as ledgers_code, ledgers.name as ledgers_name');
+		$this->db->from('entry_items')->join('ledgers', 'ledgers.id = entry_items.ledger_id');
+		$this->db->where('entry_items.update_date', $date1);
+		//$this->db->not_like('ledgers.code', '10','after');
+		//$this->db->not_like('ledgers.code','20', 'after');
+		//$this->db->order_by('entry_items.id', 'asc');
+		$this->db->limit($pagination_counter, $page_count);		
+		$dayst_q = $this->db->get();
+		if( $dayst_q->num_rows() < 1 )
+		{
+			$this->messages->add('There is no ledger entry on ' . $date1 . ' date.', 'success');
+		}
+		else 
+		{
+			echo "<thead><tr><th colspan=\"5\" align=\"center\"> The ledger entry on date ".$date1." </th></tr></thead>";
+			echo "<thead><tr><th>Sr. No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
 
-			}
+		}
 		//}
-		/*else {
+		/*else 
+		{
 			$page_count = 0;
 			$this->db->select('entry_items.ledger_id as entry_items_ledger_id, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc, ledgers.id as ledgers_id, ledgers.code as ledgers_code, ledgers.name as ledgers_name');
 			$this->db->from('entry_items')->join('ledgers', 'ledgers.id = entry_items.ledger_id');
@@ -88,54 +90,114 @@
                         //$this->db->order_by('entry_items.id', 'asc');
                         $this->db->limit($pagination_counter, $page_count);
 			$dayst_q = $this->db->get();
-				echo "<thead><tr><th colspan=\"5\" align=\"center\"> The ledger entry on date ".$date1." </th></tr></thead>";
-				echo "<thead><tr><th>Sr. No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
+			echo "<thead><tr><th colspan=\"5\" align=\"center\"> The ledger entry on date ".$date1." </th></tr></thead>";
+			echo "<thead><tr><th>Sr. No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
 		}*/
-	//	print_r($dayst_q);
+		//print_r($dayst_q);
 		$i=1;
 		foreach ($dayst_q->result() as $row)
 		{
-		//	$current_entry_type = entry_type_info($row->entries_entry_type);
+			//$current_entry_type = entry_type_info($row->entries_entry_type);
 			echo "<tr class=\"tr-" . $odd_even . "\">";
 			echo "<td>";
-				echo $i;
-//				echo anchor('entry/view/' . $current_entry_type['label'] . '/' . $row->entries_id, full_entry_number($row->entries_entry_type, $row->entries_number), array('title' => 'View ' . ' Entry', 'class' => 'anchor-link-a'));
+			echo $i;
+			//echo anchor('entry/view/' . $current_entry_type['label'] . '/' . $row->entries_id, full_entry_number($row->entries_entry_type, $row->entries_number), array('title' => 'View ' . ' Entry', 'class' => 'anchor-link-a'));
 			echo "</td>";
 			echo "<td>";
-				echo $row->ledgers_name;
-				echo "(". $row->ledgers_code. ")";
+			echo $row->ledgers_name;
+			echo "(". $row->ledgers_code. ")";
 			echo "</td>";
 			echo "<td>";
-	//			echo $current_entry_type['name'];
+			//echo $current_entry_type['name'];
 			echo "</td>";
-				if ($row->entry_items_dc == "D")
-				{
-					echo "<td>";
-						echo convert_dc($row->entry_items_dc);
-						echo " ";
-						echo money_format('%!i', $row->entry_items_amount);
-					echo "</td>";
-					echo "<td></td>";
-				} else {
-					echo "<td></td>";
-					echo "<td>";
-						echo convert_dc($row->entry_items_dc);
-						echo " ";
-						echo money_format('%!i', $row->entry_items_amount);
-					echo "</td>";
-				}
-
+			if ($row->entry_items_dc == "D")
+			{
+				echo "<td>";
+				echo convert_dc($row->entry_items_dc);
+				echo " ";
+				echo money_format('%!i', $row->entry_items_amount);
+				echo "</td>";
+				echo "<td></td>";
+			} 
+			else 
+			{
+				echo "<td></td>";
+				echo "<td>";
+				echo convert_dc($row->entry_items_dc);
+				echo " ";
+				echo money_format('%!i', $row->entry_items_amount);
+				echo "</td>";
+			}
 			echo "</tr>";
 			$odd_even = ($odd_even == "odd") ? "even" : "odd";
 			$i++;
 		}
 		echo "</table>";
-		if (!$print_preview){
-			echo "<br>";
-			echo form_open('report/printpreview/dayst/');
-			echo form_submit('submit', 'Print Preview');
-			echo form_close();
-		}
+	}
+	else
+        {
+                echo "<table border=\"0\" cellpadding=\"5\" class=\"simple-table ledgerst-table\" width=\"$width\">";
+                $odd_even = "odd";
+
+                $this->db->select('entry_items.ledger_id as entry_items_ledger_id, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc, ledgers.id as ledgers_id, ledgers.code as ledgers_code, ledgers.name as ledgers_name');
+                $this->db->from('entry_items')->join('ledgers', 'ledgers.id = entry_items.ledger_id');
+                $this->db->where('entry_items.update_date', $date1);
+                $dayst_q = $this->db->get();
+                if( $dayst_q->num_rows() < 1 )
+                {
+                        $this->messages->add('There is no ledger entry on ' . $date1 . ' date.', 'success');
+                }
+                else
+                {
+                        echo "<thead><tr><th colspan=\"5\" align=\"center\"> The ledger entry on date ".$date1." </th></tr></thead>";
+                        echo "<thead><tr><th>Sr. No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>";
+                }
+
+                $i=1;
+                foreach ($dayst_q->result() as $row)
+                {
+                        echo "<tr class=\"tr-" . $odd_even . "\">";
+                        echo "<td>";
+                        echo $i;
+                        echo "</td>";
+                        echo "<td>";
+                        echo $row->ledgers_name;
+                        echo "(". $row->ledgers_code. ")";
+                        echo "</td>";
+                        echo "<td>";
+                        echo "</td>";
+                        if ($row->entry_items_dc == "D")
+                        {
+echo "<td>";
+                                echo convert_dc($row->entry_items_dc);
+                                echo " ";
+                                echo money_format('%!i', $row->entry_items_amount);
+                                echo "</td>";
+                                echo "<td></td>";
+                        }
+                        else
+                        {
+                                echo "<td></td>";
+                                echo "<td>";
+                                echo convert_dc($row->entry_items_dc);
+                                echo " ";
+                                echo money_format('%!i', $row->entry_items_amount);
+                                echo "</td>";
+                        }
+                        echo "</tr>";
+                        $odd_even = ($odd_even == "odd") ? "even" : "odd";
+                        $i++;
+                }
+                echo "</table>";
+        }
+
+	if (!$print_preview)
+	{
+		echo "<br>";
+		echo form_open('report/printpreview/dayst/');
+		echo form_submit('submit', 'Print Preview');
+		echo form_close();
+	}
 ?>
 <?php if ( ! $print_preview) { ?>
 <div id="pagination-container"><?php echo $this->pagination->create_links(); ?></div>

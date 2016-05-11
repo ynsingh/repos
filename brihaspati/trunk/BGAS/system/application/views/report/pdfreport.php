@@ -50,18 +50,38 @@
                 }
                 $this->upload_path= realpath(BASEPATH.'../uploads/logo');
                 $file_list = get_filenames($this->upload_path);
-                if ($file_list)
-                {
-                        foreach ($file_list as $row2)
-                        {
-                                $ext = substr(strrchr($row2, '.'), 1);
-                                $my_values = explode('.',$row2);
-                                if($my_values[0] == $row1)
-                                {
-                                        echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
-                                }
-                        }
-                }
+		if ($file_list)
+        	{
+                	foreach ($file_list as $row2)
+                	{
+                        	$ext = substr(strrchr($row2, '.'), 1);
+                        	$my_values = explode('.',$row2);
+                        	if($my_values[0] == $row1)
+                        	{
+                                	//echo "<td align=\"center\">";
+                                	echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
+                        	}
+                        	$newrep_lace = str_replace('_', ' ', $my_values[0]);
+                        	if(($newrep_lace == $row1) && ($my_values[0] != $row1))
+                        	{
+                                	//echo "<td align=\"center\">";
+                                	echo img(array('src' => base_url() . "uploads/logo/" . $my_values[0].'.'.$ext));
+                        	}
+                	}
+        	}
+
+                //if ($file_list)
+                //{
+                        //foreach ($file_list as $row2)
+                        //{
+                                //$ext = substr(strrchr($row2, '.'), 1);
+                                //$my_values = explode('.',$row2);
+                                //if($my_values[0] == $row1)
+                                //{
+                                        //echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
+                                //}
+                        //}
+                //}
 	echo"<br>";
 	echo $this->config->item('account_name');echo "<br>"; ?><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $statement . "</h2><br>";
 	if(($statement != "Balance Sheet")&&($statement != "Balance Sheet MHRD Format")){

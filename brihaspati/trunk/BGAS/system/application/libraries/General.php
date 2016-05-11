@@ -18,7 +18,7 @@ class General {
 		$acc_data = $this->logndb->get();
 		if ($acc_data->num_rows() < 1)
                 {
-			$CI->messages->add('Account settings n database is missing.', 'error');
+			$CI->messages->add('Either Account settings and database is missing OR Current active account is NULL so please select the account.', 'success');
                         return FALSE;
                 }
 	

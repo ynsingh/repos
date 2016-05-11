@@ -4,7 +4,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class unspentbalance extends Controller {
         function planreport()
         {
-		
+		$this->load->model('Ledger_model');	
                 $this->load->helper('text');
 		$data['print_preview'] =FALSE;
 		$data['save_report'] =FALSE;
@@ -15,6 +15,7 @@ class unspentbalance extends Controller {
 				$this->messages->add('File Saved Successfully', 'success');
                 	}
 		}
+		$data['fund'] = $this->Ledger_model->get_fund_ledgers();
 		$this->template->load('template', 'unspentbalance/index', $data);
 
                 return;
@@ -22,6 +23,7 @@ class unspentbalance extends Controller {
 	
 	function nonplanreport()
         {
+		$this->load->model('Ledger_model');
                 $this->load->helper('text');
 		$data['print_preview'] =FALSE;
 		$data['save_report'] =FALSE;
@@ -32,7 +34,7 @@ class unspentbalance extends Controller {
 				$this->messages->add('File Saved Successfully', 'success');
                         }
                 }
-
+		$data['fund'] = $this->Ledger_model->get_fund_ledgers();
 		$this->template->load('template', 'unspentbalance/nonplan', $data);
 
                 return;
