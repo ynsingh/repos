@@ -93,32 +93,34 @@ $!data.getMessage()
          	#elseif($tdcolor == "1")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_quiz $brih_setup</I></b></a></td>
+		<b><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_quiz $brih_setup</b></a></td>
 		#if($tdcolor != "2")
         		<td>
         	#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2").addPathInfo("type","selectQuiz") style=text-decoration:none>$brih_quiz $brih_creation</I></b></a></td>
+		<b><a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2").addPathInfo("type","selectQuiz") style=text-decoration:none>$brih_quiz $brih_creation</b></a></td>
 		#if($tdcolor != "3")
         		<td>
         	#elseif($tdcolor == "3")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("mode","quizDetail").addPathInfo("count","3") style=text-decoration:none>$brih_quiz $brih_detail</I></b></a></td>
+		<b><a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("mode","quizDetail").addPathInfo("count","3") style=text-decoration:none>$brih_quiz $brih_detail</b></a></td>
 		#if($tdcolor != "4")
         		<td>
         	#elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,Preview_Quiz.vm").addPathInfo("mode","preview").addPathInfo("count","4") style=text-decoration:none>$brih_preview</I></b></a></td>
+		<b><a href=$link.setPage("call,OLES,Preview_Quiz.vm").addPathInfo("mode","preview").addPathInfo("count","4") style=text-decoration:none>$brih_preview</b></a></td>
 	</tr>		
 </table>
 
 <table bgcolor="$ui.tableColor" width="100%">
+#if($allQuiz.size()!=0)
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_quiz $brih_detail</font><b></i></td>
 	</tr>
+#end
 #if($allQuiz.size()!=0)
 <tr bgcolor="$ui.tableColor">
          <td colspan=7>
@@ -189,7 +191,7 @@ $!data.getMessage()
 		<INPUT TYPE="hidden" NAME="deleteFileNames">	
     		<input type="hidden" name="actionName">    	
 	#else
-		<tr>
+		<tr bgcolor="$ui.menuColor">
 			<td align="center">$brih_No_Quiz</td>
 		</tr>
 	#end

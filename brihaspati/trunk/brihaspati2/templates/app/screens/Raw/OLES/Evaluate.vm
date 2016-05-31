@@ -13,7 +13,7 @@ $page.setTitle("quiz Evaluation")
 $page.setBgColor("bgcolor")
 
 <head>
-<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+  <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 
 ## If some message has been set, that is retrieved and displayed.
@@ -21,36 +21,37 @@ $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 <table bgcolor="$ui.menuColor" width=100%>
-        <tr><td><b>
-                <a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a> |
-                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> |
-                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'> $online_online $brih_examat $brih_system</a>|
-                #if($!type == "result")
-                	$brih_result
-                #else
-			$brih_evaluate
-		#end
-	</b></td>
+   <tr>
+      <td><b>
+         <a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a> |
+         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> |
+         <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'> $online_online $brih_examat $brih_system</a>|
+#if($!type == "result")
+         $brih_result
+#else
+         $brih_evaluate
+#end
+      </b></td>
 ##index of paginations
-	<td align=right>
-        	#if( $total_size!=0 )
-                	#if( $endIndex < $total_size )
-                        	#if( $endIndex < $userConf )
-                                       #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
-                                #elseif($k == $j)
-                                        ##[$k - $total_size] of $total_size
-                                       #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
-                                #else
-                                        ##[$k - $endIndex] of $total_size
-                                       #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_of $total_size #end
-                                #end
-                        #else
-                                ##[$k - $total_size] of $total_size
-                               #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
-                        #end
+      <td align=right>
+#if( $total_size!=0 )
+	#if( $endIndex < $total_size )
+		#if( $endIndex < $userConf )
+			#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+                #elseif($k == $j)
+##[$k - $total_size] of $total_size
+	                #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+                #else
+##[$k - $endIndex] of $total_size
+			#if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_of $total_size #end
                 #end
+        #else
+##[$k - $total_size] of $total_size
+                #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+        #end
+#end
 
-        </td>
+      </td>
 ## Creating the link for help 
 	<td align=right>
 		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/Quizstudent.html","newWin") style='text-decoration:none'>$brih_help</a>
@@ -116,14 +117,17 @@ $!data.getMessage()
 </table>	
 <table width="100%" >
 	<tr bgcolor="$ui.menuColor" >
-		<td colspan="6"><b> $brih_quiz $brih_name  </b></td>
-		<td width="80%">
-        	<SELECT name=quizlist class="drop" onChange="checkField(document.frm,this);" >
-			#if($!quizID=="")       		
-			<option>$brih_select $brih_quiz</option>
-			#else
-                                <option value="$!quizName">$!quizName</option>  #end			
-				#foreach($topic in $quizList)
+#if($quizList.size()!=0)
+	<td colspan="6"><b> $brih_quiz $brih_name  </b></td>
+	<td width="80%">
+       	<SELECT name=quizlist class="drop" onChange="checkField(document.frm,this);" >
+	#if($!quizID=="")       		
+		<option>$brih_select $brih_quiz</option>
+	#else
+                <option value="$!quizName">$!quizName</option>
+	#end
+#end
+#foreach($topic in $quizList)
 					#if($!topic.getQuizID()==$!quizID)
 					 <option value="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("quizID",$!topic.getQuizID()).addPathInfo("quizName",$!topic.getQuizName()).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"style="width:175px;">$!topic.getQuizName()</option>
 					#else

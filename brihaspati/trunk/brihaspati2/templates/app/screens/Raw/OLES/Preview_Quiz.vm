@@ -15,7 +15,7 @@ $page.setBgColor("bgcolor")
 </head>
 
 ## If some message has been set, that is retrieved and displayed.
-$!data.getMessage()
+##$!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -68,11 +68,13 @@ $!data.getMessage()
 
 ##Drop down list to select a quiz
 <table align="center" width="100%" bgcolor="$ui.tableColor">
+#if($quizList.size()!=0)
 	<tr bgcolor="$ui.menuColor" >
-		<td width=30% align="centre">
+		<td align="left">
 	      		<b> #if($lang =="hindi" || $lang =="gujarati") $brih_quiz $brih_select #else $brih_select  $brih_quiz#end </b>
 	   	</td>
-	   	<td  width=70% align="left"  >
+#end
+	   	<td align="left">
 	        	##if($isFile!="")
 	        		#if($quizList.size()!=0)
 	        			<select name=quizList class="drop">
@@ -89,8 +91,10 @@ $!data.getMessage()
 	        			<input type="button" class="button-ftextstyle" name="" value="$brih_submit" onClick="checkValue(document.frm,this);">
 					&nbsp;&nbsp;&nbsp;
 				#else
+				<td bgcolor="$ui.menuColor" align="center" width="100%">
 					$brih_norandomquizmsg
 				#end	
+			</td>
 	        	##else
 	        		##$brih_norandomquizmsg
 	        	##end

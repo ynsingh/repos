@@ -89,11 +89,13 @@ $!data.getMessage()
 
 ##Drop down list to select a quiz
 	<table align="center" width="100%" bgcolor="$ui.tableColor">
-	<tr bgcolor="$ui.menuColor" >
-		<td width=30% align="centre">
+#if($quizList.size()!=0)
+	<tr bgcolor="$ui.menuColor">
+		<td align="left">
 	      		<b> $brih_select  $brih_quiz </b>
 	   	</td>
-	   	<td  width=70% align="left"  >
+#end
+	   	<td  align="left">
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
 	        			<select name=quizList class="drop">
@@ -111,12 +113,17 @@ $!data.getMessage()
 	        			<input type="button" class="button-ftextstyle" name="eventSubmit_announceExam" value="$brih_submit" onClick="checkValue(document.frm,this);">
 					&nbsp;&nbsp;&nbsp;
 				#else
+		<td bgcolor="$ui.menuColor" align="center" width="100%">
 					$brih_No_NewQuiz
 				#end	
+			</td>
+			
 	        	#else
+		<td bgcolor="$ui.menuColor" align="center" width="100%">
 	        		$brih_No_NewQuiz
 	        	#end
 		</td>
+</td>
 	</tr>
 </table>
 <input type="hidden" name="count" value="3">

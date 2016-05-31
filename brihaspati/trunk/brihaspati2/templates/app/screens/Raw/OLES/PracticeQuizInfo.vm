@@ -87,14 +87,17 @@ $!data.getMessage()
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,PracticeQuizInfo.vm")>
 	<table bgcolor="$ui.tableColor" width="100%">
+#if($quizList.size()!=0)
 		<tr bgcolor="$ui.menuColor"  width="100%">
 			<td>
 			<b> $brih_quiz $brih_name  </b>
     		</td>
+#end
 			<td>
+#if($quizList.size()!=0)
 			<SELECT name=quizlist class="drop" onChange="checkField(document.frm);">
                                 #if($quizlist=="")
-				<option value="1"> #if($lang =="hindi" || $lang=="gujarati") $brih_quiz $brih_select #else $brih_select $brih_quiz #end </option>
+				<option value="1"> #if($lang =="hindi" || $lang=="gujarati") $brih_quiz $brih_select #else $brih_select $brih_quiz #end </option>#end
 				 #else                   
                                 <option value="$!quizname">$!quizname</option>  #end
 					#foreach($topic in $quizList)
