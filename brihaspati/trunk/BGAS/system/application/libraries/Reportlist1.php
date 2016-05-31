@@ -2944,7 +2944,8 @@ class Reportlist1
                             {
                                 if($dc == "C")
                                 {
-                                    $plan_cr_total = $paln_cr_total + $sum;
+                                    //$plan_cr_total = $paln_cr_total + $sum;
+                                    $plan_cr_total = $plan_cr_total + $sum;
                                 }elseif($dc == "D"){
                                     $plan_dr_total = $plan_dr_total + $sum;
                                 }
@@ -3180,7 +3181,8 @@ class Reportlist1
                             {
                                 if($dc == "C")
                                 {
-                                    $plan_cr_total = $paln_cr_total + $sum;
+                                    //$plan_cr_total = $paln_cr_total + $sum;
+                                    $plan_cr_total = $plan_cr_total + $sum;
                                     $ledg_plan_cr_total = $ledg_paln_cr_total + $sum;
                                 }elseif($dc == "D"){
                                     $plan_dr_total = $plan_dr_total + $sum;

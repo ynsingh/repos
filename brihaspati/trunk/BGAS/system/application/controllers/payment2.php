@@ -666,7 +666,7 @@ class Payment2 extends Controller {
                         $data_narration = $this->input->post('being', TRUE);
                         $data_narration1 = $this->input->post('being1', TRUE);
 			
-			if($decision == "Approved")
+			if(($decision == "Approved") && ($decision == "vchrcrn"))
 			{
 				if($forward_to == "0")
                                 {
@@ -1151,6 +1151,7 @@ class Payment2 extends Controller {
                                         	'expenditure_type' => $exp_type,
                                         	'sanc_type' => $data_sanc_type,
                                         	'sanc_value' => $sanc_value,
+                                        	'current_location' => $forward_to2,
                                         );
                                 	if ( ! $this->db->where('id', $bill_no)->update('bill_voucher_create', $update_data_n1))
                                 	{
@@ -1169,7 +1170,8 @@ class Payment2 extends Controller {
                                         		'approval_amount' => $approved_amount,
                                         		'approved_by' => $this->session->userdata('user_name'),
 							'authority_name' => $auth_desig,
-                                        		'status' => $decision,
+                                        		//'status' => $decision,
+                                        		'status' => 'Approved',
                                         		'comments' => $data_narration1,
                                         	);
                                         	if ( ! $this->db->where('id', $maxbill_id)->update('bill_approval_status', $update_data_n2))
@@ -1180,6 +1182,29 @@ class Payment2 extends Controller {
                                                 	$this->template->load('template', 'payment2/p2billapproval', $data);
                                                 	return;
                                         	}
+
+						else
+						{
+							$insert_approval_data_z1 = array(
+                                                                'bill_no' => $bill_no,
+                                                                'forward_from' => $this->session->userdata('user_name'),
+                                                                'forward_to' => $forward_to2,
+                                                                'forward_date' => $today,
+                                                                'approval_amount' => $approved_amount,
+                                                                'authority_name' => $auth_desig,
+                                                                'status' => 'voucherapprove',
+                                                                'comments' => '',
+                                                        );
+                                                        if ( ! $this->db->insert('bill_approval_status', $insert_approval_data_z1))
+                                                        {
+                                                                $this->db->trans_rollback();
+                                                                $this->messages->add('Error inserting new values. '.$username.'error');
+                                                                $this->logger->write_message("error",'Error inserting new values'.$username.'error');
+                                                                $this->template->load('template', 'payment2/p2billapproval', $data);
+                                                                return;
+                                                        }
+						}
+
                                 	}
                                 	$this->db->trans_complete();
                                		$this->messages->add('Bill is approved successfully for Cheque Printing. ');
@@ -1700,7 +1725,28 @@ class Payment2 extends Controller {
                         		$this->db->trans_complete();
                         	}
 			}
-				
+
+			$this->db->trans_start();
+			$maxvou_chrid = $maxvoucher_id;
+                        //$vc_date=date("Y-m-d H:i:s");
+                        $update_new_data_2_a = array(
+                                'approval_date' => $today,
+                                'approved_by' => $this->session->userdata('user_name'), 
+                                'status' => 'vchrcrn',
+                        );
+                        if ( ! $this->db->where('id', $maxvou_chrid)->update('bill_approval_status', $update_new_data_2_a))
+                        {
+                                $this->db->trans_rollback();
+                                $this->messages->add('Error updating entries in bill voucher create. '.$username.$submitter_id.$total_amount.'error');
+                                $this->logger->write_message("error",'Error updating entries in bill voucher create'.$username.$submitter_id.$total_amount.'error');
+                                $this->template->load('template', 'payment2/p2voucherfilling', $data);
+                                return;
+                        }
+                        else
+                        {
+                                $this->db->trans_complete();
+                        }
+	
 			$today = date("Y/m/d H:i:s");
                         $this->db->trans_start();
 			$vc_date=date("Y-m-d H:i:s");
