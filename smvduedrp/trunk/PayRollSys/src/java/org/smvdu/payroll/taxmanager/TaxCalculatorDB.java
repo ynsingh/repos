@@ -18,13 +18,14 @@ import org.smvdu.payroll.beans.composite.SessionController;
 import org.smvdu.payroll.beans.db.CommonDB;
 
 /**
- *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*  Copyright (c) 2015, 2016 ETRG, IITK.
 *  All Rights Reserved.
-**  Redistribution and use in source and binary forms, with or 
+** Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
 *  conditions are met: 
-**  Redistributions of source code must retain the above copyright 
+** Redistributions of source code must retain the above copyright 
 *  notice, this  list of conditions and the following disclaimer. 
 * 
 *  Redistribution in binary form must reproduce the above copyright
@@ -436,9 +437,9 @@ public class TaxCalculatorDB {
 
 
     public int getRequiredQuater(){
-           int quater=0,month=0;
-           month=this.getMonth();
-           if(month>=4 && month<=6)
+            int quater=0,month=0;
+            month=this.getMonth();
+            if(month>=4 && month<=6)
              quater=1;
             if(month>=7 && month<=9)
              quater=2;
@@ -455,8 +456,12 @@ public class TaxCalculatorDB {
            session=sessionId.getCurrentSession();
 
            if(quater==1){
-               session-=1;}
-            return session;
+               //session-=1;
+                session=sessionId.getCurrentSession();
+               
+               
+           }
+           return session;
     }
 
 
@@ -467,7 +472,7 @@ public boolean checkIfEmployeeInvestmentExists(String empId){
         {
             session=sessionId.getCurrentSession();
             month=this.getMonth();
-             if(month==4)
+            if(month==4)
             {
              session-=1;
             }
@@ -476,7 +481,7 @@ public boolean checkIfEmployeeInvestmentExists(String empId){
             ResultSet rst;
             int row=0,i=0;
             int rows[];
-            ps=c.prepareStatement("select exists(select * from investment_plan_master where ip_emp_id=? and ip_sess_id= "+session+")");
+            ps=c.prepareStatement("select exists(select * from investment_plan_master where ip_emp_id=? and ip_sess_id= "+sessionId.getCurrentSession()+")");
             ps.setString(1, empId);
             rs=ps.executeQuery();
             if(rs.next())
@@ -531,6 +536,7 @@ public float InvestmentCalculation(String empId){
              if(month==4)
             {
              session-=1;
+              //System.out.println("e==session=="+session);
             }
             if(checkIfEmployeeInvestmentExists(empId)){
             ArrayList<EmployeeInvestment> ei = (new EmployeeInvestmentDB()).loadInvestments(empId);
@@ -558,14 +564,15 @@ public float InvestmentCalculation(String empId){
             orgCode=userBean.getUserOrgCode();
             session=sessionId.getCurrentSession();
             calctype=this.CalculationType(orgCode,session);
-           // System.out.println("calactype======563==="+calctype);
             if(calctype.equalsIgnoreCase("MONTHLY")){
             totalsalary=MonthlyTypeCalc(empCode);
-            //System.out.println("month===line 565=="+totalsalary);
             }
             if(calctype.equalsIgnoreCase("QUATERLY")){
             totalsalary=QuaterlyTypeCalc(empCode);
-            //System.out.println("month===line 567=="+totalsalary);
+            }
+            if(calctype.equalsIgnoreCase("YEARLY")){
+            totalsalary=YearlyTypeCalc(empCode);  
+            //System.out.println("month===line 587=yearly===="+totalsalary);
             }
             return totalsalary;
         }
@@ -592,7 +599,6 @@ public float InvestmentCalculation(String empId){
             Date d=rs.getDate(2);
             String db=d.toString();
             dob=db.split("-");
-            //System.out.println("gender====="+gender+"\ndob===="+dob+"\ndb==="+db);
             }
             ps.close();
             rs.close();
@@ -631,7 +637,6 @@ public float InvestmentCalculation(String empId){
             int ts_seq=0;
             if(rs.next()){
             ts_seq=rs.getInt(1);}
-            //System.out.println("ts_seq====="+ts_seq);
             ps.close();
             rs.close();
             c.close();
@@ -645,60 +650,61 @@ public float InvestmentCalculation(String empId){
      }
 
 
- public int MonthlyTypeCalc(String empCode){
-     int session=0,totalSalary=0,month=0,tempmonth=0;
-     float salary;
-     boolean check=false;
-         try{
-             session=sessionId.getCurrentSession();
+    public int MonthlyTypeCalc(String empCode){
+        int session=0,totalSalary=0,month=0,tempmonth=0;
+        float salary;
+        boolean check=false;
+        try{
+            session=sessionId.getCurrentSession();
             month=this.getMonth();
-             if(month==4)
+            if(month==4)
             {
-             session-=1;
-             check=true;
+                //     session-=1;
+                check=true;
             }
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select es_total_income,es_month from employee_salary_summery where es_code = ? and  es_org_id='"
-                                  +userBean.getUserOrgCode()
-                                  +"' and es_sess_id='"+session+"'");
+                +userBean.getUserOrgCode()+"' and es_sess_id='"+session+"'");
             ps.setString(1, empCode);
             rs=ps.executeQuery();
-
             while(rs.next()){
                 salary=rs.getInt(1);
                 tempmonth=rs.getInt(2);
-             if(check==true)
-             totalSalary+=salary;
-             else
-             {
-              if(month>=1 && month<=3)
-              {
-               if(tempmonth>=4 && tempmonth<=12)
-               totalSalary+=salary;
-               if(month==2 && tempmonth==1)
-                 totalSalary+=salary;
-               if(month==3 && (tempmonth==1 || tempmonth==2))
-                totalSalary+=salary;
-              }
-              else
-              {
-               if(tempmonth>=4 && tempmonth<month)
-               totalSalary+=salary;
-              }
-             }
+                if(check==true){
+                    totalSalary+=salary;
+                }
+                else
+                {
+                    
+                    if(month>=1 && month<=3)
+                    {
+                        if(tempmonth>=4 && tempmonth<=12)
+                            totalSalary+=salary;
+                        if(month==2 && tempmonth==1)
+                            totalSalary+=salary;
+                        if(month==3 && (tempmonth==1 || tempmonth==2))
+                            totalSalary+=salary;
+                    }
+                    else
+                    {
+                        if(tempmonth>=4 && tempmonth<month)
+                            totalSalary+=salary;
+                
+                    }
+                }
             }
-          rs.close();
-  	  ps.close();
-          c.close();
-          return totalSalary;
+            rs.close();
+            ps.close();
+            c.close();
+            return totalSalary;
         }
-      catch(Exception e)
+        catch(Exception e)
         {
             e.printStackTrace();
-           return 0;
+            return 0;
         }
 
-     }
+    }
 
     public int QuaterlyTypeCalc(String empCode){
         int session=0,month=0,quater=0,salarymonth=0,salary=0,totalSalary=0;
@@ -706,40 +712,33 @@ public float InvestmentCalculation(String empId){
         try{
             session=sessionId.getCurrentSession();
             month=this.getMonth();
-            //System.out.println("month===line704=="+month);
             if(month>=4 && month<=6)
             {
-             session-=1;
+             //session-=1;
              //   session=1;
-             //System.out.println("month===line705=="+session);
-             
+                          
             }
             quater=this.getRequiredQuater();
-            //System.out.println("month===line 6=="+quater);
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select es_month,es_total_income from employee_salary_summery where es_code = ? and  es_org_id='"+userBean.getUserOrgCode()+"' and es_sess_id='"+session+"'");
             ps.setString(1, empCode);
             rs=ps.executeQuery();
             while(rs.next()){
                 salarymonth=rs.getInt(1);
-                //System.out.println("month===line 725=="+salarymonth);
                 salary=rs.getInt(2);
-                //System.out.println("month===line 726=="+salary);
                 if(quater==1){
                     totalSalary+=salary;
-                    //System.out.println("month===line 7=="+totalSalary);
                 }
                 else
                 {
                 if(salarymonth<=(quater*3) && salarymonth>=4)
                     totalSalary+=salary;
-                    //System.out.println("month===line 6=="+quater);
+                   
                 }
             }
             rs.close();
             ps.close();
             c.close();
-            //System.out.println("month===line 742=="+totalSalary);
             return totalSalary;
         }
         catch(Exception e)
@@ -753,7 +752,6 @@ public float getTax(String empCode,float amount)
     {
         try
         {   int ts_seq=findAgeDetails(empCode);
-            //System.out.println("month===line 756=="+ts_seq);
             if(ts_seq!=0)
             {
                 Connection cn = new CommonDB().getConnection();
@@ -770,12 +768,11 @@ public float getTax(String empCode,float amount)
                 while(rst.next())
                 {
                     rows[i++]=rst.getInt(1);
-                    //System.out.println("slab==i=773=="+i);
+                    
                 }
                 pst.close();
                 rst.close();
                 int slabs=i;
-                //System.out.println("slab==fghfghfgf=779=="+slabs+"\nslabs i===="+i);
                 i=0;
                 while(i!=slabs){
                     pst = cn.prepareStatement("select sl_start_value,sl_end_value,sl_percent from slab_head where sl_orgCode='"+userBean.getUserOrgCode()+"' and sl_head_code='"+rows[i]+"'");
@@ -788,31 +785,22 @@ public float getTax(String empCode,float amount)
                         start = rst.getInt(1);
                         end = rst.getInt(2);
                         percent = rst.getFloat(3);
-                        // System.out.println("start===792=="+start+"\nend===="+end+"\npercent===="+percent+"\n amount====="+amount);
                         if (amount >= start && amount <= end )
                         {
                             tax+=(amount-start)*(percent/100);
-                            /*System.out.println("month===line 796=1loop======="+tax);
-                            System.out.println("month===line 796=amount===1loop======="+amount);
-                            System.out.println("month===line 796=start===1loop======="+start);
-                            System.out.println("month===line 796 percent==firstloop===="+percent);*/
+                            
                         }
                         if(amount>end)
                         {
                             tax+= (end - start)*(percent/100);
-                            /*System.out.println("month===line 805=="+tax);
-                            System.out.println("month===line 806=end===="+end);
-                            System.out.println("month===line 807=start===="+start);
-                            System.out.println("month===line 808 percent======"+percent);*/
+                            
                         }
                     }
                 i++;
-                //System.out.println("month===line 813======"+tax);
                 
                 }
                 pst.close();
                 cn.close();
-                //System.out.println("month===line 815======"+tax);
                 return tax;
             }
             else
@@ -865,7 +853,7 @@ public float getTax(String empCode,float amount)
              session-=1;
              quater=3;
             }
- if(month>=10 && month<=12)
+            if(month>=10 && month<=12)
             {
              quater=1;
             }
@@ -910,6 +898,35 @@ public float getTax(String empCode,float amount)
             return (float)0.0;
         }
     }
+    
+    public int YearlyTypeCalc(String empCode){
+        int session=0,totalSalary=0,month=0,tempmonth=0;
+        float salary;
+            try{
+                session=sessionId.getCurrentSession();
+                month=this.getMonth();
+                Connection c = new CommonDB().getConnection();
+                ps=c.prepareStatement("select es_total_income,es_month from employee_salary_summery where es_code = ? and  es_org_id='"
+                    +userBean.getUserOrgCode()+"' and es_sess_id='"+session+"'");
+                ps.setString(1, empCode);
+                rs=ps.executeQuery();
+                while(rs.next()){
+                    salary=rs.getInt(1);
+                    tempmonth=rs.getInt(2);
+                    totalSalary+=salary;
+                    
+                }
+                rs.close();
+                ps.close();
+                c.close();
+                return totalSalary;
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                return 0;
+            }
 
-	    
+        }
+    
 }
