@@ -13,6 +13,9 @@
         <property name="present" type="int">
             <column name="emp_present" not-null="true"/>
         </property>
+        <property name="absent" type="int">
+            <column name="emp_absent" not-null="true"/>
+        </property>
         <property name="leave" type="int">
             <column name="emp_leave" not-null="true"/>
         </property>

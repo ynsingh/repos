@@ -1,7 +1,9 @@
 <%-- 
     Document   : EmployeeAttendanceCheck
     Created on : Dec 09, 2014, 5:22:17 PM
-    Author     : *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+    Author     :
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
+* Copyright (c) 2014 - 2016 ETRG, IITK.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -30,7 +32,7 @@
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
    guest
-   IITK , Om Prakash(omprakashkgp@gmail.com), Manorama Pal (palseema30@gmail.com)
+   @Author : Om Prakash(omprakashkgp@gmail.com), Manorama Pal (palseema30@gmail.com) IITK
 --%>
 
 <%@page import="org.smvdu.payroll.beans.upload.FileUploadBean" %>
@@ -128,6 +130,12 @@
                             </f:facet>
                             <rich:inplaceInput value="#{emp.present}" />
                         </h:column> 
+                         <h:column>
+                             <f:facet name="header">
+                                 <h:outputText value=" Absent" />
+                             </f:facet>
+                             <rich:inplaceInput value="#{emp.absent}" />
+                         </h:column>
                          <h:column >
                             <f:facet name="header">
                                 <h:outputText value=" Leave "/>

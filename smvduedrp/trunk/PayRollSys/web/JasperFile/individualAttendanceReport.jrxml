@@ -7,15 +7,13 @@
 	<parameter name="month" class="java.lang.Integer"/>
 	<parameter name="year" class="java.lang.Integer"/>
         <parameter name="code" class="java.lang.String"/>
-        <parameter name="emp_present" class="java.lang.String"/>
-        <parameter name="emp_leave" class="java.lang.String"/>
        
 	<queryString>
 		<![CDATA[SELECT
-    att_emp_code,emp_name,emp_present,emp_leave from employee_attendance_master left join employee_master
+    att_emp_code,emp_name,emp_present,emp_absent,emp_leave from employee_attendance_master left join employee_master
     on emp_code = att_emp_code where att_emp_code=$P{code} and month=$P{month} and year=$P{year} and org_code=$P{org_code}]]>
 	</queryString>
-	        <field name="att_emp_code" class="java.lang.String">
+	<field name="att_emp_code" class="java.lang.String">
                 <fieldDescription><![CDATA[]]></fieldDescription>
         </field>
         <field name="emp_name" class="java.lang.String">
@@ -24,7 +22,10 @@
         <field name="emp_present" class="java.lang.Integer">
                 <fieldDescription><![CDATA[]]></fieldDescription>
         </field>
-        <field name="emp_leave" class="java.lang.String">
+        <field name="emp_absent" class="java.lang.Integer">
+            <fieldDescription><![CDATA[]]></fieldDescription>
+        </field>
+        <field name="emp_leave" class="java.lang.Integer">
                 <fieldDescription><![CDATA[]]></fieldDescription>
         </field>
 
@@ -57,7 +58,7 @@
        <columnHeader>
                 <band height="20" splitType="Stretch">
                         <staticText>
-                                <reportElement x="0" y="0" width="51" height="20"/>
+                                <reportElement x="0" y="0" width="41" height="20"/>
                                 <box leftPadding="4">
                                         <pen lineWidth="0.25"/>
                                         <topPen lineWidth="0.25"/>
@@ -71,7 +72,7 @@
                                 <text><![CDATA[Sr. No]]></text>
                         </staticText>
                         <staticText>
-                                <reportElement x="51" y="0" width="105" height="20"/>
+                                <reportElement x="41" y="0" width="95" height="20"/>
                                 <box leftPadding="4">
                                         <pen lineWidth="0.25"/>
                                         <topPen lineWidth="0.25"/>
@@ -85,7 +86,7 @@
                                 <text><![CDATA[Code]]></text>
                         </staticText>
                         <staticText>
-                                <reportElement x="156" y="0" width="190" height="20"/>
+                                <reportElement x="136" y="0" width="190" height="20"/>
                                 <box leftPadding="4">
                                         <pen lineWidth="0.25"/>
                                         <topPen lineWidth="0.25"/>
@@ -99,7 +100,7 @@
                                 <text><![CDATA[Name]]></text>
                         </staticText>
                         <staticText>
-                                <reportElement x="346" y="0" width="111" height="20"/>
+                                <reportElement x="326" y="0" width="80" height="20"/>
                                 <box leftPadding="4">
                                         <pen lineWidth="0.25"/>
                                         <topPen lineWidth="0.25"/>
@@ -112,9 +113,22 @@
                                 </textElement>
                                 <text><![CDATA[Present]]></text>
                         </staticText>
-
+                        <staticText>
+                                <reportElement x="406" y="0" width="80" height="20"/>
+                                <box leftPadding="4">
+                                        <pen lineWidth="0.25"/>
+                                        <topPen lineWidth="0.25"/>
+                                        <leftPen lineWidth="0.25"/>
+                                        <bottomPen lineWidth="0.25"/>
+                                        <rightPen lineWidth="0.25"/>
+                                </box>
+                                <textElement>
+                                        <font isBold="true"/>
+                                </textElement>
+                                <text><![CDATA[Absent]]></text>
+                        </staticText>
                        <staticText>
-                                <reportElement x="457" y="0" width="98" height="20"/>
+                                <reportElement x="486" y="0" width="75" height="20"/>
                                 <box leftPadding="4">
                                         <pen lineWidth="0.25"/>
                                         <topPen lineWidth="0.25"/>
@@ -132,7 +146,7 @@
         <detail>
                 <band height="20" splitType="Stretch">
                         <textField>
-                                <reportElement x="0" y="0" width="51" height="20"/>
+                                <reportElement x="0" y="0" width="41" height="20"/>
                                 <box leftPadding="4">
                                         <pen lineWidth="0.25"/>
                                         <topPen lineWidth="0.25"/>
@@ -145,7 +159,7 @@
                         </textField>
 
                         <textField>
-                                <reportElement x="51" y="0" width="105" height="20"/>
+                                <reportElement x="41" y="0" width="95" height="20"/>
                                 <box leftPadding="4">
                                         <pen lineWidth="0.25"/>
                                         <topPen lineWidth="0.25"/>
@@ -157,7 +171,7 @@
                                 <textFieldExpression class="java.lang.String"><![CDATA[$F{att_emp_code}]]></textFieldExpression>
                         </textField>
                         <textField>
-                                <reportElement x="156" y="0" width="190" height="20"/>
+                                <reportElement x="136" y="0" width="190" height="20"/>
                                 <box leftPadding="4">
                                         <pen lineWidth="0.25"/>
                                         <topPen lineWidth="0.25"/>
@@ -169,7 +183,7 @@
                                 <textFieldExpression class="java.lang.String"><![CDATA[$F{emp_name}]]></textFieldExpression>
                         </textField>
                         <textField>
-                                <reportElement x="346" y="0" width="111" height="20"/>
+                                <reportElement x="326" y="0" width="80" height="20"/>
                                 <box leftPadding="4">
                                         <pen lineWidth="0.25"/>
                                         <topPen lineWidth="0.25"/>
@@ -178,10 +192,22 @@
                                         <rightPen lineWidth="0.25"/>
                                 </box>
                                 <textElement/>
-                                <textFieldExpression class="java.lang.String"><![CDATA[$F{emp_present}]]></textFieldExpression>
+                                <textFieldExpression class="java.lang.Integer"><![CDATA[$F{emp_present}]]></textFieldExpression>
+                        </textField>
+                        <textField>
+                                <reportElement x="406" y="0" width="80" height="20"/>
+                                <box leftPadding="4">
+                                        <pen lineWidth="0.25"/>
+                                        <topPen lineWidth="0.25"/>
+                                        <leftPen lineWidth="0.25"/>
+                                        <bottomPen lineWidth="0.25"/>
+                                        <rightPen lineWidth="0.25"/>
+                                </box>
+                                <textElement/>
+                                <textFieldExpression class="java.lang.Integer"><![CDATA[$F{emp_absent}]]></textFieldExpression>
                         </textField>
                        <textField>
-                                <reportElement x="457" y="0" width="98" height="20"/>
+                                <reportElement x="486" y="0" width="75" height="20"/>
                                 <box leftPadding="4" >
                                         <pen lineWidth="0.25"/>
                                         <topPen lineWidth="0.25"/>
@@ -190,12 +216,10 @@
                                         <rightPen lineWidth="0.25"/>
                                 </box>
                                 <!--<textElement textAlignment="left"/>-->
-                                <textFieldExpression class="java.lang.String"><![CDATA[$F{emp_leave}]]></textFieldExpression>
+                                <textFieldExpression class="java.lang.Integer"><![CDATA[$F{emp_leave}]]></textFieldExpression>
                         </textField>
 
                 </band>
         </detail>
-
-
 
 </jasperReport>

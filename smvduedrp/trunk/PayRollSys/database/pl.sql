@@ -331,6 +331,7 @@ CREATE TABLE employee_attendance_master (
         id int(11) NOT NULL auto_increment,
         att_emp_code varchar(35) NOT NULL,
         emp_present int(11) NOT NULL default '0',
+        emp_absent int(11) NOT NULL default '0',
         emp_leave int(11) NOT NULL default '0',
         month int(11) NOT NULL ,
         year int(11) NOT NULL ,

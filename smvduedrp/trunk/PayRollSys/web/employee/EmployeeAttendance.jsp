@@ -1,7 +1,9 @@
 <%-- 
     Document   : EmployeeAttendance
     Created on : Sep 29, 2014, 5:22:17 PM
-    Author     : *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+    Author     : 
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
+* Copyright (c) 2014 - 2016 ETRG, IITK.                
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -30,7 +32,7 @@
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
    guest
-   IITK , Om Prakash(omprakashkgp@gmail.com), Manorama Pal (palseema30@gmail.com)
+   @author : Om Prakash(omprakashkgp@gmail.com), Manorama Pal (palseema30@gmail.com)
 --%>
 
 <%@page import="org.smvdu.payroll.beans.upload.FileUploadBean" %>
@@ -135,12 +137,18 @@
                                 <h:outputText value=" Employee Name "/>
                             </f:facet>
                             <h:outputText value="#{emp.name}" />
-                        </h:column>                       
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Present" />
+                            </f:facet> 
+                            <rich:inplaceInput value="#{emp.present}" />
+                        </h:column>  
                          <h:column >
                             <f:facet name="header">
-                                <h:outputText value=" Present "/>
+                                <h:outputText value=" Absent "/>
                             </f:facet>
-                            <rich:inplaceInput value="#{emp.present}" />
+                            <rich:inplaceInput value="#{emp.absent}" />
                         </h:column> 
                          <h:column >
                             <f:facet name="header">
@@ -195,6 +203,9 @@
                     </rich:calendar>--%>
                     
                     <h:message styleClass="error" for="present" tooltip="Example: 15 "/>
+                    <h:outputText value=" Absent"/>
+                    <h:inputText id="absent" required="true" requiredMessage="Please Enter Absent" value="#{AttendanceBean.absent}"/>
+                    <h:message styleClass="error" for="absent" tooltip="*" />
                     <h:outputText value=" Leave"/>
                     <h:inputText id="leave" required="true" requiredMessage="Please Enter Leave" value="#{AttendanceBean.leave}"/>
                     <h:message styleClass="error" for="leave" tooltip="*"/>
@@ -245,101 +256,13 @@
                     id="upload"
                     immediateUpload="#{FileUploadBean.autoUpload}"
                     acceptedTypes="csv" ontyperejected="alert('Only CSV files are accepted');" allowFlash="#{FileUploadBean.useFlash}">
-                   <a4j:support event="onuploadcomplete" reRender="chk"/>
+                   <a4j:support event="onuploadcomplete" reRender="dnl"/>
                 </rich:fileUpload>
                 
                </h:panelGrid>
                 
                </h:form>   
                 </rich:modalPanel>
-                 <%-- New Form---------%>
-                 <%--
-                 <rich:modalPanel  width="1000" height="340" autosized="true" id="chk">
-                 <h:form>
-                  <h:panelGrid columns="5">
-                      <%-- <h:outputText value="List of employee code which is not added in the uploaded csv file" style="font-size: 18px" />--%>
-                      <%-- <h:outputText value="List of Attendace is not uploaded " style="font-size: 12px" />
-                                <h:selectOneMenu value="#{AttendanceControllerBean.month}" >
-                                        <f:selectItem itemValue="0" itemLabel="January"/>
-                                        <f:selectItem itemValue="1" itemLabel="February"/>
-                                        <f:selectItem itemValue="2" itemLabel="March"/>
-                                        <f:selectItem itemValue="3" itemLabel="April"/>
-                                        <f:selectItem itemValue="4" itemLabel="May"/>
-                                        <f:selectItem itemValue="5" itemLabel="June"/>
-                                        <f:selectItem itemValue="6" itemLabel="July"/>
-                                        <f:selectItem itemValue="7" itemLabel="August"/>
-                                        <f:selectItem itemValue="8" itemLabel="September"/>
-                                        <f:selectItem itemValue="9" itemLabel="October"/>
-                                        <f:selectItem itemValue="10" itemLabel="November"/>
-                                        <f:selectItem itemValue="11" itemLabel="December"/>
-                         </h:selectOneMenu>
-                         <h:selectOneMenu value="#{AttendanceControllerBean.year}" >
-                             <f:selectItems value="#{AttendanceControllerBean.itemsYear}"/>
-                         </h:selectOneMenu>
-                        <a4j:commandButton reRender="check" action="#{AttendanceControllerBean.checkAtts}" value="Check Attendance"/>
-                  </h:panelGrid>
-                  </h:form>
-                  <h:form id="attChkForm"> 
-                    
-                  <h:panelGrid id="attChklist" style="width:100%;">
-                        
-                  <rich:dataTable id="check" value="#{AttendanceControllerBean.allCheckAttendanceData}"  binding="#{AttendanceControllerBean.dataGrid11 }" var="emp1" rowKeyVar="row"  rows="15" style="width:100%;">
-                        
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="S.No."/>
-                            </f:facet>
-                            <h:outputText value="#{emp1.srNo}" />
-                        </h:column>
-                         
-                        <h:column >
-                            <f:facet name="header">
-                                <h:outputText value="Employee Code"/>
-                            </f:facet>
-                            <h:outputText value="#{emp1.code}" />
-                        </h:column>  
-                        <h:column >
-                            <f:facet name="header">
-                                <h:outputText value=" Employee Name "/>
-                            </f:facet>
-                            <h:outputText value="#{emp1.name}" />
-                        </h:column>                       
-                         <h:column >
-                            <f:facet name="header">
-                                <h:outputText value=" Present "/>
-                            </f:facet>
-                            <rich:inplaceInput value="#{emp1.present}" />
-                        </h:column> 
-                         <h:column >
-                            <f:facet name="header">
-                                <h:outputText value=" Leave "/>
-                            </f:facet>
-                            <rich:inplaceInput value="#{emp1.leave}" />
-                         </h:column> 
-                         <h:column>
-                           <f:facet name="header">
-                               <h:outputText value="Month"/>
-                           </f:facet>
-                           <rich:inplaceInput value="#{emp1.month}"/>
-                       </h:column>
-                       <h:column>
-                           <f:facet name="header">
-                               <h:outputText value="Year"/>
-                           </f:facet>
-                           <rich:inplaceInput value="#{emp1.year}"/>
-                       </h:column> 
-                         
-                                <f:facet name="footer">
-                                <rich:datascroller for="check" page="15"/>  
-                            </f:facet>
-                    </rich:dataTable>
-                    </h:panelGrid>
-                    <h:panelGrid columns="2">
-                        <a4j:commandButton value="Update" reRender="check"  action="#{AttendanceControllerBean.update}"/> 
-                        <h:commandButton value="Close" onclick="#{rich:component('check')}.hide(); return false;" />
-                    </h:panelGrid>
-                  </h:form>
-                </rich:modalPanel>--%>
            <%---file upload END================================= --%>     
                 
                <rich:modalPanel id="hnl" autosized="true" domElementAttachment="parent" width="750" height="450">
@@ -352,27 +275,29 @@
                     <rich:panel header="Help">
                     <h:panelGrid  id="helppnl">
                     <h:outputText style="font-size:1.5em;font-weight:bold;" value="Instruction for add attendance"/>
-                    <h:outputText style="font-size:1.3em;"  value="1. The Code (Employee code) should be existing in the database."/>
-                    <h:outputText style="font-size:1.3em;"  value="2. Please insert the value of Present in number."/>
-                    <h:outputText style="font-size:1.3em;"  value="3. Please insert the value of Leave in number."/>
-                    <h:outputText style="font-size:1.3em;"  value="4. Please select the month."/>
-                    <h:outputText style="font-size:1.3em;"  value="5. Please select the year. "/>
-                    <h:outputText style="font-size:1.3em;"  value="6. Now press the Save Button for save attendance in database. "/>
+                    <h:outputText style="font-size:1.2em;"  value="1. The Code (Employee code) should be existing in the database."/>
+                    <h:outputText style="font-size:1.2em;"  value="2. Please insert the value of Present in number."/>
+                    <h:outputText style="font-size:1.2em;"  value="2. Please insert the value of Absent in number."/>
+                    <h:outputText style="font-size:1.2em;"  value="3. Please insert the value of Leave in number."/>
+                    <h:outputText style="font-size:1.2em;"  value="4. Please select the month."/>
+                    <h:outputText style="font-size:1.2em;"  value="5. Please select the year. "/>
+                    <h:outputText style="font-size:1.2em;"  value="6. Now press the Save Button for save attendance in database. "/>
                     <h:outputText style="font-size:1.5em;font-weight:bold;" value="Instruction for Check attendance"/>
-                    <h:outputText style="font-size:1.3em;"  value=" Whene you click on Check Attendance Button it will show the list of employee which attendance is not uploaded. "/>
-                    <h:outputText style="font-size:1.3em;"  value=" Please select the checkbox and fill the value of Year, Month, Present and Leave. now press the Save button. "/>
+                    <h:outputText style="font-size:1.2em;"  value=" When you click on Check Attendance Button it will show the list of employee which attendance is not uploaded. "/>
+                    <h:outputText style="font-size:1.2em;"  value=" Please select the checkbox and fill the value of Year, Month, Present, Absent and Leave. now press the Save button. "/>
                     <h:outputText style="font-size:1.5em;font-weight:bold;" value="Instruction for View attendance"/>
-                    <h:outputText style="font-size:1.3em;"  value=" you can view the attendance by select month and year from drop down list and press the load button."/>
-                    <h:outputText style="font-size:1.3em;font-weight:bold;" value="Instruction for upload a csv file."/>
-                    <h:outputText style="font-size:1.3em;" value=" 1. Open LibreOffice Calc in ubuntu and Excel in windows."/>
-                    <h:outputText style="font-size:1.3em;" value=" 2. The file should contain five field i.e"/>
-                    <h:outputText style="font-size:1.5em;" value="Example: "/>
-                    <h:outputText style="font-size:1.5em;font-weight:bold;" value=" Code = 127 or 127ee"/>
-                    <h:outputText style="font-size:1.5em;font-weight:bold;" value=" Present = 21"/>
-                    <h:outputText style="font-size:1.5em;font-weight:bold;" value=" Leave = 9 "/>
-                    <h:outputText style="font-size:1.5em;font-weight:bold;" value=" month = 0 for january ---- 11 for December "/>
-                    <h:outputText style="font-size:1.5em;font-weight:bold;" value=" year = 2014 "/>
-                    <h:outputText style="font-size:1.5em;"  value="3. Save as csv format."/>
+                    <h:outputText style="font-size:1.2em;"  value=" you can view the attendance by select month and year from drop down list and press the load button."/>
+                    <h:outputText style="font-size:1.2em;font-weight:bold;" value="Instruction for upload a csv file."/>
+                    <h:outputText style="font-size:1.2em;" value=" 1. Open LibreOffice Calc in ubuntu and Excel in windows."/>
+                    <h:outputText style="font-size:1.3em;" value=" 2. The file should contain six field i.e"/>
+                    <h:outputText style="font-size:1.5em;font-weight:bold;" value="Example: "/>
+                    <h:outputText style="font-size:1.2em;" value=" Code = 127 or EE127"/>
+                    <h:outputText style="font-size:1.2em;" value=" Present = 21"/>
+                    <h:outputText style="font-size:1.2em;" value=" Absent= 5 "/>
+                    <h:outputText style="font-size:1.2em;" value=" Leave = 4 "/>
+                    <h:outputText style="font-size:1.2em;" value=" month = 0 for january ---- 11 for December "/>
+                    <h:outputText style="font-size:1.2em;" value=" year = 2014 "/>
+                    <h:outputText style="font-size:1.2em;"  value="3. Save as csv format."/>
                     <%--<h:outputText style="font-size:1.5em;"  value="4. The list of attendance which is not uploaded is :  ~/PayRollSys/build/webcsvfile-UploadError.txt"/>
                      --%>        
                     </h:panelGrid>

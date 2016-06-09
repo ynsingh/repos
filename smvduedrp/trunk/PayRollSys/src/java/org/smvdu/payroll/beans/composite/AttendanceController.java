@@ -12,18 +12,21 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.ServletException;
+import org.smvdu.payroll.api.email.MassageProperties;
 import org.smvdu.payroll.api.pf.ReportGen.AnnualAttendanceReport;
 import org.smvdu.payroll.api.pf.ReportGen.AttendancePDF;
 import org.smvdu.payroll.beans.setup.Attendance;
 import org.smvdu.payroll.beans.db.AttendanceDB;
+import org.smvdu.payroll.user.UserRegistration;
 
 /**
  *
- *  *  Copyright (c) 2010 - 2011,2015 SMVDU, Katra.
-*  All Rights Reserved.
-**  Redistribution and use in source and binary forms, with or 
-*  without modification, are permitted provided that the following 
-*  conditions are met: 
+ *    Copyright (c) 2010 - 2011 SMVDU, Katra.
+ *    Copyright (c) 2014 - 2016 ETRG, IITK.
+ *  All Rights Reserved.
+ **  Redistribution and use in source and binary forms, with or 
+ *  without modification, are permitted provided that the following 
+ *  conditions are met: 
 **  Redistributions of source code must retain the above copyright 
 *  notice, this  list of conditions and the following disclaimer. 
 * 
@@ -56,11 +59,6 @@ public class AttendanceController {
     public int listofyears;
     private ArrayList<Attendance> checkattendances;
     private UIData dataGrid11;
-
-   /* public AttendanceController()
-    {
-        attendances = new AttendanceDB().loadAttendances(month,year);
-    }*/
     private ArrayList<Attendance> attendances;
     private UIData dataGrid;
     public String loadAtt;
@@ -77,13 +75,11 @@ public class AttendanceController {
    public void populate()
     {
         getAllAttendanceData();
-        //attendances = new AttendanceDB().loadAttendances(month,year);
     }
    
    public void checkAtts()
    {
        getAllCheckAttendanceData();
-       //checkattendances = new AttendanceDB().checkAttendances(month,year);
    } 
    
     public UIData getDataGrid() {
@@ -162,7 +158,6 @@ public class AttendanceController {
     public ArrayList<Attendance> getAllCheckAttendanceData() {
         checkattendances = new AttendanceDB().checkAttendances(month, year);
         dataGrid.setValue(checkattendances);
-        //System.out.print("==11="+checkattendances.size()+"\n");
         return checkattendances;
     }
    
@@ -178,7 +173,7 @@ public class AttendanceController {
         FacesContext fc = FacesContext.getCurrentInstance();
         for(Attendance d: data)
         {
-        int sum =d.getPresent()+d.getLeave();
+        int sum =d.getPresent()+d.getAbsent()+d.getLeave();
         int mth= d.getMonth();
         int yar= d.getYear();
         int monthMaxDays = new AttendanceDB().NumberofDays(mth,yar);
@@ -187,12 +182,12 @@ public class AttendanceController {
             
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            message.setSummary("Please Enter Valid Leave Number,and present number");
+            message.setSummary("Please Enter Valid Leave Number,absent number and present number");
             fc.addMessage("", message);
             return;
            }
                  
-            System.out.println("Session Present "+d.getPresent()+"<===>"+d.getLeave());
+            System.out.println("Session Present "+d.getPresent()+"<===>"+d.getAbsent()+"<====>"+d.getLeave());
         }
         new AttendanceDB().update(data);
         FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Attendance Updated", ""));
@@ -214,7 +209,7 @@ public class AttendanceController {
               //  checkboxdata.add(chbd);
                 System.out.println("datacopy:==== "+chdata.size());
             //} 
-            int sum =chbd.getPresent()+chbd.getLeave();
+            int sum =chbd.getPresent()+chbd.getAbsent()+chbd.getLeave();
             int mth= chbd.getMonth();
             int yar= chbd.getYear();
             int monthMaxDays = new AttendanceDB().NumberofDays(mth,yar);
@@ -223,7 +218,7 @@ public class AttendanceController {
             {           
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            message.setSummary("Please Enter Valid Leave Number,and present number");
+            message.setSummary("Please Enter Valid Leave Number,absent number and present number");
             fc.addMessage("", message);
             return;
             }
