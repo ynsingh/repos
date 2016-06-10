@@ -618,9 +618,9 @@ $width="100%";
 		}
 
 		/* Message for entries related to asset purchase. */
-		$this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
+	/*	$this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
                 $this->messages->add('If TDS is being deducted.Then, Select Party name next to TDS Ledger and make Narration like type@ rate of TDS on payment Amount u/s name e.g. Deduction@1.0300% on Payment Amount 41,540.00 u/s 194C.', 'success');
-	        $this->messages->add('If Assets being Purchasing.Then,Narration like DepreciationRate@xyz% lifetime@xyzYears.', 'success');
+	        $this->messages->add('If Assets being Purchasing.Then,Narration like DepreciationRate@xyz% lifetime@xyzYears.', 'success');*/
 
                     
 		/* Entry Type */
@@ -1492,9 +1492,9 @@ $width="100%";
 		}
 
 		/* Message for entries related to asset purchase. */
-                $this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
+        /*        $this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
 		$this->messages->add('If TDS is being deducted.Then, Select Party name next to TDS Ledger and make Narration like type@ rate of TDS on payment Amount u/s name e.g. Deduction@1.0300% on Payment Amount 41,540.00 u/s 194C.', 'success');
-        	$this->messages->add('If Assets being Purchasing.Then,Narration like DepreciationRate@xyz% lifetime@xyzYears.', 'success');	
+        	$this->messages->add('If Assets being Purchasing.Then,Narration like DepreciationRate@xyz% lifetime@xyzYears.', 'success');	*/
 	
 		/* Entry Type */
 		$entry_type_id = entry_type_name_to_id($entry_type);
@@ -1771,14 +1771,15 @@ $width="100%";
 			/*Load current ledger details if not $_POST */
 			//if ( ! $_POST)
 			//{
-			$this->db->from('entry_items')->where('entry_id', $entry_id);
+			
+		/*	$this->db->from('entry_items')->where('entry_id', $entry_id);
 			$cur_ledgers_q = $this->db->get();
 			if ($cur_ledgers_q->num_rows <= 0)
 			{
 				$this->messages->add('No Ledger accounts found!', 'error');
-			}
-			$counter = 0;
+			}*/
 
+			$counter = 0;
 			$flag = 0;
 			$fund_id = '';
 			$entryId = '';
@@ -1790,6 +1791,43 @@ $width="100%";
                         $query = $this->db->get();
                         $income = $query->row();
 			$income_id = $income->id;
+			
+
+			//added by @RAHUL
+			/*
+			*Code for selecting only ledger Account
+			*not Fund as Ledger Account.
+			*/						
+			$this->db->select('id')->from('entry_items')->where('entry_id',$entry_id)->where('ledger_id !=',$income_id);
+                        $map_ledger_id = $this->db->get();
+                        foreach($map_ledger_id->result() as $row_a1)
+                        {
+                                $maping_id = $row_a1->id;
+				$this->db->select('entry_items_id')->from('fund_management')->where('entry_items_id',$maping_id);
+				$map_ledger_id_1 = $this->db->get();
+				if($map_ledger_id_1->num_rows >0)
+				{
+					foreach($map_ledger_id_1->result() as $row_a2)
+					{
+						$maping_id_1[] = $row_a2->entry_items_id + 1;
+					}
+				}
+				else
+				{
+					$maping_id_1[] = '0';
+				}
+                        }
+			$this->db->from('entry_items')->where('entry_id',$entry_id)->where('ledger_id !=',$income_id)->where_not_in('id',$maping_id_1);
+			$cur_ledgers_q = $this->db->get();
+                        if ($cur_ledgers_q->num_rows <= 0)
+                        {
+                                $this->messages->add('No Ledger accounts found!', 'error');
+                        }
+			/*
+			*Above Code for selecting only ledger Account
+			*not Fund as Ledger Account ends here.  
+			*/
+
 
 			foreach ($cur_ledgers_q->result() as $row)
 			{
@@ -1815,6 +1853,13 @@ $width="100%";
 						$entryId = $row->id;
                                                	$flag = 1;
                                         }
+					if($temp && $flag == 0 && $row->dc == 'C')
+                                        {
+                                                $fund_id = $row->ledger_id;
+                                                $entryId = $row->id;
+                                                $flag = 0;
+                                        }
+
 					else
 					{
 						$flag = 0;
@@ -4193,9 +4238,9 @@ $width="100%";
                 }
 
 		/* Message for entries related to asset purchase. */
-                $this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
+        /*        $this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
                 $this->messages->add('If TDS is being deducted.Then, Select Party name next to TDS Ledger and make Narration like type@ rate of TDS on payment Amount u/s name e.g. Deduction@1.0300% on Payment Amount 41,540.00 u/s 194C.', 'success');
-                $this->messages->add('If Assets being Purchasing.Then,Narration like DepreciationRate@xyz% lifetime@xyzYears.', 'success');
+                $this->messages->add('If Assets being Purchasing.Then,Narration like DepreciationRate@xyz% lifetime@xyzYears.', 'success');*/
 
                 /* Entry Type */
                 $entry_type_id = entry_type_name_to_id($entry_type);

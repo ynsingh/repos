@@ -605,6 +605,20 @@ $(document).ready(function() {
 		Changes position of Vendor Voucher Number and Bill/Voucher Number
 		added Purchase Order No. by @RAHUL
 	*/
+
+	echo "<ul style = \"background: #fff8c6;border: 1px solid #ffec8b;display: block;color: #222222;margin: 5px 0 12px;list-style-position:outside;list-style-type: disc;\">";
+        echo "<li style = \"margin: 15px 0px 0px 0px \">";
+        echo "If asset is being purchased.Then, make an additional entry related to corresponding fund.";
+        echo "</li>";
+        echo "<li>";
+        echo "If TDS is being deducted.Then, select Party name next to TDS Ledger and make narration like type@ rate of TDS on payment.Amount u/s name e.g. Deduction @ 1.0300% on Payment Amount 41,540.00 u/s 194C.";
+        echo "</li>";
+        echo "<li>";
+        echo "If Assets being Purchasing.Then, Narration like Depreciation Rate @xyz% lifetime @xyz Years.";
+        echo "</li>";
+	echo "<br>";
+        echo "</ul>";
+
 	echo "<p align=\"right\">"; 
 	//echo anchor_popup('help/entry', 'Help'.img(array('src' => asset_url() . "images/icons/tip.png", 'alt' => 'Help')));?>
 	<a href=javascript:popupWin(<?php echo '\'' . site_url('help/entry') . '\''; ?>,"newWin");><img src="<?php echo  asset_url(); ?>images/icons/hand.gif" />Help</a>
