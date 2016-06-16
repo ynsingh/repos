@@ -168,8 +168,8 @@
                         if(!($temp))
                         {
                                 $temp1 = $this->Ledger_model->isFundDeduct($row->ledger_id);
-                                if(!($temp1))
-                                {
+                                //if(!($temp1))
+                                //{
                                         $query = $this->Ledger_model->get_type1($entry_id);
                                         $my_values = explode('#',$query);
                                         $type =$my_values[0];
@@ -183,7 +183,7 @@
                                         echo "<td> " . $this->Secunit_model->get_secunitaddress($row->secunitid) . "</td>";
                                         echo "<td> " . $name . "</td>";
                                         echo "<td> " . $type . "</td>";
-                                }
+                                //}
                         }
                 }
                 else

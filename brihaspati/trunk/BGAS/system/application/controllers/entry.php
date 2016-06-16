@@ -558,10 +558,12 @@ $width="100%";
                 $income_id = $income->id;
 
 		/* Load current entry details */
-		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
-		$this->db->where('ledger_id !=', $income_id);
 		
-		$cur_entry_ledgers = $this->db->get();
+		$cur_entry_ledgers = $this->Entry_model->get_all_entry_items_ledger_notfund($entry_id,$income_id);
+		//$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+		//$this->db->where('ledger_id !=', $income_id);
+		
+		//$cur_entry_ledgers = $this->db->get();
 
 		
 		if ($cur_entry_ledgers->num_rows() < 1)
@@ -1798,7 +1800,7 @@ $width="100%";
 			*Code for selecting only ledger Account
 			*not Fund as Ledger Account.
 			*/						
-			$this->db->select('id')->from('entry_items')->where('entry_id',$entry_id)->where('ledger_id !=',$income_id);
+			/*$this->db->select('id')->from('entry_items')->where('entry_id',$entry_id)->where('ledger_id !=',$income_id);
                         $map_ledger_id = $this->db->get();
                         foreach($map_ledger_id->result() as $row_a1)
                         {
@@ -1818,7 +1820,8 @@ $width="100%";
 				}
                         }
 			$this->db->from('entry_items')->where('entry_id',$entry_id)->where('ledger_id !=',$income_id)->where_not_in('id',$maping_id_1);
-			$cur_ledgers_q = $this->db->get();
+			$cur_ledgers_q = $this->db->get();*/
+			$cur_ledgers_q = $this->Entry_model->get_all_entry_items_ledger_notfund($entry_id,$income_id);
                         if ($cur_ledgers_q->num_rows <= 0)
                         {
                                 $this->messages->add('No Ledger accounts found!', 'error');
@@ -2068,8 +2071,17 @@ $width="100%";
                         	}
                 		$data_vendor_number = $this->input->post('vendor_number', TRUE);
 				$purchase_order_no = $this->input->post('purchase_order_no', TRUE);
-                        	$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
-				$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
+
+				if ($this->input->post('sanc_letter_date', TRUE)) {
+                                        $data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
+                                }
+                                else{
+                                        $data_sanc_letter_date = "";
+                                }
+
+                        	//$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
+				//$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
+
 			 	$data_sanc_letter_no = $this->input->post('sanc_letter_no', TRUE);
 				$dr_total = 0;
 				$cr_total = 0;
@@ -2688,10 +2700,11 @@ $width="100%";
                 $query = $this->db->get();
                 $income = $query->row();
                 $income_id = $income->id;
-
-                $this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
-                $this->db->where('ledger_id !=', $income_id);
-                $ledger_q = $this->db->get();
+		
+		$ledger_q = $this->Entry_model->get_all_entry_items_ledger_notfund($entry_id,$income_id);
+                //$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+                //$this->db->where('ledger_id !=', $income_id);
+                //$ledger_q = $this->db->get();
                 $data['ledger_q'] = $ledger_q;
 
 		$file_name = $current_entry_type['name'] . '_entry_' . $cur_entry->number . ".html";
@@ -2759,9 +2772,10 @@ $width="100%";
         	$income_id = $income->id;
 
 		/* Load current entry details */
-		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
-		$this->db->where('ledger_id !=', $income_id);
-		$ledger_q = $this->db->get();
+		$ledger_q = $this->Entry_model->get_all_entry_items_ledger_notfund($entry_id,$income_id);
+		//$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+		//$this->db->where('ledger_id !=', $income_id);
+		//$ledger_q = $this->db->get();
 		$data['ledger_q'] = $ledger_q;
 
 		$this->load->view('entry/printpreview', $data);
@@ -3400,8 +3414,9 @@ $width="100%";
                 	$ledger_q = $this->db->get();
                 	$data['ledger_q'] = $ledger_q;*/
 
-			$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
-			$ledger_q = $this->db->get();
+			$ledger_q = $this->Entry_model->get_all_entry_items_ledger_notfund($entry_id,$income_id);
+			//$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
+			//$ledger_q = $this->db->get();
 			$entry_data['ledger_data'] = $ledger_q;
 			
 			//Code for attachement file added by @RAHUL
@@ -4146,9 +4161,11 @@ $width="100%";
                 $income_id = $income->id;
 
 		/* Load current entry details */
-		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
-		$this->db->where('ledger_id !=', $income_id);
-		$cur_entry_ledgers = $this->db->get();
+		
+		$cur_entry_ledgers = $this->Entry_model->get_all_entry_items_ledger_notfund($entry_id,$income_id);
+		//$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+		//$this->db->where('ledger_id !=', $income_id);
+		//$cur_entry_ledgers = $this->db->get();
 		if ($cur_entry_ledgers->num_rows() < 1)
 		{
 			$this->messages->add('Entry has no associated Ledger accounts.', 'error');

@@ -52,8 +52,8 @@ Backward Reference Id : <span class="bold"><?php //echo $backward_reference_id; 
 			if(!($temp))
 			{
 				$temp1 = $this->Ledger_model->isFundDeduct($row->ledger_id);
-                                if(!($temp1))
-				{
+                                //if(!($temp1))
+				//{
 					$query = $this->Ledger_model->get_type1($entry_id);
                                         $my_values = explode('#',$query);
                                         $type = $my_values[0];
@@ -81,7 +81,7 @@ Backward Reference Id : <span class="bold"><?php //echo $backward_reference_id; 
 					{
                                         	echo "<td> " . $type . "</td>";
 					}
-				}
+				//}
 			}
 		}
 		else

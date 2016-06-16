@@ -2460,8 +2460,20 @@ var $ledgers = array();
 	}
 
 	function get_type1($entry_id){
+		$this->db->select('entry_id')->from('entry_items')->where('id',$entry_id);
+		$get_id = $this->db->get();
+		$get_id_1 = $get_id->row();
+		$ent_id = $get_id_1->entry_id;
+		$this->db->select('verified_by')->from('entries')->where('id',$ent_id);
+		$check_verify = $this->db->get();
+		$check_id = $check_verify->row();
+		$verify_id = $check_id->verified_by;
                 $type = '';
 		$name ="";
+		if($verify_id != '')
+			$entry_id =$entry_id-2;
+		else
+			$entry_id =$entry_id;
                 $this->db->select('type,fund_name');
                 $this->db->from('fund_management');
                 $this->db->where('entry_items_id', $entry_id);

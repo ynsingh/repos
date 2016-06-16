@@ -134,4 +134,51 @@ class Entry_model extends Model {
                 return $options;
         }
 
+	function get_all_entry_items_ledger_notfund($entry_id,$income_id)
+	{
+		$this->db->select('verified_by')->from('entries')->where('id',$entry_id);
+		$verified_id = $this->db->get();
+		$verification = $verified_id->row();
+		$verification_id = $verification->verified_by;
+		$this->db->select('id')->from('entry_items')->where('entry_id',$entry_id)->where('ledger_id !=',$income_id);
+          	$map_ledger_id = $this->db->get();
+         	foreach($map_ledger_id->result() as $row_a1)
+         	{
+             		$maping_id = $row_a1->id;
+                	$this->db->select('entry_items_id')->from('fund_management')->where('entry_items_id',$maping_id);
+                     	$map_ledger_id_1 = $this->db->get();
+			if($verification_id != '')
+			{
+				if($map_ledger_id_1->num_rows >0)
+                        	{
+                                	foreach($map_ledger_id_1->result() as $row_a2)
+                                	{
+                                        	$maping_id_1[] = $row_a2->entry_items_id;
+                                	}
+                        	}
+                        	else
+                        	{
+                                	$maping_id_1[] = '0';
+                        	}
+			}
+			else
+			{
+               			if($map_ledger_id_1->num_rows >0)
+                    		{
+                       			foreach($map_ledger_id_1->result() as $row_a2)
+                          		{
+                             			$maping_id_1[] = $row_a2->entry_items_id + 1;
+                       			}
+                  		}
+                   		else
+                    		{
+                      			$maping_id_1[] = '0';
+               			}
+			}
+		}
+        	$this->db->from('entry_items')->where('entry_id',$entry_id)->where('ledger_id !=',$income_id)->where_not_in('id',$maping_id_1);
+           	$cur_ledgers_q = $this->db->get();
+		return $cur_ledgers_q;
+	}
+
 }
