@@ -119,22 +119,32 @@ class Addparty extends Controller {
 		if($data_search_by == 'sacunit#1'){
 			$field_name=explode("#",$data_search_by);
 			$field = $field_name[0] . '      ' . 'LIKE';
-			if ($text=='student') {
+			if ($text == 'student') {
 				$text='01';
 			} elseif ($text == 'clerical staff') {
 		  		$text='02';
-			} elseif($text = 'Technical staff') {
+			} elseif($text == 'technical staff') {
 				$text='03';
-			} elseif($text = 'Supplier') {
+			} elseif($text == 'supplier') {
         			$text='04';
-			} elseif($text = 'Admin staff') {
+			} elseif($text == 'admin staff') {
         			$text='05';
-			} elseif($text = 'Contractor') {
+			} elseif($text == 'contractor') {
         			$text='06';
-			} elseif($text = 'Service provider') {
+			} elseif($text == 'service provider') {
         			$text='07';
-			} elseif($text = 'Alumni/Doner') {
+			} elseif($text == 'alumni/Doner') {
    				$text='08';
+			} elseif($text == 'author') {
+   				$text='09';
+			} elseif($text == 'illustrator') {
+   				$text='10';
+			} elseif($text == 'participant') {
+   				$text='11';
+			} elseif($text == 'invites/Speaker') {
+   				$text='12';
+			} elseif($text == 'officers') {
+   				$text='13';
 			} else{
 				 $this->messages->add('Search proper name of Party Type.', 'error');
 			}
@@ -189,9 +199,12 @@ class Addparty extends Controller {
                         "admin staff" => "Admin Staff",
                         "contractor" => "Contractor",
                         "service provider" => "Service Provider",
-                        "alumni/doner" => "Alumni/Donor",
+                        "author" => "Author",
+                        "illustrator" => "Illustrator",
+                        "participant" => "Participant",
+                        "invites/Speaker" => "Invites/Speaker",
+                        "officers" => "Officers",
                 );
-
 
 		$data['mnumber'] = array(
                         'name' => 'mnumber',
@@ -347,7 +360,6 @@ class Addparty extends Controller {
 			$data['opbal']['value'] = $this->input->post('opbal', TRUE);
 			$data['op_balance_dc'] = $this->input->post('op_balance_dc', TRUE);
 		}
-
 		/* Validating form */
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -357,8 +369,26 @@ class Addparty extends Controller {
 		}
 		else
 		{
+			$data_pname = $this->input->post('pname', TRUE);
+                        $data_mnumber = $this->input->post('mnumber', TRUE);
+                        $data_accountemail = $this->input->post('accountemail', TRUE);
+                        $data_address = $this->input->post('address', TRUE);
+                        $data_bacnumber = $this->input->post('bacnumber',TRUE);
+                        $data_bankname = $this->input->post('bankname', TRUE);
+                        $data_branchname = $this->input->post('branchname', TRUE);
+                        $data_ifsccode = $this->input->post('ifsccode', TRUE);
+                        $data_bankaddress = $this->input->post('bankaddress', TRUE);
+                        $data_pannum = $this->input->post('pannum', TRUE);
+			$data_uidnum = $this->input->post('uidnum', TRUE);
+                        $data_tannum = $this->input->post('tannum', TRUE);
+                        $data_stnm = $this->input->post('stnum', TRUE);
+                        $data_vatnum = $this->input->post('vatnum', TRUE);
+                        $data_gstnum = $this->input->post('gstnum', TRUE);
+                        $data_opbal = $this->input->post('opbal', TRUE);
+			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
 			$data_partyrole = $this->input->post('partyrole', TRUE);
 
+//add in new method
                         if($data_partyrole == "faculty"){
                         	$secunit_id = "00";
                         }
@@ -385,66 +415,26 @@ class Addparty extends Controller {
                         }
                         if($data_partyrole == "alumni/doner"){
                         	$secunit_id = "08";
+			} 
+			if($data_partyrole == "author") {
+                                $secunit_id = '09';
+                        } 
+			if($data_partyrole == 'illustrator') {
+                                $secunit_id = '10';
+                        } 
+			if($data_partyrole == 'participant') {
+                                $secunit_id = '11';
+                        } 
+			if($data_partyrole == 'invites/Speaker') {
+                                $secunit_id = '12';
+                        } 
+			if($data_partyrole == 'officers') {
+                                $secunit_id = '13';
                         }
 
-			//$CI =& get_instance();
-                       // $this->load->model('Upload_model');
                         $number = $this->upload_model->get_count_num($data_partyrole);
                         $secondary_id = $this->upload_model->get_random_secunitid($secunit_id,$number); 
  
-		/*	$code = substr($data_sacunitid, 0, 2);
-			if($code == "00"){
-			$prole="faculty";	
-			}
-			if($code == "01"){
-			$prole="student";	
-			}
-			if($code == "02"){
-			$prole="clerical staff";	
-			}
-			if($code == "03"){
-			$prole="technical staff";	
-			}
-			if($code == "04"){
-			$prole="supplier";	
-			}
-			if($code == "05"){
-			$prole="admin staff";	
-			}
-			if($code == "06"){
-			$prole="contractor";	
-			}
-			if($code == "07"){
-			$prole="service provider";	
-			}
-			if($code == "08"){
-			$prole="alumni/doner";	
-			}
-			if(($code !="00")&&($code !="01")&&($code !="02")&&($code !="03")&&($code !="04")&&($code !="05")&&($code !="06")&&($code !="07")&&($code !="08"))
-			{
-                                $this->messages->add('Please insert the second unit id with given code.', 'error');
-                                $this->template->load('template', 'addparty/add', $data);
-                                return;
-			}
-
-			$data_sacunitid = $this->input->post('sacunit', TRUE);*/
-			$data_pname = $this->input->post('pname', TRUE);
-                        $data_mnumber = $this->input->post('mnumber', TRUE);
-                        $data_accountemail = $this->input->post('accountemail', TRUE);
-                        $data_address = $this->input->post('address', TRUE);
-                        $data_bacnumber = $this->input->post('bacnumber',TRUE);
-                        $data_bankname = $this->input->post('bankname', TRUE);
-                        $data_branchname = $this->input->post('branchname', TRUE);
-                        $data_ifsccode = $this->input->post('ifsccode', TRUE);
-                        $data_bankaddress = $this->input->post('bankaddress', TRUE);
-                        $data_pannum = $this->input->post('pannum', TRUE);
-			$data_uidnum = $this->input->post('uidnum', TRUE);
-                        $data_tannum = $this->input->post('tannum', TRUE);
-                        $data_stnm = $this->input->post('stnum', TRUE);
-                        $data_vatnum = $this->input->post('vatnum', TRUE);
-                        $data_gstnum = $this->input->post('gstnum', TRUE);
-                        $data_opbal = $this->input->post('opbal', TRUE);
-			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
 			
 			if($data_mnumber !=""){
 			if(strlen($data_mnumber) < 10){
