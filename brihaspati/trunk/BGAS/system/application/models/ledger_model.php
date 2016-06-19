@@ -97,7 +97,8 @@ var $ledgers = array();
 			}
 			foreach ($ledger->result() as $row)
 			{
-				echo $cd = $row->code;
+				//echo $cd = $row->code;
+				 $cd = $row->code;
 				$nme = $row->name;
 				//if(substr($cd, 0, 2) == 10)
 				if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))

@@ -295,7 +295,7 @@ class Budget_model extends Model {
 		$budget_q1 = $this->db->get();
 		foreach($budget_q1->result() as $row)
 		{
-			echo $budget[$counter]['id'] = $row->id;
+			$budget[$counter]['id'] = $row->id;
 			$budget[$counter]['code'] = $row->code;
 			$budget[$counter]['budgetname'] = $row->budgetname;
 			$budget[$counter]['bd_balance'] = $row->bd_balance;
