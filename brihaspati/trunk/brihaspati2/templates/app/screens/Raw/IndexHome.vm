@@ -122,12 +122,14 @@ $!data.getMessage()
 #if($guest_login=="false")
 <td width=20% valign="top">
 	<table width=100% bgcolor="$ui.menuColor">
-		<tr><td><b>$brih_todayTask</b></td></tr>
+		<tr align=center><td><b>$brih_todayTask</b></td></tr>
 	</table>
-	#if($taskList.size() > 1)
+	#if($taskList.size() > 0)
 		## Below line for horizental scrolling is added by shaista
 		<div style="width:300px; overflow: auto;">
-	#end
+	#else
+                <font color="red">&nbsp $brih_there $brih_task5</font>
+        #end		
 	<table width="100%" height="100%" valign="top">
 	## $allTask is added by shaista
 	#set($allTask="")
