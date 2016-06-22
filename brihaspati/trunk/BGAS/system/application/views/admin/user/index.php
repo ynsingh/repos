@@ -11,7 +11,7 @@
 
 	echo "<table border=0 cellpadding=9 class=\"simple-table manage-account-table\">";
 	//new column Full Name in table added by @RAHUL
-	echo "<thead><tr><th>Username</th><th>Email</th><th>Full Name</th><th>Role</th><th>Status</th><th>Account</th><th> </th><th>Available action </th><th> </th><th> </th><th> </th></tr></thead>";
+	echo "<thead><tr><th>Username</th><th>Email</th><th>Full Name</th><th>Role</th><th>Status</th><th colspan=\"2\">Account</th><th></th><th colspan=\"2\">Available action</th><th colspan=\"2\"></th></tr></thead>";
 	echo "<tbody>";
 	$odd_even = "odd";
 	$user_id=0;
@@ -40,6 +40,7 @@
 		$user_account = $row->accounts;
 		$user_type = $row->aggtype;
 		$user_components = $row->componentreg;
+		$v_verified = $row->isverified;
 
 	 	echo "<tr class=\"tr-" . $odd_even;
 
@@ -51,11 +52,23 @@
 	 	echo "<td>" . $user_role . "</td>";
 	 	echo "<td>" . $user_status . "</td>";
 	 	echo "<td>" . $user_account . "</td>";
+
+		//added by @kanchan
+		if($v_verified == 1)
+		echo "<td>Verified</td>";
+		else
+		echo "<td>" . anchor('admin/user/verify/'.$row->id, 'Verfiy', array('title' => 'UnVerified')); "</td>";
+
        
     		echo "<td>" . anchor('admin/user/edit/'.$row->id, 'Edit', array('title' => 'Back to admin')); "</td>";
 		if(($user_role!="guest") && ($user_name1!="admin"))
+		{
     			echo "<td>" . anchor('admin/user/permission/'.$row->id, 'Assign Permission', array('title' => 'Back to admin')); "</td>";
-    
+		}else{
+			echo "<td>"."</td>";
+		}
+		if($user_role == "guest")
+		echo "<td>" ."</td> ";
     		if(($user_role=="administrator") ||($user_role=="manager")) 
 		{
 			if($user_type=='agg')
@@ -63,7 +76,7 @@
             			echo "<td> " . anchor('admin/user/updateaggregator/'.$row->id, 'Update Aggregator', array('title' => 'Back to admin','class' => 'red-link')); "</td>";
 			}
 			else
-			{	
+			{
 				echo "<td>" . anchor('admin/user/makeaggregator/'.$row->id, 'Make Aggregator', array('title' => 'Back to admin')); "</td>";
 			}
 		}

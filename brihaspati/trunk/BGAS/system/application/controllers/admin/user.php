@@ -42,7 +42,7 @@ class User extends Controller {
 		}*/
 		$data['users'] = array();
 		$db1=$this->load->database('login', TRUE);
-		$db1->select('edrpuser.id as id,edrpuser.username as username,edrpuser.componentreg as componentreg, edrpuser.email as email,edrpuser.status as status,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype');
+		$db1->select('edrpuser.id as id,edrpuser.username as username,edrpuser.componentreg as componentreg, edrpuser.email as email,edrpuser.status as status,edrpuser.is_verified as isverified,bgasuserrolegroup.accounts as accounts, bgasuserrolegroup.role as role,bgasuserrolegroup.aggtype as aggtype');
 		$db1->from('edrpuser')->join('bgasuserrolegroup', 'edrpuser.id = bgasuserrolegroup.userid'); 
 		
         	//$db1->select('id,username,email,role,status,accounts,aggtype')->from('bgasuser');
@@ -1799,6 +1799,28 @@ class User extends Controller {
                         redirect('admin/user/');
 
 	}
+
+	//added by @kanchan
+	function verify($user_id)
+	{
+		//load to login db for get status and username from edrpuser
+		$db1=$this->load->database('login', TRUE);
+        	$db1->select('status,username ')->from('edrpuser')->where('id',$user_id);
+        	$new_result = $db1->get();
+		$row = $new_result->row();
+		$user_name = $row->username;
+		$user_status = $row->status;
+
+		//check status if status is 1 then update edrpuser fields
+		if($user_status == 1)
+		{
+		$update_data=array('is_verified'=>'1','verification_code'=>'NULL');
+		$db1->where('id', $user_id)->update('edrpuser', $update_data);
+		$db1->trans_complete();
+		$this->messages->add('This User &nbsp;' .  $user_name .'&nbsp;is now  verified'. ' success');
+		}//if
+        	redirect('admin/user/');
+	}//verify
 
 
 }
