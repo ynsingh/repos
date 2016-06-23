@@ -170,6 +170,7 @@ $("#submitted_by").keyup(function(){
  	              
 
 ?>
+		<p style="color:#0000FF;"><b>Upload a file having extension gif | jpg | jpeg | png | pdf and size less than or equal to 1000 KB.</b></p>
                 <input type="file" name="userfile" />
                 <p><input type="submit" value="Submit" name="submit" />
 		<input type="button" onClick="window.history.back()" value="Back">

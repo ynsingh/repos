@@ -13,6 +13,26 @@ function DisableBackButton() {
 
 <script type="text/javascript">
 $(document).ready(function() {
+
+	$('.payment-type').change(function() {
+                var name = $('.payment-type').val();
+                
+                if(name == "liability"){
+             		$('.liblity').show();
+                   	$('.liability-label').show();
+             		$('.bank-cash').hide();
+            		$('.bank-label').hide();
+       		}
+          	else
+       		{
+             		$('.bank-cash').show();
+                 	$('.bank-label').show();
+             		$('.liblity').hide();
+        		$('.liability-label').hide();
+        	}
+        });
+         $('.payment-type').trigger('change');
+
         /* Show and Hide allowed_over 
                 $('.payment_mode').change(function() {
                 var name = $(".payment_mode").val();
@@ -104,6 +124,13 @@ $(document).ready(function() {
 	echo "</td>";
 
 	echo "<td>";
+	echo "<table width=\"100%\">";
+	echo "<tr>";
+
+	echo "<td>";
+	echo "<table>";
+
+	echo "<td>";
 	echo "<table width=\"30%\">";
 	echo "<tr>";
 
@@ -137,12 +164,6 @@ $(document).ready(function() {
         echo form_input($sanc_value);
         echo "</p>";
 
-	echo "<p>";
-        echo form_label('MODE OF PAYMENT', 'payment_mode');
-        echo "<br />";
-        echo form_dropdown('payment_mode', $payment_mode, $payment_mode_active, "class =\"payment_mode\"");
-        echo "</p>";
-	
 	echo "</tr>";
         echo "</table>";
         echo "</td>";
@@ -182,15 +203,45 @@ $(document).ready(function() {
         echo form_input($expensestype);
         echo "</p>";
 
-	echo "<p>";
-        echo form_label('BANK AND CASH ACCOUNT','bank_cash');
-        echo "<br/>";
-        echo form_dropdown('bank_cash' ,$bank_cash, $bankcash_active);
-        echo "</p>";
-
 	echo"</tr>";
 	echo"</table>";
 	echo"</td>";
+
+	echo"</table>";
+	echo"</td>";
+
+	echo "<tr>";
+	echo "<td>";
+	echo "<table width=\"100%\">";
+	echo "<tr>";
+
+	echo "<p>";
+        echo form_label('MODE OF PAYMENT', 'payment_mode');
+        echo "<br />";
+        echo form_dropdown('payment_mode', $payment_mode, $payment_mode_active, "class = \"payment-type\"");
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+        $libly_attr = array('class' => 'liability-label');
+        echo form_label('SUNDRY CREDITORS', 'liability_cash', $libly_attr);
+        echo " ";
+        echo form_dropdown('liability_cash', $liability_cash, $liabilitycash_active, "class = \"liblity\"");
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+        $bank_attr = array('class' => 'bank-label');
+        echo form_label('BANK AND CASH ACCOUNT', 'bank_cash', $bank_attr);
+        echo " ";
+        echo form_dropdown('bank_cash', $bank_cash, $bankcash_active, "class = \"bank-cash\"");
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        echo "</p>";
+
+	echo "</tr>";
+	echo "</table>";
+	echo "</td>";
+	echo "</tr>";
+
+	echo "</tr>";
+	echo "</table>";
+	echo "</td>";
 
 	echo"</tr>";
 	echo"</table>";

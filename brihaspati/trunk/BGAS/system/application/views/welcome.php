@@ -164,71 +164,80 @@
                 echo "</table>";
                 echo "</td>";
         }
+	
+	if($aut_q->num_rows() > 0)
+	{
+        	echo "<td style=\"padding: 0px 8px 8px 20px;\">";
+        	echo "<table width=\"100%\" border=\"1\" style=\"color: black; border-collapse:collapse; border:1px solid #BBBBBB;\">";
+        	echo "<tr style=\"text-align:center; font-weight:bold; background-color:#66C1E6;\">";
+        	echo "<td colspan=\"4\" style=\"padding: 8px 8px 8px 20px;\">";
+        	echo "Notifications";
+        	echo "</td>";
+        	echo "</tr>";
 
-        echo "<td style=\"padding: 0px 8px 8px 20px;\">";
-        echo "<table width=\"100%\" border=\"1\" style=\"color: black; border-collapse:collapse; border:1px solid #BBBBBB;\">";
-        echo "<tr style=\"text-align:center; font-weight:bold; background-color:#66C1E6;\">";
-        echo "<td colspan=\"4\" style=\"padding: 8px 8px 8px 20px;\">";
-        echo "Notifications";
-        echo "</td>";
-        echo "</tr>";
+		echo "<td>";
+		echo "<div style=\"overflow-y:scroll; height:440px\">";
+		echo "<table width=\"100%\" border=\"0\">";
+        	echo "<tr style=\"background-color:#EEEEEE; text-align:center;\">";
+		echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+        	echo "<b>Bill Number</b>";
+        	echo "</td>";
+        	echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+        	echo "<b>Submitted By</b>";
+        	echo "</td>";
+        	echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+        	echo "<b>Expense Type</b>";
+        	echo "</td>";
+        	echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+		echo "<b>Total Amount</b>";
+        	echo "</td>";
+        	echo "<td>";
+        	echo "</td>";
+        	echo "</tr>";
 
-	echo "<td>";
-	echo "<div style=\"overflow-y:scroll; height:440px\">";
-	echo "<table width=\"100%\" border=\"0\">";
-        echo "<tr style=\"background-color:#EEEEEE; text-align:center;\">";
-        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
-        echo "<b>Submitted By</b>";
-        echo "</td>";
-        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
-        echo "<b>Expense Type</b>";
-        echo "</td>";
-        echo "<td style=\"padding: 8px 8px 8px 20px;\">";
-	echo "<b>Total Amount</b>";
-        echo "</td>";
-        echo "<td>";
-        echo "</td>";
-        echo "</tr>";
-
-        foreach ($aut_q->result() as $row)
-        {
-		$this->db->select_max('id')->from('bill_approval_status')->where('bill_no',$row->id);
-        	$ma_xauth = $this->db->get();
-        	foreach($ma_xauth->result() as $row_a1)
+        	foreach ($aut_q->result() as $row)
         	{
-                	$ma_xau_th = $row_a1->id;
-                	$this->db->select('status')->from('bill_approval_status')->where('id',$ma_xau_th);
-                	$ma_xim_auth = $this->db->get();
-                	$ma_xim_auth1 = $ma_xim_auth->row();
-                	$ma_xim_auth2 = $ma_xim_auth1->status;
+			$this->db->select_max('id')->from('bill_approval_status')->where('bill_no',$row->id);
+        		$ma_xauth = $this->db->get();
+        		foreach($ma_xauth->result() as $row_a1)
+        		{
+                		$ma_xau_th = $row_a1->id;
+                		$this->db->select('status')->from('bill_approval_status')->where('id',$ma_xau_th);
+                		$ma_xim_auth = $this->db->get();
+                		$ma_xim_auth1 = $ma_xim_auth->row();
+                		$ma_xim_auth2 = $ma_xim_auth1->status;
+        		}
+			echo "<tr>";
+			echo"<td style=\"padding: 8px 8px 8px 20px;\">";
+                	echo  $row->id;
+                	echo"</td>";
+                	echo"<td style=\"padding: 8px 8px 8px 20px;\">";
+                	echo  $row->submitted_by;
+                	echo"</td>";
+                	echo"<td style=\"padding: 8px 8px 8px 20px;\">";
+                	echo  $row->expense_type;
+                	echo"</td>";
+                	echo"<td style=\"padding: 8px 8px 8px 20px;\">";
+                	echo  $row->total_amount;
+                	echo"</td>";
+                	echo"<td style=\"padding: 8px 8px 8px 20px;\">";
+			if($ma_xim_auth2 == "voucherapprove")
+			{
+				echo  anchor('payment2/p2voucherfilling/' .  $row->id , "Bill Pending For Voucher Creation", array('title' => 'VoucherCreation ' ));
+			}
+			else
+			{
+                		echo  anchor('payment2/p2billapproval/' .  $row->id , "Bill Pending For Your Action", array('title' => 'Approve,reject ' ));
+			}
+                	echo"</td>";
+                	echo"</tr>";
         	}
-		echo "<tr>";
-                echo"<td style=\"padding: 8px 8px 8px 20px;\">";
-                echo  $row->submitted_by;
-                echo"</td>";
-                echo"<td style=\"padding: 8px 8px 8px 20px;\">";
-                echo  $row->expense_type;
-                echo"</td>";
-                echo"<td style=\"padding: 8px 8px 8px 20px;\">";
-                echo  $row->total_amount;
-                echo"</td>";
-                echo"<td style=\"padding: 8px 8px 8px 20px;\">";
-		if($ma_xim_auth2 == "voucherapprove")
-		{
-			echo  anchor('payment2/p2voucherfilling/' .  $row->id , "Bill Pending For Voucher Creation", array('title' => 'VoucherCreation ' ));
-		}
-		else
-		{
-                	echo  anchor('payment2/p2billapproval/' .  $row->id , "Bill Pending For Your Action", array('title' => 'Approve,reject ' ));
-		}
-                echo"</td>";
-                echo"</tr>";
-        }
-	echo "</table>";
-	echo "</td>";
+		echo "</table>";
+		echo "</td>";
 
-        echo "</table>";
-        echo "</td>";
+        	echo "</table>";
+        	echo "</td>";
+	}
 
         echo "</tr>";
         echo "</table>";

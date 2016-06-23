@@ -178,6 +178,20 @@ var $ledgers = array();
 
         }
 
+	function get_sundry_creditors()
+	{
+		$options = array();
+		$options[0] = "(Please Select)";
+		$this->db->from('ledgers')->like('code','10040106','after');
+                $sundry_code = $this->db->get();
+		foreach($sundry_code->result() as $row)
+		{
+			$sundry_id=$row->id."-".$row->name;
+			$options[$sundry_id]=$row->name;
+		}
+                return $options;
+	}
+
 
 	function get_ledgers_bankcash($id)
         {

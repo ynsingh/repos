@@ -47,13 +47,17 @@ class Payment2 extends Controller {
                 $config['max_height'] = '1280';
                 $this->load->library('upload', $config);
 		if(!$this->upload->do_upload()) 
-			$this->upload->display_errors();
+		{
+			//$this->upload->display_errors();
+			$errorname=$this->upload->display_errors();
+			return "errflag#".$errorname;
+		}
                 else 
 		{
                 	$fInfo = $this->upload->data();
                         $filename=$fInfo['file_name'];
+                	return $filename;
               	}
-                return $filename;
         }
 	
 	/**
@@ -199,12 +203,29 @@ class Payment2 extends Controller {
 			$filename=$this->p2fileupload();
 			$secunit = $this->input->post('secunit', TRUE);
                         $forward_to = $this->input->post('forward_to', TRUE);
-			$forward_to1 = explode('`',$forward_to);
-        		$forward_to2 = $forward_to1[0];
-        		$forward_to3 = $forward_to1[1];
-		  	if($filename == "")
+			$file_errcheck = $this->p2startsWith($filename,"errflag");
+			if($forward_to != "0")
 			{
-				$this->messages->add('Please select a File having extension gif | jpg | jpeg | png | pdf |', 'error');
+				$forward_to1 = explode('`',$forward_to);
+        			$forward_to2 = $forward_to1[0];
+        			$forward_to3 = $forward_to1[1];
+			}
+			else
+			{
+				$this->messages->add('Please Select name of Forwarded Authority from Forward To dropdown.', 'error');
+                                $this->template->load('template', 'payment2/p2bill_upload', $data);
+                                return;
+
+			}
+			if($file_errcheck)
+                        {
+                                $err_upld = explode('#',$filename);
+                                $err_nme = $err_upld[1];
+                        }
+		  	if($file_errcheck) // check filename start with errflag
+			{
+				//$this->messages->add( $filename'Please select a File having extension gif | jpg | jpeg | png | pdf |', 'error');
+                                $this->messages->add($err_nme, 'error');
                                 $this->template->load('template', 'payment2/p2bill_upload', $data);
                                 return;
 			}
@@ -792,7 +813,7 @@ class Payment2 extends Controller {
 					}
 				}
 				$message2 = base_url()."index.php/user/login";
-				$message1 = "<b>Your bill is Rejected.</b>";
+				$message1 = "<b>Your bill (Bill No. : $bill_no) is Rejected.</b>";
                         	$message = $message1."<br>".$message2;
                         	$subject = 'Bill Rejection in BGAS ';
                         	if($this->paymentreceipt->send_mail($bill_app->submitted_by, $subject, $message))
@@ -940,7 +961,7 @@ class Payment2 extends Controller {
 					}
 				}
 				$message2 = base_url()."index.php/user/login";
-                        	$message1 = "<b>Please login to your account in Brihaspati General Accounting System and take actions on Bill Number $billid</b>";
+                        	$message1 = "<b>Please login to your account in Brihaspati General Accounting System and take actions on Bill Number $bill_no</b>";
                         	$message = $message1."<br>".$message2;
                         	$subject = 'Bill Approval in BGAS ';
                         	if($this->paymentreceipt->send_mail($forward_to2, $subject, $message))
@@ -1191,8 +1212,8 @@ class Payment2 extends Controller {
                                                                 'forward_to' => $forward_to2,
                                                                 'forward_date' => $today,
                                                                 'approval_amount' => $approved_amount,
-                                                                'authority_name' => $auth_desig,
-                                                                'status' => 'voucherapprove',
+                                                                'authority_name' => $forward_to3,
+                                                                //'status' => 'NULL',
                                                                 'comments' => '',
                                                         );
                                                         if ( ! $this->db->insert('bill_approval_status', $insert_approval_data_z1))
@@ -1378,6 +1399,7 @@ class Payment2 extends Controller {
                         "cheque"=> "Cheque",
 			"bank transfer"=>"Bank Transfer",
 			"dd"=>"Demand Draft",
+			"liability"=>"Liability",
                 );
 		
 		$data['secunitid'] = array(
@@ -1429,6 +1451,9 @@ class Payment2 extends Controller {
 		$data['bank_cash']= $this->Ledger_model->get_all_ledgers_bankcash1();
                 $data['bankcash_active']= '0';
 
+		$data['liability_cash']= $this->Ledger_model->get_sundry_creditors();
+                $data['liabilitycash_active']= '0';
+
 		$data['narrate'] = array(
                         'name' => 'narrate',
                         'id' => 'narrate',
@@ -1457,7 +1482,10 @@ class Payment2 extends Controller {
 			$data['exp_type']['value'] = $this->input->post('exp_type', TRUE);
 			$data['sanc_value']['value'] = $this->input->post('sanc_value', TRUE);
                         $data['sanc_type']['value'] = $this->input->post('sanc_type', TRUE);
-			$data['bankcash_active'] = $this->input->post('bank_cash',TRUE);
+			if($data['bankcash_active'] != "0")
+				$data['bankcash_active'] = $this->input->post('bank_cash',TRUE);
+			if($data['liabilitycash_active'] != "0")
+				$data['liabilitycash_active'] = $this->input->post('liability_cash',TRUE);
 			$data['narrate']['value'] = $this->input->post('narrate', TRUE);
                 }
 		
@@ -1474,6 +1502,7 @@ class Payment2 extends Controller {
                         $billno = $bill_no;
                         $decision_1 = $vouch_fill->decision;
 			$bank_cash=$this->input->post('bank_cash',TRUE);
+			$liability_cash=$this->input->post('liability_cash',TRUE);
                         $payment_mode=$this->input->post('payment_mode', TRUE);
                         $paid_to=$this->input->post('paid_to', TRUE);
 			if($payment_mode == 'select')
@@ -1482,8 +1511,14 @@ class Payment2 extends Controller {
                                 $this->template->load('template', 'payment2/p2voucherfilling', $data);
                                 return;
                         }
-			if($bank_cash == '0')
-                        {
+			if(($payment_mode == 'liability') && ($liability_cash == '0'))
+			{
+				$this->messages->add('Please Select Sundry Creditors', 'error');
+                                $this->template->load('template', 'payment2/p2voucherfilling', $data);
+                                return;
+			}
+			if(($payment_mode != 'liability') && ($bank_cash == '0'))
+			{
                                 $this->messages->add('Please Select Bank Cash Acoount', 'error');
                                 $this->template->load('template', 'payment2/p2voucherfilling', $data);
                                 return;
@@ -1494,8 +1529,13 @@ class Payment2 extends Controller {
                                 $today = date("Y/m/d H:i:s");
                                 $date = explode('/', $today);
                                 $data_date = $date[0] .'-' . $date[1] .'-' .$date[2];
-                                $value = explode('-', $bank_cash);
+				if($bank_cash != '0')
+                                	$value = explode('-', $bank_cash);
+				if($liability_cash != '0')
+					$value = explode('-', $liability_cash);
                                 $app_roved_by = $app_by;
+				if($app_roved_by == "")
+					$app_roved_by = $this->session->userdata('user_name');
                                 $sanc_ty_pe = $vouch_fill->sanc_type; 
                                 $sanc_val_ue = $vouch_fill->sanc_value; 
                                 $secunit_id = $vouch_fill->party_id; 
@@ -1592,6 +1632,29 @@ class Payment2 extends Controller {
                                         		$this->template->load('template', 'payment2/p2voucherfilling', $data);
                                         		return;
                                        		}
+
+						$insert_ledger_expns_data = array(
+                                                	'entry_id' => $entry_id,
+                                                	'ledger_id' => $idexpen1,
+                                                	'amount' => $approved_amount,
+                                                	'dc' => 'D',
+                                                	'update_date' => $data_date,
+                                                	'forward_refrence_id'  => '0',
+                                                	'backward_refrence_id' => '0',
+                                                	'secunitid' => $secunit_id,
+                                         	);
+                                         	if ( ! $this->db->insert('entry_items', $insert_ledger_expns_data))
+                                         	{
+                                                	$this->db->trans_rollback();
+                                                	$this->messages->add('Error adding Ledger account - ' . $idexpen . ' to Entry.', 'error');
+                                                	$this->template->load('template', 'payment2/p2voucherfilling', $data);
+                                                	return;
+                                         	}
+						else
+						{
+							$entry_items_id = $this->db->insert_id();
+						}
+
 						$insert_fund_data = array(
                                                    	'entry_id' => $entry_id,
                                                         'ledger_id' => $vouch_fill->fund_id,
@@ -1607,10 +1670,10 @@ class Payment2 extends Controller {
                                                     	$this->db->trans_rollback();
                                                         $this->logger->write_message("error", "Error adding fund id:" . $vouch_fill->fund_id);
 						}
-						else 
-						{
-                                                    	$entry_items_id = $this->db->insert_id();
-						}
+						//else 
+						//{
+                                                    	//$entry_items_id = $this->db->insert_id();
+						//}
                                        		$this->db->select('id')->from('ledgers')->where('name', 'Transit Income');
                                         	$query = $this->db->get();
                                         	$income = $query->row();
@@ -1685,6 +1748,22 @@ class Payment2 extends Controller {
 						{
                                                         $entry_fund_id = $this->db->insert_id();
 						}
+						$insert_fund_capexpn_data = array(
+                                                        'entry_id' => $entry_id,
+                                                        'ledger_id' => $vouch_fill->fund_id,
+                                                        'amount' => $approved_amount,
+                                                        'dc' => 'D',
+                                                        'update_date' => $data_date,
+                                                        'forward_refrence_id'  => '0',
+                                                        'backward_refrence_id' => '0',
+                                                        'secunitid' => $secunit_id,
+                                                );
+                                                if ( ! $this->db->insert('entry_items', $insert_fund_capexpn_data))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->logger->write_message("error", "Error adding fund id:" . $vouch_fill->fund_id);
+                                                }
+
 	                                        $this->db->select('name')->from('ledgers')->where('id', $vouch_fill->fund_id);
                                                 $qu_ery = $this->db->get();
                                                 $led_ger = $qu_ery->row();
@@ -1771,7 +1850,7 @@ class Payment2 extends Controller {
 				$this->db->trans_complete();
 			}
 			$message2 = base_url()."index.php/user/login";
-			$message1 = "<b>Your bill is approved and voucher is created successfully.</b>";
+			$message1 = "<b>Your bill (Bill No. : $bill_no) is approved and voucher is created successfully.</b>";
                         $message = $message1."<br>".$message2;
                        	$subject = 'Bill Voucher Creation in BGAS ';
                        	if($this->paymentreceipt->send_mail($vouch_fill->submitted_by, $subject, $message))
@@ -2026,7 +2105,6 @@ class Payment2 extends Controller {
         {
                 return !strncmp($str1, $str2, strlen($str2));
         }
-
 	/**
 		*Code to display Fund Balance.
 		*This function Available Balance according to selected fund.

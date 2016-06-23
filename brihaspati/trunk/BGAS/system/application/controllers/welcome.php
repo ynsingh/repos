@@ -59,12 +59,11 @@ class Welcome extends Controller {
                 $user = $this->session->userdata('user_name');
  		$this->db->select('bill_voucher_create.id as id, bill_voucher_create.submitted_by as submitted_by, bill_voucher_create.expense_type as expense_type, bill_voucher_create.total_amount as total_amount');
                 $this->db->from('bill_approval_status')->join('bill_voucher_create', 'bill_approval_status.bill_no = bill_voucher_create.id')->where('status',NULL);
-		$this->db->or_where('status','voucherapprove');
 		if ( ! check_access('administer'))
 		{
 			$this->db->where('forward_to',$user);
 		}		
-                $data['aut_q'] = $this->db->get();	
+                $data['aut_q'] = $this->db->get();
 		$data['logs'] = $this->logger->read_recent_messages();
 		$this->template->load('template', 'welcome', $data);
 		return;
