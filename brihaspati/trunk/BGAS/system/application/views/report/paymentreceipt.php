@@ -40,13 +40,19 @@
 		$fy_start=explode("-",$row->fy_start);
 		$fy_end=explode("-",$row->fy_end);
 	}
+		$fystrt=explode(" ",$row->fy_start);
+//		print_r ("date from session".$date1."date fystart".$fystrt[0]);
 		$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
 		$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
         	$this->db->from('ledgers')->where('type', '1');
         	$op_balance = $this->db->get();
         	foreach ($op_balance->result() as $row)
 			{
+			if($date1 == $fystrt[0]){
+        		list ($opbalance, $optype) = $this->Ledger_model->get_op_balance($row->id); /* Opening Balance */
+			}else{
         		list ($opbalance, $optype) = $this->Ledger_model->get_op_closing_balance($row->id, $date1, $date2); /* Opening Balance */
+			}
 			$ledbalance = $this->Ledger_model->get_closing_balance($row->id); /* Ledger Balance */
         		if($optype == 'C')
 			{

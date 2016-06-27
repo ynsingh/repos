@@ -353,10 +353,10 @@ $width="100%";
 				{
 					$search_text = $data_text;
 					// voucher number should be either alphanumeric or numeric
-					if((! ctype_alpha($data_text))|| (! is_numeric($data_text))) {
-                                                $this->messages->add('Please enter alphanumeric or numeric value.', 'error');
-                                                redirect('entry/' . $data['entry_path']);
-                                        }
+				//	if((! ctype_alpha($data_text))|| (! is_numeric($data_text))) {
+                                  //              $this->messages->add('Please enter alphanumeric or numeric value.', 'error');
+                                    //            redirect('entry/' . $data['entry_path']);
+                                      //  }
 
 				}
 				if($data_search_by == "entry_type")

@@ -47,7 +47,9 @@
         $liability = new Reportlist1();
 	$income = new Reportlist1();
 	$diff_total = $income->income_expense_diff();
-        $liability->new_mhrd(2);
+//        $liability->new_mhrd(2);
+	$liability->new_mhrd(2, 'view');//add for previous year value
+	$mhrd_total=-$liability->total_mhrd;//add for previous year total value
 	$curr_total = -$liability->curr_total; 
 	$liability_total1 = $curr_total + $diff_total;
 	echo "<tr>";
@@ -57,11 +59,13 @@
         echo "<td></td>";
 
         echo "<td align=\"right\" class=\"bold\">";
-        echo money_format('%!i', convert_cur($liability_total1));
+        //echo money_format('%!i', convert_cur($liability_total1));
+        echo convert_amount_dc(-$liability_total1);
         echo "</td>";
 
         echo "<td align=\"right\" class=\"bold\">";
-        echo money_format('%!i', convert_cur(0));
+      //  echo money_format('%!i', convert_cur($mhrd_total));
+        echo convert_amount_dc(-$mhrd_total);//add (-) for convert amount to cr
         echo "</td>"; 
         echo "</tr>";
         echo "</table>";
@@ -70,7 +74,9 @@
 
         $this->load->library('reportlist1');
         $asset = new Reportlist1();
-        $asset->new_mhrd(1);
+//        $asset->new_mhrd(1);
+	$asset->new_mhrd(1, 'view');//add for previous year value
+	$mhrd_total=$asset->total_mhrd; // add for previous value total
 	$asset_total1 = $asset->curr_total;  
         echo "<tr>";
         echo "<td class=\"bold\">";
@@ -80,11 +86,13 @@
         echo "<td></td>";
 
         echo "<td align=\"right\" class=\"bold\">";
-        echo money_format('%!i', convert_cur($asset_total1));
+        //echo money_format('%!i', convert_cur($asset_total1));
+        echo convert_amount_dc($asset_total1);
         echo "</td>";
 
         echo "<td align=\"right\" class=\"bold\">";
-        echo money_format('%!i', convert_cur(0));
+       // echo money_format('%!i', convert_cur($mhrd_total));
+        echo convert_amount_dc($mhrd_total);
         echo "</td>";
         echo "</tr>"; 
 

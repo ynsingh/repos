@@ -51,6 +51,7 @@
     echo "<tr><td colspan=\"4\" class=\"bold\">Income</td></tr>";
     $income = new Reportlist1();
     $income_total = $income->income_exp_mhrdnew(3, "view","NULL");
+	$prev_total1 = 0-$income->total; //add for previous year value
     $income_total = 0-$income_total;
     echo "<tr>";
         echo "<td class=\"bold\">";
@@ -58,10 +59,12 @@
         echo "</td>";
         echo "<td></td>";
         echo "<td align=\"right\" class=\"bold\">";
-                      echo money_format('%!i', convert_cur($income_total));
+                      echo convert_amount_dc(-$income_total);
+  //                    echo money_format('%!i', convert_cur($income_total));
         echo "</td>";
         echo "<td align=\"right\" class=\"bold\">";
-                      echo money_format('%!i', convert_cur(0));
+                      echo convert_amount_dc(-$prev_total1);
+//                      echo money_format('%!i', convert_cur($prev_total1));
         echo "</td>";
     echo "</tr>";
 
@@ -69,16 +72,19 @@
     echo "<tr><td colspan=\"4\" class=\"bold\">Expenditure</td></tr>";
     $expense = new Reportlist1();
     $expense_total = $expense->income_exp_mhrdnew(4, "view","NULL");
+	$prev_total2 = $expense->total; //add for previous total
     echo "<tr>";
         echo "<td class=\"bold\">";
         echo "Total (B)";
         echo "</td>";
         echo "<td></td>";
         echo "<td align=\"right\" class=\"bold\">";
-                      echo money_format('%!i', convert_cur($expense_total));
+                      echo convert_amount_dc($expense_total);
+//                      echo money_format('%!i', convert_cur($expense_total));
         echo "</td>";
         echo "<td align=\"right\" class=\"bold\">";
-                      echo money_format('%!i', convert_cur(0));
+                      echo convert_amount_dc($prev_total2);
+                     // echo money_format('%!i', convert_cur($prev_total2));
         echo "</td>";
     echo "</tr>";
 
@@ -88,29 +94,46 @@
     echo "<tr><td>Balance being excess of Income over Expenditure (A-B)</td><td></td>";
     if($income_exp_diff > 0){
         echo "<td align=\"right\" class=\"bold\">";
-        echo money_format('%!i', convert_cur($income_exp_diff));
+    //    echo money_format('%!i', convert_cur($income_exp_diff));
+        echo  convert_amount_dc(-$income_exp_diff);
         echo "</td>";
     }else{
         echo "<td></td>";
     }
-    echo "<td></td>";
+	if(($prev_total1-$prev_total2 )>0){
+        echo "<td align=\"right\" class=\"bold\">";
+//        echo money_format('%!i', convert_cur($prev_total1-$prev_total2));
+        echo convert_amount_dc(-($prev_total1-$prev_total2));
+        echo "</td>";
+    }else{
+        echo "<td></td>";
+    }
+//    echo "<td></td>";
     echo "</tr>";
     
     echo "<tr><td>Balance being Surplus(Deficit) carried to General Reserve</td><td></td>";
     echo "<td align=\"right\" class=\"bold\">";
-    echo money_format('%!i', convert_cur($income_exp_diff));
+//    echo money_format('%!i', convert_cur($income_exp_diff));
+    echo  convert_amount_dc(-$income_exp_diff);
     echo "</td>";
-    echo "<td></td>";
+    echo "<td align=\"right\" class=\"bold\">";
+//    echo money_format('%!i', convert_cur($prev_total1-$prev_total2));
+    echo convert_amount_dc(-($prev_total1-$prev_total2));
+    echo "</td>";
+    //echo "<td></td>";
     echo "</tr>";
 
     echo "<tr>";
     echo "<td class=\"bold\">";
     echo "Significant Accounting Policies";
     echo "</td>";
-    echo "<td align=\"center\">";
+//    echo "<td align=\"center\">";
     //echo anchor_popup('notes/display_notes', '23', array('title' => 'Notes On Accounts', 'style' => 'color:#000000;text-decoration:none;'));
-    echo 23;
-    echo "</td>";
+  //  echo 23;
+	echo "<td>";
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" .anchor_popup('notes/display_notes', '23', array('title' => 'Notes On Accounts', 'style' => 'color:#000000;text-decoration:none;'));
+    	echo "</td>";
+    //echo "</td>";
     echo "<td></td><td></td>";
     echo "</tr>";
 
@@ -118,10 +141,13 @@
     echo "<td class=\"bold\">";
     echo "Contingent Liabilities and Notes to Accounts";
     echo "</td>";
-    echo "<td align=\"center\">";
-    echo 24;
+   // echo "<td align=\"center\">";
+    //echo 24;
     //echo anchor_popup('notes/display_notes', '24', array('title' => 'Notes On Accounts', 'style' => 'color:#000000;text-decoration:none;'));
-    echo "</td>";
+	echo "<td>";
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". anchor_popup('notes/display_notes', '24', array('title' => 'Notes On Accounts', 'style' => 'color:#000000;text-decoration:none;'));
+	echo "</td>";
+//    echo "</td>";
     echo "<td></td><td></td>";
     echo "</tr>";
 
