@@ -206,11 +206,29 @@ public class CourseUtil{
                 Map map = new HashMap();
 		String act="", statc="", unread="false";
 		Vector iList=InstituteIdUtil.getInstructorInstId(uid,rid);
-		for(int i=0;i<iList.size();i++)
+		String instName="", instIds="";
+		int instid=0;
+		String[] vvi = new String[ iList.size() ];
+		for(int i=0;i<iList.size();i++){
+			instIds=((String)iList.get(i)).trim();
+                        instid=Integer.parseInt(instIds);
+                        instName = InstituteIdUtil.getIstName(instid);
+			vvi[i]=instName;
+		}
+		try{
+                        java.util.Arrays.sort(vvi);
+                }
+		catch(Exception ex){ ErrorDumpUtil.ErrorLog("The error in sorting institute list as per name in course util is "+ex);}
+		//for(int i=0;i<iList.size();i++)
+		for(int i=0;i<vvi.length;i++)
                 {
-			String instIds=((String)iList.get(i)).trim();
-			int instid=Integer.parseInt(instIds);
-			String instName = InstituteIdUtil.getIstName(instid);
+		//	String instIds=((String)iList.get(i)).trim();
+		//	int instid=Integer.parseInt(instIds);
+		//	String instName = InstituteIdUtil.getIstName(instid);
+		//	listi.add(instName );
+			instName=vvi[i];
+			instid=InstituteIdUtil.getIst_Id(instName);
+			instIds=Integer.toString(instid);
 			map = new HashMap();
                         map.put("instName", instName);
                         map.put("instId", instid);
@@ -220,20 +238,38 @@ public class CourseUtil{
         	                crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
                 	        crit.and(TurbineUserGroupRolePeer.ROLE_ID,rid);
                         	List v=TurbineUserGroupRolePeer.doSelect(crit);
-	                        for(int j=0;j<v.size();j++)
-        	                {
-                	                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(j);
-                        	        int gid=(element.getGroupId());
-                                	String gName=GroupUtil.getGroupName(gid);
-					if(gName.endsWith(instIds)){
-						String courseName=getCourseName(gName);
-        		                        String Coursealias=getCourseAlias(gName);
-                        		        String weekTime=CourseTimeUtil.getLastweekTime(uid,gName);
-						String loginName=org.apache.commons.lang.StringUtils.substringBetween(gName, Coursealias,"_"+instid);
-						int UID=UserUtil.getUID(loginName);
-						String fullname=UserUtil.getFullName(UID);
-                                        	boolean check_act=CourseManagement.CheckcourseIsActive(gid);
-		                                if(check_act==false)
+				ArrayList listc = new ArrayList();
+				String gName="";
+                                int gid;
+                                int kk=0;
+                                for(int j=0;j<v.size();j++)
+                                {
+                                        TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(j);
+                                        gid=(element.getGroupId());
+                                        gName=GroupUtil.getGroupName(gid);
+                                        if(gName.endsWith(instIds)){
+							listc.add( gName );
+                                        }
+                                }
+					String[] vv = new String[ listc.size() ];
+					for( int j = 0; j < vv.length; j++ )
+					vv[ j ] = listc.get( j ).toString();
+				try{
+
+					java.util.Arrays.sort(vv);
+				}
+				catch(Exception ex){ ErrorDumpUtil.ErrorLog("The error in sorting course list as per name in course util is "+ex);}
+                                for(int ii=0; ii<vv.length;ii++){
+                                                gName=vv[ii];
+                                                gid=GroupUtil.getGID(gName);
+                                                String courseName=getCourseName(gName);
+                                                String Coursealias=getCourseAlias(gName);
+                                                String weekTime=CourseTimeUtil.getLastweekTime(uid,gName);
+                                                String loginName=org.apache.commons.lang.StringUtils.substringBetween(gName, Coursealias,"_"+instid);
+                                                int UID=UserUtil.getUID(loginName);
+                                                String fullname=UserUtil.getFullName(UID);
+                                                boolean check_act=CourseManagement.CheckcourseIsActive(gid);
+                                                if(check_act==false)
                 		                        act="1";
                                 		else
 		                                        act="0";
@@ -266,7 +302,6 @@ public class CourseUtil{
 					}
 				
 				}
-			}
 			catch (Exception ex){ErrorDumpUtil.ErrorLog("The error in getCourseList in Course Util "+ex );}
 		}
 		return list;
