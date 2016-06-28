@@ -279,9 +279,12 @@ class Reportlist1
 	//			print_r($asset_total);
                 		if($name == 'Fixed Assets')
                			{
-				$y++;//add for previous year
-                                        $mhrdlist1 = @$mhrdnode1->item($y)->nodeValue;
-                                        $mhrd_total=$mhrd_total+$mhrdlist1;
+					if(file_exists($tt))
+                                	{
+						$y++;//add for previous year
+                		                $mhrdlist1 = @$mhrdnode1->item($y)->nodeValue;
+                                	        $mhrd_total=$mhrd_total+$mhrdlist1;
+					}
                 		echo "<tr class=\"tr-ledger\" width=\"30%\">";
                         	echo "<td class=\"td-ledger\" width=\"30%\">";
                         	echo "&nbsp;" .  $group_name;
@@ -316,9 +319,12 @@ class Reportlist1
                 		{
                                 if($group_name == 'Corpus Fund Investments')
                                 {
-					$y++;//add for previous year
-                                        $mhrdlist1 = @$mhrdnode1->item($y)->nodeValue;
-                                        $mhrd_total=$mhrd_total+$mhrdlist1;
+					if(file_exists($tt))
+	                                {
+						$y++;//add for previous year
+	                                        $mhrdlist1 = @$mhrdnode1->item($y)->nodeValue;
+                                        	$mhrd_total=$mhrd_total+$mhrdlist1;
+					}
                                 	$group_name = 'Investments Others';
                                         $counter = 6;
                                         echo "<tr class=\"tr-group\" width=\"30%\">";
