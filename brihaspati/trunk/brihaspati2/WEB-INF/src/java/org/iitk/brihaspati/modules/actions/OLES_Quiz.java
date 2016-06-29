@@ -420,10 +420,10 @@ public class OLES_Quiz extends SecureAction{
 			context.put("quizName",quizName);			
 			String[] temp = quizName.split(",");
 			String allowPractice=temp[3];
-		//	if(allowPractice.equalsIgnoreCase("yes")){
+			if(allowPractice.equalsIgnoreCase("yes")){
 				context.put("type","createQuiz");
 				data.setScreenTemplate("call,OLES,Practice_Quiz.vm");				
-		//	}			
+			}			
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:generateQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
