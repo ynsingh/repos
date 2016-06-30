@@ -16,6 +16,8 @@ import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 
+import org.bss.brihaspatisync.http.HttpCommManager;
+
 import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 import org.bss.brihaspatisync.network.Log;
 
@@ -47,12 +49,12 @@ public class JoinSession {
                           	  if(!usr_name.matches("^[a-zA-Z_]*$")){
                         		 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("JoinSession.MessageDialog3"));
                                		 return;
-                          	 }
-                       		 if( usr_name.equals("")){
+                          	  }
+                       		  if( usr_name.equals("")){
                           		 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("JoinSession.MessageDialog4"));
                           		 return;
-                     	        }
-				usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
+                     	          }
+				  usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
 			}
                         ClientObject.setUserName(usr_name);
 			String username="user="+URLEncoder.encode(usr_name,"UTF-8");
@@ -61,8 +63,27 @@ public class JoinSession {
                 	String st="status="+URLEncoder.encode("available","UTF-8");
 			String indexName=ClientObject.getIndexServerName();
 			String lectid="lect_id="+URLEncoder.encode(Lecture_ID,"UTF-8");
-
-			String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
+                        Vector address= HttpCommManager.getipaddres();
+                        address.remove("0:0:0:0:0:0:0:1%1");
+                        address.remove("0:0:0:0:0:0:0:1%lo");
+                        address.remove("127.0.0.1");
+                        String ipv4_add="";
+                        String ipv6_add="";
+                        for(int j=0; j < address.size(); j++)
+                        {
+                        	String fvalue = (address.get(j)).toString();
+                            	int ip_len =fvalue.length();
+                            	if(ip_len<16){
+                            		ipv4_add = fvalue;
+                                }
+                                else{
+                	                ipv6_add = fvalue;
+                                }
+                        }
+                        String ip4add="ip4_add="+URLEncoder.encode(ipv4_add,"UTF-8");
+                        String ip6add="ip6_add="+URLEncoder.encode(ipv6_add,"UTF-8");
+                        // get inet4 addr and inet6 addr and send with request......
+                        String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st+"&"+ip6add+"&"+ip4add;
 			//get reflector ip from indexing server.
 			String ref_ip  =HttpsUtil.getReflectorAddress(indexServer);
 

@@ -12,6 +12,10 @@ import java.net.URLEncoder;
 import java.net.InetAddress;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.network.Log;
+import java.net.UnknownHostException;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -118,6 +122,33 @@ public class HttpCommManager {
 		} catch(Exception e){System.out.println("Exception in getTimeIndexingServer() ");}
 		return null;
         }
+
+       /**
+         * This method are used to get the client ip which is send to server . 
+         */
+       public static Vector getipaddres(){
+       Vector msgList1=new Vector();
+                try{
+                        Enumeration e = NetworkInterface.getNetworkInterfaces();
+                        while(e.hasMoreElements())
+                        {
+                                NetworkInterface n = (NetworkInterface) e.nextElement();
+                                Enumeration ee = n.getInetAddresses();
+                                while (ee.hasMoreElements())
+                                {
+                                        InetAddress i = (InetAddress) ee.nextElement();
+                                        String ipadd= i.getHostAddress();//System.out.println(i.getHostAddress());
+                                        msgList1.addElement(ipadd);
+                                }
+                        }
+
+                }catch (Exception ex1) { ex1.printStackTrace();
+                        msgList1.clear();
+                        return msgList1;
+                }
+                return msgList1;
+       }
+
 
         	
 }
