@@ -39,7 +39,14 @@ public class ReflectorStatusManager
                 context=context1;
         }
 		
-	private static String searchreRunningReflector(String sessionid,String publicip,String privateip) {
+	//private static String searchreRunningReflector(String sessionid,String publicip,String privateip) {
+          
+         /**
+         * This method is replaced by searchreRunningReflector addedd some parameters for ip4 and ip6.
+         */
+
+          private static String searchreRunningReflector(String sessionid,String publicip, String publicip6, String privateip, String privateip6) {
+
 		String message_ip="UnSuccessfull";
                 try {
                         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -90,13 +97,20 @@ public class ReflectorStatusManager
 		return message_ip;
 	}
 		
-	protected static String Register(String sessionid,String publicip,String privateip,String role) {
+	//protected static String Register(String sessionid,String publicip,String privateip,String role) {
+
+         /**
+         * This method is replaced by Register addedd some parameters for ip4 and ip6.
+         */          
+
+          protected static String Register(String sessionid,String publicip,String publicip6,String privateip,String privateip6, String role) {
 		String message_ip="";
 		try{
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                         DocumentBuilder builder = factory.newDocumentBuilder();
                         Document doc = builder.parse(getFile());
-			message_ip=searchreRunningReflector(sessionid,publicip,privateip);
+		      //message_ip=searchreRunningReflector(sessionid,publicip,privateip);
+                        message_ip=searchreRunningReflector(sessionid,publicip,publicip6, privateip,privateip6);
 			String ip=ReflectorManager.searchElement(sessionid);
 			if((message_ip.equals("UnSuccessfull"))&&(role.equals("instructor"))) {
 			//	String ip=ReflectorManager.searchElement(sessionid);
@@ -107,8 +121,10 @@ public class ReflectorStatusManager
         		                Element reflector = doc.createElement("ReflectorStatus");
 					reflector.setAttribute("SESSIONID", sessionid);
 					reflector.setAttribute("LOAD", load);
-					reflector.setAttribute("PUBLICIP", publicip);
-					reflector.setAttribute("PRIVATEIP", privateip);
+					reflector.setAttribute("PUBLICIP4", publicip);
+                                        reflector.setAttribute("PUBLICIP6", publicip6);
+					reflector.setAttribute("PRIVATEIP4", privateip);
+                                        reflector.setAttribute("PRIVATEIP6", privateip6);
                 	        	root.appendChild(reflector);
 	                	        if(saveXML(doc).equals("Successfull"))
 						message_ip="current"+ip+","+"parent"+"";//searchParentIP(ip ,sessionid);
@@ -121,13 +137,9 @@ public class ReflectorStatusManager
 		return message_ip;
 	}
 	
-
 	//private static String updateLoad( String  sessionid) {
 	//	String message="";
 		
-			
-
-	
 	protected static String searchParentIP(String reflector_ip ,String sessionid) {
                 String message_ip="";
 		try {

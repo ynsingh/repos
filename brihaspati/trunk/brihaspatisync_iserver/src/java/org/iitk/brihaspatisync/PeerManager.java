@@ -66,7 +66,12 @@ public class PeerManager {
 	/*	
          * This Method Returns Parent Peer's IPAddress for Peer Connection .and also increase load of this parent peer.
          */
-	protected static String createPeer(String lect_id, String publicIP,String user,String role,String status,String privateIP,String proxy,String ref_ip,String first_lst_name,String ins_audio,String video) {
+//	protected static String createPeer(String lect_id, String publicIP,String user,String role,String status,String privateIP,String proxy,String ref_ip,String first_lst_name,String ins_audio,String video) { 
+
+        /**
+         * This method is replaced by createPeer addedd some parameters for ip4 and ip6.
+         */
+        protected static String createPeer(String lect_id, String publicIP,String publicIP6,String user,String role,String status,String privateIP ,String privateip6 ,String proxy,String ref_ip,String first_lst_name,String ins_audio,String video) {
 		String message="";
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -77,13 +82,15 @@ public class PeerManager {
 	                NodeList peerList = root.getElementsByTagName("Peer");
                 	if( (publicIP!="") && (user!=null) && (role!="") && (status!="")) {
 				if(!searchUserName(lect_id,user)) {
-		                	peer.setAttribute("PublicIP",publicIP);
+		                	peer.setAttribute("PublicIP4",publicIP);
+                                        peer.setAttribute("PublicIP6",publicIP6);
 	        		        peer.setAttribute("User",user);
 	        		        peer.setAttribute("UserName",first_lst_name);
         	        	        peer.setAttribute("Role",role);
                 	        	peer.setAttribute("Status",status);
 	                	       	peer.setAttribute("Reflector",ref_ip);
-	        	                peer.setAttribute("PrivateIP",privateIP);
+	        	                peer.setAttribute("PrivateIP4",privateIP);
+                                        peer.setAttribute("PrivateIP6",privateip6);
         	        	       	peer.setAttribute("Proxy",proxy);
 					peer.setAttribute("INS_AUD",ins_audio);
                                         peer.setAttribute("VIDEO",video);
@@ -92,7 +99,7 @@ public class PeerManager {
 					message="Write succfully";	
 				} else {
 					removePeer(lect_id,user);	
-					createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip,first_lst_name,ins_audio,video);
+					createPeer(lect_id,publicIP,publicIP6,user,role,status,privateIP,privateip6,proxy,ref_ip,first_lst_name,ins_audio,video);
 				}
       			} else   ServerLog.log("Exception in insert value to xml file "); 
 		} catch(Exception e){ ServerLog.log(" Exception in getFile method of PeerManager class "+e.getMessage()+"get==>"+e); }

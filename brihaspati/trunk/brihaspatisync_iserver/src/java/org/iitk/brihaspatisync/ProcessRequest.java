@@ -347,12 +347,20 @@ TBD - code to be updated as per the above logic.
                 	* LecturePeer.xml is written using these parameter
                 	* if reflector is not running message is sent back to client for it.
                 	**/
-			try {
+			try {   String publicip4 ="";
+                                String publicip6 ="";
 				String sessionid = request.getParameter("lect_id");
 				String publicip =(InetAddress.getByName(request.getRemoteAddr())).toString();
 				publicip=publicip.replaceAll("/","");
+                                int ip_len =publicip.length();
+                                if(ip_len<16){
+                              		  publicip4 =  publicip;
+                                }
+                                else{
+                                	  publicip6 =  publicip;
+                                }
 				//String privateip=request.getParameter("privateip");
-				String privateip = publicip;
+				//String privateip = publicip;
 				String user=request.getParameter("user");
 				String status=request.getParameter("status");
 				String role=request.getParameter("role");
@@ -367,8 +375,11 @@ TBD - code to be updated as per the above logic.
                                 String[] array2 = video_string.split("=");
                                 String ins_audio= array1[1];
                                 String video= array2[1];
+                                String privateip=request.getParameter("ip4_add");
+                                String privateip6=request.getParameter("ip6_add");
 				
-				message=ReflectorStatusManager.Register(sessionid,publicip,privateip,role);  
+			        //message=ReflectorStatusManager.Register(sessionid,publicip,privateip,role);
+                                message=ReflectorStatusManager.Register(sessionid,publicip,publicip6,privateip,privateip6,role);  
 				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not available !!")) && (!message.equals("Reflector have insufficient Load !!")) ) {
 					String ref_ip=message;
 					if(ref_ip.startsWith("current")) {
@@ -376,7 +387,9 @@ TBD - code to be updated as per the above logic.
                 	                        ref_ip=str1[0].replaceAll("current","");
 						str1=null;
 						String first_lst_name=ProcessRequestMethods.getFullName(user);	
-						String msg=PeerManager.createPeer(sessionid,publicip,user,role,status,publicip,proxy,ref_ip,first_lst_name,ins_audio,video);
+		                                //String msg=PeerManager.createPeer(sessionid,publicip,user,role,status,publicip,proxy,ref_ip,first_lst_name,ins_audio,video);
+                                                String msg=PeerManager.createPeer(sessionid,publicip,publicip6,user,role,status,privateip, privateip6,proxy,ref_ip,first_lst_name,ins_audio,video);
+ 
 					}
        				}
 				String av_status=ServerUtil.getAVStatus(sessionid);
