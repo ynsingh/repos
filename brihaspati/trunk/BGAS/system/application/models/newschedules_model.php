@@ -731,14 +731,15 @@ function newschedules_model()
 		$sum4 = 0;
 		$sum5 = 0;
 		$this->load->model('ledger_model');
-		$this->db->select('name,id')->from('groups')->where('parent_id',$group_id);
-                $query = $this->db->get();
-                $q_result = $query->result();
-		$total = array();
-                foreach($q_result as $row)
-                {
-                	$group_id = $row->id;
-			$group_name = $row->name;
+		//$this->db->select('name,id')->from('groups')->where('parent_id',$group_id);
+//                $query = $this->db->get();
+  //              $q_result = $query->result();
+//		$total = array();
+  //              foreach($q_result as $row)
+    //            {
+      //          	$group_id = $row->id;
+	//		$group_name = $row->name;
+	//		print_r(" the name is ".$group_name." and id is ".$group_id);
 			$this->db->select('name,id')->from('ledgers')->where('group_id',$group_id);
             		$query1 = $this->db->get();
             		$q_result1 = $query1->result();
@@ -774,19 +775,15 @@ function newschedules_model()
                                         }elseif($fund_type == "Revenue"){
                                                 $revenue_amount = $row2->amount;
                                                 $sum5 = $sum5 + $revenue_amount;
-
                                         }
-
-
-
 				}
-
 				$CI =& get_instance();
-				$CI->load->model('ledger_model');
+//				$CI->load->model('ledger_model');
 				$op_balance = $CI->ledger_model->get_op_balance($ledg_id);
  	                       	$opening_data = $op_balance[0];
 				$op_balance_dc = $op_balance[1];
-
+				$cl_bal=$CI->ledger_model->get_ledger_balance($ledg_id);
+				$sum3=$sum3+$cl_bal;
 				if($op_balance_dc == 'C')
             			{
                 			$op_balance_cr = $op_balance_cr + $opening_data;
@@ -795,7 +792,7 @@ function newschedules_model()
             			}
 
                 	}
-		}
+	//	}
 			
 			$op_balance = $op_balance_dr - $op_balance_cr;
         		if($op_balance > 0){
@@ -809,6 +806,7 @@ function newschedules_model()
 			$total[2] = $sum;
 			$total[3] = $sum1;
 			$total[4] = $sum2;
+			$total[5] = $sum3;
 			$total[6] = $sum4;
 			$total[7] = $sum5;
 			$total[8] = $op_balance_dc;

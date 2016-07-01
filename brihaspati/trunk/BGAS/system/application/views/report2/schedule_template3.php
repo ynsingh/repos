@@ -29,8 +29,10 @@
             <td align=\"center\" class=\"bold\">Total</td></tr>";
 
         echo "<tr><td class=\"bold\" colspan=\"7\">A Infrastructure</td></tr>";
+//        $object->schedule17('400301','view','NULL',$count,'A');
         $object->schedule17($code,'view','NULL',$count,'A');
         echo "<tr><td class=\"bold\" colspan=\"7\">B Communication</td></tr>";
+       // $object->schedule17('400302','view','NULL',$count,'B');
         $object->schedule17($code,'view','NULL',$count,'B');
         echo "<tr><td class=\"bold\" colspan=\"7\">C Others</td></tr>";
         $object->schedule17($code,'view','NULL',$count,'C');

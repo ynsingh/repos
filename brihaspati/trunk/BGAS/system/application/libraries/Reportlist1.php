@@ -142,7 +142,7 @@ class Reportlist1
                 $mhrdlist1=0;
                 $mhrd_total=0;
                 $CI =& get_instance();
-                $current_active_account = $CI->session->userdata('active_account');
+       //         $current_active_account = $CI->session->userdata('active_account');
                 $prev_year=$this->get_fy_year();
                 $db = $CI->Payment_model->database_name();
 
@@ -168,6 +168,10 @@ class Reportlist1
                                 $liability_total = $liability->total;
 //			print_r("the value is ".$name."=".$liability_total);
                                 $sum = $sum + $liability_total;
+		//		$liability->init(2);
+		//		$AS=$liability->total;
+		//		$AS=$AS;
+		//		print_r("=".$AS."diff is under2 =".$diff);
                                 $CI->load->model('investment_model');
                                 $result = $CI->investment_model->merge_Funds();
                                 $value = explode('#', $result);
@@ -190,15 +194,18 @@ class Reportlist1
 
                                 if($name == 'Corpus')
                    	             $name = 'Corpus/Capital Funds';
-                        	if(($code!=  '1005') && ($code!= '1001') &&  ($code!= '1006'))
+                        //	if(($code!=  '1005') && ($code!= '1001') &&  ($code!= '1006'))
+                        	if(($code!= '1001') &&  ($code!= '1006'))
                         	{
 					echo "<tr class=\"tr-group\" width=\"30%\">";
                 		        echo "<td class=\"td-group\" width=\"30%\">";
 		                        echo "&nbsp;" .  $name;
                 		        echo "</td>";
 		                        echo "<td class=\"td-group\">";
-                		        $counter++;
+					if($code !=1005){
+                		       		$counter++;
 		                        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_schedule/' . $code . '/' . $counter, $counter, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
+					}
                 		        echo "</td>";
 		                        if($name!= 'Corpus/Capital Funds')
                 		        {
@@ -220,6 +227,7 @@ class Reportlist1
 			
                 if($id == 1)
                 {
+			$sum=0;
 			$y=0;
                         $counter = 3;
 			$flag='true';
@@ -234,6 +242,10 @@ class Reportlist1
                                 $asset_total = $asset->total;
 //			print_r("the value is ".$name."=".$asset_total);
                                 $sum = $sum + $asset_total;
+
+		//		$asset->init(1);
+		//		$AS=$asset->total;
+		//		print_r("=".$AS);
 				// code for reading previous year data from xml
                                 $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
                                 $file_name="bal_mhrd1"."-".$db."-".$prev_year.".xml";
@@ -268,15 +280,11 @@ class Reportlist1
              			foreach ($main1->result() as $row1)
              			{
 				$group_name =  $row1->name;
-				//print_r($group_name);
                 		$group_id = $row1->id;
                 		$group_code = $row1->code;
                 		$asset = new Reportlist1();
                 		$asset->init($row1->id);
                 		$asset_total = $asset->total;
-                                        //$mhrdnode1 = $xpath->query("/bal_mhrd1/bal_mhrd1_Name/Amount");
-		//			print_r($mhrdlist1);
-	//			print_r($asset_total);
                 		if($name == 'Fixed Assets')
                			{
 					if(file_exists($tt))
@@ -292,29 +300,8 @@ class Reportlist1
                       		echo "<td></td>";
                                 echo "<td align=\"right\">" . convert_amount_dc($asset_total) . "</td>";
                                 echo "<td align=\"right\">" . convert_amount_dc($mhrdlist1) . "</td>";//add for previous year value
-                        	//echo "<td> </td>";
-                        	//echo "<td></td>";
 				echo "</tr>";
                 		}
-			/*
-					if($flag=='true'){
-						$group_name='Capital Work-In-Progress';
-//                				$assetcwp = new Reportlist1();
-                				$asset->init('149');
-		                		$asset_total = $asset->total;
-						$flag='false';
-                		echo "<tr class=\"tr-ledger\" width=\"30%\">";
-                        	echo "<td class=\"td-ledger\" width=\"30%\">";
-                        	echo "&nbsp;" .  $group_name;
-                        	echo "</td>";
-                      		echo "<td></td>";
-                                echo "<td align=\"right\">" . convert_amount_dc($asset_total) . "</td>";
-                                echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        	//echo "<td> </td>";
-                        	//echo "<td></td>";
-				echo "</tr>";
-					}
-			*/
                			if(($name!= 'Fixed Assets') && ($name!= 'Current Assets') && ($name!= 'Loans Advances and Deposits'))
                 		{
                                 if($group_name == 'Corpus Fund Investments')
@@ -354,11 +341,18 @@ class Reportlist1
         $income = new Reportlist1();
         $income->init('3');
         $total = $income->total;
+  //      $tincome = new Reportlist1();
+//	$tincome ->init_led('377');//remove the transit income from the total income
+//	$tincometot = $tincome->total;
+//	$total=$total-$tincometot;
+//	print_r("Income =".$total);
         $expense = new Reportlist1();
         $expense->init('4');
         $total1 = $expense->total;
-        $total = 0 - $total;
+//	print_r("Expence =".$total1);
+        $total = 0 - $total;// as result due to cr it gives negative value, so we convert it to positive
         $diff = $total - $total1;
+//	print_r("Diff is ".$diff);
         return $diff;
 	}
  
@@ -453,6 +447,10 @@ class Reportlist1
 		{
 		$counter = 7;
 		} */
+//		$asset = new Reportlist1();
+  //                      $asset->init('175');
+    //                    $asset_total = $asset->total;
+//print_r(" the final asset=".$asset_total);
                 $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
                 $group_detail = $CI->db->get();
                 $group_result = $group_detail->result();
@@ -516,9 +514,10 @@ class Reportlist1
 			$asset = new Reportlist1();
                         $asset->init($row2->id);
                         $childasset_total = $asset->total;
+			
 			if($name!= 'Investments')
 			{
-                        $sum = $sum + $childasset_total;
+      //                  $sum1 = $sum1 + $childasset_total;
 			}
 			//if($children_groupname == 'Stock in Hand')
 			//{
@@ -1782,32 +1781,16 @@ class Reportlist1
 		$str1 = 'a';
 		$CI =& get_instance();
 	//	$CI->load->model('Ledger_model');
-	 // for ledger comes under direct group
-	// for 1004 ledgers	
-//		$CI->db->select('id,name,code')->from('ledgers')->where('group_id','83');
-  //      	$mainl = $CI->db->get();
-    //    	$mainl_result = $mainl->result();
-//		print_r($mainl_result);
-//		$i=1;
-      //  	foreach($mainl_result as $rowl)
-        //	{
-          //      	$groupledg_id = $rowl->id;
-//			print_r(" I am here");
-            //    	$groupledg_name = $rowl->name;
-	//		$liability = new Reportlist1();
-          //              $liability->init_led($rowl->id);
-            //            $liability_total = $liability->total;
-//                        $liability_total = $CI->ledger_model->get_balancesheet_ledger_balance($groupledg_id);
-              //          $sum = $sum + $liability_total;
-//			print_r("the group-direct is =".$i."- ".$groupledg_name." = ".$liability_total."sum = ".$sum);
-//			print_r("<br>");
-//				$i++;
-	//	}
+			//$liabilit = new Reportlist1();
+//                        $liabilit->init('83');
+  //                      $liability_total1 = $liabilit->total;
+//			print_r("=". $liability_total1);
 		$CI->db->select('id,name,code')->from('groups')->where('parent_id',$id);
         	$main1 = $CI->db->get();
         	$main1_result = $main1->result();
-       	foreach($main1_result as $row)
+       		foreach($main1_result as $row)
         	{
+			$liability_total=0;
                 	$group_id = $row->id;
                 	$group_name = $row->name;
 			$liability = new Reportlist1();
@@ -1854,9 +1837,64 @@ class Reportlist1
 				echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($liability_total) . "</td>";
                         	echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc(0) . "</td>";
 
-			}
-		}//foreach
+			}//foreach inner
 
+		}//foreach outer
+// code for direct ledger account
+		$CI->db->select('id,name,code')->from('ledgers')->where('group_id',$id);
+        	$mainl = $CI->db->get();
+        	$mainl_result = $mainl->result();
+        	foreach($mainl_result as $rowl)
+        	{
+                	$groupledg_id = $rowl->id;
+//			print_r(" I am here");
+                	$groupledg_name = $rowl->name;
+			$liability = new Reportlist1();
+                        $liability->init_led($rowl->id);
+                        $liability_total = $liability->total;
+          //              $liability_total = $CI->ledger_model->get_balancesheet_ledger_balance($groupledg_id);
+                        $sum = $sum + $liability_total;
+		}
+				echo "<tr class=\"tr-ledger\">";
+	                	echo "<td class=\"td-ledger\">";
+				echo $str1;
+                        	echo ')';
+                        	$str1++;
+                		echo "&nbsp;&nbsp;" . "Direct Ledger(Current Liability)";
+                		echo "</td>";
+				echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($liability_total) . "</td>";
+                        	echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc(0) . "</td>";
+
+	 // for ledger comes under direct group
+	// for 1004 ledgers	
+		$CI->db->select('id,name,code')->from('ledgers')->where('group_id','83');
+        	$mainl = $CI->db->get();
+        	$mainl_result = $mainl->result();
+//		print_r($mainl_result);
+//		$i=1;
+        	foreach($mainl_result as $rowl)
+        	{
+                	$groupledg_id = $rowl->id;
+//			print_r(" I am here");
+                	$groupledg_name = $rowl->name;
+			$liability = new Reportlist1();
+                        $liability->init_led($rowl->id);
+                        $liability_total = $liability->total;
+          //              $liability_total = $CI->ledger_model->get_balancesheet_ledger_balance($groupledg_id);
+                        $sum = $sum + $liability_total;
+//			print_r("the group-direct is =".$i."- ".$groupledg_name." = ".$liability_total."sum = ".$sum);
+//			print_r("<br>");
+//				$i++;
+		}
+				echo "<tr class=\"tr-ledger\">";
+	                	echo "<td class=\"td-ledger\">";
+				echo $str1;
+                        	echo ')';
+                        	$str1++;
+                		echo "&nbsp;&nbsp;" .  "Direct Ledger (Current Liability and Provision)";
+                		echo "</td>";
+				echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($liability_total) . "</td>";
+                        	echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc(0) . "</td>";
 		$this->liability_total = $sum;
 		
 	}
@@ -1888,6 +1926,26 @@ class Reportlist1
 		echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($liability_total) . "</td>";
                 echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc(0) . "</td>";
 		}//foreach
+// code for adding direct ledger account
+		$CI->db->select('id,name,code')->from('ledgers')->where('group_id',$id);
+        	$main_result = $CI->db->get();
+        	$main_q = $main_result->result();
+        	foreach($main_q as $row)
+        	{
+		$liability = new Reportlist1();
+                $liability->init_led($row->id);
+                $liability_total = $liability->total;
+                $sum = $sum + $liability_total;
+		}
+                echo "<tr class=\"tr-group\">";
+                echo "<td class=\"td-group\">";
+                echo $counter;
+                $counter++;
+                echo "&nbsp;&nbsp;" . "Direct ledger(Provision)";
+                echo "</td>";
+		echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($liability_total) . "</td>";
+                echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc(0) . "</td>";
+
 		$this->liability_total = $sum;
 	}
 
@@ -2937,7 +2995,8 @@ class Reportlist1
             $name = $row->name;
             $code =$row->code;
             $ledg_id = $row->id;
-            echo "<tr class=\"tr-group\">";
+	//	print_r($code."=" );
+           echo "<tr class=\"tr-group\">";
             echo "<td class=\"td-group\">";
             echo "&nbsp;" .  $name;
             echo "</td>";
@@ -2986,8 +3045,8 @@ class Reportlist1
             if($id == 4 && $type == "view" && $database == "NULL")
             {
                 if($name == 'Depreciation'){
-                    //echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . $c, 4, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
-                    echo 4;
+                    echo "&nbsp;" . anchor_popup('report2/IE_schedules/' . $code . '/' . $c, 4, array('title' => $name, 'style' => 'color:#000000;text-decoration:none;'));
+                    //echo 4;
                 }
                 else{
                 $c++;
@@ -3025,9 +3084,33 @@ class Reportlist1
                         $i++;
                echo "<td align=\"right\">" . convert_amount_dc($paymentlist2) . "</td>";
                echo"</tr>";
-            }
-        }
-        $this->total=$type_total;
+            }//if expence
+        }//foreach
+        $this->total=$type_total; //used in view for previous year calculation
+        $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+        $main = $CI->db->get();
+        $main_result= $main->result();
+	
+           echo "<tr class=\"tr-group\">";
+            echo "<td class=\"td-group\">";
+            echo "&nbsp;" . "Direct Ledger";
+            echo "</td>";
+            echo "<td class=\"td-group\" align=\"center\">";
+        foreach($main_result as $row)
+        {
+		$ledg_id=$row->id;
+                $income = new Reportlist1();
+                $income->init_led($ledg_id);
+                $total = $income->total;
+                $sum = $sum + $total;
+        }//foreach
+            if($id == 3  )
+                echo "<td align=\"right\">".convert_amount_dc($total)."</td>";// add (-) for write cr
+            if($id == 4  )
+                echo "<td align=\"right\">".convert_amount_dc($total)."</td>";
+               echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+               echo"</tr>";
+
     return $sum;
     }
 
@@ -3866,15 +3949,44 @@ class Reportlist1
             $CI->load->model('Ledger_model');
 
             $group_id = $CI->Group_model->get_id('Grant/Subsidies and Donations');
-            $CI->db->select('name,id')->from('ledgers')->where('group_id',$group_id);
+            $CI->db->select('id,name,code')->from('ledgers')->where('group_id',$group_id);
             $query = $CI->db->get();
             $counter = $query->num_rows();
-            
+//            print_r($counter);
             $q_result = $query->result();
             $ledger_id = array();
             $x = 0;
+		$groupplan=0;$groupnonplan=0;$groupspecific=0; $group1plan=0;$group1nonplan=0;$group2plan=0; $group2nonplan=0;$group3plan=0;$group3nonplan=0;
             foreach($q_result as $row){
                 $ledg_id = $row->id;
+		if($x==0){
+
+		            $groupplan = $CI->Ledger_model->get_schedule10_data($ledg_id,'plan');
+		            $groupnonplan = $CI->Ledger_model->get_schedule10_data($ledg_id,'nonplan');
+		            $groupspecific = $CI->Ledger_model->get_schedule10_data($ledg_id,'specific_sch');
+		}
+		elseif($x==1){
+
+		            $group1plan = $CI->Ledger_model->get_schedule10_data($ledg_id,'plan');
+		            $group1nonplan = $CI->Ledger_model->get_schedule10_data($ledg_id,'nonplan');
+		            $group1specific = $CI->Ledger_model->get_schedule10_data($ledg_id,'specific_sch');
+		}
+		elseif($x==2){
+
+		            $group2plan = $CI->Ledger_model->get_schedule10_data($ledg_id,'plan');
+		            $group2nonplan = $CI->Ledger_model->get_schedule10_data($ledg_id,'nonplan');
+		            $group2specific = $CI->Ledger_model->get_schedule10_data($ledg_id,'specific_sch');
+		}
+		else{
+
+            		$group3plan = $CI->Ledger_model->get_schedule10_otherdata('plan',$group_id);
+		        $group3nonplan = $CI->Ledger_model->get_schedule10_otherdata('nonplan',$group_id);
+		        $group3specific = $CI->Ledger_model->get_schedule10_otherdata('specific_sch',$group_id);
+			break;
+		}
+  //              $cid = $row->code;
+//		print_r($cid);
+//		print_r("==".$ledg_id);
                 $ledger_id[$x] = $ledg_id;
                 $x++;
                 //$op_balance = $CI->Ledger_model->get_op_balance($ledger_id);
@@ -3882,8 +3994,8 @@ class Reportlist1
                 //$cr_total = $CI->Ledger_model->get_cr_total2($ledger_id);
                 //$capital_total = $CI->Ledger_model->get_capital_exp_total($ledger_id);
                 //$revenue_total = $CI->Ledger_model->get_revenue_exp_total($ledger_id);
-            }
-            //print_r($ledger_id);
+            }//end of ledger foreach
+  //          print_r("=".$ledger_id);
             $name = array();
             $name[0] = "Balance B/F";
             $name[1] = "Add: Receipts during the year";
@@ -3894,14 +4006,15 @@ class Reportlist1
             $name[6] = "Balance";
             $name[7] = "Less: utilized for Revenue Expenditure (B)";
             $name[8] = "Balance C/F (C)";            
-            $groupplan = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'plan');
-            $groupnonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'nonplan');
-            $groupspecific = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'specific_sch');
-            $group1plan = $CI->Ledger_model->get_schedule10_data($ledger_id[1],'plan');
+// ugc[0], govt [1], state [2], other[3]
+//            $groupplan = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'plan');
+  //          $groupnonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'nonplan');
+    //        $groupspecific = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'specific_sch');
+      //      $group1plan = $CI->Ledger_model->get_schedule10_data($ledger_id[1],'plan');
 		//print_r($group1plan);
-            $group1nonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[1],'nonplan');
-            $group2plan = $CI->Ledger_model->get_schedule10_data($ledger_id[2],'plan');
-            $group2nonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[2],'nonplan');
+        //    $group1nonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[1],'nonplan');
+          //  $group2plan = $CI->Ledger_model->get_schedule10_data($ledger_id[2],'plan');
+           // $group2nonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[2],'nonplan');
 	//	print_r($groupplan);
 	//	print_r($groupnonplan);
 	//	print_r($groupspecific);
@@ -3913,28 +4026,95 @@ class Reportlist1
 	//	print_r($group2nonplan);
             $a =0;
             do{
-                $plantotal1 = 0;
-                $plantotal2 = 0;
-                $plantotal3 =0;
+                $fplantotal = 0;
+                $fnonplantotal = 0;
+                $fspplantotal = 0;
+                $ftotal = 0;
+   //             $plantotal = 0;
+ //               $nonplantotal = 0;
+     //           $spplantotal =0;
+       //         $total =0;
 
-                $nonplantotal1 = 0;
+              /*  $nonplantotal1 = 0;
                 $nonplantotal2 = 0;
                 $nonplantotal3 =0;
                 $planspecifictotal = 0;
                 $plan_total = 0;
                 $non_plan_total = 0;
                 $total = 0;
-
+*/
                 if($a == 2 || $a == 4 || $a == 6 || $a == 8)
-                echo "<tr class=\"tr-ledger\" style = font-weight:bold;>";
+	                echo "<tr class=\"tr-ledger\" style = font-weight:bold;>";
                 else
-                echo "<tr class=\"tr-group\">";
+        	        echo "<tr class=\"tr-group\">";
+
+			echo"<td>";
+	                        echo $name[$a];
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($groupplan[$a]));
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($group1plan[$a]));
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($group2plan[$a]));
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($group3plan[$a]));
+			echo"</td>";
+			echo"<td>";
+				$fplantotal = $groupplan[$a]+$group1plan[$a]+$group2plan[$a]+$group3plan[$a];
+				echo money_format('%!i', convert_cur($fplantotal));//total
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($groupnonplan[$a]));
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($group1nonplan[$a]));
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($group2nonplan[$a]));
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($group3nonplan[$a]));
+			echo"</td>";
+			echo"<td>";
+				$fnonplantotal = $groupnonplan[$a]+$group1nonplan[$a]+$group2nonplan[$a]+$group3nonplan[$a];
+				echo money_format('%!i', convert_cur($fnonplantotal));//total
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($groupspecific[$a]));
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($group1specific[$a]));
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($group2specific[$a]));
+			echo"</td>";
+			echo"<td>";
+				echo money_format('%!i', convert_cur($group3specific[$a]));
+			echo"</td>";
+			echo"<td>";
+				$fspplantotal = $groupspecific[$a]+$group1specific[$a]+$group2specific[$a]+$group3specific[$a];
+				echo money_format('%!i', convert_cur($fspplantotal));//total
+			echo"</td>";
+			echo"<td>";
+				$ftotal =  $fplantotal+ $fnonplantotal+ $fspplantotal;
+				echo money_format('%!i', convert_cur($ftotal));//current year total
+			echo"</td>";
+			echo"<td>";
+						// for previous year
+			echo"</td>";
+                $a++;
+            }while($a<9);
+/*
                 $b =0;
                 $c = ($counter * 2) + 6;
                 do{
                     if($b == 0){
-                    echo"<td>";
-                    echo $name[$a];
+                	    echo"<td>";
+	                    echo $name[$a];
                     }elseif($b == 1 || $b == (3 + $counter)){
                         echo "<td align=\"right\">"; 
                         if($b == 1){
@@ -3988,6 +4168,7 @@ class Reportlist1
                 echo "</tr>";
                 $a++;
             }while($a<9);
+*/
         }
     }
 
@@ -4243,8 +4424,8 @@ class Reportlist1
         	$curr_year = $fy_start[0] ."-" .$fy_end[0];
         	$prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
 
-		$CI->load->model('Group_model');
-            	$CI->load->model('Ledger_model');
+//		$CI->load->model('Group_model');
+  //          	$CI->load->model('Ledger_model');
 
             	$id = $CI->Group_model->get_id('Designated-Earmarked/Endowment Funds');
             	$CI->db->select('name,id')->from('groups')->where('parent_id',$id);
@@ -4274,7 +4455,10 @@ class Reportlist1
                 {
                 	$group_id = $row->id;
                 	$group_name = $row->name;
+			//print_r(" the id is ".$group_id."and name is ".$group_name);
 			$value = $CI->newschedules_model->schedule2($group_id);
+//	print_r(" In first for ".$value);
+//			print_r($value);
                         $opening_balance = $value[0];
 			$op_bal_dc = $value[8];
 			$total_op_bal = $total_op_bal + $opening_balance;
@@ -4297,6 +4481,9 @@ class Reportlist1
                         $group_id = $row->id;
                         $group_name = $row->name;
                         $value = $CI->newschedules_model->schedule2($group_id);
+//			print_r($value);
+//	print_r(" In i name 1 for ".$value);
+//			print_r($value);
 			$fund_addition = $value[1];
 			$fund_total = $fund_total + $fund_addition;
                         echo "<td align=\"right\">" . convert_amount_dc(+$fund_addition) . "</td>";
@@ -4320,6 +4507,8 @@ class Reportlist1
                         $group_id = $row->id;
                         $group_name = $row->name;
                         $value = $CI->newschedules_model->schedule2($group_id);
+//	print_r(" In i name 2 for ".$value);
+//			print_r($value);
                         $fund_investment_income = $value[2];
                         $total_income = $total_income + $fund_investment_income;
                         echo "<td align=\"right\">" . convert_amount_dc(+$fund_investment_income) . "</td>";
@@ -4342,6 +4531,8 @@ class Reportlist1
                         $group_id = $row->id;
                         $group_name = $row->name;
                         $value = $CI->newschedules_model->schedule2($group_id);
+//	print_r(" In i name 3 for ".$value);
+//			print_r($value);
                         $accru_intrest = $value[3];
                         $total_intrest = $total_intrest + $accru_intrest;
                         echo "<td align=\"right\">" . convert_amount_dc(+$accru_intrest) . "</td>";
@@ -4364,6 +4555,8 @@ class Reportlist1
                         $group_id = $row->id;
                         $group_name = $row->name;
                         $value = $CI->newschedules_model->schedule2($group_id);
+//	print_r(" In i name 4 for ".$value);
+//			print_r($value);
                         $earned_intrest = $value[4];
                         $total_saving = $total_saving + $earned_intrest;
                         echo "<td align=\"right\">" . convert_amount_dc(+$earned_intrest) . "</td>";
@@ -4386,9 +4579,11 @@ class Reportlist1
                         $group_id = $row->id;
                         $group_name = $row->name;
                         $value = $CI->newschedules_model->schedule2($group_id);
-                      //  $accru_intrest = $value[4];
-                      //  $total_intrest = $total_intrest + $accru_intrest;
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+//	print_r(" In i name 5 for ".$value);
+///			print_r($value);
+                        $accru_intrest = $value[5];
+                        $total_intrest = $total_intrest + $accru_intrest;
+                        echo "<td align=\"right\">" . convert_amount_dc($total_intrest) . "</td>";
                 }
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
@@ -4408,14 +4603,17 @@ class Reportlist1
                         $group_name = $row->name;
 
 			$value = $CI->newschedules_model->schedule2($group_id);
+//	print_r(" In after total 1 for ".$value);
+///			print_r($value);
 			$opening_balance = $value[0];
 			$fund_addition = $value[1];
 			$fund_investment_income = $value[2];
 			$accru_intrest = $value[3];
 			$earned_intrest = $value[4];
+			$other_fund = $value[5];
 
 			//$other_addition = 0;
-			$total = ($opening_balance + $fund_addition + $fund_investment_income + $accru_intrest + $earned_intrest); 
+			$total = ($opening_balance + $fund_addition + $fund_investment_income + $accru_intrest + $earned_intrest+$other_fund); 
 			echo "<td align=\"right\">";
 		        echo "<strong>" . convert_amount_dc($total) . "</strong>";
         		echo "</td>";
@@ -4554,11 +4752,12 @@ class Reportlist1
                         $fund_investment_income = $value[2];
                         $accru_intrest = $value[3];
                         $earned_intrest = $value[4];
+                        $other_fund = $value[5];
 			$capital_exp = $value[6];
                         $revenue_exp = $value[7];
 
                         //$other_addition = 0;
-                        $totalA = ($opening_balance + $fund_addition + $fund_investment_income + $accru_intrest + $earned_intrest);
+                        $totalA = ($opening_balance + $fund_addition + $fund_investment_income + $accru_intrest + $earned_intrest+$other_fund);
 			$totalB = ($capital_exp + $revenue_exp);
 			
 			$net_closing = $totalA - $totalB;

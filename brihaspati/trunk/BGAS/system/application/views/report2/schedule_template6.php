@@ -15,28 +15,53 @@
 
     $counter1 = (2 * $counter) + 4;
     $counter2 = $counter + 1;
-	$this->load->library('reportlist1');
-    $object = new Reportlist1();
+//    $this->load->library('reportlist1');
+  //  $object = new Reportlist1();
 	if(!($print_preview))
 	{
         echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-        echo "<thead><tr><th align=\"center\">Particulars</th><th colspan=\"".$counter1."\" align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
+        echo "<thead><tr><th align=\"center\">Particulars</th><th colspan=\"16\" align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
 	}else{
 		echo "<table border=1 solid class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-        echo "<thead><tr><th align=\"center\">Particulars</th><th colspan=\"".$counter1."\" align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
+        echo "<thead><tr><th align=\"center\">Particulars</th><th colspan=\"16\" align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
 	}
 
     
     echo "<tr>";
     echo"<td></td>";
-    echo"<td colspan=\"".$counter2."\" align=\"center\" >Plan</td>";
-    echo"<td align=\"center\" >Total Plan</td>";
-    echo"<td align=\"center\" colspan=\"".$counter."\">Non Plan</td>";
-    echo"<td align=\"center\">Total Non Plan</td>";
+    echo"<td colspan=\"5\" align=\"center\" >Plan</td>";
+    //echo"<td align=\"center\" >Total Plan</td>";
+    echo"<td align=\"center\" colspan=\"5\">Non Plan</td>";
+//    echo"<td align=\"center\">Total Non Plan</td>";
+    echo"<td align=\"center\" colspan=\"5\">Specific Plan</td>";
     echo"<td align=\"center\">Total</td>";
     echo"<td align=\"center\">Total</td>";
     echo "</tr>";
 
+    echo "<tr>";
+    echo"<td></td>";
+    echo"<td align=\"center\">UGC</td>";
+    echo"<td align=\"center\">Govt. of India</td>";
+    echo"<td align=\"center\">Govt. of State</td>";
+    echo"<td align=\"center\">Other</td>";
+    echo"<td align=\"center\">Total</td>";
+    echo"<td align=\"center\">UGC</td>";
+    echo"<td align=\"center\">Govt. of India</td>";
+    echo"<td align=\"center\">Govt. of State</td>";
+    echo"<td align=\"center\">Other</td>";
+    echo"<td align=\"center\">Total</td>";
+    echo"<td align=\"center\">UGC</td>";
+    echo"<td align=\"center\">Govt. of India</td>";
+    echo"<td align=\"center\">Govt. of State</td>";
+    echo"<td align=\"center\">Other</td>";
+    echo"<td align=\"center\">Total</td>";
+    echo"<td align=\"center\"></td>";
+    echo"<td align=\"center\"></td>";
+    echo "</tr>";
+
+
+
+/*
     echo "<tr>";
     echo"<td></td>";
     foreach($q_result as $row){
@@ -72,7 +97,7 @@
         }
     }
     echo"<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
-    
+    */
     $this->load->library('reportlist1');
     $object = new Reportlist1(); 
     $object->schedule10($code,'view','NULL',$count);   

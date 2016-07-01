@@ -715,12 +715,15 @@ var $ledgers = array();
 			$cr_total=0;
 
                 $total = float_ops($dr_total, $cr_total, '-');
-
+//print_r("the open bal of bank cash is ".$total);
+//print_r("the open bal of bank cash is old".$op_bal);
                 if ($op_bal_type == "D")
                         $total = float_ops($total, $op_bal, '+');
                 else
                         $total = float_ops($total, $op_bal, '-');
+//print_r("the open bal of bank cash is ".$total);
 		$op_balance=abs($total);	
+//print_r("the open bal of bank cash is1 ".$op_balance);
 		if($total >= 0)
 			$op_type="D";
 		else 
@@ -1141,16 +1144,57 @@ var $ledgers = array();
 		return $revenue_total;
 
 	}
+	function get_schedule10_otherdata( $type,$gid){
+		$CI =& get_instance();
+		$CI->db->select('id,name,code')->from('ledgers')->where('group_id',$gid);
+            	$query = $CI->db->get();
+            	$counter = $query->num_rows();
+            	$q_result = $query->result();
+		$x=0;
+		$plan_total11=0; $plan_total21=0;$plan_total31=0; $plan_total41=0;
+		foreach($q_result as $row){
+		if(($x==0) || ($x==1) || ($x==2)){
+		}
+		else{
+                $ledger_id = $row->id;
+
+	        $op_balance = $this->get_op_balance($ledger_id);
+        	$dr_total = $this->get_dr_total2($ledger_id);
+	        $cr_total = $this->get_cr_total2($ledger_id);
+        	$capital_total = $this->get_capital_exp_total($ledger_id);
+	        $revenue_total = $this->get_revenue_exp_total($ledger_id);
+        	$plan = array();
+	        $plan_total1 = $op_balance[0]+ $cr_total[$type];
+		$plan_total11 = $plan_total11 +$plan_total1;
+	        $plan_total2  = $plan_total1 - $dr_total[$type];
+		$plan_total21 =  $plan_total21 +  $plan_total2;
+	        $plan_total3 = $plan_total2 - $capital_total[$type];
+		$plan_total31 = $plan_total31 + $plan_total3;
+	        $plan_total4 = $plan_total3 - $revenue_total[$type];
+		$plan_total41 =$plan_total41 +$plan_total4;
+		}//if close
+		$x++;
+		}//for each
+	        $plan[0] = $op_balance[0];
+	        $plan[1] = $cr_total[$type];
+	        $plan[2] = $plan_total11;
+	        $plan[3] = $dr_total[$type];
+	        $plan[4] = $plan_total21;
+	        $plan[5] = $capital_total[$type];
+	        $plan[6] = $plan_total31;
+	        $plan[7] = $revenue_total[$type];
+	        $plan[8] = $plan_total41;
+	        return $plan;
+	}
+
 
 	function get_schedule10_data($ledger_id, $type){
 
         $op_balance = $this->get_op_balance($ledger_id);
-	//print_r($op_balance);
         $dr_total = $this->get_dr_total2($ledger_id);
         $cr_total = $this->get_cr_total2($ledger_id);
         $capital_total = $this->get_capital_exp_total($ledger_id);
         $revenue_total = $this->get_revenue_exp_total($ledger_id);
-       // print_r($cr_total);
         if($type == 'plan'){
         	$plan = array();
 	        $plan_total1 = $op_balance[0]+ $cr_total['plan'];
