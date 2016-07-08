@@ -96,17 +96,19 @@ public class ForgotPasswordDB {
             String sport = String.valueOf(request.getServerPort()); 
             rkey=UUID.randomUUID().toString();
             activationLink = "http://"+ipAddress+":"+sport+"/adminLogin"+"/ResetPassword.jsf"+"?rkey="+rkey;  
-            //System.out.printf("Request URL==========>"+url);
+            
             String serverUrl="http://"+ipAddress+":"+sport+"/index.jsp";
             String fromEmail = new String();
             String fromPassword = new String();
             String smtpHostName;
+            String mailFrom;
             int port;
             final String[] f = new CollegeList().getSMTPAuthDetails().split("-");
             port = Integer.parseInt(f[0]);
             fromEmail = f[1];
             fromPassword = f[2];
             smtpHostName = f[3];
+            mailFrom = f[4];
             Properties props = new Properties();
             props.put("mail.smtp.host", smtpHostName); 
             props.put("mail.stmp.user", fromEmail);
@@ -124,7 +126,8 @@ public class ForgotPasswordDB {
                                      }
                                   });
             String to = fp.getEmail();
-            String from = f[1];
+            //String from = f[1];
+            String from = f[4];
             //String subject = "Payroll Password Reset Mail !";
             MassageProperties msgprop = new MassageProperties();
             MimeMessage msg = new MimeMessage(session);
@@ -394,7 +397,7 @@ public class ForgotPasswordDB {
         
     }
       /*
-       *    this method is using for sending updeted password to user 
+       *    this method is use for sending updeted password to user 
        *   after password reset process completed 
        */
        public boolean sendUpdatePasswordMail(ForgotPassword fp, String to)  {
@@ -403,12 +406,14 @@ public class ForgotPasswordDB {
                   String fromEmail = new String();
                   String fromPassword = new String();
                   String smtpHostName;
+                  String mailfrom;
                   int port;
                   final String[] f = new CollegeList().getSMTPAuthDetails().split("-");
                   port = Integer.parseInt(f[0]);
                   fromEmail = f[1];
                   fromPassword = f[2];
                   smtpHostName = f[3];
+                  mailfrom = f[4];
                   Properties props = new Properties();
                   props.put("mail.smtp.host", smtpHostName); 
                   props.put("mail.stmp.user", fromEmail);
@@ -425,8 +430,8 @@ public class ForgotPasswordDB {
                                                return new PasswordAuthentication(username, password);
                                      }
                                   });
-                    // System.out.println("==send new password 2==========>"+fromEmail+""+smtpHostName+"to====>"+to);
-                    String from = f[1];
+                    //String from = f[1];
+                    String from = f[4];
                     //String subject = "Payroll Adminstrator";
                     MassageProperties msgprop = new MassageProperties();
                     MimeMessage msg = new MimeMessage(session);
@@ -460,7 +465,6 @@ public class ForgotPasswordDB {
               }
     }
 
-    
-    
+       
 }    
 

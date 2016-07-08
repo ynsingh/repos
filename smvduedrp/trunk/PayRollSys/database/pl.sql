@@ -61,6 +61,7 @@ CREATE TABLE `admin_smtp_details` (
   `auth_password` varchar(100) default NULL,
   `smtp_status` tinyint(4) default NULL,
   `smtp_host_name` varchar(200) default NULL,
+  `mail_from` varchar(100) default NULL,
   PRIMARY KEY  (`seq_id`),
   UNIQUE KEY `smtp_host_name` (`smtp_host_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

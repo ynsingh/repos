@@ -23,6 +23,9 @@
         <property name="hostName" type="string">
             <column name="smtp_host_name" not-null="true" />
         </property>
+        <property name="mailfrom" type="string">
+            <column name="mail_from" not-null="true" />
+        </property>
         
   </class>
 </hibernate-mapping>

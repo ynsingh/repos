@@ -27,10 +27,38 @@ import org.smvdu.payroll.beans.setup.Org;
 import org.smvdu.payroll.beans.setup.SmtpConfiguration;
 import org.smvdu.payroll.user.UserRegistration;
 import org.smvdu.payroll.user.changePassword;
+
 /**
  *
+ *  Copyright (c) 2010, 2011, 2014 SMVDU Katra.
+ *  Copyright (c) 2014, 2015, 2016 ETRG, IITK. 
+ *  All Rights Reserved.
+ ** Redistribution and use in source and binary forms, with or 
+ *  without modification, are permitted provided that the following 
+ *  conditions are met: 
+ ** Redistributions of source code must retain the above copyright 
+ *  notice, this  list of conditions and the following disclaimer. 
+ * 
+ *  Redistribution in binary form must reproduce the above copyright
+ *  notice, this list of conditions and the following disclaimer in 
+ *  the documentation and/or other materials provided with the 
+ *  distribution. 
+ * 
+ * 
+ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED 
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ *  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE 
+ *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
+ *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * 
  * @author KESU
- * GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
+ * GUI Modified date 21 July 2015, Om Prakash (omprakashkgp@gmail.com), IITK
  * Modified date 21 March 2016
  */
 
@@ -1101,6 +1129,7 @@ public class CollegeList {
         smtpCon.setSmtpPort(o.getSmtpPort());
         smtpCon.setFromEmailId(o.getFromEmailId());
         smtpCon.setFromPassword(o.getFromPassword());
+        smtpCon.setMailfrom(o.getMailfrom());
         smtpCon.setSmtpStatus(o.isSmtpStatus());
         sess = helper.getSessionFactory().openSession();
         sess.beginTransaction();
@@ -1152,6 +1181,7 @@ public class CollegeList {
                 smtpCon.setFromEmailId(adm.getFromEmailId());
                 smtpCon.setFromPassword(adm.getFromPassword());
                 smtpCon.setSmtpPort(adm.getSmtpPort());
+                smtpCon.setMailfrom(adm.getMailfrom());
                 smtpCon.setSmtpStatus(adm.isSmtpStatus());
                 sess.update(smtpCon);
                 sess.getTransaction().commit();
@@ -1216,11 +1246,11 @@ public class CollegeList {
             cn.setAutoCommit(false); 
             PreparedStatement pst;
             ResultSet rst;
-            pst = cn.prepareStatement("select smtp_port,auth_emailid,auth_password,smtp_host_name from admin_smtp_details where smtp_status = '"+1+"'");
+            pst = cn.prepareStatement("select smtp_port,auth_emailid,auth_password,smtp_host_name,mail_from from admin_smtp_details where smtp_status = '"+1+"'");
             rst = pst.executeQuery();
             if(rst.next() == true)
             {
-                authDetails = rst.getInt(1)+"-"+rst.getString(2)+"-"+rst.getString(3)+"-"+rst.getString(4); 
+                authDetails = rst.getInt(1)+"-"+rst.getString(2)+"-"+rst.getString(3)+"-"+rst.getString(4)+"-"+rst.getString(5); 
             }
             else
             {

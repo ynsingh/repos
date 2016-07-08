@@ -16,37 +16,38 @@ import org.smvdu.payroll.api.Administrator.CollegeList;
 /**
  *
  *
-*  Copyright (c) 2010 - 2011.2014,2015 SMVDU, Katra.
-*  All Rights Reserved.
-**  Redistribution and use in source and binary forms, with or 
-*  without modification, are permitted provided that the following 
-*  conditions are met: 
-**  Redistributions of source code must retain the above copyright 
-*  notice, this  list of conditions and the following disclaimer. 
-* 
-*  Redistribution in binary form must reproduce the above copyright
-*  notice, this list of conditions and the following disclaimer in 
-*  the documentation and/or other materials provided with the 
-*  distribution. 
-* 
-* 
-*  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED 
-*  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
-*  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-*  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE 
-*  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
-*  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
-*  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
-*  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-*  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
-*  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
-*  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
-* 
-* 
-*
-* @author Om Prakash<omprakashkgp@gmail.com> IITK, (Dec 2015)
-*
-*/
+ *  Copyright (c) 2010 - 2011.2014 SMVDU, Katra.
+ *  Copyright (c) 2014, 2015, 2016 ETRG, IITK.
+ *  All Rights Reserved.
+ ** Redistribution and use in source and binary forms, with or 
+ *  without modification, are permitted provided that the following 
+ *  conditions are met: 
+ ** Redistributions of source code must retain the above copyright 
+ *  notice, this  list of conditions and the following disclaimer. 
+ * 
+ *  Redistribution in binary form must reproduce the above copyright
+ *  notice, this list of conditions and the following disclaimer in 
+ *  the documentation and/or other materials provided with the 
+ *  distribution. 
+ * 
+ * 
+ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED 
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ *  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE 
+ *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
+ *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * 
+ * 
+ *
+ * @author Om Prakash<omprakashkgp@gmail.com> IITK, (Dec 2015)
+ *
+ */
 
 
 public class SmtpConfiguration implements Serializable{
@@ -59,6 +60,7 @@ public class SmtpConfiguration implements Serializable{
     private boolean smtpStatus;
     private String hostName;
     private String imgUrl;
+    private String mailfrom;
     
     public SmtpConfiguration(){
     }
@@ -118,8 +120,15 @@ public class SmtpConfiguration implements Serializable{
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
-       
 
+    public String getMailfrom() {
+        return mailfrom;
+    }
+
+    public void setMailfrom(String mailfrom) {
+        this.mailfrom = mailfrom;
+    }
+       
     private ArrayList<SmtpConfiguration> smtpDetails;
     private UIData dataGrid7;
 
@@ -153,7 +162,6 @@ public class SmtpConfiguration implements Serializable{
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
                 message.setSummary("SMTP Details Added Successfuly");
-                //message.setDetail("First Name Must Be At Least Three Charecter ");
                 fc.addMessage("", message);
             }
          }
@@ -166,10 +174,8 @@ public class SmtpConfiguration implements Serializable{
      {
         try
         {
-            System.out.println("Up Datong....");
             FacesContext fc = FacesContext.getCurrentInstance();
             FacesMessage message = new FacesMessage();
-            
             ArrayList<SmtpConfiguration> admin = (ArrayList<SmtpConfiguration>) dataGrid7.getValue();
             int active = 0;
             for(SmtpConfiguration ad : admin)
@@ -179,7 +185,6 @@ public class SmtpConfiguration implements Serializable{
                     active++;
                 }
             }
-            System.out.println("Active Admin : "+active);
             if(active > 1)
             {
                  message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -187,6 +192,7 @@ public class SmtpConfiguration implements Serializable{
                  fc.addMessage("", message);
                  return;
             }
+
             Exception ex = new CollegeList().updateAdminSMTP(admin); 
             if(ex == null)
             {
