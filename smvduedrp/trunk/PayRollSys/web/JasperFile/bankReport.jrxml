@@ -5,11 +5,12 @@
 	<parameter name="org_logo" class="java.lang.Object"/>
 	<parameter name="month" class="java.lang.Integer"/>
 	<parameter name="year" class="java.lang.Integer"/>
+        <parameter name="org_id" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT
     emp_code,emp_name,es_gross,emp_bank_accno from employee_salary_summery left join employee_master
     on emp_code = es_code where
-    es_month=$P{month} and es_year=$P{year}]]>
+    es_month=$P{month} and es_year=$P{year} and es_org_id=$P{org_id}]]>
 	</queryString>
 	<field name="emp_code" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>

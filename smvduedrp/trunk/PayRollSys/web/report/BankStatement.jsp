@@ -1,7 +1,10 @@
 <%-- 
     Document   : MonthlySalarySingle
     Created on : Jul 21, 2010, 6:38:58 PM
-    Author     :  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+    Author     : 
+
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*  Copyright (c) 2014 - 2016 ETRG, IITK.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -29,7 +32,7 @@
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
-*
+** Modification date 14 July 2016,  Om Prakash<omprakashkgp@gmail.com> , IITK  
 --%>
 
 <%@page import="com.lowagie.text.Paragraph"%>
@@ -77,6 +80,7 @@
             map.put("title", "Bank Statement for the Month of " +ub.getCurrentMonthName());
             map.put("month", ub.getCurrentMonth());
             map.put("year", ub.getCurrentYear());
+            map.put("org_id", ub.getUserOrgCode());
             JasperPrint jasperPrint = JasperFillManager.fillReport(path + "/" + "JasperFile/bankReport.jasper", map, conn);
             //System.out.println("Report Created...");
             OutputStream ouputStream = response.getOutputStream();
