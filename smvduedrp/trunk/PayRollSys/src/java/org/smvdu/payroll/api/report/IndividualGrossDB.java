@@ -8,20 +8,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.context.FacesContext;
+import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.SalaryHeadDB;
-import org.smvdu.payroll.beans.setup.SalaryHead;
-import org.smvdu.payroll.beans.SessionMaster;
 import org.smvdu.payroll.beans.db.SessionDB;
 
 
 
 /**
- *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
-*  All Rights Reserved.
+*
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*   Copyright (c) 2015, 2016 ETRG, IITK.
+*   All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
-*  without modification, are permitted provided that the following 
+*   without modification, are permitted provided that the following 
 *  conditions are met: 
 **  Redistributions of source code must retain the above copyright 
 *  notice, this  list of conditions and the following disclaimer. 
@@ -46,13 +47,19 @@ import org.smvdu.payroll.beans.db.SessionDB;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modification date 15 July 2016,  Manorama Pal<palseema30@gmail.com>, IITK 
 *
  */
 public class IndividualGrossDB {
 
     private PreparedStatement ps;
     private ResultSet rs;
-
+    private final UserInfo userBean;
+    
+    public IndividualGrossDB() {
+        
+        userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+    }
    
     public Integer[][] fetchSummary(String empCode)
     {
@@ -76,7 +83,7 @@ public class IndividualGrossDB {
 
                 ps=c.prepareStatement("select emp_name,es_total_income,es_total_deduct,es_gross from "
                         + "employee_master left join employee_salary_summery on es_code = emp_code "
-                        + "and  es_month=? and es_year=? where emp_code=?");
+                        + "and  es_month=? and es_year=? where emp_code=? and emp_org_code = '"+userBean.getUserOrgCode()+"'");
                 ps.setInt(1, month);
                 ps.setInt(2, year);
                 ps.setString(3, empCode);
@@ -125,7 +132,7 @@ public class IndividualGrossDB {
                 ps = c.prepareStatement("select sd_amount,sd_date from salary_head_master "
                         + " left join salary_data on sd_head_code =sh_id and sd_emp_code=?"
                         + " and month(sd_date)=(select month(adddate(?,?)) ) and year(sd_date) = "
-                        + "(select year(adddate(?,?))) order by sh_id");
+                        + "(select year(adddate(?,?))) where sh_org_id = '"+userBean.getUserOrgCode()+"' order by sh_id" );
                 ps.setString(1, empCode);
                 ps.setString(2, startDate);
                 ps.setInt(3, dateOffset);

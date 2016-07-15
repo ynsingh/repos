@@ -29,6 +29,7 @@
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+   Modification date 15 July 2016,  Manorama Pal<palseema30@gmail.com>, IITK  
 *
 --%>
 
@@ -68,7 +69,7 @@
                 <h:inputText readonly="true" value="#{GrossSalaryController.employee.deptName}"/>
                 <h:outputText value="Designation"/>
                 <h:inputText readonly="true" value="#{GrossSalaryController.employee.desigName}"/>
-                <h:outputText value="PF Acc Np"/>
+                <h:outputText value="PF Acc No"/>
                 <h:inputText readonly="true" value="#{GrossSalaryController.employee.pfAccNo}"/>
                 <h:outputText value="Bank Ac No"/>
                 <h:inputText readonly="true" value="#{GrossSalaryController.employee.bankAccNo}"/>

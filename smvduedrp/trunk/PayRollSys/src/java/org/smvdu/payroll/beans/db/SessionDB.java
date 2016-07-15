@@ -18,10 +18,11 @@ import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.user.ActiveProfile;
 
 /**
- *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*  Copyright (c) 2015, 2016 ETRG, IITK.
 *  All Rights Reserved.
-**  Redistribution and use in source and binary forms, with or
+** Redistribution and use in source and binary forms, with or
 *  without modification, are permitted provided that the following
 *  conditions are met:
 **  Redistributions of source code must retain the above copyright
@@ -47,8 +48,8 @@ import org.smvdu.payroll.user.ActiveProfile;
 *
 *
 *  Contributors: Members of ERP Team @ SMVDU, Katra
-*
- */
+** Modification date 15 July 2016,  Manorama Pal<palseema30@gmail.com>, IITK  
+*/
 public class SessionDB {
 
 
@@ -478,12 +479,16 @@ public class SessionDB {
     {
         try
         {
+            String startDate=null;
             session = helper.getSessionFactory().openSession();
+            session.beginTransaction();
+            
             Query query = session.createQuery("from SessionMaster where current = 1 and orgcode = '"+userBean.getUserOrgCode()+"'");
-            SessionMaster data = (SessionMaster)query.list();
-            
-            String startDate = data.getStartDate();
-            
+            ArrayList<SessionMaster> data = (ArrayList<SessionMaster>)query.list();
+            for(SessionMaster sm : data){
+               startDate=sm.getStartDate();
+              
+            }
             session.getTransaction().commit();
             return startDate;
         }
