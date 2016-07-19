@@ -70,7 +70,7 @@ INSERT INTO `groups` VALUES(145,'20010113',132,'Furniture, Fixtures & Fittings',
 INSERT INTO `groups` VALUES(146,'20010114',132,'Vehicles',0,0,0,'');
 INSERT INTO `groups` VALUES(147,'20010115',132,'Library Books & Scientific Journals',0,0,0,'');
 INSERT INTO `groups` VALUES(148,'20010116',132,'Miscellaneous Equipments',0,0,0,'');
-INSERT INTO `groups` VALUES(149,'20010117',132,'Capital Work-In-Progress',0,0,0,'');
+INSERT INTO `groups` VALUES(149,'200103',131,'Capital Work-In-Progress',0,0,0,'');
 INSERT INTO `groups` VALUES(150,'20010118',132,'Small Value Assets',0,0,0,'');
 INSERT INTO `groups` VALUES(151,'20010119',132,'Others Fixed Assets',0,0,0,'');
 INSERT INTO `groups` VALUES(152,'200102',131,'Intangible Assets',0,0,0,'An asset that is not physical in nature. Corporate intellectual property (items such as patents, trademarks, copyrights, business methodologies), goodwill and brand recognition are all common intangible assets.');
@@ -401,11 +401,11 @@ INSERT INTO `ledgers` VALUES (227,'2001011403',146,'Motor Cycles','0.00','D',0,0
 INSERT INTO `ledgers` VALUES (228,'2001011404',146,'Vehicle Search Trolley Mirror','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (229,'2001011501',147,'Library Books','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (230,'2001011502',147,'Scientific Journals','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (231,'2001011701',149,'Additional Toilets','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (232,'2001011702',149,'Cafeteria Building','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (233,'2001011703',149,'Overhead Tank','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (234,'2001011704',149,'Renovation of Library Building','0.00','D',0,0,0,'');
-INSERT INTO `ledgers` VALUES (235,'2001011705',149,'Hostel Building','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (231,'20010301',149,'Additional Toilets','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (232,'20010302',149,'Cafeteria Building','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (233,'20010303',149,'Overhead Tank','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (234,'20010304',149,'Renovation of Library Building','0.00','D',0,0,0,'');
+INSERT INTO `ledgers` VALUES (235,'20010305',149,'Hostel Building','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (236,'2001011801',150,'Almirahs- SVA','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (237,'2001011802',150,'Chairs -SVA','0.00','D',0,0,0,'');
 INSERT INTO `ledgers` VALUES (238,'2001011803',150,'Computer & Accessories -SVA','0.00','D',0,0,0,'');

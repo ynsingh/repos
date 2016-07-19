@@ -127,6 +127,7 @@
 					}
 					echo"</tr></thead>";
 					//Opening Balance Of bank........................
+//. money_format('%!i', convert_cur($amount)) .
 					echo "<thead>";
 						echo "<tr><td><b>Opening Balance</td><td></td>";
 						$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
@@ -134,14 +135,14 @@
                                         	foreach ($led_name->result() as $row1)
                                         	{
 						list ($opbalance, $optype) = $this->Ledger_model->get_op_closing_balance($row1->id, $from_date, $to_date); /* Opening Balance */
-                                                echo "<td align=\"center\">"."<b>". convert_dc($optype) ." " .$opbalance."</td>";
+                                                echo "<td align=\"center\">"."<b>". convert_dc($optype) ." " .money_format('%!i', convert_cur($opbalance))."</td>";
 	
                                         	}
                                         	$this->db->from('ledgers')->where('name'. '  ' . 'NOT LIKE', '%' . 'Cash' . '%')->where('type', '1');
                                         	$led_name1 = $this->db->get();
                                         	foreach ($led_name1->result() as $row2){
                                         		list ($opbalance, $optype) = $this->Ledger_model->get_op_closing_balance($row2->id, $from_date, $to_date); /* Opening Balance */
-                                                echo "<td align=\"center\">"."<b>". convert_dc($optype) ." " .$opbalance."</td>";
+                                                echo "<td align=\"center\">"."<b>". convert_dc($optype) ." " .money_format('%!i', convert_cur($opbalance))."</td>";
 
 						}
 					echo"</tr></thead>";
@@ -150,7 +151,7 @@
                                          echo"<th width=\"20%\" align=\"center\"><b>".$expload_search[1]."</th>";
                                 	 echo "<tr><td><b>Opening Balance</td><td>";
 					 list ($opbalance1, $optype) = $this->Ledger_model->get_op_closing_balance($expload_search[0], $from_date, $to_date); /* Opening Balance */
-                                         echo "<td align=\"center\"><b>". convert_dc($optype) ." " .$opbalance1."</td>";
+                                         echo "<td align=\"center\"><b>". convert_dc($optype) ." " .money_format('%!i', convert_cur($opbalance1))."</td>";
                                          echo"</tr></thead>";
 				}
 				////For Dr- entries......................				
@@ -158,7 +159,11 @@
 
 
 					$this->db->select('ledgers.name as name, ledgers.id as id, entry_items.entry_id as entry_id, entry_items.amount as amount, entries.narration as narration, entries.date as date');
-                         		$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.dc', 'D')->where('ledgers.type', '1')->order_by('entries.date', 'asc');
+					$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.dc', 'D')->where('ledgers.type', '1')->order_by('entries.date', 'asc');	
+					$this->db->where('entries.date >=', $from_date);
+                                        $this->db->where('entries.date <=', $to_date);
+
+ //                        		$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.dc', 'D')->where('ledgers.type', '1')->order_by('entries.date', 'asc');
                          		$entry_items_q = $this->db->get();
 					foreach ($entry_items_q->result() as $entry)
                                 	{
@@ -256,6 +261,9 @@
                                 //////////////////
 			 	$this->db->select('ledgers.name as name, ledgers.id as id, entry_items.entry_id as entry_id, entry_items.amount as amount, entries.narration as narration, entries.date as date');
                                 $this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.dc', 'C')->where('ledgers.type', '1')->order_by('entries.date', 'asc');
+				$this->db->where('entries.date >=', $from_date);
+                                $this->db->where('entries.date <=', $to_date);
+
                                 $entry_items_q = $this->db->get();
                                 foreach ($entry_items_q->result() as $entry)
                                 {
