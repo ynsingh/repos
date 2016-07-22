@@ -74,7 +74,7 @@
 		  	echo "<p class=\"bold\">"  . $this->config->item('account_ins_name')."</p>";
 		  	echo "<p class=\"bold\">".$this->config->item('account_address') . "</p>";
 		  	echo "<p class=\"bold\">".$title . "</p>";
-	        echo "<p>". "For the period " . $from_date . " to " . $to_date ."</p>";
+	        	echo "<p>". "For the period " . $from_date . " to " . $to_date ."</p>";
 		}else{
 			echo "<p align=\"center\" class=\"bold\" >" . $this->config->item('account_ins_name')."</p>"; 
 			//"<br>".$this->config->item('account_address') .
@@ -88,7 +88,7 @@
 				if($title == "Depreciation Of Assets"){
 					echo "Depreciation As Today";
 				}elseif($title != "Depreciation Rate"){
-					echo	 "For the period " . $from_date . " to " . $to_date ;
+			//		echo	 "For the period " . $from_date . " to " . $to_date ;
 				}
 			}
 			echo"</p>";
