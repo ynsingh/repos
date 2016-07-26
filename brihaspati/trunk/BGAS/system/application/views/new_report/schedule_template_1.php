@@ -87,7 +87,8 @@
 	}
 	$debit_total = ($dr_total_1 + $dr_total_3);
 	$credit_total = ($cr_total_2 + $cr_total_4);
-	$total = $credit_total-$debit_total;
+	$credit_amount = -$credit_total;
+        $total = $credit_amount-$debit_total;
 
 	//Display total for the given schedule
         echo "<tr>";
@@ -96,11 +97,11 @@
         echo "</td>";
 
         echo "<td width=15% align=\"right\">";
-        echo "<strong>" . convert_amount_dc(+$debit_total) . "</strong>";
+        echo "<strong>" . convert_amount_dc($debit_total) . "</strong>";
         echo "</td>";
 
         echo "<td width=15% align=\"right\">";
-        echo "<strong>" . convert_amount_dc(-$credit_total) . "</strong>";
+        echo "<strong>" . convert_amount_dc($credit_amount) . "</strong>";
         echo "</td>";
 
         echo "<td width=15% align=\"right\">";
@@ -118,7 +119,7 @@
         echo "</td>";
 
         echo "<td colspan =2 width=30% align=\"right\">";
-        echo "<strong>" . convert_amount_dc(+-$total) . "</strong>";
+        echo "<strong>" . convert_amount_dc($total) . "</strong>";
         echo "</td>";
 
         echo "<td  colspan = 2 width=30% align=\"right\">";

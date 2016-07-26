@@ -137,18 +137,15 @@ class Reportlist1
 	//Method for display New MHRD format-2015 @kanchan
         function new_mhrd($id)
         {
-//for previous
+		//for previous
 		$x=0;
                 $mhrdlist1=0;
                 $mhrd_total=0;
                 $CI =& get_instance();
-       //         $current_active_account = $CI->session->userdata('active_account');
                 $prev_year=$this->get_fy_year();
                 $db = $CI->Payment_model->database_name();
-
 		$diff = $this->income_expense_diff();
-                $result1 = explode('#', $diff);
-                $diff_total = -($result1[0]); 
+                $diff_total = -($diff);
                 $counter = 0;
                 $sum = 0;
                 $liability_total1 = 0;
@@ -166,12 +163,7 @@ class Reportlist1
                                 $liability = new Reportlist1();
                                 $liability->init($row->id);
                                 $liability_total = $liability->total;
-//			print_r("the value is ".$name."=".$liability_total);
                                 $sum = $sum + $liability_total;
-		//		$liability->init(2);
-		//		$AS=$liability->total;
-		//		$AS=$AS;
-		//		print_r("=".$AS."diff is under2 =".$diff);
                                 $CI->load->model('investment_model');
                                 $result = $CI->investment_model->merge_Funds();
                                 $value = explode('#', $result);
@@ -194,7 +186,6 @@ class Reportlist1
 
                                 if($name == 'Corpus')
                    	             $name = 'Corpus/Capital Funds';
-                        //	if(($code!=  '1005') && ($code!= '1001') &&  ($code!= '1006'))
                         	if(($code!= '1001') &&  ($code!= '1006'))
                         	{
 					echo "<tr class=\"tr-group\" width=\"30%\">";
@@ -240,12 +231,8 @@ class Reportlist1
                                 $asset = new Reportlist1();
                                 $asset->init($row->id);
                                 $asset_total = $asset->total;
-//			print_r("the value is ".$name."=".$asset_total);
                                 $sum = $sum + $asset_total;
 
-		//		$asset->init(1);
-		//		$AS=$asset->total;
-		//		print_r("=".$AS);
 				// code for reading previous year data from xml
                                 $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
                                 $file_name="bal_mhrd1"."-".$db."-".$prev_year.".xml";
@@ -256,10 +243,8 @@ class Reportlist1
                                         $doc->formatOutput = true;
                                         $doc->load($tt);
                                         $xpath = new DomXPath($doc);
-                         //               $xpath->query("/bal_mhrd1/bal_mhrd1_Name/Amount");
                                         $mhrdnode1 = $xpath->query("/bal_mhrd1/bal_mhrd1_Name/Amount");
                                         $mhrdlist1 = @$mhrdnode1->item($y)->nodeValue;
-		//			print_r($mhrdlist1);
                                         $mhrd_total=$mhrd_total+$mhrdlist1;
                                 }
                                 if($name == 'Investments')
@@ -285,6 +270,7 @@ class Reportlist1
                 		$asset = new Reportlist1();
                 		$asset->init($row1->id);
                 		$asset_total = $asset->total;
+
                 		if($name == 'Fixed Assets')
                			{
 					if(file_exists($tt))
@@ -293,13 +279,33 @@ class Reportlist1
                 		                $mhrdlist1 = @$mhrdnode1->item($y)->nodeValue;
                                 	        $mhrd_total=$mhrd_total+$mhrdlist1;
 					}
+
                 		echo "<tr class=\"tr-ledger\" width=\"30%\">";
                         	echo "<td class=\"td-ledger\" width=\"30%\">";
                         	echo "&nbsp;" .  $group_name;
                         	echo "</td>";
                       		echo "<td></td>";
+				if($group_name == "Tangible Assets")
+				{
+					$d_sum = 0;
+					$CI->load->model('ledger_model');
+					 // for ledger comes under direct group
+                        		$CI->db->select('name,id,')->from('ledgers')->where('group_id',$ledg_id);
+                        		$ledger_value = $CI->db->get();
+                        		foreach($ledger_value->result() as $rowled)
+                        		{
+                        			$ledger_name = $rowled->name;
+                        			$ledger_id =$rowled->id;
+                        			$d_total = $CI->ledger_model->get_balancesheet_ledger_balance($ledger_id);
+						$d_sum = $d_sum + $d_total;
+                        		}//foreach
+					$asset_total1 = $asset_total + $d_sum;
+                                        echo "<td align=\"right\">" . convert_amount_dc($asset_total1) . "</td>";
+                                        echo "<td align=\"right\">" . convert_amount_dc($mhrdlist1) . "</td>";//add for previous year value
+				}else{
                                 echo "<td align=\"right\">" . convert_amount_dc($asset_total) . "</td>";
                                 echo "<td align=\"right\">" . convert_amount_dc($mhrdlist1) . "</td>";//add for previous year value
+				}
 				echo "</tr>";
                 		}
                			if(($name!= 'Fixed Assets') && ($name!= 'Current Assets') && ($name!= 'Loans Advances and Deposits'))
@@ -321,8 +327,8 @@ class Reportlist1
                                         echo "<td>";
                                         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_schedule/' . $group_code . '/' . $counter, $counter, array('title' => $group_name, 'style' => 'color:#000000;text-decoration:none;'));
                                         echo "</td>";
-                                        echo "<td align=\"right\">" . convert_amount_dc($asset_total) . "</td>";
-                                        echo "<td align=\"right\">" . convert_amount_dc($mhrdlist1) . "</td>";
+                                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
 					echo "</tr>";
                                         }//if
 					}//if(name!='')
@@ -390,7 +396,6 @@ class Reportlist1
                         $ledg_id =$row->id;
 			$opbal=$row->op_balance;
 			$opbaldc=$row->op_balance_dc;
-                        //echo "ledg=====$ledg_name";
                         echo "<tr class=\"tr-group\">";
                         echo "<td class=\"td-group\">";
                         echo "&nbsp;" .  $ledg_name;
@@ -407,9 +412,6 @@ class Reportlist1
                         $sum1 = $sum1+$cr_total1;
                         $sum = $sum+$dr_total1;
 																							
-                        //$total = float_ops($total, $pandl, '+');
-
-                        //$profit = $this->income_expense_diff();
                         if($ledg_name == 'Balance of net income/expenditure transferred from I/E Account')
                         {
                         if($profit < 0)
@@ -428,6 +430,37 @@ class Reportlist1
                         echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
 
                 }//foreach
+			
+			// for ledger comes under direct group
+		 	$CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+                        $group_detail = $CI->db->get();
+                        foreach($group_detail->result() as $row1)
+                        {
+                        $group_name = $row1->name;
+                        $group_id =$row1->id;
+                        $dr_amount = 0;
+                        $cr_amount =0;
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo "&nbsp;" .  $group_name;
+                        echo "</td>";
+                        $liability = new Reportlist1();
+                        $liability->init($row1->id);
+                        $liability_total = $liability->total;
+                        if($liability_total > 0){
+                        $dr_amount = $liability_total;
+                        }else{
+                        $cr_amount = -$liability_total;
+                        }
+                        $sum=$sum+$dr_amount;
+                        $sum1 = $sum1+$cr_amount;
+			
+                        echo "<td align=\"right\">" . convert_amount_dc(+$dr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(-$cr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        }//foreach group
+
                 $this->profit1 = $profit;
                 $this->dr_total1 = $sum;
 		$this->cr_total1 = $sum1;
@@ -443,14 +476,6 @@ class Reportlist1
                 $id = $CI->group_model->get_group_id($code);
 		$name = $CI->group_model->get_group_name($id);
 
-	/*	if($name == 'Endowment Fund Investments')
-		{
-		$counter = 7;
-		} */
-//		$asset = new Reportlist1();
-  //                      $asset->init('175');
-    //                    $asset_total = $asset->total;
-//print_r(" the final asset=".$asset_total);
                 $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
                 $group_detail = $CI->db->get();
                 $group_result = $group_detail->result();
@@ -515,12 +540,6 @@ class Reportlist1
                         $asset->init($row2->id);
                         $childasset_total = $asset->total;
 			
-			if($name!= 'Investments')
-			{
-      //                  $sum1 = $sum1 + $childasset_total;
-			}
-			//if($children_groupname == 'Stock in Hand')
-			//{
                         echo "<tr class=\"tr-group\">";
                         echo "<td class=\"td-group\">";
 			echo $str1;
@@ -600,7 +619,6 @@ class Reportlist1
                         echo "<td class=\"td-ledger\" colspan=\"2\">";
                         echo $this->numberToRoman($count1);
                         echo ".";
-                        $count1++;
                         echo "<b>&nbsp;$group_name</b>";
                         echo "</td>";
 			$asset = new Reportlist1();
@@ -793,39 +811,134 @@ class Reportlist1
                         else
                         echo "&nbsp;" .  $group_name;
                         echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($opening_bal) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($dr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
-			if($dep_op_balance > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
-			}else{
-			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
-			}
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
-                        echo "<td align=\"right\" width=\"9%\">";
-                        echo "0.00";
-                        echo "</td>";
-                        echo "<td align=\"center\">";
-                        echo money_format('%!i', convert_cur($total_depreciation));
-                        echo "</td>";
-			if($current_year_value > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
-			}else{
-			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
-			}
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>"; 
+			//added some code 
+
+		 	if($group_name == "Others Fixed Assets")
+                        {
+				$ledsum = 0;
+				$ledsum1 = 0;
+				$ledsum2 = 0;
+				$ledsum3 = 0;
+				$ledsum4 = 0;
+				$ledsum5 = 0;
+				$ledsum6 = 0;
+				$ledsum7 = 0;
+
+				$ledger_id = $id;
+				//echo "legerid======>>>>$ledger_id==============";
+				$value = $CI->newschedules_model->fixed_asset($ledger_id);
+				//print_r($value);
+                                $opening_bal1 = $value[0];
+                                $opening_bal_dc1 = $value[1];
+                                $ledsum = $ledsum + $opening_bal1;
+                                $dr_total1 = $value[2];
+                                $ledsum1 = $ledsum1 + $dr_total1;
+                                $cr_total1 = $value[3];
+                                $ledsum2 = $ledsum2 + $cr_total1;
+                                $closing_bal1 = $value[4];
+                                $ledsum3 = $ledsum3 + $closing_bal1;
+
+				$result1 = $CI->newschedules_model->get_old_asset_depvalue($ledger_id);
+				//print_r($result1);
+                                $dep_op_balance1 = $result1[0];
+                                $ledsum4 = $ledsum4 + $dep_op_balance1;
+                                $old_dep_amount1 = $result1[1];
+
+                                $result2 = $CI->newschedules_model->get_new_asset_depvalue($ledger_id);
+                                $new_dep_amount1 = $result2[1];
+				print_r($new_dep_amount1);
+				
+				//Adding opening balance for the ledger head.
+                        	$current_depreciation1 = ($old_dep_amount1 + $new_dep_amount1);
+                        	$ledsum5 = $ledsum5 + $current_depreciation1;
+                        	$total_depreciation1 = $dep_op_balance1 + $current_depreciation1;
+                        	$ledsum6 = $ledsum6 + $total_depreciation1;
+                        	$net_total1 = ($opening_bal1 + $dr_total1) - $cr_total1;
+                        	$ledsum7 = $ledsum7 + $net_total1;
+                        	$current_year_value1 = $net_total1;
+				
+				$direct_opbal = $opening_bal +  $opening_bal1;
+				$direct_drtotal= $dr_total +  $dr_total1;
+				$direct_crtotal= $cr_total +  $cr_total1;
+				$direct_clbal =  $closing_bal +  $closing_bal1;
+				$direct_depr_opbal = $dep_op_balance + $dep_op_balance1;
+				$direct_old_depamount =  $old_dep_amount+ $old_dep_amount1;
+				$direct_new_depamount =  $new_dep_amount +  $new_dep_amount1;
+				
+				$direct_curr_depr =   $current_depreciation+$current_depreciation1; 
+				$direct_totaldepr = $total_depreciation+$total_depreciation1;
+				$direct_nettotal =  $net_total +  $net_total1;
+				$direct_curr_yrvalue =  $direct_nettotal;
+
+				//code to add total amount
+				$opening_balance = $sum+$ledsum;
+				$debit_total = $sum1+$ledsum1;
+				$credit_total = $sum2+$ledsum2;
+				$closing_balance = $sum3+$ledsum3;
+				$dep_opening_balance = $sum4+$ledsum4;
+				$current_depreciation_amount = $sum5+$ledsum5;
+				$total_depreciation = $sum6+$ledsum6;
+				$current_amount = $sum7+$ledsum7;
+				
+
+				// code for display value in table
+				echo "<td align=\"right\">" . convert_amount_dc($direct_opbal) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc($direct_drtotal) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(-$direct_crtotal) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc($direct_clbal) . "</td>";
+                        	if($direct_depr_opbal > 0){
+                        	echo "<td align=\"right\">" . convert_amount_dc(+$direct_depr_opbal) . "</td>";
+                        	}else{
+                        	echo "<td align=\"right\">" . convert_amount_dc(-$direct_depr_opbal) . "</td>";
+                        	}
+                        	echo "<td align=\"right\">" . convert_amount_dc(+$direct_curr_depr) . "</td>";
+                        	echo "<td align=\"right\" width=\"9%\">";
+                        	echo "0.00";
+                        	echo "</td>";
+                        	echo "<td align=\"center\">";
+                        	echo money_format('%!i', convert_cur($direct_totaldepr));
+                        	echo "</td>";
+                        	if($direct_curr_yrvalue > 0){
+                        	echo "<td align=\"right\">" . convert_amount_dc($direct_curr_yrvalue) . "</td>";
+                        	}else{
+                        	echo "<td align=\"right\">" . convert_amount_dc($direct_curr_yrvalue) . "</td>";
+                        	}
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+			}else{	
+                        	echo "<td align=\"right\">" . convert_amount_dc($opening_bal) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc($dr_total) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
+                        	echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+				if($dep_op_balance > 0){
+                        	echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+				}else{
+				echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+				}
+                        	echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        	echo "<td align=\"right\" width=\"9%\">";
+                        	echo "0.00";
+                        	echo "</td>";
+                        	echo "<td align=\"center\">";
+                        	echo money_format('%!i', convert_cur($total_depreciation));
+                        	echo "</td>";
+				if($current_year_value > 0){
+                        	echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+				}else{
+				echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+				}
+                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+				}//else 
                         }//ifcondition
                     }//childgroup 
                 }//foreach group  
-                $this->opening_balance = $sum;
-                $this->debit_total = $sum1;
-                $this->credit_total = $sum2;
-                $this->closing_balance = $sum3;
-                $this->dep_opening_balance = $sum4;
-                $this->current_depreciation_amount = $sum5;
-                $this->total_depreciation = $sum6;
-                $this->curr_amount = $sum7; 
+                $this->opening_balance = $opening_balance;
+                $this->debit_total = $debit_total;
+                $this->credit_total = $credit_total;
+                $this->closing_balance = $closing_balance;
+                $this->dep_opening_balance = $dep_opening_balance;
+                $this->current_depreciation_amount = $current_depreciation_amount;
+                $this->total_depreciation = $total_depreciation;
+                $this->curr_amount = $current_amount; 
         }
 
 	function FixedAsset_B($code,$count)
@@ -3205,6 +3318,7 @@ class Reportlist1
         $curr_sum = "";
         $curr_plan_total = "";
         $curr_non_plan_total = "";
+	$curr_plan_sfc_total='';
         $current_active_account = $CI->session->userdata('active_account');
         $CI->db->from('settings');
         $detail = $CI->db->get();
@@ -3242,6 +3356,9 @@ class Reportlist1
             $plan_total ="";
             $non_plan_total =""; 
             $total = "";
+	    $plan_sfc_total='';
+	    $plan_sfc_cr_total=0;
+      	    $plan_sfc_dr_total=0;
             $group_name = $row->name;
             $group_id =$row->id;
             $group_code = $row->code;
@@ -3301,6 +3418,13 @@ class Reportlist1
                                 }elseif($dc == "D"){
                                     $nonplan_dr_total = $nonplan_dr_total + $sum;
                                 }
+				}elseif($sanc_type == 'plan_sfc_scheme'){
+				if($dc == "C")
+                                {
+                                    $plan_sfc_cr_total = $plan_sfc_cr_total + $sum;
+                                }elseif($dc == "D"){
+                                    $plan_sfc_dr_total = $plan_sfc_dr_total + $sum;
+                                }
 
                             }
                         }else{
@@ -3321,17 +3445,21 @@ class Reportlist1
                 $plan_total = $plan_dr_total - $plan_cr_total;
                 $non_plan_total = $nonplan_dr_total - $nonplan_cr_total;
 
-                $total = $plan_total + $non_plan_total; 
+		$plan_sfc_total=$plan_sfc_dr_total-$plan_sfc_cr_total;
+                $total = $plan_total + $non_plan_total+$plan_sfc_total; 
                 echo "<td align=\"right\">". convert_amount_dc($plan_total). "</td>";
                 echo "<td align=\"right\">". convert_amount_dc($non_plan_total). "</td>";
+		echo "<td align=\"right\">". convert_amount_dc($plan_sfc_total). "</td>";
                 echo "<td align=\"right\">". convert_amount_dc($total). "</td>";
                 echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
                 echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
                 echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+		echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+
                 $curr_sum = $curr_sum + $total;
                 $curr_plan_total = $curr_plan_total + $plan_total;
                 $curr_non_plan_total = $curr_non_plan_total + $non_plan_total;
-
+		$curr_plan_sfc_total = $curr_plan_sfc_total + $plan_sfc_total;
                 //echo "curr =$curr_sum plan = $curr_plan_total non = $curr_non_plan_total ";
 
 
@@ -3353,14 +3481,18 @@ class Reportlist1
                         
                         $sub_plan_total = $sub_g_total['plan'];
                         $sub_non_plan_total = $sub_g_total['nonplan'];
-                        
-                        $sub_g_total = $sub_plan_total + $sub_non_plan_total;
+                        $sub_plan_sfc_total=$sub_g_total['specific_sch'];
+
+                        $sub_g_total = $sub_plan_total + $sub_non_plan_total+$sub_plan_sfc_total;
                         echo "<td align=\"right\">" . convert_amount_dc($sub_plan_total) . "</td>"; 
                         echo "<td align=\"right\">". convert_amount_dc($sub_non_plan_total). "</td>";
+			echo "<td align=\"right\">". convert_amount_dc($sub_plan_sfc_total). "</td>";
                         echo "<td align=\"right\">". convert_amount_dc($sub_g_total). "</td>";
                         echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
                         echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
-                        echo "<td align=\"right\">". convert_amount_dc(0). "</td>";                       
+                        echo "<td align=\"right\">". convert_amount_dc(0). "</td>";     
+			echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+                  
                     }
                 }
             }
@@ -3369,6 +3501,7 @@ class Reportlist1
         $curr_sum1 = "";
         $curr_plan_total1 = "";
         $curr_non_plan_total1 = "";
+	$curr_plan_sfc_total1=0;
         foreach($ledger_result as $row1)
         {
             $total1 = "";
@@ -3384,10 +3517,11 @@ class Reportlist1
                 $CI =& get_instance();
                 $CI->load->model('ledger_model');
                 $total1 = $CI->ledger_model->get_ledger_balance2($ledger_id);
-//		print_r($total1);
 		$i=1;
 		$plan_total=0;
 		$non_plan_total=0;
+		$plan_sfc_total='';
+		$plan_sfc_sch_total=$total1['specific_sch'];
                 foreach ($total1 as $value){
 			if($i==1)
 				$plan_total=$value;
@@ -3409,21 +3543,27 @@ class Reportlist1
                 }else{
                     echo "<td align=\"right\">". convert_amount_dc($non_plan_total). "</td>";
                 }
+		echo "<td align=\"right\">". convert_amount_dc($plan_sfc_sch_total). "</td>";
                 echo "<td align=\"right\">". convert_amount_dc($total1). "</td>";
                 echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
                 echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
                 echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+		echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
+
                 $curr_sum1 = $curr_sum1 + $total1;
                 $curr_plan_total1 = $curr_plan_total1 + $plan_total;
                 $curr_non_plan_total1 = $curr_non_plan_total1 + $non_plan_total;
+		$curr_plan_sfc_total1 = $curr_plan_sfc_total1 + $plan_sfc_total;
             }           
         }
         $curr_sum_total = $curr_sum1 + $curr_sum;
         $curr_plan_sum_total = $curr_plan_total + $curr_plan_total1;
         $curr_non_plan_sum_total = $curr_non_plan_total + $curr_non_plan_total1;
+	$curr_plan_sfc_sum_total=$curr_plan_sfc_total1+$curr_plan_sfc_total;
         $this->curr_sum_total = $curr_sum_total;
         $this->curr_plan_sum_total = $curr_plan_sum_total;
         $this->curr_non_plan_sum_total = $curr_non_plan_sum_total;
+	$this->curr_plan_sfc_sum_total = $curr_plan_sfc_sum_total;
 
         //echo "total = $curr_sum_total plan= $curr_plan_sum_total nonplan = $curr_non_plan_sum_total";
     return;
@@ -3956,7 +4096,7 @@ class Reportlist1
             $q_result = $query->result();
             $ledger_id = array();
             $x = 0;
-		$groupplan=0;$groupnonplan=0;$groupspecific=0; $group1plan=0;$group1nonplan=0;$group2plan=0; $group2nonplan=0;$group3plan=0;$group3nonplan=0;
+		$groupplan=0;$groupnonplan=0;$groupspecific=0; $group1plan=0;$group1nonplan=0;$group1specific;$group2plan=0; $group2nonplan=0;$group2specific;$group3plan=0;$group3nonplan=0;$group3specific=0;
             foreach($q_result as $row){
                 $ledg_id = $row->id;
 		if($x==0){

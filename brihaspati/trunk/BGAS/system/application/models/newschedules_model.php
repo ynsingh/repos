@@ -5,7 +5,7 @@ function newschedules_model()
 {
         parent::Model();
 }
-	function fixed_asset($group_id)
+	function fixed_asset($id)
 	{
 		$cr_amount = 0;
                	$dr_amount = 0;
@@ -19,7 +19,7 @@ function newschedules_model()
 		$total = array();
 		
 		$CI = & get_instance();
-        	$CI->db->select('id,name,code,op_balance,op_balance_dc')->from('ledgers')->where('group_id', $group_id);
+        	$CI->db->select('id,name,code,op_balance,op_balance_dc')->from('ledgers')->where('group_id', $id);
         	$ledgers_q = $CI->db->get();
         	foreach($ledgers_q->result() as $row2)
         	{
@@ -181,7 +181,7 @@ function newschedules_model()
 		return $total2; 
 	}//fixed for children
 
-	function get_old_asset_depvalue($group_id)
+	function get_old_asset_depvalue($id)
 	{
 		$dep_op_value = "";
 		$dep_opening_value1 = 0;
@@ -194,7 +194,7 @@ function newschedules_model()
 		$old_asset_dep = array();
 
                 $CI = & get_instance();
-                $CI->db->select('id,name,code')->from('ledgers')->where('group_id', $group_id);
+                $CI->db->select('id,name,code')->from('ledgers')->where('group_id', $id);
                 $ledgers_q = $CI->db->get();
                 $ledger_result = $ledgers_q->result();
                 foreach($ledger_result as $row2)
@@ -237,7 +237,7 @@ function newschedules_model()
 
         }
 
-	function get_new_asset_depvalue($group_id)
+	function get_new_asset_depvalue($id)
 	{
 		$dep_op_value = "";
                 $current_dep_value = "";
@@ -250,7 +250,7 @@ function newschedules_model()
                 $new_asset_dep = array();
 
                 $CI = & get_instance();
-                $CI->db->select('id,name,code')->from('ledgers')->where('group_id', $group_id);
+                $CI->db->select('id,name,code')->from('ledgers')->where('group_id', $id);
                 $ledgers_q = $CI->db->get();
                 $ledger_result = $ledgers_q->result();
                 foreach($ledger_result as $row2)

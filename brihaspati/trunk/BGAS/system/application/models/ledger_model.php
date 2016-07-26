@@ -546,14 +546,17 @@ var $ledgers = array();
 
 		$plan_dr_total = $dr_total['plan'];
 		$non_plan_dr_total = $dr_total['nonplan'];
+		$plan_sfc_dr_total=$dr_total['specific_sch'];
 			//echo $non_plan_dr_total;
 		
 		$plan_cr_total = $cr_total['plan'];
 		$non_plan_cr_total = $cr_total['nonplan'];
+		$plan_sfc_cr_total=$cr_total['specific_sch'];
 			//echo "== $non_plan_cr_total";
 		
 		$plan_total = float_ops($plan_dr_total, $plan_cr_total, '-');
 		$non_plan_total = float_ops($non_plan_dr_total, $non_plan_cr_total, '-');
+		$plan_sfc_total=float_ops($plan_sfc_dr_total,$plan_sfc_cr_total, '-');
 		//echo " $non_plan_total";
 		
 		if ($op_bal_type == "D")
@@ -561,7 +564,7 @@ var $ledgers = array();
 		else
 			$non_plan_total = float_ops($non_plan_total, $op_bal, '-');
 
-		$total = array('plan' => $plan_total,'nonplan'=> $non_plan_total );
+		$total = array('plan' => $plan_total,'nonplan'=> $non_plan_total,'specific_sch'=>$plan_sfc_total);
 		return $total;
 	}
 
