@@ -176,9 +176,9 @@ body{
      -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
           box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
 	width: 81%;
-        margin-left:345px;
-        margin-top:-23px;
-	height: 100px;
+        margin-left:19%;
+        margin-top:-1%;
+	height: 50%;
 	background-color: blue;
 	font-size: 50px;
   	font-weight: bold;
@@ -186,16 +186,10 @@ body{
         letter-spacing: -1px;
         line-height: 190%; 
 }
-.content{
-	width: 100%;
-	background-color:#DDDDDD;
-	float: left;
-
-}
 .sideleft{
-  font-size: 18px;
-  font-weight:bold;
-       top: 132px;
+ 	font-size: 18px;
+  	font-weight:bold;
+        top: 134px;
 	width:22%;
 	height: 570px;
 	position: fixed;
@@ -204,8 +198,11 @@ body{
 }
 
 .sideright{
-	width: 80%;
+	width: 14%;
         min-width:80%;
-	height: 1000px;
-	float: right
-}
+	height: 100%;
+        margin-left:20%;
+	}
+
+
+
