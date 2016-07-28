@@ -792,8 +792,8 @@ var dc = '';
                 $temp2 = "exp-dropdown".$i;
                 echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select", "class = \"".$temp2."\"") . "</td>";
 
-//		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
-//		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";
+		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
+		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";
 
 		echo "<td class=\"ledger-balance\"><div></div></td>";
 

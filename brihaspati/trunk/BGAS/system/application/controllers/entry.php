@@ -781,7 +781,8 @@ $width="100%";
 		
 		if ($_POST)
 		{
-			if($check == 0){
+			if($check == 0)
+			{
 				foreach ($this->input->post('ledger_dc', TRUE) as $id => $ledger_data)
 				{
 					$this->form_validation->set_rules('dr_amount[' . $id . ']', 'Debit Amount', 'trim|currency');
@@ -812,7 +813,8 @@ $width="100%";
 			$data['sanc_letter_no']['value'] = $this->input->post('sanc_letter_no', TRUE);
                         $data['sanc_letter_date']['value'] = $this->input->post('sanc_letter_date', TRUE);
 			$data['active_sanc_type'] = $this->input->post('sanc_type', TRUE);
-			if($data['active_sanc_type'] != 'select'){
+			if($data['active_sanc_type'] != 'select')
+			{
 				if($data['active_sanc_type'] == 'plan')
 					$data['active_plan'] = $this->input->post('plan', TRUE);
 				else
@@ -820,7 +822,8 @@ $width="100%";
 			}		
 
 		} 
-		else { // use of this
+		else 
+		{ // use of this
 			for ($count = 0; $count <= 3; $count++)
 			{
 				// line added by Priyanka
@@ -847,412 +850,486 @@ $width="100%";
 			
 				/* Checking for Valid Ledgers account and Debit and Credit Total */
 				
-				$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
-				$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
-				$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
-				$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
-	                        $data_entry_name = $this->input->post('entry_name', TRUE);
-        	                $data_date = $this->input->post('entry_date', TRUE);
-                	        $data_cheque = $this->input->post('ledger_payt', TRUE);
-	                        $data_secunit = $this->input->post('secunit', TRUE);
-                        	$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
-				$bank_cash_global = '';
-				$filename=$this->fileupload();// EXPLAIN THE USE
-				$sanc_value = '';
-				$data_sanc_type = $this->input->post('sanc_type', TRUE);
-				if($data_sanc_type != 'select'){
-					if($data_sanc_type == 'plan')
-						$sanc_value = $this->input->post('plan', TRUE);
-					else
-						$sanc_value = $this->input->post('non_plan', TRUE);
-				}
+			$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
+			$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
+			$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
+			$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
+	                $data_entry_name = $this->input->post('entry_name', TRUE);
+        	        $data_date = $this->input->post('entry_date', TRUE);
+                	$data_cheque = $this->input->post('ledger_payt', TRUE);
+	                $data_secunit = $this->input->post('secunit', TRUE);
+                        $data_date = date_php_to_mysql($data_date); // Converting date to MySQL
+			$bank_cash_global = '';
+			$filename=$this->fileupload();// EXPLAIN THE USE
+			$sanc_value = '';
+			$data_sanc_type = $this->input->post('sanc_type', TRUE);
+			if($data_sanc_type != 'select')
+			{
+				if($data_sanc_type == 'plan')
+					$sanc_value = $this->input->post('plan', TRUE);
+				else
+					$sanc_value = $this->input->post('non_plan', TRUE);
+			}
 
-				$data_sanc_letter_no = $this->input->post('sanc_letter_no', TRUE);
-			//	$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
-				$number = $this->input->post('entry_number', TRUE);
-				$vendor_number = $this->input->post('vendor_number', TRUE);
-				$purchase_order_no = $this->input->post('purchase_order_no', TRUE);
-				if ($this->input->post('sanc_letter_date', TRUE)) {
-					$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
-				}
-				else{
-					$data_sanc_letter_date = "";
-				}
+			$data_sanc_letter_no = $this->input->post('sanc_letter_no', TRUE);
+			//$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
+			$number = $this->input->post('entry_number', TRUE);
+			$vendor_number = $this->input->post('vendor_number', TRUE);
+			$purchase_order_no = $this->input->post('purchase_order_no', TRUE);
+			if ($this->input->post('sanc_letter_date', TRUE))
+			{
+				$data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
+			}
+			else
+			{
+				$data_sanc_letter_date = "";
+			}
 
-				/* code for validation of unique voucher no */
-				$entry_type_id=entry_type_name_to_id(strtolower($data_entry_name));
-				$duplicate = $this->Entry_model->check_duplicacy($number,$entry_type_id);
-				if ($duplicate) {
-					$this->messages->add('Voucher No. Already Exist. Please Input a Different Voucher No.', 'error');
-                			//   $this->template->load('template', 'entry/add');
-					return;
-				}
-				/**
-				*Code for validation of unique Vendor Voucher No.
-				*/
-				//added by @RAHUL
-				$duplicate_vendor_no = $this->Entry_model->check_vendor_no($vendor_number,$purchase_order_no);
-                                if ($duplicate_vendor_no) {
-                                        $this->messages->add('Vendor Voucher No. : <b>'.$vendor_number.'</b> for Purchase Order No. : <b>'.$purchase_order_no.'</b> is already Exist. Please Input a Different Vendor Voucher No.', 'error');
-					redirect('entry/add/'.$entry_type);
-                                        //$this->template->load('template', 'entry/add');
-                                        return;
-                                }
+			/* code for validation of unique voucher no */
+			$entry_type_id=entry_type_name_to_id(strtolower($data_entry_name));
+			$duplicate = $this->Entry_model->check_duplicacy($number,$entry_type_id);
+			if ($duplicate) 
+			{
+				$this->messages->add('Voucher No. Already Exist. Please Input a Different Voucher No.', 'error');
+                		//   $this->template->load('template', 'entry/add');
+				return;
+			}
+			/**
+			*Code for validation of unique Vendor Voucher No.
+			*/
+			//added by @RAHUL
+			$duplicate_vendor_no = $this->Entry_model->check_vendor_no($vendor_number,$purchase_order_no);
+                    	if ($duplicate_vendor_no) 
+			{
+                       		$this->messages->add('Vendor Voucher No. : <b>'.$vendor_number.'</b> for Purchase Order No. : <b>'.$purchase_order_no.'</b> is already Exist. Please Input a Different Vendor Voucher No.', 'error');
+				redirect('entry/add/'.$entry_type);
+                           	//$this->template->load('template', 'entry/add');
+                          	return;
+                    	}
 
 
-				if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
-                	        {
-					foreach ($data_all_ledger_dc as $id => $ledger_data)
-                		        {
-                                		if($data_all_ledger_id[$id] < 1)
-							continue;
+			if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
+               		{
+				foreach ($data_all_ledger_dc as $id => $ledger_data)
+              			{
+                                	if($data_all_ledger_id[$id] < 1)
+						continue;
 	
-						$bank_cash = $this->Ledger_model->get_ledgers_bankcash($data_all_ledger_id[$id]);
+					$bank_cash = $this->Ledger_model->get_ledgers_bankcash($data_all_ledger_id[$id]);
 		
-						if($data_all_ledger_dc[$id] == 'C' && $bank_cash == '1')
-							$data_entry_name = 'Payment';
-                                		elseif($data_all_ledger_dc[$id] == 'D' && $bank_cash == '1')
-							$data_entry_name = 'Receipt';
+					if($data_all_ledger_dc[$id] == 'C' && $bank_cash == '1')
+						$data_entry_name = 'Payment';
+                                	elseif($data_all_ledger_dc[$id] == 'D' && $bank_cash == '1')
+						$data_entry_name = 'Receipt';
 
-						if($bank_cash_global== '1' && $bank_cash == '1')
-                        				$data_entry_name = 'Contra';
+					if($bank_cash_global== '1' && $bank_cash == '1')
+                        			$data_entry_name = 'Contra';
                                         
-						if($bank_cash == '1')
-							$bank_cash_global = '1';
-						else
-							$bank_cash_global = '0';
-                        		}
-				}
-				// get the correct id
+					if($bank_cash == '1')
+						$bank_cash_global = '1';
+					else
+						$bank_cash_global = '0';
+                        	}
+			}
+			// get the correct id
 
 			//	$entry_type_id=entry_type_name_to_id(strtolower($data_entry_name));
-				$dr_total = 0;
-				$cr_total = 0;
-				$bank_cash_present = FALSE; /* Whether atleast one Ledger account is Bank or Cash account */
-				$non_bank_cash_present = FALSE;  /* Whether atleast one Ledger account is NOT a Bank or Cash account */
-				/* Adding main entry */
-                        /*	if ($current_entry_type['numbering'] == '2')
-                        	{
-                                	$data_number = $this->input->post('entry_number', TRUE);
-	                        } else if ($current_entry_type['numbering'] == '3') {
-        	                        $data_number = $this->input->post('entry_number', TRUE);
-                	                if ( ! $data_number)
-                        	                $data_number = NULL;
-	                        } else {*/
-        	                        if ($this->input->post('entry_number', TRUE))
-                	                        $data_number = $this->input->post('entry_number', TRUE);
-                        	        else
-                                	        $data_number = $this->Entry_model->next_entry_number($entry_type_id);
-                        //	}
-				$this->messages->add('the value is '+$ledger_data, 'error');	
-				foreach ($data_all_ledger_dc as $id => $ledger_data)
-				{
-					//these lines existed earlier
-					if ($data_all_ledger_id[$id] < 1)
-						continue;
+			$dr_total = 0;
+			$cr_total = 0;
+			$bank_cash_present = FALSE; /* Whether atleast one Ledger account is Bank or Cash account */
+			$non_bank_cash_present = FALSE;  /* Whether atleast one Ledger account is NOT a Bank or Cash account */
+			/* Adding main entry */
+                        /*if ($current_entry_type['numbering'] == '2')
+                        {
+                        	$data_number = $this->input->post('entry_number', TRUE);
+	               	} 
+			else if ($current_entry_type['numbering'] == '3') 
+			{
+        	       		$data_number = $this->input->post('entry_number', TRUE);
+                	   	if ( ! $data_number)
+                        		$data_number = NULL;
+	             	} 
+			else {*/
+        	     	if ($this->input->post('entry_number', TRUE))
+              			$data_number = $this->input->post('entry_number', TRUE);
+                	else
+                      		$data_number = $this->Entry_model->next_entry_number($entry_type_id);
+                        //}
+			$this->messages->add('the value is '+$ledger_data, 'error');	
+			foreach ($data_all_ledger_dc as $id => $ledger_data)
+			{
+				//these lines existed earlier
+				if ($data_all_ledger_id[$id] < 1)
+					continue;
 				                                     
-					/* Check for valid ledger id */
-					$this->db->from('ledgers')->where('id', $data_all_ledger_id[$id]);
+				/* Check for valid ledger id */
+				$this->db->from('ledgers')->where('id', $data_all_ledger_id[$id]);
 				
-					$valid_ledger_q = $this->db->get();
-					if ($valid_ledger_q->num_rows() < 1)
-					{
-						$this->messages->add('Invalid Ledger account.', 'error');
-						$this->template->load('template', 'entry/add', $data);
-						return;
-					}
-					if ($data_all_ledger_dc[$id] == "D")
-					{
-						$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
-					} else {
-						$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
-					}
-			/*		if (($data_all_ledger_dc[$id] == "D")&&($data_cheque[$id] == 1)){
-						$this->messages->add("ledger_dc".$data_all_ledger_dc[$id]."cheque".$data_cheque[$id]."secunit".$data_secunit[$id], 'error');
+				$valid_ledger_q = $this->db->get();
+				if ($valid_ledger_q->num_rows() < 1)
+				{
+					$this->messages->add('Invalid Ledger account.', 'error');
+					$this->template->load('template', 'entry/add', $data);
+					return;
+				}
+				if ($data_all_ledger_dc[$id] == "D")
+				{
+					$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
+				} 
+				else 
+				{
+					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
+				}
+				/*if (($data_all_ledger_dc[$id] == "D")&&($data_cheque[$id] == 1))
+				{
+					$this->messages->add("ledger_dc".$data_all_ledger_dc[$id]."cheque".$data_cheque[$id]."secunit".$data_secunit[$id], 'error');
 						
-						if($data_secunit[$id] == 0){
+					if($data_secunit[$id] == 0)
+					{
 						$this->messages->add('Please Add Party Name For Cheque Payment.', 'error');
                                                 $this->template->load('template', 'entry/add/'.$current_entry_type['name'], $data);
 
                                         	return;      
-						}
-
-					}*/
-				 }	
-				if (float_ops($dr_total, $cr_total, '!='))
-				{
-					$this->messages->add('Debit and Credit Total does not match!', 'error');
-					$this->template->load('template', 'entry/add', $data);
-					return;
-				} else if (float_ops($dr_total, 0, '==') && float_ops($cr_total, 0, '==')) {
-					$this->messages->add('Cannot save empty Entry.', 'error');
-					$this->template->load('template', 'entry/add', $data);
-					return;
-				}
-					$data_date = $this->input->post('entry_date', TRUE);
-					$data_back_refrence = $this->input->post('backward_refrence_id', TRUE);
-					$data_narration = $this->input->post('entry_narration', TRUE);
-					$data_tag = $this->input->post('entry_tag', TRUE);
-
-				if ($data_tag < 1)
-					$data_tag = NULL;
-				$this->db->select('id')->from('entry_types')->where('name', $data_entry_name);
-                                $query1 = $this->db->get();
-                                foreach($query1->result() as $row1)
-                                {
-                                        $id = $row1->id;
-                                }
-				
-				$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
-				//$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
-				if($data_sanc_letter_date != ""){
-					$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
-				}
-				$entry_id = NULL;
-				$uname=$this->session->userdata('user_name');
-	                        $sec_unit=$this->session->userdata('sec_unit_id');
-				$today = date("Y-m-d H:i:s");
-				$this->db->trans_start();
-				$insert_data = array(
-					'number' => $data_number,
-					'date' => $data_date,
-					'narration' => $data_narration,
-					'entry_type' => $id,
-					'tag_id' => $data_tag,
-					'update_date' => $today,
-					'submitted_by' => $uname,
-					'forward_refrence_id' => '0',
-					'backward_refrence_id' => $data_back_refrence,
-					'sanc_letter_no' => $data_sanc_letter_no,
-					'sanc_letter_date' => $data_sanc_letter_date,
-					'sanc_type' => $data_sanc_type,
-					'sanc_value' => $sanc_value,
-					'vendor_voucher_number' => $vendor_number,
-					'purchase_order_no' => $purchase_order_no
-				);
-
-				if ( ! $this->db->insert('entries', $insert_data))
-				{
-					$this->db->trans_rollback();
-					$this->messages->add('Error addding Entry.', 'error');
-					$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry 1");
-					$this->template->load('template', 'entry/add', $data);
-					return;
-				} else {
-					$entry_id = $this->db->insert_id();
-				}
-
-				/* Adding ledger accounts */
-				$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
-				$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
-				$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
-				$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
-				$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
-				$data_all_secunit = $this->input->post('secunit', TRUE);
-				//$data_all_income_type = $this->input->post('income_type', TRUE);
-				$data_all_expense_type = $this->input->post('expense_type', TRUE);
-				$data_cheque = $this->input->post('ledger_payt', TRUE);
-				//$data_secunitid = $this->input->post('sec_unit_id', TRUE);
-				$dr_total = 0;
-				$cr_total = 0;
-				$ledg_code = 0;
-				$budgetamt = 0;
-				$data_amount = 0;
-				$useamt = 0;
-				$allow = 0;
- 
-				foreach ($data_all_ledger_dc as $id => $ledger_data)
-				{
-					$data_ledger_dc = $data_all_ledger_dc[$id];
-					$data_ledger_id = $data_all_ledger_id[$id];
-                        	      
-					if ($data_ledger_id < 1)
-						continue;
-
-					if ($data_all_ledger_dc[$id] == "D")
-					{
-						$data_amount = $data_all_dr_amount[$id];
-						$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
-					} else {
-						$data_amount = $data_all_cr_amount[$id];
-						$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
-					}	
-					 $data_ledger_id;
-
-					if($data_ledger_dc == "D")
-					{//001
-						/**
-                	                         * To identify "expense" entry, code of the selected ledger head
-                                	         * is being fetched. If the ledger head has "Expenses" as its 
-                        	        	 * super parent and the account is being debited, then it must
-	                                         * be a "expense" entry.
-						 * Then, the corresponding budget amount is updated. Since,
-						 * the budget amount is set for "expense" only.
-                        	                 * Lines added by Priyanka
-                                	         */
-						$this->load->model('Budget_model');
-	                                        $this->Budget_model->check_budget($data_ledger_id,$cr_total,$dr_total,$data_amount,$data);
-				
-					}//001	
-	
-					/* Code for making entry in Fund and Transit Income account. */
-					$fund_ledger = $data_all_fund_ledger[$id];
-					$secunitid = $data_all_secunit[$id];
-//////////////////////////////////////	
-				
-                                	$insert_ledger_data = array(
-                                        	'entry_id' => $entry_id,
-                                        	'ledger_id' => $data_ledger_id,
-                                        	'amount' => $data_amount,
-                                        	'dc' => $data_ledger_dc,
-                                        	'update_date' => $data_date,
-                                        	'forward_refrence_id' => '0',
-                                        	'backward_refrence_id' => $data_back_refrence,
-                                        	'secunitid' => $secunitid,
-                                		);
-                                		if ( ! $this->db->insert('entry_items', $insert_ledger_data))
-                                		{
-                                        		$this->db->trans_rollback();
-                                        		$this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
-                                        		$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 2 " . "[id:" . $data_ledger_id . "]");
-                                        		$this->template->load('template', 'entry/add', $data);
-                                        		return;
-                                		}else {
-                                        		$entry_items_id = $this->db->insert_id();
-                                		}
-						$this->db->from('ledgers')->where('id', $data_ledger_id);
-                                        	$query_q = $this->db->get();
-						foreach($query_q->result() as $row2)
-                                		{
-							$led_name = $row2->name;
-                                        		$led_code = $row2->code;
-                                		}
-                                        	//$is_fixed_asset= startsWith($ledger_code, '2001');
-						$is_asset_code = substr($led_code, 0, 4);
-						
-						if($is_asset_code ==  '2001'){	
-  						$asset_register = array(
-									'asset_name' => $led_name,
-                                                                        'code' =>  $led_code,
-                                                                        'cost' => $data_amount,
-                                                                        'date_of_purchase' => $data_date,
-									'narration' => $data_narration,
-									'sanc_type' => $data_sanc_type,
-                                                                        );
-
-                                                                        if ( ! $this->db->insert('new_asset_register', $asset_register))
-                                                                        {
-                                                                                $this->db->trans_rollback();
-                                                                                $this->logger->write_message("error", "Error adding Assets 3");
-                                                                        }else {
-                                        					$asset_id = $this->db->insert_id();
-                                					}
-
-
 					}
 
-				  	if($data_ledger_dc == 'C'){
-                                        	$expense_type = $data_all_expense_type[$id];
-					
-                                        	if($expense_type == "Earn" || $expense_type == "Accru"){
+				}*/
+			}	
+			if (float_ops($dr_total, $cr_total, '!='))
+			{
+				$this->messages->add('Debit and Credit Total does not match!', 'error');
+				$this->template->load('template', 'entry/add', $data);
+				return;
+			} 
+			else if (float_ops($dr_total, 0, '==') && float_ops($cr_total, 0, '==')) 
+			{
+				$this->messages->add('Cannot save empty Entry.', 'error');
+				$this->template->load('template', 'entry/add', $data);
+				return;
+			}
+			$data_date = $this->input->post('entry_date', TRUE);
+			$data_back_refrence = $this->input->post('backward_refrence_id', TRUE);
+			$data_narration = $this->input->post('entry_narration', TRUE);
+			$data_tag = $this->input->post('entry_tag', TRUE);
 
-                                                	$this->db->select('name');
-                                                	$this->db->from('ledgers')->where('id', $data_ledger_id);
-                                               		$query = $this->db->get();
-                                                	$ledger = $query->row();
-                                                	$ledger_name = $ledger->name;
-							if($fund_ledger > 0)
-							{
-								$this->db->select('name');
-                                                        	$this->db->from('ledgers')->where('id', $fund_ledger);
-                                                        	$query = $this->db->get();
-                                                        	$ledger = $query->row();
-                                                        	$ledger_name = $ledger->name;
+			if ($data_tag < 1)
+				$data_tag = NULL;
+			$this->db->select('id')->from('entry_types')->where('name', $data_entry_name);
+                     	$query1 = $this->db->get();
+                     	foreach($query1->result() as $row1)
+                 	{
+                         	$id = $row1->id;
+                     	}
+				
+			$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
+			//$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
+			if($data_sanc_letter_date != "")
+			{
+				$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
+			}
+			$entry_id = NULL;
+			$uname=$this->session->userdata('user_name');
+	          	$sec_unit=$this->session->userdata('sec_unit_id');
+			$today = date("Y-m-d H:i:s");
+			$this->db->trans_start();
+			$insert_data = array(
+				'number' => $data_number,
+				'date' => $data_date,
+				'narration' => $data_narration,
+				'entry_type' => $id,
+				'tag_id' => $data_tag,
+				'update_date' => $today,
+				'submitted_by' => $uname,
+				'forward_refrence_id' => '0',
+				'backward_refrence_id' => $data_back_refrence,
+				'sanc_letter_no' => $data_sanc_letter_no,
+				'sanc_letter_date' => $data_sanc_letter_date,
+				'sanc_type' => $data_sanc_type,
+				'sanc_value' => $sanc_value,
+				'vendor_voucher_number' => $vendor_number,
+				'purchase_order_no' => $purchase_order_no
+			);
 
-                                                        	$insert_income_data = array(
-                                                                	'fund_id' => $fund_ledger,
-                                                                	'fund_name' => $ledger_name,
-                                                                	'amount' => $data_amount,
-                                                                	'date' => $data_date,
-                                                                	'type' => $expense_type,
-                                                                	'entry_items_id' => $entry_items_id
-                                                        		);
+			if ( ! $this->db->insert('entries', $insert_data))
+			{
+				$this->db->trans_rollback();
+				$this->messages->add('Error addding Entry.', 'error');
+				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry 1");
+				$this->template->load('template', 'entry/add', $data);
+				return;
+			} 
+			else 
+			{
+				$entry_id = $this->db->insert_id();
+			}
 
-							}else{
-                                                		$insert_income_data = array(
-                                                        		'fund_id' => $data_ledger_id,
-                                                        		'fund_name' => $ledger_name,
-                                                        		'amount' => $data_amount,
-                                                        		'date' => $data_date,
-                                                        		'type' => $expense_type,
-                                                        		'entry_items_id' => $entry_items_id
-                                                         		);
-							}
-                                             		//   print_r($insert_income_data);
-                                                	if ( ! $this->db->insert('fund_management', $insert_income_data))
-                                                	{
-                                                        	$this->db->trans_rollback();
-                                                        	$this->logger->write_message("error", "Error adding income from investment details for fund  4:" . $data_ledger_id);
-                                                	}	
-                                                }
-                                        } 
+			/* Adding ledger accounts */
+			$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
+			$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
+			$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
+			$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
+			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
+			$data_all_secunit = $this->input->post('secunit', TRUE);
+			//$data_all_income_type = $this->input->post('income_type', TRUE);
+			$data_all_expense_type = $this->input->post('expense_type', TRUE);
+			$data_cheque = $this->input->post('ledger_payt', TRUE);
+			//$data_secunitid = $this->input->post('sec_unit_id', TRUE);
+			$dr_total = 0;
+			$cr_total = 0;
+			$ledg_code = 0;
+			$budgetamt = 0;
+			$data_amount = 0;
+			$useamt = 0;
+			$allow = 0;
+ 
+			foreach ($data_all_ledger_dc as $id => $ledger_data)
+			{
+				$data_ledger_dc = $data_all_ledger_dc[$id];
+				$data_ledger_id = $data_all_ledger_id[$id];
+                        	      
+				if ($data_ledger_id < 1)
+					continue;
+
+				if ($data_all_ledger_dc[$id] == "D")
+				{
+					$data_amount = $data_all_dr_amount[$id];
+					$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
+				} 
+				else 
+				{
+					$data_amount = $data_all_cr_amount[$id];
+					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
+				}	
+				$data_ledger_id;
+
+				if($data_ledger_dc == "D")
+				{//001
+					/**
+                	       		* To identify "expense" entry, code of the selected ledger head
+                            		* is being fetched. If the ledger head has "Expenses" as its 
+                       			* super parent and the account is being debited, then it must
+	                              	* be a "expense" entry.
+					* Then, the corresponding budget amount is updated. Since,
+					* the budget amount is set for "expense" only.
+                        	      	* Lines added by Priyanka
+                          		*/
+					$this->load->model('Budget_model');
+	                     		$this->Budget_model->check_budget($data_ledger_id,$cr_total,$dr_total,$data_amount,$data);
+				
+				}//001	
 	
-					if($fund_ledger > 0 && $data_ledger_dc == 'D'){
+				/* Code for making entry in Fund and Transit Income account. */
+				$fund_ledger = $data_all_fund_ledger[$id];
+				$secunitid = $data_all_secunit[$id];
+				//////////////////////////////////////	
+				
+                                $insert_ledger_data = array(
+                                	'entry_id' => $entry_id,
+                                        'ledger_id' => $data_ledger_id,
+                                        'amount' => $data_amount,
+                                        'dc' => $data_ledger_dc,
+                                        'update_date' => $data_date,
+                                        'forward_refrence_id' => '0',
+                                        'backward_refrence_id' => $data_back_refrence,
+                                        'secunitid' => $secunitid,
+                                );
+                                if ( ! $this->db->insert('entry_items', $insert_ledger_data))
+                                {
+                               		$this->db->trans_rollback();
+                                        $this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
+                                        $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 2 " . "[id:" . $data_ledger_id . "]");
+                                        $this->template->load('template', 'entry/add', $data);
+                                        return;
+                                }
+				else 
+				{
+                                	$entry_items_id = $this->db->insert_id();
+                               	}
+				$this->db->from('ledgers')->where('id', $data_ledger_id);
+                              	$query_q = $this->db->get();
+				foreach($query_q->result() as $row2)
+                                {
+					$led_name = $row2->name;
+                                       	$led_code = $row2->code;
+                                }
+                        	//$is_fixed_asset= startsWith($ledger_code, '2001');
+				$is_asset_code = substr($led_code, 0, 4);
+						
+				if($is_asset_code ==  '2001')
+				{	
+  					$asset_register = array(
+						'asset_name' => $led_name,
+                                                'code' =>  $led_code,
+                                              	'cost' => $data_amount,
+                                            	'date_of_purchase' => $data_date,
+						'narration' => $data_narration,
+						'sanc_type' => $data_sanc_type,
+                                  	);
+
+                                 	if ( ! $this->db->insert('new_asset_register', $asset_register))
+                                 	{
+                                        	$this->db->trans_rollback();
+                                             	$this->logger->write_message("error", "Error adding Assets 3");
+                                	}
+					else 
+					{
+                                        	$asset_id = $this->db->insert_id();
+                                	}
+				}
+
+				if($data_ledger_dc == 'C')
+				{
+                                	$expense_type = $data_all_expense_type[$id];
+					
+                                        if($expense_type == "Earn" || $expense_type == "Accru")
+					{
+                                        	$this->db->select('name');
+                                                $this->db->from('ledgers')->where('id', $data_ledger_id);
+                                               	$query = $this->db->get();
+                                                $ledger = $query->row();
+                                                $ledger_name = $ledger->name;
+						if($fund_ledger > 0)
+						{
+							$this->db->select('name');
+                                                        $this->db->from('ledgers')->where('id', $fund_ledger);
+                                                        $query = $this->db->get();
+                                                        $ledger = $query->row();
+                                                        $ledger_name = $ledger->name;
+
+                                                        $insert_income_data = array(
+                                                        	'fund_id' => $fund_ledger,
+                                                                'fund_name' => $ledger_name,
+                                                                'amount' => $data_amount,
+                                                                'date' => $data_date,
+                                                                'type' => $expense_type,
+                                                                'entry_items_id' => $entry_items_id
+                                                        );
+						}
+						else
+						{
+                                                	$insert_income_data = array(
+                                                        	'fund_id' => $data_ledger_id,
+                                                        	'fund_name' => $ledger_name,
+                                                        	'amount' => $data_amount,
+                                                        	'date' => $data_date,
+                                                        	'type' => $expense_type,
+                                                        	'entry_items_id' => $entry_items_id
+                                                         );
+						}
+                                             	//   print_r($insert_income_data);
+                                                if ( ! $this->db->insert('fund_management', $insert_income_data))
+                                                {
+                                                 	$this->db->trans_rollback();
+                                                        $this->logger->write_message("error", "Error adding income from investment details for fund  4:" . $data_ledger_id);
+                                                }	
+                               		}
+                           	} 
+	
+				if($fund_ledger > 0 && $data_ledger_dc == 'D')
+				{
 					$expense_type = $data_all_expense_type[$id];
 					//if($expense_type != 'Capital'){
 					
-				//	}
+					//}
 					if(($expense_type !="Select") && ($expense_type !=""))
 					{ 
 						if($expense_type == "Revenue")
 					     	{
-						/*	$this->load->model('ledger_model');
+							/*$this->load->model('ledger_model');
                                                         $fund_code =$this->ledger_model->get_ledger_code($fund_ledger);
                                                         $fund_code1 = substr($fund_code,0,6);
                                                         if($fund_code1 == '100103')
                                                         {*/
-								$insert_fund_data = array(
-        	                               				'entry_id' => $entry_id,
-	        	                                		'ledger_id' => $fund_ledger,
-               			                        		'amount' => $data_amount,
-                               			        		'dc' => 'D',
-	                                	        		'update_date' => $data_date,
-               		                        			'forward_refrence_id' => '0',
-	                               		        		'backward_refrence_id' => $data_back_refrence,
-									'secunitid' => $secunitid,
-	        	                                		);
+							$insert_fund_data = array(
+        	                               			'entry_id' => $entry_id,
+	        	                                	'ledger_id' => $fund_ledger,
+               			                        	'amount' => $data_amount,
+                               			        	'dc' => 'D',
+	                                	        	'update_date' => $data_date,
+               		                        		'forward_refrence_id' => '0',
+	                               		        	'backward_refrence_id' => $data_back_refrence,
+								'secunitid' => $secunitid,
+	        	                                );
 	
-        		                                		if ( ! $this->db->insert('entry_items', $insert_fund_data))
-			                                  		{
-                		                             			$this->db->trans_rollback();
-	                        	                     			$this->logger->write_message("error", "Error adding fund id 5:" . $fund_ledger);
-                        	        	       			}else {
-                                 			     			$entry_fund_id = $this->db->insert_id();
-	                                	             		}
+        		                                if ( ! $this->db->insert('entry_items', $insert_fund_data))
+			                             	{
+                		                        	$this->db->trans_rollback();
+	                        	                     	$this->logger->write_message("error", "Error adding fund id 5:" . $fund_ledger);
+                        	        	       	}
+							else 
+							{
+                                 				$entry_fund_id = $this->db->insert_id();
+	                                	    	}
 			
-   						    		$this->db->select('id');
-                                                    		$this->db->from('ledgers')->where('name', 'Transit Income');
-                                                    		$query = $this->db->get();
-                                                    		$income = $query->row();
-                                                    		$income_id = $income->id;
+   						    	$this->db->select('id');
+                                                    	$this->db->from('ledgers')->where('name', 'Transit Income');
+                                                    	$query = $this->db->get();
+                                                    	$income = $query->row();
+                                                    	$income_id = $income->id;
 
-                                                    		$insert_income_data = array(
-                                                        		'entry_id' => $entry_id,
-                                                        		'ledger_id' => $income_id,
-                                                        		'amount' => $data_amount,
-                                                        		'dc' => 'C',
-                                                        		'update_date' => $data_date,
-                                                        		'forward_refrence_id' => '0',
-                                                        		'backward_refrence_id' => $data_back_refrence,
-                                                        		'secunitid' => $secunitid,
-                                                        		);
+                                                    	$insert_income_data = array(
+                                                        	'entry_id' => $entry_id,
+                                                        	'ledger_id' => $income_id,
+                                                        	'amount' => $data_amount,
+                                                        	'dc' => 'C',
+                                                        	'update_date' => $data_date,
+                                                        	'forward_refrence_id' => '0',
+                                                        	'backward_refrence_id' => $data_back_refrence,
+                                                        	'secunitid' => $secunitid,
+                                                        );
 
-                                                     			if ( ! $this->db->insert('entry_items', $insert_income_data))
-                                                        		{
-                                                            			$this->db->trans_rollback();
-                                                            			$this->logger->write_message("error", "Error adding transit income 6");
-                                                        		}
-						//	}	
+                                                     	if ( ! $this->db->insert('entry_items', $insert_income_data))
+                                                        {
+                                                       		$this->db->trans_rollback();
+                                                            	$this->logger->write_message("error", "Error adding transit income 6");
+                                                        }
+							//}	
+						}  
+						if($expense_type == "Capital")
+					     	{
+							$insert_fund_data = array(
+        	                               			'entry_id' => $entry_id,
+	        	                                	'ledger_id' => $fund_ledger,
+               			                        	'amount' => $data_amount,
+                               			        	'dc' => 'D',
+	                                	        	'update_date' => $data_date,
+               		                        		'forward_refrence_id' => '0',
+	                               		        	'backward_refrence_id' => $data_back_refrence,
+								'secunitid' => $secunitid,
+	        	                                );
+	
+        		                                if ( ! $this->db->insert('entry_items', $insert_fund_data))
+			                             	{
+                		                        	$this->db->trans_rollback();
+	                        	                     	$this->logger->write_message("error", "Error adding fund id 5:" . $fund_ledger);
+                        	        	       	}
+							else 
+							{
+                                 				$entry_fund_id = $this->db->insert_id();
+	                                	    	}
+			
+   						    	$this->db->select('id');
+                                                    	$this->db->from('ledgers')->where('name', 'Transit Income');
+                                                    	$query = $this->db->get();
+                                                    	$income = $query->row();
+                                                    	$income_id = $income->id;
+
+                                                    	$insert_income_data = array(
+                                                        	'entry_id' => $entry_id,
+                                                        	'ledger_id' => $income_id,
+                                                        	'amount' => $data_amount,
+                                                        	'dc' => 'C',
+                                                        	'update_date' => $data_date,
+                                                        	'forward_refrence_id' => '0',
+                                                        	'backward_refrence_id' => $data_back_refrence,
+                                                        	'secunitid' => $secunitid,
+                                                        );
+
+                                                     	if ( ! $this->db->insert('entry_items', $insert_income_data))
+                                                        {
+                                                       		$this->db->trans_rollback();
+                                                            	$this->logger->write_message("error", "Error adding transit income 6");
+                                                        }
+							//}	
 						}  
                                                 $this->db->select('name');
                                                 $this->db->from('ledgers')->where('id', $fund_ledger);
@@ -1267,85 +1344,84 @@ $width="100%";
                                                         'date' => $data_date,
                                                         'type' => $expense_type,
                                                         'entry_items_id' => $entry_items_id
-                                                        );
+                                           	);
 
-                                                        if ( ! $this->db->insert('fund_management', $insert_expense_data))
-                                                        {
-                                                                $this->db->trans_rollback();
-                                                                $this->logger->write_message("error", "Error adding expenditure details for fund in fund management 7:" . $fund_ledger);
-							}
-							//////////
-							$this->db->from('ledgers')->where('id', $fund_ledger);
-                                                	$query_q = $this->db->get();
-                                                	foreach($query_q->result() as $row2)
-                                                	{
-                                                        	$led_name = $row2->name;
-                                                        	$led_code = $row2->code;
-                                                	}
-                                                        	$is_asset_code = substr($led_code, 0, 4);
-                                                        	$is_asset_code1 = substr($led_code, 0, 8);
-                                                        	//$this->db->select('id');
-                                                        	//$this->db->from('new_asset_register')->where('asset_name', $data_ledger_id)->where('date_of_purchase', $data_date);
-                                                        	//$asset_id = $this->db->get();
-                                                        	//$id1 = $asset_id->row();
-
-                                                        if($is_asset_code1 ==  '10040105'){
-
-                                                        $asset_register = array(
-                                                                        'asset_id' => $asset_id,
-                                                                        'project_name' => $led_name,
-                                                                        'code' =>  $led_code,
-                                                                        'date_of_purchase' => $data_date,
-                                                                        );
-
-                                                                        if ( ! $this->db->insert('new_sponsored_asset_register', $asset_register))
-                                                                        {
-                                                                                $this->db->trans_rollback();
-                                                                                $this->logger->write_message("error", "Error adding Assets in sponsored project.");
-                                                                        }
-                                                        }
-
-                                                        if($is_asset_code ==  '1001' || $is_asset_code ==  '1002' || $is_asset_code ==  '1003'){
-
-                                                        $asset_register = array(
-                                                                        'asset_id' => $asset_id,
-                                                                        'fund_name' => $led_name,
-                                                                        'code' =>  $led_code,
-                                                                        'date_of_purchase' => $data_date,
-                                                                        );
-
-                                                                        if ( ! $this->db->insert('new_fund_asset_register', $asset_register))
-                                                                        {
-                                                                                $this->db->trans_rollback();
-                                                                                $this->logger->write_message("error", "Error adding fund in fund asset register.");
-                                                                        }
-
-                                                        }
-
-                                        	
+                                             	if ( ! $this->db->insert('fund_management', $insert_expense_data))
+                                           	{
+                                                	$this->db->trans_rollback();
+                                                     	$this->logger->write_message("error", "Error adding expenditure details for fund in fund management 7:" . $fund_ledger);
 						}
-					}
-					
-//					if (($data_cheque[$id] == 1 )||($data_cheque[$id] == 3 ) ||($data_cheque[$id] == 4 ) ||($data_cheque[$id] == 5 ) ||($data_cheque[$id] == 6 )||($data_cheque[$id] == 7 ))
-					if (in_array($data_cheque[$id], array(1, 3, 4, 5, 6, 7)))
-					{
-                                                $insert_cheque_data = array(
-                                                        'ledger_id' => $data_ledger_id,
-                                                        'entry_no' => $entry_id,
-							'paymentreceiptby' => $data_cheque[$id],
-                                                        'update_cheque_no' => $data_cheque[$id],
-							'secunitid' => $secunitid
-                                                );
-                                                if ( ! $this->db->insert('cheque_print', $insert_cheque_data))
+						//////////
+						$this->db->from('ledgers')->where('id', $fund_ledger);
+                                                $query_q = $this->db->get();
+                                                foreach($query_q->result() as $row2)
                                                 {
-                                                        $this->db->trans_rollback();
-                                                        $this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
-                                                        $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 8" . "[id:" . $data_ledger_id . "]");
-                                                        $this->template->load('template', 'entry/add', $data);
-                                                        return;
-                                                }//if inner
-                                        }//if
-				}//end of foreach
+                                                	$led_name = $row2->name;
+                                                        $led_code = $row2->code;
+                                                }
+                                            	$is_asset_code = substr($led_code, 0, 4);
+                                             	$is_asset_code1 = substr($led_code, 0, 8);
+                                              	//$this->db->select('id');
+                                             	//$this->db->from('new_asset_register')->where('asset_name', $data_ledger_id)->where('date_of_purchase', $data_date);
+                                              	//$asset_id = $this->db->get();
+                                              	//$id1 = $asset_id->row();
+
+                                        	if($is_asset_code1 ==  '10040105')
+						{
+
+                                                	$asset_register = array(
+                                                        	'asset_id' => $asset_id,
+                                                             	'project_name' => $led_name,
+                                                             	'code' =>  $led_code,
+                                                           	'date_of_purchase' => $data_date,
+                                                 	);
+
+                                             		if ( ! $this->db->insert('new_sponsored_asset_register', $asset_register))
+                                                  	{
+                                                     		$this->db->trans_rollback();
+                                                            	$this->logger->write_message("error", "Error adding Assets in sponsored project.");
+                                            		}
+                                 		}
+
+                                              	if($is_asset_code ==  '1001' || $is_asset_code ==  '1002' || $is_asset_code ==  '1003')
+						{
+                                               		$asset_register = array(
+                                                		'asset_id' => $asset_id,
+                                                        	'fund_name' => $led_name,
+                                                         	'code' =>  $led_code,
+                                                       		'date_of_purchase' => $data_date,
+                                                	);
+
+                                              		if ( ! $this->db->insert('new_fund_asset_register', $asset_register))
+                                                 	{
+                                                        	$this->db->trans_rollback();
+                                                           	$this->logger->write_message("error", "Error adding fund in fund asset register.");
+                                                 	}
+
+                                    		}
+					}
+				}
+					
+				//if (($data_cheque[$id] == 1 )||($data_cheque[$id] == 3 ) ||($data_cheque[$id] == 4 ) ||($data_cheque[$id] == 5 ) ||($data_cheque[$id] == 6 )||($data_cheque[$id] == 7 ))
+				if (in_array($data_cheque[$id], array(1, 3, 4, 5, 6, 7)))
+				{
+                               		$insert_cheque_data = array(
+                                       		'ledger_id' => $data_ledger_id,
+                                               	'entry_no' => $entry_id,
+						'paymentreceiptby' => $data_cheque[$id],
+                                                'update_cheque_no' => $data_cheque[$id],
+						'secunitid' => $secunitid
+                               		);
+                           		if ( ! $this->db->insert('cheque_print', $insert_cheque_data))
+                                  	{
+                                      		$this->db->trans_rollback();
+                                           	$this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
+                                        	$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 8" . "[id:" . $data_ledger_id . "]");
+                                            	$this->template->load('template', 'entry/add', $data);
+                                           	return;
+                          		}//if inner
+                   		}//if
+			}//end of foreach
 			/* Updating Debit and Credit Total in entries table */
 			$update_data = array(
 				'dr_total' => $dr_total,
@@ -1387,9 +1463,9 @@ $width="100%";
                         $user_email = $r_query->email;
 			if($transcationemail_status == 1)
 			{
-                        $this->load->library('paymentreceipt');
-                        $this->paymentreceipt->send_mail($user_email,$subject,$message);  
-			return;
+                        	$this->load->library('paymentreceipt');
+                        	$this->paymentreceipt->send_mail($user_email,$subject,$message);  
+				return;
 			}
                         $this->template->load('template', 'entry/add', $data);
                         return;
@@ -1397,7 +1473,7 @@ $width="100%";
 		}//end of else
 		return;
 	}
-//end of Payment 
+	//end of Payment 
 
 	function startsWith($str1, $str2)
         {

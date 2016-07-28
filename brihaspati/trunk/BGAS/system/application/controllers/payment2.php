@@ -1763,6 +1763,25 @@ class Payment2 extends Controller {
                                                         $this->db->trans_rollback();
                                                         $this->logger->write_message("error", "Error adding fund id:" . $vouch_fill->fund_id);
                                                 }
+                                       		$this->db->select('id')->from('ledgers')->where('name', 'Transit Income');
+                                        	$query = $this->db->get();
+                                        	$income = $query->row();
+                                        	$income_id = $income->id;
+						$insert_income_data = array(
+                                                	'entry_id' => $entry_id,
+                                                	'ledger_id' => $income_id,
+                                                	'amount' => $approved_amount,
+                                                	'dc' => 'C',
+                                                	'update_date' => $data_date,
+                                                	'forward_refrence_id' => '0',
+                                                	'backward_refrence_id' => '0',
+                                                	'secunitid' => $secunit_id,
+                                        	);
+						if ( ! $this->db->insert('entry_items', $insert_income_data))
+                                        	{
+                                                	$this->db->trans_rollback();
+                                                        $this->logger->write_message("error", "Error adding transit income");
+                                       		}	
 
 	                                        $this->db->select('name')->from('ledgers')->where('id', $vouch_fill->fund_id);
                                                 $qu_ery = $this->db->get();
