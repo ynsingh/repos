@@ -15,6 +15,7 @@ class Report extends Controller {
 	{
 		parent::Controller();
 		$this->load->model('Setting_model');
+		$this->load->model('entry_model');
 		$this->load->model('Ledger_model');
 		$this->load->model('Budget_model');
 		$this->load->model('Group_model');

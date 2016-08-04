@@ -68,6 +68,9 @@
 
 	}
 		echo "<table border=\"0\" cellpadding=\"5\" class=\"simple-table ledgerst-table\" width=\"$width\">";
+		echo "<tr><td><h3>Receipt</td></tr>";
+		echo "</table>";
+		echo "<table border=\"0\" cellpadding=\"5\" class=\"simple-table ledgerst-table\" width=\"$width\">";
 		$odd_even = "odd";
 		$dr_total = 0;
         	$cr_total= 0;
@@ -111,7 +114,7 @@
 				$cash_in_hand = $this->Tag_model->cash_in_hand_available('Cash');
 				if($search == NULL || $search == "--Select--"){
 					//Head Of cash in hand and name of banks................
-					echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th>";
+					echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th><th width=\"20%\"><b>Voucher No.</th><th width=\"20%\"><b>Head of A/C</th>";
 					//First Colomn of Cash in hand.............
 					$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
                 			$led_name = $this->db->get();
@@ -129,7 +132,7 @@
 					//Opening Balance Of bank........................
 //. money_format('%!i', convert_cur($amount)) .
 					echo "<thead>";
-						echo "<tr><td><b>Opening Balance</td><td></td>";
+						echo "<tr><td><b>Opening Balance</td><td></td><td></td><td></td>";
 						$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
                                         	$led_name = $this->db->get();
                                         	foreach ($led_name->result() as $row1)
@@ -147,9 +150,9 @@
 						}
 					echo"</tr></thead>";
 				}else{
-					 echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th>";
+					 echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th><th width=\"20%\"><b>Voucher No.</th><th width=\"20%\"><b>Head Of A/C</th>";
                                          echo"<th width=\"20%\" align=\"center\"><b>".$expload_search[1]."</th>";
-                                	 echo "<tr><td><b>Opening Balance</td><td>";
+                                	 echo "<tr><td><b>Opening Balance</td><td></td><td></td><td></td>";
 					 list ($opbalance1, $optype) = $this->Ledger_model->get_op_closing_balance($expload_search[0], $from_date, $to_date); /* Opening Balance */
                                          echo "<td align=\"center\"><b>". convert_dc($optype) ." " .money_format('%!i', convert_cur($opbalance1))."</td>";
                                          echo"</tr></thead>";
@@ -158,7 +161,7 @@
 		
 
 
-					$this->db->select('ledgers.name as name, ledgers.id as id, entry_items.entry_id as entry_id, entry_items.amount as amount, entries.narration as narration, entries.date as date');
+					$this->db->select('ledgers.name as name, ledgers.id as id, entry_items.entry_id as entry_id, entry_items.amount as amount, entries.narration as narration, entries.date as date, entries.number as voucher_numb, entries.sanc_value as head_value, entries.sanc_type as head_type');
 					$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.dc', 'D')->where('ledgers.type', '1')->order_by('entries.date', 'asc');	
 					$this->db->where('entries.date >=', $from_date);
                                         $this->db->where('entries.date <=', $to_date);
@@ -173,6 +176,18 @@
                                                 $opp_name=$this->Tag_model->get_ledger_of_multiple_entry($id, $entry->entry_id);
 						$exp_opp_name=explode("#",$opp_name);
                                                 $bank_type=$this->Tag_model->check_type_of_bank($led_name);
+						if($entry->head_value=="select")
+							$head_sanc_value="";
+						else
+							$head_sanc_value="  (".$entry->head_value.")";
+						if($entry->head_type=="non_plan")
+							$head_sanc_type="Non Plan";
+						elseif($entry->head_type=="plan")
+							$head_sanc_type="Plan";
+						elseif($entry->head_type=="plan_sfc_scheme")
+							$head_sanc_type="Plan Specific Schemes";
+						elseif($entry->head_type=="plan_other_scheme")
+							$head_sanc_type="Other Schemes";
                                                 if($bank_type == '0'){
                                                 	$bank_name=$this->Tag_model->get_all_bank_cash_ledgers($led_name);
                                                    }else{
@@ -189,6 +204,12 @@
                                                                         echo $exp_opp_name[0] . "<br>";
                                                                         echo "Narration: " . $entry->narration;
                                                                         echo "</td>";
+                                                                        echo "<td>";
+                                                                        echo $entry->voucher_numb;
+                                                                        echo "</td>";
+                                                                        echo "<td>";
+									echo $head_sanc_type.$head_sanc_value;
+                                                                        echo "</td>";
                                                                         for($counter=1; $counter <= $key; $counter++){
                                                                         	echo "<td align=\"center\">";
                                                                         }
@@ -204,6 +225,12 @@
                                                                                 echo  $exp_opp_name[0] . "<br>";
                                                                                 echo "Narration: " . $entry->narration;
                                                                                 echo "</td>";
+									echo "<td>";
+                                                                        echo $entry->voucher_numb;
+                                                                        echo "</td>";
+                                                                        echo "<td>";
+									echo $head_sanc_type.$head_sanc_value;
+                                                                        echo "</td>";
                                                                                 echo "<td align=\"center\">" . $amount . "</td>";
                                                                           }
                                                                  }
@@ -211,7 +238,7 @@
                                           }
 
 				//Total Balance ........................
-        			echo "<tr class=\"tr-total\"><td>TOTAL </td><td></td></td>";
+        			echo "<tr class=\"tr-total\"><td>TOTAL </td><td></td></td><td></td><td></td>";
         			if($search == NULL || $search == "--Select--"){
 					$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
                                         $led_name = $this->db->get();
@@ -234,10 +261,10 @@
                                         echo "<td  align=\"center\">Dr " . money_format('%!i', convert_cur($amount)) ."</td>";
 
         			}
-				echo "<tr><td></td><td></td></td><td></td>";
+				echo "<tr><td colspan=\"6\"><h3>Payment</td>";
 		
 				//// For Cr- entries ....................
-				echo "<tr  class=\"tr-total\"><td width=\"10%\"><b>Date</td><td width=\"20%\"><b>Ledger Name</td>";
+				echo "<tr  class=\"tr-total\"><td width=\"10%\"><b>Date</td><td width=\"20%\"><b>Ledger Name</td><td width=\"20%\"><b>Voucher No.</td><td width=\"20%\"><b>Head Of A/C</td>";
 				if($search == NULL || $search == "--Select--"){
 					$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
 				        $led_name = $this->db->get();
@@ -259,7 +286,7 @@
 				echo"</tr>";
 
                                 //////////////////
-			 	$this->db->select('ledgers.name as name, ledgers.id as id, entry_items.entry_id as entry_id, entry_items.amount as amount, entries.narration as narration, entries.date as date');
+			 	$this->db->select('ledgers.name as name, ledgers.id as id, entry_items.entry_id as entry_id, entry_items.amount as amount, entries.narration as narration, entries.date as date, entries.number as voucher_numb1, entries.sanc_value as head_value1, entries.sanc_type as head_type1');
                                 $this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.dc', 'C')->where('ledgers.type', '1')->order_by('entries.date', 'asc');
 				$this->db->where('entries.date >=', $from_date);
                                 $this->db->where('entries.date <=', $to_date);
@@ -273,6 +300,19 @@
 					$opp_name=$this->Tag_model->get_ledger_Dr_multiple_entry($id, $entry->entry_id);	
 					$exp_opp_name=explode("#",$opp_name);
 					$bank_type=$this->Tag_model->check_type_of_bank($led_name);
+					if($entry->head_value1=="select")
+                                		$head_sanc_value1="";
+                                   	else
+                             			$head_sanc_value1="  (".$entry->head_value1.")";
+                                 	if($entry->head_type1=="non_plan")
+                                		$head_sanc_type1="Non Plan";
+                                    	elseif($entry->head_type1=="plan")
+                                 		$head_sanc_type1="Plan";
+                               		elseif($entry->head_type1=="plan_sfc_scheme")
+                                		$head_sanc_type1="Plan Specific Schemes";
+                              		elseif($entry->head_type1=="plan_other_scheme")
+                               			$head_sanc_type1="Other Schemes";
+
                                         if($bank_type == '0'){
                                         	$bank_name=$this->Tag_model->get_all_bank_cash_ledgers($led_name);
                                         }else{
@@ -289,6 +329,13 @@
                                 				echo $exp_opp_name[0] . "<br>";
                                 				echo "Narration: " . $entry->narration;echo"<br>";
                                 				echo "</td>";
+								echo "<td>";
+                                                         	echo $entry->voucher_numb1;
+                                                           	echo "</td>";
+                                                          	echo "<td>";
+                                                           	echo $head_sanc_type1.$head_sanc_value1;
+                                                            	echo "</td>";
+
                                                                 for($counter=1; $counter <= $key; $counter++){
                                                                 	echo "<td align=\"center\">";
                                                                 }
@@ -304,6 +351,12 @@
                                                 			echo $exp_opp_name[0];echo"<br>";
                                                                 	echo "Narration: " . $entry->narration;
                                  	        	        	echo "</td>";
+									echo "<td>";
+                                                                	echo $entry->voucher_numb1;
+                                                                	echo "</td>";
+                                                                	echo "<td>";
+                                                                	echo $head_sanc_type1.$head_sanc_value1;
+                                                                	echo "</td>";
                                                                 	echo "<td align=\"center\">" .$entry->amount . "</td>";
 								}
 							}
@@ -311,7 +364,7 @@
 				}
 
 	////Total Of Dr amount........
-       echo "<tr  class=\"tr-total\"><td>TOTAL </td><td></td>";
+       echo "<tr  class=\"tr-total\"><td>TOTAL </td><td></td><td></td><td></td>";
        if($search == NULL || $search == "--Select--"){
 	$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
         $led_name = $this->db->get();
@@ -335,7 +388,7 @@
        echo"</tr>";
 
 	//Closing balance .............................
-	echo "<tr class=\"tr-balance\"><td><b>Closing Balance</td><td></td>";
+	echo "<tr class=\"tr-balance\"><td><b>Closing Balance</td><td></td><td></td><td></td>";
 	if($search == NULL ||  $search == "--Select--"){
 		  $this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
         	$led_name = $this->db->get();

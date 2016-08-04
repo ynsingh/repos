@@ -551,7 +551,7 @@ var dc = '';
 
 	echo form_open('entry/edit/' . $current_entry_type['label'] . "/" . $entry_id);
 	echo "<p>";
-	echo form_label('Vendor Voucher Number', 'vendor_number');
+	echo form_label('Bill Against Voucher Number', 'vendor_number');
         echo " ";
         echo form_input($vendor_number);
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";

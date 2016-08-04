@@ -146,3 +146,19 @@ li.sfHover > a > .sf-sub-indicator {
 .sf-shadow ul.sf-shadow-off {
 	background:transparent;
 }
+
+nav {
+	background:none repeat scroll 0 0 #0099CC;
+	height:35px;
+	padding:0 0 0 18px;
+	color:#FFFFFF;
+}
+
+.fixed {
+        position:fixed;
+        top:0;
+        height: 35px;
+        width: 100%;
+        z-index: 1;
+}
+

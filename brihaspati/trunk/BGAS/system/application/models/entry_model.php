@@ -134,6 +134,15 @@ class Entry_model extends Model {
                 return $options;
         }
 
+	function get_name_of_entry_type($entry_type_id)
+	{
+		$this->db->select('name')->from('entry_types')->where('id',$entry_type_id)->limit(1);
+		$tye_entry = $this->db->get();
+		$type_entry = $tye_entry->row();
+		$entry_type_name = $type_entry->name;
+		return $entry_type_name;
+	}
+
 	function get_all_entry_items_ledger_notfund($entry_id,$income_id)
 	{
 		$this->db->select('verified_by')->from('entries')->where('id',$entry_id);

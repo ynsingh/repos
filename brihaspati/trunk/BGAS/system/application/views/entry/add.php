@@ -626,7 +626,7 @@ $(document).ready(function() {
 
 	echo form_open('entry/checkentry/' . $current_entry_type['label']."/".$check);
 	echo "<p>";
-	echo form_label('Vendor Voucher Number', 'vendor_number');
+	echo form_label('Bill Against Voucher Number', 'vendor_number');
         echo " ";
         echo form_input($vendor_number);
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";

@@ -92,6 +92,7 @@
 
 	setlocale(LC_MONETARY, 'en_IN');
 	$check = 1;
+	$i = 1;
  	foreach ($entry_data->result() as $row)
      	{
     		$status = $row->status;
@@ -111,7 +112,10 @@
             	}
        		if($value != NULL) 
 		{
-           		echo "<tr style=\"border-bottom: 1px solid #BBBBBB;\">";
+			if($i % 2 == 0)
+                    	echo "<tr style=\"border-bottom: 1px solid #BBBBBB; background-color:#87CEEB\">";
+                      	else
+                   	echo "<tr style=\"border-bottom: 1px solid #BBBBBB; background-color:#AFEEEE\">";
               		$this->db->select('name,bank_name,ledger_id,update_cheque_no')->from('cheque_print')->where('entry_no',$row->id);
                  	$ledger_q = $this->db->get();
                 	$no_of_row=$ledger_q->num_rows();
@@ -197,6 +201,7 @@
                       	echo " &nbsp;" . anchor('entry/download/' . $current_entry_type['label'] . "/" . $row->id , img(array('src' => asset_url() . "images/icons/save.png", 'border' => '0', 'alt' => 'Download ' . $current_entry_type['name'] . ' Entry', 'title' => "Download entry")), array('title' => 'Download  ' . $current_entry_type['name'] . ' Entry')) . " ";
                    	echo " &nbsp;" . anchor('entry/pdf/' . $current_entry_type['label'] . "/" . $row->id , img(array('src' => asset_url() . "images/icons/pdf.jpeg", 'border' => '0', 'alt' => 'Download Pdf ' . $current_entry_type['name'] . ' Entry', 'title' => "Download entry in pdf")), array('title' => 'Download  ' . $current_entry_type['name'] . ' Entry')) . "</td>";
                   	echo "</tr>";
+			$i++;
            	}
   	}
      	if($check == "1" && $search == "name")

@@ -175,3 +175,58 @@ a.no-underline {
 	color:#00000;
 }
 
+#header1 {
+        background:none repeat scroll 0 0 #FFFFFF;
+        height:125px;
+        margin:0;
+        position:relative;
+        text-align:center;
+}
+
+#header1 #logo {
+        color:#000000;
+        font-size:15px;
+        display:block;
+        position:relative;
+        background:none repeat scroll 0 0;
+        padding:0px;
+        -moz-border-radius:0 0 5px 5px;
+        margin:0px;
+        float:left;
+}
+
+#header1 #logo1 {
+        color:#000000;
+        font-size:33px;
+        display:block;
+        position:relative;
+        background:none repeat scroll 0 0;
+        padding:0px;
+        -moz-border-radius:0 0 5px 5px;
+        top:35%;
+        left:-10%;
+}
+
+#header1 #info {
+        color:#000000;
+        display:block;
+        position:absolute;
+        right:18px;
+        top:20px;
+        background:none repeat scroll 0 0 #EEEEEE;
+        padding:10px;
+        font-size:15px;
+        -moz-border-radius: 10px;
+        border-radius: 1px;
+}
+
+#header1 #admin {
+	color:#000000;
+	font-size:15px;
+	display:block;
+	position:relative;
+	background:none repeat scroll 0 0;
+	padding:0 15px 5px 15px;
+	-moz-border-radius:0 0 5px 5px;
+	margin:0px;
+}

@@ -76,112 +76,78 @@ $(document).ready(function() {
 		history.go(0);
 	});
 });
+
+</script>
+<script>
+   $(document).ready(function(){
+	   $(window).bind('scroll', function() {
+	   //var navHeight = $( window ).height() - 35;
+	   var navHeight =125 - 35;
+			 if ($(window).scrollTop() > navHeight) {
+				 $('nav').addClass('fixed');
+			 }
+			 else {
+				 $('nav').removeClass('fixed');
+			 }
+		});
+	});
 </script>
 
 </head>
 <body>
 <div id="container">
-	<div id="header">
-
-
-		<div id="logo">
-		<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b'));?>
- 
+	<div id="header1">
+		<div id="admin">
+		<?php
+			if(isset($schedule) || isset($help))
+			{
+			}
+			else
+			{
+				if ($this->session->userdata('user_name')) 
+				{
+					echo anchor('', 'Accounts', array('title' => "Accounts", 'class' => 'anchor-link-b'));
+					echo " | ";
+					/* Check if allowed administer rights */
+					if (check_access('administer')) {
+						echo anchor('admin', 'Administer', array('title' => "Administer", 'class' => 'anchor-link-b'));
+						echo " | ";
+					}
+                                	if (check_access('manager')) 
+					{
+                                        	echo anchor('user/aggregator', 'Aggregater', array('title' => "Aggregater", 'class' => 'anchor-link-b'));
+                                        	echo " | ";
+                                	}
+					echo anchor('user/profile', 'Profile', array('title' => "Profile", 'class' => 'anchor-link-b'));
+					echo " | ";
+					echo anchor('user/logout', 'Logout', array('title' => "Logout", 'class' => 'anchor-link-b'));
+				}
+			}
+		?>
 		</div>
 
+		<div id="logo">
 		<?php
-/*			$Flag=FALSE;
-			$db2=$this->load->database('brihaspati',TRUE);
-			if($db2){
-                        $applist="";
-			$table="APPLIST";
-                        if($db2->query("SHOW TABLES LIKE '".$table."'")->num_rows()==1){
-                                $this->messages->add('Brihaspati database with APPLICATION LIST table exists.', 'success');
-                                $db2->from('APPLIST');
-                                $db2->select('*')->where('APPSTATUS = ', 0);
-                                $applist = $db2->get();
-				$Flag=TRUE;
-                        }
-			else{
-                                $this->messages->add('Brihaspati database with APPLICATION LIST table is not exists. so contact to administrator for application header', 'success');
-                        }
-			}
-*/
-			if(isset($schedule) || isset($help)){
-			}
-			else{
-			echo "<div id=\"admin\">";
-	//		echo $username=$this->session->userdata('user_name');
-			if ($this->session->userdata('user_name')) {
-				echo anchor('', 'Accounts', array('title' => "Accounts", 'class' => 'anchor-link-b'));
-				echo " | ";
-				/* Check if allowed administer rights */
-				if (check_access('administer')) {
-					echo anchor('admin', 'Administer', array('title' => "Administer", 'class' => 'anchor-link-b'));
-					echo " | ";
-				}
-                                if (check_access('manager')) {
-                                        echo anchor('user/aggregator', 'Aggregater', array('title' => "Aggregater", 'class' => 'anchor-link-b'));
-                                        echo " | ";
-                                }
-
-				echo anchor('user/profile', 'Profile', array('title' => "Profile", 'class' => 'anchor-link-b'));
-				echo " | ";
-				echo anchor('user/logout', 'Logout', array('title' => "Logout", 'class' => 'anchor-link-b'));
-			}
-			echo "</div>";
-			}
-			echo "<div>";
-/*				if(($db2)&&($Flag)){
-                                        $urlf="";
-                                foreach($applist->result() as $row)
-                                {
-                                        $appacrm ="";
-                                        if($row->ACRONYM == "")
-                                                $appacrm = $row->APPNAME;
-                                        else
-                                                $appacrm = $row->ACRONYM;
-
-                                        $urlf="";
-                                        if ($this->session->userdata('user_name'))
-                                                $urlf=$row->APPURL."?lgdst=lgdn";
-                                        else
-                                                $urlf=$row->APPURL."?lgdst=nlgdn";
-
-					if((strcasecmp(($row->ACRONYM), "BGAS") != 0 )||(strcasecmp(($row->APPNAME),"Brihaspati General Accounting System")!=0)){
-					//if((($row->ACRONYM) != "BGAS")||(($row->APPNAME) != "Brihaspati General Accounting System")){
-                                        	echo anchor($urlf, $appacrm, array('title' => $row->APPNAME, 'class' => 'anchor-link-b'));
-                                        	echo " | ";
-					}
-                                }
-                        	$db2->close();
-				}//end if
-*/
-                        echo "</div>";
-
-		?>
-
-		 <?php
 		$this->db->select('id, name')->from('settings');
                 $ins_id = $this->db->get();
                 foreach( $ins_id->result() as $row)
                 {
-                        $row1 = $row->name;
-                }
+                	$row1 = $row->name;
+               	}
                 $this->upload_path= realpath(BASEPATH.'../uploads/logo');
                 $file_list = get_filenames($this->upload_path);
                 if ($file_list)
                 {
-                        foreach ($file_list as $row2)
+               		foreach ($file_list as $row2)
                         {
-                                $ext = substr(strrchr($row2, '.'), 1);
+                        	$ext = substr(strrchr($row2, '.'), 1);
                                 $my_values = explode('.',$row2);
                                 if($my_values[0] == $row1)
                                 {
-                                echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
-                                echo "<br/>";
-                                echo"&nbsp;&nbsp;&nbsp;&nbsp;";
-                                echo $this->config->item('account_ins_name');
+                                	echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
+                                	echo "<br/>";
+                                	echo"&nbsp;&nbsp;&nbsp;&nbsp;";
+                                	echo $this->config->item('account_ins_name');
                                 }
 				$newrep_lace = str_replace('_', ' ', $my_values[0]);
                                 if(($newrep_lace == $row1) && ($my_values[0] != $row1))
@@ -191,46 +157,52 @@ $(document).ready(function() {
                                 	echo"&nbsp;&nbsp;&nbsp;&nbsp;";
                                 	echo $this->config->item('account_ins_name');
                                 }
-
                         }
                 }
-                else{
-                echo "<br/>";
-                echo "<br/>";
-                echo "<br/>";
-                echo "<br/>";
-                echo "<p align=\"justify\">" . "&nbsp;" . $this->config->item('account_ins_name') . "</p>";
+                else
+		{
+                	echo "<br/>";
+                	echo "<br/>";
+                	echo "<br/>";
+                	echo "<br/>";
+                	echo "<p align=\"justify\">" . "&nbsp;" . $this->config->item('account_ins_name') . "</p>";
                 }
+		?>
+		</div>
 
-		?> 
- 
+		<div id="logo1">
+		<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b'));?>
+		</div>
+
 		<div id="info">
-			<?php
-				echo $this->config->item('account_name');
-				echo " (";
-				echo anchor('user/account', 'change', array('title' => 'Change active account', 'class' => 'anchor-link-a'));
-				echo ")<br />";
-				echo "Acc. Name : ";
-				$current_active_account = $this->session->userdata('active_account');
-			        echo ($current_active_account) ? $current_active_account : "(None)";
-				echo "<br/>";
-				echo "FY : ";
-				echo date_mysql_to_php_display($this->config->item('account_fy_start'));
-				echo " - ";
-				echo date_mysql_to_php_display($this->config->item('account_fy_end'));
-				echo "<br/>";
-				echo "Date : ";
-				echo Date("l, d F Y");
-			?>
+		<?php
+               	echo $this->config->item('account_name');
+           	echo " (";
+             	echo anchor('user/account', 'change', array('title' => 'Change active account', 'class' => 'anchor-link-a'));
+              	echo ")<br />";
+             	echo "Acc. Name : ";
+            	$current_active_account = $this->session->userdata('active_account');
+           	echo ($current_active_account) ? $current_active_account : "(None)";
+          	echo "<br/>";
+             	echo "FY : ";
+            	echo date_mysql_to_php_display($this->config->item('account_fy_start'));
+             	echo " - ";
+            	echo date_mysql_to_php_display($this->config->item('account_fy_end'));
+             	echo "<br/>";
+             	echo "Date : ";
+             	echo Date("l, d F Y");
+               	?>
 		</div>
 	</div>
 
-	
+
+	<div id="header">
 	<?php 
 	//Check added by Priyanka
 	if(isset($schedule) || isset($help)){}
-	else{ 
-	echo "<div id=\"menu\">";
+	else{?> 
+	<nav>
+	<?php
 		echo "<ul class=\"sf-menu\">";
 			echo "<li class=\"current\">";
 				//echo "<a href=" . base_url() . "title=\"Dashboard\">Dashboard</a>";
@@ -447,7 +419,9 @@ $(document).ready(function() {
                                 echo anchor('changepassword', 'Change Password', array('title' => 'changepassword', 'class' => 'last')); 
                         echo "</li>";
 		echo "</ul>";
-	echo "</div>";
+		?>
+	</nav>
+	<?php
 	}
 	?>
 
@@ -529,7 +503,6 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
-</div>
 <div id="footer">
 	<?php if (isset($page_footer)) echo $page_footer ?>
 <a href="/~brihaspati/BGAS/ListOfDocument.html" target="_blank">Importants Links</a> Based on <a href="http://webzash.org" target="_blank"> Webzash<a/> and licensed is <a href="/~brihaspati/BGAS/brihaspati-license.txt" target="_blank">BGAS License</a> and <a href="/~brihaspati/BGAS/acknowledgement.txt" target="_blank">BGAS Acknowledgement</a>
