@@ -67,10 +67,11 @@ class Entry extends Controller {
 			$data['tag_id'] = $tag_id;
 			$tag_name = $this->Tag_model->tag_name($tag_id);
 			$this->template->set('page_title', 'Entries Tagged "' . $tag_name . '"');
+ 			$this->template->set('nav_links', array('entry/monthwise/' => 'MONTHWISE VOUCHERS'));
 		} else if ($entry_type == 'all') {
 			$entry_type_id = 0;
 			$this->template->set('page_title', 'All Vouchers');
-			$this->template->set('nav_links', array('entry/printallentry/'=> 'PRINT ALL VOUCHERS'));
+			$this->template->set('nav_links', array('entry/printallentry/'=> 'PRINT ALL VOUCHERS','entry/monthwise/'=> 'MONTHWISE VOUCHERS'));
 		} else {
 			$entry_type_id = entry_type_name_to_id($entry_type);
 			if ( ! $entry_type_id)
@@ -81,7 +82,7 @@ class Entry extends Controller {
 			} else {
 				$current_entry_type = entry_type_info($entry_type_id);
 				$this->template->set('page_title', $current_entry_type['name'] . ' Vouchers');
-				$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Voucher', 'entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Voucher'));
+				$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Voucher', 'entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Voucher','entry/monthwise/'=> 'MONTHWISE VOUCHERS'));
 $width="100%";
 
 			}
@@ -316,9 +317,8 @@ $width="100%";
 			if ($_POST)
 			{
 				$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
-				$data['text']['value'] = $this->input->post('text', TRUE);
+				$data['text']['value'] = $this->input->post('text', TRUE);                       
 			}
-			
 			/* Form Validation */
 			$this->form_validation->set_rules('search_by', 'Search By', 'trim|required');
 			$this->form_validation->set_rules('text', 'Text', 'trim|required');
@@ -498,6 +498,102 @@ $width="100%";
 		$this->template->load('template', 'entry/index', $data);
 		return;
 
+	}
+	
+	function monthwise()
+	{
+		$this->load->helper('text');
+		/* Pagination setup */
+		$this->load->library('pagination');
+
+		$this->template->set('page_title', 'Monthwise Vouchers');
+		$default_end_date;
+		/* Form fields */
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$date1 = $row->fy_start;
+			$date2 = $row->fy_end;
+		}
+		$date=explode("-",$date1);
+		$date2 = explode("-", $row->fy_end);
+		$default_start = '01/04/'.$date[0];
+		$default_end = '31/03/'.$date2[0];
+		$curr_date = date_today_php();
+		if($curr_date >= $default_end) 
+		{
+			$default_end_date = $default_end;
+		}
+		else 
+		{
+			$default_end_date = $curr_date;
+		}
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => $default_start,
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => $default_end_date,
+		);
+		$data_date1 = $default_start;
+		$data_date2 = $default_end_date;
+
+		$date=explode("/",$data_date1);
+		$start_date=$date[2]."-".$date[1]."-".$date[0];
+		$date=explode("/",$data_date2);
+		$end_date=$date[2]."-".$date[1]."-".$date[0];
+
+		$newrange = array(
+			'startdate'  => $start_date,
+			'enddate'  => $end_date
+		);
+		$this->session->set_userdata($newrange);
+		/* Repopulating form */
+
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);
+		}
+
+		/* Form validations */
+
+		$this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+		$this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'entry/monthwise', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+			$date=explode("/",$data_date1);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$data_date2);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+
+			$newdata = array(
+				'date1'  => $date1,
+				'date2'  => $date2,
+			);
+			$this->session->set_userdata($newdata);
+			redirect('entry/monthwise');
+		}
+		$this->template->load('template', 'entry/monthwise', $data);
+		return;
 	}
 
 	function get_code($num, $code)
