@@ -1154,6 +1154,7 @@ var $ledgers = array();
             	$counter = $query->num_rows();
             	$q_result = $query->result();
 		$x=0;
+		$optot=0;$ctot=0;$dtot=0;$captot=0;$revtot=0;
 		$plan_total11=0; $plan_total21=0;$plan_total31=0; $plan_total41=0;
 		foreach($q_result as $row){
 		if(($x==0) || ($x==1) || ($x==2)){
@@ -1162,30 +1163,48 @@ var $ledgers = array();
                 $ledger_id = $row->id;
 
 	        $op_balance = $this->get_op_balance($ledger_id);
+//		print_r($op_balance);
         	$dr_total = $this->get_dr_total2($ledger_id);
+		//print_r("the dr".$dr_total);
+//		print_r($dr_total);
 	        $cr_total = $this->get_cr_total2($ledger_id);
+//		print_r("the cr".$cr_total);
+//		print_r($cr_total);
         	$capital_total = $this->get_capital_exp_total($ledger_id);
 	        $revenue_total = $this->get_revenue_exp_total($ledger_id);
         	$plan = array();
-	        $plan_total1 = $op_balance[0]+ $cr_total[$type];
+		$optot = $optot + $op_balance[0];
+		if( $op_balance[1] == 'C')
+		        $plan_total1 = $op_balance[0]+ $cr_total[$type];
+		else
+	        	$plan_total1 = -$op_balance[0]+ $cr_total[$type];
 		$plan_total11 = $plan_total11 +$plan_total1;
+		$ctot = $ctot +$cr_total[$type];
 	        $plan_total2  = $plan_total1 - $dr_total[$type];
 		$plan_total21 =  $plan_total21 +  $plan_total2;
+		$dtot = $dtot +$dr_total[$type];
 	        $plan_total3 = $plan_total2 - $capital_total[$type];
 		$plan_total31 = $plan_total31 + $plan_total3;
+		$captot = $captot + $capital_total[$type];
 	        $plan_total4 = $plan_total3 - $revenue_total[$type];
 		$plan_total41 =$plan_total41 +$plan_total4;
+		$revtot = $revtot + $revenue_total[$type];
 		}//if close
 		$x++;
 		}//for each
-	        $plan[0] = $op_balance[0];
-	        $plan[1] = $cr_total[$type];
+	        $plan[0] = $optot;
+	        //$plan[0] = $op_balance[0];
+	        $plan[1] = $ctot;
+	       // $plan[1] = $cr_total[$type];
 	        $plan[2] = $plan_total11;
-	        $plan[3] = $dr_total[$type];
+	        $plan[3] = $dtot;
+	       // $plan[3] = $dr_total[$type];
 	        $plan[4] = $plan_total21;
-	        $plan[5] = $capital_total[$type];
+	        $plan[5] = $captot;
+	       // $plan[5] = $capital_total[$type];
 	        $plan[6] = $plan_total31;
-	        $plan[7] = $revenue_total[$type];
+	        $plan[7] = $revtot;
+	        //$plan[7] = $revenue_total[$type];
 	        $plan[8] = $plan_total41;
 	        return $plan;
 	}

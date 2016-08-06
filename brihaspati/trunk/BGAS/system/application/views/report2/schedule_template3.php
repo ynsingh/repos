@@ -39,17 +39,20 @@
 
         
         $curr_total = $object->curr_sum_total;    
-            $curr_plan_total = $object->curr_plan_sum_total;
-            $curr_non_plan_total = $object->curr_non_plan_sum_total;
+        $curr_plan_total = $object->curr_plan_sum_total;
+        $curr_non_plan_total = $object->curr_non_plan_sum_total;
         echo "<tr><td align=\"left\" class=\"bold\">Total</td>";
         echo "<td align=\"right\" class=\"bold\">";
-        echo money_format('%!i', convert_cur($curr_plan_total));
+        echo convert_amount_dc($curr_plan_total);
+        //echo money_format('%!i', convert_cur($curr_plan_total));
         echo "</td>";
         echo "<td align=\"right\" class=\"bold\">";
-        echo money_format('%!i', convert_cur($curr_non_plan_total));
+        echo convert_amount_dc($curr_non_plan_total);
+       // echo money_format('%!i', convert_cur($curr_non_plan_total));
         echo"</td>";
         echo "<td align=\"right\" class=\"bold\">";
-        echo money_format('%!i', convert_cur($curr_total));
+        echo convert_amount_dc($curr_total);
+       // echo money_format('%!i', convert_cur($curr_total));
         echo "</td>";
         echo"<td></td>";
         echo"<td></td>";

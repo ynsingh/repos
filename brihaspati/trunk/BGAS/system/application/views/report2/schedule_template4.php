@@ -19,10 +19,10 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	if(! $print_preview)
 	{
         echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-        echo "<thead><tr><th></th><th align=\"center\">Pension</th><th align=\"center\">Gratuity</th><th align=\"center\">Leave Encashment</th><th align=\"center\">DCRG</th><th align=\"center\">Commutation</th><th align=\"center\">Total</th></tr></thead>";
+        echo "<thead><tr><th></th><th align=\"center\">Gratuity</th><th align=\"center\">Leave Encashment</th><th align=\"center\">Pension</th><th align=\"center\">DCRG</th><th align=\"center\">Commutation</th><th align=\"center\">Total</th></tr></thead>";
 	}else{
 		echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-        echo "<thead><tr><th></th><th align=\"center\">Pension</th><th align=\"center\">Gratuity</th><th align=\"center\">Leave Encashment</th><th align=\"center\">DCRG</th><th align=\"center\">Commutation</th><th align=\"center\">Total</th></tr></thead>";
+        echo "<thead><tr><th></th><th align=\"center\">Gratuity</th><th align=\"center\">Leave Encashment</th><th align=\"center\">Pension</th><th align=\"center\">DCRG</th><th align=\"center\">Commutation</th><th align=\"center\">Total</th></tr></thead>";
 	}
     $object->schedule15A($code,$count);
 

@@ -3517,20 +3517,25 @@ class Reportlist1
                 $CI =& get_instance();
                 $CI->load->model('ledger_model');
                 $total1 = $CI->ledger_model->get_ledger_balance2($ledger_id);
+//		print_r($total1);
+//		echo "total1 :".$total1." id : ".$ledger_id;
 		$i=1;
 		$plan_total=0;
 		$non_plan_total=0;
 		$plan_sfc_total='';
-		$plan_sfc_sch_total=$total1['specific_sch'];
+		$plan_sfc_sch_total=0;
                 foreach ($total1 as $value){
 			if($i==1)
 				$plan_total=$value;
-			else
+			elseif($i==2)
 				$non_plan_total=$value;
+			else
+				$plan_sfc_sch_total=$value;
 			$i++;
   //                      $plan_total = $value['plan'];
 //                        $non_plan_total = $value['nonplan'];
-                }
+               }
+//		$plan_sfc_sch_total=$total1['specific_sch'];
                 $total1 = $plan_total + $non_plan_total;
                 if($plan_total ==""){
                     echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
@@ -3778,17 +3783,21 @@ class Reportlist1
 //		print_r($total1);
 		$plan_total=0;
 		$non_plan_total=0;
+		$plan_sfc=0;
 		$i=1;
                 foreach ($total1 as $value){
 			if($i == 1)
                   	      $plan_total = $value;
-			else
+			elseif($i == 2)
                         	$non_plan_total = $value;
+			else
+				$plan_sfc=$value;
 
 //                        $plan_total = $value['plan'];
 //                        $non_plan_total = $value['nonplan'];
 			$i++;
                 }
+		$plan_total = $plan_total + $plan_sfc;
                 $total1 = $plan_total + $non_plan_total;
                 if($plan_total ==""){
                     echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
@@ -4097,6 +4106,7 @@ class Reportlist1
             $ledger_id = array();
             $x = 0;
 		$groupplan=0;$groupnonplan=0;$groupspecific=0; $group1plan=0;$group1nonplan=0;$group1specific;$group2plan=0; $group2nonplan=0;$group2specific;$group3plan=0;$group3nonplan=0;$group3specific=0;
+// ugc[0], govt [1], state [2], other[3]
             foreach($q_result as $row){
                 $ledg_id = $row->id;
 		if($x==0){
@@ -4117,7 +4127,7 @@ class Reportlist1
 		            $group2nonplan = $CI->Ledger_model->get_schedule10_data($ledg_id,'nonplan');
 		            $group2specific = $CI->Ledger_model->get_schedule10_data($ledg_id,'specific_sch');
 		}
-		else{
+		elseif($x==3){
 
             		$group3plan = $CI->Ledger_model->get_schedule10_otherdata('plan',$group_id);
 		        $group3nonplan = $CI->Ledger_model->get_schedule10_otherdata('nonplan',$group_id);
@@ -4146,7 +4156,6 @@ class Reportlist1
             $name[6] = "Balance";
             $name[7] = "Less: utilized for Revenue Expenditure (B)";
             $name[8] = "Balance C/F (C)";            
-// ugc[0], govt [1], state [2], other[3]
 //            $groupplan = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'plan');
   //          $groupnonplan = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'nonplan');
     //        $groupspecific = $CI->Ledger_model->get_schedule10_data($ledger_id[0],'specific_sch');
@@ -4244,7 +4253,7 @@ class Reportlist1
 				echo money_format('%!i', convert_cur($ftotal));//current year total
 			echo"</td>";
 			echo"<td>";
-						// for previous year
+				 echo money_format('%!i', convert_cur(0));// for previous year
 			echo"</td>";
                 $a++;
             }while($a<9);
@@ -4352,7 +4361,7 @@ class Reportlist1
             $op_bal = $CI->Ledger_model->get_op_balance($pro_ledg_id);
             if($op_bal[1] =='C'){
                 $op_bal[1] = 'Cr';
-                $op_bal_cr - $op_bal_cr = $op_bal_cr + $op_bal[0];
+                $op_bal_cr = $op_bal_cr + $op_bal[0];
             }
             elseif($op_bal[1] =='D'){
                 $op_bal[1] = 'Dr';
@@ -4362,7 +4371,7 @@ class Reportlist1
             $total1 = $op_bal_cr - $op_bal_dr;
             echo"<td align=\"right\">";
             if($op_bal[0] == 0)
-            echo money_format('%!i', convert_cur($op_bal[0]));
+            echo  $op_bal[1]." ".money_format('%!i', convert_cur($op_bal[0]));
             else
             echo $op_bal[1]." ".money_format('%!i', convert_cur($op_bal[0]));
             echo"</td>";
@@ -4372,9 +4381,9 @@ class Reportlist1
         } 
         echo"<td align=\"right\">";
         if($total1 > 0)
-        echo convert_amount_dc(-$total1);
+        	echo convert_amount_dc(-$total1);
         else
-           echo convert_amount_dc($total1); 
+           	echo convert_amount_dc($total1); 
         echo"</td>";
         echo "</tr>";
 
@@ -4416,13 +4425,15 @@ class Reportlist1
                 $total3 = $amount + $total_sum2[$i];
             }
             echo"<td align=\"right\">";
-            echo money_format('%!i', convert_cur($total3));
+            echo convert_amount_dc(-$total3);
+          //  echo money_format('%!i', convert_cur($total3));
             echo"</td>";
             $sum_total3 = $sum_total3 + $total3;
             $total_sum3[$i] = $total3;
         }
         echo"<td align=\"right\">";
-        echo money_format('%!i', convert_cur($sum_total3));
+        echo convert_amount_dc(-$sum_total3);
+        //echo money_format('%!i', convert_cur($sum_total3));
         echo"</td>";
         echo "</tr>";
 
@@ -4459,13 +4470,15 @@ class Reportlist1
         {
             $sum_total5 = $total_sum3[$i] - $total_sum4[$i];
             echo"<td align=\"right\">";
-            echo money_format('%!i', convert_cur($sum_total5));
+            echo convert_amount_dc(-$sum_total5);
+            //echo money_format('%!i', convert_cur($sum_total5));
             echo"</td>";
             $total5 = $total5 + $sum_total5;
             $total_sum5[$i] = $sum_total5;
         }
         echo"<td align=\"right\">";
-        echo money_format('%!i', convert_cur($total5));
+        echo convert_amount_dc($total5);
+//        echo money_format('%!i', convert_cur($total5));
         echo"</td>";
         echo "</tr>";
 
@@ -4499,13 +4512,15 @@ class Reportlist1
         {
             $sum_total7 = (-$total_sum6[$i]) - $total_sum5[$i];
             echo"<td align=\"right\">";
-            echo money_format('%!i', convert_cur($sum_total7));
+            echo convert_amount_dc(-$sum_total7);
+//            echo money_format('%!i', convert_cur($sum_total7));
             echo"</td>";
             $total7 = $total7+ $sum_total7;
             $total_sum7[$i] = $sum_total7;
         }
         echo"<td align=\"right\">";
-        echo money_format('%!i', convert_cur($total7));
+        echo convert_amount_dc(-$total7);
+//        echo money_format('%!i', convert_cur($total7));
         echo"</td>";
         echo "</tr>";
 
@@ -4515,13 +4530,20 @@ class Reportlist1
         {
             $name = $row->name;
             $ledger_id = $row->id;
-            if($name == 'Deposit Linked Insurance Payment' || $name == 'Medical Reimbursement to Retired Employee' || $name == 'Travel to Hometown on Retirement' || $name == 'Contribution to New Pension Scheme')
+//		if($ledger_id !=413 || $ledger_id !=414 || $ledger_id !=415 || $ledger_id !=578 || $ledger_id !=579 )
+//if($name != 'Payment of Guatuity' || $name != 'Payment of Leave Encashment' || $name !='Payment of Pension' || $name != 'Payment of DCRG'|| $name != 'Payment of Commutation')
+            //if($name == 'Deposit Linked Insurance Payment' || $name == 'Medical Reimbursement to Retired Employee' || $name == 'Travel to Hometown on Retirement' || $name == 'Contribution to New Pension Scheme')
+            if($name == 'Payment of Guatuity' || $name == 'Payment of Leave Encashment' || $name =='Payment of Pension' || $name == 'Payment of DCRG'|| $name == 'Payment of Commutation')
             {
+		// these values are used above so we ignore
+	    }
+	    else{
                 echo "<tr class=\"tr-group\">";
                 echo "<td colspan=\"6\" >".$counter.". ".$name."</td>";
                 $ledger_bal = $CI->Ledger_model->get_ledger_balance1($ledger_id);
                 echo"<td align=\"right\">";
-                echo money_format('%!i', convert_cur($ledger_bal));
+                echo convert_amount_dc($ledger_bal);
+//                echo money_format('%!i', convert_cur($ledger_bal));
                 echo"</td>";
                 echo "</tr>";
                 $counter++;
@@ -4529,11 +4551,12 @@ class Reportlist1
             }
             
         }
-        $total = $total + $total7;
+        $total = $total + (-$total7);
         echo "<tr class=\"tr-ledger\" style = font-weight:bold;>";
         echo "<td colspan=\"6\">Total (A+B+C+D+E)</td>";
         echo"<td align=\"right\">";
-        echo money_format('%!i', convert_cur($total));
+        echo convert_amount_dc($total);
+        //echo money_format('%!i', convert_cur($total));
         echo"</td>";
         echo "</tr>";
     }
