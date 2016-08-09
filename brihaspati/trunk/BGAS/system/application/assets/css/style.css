@@ -230,3 +230,34 @@ a.no-underline {
 	-moz-border-radius:0 0 5px 5px;
 	margin:0px;
 }
+
+#mainheader{
+        background:none repeat scroll 0 0 #FFFFFF;
+        height:125px;
+        margin:0px;
+        position:relative;
+        text-align:center;
+}
+
+#mainheader #admin {
+	color:#000000;
+	font-size:15px;
+	display:block;
+	position:relative;
+	background:none repeat scroll 0 0;
+	padding:0 15px 5px 15px;
+	-moz-border-radius:0 0 5px 5px;
+	margin:0px;
+}
+
+#mainheader #logo1 {
+        color:#000000;
+        font-size:40px;
+        display:block;
+        position:relative;
+        background:none repeat scroll 0 0;
+        padding:0px;
+        -moz-border-radius:0 0 5px 5px;
+        top:20%;
+        left:0%;
+}

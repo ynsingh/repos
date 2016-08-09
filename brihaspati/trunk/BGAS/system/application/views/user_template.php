@@ -30,8 +30,52 @@
 </head>
 <body>
 <div id="container">
-	<div id="header">
-		<div id="logo">
+	<div id="mainheader">
+		<div id="admin">
+		<?php
+			$username=$this->session->userdata('user_name');
+                        $db1=$this->load->database('login', TRUE);
+                        $db1->select('id')->from('edrpuser')->where('username', $username);
+                        $query_result = $db1->get();
+                        foreach ($query_result->result() as $row) 
+			{
+                                $userid = $row->id;
+                        }
+                        $db1->from('bgasuserrolegroup')->where('userid', $userid);
+                        $userrec = $db1->get();
+                        foreach($userrec->result() as $row)
+            		{
+                		$type=$row->aggtype;
+                                $userrole=$row->role;
+            		}
+                        if ($this->session->userdata('user_name')) 
+			{
+                                echo anchor('', 'Accounts', array('title' => "Accounts", 'class' => 'anchor-link-b'));
+                                echo " | ";
+                                /* Check if allowed administer rights */
+                                if (check_access('administer')) 
+				{
+                                        echo anchor('admin', 'Administer', array('title' => "Administer", 'class' => 'anchor-link-b'));
+                                        echo " | ";
+                                }
+                                //if (check_access('administer')) ||(check_access('manager')) {
+                                //if ($userrole=='manager') {
+                                if(check_access('administer'))
+				{
+                                        if($type=='agg')
+                                        {
+                                        	echo anchor('admin/aggregator', 'Aggregater', array('title' => "Aggregater", 'class' => 'anchor-link-b'));
+                                        	echo " | ";
+                                        }
+                                }
+                                echo anchor('user/profile', 'Profile', array('title' => "Profile", 'class' => 'anchor-link-b'));
+                                echo " | ";
+                                echo anchor('user/logout', 'Logout', array('title' => "Logout", 'class' => 'anchor-link-b'));
+			}
+		?>
+		</div>
+
+		<div id="logo1">
 			<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); ?>
 		</div>
 		<?php
@@ -55,7 +99,7 @@
 			}
 			}
 */
-			echo "<div id=\"admin\">";
+		/*	echo "<div id=\"admin\">";
 			$username=$this->session->userdata('user_name');
 			$db1=$this->load->database('login', TRUE);
 			$db1->select('id')->from('edrpuser')->where('username', $username);
@@ -78,7 +122,7 @@
 				echo anchor('', 'Accounts', array('title' => "Accounts", 'class' => 'anchor-link-b'));
 				echo " | ";
 				/* Check if allowed administer rights */
-				if (check_access('administer')) {
+		/*		if (check_access('administer')) {
 					echo anchor('admin', 'Administer', array('title' => "Administer", 'class' => 'anchor-link-b'));
 					echo " | ";
 				}
@@ -121,9 +165,10 @@
 			$db2->close();
 				}
 */
-			echo "</div>";
+		/*	echo "</div>";*/
 		?>
 	</div>
+	<div id="header">
 	<div id="menu">
 		<ul class="sf-menu">
 			<li class="current">
@@ -196,7 +241,6 @@
 			</div>
 		</div>
 	</div>
-</div>
 <div id="footer">
 	<?php if (isset($page_footer)) echo $page_footer ?>
 <a href="/~brihaspati/BGAS/ListOfDocument.html" target="_blank">Importants Links</a> Based on <a href="http://webzash.org" target="_blank"> Webzash<a/> and licensed is <a href="/~brihaspati/BGAS/brihaspati-license.txt" target="_blank">BGAS License</a> and <a href="/~brihaspati/BGAS/acknowledgement.txt" target="_blank">BGAS Acknowledgement</a>

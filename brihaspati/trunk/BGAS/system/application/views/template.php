@@ -164,7 +164,7 @@ $(document).ready(function() {
                 	echo "<br/>";
                 	echo "<br/>";
                 	echo "<br/>";
-                	echo "<br/>";
+                	//echo "<br/>";
                 	echo "<p align=\"justify\">" . "&nbsp;" . $this->config->item('account_ins_name') . "</p>";
                 }
 		?>
