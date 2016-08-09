@@ -594,7 +594,7 @@ public class Notice_Send_Delete extends SecureAction
 			*/
 			if(fhrole.equals("admin") && htype.equals("Flash Heading")){
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Notification.properties";
-			(new File(path)).delete();
+			//(new File(path)).delete();
 			AdminProperties.setPropertyValue(path,Fheading,"brihaspati.admin.flashHeading.value");
 			}
 			/**
@@ -616,13 +616,14 @@ public class Notice_Send_Delete extends SecureAction
                         //Get Expiry date for Shutdown Notices.
                         String ExpiryDate=dateFormat.format(now.getTime());
                         String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Shutdown.properties";
-                        (new File(path)).delete();
+                        //(new File(path)).delete();
 			/**
 			* Set Message in Shutdown.Notification properties file
 			* Set ExpiryDate in Shutdown.Notification properties file
 			*/
-                        AdminProperties.setPropertyValue(path,ExpiryDate,"brihaspati.admin.ShutdownExpDate.value");
-                        AdminProperties.setPropertyValue(path,Fheading,"brihaspati.admin.ShutdownHeading.value");
+                       	AdminProperties.setPropertyValue(path,ExpiryDate,"brihaspati.admin.ShutdownExpDate.value");
+                       	AdminProperties.setPropertyValue(path,Fheading,"brihaspati.admin.ShutdownHeading.value");
+
                         }
 			String Fhupdate=MultilingualUtil.ConvertedString("cal_ins",LangFile);
                         data.setMessage(Fhupdate);

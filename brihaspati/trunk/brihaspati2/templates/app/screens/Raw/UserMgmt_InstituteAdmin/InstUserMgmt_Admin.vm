@@ -23,6 +23,7 @@ $!data.getMessage()
 
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/Button_disable.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.tableColor" width=100%>
@@ -514,7 +515,7 @@ face="$ui.sansSerifFonts">$type</font>
             shouldn't appear when inserting a new user.
           *#
                 <font face="$ui.sansSerifFonts">
-                <input type="button" class="button-ftextstyle" name="eventSubmit_doUploadadmin" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
+                <input type="button" class="button-ftextstyle" id="button1" name="eventSubmit_doUploadadmin" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="mode" value="$mode"/>
                 <input type="hidden" name="count" value="$tdcolor"/>
@@ -579,7 +580,7 @@ face="$ui.sansSerifFonts">$type</font>
         <tr bgcolor="$ui.tableColor">
         <td colspan=2 align="left">
         <font face="$ui.sansSerifFonts">
-        <input type="button" class="button-ftextstyle" name="eventSubmit_doUploadMultiUserZip" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" id="button1" name="eventSubmit_doUploadMultiUserZip" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
         <input type="hidden" name="actionName" value=""/>
         <input type="hidden" name="mode" value="$mode"/>
         <input type="hidden" name="count" value="$tdcolor"/>
