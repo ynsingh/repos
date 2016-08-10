@@ -48,11 +48,12 @@ if ( ! function_exists('form_dropdown_payt'))
                                 $selected = $_POST[$name];
                         }
                 }
-
+//		print_r($selected);
                 if ($extra != '') $extra = ' '.$extra;
 
                 $form = '<select name="'.$name.'"'.$extra.' class="payt-dropdown" >';
-
+		$form .= '<option value="'.$selected.'"'."selected".'>'.$options[$selected]."</option>\n";
+		//$form .= '<option value="'.$selected.'"'."selected".'>'.(string) $selected."</option>\n";
                 foreach ($options as $key => $val)
                 {
                         $key = (string) $key;
@@ -361,7 +362,7 @@ if ( ! function_exists('form_dropdown_secunit'))
                 $CI->load->model('Secunit_model');
 
                 $options = $CI->Secunit_model->get_all_secunitid();
-
+		//print_r( "the value of ".$selected."  and ". $extra);
                 if ( ! ($selected))
                 {
                         if (isset($_POST[$name]))
@@ -373,14 +374,14 @@ if ( ! function_exists('form_dropdown_secunit'))
                 if ($extra != '') $extra = ' '.$extra;
 
                 $form = '<select name="'.$name.'"'.$extra.' >';
-
+	        if(strlen($selected) > 1)	
+			$form .= '<option value="'.$selected.'"'."selected".'>'.(string) $selected."</option>\n";
                 foreach ($options as $key => $val)
                 {
 
                         $key = (string) $key;
                         $sel = ($key == $selected) ? ' selected="selected"' : '';
                         $form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
-                        //$form .= '<option value="'.$key.'"'.$sel.'>'.(string) $name."</option>\n";
                 }
 
                 $form .= '</select>';

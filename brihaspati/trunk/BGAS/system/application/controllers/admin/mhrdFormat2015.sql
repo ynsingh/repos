@@ -122,6 +122,7 @@ INSERT INTO `groups` VALUES(195,'200401',194,'Advance to suppliers and Contrcato
 INSERT INTO `groups` VALUES(196,'200402',194,'Advances to employees',0,0,0,'');
 INSERT INTO `groups` VALUES(197,'200403',194,'Interest Bearing Advances to Employees',0,0,0,'');
 INSERT INTO `groups` VALUES(198,'200404',194,'Temporary Advances',0,0,0,'');
+INSERT INTO `groups` VALUES(199,'200405',194,'Deposits',0,0,0,'');
 INSERT INTO `groups` VALUES(202,'3001',3,'Academic Receipts',0,0,0,'');
 INSERT INTO `groups` VALUES(203,'3002',3,'Grant/Subsidies and Donations',0,0,0,'');
 INSERT INTO `groups` VALUES(204,'3003',3,'Income from Royalty & Publications',0,0,0,'');

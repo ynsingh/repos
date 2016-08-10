@@ -737,10 +737,13 @@ var dc = '';
 		echo "<td id =\"dr\">" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
 		echo "<td id = \"dc\">" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "0") . "</td>";
-		echo "<td>" . form_input($secondaryid) . "</td>";
-		//echo "<td>" . form_dropdown_secunit('sunitid[' . $i . ']', isset($sunitid[$i]) ? $sunitid[$i] : 0) . "</td>";
-//		echo "<td>" . form_dropdown_secunit('secunit[' . $i . ']', isset($secondaryid) ? $secondaryid : 0) . "</td>";
-		//echo "<td>" . form_dropdown_secunit('secunit[' . $i . ']', isset($secunit[$i]) ? $secunit[$i] : 0) . "</td>";
+//		echo "<td>" . form_input($secondaryid) . "</td>";
+//		print_r($secondaryid);
+		// $partyname = $secondaryid['value'];	
+		//echo "<td>" . form_dropdown_secunit('sunitid[' . $i . ']', isset($sunitid[$i]) ? $sunitid[$i] : 0, $partyname) . "</td>";
+		echo "<td>" . form_dropdown_secunit('sunitid[' . $i . ']', isset($sunitid[$i]) ? $sunitid[$i] : 0) . "</td>";
+	//	echo "<td>" . form_dropdown_secunit('secunit[' . $i . ']', $secondaryid) . "</td>";
+//		echo "<td>" . form_dropdown_secunit('secunit[' . $i . ']', isset($secunit[$i]) ? $secondaryid : 0) . "</td>";
 			
 		//echo "<td>" . form_input($cheque) . "</td>";
 
