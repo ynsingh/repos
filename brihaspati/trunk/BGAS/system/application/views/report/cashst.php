@@ -176,7 +176,27 @@
                                                 $opp_name=$this->Tag_model->get_ledger_of_multiple_entry($id, $entry->entry_id);
 						$exp_opp_name=explode("#",$opp_name);
                                                 $bank_type=$this->Tag_model->check_type_of_bank($led_name);
-						if($entry->head_value=="select")
+						if(($entry->head_value=="select") || ($entry->head_value==""))
+                                                $head_sanc_value="";
+        	                                else
+	                                                $head_sanc_value="  (".$entry->head_value.")";
+                	                        if($entry->head_type=="select")
+                        	                {
+                                	                $head_sanc_type="";
+                                        	}
+	                                        else
+        	                                {
+                	                                if($entry->head_type=="non_plan")
+                        	                                $head_sanc_type="Non Plan";
+                                	                elseif($entry->head_type=="plan")
+                                        	                $head_sanc_type="Plan";
+                                                	elseif($entry->head_type=="plan_sfc_scheme")
+                                                        	$head_sanc_type="Plan Specific Schemes";
+	                                                elseif($entry->head_type=="plan_other_scheme")
+        	                                                $head_sanc_type="Other Schemes";
+                	                        }
+
+			/*			if($entry->head_value=="select")
 							$head_sanc_value="";
 						else
 							$head_sanc_value="  (".$entry->head_value.")";
@@ -188,6 +208,7 @@
 							$head_sanc_type="Plan Specific Schemes";
 						elseif($entry->head_type=="plan_other_scheme")
 							$head_sanc_type="Other Schemes";
+*/
                                                 if($bank_type == '0'){
                                                 	$bank_name=$this->Tag_model->get_all_bank_cash_ledgers($led_name);
                                                    }else{
