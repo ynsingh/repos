@@ -300,18 +300,25 @@
 					$opp_name=$this->Tag_model->get_ledger_Dr_multiple_entry($id, $entry->entry_id);	
 					$exp_opp_name=explode("#",$opp_name);
 					$bank_type=$this->Tag_model->check_type_of_bank($led_name);
-					if($entry->head_value1=="select")
+					if(($entry->head_value1=="select") || ($entry->head_value1==""))
                                 		$head_sanc_value1="";
                                    	else
                              			$head_sanc_value1="  (".$entry->head_value1.")";
-                                 	if($entry->head_type1=="non_plan")
-                                		$head_sanc_type1="Non Plan";
-                                    	elseif($entry->head_type1=="plan")
-                                 		$head_sanc_type1="Plan";
-                               		elseif($entry->head_type1=="plan_sfc_scheme")
-                                		$head_sanc_type1="Plan Specific Schemes";
-                              		elseif($entry->head_type1=="plan_other_scheme")
-                               			$head_sanc_type1="Other Schemes";
+					if($entry->head_type1=="select")
+					{
+						$head_sanc_type1="";
+					}
+					else
+					{
+                                 		if($entry->head_type1=="non_plan")
+                                			$head_sanc_type1="Non Plan";
+                                    		elseif($entry->head_type1=="plan")
+                                 			$head_sanc_type1="Plan";
+                               			elseif($entry->head_type1=="plan_sfc_scheme")
+                                			$head_sanc_type1="Plan Specific Schemes";
+                              			elseif($entry->head_type1=="plan_other_scheme")
+                               				$head_sanc_type1="Other Schemes";
+					}
 
                                         if($bank_type == '0'){
                                         	$bank_name=$this->Tag_model->get_all_bank_cash_ledgers($led_name);

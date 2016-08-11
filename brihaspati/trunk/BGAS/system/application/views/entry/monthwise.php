@@ -73,7 +73,7 @@
         $config['last_tag_close'] = '</li>';
         $this->pagination->initialize($config);
 
-	$this->db->from('entries')->where('date >=', $from_date)->where('date <=', $to_date)->order_by('id','desc');
+	$this->db->from('entries')->where('date >=', $from_date)->where('date <=', $to_date)->order_by('id','desc')->order_by('date','desc');
 	$this->db->limit($pagination_counter, $page_count);
 	$month_entry = $this->db->get();
 	if($month_entry->num_rows() < 1){
