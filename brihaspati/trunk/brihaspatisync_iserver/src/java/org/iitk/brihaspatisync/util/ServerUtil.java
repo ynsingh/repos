@@ -26,7 +26,7 @@ import org.iitk.brihaspatisync.om.LecturePeer;
 public class ServerUtil {
 	
 	/** Generate a session Key */
-    	public static int generateSessionKey() {
+      	public static int generateSessionKey() {
        		int key=new Random().nextInt();
          	if(key<=0) {
                 	do{
@@ -35,6 +35,14 @@ public class ServerUtil {
              	}
         	return key;
     	}
+  
+        /** Generate  random integers in the range 0..999999. */
+        public static int RandomInteger() {
+
+                Random randomGenerator = new Random();
+                int randomInt = randomGenerator.nextInt(1000000);
+                return randomInt;
+                }
 
 	/****************  get Current Date **************/
 	public static String getCurrentDate(String delimiter)
@@ -97,6 +105,8 @@ public class ServerUtil {
         	        return "date"+getCurrentDate("/")+" "+strTime;
 		}catch(Exception e){return "UnSuccessfull"; }
 	}
+ 
+
 	
 	public static String getAVStatus(String lect_id) {
                 String str="";
@@ -177,5 +187,21 @@ public class ServerUtil {
 	private static String encrypt(String Data) throws Exception {
 	        return new String(org.apache.commons.codec.binary.Base64.encodeBase64(Data.getBytes()));
         }
+  
+       public static String getTimeCalculation(String uptime, String lotime)
+        {       String utime=null;
+                try{
+                        long l = Long.parseLong(uptime);
+                        long l1 = Long.parseLong(lotime);
+                        long diff = l-l1;
+                        long diffHours = diff/(60 * 60 * 1000);
+                        long diffHour = diff%(60 * 60 * 1000);
+                        long diffMin=diffHour/(60*1000);
+                        utime=+diffHours+"Hrs"+" "+diffMin+"Min";
+                }catch(Exception ex){}
+                return utime;
+
+        }
+
 
 }//end of class	

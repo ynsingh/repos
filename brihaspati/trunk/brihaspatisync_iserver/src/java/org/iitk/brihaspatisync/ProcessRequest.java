@@ -302,7 +302,38 @@ TBD - code to be updated as per the above logic.
                         	        response.setContentLength(message.length());
 				}
 			} catch(Exception e) { ServerLog.log("Exception in getting session list in ProcessRequest class"+e.getMessage()); }	
-		} 
+		}
+
+                else if(reqType.equals("putemail")) {
+                        /**
+                         * This block of code is used to authanticate user when clients make login .
+                         **/
+                        try {
+                                String publicip =(InetAddress.getByName(request.getRemoteAddr())).toString();
+                                publicip=publicip.replaceAll("/","");
+                                String mail_id=request.getParameter("usr_name");
+                                String status="Not Verified";
+                                String logintime=ServerUtil.getSystemDateTime();
+                                logintime=logintime.substring(4,20);
+                                message=PeerManager.createPeerguest(mail_id,publicip,status,logintime);
+                                response.setContentLength(message.length());
+                        } catch(Exception e) { ServerLog.log("Exception in login in ProcessRequest class"+e.getMessage()); }
+                }
+
+               else if(reqType.equals("verifyotp")) {
+                        /**
+                         * This block of code is used to authanticate user when clients make login and verify otp.
+                         **/
+                        try {
+                                String mail_id=request.getParameter("usr_name");
+                                String otp=request.getParameter("user_rndm_strng");
+                                String otpusertime=request.getParameter("user_otp_time");
+                                message=PeerManager.verifyotp(mail_id,otp,otpusertime);
+                                response.setContentLength(message.length());
+                        } catch(Exception e) { ServerLog.log("Exception in login in ProcessRequest class"+e.getMessage()); }
+                }
+
+ 
 		else if(reqType.equals("putLecture")) {
 			/**
                 	 * When client announce a Lecture all announced parameters has been
@@ -498,6 +529,24 @@ TBD - code to be updated as per the above logic.
                                 in.close();
                         } catch(Exception e) { ServerLog.log("Exception in GetReflectorXML in ProcessRequest class"+e.getMessage()); }
                 }
+ 
+
+                 else if(reqType.equals("getupdatexml")) {
+                        /**
+                        *This condition is executed for Network Management System to
+                        *to send Reflector.xml file.
+                        */
+                 try {
+                                        message="";
+                                        String mail_id=request.getParameter("usr_name");
+                                        String logintime=ServerUtil.getSystemDateTime();
+                                        logintime=logintime.substring(4,20);
+                                        message=PeerManager.updateStatusxml(mail_id);
+
+                                response.setContentLength(message.length());
+                        } catch(Exception e) { ServerLog.log(" Exception in cancle Lecture for user list in ProcessRequest class"+e.getMessage()); }
+                }
+
 		else if(reqType.equals("GetLectureXml")) {
 			/**
 	                *This condition is executed for Network Management System to

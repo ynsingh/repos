@@ -162,7 +162,8 @@ public class ProcessRequestMethods {
 					/**
 					 * Call to sendMail method to send mail to student when session is announced.
 					 **/
-                                        if((mailsend_permission.equals("1")) && (!(mail_id_new[0].equals("guest")))) {
+
+                                         if((mailsend_permission.equals("1")) && (!(mail_id_new[0].equals("guest")))) {
                                                 MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key),url);
                                         }
 

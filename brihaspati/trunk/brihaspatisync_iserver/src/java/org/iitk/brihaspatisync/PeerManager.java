@@ -18,6 +18,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element; 
 import org.w3c.dom.NodeList; 
 import org.w3c.dom.Document; 
+import java.util.Calendar;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import org.iitk.brihaspatisync.util.ServerUtil;
 
 import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
@@ -27,6 +32,7 @@ import org.apache.xerces.dom.DocumentImpl;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.iitk.brihaspatisync.util.ServerLog;
+//import static java.util.concurrent.TimeUnit.*;
 
 
 /**
@@ -62,6 +68,62 @@ public class PeerManager {
       		} catch (Exception ex) { ServerLog.log(" Exception in getFile method of PeerManager class "+ex.getMessage());  }
 		return file;
 	}
+  
+        /*      
+         * This Method Returns Parent Peer's IPAddress for Peer Connection .and also increase load of this parent peer.
+         */
+        protected static String createPeerguest(String mail_id,String publicip,String status,String logintime) {
+                String message="";
+                String subject="This is a verification link from brihaspatisync.";
+                String lect_id="guestuser";
+                try {
+                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile(lect_id));
+                        Element root = doc.getDocumentElement();
+                        Element peer = doc.createElement("Peer");
+                        String logintime_date=ServerUtil.getSystemDateTime();
+                        String[] array = logintime_date.split(" ");
+                        String date_string= array[0];
+                        date_string =date_string.substring(12,14);
+                        NodeList peerList = root.getElementsByTagName("Peer");
+                        int lenth=peerList.getLength();
+                        String existvalue = getAttributeValueExist(lect_id,"Emailid",mail_id,"Status");
+                        int key=ServerUtil.RandomInteger();
+                        File filenew =new File(context.getRealPath(lect_id+".xml"));
+                        double bytes = filenew.length();
+                        double kilobytes = (bytes / 1024);
+
+                        if(existvalue.equals("true")){
+                       	        message="Write unsuccfully";
+                        }
+                        else if(existvalue.equals("nottrue")){
+                                MailNotification.getController().sendMailotp(context,subject,mail_id,Integer.toString(key));
+                                message="Write succfully";
+                              
+                        }
+                        else{
+                             	peer.setAttribute("Emailid",mail_id);
+                                peer.setAttribute("PublicIP",publicip);
+                                peer.setAttribute("Status",status);
+                                peer.setAttribute("Lastlogin" ,logintime);
+                                peer.setAttribute("OTPNO","NULL");
+                                root.appendChild(peer);
+                                saveXML(doc,getFile(lect_id));
+                                message="Write succfully";
+                                //MailNotification.getController().sendMailotp(context,subject,mail_id, date,Integer.toString(key));
+                                MailNotification.getController().sendMailotp(context,subject,mail_id,Integer.toString(key));
+                       }
+                       if(kilobytes>500){
+                                File file=new File(context.getRealPath(lect_id+".xml"));
+                                file.delete();
+                       }
+
+                } catch(Exception e){ ServerLog.log(" Exception in createpeerguest method of emailid class "+e.getMessage()+"get==>"+e); }
+                return message;
+        }
+
+
 		
 	/*	
          * This Method Returns Parent Peer's IPAddress for Peer Connection .and also increase load of this parent peer.
@@ -102,7 +164,7 @@ public class PeerManager {
 					createPeer(lect_id,publicIP,publicIP6,user,role,status,privateIP,privateip6,proxy,ref_ip,first_lst_name,ins_audio,video);
 				}
       			} else   ServerLog.log("Exception in insert value to xml file "); 
-		} catch(Exception e){ ServerLog.log(" Exception in getFile method of PeerManager class "+e.getMessage()+"get==>"+e); }
+		} catch(Exception e){ ServerLog.log(" Exception in createpeer method of PeerManager class "+e.getMessage()+"get==>"+e); }
 		return message;
 	}
 				
@@ -136,7 +198,61 @@ public class PeerManager {
 		}catch(Exception e) { ServerLog.log(" Exception in updateStatus method of PeerManager class "+e.getMessage()); }	
 		return message;
 	}
-	
+  
+          /**
+         * This method is used to verify otp getting from client side.
+         */
+
+     
+	 protected static String verifyotp(String userName,String OTP, String OTPtime) {
+                String message="unSuccessfull";
+                String LectureID="guestuser";
+
+                try {
+                        DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
+                        factory.setValidating(false);
+                        factory.setIgnoringElementContentWhitespace(false);
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document document = builder.parse(getFile(LectureID));
+                        Element root = document.getDocumentElement();
+                        NodeList peerList = root.getElementsByTagName("Peer");
+                        int lenth=peerList.getLength();
+                        for( int i=0; i<peerList.getLength(); i++ ){
+                                Node node = peerList.item(i);
+                                if( node.getNodeType() == node.ELEMENT_NODE ){
+                                        Element element = (Element)node;
+                                        String user=element.getAttribute("Emailid");
+                                         String attrNode = element.getAttributeNode("OTPNO").getNodeValue();
+
+                                        /**
+                                         * check otp no.
+                                         */
+                                        if(OTP.equals(attrNode)){
+                                                String attrNode1 = element.getAttributeNode("Lastlogin").getNodeValue(); 
+                                                SimpleDateFormat format = new SimpleDateFormat("yyyy/mm/dd HH:mm");
+                        				Date d1 = format.parse(OTPtime);
+                     				        Date d2 = format.parse(attrNode1);
+                       					 long diff = d1.getTime() - d2.getTime();
+                        				 long diffSeconds = diff / 1000 % 60;
+                        				 long diffMinutes = diff / (60 * 1000) % 60;
+                        				 long diffHours = diff / (60 * 60 * 1000) % 24;
+                        				 long diffDays = diff / (24 * 60 * 60 * 1000);
+                                                         if (diffMinutes<60){
+                                                                      message=updateStatusxml(userName);
+                                                         }
+                                                         else {
+                                                           root.removeChild(element);
+                                                           saveXML(document,getFile(LectureID));
+                                                           message="unSuccessfull";
+                                                       }
+                                        }
+                                }
+                        }
+                }catch(Exception e) { ServerLog.log(" Exception in updateStatus method of PeerManager class "+e.getMessage()); }
+                return message;
+        }
+
+
 
 	 protected static String updateLoad( String  sessionid) {
                 String message="";
@@ -147,6 +263,82 @@ public class PeerManager {
 			}catch ( Exception e ) { ServerLog.log(" Exception in updateLoad method of PeerManager class "+e.getMessage()); }
 			 return Integer.toString(count);
  		}
+
+        /**
+         * This method is used to update the status in xml.
+         */
+
+         protected static String updateStatusxml(String mail_id) {
+                String message="unSuccessfull";
+                String LectureID="guestuser";
+                try {
+                        DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
+                        factory.setValidating(false);
+                        factory.setIgnoringElementContentWhitespace(false);
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document document = builder.parse(getFile(LectureID));
+                        Element root = document.getDocumentElement();
+                        NodeList peerList = root.getElementsByTagName("Peer");
+                        for( int i=0; i<peerList.getLength(); i++ ){
+                            int c =peerList.getLength();
+                                Node node = peerList.item(i);
+                                if( node.getNodeType() == node.ELEMENT_NODE ){
+                                         Element element = (Element)node;
+                                         String emailid = element.getAttribute("Emailid");
+                                         String ip = element.getAttribute("PublicIP");
+                                         
+                                        /**
+                                         * update status of Peer
+                                         */
+                                        if(emailid.equals(mail_id)){
+                                                Attr attrNode = element.getAttributeNode("Status");
+                                                Attr attrNodeotp = element.getAttributeNode("OTPNO");
+                                                attrNode.setValue("Verified");
+                                                attrNodeotp.setValue("otp used");
+                                                saveXML(document,getFile(LectureID));
+                                                message="Successfull";
+                                        }                                }
+                        }
+                }catch(Exception e) { ServerLog.log(" Exception in updateStatus method of PeerManager class "+e.getMessage()); }
+                return message;
+        }
+
+        /**
+         * This method is used to update the otpno in xml.
+         */
+
+        protected static String updateotpxml(String mail_id,String otp) {
+                String message="unSuccessfull";
+                String LectureID="guestuser";
+                try {
+                        DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
+                        factory.setValidating(false);
+                        factory.setIgnoringElementContentWhitespace(false);
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document document = builder.parse(getFile(LectureID));
+                        Element root = document.getDocumentElement();
+                        NodeList peerList = root.getElementsByTagName("Peer");
+                        for( int i=0; i<peerList.getLength(); i++ ){
+                            int c =peerList.getLength();
+                                Node node = peerList.item(i);
+                                if( node.getNodeType() == node.ELEMENT_NODE ){
+                                         Element element = (Element)node;
+                                         String emailid = element.getAttribute("Emailid");
+                                         String ip = element.getAttribute("PublicIP");
+                                        /**
+                                         * update status of Peer
+                                         */
+                                        if(emailid.equals(mail_id)){
+                                                Attr attrNode = element.getAttributeNode("OTPNO");
+                                                attrNode.setValue(otp);
+                                                saveXML(document,getFile(LectureID));
+                                                message="Successfull";
+                                        }                                }
+                        }
+                }catch(Exception e) { ServerLog.log(" Exception in updateStatus method of PeerManager class "+e.getMessage()); }
+                return message;
+        }
+
 
 	
 	protected static boolean searchUserName(String lectID,String username) {
@@ -264,7 +456,49 @@ public class PeerManager {
                         	}
 				 
                 	}
-		}
+    		}
                 return userList;
         }
+
+      /**
+         * This Method is used to check element exist in xml or not.
+         */
+
+
+       public static String getAttributeValueExist(String filePath, String attributeName,String value,String attributeName1){
+       String nodeid="";
+       String nodestatus="";
+       String headExist="false";
+       String lect_id="guestuser";
+                try{
+                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document doc = builder.parse(getFile(lect_id));
+                        Element root = doc.getDocumentElement();
+                        NodeList nodeList = doc.getElementsByTagName("Peer");
+                        for(int x=0,size= nodeList.getLength(); x<size; x++) {
+                     		   Node node2 = nodeList.item( x );
+                                   if( node2.getNodeType() == node2.ELEMENT_NODE ){
+                                   		Element element = ( Element )node2;
+                                		nodeid = nodeList.item(x ).getAttributes().getNamedItem(attributeName).getNodeValue();
+                                		nodestatus= nodeList.item(x ).getAttributes().getNamedItem(attributeName1).getNodeValue();
+                                		if(nodeid.equals(value)){
+                                     			if( nodestatus.equals("Verified")){
+                                        			headExist="true";
+                                        		}
+                                        		else{
+                                          			headExist="nottrue";
+
+                                       			}
+                                		}	
+                                   }
+                    }
+                }catch(Exception ex) {ServerLog.log(" Exception in  getAttributeValueExist  method of PeerManager class "+ex.getMessage());};
+                 return headExist;
+
+
+    }
+  
+
+
 }//end class
