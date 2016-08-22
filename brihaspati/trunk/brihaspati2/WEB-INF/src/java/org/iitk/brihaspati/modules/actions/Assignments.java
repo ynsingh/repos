@@ -64,7 +64,6 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
-import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
@@ -688,8 +687,12 @@ public class Assignments extends SecureAction
 					int startIndex=fileName1.lastIndexOf(".")+1;
                                         String fileExt="."+fileName1.substring(startIndex);
                                        // String fileName="AssignmentFile"+fileExt;
-                                        if(user_role.equals("student"))
-                                                fileName=userid+fileExt;
+                                        if(user_role.equals("student")){
+						if(StringUtils.isBlank(Rollnm))
+	                                                fileName=userid+fileExt;
+						else
+                                                	fileName=Rollnm+fileExt;
+					}
 					else if(mode.equals("PostCorrectAns")){
                                                 //fileName=userid+fileExt;
 						fileName = pp.getString("filename","");
@@ -701,7 +704,7 @@ public class Assignments extends SecureAction
                                                 fileName="Answerfile"+fileExt;
 					for(int ss=0;ss<flist.length;ss++)
                         		{
-						if(flist[ss].startsWith(userid1))
+						if((flist[ss].startsWith(userid1)) || (flist[ss].startsWith(Rollnm)))
 						{
 							File fl = new File(Assign+"/"+flist[ss]);
 							fl.delete();
@@ -822,8 +825,13 @@ public class Assignments extends SecureAction
                         {
 				int startIndex=fileName1.lastIndexOf(".")+1;
                                 String fileExt="."+fileName1.substring(startIndex);
-                                if(user_role.equals("student"))
-                                        fileName=userid+fileExt;
+                                if(user_role.equals("student")){
+                                                if(StringUtils.isBlank(Rollnm))
+                                                        fileName=userid+fileExt;
+                                                else
+                                                        fileName=Rollnm+fileExt;
+                                        }
+
                                 if(user_role.equals("instructor"))
                                         fileName="Answerfile"+fileExt;
                                 /** Write the file in Upload file  */
@@ -897,6 +905,7 @@ public class Assignments extends SecureAction
 
                         String username1=pp.getString("topicList1","");
                         context.put("topicList1",username1);
+
                         String newgrade=pp.getString("newgrade","");
                         context.put("newgrade",newgrade);
                         User user=data.getUser();
@@ -924,6 +933,8 @@ public class Assignments extends SecureAction
                                         data.setMessage("\" "+DB_subject+"  \""+msg);
 				}
                         }
+			if((DB_subject1.equals(""))|| (DB_subject1.equals(null)))
+				data.setMessage(MultilingualUtil.ConvertedString("uploadAction_msg",LangFile));
                 }
                 catch(Exception ex) { data.setMessage("The error in dosubmitView under  Assignment action  !!"+ex);   }
 	}
