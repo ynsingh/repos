@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionListener;
 import java.awt.KeyboardFocusManager;
+import java.net.URLEncoder;
 import java.lang.Object;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -32,28 +33,33 @@ import javax.swing.JPasswordField;
 import javax.swing.border.TitledBorder;
 import javax.swing.SwingWorker;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.HttpsUtil;
+import org.bss.brihaspatisync.util.DateUtil;
 import java.lang.Object;
 import javax.swing.JProgressBar;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.beans.*;
+import java.awt.Insets;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JOptionPane;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Random;
-import java.util.*;
+import java.util.Vector;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha</a> Modified this class for signalling. 
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> update@ swingworker class.
- * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a> last modified in 
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a> last modified in. 
+ * @author <a href="mailto:chetnatrivedi1990@gmail.com">Chetna Trivedi</a> guest verification. 
  */
 
-public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener, PropertyChangeListener {
+public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener,PropertyChangeListener{
 	
 	private JPanel loginGUIPanel;
-	
+	//private JFrame myFrame = null;
 	private JComboBox indexServerListCombo=null;
 	private JComboBox languageListCombo=null;	
 	
@@ -80,7 +86,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private String userName=null;
 	private String languageName=null;
 	private String indexServerName=null;
-	
+        private String rndm_strng=null;
+
 	private MainWindow mainWindow=MainWindow.getController();		
 	
 	//private ClientObject client_obj=ClientObject.getController();
@@ -94,6 +101,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private JProgressBar progressBar;
 	private JTextArea taskOutput;
         private Task task;
+        
 	/**
 	 * Constructor detail and 
 	 * Create GUI for LoginWindow
@@ -102,7 +110,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		super(Language.getController().getLangValue("LoginWindow.Title"),true,false,false,true);
 		setFrameIcon(new ImageIcon(clr.getResource("resources/images/login.png")));
 		/**
-		 * This block of code is use to fixed Logo image in Login Panel.
+		 * This block of code is use to fixed Logo image in Login Panen .
 		 */  
 		
 		JLabel imageLabel = new JLabel(new ImageIcon(clr.getResource("resources/images/Title.jpg")));
@@ -311,6 +319,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	
 		}catch(Exception e) { System.out.println(this.getClass()+ " "+e.getMessage()); }
 	}
+
   	public void actionPerformed(ActionEvent e) {
   		if(e.getSource()==indexServerListCombo){
 			JComboBox combo = (JComboBox)e.getSource();
@@ -378,30 +387,74 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	
 	private void checkUserNamePasswd() {  
 		try {
-                        submitButton.setCursor(busyCursor);
+                    	submitButton.setCursor(busyCursor);
                         if((usernameText.getText().equals("")) && (passwordField.getText().equals(""))) {
                                 StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog3"));
                                 submitButton.setCursor(defaultCursor); 
-                        } else {
+                        }else {
                         	boolean loginValue=ClientObject.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
-                                                         
 				System.out.println(loginValue);
                                 if(loginValue==false) {
                                 	passwordField.setText("");
                                         StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));
-                                } 
-				else {
-					
-                                	ClientObject.setUserName(usernameText.getText());
-                                        StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog7"));
-                                        task = new Task();
-                                        task.addPropertyChangeListener(this);
-                                        task.execute();
-                             	}
-                         }
+                        }else {
+                               		ClientObject.setUserName(usernameText.getText());
+                                        String usr_name=ClientObject.getUserName();
+                                       	if(usr_name.equals("guest")) {
+                                  	usr_name =""; 
+                                        usr_name = javax.swing.JOptionPane.showInputDialog("Enter your emailid");
+                                        if (usr_name!=null){
+                                     	   if(!usr_name.matches("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")){
+                                            	 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog8"));
+                                                 return;
+                                           }
+                                           else{
+                                               		String usr_name1="usr_name="+URLEncoder.encode(usr_name,"UTF-8");
+                                                  	String indexServerName=ClientObject.getIndexServerName();
+                                                  	String  indexServer=indexServerName+"/ProcessRequest?req=putemail&"+usr_name1;
+                                                  	String result=HttpsUtil.getcheckuser(indexServer);
+                                                  	if(result.equals("Write succfully")){
+                                                  		rndm_strng =javax.swing.JOptionPane.showInputDialog("Enter random number which is send on your email");
+                                                  		if (rndm_strng!=null){
+                                                                	 String rndm_string="user_rndm_strng="+URLEncoder.encode(rndm_strng,"UTF-8");
+                                                                 	 String otptime=DateUtil.getSystemDateTime();
+                                                                 	 String otp_send_time="user_otp_time="+URLEncoder.encode(otptime,"UTF-8");
+                                                        	         String  indexServername=indexServerName+"/ProcessRequest?req=verifyotp&"+usr_name1+"&"+rndm_string+"&"+otp_send_time;
+                                                                 	 boolean value=HttpsUtil.getverifyotp(indexServername);
+                                                                         if(value==true){
+                                                                 		StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog7"));
+                                                                 		task = new Task();
+                                                                 		task.addPropertyChangeListener(this);
+                                                                	        task.execute();
+                                                                 	 }
+                                                                 	 else{
+                                                                 	     JOptionPane.showMessageDialog (null,"otp not match or otp has been expired","Wrong Random No",JOptionPane.INFORMATION_MESSAGE);
+                                                                	 }
+                                                  	        }
+                                       		        }	
+                                                        else{
+                                                		JOptionPane.showMessageDialog (null,"u r valid user","Wrong Random No",JOptionPane.INFORMATION_MESSAGE);
+                                                	        StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog7"));
+                                                		task = new Task();
+                                                		task.addPropertyChangeListener(this);
+                                                		task.execute();
+                                           	 	}	
+
+                                           }
+                                        }
+                                      }
+                                      else{
+                                        	StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog7"));
+                                                task = new Task();
+                                                task.addPropertyChangeListener(this);
+                                                task.execute();
+                                      }
+                         }                      
+                        }
                        			
 		} catch(Exception e) { System.out.println(this.getClass()+ " "+e.getMessage());}
 	}
+ 
 	
 	public void propertyChange(PropertyChangeEvent evt) {
                 if ("progress" == evt.getPropertyName()) {
@@ -410,9 +463,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 taskOutput.append(String.format("Completed %d%% of task.\n",task.getProgress()));
                 }
         }
-
-
-	public class Task extends SwingWorker<CourseSessionWindow,Void>implements PropertyChangeListener{
+	
+        public class Task extends SwingWorker<CourseSessionWindow,Void>implements PropertyChangeListener{
 
 		JFrame progressframe = new JFrame("Please Wait....");
  		Task(){

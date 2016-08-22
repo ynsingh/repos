@@ -250,7 +250,7 @@ public class HttpsUtil{
                 }
                 return null;
         }
-
+ 
 	
 	public static synchronized Vector getvectorMessage(String sendurl,String message){
         	Vector msgList=new Vector();
@@ -281,6 +281,59 @@ public class HttpsUtil{
                 }
                 return msgList;
         }
+   
+          public static synchronized String getcheckuser(String sendurl){
+                String  msgList1="Write unsuccfully";
+                try {
+                        URL url = new URL(sendurl);
+                        connection=createHTTPConnection(url);
+                        if(connection != null) {
+                                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                                String str="";
+                                try{
+                                        while((str=in.readLine())!=null){
+                                                        if(str.equals("Write succfully")){
+                                                                return str;
+                                                        }
+                                        }
+                                } finally {
+                                        if(in != null) in.close();
+                                }
+                        }else
+                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
+                }catch(Exception e){
+                        System.out.println("Exception on getvectorMessage(connection) HttpsUtil.java "+e.getMessage());
+                        return msgList1;
+                }
+                return msgList1;
+        }
+
+        public static synchronized boolean getverifyotp(String indexServer) {
+                boolean flag=false;
+                try {
+                        URL indexurl = new URL(indexServer);
+                        connection=createHTTPConnection(indexurl);
+                        if(connection != null){
+                                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                                String str="";
+                                try {
+                                        if((str=in.readLine())!=null) {
+                                                if(str.equals("Successfull")) {
+                                                        flag=true;
+                                                }
+                                        } 
+                                } finally {
+                                        if(in != null) in.close();
+                                }
+                        } else
+                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
+                }catch(Exception e) {
+                        System.out.println("Exception on getIndexingMessage(connection) HttpsUtil.java "+e.getMessage());
+                }
+                return flag;
+        }
+
+
 	/** get all the session in instruvtor or student ***/	
 
 	public static synchronized Vector getSessionForCourse(Vector courseList, String indexServerName) {

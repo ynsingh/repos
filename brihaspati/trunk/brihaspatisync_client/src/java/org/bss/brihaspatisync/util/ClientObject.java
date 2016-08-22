@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.util;
  * ClientObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2010-2011-2012,2013,2015 ETRG, IIT Kanpur.
+ * Copyright (c) 2010-2011-2012,2013,2015,2016 ETRG, IIT Kanpur.
  */
 
 import java.util.Vector;
@@ -35,6 +35,7 @@ public class ClientObject {
 	private static String parent_reflector_ip="";
 	private static String selectedUserlistname="";
 	
+        private static String user_emailid="";
 	private static Vector usrNameVector=null;
 	private static String user_full_name="";
 	private static Vector usrStatusVector=null;
@@ -73,6 +74,15 @@ public class ClientObject {
 			indexServerList=HttpCommManager.connectToMasterServer();
 		return indexServerList;
 	}
+ 
+        public static void setuser_emailid(String value){
+                user_emailid=value;
+        }
+ 
+        public static String getuser_emailid(){
+                return user_emailid;
+ 
+        }
 	
 	/**
          * This method is used to get index server name which is choosen by this client for login authentication.

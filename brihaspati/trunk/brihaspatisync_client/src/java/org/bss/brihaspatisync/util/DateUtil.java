@@ -7,7 +7,7 @@ package org.bss.brihaspatisync.util;
  */
 
 import java.util.Calendar;
-
+import java.util.Date;
 /**
  * @author: <a href="mailto:ashish.knp@gmail.com">Ashish Yadav</a>
  * @author <a href=arvindjss17@yahoo.co.in>Arvind Pal</a>
@@ -68,6 +68,42 @@ public class DateUtil {
                         
 		}
                 return datFlag;
+        }
+
+       public static String getCurrentDate(String delimiter)
+        {
+                String cdate="";
+                try{
+                        Calendar calendar=Calendar.getInstance();
+                        int curr_day=calendar.get(calendar.DATE);
+                        int curr_month=calendar.get(calendar.MONTH)+1;
+                        int curr_year=calendar.get(calendar.YEAR);
+                        String current_day=Integer.toString(curr_day);
+                        String current_month=Integer.toString(curr_month);
+                        String current_year=Integer.toString(curr_year);
+                        if(curr_month<10)
+                                current_month="0"+current_month;
+                        if(curr_day<10)
+                                current_day="0"+current_day;
+                        if(!delimiter.equals(""))
+                                cdate=current_year+delimiter+current_month+delimiter+current_day;
+                        else
+                                cdate=current_year+current_month+current_day;
+
+                } catch(Exception e) {}
+                return(cdate.trim());
+        }
+
+
+
+         public static String getSystemDateTime() {
+                try {
+                        java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("yyyy/MM/dd");
+                        java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
+                        Date now = new Date();
+                        String strTime = sdfTime.format(now);
+                        return getCurrentDate("/")+" "+strTime;
+                }catch(Exception e){return "UnSuccessfull"; }
         }
 }
 
