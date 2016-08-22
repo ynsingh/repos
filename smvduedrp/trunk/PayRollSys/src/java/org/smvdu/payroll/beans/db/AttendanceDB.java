@@ -456,7 +456,7 @@ public class AttendanceDB {
             
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement(" select emp_code from employee_master where emp_code not in ( select att_emp_code from employee_attendance_master"
-                  + " where month=? and year=? and org_code='"+userBean.getUserOrgCode()+"')");
+                  + " where month=? and year=? and org_code='"+userBean.getUserOrgCode()+"') and emp_org_code='"+userBean.getUserOrgCode()+"'");
            
             ps.setInt(1, month);
             ps.setInt(2, year);
