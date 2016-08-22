@@ -138,13 +138,27 @@
                    	echo "<td style=\"text-align:center;\">" ;
         		//echo "<td>" . anchor('entry/edit/' . $current_entry_type['label'] . "/" . $row->id , "Edit", array('title' => 'Edit ' . $current_entry_type['name'] . ' Entry', 'class' => 'red-link')) . " ";
         //         	echo " &nbsp;" . anchor('entry/delete/' . $current_entry_type['label'] . "/" . $row->id , img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete ' . $current_entry_type['name'] . ' Entry', 'class' => "confirmClick", 'title' => "Delete entry")), array('title' => 'Delete  ' . $current_entry_type['name'] . ' Entry')) . " ";
-                	if($status != 1)
+                	if($status != 3)
 			{
+				$nme1 = explode(",", $row->verified_by);
+				$k = sizeof($nme1);
+				for($j=0; $j<$k; $j++)
+				{
+					echo $nme1[$j];
+					echo "<br>";
+				}
                      		echo " &nbsp;" . anchor('entry/verify/' . $current_entry_type['label'] . "/" . $row->id,'Verify' ,  array('title' => 'Verify ' . $current_entry_type['name']. ' Entry', 'class' => 'anchor-link-a')) . " ";
                    	}
 			else
 			{
-                    		echo $row->verified_by. " ";
+				$nme1 = explode(",", $row->verified_by);
+				$k = sizeof($nme1);
+				for($j=0; $j<$k; $j++)
+				{
+					echo $nme1[$j];
+					echo "<br>";
+				}
+                    		//echo $row->verified_by. " ";
                  	}
                  	echo "<td style=\"text-align:center;\">" ;
                 	if( $no_of_row == 1)

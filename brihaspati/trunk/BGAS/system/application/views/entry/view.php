@@ -119,7 +119,23 @@
 
 	<tr>
 	<td id="td_first">Submitted By : <span class="bold"><?php echo $submitted_by; ?></span></td>
-	<td id="td_second">Verified By : <span class="bold"><?php echo $verified_by; ?></span></td>
+	<td id="td_second">Verified By : <span class="bold">
+	<?php
+		if($verified_by == "")
+		{
+			echo $verified_by;
+		}
+		else
+		{
+			$nme1 = explode(",", $verified_by);
+           		$i = sizeof($nme1);
+                	for($j=0; $j<$i; $j++)
+                	{
+                		echo $nme1[$j];
+                        	echo "<br>";
+            		}
+		}
+	?></span></td>
 	</tr>
 
 	<tr>

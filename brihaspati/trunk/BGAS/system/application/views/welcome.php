@@ -197,15 +197,17 @@
 
         	foreach ($aut_q->result() as $row)
         	{
-			$this->db->select_max('id')->from('bill_approval_status')->where('bill_no',$row->id);
+			//$this->db->select_max('id')->from('bill_approval_status')->where('bill_no',$row->id);
+			$this->db->select('decision')->from('bill_voucher_create')->where('id',$row->id);
         		$ma_xauth = $this->db->get();
         		foreach($ma_xauth->result() as $row_a1)
         		{
-                		$ma_xau_th = $row_a1->id;
-                		$this->db->select('status')->from('bill_approval_status')->where('id',$ma_xau_th);
-                		$ma_xim_auth = $this->db->get();
-                		$ma_xim_auth1 = $ma_xim_auth->row();
-                		$ma_xim_auth2 = $ma_xim_auth1->status;
+                		//$ma_xau_th = $row_a1->id;
+                		//$this->db->select('status')->from('bill_approval_status')->where('id',$ma_xau_th);
+                		//$ma_xim_auth = $this->db->get();
+                		//$ma_xim_auth1 = $ma_xim_auth->row();
+                		//$ma_xim_auth2 = $ma_xim_auth1->status;
+                		$ma_xim_auth2 = $row_a1->decision;
         		}
 			echo "<tr>";
 			echo"<td style=\"padding: 8px 8px 8px 20px;\">";
@@ -221,7 +223,8 @@
                 	echo  $row->total_amount;
                 	echo"</td>";
                 	echo"<td style=\"padding: 8px 8px 8px 20px;\">";
-			if($ma_xim_auth2 == "voucherapprove")
+			//if($ma_xim_auth2 == "voucherapprove")
+			if($ma_xim_auth2 == "vchrcrn")
 			{
 				echo  anchor('payment2/p2voucherfilling/' .  $row->id , "Bill Pending For Voucher Creation", array('title' => 'VoucherCreation ' ));
 			}

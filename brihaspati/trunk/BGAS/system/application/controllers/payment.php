@@ -1030,7 +1030,7 @@ class Payment extends Controller {
 			$entry_id = $row->entry_id;
 			$expense = $row->expense_type;
 			$expensetype = explode('.', $expense);
-			$id = $expensetype[0];
+			$id = $this->Ledger_model->get_ledger_id($expensetype[0]);
 			$approved_by =$row->approved_by;
 			$secunitid =$row->secunitid;
 			$fund =$row->fund_name;
@@ -1219,6 +1219,10 @@ class Payment extends Controller {
                                 $date = explode('/', $today);
                                 $data_date = $date[0] .'-' . $date[1] .'-' .$date[2];
                                 $value = explode('-', $bank_cash);
+				$code_ledg_val = $this->Ledger_model->get_code($value[0]);
+                                $code_ledg_exp = $this->Ledger_model->get_code($id);
+                                $code_ledg_fnd = $this->Ledger_model->get_code($fund);
+
 
 				$this->db->select_max('number')->from('entries')->where('entry_type', '2');
                                 $bill_r = $this->db->get();
@@ -1264,6 +1268,7 @@ class Payment extends Controller {
                                         'forward_refrence_id'  => '0',
                                         'backward_refrence_id' => '0',
 					'secunitid' => $secunitid,
+					'ledger_code' => $code_ledg_val,
                                		 );
                                 	if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                		 {
@@ -1281,6 +1286,7 @@ class Payment extends Controller {
                                         'forward_refrence_id'  => '0',
                                         'backward_refrence_id' => '0',
 					'secunitid' => $secunitid,
+					'ledger_code' => $code_ledg_exp,
                                		 );
                                 	if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                		 {
@@ -1301,6 +1307,7 @@ class Payment extends Controller {
                                        		   'forward_refrence_id'  => '0',
                                        		   'backward_refrence_id' => '0',
 						   'secunitid' => $secunitid,
+						   'ledger_code' => $code_ledg_val,
                                         	    );
                                         	if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                         	 {
@@ -1319,6 +1326,7 @@ class Payment extends Controller {
                                         		'forward_refrence_id'  => '0',
                                         		'backward_refrence_id' => '0',
 							'secunitid' => $secunitid,
+							'ledger_code' => $code_ledg_exp,
                                             		 );
                                        		 if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                         	 {
@@ -1339,6 +1347,7 @@ class Payment extends Controller {
                                                         'forward_refrence_id'  => '0',
                                                         'backward_refrence_id' => '0',
                                                         'secunitid' => $secunitid,
+							'ledger_code' => $code_ledg_fnd,
                                                          );
                                                  if ( ! $this->db->insert('entry_items', $insert_fund_data))
                                                  {
@@ -1353,6 +1362,7 @@ class Payment extends Controller {
                                         		$query = $this->db->get();
                                         		$income = $query->row();
                                         		$income_id = $income->id;
+                                			$code_ledg_inc = $this->Ledger_model->get_code($income_id);
 
                                         	  $insert_income_data = array(
                                                 	 'entry_id' => $entry_id,
@@ -1363,6 +1373,7 @@ class Payment extends Controller {
                                                 	 'forward_refrence_id' => '0',
                                                 	 'backward_refrence_id' => '0',
                                                 	 'secunitid' => $secunitid,
+							'ledger_code' => $code_ledg_inc,
                                         		 );
 
                                         	 if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -1402,6 +1413,7 @@ class Payment extends Controller {
                                                    'forward_refrence_id'  => '0',
                                                    'backward_refrence_id' => '0',
                                                    'secunitid' => $secunitid,
+						   'ledger_code' => $code_ledg_val,
                                                     );
                                                 if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                                  {
@@ -1419,6 +1431,7 @@ class Payment extends Controller {
                                                         'forward_refrence_id'  => '0',
                                                         'backward_refrence_id' => '0',
                                                         'secunitid' => $secunitid,
+							'ledger_code' => $code_ledg_exp,
                                                          );
                                                  if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                                  {

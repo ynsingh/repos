@@ -186,13 +186,19 @@
                       	echo "<td style=\"text-align:center;\">" . money_format('%!i', $row->cr_total) . "</td>";
                    	echo "<td style=\"text-align:center;\">" . $row->submitted_by . "</td>";
                    	echo "<td style=\"text-align:center;\">" ;
-                	if($status != 1)
+                	if($status != 3)
 			{
                      		echo " &nbsp;" . anchor('entry/verify/' . $current_entry_type['label'] . "/" . $row->id,'Verify' ,  array('title' => 'Verify ' . $current_entry_type['name']. ' Entry', 'class' => 'anchor-link-a')) . " ";
                    	}
 			else
 			{
-                    		echo $row->verified_by. " ";
+				$nme1 = explode(",", $row->verified_by);
+                                $i = sizeof($nme1);
+                                for($j=0; $j<$i; $j++)
+                                {
+                                        echo $nme1[$j];
+                                        echo "<br>";
+                                }
                  	}
                  	echo "<td style=\"text-align:center;\">" ;
                 	if( $no_of_row == 1)

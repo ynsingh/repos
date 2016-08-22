@@ -234,7 +234,24 @@
 
 	echo"<table>";
 	echo"<tr>";
-	echo"<td>"."Verified By : ".$verified_by."</td>";
+	//echo"<td>"."Verified By : ".$verified_by."</td>";
+	echo "<td>Verified By :";
+        if($verified_by == "")
+        {
+                echo $verified_by;
+        }
+        else
+        {
+                $nme1 = explode(",", $verified_by);
+                $i = sizeof($nme1);
+                for($j=0; $j<$i; $j++)
+                {
+                        echo $nme1[$j];
+                        echo "<br>";
+                }
+        }
+        echo "</td>";
+
 	echo"<td>"."Tag : "."</td>";
 	echo"</tr>";
 

@@ -300,7 +300,23 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
 	}
 	echo "</span>";
         echo "<br>";
-	echo "Verified By : "."<span class=\"value\">".$verified_by."</span>";
+	//echo "Verified By : "."<span class=\"value\">".$verified_by."</span>";
+	echo "Verified By : "."<span class=\"value\">";
+        if($verified_by == "")
+        {
+                echo $verified_by;
+        }
+        else
+        {
+                $nme1 = explode(",", $verified_by);
+                $i = sizeof($nme1);
+                for($j=0; $j<$i; $j++)
+                {
+                        echo $nme1[$j];
+                        echo "<br>";
+                }
+        }
+        echo "</span>";
         echo "<br>";
         echo "<br>";
 	echo "Tag :";

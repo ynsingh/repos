@@ -35,12 +35,13 @@
 <tbody>
 	<?php
 	if(is_array( $bill_data)) {
+		$i=1;
 		foreach( $bill_data as $row)
 		{
-			if($row->id % 2 == 0)
-                      		echo"<tr style=\"background-color:#F0FFFF;\">";
+			if($i % 2 == 0)
+                      		echo"<tr style=\"background-color:#87CEEB;\">";
               		else
-                      		echo"<tr style=\"background-color:#F5F5DC;\">";
+                      		echo"<tr style=\"background-color:#AFEEEE;\">";
 	//	echo "<tr>";
 		if(($row->decision=='vchrcrn') && ($row->vc_date!="0000-00-00 00:00:00")){
  		echo "<td>" . anchor_popup('payment2/p2bill_printpreview/' .  $row->id , "<font color = #008000>".$row->id."</font>", array('title' => 'Bill Print Preview ', 'width' => '600', 'height' => '600')) . "</td>";}
@@ -164,6 +165,7 @@
 		        echo "<td><td><td><td><td><td><td><td><td><td><td><td><td>" . anchor('payment2/p2reject_printpreview/' .  $row->id , "PrintPreview", array('title' => 'PrintPreview ' )) . " ";
 			}}
 		echo "</tr>";
+		$i++;
 		}
 	}
 ?>

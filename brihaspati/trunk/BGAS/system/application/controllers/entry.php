@@ -1216,6 +1216,9 @@ $width="100%";
 				/* Code for making entry in Fund and Transit Income account. */
 				$fund_ledger = $data_all_fund_ledger[$id];
 				$secunitid = $data_all_secunit[$id];
+				$code_ledg_dat = $this->Ledger_model->get_code($data_ledger_id);
+				$code_ledg_fnd = $this->Ledger_model->get_code($fund_ledger);
+				$code_ledg_inc = $this->Ledger_model->get_code($income_id);
 				//////////////////////////////////////	
 				
                                 $insert_ledger_data = array(
@@ -1227,6 +1230,7 @@ $width="100%";
                                         'forward_refrence_id' => '0',
                                         'backward_refrence_id' => $data_back_refrence,
                                         'secunitid' => $secunitid,
+                                        'ledger_code' => $code_ledg_dat,
                                 );
                                 if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                 {
@@ -1344,6 +1348,7 @@ $width="100%";
                		                        		'forward_refrence_id' => '0',
 	                               		        	'backward_refrence_id' => $data_back_refrence,
 								'secunitid' => $secunitid,
+                                        			'ledger_code' => $code_ledg_fnd,
 	        	                                );
 	
         		                                if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -1371,6 +1376,7 @@ $width="100%";
                                                         	'forward_refrence_id' => '0',
                                                         	'backward_refrence_id' => $data_back_refrence,
                                                         	'secunitid' => $secunitid,
+                                        			'ledger_code' => $code_ledg_inc,
                                                         );
 
                                                      	if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -1391,6 +1397,7 @@ $width="100%";
                		                        		'forward_refrence_id' => '0',
 	                               		        	'backward_refrence_id' => $data_back_refrence,
 								'secunitid' => $secunitid,
+                                        			'ledger_code' => $code_ledg_fnd,
 	        	                                );
 	
         		                                if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -1418,6 +1425,7 @@ $width="100%";
                                                         	'forward_refrence_id' => '0',
                                                         	'backward_refrence_id' => $data_back_refrence,
                                                         	'secunitid' => $secunitid,
+                                        			'ledger_code' => $code_ledg_inc,
                                                         );
 
                                                      	if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -2497,6 +2505,9 @@ $width="100%";
                                 	}
 					/* Code for making entry in Fund and Transit Income account. */
                                 	$fund_ledger = $data_all_fund_ledger[$id];
+					$code_ledg_dat = $this->Ledger_model->get_code($data_ledger_id);
+					$code_ledg_fnd = $this->Ledger_model->get_code($fund_ledger);
+					$code_ledg_inc = $this->Ledger_model->get_code($income_id);
                                 	if($fund_ledger > 0 && $data_ledger_dc == 'D')
 					{
 						$expense_type = $data_all_expense_type[$id];
@@ -2515,7 +2526,8 @@ $width="100%";
                                         	        	'update_date' => $updatedate,
                                                 		'forward_refrence_id' => $data_forw_refrence,
 	                                                	'backward_refrence_id' => $data_back_refrence,
-								'secunitid' => $secondunitid
+								'secunitid' => $secondunitid,
+								'ledger_code' => $code_ledg_fnd,
                 	                        	);
 
                         	                	if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -2569,7 +2581,8 @@ $width="100%";
                                                 		'update_date' => $updatedate,
 	                                                	'forward_refrence_id' => $data_forw_refrence,
         	                                        	'backward_refrence_id' => $data_back_refrence,
-								'secunitid' => $secondunitid
+								'secunitid' => $secondunitid,
+								'ledger_code' => $code_ledg_inc,
                         	                	);
 							if ( ! $this->db->insert('entry_items', $insert_income_data))
                 	                        	{
@@ -2591,7 +2604,8 @@ $width="100%";
 						'amount' => $data_amount,
 						'dc' => $data_ledger_dc,
 						'update_date' => $updatedate,
-						'secunitid' => $secondunitid
+						'secunitid' => $secondunitid,
+						'ledger_code' => $code_ledg_dat,
 					);				
 
 					if ( ! $this->db->insert('entry_items', $insert_ledger_data))
@@ -2656,9 +2670,18 @@ $width="100%";
 					return;
 				}
 				//$uname=$this->session->userdata('user_name');
+				$by_verify = $cur_entry->verified_by;
+				if($by_verify == "")
+					$login_verify = $loginname;
+				else
+					$login_verify = $by_verify.",".$loginname;
+				$st_tus = $cur_entry->status;
+				$st_tus1 = $st_tus+1;
 				$verifyuser = array(
-                                	'verified_by' => $loginname,
-                                	'status' => 1,
+                                	//'verified_by' => $loginname,
+                                	//'status' => 1,
+					'verified_by' => $login_verify,
+					'status' =>$st_tus1
                         	);
                         	if ( ! $this->db->where('id', $entry_id)->update('entries', $verifyuser))
                         	{
@@ -3585,6 +3608,12 @@ $width="100%";
                 	$this->db->where('ledger_id !=', $income_id);
                 	$ledger_q = $this->db->get();
                 	$data['ledger_q'] = $ledger_q;*/
+			$this->db->select('id');
+                	$this->db->from('ledgers');
+                	$this->db->where('name', 'Transit Income');
+                	$e_query = $this->db->get();
+                	$e_income = $e_query->row();
+                	$income_id = $e_income->id;
 
 			$ledger_q = $this->Entry_model->get_all_entry_items_ledger_notfund($entry_id,$income_id);
 			//$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
@@ -4382,15 +4411,30 @@ $width="100%";
 			$entry_type_id = entry_type_name_to_id($entry_type);
                         $cur_entry = $this->Entry_model->get_entry($entry_id, $entry_type_id);
                         $submittername=$cur_entry->submitted_by;	
+                        $status=$cur_entry->status;	
+                        $verifyby=$cur_entry->verified_by;	
 			$verifydate = date_php_to_mysql(date_today_php());
 			$uname=$this->session->userdata('user_name');
-			if($uname==$submittername){
+			if($verifyby == "")
+				$uname1=$uname;
+			else
+				$uname1=$verifyby.",".$uname;
+                        $i=$status+1;	
+			/*if($uname==$submittername){
                                 $this->messages->add('Submitter can not verify own entry');
-                        }
+                        }*/
+			if(($uname==$submittername) && ($uname!= 'admin'))
+                	{
+                        	$this->messages->add('Submitter can not verify own entry');
+                        	redirect('entry/show/' . $entry_type);
+                        	return;
+                	}
                         else{	
 			$update_data = array(
-                                'verified_by' => $uname,
-                                'status' => 1,
+                                //'verified_by' => $uname,
+                                'verified_by' => $uname1,
+                                //'status' => 1,
+                                'status' => $i,
 				'update_date'=> $verifydate,
                         );
                         if ( ! $this->db->where('id', $entry_id)->update('entries', $update_data))
