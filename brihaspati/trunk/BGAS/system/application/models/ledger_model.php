@@ -650,9 +650,17 @@ var $ledgers = array();
 
 	function get_op_closing_balance($ledger_id, $from_date, $to_date)
 	{
+
+		$this->db->from('settings');
+	        $value = $this->db->get();
+        	foreach($value->result() as $row)
+        	{
+               		$fy_start=explode(" ",$row->fy_start);
+        	}
+		$fy_start_date=$fy_start[0];
 		$actual_date='';
 		$flag=0;
-		$fy_start_date=2015-04-01;
+	//	$fy_start_date=2015-04-01;
 		$exp_from_date=explode("-",$from_date);
 		$previous_date=$exp_from_date[2]-1;
                 $month=$exp_from_date[1]-1;     
@@ -688,7 +696,8 @@ var $ledgers = array();
 			}elseif($previous_month == '03'){	
 				$flag=1;
 				list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);	
-				$actual_date="2015-04-01";
+			//	$actual_date="2015-04-01";
+				$actual_date=$fy_start_date;
 			}elseif($previous_month == '06' || $previous_month == '09' || $previous_month == '11' || $previous_month == '04'){
 				$actual_date=$exp_from_date[0]."-".$previous_month."-"."30";
 			}
@@ -702,21 +711,24 @@ var $ledgers = array();
                 }
 		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
                 $this->db->where('date >=', $fy_start_date);
-                $this->db->where('date <=', $actual_date);
+                $this->db->where('date <', $actual_date);
+              //  $this->db->where('date <=', $actual_date);
                 $dr_total_q = $this->db->get();
                 if ($dr_total = $dr_total_q->row())
                         $dr_total=$dr_total->drtotal;
                 else
                         $dr_total=0;
+	//	echo " the dr total is  ".$dr_total;
 		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
                 $this->db->where('date >=', $fy_start_date);
-                $this->db->where('date <=', $actual_date);
+                $this->db->where('date <', $actual_date);
+               // $this->db->where('date <=', $actual_date);
                 $cr_total_q = $this->db->get();
                 if ($cr_total = $cr_total_q->row())
                         $cr_total=$cr_total->crtotal;
                 else
 			$cr_total=0;
-
+		
                 $total = float_ops($dr_total, $cr_total, '-');
 //print_r("the open bal of bank cash is ".$total);
 //print_r("the open bal of bank cash is old".$op_bal);
