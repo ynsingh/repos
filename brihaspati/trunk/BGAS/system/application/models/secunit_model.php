@@ -111,7 +111,20 @@ class Secunit_model extends Model {
 			return 0;
 	}
 
-
+	function get_sundry_seccr_secdr_total($sec_id,$dr_cr,$ledg_code)
+	{
+		$this->db->select_sum('amount', 'total')->from('entry_items')->where('secunitid',$sec_id)->where('dc',$dr_cr)->like('ledger_code',$ledg_code,'after');
+		$total_q = $this->db->get();
+		if( $total_q->num_rows() < 1 )
+		{
+			return "0";
+		}
+		else
+		{
+			$total_amnt = $total_q->row();
+			return $total_amnt->total;
+		}
+	}
 	// get the clossing balance for respective secondary unit 
 	function gel_secclsbal($secunit_id)
 	{

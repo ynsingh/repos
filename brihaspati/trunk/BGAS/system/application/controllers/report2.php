@@ -896,6 +896,50 @@ class Report2 extends Controller {
 		$this->template->load('template', 'report2/sec_report/' . $sec_uni_id, $data);
 		return;
 	}
+	
+	function sundry_credit_report($party_id=0)
+	{
+		$this->load->library('pagination');
+		$this->template->set('page_title', 'Sundry Creditors Report');
+		$party_entry = $this->Secunit_model->get_allsecid();
+		$data['total_party_row'] = $party_entry->num_rows();
+		if ($_POST)
+		{
+			$party_id = $this->input->post('party_id', TRUE);
+		}
+		$data['party_id'] = $party_id;
+		$this->db->select('entry_id')->from('entry_items')->where('secunitid',$party_id);
+		$this->db->like('ledger_code','10040106','after');
+		$cred_rep = $this->db->get();
+		foreach($cred_rep->result() as $row)
+		{
+			$tot_row[] = $row->entry_id;
+		}
+		$this->template->load('template', 'report2/sundry_credit_report', $data);
+		return;
+	}
+
+	function sundry_debit_report($party_id=0)
+	{
+		$this->load->library('pagination');
+		$this->template->set('page_title', 'Sundry Debtors Report');
+		$party_entry = $this->Secunit_model->get_allsecid();
+		$data['total_party_row'] = $party_entry->num_rows();
+		if ($_POST)
+		{
+			$party_id = $this->input->post('party_id', TRUE);
+		}
+		$data['party_id'] = $party_id;
+		$this->db->select('entry_id')->from('entry_items')->where('secunitid',$party_id);
+		$this->db->like('ledger_code','200308','after');
+		$debt_rep = $this->db->get();
+		foreach($debt_rep->result() as $row)
+		{
+			$tot_row[] = $row->entry_id;
+		}
+		$this->template->load('template', 'report2/sundry_debit_report', $data);
+		return;
+	}
 
 	function profitandloss_mhrd()
 	{

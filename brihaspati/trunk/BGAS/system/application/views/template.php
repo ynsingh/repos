@@ -381,6 +381,12 @@ $(document).ready(function() {
 					echo"<li>";
                                                 echo anchor('report2/tds_report','TDS Report', array('title'=>'TDS Report'));
                                         echo"</li>";
+					echo"<li>";
+                                                echo anchor('report2/sundry_credit_report','Sundry Creditors Report', array('title'=>'Sundry Creditors Report'));
+                                        echo"</li>";
+					echo"<li>";
+                                                echo anchor('report2/sundry_debit_report','Sundry Debtors Report', array('title'=>'Sundry Debtors Report'));
+                                        echo"</li>";
 
 
 				echo"</ul>";

@@ -193,8 +193,8 @@
 			else
 			{
 				$nme1 = explode(",", $row->verified_by);
-                                $i = sizeof($nme1);
-                                for($j=0; $j<$i; $j++)
+                                $k = sizeof($nme1);
+                                for($j=0; $j<$k; $j++)
                                 {
                                         echo $nme1[$j];
                                         echo "<br>";
