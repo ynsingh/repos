@@ -92,6 +92,29 @@ $(document).ready(function() {
 		});
 	});
 </script>
+<style>
+.chcol1{
+        animation-name: blink;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        text-decoration: none;
+}
+
+@keyframes blink {
+        0%   {color:Turquoise;}
+        10%   {color:SteelBlue;}
+        20%   {color:SlateBlue;}
+        30%   {color:SkyBlue;}
+        40%   {color:RoyalBlue;}
+        50%   {color:PowderBlue;}
+        60%   {color:MediumTurquoise;}
+        70%   {color:MediumSlateBlue;}
+        80%   {color:MediumBlue;}
+        90%   {color:DodgerBlue;}
+        100%  {color:DeepSkyBlue;}
+}
+</style>
 
 </head>
 <body>
@@ -171,7 +194,9 @@ $(document).ready(function() {
 		</div>
 
 		<div id="logo1">
-		<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b'));?>
+		<?php $end_uri = site_url();?>
+		<?php //echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b'));?>
+		<?php echo "<a class=\"chcol1\" href=$end_uri>Brihaspati General Accounting System</a>";?>
 		</div>
 
 		<div id="info">

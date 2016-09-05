@@ -26,7 +26,29 @@
 <script type="text/javascript" src="<?php echo asset_url(); ?>js/ezpz_tooltip.min.js"></script>
 <script type="text/javascript" src="<?php echo asset_url(); ?>js/shortcutslibrary.js"></script>
 <script type="text/javascript" src="<?php echo asset_url(); ?>js/shortcuts.js"></script>
+<style>
+.chcol{
+        animation-name: blink;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+	text-decoration: none;
+}
 
+@keyframes blink {
+        0%   {color:Turquoise;}
+        10%   {color:SteelBlue;}
+        20%   {color:SlateBlue;}
+        30%   {color:SkyBlue;}
+        40%   {color:RoyalBlue;}
+        50%   {color:PowderBlue;}
+        60%   {color:MediumTurquoise;}
+        70%   {color:MediumSlateBlue;}
+        80%   {color:MediumBlue;}
+        90%   {color:DodgerBlue;}
+        100%  {color:DeepSkyBlue;}
+}
+</style>
 </head>
 <body>
 <div id="container">
@@ -76,7 +98,8 @@
 		</div>
 
 		<div id="logo1">
-			<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); ?>
+			<?php //echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); ?>
+			<a class="chcol" href=''>Brihaspati General Accounting System</a>
 		</div>
 		<?php
 			 /* Check applist table exists in brihaspati database*/

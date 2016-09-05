@@ -1,8 +1,8 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="<?php echo asset_url(); ?>css/helpdoc.css"/>
-	<link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/scroll.css" />
-        <script type="text/javascript" src="<?php echo asset_url(); ?>js/scroll.js"></script>
+	<!--<link type="text/css" rel="stylesheet" href="<?php //echo asset_url(); ?>css/scroll.css" />
+        <script type="text/javascript" src="<?php //echo asset_url(); ?>js/scroll.js"></script>-->
 </head>
 <body>
 	<div class="wrapper" width="100%"  style="background-color: #DDDDDD;"> 
@@ -106,6 +106,8 @@
 				           </ul>
 				      </li>	
 			                  <li><a href="#TDSReport">TDS Report</a></li> 
+			                  <li><a href="#SundryCreditorsReport">Sundry Creditors Report</a></li> 
+			                  <li><a href="#SundryDebitorsReport">Sundry Debitors Report</a></li> 
 	                    </ul>
 	            </li>
 	          <li class='has-sub'><a href="#Setting">Setting</a>
@@ -1261,6 +1263,120 @@
                                         </font>
                                         <?php
                                         echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'tdsreport.png'));
+                                        ?>
+                                        </div>
+                                        </section>
+					<section id="SundryCreditorsReport">
+                                        	<div class="row-fluid">
+                                        		<h2>Sundry Creditors Report</h2>
+                                        	</div>
+                                        <div class="row-fluid">
+                                        	<font size="4">
+                                        		<ol>
+                                        			<p align="justify" STYLE="line-height: 150%">
+				From here we can see report of Sundry Creditors for all parties. To see the sundry creditor report for a particular party, click on the name of party or select the name of party from dropdown.
+								</p>
+							</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditmain.png'));
+                                        ?>
+                                        	<font size="4">
+                                        		<ol>
+                                        			<p align="justify" STYLE="line-height: 150%">
+				After clicking on the name of party or selecting name of party from dropdown, it will show  all entries related to sundry creditor and all information related to entries.
+								</p>
+							</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditparty.png'));
+                                        ?>
+                                        	<font size="4">
+                                        		<ol>
+                                        			<p align="justify" STYLE="line-height: 150%">
+				After selecting party from dropdown if there is no sundry creditor report for the selected party then screen will display a message as shown in image below.
+								</p>
+							</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditpnone.png'));
+                                        ?>
+                                        	<font size="4">
+                                        		<ol>
+                                        			<p align="justify" STYLE="line-height: 150%">
+				If there is no party in the dropdown then screen will display a message as shown in image below.
+								</p>
+							</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditnone.png'));
+                                        ?>
+                                        	<font size="4">
+                                        		<ol>
+                                        			<p align="justify" STYLE="line-height: 150%">
+				If there are parties in the dropdown but there are no sundry creditors then screen will display a message as shown in image below.
+								</p>
+							</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditparnone.png'));
+                                        ?>
+                                        </div>
+                                        </section>
+					<section id="SundryDebitorsReport">
+                                        	<div class="row-fluid">
+                                        		<h2>Sundry Debitors Report</h2>
+                                        	</div>
+                                        <div class="row-fluid">
+                                        	<font size="4">
+                                        		<ol>
+                                        			<p align="justify" STYLE="line-height: 150%">
+				From here we can see report of Sundry debitors for all parties. To see the sundry debitor report for a particular party, click on the name of party or select the name of party from dropdown.
+								</p>
+							</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitmain.png'));
+                                        ?>
+                                        	<font size="4">
+                                        		<ol>
+                                        			<p align="justify" STYLE="line-height: 150%">
+				After clicking on the name of party or selecting name of party from dropdown, it will show  all entries related to sundry debitor and all information related to entries.
+								</p>
+							</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitparty.png'));
+                                        ?>
+                                        	<font size="4">
+                                        		<ol>
+                                        			<p align="justify" STYLE="line-height: 150%">
+				After selecting party from dropdown if there is no sundry debitor report for the selected party then screen will display a message as shown in image below.
+								</p>
+							</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitpnone.png'));
+                                        ?>
+                                        	<font size="4">
+                                        		<ol>
+                                        			<p align="justify" STYLE="line-height: 150%">
+				If there is no party in the dropdown then screen will display a message as shown in image below.
+								</p>
+							</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitnone.png'));
+                                        ?>
+                                        	<font size="4">
+                                        		<ol>
+                                        			<p align="justify" STYLE="line-height: 150%">
+				If there are parties in the dropdown but there are no sundry debitors then screen will display a message as shown in image below.
+								</p>
+							</ol>
+                                        </font>
+                                        <?php
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitparnone.png'));
                                         ?>
                                         </div>
                                         </section>

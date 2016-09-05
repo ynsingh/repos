@@ -1,3 +1,30 @@
+<html>
+<head>
+<style>
+.chcol{
+        animation-name: change;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+}
+
+@keyframes change {
+        0%   {color:Tomato;}
+        10%   {color:Teal;}
+        20%   {color:YellowGreen;}
+        30%   {color:Purple;}
+        40%   {color:OrangeRed;}
+        50%   {color:Magenta;}
+        60%   {color:HotPink;}
+        70%   {color:Fuchsia;}
+        80%   {color:DarkOrange;}
+        90%   {color:Crimson;}
+        100%  {color:DarkOrchid;}
+}
+</style>
+</head>
+</html>
+
 <?php
 	echo form_open('report2/sundry_debit_report/'. $party_id);
     	echo "<p>";
@@ -8,6 +35,8 @@
       	echo " ";
  	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
    	echo form_submit('submit', 'Show');
+        $help_uri = site_url()."/help/helpdoc#SundryDebitorsReport";
+	echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size: 30px;\"class=\"chcol\">Click for Help</b></a>";
        	echo "</p>";
     	echo form_close();
 
@@ -49,6 +78,11 @@
         $config['last_tag_open'] = '<li class="last">';
     	$config['last_tag_close'] = '</li>';
      	$this->pagination->initialize($config);
+
+	if($page_count == 0)
+                $serial = 1;
+        else
+                $serial = $page_count+1;
 
 	if($total_party_row == 0)
 	{
@@ -126,6 +160,9 @@
                			echo "<table cellpadding=\"10\" width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse; border:1px solid #BBBBBB;\">";
                			echo "<tr style=\"border-bottom: 1px solid #BBBBBB;\">";
                			echo "<td style=\"padding: 8px 8px 8px 20px;background-color:#EEEEEE;\">";
+               			echo "<b>Sr.No.";
+               			echo "</td>";
+               			echo "<td style=\"padding: 8px 8px 8px 20px;background-color:#EEEEEE;\">";
                			echo "<b>Party Name";
                			echo "</td>";
                			echo "<td style=\"padding: 8px 8px 8px 20px;background-color:#EEEEEE;\">";
@@ -146,6 +183,7 @@
                                         	echo "<tr style=\"border-bottom: 1px solid #BBBBBB; background-color:#87CEEB\">";
                                 	else
                                         	echo "<tr style=\"border-bottom: 1px solid #BBBBBB; background-color:#AFEEEE\">";
+					echo "<td style=\"text-align:center;\">" . $serial . "</td>";
                                 	echo "<td style=\"text-align:center;\"><a style=\"text-decoration: none;color:black;\" href=$end_uri"."$row2->secunitid>$p_nme1</a></td>";
 					$total_cr = $this->Secunit_model->get_sundry_seccr_secdr_total($row2->secunitid,"C","200308");
 					$total_dr = $this->Secunit_model->get_sundry_seccr_secdr_total($row2->secunitid,"D","200308");
@@ -160,6 +198,7 @@
                                 		echo "<td style=\"text-align:center;\">" . $balance . "</td>";
                                 	echo "</tr>";
                                 	$j++;
+                                	$serial++;
                         	}
 
 				echo "</table>";
@@ -227,6 +266,9 @@
                			echo "<table cellpadding=\"10\" width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse; border:1px solid #BBBBBB;\">";
                			echo "<tr style=\"border-bottom: 1px solid #BBBBBB;\">";
                			echo "<td style=\"padding: 8px 8px 8px 20px;background-color:#EEEEEE;\">";
+               			echo "<b>Sr.No.";
+               			echo "</td>";
+               			echo "<td style=\"padding: 8px 8px 8px 20px;background-color:#EEEEEE;\">";
                			echo "<b>Date";
                			echo "</td>";
                			echo "<td style=\"padding: 8px 8px 8px 20px;background-color:#EEEEEE;\">";
@@ -261,6 +303,7 @@
                         			echo "<tr style=\"border-bottom: 1px solid #BBBBBB; background-color:#87CEEB\">";
                         		else
                         			echo "<tr style=\"border-bottom: 1px solid #BBBBBB; background-color:#AFEEEE\">";
+					echo "<td style=\"text-align:center;\">" . $serial . "</td>";
                         		echo "<td style=\"text-align:center;\">" . date_mysql_to_php_display($row1->date) . "</td>";
                         		echo "<td style=\"text-align:center;\">" . anchor('entry/view/' . $current_entry_type['label'] . "/" . $row1->id, full_entry_number($row1->entry_type, $row1->number), array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a')) . "</td>";
                         		echo "<td style=\"text-align:center;\">".$row1->vendor_voucher_number."</td>";
@@ -271,6 +314,7 @@
                         		echo "<td style=\"text-align:center;\">" . $row1->submitted_by . "</td>";
 					echo "</tr>";
                         		$i++;
+                        		$serial++;
 				}
 
 				echo "</table>";
