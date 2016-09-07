@@ -174,12 +174,12 @@ $!data.getMessage()
 			if(btype){
 				if((frm.maxMarks.value>=10) && (frm.maxMarks.value<=100)){
 					if((frm.maxTime.value>=5) && (frm.maxTime.value<=120)){
-						if((frm.numberQuestion.value>=5) && (frm.numberQuestion.value<=50)){
+						if((frm.numberQuestion.value>=1) && (frm.numberQuestion.value<=50)){
 				                       	frm.actionName.value=field.name;
 			                        	frm.submit();
 				            	}
 				                else{
-					                alert("The number of questions in a quiz should be between 5 to 50");
+					                alert("The number of questions in a quiz should be between 1 to 50");
 				            	}
 			        	}
 					else{
