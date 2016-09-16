@@ -3446,7 +3446,7 @@ class Reportlist1
                 $non_plan_total = $nonplan_dr_total - $nonplan_cr_total;
 
 		$plan_sfc_total=$plan_sfc_dr_total-$plan_sfc_cr_total;
-                $total = $plan_total + $non_plan_total+$plan_sfc_total; 
+                $total = $plan_total + $non_plan_total + $plan_sfc_total; 
                 echo "<td align=\"right\">". convert_amount_dc($plan_total). "</td>";
                 echo "<td align=\"right\">". convert_amount_dc($non_plan_total). "</td>";
 		echo "<td align=\"right\">". convert_amount_dc($plan_sfc_total). "</td>";
@@ -3536,7 +3536,7 @@ class Reportlist1
 //                        $non_plan_total = $value['nonplan'];
                }
 //		$plan_sfc_sch_total=$total1['specific_sch'];
-                $total1 = $plan_total + $non_plan_total;
+                $total1 = $plan_total + $non_plan_total+$plan_sfc_sch_total;
                 if($plan_total ==""){
                     echo "<td align=\"right\">". convert_amount_dc(0). "</td>";
                 }else{
