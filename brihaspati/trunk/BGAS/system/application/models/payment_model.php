@@ -373,95 +373,91 @@ class Payment_model extends Model {
 
 	function xml_creation($type,$ledg_id,$database,$name,$curr_year,$total)
 	{
-		 $CI =& get_instance();
+		$CI =& get_instance();
 		$counter = "0";
-				if($type == "Income")
-				{
-                                	$total = $this->income_xml_data($ledg_id);
-					
-				 }elseif($type == "Expense"){
-					
-					 $expense = new Reportlist();
-                                        $expense->init($ledg_id);
-                                        $total = $expense->total; 
-				 }
-		//		echo"total==$total sum =$sum";
-                              
-                                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                                $file_name="";
+		if($type == "Income")
+		{
+                	$total = $this->income_xml_data($ledg_id);
+				
+		}elseif($type == "Expense"){
+			
+			$expense = new Reportlist();
+                        $expense->init($ledg_id);
+                        $total = $expense->total; 
+		 }
+                            
+		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                $file_name="";
 
-                                /* 
-                                * code for creating Income Xml file.
-                                */
-				$type1 =$type."_Name";
-                                $doc = new DOMDocument();
-                                $doc->formatOutput = true;
+                /* 
+               * code for creating Income Xml file.
+                */
+		$type1 =$type."_Name";
+		$doc = new DOMDocument();
+                $doc->formatOutput = true;
 
-                                $file_name=$type."-".$database."-".$curr_year.".xml";
-                                $tt=$acctpath."/".$file_name;
+                $file_name=$type."-".$database."-".$curr_year.".xml";
+                $tt=$acctpath."/".$file_name;
 
-                                if(file_exists($tt))
-                                {
-                                        $doc->preserveWhiteSpace = false;
-                                        $doc->load($tt);
-                                        $type = $doc->firstChild;
-                                        $type1 = $doc->createElement($type1);
+                if(file_exists($tt))
+                {
+                $doc->preserveWhiteSpace = false;
+                $doc->load($tt);
+                $type = $doc->firstChild;
+                $type1 = $doc->createElement($type1);
 
-                                        $group_name = $doc->createElement('Group_Name');
-                                        $textNode = $doc->createTextNode($name);
-                                        $group_name->appendChild($textNode);
-					$type1->appendChild($group_name);
+                $group_name = $doc->createElement('Group_Name');
+                $textNode = $doc->createTextNode($name);
+                $group_name->appendChild($textNode);
+		$type1->appendChild($group_name);
 
-                                        $amount = $doc->createElement('Amount');
-                                        $textNode2 = $doc->createTextNode($total);
-                                        $amount->appendChild($textNode2);
-                                        $type1->appendChild($amount);
+		$amount = $doc->createElement('Amount');
+                $textNode2 = $doc->createTextNode($total);
+                $amount->appendChild($textNode2);
+                $type1->appendChild($amount);
 
-                                        $group_id = $doc->createElement('Group_ID');
-                                        $textNode1 = $doc->createTextNode($ledg_id);
-                                        $group_id->appendChild($textNode1);
-                                        $type1->appendChild($group_id);
+                $group_id = $doc->createElement('Group_ID');
+                $textNode1 = $doc->createTextNode($ledg_id);
+                $group_id->appendChild($textNode1);
+                $type1->appendChild($group_id);
 
-                                    /*    $grnd_total = $doc->createElement('Total');
-                                        $textNode3 = $doc->createTextNode($sum);
-                                        $grnd_total->appendChild($textNode3);
-                                        $type1->appendChild($grnd_total);*/
+                /*      $grnd_total = $doc->createElement('Total');
+                	$textNode3 = $doc->createTextNode($sum);
+                        $grnd_total->appendChild($textNode3);
+                        $type1->appendChild($grnd_total);*/
 
-                                        $type->appendChild($type1);
-                                        $ttt=$doc->saveXML();
-                                        $handle = fopen($tt, "w");
-                                        fwrite($handle, $ttt);
-                                        fclose($handle);
-                                }else{
-                                        $r = $doc->createElement( $type );
-                                        $doc->appendChild( $r );
-                                        $b = $doc->createElement( $type1 );
+		$type->appendChild($type1);
+                $ttt=$doc->saveXML();
+                $handle = fopen($tt, "w");
+                fwrite($handle, $ttt);
+                fclose($handle);
+                }else{
+                $r = $doc->createElement( $type );
+                $doc->appendChild( $r );
+                $b = $doc->createElement( $type1 );
+                $group_name = $doc->createElement( "Group_Name" );
+                $group_name->appendChild($doc->createTextNode($name));
+                $b->appendChild( $group_name );
 
-                                        $group_name = $doc->createElement( "Group_Name" );
-                                        $group_name->appendChild($doc->createTextNode($name));
-                                        $b->appendChild( $group_name );
+                $amount = $doc->createElement( "Amount");
+		$amount->appendChild($doc->createTextNode($total));
+		$b->appendChild( $amount );
 
-                                        $amount = $doc->createElement( "Amount");
-                                        $amount->appendChild($doc->createTextNode($total));
-					$b->appendChild( $amount );
+                $group_id = $doc->createElement('Group_ID');
+                $textNode1 = $doc->createTextNode($ledg_id);
+                $group_id->appendChild($textNode1);
+                $b->appendChild( $group_id );
 
-                                        $group_id = $doc->createElement('Group_ID');
-                                        $textNode1 = $doc->createTextNode($ledg_id);
-                                        $group_id->appendChild($textNode1);
-                                        $b->appendChild( $group_id );
+                /*     $grnd_total = $doc->createElement('Total');
+                       $textNode2 = $doc->createTextNode($sum);
+                       $grnd_total->appendChild($textNode2);
+                       $b->appendChild($grnd_total);*/
 
-                                   /*     $grnd_total = $doc->createElement('Total');
-                                        $textNode2 = $doc->createTextNode($sum);
-                                        $grnd_total->appendChild($textNode2);
-                                        $b->appendChild($grnd_total);*/
-
-                                        $r->appendChild( $b );
-
-                                        $doc->save($tt);
-                                        $doc->saveXML();
-
-                                 }
-			return $counter;
+               $r->appendChild( $b );
+               $doc->save($tt);
+               $doc->saveXML();
+               }
+	return $counter;
 	}
 	
 	function database_name()
@@ -538,6 +534,165 @@ class Payment_model extends Model {
                 }
                 return $cheque_no;
         }
+
+	function xml_read($file_name, $name){
+		$amount="0.00";
+		if(file_exists($file_name))
+                {
+			$xml=simplexml_load_file($file_name);
+			foreach($xml->children() as $books){
+				if($books->Group_Name == $name)
+					$amount=$books->Amount.".00";
+				if($amount == 0)
+					$amount="0.00";
+			} 	
+
+		}
+                return $amount;
+	}
+
+/*	function xml_read_COA($file_name, $name){
+                $amount="0.00";
+                if(file_exists($file_name))
+                {
+                        $xml=simplexml_load_file($file_name);
+                        foreach($xml->children() as $books){
+				print_r($books->Ledgers_Name);
+                                if($books->Ledgers_Name == $name)
+				$amount=$books->Ledger_Name.".00"."#".$books->op_balance.".00"."#".$books->op_balance_dc.".00";
+                        }
+
+                }
+                return $amount;
+        }
+*/
+
+	function xml_read1($file_name, $name){
+                $amount="0.00"."#"."0.00"."#"."0.00"."#"."0.00";
+                if(file_exists($file_name))
+                {
+                        $xml=simplexml_load_file($file_name);
+                        foreach($xml->children() as $books){
+                                if($books->Group_Name == $name)
+                                        $amount=$books->Amount.".00"."#".$books->plan.".00"."#".$books->nonplan.".00"."#".$books->plansfc.".00";
+                        }
+                }
+                return $amount;
+        }
+
+	 function xml_read_schedule1($file_name, $name){
+                $amount="0.00"."#"."0.00";
+                if(file_exists($file_name))
+                {
+                        $xml=simplexml_load_file($file_name);
+                        foreach($xml->children() as $books){
+                                if($books->Group_Name == $name)
+                                        $amount=$books->Amount.".00"."#".$books->Group_ID.".00";
+                        }
+                }
+                return $amount;
+        }
+		
+	function xml_creation_schedule($type,$plan,$nonplan,$plansfc, $database,$name,$curr_year,$total)
+        {
+                $CI =& get_instance();
+                $counter = "0";
+                if($type == "Income")
+                {
+                        $total = $this->income_xml_data($ledg_id);
+
+                }elseif($type == "Expense"){
+
+                        $expense = new Reportlist();
+                        $expense->init($ledg_id);
+                        $total = $expense->total;
+                 }
+
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                $file_name="";
+
+                /* 
+               * code for creating Income Xml file.
+                */
+                $type1 =$type."_Name";
+                $doc = new DOMDocument();
+                $doc->formatOutput = true;
+
+                $file_name=$type."-".$database."-".$curr_year.".xml";
+                $tt=$acctpath."/".$file_name;
+
+                if(file_exists($tt))
+                {
+                $doc->preserveWhiteSpace = false;
+                $doc->load($tt);
+                $type = $doc->firstChild;
+                $type1 = $doc->createElement($type1);
+
+                $group_name = $doc->createElement('Group_Name');
+                $textNode = $doc->createTextNode($name);
+                $group_name->appendChild($textNode);
+                $type1->appendChild($group_name);
+
+                $amount = $doc->createElement('Amount');
+                $textNode2 = $doc->createTextNode($total);
+                $amount->appendChild($textNode2);
+                $type1->appendChild($amount);
+
+                $plan_name = $doc->createElement('plan');
+                $textNode1 = $doc->createTextNode($plan);
+                $plan_name->appendChild($textNode1);
+                $type1->appendChild($plan_name);
+		
+		$nonplan_name = $doc->createElement('nonplan');
+                $textNode1 = $doc->createTextNode($nonplan);
+                $nonplan_name->appendChild($textNode1);
+                $type1->appendChild($nonplan_name);
+
+		$plansfc_name = $doc->createElement('plansfc');
+                $textNode1 = $doc->createTextNode($plansfc);
+                $plansfc_name->appendChild($textNode1);
+                $type1->appendChild($plansfc_name);
+
+                $type->appendChild($type1);
+                $ttt=$doc->saveXML();
+                $handle = fopen($tt, "w");
+                fwrite($handle, $ttt);
+                fclose($handle);
+                }else{
+                $r = $doc->createElement( $type );
+                $doc->appendChild( $r );
+                $b = $doc->createElement( $type1 );
+                $group_name = $doc->createElement( "Group_Name" );
+                $group_name->appendChild($doc->createTextNode($name));
+                $b->appendChild( $group_name );
+
+                $amount = $doc->createElement( "Amount");
+                $amount->appendChild($doc->createTextNode($total));
+                $b->appendChild( $amount );
+
+                $plan_name = $doc->createElement('plan');
+                $textNode1 = $doc->createTextNode($plan);
+                $plan_name->appendChild($textNode1);
+                $b->appendChild( $plan_name );
+
+		$nonplan_name = $doc->createElement('nonplan');
+                $textNode1 = $doc->createTextNode($nonplan);
+                $nonplan_name->appendChild($textNode1);
+                $b->appendChild( $nonplan_name );
+
+		$plansfc_name = $doc->createElement('plansfc');
+                $textNode1 = $doc->createTextNode($plansfc);
+                $plansfc_name->appendChild($textNode1);
+                $b->appendChild( $plansfc_name );
+
+		$r->appendChild( $b );
+		$doc->save($tt);
+		$doc->saveXML();
+               }
+        return $counter;
+        }
+
+
 
 
 }

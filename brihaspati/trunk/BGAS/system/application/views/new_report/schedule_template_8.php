@@ -15,9 +15,9 @@
 
         echo "<table border=0 class=\"simple-table balance-sheet-table\" >";
         echo "<thead><tr><th></th><th align=\"center\" colspan=\"2\">CURRENT YEAR</th><th align=\"center\" colspan=\"2\">PREVIOUS YEAR</th></tr></thead>";
-            $asset->get_Assetschedule('2004',8);
-            $current_total = $asset->curr_total1;
-
+	$asset->get_Assetschedule('2004',8, 'view', 'NULL');
+	$current_total = $asset->curr_total1;
+	$prev_total=$asset->prev_total;
 	      echo "<tr>";
                         echo "<td>";
                                 echo "<strong> TOTAL</strong>";
@@ -32,7 +32,7 @@
                         echo "</td>";*/
 
                         echo "<td align=\"right\">";
-                                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                                echo "<strong>" . convert_amount_dc($prev_total) . "</strong>";
                         echo "</td>";
 
                    /*     echo "<td>";

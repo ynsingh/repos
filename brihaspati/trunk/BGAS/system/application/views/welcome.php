@@ -38,13 +38,13 @@
 	
 	echo "<tr>";
         echo "<td style=\"padding: 8px 8px 8px 20px;\">Account for Financial Year<strong>";
-	echo date_mysql_to_php_display($this->config->item('account_fy_start')) . " - " . date_mysql_to_php_display($this->config->item('account_fy_end'));
+	echo " ".date_mysql_to_php_display($this->config->item('account_fy_start')) . " - " . date_mysql_to_php_display($this->config->item('account_fy_end'));
         echo "</strong></td></tr>";
 	
 	if ($this->config->item('account_locked') == 1)
 	{
 		echo "<tr>";
-        	echo "<td>Account is currently<strong>locked</strong>to prevent any further modifications.</td>";
+        	echo "<td>Account is currently <strong>locked</strong> to prevent any further modifications.</td>";
 		echo "</tr>";
 	}
 

@@ -22,20 +22,19 @@
         echo "</tr>";
 		
 	$liability = new Reportlist1();
-	$liability->Current_liability(84,'100401',3);
+	$liability->Current_liability(84,'100401',3, 'view', 'NULL');
 	$liability_totalA = $liability->liability_total;
-
+	$prev_total = $liability->prev_total;
 	echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "<strong> TOTAL(A)</strong>";
-                echo "</td>";
 
                 echo "<td colspan=\"2\" align=\"right\">";
                 echo "<strong>" . convert_amount_dc($liability_totalA) . "</strong>";
                 echo "</td>";
 
                 echo "<td align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "<strong>" . convert_amount_dc($prev_total) . "</strong>";
                 echo "</td>";
       echo "</tr>";
 
@@ -45,9 +44,9 @@
        	echo "<td></td>";
         echo "</tr>";
 	$liability = new Reportlist1();
-	$liability->Provision(109,'100402',3);
+	$liability->Provision(109,'100402',3, 'view', 'NULL');
 	$liability_totalB = $liability->liability_total;
-
+	$prev_total1 = $liability->prev_total;
 	 echo "<tr>";
                 echo "<td align=\"right\">";
                 echo "<strong> TOTAL(B)</strong>";
@@ -58,7 +57,7 @@
                 echo "</td>";
 
                 echo "<td align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "<strong>" . convert_amount_dc($prev_total1) . "</strong>";
                 echo "</td>";
       echo "</tr>";
 
@@ -67,14 +66,14 @@
                 echo "<strong> TOTAL(A+B)</strong>";
                 echo "</td>";
 		$net_total = $liability_totalA+$liability_totalB; 
-
+		$net_prev_total=$prev_total+$prev_total1;
 
                 echo "<td colspan=\"2\" align=\"right\">";
                 echo "<strong>" . convert_amount_dc($net_total) . "</strong>";
                 echo "</td>";
 
                 echo "<td align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "<strong>" . convert_amount_dc($net_prev_total) . "</strong>";
                 echo "</td>";
       	echo "</tr>";
 	echo "</table>"; 

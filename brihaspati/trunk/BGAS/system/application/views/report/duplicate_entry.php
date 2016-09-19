@@ -90,7 +90,7 @@ $CI =& get_instance();
                                         echo "<td>" . $row->cost  . "</td>";
                                         echo "<td>" . $trim_dep_value  . "</td>";
 					echo "<td>" . $trim_curr_value  . "</td>";
-					echo "<td>" . "---"  . "</td>";
+					echo "<td>" . "In Use"  . "</td>";
                                         echo "<td>" . $row->sanc_type . "</td>";
                                         echo "<td>" . $fund_name . "</td>";
 

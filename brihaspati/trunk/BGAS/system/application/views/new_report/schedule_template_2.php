@@ -48,13 +48,13 @@
         $object = new Reportlist1();
         $object->designated_fundA('1003','view','NULL',2);
 	$net_value = $object->net_total1;
-
+	$prev_amount = $object->prev_total;
 	echo "<td align=\"right\">";
         echo "<strong>" . convert_amount_dc($net_value) . "</strong>";
         echo "</td>";
 	
 	echo "<td align=\"right\">";
-        echo "<strong>" . convert_amount_dc(0) . "</strong>";
+        echo "<strong>" . convert_amount_dc($prev_amount) . "</strong>";
         echo "</td>";
         echo "</tr>";
 
@@ -69,13 +69,13 @@
 	$object = new Reportlist1();
         $object->designated_fundB('1003','view','NULL',2);
 	$net_value3 = $object->net_total3;
-
+	$prev_amount = $object->prev_amount;
         echo "<td align=\"right\">";
         echo "<strong>" . convert_amount_dc($net_value3) . "</strong>";
         echo "</td>";
 
         echo "<td align=\"right\">";
-        echo "<strong>" . convert_amount_dc(0) . "</strong>";
+        echo "<strong>" . convert_amount_dc($prev_amount) . "</strong>";
         echo "</td>";
         echo "</tr>";
 

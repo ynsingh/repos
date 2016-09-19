@@ -72,13 +72,19 @@
                 echo "<td width=15%>";
                 echo "</td>";
         }  
-        $liability1->get_liabilityschedule('1001',$count);
+        $liability1->get_liabilityschedule('1001',$count, 'view','NULL');
 	$dr_total_1 = $liability1->dr_total1;
         $cr_total_2 = $liability1->cr_total1;
+	$prev_dr_total_1 = $liability1->prev_dr_total1;
+        $prev_cr_total_2 = $liability1->prev_cr_total1;
 
-	$liability1->get_liabilityschedule('1002',$count);
+	
+	$liability1->get_liabilityschedule('1002',$count, 'view','NULL');
 	$dr_total_3 = $liability1->dr_total1;
 	$cr_total_4 = $liability1->cr_total1;
+	$prev_dr_total_3 = $liability1->prev_dr_total1;
+        $prev_cr_total_4 = $liability1->prev_cr_total1;
+
 	$profit = $liability1->profit1;
 	if($profit < 0){
 	$dr_total_3 = $dr_total_3 + (-$profit);
@@ -91,6 +97,11 @@
         $total = $credit_total-$debit_total;
 //        $total = $credit_amount-$debit_total;
 	//print_r($total);
+
+	$prev_debit_total = ($prev_dr_total_1 + $prev_dr_total_3);
+        $prev_credit_total = ($prev_cr_total_2 + $prev_cr_total_4);
+        $prev_total = -$prev_credit_total-$prev_debit_total;
+
 
 	//Display total for the given schedule
         echo "<tr>";
@@ -107,11 +118,11 @@
         echo "</td>";
 
         echo "<td width=15% align=\"right\">";
-        echo "<strong>" . convert_amount_dc(0) . "</strong>";
+        echo "<strong>" . convert_amount_dc($prev_debit_total) . "</strong>";
         echo "</td>";
 
         echo "<td width=15% align=\"right\">";
-        echo "<strong>" . convert_amount_dc(0) . "</strong>";
+        echo "<strong>" . convert_amount_dc($prev_credit_total) . "</strong>";
        	echo "</td>";
         echo "</tr>";
 
@@ -125,7 +136,7 @@
         echo "</td>";
 
         echo "<td  colspan = 2 width=30% align=\"right\">";
-        echo "<strong>" . convert_amount_dc(0) . "</strong>";
+        echo "<strong>" . convert_amount_dc($prev_total) . "</strong>";
         echo "</td>";
         echo "</tr>";
 	echo "</table>";

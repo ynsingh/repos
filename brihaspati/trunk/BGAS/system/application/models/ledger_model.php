@@ -554,6 +554,7 @@ var $ledgers = array();
 		$plan_sfc_cr_total=$cr_total['specific_sch'];
 			//echo "== $non_plan_cr_total";
 		
+		
 		$plan_total = float_ops($plan_dr_total, $plan_cr_total, '-');
 		$non_plan_total = float_ops($non_plan_dr_total, $non_plan_cr_total, '-');
 		$plan_sfc_total=float_ops($plan_sfc_dr_total,$plan_sfc_cr_total, '-');
@@ -1749,7 +1750,7 @@ var $ledgers = array();
                 return 0;
     }
 
-	  function get_group_id($code)
+	function get_group_id($code)
         {
                 $this->db->select('id');
                 $this->db->from('groups')->where('code =', $code);
@@ -1776,8 +1777,8 @@ var $ledgers = array();
                  $tot_value='';
                  $tot_cur_value='';
                  $tot_amt='';
-		$net_dep_amount='';
-		$amount='';
+		 $net_dep_amount='';
+		 $amount='';
                  $data=array();
                  /*load database pico*/
                  $logndb = $this->load->database('pico', TRUE);
@@ -1808,12 +1809,12 @@ var $ledgers = array();
 				}else{
 					for($i=1; $i<=$get_asset_used_years[0]; $i++){
                                         	if($i == 1){
-                                                	$val=($IRD_Rate*$ERPMIM_Depreciation_Percentage[0])/100;
-                                                	$amount=$row->cost-$val;
-                                                	$depepreciation_on_day=$IRD_Rate*($tot_day/365)*($ERPMIM_Depreciation_Percentage[0]/100);
-                                                 	$net_dep_amount= $net_dep_amount+$val;
+                                                	$val=($IRD_Rate*$ERPMIM_Depreciation_Percentage)/100;
+                                                	$amount=$IRD_Rate-$val;
+                                                	$depepreciation_on_day=$amount*($tot_day/365)*($ERPMIM_Depreciation_Percentage[0]/100);
+                                                 	$net_dep_amount= $depepreciation_on_day+$val;
                                         	}else{
-                                                	$val=($amount*$ERPMIM_Depreciation_Percentage[0])/100;
+                                                	$val=($amount*$ERPMIM_Depreciation_Percentage)/100;
                                                 	$depepreciation_on_day=$amount*($tot_day/365)*($ERPMIM_Depreciation_Percentage[0]/100);
                                                 	$net_amount= $depepreciation_on_day+$val;
                                                 	$amount=$amount-$net_amount;

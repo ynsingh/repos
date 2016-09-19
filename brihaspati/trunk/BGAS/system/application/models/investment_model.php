@@ -675,7 +675,7 @@ function schedule_1($ledger_id)
 	} 
 	
 	function newschedule1($ledg_id)
-    {
+	{
                 $credit_amount = 0.00;
                 $debit_amount = 0.00;
                 $dr_total = 0.00;

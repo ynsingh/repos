@@ -192,7 +192,7 @@
                                 }
                                         $master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table1($group_name);
                         }
-
+					if($led_code != '20010101'){
                                 	$exp_dep_percentage=explode("#",$master_group_code);
 					$date = date_mysql_to_php($row->date_of_purchase);
 					$today_date1=date("Y/m/d");
@@ -253,7 +253,7 @@
                                         foreach ($project->result() as $row5){
                                          $fund_name=$row5->project_name;
                                          }
-                                	if($get_asset_used_years[0] == $exp_dep_percentage[1]){
+                                	if($get_asset_used_years[0] == $exp_dep_percentage[0]){
                                         	$this->db->trans_start();
                                         	$update_data = array(
                                         		'asset_status'=>'1',
@@ -307,6 +307,7 @@
 										echo "<td>".$fund_name."</td>";
 									}
                         }
+			}
 		}//if2
 		$val=explode("#",$field);
 		$this->db->select();
@@ -435,6 +436,7 @@
 					}	
 					$master_group_code = $CI->Depreciation_model->is_asset_in_depreciation_master_table1($group_name);
 				}
+				if($led_code != '20010101'){
                         	$exp_dep_percentage=explode("#",$master_group_code);  
 				$value= $row->cost * $exp_dep_percentage[0]/(100*365);
 				$today_date1=date("Y/m/d");
@@ -540,6 +542,7 @@
                                                                 				$this->db->trans_complete();
                                                          				}
 										}
+						}
                                                                 			$count++;
 				}else{
 					 $rate=explode("%",$narr[1]);

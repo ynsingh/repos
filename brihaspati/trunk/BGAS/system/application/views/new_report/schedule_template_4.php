@@ -38,7 +38,7 @@
 		echo "<td> 31.03.".$fy_end[0]."</td>";
 	echo "</tr>";
 	$object = new Reportlist1();
-	$object->FixedAsset_A('2001',4);
+	$object->FixedAsset_A('2001',4,'view', 'NULL');
 	$opening_balanceA = $object->opening_balance;
 	$debit_totalA = $object->debit_total;
 	$credit_totalA = $object->credit_total;
@@ -47,7 +47,7 @@
 	$current_depreciation_amountA = $object->current_depreciation_amount;
 	$total_depreciationA = $object->total_depreciation;
 	$current_yearA = $object->curr_amount; 
-
+	$prev_total1 = $object->prev_total;	
 //	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
 
 	echo "<tr class=\"tr-group\">";
@@ -94,7 +94,7 @@
                 echo "</td>";
 
                 echo "<td align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "<strong>" . convert_amount_dc($prev_total1) . "</strong>";
                 echo "</td>"; 
 		echo "</tr>";
 
@@ -102,7 +102,7 @@
 	echo "<br>";
 	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
 	$object = new Reportlist1();
-	$object->FixedAsset_B('2001',4);
+	$object->FixedAsset_B('2001',4, 'view', 'NULL');
 	$opening_balanceB = $object->opening_balance;
         $debit_totalB = $object->debit_total;
         $credit_totalB = $object->credit_total;
@@ -111,6 +111,7 @@
         $current_depreciation_amountB = $object->current_depreciation_amount;
         $total_depreciationB = $object->total_depreciation;
 	$current_yearB = $object->curr_amount;
+	$prev_total2 = $object->prev_total;
 
 	echo "</table>";
 	echo "<br>";
@@ -145,7 +146,7 @@
                 echo "<td> 31.03.".$fy_end[0]."</td>";
         echo "</tr>";
 	$object = new Reportlist1();
-        $object->FixedAsset_C('2001',4);
+        $object->FixedAsset_C('2001',4,'view','NULL');
 	$opening_balanceC = $object->opening_balance;
         $debit_totalC = $object->debit_total;
         $credit_totalC = $object->credit_total;
@@ -154,7 +155,7 @@
         $current_depreciation_amountC = $object->current_depreciation_amount;
 	$total_depreciationC = $object->total_depreciation;
 	$current_yearC = $object->curr_amount;
-
+	$prev_total3 = $object->prev_total;
 	echo "<tr>";
 		echo "<td>";
 		echo "</td>";
@@ -200,7 +201,7 @@
                 echo "</td>";
 
                 echo "<td align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "<strong>" . convert_amount_dc($prev_total3) . "</strong>";
 		echo "</td>";
 	echo "</table>";
 
@@ -218,6 +219,7 @@
 		$total_current_depreciation_amount = ($current_depreciation_amountA + $current_depreciation_amountB + $current_depreciation_amountC);
 		$grand_total_depreciation = ($total_depreciationA + $total_depreciationB + $total_depreciationC);
 		$grand_current_year = ($current_yearA + $current_yearB + $current_yearC);
+		$prev_total = ($prev_total1 + $prev_total2 + $prev_total3);
 		
                 echo "<td align=\"right\">";
                 echo "<strong>" . convert_amount_dc($total_opening_balance) . "</strong>";
@@ -256,7 +258,7 @@
                 echo "</td>";
 
                 echo "<td align=\"right\">";
-                echo "<strong>" . convert_amount_dc(0) . "</strong>";
+                echo "<strong>" . convert_amount_dc($prev_total) . "</strong>";
                 echo "</td>";
 		echo "</tr>";
 		echo "</table>";

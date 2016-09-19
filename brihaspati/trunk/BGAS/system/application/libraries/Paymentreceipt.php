@@ -5,6 +5,9 @@ class paymentreceipt
 
 	function Paymentreceipt()
         {
+		$CI =& get_instance();
+		$CI->load->model('payment_model');
+		$CI->load->library('session');
                 return;
         }
 		
@@ -29,83 +32,85 @@ class paymentreceipt
             		$date1 = $row->fy_start;
             		$date2 = $row->fy_end;
         	}
-            		$fy_start=explode("-",$date1);
-            		$fy_end=explode("-",$date2);
+		$fy_start=explode("-",$date1);
+            	$fy_end=explode("-",$date2);
 
-        		$curr_year = $fy_start[0] ."-" .$fy_end[0];
-        		$prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
-			$CI->load->model('Payment_model');
-			$CI->load->library('session');
-        		$date1 = $CI->session->userdata('date1');
-        		$date2 = $CI->session->userdata('date2');
-			$current_active_account = $CI->session->userdata('active_account');
-			if($type == "Payment")
-        		{
-    				$CI->db->select('name,code,id')->from('groups')->where('parent_id <=',4)->where('parent_id !=',3)->where('parent_id !=',0);
-            			$main = $CI->db->get();
-    				$no_row = $main->num_rows();
-            			$main_result= $main->result();
-    				foreach($main_result as $row)
-            			{
-                			$name = $row->name;
-                			$code =$row->code;
-                			$ledg_id = $row->id;
-                			$dr_sum = 0;
-                			$cr_sum = 0;
-                			$dr_sum_total= 0;
-                			$cr_sum_total=0;
-					if($name !=  'Depreciation' && $name !=  'Current Assets' && $name !=  'Committed Fund')
-                			{
-						$CI->db->from('ledgers')->where('code LIKE', $code . '%')->where('type !=', '1');
-                				$child_ledger_q = $CI->db->get();
-						foreach ($child_ledger_q->result() as $row)
-                    				{
-						$ledger_code = $row->code;
-                        			$ledger_code = substr($ledger_code, 0, 2);
-                        			if($ledger_code  != '40')
-                        			{
-                            			$CI->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $row->id)->where('entry_items.dc', 'D');
-                            			$CI->db->where('date >=', $date1);
-                            			$CI->db->where('date <=', $date2);
-                            			$dr_total_q = $CI->db->get();
-                            			if ($dr_total = $dr_total_q->row())
-						{
-                              			$dr_total=$dr_total->drtotal;
-                            			}
-                            			$total = float_ops($total, $dr_total, '+');
-                        			}elseif($ledger_code == '40')
-						{
-                    				$CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $row->id);		
-                            			$CI->db->where('date >=', $date1);
-            					$CI->db->where('date <=', $date2);
-                            			$result11 =$CI->db->get();
-                            			$entry_result = $result11->result();
-                            			foreach($entry_result as $query_row)
-                            			{
-                                		$dc = $query_row->entry_items_dc;
-                                		if($dc == "D"){
-                                    		$dr_sum = $query_row->entry_items_amount;
-                                    		$dr_sum_total = $dr_sum_total + $dr_sum;
-                                		}else{
-                                    		$cr_sum = $query_row->entry_items_amount;
-                                    		$cr_sum_total = $cr_sum_total + $cr_sum;
-                                		}
-                            			}
-                            			$total = $dr_sum_total - $cr_sum_total;
-                        			}
-						}
-						if($acc == "view" && $database == "NULL" )
-                    				{
-						echo "<tr class=\"tr-group\">";
-                				echo "<td class=\"td-group\">";
-                				echo "&nbsp;" .  $name;
-                				echo "</td>";		
-                        			echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
-						//echo "</tr>";
-			//code for writing xml... 
-			$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        $file_name="Payment"."-".$current_active_account."-".$prev_year.".xml";
-                        $tt=$acctpath."/".$file_name;
+        	$curr_year = $fy_start[0] ."-" .$fy_end[0];
+        	$prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+        	$date1 = $CI->session->userdata('date1');
+        	$date2 = $CI->session->userdata('date2');
+		$current_active_account = $CI->session->userdata('active_account');
+		if($type == "Payment")
+       		{
+    			$CI->db->select('name,code,id')->from('groups')->where('parent_id <=',4)->where('parent_id !=',3)->where('parent_id !=',0);
+        		$main = $CI->db->get();
+    			$no_row = $main->num_rows();
+            		$main_result= $main->result();
+    			foreach($main_result as $row)
+            		{
+                		$name = $row->name;
+                		$code =$row->code;
+                		$ledg_id = $row->id;
+                		$dr_sum = 0;
+                		$cr_sum = 0;
+                		$dr_sum_total= 0;
+                		$cr_sum_total=0;
+				if($name !=  'Depreciation' && $name !=  'Current Assets' && $name !=  'Committed Fund')
+                		{
+					$CI->db->from('ledgers')->where('code LIKE', $code . '%')->where('type !=', '1');
+                			$child_ledger_q = $CI->db->get();
+					foreach ($child_ledger_q->result() as $row)
+                    			{
+					$ledger_code = $row->code;
+                        		$ledger_code = substr($ledger_code, 0, 2);
+                        		if($ledger_code  != '40')
+                        		{
+                            		$CI->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $row->id)->where('entry_items.dc', 'D');
+                            		$CI->db->where('date >=', $date1);
+                            		$CI->db->where('date <=', $date2);
+                            		$dr_total_q = $CI->db->get();
+                            		if ($dr_total = $dr_total_q->row())
+					{
+                              		$dr_total=$dr_total->drtotal;
+                            		}
+                            		$total = float_ops($total, $dr_total, '+');
+                        		}elseif($ledger_code == '40'){
+                    			$CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $row->id);		
+                            		$CI->db->where('date >=', $date1);
+            				$CI->db->where('date <=', $date2);
+                            		$result11 =$CI->db->get();
+                            		$entry_result = $result11->result();
+                            		foreach($entry_result as $query_row)
+                            		{
+                                	$dc = $query_row->entry_items_dc;
+                                	if($dc == "D"){
+                                    	$dr_sum = $query_row->entry_items_amount;
+                                    	$dr_sum_total = $dr_sum_total + $dr_sum;
+                                	}else{
+                                    	$cr_sum = $query_row->entry_items_amount;
+                                    	$cr_sum_total = $cr_sum_total + $cr_sum;
+                                	}
+                            		}
+                            		$total = $dr_sum_total - $cr_sum_total;
+                        		}
+					}
+					//code for writig xml... 
+                                        $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                                        $file_name="Payment"."-".$current_active_account."-".$prev_year.".xml";
+	                                $tt=$acctpath."/".$file_name;
+					$paymentlist2=$CI->payment_model->xml_read($tt,$name);
+					if($acc == "view" && $database == "NULL" )
+                    			{
+					echo "<tr class=\"tr-group\">";
+                			echo "<td class=\"td-group\">";
+                			echo "&nbsp;" .  $name;
+                			echo "</td>";		
+                        		echo "<td align=\"right\">" . convert_amount_dc($total) . "</td>";
+					//echo "</tr>";
+					//code for writig xml... 
+			/*		$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                        		$file_name="Payment"."-".$current_active_account."-".$prev_year.".xml";
+                        		$tt=$acctpath."/".$file_name;
 			if(file_exists($tt))
                         {
 				$doc = new DomDocument();
@@ -116,6 +121,7 @@ class paymentreceipt
             			$xpath->query("/Payment/Payment_Name/Group_Name");
             			$xpath->query("/Payment/Payment_Name/Amount");
             			$xpath->query("/Payment/Payment_Name/Group_ID");
+                        	eymentlist2=$CI->payment_model->xml_read($tt,$name);lse
 
             			$paymentnode1 = $xpath->query("/Payment/Payment_Name/Group_Name");
             			$paymentnode2 = $xpath->query("/Payment/Payment_Name/Amount");
@@ -123,12 +129,9 @@ class paymentreceipt
             			$paymentlist1 = @$paymentnode1->item($i)->nodeValue;
             			$paymentlist2 = @$paymentnode2->item($i)->nodeValue;
             			$paymentlist3 = @$paymentnode3->item($i)->nodeValue;
-			}//if xml...
+			}//if xml...*/
 				$type_total = $type_total + $paymentlist2;
 				$i++;
-				if($paymentlist2 == 0)
-                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        	else
                         	echo "<td align=\"right\">" . convert_amount_dc($paymentlist2) . "</td>"; 
 				echo "</tr>";
                     	}//if view
@@ -198,6 +201,11 @@ class paymentreceipt
                             	$total = $cr_sum_total - $dr_sum_total;
                         }
                     	}
+			$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                        $file_name="Receipt"."-".$current_active_account."-".$prev_year.".xml";
+                        $tt=$acctpath."/".$file_name;
+                        $receiptlist2=$CI->payment_model->xml_read($tt,$name);
+
 			if($acc == "view" && $database == "NULL" )
                     	{
                 		echo "<tr class=\"tr-group\">";
@@ -206,10 +214,7 @@ class paymentreceipt
             			echo "</td>";
             			echo "<td align=\"right\">" . convert_amount_dc(-$total) . "</td>";
 
-			$acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
-                        $file_name="Receipt"."-".$current_active_account."-".$prev_year.".xml";
-                        $tt=$acctpath."/".$file_name;
-			if(file_exists($tt))
+			/*if(file_exists($tt))
                         {
 				$doc = new DomDocument();
             			$doc->formatOutput = true;
@@ -226,12 +231,9 @@ class paymentreceipt
             			$receiptlist1 = @$receiptnode1->item($i)->nodeValue;
             			$receiptlist2 = @$receiptnode2->item($i)->nodeValue;
             			$receiptlist3 = @$receiptnode3->item($i)->nodeValue;
-			}//if xml..
+			}//if xml..*/
 				$type_total = $type_total + $receiptlist2;
-				$i++;
-				if($receiptlist2 == 0)
-                        	echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                        	else
+				//$i++;
                         	echo "<td align=\"right\">" . convert_amount_dc(-$receiptlist2) . "</td>";
 				echo "</tr>";
 			}//if view
@@ -351,7 +353,6 @@ class paymentreceipt
 		$CI->db->select('id,amount,dc,secunitid,entry_id')->from('entry_items')->where('ledger_id', '4')->where('dc', 'C');
         	$query_result = $CI->db->get();
         	$result = $query_result->result();
-	     // 	print_r($result);
         	$no_rows = $query_result->num_rows();
         	foreach($result as $row)
         	{
@@ -440,5 +441,71 @@ class paymentreceipt
 			 return TRUE;
   		}
         }//send_mail 
+
+	function ledgers_op_cl_balance($type,$ledg_id,$database,$name,$curr_year, $op_balance, $op_balance_dc)
+        {
+                $CI =& get_instance();
+                if($name !=  'Depreciation' && $name !=  'Current Assets' && $name !=  'Committed Fund'){
+                $type1 =$type."_Name";
+                $doc = new DOMDocument();
+                $doc->formatOutput = true;
+                $acctpath= $this->upload_path1= realpath(BASEPATH.'../uploads/xml');
+                $file_name="";
+                $file_name=$type."-".$database."-".$curr_year.".xml";
+                $tt=$acctpath."/".$file_name;
+                if(file_exists($tt))
+                {
+                        $doc->preserveWhiteSpace = false;
+                        $doc->load($tt);
+                        $type = $doc->firstChild;
+                        $type1 = $doc->createElement($type1);
+                        $group_name = $doc->createElement('Ledger_Name');
+                        $textNode = $doc->createTextNode($name);
+                        $group_name->appendChild($textNode);
+                        $type1->appendChild($group_name);
+
+                        $amount = $doc->createElement('op_balance');
+                        $textNode2 = $doc->createTextNode($op_balance);
+                        $amount->appendChild($textNode2);
+                        $type1->appendChild($amount);
+
+                        $group_id = $doc->createElement('op_balance_dc');
+                        $textNode1 = $doc->createTextNode($op_balance_dc);
+                        $group_id->appendChild($textNode1);
+                        $type1->appendChild($group_id);
+
+                        $type->appendChild($type1);
+                        $ttt=$doc->saveXML();
+                        $handle = fopen($tt, "w");
+                        fwrite($handle, $ttt);
+                        fclose($handle);
+                }else{
+                        $r = $doc->createElement( $type );
+                        $doc->appendChild( $r );
+                        $b = $doc->createElement( $type1 );
+
+                        $group_name = $doc->createElement( "Ledger_Name" );
+                        $group_name->appendChild($doc->createTextNode($name));
+                        $b->appendChild( $group_name );
+
+                        $amount = $doc->createElement("op_balance");
+                        $amount->appendChild($doc->createTextNode($op_balance));
+                        $b->appendChild( $amount );
+
+                        $group_id = $doc->createElement('op_balance_dc');
+                        $textNode1 = $doc->createTextNode($op_balance_dc);
+                        $group_id->appendChild($textNode1);
+                        $b->appendChild( $group_id );
+
+                        $r->appendChild( $b );
+
+                        $doc->save($tt);
+                        $doc->saveXML();
+
+                }
+        }
+
+        }
+
 }
 ?>

@@ -13,7 +13,7 @@
         $asset = new Reportlist1();
         echo "<table border=0 class=\"simple-table balance-sheet-table\" >";
         echo "<thead><tr><th></th><th align=\"center\" colspan=\"2\">CURRENT YEAR</th><th align=\"center\" colspan=\"2\">PREVIOUS YEAR</th></tr></thead>";
-        $asset->schedule_template6('200201',5);
+        $asset->schedule_template6('200201',5,'view', 'null');
         $current_total = $asset->curr_total1;
 
         echo "<tr>";

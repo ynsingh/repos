@@ -48,7 +48,7 @@
 	$income = new Reportlist1();
 	$diff_total = $income->income_expense_diff();
 //        $liability->new_mhrd(2);
-	$liability->new_mhrd(2, 'view');//add for previous year value
+	$liability->new_mhrd(2, 'view', 'NULL');//add for previous year value
 	$mhrd_total=-$liability->total_mhrd;//add for previous year total value
 	$curr_total = -$liability->curr_total; 
 	$liability_total1 = $curr_total + $diff_total;
@@ -75,7 +75,7 @@
         $this->load->library('reportlist1');
         $asset = new Reportlist1();
 //        $asset->new_mhrd(1);
-	$asset->new_mhrd(1, 'view');//add for previous year value
+	$asset->new_mhrd(1, 'view', 'NULL');//add for previous year value
 	$mhrd_total=$asset->total_mhrd; // add for previous value total
 	$asset_total1 = $asset->curr_total;  
         echo "<tr>";

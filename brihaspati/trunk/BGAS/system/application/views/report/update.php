@@ -72,7 +72,7 @@ if(!$print_preview) {
         {
                 foreach ($dep as $id => $data)
                       {
-			if($data['name'] == 'E-Journals'){
+			if($data['name'] == 'Computer Software'){
 				echo "<tr class=\"tr-balance\"><td colspan=\"4\"><b>Intengible assets</b></td></tr>";	
 			}
 			 echo "<tr>";

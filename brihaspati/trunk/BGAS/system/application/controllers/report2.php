@@ -1278,27 +1278,25 @@ class Report2 extends Controller {
 
 	function IE_schedules($code,$count)
 	{
-		$this->template->set('schedule', 'true');
+	$this->template->set('schedule', 'true');
         $data = array();
         $id = '';
         $schedule = '';
         $name = '';
 
         $data['code'] = $code;
-		$data['count'] = $count;
+	$data['count'] = $count;
         $this->load->model('Group_model');
         $group_details = $this->Group_model->get_schedule($code);
 
-	    $group_id = $this->Group_model->get_id('Grant and Donations');    
+	$group_id = $this->Group_model->get_id('Grant and Donations');    
+	$this->db->select('name')->from('ledgers')->where('group_id',$group_id);
+	$query = $this->db->get();
+	$counter = $query->num_rows();
+	$q_result = $query->result();
 
-	    $this->db->select('name')->from('ledgers')->where('group_id',$group_id);
-	    $query = $this->db->get();
-	    $counter = $query->num_rows();
-	    
-	    $q_result = $query->result();
-
-	    $data['q_result'] = $q_result;
-	    $data['counter'] = $counter;
+	$data['q_result'] = $q_result;
+	$data['counter'] = $counter;
 
         foreach ($group_details as $id => $group)
         {
