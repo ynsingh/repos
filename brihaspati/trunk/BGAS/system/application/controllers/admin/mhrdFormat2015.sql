@@ -3,7 +3,7 @@ INSERT INTO `groups` VALUES (2,'10',0,'Sources of Funds',0,0,0,'');
 INSERT INTO `groups` VALUES(3,'30',0,'Incomes',0,0,0,'');
 INSERT INTO `groups` VALUES(4,'40',0,'Expenditure',0,0,0,'');
 INSERT INTO `budgets` VALUES (1, '50', 0, 'Main Budget', 0.00, 0.00,'Yearly', 0,0);
-INSERT INTO `projection` VALUES(1, '60', 0, 'Target Projection', 0.00, 'Yearly', 0.00);
+INSERT INTO `projection` VALUES(1, '60', 0, 'Target Projection', 0.00, 0.00, 'Yearly');
 INSERT INTO `groups` VALUES(5,'1001',2,'Capital Funds',0,0,0,'Money set aside for the purchase of capital or fixed assets, such as land, factories or manufacturing equipment.');
 INSERT INTO `groups` VALUES(6,'1002',2,'Corpus',0,0,0,'Corpus fund denotes a permanent fund kept for the basic expenditures needed for the administration and survival of the organization.');
 INSERT INTO `groups` VALUES(7,'100201',6,'Corpus-Registartion/Affiliation/Enrolment',0,0,0,'');
@@ -768,12 +768,12 @@ INSERT INTO `budgets` VALUES (8, '4007', 1, 'Depreciation', 0.00, 0.00,'Yearly',
 INSERT INTO `budgets` VALUES (9, '4008', 1, 'Other expenses', 0.00, 0.00,'Yearly', 0,0);
 INSERT INTO `budgets` VALUES (10, '4009', 1, 'Prior Period Expenses', 0.00, 0.00,'Yearly', 0,0);
 
-INSERT INTO `projection` VALUES(2, '3001', 1, 'Academic Receipts', 0.00, 'Yearly', 0.00);
-INSERT INTO `projection` VALUES(3, '3002', 1, 'Grant/Subsidies and Donations', 0.00, 'Yearly', 0.00);
-INSERT INTO `projection` VALUES(4, '3003', 1, 'Income from Royalty & Publications', 0.00, 'Yearly', 0.00);
-INSERT INTO `projection` VALUES(5, '3004', 1, 'Interest Earned', 0.00, 'Yearly', 0.00);
-INSERT INTO `projection` VALUES(6, '3005', 1, 'Other Incomes', 0.00, 'Yearly', 0.00);
-INSERT INTO `projection` VALUES(7, '3006', 1, 'Prior Period Income', 0.00, 'Yearly', 0.00);
+INSERT INTO `projection` VALUES(2, '3001', 1, 'Academic Receipts', 0.00, 0.00, 'Yearly');
+INSERT INTO `projection` VALUES(3, '3002', 1, 'Grant/Subsidies and Donations', 0.00, 0.00, 'Yearly');
+INSERT INTO `projection` VALUES(4, '3003', 1, 'Income from Royalty & Publications', 0.00, 0.00, 'Yearly');
+INSERT INTO `projection` VALUES(5, '3004', 1, 'Interest Earned', 0.00, 0.00, 'Yearly');
+INSERT INTO `projection` VALUES(6, '3005', 1, 'Other Incomes', 0.00, 0.00, 'Yearly');
+INSERT INTO `projection` VALUES(7, '3006', 1, 'Prior Period Income', 0.00, 0.00, 'Yearly');
 
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (1, 'receipt', 'Receipt', 'Received in Bank account or Cash account', 1, 1, '', '', 0, 2);
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (2, 'payment', 'Payment', 'Payment made from Bank account or Cash account', 1, 1, '', '', 0, 3);
