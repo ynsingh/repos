@@ -27,9 +27,8 @@ class Cf extends Controller{
 
 	function index()
 	{
-
+		ini_set('max_execution_time', 300);
 		$this->template->set('page_title', 'Carry forward account');
-
 		/* Check access */
 		if ( ! check_access('cf account'))
 		{

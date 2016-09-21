@@ -4095,8 +4095,6 @@ d Investments')
         $prev_plan_sum_total=$prev_plan_total+$prev_plan_total1;
         $prev_nonplan_sum_total=$prev_nonplan_total+$prev_nonplan_total1;
         $prev_plan_sfc_sum_total=$prev_plan_sfc_total+$prev_plan_sfc_total1;
-	echo"====";
-	print_r($prev_nonplan_sum_total);
 	$this->curr_sum_total = $curr_sum_total;
         $this->curr_plan_sum_total = $curr_plan_sum_total;
         $this->curr_non_plan_sum_total = $curr_non_plan_sum_total;
