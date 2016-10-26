@@ -172,7 +172,8 @@
 		{
 			$update_cheque=NULL;
 		}else{
-			$update_cheque=$update_cheque+1;
+			//$update_cheque=$update_cheque+1;
+			$update_cheque=$update_cheque;
 		}
         	echo"<tr>";
 			//Get cheque print status....
@@ -290,8 +291,8 @@
         		echo form_dropdown('cheque_type', $cheque_type, $active_cheque_type, "class = \"type_dropdown\"");
         		echo "</td>";
 
-			echo anchor('entry', 'Back', array('title' => 'Back to settings'));
-        		echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+			//echo anchor('entry', 'Back', array('title' => 'Back to settings'));
+        		//echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 
         		echo"<td>";
         		echo"<p id=\"submit\">";
@@ -308,6 +309,8 @@
          	echo"<tr>";
 		$i++;
         }
+			echo anchor('entry', 'Back', array('title' => 'Back to settings'));
+        		echo "&nbsp;&nbsp;&nbsp;&nbsp;";
         	echo "</table>";
 
 	}

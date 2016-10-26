@@ -90,11 +90,14 @@ $(document).ready(function(){
 	</thead>
 	<tbody>
 	<?php
+		$end_uri = site_url()."/report2/sec_report/";
 		foreach ($party_detail->result() as $row)
 		{
 			echo "<tr>";
                         echo "<td>" . $row->sacunit . "</td>";
-                        echo "<td>" . $row->partyname . "</td>";
+			$sec_name_id = $this->secunit_model->get_secunitid($row->partyname);
+			echo "<td><a style=\"text-decoration: none;color:black;\" href=$end_uri"."$sec_name_id>$row->partyname</a></td>";
+                        //echo "<td>" . $row->partyname . "</td>";
                         echo "<td>" . $row->partyrole . "</td>";
                         echo "<td>" . $row->mobnum . "</td>";
                         echo "<td>" . $row->email . "</td>";

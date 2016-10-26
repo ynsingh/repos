@@ -32,6 +32,16 @@ class Secunit_model extends Model {
                         return;
         }
 	
+	function get_secunitid($secunit_name)
+        {
+                $this->db->from('addsecondparty')->where('partyname', $secunit_name)->limit(1);
+                $sparty_q = $this->db->get();
+                if ($pname = $sparty_q->row())
+                        return $pname->sacunit;
+                else
+                        return;
+        }
+
 	function get_secunitaddress($secunit_id)
         {
                 $this->db->from('addsecondparty')->where('sacunit', $secunit_id)->limit(1);

@@ -112,6 +112,17 @@ class Entry_model extends Model {
 		}
         }
 
+	function cheque_duplicacy($par_tyid,$data_cheque_no,$entry_id,$data_bank_name)
+	{
+		$this->db->from('cheque_print')->where('secunitid', $par_tyid)->where('update_cheque_no', $data_cheque_no)->where('entry_no', $entry_id)->where('bank_name', $data_bank_name);
+		$duplicacy = $this->db->get();
+		$rows = $duplicacy->num_rows();
+                if ($rows > 0)
+                	return true;
+                else
+                	return  false;
+	}
+
 
 	function get_entry($entry_id, $entry_type_id)
 	{

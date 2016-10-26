@@ -1366,6 +1366,7 @@ $width="100%";
                                                     	$query = $this->db->get();
                                                     	$income = $query->row();
                                                     	$income_id = $income->id;
+							$code_ledg_inc1 = $this->Ledger_model->get_code($income_id);
 
                                                     	$insert_income_data = array(
                                                         	'entry_id' => $entry_id,
@@ -1376,7 +1377,7 @@ $width="100%";
                                                         	'forward_refrence_id' => '0',
                                                         	'backward_refrence_id' => $data_back_refrence,
                                                         	'secunitid' => $secunitid,
-                                        			'ledger_code' => $code_ledg_inc,
+                                        			'ledger_code' => $code_ledg_inc1,
                                                         );
 
                                                      	if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -1415,6 +1416,7 @@ $width="100%";
                                                     	$query = $this->db->get();
                                                     	$income = $query->row();
                                                     	$income_id = $income->id;
+							$code_ledg_inc1 = $this->Ledger_model->get_code($income_id);
 
                                                     	$insert_income_data = array(
                                                         	'entry_id' => $entry_id,
@@ -1425,7 +1427,7 @@ $width="100%";
                                                         	'forward_refrence_id' => '0',
                                                         	'backward_refrence_id' => $data_back_refrence,
                                                         	'secunitid' => $secunitid,
-                                        			'ledger_code' => $code_ledg_inc,
+                                        			'ledger_code' => $code_ledg_inc1,
                                                         );
 
                                                      	if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -3296,7 +3298,17 @@ $width="100%";
                         $data_amount = $this->input->post('amount', TRUE);
                         $data_cheque_no = $this->input->post('cheque_no', TRUE);
                         $data_cheque_type = $this->input->post('cheque_type', TRUE);
-			//Check entered cheque no. already exist in database(Give error message) .........
+
+			$par_tyid = $this->Secunit_model->get_secunitid($data_beneficiary_name);
+			$chequ_duplicate = $this->Entry_model->cheque_duplicacy($par_tyid,$data_cheque_no,$entry_id,$data_bank_name);
+			if($chequ_duplicate)
+			{
+				$this->messages->add('Cheque number '.$data_cheque_no.' already printed by '.$data_bank_name.' for the party '.$data_beneficiary_name.' .', 'error');
+                                $this->template->load('template', 'entry/cheque', $data);
+                                return;
+			}
+
+			/*Check entered cheque no. already exist in database(Give error message) .........
 			$this->db->select('id, entry_no')->from('cheque_bounce_record')->where('new_cheque_no', $data_cheque_no)->where('bank_name', $data_bank_name);
                         $check_name_exist = $this->db->get();
 			foreach($check_name_exist->result() as $row3)
@@ -3309,7 +3321,7 @@ $width="100%";
                                 $this->template->load('template', 'entry/cheque', $data);
                                 return;
 		
-			}
+			}*/
 			//set cheque_type(Bearer or order) in session..
                         $newdata = array(
                         'cheque_type'  => $data_cheque_type,
@@ -3376,18 +3388,18 @@ $width="100%";
                                         } else {
                                         $this->db->trans_complete();
                                 }
-			
 
 		} 
 		
 		if ($_POST)
                 {
 		 	if ($_POST['submit'] == 'Save')
-                        {
+                       	{
 				$this->messages->add(' Cheque record save Successfully.', 'success');
-                                $this->template->load('template', 'entry/cheque', $data);
-                                return;
+                             	$this->template->load('template', 'entry/cheque', $data);
+                               	return;
 			}
+		
 		}
 		
                 /* Getting Ledger details */
