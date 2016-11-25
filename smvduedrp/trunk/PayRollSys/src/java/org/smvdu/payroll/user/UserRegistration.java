@@ -62,7 +62,8 @@ import org.smvdu.payroll.beans.db.UserDB;
  *  Contributors: Members of ERP Team @ SMVDU, Katra
  *
  * @author Seema Pal
- * User Verification code added by Om Prakash<omprakashkgp@gmail.com> IITK, 19 April 2016.
+ * User Verification code added by Om Prakash (omprakashkgp@gmail.com), IITK, 19 April 2016.
+ * Last Modification : August 29, 2016
  */
 public class UserRegistration {
     private String vcode;
@@ -108,7 +109,7 @@ public class UserRegistration {
                                      }
                                   });
             String to = emailId;
-            String from = f[1];
+            String from = f[4];
             
             MassageProperties msgprop = new MassageProperties();
             MimeMessage msg = new MimeMessage(session);
@@ -137,9 +138,6 @@ public class UserRegistration {
                   msg.setContent(l_mp);
             Date date=new Date();
             
-            //Connection connection = new CommonDB().getConnection();
-            // Connection connectionLogin = new CommonDB().getLoginDBConnection();
-            //  try{
             PreparedStatement pst = null; 
             PreparedStatement pst1 = null; 
             PreparedStatement pst2 = null; 
@@ -148,61 +146,50 @@ public class UserRegistration {
             //ResultSet rst = null;
             UserDB ud = new UserDB();
             int userid = ud.CheckUserExistInUserMaster(emailId);
-            //System.out.println("User in user_master - " +userid);
             if(!(userid > 0)){
               //  pst = connection.prepareStatement("insert into user_master(user_name,user_pass,user_profile_id,flag) values('"+emailId+"','"+password+"','"+0+"','"+1+"')");
                 pst = connection.prepareStatement("insert into user_master(user_name,user_pass,user_profile_id,flag,verification_code,is_verified) values('"+emailId+"','"+password+"','"+0+"','"+0+"','"+vcode+"','"+0+"')");
                 pst.executeUpdate();
                 pst.clearParameters();
                 pst.close();
-                //System.out.println("Records inserted into user_master for "+emailId);
-           
+                           
                 boolean dbExist = new CommonDB().checkLoginDBExists();
                 if(dbExist){
-                    //System.out.println("Login Database exist");
                     int id = ud.CheckUserExistInLoginDB(emailId);
                     if(!(id > 0)){
-                        //System.out.println("User does not exist in login database");
                         String component = "payroll";
                         //pst1 = connectionLogin.prepareStatement("insert into edrpuser(username,password,email,componentreg,category_type,mobile,status) values('"+emailId+"','"+password+"','"+emailId+"','"+component+"','"+categoryT+"','"+phoneno+"','"+1+"')");
                         pst1 = connectionLogin.prepareStatement("insert into edrpuser(username,password,email,componentreg,category_type,mobile,status,verification_code,is_verified) values('"+emailId+"','"+password+"','"+emailId+"','"+component+"','"+categoryT+"','"+phoneno+"','"+0+"','"+vcode+"','"+0+"')");
                         pst1.executeUpdate();
                         pst1.clearParameters();
                         pst1.close();
-                       // System.out.print("msg for sending mail body1=======>"+msg);
+                       
                         msg.setSentDate(date);
                         Transport transport = session.getTransport("smtp");
                         transport.connect();
                         msg.saveChanges();     // don't forget this
                         transport.sendMessage(msg, msg.getAllRecipients());
                         //transport.send(msg);
-                        transport.close();            
-                        //System.out.print("msg for sending mail body2=======>"+msg);
-
-                        //System.out.println("Records inserted into bgasuser of LoginDB for "+emailId);    
+                        transport.close();  
                         int userIdInLoginDB = ud.CheckUserExistInLoginDB(emailId);
-                        //System.out.println("User Now exist in Login Database exist with userid " +userIdInLoginDB);
-                    
-                        //System.out.println("User Now exist in Login Database exist with userid " +userIdInLoginDB);
+                        
                         pst2 = connectionLogin.prepareStatement("insert into userprofile(userid,firstname,lastname,address,secmail,mobile,lang,status)"
                            + " values('"+userIdInLoginDB+"','"+firstname+"','"+lastname+"','"+address+"','"+""+"', '"+phoneno+"','"+"english"+"','"+1+"')");
                         pst2.executeUpdate();
                         pst2.clearParameters();
                         pst2.close();
-                        //System.out.println("Records inserted into userprofile of LoginDB for "+emailId+":"+firstname+":"+lastname+":"+address);
-                    
+                                                                  
                     }
                     else
                     {
-                         //System.out.println("Entry already Exist in users of LoginDB for - "+emailId);
                          ArrayList<String> totalComponents = getTotalComponent(emailId);
-                         String components = null;
+                         String components ="BGAS";
                                 
-                                /**write code for retrieving component details. split that details saprating by commma into
-                                *an arraylist.
-                                *if that arraylist contain payroll. than do nothing otherwise insert payroll into that
-                                *column.
-                                */
+                            /**write code for retrieving component details. split that details saprating by commma into
+                             *an arraylist.
+                             *if that arraylist contain payroll. than do nothing otherwise insert payroll into that
+                             *column.
+                             */
                                 
                          boolean flag = totalComponents.contains("payroll");
                          if(flag){
@@ -210,7 +197,6 @@ public class UserRegistration {
                             System.out.println("Do nothing in LoginDB");
                          }
                          else{
-                            //System.out.println("User is first time Registering in Payroll SO insert 'payroll' in Componentreg field in LoginDB");
                             components = components.concat(",payroll");
                             pst3 = connectionLogin.prepareStatement("update edrpuser set componentreg=? where username=?");
                             pst3.setString(1,components);
@@ -218,7 +204,7 @@ public class UserRegistration {
                             pst3.executeUpdate();
                             pst3.clearParameters();
                             pst3.close();
-                            //System.out.println("payroll is inserted in edrpuser in componentreg field");
+                            
                          }      
                                     
                      }//close else part if user exists in userLogindb           
@@ -236,8 +222,7 @@ public class UserRegistration {
             int UserId = ud.getUserId(emailId);
             //int roleId=ud.getRoleExists(emailId,orgId);
             int roleId=getRoleExists(emailId,orgId);
-            //System.out.println("userRole check from user_roles table===="+roleId+"userid==="+UserId);
-           
+                       
             Exception adduser_role;
             /** Add employee role if employee role not exists in institute */ 
             if(roleId!= 6 && userType.equals("EmpReg")){
@@ -249,7 +234,6 @@ public class UserRegistration {
                     adduser_role = AddUserRole(emailId, orgId,"InstAdminReg",UserId );
                 }    
             }
-           
             connection.close();
             connectionLogin.close();        
             return null;
@@ -294,13 +278,14 @@ public class UserRegistration {
         ResultSet rst;
         try
         {
-            pst = connL.prepareStatement("select componentreg from bgasuser where username='"+emailId+"'");
+      //      pst = connL.prepareStatement("select componentreg from bgasuser where username='"+emailId+"'");
+            pst = connL.prepareStatement("select componentreg from edrpuser where username='"+emailId+"'");
             rst = pst.executeQuery();
             rst.next();
             String components = rst.getString(1);
             for (String componentName : components.split(",")){
                 totalComponents.add(componentName);
-                //System.out.println("User is already Registered with "+componentName);
+              
             }
             rst.close();
             pst.close();
@@ -344,22 +329,17 @@ public class UserRegistration {
                 pst6.executeUpdate();
                 pst6.clearParameters();
                 pst6.close();
-                System.out.println("Records inserted into user_roles as Admin for "+emailId);
-                
+                              
                 pst7 = connection.prepareStatement("insert into user_roles(user_id, role_id, org_id) values('"+UserId+"','"+6+"','"+orgId+"')");
                 pst7.executeUpdate();
                 pst7.clearParameters();
                 pst7.close();
                     
-                System.out.println("Records inserted into user_roles as Employee for '"+emailId+"' and OrgId is :'"+orgId+"'" );
-                    
                 pst8 = connection.prepareStatement("update org_profile set org_status = 1 where org_id='"+orgId+"'");
                 pst8.executeUpdate(); 
                 pst8.clearParameters();
                 pst8.close();
-                    
-                System.out.println("Status is set to TRUE for orgnization where org id is : "+orgId);
-                
+                                                
             } 
             return null;
         }
@@ -401,12 +381,10 @@ public class UserRegistration {
             PreparedStatement pst;
             ResultSet rst;
             int uid=new UserDB().getUserIDfromUserName(userName);
-            //System.out.println("userid==in getuserOrg method==="+uid +":"+userName);
             pst  = cn.prepareStatement("select role_id from user_roles where user_id ='"+uid+"' and org_id = '"+orgId+"' ");
             rst = pst.executeQuery();
             while(rst.next()){;
             roleid=rst.getInt(1);
-            System.out.println("userid==in get active link=in userDB==="+orgId+":----"+uid+":"+userName+":"+roleid);
             }
             rst.close();
             pst.close();
@@ -442,7 +420,6 @@ public class UserRegistration {
             
             boolean dbExist = new CommonDB().checkLoginDBExists();
             if(dbExist){
-                //System.out.println("This is updating status of Login Db ====>"+email);
                 pst1=connectionLogin.prepareStatement("update edrpuser set status='"+1+"', verification_code='"+sc+"', is_verified='"+1+"' where "
                     + "username=? and verification_code=?");
                 pst1.setString(1, email);

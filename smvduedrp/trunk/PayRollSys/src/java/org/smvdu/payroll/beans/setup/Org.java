@@ -7,11 +7,13 @@ package org.smvdu.payroll.beans.setup;
 
 import java.io.Serializable;
 import java.net.UnknownHostException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
@@ -24,43 +26,46 @@ import org.smvdu.payroll.beans.db.OrgProfileDB;
 
 /**
  *
- *  *  Copyright (c) 2010 - 2011 - 2015 SMVDU, Katra.
-*  All Rights Reserved.
-**  Redistribution and use in source and binary forms, with or 
-*  without modification, are permitted provided that the following 
-*  conditions are met: 
-**  Redistributions of source code must retain the above copyright 
-*  notice, this  list of conditions and the following disclaimer. 
-* 
-*  Redistribution in binary form must reproduce the above copyright
-*  notice, this list of conditions and the following disclaimer in 
-*  the documentation and/or other materials provided with the 
-*  distribution. 
-* 
-* 
-*  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED 
-*  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
-*  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-*  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE 
-*  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
-*  EQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
-*  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
-*  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-*  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
-*  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
-*  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
-* 
-* 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
-*
+ *  Copyright (c) 2010 - 2011 - 2014 SMVDU, Katra.
+ *  Copyright (c) 2014 - 2016 ETRG, IITK.
+ *  All Rights Reserved.
+ **  Redistribution and use in source and binary forms, with or 
+ *  without modification, are permitted provided that the following 
+ *  conditions are met: 
+ **  Redistributions of source code must retain the above copyright 
+ *  notice, this  list of conditions and the following disclaimer. 
+ * 
+ *  Redistribution in binary form must reproduce the above copyright
+ *  notice, this list of conditions and the following disclaimer in 
+ *  the documentation and/or other materials provided with the 
+ *  distribution. 
+ * 
+ * 
+ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED 
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ *  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE 
+ *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+ *  EQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
+ *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * 
+ * 
+ *  Contributors: Members of ERP Team @ SMVDU, Katra
+ *  Modified : August 13, 2016, Om Prakash (omprakashkgp@gmail.com), IITK
+ *  Last Modified : November 24, 2016, Om
  */
-public class Org implements Serializable{
+ public class Org implements Serializable{
+   
     private String adUserId;
     private ArrayList<Org> adminList;
     private String adPassword;
     private String oldPassword;
     private String adRePassword;
-    private String date;
+    private Date date;
     private PreparedStatement ps;
     private ResultSet rs;
     private String email;
@@ -71,14 +76,14 @@ public class Org implements Serializable{
     private String address1;
     private String address2;
     private String tagLine;
-    private int id ;
+    private int id;
     private String masterPassword;
     private String recoveryEMailId;
     private String tanno;
     private boolean status;
     private int notificationDay;
     private String city;
-    private String pincode;
+    private int pincode;
     private String state;
    // private int ll=0;
     private String countryCode = "+91";
@@ -99,13 +104,23 @@ public class Org implements Serializable{
     private String contextName;
     private boolean ipStatus;
     private int srNo;
-
+    private Blob logo;
+    
+       
     public int getSrNo() {
         return srNo;
     }
 
     public void setSrNo(int srNo) {
         this.srNo = srNo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
   
     public boolean isIpStatus() {
@@ -180,9 +195,8 @@ public class Org implements Serializable{
     private ArrayList<Org> collegeList;
     private ArrayList<Org> adminEmailIdList;
     public ArrayList<Org> getAdminEmailIdList() {
-         adminEmailIdList = new CollegeList().adminEmaiIdList();
+        adminEmailIdList = new CollegeList().adminEmaiIdList();
         dataGrid2.setValue(adminEmailIdList); 
-        //System.out.println("\nadminEmailIdList====="+adminEmailIdList+"\ndataGrid2====="+dataGrid2);
         return adminEmailIdList;
     }
 
@@ -221,13 +235,23 @@ public class Org implements Serializable{
         this.dataGrid4 = dataGrid4;
     }
     private UIData dataGrid5;
-
+    
     public UIData getDataGrid5() {
         return dataGrid5;
     }
 
     public void setDataGrid5(UIData dataGrid5) {
         this.dataGrid5 = dataGrid5;
+    }
+    
+    private UIData dataGrid9;
+
+    public UIData getDataGrid9() {
+        return dataGrid9;
+    }
+
+    public void setDataGrid9(UIData dataGrid9) {
+        this.dataGrid9 = dataGrid9;
     }
     
     private ArrayList<Org> serverDetails;
@@ -264,7 +288,8 @@ public class Org implements Serializable{
     public void setPendingList(ArrayList<Org> pendingList) {
         this.pendingList = pendingList;
     }
-    String ip;
+    
+// String ip;
      public Org() throws UnknownHostException
      {
          FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -296,18 +321,27 @@ public class Org implements Serializable{
      
     public ArrayList<Org> getAdminList() {
        adminList = new CollegeList().activeAdminList();
-      // System.out.println("\nseema===Om===adminList=====lstadmin="+adminList);
        dataGrid.setValue(adminList); 
-       //System.out.println("\nseema====Om=======lstadmin="+adminList+"\ndataGrid====="+dataGrid);
        return adminList;
     }
 
     public void setAdminList(ArrayList<Org> adminList) {
         this.adminList = adminList;
     }
-     
+    
+    private ArrayList<Org> deactivateList;
+    
+    public ArrayList<Org> getDeactivateList() {
+        deactivateList = new CollegeList().getDeactivateCollegeList();
+        dataGrid9.setValue(deactivateList);
+        return deactivateList;
+    }
+
+    public void setDeactivateList(ArrayList<Org> deactivateList) {
+        this.deactivateList = deactivateList;
+    }
+
     public String getAdUserId() {
-        //System.out.print("============>"+adUserId);
         return adUserId;
     }
 
@@ -370,18 +404,20 @@ public class Org implements Serializable{
     }
 
     public void setNotificationDay(int notificationDay) {
+       if(notificationDay != 0)
         this.notificationDay = notificationDay;
+       else
+           notificationDay = -1;
     }
 
-    public String getDate(){ 
-            return date;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    
     public String getRequestUrl() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
@@ -440,7 +476,7 @@ public class Org implements Serializable{
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
-
+    
     public String getInstDomain() {
         return instDomain;
     }
@@ -449,13 +485,14 @@ public class Org implements Serializable{
         this.instDomain = instDomain;
     }
 
-    public String getPincode() {
+    public int getPincode() {
         return pincode;
     }
 
-    public void setPincode(String pincode) {
+    public void setPincode(int pincode) {
         this.pincode = pincode;
     }
+       
     public String getState() {
         return state;
     }
@@ -515,16 +552,6 @@ public class Org implements Serializable{
     public void setVpass(String vpass) {
         this.vpass = vpass;
     }
-    
-
-    public int getId() {
-          return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-    
 
     public String getName() {
         return name;
@@ -585,8 +612,14 @@ public class Org implements Serializable{
         this.web = web;
     }
 
-    
+    public Blob getLogo() {
+        return logo;
+    }
 
+    public void setLogo(Blob logo) {
+        this.logo = logo;
+    }
+    
     public void getProfile()   {
         Org o = new OrgProfileDB().loadOrgProfile(id);
         this.name = o.getName();
@@ -644,7 +677,7 @@ public class Org implements Serializable{
             fc.addMessage("", message);
             return;
         }
-        if((this.getPincode().matches(".*[0-9].*") == false) || this.getPincode().length()<5)
+        /*if((this.getPincode().matches(".*[0-9].*") == false) || this.getPincode().length()<5)
         {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -652,9 +685,8 @@ public class Org implements Serializable{
             //message.setDetail("First Name Must Be At Least Three Charecter ");
             fc.addMessage("", message);
             return;
-        }
+        }*/
         
-       //if((this.getPhone().matches(".*[0-9]{7}.*") == false) || this.getPhone().length()!=7)
         if((this.getPhone().matches(".*[0-9].*") == false) || this.getPhone().length()<10)
         {
             FacesMessage message = new FacesMessage();
@@ -706,7 +738,6 @@ public class Org implements Serializable{
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             message.setSummary("Please Enter Valid Email Address");
-            //message.setDetail("First Name Must Be At Least Three Charecter ");
             fc.addMessage("", message);
             return;
         }
@@ -731,13 +762,12 @@ public class Org implements Serializable{
             //flash.setRedirect(true);
             //facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sample info message", "richFaces rocks!"));
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Master user Created. User Name :"+this.getEmail()+",Password :"+masterPassword, ""));
-            //FacesContext.getCurrentInstance().getExternalContext().redirect("../Login.jsf");  
+            
             
         }
         else
         {
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
-            //String page= FacesContext.getCurrentInstance().getExternalContext().redirect("../Login.jsf");  
             return;  
         }
         }//  
@@ -760,13 +790,12 @@ public class Org implements Serializable{
             ps.setString(5, name);
             ps.setString(6, city);
             ps.setString(7, state);
-            ps.setString(8, pincode);
+            ps.setInt(8, pincode);
             ps.setInt(9, id);
             ps.executeUpdate();
             ps.close();
             c.close();
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Institute information updated successfully", ""));
-            //System.out.println("Updated ID "+id+":"+city+":"+state+":"+pincode);
         }
         catch(Exception e)
         {
@@ -779,18 +808,18 @@ public class Org implements Serializable{
         try
         {
             ArrayList<Org> orgProf = (ArrayList<Org>) dataGrid3.getValue();
-            //System.out.println("orgProf====="+orgProf);
             for(Org o : orgProf)
             {
-                System.out.println(o.getName()+" : "+o.getWeb()+" : "+o.isStatus());
-            }
+                System.out.println(o.getName()+" : "+o.getWeb()+" : "+o.isStatus()+" "+o.getEmail());
             
+            }            
             Exception ex = new CollegeList().updateRequest(orgProf); 
-            //System.out.println("orgProf==in last==="+orgProf);
             if(ex == null)
             {
                 FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "College Are Updated", ""));
+               
             }
+                
         }
         catch(Exception ex)
         {
@@ -811,7 +840,7 @@ public class Org implements Serializable{
             Exception ex = new CollegeList().update(orgProf);
             if(ex == null)
             {
-                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "College Are Updated", ""));
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "College/Institute Are Deactivated.", ""));
             }
         }
         catch(Exception ex)
@@ -820,11 +849,56 @@ public class Org implements Serializable{
         }
     }
     
+    public void updateDeactivate()
+    {
+        try
+        {
+            ArrayList<Org> orgProfile = (ArrayList<Org>) dataGrid9.getValue();
+            for(Org org : orgProfile)
+            {    
+                System.out.println(org.getId()+":"+org.getName()+":"+org.getWeb()+":"+org.isStatus());
+            }
+            Exception ex = new CollegeList().updateDeactivate(orgProfile);
+            if(ex == null)
+            {
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "College/Institute Are Activated", ""));
+                
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    
+   public void deleteDeactivate()
+   {
+        try
+        {
+            ArrayList<Org> orgProfile = (ArrayList<Org>) dataGrid9.getValue();
+            for(Org org : orgProfile)
+            {    
+                System.out.println(org.getId()+":"+org.getName()+":"+org.getWeb()+":"+org.isStatus());
+            }
+            Exception ex = new CollegeList().deleteDeactivate(orgProfile);
+            if(ex == null)
+            {
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "College/Institute Are deleted. ", ""));
+                
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    
     public void changePassword()
     {
         try
         {
-            System.out.println("User ID : "+this.getAdUserId());
             FacesContext fc = FacesContext.getCurrentInstance();
             FacesMessage message = new FacesMessage();
             if(this.getAdPassword().equals(this.getAdRePassword()) == false)
@@ -858,7 +932,6 @@ public class Org implements Serializable{
     {
         try
         {
-            //System.out.println("User ID : "+this.getAdUserId());
             FacesContext fc = FacesContext.getCurrentInstance();
             FacesMessage message = new FacesMessage();
             if(this.getAdPassword().equals(this.getAdRePassword()) == false)
@@ -890,7 +963,6 @@ public class Org implements Serializable{
     {
         try
         {
-            //System.out.println("Addeing.............");
             Exception ex = new CollegeList().adminDB(this);
             if(ex == null)
             {
@@ -929,7 +1001,6 @@ public class Org implements Serializable{
                  return;
             }
             Exception ex = new CollegeList().updateAdminStatus(admin);
-            //System.out.println("\nActive Admin==in last====seema : "+admin);
             if(ex == null)
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
@@ -952,12 +1023,10 @@ public class Org implements Serializable{
     {
         try
         {
-            System.out.println("Up Datong....");
             FacesContext fc = FacesContext.getCurrentInstance();
             FacesMessage message = new FacesMessage();
             
             ArrayList<Org> admin = (ArrayList<Org>) dataGrid2.getValue();
-            //System.out.println("Active===== Admin arrayliat : "+admin);
             int active = 0;
             for(Org ad : admin)
             {
@@ -975,7 +1044,6 @@ public class Org implements Serializable{
                 return;
             }
             Exception ex = new CollegeList().updateAdminEmailStatus(admin);
-            //System.out.println("Active==in last=== Admin arrayliat : "+admin);
             if(ex == null)
             {
                 message.setSeverity(FacesMessage.SEVERITY_INFO);
@@ -999,17 +1067,16 @@ public class Org implements Serializable{
         try
         {
                FacesContext fc = FacesContext.getCurrentInstance();
-                FacesMessage message = new FacesMessage();
+               FacesMessage message = new FacesMessage();
             if(new CollegeList().featchDetails(this) == true)
             {
                 return "Admin.jsf";
             }
             else
             {
-                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 message.setSummary("Wrong User Id Or Password");
-            //message.setDetail("First Name Must Be At Least Three Charecter ");
-            fc.addMessage("", message);
+                fc.addMessage("", message);
                 return "adminLogin.jsf";
             }
         }
@@ -1029,7 +1096,6 @@ public class Org implements Serializable{
 
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 message.setSummary("Plz Enter EmailID In Correct Format ");
-                //message.setDetail("First Name Must Be At Least Three Charecter ");
                 fc.addMessage("", message);
                 return;
             }

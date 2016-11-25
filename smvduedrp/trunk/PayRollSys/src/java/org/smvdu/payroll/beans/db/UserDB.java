@@ -18,7 +18,7 @@ import org.smvdu.payroll.user.changePassword;
 /**
 *
 *  Copyright (c) 2010 - 2011.2014 SMVDU, Katra.
-*  Copyright (c) 2016 ETRG, IITK.
+*  Copyright (c) 2014 - 2016 ETRG, IITK.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -47,7 +47,9 @@ import org.smvdu.payroll.user.changePassword;
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra,IITkanpur.
 *  Modified Date: 26 feb 2014, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
-* Om Prakash <omprakashkgp@gmail.com> IITK 19 April 2016
+*  Modification: April 2016, Om Prakash (omprakashkgp@gmail.com), IITK 
+*  Modification : August 2016 
+*  Last Modification : November, 2016, Om Prakash
 */
 
 public class UserDB {
@@ -85,9 +87,9 @@ public class UserDB {
                 {
                     ui.setProfileActive(true);
                 }
- else
-                ui.setProfileActive(false);
-                data.add(ui);
+                else
+                    ui.setProfileActive(false);
+                    data.add(ui);
             }
             rs.close();
             ps.close();
@@ -456,7 +458,6 @@ public class UserDB {
     
     public void LastLogoutStatusUpdate(int userId){
         try{
-            //System.out.println("Updating LastVisitedComponent in UserLastStatus");
             Connection connection = new CommonDB().getLoginDBConnection();
             PreparedStatement pst;
             pst=connection.prepareStatement("update userlaststatus set lastvisitedcomponent=? where userid=?");
@@ -574,7 +575,7 @@ public class UserDB {
             PreparedStatement pst;
             ResultSet rst;
             //pst = connection.prepareStatement("select id from edrpuser where username='"+email+"' and status = '"+1+"'");
-            pst = connection.prepareStatement("select id from edrpuser where username='"+email+"' and status = '"+0+"'");
+            pst = connection.prepareStatement("select id from edrpuser where username='"+email+"'");
             rst = pst.executeQuery();
             while(rst.next()){
                 userId = rst.getInt(1);
@@ -624,8 +625,7 @@ public class UserDB {
             rst = pst.executeQuery();
             rst.next();
             int userId = rst.getInt(1);
-            //System.out.println("userID==in  getUserIDfromUserName =="+userId+":"+UserName);
-           
+                       
             rst.close();
             pst.close();
             connection.close();
@@ -647,7 +647,6 @@ public class UserDB {
             Connection cn = new CommonDB().getConnection();
             PreparedStatement pst;
             int uid=getUserIDfromUserName(userName);
-            //System.out.println("userid==in user roles method==="+uid +":"+userName);
             pst  = cn.prepareStatement("select role_id from user_roles where user_id = '"+uid+"' and  org_id='"+orgId+"'");
        
             ResultSet rst;
@@ -657,7 +656,6 @@ public class UserDB {
                 UserInfo uroles = new UserInfo();
                 uroles.setUserRoleId(rst.getInt(1));
                 userRoles.add(uroles.getUserRoleId());
-                //System.out.println(" user roles method==lst="+uroles.getUserRoleId()+":"+rst.getInt(1));
             }
             rst.close();
             pst.close();
@@ -679,10 +677,8 @@ public class UserDB {
             ResultSet rst;
             pst = connection.prepareStatement("select emp_code from employee_master where emp_email='"+UserName+"' and emp_org_code='"+orgCode+"' ");
             rst = pst.executeQuery();
-            //System.out.println("userID==in userrole==="+UserName);
             rst.next();
             String empCode = rst.getString(1);
-            //System.out.println("userID==in rmployeecode from username==="+UserName+":"+orgCode+":"+empCode);
             rst.close();
             pst.close();
             connection.close();
@@ -704,7 +700,6 @@ public class UserDB {
             Connection cn = new CommonDB().getConnection();
             PreparedStatement pst;
             int uid=getUserIDfromUserName(userName);
-            //System.out.println("userid==in user getuserTotalRole method==="+uid +":"+userName);
             pst  = cn.prepareStatement("select role_id from user_roles where user_id = '"+uid+"'");
        
             ResultSet rst;
@@ -714,7 +709,7 @@ public class UserDB {
                 UserInfo uroles = new UserInfo();
                 uroles.setUserRoleId(rst.getInt(1));
                 userRoles.add(uroles.getUserRoleId());
-                //System.out.println(" user getuserTotalRole method==lst="+uroles.getUserRoleId()+":"+rst.getInt(1));
+                
             }
             rst.close();
             pst.close();
@@ -735,7 +730,6 @@ public class UserDB {
             Connection cn = new CommonDB().getConnection();
             PreparedStatement pst;
             int uid=getUserIDfromUserName(userName);
-            //System.out.println("userid==in user getuserTotalOrg method==="+uid +":"+userName);
             pst  = cn.prepareStatement("select distinct org_id from user_roles where user_id = '"+uid+"' ");
           
             ResultSet rst;
@@ -745,9 +739,7 @@ public class UserDB {
                 UserInfo ins = new UserInfo();
                 ins.setUserOrgCode(rst.getInt(1));
                 insDetail.add(ins);
-                //System.out.println(" user total org==="+ins.getUserOrgCode());
             }
-            //System.out.println(" user total org==="+insDetail);
             rst.close();
             pst.close();
             cn.close();
@@ -768,12 +760,10 @@ public class UserDB {
             PreparedStatement pst;
             ResultSet rst;
             int uid=getUserIDfromUserName(userName);
-            //System.out.println("userid==in getuserOrg method==="+uid +":"+userName);
             pst  = cn.prepareStatement("select org_id from user_roles where user_id ='"+uid+"' ");
             rst = pst.executeQuery();
             rst.next();
             int orgcode=rst.getInt(1);
-            //System.out.println("userid==in getuserOrg==="+orgcode);
             rst.close();
             pst.close();
             cn.close();
@@ -794,17 +784,16 @@ public class UserDB {
             PreparedStatement pst;
             ResultSet rst;
             int uid=getUserIDfromUserName(userName);
-            //System.out.println("userid==in getuserOrg method==="+uid +":"+userName);
             pst  = cn.prepareStatement("select role_id from user_roles where user_id ='"+uid+"' and org_id = '"+orgId+"' ");
             rst = pst.executeQuery();
-            rst.next();
-            int roleid=rst.getInt(1);
-            //System.out.println("userid==in get active link===="+orgId+":----"+uid+":"+userName+":"+roleid);
+            while(rst.next()){
+                int roleid=rst.getInt(1);
+                return roleid;
+            }   
             rst.close();
             pst.close();
             cn.close();
-            return roleid;
-         
+            return -1;
         }
         catch(Exception ex)
         {

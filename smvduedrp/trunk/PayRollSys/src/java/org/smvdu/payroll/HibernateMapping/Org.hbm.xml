@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.setup.Org"  table="org_profile">
+
+        <id name="id" type="java.lang.Integer">
+            <column name="org_id" />
+            <generator class="identity"/>
+        </id>
+
+       <property name="name" type="java.lang.String">
+            <column name="org_name" length="100" not-null="true" />
+        </property>
+        <property name="tagLine" type="java.lang.String">
+            <column name="org_tagline" length="100" />
+        </property>
+        <property name="email" type="java.lang.String">
+            <column name="org_email" length="100" />
+        </property>
+       <property name="web" type="java.lang.String">
+            <column name="org_web" length="100" />
+        </property>
+       <property name="phone" type="java.lang.String">
+            <column name="org_phone" length="35" />
+        </property>
+       <property name="address1" type="java.lang.String">
+            <column name="org_address1" length="100" />
+        </property>
+       <property name="address2" type="java.lang.String">
+            <column name="org_address2" length="100"/>
+        </property>
+       <property name="logo" type="blob">
+            <column name="org_logo" />
+        </property>
+       <property name="masterPassword" type="java.lang.String">
+            <column name="org_master_password" length="200" />
+        </property>
+       <property name="recoveryEMailId" type="java.lang.String">
+            <column name="org_recovery_id" length="200"/>
+        </property>
+       <property name="tanno" type="java.lang.String">
+            <column name="org_tanno" length="20" />
+        </property>
+       <property name="city" type="java.lang.String">
+            <column name="org_city" length="40" />
+        </property>
+       <property name="pincode" type="java.lang.Integer">
+            <column name="org_pincode" length="11" not-null="true" />
+        </property>
+        
+       <property name="state" type="java.lang.String">
+            <column name="org_state" length="40"/>
+        </property>
+
+       <property name="countryCode" type="java.lang.Integer">
+            <column name="org_countrycode" length="11" />
+        </property>
+
+       <property name="instDomain" type="java.lang.String">
+            <column name="org_institutedomain" length="100" />
+        </property>
+
+       <property name="toi" type="java.lang.String">
+            <column name="org_toi" length="20" />
+        </property>
+      <property name="affiliation" type="java.lang.String">
+            <column name="org_affiliation" length="40" />
+        </property>
+      <property name="adminfn" type="java.lang.String">
+            <column name="org_adminfn" length="30" />
+        </property>
+      <property name="adminln" type="java.lang.String">
+            <column name="org_adminln" length="40" />
+        </property>
+      <property name="adminDesig" type="java.lang.String">
+            <column name="org_admindesig" length="40"/>
+        </property>
+      <property name="notificationDay" type="java.lang.Integer">
+            <column name="org_reg_noti" length="11"/>
+        </property>
+      <property name="status" type="boolean">
+           <column name="org_status" />
+       </property>
+       <property name="date" type="date">
+            <column name="org_reg_date" />
+       </property>
+        
+  </class>
+</hibernate-mapping>

@@ -1,7 +1,6 @@
 <%-- 
-    Document   : PendingCollegeList
-    Created on : Dec 24, 2012, 11:16:48 AM
-    Author     : KESU 
+    Document   : DeactivateCollegeList
+    Created on : Aug 3, 2016, 2:34:52 PM
 
 *  Copyright (c) 2010 - 2011.2014 SMVDU, Katra.
 *  Copyright (c) 2014 - 2016 ETRG, IITK.
@@ -30,11 +29,8 @@
 *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
-
-
-    GUI Modified date 21 July 2015, Om Prakash (omprakashkgp@gmail.com), IITK
-    Modification : 31 August 2016
-    Last Modification : November, 2016, Om Prakash
+* 
+*    Author : Om Prakash (omprakashkgp@gmail.com), IITK
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -42,93 +38,85 @@
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
 <%@ taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
 <%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
-<!DOCTYPE html>
 
-    <html>
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>JSP Page</title>
-            <link type="text/css" rel="stylesheet" href="../bankDetails.css"/>
-        </head>
-        <body> <f:view>
-            <rich:panel style="height:380px; width:1290px" header="List of Pending Institute's">
-              <div align="right" >                                            
-                  <a4j:commandLink ajaxSingle="true" reRender="sListh" onclick="Richfaces.showModalPanel('sListhelp');">
-                      <h:graphicImage id="hl" value="/img/help-icon.png" alt="Help"></h:graphicImage><rich:toolTip for="lh" value="Help"></rich:toolTip>
-                   </a4j:commandLink>
-              </div>
-                <h:form>
-                    <rich:panel style="margin-left:100px;margin-right:100px;border:none;" >
-                        <rich:messages>
-                            <f:facet name="infoMarker">
-                                <h:graphicImage url="/img/success.png"/>
-                            </f:facet>
-                        </rich:messages>
-                        <rich:dataTable id="upda" style="font-size:14px;font-weight:bold;width:1050px;" rowKeyVar="row" rows="7" value="#{OrgProfileBean.pendingList}" binding="#{OrgProfileBean.dataGrid3}"  var="ins"> 
-                             <h:column>
-                                <f:facet name="header" >
-                                    <h:outputText value="S.No."/>
-                                </f:facet>
-                                 <%-- <h:inputHidden value="#{ins[0]}"/> --%>
-                                  <h:outputText value="#{ins.srNo}"/> 
-                                </h:column> 
+<!DOCTYPE html>
+<html>
+    <link type="text/css" rel="stylesheet" href="../bankDetails.css"/>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <f:view>
+    <body>
+       <a4j:region>
+           <rich:panel header="List Of Deactivate College/Institute's" style="font-size:17px;font-weight:bold;width:1290px;height:380px;">
+            <div align="right" >                                            
+                <a4j:commandLink ajaxSingle="true" reRender="sListh" onclick="Richfaces.showModalPanel('sListhelp');">
+                   <h:graphicImage id="hl" value="/img/help-icon.png" alt="Help"></h:graphicImage><rich:toolTip for="lh" value="Help"></rich:toolTip>
+                 </a4j:commandLink>
+               </div>
+               <h:form>
+                   <rich:panel style="margin-left:100px;margin-right:100px;border:none;" >
+                   <rich:messages>
+                        <f:facet name="infoMarker">
+                            <h:graphicImage url="/img/success.png"/>
+                        </f:facet>
+                   </rich:messages>
+                       <rich:dataTable id="upda3" style="font-size:14px;font-weight:bold;width:1050px;" rowKeyVar="row" rows="7" value="#{OrgProfileBean.deactivateList}" binding="#{OrgProfileBean.dataGrid9}"  var="ins">
                             <h:column>
-                                <f:facet name="header" >
+                                <f:facet name="header">
+                                    <h:outputText value="S.No"/>
+                                </f:facet> 
+                                <h:outputText value="#{ins.srNo}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
                                     <h:outputText value="Institute Name"/>
                                 </f:facet>
-                                 <h:outputText value="#{ins.name}"/> 
-                               </h:column>
+                                <h:outputText value="#{ins.name}"/>
+                            </h:column>
                             <h:column>
-                                <f:facet name="header" >
+                                <f:facet name="header">
                                     <h:outputText value="Web Site"/>
                                 </f:facet>
-                                  <h:outputText value="#{ins.web}"/> 
-                                
+                                <h:outputText value="#{ins.web}"/>
                             </h:column>
                             <h:column>
-                                <f:facet name="header" >
-                                    <h:outputText value="Admin Email ID"/>
+                                <f:facet name="header">
+                                    <h:outputText value="Email"/>
                                 </f:facet>
-                                 <h:outputText value="#{ins.email}"/> 
-                              </h:column>
-                            <h:column>
-                                <f:facet name="header" >
-                                    <h:outputText value="Admin Phone"/>
-                                </f:facet>
-                                 <h:outputText value="#{ins.phone}"/> 
+                                <h:outputText value="#{ins.email}"/>
                             </h:column>
                             <h:column>
-                                <f:facet name="header" >
+                                <f:facet name="header">
+                                    <h:outputText value="Phone No."/>
+                                </f:facet>
+                                <h:outputText value="#{ins.phone}"/>
+                            </h:column>    
+                            <h:column>
+                                <f:facet name="header">
                                     <h:outputText value="Check/Uncheck"/>
                                 </f:facet>
-                                 <h:selectBooleanCheckbox  value="#{ins.status}"/> 
-                             </h:column>
+                                <h:selectBooleanCheckbox value="#{ins.status}"/>
+                            </h:column>
                             <h:column>
-                                <f:facet name="header" >
+                                <f:facet name="header">
                                     <h:outputText value="Status"/>
                                 </f:facet>
-                                 <h:graphicImage value="/img/#{ins.imgUrl}"/> 
-                             </h:column> 
+                                 <h:graphicImage value="/img/#{ins.imgUrl}"/>
+                            </h:column>
                             
-                             <f:facet name="footer">
-                                    <rich:datascroller for="upda" page="5" />
-                            </f:facet>
-
-                      </rich:dataTable>
+                        </rich:dataTable> 
                         <rich:panel>
-                            <a4j:commandButton reRender="#{OrgProfileBean.pendingList}, upda" value="Update" action="#{OrgProfileBean.updateRequest}"/>
-                            <a4j:commandButton reRender="#{OrgProfileBean.pendingList}, upda" value="Filter College's"/>
+                            <a4j:commandButton reRender="#{OrgProfileBean.deactivateList}, upda3 " value="Activate" action="#{OrgProfileBean.updateDeactivate}"/> &nbsp;
+                            <a4j:commandButton reRender="#{OrgProfileBean.deactivateList}, upda3 " value="Delete" action="#{OrgProfileBean.deleteDeactivate}"/>
                         </rich:panel>
-                     </rich:panel>
-                    <%--  <rich:panel style="margin-left:100px;margin-right:100px;">
-                        <h:panelGrid columns="2">
-                            <a4j:commandButton value="Update" action="#{OrgProfileBean.updateRequest}"/>
-                            <a4j:commandButton reRender="list" value="Filter College's"/>
-                        </h:panelGrid>
-                    </rich:panel>--%>
-                </h:form>
-            </rich:panel> 
-            <rich:modalPanel id="sListhelp" autosized="true" domElementAttachment="parent" width="600" height="400">
+                   </rich:panel>
+               </h:form>
+           </rich:panel>
+       </a4j:region>  
+
+             <rich:modalPanel id="sListhelp" autosized="true" domElementAttachment="parent" width="600" height="400">
                    <f:facet name="controls">
                         <h:graphicImage value="/img/close1.png" style="cursor:pointer"  
                                               onclick="Richfaces.hideModalPanel('sListhelp');" />
@@ -147,7 +135,7 @@
                                     <h:outputText style="font-size:14px;" value=" From this link you can Delete and Activate the College/Institute. "/>
                                     <h:outputText style="font-size:14px;" value=" Check the checkbox and click on delete button for delete College/Institute's."/>
                                     <h:outputText style="font-size:14px;" value=" Check the checkbox and click on activate button for activate College/Institute's. "/>
-                                    <h:outputText style="font-size:14px;font-weight:bold;" value=" Change Password "/> 
+                                    <h:outputText style="font-size:14px;font-weight:bold;" value=" Change Password "/>
                                                   <h:outputText style="font-size:14px;" value=" Click on Change Password button. Now insert new Password and click on Submit button. "/>
                                     <h:outputText style="font-size:14px;" value=" If you want to modify the name of institute click on institute name and change the name after that click on Update button. "/>
                                     </h:panelGrid>
@@ -155,6 +143,6 @@
                              <h:commandButton value="Close" onclick="#{rich:component('sListhelp')}.hide(); return false;" />
                            </h:form>
            </rich:modalPanel>
-         </f:view>
-       </body>
-    </html>
+    </body>
+    </f:view>
+</html>

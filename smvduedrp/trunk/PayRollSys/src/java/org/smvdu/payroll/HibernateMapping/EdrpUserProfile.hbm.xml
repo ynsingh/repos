@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.setup.EdrpUserProfile"  table="userprofile">
+       <id name="upid" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity"/>
+        </id>
+       
+        <property name="userid" type="int">
+            <column name="userid" length="20" not-null="true"/>
+        </property>
+        <property name="fstname" type="string">
+            <column name="firstname" length="255"/>
+        </property>
+        <property name="lstname" type="string">
+            <column name="lastname" />
+        </property>
+        <property name="address" type="string">
+            <column name="address" />
+        </property>
+       <property name="smail" type="string">
+            <column name="secmail" />
+        </property>
+       <property name="mobile" type="string">
+            <column name="mobile" />
+        </property>
+	<property name="lang" type="string">
+            <column name="lang" />
+        </property>
+     <property name="status" type="string">
+            <column name="status" />
+        </property>
+      
+  </class>
+</hibernate-mapping>

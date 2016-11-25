@@ -352,14 +352,16 @@
                                     <rich:separator />
                                     <rich:separator />
                                     <rich:separator />--%>
-                                    <h:outputText styleClass="Label" value="Bank Acc. No."/>
+                                    <h:column><h:outputText styleClass="Label" value="Bank Acc. No."/>
+                                    <h:outputText value="*" style="color:red;"/></h:column>
                                     <h:inputText id="ban" styleClass="fields" value="#{EmployeeBean.bankAccNo}"/>
                                     <h:message for="ban" tooltip="*"/>
                                     <h:outputText styleClass="Label" value="Bank Name "/>
                                     <h:inputText value="#{EmployeeBean.bankIFSCcode}" styleClass="fields" id="bankInfo"/>
                                     <h:message for="address" tooltip="*"/>
 
-                                    <h:outputText styleClass="Label" value="Aadhaar No. "/>
+                                    <h:column> <h:outputText styleClass="Label" value="Aadhaar No. "/>
+                                    <h:outputText value="*" style="color:red;"/></h:column>
                                     <h:inputText maxlength="12" value="#{EmployeeBean.aadhaarNo}" styleClass="fields" id="aadharInfo">
                                             <f:convertNumber integerOnly="true" type="number" />
                                     </h:inputText> 

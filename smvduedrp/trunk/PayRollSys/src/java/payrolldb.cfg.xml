@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.datasource">java:comp/env/jdbc/pl</property> 
+<!--<property name="hibernate.connection.url">jdbc:mysql://localhost/pl?autoReconnect=true</property>
+    <property name="hibernate.connection.username">username</property>
+    <property name="hibernate.connection.password">password</property>
+--> 
+    <property name="hibernate.show_sql">true</property>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SessionMaster.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/Department.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/Designation.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/EmployeeType.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/BankProfileDetails.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryGrade.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryProcessingSetup.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/Gender.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/TaxSlabHeadBean.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/EmployeeSlabDetail.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/LeaveType.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/LeaveTypeOrgRecode.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryHead.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryTypeMaster.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/DefaultSalaryData.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SalaryFormula.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/EmployeeTypeSalaryHead.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/Attendance.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/ForgotPassword.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/SmtpConfiguration.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/Org.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/UserMaster.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/UserRoles.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/CollegePendingStatus.hbm.xml"/>
+  </session-factory>
+
+
+</hibernate-configuration>

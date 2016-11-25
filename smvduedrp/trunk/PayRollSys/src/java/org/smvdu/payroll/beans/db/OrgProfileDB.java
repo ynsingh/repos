@@ -11,16 +11,48 @@ import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList; 
-import java.util.Date;
 import org.smvdu.payroll.Admin.ServerDetails;
 import org.smvdu.payroll.api.Administrator.CollegeRequestStatus;
 import org.smvdu.payroll.api.EncryptionUtil;
-import org.smvdu.payroll.api.email.Mail;
 import org.smvdu.payroll.api.email.OrgConformationEmail;
-
 import org.smvdu.payroll.beans.UserGroup;
 import org.smvdu.payroll.beans.setup.Org;
 import org.smvdu.payroll.beans.UserInfo;
+
+/**
+ *
+ *  Copyright (c) 2010 - 2011 - 2014 SMVDU, Katra.
+ *  Copyright (c) 2014 - 2016 ETRG, IITK.
+ *  All Rights Reserved.
+ **  Redistribution and use in source and binary forms, with or 
+ *  without modification, are permitted provided that the following 
+ *  conditions are met: 
+ **  Redistributions of source code must retain the above copyright 
+ *  notice, this  list of conditions and the following disclaimer. 
+ * 
+ *  Redistribution in binary form must reproduce the above copyright
+ *  notice, this list of conditions and the following disclaimer in 
+ *  the documentation and/or other materials provided with the 
+ *  distribution. 
+ * 
+ * 
+ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED 
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ *  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE 
+ *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+ *  EQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
+ *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * 
+ * 
+ *  Contributors: Members of ERP Team @ SMVDU, Katra
+ * 
+ *  Last Modification : August 2016, Om Prakash (omprakashkgp@gmail.com), IITK
+ */
 
 public class OrgProfileDB {
 
@@ -45,7 +77,7 @@ public class OrgProfileDB {
             o.setAddress1(rs.getString(7));
             o.setAddress2(rs.getString(8));
             o.setCity(rs.getString(13));
-            o.setPincode(rs.getString(14));
+            o.setPincode(rs.getInt(14));
             o.setState(rs.getString(15));
             rs.close();
             ps.close();
@@ -124,7 +156,6 @@ public class OrgProfileDB {
     public void update(String name,int code)  {
         try
         {
-            //System.out.println("update method is calling======");
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update org_profile set org_name=? where org_id=? ");
             ps.setString(1, name);
@@ -159,13 +190,12 @@ public class OrgProfileDB {
         }
     }
     public Exception save(Org org)  {
-        try
+      try
         {
             java.util.Date date = new java.util.Date();
             java.util.Date dat = new java.util.Date();
             DateFormat dateFormat;
-            dateFormat = new SimpleDateFormat("yy-MM-dd");
-            
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             /*
             java.util.Date date=new java.util.Date();
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -173,13 +203,13 @@ public class OrgProfileDB {
             int month = date.getMonth();
             int year = date.getYear();
             int day = date.getDate();*/
-            String d = String.valueOf(date.getDate())+"-"+String.valueOf(date.getMonth())+"-"+String.valueOf(date.getDate());
-            dat = (java.util.Date) dateFormat.parse(d);
+            //String d = String.valueOf(date.getDate())+"-"+String.valueOf(date.getMonth())+"-"+String.valueOf(date.getDate());
+            //dat = (java.util.Date) dateFormat.parse(d);
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into org_profile(org_name,"
                     + "org_email,org_web,org_phone,org_address1,"
                     + "org_master_password, org_city, org_pincode, org_state, org_countrycode, org_institutedomain, org_toi, org_affiliation, org_adminfn, org_adminln, org_admindesig,org_status,org_reg_date) "
-                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'"+0+"','"+new java.sql.Date(dat.getTime())+"')",1);
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'"+0+"','"+dateFormat.format(date)+"')",1);
             ps.setString(1, org.getName());
         //    ps.setString(2, org.getTagLine());
             ps.setString(2, org.getEmail());
@@ -192,7 +222,7 @@ public class OrgProfileDB {
         //    ps.setString(9, org.getRecoveryEMailId());
          //   ps.setString(7,org.getTanno());
             ps.setString(7, org.getCity());
-            ps.setInt(8, Integer.parseInt(org.getPincode()));
+            ps.setInt(8, org.getPincode());
             ps.setString(9, org.getState());
            // ps.setInt(10, org.getLl());
             ps.setString(10, org.getCountryCode());
@@ -206,9 +236,7 @@ public class OrgProfileDB {
             ps.executeUpdate();
             rs=ps.getGeneratedKeys();
             rs.next();
-           // System.out.println("rs===="+rs);
             int code = rs.getInt(1);
-            //System.out.println("rs==code=="+code);
             ps.close();
             c.close();
             UserInfo info = new UserInfo();

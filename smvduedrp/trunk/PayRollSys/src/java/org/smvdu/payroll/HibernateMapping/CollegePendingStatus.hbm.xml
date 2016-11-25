@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.setup.CollegePendingStatus"  table="college_pending_status">
+       <id name="cpsid" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity"/>
+        </id>
+       
+        <property name="orgcode" type="int">
+            <column name="org_code" />
+        </property>
+        <property name="orgstatus" type="boolean">
+            <column name="org_request_status" />
+        </property>
+        <property name="orgemail" type="string">
+            <column name="org_pen_email" />
+        </property>
+        
+  </class>
+</hibernate-mapping>

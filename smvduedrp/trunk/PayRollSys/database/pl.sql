@@ -124,7 +124,7 @@ CREATE TABLE `org_profile` (
  /* `org_ll` int(20) NOT NULL,*/
   `org_countrycode` int(11) default NULL,
  /*`org_regioncode` int(11) NOT NULL,*/
-  `org_institutedomain` varchar(20) default NULL,
+  `org_institutedomain` varchar(100) default NULL,
   `org_toi` varchar(20) default NULL,
   `org_affiliation` varchar(40) default NULL,
   `org_adminfn` varchar(30) default NULL,

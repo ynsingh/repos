@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.setup.EdrpUser"  table="edrpuser">
+       <id name="edrpid" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity"/>
+        </id>
+       
+        <property name="username" type="string">
+            <column name="username" length="200" not-null="true"/>
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="200" not-null="true"/>
+        </property>
+        <property name="email" type="string">
+            <column name="email" not-null="true"/>
+        </property>
+        
+        <property name="comptreg" type="string">
+            <column name="componentreg" not-null="true" />
+        </property>
+       <property name="catrytype" type="string">
+            <column name="category_type" not-null="true" />
+        </property>
+       <property name="mobile" type="string">
+            <column name="mobile" />
+        </property>
+       <property name="status" type="string">
+            <column name="status" not-null="true" />
+        </property>
+       <property name="vericode" type="string">
+            <column name="verification_code" not-null="true" />
+        </property>
+       <property name="isveri" type="int">
+            <column name="is_verified" not-null="true" />
+        </property>
+  
+      
+  </class>
+</hibernate-mapping>

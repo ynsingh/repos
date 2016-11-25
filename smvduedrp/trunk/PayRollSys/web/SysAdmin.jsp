@@ -2,8 +2,10 @@
     Document   : Admin
     Created on : Dec 12, 2012, 10:23:06 AM
     Author     : KESU
-    
-    *  All Rights Reserved.
+
+*  Copyright (c) 2010 - 2011.2014 SMVDU, Katra.
+*  Copyright (c) 2014 - 2016 ETRG, IITK.
+*  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
 *  conditions are met: 
@@ -31,8 +33,9 @@
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
 *  Modified Date: 4 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
-   GUI Modified date 21 July 2015, IITK , Om Prakash (omprakashkgp@gmail.com)
-
+*  GUI ModifGUIied date 21 July 2015, Om Prakash (omprakashkgp@gmail.com), IITK
+*  Modification : August 2016
+*  Last modification : November, 2016, Om Prakash
 --%>
 
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
@@ -86,7 +89,7 @@
                             <ul>
                                 <li><a href='http://202.141.40.215:8080/brihaspati/servlet/brihaspati' target="_blank">Brihaspati</a></li>
                                 <li><a href='http://202.141.40.215/~brihaspati/BGAS/index.php/user/login' target="_blank">BGAS</a></li>
-                               <li><a href='#'>PICO</a></li>
+                               <li><a href='http://202.141.40.218:8081/pico/Administration/Index.action'>PICO</a></li>
                               <%-- <li><a href='#'>Student Fee Management</a></li>--%>
                             </ul>
                         </div>
@@ -153,7 +156,8 @@
                                 <rich:dropDownMenu id="IMang" value="Institute Management" >
                                 <rich:menuItem value="Check Registered College/Institute's" onclick="return loadIframe('ifrm', 'adminLogin/CollegeList.jsf')"/>
                                 <rich:menuItem value="Check Pending College/Institute's" onclick="return loadIframe('ifrm', 'adminLogin/PendingCollegeList.jsf')"/> 
-                                        <%-- <h:commandLink value="Check Registered College/Institute's" onclick="return loadIframe('ifrm', 'adminLogin/CollegeList.jsf')"/>--%>
+                                <rich:menuItem value="Delete / activate College/Institute's " onclick="return loadIframe('ifrm', 'adminLogin/DeactivateCollegeList.jsf')"/>
+                                <%-- <h:commandLink value="Check Registered College/Institute's" onclick="return loadIframe('ifrm', 'adminLogin/CollegeList.jsf')"/>--%>
                                 </rich:dropDownMenu>
                                     <%--  </h:column> --%>
                                     <%-- <h:column>

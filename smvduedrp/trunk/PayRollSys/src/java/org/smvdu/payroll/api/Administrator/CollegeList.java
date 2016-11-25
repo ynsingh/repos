@@ -11,10 +11,12 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import org.hibernate.Query;
+import org.hibernate.Transaction;
 import org.smvdu.payroll.Admin.AdminManagedBean;
 import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.api.EncryptionUtil;
@@ -23,8 +25,12 @@ import org.smvdu.payroll.beans.Employee;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.OrgProfileDB;
+import org.smvdu.payroll.beans.db.UserDB;
+import org.smvdu.payroll.beans.setup.EdrpUser;
+import org.smvdu.payroll.beans.setup.EdrpUserProfile;
 import org.smvdu.payroll.beans.setup.Org;
 import org.smvdu.payroll.beans.setup.SmtpConfiguration;
+import org.smvdu.payroll.beans.setup.UserMaster;
 import org.smvdu.payroll.user.UserRegistration;
 import org.smvdu.payroll.user.changePassword;
 
@@ -60,6 +66,7 @@ import org.smvdu.payroll.user.changePassword;
  * @author KESU
  * GUI Modified date 21 July 2015, Om Prakash (omprakashkgp@gmail.com), IITK
  * Modified date 21 March 2016
+ * Hibernate conversion of multiple database : November, 2016, Om Prakash. 
  */
 
 @ManagedBean
@@ -68,11 +75,10 @@ import org.smvdu.payroll.user.changePassword;
 public class CollegeList {
     Connection cn;
     String adminUserId;
-    
     private HibernateUtil helper;
     private org.hibernate.Session sess;
-
-    
+    private org.hibernate.Session seslogin;
+  
     public CollegeList()
     {
         
@@ -91,12 +97,40 @@ public class CollegeList {
     
     /**
      * @Load All Pending Details of College List Org Name, Org Id, Org Request Status, Pending Status 
-     * @return  
+     * @return  List of Pending College List
      */
     
-    public ArrayList<Org> getPendingCollegeList()
+    public ArrayList<Org> getPendingCollegeList()  
     {
-        try
+           ArrayList<Org> pendingLt = new ArrayList<Org>();
+           try{
+                sess = helper.getSessionFactory().openSession();
+                sess.beginTransaction();
+                Query query = sess.createQuery("select o.id, o.name, o.web, o.email, o.phone, cps.orgstatus from Org o, CollegePendingStatus cps where o.id=cps.orgcode and cps.orgstatus='"+0+"'");
+                List<Object[]> pending = query.list();
+                int k=1;
+                for(Object[] it: pending){
+                   Org orgt = new Org();
+                   orgt.setSrNo(k);
+                   orgt.setId((Integer)it[0]);
+                   orgt.setName(it[1].toString());
+                   orgt.setWeb(it[2].toString());
+                   orgt.setEmail(it[3].toString());
+                   orgt.setPhone(it[4].toString());
+                   orgt.setStatus(false);
+                   orgt.setImgUrl("InActive.png");
+                   pendingLt.add(orgt);
+                   k++;
+                }
+                sess.getTransaction().commit();
+                return pendingLt;
+              }  
+              catch(Exception e){
+              sess.beginTransaction().rollback();
+              e.printStackTrace();
+       }
+
+  /*   try
         {
             
             ArrayList<Org> pendingList = new ArrayList<Org>();
@@ -137,7 +171,54 @@ public class CollegeList {
             ex.printStackTrace();
             return null;
         }
+    */   
+        return null;
+             
+        
     }
+    
+    /*
+     * Deactivate College / Institute details 
+     */
+    public ArrayList<Org> getDeactivateCollegeList()
+    {
+       try{
+           ArrayList<Org> deactivateList = new ArrayList<Org>();
+           Connection conection = new CommonDB().getConnection();
+           PreparedStatement pst;
+           pst=conection.prepareStatement("select org_id,org_name,org_web,org_email,org_phone,org_reg_date,org_status from org_profile left join user_master on org_email=user_name where org_status='"+0+"' and flag='"+0+"'");
+           ResultSet rst = pst.executeQuery();
+           int k=1;
+           while(rst.next()){
+               Org org = new Org();
+               org.setId(rst.getInt(1));
+               org.setName(rst.getString(2));
+               org.setWeb(rst.getString(3));
+               org.setEmail(rst.getString(4));
+               org.setPhone(rst.getString(5));
+               org.setDate(rst.getDate(6));
+               if(rst.getInt(7) == 1)
+                {
+                    org.setImgUrl("Active.png");
+                    org.setStatus(true); 
+                }
+                else
+                {
+                    org.setImgUrl("InActive.png"); 
+                    org.setStatus(false);  
+                }
+                org.setSrNo(k);
+                deactivateList.add(org);
+                k++;
+           }
+           conection.close();
+           return deactivateList;
+       } 
+       catch(Exception ex){
+           ex.printStackTrace();
+           return null;
+       }
+    }        
     
      public int getDateDIff(String fromDate,String toDate)
     {
@@ -209,7 +290,7 @@ public class CollegeList {
             cn.setAutoCommit(false); 
             java.util.Date d = new java.util.Date();
         //    PreparedStatement pst = cn.prepareStatement("select org_id,org_name,org_web,org_email,org_phone,org_reg_date,flag from org_profile inner join user_master on org_id = user_org_id");
-            PreparedStatement pst = cn.prepareStatement("select org_id,org_name,org_web,org_email,org_phone,org_reg_date,org_status from org_profile where org_status =1");
+            PreparedStatement pst = cn.prepareStatement("select org_id,org_name,org_web,org_email,org_phone,org_reg_date,org_status from org_profile join user_master where org_email=user_name");
             
             ResultSet rst = pst.executeQuery();
             String toDate = d.getYear()+"-"+d.getMonth()+"-"+d.getDay();
@@ -226,7 +307,7 @@ public class CollegeList {
                 o.setWeb(rst.getString(3)); 
                 o.setEmail(rst.getString(4)); 
                 o.setPhone(rst.getString(5)); 
-                o.setDate(rst.getString(6)); 
+                o.setDate(rst.getDate(6)); 
                 if(rst.getInt(7) == 1)
                 {
                     o.setImgUrl("Active.png");
@@ -288,44 +369,124 @@ public class CollegeList {
     
     public Exception update(ArrayList<Org> org)
     {
+       try {
+           sess = helper.getSessionFactory().openSession();
+           seslogin = helper.getLoginSF().openSession();
+           //SessionFactory factory = new Configuration().configure("logindb.cfg.xml").buildSessionFactory(); 
+          // Session session = factory.openSession();
+           Transaction tx = null;
+           for(Org or : org)
+           {
+              if(or.isStatus()==false)
+              {
+                sess.beginTransaction();
+                Query query1 = sess.createQuery("update Org set status = '"+0+"' where id = '"+or.getId()+"'");
+                query1.executeUpdate();
+                UserMaster um = new UserMaster();
+                um.setUid(or.getId());
+                um.setUsname(or.getEmail());
+                Query query2 = sess.createQuery("update UserMaster set flag = '0' where usname ='"+or.getEmail()+"'");
+                query2.executeUpdate();
+                sess.getTransaction().commit();
+                String emailId=or.getEmail();
+                ArrayList totalComponents = new UserRegistration().getTotalComponent(emailId);
+                boolean flag = totalComponents.contains("BGAS");
+                if(flag)
+                {    
+                      String component="BGAS";
+                      tx= seslogin.beginTransaction();
+                      Query query3 = seslogin.createQuery("update EdrpUser set comptreg='"+component+"' , status='"+1+"' where username ='"+emailId+"'");
+                      EdrpUser edu = new EdrpUser();
+                      edu.setUsername(emailId);
+                      query3.executeUpdate();
+                      tx.commit();
+                 }   
+                else{
+                    String component=" ";
+                    tx= seslogin.beginTransaction();
+                    Query query4 = seslogin.createQuery("update EdrpUser set comptreg='"+component+"' , status='"+0+"' where username ='"+emailId+"'");
+                    EdrpUser edu = new EdrpUser();
+                    edu.setUsername(or.getEmail());
+                    query4.executeUpdate();
+                    tx.commit();
+                }
+               new OrgConformationEmail().sendDeActivationCollegeMail(or);
+              }
+           }
+                              
+       }
+       catch(Exception e){
+           sess.beginTransaction().rollback();
+           e.printStackTrace();
+       }
+     finally {
+             sess.close();
+             seslogin.close();
+                        
+        }
+        
+        /*
         try
         {
             
             Connection connection = new CommonDB().getConnection();
+            Connection connectionLogin = new CommonDB().getLoginDBConnection();
             PreparedStatement pst = null; 
             PreparedStatement pst1 = null;
+            PreparedStatement pst2 = null;
+            PreparedStatement pst3 = null;
             int st;
             for(Org or : org)
             {
-                if(or.isStatus() == true)
+                if(or.isStatus() == false)
                 {
-                   // System.out.print("Om1======>"+or.getId());
-                    st =1;
-                    new OrgConformationEmail().sendMail(or); 
-                }
-                else
-                {
-                    
                     st = 0;
+                
+                    pst = connection.prepareStatement("update org_profile set org_status ='"+st+"' where org_id ='"+or.getId()+"'");
+                    pst1 = connection.prepareStatement("update user_master set flag ='"+st+"' where user_name ='"+or.getEmail()+"'");
+                    pst1.executeUpdate();
+                    pst1.clearParameters();
+                    pst.executeUpdate();
+                    pst.clearParameters();
+                    String emailId=or.getEmail();
+                    ArrayList totalComponents = new UserRegistration().getTotalComponent(emailId);
+                    boolean flag = totalComponents.contains("BGAS");
+                    if(flag)
+                    {    
+                        String component="BGAS";
+                        pst2 = connectionLogin.prepareStatement("update edrpuser set componentreg=? , status='"+1+"' where username =? ");
+                        pst2.setString(1, component);
+                        pst2.setString(2, emailId);
+                        pst2.executeUpdate();
+                        pst2.clearParameters();
+                        pst2.close();
+                    }
+                    else{
+                        String component=" ";
+                        pst3 = connectionLogin.prepareStatement("update edrpuser set componentreg=? , status='"+st+"' where username =? ");
+                        pst3.setString(1, component);
+                        pst3.setString(2, emailId);
+                        pst3.executeUpdate();
+                        pst3.clearParameters();
+                        pst3.close();
+                    
+                    }
                     new OrgConformationEmail().sendDeActivationCollegeMail(or); 
                 }
-                pst = connection.prepareStatement("update org_profile set org_status = '"+st+"' where org_id = '"+or.getId()+"'");
-                pst1 = connection.prepareStatement("update user_master set flag = '"+st+"' where user_org_id='"+or.getId()+"'");
-                pst1.executeUpdate();
-                pst1.clearParameters();
-                pst.executeUpdate();
-                pst.clearParameters();
             }
             pst.close();
             pst1.close();
             connection.close();
+            connectionLogin.close();
             return null;
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
             return ex;
-        } 
+        } */
+        return null;
+       
     }
    
     /**
@@ -458,13 +619,293 @@ public class CollegeList {
 //        } 
 //    }
 //    
+   /* 
+    * this method is use for Activate the Deactivated College List.
+    */
+    public Exception updateDeactivate(ArrayList<Org> orgDA)
+    {
+       try {
+           sess = helper.getSessionFactory().openSession();
+           seslogin = helper.getLoginSF().openSession();
+           Transaction tx = null;
+           for(Org or : orgDA)
+           {
+              if(or.isStatus()==true)
+              {
+                sess.beginTransaction();
+                Query query1 = sess.createQuery("update Org set status = '"+1+"' where id = '"+or.getId()+"'");
+                query1.executeUpdate();
+                UserMaster um = new UserMaster();
+                um.setUid(or.getId());
+                um.setUsname(or.getEmail());
+                Query query2 = sess.createQuery("update UserMaster set flag = '1' where usname ='"+or.getEmail()+"'");
+                query2.executeUpdate();
+                sess.getTransaction().commit();
+                String emailId=or.getEmail();
+                ArrayList totalComponents = new UserRegistration().getTotalComponent(emailId);
+                boolean flag = totalComponents.contains("BGAS");
+                if(flag)
+                {    
+                      String components="BGAS";
+                      components = components.concat(",payroll");
+                      tx = seslogin.beginTransaction();
+                      Query query3 = seslogin.createQuery("update EdrpUser set comptreg='"+components+"' , status='"+1+"' where username ='"+emailId+"'");
+                      EdrpUser edu = new EdrpUser();
+                      edu.setUsername(emailId);
+                      query3.executeUpdate();
+                      tx.commit();
+                 }   
+                else{
+                    String components = "payroll";
+                    tx = seslogin.beginTransaction();
+                    Query query4 = seslogin.createQuery("update EdrpUser set comptreg='"+components+"' , status='"+1+"' where username ='"+emailId+"'");
+                    EdrpUser edu = new EdrpUser();
+                    edu.setUsername(or.getEmail());
+                    query4.executeUpdate();
+                    tx.commit();
+                } 
+                new OrgConformationEmail().sendMail(or);
+             }
+         }
+      }
+      catch(Exception e){
+           sess.beginTransaction().rollback();
+           e.printStackTrace();
+      }
+      finally {
+         sess.close();
+         seslogin.close();
+      }
+
+  /*
+       Connection connection = new CommonDB().getConnection();
+       Connection connectionLogin = new CommonDB().getLoginDBConnection();
+       try{
+                PreparedStatement pst = null;
+                PreparedStatement pst1= null;
+                PreparedStatement pst2= null;
+                PreparedStatement pst3 = null;
+                int st;
+                for(Org org : orgDA)
+                {   
+                    if(org.isStatus()==true)
+                    {
+                        st=1;
+  
+                        pst = connection.prepareStatement("update org_profile set org_status ='"+st+"' where org_id ='"+org.getId()+"'");
+                        pst1 = connection.prepareStatement("update user_master set flag ='"+st+"' where user_name ='"+org.getEmail()+"'");
+                        pst1.executeUpdate();
+                        pst1.clearParameters();
+                        pst.executeUpdate();
+                        pst.clearParameters();
+                    
+                        String emailId=org.getEmail();
+                        ArrayList<String> totalComponents =new UserRegistration().getTotalComponent(emailId);
+                        boolean flag=totalComponents.contains("BGAS");
+                        if(flag)
+                        {
+                            String components = "BGAS";
+                            components = components.concat(",payroll");
+                            pst2=connectionLogin.prepareStatement("update edrpuser set componentreg=? , status='"+st+"' where username=?");
+                            pst2.setString(1, components);
+                            pst2.setString(2, emailId);
+                            pst2.executeUpdate();
+                            pst2.clearParameters();
+                            pst2.close();
+                            
+                        }
+                        else{
+                            String components = "payroll";
+                            pst3=connectionLogin.prepareStatement("update edrpuser set componentreg=? , status='"+st+"' where username=?");
+                            pst3.setString(1, components);
+                            pst3.setString(2, emailId);
+                            pst3.executeUpdate();
+                            pst3.clearParameters();
+                            pst3.close();
+                        }
+                        new OrgConformationEmail().sendMail(org);
+                   }
+                        
+                }
+                pst.close();
+                pst1.close();
+                connection.close();
+                connectionLogin.close();
+                return null;
+            } 
+            catch(Exception ex){
+                ex.getStackTrace();
+            }*/
+           return null;
+    }
+
+    // Method for delete Institute/College
     
-    
-    
-    
+    public Exception deleteDeactivate(ArrayList<Org> orgD)
+    {
+        try{
+           sess = helper.getSessionFactory().openSession();
+           seslogin = helper.getLoginSF().openSession();
+           Transaction tx = null;
+           for(Org or : orgD)
+           {
+              if(or.isStatus()==true)
+              {
+                sess.beginTransaction();
+                Query query1 = sess.createQuery("delete Org where id = '"+or.getId()+"'");
+                query1.executeUpdate();
+                UserMaster um = new UserMaster();
+                um.setUid(or.getId());
+                um.setUsname(or.getEmail());
+                Query query2 = sess.createQuery("delete UserMaster where usname ='"+or.getEmail()+"'");
+                query2.executeUpdate();
+                sess.getTransaction().commit();
+                UserDB ud = new UserDB();
+                String emailId=or.getEmail();
+                ArrayList totalComponents = new UserRegistration().getTotalComponent(emailId);
+                boolean flag = totalComponents.contains("BGAS");
+                if(flag)
+                {    
+                    System.out.println("The User Entry can not be delete from login database. ");
+                }   
+               else{
+                    int userIdInLoginDB = ud.CheckUserExistInLoginDB(emailId);
+                    tx= seslogin.beginTransaction();
+                    Query query3 = seslogin.createQuery("delete EdrpUser where status='"+0+"' and username ='"+emailId+"'");
+                    EdrpUser edu = new EdrpUser();
+                    edu.setUsername(or.getEmail());
+                    query3.executeUpdate();
+                    Query query4 = seslogin.createQuery("delete EdrpUserProfile where userid ='"+userIdInLoginDB+"'");
+                    EdrpUserProfile edup= new EdrpUserProfile();
+                    edup.setUserid(userIdInLoginDB);
+                    query4.executeUpdate();
+                    tx.commit();
+                  }
+            }
+         }
+        }
+        catch(Exception e){
+           sess.beginTransaction().rollback();
+           e.printStackTrace();
+       }
+       finally {
+           sess.close();
+           seslogin.close();
+     }
+        
+        /*
+       Connection connection = new CommonDB().getConnection();
+       Connection connectionLogin = new CommonDB().getLoginDBConnection();
+       try{
+                PreparedStatement pst = null;
+                PreparedStatement pst1= null;
+                PreparedStatement pst2= null;
+                PreparedStatement pst3 = null;
+                int st;
+                for(Org org : orgD)
+                {   
+                    if(org.isStatus()==true)
+                    {
+                        st=1;
+  
+                        pst = connection.prepareStatement("delete from org_profile where org_id ='"+org.getId()+"'");
+                        pst1 = connection.prepareStatement("delete from user_master where user_name ='"+org.getEmail()+"'");
+                        pst1.executeUpdate();
+                        pst1.clearParameters();
+                        pst.executeUpdate();
+                        pst.clearParameters();
+                        
+                        UserDB ud = new UserDB();
+                        
+                        String emailId=org.getEmail();
+                        ArrayList<String> totalComponents =new UserRegistration().getTotalComponent(emailId);
+                        boolean flag=totalComponents.contains("BGAS");
+                        if(flag)
+                        {
+                            System.out.println("The User Entry can not be delete from login database. ");
+
+                        }
+                        else{
+                            int userIdInLoginDB = ud.CheckUserExistInLoginDB(emailId);
+                   
+                            pst3=connectionLogin.prepareStatement("delete from edrpuser where username=?");
+                            pst3.setString(1, emailId);
+                            pst3.executeUpdate();
+                            pst3.clearParameters();
+                            pst3.close();
+                            
+                            pst2=connectionLogin.prepareStatement("delete from userprofile where userid=?");
+                            pst2.setInt(1, userIdInLoginDB);
+                            pst2.executeUpdate();
+                            pst2.clearParameters();
+                            pst2.close();
+                        }
+                      
+                   }
+                        
+                }
+                pst.close();
+                pst1.close();
+                connection.close();
+                connectionLogin.close();
+                return null;
+            } 
+            catch(Exception ex){
+                ex.getStackTrace();
+            }*/
+        return null;
+    }        
+    /*
+     * This method is for accept the pending college list.
+     */
     public Exception updateRequest(ArrayList<Org> org)
     {
-       
+        try{
+           sess = helper.getSessionFactory().openSession();
+           String password = null;
+           for(Org or : org)
+            {
+                if(or.isStatus() == true)
+                {
+                    sess.beginTransaction();
+                    Query query = sess.createQuery("select masterPassword from Org  where email = '"+or.getEmail()+"'");
+                    ArrayList<Org> data = (ArrayList<Org>) query.list();
+                    for (Object obj:data)
+                    {
+                        password = obj.toString();
+                    }
+                    
+                    updateStatus(or);
+                    
+                    Employee emp = new Employee();
+                    
+                    Org orginfo =  new OrgProfileDB().loadOrgProfileByName(or.getName());
+                    Exception eloginmachanism;
+                    eloginmachanism = new UserRegistration().EmployeeRegistration(or.getEmail(),password,or.getPhone(),orginfo.getAdminfn(),orginfo.getAdminln(),orginfo.getAddress1(),emp.getCategoryT(),or.getId(),"InstAdminReg");
+                   
+                    deleteCps(or);
+                    UserDB ud = new UserDB();
+                    String emailId = or.getEmail();
+                    int orgId = or.getId(); 
+                    String userType = null;
+                    int UserId = ud.getUserId(emailId);
+                    int roleId=ud.getRoleExists(emailId,orgId);
+                    Exception adduser_role;
+                    //** Add InstituiteAdmin  role if InstituteAdmin  role not exists in institute   
+                    if(roleId!= 4){
+                        adduser_role = new UserRegistration().AddUserRole(emailId, orgId,"InstAdminReg",UserId );
+                    }    
+                    new OrgConformationEmail().sendMail(or);
+                }
+            }
+        }
+        catch(Exception e){
+            sess.beginTransaction().rollback();
+            e.printStackTrace();
+        }
+       return null;
+        
+        /*
         Connection connection = new CommonDB().getConnection();
         Connection connectLogin = new CommonDB().getLoginDBConnection();
         try
@@ -475,7 +916,6 @@ public class CollegeList {
             ResultSet rst = null;
             int st;
             String password = null;
-            //System.out.println("Total Institutes to be approved are : " +org.size());
             for(Org or : org)
             {
                 if(or.isStatus() == true)
@@ -487,28 +927,45 @@ public class CollegeList {
                     if(rst.next())
                     {
                         password = rst.getString(1);
-                      //  System.out.println("password first====="+password+":"+or.getAdminfn()+":"+or.getAdminln()+":"+or.getAddress1()+":"+or.getName());
+                      
                     }
                     rst.close();
-                    pst.close(); 
-                  
+                    pst.close();
                     
-                    /** this method follow the common data base mechanism for (InstituteAdmin) user registration process
-                    * and check user exists or not if not then insert the entry.
-                    * get institute detail from OrgProfileDB() for profile information.
-                    * @see UserRegistration() and OrgProfileDB().
-                    */
+                    new CollegeList().updateStatus(or);
+                    
+                    //** this method follow the common data base mechanism for (InstituteAdmin) user registration process
+                    //* and check user exists or not if not then insert the entry.
+                    //* get institute detail from OrgProfileDB() for profile information.
+                    //* @see UserRegistration() and OrgProfileDB().
+                    
                     Employee emp = new Employee();
                     
                     Org orginfo =  new OrgProfileDB().loadOrgProfileByName(or.getName());
                     Exception eloginmachanism;
                     eloginmachanism = new UserRegistration().EmployeeRegistration(or.getEmail(),password,or.getPhone(),orginfo.getAdminfn(),orginfo.getAdminln(),orginfo.getAddress1(),emp.getCategoryT(),or.getId(),"InstAdminReg");
-                                      
                     pst9 = connection.prepareStatement("delete from college_pending_status where org_code = '"+or.getId()+"'");
-                    //System.out.println("college pending=====entry for delete======"+pst9+"adminfn==="+orginfo.getAdminfn()+"adminln==="+orginfo.getAdminln()+"address---"+orginfo.getAddress1());
                     pst9.executeUpdate();
                     pst9.clearParameters();
                     pst9.close();
+                    /////////new
+                    UserDB ud = new UserDB();
+                    String emailId = or.getEmail();
+                    int orgId = or.getId();
+                   
+                    //** get userId from user emailId 
+                    //* check for role exists or not
+                    //
+                    int UserId = ud.getUserId(emailId);
+                    int roleId=ud.getRoleExists(emailId,orgId);
+                                                              
+                    Exception adduser_role;
+                   
+                    //** Add InstituiteAdmin  role if InstituteAdmin  role not exists in institute   
+                    if(roleId!= 4 ){
+                        adduser_role = new UserRegistration().AddUserRole(emailId, orgId,"InstAdminReg",UserId );
+                    }    
+                  
                     new OrgConformationEmail().sendMail(or);
                     
                 }
@@ -516,6 +973,7 @@ public class CollegeList {
                 {
                     st = 0;
                 }
+                
             }
             connection.close();
             connectLogin.close();
@@ -553,7 +1011,7 @@ public class CollegeList {
                 }
             }
             return null;
-        }
+        } */
     }
     
     
@@ -762,9 +1220,7 @@ public class CollegeList {
         try
         {
             java.util.Date date = new java.util.Date();
-            
             java.util.Date dat = new java.util.Date();
-            //System.out.print("date========>"+date+"====dat====>"+dat);
             DateFormat dateFormat;
             dateFormat = new SimpleDateFormat("yy-MM-dd");
             
@@ -863,7 +1319,7 @@ public class CollegeList {
             PreparedStatement pst;
             ResultSet rst;
             //pst = connection.prepareStatement("select count(user_name) as total from user_master where flag='"+0+"'");
-            pst = connection.prepareStatement("select count(org_name) as total from org_profile where org_status = '"+0+"'");
+            pst = connection.prepareStatement("select count(org_name) as total from org_profile join user_master on org_email=user_name where org_status = '"+0+"'");
             rst = pst.executeQuery();
             rst.next();
             totalCollege = rst.getInt("total");
@@ -980,7 +1436,6 @@ public class CollegeList {
         {
             Connection cn = new CommonDB().getConnection();
             PreparedStatement pst;
-           // System.out.println("org email====="+editedRecord.getEmail()+"password==="+editedRecord.getAdPassword());
             String pass= new EncryptionUtil().createDigest("MD5",editedRecord.getAdPassword());
             String changepassinDb=new changePassword().changePaswordInLoginDB(pass, editedRecord.getEmail());
             pst = cn.prepareStatement("update org_profile set org_master_password = '"+pass+"' where org_email = '"+editedRecord.getEmail()+"'");
@@ -1267,5 +1722,60 @@ public class CollegeList {
             return null;
         }
     }
-    
+    /*
+     * This method has been generated for update the org profile status after admin accept.
+     */
+    public void updateStatus(Org orgs)
+    {
+        
+        try{
+            sess = helper.getSessionFactory().openSession();
+            sess.beginTransaction();
+            Query query = sess.createQuery("update Org set status = '"+1+"' where email = '"+orgs.getEmail()+"'");
+            query.executeUpdate();
+            sess.getTransaction().commit();
+        }
+        catch(Exception e){
+            sess.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        finally{
+        sess.close();
+        }
+       /* Connection cn = new CommonDB().getConnection();
+        try{
+                PreparedStatement pst;
+                pst = cn.prepareStatement("update org_profile set org_status='"+1+"' where org_email='"+orgs.getEmail()+"'");
+                pst.executeUpdate();
+                cn.close();
+                pst.close();
+                
+        }
+        catch(Exception ex)
+        {
+             ex.printStackTrace();
+                         
+        }*/
+     }
+    /*
+     * This method has been generated for delete the college pending status after accepting the college. 
+     */
+    public void deleteCps(Org cps)
+    {
+        
+        try{
+            sess = helper.getSessionFactory().openSession();
+            sess.beginTransaction();
+            Query query = sess.createQuery("delete  CollegePendingStatus where orgcode = '"+cps.getId()+"'");
+            query.executeUpdate();
+            sess.getTransaction().commit();
+        }
+        catch(Exception e){
+            sess.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        finally{
+            sess.close();
+        }
+    }
 }
