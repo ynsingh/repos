@@ -978,7 +978,7 @@ $width="100%";
 			}
 			else
 			{
-				$data_sanc_letter_date = "";
+				$data_sanc_letter_date = " ";
 			}
 
 			/* code for validation of unique voucher no */
@@ -1115,7 +1115,7 @@ $width="100%";
                  	{
                          	$id = $row1->id;
                      	}
-				
+			
 			$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			//$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
 			if($data_sanc_letter_date != "")
@@ -1142,14 +1142,18 @@ $width="100%";
 				'sanc_type' => $data_sanc_type,
 				'sanc_value' => $sanc_value,
 				'vendor_voucher_number' => $vendor_number,
-				'purchase_order_no' => $purchase_order_no
+				'purchase_order_no' => $purchase_order_no,
+				'verified_by' => ' '
 			);
 
 			if ( ! $this->db->insert('entries', $insert_data))
 			{
+				$mymsg=$this->db->_error_message();
+			//echo	$mymsgno=$this->db->_error_number();
 				$this->db->trans_rollback();
 				$this->messages->add('Error addding Entry.', 'error');
-				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry 1");
+				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry 1".$mymsg." value is ".$data_sanc_letter_date);
+//				echo mysql_errno($this->db) . ": " . mysql_error($this->db) . "\n";
 				$this->template->load('template', 'entry/add', $data);
 				return;
 			} 
@@ -1234,9 +1238,10 @@ $width="100%";
                                 );
                                 if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                 {
+					$mymsg=$this->db->_error_message();
                                		$this->db->trans_rollback();
                                         $this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
-                                        $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 2 " . "[id:" . $data_ledger_id . "]");
+                                        $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 2 " . "[id:" . $data_ledger_id . "]".$mymsg);
                                         $this->template->load('template', 'entry/add', $data);
                                         return;
                                 }
