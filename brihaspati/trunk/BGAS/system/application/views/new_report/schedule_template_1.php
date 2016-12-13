@@ -72,6 +72,29 @@
                 echo "<td width=15%>";
                 echo "</td>";
         }  
+		echo "</tr>";
+		echo "<tr>";
+		echo "<td width=15%>";
+                echo "</td>";
+
+	 	echo "<td width=15% align=\"right\">";
+                echo "DR";
+                echo "</td>";
+
+		echo "<td width=15% align=\"right\">";
+                echo "CR";
+                echo "</td>";
+
+		echo "<td width=15% align=\"right\">";
+                echo "DR";
+                echo "</td>";
+
+                echo "<td width=15% align=\"right\">";
+                echo "CR";
+                echo "</td>";
+		echo "</tr>";
+  
+
         $liability1->get_liabilityschedule('1001',$count, 'view','NULL');
 	$dr_total_1 = $liability1->dr_total1;
         $cr_total_2 = $liability1->cr_total1;

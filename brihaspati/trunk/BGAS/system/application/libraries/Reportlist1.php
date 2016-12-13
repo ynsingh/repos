@@ -431,7 +431,7 @@ class Reportlist1
                                         echo "<td align=\"right\">" . convert_amount_dc(-$cr_total1) . "</td>";
                                 
                                         echo "<td align=\"right\">" . convert_amount_dc($prev_amount[0]) . "</td>";
-                                        echo "<td align=\"right\">" . convert_amount_dc($prev_amount[1]) . "</td>";
+                                        echo "<td align=\"right\">" . convert_amount_dc(-$prev_amount[1]) . "</td>";
                         }else{
                                 if($profit < 0)
                                         $dr_total1=-$profit;
@@ -446,7 +446,7 @@ class Reportlist1
                                         echo "<td align=\"right\">" . convert_amount_dc(+$dr_total1) . "</td>";
                                         echo "<td align=\"right\">" . convert_amount_dc(-$cr_total1) . "</td>";
                                         echo "<td align=\"right\">" . convert_amount_dc($prev_amount[0]) . "</td>";
-                                        echo "<td align=\"right\">" . convert_amount_dc($prev_amount[1]) . "</td>";
+                                        echo "<td align=\"right\">" . convert_amount_dc(-$prev_amount[1]) . "</td>";
 					}else{
                                         $data = $CI->payment_model->xml_creation('schedule_'.$count,-$cr_total1,$database,$ledg_name,$curr_year,$dr_total1);
 					}
@@ -489,7 +489,7 @@ class Reportlist1
                         echo "<td align=\"right\">" . convert_amount_dc(+$dr_amount) . "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc(-$cr_amount) . "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc($prev_amount[0]) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($prev_amount[1]) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(-$prev_amount[1]) . "</td>";
 			}else{
                         	$data = $CI->payment_model->xml_creation('schedule_'.$count,-$cr_amount,$database,$group_name,$curr_year,$dr_amount);
                         }
@@ -543,6 +543,11 @@ class Reportlist1
                         echo ".&nbsp;";
 			}
                         $counter++;
+			if($counter){
+			$str1 = "a";
+			}
+			$str1--; 
+
 			if($type == 'view'){
 			if($group_name == 'Cash in Hand')
                         echo "&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
@@ -619,6 +624,7 @@ d Investments')
 			}	
 			if($children_groupname == 'Stock in Hand')
                         {
+				$count1 = 1;
 				$CI->db->select('name,code,id')->from('ledgers')->where('group_id',$children_groupid);
                 		$children_ledgerdetail = $CI->db->get();
                 		$children_ledgerresult = $children_ledgerdetail->result();
@@ -630,6 +636,9 @@ d Investments')
 					if($type == 'view'){
                         		echo "<tr class=\"tr-ledger\">";
                         		echo "<td class=\"td-ledger\">";
+					echo "&emsp;&emsp;&emsp;&emsp;" . $this->numberToRoman($count1);
+                                	echo ".";
+					$count1++;
                         		echo "&nbsp;" .  $children_ledgername;
                         		echo "</td>";
 					//$total = $CI->ledger_model->get_balancesheet_ledger_balance($children_ledgerid);
@@ -2016,6 +2025,11 @@ d Investments')
                 	echo "<td class=\"td-group\">";
                 	echo $counter;
                 	$counter++;
+			if($counter){
+                        $str1 = "a";
+                        }
+                        $str1--;
+
 			if($group_name == 'Recipts Against Sponsored Projects')
                         echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row->id . '/' . $row->name, $row->name, array('title' => $row->name,  'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
                         elseif($group_name == 'UGC Sponsored Fellowship/Scholarships')

@@ -13,14 +13,15 @@
     	$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
     	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 
+	$count = "";	
 	$this->load->library('reportlist1');
     	$object = new Reportlist1();
-	if(! $print_preview)
-	{
-        echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-	}else{
+//	if(! $print_preview)
+//	{
+// 	      echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
+//	}else{
 		echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-	}
+//	}
         echo "<thead><tr><th></th><th align=\"center\" colspan=\"5\">Current Year<br>$curr_year</th><th align=\"center\" colspan=\"3\">Previous Year<br>$prev_year</th></tr></thead>";
         echo "<tr><td></td>
         <td align=\"center\" class=\"bold\">Plan</td><td align=\"center\" class=\"bold\">Non-Plan</td><td align=\"center\" class=\"bold\">Plan Specific Scheme</td>

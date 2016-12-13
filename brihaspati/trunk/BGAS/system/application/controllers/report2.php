@@ -1175,9 +1175,9 @@ class Report2 extends Controller {
                 }
 		//$aggtype;
 		if($aggtype == 'agg')
-	                $this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview', 'aggregation/aggregateincexp' => 'ViewAggregate '));
+	                $this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview', 'aggregation/aggregateincexp' => 'ViewAggregate','report2/printall_schedules/1' => 'Print All Schedules'));
 		else
-			$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview'));
+			$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview','report2/printall_schedules/1' => 'Print All Schedules'));
 
 		$data['left_width'] = "300";
                 $data['right_width'] = "125";
@@ -1335,6 +1335,15 @@ class Report2 extends Controller {
 		}
         return;
 	}
+
+	function printall_schedules($counter)
+        {
+                $this->template->set('page_title', 'Print All Schedules');
+                $date1 = $this->session->userdata('date1');
+                $date2 = $this->session->userdata('date2');
+                $this->template->load('template', 'report2/printall_schedules');
+                return;
+        }	
 	
 }
 

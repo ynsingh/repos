@@ -1,30 +1,32 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	
-    $this->db->from('settings');
-    $detail = $this->db->get();
-    foreach ($detail->result() as $row)
-    {
-        $date1 = $row->fy_start;
-        $date2 = $row->fy_end;
-    }
-    $fy_start=explode("-",$date1);
-    $fy_end=explode("-",$date2);
+    	$this->db->from('settings');
+    	$detail = $this->db->get();
+    	foreach ($detail->result() as $row)
+    	{
+        	$date1 = $row->fy_start;
+        	$date2 = $row->fy_end;
+    	}
+    	$fy_start=explode("-",$date1);
+    	$fy_end=explode("-",$date2);
 
-    $curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
-    $prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
+    	$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
+    	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 
-    $counter1 = (2 * $counter) + 4;
-    $counter2 = $counter + 1;
+	$counter = "";	
+	$count = "";
+    	$counter1 = (2 * $counter) + 4;
+    	$counter2 = $counter + 1;
 //    $this->load->library('reportlist1');
   //  $object = new Reportlist1();
-	if(!($print_preview))
-	{
-        echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-        echo "<thead><tr><th align=\"center\">Particulars</th><th colspan=\"16\" align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
-	}else{
+	//if(!($print_preview))
+	//{
+        //echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
+        //echo "<thead><tr><th align=\"center\">Particulars</th><th colspan=\"16\" align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
+	//}else{
 		echo "<table border=1 solid class=\"simple-table balance-sheet-table\" width=\"100%\" >";
         echo "<thead><tr><th align=\"center\">Particulars</th><th colspan=\"16\" align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
-	}
+	//}
 
     
     echo "<tr>";
