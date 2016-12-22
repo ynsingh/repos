@@ -48,10 +48,10 @@
                         <div id='cssmenu' class="align-center">
                             <ul>
                                 <li><a href="../Login.jsf"> Login Page </a></li>
-                                <li><a href='http://202.141.40.215:8080/brihaspati/servlet/brihaspati' target="_blank">Brihaspati</a></li>
-                                <li><a href='http://202.141.40.215/~brihaspati/BGAS/index.php/user/login' target="_blank">BGAS</a></li>
-                               <li><a href='#'>PICO</a></li>
-                               <%--  <li><a href='#'>Student Fee Management</a></li>--%>
+                                <li><a href='http://brihaspati.nmeict.in/brihaspati/servlet/brihaspati' target="_blank">Brihaspati</a></li>
+                                <li><a href='http://brihaspati.nmeict.in/~brihaspati/BGAS/index.php/user/login' target="_blank">BGAS</a></li>
+                               <%--<li><a href='#'>PICO</a></li>
+                                 <li><a href='#'>Student Fee Management</a></li>--%>
                             </ul>
                         </div>
                     </div>

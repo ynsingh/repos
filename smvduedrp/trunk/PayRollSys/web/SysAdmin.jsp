@@ -87,10 +87,10 @@
 
                         <div id='cssmenu' class="align-center">
                             <ul>
-                                <li><a href='http://202.141.40.215:8080/brihaspati/servlet/brihaspati' target="_blank">Brihaspati</a></li>
-                                <li><a href='http://202.141.40.215/~brihaspati/BGAS/index.php/user/login' target="_blank">BGAS</a></li>
-                               <li><a href='http://202.141.40.218:8081/pico/Administration/Index.action'>PICO</a></li>
-                              <%-- <li><a href='#'>Student Fee Management</a></li>--%>
+                                <li><a href='http://brihaspati.nmeict.in/brihaspati/servlet/brihaspati' target="_blank">Brihaspati</a></li>
+                                <li><a href='http://brihaspati.nmeict.in/~brihaspati/BGAS/index.php/user/login' target="_blank">BGAS</a></li>
+                              <%-- <li><a href='http://202.141.40.218:8081/pico/Administration/Index.action'>PICO</a></li>
+                               <li><a href='#'>Student Fee Management</a></li>--%>
                             </ul>
                         </div>
                         
@@ -198,7 +198,7 @@
                                 <rich:toolTip for="im" value="Some College Are Wating For Your Approval"/>
                                 <h:commandButton id="lout"  value="Logout"  action="#{adminManagedBean.logout}" />
                                         <%--  <h:commandButton id="lout"  image="/img/lout.gif" action="#{adminManagedBean.logout}" />--%>
-                                <rich:toolTip for="lout" value="Click Here For Log Out"/>
+                                <rich:toolTip for="lout"  style="color: black" value="Click Here For Log Out"/>
                                 </h:form>
                                 </rich:toolBar> 
                                 <%--  </h:form> --%>
