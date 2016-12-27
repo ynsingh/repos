@@ -4,56 +4,230 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 Author: Feb 2016, Om Prakash<omprakashkgp@gmail.com>, IITK
+Author: Dec 2016, Deepika Chaudhary<chaudharydeepika88@gmail.com>, IITK
 -->
-
+	
 <html>
 <head>
+        <title>Institute Admin Interface</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+    </head>
+<body>
 <style>
-a:link {
-    color: green;
-    background-color: transparent;
-    text-decoration: none;
+/*
+* New Css menu Style 
+*/
+img {
+width: 100%; 
+border: 10px solid transparent;
 }
-a:visited {
-    color: blue;
-    background-color: transparent;
-    text-decoration: none;
+
+#cssmenu,
+#cssmenu ul,
+#cssmenu ul li,
+#cssmenu ul li a {
+  margin-left: 0%;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  line-height: 1;
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
-a:hover {
-    color: red;
-    background-color: transparent;
-    text-decoration: underline;
+#cssmenu {
+  font-family: Roboto, sans-serif;
 }
-a:active {
-    color: yellow;
-    background-color: transparent;
-    text-decoration: underline;
+#cssmenu > ul {
+  width: 80%;
+  background: #ffffff;
 }
-#section {
-    width:350px;
-    float:left;
-    padding:10px;	 	 
+#cssmenu > ul > li > a {
+  padding: 8px 15px;
+  font-size: 17px;
+font-family: "Times New Roman", Times, serif;
+  color:#1A5183;
+  background:#7AD7FB;
+  font-weight: 700;
+  border: 2px solid #fff;
+  text-decoration: none;
+  -webkit-transition: color .2s ease;
+  -o-transition: color .2s ease;
+  -ms-transition: color .2s ease;
+  transition: color .2s ease;
 }
+#cssmenu > ul > li:hover > a,
+#cssmenu > ul > li > a:hover {
+  color: #ffffff;
+}
+#cssmenu ul li.has-sub > a::after {
+  position: absolute;
+  right: 15px;
+  display: block;
+  width: 10px;
+  height: 10px;
+  content: "";
+  border-radius: 2px;
+}
+#cssmenu > ul > li.has-sub > a::after {
+  top: 13px;
+  background: #0000CC;
+}
+#cssmenu > ul > li.has-sub:hover > a::after,
+#cssmenu > ul > li.has-sub > a:hover::after {
+  background: #222222;
+}
+#cssmenu ul ul li.has-sub > a::after {
+  top: 13px;
+  background: #ffffff;
+}
+#cssmenu ul ul li.has-sub:hover > a::after,
+#cssmenu ul ul li.has-sub > a:hover::after {
+  background: #dddddd;
+}
+#cssmenu ul li.has-sub > a::before {
+  position: absolute;
+  right: 15px;
+  z-index: 2;
+  display: block;
+  width: 0;
+  height: 0;
+  border: 3px solid transparent;
+  content: "";
+}
+#cssmenu > ul > li.has-sub > a::before {
+  top: 16px;
+  border-left-color: #ffffff;
+}
+#cssmenu ul ul li.has-sub > a::before {
+  top: 15px;
+  border-left-color: #2e353b;
+}
+#cssmenu ul {
+  -webkit-perspective: 600px;
+  -moz-perspective: 600px;
+  perspective: 600px;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+#cssmenu ul ul {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+  width: 180px;
+  background: #1C9ECB;
+  opacity: 0;
+  -moz-transition: opacity 0.2s ease, -moz-transform 0.2s ease;
+  -webkit-transition: opacity 0.2s ease, -webkit-transform 0.2s ease;
+  -ms-transition: opacity 0.2s ease, -ms-transform 0.2s ease;
+  -o-transition: opacity 0.2s ease, -o-transform 0.2s ease;
+  transition: opacity .2s ease, transform .2s ease;
+  -webkit-transform: rotate3d(0, 1, 0, 35deg);
+  -moz-transform: rotate3d(0, 1, 0, 35deg);
+  transform: rotate3d(0, 1, 0, 35deg);
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  transform-origin: left center;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+#cssmenu ul li:hover > ul {
+  left: 100%;
+  opacity: 1;
+  transform: rotate3d(0, 0, 0, 0);
+}
+#cssmenu ul ul::after {
+  position: absolute;
+  left: -8px;
+  top: 13px;
+  z-index: 5;
+  display: block;
+  width: 0;
+  height: 0;
+  border: 3px solid transparent;
+  border-right-color: #2e353b;
+  content: "";
+}
+#cssmenu ul ul a {
+  border: 2px solid #ffffff;
+  padding: 8px 15px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  -webkit-transition: color .2s ease;
+  -o-transition: color .2s ease;
+  -ms-transition: color .2s ease;
+  transition: color .2s ease;
+}
+#cssmenu ul ul li:hover > a,
+#cssmenu ul ul li a:hover {
+  color: #0000FF;
+}
+
+.body{
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+.head{
+  background-color:#76D5F2;
+  text-shadow: 0 1px 3px rgba(0,0,0,.3), 0 0 30px rgba(0,0,0,.075);
+  background:#76D5F2; /* Old browsers */
+  background: -moz-linear-gradient(25deg,  #76D5F2 0%, #76D5F2 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#020031), color-stop(100%,#6d3353)); /* Chrome,Safari3+ */
+  background: -webkit-linear-gradient(25deg,  #0393C5 0%,#0393C5 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(25deg,  #76D5F2 0%,#76D5F2 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(25deg,  #76D5F2 0%,#76D5F2 100%); /* IE10+ */
+  background: linear-gradient(25deg,  #76D5F2 0%,#76D5F2 100%); /* W3C */
+  -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+     -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+          box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+	width: 100%;
+        margin-top:-1%;
+	height: 50%;
+	background-color:#76D5F2;
+        color:#1A5183;
+	font-size:63px;
+  	font-weight: bold;
+        text-align:center;
+        letter-spacing: 23px;
+        line-height: 207%; 
+}
+.sideleft{
+ 	font-size: 18px;
+  	font-weight:bold;
+        top: 133px;
+	width:22%;
+	height: 570px;
+	position: fixed;
+	bottom: 10px;
+
+}
+
+.sideright{
+	width: 79%;
+	height: 100%;
+        margin-left:20%;
+	}
 </style>
-              
-        </head>
-
-        <body>
-                <div class="wrapper" style="background-color: #DDDDDD;">
-
-                     
-<header>
-   <img src="frst.jpg" style="width:1200px;">
-</header>
-
-
-           <div class="content">
-              <div class="sideleft">
+                <div class="wrapper" style="background-color:#DDDDDD;">
+		<div class="head">Payroll System</div>
+   		<div class="content">
+                <div class="sideleft">
                 <div id="cssmenu">
                     <ul> 
-                     <li><a href="../../Login.jsf"> Login Page </a></li><br>
+                     <li><a href="../../Login.jsf"> Login Page </a></li>
                      <li><a href="#PayRollSystem">PayRoll System</a></li>
-                            <li class='has-sub'>Setup</a>
+ 		      <li class='has-sub'><a href="#Setup">Setup</a>
+ 
                                 <ul>
                                         <li><a href="#FinancialYears">Financial Year</a></li>
                                         <li><a href="#Department">Department</a></li>
@@ -62,17 +236,21 @@ a:active {
                                         <li><a href="#EmployeeTypes">Employee Types</a></li>
                                         <li><a href="#PayScales">Pay Scales</a></li>
                                         <li><a href="#SalaryHeads">Salary Heads</a></li>
-					<li class='has-sub'>Tax Slab Setup</a>
+				</ul>
+				</li>
+					<li class='has-sub'><a href="#TaxSlabSetup">Tax Slab Setup</a>
 					<ul>
 				        <li><a href="#AddGenderDetails">Add Gender Details</a></li>
                                         <li><a href="#AddSlabDetails">Add Slab Details</a></li>
                                         <li><a href="#EmployeeSlabDetails">Employee Slab Details</a></li>
 					</ul>
                                         </li>
+
                                         <li><a href="#Leave Types">Leave Types</a></li>
-                                        </ul>
-                            </li>
-                            <li class='has-sub'>Employee</a>
+                                       
+                     
+
+                            <li class='has-sub'><a href="#Employee">Employee</a>
 			    <ul>
                              <li><a href="#AddProfile">Add Profile</a></li>
                              <li><a href="#EditProfile">Edit Profile</a></li>
@@ -80,16 +258,19 @@ a:active {
                              <li><a href="#EmployeeAttendance">Employee Attendance</a></li>
                             </ul>
 			    </li>
-                            <li class='has-sub'>Salary</a>
+                            <li class='has-sub'><a href="#Salary">Salary</a>
 			    <ul>
                              <li><a href="#SalaryFormula">Salary Formula</a></li>
                              <li><a href="#DefaultSalaryValues">Default Salary Values</a></li>
                              <li><a href="#TypewisesalaryHeadsetting">Type wise salary Head setting</a></li>
                              <li><a href="#SalaryProcessing">Salary Processing</a></li>
+ 			     <li><a href="#SalaryPaid">Salary Paid</a></li>
+ 			     <li><a href="#EmployeeLiabilities">Employee Liabilities</a></li>
+
                             </ul>
 			    </li>
                            
-                            <li class='has-sub'>Tax Management</a>
+                            <li class='has-sub'><a href="#TaxManagement">Tax Management</a>
                                 <ul>
                                         <li><a href="#MainHeadSections">Main Head Sections</a></li>
                                         <li><a href="#InvestmentHeads">Investment Heads</a></li>
@@ -98,14 +279,14 @@ a:active {
       </ul>
                             </li>
 
-                            <li class='has-sub'>PF Management</a>
+                            <li class='has-sub'><a href="#PFManagement">PF Management</a>
                                 <ul>
                                         <li><a href="#OpeningBalance">Opening Balance</a></li>
                                         <li><a href="#PFWithdrawl">PF Withdrawl</a></li>
 					<li><a href="#PFAccount">PF Account</a></li>
                                         </ul>
                                     </li>
-                            <li class='has-sub'>HR Management</a>
+                            <li class='has-sub'><a href="#HRManagement">HR Management</a>
                                 <ul>
                                         <li><a href="#EmployeeFamilyRecord">Employee Family Record</a></li>
                                         <li><a href="#EmployeeServiceHistory">Employee Service History</a></li>
@@ -122,7 +303,7 @@ a:active {
                                         <li><a href="#EmployeeLTC">Employee LTC</a></li>
 </ul>
 </li>
-                            <li class='has-sub'>Report</a>
+                            <li class='has-sub'><a href="#Report">Report</a>
                                                         <ul>
                                                        <li><a href="#Bank  Statement">Bank Statement</a></li>
                                                        <li><a href="#MonthlySalarySlip">Monthly Salary Slip</a></li>
@@ -135,7 +316,7 @@ a:active {
                                                        <li><a href="#AnnualAttendanceReport">Annual Attendance Report</a></li>                                               
  </ul>
                             </li>
-                            <li class='has-sub'>Tax Reports</a>
+                            <li class='has-sub'><a href="#TaxReport">Tax Reports</a>
                                 <ul>
                                                 <li><a href="#EmployeeWiseInvestment">Employee Wise Investment</a></li>
                                                 <li><a href="#AnnualPayableTax">Annual Payable Tax</a></li>
@@ -153,22 +334,18 @@ a:active {
             </div>
            </div>
          <div class="sideright">
-             <div id="sectionbgas">
-                <div style="display:none;" class="scroll_up" id="scroll_up"></div>
-                   <div style="display:none;" class="scroll_down" id="scroll_down"></div>
-             </div>
                    <section id="PayRollSystem">
-
-                                        <h2><u>PayRoll System</u></h2>
+ 			<div class="row-fluid">
+                                        <h3>PayRoll System</h3>
                                         <div class="row-fluid">
-                                                <font size="4">
+                                                <font size="3">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
-The Payroll system is software which organizes all the task of employee payment and the filing of employee taxes. These tasks can <br>
-include keeping tracking of hours, calculating wages, withholding taxes and deductions, printing and delivering checks and paying <br> 
-employment taxes to the government. Enter your email ID and password in given window and click on login. To login as the institute <br> 
+The Payroll system is software which organizes all the task of employee payment and the filing of employee taxes. These tasks can 
+include keeping tracking of hours, calculating wages, withholding taxes and deductions, printing and delivering checks and paying 
+employment taxes to the government. Enter your email ID and password in given window and click on login. To login as the institute 
 admin click on the link click here given.<br>
-<img src="pic.jpg" style="width:1200px;height:720px;"> 
+<img src="pic.jpg"> 
                                                              </p>
                                                         </ol>
                                                 </font>
@@ -176,31 +353,31 @@ admin click on the link click here given.<br>
                                         </section>
 
 <section id="FinancialYears">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h2><u>Financial Years</u></h2>
+                                                <div class="row-fluid">
+                                                <h3>Financial Years</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                  <ol>
                                                      <p align="justify" STYLE="line-height: 150%">
-Configure existing financial years.Click on Add New and fill the details for creating a new session and click on save.Now to activate <br> 
+Configure existing financial years.Click on Add New and fill the details for creating a new session and click on save.Now to activate  
 a session check the box in the current session and click on update.<br>
-<img src="fin.jpg" style="width:1200px;height:720px;">
+<img src="fin.jpg">
                                                         </p> 
                                                  </ol>
                                                    </font>
                                                 </div>
                                     </section>              
 <section id="Department">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                 <h2><u>Department</u></h2>
+                                                <div class="row-fluid">
+                                                 <h3>Department</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
-Configure department details.To add a single department click on Add New. Fill the details required and click on save as shown below.<br>
-<img src="dep1.jpg" style="width:1200px;height:720px;"><br>
+Configure department details.To add a single department click on Add New. Fill the details required and click on save as shown below.
+<img src="dep1.jpg"><br>
 To add more than one departments click on Upload Department List.
 Instruction for upload a csv file.<br>
 1. Open LibreOffice Calc in ubuntu and Excel in windows.<br>
@@ -211,22 +388,22 @@ Department Code, Department Name and Department Nick Name<br>
 Department Name =Computer Science Engineering<br>
 Department Nick Name = CSE</b><br>
 Click on add button to add the csv file and then click on update to upload the file.<br>
-<img src="dep2.jpg" style="width:1200px;height:720px;">
+<img src="dep2.jpg">
                                                                     </p>
                                                                 </ol>
                                                             </font>
                                                 </div>
                                     </section>  
 <section id="Designation">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Designation</u></h2>
+                                                <div class="row-fluid">
+                                                        <h3>Designation</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 Configure designation details.To add a single designation click on Add New. Fill the details in the pop-up window and click on save.<br>
-<img src="des2.jpg" style="width:1200px;height:720px;"><br>
+<img src="des2.jpg"><br>
 <b>To add more than one designation at a time click on Upload Designation List:</b><br>
 Instruction for upload a csv file.<br>
 1. Open LibreOffice Calc in ubuntu and Excel in windows.<br>
@@ -238,33 +415,33 @@ Designation Name = Project Manager<br>
 Designation Nick Name = PM <br></b>
 3. Save as csv format.<br>
 Click on add button to add the csv file and then click on update to upload the file.<br>
-<img src="des1.jpg" style="width:1200px;height:720px;">
+<img src="des1.jpg">
                                                                     </p>
                                                                 </ol>
                                                             </font>
                                                 </div>
                                     </section>        
 <section id="AddBankProfile">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Add Bank Profile</u></h2>
+                                                <div class="row-fluid">
+                                                        <h3>Add Bank Profile</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 
-<img src="bnk.jpg" style="width:1200px;height:720px;">
+<img src="bnk.jpg">
                                                                     </p>
                                                                 </ol>
                                                             </font>
                                                 </div>
                                     </section>                     
 <section id="EmployeeTypes">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Employee Types</u></h2>
+                                                <div class="row-fluid">
+                                                        <h3>Employee Types</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 To create a employee type click on Add New.
@@ -276,24 +453,24 @@ Nick Name = REG <br>
 Click on the Checkbox if you want to apply PF<br>
 Max PF Limit = 1000000<br>
 Click on Update to upload the new employee type.<br>
-<img src="emp.jpg" style="width:1200px;height:720px;"><br>
+<img src="emp.jpg"><br>
                                                                     </p>
                                                                 </ol>
                                                             </font>
                                                 </div>
                                     </section>     
 <section id="PayScales">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Pay Scales</u></h2>
+                                                <div class="row-fluid">
+                                                        <h3>Pay Scales</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 To configure pay scales.
 To create a new pay scale click on add new and fill the details in the pop-up window.
 Then click on the save <br> button and update the list.<br>
-<img src="pay1.jpg" style="width:1200px;height:720px;"><br>
+<img src="pay1.jpg"><br>
 To add more than one list at a time click on Upload Pay Band list.<br>
 Instruction for upload a csv file.<br>
 1. Open LibreOffice Calc in ubuntu and Excel in windows.<br>
@@ -301,12 +478,12 @@ Instruction for upload a csv file.<br>
 Pay Band Name,Max Amount,Min Amount and Academic Grade Pay/ Grade Pay.<br>
 <b>Example:</b><br>
 Pay Band Name = PB-2<br>
-Max Amount = 34900<br>
+Max Amount = 33900<br>
 Min Amount =9300<br>
-Grade Pay = 4800<br>
+Grade Pay = 3800<br>
 3. Save as csv format.<br>
 Upload the csv file and click on Update.<br>
-<img src="pay2.jpg" style="width:1200px;height:720px;">
+<img src="pay2.jpg">
                                                                     </p>
                                                                 </ol>
                                                            </font>
@@ -314,43 +491,45 @@ Upload the csv file and click on Update.<br>
                                     </section>       
             
 <section id="SalaryHeads">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Salary Heads</u></h2>
+                                                <div class="row-fluid">
+                                                        <h3>Salary Heads</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 Configure salary heads.
 Click on add new and enter the Salary Head code, Salary Head, Short name, under, schedule type, <br> 
 calculation type and other details in the window shown below.
 Click on Update.<br>
-<img src="sal.jpg" style="width:1200px;height:720px;"><br>
+<img src="sal.jpg"><br>
                                                                     </p>
                                                                 </ol>
                                                             </font>
                                                 </div>
                                     </section> 
 <section id="AddGenderDetails">
-                                                 <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Text Slab Details</u></h2>
-                                                        <h3><u>Add Gender Details</u></h3>
+                                                 <div class="row-fluid">
+                                                         <font size="3">
+                                                        <h3>Text Slab Details</h3>
+                                                        <h3>Add Gender Details</h3>
                                                 </div>
+                                                  </font>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                  <ol>
-                    <img src="gen.jpg" style="width:1200px;height:720px;"><br>
+                    <img src="gen.jpg"><br>
                     <section id="AddSlabDetails">
-                    <h3><u>Add Slab Details</u></h3>
+                    <h3>Add Slab Details</h3>
                      <p align="justify" STYLE="line-height: 150%">
-Click on add new button. Enter the financial years, slab name, slab start value, slab end value, slab percent, slab surcharge and <br> 
+Click on add new button. Enter the financial years, slab name, slab start value, slab end value, slab percent, slab surcharge and
 other details. Click on save and then load the slab to update as given in the figure below.<br>
-                    <img src="slab.jpg" style="width:1200px;height:720px;"> 
+                    <img src="slab.jpg"> 
                             
                                          </p> 
                     </section>
                     <section id="EmployeeSlabDetails">
-                    <h3><u>Employee Slab Details</u></h3>
+                    <h3>Employee Slab Details</h3>
                     <p align="justify" STYLE="line-height: 150%">
 Select the gender from the given options.
 Check the employee  slab to be selected.
@@ -364,15 +543,17 @@ Click on update to save the changes.
                                     </section>
       
                        <section id="LeaveTypes">
-                                     <div class="row-fluid" style="margin-left: 2%">
-                                         <h2><u>Leave Types</u></h2>
+                                     <div class="row-fluid">
+                                        
+                                         <h3>Leave Types</h3>
                                              </div>
+						
                                                <div class="row-fluid">
-                                		<font size="4">
+                                		<font size="3">
                         <ol>
                                   <p align="justify" STYLE="line-height: 150%">
 The leaves checked are allowed for the institute and the leaves unchecked are not allowed.<br>
-<img src="lev.jpg" style="width:1200px;height:720px;"><br>
+<img src="lev.jpg"><br>
 Click on add new button to add a new leave to the profile and click on save.
     
                                    </p>
@@ -382,19 +563,20 @@ Click on add new button to add a new leave to the profile and click on save.
                                     </section>                                               
 
 <section id="AddProfile">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Add Employee Profile</u></h2>
+                                                <div class="row-fluid">
+                                                         
+                                                        <h3>Add Employee Profile</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 Instruction for Add Employee Profile:<br>
 
 In Employee menu select Add profile option.<br>
 Enter the details in the given fields.<br>
-Fields which are mandatory : Employee Code (Unique), Employee Name, Employee Gender,Entitlement Category, Employee Type, <br> 
-Pay Band, Current Basic, Salary Department, Current Department, Current Designation, Date of joining, Date of Birth, Working <br> 
+Fields which are mandatory : Employee Code (Unique), Employee Name, Employee Gender,Entitlement Category, Employee Type, 
+Pay Band, Current Basic, Salary Department, Current Department, Current Designation, Date of joining, Date of Birth, Working 
 Type, Joining Department, Joined As(designation), E-Mail ID, Phone No.
 Now press the Save Button for Employee Registration.<br>
 Instruction for Upload a CSV File :<br>
@@ -407,10 +589,10 @@ Employee name = Montu<br>
 Department Code = CS01<br>
 Designation Code = PM<br>
 Employee Type Code = CONT<br>
-Phone No = 1234567890<br>
+Phone No = 1233567890<br>
 Employee E-mail Id = xyz@gmail.com<br>
-Employee Date of Joining = 2014-12-09 <br>
-Employee Date of Birth = 1989-12-01 Salary Grade Name = PB-4<br>
+Employee Date of Joining = 2013-12-09 <br>
+Employee Date of Birth = 1989-12-01 Salary Grade Name = PB-3<br>
 Current Basic = 10000<br>
 Entitlement Category = general or Handicap<br>
 Employee Status = Married or Single<br>
@@ -419,9 +601,9 @@ Salary Department Code = AS01<br>
 Department Code(at the time of Joining) = CS01<br>
 Designation Code (at the time of joining)= JT08<br>
 3. Save as csv format.<br>
-4. Now Click for upload csv file image and upload the csv file as shown in the figure given below.<br>
+3. Now Click for upload csv file image and upload the csv file as shown in the figure given below.<br>
 
-<img src="pro.jpg" style="width:1200px;height:720px;"><br>
+<img src="pro.jpg"><br>
                                                             </p>
                                                                 </ol>
                                                             </font>
@@ -429,15 +611,15 @@ Designation Code (at the time of joining)= JT08<br>
                                     </section>    
 
 <section id="EditProfile">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Edit Profile</u></h2>
+                                                <div class="row-fluid">
+                                                        <h3>Edit Profile</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 Enter the employee code and click on load profile as shown in the figure below.<br>
-<img src="ed.jpg" style="width:1200px;height:720px;"><br>
+<img src="ed.jpg"><br>
 Enter the changes required in the given profile and click on update.<br>
                                                                     </p> 
                                                                 </ol>
@@ -445,37 +627,37 @@ Enter the changes required in the given profile and click on update.<br>
                                                 </div>
                                     </section>  
 <section id="SearchProfile">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Search Profile</u></h2>
+                                                <div class="row-fluid">
+                                                        <h3>Search Profile</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                          <ol>
                                                               <p align="justify" STYLE="line-height: 150%">
 To search a employee profile click on Filter.
 Enter employee name, department, designation and employee type and click on search <br> as shown in the figure below.<br>
-<img src="serch.jpg" style="width:1200px;height:720px;"><br>
+<img src="serch.jpg"><br>
                                                               </p> 
                                                          </ol>
                                                     </font>
                                                 </div>
                                     </section>   
 <section id="EmployeeAttendance">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                 <h2><u>Employee Attendance</u></h2>
+                                                <div class="row-fluid">
+                                                 <h3>Employee Attendance</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                     <ol>
                                                          <p align="justify" STYLE="line-height: 150%">
 <b>Instruction for add attendance</b><br>
 1. The Code (Employee code) should be existing in the database.<br>
 2. Please insert the value of Present in number.<br>
 3. Please insert the value of Leave in number.<br>
-4. Please select the month.<br>
+3. Please select the month.<br>
 5. Please select the year.<br>
 6. Now press the Save Button for save attendance in database as shown in the figure.<br>
-<img src="attd.jpg" style="width:1200px;height:720px;"><br>
+<img src="attd.jpg"><br>
 <b>Instruction for Check attendance</b><br>
 When you click on Check Attendance Button it will show the list of employee which attendance is not uploaded.<br> 
 Please select the checkbox and fill the value of Year, Month, Present and Leave. now press the Save button.<br>
@@ -489,7 +671,7 @@ Code = 127 or 127ee<br>
 Present = 21<br>
 Leave = 9 <br>
 month = 0 for January ---- 11 for December<br> 
-year = 2014 <br>
+year = 2013 <br>
 3. Save as csv format.<br>
 
                                                             </p> 
@@ -500,11 +682,11 @@ year = 2014 <br>
 
 
 <section id="SalaryFormula">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2>Salary Formula</h2>
+                                                <div class="row-fluid">
+                                                        <h3>Salary Formula</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 <b>Instruction for Add and Update Salary Formula</b><br>
@@ -516,66 +698,98 @@ e.g. : if central government pay 119% DA (Dearness Allowance) then formula is (B
 (here BP and GP is the Short Name <br>of the Basic Pay and Grade Pay).
 use Short Name of the Salary Head for creating formula.<br> 
 <b>Note: exactly you follow the above example for creating the formula for the Salary Head</b><br>
-<img src="slry.jpg" style="width:1200px;height:720px;">
+<img src="slry.jpg">
                                                                 </p>
                                                             </ol>
                                                     </font>
                                                 </div>
                                     </section>   
 <section id="DefaultSalaryValues">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Default Salary Values</u></h2>
+                                                <div class="row-fluid">
+                                                        <h3>Default Salary Values</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                          <ol>
                                                              <p align="justify" STYLE="line-height: 150%">
 Enter the salary grade and click on load defaults.
 Enter the values and click on Update.<br>
-<img src="salda.jpg" style="width:1200px;height:720px;"><br>
+<img src="salda.jpg"><br>
                                                             </p> 
                                                          </ol>
                                                       </font>
                                                 </div>
                                     </section>   
 <section id="TypewisesalaryHeadsetting">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                        <h2><u>Type Wise Salary Head Setting</u></h2>
+                                                <div class="row-fluid">
+                                                        <h3>Type Wise Salary Head Setting</u>`</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                        <ol>
                                                               <p align="justify" STYLE="line-height: 150%">
-<img src="typsal.jpg" style="width:1200px;height:720px;"><br>
+<img src="typsal.jpg"><br>
                                                                </p> 
                                                            </ol>
                                                       </font>
                                                 </div>
                                     </section>   
 <section id="SalaryProcessing">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h2><u>Salary Processing</u></h2>
+                                                <div class="row-fluid">
+                                                <h3>Salary Processing</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                     <p align="justify" STYLE="line-height: 150%">
-<img src="prsal.jpg" style="width:1200px;height:720px;"><br>
+<img src="prsal.jpg"><br>
                                                                    </p> 
                                                               </ol>
                                                         </font>
                                                 </div>
                                     </section> 
-<section id="MainHeadSections">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h2><u>Main Head Section</u></h2>
+<section id="SalaryPaid">
+                                                <div class="row-fluid">
+                                                <h3>Salary Paid</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
+                                                                <ol>
+                                                                    <p align="justify" STYLE="line-height: 150%">
+From here we can see salary details.<br>
+<img src="salarypaid.jpg"><br>
+                                                                   </p> 
+                                                              </ol>
+                                                        </font>
+                                                </div>
+                                    </section> 
+<section id="EmployeeLiabilities">
+                                                <div class="row-fluid">
+                                                <h3>Employee Liabilities</h3>
+                                                </div>
+                                                <div class="row-fluid">
+ 						<font size="3">
+                                                                <ol>
+                                                                    <p align="justify" STYLE="line-height: 150%">
+From here we can see employee salary liability and expenses detail.<br>
+<img src="employeeliabilties.jpg"><br>
+                                                                   </p> 
+                                                              </ol>
+                                                        </font>
+                                                </div>
+                                    </section> 
+
+
+<section id="MainHeadSections">
+                                                <div class="row-fluid">
+                                                <h3>Main Head Section</h3>
+                                                </div>
+                                                <div class="row-fluid">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 Click on add new and enter the new category, maximum allowed and details and click on save.<br>
-<img src="hdsec.jpg" style="width:1200px;height:720px;"><br>
+<img src="hdsec.jpg"><br>
 Click on update as shown in the figure.<br>
                                                                     </p> 
                                                                 </ol>
@@ -583,45 +797,45 @@ Click on update as shown in the figure.<br>
                                                 </div>
                                     </section> 
 <section id="InvestmentHeads">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h2><u>Investment Heads</u></h2>
+                                                <div class="row-fluid">
+                                                <h3>Investment Heads</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                        <ol>
                                                             <p align="justify" STYLE="line-height: 150%">
 To configure investment heads click on add new and enter new head, tax benefit and other details and click on save.
 Click on <br>update to update the data list as shown in the figure.<br>
-<img src="inhed.jpg" style="width:1200px;height:720px;"><br>
+<img src="inhed.jpg"><br>
                                                             </p> 
                                                           </ol>
                                                      </font>
                                                 </div>
                                     </section> 
 <section id="InvestmentForms">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h2><u>Investment Form</u></h2>
+                                                <div class="row-fluid">
+                                                <h3>Investment Form</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                        <ol>
                                                             <p align="justify" STYLE="line-height: 150%">
 To configure the investment details of an employee enter the employee code and click on submit as given in the figure given below.<br>
-<img src="inf.jpg" style="width:1200px;height:720px;"><br>
+<img src="inf.jpg"><br>
                                                             </p> 
                                                         </ol>
                                                      </font>
                                                 </div>
                                     </section> 
 <section id="AnnualTaxCalculator">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h2><u>Annual Tax Calculator</u></h2>
+                                                <div class="row-fluid">
+                                                <h3>Annual Tax Calculator</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                      <ol>
                                                              <p align="justify" STYLE="line-height: 150%">
-<img src="taxcal.jpg" style="width:1200px;height:720px;"><br>
+<img src="taxcal.jpg"><br>
 To configure tax calculator enter the employee code.
 Enter the net income, net savings, total taxable amount,tax percent and total <br> tax and click on the save button shown in the figure above.<br>
                                                             </p> 
@@ -629,30 +843,30 @@ Enter the net income, net savings, total taxable amount,tax percent and total <b
                                                      </font>
                                                 </div>
                                     </section> 
-<h2>PF MANAGEMENT</h2>
+<h3>PF MANAGEMENT</h3>
 <section id="OpeningBalance">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h3><u>Opening balance</u></h3>
+                                                <div class="row-fluid">
+                                                <h3><Opening balance</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                        <ol>
                                                              <p align="justify" STYLE="line-height: 150%">
-<img src="opbl.jpg" style="width:1200px;height:720px;"><br>
+<img src="opbl.jpg"><br>
                                                             </p> 
                                                         </ol>
                                                      </font>
                                                 </div>
                                     </section> 
 <section id="PFWithdrawl">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h3><u>PF Withdrawl</u></h3>
+                                                <div class="row-fluid">
+                                                <h3>PF Withdrawl</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                     <p align="justify" STYLE="line-height: 150%">
-<img src="pfw.jpg" style="width:1200px;height:720px;"><br>
+<img src="pfw.jpg"><br>
                                                                    </p> 
                                                             </ol>
                                                      </font>
@@ -660,30 +874,30 @@ Enter the net income, net savings, total taxable amount,tax percent and total <b
                                     </section> 
 
 <section id="PFAccount">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h3><u>PF Account</u></h3>
+                                                <div class="row-fluid">
+                                                <h3>PF Account</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                       <ol>
                                                            <p align="justify" STYLE="line-height: 150%">
-<img src="pfa.jpg" style="width:1200px;height:720px;"><br>
+<img src="pfa.jpg"><br>
                                                            </p> 
                                                         </ol>
                                                     </font>
                                                 </div>
                                     </section> 
-<h2><u>HR MANAGEMENT</u></h2>
+<h3>HR MANAGEMENT</h3>
 <section id="EmployeeFamilyRecord">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h3><u>Employee Family Record</u></h3>
+                                                <div class="row-fluid">
+                                                <h3>Employee Family Record</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                       <ol>
                                                           <p align="justify" STYLE="line-height: 150%">
 To configure employee family record.<br>
-<img src="abc.jpg" style="width:1200px;height:720px;"><br>
+<img src="abc.jpg"><br>
 To make a new record click on add new.<br>
 Enter the following details employee code, family member name,relation, date of birth, dependent, whether employed, name of the <br> department and then click on save.<br>
 
@@ -693,15 +907,15 @@ Enter the following details employee code, family member name,relation, date of 
                                                </div>
                                     </section> 
 <section id="EmployeeServiceHistory">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h3><u>Employee Service History</u></h3>
+                                                <div class="row-fluid">
+                                                <h3>Employee Service History</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                        <ol>
                                                          <p align="justify" STYLE="line-height: 150%">
 To configure employee service history.<br>
-<img src="abcd.jpg" style="width:1200px;height:720px;"><br>
+<img src="abcd.jpg"><br>
 To make a new record click on add new.<br>
 Enter the following details employee code,Transaction type,To which Post,To office, Class, Order No., Order Date, Date of Increment, <br> Pay scale,Name of the other Department,Area Type and click on save.<br>
 
@@ -711,20 +925,20 @@ Enter the following details employee code,Transaction type,To which Post,To offi
                                              </div>
                                     </section> 
 <section id="EmployeeEducationDetails">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h3><u>Employee Education Details</u></h3>
+                                                <div class="row-fluid">
+                                                <h3>Employee Education Details</u></h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                      <ol>
                                                            <p align="justify" STYLE="line-height: 150%">
 <b>To configure Education Details.</b><br>
-<img src="edu.jpg" style="width:1200px;height:720px;"><br>
+<img src="edu.jpg"><br>
 To make a new record click on Add Education Detail.<br>
 Enter the following details employee code,Exam passed, Name of Board University, Marks Obtained, Passing Year,Division/Year.<br>
 <br>
 <b>To configure Training Details.</b><br>
-<img src="train.jpg" style="width:1200px;height:720px;"><br>
+<img src="train.jpg"><br>
 To make a new record click on Add Training Detail.<br>
 Enter the following details Employee code,Training Type, Topic name, Name of Institute, Sponsored by, Date and click on Save.<br>
                                                           </p> 
@@ -732,47 +946,47 @@ Enter the following details Employee code,Training Type, Topic name, Name of Ins
                                                   </font>
                                              </div>
                                     </section> 
-<h2><u>Employee Leave Management</u></h2>
+<h3>Employee Leave Management</h3>
 <section id="LeaveQuotaSetup">
-                                                <div class="row-fluid" style="margin-left: 2%">
+                                                <div class="row-fluid">
                                                 <h3><u>Leave Quota Setup</u></h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 <b>To configure Leave Quota Setup.</b><br>
-<img src="lvq.jpg" style="width:1200px;height:720px;"><br>
+<img src="lvq.jpg"><br>
                                                          </p> 
                                                        </ol>
                                                  </font>
                                              </div>
                                     </section> 
 <section id="LeaveManager">
-                                                <div class="row-fluid" style="margin-left: 2%">
-                                                <h3><u>Leave Manager</u></h3>
+                                                <div class="row-fluid">
+                                                <h3>Leave Manager</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 <b>To configure Leave Manager.</b><br>
-<img src="lvdet.jpg" style="width:1200px;height:720px;"><br>
+<img src="lvdet.jpg"><br>
                                                     </p>
                                                   </ol>
                                                 </font>
                                              </div>
                                     </section> 
 <section id="LeaveDetail">
-    <div class="row-fluid" style="margin-left: 2%">
-                                                <h3><u>Leave Detail</u></h3>
+    <div class="row-fluid">
+                                                <h3>Leave Detail</h3>
                                                 </div>
                                                 <div class="row-fluid">
- 						<font size="4">
+ 						<font size="3">
                                                                 <ol>
                                                                         <p align="justify" STYLE="line-height: 150%">
 <b>To configure Leave Detail.</b><br>
-<img src="l3.jpg" style="width:1200px;height:720px;"><br>
+<img src="l3.jpg"><br>
 
                                                     </p> 
                                           </ol>
@@ -780,7 +994,9 @@ Enter the following details Employee code,Training Type, Topic name, Name of Ins
                           </div>
                      </section>
             </div>
-        </div>                           
+        </div>  
+</div>
+</div>                         
     </body>
 </html>                                                                                                                       
 

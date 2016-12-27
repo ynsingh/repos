@@ -7,101 +7,273 @@ Author: Feb 2016, Om Prakash<omprakashkgp@gmail.com, vineetasingh79@gmail.com>, 
 -->
 <html>
     <head>
-        <title> Admin Interface </title>
+        <title>Admin Interface</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
-<style>
-a:link {
-    color: green;
-    background-color: transparent;
-    text-decoration: none;
-}
-a:visited {
-    color: blue;
-    background-color: transparent;
-    text-decoration: none;
-}
-a:hover {
-    color: red;
-    background-color: transparent;
-    text-decoration: underline;
-}
-a:active {
-    color: yellow;
-    background-color: transparent;
-    text-decoration: underline;
-}
-#section {
-    width:350px;
-    float:left;
-    padding:10px;	 	 
-}
-</style>
-
     </head>
     <body>
-           <div class="wrapper" style="background-color: #DDDDDD;">
-        <header>
-               <img src="frst.jpg" style="width:1200px;">
-        </header>
+<style>
+/*
+* New Css menu Style 
+*/
+img {
+width: 100%; 
+border: 10px solid transparent;
+}
 
+#cssmenu,
+#cssmenu ul,
+#cssmenu ul li,
+#cssmenu ul li a {
+  margin-left: 0%;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  line-height: 1;
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#cssmenu {
+  font-family: Roboto, sans-serif;
+}
+#cssmenu > ul {
+  width: 80%;
+  background: #ffffff;
+}
+#cssmenu > ul > li > a {
+  padding: 8px 15px;
+  font-size: 17px;
+font-family: "Times New Roman", Times, serif;
+  color:#1A5183;
+  background:#7AD7FB;
+  font-weight: 700;
+  border: 2px solid #fff;
+  text-decoration: none;
+  -webkit-transition: color .2s ease;
+  -o-transition: color .2s ease;
+  -ms-transition: color .2s ease;
+  transition: color .2s ease;
+}
+#cssmenu > ul > li:hover > a,
+#cssmenu > ul > li > a:hover {
+  color: #ffffff;
+}
+#cssmenu ul li.has-sub > a::after {
+  position: absolute;
+  right: 15px;
+  display: block;
+  width: 10px;
+  height: 10px;
+  content: "";
+  border-radius: 2px;
+}
+#cssmenu > ul > li.has-sub > a::after {
+  top: 13px;
+  background: #0000CC;
+}
+#cssmenu > ul > li.has-sub:hover > a::after,
+#cssmenu > ul > li.has-sub > a:hover::after {
+  background: #222222;
+}
+#cssmenu ul ul li.has-sub > a::after {
+  top: 13px;
+  background: #ffffff;
+}
+#cssmenu ul ul li.has-sub:hover > a::after,
+#cssmenu ul ul li.has-sub > a:hover::after {
+  background: #dddddd;
+}
+#cssmenu ul li.has-sub > a::before {
+  position: absolute;
+  right: 15px;
+  z-index: 2;
+  display: block;
+  width: 0;
+  height: 0;
+  border: 3px solid transparent;
+  content: "";
+}
+#cssmenu > ul > li.has-sub > a::before {
+  top: 16px;
+  border-left-color: #ffffff;
+}
+#cssmenu ul ul li.has-sub > a::before {
+  top: 15px;
+  border-left-color: #2e353b;
+}
+#cssmenu ul {
+  -webkit-perspective: 600px;
+  -moz-perspective: 600px;
+  perspective: 600px;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+#cssmenu ul ul {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+  width: 180px;
+  background: #1C9ECB;
+  opacity: 0;
+  -moz-transition: opacity 0.2s ease, -moz-transform 0.2s ease;
+  -webkit-transition: opacity 0.2s ease, -webkit-transform 0.2s ease;
+  -ms-transition: opacity 0.2s ease, -ms-transform 0.2s ease;
+  -o-transition: opacity 0.2s ease, -o-transform 0.2s ease;
+  transition: opacity .2s ease, transform .2s ease;
+  -webkit-transform: rotate3d(0, 1, 0, 35deg);
+  -moz-transform: rotate3d(0, 1, 0, 35deg);
+  transform: rotate3d(0, 1, 0, 35deg);
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  transform-origin: left center;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+#cssmenu ul li:hover > ul {
+  left: 100%;
+  opacity: 1;
+  transform: rotate3d(0, 0, 0, 0);
+}
+#cssmenu ul ul::after {
+  position: absolute;
+  left: -8px;
+  top: 13px;
+  z-index: 5;
+  display: block;
+  width: 0;
+  height: 0;
+  border: 3px solid transparent;
+  border-right-color: #2e353b;
+  content: "";
+}
+#cssmenu ul ul a {
+  border: 2px solid #ffffff;
+  padding: 8px 15px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  -webkit-transition: color .2s ease;
+  -o-transition: color .2s ease;
+  -ms-transition: color .2s ease;
+  transition: color .2s ease;
+}
+#cssmenu ul ul li:hover > a,
+#cssmenu ul ul li a:hover {
+  color: #0000FF;
+}
+
+.body{
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+.head{
+  background-color:#76D5F2;
+  text-shadow: 0 1px 3px rgba(0,0,0,.3), 0 0 30px rgba(0,0,0,.075);
+  background:#76D5F2; /* Old browsers */
+  background: -moz-linear-gradient(25deg,  #76D5F2 0%, #76D5F2 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#020031), color-stop(100%,#6d3353)); /* Chrome,Safari3+ */
+  background: -webkit-linear-gradient(25deg,  #0393C5 0%,#0393C5 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(25deg,  #76D5F2 0%,#76D5F2 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(25deg,  #76D5F2 0%,#76D5F2 100%); /* IE10+ */
+  background: linear-gradient(25deg,  #76D5F2 0%,#76D5F2 100%); /* W3C */
+  -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+     -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+          box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+	width: 100%;
+        margin-top:-1%;
+	height: 50%;
+	background-color:#76D5F2;
+        color:#1A5183;
+	font-size:63px;
+  	font-weight: bold;
+        text-align:center;
+        letter-spacing: 23px;
+        line-height: 207%; 
+}
+.sideleft{
+ 	font-size: 18px;
+  	font-weight:bold;
+        top: 133px;
+	width:22%;
+	height: 570px;
+	position: fixed;
+	bottom: 10px;
+
+}
+.sideright{
+	width: 79%;
+	height: 100%;
+        margin-left:20%;
+       margin-top: -20px;
+	}
+</style>
+        
+        <div class="head">Payroll System</div>
         <div class="content">
-
         <div class="sideleft">
                 <div id="cssmenu">
                     <ul>  
-                        <li><a href="../../Login.jsf"> Login Page </a></li><br>
+                        <li><a href="../../Login.jsf">Login Page</a></li>
                         <li><a href="#PayRollSystem">PayRoll System</a></li>
-                        <li class='has-sub'>Setup</li>
+                       <li class='has-sub'><a href="#Setup">Setup</a>
                         <ul>
                             <li><a href="#Setupofleavetypes">Setup of leave types</a></li>
                         </ul>
-                            <li class='has-sub'>Manage Administrator</li>
+                          </li>
+                            <li class='has-sub'><a href="#ManageAdministrator">Manage Administrator</a>
                         <ul>
                             <li><a href="#AddAdminEmailIdConfg">Add Admin Email Id Confg</a></li>
                             <li><a href="#AddNewAdministrator">Add New Administrator</a></li>
                             <li><a href="#SMTPConfiguration">SMTP Configuration</a></li>
                         </ul>
-                            <li class='has-sub'>Institute Management</li>
+                         <li>
+                            <li class='has-sub'><a href="#Institute Management">Institute Management</a>
                         <ul>
                             <li><a href="#CheckRegisteredCollegeInstitutions">Check Registered College/Institutions</a></li>
                             <li><a href="#CheckPendingCollegeInstitutions">Check Pending College/Institutions</a></li>
                         </ul>
-                            <li class='has-sub'>Change Password</a></li>
-                        <ul>
-                            <li><a href="#ChangeAdminPassword">Change Admin Password</a></li>
-                        </ul>
-                            <li class='has-sub'>Logout</a></li> 
+                         </li>
+ 			<li><a href="#ChangePassword">Change Password</a></li>
+                           <li><a href="#Logout">Logout</a></li>
+         
+                       
                     </ul>   
                 </div>
                 </div>
+</div>
         </div>
-                <div class="sideright">
-                <div id="sectionbgas">                               
-                <div style="display:none;" class="scroll_up" id="scroll_up"></div>
-                <div style="display:none;" class="scroll_down" id="scroll_down"></div>
-                </div>
+<div class="wrapper" style="background-color:#DDDDDD;">
+ 		<div class="sideright">
                 <section id="PayRollSystem">
-
-                    <h2><u>PayRoll System</u></h2>
-                
+ 		<div class="row-fluid">
+                    <h2>PayRoll System</h2>
+               </div>
                         <div class="row-fluid">
                             <font size="4">
                                 <ol>
                                     <p align="justify" STYLE="line-height: 150%">
                                         The Payroll system is software which organizes all the task of employee payment and the filing of employee taxes.
-                                        These tasks can <br> include keeping tracking of hours, calculating wages, withholding taxes and deductions, printing
-                                        and delivering checks and paying <br> employment taxes to the government. Enter your email ID and password in given window
-                                        and click on login. To login as the institute <br> admin click on the link click here given. <br>
-<img src="pic.jpg" style="width:1200px;height:720px;"> 
-                                    </p>
+                                        These tasks can include keeping tracking of hours, calculating wages, withholding taxes and deductions, printing
+                                        and delivering checks and paying employment taxes to the government. Enter your email ID and password in given window
+                                        and click on login. To login as the institute admin click on the link click here given.
+				 </p>
                                  </ol>
                               </font>
+<img src="pic.jpg" border="1">        
                         </div>
                      </section>
         <section id="Setupofleavetypes">
                 <div class="row-fluid">
-                    <h2><u>Setup of Leave Types</u></h2>
+                    <h2>Setup of Leave Types</h2>
                         </div>
                             <div class="row-fluid">
                                 <font size="4">
@@ -109,7 +281,7 @@ a:active {
                                         <p align="justify" STYLE="line-height: 150%">
 To configure a new leave. Click on Add New and enter the leave type and maximum limit.<br>
 Click on save.<br>
-<img src="set.jpg" style="width:1200px;height:720px;">
+<img src="set.jpg">
                                         </p>
                                      </ol>
                                   </font>
@@ -117,15 +289,18 @@ Click on save.<br>
                        </section>              
             <section id="AddAdminEmailIdConfg">
                      <div class="row-fluid">
-                         <h2><u>Add Admin Email Id Config.</u></h2>
+                         <h2>Add Admin Email Id Config</h2>
                              </div>
                                     <div class="row-fluid">
                                         <font size="4">
                                             <ol>
                                                <p align="justify" STYLE="line-height: 150%">
 To configure admin email id click on add new.<br>
+When you click this link you can see list of all administrator with user ID, Adding date, Check/Unchecked and Status field . Red color of check-box means deactivate and green color of check box means Active.<br>
+In this panel Add new Administrator link –> click this link you can add another administrator and also update administrator by using update button. a drop down menu appears having following actions
+Using this link Administrator can add new Admin Email-id and update this value.<br>
 Enter email Id and password and click on save.<br>
-<img src="mang1.jpg" style="width:1200px;height:720px;">
+<img src="mang1.jpg">
                                                        
                                                </p>
                                             </ol>
@@ -134,14 +309,16 @@ Enter email Id and password and click on save.<br>
                               </section>              
     <section id="AddNewAdministrator">
                     <div class="row-fluid">
-                        <h2><u>Add New Administrator</u></h2>
+                        <h2>Add New Administrator</h2>
                             </div>
                                 <div class="row-fluid">
                                     <font size="4">
                                         <ol>
                                             <p align="justify" STYLE="line-height: 150%">
-
-    <img src="mang2.jpg" style="width:1200px;height:720px;">
+When you click this link you can see list of all administrator with user ID, Adding
+date, Check/Unchecked and Status field. Red color of check-box means deactivate and green color
+of check box means Active.
+    <img src="mang2.jpg">
                                              </p> 
                                          </ol>
                                      </font>
@@ -149,14 +326,18 @@ Enter email Id and password and click on save.<br>
                     </section>    
     <section id="SMTPConfiguration">
                       <div class="row-fluid">
-                            <h2><u>SMTP Configuration</u></h2>
+                            <h2>SMTP Configuration</h2>
                                 </div>
                                     <div class="row-fluid">
                                         <font size="4">
                                             <ol>
                                                <p align="justify" STYLE="line-height: 150%">
-
-<img src="mang3.jpg" style="width:1200px;height:720px;">
+When you click this link you can see list of all administrator with user ID, Adding date,
+Check/Unchecked and Status field. Red color of check-box means deactivate and green color
+of check box means Active.  In this panel Add new Administrator link –> click this link you can add
+another administrator and also update administrator by using update button. A drop down menu appears
+having following actions Using this link Administrator can add new Admin Email-id and update this value.
+<img src="mang3.jpg">
                                                 </p> 
                                             </ol>
                                          </font>
@@ -166,14 +347,17 @@ Enter email Id and password and click on save.<br>
 
         <section id="CheckRegisteredCollegeInstitutions">
                  <div class="row-fluid">
-                    <h2><u>Check Registered College/Institutions</u></h2>
+                    <h2>Check Registered College/Institutions</h2>
                         </div>
                             <div class="row-fluid">
                                 <font size="4">
                                     <ol>
                                         <p align="justify" STYLE="line-height: 150%">
-
-<img src="im1.jpg" style="width:1200px;height:720px;">
+Administrator see list of registered college/institutes. Total no of Registered college, Total no of Activated
+collages and Total no of Deactivated college.  Institute list contain institute name, website, Admin Email
+id, Check/Unchecked and Status (activate/deactivate), by using update button, update the detail of institute
+Admin and also change the password.
+<img src="im1.jpg">
                                         </p> 
                                      </ol>
                                  </font>
@@ -181,14 +365,15 @@ Enter email Id and password and click on save.<br>
                         </section> 
         <section id="CheckPendingCollegeInstitutions">
                 <div class="row-fluid">
-                    <h2><u>Check Pending College/Institutions</u></h2>
+                    <h2>Check Pending College/Institutions</h2>
                         </div>
                              <div class="row-fluid">
  				<font size="4">
                                     <ol>
                                         <p align="justify" STYLE="line-height: 150%">
+Admin can check the pending college list with detail of institute by checking the check box confirm the institute registration request.
 
-<img src="im2.jpg" style="width:1200px;height:720px;">
+<img src="im2.jpg">
                                         </p>
                                      </ol>
                                   </font>
@@ -201,9 +386,9 @@ Enter email Id and password and click on save.<br>
                                 <div class="row-fluid">
                                     <font size="4">
                                         <ol>
-                                            <p align="justify" STYLE="line-height: 150%">
-
-<img src="pass.jpg" style="width:1200px;height:720px;">
+                                            <p STYLE="line-height: 150%">
+Administrator can change his/her password.
+<img src="pass.jpg">
                                            </p> 
                                        </ol>
                                   </font>
@@ -211,5 +396,7 @@ Enter email Id and password and click on save.<br>
                     </section>             
                 </div>
          </div>
+</div>
+</div>
     </body>
 </html>
