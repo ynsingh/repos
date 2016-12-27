@@ -2,12 +2,12 @@
 * New Css menu Style 
 */
 
-
+/*
 img {
 width: 100%; 
 
 }
-
+*/
 #cssmenu,
 #cssmenu ul,
 #cssmenu ul li,
@@ -28,7 +28,6 @@ width: 100%;
 }
 #cssmenu > ul {
   width: 80%;
-  background: #ffffff;
 }
 #cssmenu > ul > li > a {
   padding: 8px 15px;
@@ -189,7 +188,7 @@ body{
 .sideleft{
  	font-size: 18px;
   	font-weight:bold;
-        top: 134px;
+        top: 160px;
 	width:22%;
 	height: 570px;
 	position: fixed;

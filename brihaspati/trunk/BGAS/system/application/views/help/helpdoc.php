@@ -1,8 +1,8 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="<?php echo asset_url(); ?>css/helpdoc.css"/>
-	<!--<link type="text/css" rel="stylesheet" href="<?php //echo asset_url(); ?>css/scroll.css" />
-        <script type="text/javascript" src="<?php //echo asset_url(); ?>js/scroll.js"></script>-->
+	<link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/scroll.css"/>
+        <script type="text/javascript" src="<?php echo asset_url(); ?>js/scroll.js"></script>
 </head>
 <body>
 	<div class="wrapper" width="100%"  style="background-color: #DDDDDD;"> 
@@ -166,7 +166,7 @@
 								</ol>
 							</font>
 						<?php
-						echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adminhome.png', 'width' => 1000, 'height' =>500  ));
+						echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adminhome.png', 'width' => 1300, 'height' =>700  ));
 						?>
 						</div>
 					</section>
@@ -187,7 +187,7 @@
 							</font>
 						
 						<?php
-						echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'changeaccount.png', 'width' => 1000, 'height' =>860));
+						echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'changeaccount.png', 'width' => 1300, 'height' =>860));
 						?>
 						</div>
 					</section>
@@ -297,10 +297,10 @@
 							</ol>
 							
 							<?php
-							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'createaccount.png'));
+							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'createaccount.png','width' => 1300, 'height' =>1100));
 							?>
 							<?php
-							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'createaccount1.png'));
+							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'createaccount1.png','width' => 1300, 'height' =>700));
 							?>
 						</div>
 					</section>
@@ -320,7 +320,7 @@
 								</ol>
 							</font>		
 							<?php
-							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'manageaccount.png'));
+							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'manageaccount.png','width' => 1300, 'height' =>700));
 							?>
 						</div>
 					</section>
@@ -341,7 +341,7 @@
 							</font>
 							
 							<?php
-							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'manageuser.png'));
+							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'manageuser.png','width' => 1300, 'height' =>700));
 							?>
 						</div>
 
@@ -365,7 +365,7 @@
                                                         </font>
 
                                                         <?php
-                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adduser.png'));
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adduser.png','width' => 1300, 'height' =>700));
                                                         ?>
                                                 </div>
 
@@ -385,7 +385,7 @@
                                                                 </ol>
                                                         </font>
 							<?php
-                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'managemailsetting.png'));
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'managemailsetting.png','width' => 1300, 'height' =>700));
                                                         ?>
 						</div>
                                         </section>
@@ -403,7 +403,7 @@
                                                                 </ol>
                                                         </font>
 							<?php
-                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'manageauthorityallocation.png'));
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'manageauthorityallocation.png','width' => 1300, 'height' =>700));
                                                         ?>
 						</div>
 					</section>
@@ -428,7 +428,7 @@
                                                                 </ol>
                                                         </font>
                                                         <?php
-                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'AllocateAuthority.png'));
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'AllocateAuthority.png','width' => 1300, 'height' =>700));
                                                         ?>
                                                 </div>
                                         </section>
@@ -448,7 +448,7 @@
 						</ol>
 					</font>	
 							<?php
-							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adminsetting.png'));
+							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'adminsetting.png','width' => 1300, 'height' =>700));
 							?>
 				  </div>
 				</section>
@@ -465,7 +465,7 @@
                                                         </ol>
                                                 </font>
 							<?php
-                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'manageauthority.png'));
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'manageauthority.png','width' => 1300, 'height' =>700));
                                                         ?>
                                         </div>
 
@@ -484,7 +484,7 @@
                                                         </ol>
                                                 </font>
                                                         <?php
-                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'AddAuthority.png'));
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'AddAuthority.png','width' => 1300, 'height' =>700));
                                                         ?>
                                         </div>
 
@@ -502,7 +502,7 @@
                                                         </ol>
                                                 </font>
 							<?php
-                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'profile.png'));
+                                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'profile.png','width' => 1300, 'height' =>700));
                                                         ?>
 				      </div>
 				</section>
@@ -522,7 +522,7 @@
 										</ol>
 									</font>
 									<?php
-									echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'dashboard.png'));
+									echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'dashboard.png','width' => 1300, 'height' =>700));
 									?>
 								</div>
 							</section>
@@ -542,7 +542,7 @@
 								</ol>
 							</font>
 							<?php
-							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'budget.png'));
+							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'budget.png','width' => 1300, 'height' =>700));
 							?>
 						</div>
 					</section>
@@ -558,7 +558,7 @@
 							</ol>
 							</font>
 							<?php
-							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'addbudget.png'));
+							echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'addbudget.png','width' => 1300, 'height' =>700));
 							?>
 					       </div>
 					</section>
@@ -574,7 +574,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'BudgetReappropriation.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'BudgetReappropriation.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 			        	</section>					
@@ -591,7 +591,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'projection.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'projection.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -608,7 +608,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'NewProjection.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'NewProjection.png','width' => 1300, 'height' =>600));
 					?>
 					</div>
 					</section>
@@ -625,7 +625,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'ProjectionReappropriation.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'ProjectionReappropriation.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -643,19 +643,19 @@
 						</font>
 					<h2>Sources of Funds</h2>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccount.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccount.png','width' => 1300, 'height' =>700));
 					?>
 					<h2>Application of Funds<h2>
 					 <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccount1.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccount1.png','width' => 1300, 'height' =>700));
                                         ?>
 					<h2>Income<h2>
 					<?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccount2.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccount2.png','width' => 1300, 'height' =>700));
                                         ?>
 					<h2>Expenditure<h2>
 					<?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccount3.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccount3.png','width' => 1300, 'height' =>700));
                                         ?>
 
 					</div>
@@ -687,7 +687,7 @@
 							</ol>   
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'allentries.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'allentries.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -704,7 +704,7 @@
 							</ol>
 						</font>	
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'newjournal.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'newjournal.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -725,7 +725,7 @@
 									</ol>
 								</font>
 						<?php
-						echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'viewbill.png'));
+						echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'viewbill.png','width' => 1300, 'height' =>700));
 						?>
 							</div>
 						</section>
@@ -744,7 +744,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'billupload.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'billupload.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					<section id="BillUpload/VoucherCreationWithMultipleVarification">
@@ -764,10 +764,10 @@
 					<b>4.)</b> After filling all fields and uploading bill, press Submit button to submit the bill.<br>
                                       	<br> 
 					<?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'billuploadMultipleVarification.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'billuploadMultipleVarification.png','width' => 1300, 'height' =>700));
                                         ?>
 					<?php   
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'billuploadMultipleVarification1.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'billuploadMultipleVarification1.png','width' => 1300, 'height' =>700));
                                         ?>
 					<br>
 					<br>
@@ -797,7 +797,7 @@
 					<b>3.2)</b> Enter the amount you want to approve in Approved Amount field and write comments in the Comments field and click on Submit button.</br>
 					<br>
 					<?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'billapproval.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'billapproval.png','width' => 1300, 'height' =>700));
                                         ?>
 					<br>
 					<br>
@@ -808,7 +808,7 @@
 					in BANK AND CASH ACCOUNT drop-down and click on Submit button.<br>
 					<br>
 					<?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'vouchercreation.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'vouchercreation.png','width' => 1300, 'height' =>700));
                                         ?>
 					<br>
 					<br>
@@ -819,7 +819,7 @@
 					<br>
 					<br>
 					<?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'PrintPreview.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'PrintPreview.png','width' => 1300, 'height' =>700));
                                         ?>
 								 </p>
                                                         </ol>
@@ -851,13 +851,13 @@
 									</ol>
 								</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheet.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheet.png','width' => 1300, 'height' =>700));
 					?>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheet1.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheet1.png','width' => 1300, 'height' =>700));
 					?>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheet2.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheet2.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -874,10 +874,10 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheetmhrd.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheetmhrd.png','width' => 1300, 'height' =>700));
 					?>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheetmhrd2.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'balancesheetmhrd2.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -901,13 +901,13 @@
 									</font>
 								</div>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'incomeandexpenditurestatement.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'incomeandexpenditurestatement.png','width' => 1300, 'height' =>700));
 					?>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'incomeandexpenditurestatement1.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'incomeandexpenditurestatement1.png','width' => 1300, 'height' =>700));
 					?>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'incomeandexpenditurestatement2.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'incomeandexpenditurestatement2.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>	
@@ -925,7 +925,7 @@
 							</ol>
                                         	</font>
 					<?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'mhrdformatIE.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'mhrdformatIE.png','width' => 1300, 'height' =>700));
                                         ?>
                                         </div>
                                         </section>
@@ -943,13 +943,13 @@
 								</ol>
 							</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'payment&receipt.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'payment&receipt.png','width' => 1300, 'height' =>700));
 					?>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'payment&receipt1.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'payment&receipt1.png','width' => 1300, 'height' =>700));
 					?>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'payment&receipt2.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'payment&receipt2.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -967,7 +967,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'trialbalance.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'trialbalance.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -984,7 +984,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'ledgerstatement.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'ledgerstatement.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1001,7 +1001,7 @@
 									</ol>
 								</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'reconciliation.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'reconciliation.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1032,7 +1032,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'daystatement.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'daystatement.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1049,7 +1049,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'cashreport.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'cashreport.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1083,7 +1083,7 @@
 							</ol>
                                         	</font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'PlanReport.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'PlanReport.png','width' => 1300, 'height' =>700));
                                         ?>
                                         </div>
                                         </section>
@@ -1100,7 +1100,7 @@
 							</ol>
                                         	</font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'NonPlanReport.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'NonPlanReport.png','width' => 1300, 'height' =>700));
                                         ?>
                                         </div>
                                         </section>
@@ -1117,7 +1117,7 @@
 							</ol>
                                         	</font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'SummaryReport.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'SummaryReport.png','width' => 1300, 'height' =>700));
                                         ?>
                                         </div>
                                         </section>
@@ -1138,7 +1138,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'fundlist.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'fundlist.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1155,7 +1155,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'tagreport.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'tagreport.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1172,7 +1172,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'secondaryunitstatement.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'secondaryunitstatement.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1194,7 +1194,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccountlogs.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'chartofaccountlogs.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1211,7 +1211,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'transactionlogs.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'transactionlogs.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1228,7 +1228,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'budgetlogs.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'budgetlogs.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1245,7 +1245,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'otherlogs.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'otherlogs.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1262,7 +1262,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'tdsreport.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'tdsreport.png','width' => 1300, 'height' =>700));
                                         ?>
                                         </div>
                                         </section>
@@ -1279,7 +1279,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditmain.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditmain.png','width' => 1300, 'height' =>700));
                                         ?>
                                         	<font size="4">
                                         		<ol>
@@ -1289,7 +1289,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditparty.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditparty.png','width' => 1300, 'height' =>700));
                                         ?>
                                         	<font size="4">
                                         		<ol>
@@ -1299,7 +1299,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditpnone.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditpnone.png','width' => 1300, 'height' =>700));
                                         ?>
                                         	<font size="4">
                                         		<ol>
@@ -1309,7 +1309,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditnone.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditnone.png','width' => 1300, 'height' =>700));
                                         ?>
                                         	<font size="4">
                                         		<ol>
@@ -1319,7 +1319,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditparnone.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrycreditparnone.png','width' => 1300, 'height' =>700));
                                         ?>
                                         </div>
                                         </section>
@@ -1336,7 +1336,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitmain.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitmain.png','width' => 1300, 'height' =>700));
                                         ?>
                                         	<font size="4">
                                         		<ol>
@@ -1346,7 +1346,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitparty.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitparty.png','width' => 1300, 'height' =>700));
                                         ?>
                                         	<font size="4">
                                         		<ol>
@@ -1356,7 +1356,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitpnone.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitpnone.png','width' => 1300, 'height' =>700));
                                         ?>
                                         	<font size="4">
                                         		<ol>
@@ -1366,7 +1366,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitnone.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitnone.png','width' => 1300, 'height' =>700));
                                         ?>
                                         	<font size="4">
                                         		<ol>
@@ -1376,7 +1376,7 @@
 							</ol>
                                         </font>
                                         <?php
-                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitparnone.png'));
+                                        echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'sundrydebitparnone.png','width' => 1300, 'height' =>700));
                                         ?>
                                         </div>
                                         </section>
@@ -1393,7 +1393,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'settings.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'settings.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1410,7 +1410,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'accountsettings.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'accountsettings.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1427,7 +1427,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'carryfowardaccount.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'carryfowardaccount.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1444,7 +1444,7 @@
 						<!--/ol>
 						</font>
 						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
-						<table border="1" style="width:500px">
+						<table border="1" style="width:700px">
 						<tr>
 						<td><B>Field</B></td>
 						<td><B>Description</B></td>
@@ -1491,7 +1491,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'printersettings.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'printersettings.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1508,7 +1508,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'downloadbackup.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'downloadbackup.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1525,7 +1525,7 @@
 							</ol>
 						</font>
 						<?php
-						echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'tags.png'));
+						echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'tags.png','width' => 1300, 'height' =>700));
 						?>
 					</div>
 					</section>
@@ -1542,7 +1542,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'entrytype.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'entrytype.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1559,7 +1559,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'uploadlogo.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'uploadlogo.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1576,7 +1576,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'payrollsetup.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'payrollsetup.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1598,7 +1598,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'viewparty.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'viewparty.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1615,7 +1615,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'addparty.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'addparty.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>					
@@ -1632,7 +1632,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'help.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'help.png','width' => 1300, 'height' =>700));
 					?>
 					</div>
 					</section>
@@ -1649,7 +1649,7 @@
 							</ol>
 						</font>
 					<?php
-					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'passwordsetting.png'));
+					echo img(array('src' => base_url() . "system/application/views/help/BGAScreenshot/" . 'passwordsetting.png','width' => 1300, 'height' =>700));
 					?>
 
 					</div>
