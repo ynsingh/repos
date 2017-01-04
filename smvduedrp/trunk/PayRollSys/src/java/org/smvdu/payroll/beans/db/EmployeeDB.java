@@ -7,17 +7,26 @@ package org.smvdu.payroll.beans.db;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.bean.CsvToBean;
-//import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.application.FacesMessage;
+import java.util.Properties;
 import javax.faces.context.FacesContext;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import org.hibernate.Query;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
+import org.smvdu.payroll.api.Administrator.CollegeList;
 import org.smvdu.payroll.api.BankDetails.BankProfileDetails;
 import org.smvdu.payroll.api.EncryptionUtil;
+import org.smvdu.payroll.api.email.MassageProperties;
 import org.smvdu.payroll.beans.setup.Department;
 import org.smvdu.payroll.beans.setup.Designation;
 import org.smvdu.payroll.beans.Employee;
@@ -27,22 +36,17 @@ import org.smvdu.payroll.beans.SimpleEmployee;
 import org.smvdu.payroll.beans.setup.EmployeeType;
 import org.smvdu.payroll.beans.setup.SalaryGrade;
 import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.beans.setup.Org;
 import org.smvdu.payroll.beans.upload.UploadFile;
-//import org.smvdu.payroll.beans.composite.ActivationDeactivationMessage;
-//import org.smvdu.payroll.beans.composite.NewSalaryProcessing;
-//import org.smvdu.payroll.beans.setup.Org;
-//import org.smvdu.payroll.beans.validator.AllValidator;
-//import org.smvdu.payroll.beans.validator.EmployeeNotification;
-//import org.smvdu.payroll.beans.validator.ValidationStatus;
-//import org.smvdu.payroll.beans.validator.ValidatorStatus;
-//import org.smvdu.payroll.user.ActiveProfile;
 import org.smvdu.payroll.user.SalaryMessage;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
 import org.smvdu.payroll.user.UserRegistration;
+import org.smvdu.payroll.user.changePassword;
 
 /**
  *
  *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ *  *  Copyright (c) 2014 - 2017 ETRG, IITK. 
  *  All Rights Reserved.
  **  Redistribution and use in source and binary forms, with or
  *  without modification, are permitted provided that the following
@@ -71,7 +75,8 @@ import org.smvdu.payroll.user.UserRegistration;
  *
  *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
  *  Modified Date: 4 AUG 2014, 12 FEB 2015, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
- *  GUI Modification : 20 June 2015, Om Prakash<omprakashkgp@gmail.com>
+ *  GUI Modification : 20 June 2015, Om Prakash(omprakashkgp@gmail.com)
+ *  Last Modification :(Change Password of Employee ), January 2017, Om Prakash
  */
 
 public class EmployeeDB {
@@ -81,6 +86,10 @@ public class EmployeeDB {
     private UserInfo uf;
     private int status;
     private String url;
+    private HibernateUtil helper;
+    private org.hibernate.Session sess;
+    private org.hibernate.Session seslogin;
+
 
     public int getStatus() {
         return status;
@@ -1405,6 +1414,114 @@ public class EmployeeDB {
             return -1;
         }
     }
-  
+
+   /**
+     * update the Password for user for Specific organization
+     * @param 
+     * @return 
+     * 
+     */
+    public Exception updateEmpPassword(Employee editedRecord)
+    {
+        try{
+                sess = helper.getSessionFactory().openSession();
+                String pass= new EncryptionUtil().createDigest("MD5",editedRecord.getPassword());
+                String changepassinDb=new changePassword().changePaswordInLoginDB(pass, editedRecord.getEmail());
+                sess.beginTransaction();
+                Query query = sess.createQuery("update UserMaster set uspass = '"+pass+"' where usname = '"+editedRecord.getEmail()+"'");
+                query.executeUpdate();
+                sess.getTransaction().commit();
+                sendChangePasswordMail(editedRecord);
+        }
+        catch(Exception e)
+        {
+            sess.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            sess.close();  
+        }
+        return null;
+
+        
+       /** try
+        {
+            Connection cn = new CommonDB().getConnection();
+            PreparedStatement pst;
+            String pass= new EncryptionUtil().createDigest("MD5",editedRecord.getPassword());
+            System.out.println("OP:===New Pass word of Employee is ====>"+pass);
+            String changepassinDb=new changePassword().changePaswordInLoginDB(pass, editedRecord.getEmail());
+            pst = cn.prepareStatement("update user_master set user_pass = '"+pass+"' where user_name = '"+editedRecord.getEmail()+"'");
+            pst.executeUpdate();
+            pst.close();
+            cn.close();
+            //new OrgConformationEmail().sendChangePasswordMail(editedRecord); 
+            return null;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return ex;
+        }
+        */
+    }
+
+    
+    public boolean sendChangePasswordMail(Employee emp)  {
+              try
+              {
+                  String fromEmail = new String();
+                  String fromPassword = new String();
+                  String smtpHostName;
+                  int port;
+                  final String[] f = new CollegeList().getSMTPAuthDetails().split("-");
+                  port = Integer.parseInt(f[0]);
+                  fromEmail = f[1];
+                  fromPassword = f[2];
+                  smtpHostName = f[3];
+                Properties props = new Properties();
+                props.put("mail.smtp.host", smtpHostName); 
+                props.put("mail.smtp.user", fromEmail);
+                //To use TLS
+                props.put("mail.smtp.auth", "true");
+                props.put("mail.smtp.starttls.enable", "true");
+                props.put("mail.smtp.password", fromPassword);
+                props.put("mail.smtp.port",String.valueOf(port)); 
+                Session session = Session.getDefaultInstance(props, new Authenticator() {
+                                     @Override
+                                     protected PasswordAuthentication getPasswordAuthentication() {
+                                             String username = f[1];
+                                             String password = f[2];
+                                               return new PasswordAuthentication(username, password);
+                                     }
+                                  });
+                                 String to = emp.getEmail();
+                    String from = f[4];
+                    MassageProperties msgprop = new MassageProperties();
+                    MimeMessage msg = new MimeMessage(session);
+                    try {
+                        msg.setFrom(new InternetAddress(from));
+                        msg.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(to));
+                        //   msg.setSubject(subject);
+                        msg.setSubject(msgprop.getPropertieValue("reg"));
+                        msg.setContent("<html>" 
+                                    +"<font style='color:#4B4B4B;font-size:13px;font-weight:bold;'>"+msgprop.getPropertieValue("reg11")+"<hr>"
+                          + emp.getPassword()+"<hr><br><br><font style='color:#4B4B4B;font-size:15px;font-weight:bold;'><br>"+msgprop.getPropertieValue("reg")+"</font></font><br><hr>" 
+                          + "</html>","text/html"); 
+                      Transport transport = session.getTransport("smtp");
+                      transport.send(msg);
+                   }  catch(Exception exc) 
+                   {
+                        System.out.println(exc);
+                   }
+                  return true;
+              }
+              catch(Exception e)
+              {
+                  e.printStackTrace();
+                  return false;
+              }
+    }
 
 }

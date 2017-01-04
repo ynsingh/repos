@@ -147,7 +147,7 @@
                         
                         </rich:menuGroup>--%>
                         <rich:separator/>
-                        <rich:menuItem value="Exit"/>
+                        <%-- <rich:menuItem value="Exit"/> --%>
                     </rich:dropDownMenu>
                    <%-- <rich:dropDownMenu  id="ad"  value="Administration " styleClass="pic" >
                             <rich:menuItem  id="ad1"  onclick="return loadIframe('ifrm','adm/Salary.jsf')" value="Lock Salary"/>

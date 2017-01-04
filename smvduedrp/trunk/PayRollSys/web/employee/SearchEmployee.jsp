@@ -2,6 +2,8 @@
     Document   : SearchEmployee
     Created on : Jul 8, 2010, 3:23:09 PM
     Author     :  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*  Copyright (c) 2010 - 2011.2014 SMVDU, Katra.
+*  Copyright (c) 2014 - 2017 ETRG, IITK.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -29,6 +31,8 @@
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*
+*  Last Modified :(Change Password of Employee),January 2017, Om Prakash (omprakashkgp@gmail.com), IITK
 *
 --%>
 
@@ -88,6 +92,7 @@
                 </h:panelGrid>
                 <h:form id="myform">
                     <rich:dataTable id="result" value="#{SearchBean.all}" var="emp">
+                        <a4j:keepAlive beanName="SearchBean" ajaxOnly="true"/>
                         <h:column>
                             <f:facet name="header" >
                                 <h:outputText value="Sr.No"/>
@@ -158,14 +163,61 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">
+                                <h:outputText value="Actions"></h:outputText>
+                            </f:facet> 
+                             <a4j:commandButton value="Change Password"  immediate="true" ajaxSingle="true" reRender="editGrid" onclick="Richfaces.showModalPanel('adnew');">
+                             <f:setPropertyActionListener value="#{emp}" target="#{SearchBean.editedRecord}" />
+                             </a4j:commandButton>
+
+                            <%--   <f:facet name="header">
                                 <h:outputText value="Delete"></h:outputText>
                             </f:facet>
-                            <a4j:commandButton  disabled="#{emp.event}" value="#{emp.buttonValue}"></a4j:commandButton>
+                            <a4j:commandButton  disabled="#{emp.event}" value="#{emp.buttonValue}"></a4j:commandButton> --%>
                         </h:column>
                     </rich:dataTable>
                 </h:form>
-            </rich:panel>
-        </f:view>
+            </rich:panel> 
+           
+           <rich:modalPanel label="Change Password" id="adnew" width="500" height="200" autosized="true">
+               <a4j:support event="onbeforeshow" action="#{SearchBean.updateEmpPassword}"/>
+                <f:facet name="header">
+                    <h:panelGroup>
+                        <h:outputText value="Change Password"></h:outputText>
+                    </h:panelGroup>
+                </f:facet>
+                <f:facet name="controls">
+                    <h:panelGroup>
+                        <h:graphicImage value="/img/close1.png" styleClass="hidelink" id="hidelinkpnl"/>
+                        <rich:componentControl for="adnew" attachTo="hidelinkpnl" operation="hide" event="onclick"/>
+                    </h:panelGroup>
+                </f:facet>
+                <h:form>
+                    <rich:panel>
+                        <rich:messages>
+                            <f:facet name="infoMarker">
+                                <h:graphicImage url="/img/success.png"/>
+                            </f:facet>
+                            <f:facet name="errorMarker">
+                                <h:graphicImage url="/img/err.png"/>
+                            </f:facet>
+                        </rich:messages>
+                            <h:panelGrid id="editGrid" columns="2" style="width:500; height:200;">
+                            <h:outputText value="User ID"/>
+                            <h:outputText value="#{SearchBean.editedRecord.email}"/>
+                            <h:outputText value="Password"/>
+                            <h:inputSecret required="true" size="30" value="#{SearchBean.editedRecord.password}"/>
+                            <h:outputText value="Re Password"/>
+                            <h:inputSecret required="true" size="30" value="#{SearchBean.editedRecord.rePassword}"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" style="padding-left:15%;">
+                            <a4j:commandButton reRender="myform, result" value="Submit" action="#{SearchBean.updateEmpPassword}" oncomplete="#{rich:component('adnew')}.hide();"/>
+                            <a4j:support event="oncomplete" reRender="result"/>
+                            <a4j:commandButton value="Reset" type="reset"/>
+                        </h:panelGrid>
+                    </rich:panel>
+                </h:form>
+            </rich:modalPanel>   
+         </f:view>
 
     </body>
 </html>

@@ -13,7 +13,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import org.smvdu.payroll.api.BankDetails.BankDetailsSearch;
 import org.smvdu.payroll.api.BankDetails.BankProfileDetails;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.EmployeeDB;
@@ -24,6 +23,7 @@ import org.smvdu.payroll.module.attendance.LoggedEmployee;
  * EmployeeDB.search to fetch records. It is available as SearchBean as managed bean.
  * This class is responsible for providing popup results in almost all UI window
  *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ * Copyright (c) 2014, 2015, 2016, 2017 ETRG, IITK.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -51,8 +51,9 @@ import org.smvdu.payroll.module.attendance.LoggedEmployee;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
-*
- */
+*  Modification :(Change password of Employee) January, 2017, Om Prakash (omprakashkgp@gmail.com), IITK
+*/
+
 public class EmployeeSearchBean {
 
 
@@ -75,6 +76,8 @@ public class EmployeeSearchBean {
 
     private String bankName = new String();
     private String bankBranchName = new String();
+    
+    
 
     public String getBankBranchName() {
         return bankBranchName;
@@ -296,4 +299,67 @@ public class EmployeeSearchBean {
        return results;
    }
     
+    
+    private Employee editedRecord;
+    private String password;
+    private String rePassword;
+
+    public Employee getEditedRecord() {
+        return editedRecord;
+    }
+
+    public void setEditedRecord(Employee editedRecord) {
+        this.editedRecord = editedRecord;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRePassword() {
+        return rePassword;
+    }
+
+    public void setRePassword(String rePassword) {
+        this.rePassword = rePassword;
+    }
+    
+            
+   /*
+    * Method for change Password of the Employee 
+    */
+    public void updateEmpPassword()
+    {
+      try
+        {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            FacesMessage message = new FacesMessage();
+            if(!editedRecord.getPassword().equals(editedRecord.getRePassword()))
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Password Are Not Matching.....Please Try Again.");
+                fc.addMessage("", message);
+                return;
+             
+            }
+            
+           Exception ex = new EmployeeDB().updateEmpPassword(editedRecord); 
+            if(ex == null)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_INFO);
+                message.setSummary("Password updated successfully Mail has been  sent successfuly to : "+editedRecord.getEmail());
+                fc.addMessage("", message);
+            }
+            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            
+        }
+    }
 }
