@@ -648,7 +648,7 @@ var $ledgers = array();
 			return array(0, "D");
 
 	}
-
+	// This function gives the opening balance of the selected month
 	function get_op_closing_balance($ledger_id, $from_date, $to_date)
 	{
 
@@ -662,19 +662,40 @@ var $ledgers = array();
 		$actual_date='';
 		$flag=0;
 	//	$fy_start_date=2015-04-01;
+		$actual_date = date('Y-m-d', strtotime($from_date .' -1 day'));
+		$pymd=explode("-",$actual_date);
+		if(($pymd[1] == 03)&& ($pymd[2] == 01)){
+			$actual_date=$fy_start_date;
+			list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
+			$flag=1;
+		}
+/*		echo "prevdate";
+		echo  $prev_date;
 		$exp_from_date=explode("-",$from_date);
+		echo "=";
+		echo  $exp_from_date;
 		$previous_date=$exp_from_date[2]-1;
+		echo "==";
+		echo $previous_date;
                 $month=$exp_from_date[1]-1;     
-                $previous_month="0"."$month";
-                        
+		echo "===";
+		echo $month;
+		if ($month <10){
+                	$previous_month="0"."$month";
+		}
+		else{
+                	$previous_month=$month;
+		}
+		echo "pre month=";
+        	print_r($previous_month);                
 		if($exp_from_date[2] == 01){
 			if($previous_month == '01' || $previous_month == '05' || $previous_month == '07' || $previous_month == '08' || $previous_month == '10' || $previous_month == '12'){
 				$actual_date=$exp_from_date[0]."-".$previous_month."-"."31";
 			}elseif($previous_month == '02'){
 				$day = "";
-    				/*
+    			/*
       				since leap year falls ever 4 years so loop for 4 times 
-    				*/
+    				/
     				for($i=0; $i<4; $i++)
     				{
     					//get day timestamp for feburary 29 for this year
@@ -682,7 +703,7 @@ var $ledgers = array();
     					/*
     					check if day equals 29. 
     					If day is 29 then it must be the leap year. if day is 01, then it not a leap year.
-    					*/
+    					/
     					if($day == 29)
     					{
     						$year = date("Y")+$i;
@@ -707,12 +728,13 @@ var $ledgers = array();
 			$previous_date="0"."$previous_date";	
 			$actual_date=$exp_from_date[0]."-".$exp_from_date[1]."-".$previous_date;
 		}
+*/
 		 if($flag != 1){
                  list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
                 }
 		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
                 $this->db->where('date >=', $fy_start_date);
-                $this->db->where('date <', $actual_date);
+                $this->db->where('date <=', $actual_date);
               //  $this->db->where('date <=', $actual_date);
                 $dr_total_q = $this->db->get();
                 if ($dr_total = $dr_total_q->row())
@@ -722,7 +744,7 @@ var $ledgers = array();
 	//	echo " the dr total is  ".$dr_total;
 		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
                 $this->db->where('date >=', $fy_start_date);
-                $this->db->where('date <', $actual_date);
+                $this->db->where('date <=', $actual_date);
                // $this->db->where('date <=', $actual_date);
                 $cr_total_q = $this->db->get();
                 if ($cr_total = $cr_total_q->row())
