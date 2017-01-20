@@ -23,7 +23,7 @@
 	echo form_dropdown('partyrole', $partyrole);
 
 	echo "</span>";
-	echo "<span id=\"tooltip-content-1\">(Faculty - 00, Student - 01, Staff Clerical - 02, Technical staff - 03, Supplier - 04, <br>Admin staff - 05, Contractor - 06, Service provider - 07, Alumni/Doner - 08,<br> Author - 09, Illustrator - 10, Participant - 11, Invites/Speaker - 12, Officers - 13 )</span>";	
+	echo "<span id=\"tooltip-content-1\">(Faculty - 00, Student - 01, Staff Clerical - 02, Technical staff - 03, Supplier - 04, <br>Admin staff - 05, Contractor - 06, Service provider - 07, Alumni/Doner - 08,<br> Author - 09, Illustrator - 10, Participant - 11, Invites/Speaker - 12, Officers - 13,<br> Others - 14 )</span>";	
 	echo "</p>";
 	
 	echo "<p>";

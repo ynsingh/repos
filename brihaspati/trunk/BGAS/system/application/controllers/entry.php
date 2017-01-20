@@ -1115,7 +1115,7 @@ $width="100%";
                  	{
                          	$id = $row1->id;
                      	}
-			
+				
 			$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			//$data_sanc_letter_date = date_php_to_mysql($data_sanc_letter_date);
 			if($data_sanc_letter_date != "")
@@ -1142,18 +1142,14 @@ $width="100%";
 				'sanc_type' => $data_sanc_type,
 				'sanc_value' => $sanc_value,
 				'vendor_voucher_number' => $vendor_number,
-				'purchase_order_no' => $purchase_order_no,
-				'verified_by' => ' '
+				'purchase_order_no' => $purchase_order_no
 			);
 
 			if ( ! $this->db->insert('entries', $insert_data))
 			{
-				$mymsg=$this->db->_error_message();
-			//echo	$mymsgno=$this->db->_error_number();
 				$this->db->trans_rollback();
 				$this->messages->add('Error addding Entry.', 'error');
-				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry 1".$mymsg." value is ".$data_sanc_letter_date);
-//				echo mysql_errno($this->db) . ": " . mysql_error($this->db) . "\n";
+				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry 1");
 				$this->template->load('template', 'entry/add', $data);
 				return;
 			} 
@@ -1238,10 +1234,9 @@ $width="100%";
                                 );
                                 if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                 {
-					$mymsg=$this->db->_error_message();
                                		$this->db->trans_rollback();
                                         $this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
-                                        $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 2 " . "[id:" . $data_ledger_id . "]".$mymsg);
+                                        $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item 2 " . "[id:" . $data_ledger_id . "]");
                                         $this->template->load('template', 'entry/add', $data);
                                         return;
                                 }
@@ -1372,7 +1367,6 @@ $width="100%";
                                                     	$income = $query->row();
                                                     	$income_id = $income->id;
 							$code_ledg_inc1 = $this->Ledger_model->get_code($income_id);
-
                                                     	$insert_income_data = array(
                                                         	'entry_id' => $entry_id,
                                                         	'ledger_id' => $income_id,
@@ -1422,7 +1416,6 @@ $width="100%";
                                                     	$income = $query->row();
                                                     	$income_id = $income->id;
 							$code_ledg_inc1 = $this->Ledger_model->get_code($income_id);
-
                                                     	$insert_income_data = array(
                                                         	'entry_id' => $entry_id,
                                                         	'ledger_id' => $income_id,
@@ -3303,7 +3296,7 @@ $width="100%";
                         $data_amount = $this->input->post('amount', TRUE);
                         $data_cheque_no = $this->input->post('cheque_no', TRUE);
                         $data_cheque_type = $this->input->post('cheque_type', TRUE);
-
+/*
 			$par_tyid = $this->Secunit_model->get_secunitid($data_beneficiary_name);
 			$chequ_duplicate = $this->Entry_model->cheque_duplicacy($par_tyid,$data_cheque_no,$entry_id,$data_bank_name);
 			if($chequ_duplicate)
@@ -3313,7 +3306,8 @@ $width="100%";
                                 return;
 			}
 
-			/*Check entered cheque no. already exist in database(Give error message) .........
+*/
+			//Check entered cheque no. already exist in database(Give error message) .........
 			$this->db->select('id, entry_no')->from('cheque_bounce_record')->where('new_cheque_no', $data_cheque_no)->where('bank_name', $data_bank_name);
                         $check_name_exist = $this->db->get();
 			foreach($check_name_exist->result() as $row3)
@@ -3326,7 +3320,7 @@ $width="100%";
                                 $this->template->load('template', 'entry/cheque', $data);
                                 return;
 		
-			}*/
+			}
 			//set cheque_type(Bearer or order) in session..
                         $newdata = array(
                         'cheque_type'  => $data_cheque_type,
@@ -3393,18 +3387,18 @@ $width="100%";
                                         } else {
                                         $this->db->trans_complete();
                                 }
+			
 
 		} 
 		
 		if ($_POST)
                 {
 		 	if ($_POST['submit'] == 'Save')
-                       	{
+                        {
 				$this->messages->add(' Cheque record save Successfully.', 'success');
-                             	$this->template->load('template', 'entry/cheque', $data);
-                               	return;
+                                $this->template->load('template', 'entry/cheque', $data);
+                                return;
 			}
-		
 		}
 		
                 /* Getting Ledger details */

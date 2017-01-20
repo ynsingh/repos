@@ -145,6 +145,8 @@ class Addparty extends Controller {
    				$text='12';
 			} elseif($text == 'officers') {
    				$text='13';
+			} elseif($text == 'others') {
+   				$text='14';
 			} else{
 				 $this->messages->add('Search proper name of Party Type.', 'error');
 			}
@@ -264,6 +266,7 @@ class Addparty extends Controller {
                         "participant" => "Participant",
                         "invites/Speaker" => "Invites/Speaker",
                         "officers" => "Officers",
+                        "others" => "Others",
                 );
 
 		$data['mnumber'] = array(
@@ -771,6 +774,9 @@ class Addparty extends Controller {
                         }
                         if($data_partyrole == 'officers') {
                                 $secunit_id = '13';
+                        }
+                        if($data_partyrole == 'others') {
+                                $secunit_id = '14';
                         }
 			if($secunit_id == ""){
 				$msg1= 'The party role is invalid.';
