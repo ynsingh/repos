@@ -239,7 +239,9 @@ public class Evaluate extends  SecureScreen{
 							String evaluate=((QuizFileEntry) scoreCollect.elementAt(i)).getEvaluate();
                                                         String uid=((QuizFileEntry) scoreCollect.elementAt(i)).getUserID();
                                                         int studentMarks=Integer.parseInt(((QuizFileEntry) scoreCollect.elementAt(i)).getScore());
-                                                        String sname=UserUtil.getFullName(Integer.parseInt(uid));
+
+//                                                        String sname=UserUtil.getFullName(Integer.parseInt(uid));
+                                                        String sname=UserUtil.getLoginName(Integer.parseInt(uid));
 							String percentageScore = String.valueOf((studentMarks*100)/(Integer.parseInt(maxMarks)));
                                                        	if(Integer.parseInt(percentageScore)>=passingPercentage)
                                                        	finalResult="Pass";
