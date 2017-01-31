@@ -8,7 +8,6 @@ package org.smvdu.payroll.beans;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.Serializable;
-//import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,15 +20,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
+import org.smvdu.payroll.api.Administrator.CollegeList;
 import org.smvdu.payroll.api.BankDetails.BankDetailsSearch;
 import org.smvdu.payroll.api.BankDetails.BankProfileDetails;
-import org.smvdu.payroll.api.report.LeavingDate;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.EmployeeDB;
 import org.smvdu.payroll.beans.upload.UploadFile;
@@ -43,7 +39,9 @@ import org.smvdu.payroll.user.ActiveProfile;
  * for database operations, it uses EmployeeDB and is accessible as
  * SearchBean and EmployeeController as Managed Beans in UI calls.
  * Employee Record include Date of birth, Department, Designation etc all.
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ * 
+ *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ *  Copyright (c) 2014 - 2017 ETRG, IITK.
  *  All Rights Reserved.
  **  Redistribution and use in source and binary forms, with or
  *  without modification, are permitted provided that the following
@@ -72,12 +70,14 @@ import org.smvdu.payroll.user.ActiveProfile;
  *
  *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
  *  Modified Date: 4 AUG 2014, 17 Jan 2015 IITK  IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
- *  Date 06-02-2016, Aadhar No and Category type,  Om Prakash omprakashkgp@gmail.com  IITK 
+ *  Date 06-02-2016, Aadhar No and Category type,  Om Prakash (omprakashkgp@gmail.com),  IITK 
+ *  Last Modified : (Hibernate conversion ), January 2017, Om Prakash
  */
+
 public class Employee implements Serializable {
 
-    /*public Employee() {
-    }*/
+    public Employee() {
+    }
     
     private int gradePay;
 
@@ -106,6 +106,7 @@ public class Employee implements Serializable {
     public void setRePassword(String rePassword) {
         this.rePassword = rePassword;
     }
+   
     private int orgCode;
     private String code;
     private String genderName;
@@ -120,36 +121,38 @@ public class Employee implements Serializable {
     private boolean userNameStatus;
     private String notification = new String();
     private String salaryMessage = new String();
-
     private String genDetails;
 
+ 
+    public int getOrgCode() {
+        return orgCode;
+    }
+
+    public void setOrgCode(int orgCode) {
+        this.orgCode = orgCode;
+    }
+    
     public String getGenDetails() {
-        //System.out.println("employeebean==getdetails=="+ genDetails);
         return genDetails;
     }
 
     public void setGenDetails(String genDetails) {
-         //System.out.println("employeebean==setdetails=="+ genDetails);
         this.genDetails = genDetails;
     }
      private int genDetailCode;
 
     public int getGenDetailCode() {
-        //System.out.println("Code : "+genDetailCode);
         return genDetailCode;
     }
 
     public void setGenDetailCode(int genDetailCode) {
-        //System.out.println("Code : "+genDetailCode);
         this.genDetailCode = genDetailCode;
     }
     public String getSalaryMessage() {
-        //System.out.println("DAta Should Be Write Here :dsd "+salaryMessage);
         return salaryMessage;
     }
 
     public void setSalaryMessage(String salaryMessage) {
-        //System.out.println("DAta Should Be Write Here seema: "+salaryMessage);
         this.salaryMessage = salaryMessage;
     }
     public String getNotification() {
@@ -184,10 +187,6 @@ public class Employee implements Serializable {
         this.ststus = ststus;
     }
 
-    public int getExperience() {
-        return experience;
-    }
-
     public String getQualification() {
         return qualification;
     }
@@ -196,6 +195,9 @@ public class Employee implements Serializable {
         this.qualification = qualification;
     }
 
+    public int getExperience() {
+        return experience;
+    }
     public void setExperience(int experience) {
         this.experience = experience;
     }
@@ -243,12 +245,10 @@ public class Employee implements Serializable {
     }
 
     public String getGenderName() {
-        //System.out.println("employeebean==get=="+ genderName);
         return genderName;
     }
 
     public void setGenderName(String genderName) {
-        //System.out.println("employeebean==set=="+ genderName);
         this.genderName = genderName;
     }
     private int currentBasic;
@@ -319,7 +319,6 @@ public class Employee implements Serializable {
     }
 
     public boolean isMale() {
-        //System.out.println("male==="+   male);
         return male;
     }
 
@@ -359,7 +358,20 @@ public class Employee implements Serializable {
     private int empNotDay ;
     private String empLeavingDate = new String();
     private boolean seniorCitizen;
+    private int smtport;
+    private int tgender;
+        
 
+    public int getSmtport() {
+        final String[] f = new CollegeList().getSMTPAuthDetails().split("-");
+        smtport = Integer.parseInt(f[0]);
+        return smtport;
+    }
+
+    public void setSmtport(int smtport) {
+        this.smtport = smtport;
+    }
+    
     public boolean isSeniorCitizen() {
         return seniorCitizen;
     }
@@ -367,6 +379,15 @@ public class Employee implements Serializable {
     public void setSeniorCitizen(boolean seniorCitizen) {
         this.seniorCitizen = seniorCitizen;
     }
+
+    public int getTgender() {
+        return tgender;
+    }
+
+    public void setTgender(int tgender) {
+        this.tgender = tgender;
+    }
+        
     public String getEmpLeavingDate() {
         return empLeavingDate;
     }
@@ -461,10 +482,6 @@ public class Employee implements Serializable {
         this.empId = empId;
     }
 
-    public String getBankAccNo() {
-        return bankAccNo;
-    }
-
     public void loadBankDeails() {
         try {
             Connection cn;
@@ -509,6 +526,13 @@ public class Employee implements Serializable {
                 this.setStatusI("/img/InActive.png");
                 fc.addMessage("", message);
                 return;
+            }
+            if(this.getSmtport()<=0){
+                    FacesMessage message = new FacesMessage();
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("You have to update the SMTP Configuration.");
+                    fc.addMessage("", message);
+                    return;
             }
             if(this.getName().matches("^[a-zA-Z\\s]*$") == false)
             {
@@ -643,7 +667,6 @@ public class Employee implements Serializable {
                 fc.addMessage("", message);
                 return;
             }
-            //System.out.println("doa==="+this.getDoAcceptance()+"dom=="+this.getDoMaturity());
             if((!(this.getDoMaturity().equals("")))||(!(this.getDoAcceptance().equals(""))))
             {
                 //System.out.println("doa=222=="+this.getDoAcceptance()+"dom=="+this.getDoMaturity());
@@ -702,7 +725,7 @@ public class Employee implements Serializable {
             if (dateVali == true) {
                 boolean b = new EmployeeDB().update(this);
                 boolean c= new EmployeeDB().updateEmpSupport(this);
-                //System.out.println("update====b="+b+"\nc======"+c);
+                
                 if (b || c) {
                     FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Details Updated sucessfully", ""));
                 }
@@ -721,6 +744,9 @@ public class Employee implements Serializable {
         }
     }     
     
+    public String getBankAccNo() {
+        return bankAccNo;
+    }
     public void setBankAccNo(String bankAccNo) {
         this.bankAccNo = bankAccNo;
     }
@@ -765,12 +791,12 @@ public class Employee implements Serializable {
     }
 
     public Employee getProfileData(String code) {
-        //System.err.println("Loading Profile for code :"+id);
+        
         Employee xemp = new EmployeeDB().loadProfile(code, orgCode);
         if (xemp == null) {
             xemp = getDefault();
         }
-        //System.err.println("Name : "+emp.name);
+        
         type = xemp.type;
         name = xemp.name;
         code = xemp.code;
@@ -790,13 +816,11 @@ public class Employee implements Serializable {
 
 
         ActiveProfile le = (ActiveProfile) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
-
         //System.err.println("Loading Profile for code :"+id);
         Employee xemp = new EmployeeDB().loadProfile(code, orgCode);
         if (xemp == null) {
             xemp = getDefault();
         }
-        //System.err.println("Name : "+emp.name);
         type = xemp.type;
         name = xemp.name;
         code = xemp.code;
@@ -824,7 +848,6 @@ public class Employee implements Serializable {
         if (emp == null) {
             emp = getDefault();
         }
-        //System.err.println("Name : " + emp.name);
         type = emp.type;
         name = emp.name;
         setCode(code);
@@ -842,12 +865,10 @@ public class Employee implements Serializable {
     private String genName;
 
     public String getGenName() {
-         //System.out.println("employeebean==getname=="+ genName);
         return genName;
     }
 
     public void setGenName(String genName) {
-        //System.out.println("employeebean==setname=="+ genName);
         this.genName = genName;
     }
 
@@ -899,24 +920,24 @@ public class Employee implements Serializable {
             addEmpMess();
         }
         else{
-            //System.err.println("Load Profile for code empz===:" +empz);
             if (empz.getStstus() == false) {
                 this.setStstus(false);
                 this.setStatusI("/img/InActive.png");
             }
             else {
                 this.setStstus(true);
-                //System.out.println("DAta Should Be Write Herekjhkgh : " + empz.getStstus());
                 this.setStatusI("/img/Active.png");
             }
             bankName = new String();
             bankBranchName = new String();
             bankIFSCcode = new String();
+            title = empz.title;
             type = empz.type;
             name = empz.name;
             setCode(code);
             dept = empz.dept;
             desig = empz.desig;
+            grade = empz.grade;
             dob = empz.dob;
             doj = empz.doj;
             phone = empz.phone;
@@ -926,7 +947,7 @@ public class Employee implements Serializable {
             currentBasic = empz.currentBasic;
             panNo = empz.panNo;
             fatherName = empz.fatherName;
-            male = empz.male;
+            tgender = empz.tgender;
             qualification = empz.qualification;
             experience = empz.experience;
             address = empz.address;
@@ -935,11 +956,11 @@ public class Employee implements Serializable {
             ststus = empz.ststus;
             empNotDay = empz.empNotDay;
             notification = new EmployeeNotification().resignationNotification(empz.doj, empz.dateOfResig);
-            //System.out.println("Noti "+notification);
-            empLeaDate = new LeavingDate().leavingDate(empz.dateOfResig,empz.empNotDay);
+           // empLeaDate = new LeavingDate().leavingDate(empz.dateOfResig,empz.empNotDay);
             bankIFSCcode = empz.bankIFSCcode.trim();
             dateOfResig = empz.dateOfResig;
             genDetails = empz.genDetails;
+                        
             /* employee (support table data) support data */       
             entitledCategory = empsupp.entitledCategory.trim();
             employeeStatus = empsupp.employeeStatus;
@@ -962,9 +983,12 @@ public class Employee implements Serializable {
             confirmationDate = empsupp.confirmationDate;
             extentionDate = empsupp.extentionDate;
             joindesig = empsupp.joindesig;
+            aadhaarNo = empz.aadhaarNo;
+            categoryT = new EmployeeDB().getCategoryType(email);
             //seniorCitizen = empz.seniorCitizen;
-            //empLeaDate = empz.empLeaDate;
-            //System.out.println("Bank l : "+empz.bankIFSCcode);
+            genDetailCode =empz.genDetailCode;
+            empLeaDate = empz.empLeaDate;
+            
         }  
         return "EditEmployeeProfile";
         
@@ -1003,6 +1027,7 @@ public class Employee implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Code already exist(" + code + ")", "(" + code + ")"));
                 return;
             }
+            
             if (this.getEmail().matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$") == false) {
 
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -1010,8 +1035,13 @@ public class Employee implements Serializable {
                 fc.addMessage("", message);
                 return;
             }
+            if(this.getSmtport()<=0){
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("You have to update the SMTP Configuration.");
+                fc.addMessage("", message);
+                return;
+            }
             if(this.getName().matches("^[a-zA-Z\\s]*$") == false) {
-                
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 message.setSummary("Plz Enter Valid First Name");
                 fc.addMessage("", message);
@@ -1127,10 +1157,8 @@ public class Employee implements Serializable {
                 fc.addMessage("", message);
                 return;
             }
-            //System.out.println("doa==="+this.getDoAcceptance()+"dom=="+this.getDoMaturity());
             if((!(this.getDoMaturity().equals("")))||(!(this.getDoAcceptance().equals(""))))
             {
-                //System.out.println("doa=222=="+this.getDoAcceptance()+"dom=="+this.getDoMaturity());
                 date1=dateFormat.parse(this.getDoMaturity());
                 date2=dateFormat.parse(this.getDoAcceptance());
 
@@ -1193,14 +1221,12 @@ public class Employee implements Serializable {
     }
 
     public String getDob() {
-        //System.out.println(">> Date Of Birth : " +dob);
         return dob;
     }
 
     public void setDob(String dob) {
         this.dob = dob;
-        //System.out.println(">> Date Of Birth : " + this.dob);
-
+        
     }
 
     public String getDoj() {
@@ -1263,7 +1289,6 @@ public class Employee implements Serializable {
     public void delete() {
         String s = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("delid");
         int pid = Integer.parseInt(s);
-        //System.err.println("CUT Command " + pid);
         new EmployeeDB().delete(pid);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected Employee Record Deleted", ""));
     }
@@ -1301,12 +1326,10 @@ public class Employee implements Serializable {
     public String bifsc = new String();
 
     public String getBifsc() {
-        //System.out.println("DAta Should Be Write Here klop cv: " + bifsc);
         return bifsc;
     }
 
     public void setBifsc(String bifsc) {
-        //System.out.println("DAta Should Be Write Here klop : " + bifsc);
         this.bifsc = bifsc;
     }
 
@@ -1398,7 +1421,6 @@ public class Employee implements Serializable {
     }
    
     public boolean isCheck() {
-        //System.out.println("is chdecked====="+checked);
         return checked;
     }
 
@@ -1417,19 +1439,16 @@ public class Employee implements Serializable {
     private int recordId;
 
     public int getRecordId() {
-        //System.out.println("recordId===== : "+recordId);
         return recordId;
     }
 
     public void setRecordId(int recordId) {
-        //System.out.println("recordId===== : "+recordId);
         this.recordId = recordId;
     }
     
     // family record-----------------
     public void saveFamilyRecord() {
         try {
-            //System.out.println("method====save family record=");
             String statusMessage = null;
             Severity s = null;
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -1468,7 +1487,6 @@ public class Employee implements Serializable {
         try{
             
             allfamilyrecord = new EmployeeDB().loadfamilyrecord(code);
-            //System.err.println("Loading Profile for code :" + code+"\nallfamilyrecord==="+allfamilyrecord);
             if((allfamilyrecord.isEmpty()) && (!code.equals("null"))){
          
                 FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Family detial of employee is not exist", ""));
@@ -1484,7 +1502,6 @@ public class Employee implements Serializable {
        
     public ArrayList<Employee>getAllFamilyRecord()   {
        allfamilyrecord = new EmployeeDB().loadfamilyrecord(code);
-       //System.out.println("\n inget family record in line1071==code==="+code+"\nallfamilyrecord=size==="+allfamilyrecord.size());
        dataGrid.setValue(allfamilyrecord);  
        return allfamilyrecord;
        
@@ -1594,25 +1611,24 @@ public class Employee implements Serializable {
     
     int currentRecordindex;
     public int getCurrentRecordindex() {
-        //System.out.println("current index====="+currentRecordindex);
         return currentRecordindex;
     }
  
     public void setCurrentRecordindex(int currentRecordindex) {
-        //System.out.println("current index==inset==="+currentRecordindex);
         this.currentRecordindex = currentRecordindex;
     }
     
     Employee editedRecord;
+
     public Employee getEditedRecord() {
-        
         return editedRecord;
     }
- 
+
     public void setEditedRecord(Employee editedRecord) {
         this.editedRecord = editedRecord;
     }
-    
+
+        
     public void saveServiceHistory() {
         try {
             
@@ -1647,7 +1663,6 @@ public class Employee implements Serializable {
         try{
         
             allservicerecord = new EmployeeDB().loadEmpHitory(code);
-           //  System.out.println("\n===loadserviceHistory==code=== "+code+"\nallsrvcsHistory===="+allservicerecord);
             if((allservicerecord.isEmpty()) && (!code.equals("null"))){
          
                 FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Service History of employee is not exist", ""));
@@ -1664,7 +1679,6 @@ public class Employee implements Serializable {
         
         allservicerecord = new EmployeeDB().loadEmpHitory(code);
         dataGrid.setValue(allservicerecord);  
-        //System.out.println("\n inget  record in line1300=code=dataGrid1=="+dataGrid);
         return allservicerecord;
        
     }
@@ -1683,7 +1697,6 @@ public class Employee implements Serializable {
             ArrayList<Employee> familyrecord = (ArrayList<Employee>) dataGrid.getValue();
             Employee emp=familyrecord.get(currentRecordindex);
             int currentIndex=emp.getRecordId();
-           // System.out.println("\n in line 1103==getFamilyRecord=="+familyrecord);
             Exception ex = new EmployeeDB().DeleteFamilyRecord(currentIndex, familyrecord);
             if(ex == null )
             {
@@ -2057,17 +2070,12 @@ public class Employee implements Serializable {
             FacesContext fc = FacesContext.getCurrentInstance();
                    
             boolean b=new EmployeeDB().loadData(files);
-            // System.out.println("\n boolean b in save file===="+b);
             if(b==true)
             {
-                //System.out.println("\n boolean b in save file==true case=="+b);
-           
                 FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee registration file uploaded successfully ", ""));
-                //System.out.println("\n boolean b in save below message file==true case=="+b);
             }
             else
             {
-                //System.out.println("\n boolean b in save file=false case==="+b);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Code already exist",""));
             }   
 

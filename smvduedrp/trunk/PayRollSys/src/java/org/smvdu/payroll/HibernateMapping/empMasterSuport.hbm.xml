@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.setup.EmployeeMasterSuport" table="employee_master_support" >
+        <id name="emsId" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity"/>
+        </id>
+        <property name="emsCode" type="java.lang.String">
+            <column name="code" length="50" not-null="true" />
+        </property>
+        <property name="entitledcat" type="java.lang.String">
+            <column name="entitled_cat" length="50" not-null="true" />
+        </property>
+        <property name="statusemp" type="java.lang.String">
+            <column name="status_emp" length="50" not-null="true" />
+        </property>
+        <property name="statusEmp" type="java.lang.String">
+            <column name="working_type" length="100" not-null="true" />
+        </property>
+        <property name="salDeptCode" type="java.lang.Integer">
+            <column name="sal_dept_code" not-null="true" />
+        </property>
+        <property name="joiningDept" type="java.lang.Integer">
+            <column name="joining_dept" not-null="true" />
+        </property>
+        <property name="joinedDesig" type="java.lang.Integer">
+            <column name="joined_desig" not-null="true" />
+        </property>
+            
+        <property name="emsgpfNo" type="java.lang.String">
+            <column name="gpf_no" length="50" />
+        </property>
+        <property name="emsnpsNo" type="java.lang.String">
+            <column name="nps_no" length="100" />
+        </property>
+        <property name="emsDpsNo" type="java.lang.String">
+            <column name="dps_no" length="100" />
+        </property>
+        <property name="houseType" type="java.lang.String">
+            <column name="house_type" length="100" />
+        </property>
+        <property name="houseNo" type="java.lang.String">
+            <column name="house_no" length="100" />
+        </property>
+        <property name="emsECRno" type="java.lang.String">
+            <column name="ecr_no" length="100" />
+        </property>
+        <property name="pageNo" type="java.lang.String">
+            <column name="page_no" length="100" />
+        </property>
+        <property name="postingId" type="java.lang.String">
+            <column name="posting_id" length="100"  />
+        </property>
+        <property name="licpolicyNo" type="java.lang.String">
+            <column name="lic_policy_no" length="100" />
+        </property>
+        <property name="licDoa" type="java.util.Date">
+            <column name="lic_doa" />
+        </property>
+        <property name="licDom" type="java.util.Date">
+            <column name="lic_dom" />
+        </property>
+        <property name="giPolicyNo" type="java.lang.String">
+            <column name="gi_policy_no" length="100" />
+        </property>
+        <property name="gidoa" type="java.util.Date">
+            <column name="gi_doa" />
+        </property>
+        <property name="giDom" type="java.util.Date">
+            <column name="gi_dom" />
+        </property> 
+        
+        <property name="nextincrement" type="java.util.Date">
+            <column name="nextincrement_date" />
+        </property> 
+        <property name="probationDate" type="java.util.Date">
+            <column name="probation_date" />
+        </property> 
+
+        <property name="confirmation" type="java.util.Date">
+            <column name="confirmation_date" />
+        </property> 
+        <property name="extentionDate" type="java.util.Date">
+            <column name="extention_date" />
+        </property> 
+  </class>
+</hibernate-mapping>

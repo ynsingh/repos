@@ -1,9 +1,10 @@
 <%--
     Document        : AddUser.jsp
     Created on      : 3:02 AM Friday, October 01, 2010
-    Last Modified   : 4:03 AM Saturday, October 02, 2010, February 24, 2015
+    Last Modified   : 4:03 AM Saturday, October 02, 2010, February 24, 2015, December 2016
     Author          :
 *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*  Copyright (c) 2014 - 2017 ETRG, IITK.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -31,6 +32,7 @@
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+*  Last Modified : January,2017, Om Prakash (omprakashkgp@gmail.com)
 *
 --%>
 
@@ -112,7 +114,7 @@
                                                     <rich:toolTip value="Enter few characters of name and choose from List" for="empCode"/>
                                                     <a4j:commandButton id="ldbtn" styleClass="panel" action="#{EmployeeBean.loadProfile}" value="Load Profile" />
                                                     <h:graphicImage value="#{EmployeeBean.statusI}"></h:graphicImage>
-                                                    <h:outputText value="#{EmployeeBean.genDetails}"/>
+                                                    <%-- <h:outputText value="#{EmployeeBean.genDetails}"/> --%>
                                                 </h:panelGrid>
                                             </h:column>
                                         </h:panelGrid>
@@ -142,16 +144,20 @@
                                         </h:inputText>
                                         <h:outputText value=""/>
                                         <h:outputText styleClass="Label" value="Gender"/>
-                                        <h:selectOneMenu  styleClass="combo" id="empGender" value="#{EmployeeBean.male}">
-                                            <f:selectItem itemValue="#{EmployeeBean.gender}" itemLabel="Male"/>
-                                            <f:selectItem itemValue="#{EmployeeBean.gender}" itemLabel="Female"/>
+                                        <h:selectOneMenu  styleClass="combo" id="empGender" value="#{EmployeeBean.tgender}">
+                                            <f:selectItem itemValue="1" itemLabel="Female"/>
+                                            <f:selectItem itemValue="2" itemLabel="Male" />
+                                            <f:selectItem itemValue="3" itemLabel="Transgender" />
+                                            <%--  <f:selectItem itemValue="#{EmployeeBean.gender}" itemLabel="Male"/>
+                                                  <f:selectItem itemValue="#{EmployeeBean.gender}" itemLabel="Female"/> --%>
                                         </h:selectOneMenu>
                                         <h:message for="empGender" tooltip="Employee's Gender."/>
                                        
                                         
                                         <h:outputText styleClass="label" value="Gender Details"/>
-                                        <h:selectOneMenu value="#{EmployeeBean.genDetailCode}" id = "seci">
-                                            <f:selectItem itemLabel="<--Select One-->"/>
+                                        <%--<h:selectOneMenu value="#{EmployeeBean.genDetailCode}" id = "seci">--%>
+                                        <h:selectOneMenu value="#{EmployeeBean.genDetails}" id = "seci">
+                                            <f:selectItem itemLabel="<--Select One-->"/> 
                                             <f:selectItems value="#{employeeSlabDetail.items}"/>
                                         </h:selectOneMenu>
                                         <h:outputText value=""/>
@@ -374,7 +380,7 @@
                                         <h:message for="prev"/>
                                         <h:column><h:outputText styleClass="Label" value="Phone/Mobile"/>
                                         <h:outputText value="*" style="color:red;"/></h:column>
-                                        <h:inputText id="empPhone"  styleClass="fields" value="#{EmployeeBean.phone}"/>
+                                        <h:inputText id="empPhone" styleClass="fields" value="#{EmployeeBean.phone}"/>
                                         <h:message for="empPhone" tooltip="* Enter Employee Phone/Mobile Number"/>
                                         <h:column><h:outputText styleClass="Label" value="E-Mail ID"/>
                                         <h:outputText value="*" style="color:red;"/></h:column>
@@ -396,7 +402,7 @@
                                         <rich:separator />
                                         <h:column><h:outputText styleClass="Label" value="Bank Acc. No."/>
                                         <h:outputText value="*" style="color:red;"/></h:column>
-                                        <h:inputText id="ban" styleClass="fields" value="#{EmployeeBean.bankAccNo}"/>
+                                        <h:inputText id="ban" maxlength="11" styleClass="fields" value="#{EmployeeBean.bankAccNo}"/>
                                         <h:message for="ban" tooltip="*"/>
                                         <h:outputText styleClass="Label" value="Bank Name "/>
                                         <h:inputText onclick="active"  value="#{EmployeeBean.bankIFSCcode}" styleClass="fields" id="bankInfo"/>

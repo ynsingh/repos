@@ -4,7 +4,7 @@
     Author     : KESU 
 
 *  Copyright (c) 2010 - 2011.2014 SMVDU, Katra.
-*  Copyright (c) 2014 - 2016 ETRG, IITK.
+*  Copyright (c) 2014 - 2017 ETRG, IITK.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -34,7 +34,8 @@
 
     GUI Modified date 21 July 2015, Om Prakash (omprakashkgp@gmail.com), IITK
     Modification : 31 August 2016
-    Last Modification : November, 2016, Om Prakash
+    Modification : November, 2016, Om Prakash
+    Last Modification : January, 2017, Om Prakash
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -52,6 +53,7 @@
         </head>
         <body> <f:view>
             <rich:panel style="height:380px; width:1290px" header="List of Pending Institute's">
+                <div align="center"><h2><font color="blue"> Before Accept Institute, you have to update SMTP Configuration.</font></h2></div>
               <div align="right" >                                            
                   <a4j:commandLink ajaxSingle="true" reRender="sListh" onclick="Richfaces.showModalPanel('sListhelp');">
                       <h:graphicImage id="hl" value="/img/help-icon.png" alt="Help"></h:graphicImage><rich:toolTip for="lh" value="Help"></rich:toolTip>

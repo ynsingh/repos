@@ -1,9 +1,43 @@
 <%--
     Document        : EmployeeProfile.jsp
     Created on      : 3:02 AM Friday, October 01, 2010
-    Last Modified   : 5:53 AM Saturday, October 02, 2010, February 24, 2015
+    Last Modified   : 5:53 AM Saturday, October 02, 2010, February 24, 2015 
     Author          : Saurabh Kumar
+
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*  Copyright (c) 2014 - 2017 ETRG, IITK.
+*  All Rights Reserved.
+**  Redistribution and use in source and binary forms, with or 
+*  without modification, are permitted provided that the following 
+*  conditions are met: 
+**  Redistributions of source code must retain the above copyright 
+*  notice, this  list of conditions and the following disclaimer. 
+* 
+*  Redistribution in binary form must reproduce the above copyright
+*  notice, this list of conditions and the following disclaimer in 
+*  the documentation and/or other materials provided with the 
+*  distribution. 
+* 
+* 
+*  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED 
+*  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+*  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+*  DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE 
+*  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+*  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
+*  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+*  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+*  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+*  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+*  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+* 
+* 
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+*  Last Modified : January,2017, Om Prakash (omprakashkgp@gmail.com)
+*
 --%>
+
+
 
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
@@ -29,8 +63,9 @@
         <body class="subpage" id="">
             <div class="container_form">
                 <rich:panel id="addempl" header="Add New Employee Details" styleClass="form" style="width:auto;">
-                <div align="right" >
-                      <h:form>
+                  <div align="right" >
+                    <h2><font color="blue"> Before Registration you have to update SMTP Configuration.</font></h2> 
+                  <h:form>
                   <a4j:commandLink id="updfile" ajaxSingle="true"  onclick="Richfaces.showModalPanel('dnl');">
                   <rich:toolTip value="Click for upload csv file" for="updfile"/>  
                   <h:graphicImage value="/img/uploadcsv.jpg" alt="Upload Employee List" /> 
@@ -39,10 +74,10 @@
                   <a4j:commandLink id="viewfile" ajaxSingle="true"  action="#{EmployeeBean.callpage}">
                   <h:graphicImage value="/img/document.png" alt="Uploaded Employee List" /> 
                   <rich:toolTip value="Click for view uploaded file" for="viewfile"/>
-                  </a4j:commandLink>&nbsp;--%>
-                   <a4j:commandLink id="hlp"ajaxSingle="true"  onclick="Richfaces.showModalPanel('hnl');">
+                  </a4j:commandLink>&nbsp;--%> 
+                  <a4j:commandLink id="hlp"ajaxSingle="true"  onclick="Richfaces.showModalPanel('hnl');">
                   <h:graphicImage value="/img/help-icon.png" alt="Help" /> 
-                   <rich:toolTip value="Click for help" for="hlp"/>
+                  <rich:toolTip value="Click for help" for="hlp"/>
                   </a4j:commandLink>
                   </h:form>
                  </div>
@@ -65,7 +100,7 @@
                                     <h:column><h:outputText styleClass="Label" value="Employee Code "/>
                                     <h:outputText value="*" style="color:red;"/></h:column>
                                     <h:inputText id="empCode" styleClass="fields" required="true"
-                                                 requiredMessage="Please Enter Employee Code"  value="#{EmployeeBean.code}">
+                                                 requiredMessage="Please Enter Employee Code"  value="#{EmployeeBean.code}"> 
                                         <f:validateLength  minimum="2" maximum="10"/>
                                     </h:inputText>
                                     <h:message styleClass="error" for="empCode" tooltip="true"/>
@@ -96,11 +131,16 @@
                                     
                                     <h:column><h:outputText styleClass="Label" value="Gender " />
                                     <h:outputText value="*" style="color:red;"/></h:column>
-                                    <h:selectOneMenu  styleClass="combo" id="empGender" value="#{EmployeeBean.male}">
+                                    <h:selectOneMenu  styleClass="combo" id="empGender" value="#{EmployeeBean.tgender}">
+                                            <f:selectItem itemValue="1" itemLabel="Female"/>
+                                            <f:selectItem itemValue="2" itemLabel="Male" />
+                                            <f:selectItem itemValue="3" itemLabel="Transgender" />
+                                    </h:selectOneMenu>
+                                    <%--  <h:selectOneMenu  styleClass="combo" id="empGender" value="#{EmployeeBean.male}">
                                         <f:selectItem itemValue="true" itemLabel="Male"/>
                                         <f:selectItem itemValue="false" itemLabel="Female"/>
                                       
-                                    </h:selectOneMenu>
+                                    </h:selectOneMenu> --%>
                                     <h:message for="empGender" tooltip=" Enter Employee's Gender."/>
                                     <%-- ==================Add Employee Category-----start------- --%>
                                     
@@ -338,7 +378,7 @@
                                     <h:message for="exp"/>
                                     <h:column><h:outputText styleClass="Label" value="Phone/Mobile"/>
                                     <h:outputText value="*" style="color:red;"/></h:column>
-                                    <h:inputText id="empPhone" required="true" requiredMessage="Mobile is Compulsory"  styleClass="fields" value="#{EmployeeBean.phone}"/>
+                                    <h:inputText id="empPhone" maxlength="11" required="true" requiredMessage="Mobile is Compulsory"  styleClass="fields" value="#{EmployeeBean.phone}"/>
                                     <h:message for="empPhone" tooltip="*"/>
                                     <h:column><h:outputText styleClass="Label" value="E-Mail ID"/>
                                     <h:outputText value="*" style="color:red;"/></h:column>
@@ -354,7 +394,7 @@
                                     <rich:separator />--%>
                                     <h:column><h:outputText styleClass="Label" value="Bank Acc. No."/>
                                     <h:outputText value="*" style="color:red;"/></h:column>
-                                    <h:inputText id="ban" styleClass="fields" value="#{EmployeeBean.bankAccNo}"/>
+                                    <h:inputText id="ban" maxlength="11" required="true" requiredMessage="Account No. is Compulsory " styleClass="fields" value="#{EmployeeBean.bankAccNo}"/>
                                     <h:message for="ban" tooltip="*"/>
                                     <h:outputText styleClass="Label" value="Bank Name "/>
                                     <h:inputText value="#{EmployeeBean.bankIFSCcode}" styleClass="fields" id="bankInfo"/>
@@ -362,7 +402,7 @@
 
                                     <h:column> <h:outputText styleClass="Label" value="Aadhaar No. "/>
                                     <h:outputText value="*" style="color:red;"/></h:column>
-                                    <h:inputText maxlength="12" value="#{EmployeeBean.aadhaarNo}" styleClass="fields" id="aadharInfo">
+                                    <h:inputText maxlength="12" required="true" requiredMessage="Aadhaar No. is Compulsory " value="#{EmployeeBean.aadhaarNo}" styleClass="fields" id="aadharInfo">
                                             <f:convertNumber integerOnly="true" type="number" />
                                     </h:inputText> 
                                     <rich:toolTip value="Enter Aadhaar Number, character are not allowed " for="aadharInfo"/>

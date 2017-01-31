@@ -34,6 +34,8 @@
     <mapping resource="org/smvdu/payroll/HibernateMapping/UserMaster.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/HibernateMapping/UserRoles.hbm.xml"/>
     <mapping resource="org/smvdu/payroll/HibernateMapping/CollegePendingStatus.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/Employee.hbm.xml"/>
+    <mapping resource="org/smvdu/payroll/HibernateMapping/empMasterSuport.hbm.xml"/>
   </session-factory>
 
 

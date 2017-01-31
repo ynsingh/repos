@@ -36,9 +36,7 @@ import org.smvdu.payroll.beans.SimpleEmployee;
 import org.smvdu.payroll.beans.setup.EmployeeType;
 import org.smvdu.payroll.beans.setup.SalaryGrade;
 import org.smvdu.payroll.beans.UserInfo;
-import org.smvdu.payroll.beans.setup.Org;
 import org.smvdu.payroll.beans.upload.UploadFile;
-import org.smvdu.payroll.user.SalaryMessage;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
 import org.smvdu.payroll.user.UserRegistration;
 import org.smvdu.payroll.user.changePassword;
@@ -48,10 +46,10 @@ import org.smvdu.payroll.user.changePassword;
  *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
  *  *  Copyright (c) 2014 - 2017 ETRG, IITK. 
  *  All Rights Reserved.
- **  Redistribution and use in source and binary forms, with or
+ ** Redistribution and use in source and binary forms, with or
  *  without modification, are permitted provided that the following
  *  conditions are met:
- **  Redistributions of source code must retain the above copyright
+ ** Redistributions of source code must retain the above copyright
  *  notice, this  list of conditions and the following disclaimer.
  *
  *  Redistribution in binary form must reproduce the above copyright
@@ -76,7 +74,7 @@ import org.smvdu.payroll.user.changePassword;
  *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
  *  Modified Date: 4 AUG 2014, 12 FEB 2015, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
  *  GUI Modification : 20 June 2015, Om Prakash(omprakashkgp@gmail.com)
- *  Last Modification :(Change Password of Employee ), January 2017, Om Prakash
+ *  Last Modification :(Change Password of Employee +Hibernate conversion), January 2017, Om Prakash
  */
 
 public class EmployeeDB {
@@ -190,144 +188,99 @@ public class EmployeeDB {
     }
 
     public Employee loadProfile(String empCode, int orgId) {
-        try {
-            Connection c = new CommonDB().getConnection();
-            String q = "select emp_code,emp_name,dept_name,desig_name,"
-                    + "emp_type_name,emp_id,emp_bank_accno,emp_pf_accno,emp_pan_no,"
-                    + " emp_type_code,emp_salary_grade,grd_name,emp_email,emp_dob,"
-                    + "emp_doj,emp_phone,emp_father,emp_dept_code,emp_desig_code,emp_title,"
-                    + "emp_exp,emp_qual,emp_yop,emp_prev_emp,emp_address,emp_basic,grd_gp,emp_active,emp_gender,bank_ifsc_code,emp_bank_status,dor,emp_leaving,emp_noti_day "
-                    + "from employee_master "
-                    + "left join designation_master on desig_code= emp_desig_code  "
-                    + "left join department_master on dept_code = emp_dept_code "
-                    + " left join employee_type_master on emp_type_id = emp_type_code "
-                    + "left join salary_grade_master on grd_code = emp_salary_grade "
-                    + " where emp_code=? and emp_org_code=?";
-            ps = c.prepareStatement(q);
-            ps.setString(1, empCode.trim());
-            ps.setInt(2, orgCode);
-            rs = ps.executeQuery();
-            Employee emp = null;
-            SalaryMessage  sm = new SalaryMessage();
-            if (rs.next())
-            {
-                emp = new Employee();
-                emp.setCode(rs.getString(1));
-                emp.setName(rs.getString(2));
-                Department dept = new Department();
-                dept.setName(rs.getString(3));
-                emp.setDept(dept.getCode());
-                emp.setDeptName(dept.getName());
-                Designation desig = new Designation();
-                desig.setName(rs.getString(4));
-                emp.setDesig(desig.getCode());
-                emp.setDesigName(desig.getName());
-                EmployeeType et = new EmployeeType();
-                et.setName(rs.getString(5));
-                et.setCode(rs.getInt(10));
-                emp.setType(et.getCode());
-                emp.setTypeName(et.getName());
-                emp.setEmpId(rs.getInt(6));
-               // emp.setBankAccNo(rs.getString(7));
-                if(rs.getString(7).equals("") == true)
-                {
-                    
-                    emp.setBankAccNo("Enter Bank A/c Number");
-                }
-                else
-                {
-                    emp.setBankAccNo(rs.getString(7).trim());
-                 }
-                emp.setPfAccNo(rs.getString(8));
-                emp.setPanNo(rs.getString(9));
-                SalaryGrade sg = new SalaryGrade();
-                sg.setCode(rs.getInt(11));
-                sg.setName(rs.getString(12));
-                emp.setGrade(sg.getCode());
-                emp.setBandName(sg.toString());
-                emp.setEmail(rs.getString(13));
-                emp.setDob(rs.getString(14));
-                emp.setDoj(rs.getString(15));
-                emp.setPhone(rs.getString(16));
-                emp.setFatherName(rs.getString(17));
-                emp.setDept(rs.getInt(18));
-                emp.setDesig(rs.getInt(19));
-                emp.setTitle(rs.getString(20));
-                emp.setExperience(rs.getInt(21));
-                emp.setQualification(rs.getString(22));
-                emp.setYearOfPassing(rs.getInt(23));
-                emp.setPreviousEmployer(rs.getString(24));
-                emp.setAddress(rs.getString(25));
-                emp.setCurrentBasic(rs.getInt(26));
-                emp.setGradePay(rs.getInt(27));
-                if (rs.getInt(28) == 1)
-                {
-                    //System.out.println("Status : " + rs.getInt(28));
-                    emp.setStstus(true);
-                }
-                else
-                {
-                    emp.setStstus(false);
-                }
-                
-                boolean b = new GenderDetails().gen(emp.getDob(), emp.getDoj());
-                if(b == true)
-                {
-                    emp.setGenDetails("Employee is Senior Citizen");
-                }
-                else 
-                {
-                    emp.setGenDetails("");
-                }
-                
-                
-                //this.setStatus(rs.getInt(28));
-                emp.setGender(rs.getInt(29));
-                String gender="";
-                if(rs.getInt(29) == 0){
-                   gender="Female";
-                   emp.setGenderName(gender);
-                }   
-                else{  
-                    gender="Male";
-                    emp.setGenderName(gender);
-                }
-                
-                //emp.setBankName(rs.getString(30));
-                //System.out.println("in employeedb======  :"+rs.getString(29));
-                //emp.setBankBranchName(rs.getString(31));
-                //System.out.println("Bank Name  :"+rs.getString(30));
-                if(rs.getString(30) == null) 
-                {
-                    emp.setBankIFSCcode("Enter Bank IFSC Code");
-                }
-                else
-                {
-                    emp.setBankIFSCcode(rs.getString(30).trim());
-                }
-                emp.setDateOfResig(rs.getString(32));
-                //emp.setSalaryMessage(new ActivationDeactivationMessage().salaryMessage(rs.getString(33)));
-                emp.setEmpNotDay(rs.getInt(34));
-                //emp.setSeniorCitizen(false);
-                /*if(rs.getBoolean(35) == false)
-                {
-                    emp.setSeniorCitizen(false);
-                }
-                else
-                {
-                    emp.setSeniorCitizen(true);
-                }*/
-            }
-            rs.close();
-            ps.close();
-            c.close();
-            return emp;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-
+    try{
+        sess = helper.getSessionFactory().openSession();
+        sess.beginTransaction();
+        Query query = sess.createQuery("select ee.code, ee.name, dpt.name, ds.name, et.name, ee.empId, ee.bankAccNo, ee.pfAccNo, ee.panNo,"
+                + " ee.type, ee.grade, sg.name, ee.email, ee.dob, ee.doj, ee.phone, ee.fatherName, ee.dept, ee.desig, ee.title, ee.experience,"
+                + " ee.qualification, ee.yearOfPassing, ee.previousEmployer, ee.address, ee.currentBasic, sg.gradePay, ee.ststus, ee.tgender, ee.bankIFSCcode, "
+                + " ee.bankStatus, ee.dateOfResig, ee.empLeaDate, ee.empNotDay, ee.genDetailCode, ee.aadhaarNo from Employee ee, Designation ds, Department dpt, EmployeeType et, SalaryGrade sg "
+                + " where ds.code=ee.desig and dpt.code=ee.dept and et.code=ee.type and sg.code=ee.grade and ee.code='"+empCode+"' and ee.orgCode='"+1+"'");
+        List<Object[]> pending = query.list();
+        for(Object[] empd: pending)
+        {
+           Employee emp = new Employee();
+           emp.setCode(empd[0].toString());
+           emp.setName(empd[1].toString());
+           Department dept = new Department();
+           dept.setName(empd[2].toString());
+           emp.setDept(dept.getCode());
+           emp.setDeptName(dept.getName());
+           Designation desig = new Designation();
+           desig.setName(empd[3].toString());
+           emp.setDesig(desig.getCode());
+           emp.setDesigName(desig.getName());
+           EmployeeType et = new EmployeeType();
+           et.setName(empd[4].toString());
+           et.setCode((Integer)empd[9]);
+           emp.setType(et.getCode());
+           emp.setTypeName(et.getName());
+           emp.setEmpId((Integer)empd[5]);                   
+           if(empd[6].equals("") == true)
+           {
+                emp.setBankAccNo("Enter Bank A/c Number");
+           }
+           else
+           {
+                emp.setBankAccNo(empd[6].toString());
+           }
+           emp.setPfAccNo(empd[7].toString());
+           emp.setPanNo(empd[8].toString());
+           SalaryGrade sg = new SalaryGrade();
+           sg.setCode((Integer)empd[10]);
+           sg.setName(empd[11].toString());
+           emp.setGrade(sg.getCode());
+           emp.setBandName(sg.toString());
+           emp.setEmail(empd[12].toString());
+           emp.setDob(empd[13].toString());
+           emp.setDoj(empd[14].toString());
+           emp.setPhone(empd[15].toString());
+           emp.setFatherName(empd[16].toString());
+           emp.setDept((Integer)empd[17]);
+           emp.setDesig((Integer)empd[18]);
+           emp.setTitle(empd[19].toString());
+           emp.setExperience((Integer)empd[20]);
+           emp.setQualification(empd[21].toString());
+           emp.setYearOfPassing((Integer)empd[22]);
+           emp.setPreviousEmployer(empd[23].toString());
+           emp.setAddress(empd[24].toString());
+           emp.setCurrentBasic((Integer)empd[25]);
+           emp.setGradePay((Integer)empd[26]);
+           emp.setStstus(true);
+           boolean b = new GenderDetails().gen(emp.getDob(), emp.getDoj());
+           if(b == true)
+           {
+                emp.setGenDetails("Employee is Senior Citizen");
+           }
+           else 
+           {
+               emp.setGenDetails("");
+           }
+           emp.setTgender((Integer)empd[28]);
+           if(empd[29] == null) 
+           {
+                emp.setBankIFSCcode("Enter Bank IFSC Code");
+           }
+           else
+           {
+                emp.setBankIFSCcode(empd[29].toString());
+           }
+           emp.setDateOfResig(empd[31].toString());
+           emp.setEmpLeaDate(empd[32].toString());
+           emp.setEmpNotDay((Integer)empd[33]);
+           emp.setGenDetails(Integer.toString((Integer)empd[34]));
+           emp.setAadhaarNo(empd[35].toString());
+           return emp;
         }
+    
     }
+    catch(Exception ex)
+    {
+        ex.printStackTrace();
+        return null;
+    }
+    return null;
+ }
 
     public String getStatusImage(int status) {
         try {
@@ -463,11 +416,15 @@ public class EmployeeDB {
         }
     }
 
-    //public boolean update(Employee emp) {
+    /* This method has been developed for update emplyee profile recard.
+    *
+    */
     public boolean update(Employee emp) {
-        try {
+          try{
             Employee employee = new Employee().bankDetails(emp);
-            Connection c = new CommonDB().getConnection();
+            sess = helper.getSessionFactory().openSession();
+            seslogin = helper.getLoginSF().openSession();
+            sess.beginTransaction();
             int empstatus;
             if (emp.getStstus() == true) {
                 empstatus = 1;
@@ -475,22 +432,35 @@ public class EmployeeDB {
             else {
                 empstatus = 0;
             }
-            ps = c.prepareStatement("update employee_master set emp_name='" + emp.getName() + "',"
-                    + "emp_dept_code='" + emp.getDept() + "',emp_desig_code='" + emp.getDesig() + "',emp_type_code='" + emp.getType() + "',emp_phone='" + emp.getPhone() + "',"
-                    + "emp_email='" + emp.getEmail() + "',emp_dob='" + emp.getDob() + "',emp_doj='" + emp.getDoj() + "',emp_bank_accno='" + emp.getBankAccNo() + "',emp_pf_accno='" + emp.getPfAccNo() + "',emp_pan_no='" + emp.getPanNo() + "',"
-                    + "emp_salary_grade='" + emp.getGrade() + "',emp_basic='" + emp.getCurrentBasic() + "',emp_father='" + emp.getFatherName() + "',emp_title='" + emp.getTitle() + "',emp_exp='" + emp.getExperience() + "',emp_qual='" + emp.getQualification() + "',"
-                    + "emp_yop='" + emp.getYearOfPassing() + "',emp_prev_emp='" + emp.getYearOfPassing() + "',emp_address='" + emp.getAddress() + "',emp_active = '" + empstatus + "',"
-                    + "bank_ifsc_code='" + employee.getBankIFSCcode().trim() + "',emp_bank_status='" + empstatus + "', dor = '"+emp.getDateOfResig()+"',emp_leaving = '"+emp.getEmpLeaDate()+"',emp_noti_day = '"+emp.getEmpNotDay()+"', citizen='"+emp.getGenDetailCode()+"',emp_aadhaar_no='"+emp.getAadhaarNo()+"' where emp_code='" + emp.getCode().trim() + "' and emp_org_code='" + orgCode + "'");
-            ps.executeUpdate();
-            //System.out.println("DAta Should Be Write Here ...employeedb.............");
-            ps.executeUpdate();
-            ps.close();
-            c.close();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            
+            Query query1 = sess.createQuery("update Employee set name='"+emp.getName()+"', dept='"+emp.getDept()+"',desig='"+emp.getDesig()+"',type='"+emp.getType()+"',phone='"+emp.getPhone()+"', email='"+emp.getEmail()+"',"
+                    + "dob='"+emp.getDob()+"',doj='"+emp.getDoj()+"',bankAccNo='"+emp.getBankAccNo()+"',pfAccNo='"+emp.getPfAccNo()+"',panNo='"+emp.getPanNo()+"'," 
+                    + "grade='"+emp.getGrade()+"',currentBasic='"+emp.getCurrentBasic()+"',fatherName='"+emp.getFatherName()+"',title='"+emp.getTitle()+"',experience='"+emp.getExperience()+"',qualification='"+emp.getQualification()+"',"
+                    + "yearOfPassing='"+emp.getYearOfPassing()+"',previousEmployer='"+emp.getYearOfPassing()+"',tgender='"+emp.getTgender()+"',address='"+emp.getAddress()+"',ststus ='"+empstatus+"'," 
+                    + "bankIFSCcode='"+employee.getBankIFSCcode().trim()+"',bankStatus='"+empstatus+"',dateOfResig ='"+emp.getDateOfResig()+"',empLeaDate ='"+emp.getEmpLeaDate()+"',empNotDay='"+emp.getEmpNotDay()+"',"
+                    + "genDetailCode='"+emp.getGenDetails()+"',aadhaarNo='"+emp.getAadhaarNo()+"' where code='"+emp.getCode().trim()+"' and orgCode='"+orgCode+"'");
+            query1.executeUpdate();
+            sess.getTransaction().commit();
+            
+            boolean dbExist = new CommonDB().checkLoginDBExists();
+            if(dbExist){
+            seslogin.beginTransaction();
+            Query query2 = seslogin.createQuery("update EdrpUser set catrytype='"+emp.getCategoryT()+"' where username='"+emp.getEmail()+"'");
+            query2.executeUpdate();
+            seslogin.getTransaction().commit();
+            seslogin.close();
+            }
         }
+        catch(Exception e)
+        {
+            sess.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        finally {
+            sess.close();
+        }
+    
+    return false;
     }
 
 
@@ -588,20 +558,15 @@ public class EmployeeDB {
             ps.setString(27, emp.getAadhaarNo());
             ps.executeUpdate();
             ps.close();
-           /* ps = c.prepareStatement("insert into employee_login_master values(?,?,?,?)");
-            ps.setString(1, emp.getCode());
-            ps.setString(2, emp.getCode());
-            ps.setString(3, emp.getCode());
-            ps.setInt(4, orgCode);
-            ps.executeUpdate();
-            ps.close();*/
             c.close();
             return null;
         } catch (Exception e) {
             e.printStackTrace();
             return e;
         }
+        
     }
+   
 
     public ArrayList<Employee> selectNonBankedEmployee() {
         try {
@@ -952,7 +917,7 @@ public class EmployeeDB {
        * @return Exception
        */  
       public Exception saveEmpSupportData(Employee emp){
-        try{
+         try{
             int sd1=getDepartmentcode(emp.getSaldeptdcode());
             int jd1=getDepartmentcode(emp.getJoindeptdcode());
             int jdd1=getDesignationcode(emp.getJoindesigdcode());
@@ -1032,7 +997,7 @@ public class EmployeeDB {
                 ex.printStackTrace();
                 return ex;
             }
-      }
+  }
       
       /**
        * This method is used for read the csv file 
@@ -1234,7 +1199,6 @@ public class EmployeeDB {
                     ps.setString(24, null);
                 else
                     ps.setString(24, empsupp.getExtentionDate());
-                //System.out.println("DAta Should Be Write Here ...employeedb............."+empsupp.getDoAcceptance());
                 ps.executeUpdate();
                 ps.clearParameters();
                 ps.close();
@@ -1252,76 +1216,57 @@ public class EmployeeDB {
      * @return boolean
      */
     public boolean InsertAllEmpData(Employee emp){
+      
         try{
-            boolean em=false;
-            Connection connection = new CommonDB().getConnection();
-           /* if (codeExist(emp.getCode())) {
-                //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Code already exist(" + emp.getCode() + ")", "(" + emp.getCode()+ ")"));
-                System.out.println("Employee already exists in  employee_master for "+emp.getCode());
+            boolean em = false;
+            if(codeExist(emp.getCode())){
+                System.out.println("Employee already exists in employee_master for "+emp.getCode());
                 return em;
-            }*/
-            
-            /*Get complete hashed password in hex format.
-            *@see EncryptionUtil().
-            */
+            }
             String password=new EncryptionUtil().createDigest("MD5", emp.getCode());
-            /* this method follow the common data base machnism for user registration process
-             * and check user exists or not if not then insert the entry.
-             * and also insert the entry in user_master table and user_roles table.
-             */
             Exception eloginmachanism =new UserRegistration().EmployeeRegistration(emp.getEmail(), password, emp.getPhone(),emp.getName(),"",emp.getAddress(),emp.getCategoryT(),orgCode,"EmpReg");
-            if(eloginmachanism == null){
-                
+            if(eloginmachanism == null) {
+                        
                 Exception ee =save(emp);
                 Exception ex =saveEmpSupportData(emp);
+               
                 if(ex!=null){
-                    /*if(ex rerturn null) means employee data is properly insert in employee master support table its means proper entry in done
-                    * else means data is not insert in employee_master_support table so delete entry from employee_master
-                    * because for proper employee registration entry insert in  both tables.
-                    */ 
-                    ps = connection.prepareStatement("delete from employee_master where emp_code = '"+emp.getCode()+"' and emp_org_code='" +orgCode+ "' ");
-                    ps.executeUpdate();
-                    ps.close();
-                    /*ps = connection.prepareStatement("delete from employee_login_master where el_id= '"+emp.getCode()+"' and el_org_id='" +orgCode+ "' ");
-                    ps.executeUpdate();
-                    ps.close();
-                    em=false;*/
-                }
-                else
-                {
-                    System.out.println("employee registration entry insert in  both tables for : "+emp.getCode());
-                    em=true;
-                }
-                if(ee!=null)
-                {
-                    /*if(ee rerturn null) means employee data is properly insert in employee master table its means proper entry in done
-                    * else means data is not insert in employee_master table so delete entry from employee_master_support
-                    * because for proper employee registration entry insert in  both tables.
-                    */ 
+                    sess = helper.getSessionFactory().openSession();    
+                    sess.beginTransaction();
+                    Query query1 = sess.createQuery("delete from Employee where code = '"+emp.getCode()+"' and orgCode='" +orgCode+ "'");
+                    query1.executeUpdate();
+                    sess.getTransaction().commit();
+                    }
+                    else
+                    {
+                        System.out.println("Employee registration entry insert in  both tables for : "+emp.getCode());
+                        em=true;
+                    }
+                    if(ee!=null) {
+                        sess.beginTransaction();
+                        Query query2 = sess.createQuery("delete from EmployeeMasterSuport where emsId= '"+emp.getEmpId()+"' emsCode = '"+emp.getCode()+"' ");
+                        query2.executeUpdate();
+                        sess.getTransaction().commit();
+                    
+                    }
+                    else{
+                        System.out.println("employee registration entry insert in  both tables for : "+emp.getCode());
+                        em=true;
+                    }
                 
-                    ps = connection.prepareStatement("delete from employee_master_support where id= '"+emp.getEmpId()+"' code = '"+emp.getCode()+"' ");
-                    ps.executeUpdate();
-                    ps.close();
-                    em=false;
-                }
-                else{
-                    System.out.println("employee registration entry insert in  both tables for : "+emp.getCode());
-                    em=true;
-                }
             }
             else{
                 System.out.println(" problem in employee registration for  : "+emp.getCode());
                 return em;
             }
-            connection.close(); 
-           return em;
+            return em;
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
             return false;
         }
-        
-    }
+  }
     
     /**
      * This method is used for to get Department Code
@@ -1339,7 +1284,6 @@ public class EmployeeDB {
             rs.close();
             ps.close();
             c.close();
-            //System.out.println(">>>> leave defaultdc value==== "+dc);
             return dc;
         } catch (Exception e) {
             return -1;
@@ -1362,7 +1306,6 @@ public class EmployeeDB {
             rs.close();
             ps.close();
             c.close();
-            //System.out.println(">>>> leave default desigcodevalue==== "+desigcode);
             return desigcode;
         } catch (Exception e) {
             return -1;
@@ -1385,7 +1328,6 @@ public class EmployeeDB {
             rs.close();
             ps.close();
             c.close();
-            //System.out.println(">>>> leave defaultEmpTypecode value==== "+empcode);
             return empcode;
         } catch (Exception e) {
             return -1;
@@ -1408,7 +1350,6 @@ public class EmployeeDB {
             rs.close();
             ps.close();
             c.close();
-            //System.out.println(">>>>defaultgrdcode value==== "+grdcode);
             return grdcode;
         } catch (Exception e) {
             return -1;
@@ -1443,29 +1384,8 @@ public class EmployeeDB {
             sess.close();  
         }
         return null;
-
-        
-       /** try
-        {
-            Connection cn = new CommonDB().getConnection();
-            PreparedStatement pst;
-            String pass= new EncryptionUtil().createDigest("MD5",editedRecord.getPassword());
-            System.out.println("OP:===New Pass word of Employee is ====>"+pass);
-            String changepassinDb=new changePassword().changePaswordInLoginDB(pass, editedRecord.getEmail());
-            pst = cn.prepareStatement("update user_master set user_pass = '"+pass+"' where user_name = '"+editedRecord.getEmail()+"'");
-            pst.executeUpdate();
-            pst.close();
-            cn.close();
-            //new OrgConformationEmail().sendChangePasswordMail(editedRecord); 
-            return null;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-            return ex;
-        }
-        */
-    }
+    
+ }
 
     
     public boolean sendChangePasswordMail(Employee emp)  {
@@ -1524,4 +1444,28 @@ public class EmployeeDB {
               }
     }
 
+   /*
+    * this method is used for get category code.  
+    */   
+    public String getCategoryType(String email)
+    {
+        try{
+            seslogin = helper.getLoginSF().openSession();
+            seslogin.beginTransaction();
+            Query query = seslogin.createQuery("select catrytype from EdrpUser where username='"+email+"'");
+            List ctype = query.list();
+            seslogin.getTransaction().commit();
+            return ctype.get(0).toString();            
+        }
+        catch(Exception e)
+        {
+            seslogin.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            seslogin.close();  
+        }
+        
+    }
 }

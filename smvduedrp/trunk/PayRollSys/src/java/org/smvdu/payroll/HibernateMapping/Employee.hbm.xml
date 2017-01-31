@@ -9,18 +9,18 @@
         </id>
        
         <property name="code" type="java.lang.String">
-            <column name="emp_code" length="100" not-null="true" />
+            <column name="emp_code" length="30" not-null="true" />
         </property>
         <property name="name" type="java.lang.String">
-            <column name="emp_name" not-null="true"/>
+            <column name="emp_name" length="70" not-null="true"/>
         </property>
-        <property name="dept" type="int">
+        <property name="dept" type="java.lang.Integer">
             <column name="emp_dept_code" not-null="true"/>
         </property>
-        <property name="desig" type="int">
+        <property name="desig" type="java.lang.Integer">
             <column name="emp_desig_code" not-null="true"/>
         </property>
-	<property name="type" type="int">
+	<property name="type" type="java.lang.Integer">
             <column name="emp_type_code" not-null="true"/>
         </property>
        <property name="phone" type="java.lang.String">
@@ -30,13 +30,13 @@
             <column name="emp_email" length="30" />
         </property>
        <property name="dob" type="java.lang.String">
-            <column name="emp_dob" />
+            <column name="emp_dob" length="100" not-null="true" />
         </property>
 	<property name="doj" type="java.lang.String">
-            <column name="emp_doj" />
+            <column name="emp_doj" length="100" not-null="true" />
         </property>
-	 <property name="grade" type="int">
-            <column name="emp_salary_grade" not-null="true"/>
+	 <property name="grade" type="java.lang.Integer">
+            <column name="emp_salary_grade" not-null="true" />
         </property>
 
 	 <property name="bankAccNo" type="java.lang.String">
@@ -48,25 +48,28 @@
 	<property name="panNo" type="java.lang.String">
             <column name="emp_pan_no" length="20" />
         </property>
-         <property name="male" type="java.lang.Boolean">
-            <column name="emp_gender" not-null="true" default="1"/>
+        <property name="tgender" type="int">
+		<column name="emp_gender" not-null="true" default="1" />
         </property>
+        <property name="orgCode" type="java.lang.Integer">
+            <column name="emp_org_code" default="0"/>
+        </property>        
          <property name="fatherName" type="java.lang.String">
             <column name="emp_father" length="100" />
         </property>
-	<property name="currentBasic" type="int">
+	<property name="currentBasic" type="java.lang.Integer">
             <column name="emp_basic" not-null="true" default="0"/>
         </property>
 	<property name="title" type="java.lang.String">
             <column name="emp_title" length="50" not-null="true" default="Prof."/>
         </property>
-	<property name="experience" type="int">
+	<property name="experience" type="java.lang.Integer">
             <column name="emp_exp" not-null="true"/>
         </property>
 	<property name="qualification" type="java.lang.String">
             <column name="emp_qual" length="100" not-null="true"/>
         </property>
-	<property name="yearOfPassing" type="int">
+	<property name="yearOfPassing" type="java.lang.Integer">
             <column name="emp_yop" not-null="true"/>
         </property>
 	<property name="previousEmployer" type="java.lang.String">
@@ -75,13 +78,13 @@
 	<property name="address" type="java.lang.String">
             <column name="emp_address" length="200" not-null="true"/>
         </property>
-	<property name="active" type="java.lang.Boolean">
+	<property name="ststus" type="boolean">
             <column name="emp_active" default="1"/>
         </property>
 	<property name="bankIFSCcode" type="java.lang.String">
             <column name="bank_ifsc_code" length="500" />
         </property>
-	<property name="bankStatus" type="java.lang.Boolean">
+	<property name="bankStatus" type="boolean">
             <column name="emp_bank_status" default="0"/>
         </property>
 
@@ -91,16 +94,16 @@
 	<property name="empLeaDate" type="java.lang.String">
             <column name="emp_leaving" length="100" />
         </property>
-	<property name="empNotDay" type="int">
+	<property name="empNotDay" type="java.lang.Integer">
             <column name="emp_noti_day" />
         </property>
-	<property name="genDetailCode" type="java.lang.Boolean">
+	<property name="genDetailCode" type="int">
             <column name="citizen" />
         </property>
-        <property name="orgCode" type="java.lang.Integer">
-            <column name="emp_org_code" default="0"/>
-        </property>
-        
+	<property name="aadhaarNo" type="java.lang.String">
+		<column name="emp_aadhaar_no" length="100" />
+	</property>
+      
     </class>    
 </hibernate-mapping>
   
