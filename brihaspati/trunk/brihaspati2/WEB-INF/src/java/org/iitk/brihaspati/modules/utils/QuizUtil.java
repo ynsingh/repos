@@ -230,4 +230,26 @@ public class QuizUtil
 		}
 		return flag;
 	}
+
+	public static String fwslash_replace(String query){
+
+    		return query.replace("/","fwslashrep");
+	}
+
+	public static String fwslash_unreplace(String query){
+
+    		return query.replace("fwslashrep","/");
+	}
+
+	public static String bwslash_replace(String query){
+
+                return query.replace("\\","bwslashrep");
+        }
+
+        public static String bwslash_unreplace(String query){
+
+                return query.replace("bwslashrep","\\");
+        }
+
+
 }//end class

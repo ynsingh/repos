@@ -96,6 +96,10 @@ $page.setBgColor("bgcolor")
 		</td>
 		<td>
 			$!finalQ.getQuestion()
+			
+			#if ($quesimage !="")
+				<img src="$content.getURI("/images/QuestionBank/$quesimage")" width="80" height="100" align="center">
+			#end	
 		</td>
 		<td>
 			$!finalQ.getMarksPerQuestion()

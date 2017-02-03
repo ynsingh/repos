@@ -114,7 +114,9 @@ $!data.getMessage()
 #end
 </table>
 <table width="100%" bgcolor="$ui.menuColor" cellpadding="2"> 
+#if($quesimage != "")
 <tr bgcolor="$ui.menuColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$crsId/$topic/$quesimage")"></td></tr>
+#end
 ##end
   <tr>
    <td width=30% align="centre" >
@@ -161,7 +163,7 @@ $!data.getMessage()
 <font face ="$ui.sansserifFonts">
 		#if($acttype!="viewques")
 		#if($acttype=="editques")
-                <input type="button" class="button-ftextstyle" name="eventSubmit_doEditQuestion" value="$brih_edit" onClick="checkValue(document.frm,this);">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doEditQuestion" value="$brih_update" onClick="checkValue(document.frm,this);">
                 <input type="reset" value="$brih_reset" class="button-ftextstyle">
                 #else
   		<input type="reset" value="$brih_reset"i class="button-ftextstyle"> 
@@ -196,6 +198,19 @@ $!data.getMessage()
 <script LANGUAGE="JAVASCRIPT">
         function checkValue(frm,field)
         {
+		var qst=frm.Question.value;
+                var qstpart=qst.split("\\");
+                var fqst="";
+                for(i = 0; i < qstpart.length; i++)
+                {
+                        if(i==0){
+                                fqst=qstpart[i];
+                        }else{
+                        fqst= fqst +"\\"+"\\"+qstpart[i];
+                        }
+                }
+                frm.Question.value=fqst;
+
                 if(frm.Question.value!="")
                 {
                        	frm.actionName.value=field.name;

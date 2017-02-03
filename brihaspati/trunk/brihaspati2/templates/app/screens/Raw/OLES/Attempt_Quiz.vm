@@ -62,6 +62,7 @@ $!data.getMessage()
             	#else
                 	<tr bgcolor="$ui.tableColor">
             	#end
+            	
 						<td align=left width="8%">
 							$velocityCount
 							#set($finAnswer="")		
@@ -69,14 +70,19 @@ $!data.getMessage()
 							#if(($qid.getQuestionID()==$answer.getQuestionID()) && ($qid.getFileName()==$answer.getFileName()))
 								<img src=$content.getURI("/images/rightred.JPG")>
 								#set($finAnswer=$answer.getStudentAnswer())										
+								#set($finAnswer = $finAnswer.replace("/","fwslashrep"))
+								#set($finAnswer = $finAnswer.replace("\\","bwslashrep"))
 							#end
 							#end																					
 						</td>								
 						<td>
 							#set($quesDetail="$qid.getQuestionID(),$qid.getFileName(),$qid.getQuestionType(),$qid.getMarksPerQuestion()")
 							#set($quizIDTime="$quizID,$maxTime")
+						#set(	$quston = $qid.getQuestion().replace("/","fwslashrep"))
+						#set(	$quston = $quston.replace("\\","bwslashrep"))
 							#if($qid.getQuestionType()=="mcq")
-								<a href=$link.setPage("call,OLES,Attempt_Quiz.vm").addPathInfo("quizIDTime",$quizIDTime).addPathInfo("quizName",$quizName).addPathInfo("quesDetail",$quesDetail).addPathInfo("question",$qid.getQuestion()).addPathInfo("option1",$qid.getOption1()).addPathInfo("option2",$qid.getOption2()).addPathInfo("option3",$qid.getOption3()).addPathInfo("option4",$qid.getOption4()).addPathInfo("finalAnswer",$!finAnswer) style=text-decoration:none onClick="showAlert();">
+## make change here
+								<a href=$link.setPage("call,OLES,Attempt_Quiz.vm").addPathInfo("quizIDTime",$quizIDTime).addPathInfo("quizName",$quizName).addPathInfo("quesDetail",$quesDetail).addPathInfo("question",$quston).addPathInfo("option1",$qid.getOption1()).addPathInfo("option2",$qid.getOption2()).addPathInfo("option3",$qid.getOption3()).addPathInfo("option4",$qid.getOption4()).addPathInfo("finalAnswer",$!finAnswer) style=text-decoration:none onClick="showAlert();">
 								#if($qid.getQuestion().length()>25)
    									$qid.getQuestion().substring(0,25) .....
 								#else
@@ -84,7 +90,7 @@ $!data.getMessage()
 								#end
 								</a>
 							#else
-								<a href=$link.setPage("call,OLES,Attempt_Quiz.vm").addPathInfo("quizIDTime",$quizIDTime).addPathInfo("quizName",$quizName).addPathInfo("quesDetail",$quesDetail).addPathInfo("question",$qid.getQuestion()).addPathInfo("finalAnswer",$!finAnswer) onClick="showAlert();">
+								<a href=$link.setPage("call,OLES,Attempt_Quiz.vm").addPathInfo("quizIDTime",$quizIDTime).addPathInfo("quizName",$quizName).addPathInfo("quesDetail",$quesDetail).addPathInfo("question",$quston).addPathInfo("finalAnswer",$!finAnswer) onClick="showAlert();">
 								#if($qid.getQuestion().length()>25)
    									$qid.getQuestion().substring(0,25) .....
 								#else
@@ -105,8 +111,12 @@ $!data.getMessage()
 					<tr bgcolor="$ui.tableColor">				
 						<td width="30%">
                    			<input type="hidden" name="markPerQues" value="$!markPerQues"><b>$brih_qus</b>
-               			</td>       		              
-        				<td><textarea rows="2" cols="40" name="question" readonly>$question</textarea>
+               			</td>   
+        				<td><textarea rows="2" cols="40" name="question" readonly>$question </textarea>
+## get the user name from quizid, course id, topic is question bank name and $quesimage is image url 
+#if ($quesimage !="")
+<img src="$content.getURI("/images/QuestionBank/$qzowner/$crsId/$qbname/$quesimage")" width="80" height="100" align="center">
+#end
         				</td>															
 					</tr>
 	##tft
@@ -159,6 +169,7 @@ $!data.getMessage()
 					</tr>
 					#elseif($quesType=="lat" || $quesType=="sat")
 ##sat & lat
+
 					<tr>
 						<td  align=left width="30%">
 							<b>$brih_answer</b>
@@ -210,6 +221,19 @@ $!data.getMessage()
 <SCRIPT LANGUAGE="javascript">
 function saveAnswer(frm,field){		
 	var checked = false;	
+	var qst=frm.answer.value;
+                var qstpart=qst.split("\\");
+                var fqst="";
+                for(i = 0; i < qstpart.length; i++)
+                {
+                        if(i==0){
+                                fqst=qstpart[i];
+                        }else{
+                        fqst= fqst +"\\"+"\\"+qstpart[i];
+                        }
+                }
+                frm.answer.value=fqst;
+
 		if(frm.answer.length==undefined){
 			frm.answer.length=1;
 		}

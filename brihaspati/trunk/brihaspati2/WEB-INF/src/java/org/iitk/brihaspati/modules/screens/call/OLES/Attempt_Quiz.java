@@ -36,46 +36,49 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
  * 
  */
 
-import java.util.Calendar;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;
-import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.turbine.services.servlet.TurbineServlet;
+
+import java.io.File;
+import java.util.List;
+import java.util.Date;
+import java.util.Timer;
+import java.util.Vector;
+import java.util.Iterator;
+import java.util.Calendar;
+import java.util.TimerTask;
+import java.util.Collections;
+import java.util.StringTokenizer;
+
+import org.iitk.brihaspati.om.Quiz;
+import org.iitk.brihaspati.om.QuizPeer;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.QuizUtil;
+import org.iitk.brihaspati.modules.utils.DbDetail;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.XmlWriter;
+import org.iitk.brihaspati.modules.utils.FileEntry;
+import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
-import org.iitk.brihaspati.modules.utils.QuizUtil;
-import java.util.Vector;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.io.File;
-import java.util.StringTokenizer;
-import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.utils.GroupUtil;
-import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlWriter;
-import org.iitk.brihaspati.modules.utils.XmlWriter;
-import org.apache.turbine.services.servlet.TurbineServlet;
-import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
-import org.iitk.brihaspati.modules.utils.GroupUtil;
-import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.DbDetail;
-import org.iitk.brihaspati.modules.utils.ListManagement;
-import org.iitk.brihaspati.om.QuizPeer;
-import org.iitk.brihaspati.om.Quiz;
+//import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+//import org.iitk.brihaspati.modules.utils.GroupUtil;
+//import org.iitk.brihaspati.modules.utils.ListManagement;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *   This class contains code for attempt quiz part of student
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -95,6 +98,7 @@ public class Attempt_Quiz extends SecureScreen
 			String loginname=user.getName();           
 			String uid=Integer.toString(UserUtil.getUID(uname));
 			String cid=(String)user.getTemp("course_id");
+			context.put("crsId",cid);
 			String Role=(String)user.getTemp("role");
 			context.put("user_role",Role);
 			String quizName = pp.getString("quizName","");
@@ -133,11 +137,15 @@ public class Attempt_Quiz extends SecureScreen
 				quesType = queDetail[2];
 				markPerQues = queDetail[3];
 			}            
+
 			context.put("quesID",quesID); 
 			context.put("fileName",fileName); 
 			context.put("quesType",quesType);
 			context.put("markPerQues",markPerQues);
+
 			String question = pp.getString("question","");
+			question = QuizUtil.fwslash_unreplace(question);
+			question = QuizUtil.bwslash_unreplace(question);
 			context.put("question",question);
 			String option1 = pp.getString("option1","");
 			context.put("option1",option1);
@@ -148,6 +156,8 @@ public class Attempt_Quiz extends SecureScreen
 			String option4 = pp.getString("option4","");
 			context.put("option4",option4);
 			String finalAnswer = pp.getString("finalAnswer","");
+			finalAnswer = QuizUtil.fwslash_unreplace(finalAnswer);
+                        finalAnswer = QuizUtil.bwslash_unreplace(finalAnswer);
 			context.put("finalAnswer",finalAnswer);
 
 			String answerFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/"+quizID+"/");
@@ -165,7 +175,7 @@ public class Attempt_Quiz extends SecureScreen
 				quizList=quizmetadata.getInsertedQuizQuestions();
 				if(quizList!=null && quizList.size()!=0){					
 					for(int i=0;i<quizList.size();i++){														
-						totalMarks = totalMarks + Integer.parseInt(((QuizFileEntry)quizList.elementAt(i)).getMarksPerQuestion());											
+						totalMarks = totalMarks + Integer.parseInt(((QuizFileEntry)quizList.elementAt(i)).getMarksPerQuestion());
 					}
 					context.put("maxQuestion",quizList.size());	
 					context.put("maxMarks",totalMarks);
@@ -229,6 +239,33 @@ public class Attempt_Quiz extends SecureScreen
 					context.put("answerList",answerList); 							
 				}	
 			}
+
+		// code for image display in quiz attempt for student
+			String [] parts=quizID.split("_", 2);
+                        String qzowner=parts[1];
+                        context.put("qzowner",qzowner);
+                        parts=fileName.split("_", 2);
+                        String qbname=parts[0];
+                        context.put("qbname",qbname);
+                        String qbfilePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+qzowner+"/"+cid);
+                        TopicMetaDataXmlReader tmdxr=null; 
+			tmdxr =new TopicMetaDataXmlReader(qbfilePath+"/"+fileName);
+                        Vector Read=new Vector();
+                        Read=tmdxr.getQuesBank_Detail1();
+                        if(Read != null)
+                        {
+                                for(int i=0;i<Read.size();i++)
+                                {
+                                        String questonid=((FileEntry)Read.elementAt(i)).getquestionid();
+                                        if(questonid.equals(quesID))
+                                        {
+                                                String Quesimage=((FileEntry)Read.elementAt(i)).getUrl();
+                                                context.put("quesimage",Quesimage);
+                                        }
+                                }
+                        }
+
+
 			/**
                          *Time calculaion for how long user use this page.
                          */
