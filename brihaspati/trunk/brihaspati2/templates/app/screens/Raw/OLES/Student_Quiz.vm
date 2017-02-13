@@ -126,11 +126,15 @@ $page.setBgColor("#ffffff")
 		#if($isFile!="")
 			#if($quizList.size()!=0)
 				<tr bgcolor="$ui.tableColor">
-					<td align="left"><b>$brih_enterSecurityStr</b></td>
+					<td align="left"><b>$brih_enter $brih_security $brih_num</b></td>
 					<td align="left">
-						<input type="text" name="textBox" value=""  MaxLength="5" size="10">	
+						<input type="text" name="textBox" value=""  MaxLength="8" size="10">	
 					</td>
 				</tr>
+				<tr>
+                                <td align="left"><font color="blue">$brih_SecurityInst</font></td>
+                                </tr>
+
 			#end
 		#end
 	#end

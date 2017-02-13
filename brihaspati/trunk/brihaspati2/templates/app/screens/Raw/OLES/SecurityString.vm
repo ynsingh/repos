@@ -26,9 +26,9 @@ $!data.getMessage()
                 <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> |
                 <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'>$online_online $brih_examat $brih_system</a>|
               	#if($flag1 == "show") 
-              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","2").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'> #if($lang =="hindi" || $lang == "gujarati")$brith_security $brih_string $RemoteShow #else $RemoteShow $brith_security $brih_string #end</a>
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","2").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'> #if($lang =="hindi" || $lang == "gujarati")$brith_security $brih_num $RemoteShow #else $RemoteShow $brith_security $brih_num #end</a>
               	#else 
-              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","1").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'> #if($lang =="hindi" || $lang == "gujarati")$brith_security $brih_string $brih_generate #else $brih_generate $brith_security $brih_string #end</a>
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","1").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'> #if($lang =="hindi" || $lang == "gujarati")$brith_security $brih_num $brih_generate #else $brih_generate $brith_security $brih_num #end</a>
               	#end
         </b></td>   
 ## Creating the links for help regarding QUIZ 
@@ -105,13 +105,13 @@ $!data.getMessage()
 		 #elseif($tdcolor1 == "1")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","1").addPathInfo("count","6").addPathInfo("flag1","generate").addPathInfo("flag","security") style=text-decoration:none>$brith_generateSecurity</b></a></td>
+		<b><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","1").addPathInfo("count","6").addPathInfo("flag1","generate").addPathInfo("flag","security") style=text-decoration:none>$brih_generate $brith_security $brih_num</b></a></td>
 		#if($tdcolor1 != "2")
 			<td>
 		 #elseif($tdcolor1 == "2")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","2").addPathInfo("count","6").addPathInfo("flag1","show").addPathInfo("flag","security") style=text-decoration:none>$brith_showSecurity</b></a></td>
+		<b><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","2").addPathInfo("count","6").addPathInfo("flag1","show").addPathInfo("flag","security") style=text-decoration:none>$RemoteShow $brith_security $brih_num</b></a></td>
 	</tr>
 </table>
 #if($flag1 == "show")
@@ -135,8 +135,10 @@ $!data.getMessage()
 		#if($quizname!="" && $filemode!="blank")
                 <table width="100%" bgcolor="$ui.tableColor">
                         <tr bgcolor="$ui.tableColor">
-                                <td width="50%"><b>$brih_student $brih_name</b></td>
-                                <td width="50%"><b>$brih_secritystrs</b></td></tr>
+                                <td width="30%"><b>$brih_student $brih_name</b></td>
+                                <td width="30%"><b>$brith_security $brih_num</b></td>
+				<td width="30%"><b>Action</b></td>
+			</tr>
                         #foreach($secstrs in $securitydetail)
                         #if($velocityCount%2==0)
                                 <tr bgcolor="$ui.tableColor">
@@ -146,10 +148,13 @@ $!data.getMessage()
 
                         <td>$secstrs.StudentID</td>
                         <td>$secstrs.SecurityID</td>
+
+			<td><b><a href=$link.setPage("call,OLES,SecurityString.vm").setAction("OLES_AttemptQuiz").addPathInfo("quizlist",$quizlist).addPathInfo("quizname",$quizname).addPathInfo("studentid",$secstrs.getStudentID()).addPathInfo("counttemp","2").addPathInfo("count","6").addPathInfo("flag1","show").addPathInfo("flag","security").addPathInfo("actionName","eventSubmit_ResetSecuritynumber") onclick="javascript:return confirm('Do you want to change this security number')" style='text-decoration:none'>$brih_reset $brith_security $brih_num</b></a></td>
+
                         #end
                         </tr>
                 <tr bgcolor="$ui.menuColor">
-                        <td colspan="2">
+                        <td colspan="3">
                         <input type="button" class="button-ftextstyle" name="print" value="$brih_print" onClick="javascript:window.print();"/>
                         </td>
                 </tr>
@@ -215,7 +220,7 @@ $!data.getMessage()
 		}
 		else{
 			if(document.frm.sendMail.checked){
-				if(confirm('Do you want to send mail of Security String')){
+				if(confirm('Do you want to send mail of Security Number')){
 					frm.quizID.value = frm.quizlist.options[frm.quizlist.selectedIndex].value;
 					frm.quizName.value = frm.quizlist.options[frm.quizlist.selectedIndex].text;			
 					frm.actionName.value=field.name;

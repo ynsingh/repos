@@ -85,14 +85,14 @@ public class OLES_AttemptQuiz extends SecureAction{
 	//--------------------to Generate Uniques 5 Digits Security String-------------------------
 	//---------------------------------Devendra-----------------------------------------------
 	//-------Start
-	private static final char[] symbols = new char[36];
+	private static final char[] symbols = new char[10];
 	  private static final Random random = new Random();
-	  private static final char[] securityString=new char[5];
+	  private static final char[] securityString=new char[8];
 	  static {
 	    for (int idx = 0; idx < 10; ++idx)
 	      symbols[idx] = (char) ('0' + idx);
-	    for (int idx = 10; idx < 36; ++idx)
-	      symbols[idx] = (char) ('a' + idx - 10);
+	 /*   for (int idx = 10; idx < 36; ++idx)
+	      symbols[idx] = (char) ('a' + idx - 10);*/
 	  }
 	  public static String generateSecurityString()
 	  {
@@ -149,6 +149,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 			Result_Vecrification(data,context);	
 		else if(action.equals("eventSubmit_ViewAnswerSheet"))
 			ViewAnswerSheet(data,context);	
+		else if(action.equals("eventSubmit_ResetSecuritynumber"))
+                        ResetSecuritynumber(data,context);
 		else{
 			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));	
 			}
@@ -1552,4 +1554,116 @@ public class OLES_AttemptQuiz extends SecureAction{
                        ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:ViewAnswerSheet !! "+e);
                 }
         }//method
+
+	/** This method is responsible for  to Reset  Security Number
+        * @param data RunData instance
+        * @param context Context instance
+        * @exception Exception, a generic exception
+        */
+        public static void ResetSecuritynumber(RunData data, Context context){
+                try{
+                        XmlWriter xmlWriter=null;
+                        /**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
+                        String LangFile=(String)data.getUser().getTemp("LangFile");
+                        String courseID=(String)data.getUser().getTemp("course_id");
+                        ParameterParser pp=data.getParameters();
+                        String quizID=pp.getString("quizlist","");
+                        context.put("quizlist",quizID);
+                        String quizName=pp.getString("quizname","");
+                        context.put("quizname",quizName);
+                        String studentId=pp.getString("studentid","");
+                        pp.setString("flag","security");
+                        pp.setString("flag1","show");
+                        pp.setString("counttemp","2");
+                        Vector collectSecurity=new Vector();
+
+                        /**get path where the Exam directory,quizID_Security.xml file stored */
+			String securityFile=quizID+"_Security.xml";
+                        String examFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseID+"/Exam/"+"/"+quizID);
+                        File securityFile1=new File(examFilePath+"/"+securityFile);
+                        QuizMetaDataXmlWriter createXmlfile=new QuizMetaDataXmlWriter();
+
+                        /**read the xml file and put the all values in vector (collect)
+                        *gets the Detail of all SecurityStrings
+                        *@see xmlReader QuizMetaDataXmlReader in Util
+                        */
+                        String securityID="";
+                        String IPAddress="";
+                        int seq=-1;
+                        if(securityFile1.exists()){
+                                QuizMetaDataXmlReader readSecurity=new QuizMetaDataXmlReader(examFilePath+"/"+securityFile+"/");
+                                XmlWriter xmlwrite=new XmlWriter(examFilePath+"/"+securityFile);
+                                collectSecurity=readSecurity.getSecurityDetail();
+                                if(collectSecurity!=null)
+                                {
+                                        for(int i=0;i<collectSecurity.size();i++){
+                                                String stutid =((QuizFileEntry) collectSecurity.elementAt(i)).getStudentID();
+                                                if(studentId.equals(stutid)){
+                                                        seq=i;
+                                                        securityID=generateSecurityString();
+                                                        break;
+                                                }
+                                        }//for
+                                }//ofcollect
+                                QuizMetaDataXmlWriter writer=new QuizMetaDataXmlWriter();
+                                xmlwrite=createXmlfile.WriteinSecurityxml(examFilePath,securityFile);
+                                createXmlfile.updateSecurity( xmlwrite,studentId,securityID,IPAddress,seq,examFilePath,securityFile);
+                                int seqno = -1;
+                                QuizMetaDataXmlReader scoreData = null;
+                                XmlWriter xmlWriter1=null;
+                                String answerFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseID+"/Exam/");
+                                String answerPath="score.xml";
+                                xmlWriter1=new XmlWriter(answerFilePath+"/"+answerPath);
+                                String uid=Integer.toString(UserUtil.getUID(studentId));
+                                scoreData=new QuizMetaDataXmlReader(answerFilePath+"/"+answerPath);
+                                seqno = scoreData.getSeqOfAlreadyInsertedScore(answerFilePath,answerPath,quizID,uid);
+                                if(seqno!=-1){
+                                        xmlWriter1=QuizMetaDataXmlWriter.WriteinScorexml(answerFilePath,answerPath);
+                                        xmlWriter1.removeElement("QuizQuestions",seqno);
+                                        xmlWriter1.writeXmlFile();
+                                }
+                                data.setMessage(MultilingualUtil.ConvertedString("brih_resetSecurity",LangFile));
+                                /** This  part is responsible for sending mail to student to inform about the securitystring for Quiz
+                                *@see MailNotificationThread in util
+                                */
+                                String subject="", msgDear="",msgRegard="",message="";
+                                String srvrPort=TurbineServlet.getServerPort();
+                                int uid1=(UserUtil.getUID(studentId));
+                                String email=UserUtil.getEmail(uid1);
+                                String Crsname=CourseUtil.getCourseName(courseID);
+                                Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
+                                if(srvrPort.equals("8080")){
+                                        subject = MailNotification.subjectFormate("studentsecuritystring",quizName, pr );
+                                        msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
+                                        msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+                                        message = MailNotification.getQuizMessage("studentsecuritystring","","","",quizName,securityID,Crsname,pr);
+                                }
+                                else{
+                                        subject = MailNotification.subjectFormate("studentsecuritystringhttps",quizName, pr );
+                                        msgDear = pr.getProperty("brihaspati.Mailnotification.newUserhttps.msgDear");
+                                        msgRegard=pr.getProperty("brihaspati.Mailnotification.newUserhttps.msgRegard");
+                                        message = MailNotification.getQuizMessage("studentsecuritystringhttps","","","",quizName,securityID,Crsname,pr);
+  				}
+                                msgRegard = MailNotification.replaceServerPort(msgRegard);
+                                msgDear = MailNotification.getMessage_new(msgDear, "","", "",studentId);
+                                String Mail_msg =MailNotificationThread.getController().set_Message(message,msgDear,msgRegard,"",email,subject,"",LangFile);
+                                if(Mail_msg.equals("Success")){
+                                        Mail_msg=" "+MultilingualUtil.ConvertedString("mail_msg",LangFile);
+                                        data.addMessage(Mail_msg);
+                                }
+
+                        }
+                        else{
+                                data.setMessage(MultilingualUtil.ConvertedString("brih_canNotgenerateSecurity",LangFile));
+                        }
+                 }
+                 catch(Exception ex){
+                         ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:ResetSecuritynumber !! "+ex);
+                                data.setMessage("See ExceptionLog !!");
+                 }
+
+        }
+
 }//class	                           
