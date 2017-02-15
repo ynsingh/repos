@@ -43,8 +43,8 @@ import org.smvdu.payroll.user.changePassword;
 
 /**
  *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
- *  *  Copyright (c) 2014 - 2017 ETRG, IITK. 
+ *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ *  Copyright (c) 2014 - 2017 ETRG, IITK. 
  *  All Rights Reserved.
  ** Redistribution and use in source and binary forms, with or
  *  without modification, are permitted provided that the following
@@ -79,7 +79,7 @@ import org.smvdu.payroll.user.changePassword;
 
 public class EmployeeDB {
 
-    private int orgCode = 0;
+    private int orgCode;
     //private UserInfo uf = null;
     private UserInfo uf;
     private int status;
@@ -195,7 +195,7 @@ public class EmployeeDB {
                 + " ee.type, ee.grade, sg.name, ee.email, ee.dob, ee.doj, ee.phone, ee.fatherName, ee.dept, ee.desig, ee.title, ee.experience,"
                 + " ee.qualification, ee.yearOfPassing, ee.previousEmployer, ee.address, ee.currentBasic, sg.gradePay, ee.ststus, ee.tgender, ee.bankIFSCcode, "
                 + " ee.bankStatus, ee.dateOfResig, ee.empLeaDate, ee.empNotDay, ee.genDetailCode, ee.aadhaarNo from Employee ee, Designation ds, Department dpt, EmployeeType et, SalaryGrade sg "
-                + " where ds.code=ee.desig and dpt.code=ee.dept and et.code=ee.type and sg.code=ee.grade and ee.code='"+empCode+"' and ee.orgCode='"+1+"'");
+                + " where ds.code=ee.desig and dpt.code=ee.dept and et.code=ee.type and sg.code=ee.grade and ee.code='"+empCode+"' and ee.orgCode='"+orgId+"'");
         List<Object[]> pending = query.list();
         for(Object[] empd: pending)
         {
@@ -265,10 +265,34 @@ public class EmployeeDB {
            {
                 emp.setBankIFSCcode(empd[29].toString());
            }
-           emp.setDateOfResig(empd[31].toString());
-           emp.setEmpLeaDate(empd[32].toString());
-           emp.setEmpNotDay((Integer)empd[33]);
-           emp.setGenDetails(Integer.toString((Integer)empd[34]));
+           if(empd[31]==null)
+           {
+               emp.setDateOfResig(" ");
+           }
+           else{
+                emp.setDateOfResig(empd[31].toString());
+            }
+           if(empd[32]==null)
+           {
+               emp.setEmpLeaDate(" ");
+           }   
+           else{
+               emp.setEmpLeaDate(empd[32].toString());
+           }
+           if(empd[33]==null)
+           {
+               emp.setEmpNotDay(0);
+           }    
+           else{
+               emp.setEmpNotDay((Integer)empd[33]);
+           }
+           if(empd[34]==null)
+           {
+               emp.setGenDetails("Enter the citizen");
+           }   
+           else{
+                emp.setGenDetails(Integer.toString((Integer)empd[34]));
+           }
            emp.setAadhaarNo(empd[35].toString());
            return emp;
         }
@@ -1255,10 +1279,23 @@ public class EmployeeDB {
                     }
                 
             }
+            
             else{
                 System.out.println(" problem in employee registration for  : "+emp.getCode());
                 return em;
             }
+            
+            UserDB ud = new UserDB();
+            String emailId = emp.getEmail();
+            int orgId = orgCode;
+            int UserId = ud.getUserId(emailId);
+            int roleId=ud.getRoleExists(emailId,orgId);
+            Exception adduser_role;
+            /** Add employee role if employee role not exists in institute */ 
+            if(roleId!= 6 ){
+                adduser_role = new UserRegistration().AddUserRole(emailId, orgId,"EmpReg",UserId );
+            }
+            
             return em;
         }
         catch(Exception ex)

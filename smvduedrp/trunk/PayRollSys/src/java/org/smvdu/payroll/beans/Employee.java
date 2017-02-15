@@ -914,6 +914,14 @@ public class Employee implements Serializable {
      * @return String 
      */
      public String loadProfile(){
+        LoggedEmployee le = (LoggedEmployee) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
+        if (le == null) {
+            UserInfo uf = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+            orgCode = uf.getUserOrgCode();
+        } else {
+            orgCode = le.getUserOrgCode();
+        }
+      
         Employee empz = new EmployeeDB().loadProfile(code.trim(), orgCode);
         Employee empsupp = new EmployeeDB().loadEmpsupportProfile(code.trim());
         if (empz == null) {
@@ -1018,7 +1026,7 @@ public class Employee implements Serializable {
     }
 
     public void save() {
-        try {
+         try {
             String statusMessage = null;
             Severity s = null;
             FacesContext fc = FacesContext.getCurrentInstance();

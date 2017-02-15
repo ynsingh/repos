@@ -1,0 +1,90 @@
+*********************************************************************************************
+Copyright 2014-2017, ETRG, IIT Kanpur
+       
+Last Modification : February 2017, Om Prakash (omprakashkgp@gmail.com)
+*********************************************************************************************
+
+The Softwares that need to be installed on your Local PC for running this software are 
+
+	MySql Server 5.7,
+	Apache Ant 1.8,
+	SVN client,
+	Tomcat 6.0.48,
+	Java 1.8, and
+	Operating System : ubuntu 16.04 and fedora Linux.
+
+
+Installation procedure for PayrollSys
+
+1.	In user's home directory, checkout the PayRollSys from svn using the command.
+	$svn co http://202.141.40.215/repos/smvduedrp/trunk/PayRollSys
+
+2.	Go to "~/PayRollSys/database/" directory and run the SQL script using the following command.
+	$mysql -h 127.0.0.1 -u username -ppassword pl<pl.sql;
+
+3.	Go to "~/PayRollSys/web/dbsetting/" directory and open the dbconf_admin.properties
+	file in this file define the user name and password of database.
+
+4.	Compile the PayRollSys using ant command
+        PayRollSys/ant
+        make the war file, “PayRollSys.war” which is located in the PayRollSys/dist/   Directory
+
+5. 	Download tomcat from http://tomcat.apache.org/
+	and start the tomcat by using the command “sh startup.sh” which is located in 
+	"apache-tomcat-6.0.48/bin/" Directory
+
+6.	Deploy the “PayRollSys.war” file in the tomcat application server.
+
+7.	Go to PayRollSys/ Directory and read the “HibernateConfigSett” file. Copy the Hibernate
+ 	Configuration Setting and paste two times in to  “apache-tomcat-6.0.48/conf/context.xml”
+ 	file. In “context.xml” file change the Database_Name = “pl” and “login” for both database
+ 	define the database username and password.   
+ 
+8. 	Open the PayRoll System home page by the URL: ”http://localhost:8080/PayrollSys/”
+	the Administrator User name is “admin” and password is “admin123”
+
+9.	Register new institute in PayRoll System by clicking on “register new institute” link
+
+10. 	Login as a Administrator and update the SMTP configuration, now click on “check pending
+ 	collage/Institute's” and update Collage Pending list.
+ 
+11.	Login as institute admin select a institute from drop down list.
+	e.g. Login name “mprakash@iitk.ac.in” and Password “123” this login name and password is 
+	coming from register new institute.
+
+
+Institute administrator functionality
+
+
+1.	Click on Setup Link
+		Add new financial year 	e. g. 2016-17
+		Add new Department	e. g. EE
+		Add new Designations	e. g. Project Associate 
+		Add New Bank profile	e. g. SBI
+		Add New Employee types	e. g. Regular 
+		Add New Pay Scale	e. g. 15000-30000
+		Add new Salary head	e. g. basic
+2.	Click on Employee link
+		Add profile (using this link you can add new profile of employee)
+		Edit profile (using this link you can make correction of in employee profile)
+		Search Profile (Using this link you can view total profile of employee, and 
+		you can change the password of employee. )
+		Employee Attendance (Using this link you can add, upload attendance of employee)
+
+3.	Click on Salary Link
+		Salary Processing  (Using this link you can process salary of employee by using his profile Code)
+		Type wise Salary head setting ( Using this link you can update salary head for showing in salary
+		slip. First select the employee type then select salary head single click on check box after that
+		click on update button )
+		Default Salary value ( Using this link you can load default value of salary grade )
+
+4.	Click on Report link
+		Monthly salary slip (when you click  on this link two other link will appear, on is ExportasHTML
+		and second one ExportAsPDF, when you click on ExportAsPDF link you can view the salary slip of the employee)
+		
+		Monthly Attendance Report ( Using this link you can generate the employee attendance report)
+
+Other features
+
+5.		Forgot Password (Using this link user can reset his password)
+		
