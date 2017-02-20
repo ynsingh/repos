@@ -350,7 +350,7 @@ $(document).ready(function() {
 						echo anchor('report/dayst', 'Day Book', array('title' => 'Day Book'));
 					echo "</li>";
 					echo "<li>";
-                                                echo anchor('report/cashst', 'Cash Book', array('title' => 'Cash Book'));
+                                                echo anchor('report/cashst', 'Cash/Bank Book', array('title' => 'Cash /Bank Book'));
                                         echo "</li>";
 					echo "<li>";
 						echo anchor('','Unspent Balance');
@@ -413,6 +413,9 @@ $(document).ready(function() {
                                                 echo anchor('report2/sundry_debit_report','Sundry Debtors Report', array('title'=>'Sundry Debtors Report'));
                                         echo"</li>";
 
+					echo"<li>";
+                                           //     echo anchor('report2/negative_trans_report','Negative Transaction Report', array('title'=>'Negative Transaction Report'));
+                                        echo"</li>";
 
 				echo"</ul>";
 

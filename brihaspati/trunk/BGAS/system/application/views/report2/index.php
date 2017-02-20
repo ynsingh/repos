@@ -19,7 +19,7 @@
 		</div>
 		<div class="settings-container">
                         <div class="settings-title">
-                                <?php echo anchor('report2/sec_report', 'Secondary Unit Report', array('title' => 'Tag Report')); ?>
+                                <?php echo anchor('report2/sec_report', 'Party Report', array('title' => 'Party Report')); ?>
                         </div>
                         <div class="settings-desc">
                                 &nbsp;
@@ -61,7 +61,46 @@
                                 &nbsp;
                         </div>
 		</div>
-</div>
+	</div>
+
+        <div id="right-col">
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php echo anchor('report2/tds_report', 'TDS Report', array('title' => 'TDS Report')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                &nbsp;
+                        </div>
+                </div>
+
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php echo anchor('report2/sundry_credit_report', 'Sundry Creditors Report', array('title' => 'Sundry Credit Report')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                &nbsp;
+                        </div>
+                </div>
+
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php echo anchor('report2/sundry_debit_report', 'Sundary Debitors Report', array('title' => 'Sundary Debit Report')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                &nbsp;
+                        </div>
+                </div>
+
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php //echo anchor('report2/negative_trans_report', 'Negative Transaction Report', array('title' => 'Negative Transaction Report')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                &nbsp;
+                        </div>
+                </div>
+	</div>
+
 <div class="clear">
 </div>
 

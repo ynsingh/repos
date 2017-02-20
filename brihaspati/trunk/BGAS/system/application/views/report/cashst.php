@@ -114,7 +114,7 @@
 				$cash_in_hand = $this->Tag_model->cash_in_hand_available('Cash');
 				if($search == NULL || $search == "--Select--"){
 					//Head Of cash in hand and name of banks................
-					echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th><th width=\"20%\"><b>Voucher No.</th><th width=\"20%\"><b>Head of A/C</th>";
+					echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th><th width=\"10%\"><b>Voucher No.</th><th width=\"10%\"><b>Cheque No.</th><th width=\"20%\"><b>Head of A/C</th>";
 					//First Colomn of Cash in hand.............
 					$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
                 			$led_name = $this->db->get();
@@ -150,7 +150,7 @@
 						}
 					echo"</tr></thead>";
 				}else{
-					 echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th><th width=\"20%\"><b>Voucher No.</th><th width=\"20%\"><b>Head Of A/C</th>";
+					 echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th><th width=\"10%\"><b>Voucher No.</th><th width=\"10%\"><b>Cheque No.</th><th width=\"20%\"><b>Head Of A/C</th>";
                                          echo"<th width=\"20%\" align=\"center\"><b>".$expload_search[1]."</th>";
                                 	 echo "<tr><td><b>Opening Balance</td><td></td><td></td><td></td>";
 					 list ($opbalance1, $optype) = $this->Ledger_model->get_op_closing_balance($expload_search[0], $from_date, $to_date); /* Opening Balance */
@@ -161,8 +161,8 @@
 		
 
 
-					$this->db->select('ledgers.name as name, ledgers.id as id, entry_items.entry_id as entry_id, entry_items.amount as amount, entries.narration as narration, entries.date as date, entries.number as voucher_numb, entries.sanc_value as head_value, entries.sanc_type as head_type');
-					$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.dc', 'D')->where('ledgers.type', '1')->order_by('entries.date', 'asc');	
+					$this->db->select('ledgers.name as name, ledgers.id as id, entry_items.entry_id as entry_id, entry_items.amount as amount, entries.narration as narration, entries.date as date, entries.number as voucher_numb, entries.sanc_value as head_value, entries.sanc_type as head_type, cheque_print.update_cheque_no as chqno');
+					$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->join('cheque_print','entries.id=cheque_print.entry_no')->where('entry_items.dc', 'D')->where('ledgers.type', '1')->order_by('entries.date', 'asc');	
 					$this->db->where('entries.date >=', $from_date);
                                         $this->db->where('entries.date <=', $to_date);
 
@@ -229,6 +229,10 @@
                                                                         echo $entry->voucher_numb;
                                                                         echo "</td>";
                                                                         echo "<td>";
+									// cheque number
+                                                                        echo $entry->chqno;
+                                                                        echo "</td>";
+                                                                        echo "<td>";
 									echo $head_sanc_type.$head_sanc_value;
                                                                         echo "</td>";
                                                                         for($counter=1; $counter <= $key; $counter++){
@@ -248,6 +252,9 @@
                                                                                 echo "</td>";
 									echo "<td>";
                                                                         echo $entry->voucher_numb;
+                                                                        echo "</td>";
+                                                                        echo "<td>";
+                                                                        echo $entry->chqno;
                                                                         echo "</td>";
                                                                         echo "<td>";
 									echo $head_sanc_type.$head_sanc_value;
@@ -285,7 +292,7 @@
 				echo "<tr><td colspan=\"6\"><h3>Payment</td>";
 		
 				//// For Cr- entries ....................
-				echo "<tr  class=\"tr-total\"><td width=\"10%\"><b>Date</td><td width=\"20%\"><b>Ledger Name</td><td width=\"20%\"><b>Voucher No.</td><td width=\"20%\"><b>Head Of A/C</td>";
+				echo "<tr  class=\"tr-total\"><td width=\"10%\"><b>Date</td><td width=\"20%\"><b>Ledger Name</td><td width=\"10%\"><b>Voucher No.</td><th width=\"10%\"><b>Cheque No.</th><td width=\"20%\"><b>Head Of A/C</td>";
 				if($search == NULL || $search == "--Select--"){
 					$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
 				        $led_name = $this->db->get();
@@ -307,8 +314,8 @@
 				echo"</tr>";
 
                                 //////////////////
-			 	$this->db->select('ledgers.name as name, ledgers.id as id, entry_items.entry_id as entry_id, entry_items.amount as amount, entries.narration as narration, entries.date as date, entries.number as voucher_numb1, entries.sanc_value as head_value1, entries.sanc_type as head_type1');
-                                $this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.dc', 'C')->where('ledgers.type', '1')->order_by('entries.date', 'asc');
+			 	$this->db->select('ledgers.name as name, ledgers.id as id, entry_items.entry_id as entry_id, entry_items.amount as amount, entries.narration as narration, entries.date as date, entries.number as voucher_numb1, entries.sanc_value as head_value1, entries.sanc_type as head_type1, cheque_print.update_cheque_no as chqno');
+                                $this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->join('cheque_print','entries.id=cheque_print.entry_no')->where('entry_items.dc', 'C')->where('ledgers.type', '1')->order_by('entries.date', 'asc');
 				$this->db->where('entries.date >=', $from_date);
                                 $this->db->where('entries.date <=', $to_date);
 
@@ -360,6 +367,9 @@
 								echo "<td>";
                                                          	echo $entry->voucher_numb1;
                                                            	echo "</td>";
+                                                                        echo "<td>";
+                                                                        echo $entry->chqno;
+                                                                        echo "</td>";
                                                           	echo "<td>";
                                                            	echo $head_sanc_type1.$head_sanc_value1;
                                                             	echo "</td>";
@@ -382,6 +392,9 @@
 									echo "<td>";
                                                                 	echo $entry->voucher_numb1;
                                                                 	echo "</td>";
+                                                                        echo "<td>";
+                                                                        echo $entry->chqno;
+                                                                        echo "</td>";
                                                                 	echo "<td>";
                                                                 	echo $head_sanc_type1.$head_sanc_value1;
                                                                 	echo "</td>";

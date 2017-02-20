@@ -26,6 +26,15 @@
                        	    </div>
 		</div>
 		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php echo anchor('report2/profitandloss_mhrdnew', 'Income and Expenditure MHRD Format', array('title' => 'Income and Expenditure  Statement MHRD Format', 'class' => 'loading')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                &nbsp;
+                        </div>
+                </div>
+
+		<div class="settings-container">
 			<div class="settings-title">
 				<?php echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt', 'class' => 'loading')); ?>
 			</div>
@@ -78,7 +87,16 @@
                 </div>
 		<div class="settings-container">
                         <div class="settings-title">
-                                <?php echo anchor('report/cashst', 'Cash Report', array('title' => 'Cash Report')); ?>
+                                <?php echo anchor('report/cashst', 'Cash/Bank Book', array('title' => 'Cash /Bank Book')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                &nbsp;
+                        </div>
+                </div>
+                
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php echo anchor('unspentbalance/planreport', 'Unspent Plan Balance', array('title' => 'Unspent Plan Balance')); ?>
                         </div>
                         <div class="settings-desc">
                                 &nbsp;
@@ -86,12 +104,21 @@
                 </div>
 		<div class="settings-container">
                         <div class="settings-title">
-                                <?php echo anchor('unspentbalance/planreport', 'Unspent Balance', array('title' => 'Unspent Balance')); ?>
+                                <?php echo anchor('unspentbalance/nonplanreport', 'Unspent Non Plan Balance', array('title' => 'Unspent Non Plan Balance')); ?>
                         </div>
                         <div class="settings-desc">
                                 &nbsp;
                         </div>
                 </div>
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php echo anchor('unspentbalance/summaryreport', 'Unspent Summary Balance', array('title' => 'Unspent Summary Balance')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                &nbsp;
+                        </div>
+                </div>
+
 	
 	</div>
 </div>

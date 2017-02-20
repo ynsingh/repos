@@ -36,7 +36,7 @@
 	$total_cl_bal = 0;
 	$total_op_bal = 0;
 	echo "<table border=0 cellpadding=5 class=\"simple-table trial-balance-table\" width=\"$width\">";
-	echo "<thead><tr><th>Ledger Account</th><th>O/P Balance</th><th>C/L Balance</th><th>Dr Total</th><th>Cr Total</th></tr></thead>";
+	echo "<thead><tr><th>Ledger Account</th><th>O/P Balance</th></th><th>Dr Total</th><th>Cr Total</th><th>C/L Balance</th></tr></thead>";
 	$this->load->model('Ledger_model');
 	$all_ledgers = $this->Ledger_model->get_all_ledgers1($date1, $date2);
 
@@ -59,13 +59,13 @@
                 $total_op_bal = float_ops($total_op_bal, $new_opbal_amount, '+');
 		echo convert_opening($opbal_amount, $opbal_type);
 		echo "</td>";
-
+/*
 		echo "<td>";
 		$clbal_amount = $this->Ledger_model->get_ledger_balance($ledger_id);
 		$total_cl_bal = float_ops($total_cl_bal, $clbal_amount, '+');
 		echo convert_amount_dc($clbal_amount);
 		echo "</td>";
-
+*/
 		echo "<td>";
 		$dr_total = $this->Ledger_model->get_dr_total($ledger_id);
 		if ($dr_total)
@@ -86,6 +86,13 @@
 			echo "0";
 		}
 		echo "</td>";
+
+		echo "<td>";
+                $clbal_amount = $this->Ledger_model->get_ledger_balance($ledger_id);
+                $total_cl_bal = float_ops($total_cl_bal, $clbal_amount, '+');
+                echo convert_amount_dc($clbal_amount);
+                echo "</td>";
+
 		echo "</tr>";
 		$odd_even = ($odd_even == "odd") ? "even" : "odd";
 	}
@@ -94,7 +101,7 @@
 		echo "<img src=\"" . asset_url() . "images/icons/match.png\">";
 	else
 		echo "<img src=\"" . asset_url() . "images/icons/nomatch.png\">";
-	echo "</td><td> " . convert_amount_dc($total_op_bal) . "</td><td> " . convert_amount_dc($total_cl_bal) . "</td><td>Dr " . money_format('%!i', convert_cur($temp_dr_total)) . "</td><td>Cr " . money_format('%!i', convert_cur($temp_cr_total)) . "</td></tr>";
+	echo "</td><td> " . convert_amount_dc($total_op_bal) . "</td><td>Dr " . money_format('%!i', convert_cur($temp_dr_total)) . "</td><td>Cr " . money_format('%!i', convert_cur($temp_cr_total)) ."</td><td> " . convert_amount_dc($total_cl_bal) ."</td></tr>";
 	echo "</table>";
 	echo "<br>";
 	if(! $print_preview)

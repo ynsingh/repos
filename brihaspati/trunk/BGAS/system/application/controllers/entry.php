@@ -871,7 +871,7 @@ $width="100%";
 		$this->form_validation->set_rules('purchase_order_no', 'Purchase Order Number', 'trim');
 		$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim');
 		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
-		$this->form_validation->set_rules('entry_narration', 'trim');
+		$this->form_validation->set_rules('entry_narration', 'trim|required');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
 		$this->form_validation->set_rules('entry_name', 'Entry Type', 'trim|required');
 		

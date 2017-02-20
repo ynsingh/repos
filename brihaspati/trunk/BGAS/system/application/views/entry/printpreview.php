@@ -389,6 +389,37 @@ echo $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_numbe
         echo "</td>";
 
         echo "</tr>";
+//footer for signature
+	echo "<tr>";
+	echo "<td>";
+	echo "<table width=\"100%\" border=\"0\">";
+
+        echo "<tr valign=\"top\">";
+ 	echo "<br>";
+ 	echo "<br>";
+        echo "<br>";
+
+
+        echo "<td>";
+
+	echo "<b>DA/SO(F)</b> ";
+	echo "</td>";
+	echo "<td>";
+	echo "<b>AR(F)</b> ";
+        echo "</td>";
+	echo "<td>";
+	echo "<b>DR(F)</b> ";
+        echo "</td>";
+	echo "<td>";
+	echo "<b>Finance Officer</b> ";
+	echo "</td>";
+
+        echo "</tr>";
+
+        echo "</table>";
+        echo "</td>";
+
+	echo "</tr>";
 
 	echo "</table>";
 	echo "</tr>";

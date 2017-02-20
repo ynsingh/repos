@@ -285,6 +285,26 @@ class Report2 extends Controller {
                         $this->session->unset_userdata('date2');
                         return;
                 }
+//negative_trans_report
+		if ($statement == "negative_trans_report")
+                {
+                        $this->load->helper('text');
+                        $data['width'] = "70%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+//                        $data['sec_uni_id'] = $this->uri->segment(4);
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report2/negative_trans_report";
+                        $data['title'] =  "Negative Transaction Statement ";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+                        $this->load->view('report/report_template', $data);
+                        $this->session->unset_userdata('date1');
+                        $this->session->unset_userdata('date2');
+                        return;
+                }
 
 		if ($statement == "sec_report")
                 {
@@ -326,7 +346,7 @@ class Report2 extends Controller {
                         return;
                 }
 
-        if ($statement == "profitandloss_mhrdnew")
+        	if ($statement == "profitandloss_mhrdnew")
                 {
                         $this->load->helper('text');
                         $data['width'] = "100%";
@@ -505,7 +525,25 @@ class Report2 extends Controller {
                         $this->load->view('report/pdfreport', $data);
                         return;
                 }
-		
+	//negative_trans_report
+
+//		if($statement == "negative_trans_report")
+//                {
+//                 $this->load->helper('text');
+//                        $data['width'] = "100%";
+  //                      $page_count = 0;
+                        /* Pagination setup */
+    //                    $this->load->library('pagination');
+      //                  $data['page_count'] = $page_count;
+        //                $data['report'] = "report2/negative_trans_report";
+          //              $data['statement'] = "Negative Transaction Statement ";
+            //            $data['print_preview'] = TRUE;
+              //          $data['entry_date1'] = $date1;
+                //        $data['entry_date2'] = $date2;
+                  //      $this->load->view('report/pdfreport', $data);
+                    //    return;
+              //  }
+	
 		if($statement == "sec_report")
                 {
                  $this->load->helper('text');
@@ -894,6 +932,112 @@ class Report2 extends Controller {
 			redirect('report2/sec_report/' . $sec_uni_id);
 		}
 		$this->template->load('template', 'report2/sec_report/' . $sec_uni_id, $data);
+		return;
+	}
+//	negative_trans_report
+
+	function negative_trans_report()
+	{
+		$this->load->library('session');
+		$this->load->helper('text');
+		/* Pagination setup */
+		$this->load->library('pagination');
+
+		$this->template->set('page_title', 'Negative Transaction Statement');
+		//$this->template->set('nav_links', array('report2/download/negative_trans_report/'  => 'Download CSV', 'report2/printpreview/negative_trans_report/' => 'Print Preview', 'report2/pdf/negative_trans_report/' => 'Download PDF'));
+		$this->template->set('nav_links', array('report2/printpreview/negative_trans_report/' => 'Print Preview'));
+		$data['width'] = "70%";
+
+		$data['print_preview'] = FALSE;
+
+		$default_end_date;
+
+		/* Form fields */ 
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$date1 = $row->fy_start;
+			$date2 = $row->fy_end;
+		}
+		$date=explode("-",$date1);
+		$date2 = explode("-", $row->fy_end);
+		$default_start = '01/04/'.$date[0];
+		$default_end = '31/03/'.$date2[0];
+		
+		$curr_date = date_today_php();
+		if($curr_date >= $default_end) {
+			$default_end_date = $default_end;
+		}
+		else {
+			$default_end_date = $curr_date;
+		}
+		
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => $default_start,
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => $default_end_date,
+		);
+		$data_date1 = $default_start;
+                $data_date2 = $default_end_date;
+
+                $date=explode("/",$data_date1);
+                $start_date=$date[2]."-".$date[1]."-".$date[0];
+                $date=explode("/",$data_date2);
+                $end_date=$date[2]."-".$date[1]."-".$date[0];
+
+                $newrange = array(
+                      'startdate'  => $start_date,
+                      'enddate'  => $end_date
+                     );
+                $this->session->set_userdata($newrange);
+		/* Repopulating form */
+ 
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);
+		} 
+		
+		/* Form validations */ 
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'report2/negative_trans_report', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+
+			$date=explode("/",$data_date1);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$data_date2);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+			
+			$newdata = array(
+	                   'date1'  => $date1,
+        	           'date2'  => $date2,
+	                );
+			$this->session->set_userdata($newdata);
+			redirect('report2/negative_trans_report/');
+		}
+		$this->template->load('template', 'report2/negative_trans_report/', $data);
 		return;
 	}
 	
