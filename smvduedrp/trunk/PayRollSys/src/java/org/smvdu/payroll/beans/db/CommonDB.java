@@ -9,14 +9,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import javax.faces.context.FacesContext;
 
 /**
@@ -25,7 +20,8 @@ import javax.faces.context.FacesContext;
  *  Database connection is managed by DBCP and is pooled. COnfiguration details
  *  can be found and edited in context.xml file.
  *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
-*  All Rights Reserved.
+ *  Copyright (c) 2014 - 2017 ETRG, IITK.
+ *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
 *  conditions are met: 
@@ -53,6 +49,7 @@ import javax.faces.context.FacesContext;
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITK
 *  Modified Date: 26 Dec 2013, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*  Last Modification : January 2017, Manorama Pal (palseema30@gmail.com).
 *
 */
 public class CommonDB {
@@ -325,7 +322,7 @@ public class CommonDB {
      * Connection for Brihaspati General Accounting System (BGAS) Database
      * @return : instance of Database Connection
      */
-    public Connection getwebzashConnection()   {
+    public Connection getbgasConnection()   {
        try
         {
 

@@ -44,7 +44,7 @@
 
     <rich:panel header="Salary Copier Tool">
         <h:form>
-            <rich:messages  >
+            <rich:messages>
                 <f:facet name="infoMarker">
                     <h:graphicImage url="/img/success.png"/>
                 </f:facet>
@@ -53,19 +53,19 @@
                 </f:facet>
             </rich:messages>
             <h:panelGrid columns="2">
+                <h:outputText value="Current Month :"  style="font-size:1.2em;"/>
+                <h:outputText value="#{SalaryTool.copyTo}" style="font-size:1.2em;" />
+            </h:panelGrid><br/> 
+            <h:panelGrid columns="2">
                 <h:outputText value="Copy From"/>
                 <h:selectOneMenu  value="#{SalaryTool.current}" >
                     <f:selectItems value="#{SalaryTool.copyProvider}"/>
                 </h:selectOneMenu>
                 <h:outputText value="Copy To"/>
                 <h:outputText value="#{SalaryTool.copyTo}"/>
-                <h:commandButton action="#{SalaryTool.copy}" value="Copy Now"/>
-                <h:commandButton value="Help"/>
-            </h:panelGrid>
-            <rich:separator>
-
-            </rich:separator>
-            <a4j:commandButton value="Automatic Salary Generator" action="#{SalaryProcessingBean.autoLoad}"/>
+                
+            </h:panelGrid><br/> 
+             <h:commandButton action="#{SalaryTool.copy}" value="Copy Now"/>         
         </h:form>
     </rich:panel>
 

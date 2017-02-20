@@ -24,6 +24,7 @@ import org.smvdu.payroll.beans.db.SalaryHeadDB;
  * is composed of an array of salary heads.
  * FormulaProcessor operates on Salary heads to calculate Formula related Fields.
  *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ *     Copyright (c) 2014 - 2017 ETRG, IITK. 
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -52,6 +53,7 @@ import org.smvdu.payroll.beans.db.SalaryHeadDB;
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
 *  Modified Date: 13 Nov 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*  Last Modification :(Salary Processing with Budgets), January 2017, Manorama Pal (palseema30@gmail.com).
 *
  */
 public class SalaryHead implements Serializable {
@@ -61,7 +63,7 @@ public class SalaryHead implements Serializable {
 
     public SalaryHead()
     {
-       // System.out.println("salary Head111=====");
+       
 
     }
     /**
@@ -73,17 +75,15 @@ public class SalaryHead implements Serializable {
 
      public SalaryHead(SalaryData sd)
     {
-       //System.out.println("salary Head=====");
-        //this.setName(sd.getHeadName());
         name = sd.getHeadName();
         under = sd.isCatagory();
         number = sd.getHeadCode();
         defaultValue = sd.getHeadValue();
-        //System.out.println("salary Head=in defaultvalue===="+sd.getHeadValue());
         formula = sd.getFormula();
         alias= sd.getAlias();
         scalable = sd.isScalable();
         display = sd.isDisplay();
+        
     }
 
     public static final int BASIC_SALARY=1;
@@ -209,17 +209,6 @@ public class SalaryHead implements Serializable {
         this.display = display;
     }
     
-    
-    /*  private int typeCode;
-    
-    public int getTypeCode() {
-        return typeCode;
-    }
-
-    public void setTypeCode(int typeCode) {
-        this.typeCode = typeCode;
-    }   */
-    
     private SalaryTypeMaster typeCode;
 
     public SalaryTypeMaster getTypeCode() {
@@ -241,7 +230,16 @@ public class SalaryHead implements Serializable {
         this.typeCodeForDropDown = typeCodeForDropDown;
     }
     
-  
+    private String bgasLedger;
+    public String getBgasLedger(){
+        System.out.println("bgasledger==="+bgasLedger);
+        return bgasLedger;
+    }
+
+    public void setBgasLedger(String bgasLedger) {
+
+        this.bgasLedger = bgasLedger;
+    }
     
     private boolean processType; // Regular or scheduled
     
@@ -273,6 +271,8 @@ public class SalaryHead implements Serializable {
     public void setOrgcode(int orgcode) {
         this.orgcode = orgcode;
     }
+    
+    
     
 
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -318,7 +318,7 @@ public class SalaryHead implements Serializable {
         {
             processTypeName = "Regular";
         }
- else
+        else
         {
             processTypeName = "Scheduled";
  }
@@ -328,9 +328,6 @@ public class SalaryHead implements Serializable {
     public void setProcessTypeName(String processTypeName) {
         this.processTypeName = processTypeName;
     }
-    
-    
-    
     
     private SalaryTypeMaster salaryType;
 
@@ -342,19 +339,10 @@ public class SalaryHead implements Serializable {
         this.salaryType = salaryType;
     }
 
-    
-    
-
-    
-    
-    
-   
     public SalaryHead(String name)
     {
         this.name = name;
     }
-
- 
 
     private int empType;
 
@@ -377,14 +365,12 @@ public class SalaryHead implements Serializable {
     }
 
     public void setEmpType(int empType) {
-        //System.err.println("Emptype : "+empType);
         this.empType = empType;
     }
 
 
     public void populate()
     {
-        //System.err.println("Emptype : "+empType);
         getSelected();
     }
     
@@ -413,31 +399,29 @@ public class SalaryHead implements Serializable {
             sh = allheads.get(i);
             SelectItem si = new SelectItem(sh.number,sh.name);
             items[i] = si;
-            //System.out.println("\nsiin head===="+si+"\nsh====="+sh+"\nitems"+items+"\nitems[i]==="+items[i]);
         }
         return items;
     }
     public void print()   {
         if(items==null)
         {
-            //System.err.println(" >> No Selection");
             return;
         }
-         for(SelectItem si : items)
+        for(SelectItem si : items)
         {
-            //System.err.print(si.getLabel()+""+si.getValue());
         }
     }
     public void setItems(String[] items) {
          for(String s : items)
          {
-             System.err.println(s);
+            // System.err.println(s);
          }
        
     }
     public String toString() {
         return name;
     }
+    
     public String getCalculationString() {
         if(calculationType)
         {
@@ -453,22 +437,23 @@ public class SalaryHead implements Serializable {
         {
             return "Earning";
         }
- else
+        else
         {
             return "Deduction";
- }
+        }
     }
     public ArrayList<SalaryHead> getSelected() { 
-       // System.out.println("salary Head=====");
+       System.out.println("number of emptype====="+number);
         return  new SalaryHeadDB().loadSelectedHeads(number);
+        
     }
     public ArrayList<SalaryHead> getHeads() {
-        //System.out.println("salary Head=====");
+       
         return  new SalaryHeadDB().loadAllHeads();
         
     }
     public void setHeads(ArrayList<SalaryHead> heads) {
-        //System.out.println("salary Head=====");
+        
         this.heads = heads;
     }
     
@@ -494,7 +479,6 @@ public class SalaryHead implements Serializable {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             message.setSummary("Plz Enter Valid Short Name");
-            //message.setDetail("First Name Must Be At Least Three Charecter ");
             fc.addMessage("", message);
             return;
         }
@@ -523,13 +507,12 @@ public class SalaryHead implements Serializable {
     public void update()
     {
         String code = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
-        //System.err.println("Got delete Code "+code);
     }
 
     public void delete()
     {
         String code = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
-        //System.err.println("Got delete Code "+code);
+       
     }
 
 
@@ -540,11 +523,26 @@ public class SalaryHead implements Serializable {
         this.message = message;
     }
     
+    private String ledgerName;
     
+    public String getLedgerName() {
+        return ledgerName;
+    }
     
+    public void setLedgerName(String ledgername) {
+        this.ledgerName = ledgername;
+    }
     
+    String coaformat=null;
+    public String getCoaFormat(){
+        System.out.println("coaformat======heads====="+coaformat);
+        return coaformat;
+    }
 
+    public void setCoaFormat(String coaformat) {
+       this.coaformat = coaformat;
+    }
+    
     
    
-    
 }

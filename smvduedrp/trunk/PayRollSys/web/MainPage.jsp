@@ -1,7 +1,8 @@
 <%--
     Document   : TableViewer
     Created on : Dec 13, 2010, 7:57:28 PM
-    Author     :  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+    Author     : Copyright (c) 2010 - 2011 SMVDU, Katra.
+                 Copyright (c) 2015, 2016 ETRG, IITK.
 *  All Rights Reserved.
 *  Redistribution and use in source and binary forms, with or
 *  without modification, are permitted provided that the following
@@ -33,8 +34,8 @@
 *  Modified date 27 October 2014, IITK , Om Prakash (omprakashkgp@gmail.com) (GUI Main page)
 --%>
 
-<%--<%@page import="org.smvdu.payroll.api.UserOperationBeans.UserBeans"%>
-<%@page import="org.smvdu.payroll.beans.setup.SalaryProcessingSetup"%>--%>
+<%@page import="org.smvdu.payroll.api.UserOperationBeans.UserBeans"%>
+<%@page import="org.smvdu.payroll.beans.setup.SalaryProcessingSetup"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
@@ -112,21 +113,22 @@
                     <rich:hotKey  key="alt+k" handler="#{rich:component('em')}.expand()"/>
 
                     <rich:dropDownMenu  id="se" value="Setup" styleClass="pic" >
-                       <rich:menuItem  id="se1"   onclick="return loadIframe('ifrm', 'setup/SessionSetup.jsf')"  value="Financial Years"/>
+                        <rich:menuItem  id="se1"   onclick="return loadIframe('ifrm', 'setup/SessionSetup.jsf')"  value="Financial Years"/>
                         <rich:menuItem  id="se2"  onclick="return loadIframe('ifrm', 'setup/Departments.jsf')"  value="Department"/>
                         <rich:menuItem  id="se3"  onclick="return loadIframe('ifrm', 'setup/Designation.jsf')" value="Designation"/>
                         <rich:menuItem  id="se4"  onclick="return loadIframe('ifrm', 'setup/bankProfile.jsf')" value="Add Bank Profile"/>
                         <rich:menuItem  id="se5"  onclick="return loadIframe('ifrm', 'EmployeeType.jsf')" value="Employee Types"/>
                         <rich:menuItem  id="se6"  onclick="return loadIframe('ifrm', 'setup/SalaryGrade.jsf')" value="Pay Scales"/>
                         <rich:menuItem  id="se7"  onclick="return loadIframe('ifrm', 'setup/SalaryHead.jsf')" value="Salary Heads"/>
+			<rich:menuItem  id="se12"  onclick="return loadIframe('ifrm', 'setup/BgasLedgerMap.jsf')" value="Bgas Ledger Map"/>
                         <rich:menuGroup id="se8"  value="Tax Slab Setup" direction="right-bottom">
                             <rich:menuItem  id="se81"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/Gender.jsf')" value="Add Gender Details"/>
                             <rich:menuItem  id="se82"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/TaxSlabName.jsf')" value="Add Slab Details"/>
                             <rich:menuItem  id="se83"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/EmployeeSlabValue.jsf')" value="Employee Slab Details"/>
- 			    <rich:menuItem  id="se84"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/TaxCalculationType.jsf')" value="Calculation Type Details"/>
+                            <rich:menuItem  id="se84"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/TaxCalculationType.jsf')" value="Calculation Type Details"/>
                         </rich:menuGroup>
                        <%-- <rich:menuItem  id="se9"  onclick="return loadIframe('ifrm', 'account/AddUser.jsf')" value="System User Accounts"/>--%>
-                        <%--<rich:menuItem  id="se10"  onclick="return loadIframe('ifrm', 'setup/SalaryProcessingSetup.jsf')" value="Salary Processing Setup"/>--%>
+                        <rich:menuItem  id="se10"  onclick="return loadIframe('ifrm', 'setup/SalaryProcessingSetup.jsf')" value="Salary Processing Setup"/>
                         <rich:menuItem  id="se11"  onclick="return loadIframe('ifrm', 'attendance/LeaveTypes.jsf')" value="Leave Types"/>
                        
                     </rich:dropDownMenu>
@@ -137,15 +139,20 @@
                         <rich:menuItem id="em4" onclick="return loadIframe('ifrm', 'employee/EmployeeAttendance.jsf')" value="Employee Attendance"/>
                     </rich:dropDownMenu> 
                     <rich:dropDownMenu  id="sa"   value="Salary" styleClass="pic" >
+                        <rich:menuItem  id="sa6" onclick="return loadIframe('ifrm','salary/ConfigureSalLiability.jsf')" value="Configure Salary Libility"/>
                         <rich:menuItem  id="sa1" onclick="return loadIframe('ifrm','salary/SalaryFormula.jsf')" value="Salary Formula"/>
                         <rich:menuItem  id="sa2" onclick="return loadIframe('ifrm','salary/DefaultSalaryData.jsf')" value="Default Salary values"/>
                         <rich:menuItem  id="sa3" onclick="return loadIframe('ifrm','salary/SalarySettings.jsf')" value="Type wise Salary Head Setting"/>
-                        <rich:menuItem  id="sa4" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing"/>
-                        <%--<rich:menuGroup id="sa5"  value="Salary Processing Setup" >
+                       <%--<rich:menuItem  id="sa4" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing"/>--%>
+                        <rich:menuGroup id="sa5"  value="Salary Processing Setup" >
                         <rich:menuItem id="sa51" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcesswithBudget.jsf')" value="Salary Processing with Budget" disabled="#{SalaryProcessingSetup.inactive}"/>
-                            <rich:menuItem  id="sa52" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing" disabled="#{SalaryProcessingSetup.active}" />
+                        <rich:menuItem  id="sa52" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing" disabled="#{SalaryProcessingSetup.active}" />
                         
-                        </rich:menuGroup>--%>
+                        </rich:menuGroup>
+                        <rich:menuItem  id="sa54" onclick="return loadIframe('ifrm','salary/EmpSalaryLiability.jsf')" value="Employee Liability"/>
+                        <rich:menuItem  id="sa43" onclick="return loadIframe('ifrm','salary/SalaryPaid.jsf')" value="Salary Paid"/>
+                        
+
                         <rich:separator/>
                         <%-- <rich:menuItem value="Exit"/> --%>
                     </rich:dropDownMenu>
@@ -182,7 +189,7 @@
                                 <rich:menuItem onclick="return loadIframe('ifrm', 'attendance/LeaveValue.jsf')"  value="Leave Values Setup"/>
                                 <rich:menuItem onclick="return loadIframe('ifrm', 'attendance/LeaveQuota.jsf')"  value="Leave Quota Setup"/>
                   </rich:dropDownMenu> --%>
-                  <rich:dropDownMenu  id="pf"   value="PF Management" styleClass="pic">
+                    <rich:dropDownMenu  id="pf"   value="PF Management" styleClass="pic">
                         <rich:menuItem  id="pf1"   onclick="return loadIframe('ifrm', 'pf/OpeningBalance.jsf')"  value="Opening Balance"/>
                         <rich:menuItem  id="pf2"  onclick="return loadIframe('ifrm', 'pf/PFWithdrawal.jsf')"  value="PF Withdrawal"/>
                         <rich:menuItem  id="pf3"  onclick="return loadIframe('ifrm', 'pf/PFAccount.jsf')"  value="PF Account"/>
@@ -230,6 +237,7 @@
 
                     <rich:dropDownMenu  id="t"   value="Tools" styleClass="pic" >
                         <%--  <rich:menuItem onclick="return loadIframe('ifrm', 'tool/ArrCalculator.jsf')"  value="Arrear Calculator Tool"/> --%>
+                        <rich:menuItem  id="t2"  onclick="return loadIframe('ifrm', 'tool/SalaryGeneration.jsf')"  value="Salary Generation"/>
                         <rich:menuItem  id="t1"  onclick="return loadIframe('ifrm', 'tool/SalaryCopier.jsf')"  value="Salary Copy Tool"/>
                         <%--  <rich:menuItem onclick="return loadIframe('ifrm', 'tool/ReportTool.jsf')"  value="Report Tool"/> --%>
                         <%--    <rich:menuItem action="account/Logout.jsf" value="Logout"/> --%>

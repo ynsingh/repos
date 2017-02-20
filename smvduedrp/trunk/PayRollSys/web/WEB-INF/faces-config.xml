@@ -1181,7 +1181,7 @@
         </description>
         <managed-bean-name>EmpSalaryLiabilityBean</managed-bean-name>
         <managed-bean-class>org.smvdu.payroll.beans.composite.EmpSalaryLiability</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
     
@@ -1230,6 +1230,24 @@
         <managed-bean-name>UserVerificationBean</managed-bean-name>
         <managed-bean-class>org.smvdu.payroll.beans.setup.UserVerification</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			LedgerMapController
+        </description>
+        <managed-bean-name>LedgerMapControllerBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.LedgerMapController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			SalaryLiabilityDataConfiguration
+        </description>
+        <managed-bean-name>ConfigParamBean</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.ConfigParam</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
  

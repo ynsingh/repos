@@ -53,23 +53,24 @@
             <rich:panel>
                 <h:panelGrid columns="3">
 
-                    <rich:panel>
+                    <rich:panel style="border:hidden;">
                         <h:panelGrid columns="2">
                             <rich:panel header="Monthly Salary Processing with Budget" id="mypnl">
-                                <rich:messages layout="table" style="border:1;" >
+                                
+                                <h:form>
+                                    <rich:panel style="height:40px;">
+                                    <rich:messages layout="table" style="border:1;" >
                                     <f:facet name="infoMarker">
                                         <h:graphicImage url="/img/success.png"/>
                                     </f:facet>
                                     <f:facet name="errorMarker">
                                         <h:graphicImage url="/img/err.png"/>
                                     </f:facet>
-                                </rich:messages>
-                                <h:form>
-                                    <rich:panel style="height:40px;">
-                                        <h:outputText value="#{salaryMessage.message}"/>
+                                    </rich:messages>
+                                    <h:outputText value="#{salaryMessage.message}"/>
                                     </rich:panel>
                                     <h:panelGrid columns="2">
-                                        <rich:panel id="inpnl" style="width:200px;height:400px;">
+                                        <rich:panel id="inpnl" style="width:200px;height:400px;overflow-y: auto;">
                                             <rich:dataTable  width="180px;" binding="#{SalaryProcessingBean.incomeGrid}"
                                                              value="#{SalaryProcessingBean.incomeHeads}" var="income">
                                                 <h:column>
@@ -91,7 +92,7 @@
                                                 </f:facet>
                                             </rich:dataTable>
                                         </rich:panel>
-                                        <rich:panel id="dpnl" style="width:200px;height:400px;">
+                                        <rich:panel id="dpnl" style="width:200px;height:400px; overflow-y: auto;">
                                             <rich:dataTable width="180px;" binding="#{SalaryProcessingBean.deductGrid}"
                                                             value="#{SalaryProcessingBean.deductHeads}" var="deduct">
                                                 <h:column>
@@ -115,12 +116,7 @@
                                     
                                     <a4j:commandButton reRender="inpnl,dpnl,salpnl,ppanel"  id="sa5" value="Update Salary" rendered="#{!SalaryProcessingBean.locked}"
                                                        action="#{SalaryProcessingBean.updateDatawithbudgets}"/> 
-                                                        
-                                    <%--dfbsdhgfhsgdfhgshd
-                                    <a4j:commandButton reRender="inpnl,dpnl,salpnl,ppanel"
-                                                       value="Update Salary" rendered="#{!SalaryProcessingBean.locked}" action="#{SalaryProcessingBean.getpayrollsetupDetail}"/>
-                                    --%>
-                                                                        
+                                                                           
                                     <h:commandButton value="Reset"/>
                                     <h:outputText rendered="#{!SalaryProcessingBean.locked}" value="Load Current data"/>
                                     <h:outputText style="background-color:red;" value="Salary Editing for this Month is Locked" rendered="#{SalaryProcessingBean.locked}"/>
@@ -129,7 +125,7 @@
                                     <h:inputHidden value="#{SalaryProcessingBean.typeCode}"/>
                                 </h:form>
                             </rich:panel>
-                            <rich:panel style="width:300px;height:475px;" header="Salary Tools">
+                            <rich:panel style="width:300px;height:514px;" header="Salary Tools">
                                 <h:form>
                                     <rich:panel style="width:280px;border:1;">
                                         <h:panelGrid columns="4">
@@ -149,15 +145,7 @@
                                         </h:panelGrid>
                                     </rich:panel>
                                 </h:form>
-                                <%--<rich:panel style="width:280px;border:1;">
-                                    <h:panelGrid  columns="3">
-                                        <h:form>
-                                            <h:outputText style="font-size:14px;align:right;" value="Days Present"/>
-                                            <h:inputText style="width:20px;" value="#{SalaryProcessingBean.numberOfdays}"/>
-                                            <a4j:commandButton reRender="inpnl,dpnl,salpnl,ppanel" action="#{SalaryProcessingBean.scale}" value="Refresh"/>
-                                        </h:form>
-                                    </h:panelGrid>
-                                </rich:panel>--%>
+                               
                                 <rich:panel header="Employee Details">
                                     <h:panelGrid id="empDetail" columns="2">
                                         <h:outputText value="Code"/>
@@ -174,7 +162,7 @@
                                         <h:inputText readonly="true" value="#{SalaryProcessingBean.employee.typeName}"/>
                                     </h:panelGrid>
                                 </rich:panel>
-                                <rich:panel id="salpnl" header="Salary Summery">
+                                <rich:panel id="salpnl" header="Salary Summery" style="height:210px">
                                     <h:panelGrid columns="2">
                                         <h:outputText style="font-size:14px;align:right;" value="Total Income"/>
                                         <h:outputText style="font-size:14px;align:right;" value="#{SalaryProcessingBean.totalIncome}"/>
@@ -188,7 +176,7 @@
                         </h:panelGrid>
                     </rich:panel>
                     
-                        <rich:panel style="width:auto;height:470px;" id="ppanel" header="Pending List">
+                        <rich:panel style="width:280px;height:514px;overflow-y:auto;" id="ppanel" header="Pending List">
                             <h:form>
                             <h:panelGrid columns="1" style="width:270px;">
                                 <rich:panel style="height:50px;">

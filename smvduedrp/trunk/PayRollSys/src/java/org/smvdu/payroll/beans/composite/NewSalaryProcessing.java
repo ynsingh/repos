@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.smvdu.payroll.beans.setup.SalaryHead;
-import org.smvdu.payroll.beans.*;
+//import org.smvdu.payroll.beans.*;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
@@ -25,12 +25,18 @@ import org.smvdu.payroll.beans.db.SalaryHeadDB;
 import org.smvdu.payroll.user.ActiveProfile;
 import javax.faces.model.SelectItem;
 import java.util.Date;
+import org.smvdu.payroll.beans.Employee;
+import org.smvdu.payroll.beans.SalaryData;
+import org.smvdu.payroll.beans.SimpleEmployee;
+import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.beans.db.EmpSalaryLiabilityDB;
 
 
 
 /**
 *
 *  Copyright (c) 2010 - 2011 SMVDU, Katra, IITK.
+*  Copyright (c) 2014 - 2017 ETRG, IITK.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -60,6 +66,7 @@ import java.util.Date;
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IIT Kanpur.
 * 
 *  Modified Date: 26 Dec 2013, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com).
+*  Last Modification :(Salary Processing with Budgets), January 2017, Manorama Pal (palseema30@gmail.com).
 */
 
 public class NewSalaryProcessing {
@@ -96,12 +103,12 @@ public class NewSalaryProcessing {
         this.dataGridValue = dataGridValue;
     }
     public String getMe() {
-        System.out.println("DAta Should Be Write Here : "+me);
+        //System.out.println("DAta Should Be Write Here : "+me);
         return me;
     }
 
     public void setMe(String me) {
-        System.out.println("DAta Should Be Write Here set : "+me);
+        //System.out.println("DAta Should Be Write Here set : "+me);
         this.me = me;
     }
     public String getErrorClass() {
@@ -255,12 +262,12 @@ public class NewSalaryProcessing {
 
     
     public int getNumberOfdays() {
-        System.out.println("Number Of Days..."+numberOfdays);
+        //System.out.println("Number Of Days..."+numberOfdays);
         return numberOfdays;
     }
 
     public void setNumberOfdays(int numberOfdays) {
-        System.out.println("Number Of Days...set ..."+numberOfdays);
+        //System.out.println("Number Of Days...set ..."+numberOfdays);
         this.numberOfdays = numberOfdays;
     }
     public ArrayList<SalaryHead> getDeductHeads() {
@@ -286,7 +293,7 @@ public class NewSalaryProcessing {
     }
     
         public void scale()   {
-        System.err.println("Scaling by "+numberOfdays);
+        //System.err.println("Scaling by "+numberOfdays);
         if(combinedData!=null)
         {
             combinedData.clear();
@@ -326,10 +333,10 @@ public class NewSalaryProcessing {
         {
             if(sd.isScalable())
             {
-                System.err.println("Scalable field name : "+sd.getHeadName());
-                System.out.println("NUmber Of Days : "+this.getNumberOfdays());
+                //System.err.println("Scalable field name : "+sd.getHeadName());
+                //System.out.println("NUmber Of Days : "+this.getNumberOfdays());
                 sd.setHeadValue((sd.getHeadValue()*this.getNumberOfdays())/30);
-                System.err.println("Scalable field Value : "+sd.getHeadValue());
+                //System.err.println("Scalable field Value : "+sd.getHeadValue());
             }
         }
         new FormulaProcessor().processFormula(combinedData);
@@ -339,7 +346,7 @@ public class NewSalaryProcessing {
 //        deductHeads.clear();
         incomeHeads = new ArrayList<SalaryHead>();
         deductHeads = new ArrayList<SalaryHead>();
-       for (SalaryData sd : combinedData) {
+        for (SalaryData sd : combinedData) {
                 SalaryHead sh = new SalaryHead();
                 sh.setName(sd.getHeadName());
                 sh.setUnder(sd.isCatagory());
@@ -391,7 +398,7 @@ public class NewSalaryProcessing {
                     deductHeads.add(sh);
                     
                     totalDeduct+=sh.getDefaultValue();
-                    System.err.println("Deduct >> "+sh.getName());
+                    //System.err.println("Deduct >> "+sh.getName());
                 }
 
                 gorssTotal = totalIncome-totalDeduct;
@@ -410,7 +417,7 @@ public class NewSalaryProcessing {
             //currentBasic = employee.getCurrentBasic();
             combinedData = new SalaryDataDB().loadCurrentSalaryData(employee);
             if (combinedData != null&&combinedData.size()>0) {
-                System.out.println("Data exist. Loading ...");
+                //System.out.println("Data exist. Loading ...");
                 refreshModel();
                 
             }
@@ -472,7 +479,6 @@ public class NewSalaryProcessing {
 
     public void updateData() throws SQLException {
 
-        
         //FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Salary data Updated", ""));        
         PreparedStatement ps;
         ResultSet rs;
@@ -487,7 +493,7 @@ public class NewSalaryProcessing {
         totalIncome=0;
         for (SalaryHead sh : incomes) {
             SalaryData sd = new SalaryData();
-            System.err.println("Code : "+sh.getNumber()+", "+sh.getDefaultValue());
+            //System.err.println("Code : "+sh.getNumber()+", "+sh.getDefaultValue());
             sd.setEmployee(emp);
             sd.setHeadCode(sh.getNumber());
             sd.setHeadValue(sh.getDefaultValue());
@@ -496,26 +502,26 @@ public class NewSalaryProcessing {
         }
         //new SalaryDataDB().save(datas);
         incomes = (ArrayList<SalaryHead>) deductGrid.getValue();
-        System.out.println("Deduct Size : " + incomes.size());
+        //System.out.println("Deduct Size : " + incomes.size());
         for (SalaryHead sh : incomes) {
             SalaryData sd = new SalaryData();
-            System.err.println("Code : "+sh.getNumber()+", "+sh.getDefaultValue());
+            //System.err.println("Code : "+sh.getNumber()+", "+sh.getDefaultValue());
             sd.setEmployee(emp);
             sd.setHeadCode(sh.getNumber());
             sd.setHeadValue(sh.getDefaultValue());
             datas.add(sd);
             totalDeduct+=sh.getDefaultValue();
         }
-         ps = new CommonDB().getConnection().prepareStatement("select emp_active from employee_master where emp_code = '"+empCode+"'");
-         rs = ps.executeQuery();
-         if(rs.next())
-         {
+        ps = new CommonDB().getConnection().prepareStatement("select emp_active from employee_master where emp_code = '"+empCode+"'");
+        rs = ps.executeQuery();
+        if(rs.next())
+        {
             if(rs.getInt(1) == 0)
             {
                 FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Is Not Active", "errorMarker"));
                 return;
             }
-         }
+        }
         gorssTotal =totalIncome-totalDeduct;
         SalaryDataDB sdb = new SalaryDataDB();
         sdb.save(datas,empCode);
@@ -541,7 +547,7 @@ public class NewSalaryProcessing {
         totalIncome=0;
         for (SalaryHead sh : incomes) {
             SalaryData sd = new SalaryData();
-            System.err.println("Code : "+sh.getNumber()+", "+sh.getDefaultValue());
+            //System.err.println("Code : "+sh.getNumber()+", "+sh.getDefaultValue());
             sd.setEmployee(emp);
             sd.setHeadCode(sh.getNumber());
             sd.setHeadValue(sh.getDefaultValue());
@@ -550,18 +556,18 @@ public class NewSalaryProcessing {
         }
         //new SalaryDataDB().save(datas);
         incomes = (ArrayList<SalaryHead>) deductGrid.getValue();
-        System.out.println("Deduct Size : " + incomes.size());
+        //System.out.println("Deduct Size : " + incomes.size());
         for (SalaryHead sh : incomes) {
             SalaryData sd = new SalaryData();
-            System.err.println("Code : "+sh.getNumber()+", "+sh.getDefaultValue());
+            //System.err.println("Code : "+sh.getNumber()+", "+sh.getDefaultValue());
             sd.setEmployee(emp);
             sd.setHeadCode(sh.getNumber());
             sd.setHeadValue(sh.getDefaultValue());
             datas.add(sd);
             totalDeduct+=sh.getDefaultValue();
         }
-         ps = new CommonDB().getConnection().prepareStatement("select emp_active from employee_master where emp_code = '"+empCode+"'");
-         rs = ps.executeQuery();
+        ps = new CommonDB().getConnection().prepareStatement("select emp_active from employee_master where emp_code = '"+empCode+"'");
+        rs = ps.executeQuery();
          if(rs.next())
          {
             if(rs.getInt(1) == 0)
@@ -577,7 +583,7 @@ public class NewSalaryProcessing {
         boolean c =checkAlreadyExsistEmpSalary(empCode);
         if(c==true)
         {
-            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Salary already processed for this month", ""));
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Salary already paid for this month", ""));
             return;
         }
         else{
@@ -585,16 +591,17 @@ public class NewSalaryProcessing {
                 boolean b= checkbudgetwithTotalSalary();
                 if(b==true){
                     sdb.save(datas,empCode);
-                    System.out.println("  check=== budget +========= budget : "+b);
-                    saveEmpLiability();
-                    PaymentEntry();
+                    
+                    saveEmpLiability(empCode);
+                    insertinEntries(totalIncome, totalIncome);
+                    AddEntryItems(empCode,gorssTotal);
                     updateEmpLiability(empCode);
                     sdb.saveSummary(totalIncome, totalDeduct, gorssTotal, empCode);
-                    UpdateBudgets();
+                    UpdateBudgets(totalIncome);
+                    
                 }
                 else
                 {
-                    System.out.println(" check====in else========== budget : "+b);
                     FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Allocated Budget is not sufficient to process salary", ""));
                     return;
                 }
@@ -610,7 +617,7 @@ public class NewSalaryProcessing {
         ResultSet rs;
         try
         {
-            Connection c = new CommonDB().getwebzashConnection();
+            Connection c = new CommonDB().getbgasConnection();
             int salcode = getsalarybudgetcode();
             ps = c.prepareStatement("select bd_balance,consume_amount from budgets "
                 + "where code='"+salcode+"'");
@@ -620,9 +627,6 @@ public class NewSalaryProcessing {
             int allocationamt = rs.getInt(1);
             int consumedamt=rs.getInt(2);
             int availableamt=allocationamt-consumedamt;
-            //System.out.println(" getAvailableBudget=== + : "+allocationamt);
-            //System.out.println(" getAvailableBudget==== + : "+consumedamt);
-            //System.out.println(" getAvailableBudget===== + : "+availableamt);
             rs.close();
             ps.close();
             c.close();
@@ -647,10 +651,8 @@ public class NewSalaryProcessing {
             {
                 Pmonth=12;
                 year=year-1;
-                //System.out.println("Emptotalsalary======"+Pmonth+"\nyear====="+year);
-                
+                              
             } 
-            
             ps=c.prepareStatement("select es_total_income from employee_salary_summery "
             + "left join employee_master on emp_code = es_code "
             +"where es_org_id ='"+orgCode+"' and es_month= '"+Pmonth+"' and es_year='"+year+"' ");
@@ -658,10 +660,8 @@ public class NewSalaryProcessing {
             rs=ps.executeQuery();   
             while(rs.next())
             {
-                //System.out.println("Emptotalsalary======"+rs.getInt(1));
                 total=total+rs.getInt(1);
             }
-            //System.out.println("Emptotalsalarytotal======"+total);
             return total;    
      }
      catch(Exception e) {
@@ -673,24 +673,16 @@ public class NewSalaryProcessing {
     public boolean checkbudgetwithTotalSalary(){
      try{
          
-         int emptotalsalary=getEmptotalsalary();
-         //System.out.println("Emptotalsalarytotal======"+emptotalsalary);
-         int salcode = getsalarybudgetcode();
-         //System.out.println("Emptotalsalarytotal======"+salcode);
-         int avalbud= getAvailableBudget(salcode);
-         //System.out.println("available bug======"+avalbud);
-         if(avalbud > emptotalsalary){
-             //System.out.println("Emptotalsalarytotal======"+emptotalsalary);
-             //System.out.println("avalbudget======"+avalbud);
-             
-             return true;
+        int emptotalsalary=getEmptotalsalary();
+        int salcode = getsalarybudgetcode();
+        int avalbud= getAvailableBudget(salcode);
+        if(avalbud > emptotalsalary){
+            return true;
                          
          }
          else{
-             //System.out.println("Emptotalsalarytotal======"+emptotalsalary);
-             //System.out.println("availablebuget======"+avalbud);
-             return false;
-         }
+           return false;
+        }
         
      }
      catch(Exception e) {
@@ -704,23 +696,23 @@ public class NewSalaryProcessing {
           
         PreparedStatement ps;
         ResultSet rs;
+        int Pcode=0;
         try
         {
-            Connection c = new CommonDB().getwebzashConnection();
+            Connection c = new CommonDB().getbgasConnection();
             int salcode = getsalarybudgetcode();
-            //System.out.println("getParentcode()======"+salcode);
             ps = c.prepareStatement("select groups.code,groups.id,groups.parent_id from groups "
             + "left join ledgers on  ledgers.group_id = groups.id"
 	    +" where ledgers.code='"+salcode+"' ");
             
             rs=ps.executeQuery();
             rs.next();
-            int Pcode = rs.getInt(1);
-            //int id = rs.getInt(2);
-	    //int Pid = rs.getInt(3);
-	    //System.out.println(" getParentlist+ : =Pcode==rs "+Pcode);
-            //System.out.println("getParentlist== + : ==id=rs "+id);
-            //System.out.println("getParentlist + : parentid===rs "+Pid);
+            if(rs.getRow()!=0){
+                Pcode = rs.getInt(1);
+            }
+            else{
+                Pcode=salcode;
+            }
             return Pcode;
            
         }
@@ -729,63 +721,37 @@ public class NewSalaryProcessing {
         return -1;
      }
     }
-    public void PaymentEntry(){ 
+    public void PaymentEntry(String ledgercode, int amount,String dctype){ 
         PreparedStatement ps;
               
         try{
-                                
+                                              
                 UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
-                Connection c = new CommonDB().getwebzashConnection();
+                Connection c = new CommonDB().getbgasConnection();
                 Date date = new Date();
                 java.sql.Date newdate = new java.sql.Date(date.getTime());
-                int totalincome=getTotalIncome();
-                //get ledgers id==============
-                int ledgerid=getledgers_salId();
                 //Insert enrty in BGAS entries table
-                insertinEntries();
-                // Insert entry in BGAS entry_items table and update the left over entry in entries
-                ps = c.prepareStatement("insert into entry_items values(?,?,?,?,?,?,?)");
+                // Insert entry in BGAS entry_items table 
+                int ledgerid=getledgersIdbyledgercode(ledgercode);
+                int entry_id=getEntryId();
+                ps = c.prepareStatement("insert into entry_items values(?,?,?,?,?,?,?,?,?,?,?)");
                 ArrayList<SalaryData> data= EntryIDforPayment();
-                ArrayList<SalaryData> ldata= getAllledgersId();
                 for(SalaryData Ed: data){
-                    for(SalaryData ld : ldata){
-                        //if(ld.getledgersId()== 773){
-                        if(ld.getledgersId()== ledgerid){
-                            //System.out.println("line723=="+Ed.getEntId()+"\n secomd========="+Ed.getEntryId());
-                            ps.setInt(1,Ed.getEntId());
-                            ps.setInt(2,Ed.getEntryId());
-                            ps.setInt(3,ld.getledgersId() );
-                            ps.setInt(4, totalincome);
-                            ps.setString(5, "D");
-                            ps.setDate(6, null );
-                            ps.setDate(7, newdate);
-                        }      
-                        else{
-                            int edid=Ed.getEntId()+1;
-                            ps.setInt(1, edid);
-                            ps.setInt(2, Ed.getEntryId());
-                            ps.setInt(3, ld.getledgersId());
-                            ps.setInt(4, totalincome);
-                            ps.setString(5, "C");  
-                            ps.setDate(6, null );
-                            ps.setDate(7, newdate);
-                        }   
-                        ps.executeUpdate(); 
-                        ps.clearParameters();
-                        //ps.close();                      
-                       
-                    } 
-                    ps = c.prepareStatement("update entries set dr_total=?, cr_total=? "
-                    +" where entries.number='"+Ed.getEntryId()+"' ");
-                    ps.setInt(1, totalincome);
-                    ps.setInt(2, totalincome);
+                    
+                    ps.setInt(1,Ed.getEntId());
+                    ps.setInt(2,entry_id);
+                    ps.setInt(3,ledgerid );
+                    ps.setInt(4, amount);
+                    ps.setString(5, dctype);
+                    ps.setDate(6, null );
+                    ps.setDate(7, newdate);
+                    ps.setInt(8, 0);
+                    ps.setInt(9, 0);
+                    ps.setString(10, "");
+                    ps.setString(11, ledgercode);
                     ps.executeUpdate(); 
-                    ps.clearParameters();
-                    //ps.close();
-                }
-                ps.close();
-                ps=c.prepareStatement("commit");
-                ps.executeUpdate();
+                    
+                } 
                 ps.close();
                 c.close();
            
@@ -801,12 +767,9 @@ public class NewSalaryProcessing {
         PreparedStatement ps;
         ResultSet rs;
         try{
-                Connection c = new CommonDB().getwebzashConnection();
-                //System.out.println(" getAllledgersId====+ :connection====="+c);
+                Connection c = new CommonDB().getbgasConnection();
                 int salcode = getsalarybudgetcode();
-                //System.out.println(" getAllledgersId====+ :connection====="+salcode);
                 int cashbudgetcode = getcashbudgetcode();
-                //System.out.println(" getAllledgersId====+ :connection====="+cashbudgetcode);
                 ps = c.prepareStatement("select ledgers.id from ledgers "
                 + "where code IN ('"+salcode+"','"+cashbudgetcode+"' )");
                 
@@ -814,11 +777,7 @@ public class NewSalaryProcessing {
                 ArrayList<SalaryData> data = new ArrayList<SalaryData>();
                 while(rs.next())
                 {
-                                      
-                    //System.out.println("getAllledgersId====from ledgers====="+rs.getInt(1));
-                    
                     SalaryData sd = new SalaryData();
-                    //EntryData Ed = new EntryData();
                     sd.setledgersId(rs.getInt(1));
                     data.add(sd);
                     
@@ -840,28 +799,25 @@ public class NewSalaryProcessing {
         PreparedStatement ps;
         ResultSet rs;
         try{
-                Connection c = new CommonDB().getwebzashConnection();
-                //System.out.println("EntryIDforPayment===== + :connection====="+c);
-                ps = c.prepareStatement("select Max(id) , Max(entry_id) from entry_items");
+                Connection c = new CommonDB().getbgasConnection();
+                ps = c.prepareStatement("select Max(id) from entry_items");
                 rs=ps.executeQuery();
                 ArrayList<SalaryData> data = new ArrayList<SalaryData>();
                 while(rs.next())
                 {
                     SalaryData sd = new SalaryData();
-                    if(rs.getInt(1)==0 && rs.getInt(2)==0){
+                    if(rs.getInt(1)==0){
                         sd.setEntId(1);
-                        sd.setEntryId(1);
+                        //sd.setEntryId(1);
                         data.add(sd);
                     }
                     else{
                         sd.setEntId(rs.getInt(1)+1);
-                        sd.setEntryId(rs.getInt(2)+1);
+                        //sd.setEntryId(rs.getInt(2)+1);
                         data.add(sd);
                     }
-                    //System.out.println("entry id from entry_items====="+data);
-                    
+                  
                 }
-                //System.out.println("entry id from  outer part entry_items====="+data);
                 rs.close();
                 ps.close();
                 c.close();
@@ -875,27 +831,36 @@ public class NewSalaryProcessing {
         }
     }
     // save employee salary liability data into the database 
-    public void saveEmpLiability() throws SQLException  {
+    public void saveEmpLiability(String empcode) throws SQLException  {
         PreparedStatement ps;
         ResultSet rs;
         try
         {
-            int totalincome=getTotalIncome();
-            //System.out.println("totlaincome in save emp liability ====="+totalincome);
-            UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
-            //System.out.println("totlaincome in save emp liability ====="+empCode);
-            Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("insert into employee_salary_liability (esl_emp_code,"
-                    + "esl_month,esl_year,esl_totalsalary_amount,esl_debit,esl_credit,esl_org_id) values(?,?,?,?,?,?,?)");
+            int totalincome=getEmpGrossTotal(empcode);
             
-            ps.setString(1,empCode);
-            //System.out.println("liability====line890==="+user.getCurrentMonth());
-            //System.out.println("liability==line891======="+user.getCurrentYear());
-            ps.setInt(2,user.getCurrentMonth() );
+            UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+            //System.out.println("totlaincome in save emp liability ====="+);
+            String date=user.getCurrentDate();
+            Connection c = new CommonDB().getConnection();
+            
+            ps=c.prepareStatement("delete from employee_salary_liability where esl_emp_code=? and "
+                    + "esl_month=? and esl_year=? and esl_org_id=?");
+            ps.setString(1, empcode);
+            ps.setInt(2, user.getCurrentMonth());
+            ps.setInt(3, user.getCurrentYear());
+            ps.setInt(4, user.getUserOrgCode());
+            ps.executeUpdate();
+            ps.close();
+            
+            ps=c.prepareStatement("insert into employee_salary_liability (esl_emp_code,"
+                + "esl_month,esl_year,esl_totalsalary_amount,esl_type,esl_transaction_date,esl_org_id) values(?,?,?,?,?,?,?)");
+
+            ps.setString(1,empcode);
+            ps.setInt(2,user.getCurrentMonth());
             ps.setInt(3, user.getCurrentYear());
             ps.setInt(4, totalincome);
-            ps.setInt(5, 0);
-            ps.setInt(6, totalincome);
+            ps.setString(5, "credit");
+            ps.setString(6, date);
             ps.setInt(7, user.getUserOrgCode());
             ps.executeUpdate();
             ps.close();
@@ -903,6 +868,7 @@ public class NewSalaryProcessing {
             ps.executeUpdate();
             ps.close();
             c.close();
+           
             
         }
         catch(Exception e)
@@ -917,16 +883,12 @@ public class NewSalaryProcessing {
         ResultSet rs;
         try
         {
-            int totalincome=getTotalIncome();
-            //System.out.println("totlaincome in update emp liability ====="+totalincome);
             UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
-            //System.out.println("totlaincome in save emp liability ====="+empCode);
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update employee_salary_liability set esl_debit=?"
+            ps=c.prepareStatement("update employee_salary_liability set esl_type=?"
                 + " where esl_emp_code=? and esl_org_id=? ");
-            //System.out.println("totlaincome in update emp liability ====="+ps);
-            //System.out.println("totlaincome in update emp liability ====="+empcode);
-            ps.setInt(1, totalincome);
+
+            ps.setString(1, "debit");
             ps.setString(2,empcode);
             ps.setInt(3, user.getUserOrgCode());
             ps.executeUpdate();
@@ -942,34 +904,48 @@ public class NewSalaryProcessing {
     }
     
     
-     public void UpdateBudgets(){ 
+    public void UpdateBudgets(int salaryPayableAmt){ 
         
         PreparedStatement ps;
         ResultSet rs;
+        int finalconsumedamt=0;
+        int consumedamt=0;
         try{
                 UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
-                Connection c = new CommonDB().getwebzashConnection();
-                //System.out.println("updatebudgets connection==="+c);
+                Connection c = new CommonDB().getbgasConnection();
                 int salcode = getsalarybudgetcode();
-                //System.out.println(" getAllledgersId====+ :connection====="+salcode);
-                int parentbudgetcode = getParentcode();
-                //System.out.println(" getAllledgersId====+ :connection====="+parentbudgetcode);
-                int mainbudgetcode = getmainbudgetcode();
-                //System.out.println(" getAllledgersId====+ :connection====="+mainbudgetcode);
-                int consumedamt=getconsumedBudget(salcode);
-                //System.out.println("updatebudgets======="+consumedamt);
-                int empsalary=getTotalIncome();
-                //System.out.println("updatebudgets=====totalincome====="+empsalary);
-                int finalconsumedamt=consumedamt+empsalary;
-                //System.out.println("updatebudgets====finalconsumedamt====="+finalconsumedamt);
-                ps=c.prepareStatement(" update budgets set consume_amount=? "
-                    + " where code IN ('"+salcode+"', '"+parentbudgetcode+"', '"+mainbudgetcode+"' ) ");
+                consumedamt=getconsumedBudget(salcode);
+                finalconsumedamt=consumedamt+salaryPayableAmt;
+                
+                 ps=c.prepareStatement(" update budgets set consume_amount=? "
+                   + " where code='"+salcode+"' ");
+                
                 ps.setInt(1,finalconsumedamt);
                 ps.executeUpdate();
                 ps.clearParameters();
                 ps.close();
-                ps=c.prepareStatement("commit");
+                               
+                int parentbudgetcode = getParentcode();
+                if(salcode!=parentbudgetcode){
+                    consumedamt=getconsumedBudget(parentbudgetcode);
+                    finalconsumedamt=consumedamt+salaryPayableAmt;
+                    ps=c.prepareStatement(" update budgets set consume_amount=? "
+                        + " where code='"+parentbudgetcode+"' ");
+                
+                    ps.setInt(1,finalconsumedamt);
+                    ps.executeUpdate();
+                    ps.clearParameters();
+                    ps.close();
+                }
+                int mainbudgetcode = getmainbudgetcode();
+                consumedamt=getconsumedBudget(mainbudgetcode);
+                finalconsumedamt=consumedamt+salaryPayableAmt;
+                ps=c.prepareStatement(" update budgets set consume_amount=? "
+                   + " where code='"+mainbudgetcode+"' ");
+                
+                ps.setInt(1,finalconsumedamt);
                 ps.executeUpdate();
+                ps.clearParameters();
                 ps.close();
                 c.close();
                
@@ -985,16 +961,13 @@ public class NewSalaryProcessing {
         ResultSet rs;
         try
         {
-            Connection c = new CommonDB().getwebzashConnection();
-            //System.out.println("condumed amount + :connection====="+c);
+            Connection c = new CommonDB().getbgasConnection();
             ps = c.prepareStatement("select consume_amount from budgets "
             + "where code='"+code+"'");
-            //System.out.println("consumed + :ps "+ps);
+            
             rs=ps.executeQuery();
-            //System.out.println("consumed + :rs "+rs);
             rs.next();
             int consumedamt=rs.getInt(1);
-            //System.out.println("consumed + :======line====934=== "+consumedamt);
             rs.close();
             ps.close();
             c.close();
@@ -1006,35 +979,41 @@ public class NewSalaryProcessing {
         }
     } 
      
-     public void insertinEntries() throws SQLException  {
+     public void insertinEntries(int drAmt, int crAmt) throws SQLException  {
         PreparedStatement ps;
         try
         {
             UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
-            Connection c = new CommonDB().getwebzashConnection();
-            int totalincome=getTotalIncome();
+            Connection c = new CommonDB().getbgasConnection();
             Date date = new Date();
-            //System.out.println("entries + :connection=== date=="+date);
             java.sql.Date newdate = new java.sql.Date(date.getTime());
-            //System.out.println("entries + :connection===new newdate=="+newdate);
             ArrayList<SalaryData> entries=NumberInEntyriesTable();
-            ps = c.prepareStatement("insert into entries values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            ps = c.prepareStatement("insert into entries values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             for(SalaryData entnum : entries){
-                //System.out.println("entries :connection====="+entnum.getEntId());
-                //System.out.println("entries :connection====="+entnum.getEntryId());
+                
                 ps.setInt(1,entnum.getEntId());
-                ps.setString(2, null);
-                ps.setInt(3, 2);
-                ps.setInt(4, entnum.getEntryId());
-                ps.setDate(5, newdate );
-                ps.setInt(6, 0);
-                ps.setInt(7, 0);
-                ps.setString(8, "salary entry from payroll");
+                ps.setInt(2,0);//tagid
+                ps.setInt(3,2);//entrytype
+                ps.setString(4, Integer.toString(entnum.getEntryId()));//number
+                ps.setDate(5, newdate );//date
+                ps.setInt(6, drAmt);//drtotal
+                ps.setInt(7, crAmt);//crtotal
+                               
+                ps.setString(8, "salary for the month:"+newdate);
                 ps.setDate(9, newdate);
                 ps.setString(10, user.getUserName());
                 ps.setString(11, "");
                 ps.setInt(12, 0);
-                ps.setString(13, null);
+                ps.setString(13, null); //forwarid
+                ps.setString(14, null);//backwardid
+                ps.setString(15, null); //modifiedvalue
+                ps.setString(16, null);//sacndunitid
+                ps.setString(17, null);//sancletterno
+                ps.setDate(18, null);//sancletterdate
+                ps.setString(19, "non_plan"); // sanc_type
+                ps.setString(20, "Salary OH:36");//
+                ps.setString(21, null);//
+                ps.setString(22, null);//
                 ps.executeUpdate();
                 ps.clearParameters();
            
@@ -1052,12 +1031,11 @@ public class NewSalaryProcessing {
         }
     }
      
-     public ArrayList<SalaryData> NumberInEntyriesTable(){ 
+    public ArrayList<SalaryData> NumberInEntyriesTable(){ 
         PreparedStatement ps;
         ResultSet rs;
         try{
-                Connection c = new CommonDB().getwebzashConnection();
-                //System.out.println(" + :connection====="+c);
+                Connection c = new CommonDB().getbgasConnection();
                 ps = c.prepareStatement("select Max(id), Max(number) from entries");
                 rs=ps.executeQuery();
                 ArrayList<SalaryData> data = new ArrayList<SalaryData>();
@@ -1074,8 +1052,7 @@ public class NewSalaryProcessing {
                         sd.setEntryId(rs.getInt(2)+1);
                         data.add(sd);
                     }
-                    //System.out.println("number====="+data);
-                    
+                   
                 }
                 rs.close();
                 ps.close();
@@ -1094,8 +1071,7 @@ public class NewSalaryProcessing {
         PreparedStatement ps;
         ResultSet rs;
         try{
-                Connection c = new CommonDB().getwebzashConnection();
-                //System.out.println(" + :connection====="+c);
+                Connection c = new CommonDB().getbgasConnection();
                 ps = c.prepareStatement(" select * from payrollsetup");
                 rs=ps.executeQuery();
                 ArrayList<SalaryData> data = new ArrayList<SalaryData>();
@@ -1106,11 +1082,7 @@ public class NewSalaryProcessing {
                     sd.setbudgetname(rs.getString(3));
                     sd.setbudgettype(rs.getInt(4));
                     data.add(sd);
-                    /*System.out.println("=getpayrollsetupDetailcode===="+rs.getString(2));
-                    System.out.println("==getpayrollsetupDetailname==="+rs.getString(3));
-                    System.out.println("number==getpayrollsetupdetialtype==="+rs.getInt(4));
-                    System.out.println("number==getpayrollsetupDetail======data=="+data);*/
-                    
+                                        
                 }
                 rs.close();
                 ps.close();
@@ -1130,16 +1102,14 @@ public class NewSalaryProcessing {
         ResultSet rs;
         try
         {
-            Connection c = new CommonDB().getwebzashConnection();
-            //System.out.println("condumed amount + :connection====="+c);
+            Connection c = new CommonDB().getbgasConnection();
+            
             ps = c.prepareStatement("select payrollsetup.code from payrollsetup "
             + "where type='"+2+"'");
-            //System.out.println("consumed + :ps "+ps);
+            
             rs=ps.executeQuery();
-            //System.out.println("consumed + :rs "+rs);
             rs.next();
             int salarycode=rs.getInt(1);
-            //System.out.println("consumed + :======line====934=== "+salarycode);
             rs.close();
             ps.close();
             c.close();
@@ -1156,16 +1126,12 @@ public class NewSalaryProcessing {
         ResultSet rs;
         try
         {
-            Connection c = new CommonDB().getwebzashConnection();
-            //System.out.println("condumed amount + :connection====="+c);
+            Connection c = new CommonDB().getbgasConnection();
             ps = c.prepareStatement("select payrollsetup.code from payrollsetup "
             + "where type='"+1+"'");
-            //System.out.println("consumed + :ps "+ps);
             rs=ps.executeQuery();
-            //System.out.println("consumed + :rs "+rs);
             rs.next();
             int cashbudgetcode=rs.getInt(1);
-            //System.out.println("consumed + :======line====934=== "+cashbudgetcode);
             rs.close();
             ps.close();
             c.close();
@@ -1184,16 +1150,14 @@ public class NewSalaryProcessing {
         try
         {
             
-            Connection c = new CommonDB().getwebzashConnection();
-            //System.out.println("condumed amount + :connection====="+c);
+            Connection c = new CommonDB().getbgasConnection();
             ps = c.prepareStatement("select payrollsetup.code from payrollsetup "
             + "where type= '"+0+"' ");
-            //System.out.println("consumed + :ps "+ps);
+            
             rs=ps.executeQuery();
-            //System.out.println("consumed + :rs "+rs);
+            
             rs.next();
             int mainbudgetcode=rs.getInt(1);
-            //System.out.println("consumed + :======line====934=== "+mainbudgetcode);
             rs.close();
             ps.close();
             c.close();
@@ -1211,29 +1175,27 @@ public class NewSalaryProcessing {
         ResultSet rs;
         try
         {
-            Connection c = new CommonDB().getwebzashConnection();
-            //System.out.println("condumed amount + :connection====="+c);
+            Connection c = new CommonDB().getbgasConnection();
+            
             int salcode = getsalarybudgetcode();
             ps = c.prepareStatement("select ledgers.id from ledgers "
             + "where code='"+salcode+"'");
-            //System.out.println("consumed + :ps "+ps);
+            
             rs=ps.executeQuery();
-            //System.out.println("consumed + :rs "+rs);
             rs.next();
             int ledgerid=rs.getInt(1);
-            //System.out.println("consumed + :======line====934=== "+ledgerid);
             rs.close();
             ps.close();
             c.close();
            return ledgerid;
-       }
-       catch(Exception e) {
+        }
+        catch(Exception e) {
             e.printStackTrace();
             return -1;
         }
     }
     
-     public boolean checkAlreadyExsistEmpSalary(String empcode){
+    public boolean checkAlreadyExsistEmpSalary(String empcode){
         try{
                 PreparedStatement ps;
                 ResultSet rs;
@@ -1250,7 +1212,6 @@ public class NewSalaryProcessing {
                 rs=ps.executeQuery();
                 rs.next();
                 String escode=rs.getString(1);
-                //System.out.println("existsempsalary====line====1252=== "+escode);
                 rs.close();
                 ps.close();
                 c.close();
@@ -1261,7 +1222,168 @@ public class NewSalaryProcessing {
             return false;
         }
     }//mothod cloase
+
+    //changes for bgas===================
+
+    public int getEmpGrossTotal(String empCode){
+        try{
+                int totalIncome=0;
+                employee = new EmployeeDB().loadProfile(empCode,orgCode);
+                ArrayList<SalaryData> Data = new SalaryDataDB().loadCurrentSalaryData(employee);
+                new FormulaProcessor().processFormula(Data);
+                for (SalaryData sd : Data) {
+                    SalaryHead sh = new SalaryHead();
+
+                    sh.setDefaultValue(sd.getHeadValue());
+                    if (sd.isCatagory()) {
+                        totalIncome+=sh.getDefaultValue();
+                    }
+                    
+            }
+            return totalIncome;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
      
+    public int getEntryId(){ 
+        PreparedStatement ps;
+        ResultSet rs;
+        try{
+                int entry_id=0;
+                Connection c = new CommonDB().getbgasConnection();
+                ps = c.prepareStatement("select Max(id) from entries");
+                rs=ps.executeQuery();
+                while(rs.next())
+                {
+                   
+                    entry_id=rs.getInt(1);
+                }
+                rs.close();
+                ps.close();
+                c.close();
+                return entry_id;  
+                
+        }
+        catch(Exception e) {
+        e.printStackTrace();
+        return -1;
+        
+        }
+    }  
+    
+    public int getledgersIdbyledgercode(String ledgercode){
+        
+        PreparedStatement ps;
+        ResultSet rs;
+        try
+        {
+            Connection c = new CommonDB().getbgasConnection();
+            
+            int salcode = getsalarybudgetcode();
+            ps = c.prepareStatement("select ledgers.id from ledgers "
+            + "where code='"+ledgercode+"'");
+            
+            rs=ps.executeQuery();
+            rs.next();
+            int ledgerid=rs.getInt(1);
+            
+            rs.close();
+            ps.close();
+            c.close();
+           return ledgerid;
+       }
+       catch(Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    
+    public ArrayList<SalaryData> getTotalHeadValue(String empCode){
+        try{
+            ResultSet rs; 
+            int finaltotal=0;
+            ArrayList<SalaryData> data = new ArrayList<SalaryData>();
+            int i=0;
+            rs= new EmpSalaryLiabilityDB().getTotalExpensesHeadwise(empCode);
+            if(i==0){
+                while(rs.next())
+                {
+                    SalaryData sd = new SalaryData();
+                    sd.setUnder(rs.getBoolean(1));
+                    sd.setLedgerCode(rs.getString(2));
+                    sd.setNumber(rs.getInt(3));
+                    sd.setHeadValue(rs.getInt(4));
+                    data.add(sd);
+                     
+                }
+                i++;
+            }
+            else{
+                ArrayList<SalaryData> clone = (ArrayList<SalaryData>) data.clone();
+                data = new ArrayList<SalaryData>();
+                while(rs.next()){
+                    for(SalaryData firstsd : clone)
+                    {
+                        if(rs.getInt(3)== firstsd.getNumber()){
+                            //data.get(0);
+                            finaltotal= rs.getInt(4)+firstsd.getHeadValue();
+                                  
+                            SalaryData sd = new SalaryData();
+                            sd.setUnder(rs.getBoolean(1));
+                            sd.setLedgerCode(rs.getString(2));
+                            sd.setNumber(rs.getInt(3));
+                            sd.setHeadValue(finaltotal);
+                            data.add(sd);
+                               
+                        }
+                            // clone.remove(firstsd);
+                    } 
+                    //data=(ArrayList<SalaryData>) clone.clone();
+                        //sortStones();
+                           
+                }
+                i++;
+            }
+            return data;
+        
+        }        
+        catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    } 
+    
+    public void  AddEntryItems(String empCode,int TotalIncome){
+        try{
+            ArrayList<SalaryData>data=getTotalHeadValue(empCode);
+            for(SalaryData sd : data){
+                    
+                if(sd.isUnder()){
+                    // insert data into BGAS entry_items======(emp incomes)==========// 
+                    PaymentEntry(sd.getLedgerCode(),sd.getHeadValue(),"D");
+                                                            
+                }
+                else{
+                    // insert data into BGAS entry_items======(emp deduction)==========// 
+                    PaymentEntry(sd.getLedgerCode(),sd.getHeadValue(),"C");
+                }
+                
+            } 
+            //income total
+            int ledgercodeofexpence=getcashbudgetcode();
+            //System.out.println("ledgercodeofexpence=== ="+ledgercodeofexpence);
+            PaymentEntry(Integer.toString(ledgercodeofexpence),TotalIncome,"C");
+                
+        }
+         catch(Exception e) {
+            e.printStackTrace();
+            
+        }
+    }
+        
 }
 
 

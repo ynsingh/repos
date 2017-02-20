@@ -1640,14 +1640,14 @@ COMMIT;
 # Structure for the `employee_salary_Libality`
 #
 
-CREATE TABLE `employee_salary_libality` (
+CREATE TABLE `employee_salary_liability` (
 
         esl_emp_code varchar(40) NOT NULL,
         esl_month int(11) NOT NULL,
         esl_year int(11) NOT NULL,
         esl_totalsalary_amount int(11) NOT NULL,
-        esl_debit int(11) NOT NULL,
-        esl_credit int(11) NOT NULL,
+	esl_type varchar(30) NOT NULL,
+	esl_transaction_date date default NULL,
         esl_org_id int(11) NOT NULL,
         KEY `esl_emp_code` (`esl_emp_code`),
         KEY `esl_org_id` (`esl_org_id`),

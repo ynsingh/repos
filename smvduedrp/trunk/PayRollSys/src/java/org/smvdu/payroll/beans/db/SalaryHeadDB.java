@@ -15,7 +15,10 @@ import javax.faces.context.FacesContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.smvdu.payroll.Hibernate.HibernateUtil;
+import org.smvdu.payroll.api.tools.FormulaProcessor;
 import org.smvdu.payroll.beans.DefaultSalary;
+import org.smvdu.payroll.beans.Employee;
+import org.smvdu.payroll.beans.SalaryData;
 import org.smvdu.payroll.beans.SalaryTypeMaster;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.SalaryGrade;
@@ -25,6 +28,7 @@ import org.smvdu.payroll.user.ActiveProfile;
 /**
  *
  *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ *     Copyright (c) 2014 - 2017 ETRG, IITK. 
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -52,7 +56,8 @@ import org.smvdu.payroll.user.ActiveProfile;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
-* Modified Date: 13 Nov 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*  Modified Date: 13 Nov 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*  Last Modification :(Salary Processing with Budgets), January 2017, Manorama Pal (palseema30@gmail.com).
 *
 */
 public class SalaryHeadDB {
@@ -531,6 +536,7 @@ public class SalaryHeadDB {
                 sal.setDefaultValue(rs.getInt(3));
                 sal.setUnder(rs.getBoolean(4));
                 data.add(sal);
+               
             }
             rs.close();
             ps.close();
@@ -562,9 +568,9 @@ public class SalaryHeadDB {
                 dept.setNumber(rs.getInt(1));
                 dept.setName(rs.getString(2));
                 dept.setDefaultValue(rs.getInt(3));
-                //System.out.println("\n loadSelectedDeductionHeadss======"+rs.getInt(3)); 
                 dept.setCalculationType(rs.getBoolean(4));
                 data.add(dept);
+               
             }
             rs.close();
             ps.close();
@@ -595,7 +601,6 @@ public class SalaryHeadDB {
                 dept.setNumber(rs.getInt(1));
                 dept.setName(rs.getString(2));
                 dept.setDefaultValue(rs.getInt(3));
-                //System.out.println("\n loadSelectedIncomeHeads======"+rs.getInt(3));               
                 dept.setCalculationType(rs.getBoolean(4));
                 data.add(dept);
             }
@@ -912,5 +917,143 @@ public class SalaryHeadDB {
         }  */ 
 
     }   
+    public ArrayList<SalaryHead> loadSelectedHeadValues(int emptype, int gradecode){
+       try{
+           
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select  sh_id,sh_name,sh_type,sh_alias,ds_amount from emp_salary_head_master "
+                    + "left join salary_head_master on sh_id = st_sal_code left join default_salary_master on sh_id = ds_sal_head "
+                     +"where st_code='"+emptype+"' and ds_emp_type='"+gradecode+"' order by sh_id");
+            
+           // ps.setInt(1, emptype);
+            //ps.setInt(2, gradecode);
+            rs=ps.executeQuery();
+            ArrayList<SalaryHead> data = new ArrayList<SalaryHead>();
+            while(rs.next())
+            {
+                SalaryHead sal = new SalaryHead();
+                sal.setNumber(rs.getInt(1));
+                sal.setName(rs.getString(2));
+                sal.setUnder(rs.getBoolean(3));
+                sal.setAlias(rs.getString(4));
+                sal.setDefaultValue(rs.getInt(5));
+                data.add(sal);
+                
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return data;
+                     
+       } 
+       catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+     /*   finally {
+            session.close();
+        }    */   
+                   
+    }
+     public ArrayList<SalaryHead> loadSelectedHeadFormulaValues(int emptype){
+       try{
+           
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select sh_id,sh_name,sh_type,sh_alias,sf_sal_formula from emp_salary_head_master "
+                    + "left join salary_head_master on sh_id = st_sal_code left join salary_formula on sh_id = sf_sal_id "
+                     +"where st_code=? and  sf_org_id='"+userBean.getUserOrgCode()+"' order by sh_id");
+            
+            ps.setInt(1, emptype);
+            rs=ps.executeQuery();
+            ArrayList<SalaryHead> data = new ArrayList<SalaryHead>();
+            while(rs.next())
+            {
+                SalaryHead sal = new SalaryHead();
+                sal.setNumber(rs.getInt(1));
+                sal.setName(rs.getString(2));
+                sal.setUnder(rs.getBoolean(3));
+                sal.setAlias(rs.getString(4));
+                sal.setFormula(rs.getString(5));
+                data.add(sal);
+                
+            }
+            rs.close();
+            ps.close();
+            c.close();
+           // System.out.println("new values===hcode="+data.+"\nName===="+sal.getName()+"\ndefaultvalue==="+sal.getDefaultValue()+"\nformula===="+sal.getFormula());
+            return data;
+                     
+       } 
+       catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+                        
+    }  
+    public ArrayList<SalaryData> CombineDataofselectHead(int emptype, int gradecode, Employee emp){
+       try{
+           ArrayList<SalaryHead> salhead=loadSelectedHeadValues(emptype,gradecode);
+           ArrayList<SalaryHead> salformula = loadSelectedHeadFormulaValues(emptype);
+           //ArrayList<SalaryData> combinedData = new ArrayList<SalaryData>();
+           ArrayList<SalaryData> combinedData = new ArrayList<SalaryData>();
+           new FormulaProcessor().processFormula(combinedData);
+           for(SalaryHead sh : salhead)
+           {
+                SalaryData sd = new SalaryData();
+                //sd.setEmployee(emp);
+                sd.setHeadCode(sh.getNumber());
+                sd.setHeadName(sh.getName());
+                sd.setHeadValue(sh.getDefaultValue());
+                sd.setUnder(sh.isUnder());
+                sd.setAlias(sh.getAlias());
+                //if(sd.getHeadName().equalsIgnoreCase("BASIC PAY"))
+                if(sd.getHeadCode() == 1)
+                {
+                    sd.setHeadValue(emp.getCurrentBasic());
+                    //System.out.println("headcode=beforedformula==dname=basic pay in loop=="+sd.getHeadName()+"code===="+sd.getHeadCode()+"bp===="+sd.getHeadValue());
+                    //System.out.println("headcode=beforedformula=bp==="+emp+"code==="+emp.getCode()+"bp===="+emp.getCurrentBasic());
+                }
+               // if(sd.getHeadName().equalsIgnoreCase("GRADE PAY"))
+                if(sd.getHeadCode() == 2)
+                {
+                    sd.setHeadValue(emp.getGradePay());
+                   // System.out.println("headcode=beforedformula==dname=grade pay in loop=="+sd.getHeadName()+"code===="+sd.getHeadCode()+"gpp===="+sd.getHeadValue());
+                    //System.out.println("headcode=beforedformula=gp======"+emp+"code==="+emp.getCode()+","+emp.getGradePay());
+                   
+                    
+
+                }
+                combinedData.add(sd);
+                //System.out.println("headcode=beforedformula==dname==="+sd.getHeadName()+"under==="+sd.getUnderString()+"dvalue==="+sd.getAlias()+"formula===="+sd.getFormula()+"headvalue==="+sd.getHeadValue());
+           }
+          
+            for(SalaryHead sf : salformula)
+            {
+                SalaryData sd = new SalaryData();
+                sd.setHeadCode(sf.getNumber());
+                sd.setHeadName(sf.getName());
+                sd.setHeadValue(sf.getDefaultValue());
+                sd.setUnder(sf.isUnder());
+                sd.setAlias(sf.getAlias());
+                sd.setFormula(sf.getFormula());
+                                                  
+                combinedData.add(sd);
+               
+                //System.out.println("headcode=afterformula==dname==="+sd.getHeadName()+"under==="+sd.getUnderString()+"dvalue==="+sd.getAlias()+"formula===="+sd.getFormula()+"headvalue==="+sd.getHeadValue());
+                
+            }
+            new FormulaProcessor().processFormula(combinedData);
+                     
+            
+           // System.out.println("sizeof combine data is ===="+combinedData.size());
+            return combinedData;
+       }
+     catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+                        
+    }  
+   
 
 }
