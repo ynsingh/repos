@@ -75,8 +75,8 @@ $!msg
                 </td></tr> ## 6, 5
         </table> ## 4
 
-	<table class="session" style= "font-size:16px;font-family:Times New Roman;"> ## 4
-                <tr bgcolor="$ui.menuColor" style="height:50px"><td align=center>  ## 5, 6
+	<table class="session" style= "font-size:16px;font-family:Times New Roman;height:60%"> ## 4
+                <tr bgcolor="$ui.menuColor" style="height:100px"><td align=center>  ## 5, 6
                 <b>$sec_session</b>
                 </td></tr>
         #if($lec_details.size()==0)
@@ -94,30 +94,46 @@ $!msg
 	<td valign="top"> ## 3
 	<table align="left" class="desc"> ## 4
 	<tr><td valign=top> ## 5, 6
-	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+        
+	<span class="spce" style= "font-size:16px;font-family:Times New Roman;">
 	&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")"><a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang) style="text-decoration:none"> <b>$brih_reg2 $brih_course #if($lang == "marathi") $brih_Of1 #end $brih_list</b></a>
 <br>
-	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+	<span class="spce" style= "font-size:16px;font-family:Times New Roman;">
 &nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1") style="text-decoration:none"><b>$online_online $brih_reg</b> </a>
 <br>
-	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+	<span class="spce" style= "font-size:16px;font-family:Times New Roman;">
 &nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_open $brih_access $brih_courses</b></a>
 <br>
-	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+	<span class="spce" style= "font-size:16px;font-family:Times New Roman;">
 &nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")"><a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b> #if($lang == "hindi")$brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_admin #if($lang == "hindi")$brih_Of1 #end $brih_reg </b> </a>
 <br>
-	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+	<span class="spce" style= "font-size:16px;font-family:Times New Roman;">
 &nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_reg2 $RemoteInstitute #if($lang == "hindi") $brih_of1 #end $brih_list</b></a>
 <br>
-	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+	<span class="spce" style= "font-size:16px;font-family:Times New Roman;">
 &nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general") style="text-decoration:none"><b>$brih_FAQ #if($lang =="hindi" || $lang =="bhojpuri")$brih_Of #end $brih_list</b></a>
 <br>
-	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+	<span class="spce" style= "font-size:16px;font-family:Times New Roman;">
 &nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_parent $brih_reg</b> </a>
 <br>
-	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+	<span class="spce" style= "font-size:16px;font-family:Times New Roman;">
 &nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")"><a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b> #if($lang =="hindi" || $lang =="bhojpuri" || $lang == "marathi")$brih_bri $brih_server $brih_from $brih_auth #else $brih_auth $brih_from $brih_bri $brih_server #end</b> </a>
-
+<br><br>
+<div style="width:400px; height:auto;font-size:16px;font-family:Times New Roman;text-align: justify;">
+<table>
+<tr>
+<td>
+<b> <span style="font-size:19px;color:#00000;">Exam Instruction For Student</span> </b><br>
+<ul><li><b>Step-1:-</b> Enter username (Email-ID) and Password to Login in Brihaspati.</ul>
+<ul><li><b>Step-2:-</b> If you unable to login then click on <b>Forget Password</b> link by this you get new mail for new password.</ul>
+<ul><li><b>Step-3:-</b> After login as a student, click on <b>Student Course Area</b>.</ul>
+<ul><li><b>Step-4:-</b> In Course Home click to the exam module and go to the <b>Attempt Quiz</b> link. (Read the message for quiz start time).</ul>
+<ul><li><b>Step-5:-</b> After entering numeric eight digit number, the quiz will start.</ul>
+<ul><li><b>Step-6:-</b> Before one minute end the quiz, Please save and submit the quiz.</ul>
+</td>
+</tr>
+</table>
+</div>
 	</td></tr> ## 6, 5
 	</table> ## 4
 	</td> ## 3

@@ -31,6 +31,11 @@ $!data.getMessage()
 	</td>
 </tr>
 </table>
+<table  bgcolor="$ui.tableColor" width="100%" >
+	<td>
+		<img src="$content.getURI("/images/red.gif")">&nbsp;&nbsp<font color="blue">$brih_helpquiz <font color="red"><b>"$brih_helpquiz1"</b></font> $brih_helpquiz2 </font>
+        </td>
+</table>
 <form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Attempt_Quiz.vm").setAction("OLES_AttemptQuiz")>
 <table  bgcolor="$ui.tableColor" border=0 cellpadding="2" width=100% >
 	<tr bgcolor="$ui.menuColor" >
