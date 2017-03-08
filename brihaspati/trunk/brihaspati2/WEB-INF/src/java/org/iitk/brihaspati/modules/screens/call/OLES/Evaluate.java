@@ -177,8 +177,8 @@ public class Evaluate extends  SecureScreen{
                                 			data.setMessage(MultilingualUtil.ConvertedString("brih_noshtlngAnswer",LangFile));
 				    	 	return;
 						}
-						else
-                                		data.setMessage(MultilingualUtil.ConvertedString("brih_noquizToverify",LangFile));
+						//else
+                                		//data.setMessage(MultilingualUtil.ConvertedString("brih_noquizToverify",LangFile));
                                 	}
 					context.put("flag",flag);
 				}//if questionDetailVectornullcondition

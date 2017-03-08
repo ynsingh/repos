@@ -13,7 +13,25 @@ $page.setBgColor($ui.bgcolor)
 
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 </head>
+
+<style type="text/css">
+                a.one:link,a.one:visited{
+                        display:block;
+                        font-size:14px;
+                        color:#FFFFFF;
+                        background-color:#85c1e9;
+                        width:50px;
+                        text-align:center;
+                        padding:4px;
+                        text-decoration:none;
+
+                }
+                a.one:hover,a.one:active{
+                }
+
+        </style>
 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
@@ -139,6 +157,8 @@ $!data.getMessage()
                                 <td width="30%"><b>$brith_security $brih_num</b></td>
 				<td width="30%"><b>Action</b></td>
 			</tr>
+			#set($allDetail="")
+                        #set($sno=1)
                         #foreach($secstrs in $securitydetail)
                         #if($velocityCount%2==0)
                                 <tr bgcolor="$ui.tableColor">
@@ -151,15 +171,22 @@ $!data.getMessage()
 
 			<td><b><a href=$link.setPage("call,OLES,SecurityString.vm").setAction("OLES_AttemptQuiz").addPathInfo("quizlist",$quizlist).addPathInfo("quizname",$quizname).addPathInfo("studentid",$secstrs.getStudentID()).addPathInfo("counttemp","2").addPathInfo("count","6").addPathInfo("flag1","show").addPathInfo("flag","security").addPathInfo("actionName","eventSubmit_ResetSecuritynumber") onclick="javascript:return confirm('Do you want to change this security number')" style='text-decoration:none'>$brih_reset $brith_security $brih_num</b></a></td>
 
+			 #set($allDetail="${allDetail}${sno}-${secstrs.getStudentID()}-${secstrs.getSecurityID()}-<br>")
+                         #set($sno=$sno+1)
+                            #end
+
                         #end
                         </tr>
-                <tr bgcolor="$ui.menuColor">
-                        <td colspan="3">
-                        <input type="button" class="button-ftextstyle" name="print" value="$brih_print" onClick="javascript:window.print();"/>
+                        <tr bgcolor="$ui.menuColor">
+                        #if($allDetail != "")
+                             <table width="100%" valign="top" bgcolor="$ui.menuColor">
+                          <tr><td><input type="hidden" name="allDetail" value="$allDetail">
+                        <tr bgcolor="$ui.menuColor">
+                        <td colspan="3"> <a type="button" class="one" name="print" value="Print"  href=javascript:(popupWin1("newWin"))> Print </a></td></tr>
                         </td>
                 </tr>
                 </table>
-                #end
+               #end
 	</table>
 	
 #else
@@ -204,9 +231,48 @@ $!data.getMessage()
 <input type="hidden" name="flag1" value="$flag1">
 
 <SCRIPT LANGUAGE="javascript">
-	function popupWin(url,popupName){
-                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+	
+function popupWin1(popupName) {
+        var x = document.getElementsByName('allDetail');
+        var col_array=x[0].value.split("<br>");
+        //alert("col_array[]="+col_array);
+        Win1=window.open('',popupName,"scrollbars=1,resizable,height=200,width=400");
+        var tmp = Win1.document;
+        tmp.write('<html><head><title>Student List</title>');
+        tmp.write('<body bgcolor="$ui.tableColor"></head>');
+        tmp.write('<table width="100%"><tr><td colspan="2"</td>');
+        tmp.write('<tr bgcolor="$ui.menuColor">');
+        tmp.write('<th colspan="4"><font size=3>Student Details</font></th>');
+        tmp.write('<tr bgcolor="$ui.menuColor">');
+        tmp.write('<td><font color="blue">Sr. No.</font></td>');
+        tmp.write('<td><font color="blue">Student Name</font></td>');
+        tmp.write('<td><font color="blue">Security Number </font></td>');
+        tmp.write('<td><font color="blue">Signature</font></td>');
+        tmp.write('</tr>');
+
+        var value=2;
+        for (var i=0;i<col_array.length;i++) {
+                //alert("col_array[i]="+col_array[i]);
+                if(value%2 == 0){
+                        tmp.write('<tr bgcolor="$ui.tableColor" >');
+                }else {
+                        tmp.write('<tr bgcolor="$ui.menuColor" >');
+                }
+
+                var tmpColArray = col_array[i].split("-")
+                //alert("tmpColArray.length=="+tmpColArray.length);
+                for (var j=0; j<tmpColArray.length; j++) {
+                        //alert('tmpColArray=='+tmpColArray[j]);
+                        tmp.write('<td>'+tmpColArray[j]+'</td>');
+                }
+                tmp.write('</tr>');
+                value++;
         }
+        tmp.write('</td></tr></table>');
+        tmp.write('<p><a href="javascript:self.print()">Print</a> &nbsp;&nbsp;&nbsp;<a href="javascript:self.close()">Close</a> </p>');
+        tmp.write('</body></html>');
+}
+
         
 	function checkField(frm,field){
 	 	frm.submit();
