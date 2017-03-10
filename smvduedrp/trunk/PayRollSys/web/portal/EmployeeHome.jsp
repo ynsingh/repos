@@ -2,6 +2,7 @@
     Document   : Home
     Created on : Mar 24, 2011, 9:27:20 PM
     Author     :  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+                     Copyright (c) 2014 - 2017 IIT, Kanpur. 
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -29,6 +30,7 @@
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+   Modified Date: 01 March 2017, IITK (palseema30@gmail.com) add link Annual Salary Statement
 *
 --%>
 
@@ -130,6 +132,7 @@
                                 <h:commandButton onclick="return loadIframe('ifrm', 'UpdateProfile.jsf')" value="Profile"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', '../report/ReportExporter.jsf')" value="Monthly Salary Slip"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'AttendanceReport.jsf')" value="Monthly Attendance Report"/>
+                                <h:commandButton onclick="return loadIframe('ifrm', 'EmpIndividualGrossSalary.jsf')"  value="Annual Salary Statement" />
                                 <h:commandButton onclick="return loadIframe('ifrm', 'TimeManager.jsf')" value="My TaskPad"  disabled="true"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'DailyWorkReport.jsf')" value="My daily Worksheet" disabled="true"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'IndividualAttendanceReport.jsf')" value="AttendanceReport" disabled="true"/>
@@ -142,6 +145,7 @@
                                 <h:commandButton onclick="return loadIframe('ifrm', 'TaskManager.jsf')" value="My Tasks" disabled="true"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'EmpOrder.jsf')" value="My Team" disabled="true"/>
                                 
+                                                               
                                                                
                             </h:panelGrid>
                         </h:form>
