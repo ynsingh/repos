@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.ext.attendance.EmpLeaveMaster" table="employee_leave_master">
+  
+        <id name="empId" type="java.lang.Integer">
+            <column name="el_id" />
+            <generator class="identity"/>
+        </id>
+       
+        <property name="empcode" type="java.lang.String">
+            <column name="el_emp_code" length="30" />
+        </property> 
+        <property name="datefrom" type="java.lang.String">
+            <column name="el_date_from" length="100" not-null="true"/>
+        </property>
+        <property name="dateto" type="java.lang.String">
+            <column name="el_date_to" not-null="true"/>
+        </property>
+        <property name="count" type="java.lang.Integer">
+            <column name="el_count" not-null="true" default='0'/>
+        </property>
+	<property name="quatatype" type="java.lang.Integer">
+            <column name="el_quota_type" not-null="true"/>
+        </property>
+        <property name="applieddate" type="java.lang.String">
+            <column name="el_applied_date" not-null="true" />
+        </property>
+       <property name="approvaldate" type="java.lang.String">
+            <column name="el_approval_date" />
+        </property>
+       <property name="approvalstatus" type="java.lang.Integer">
+            <column name="el_approval_status" not-null="true" />
+        </property>
+	<property name="orgid" type="java.lang.Integer">
+            <column name="el_org_id" not-null="true" />
+        </property>
+	<property name="reasonforleave" type="java.lang.String">
+            <column name="el_Reasonforleave" not-null="true" />
+        </property>
+        
+	 <property name="contractno" type="java.lang.String">
+            <column name="el_ContractNo" length="255" />
+        </property>
+	 <property name="reportingoff" type="java.lang.String">
+            <column name="el_Reporting_offcr" length="255" />
+        </property>
+	<property name="coveringoff" type="java.lang.String">
+            <column name="el_Covering_offcr" length="255" />
+        </property>
+        <property name="comments" type="java.lang.String">
+		<column name="el_Commnts" length="255" />
+        </property>
+      
+    </class>    
+</hibernate-mapping>
+  

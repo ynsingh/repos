@@ -10,21 +10,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.ext.attendance.LeaveQuota;
-import org.smvdu.payroll.beans.ext.attendance.LeaveType;
 
 /**
- *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*
+*  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*  Copyright (c) 2014 - 2017 ETRG, IITK.
 *  All Rights Reserved.
-**  Redistribution and use in source and binary forms, with or 
+*  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
 *  conditions are met: 
-**  Redistributions of source code must retain the above copyright 
+*  Redistributions of source code must retain the above copyright 
 *  notice, this  list of conditions and the following disclaimer. 
 * 
 *  Redistribution in binary form must reproduce the above copyright
@@ -48,18 +47,21 @@ import org.smvdu.payroll.beans.ext.attendance.LeaveType;
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
 *  Modified Date: 7 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*  Modification : March 2017, Om Prakash (omprakashkgp@gmail.com) 
 */
 
 public class LeaveQuotaDB {
     private PreparedStatement ps;
     private ResultSet rs;
     private final UserInfo userBean;
+
+
+    
     
     public LeaveQuotaDB()   {
         //info = (ActiveProfile)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
 
         userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
-
 
     }
     
@@ -71,17 +73,16 @@ public class LeaveQuotaDB {
             ArrayList<LeaveQuota> allltypes=new ArrayList<LeaveQuota>(getQuota(type));
             ArrayList<LeaveQuota> diff = new ArrayList<LeaveQuota>(data);
             diff.removeAll(allltypes);
-            /*System.out.print("\nvalue===allltypes==="+allltypes);
-            System.out.print("\nvalue====data==="+data);
-            System.out.print("\nvalue===diff==="+diff);*/   
+             
             if(diff.size()!=0){
                 for(LeaveQuota lq : diff)
                 {
                    
-                   ps = c.prepareStatement("insert into leave_quota_master values(?,?,?)");
+                   ps = c.prepareStatement("insert into leave_quota_master values(?,?,?,?)");
                    ps.setInt(1, type);
                    ps.setInt(2, lq.getLeaveType());
                    ps.setInt(3, lq.getCount());
+                   ps.setInt(4, userBean.getUserOrgCode());
                    ps.executeUpdate();
                    ps.clearParameters();
             
@@ -90,10 +91,11 @@ public class LeaveQuotaDB {
             else{
                 for(LeaveQuota lq : data)
                 {
-                    ps=c.prepareStatement("update leave_quota_master set lq_count=? where lq_emp_type=? and lq_leave_type=? ");
+                    ps=c.prepareStatement("update leave_quota_master set lq_count=? where lq_emp_type=? and lq_leave_type=? and lq_org_id=? ");
                     ps.setInt(1, lq.getCount());
                     ps.setInt(2, type);
                     ps.setInt(3,lq.getLeaveType());
+                    ps.setInt(4, userBean.getUserOrgCode());
                     ps.executeUpdate();
                     ps.clearParameters();
                     
@@ -106,7 +108,6 @@ public class LeaveQuotaDB {
         catch(Exception e)
         {
             e.printStackTrace();
-            //return false;
         }
     }
     public ArrayList<LeaveQuota> getQuota(int type)  {
@@ -125,7 +126,7 @@ public class LeaveQuotaDB {
                 lq.setLeaveType(rs.getInt(1));
                 lq.setLeaveTypeName(rs.getString(2));
                 lq.setCount(rs.getInt(3));
-                data.add(lq);
+                    data.add(lq);
             }
             rs.close();
             ps.close();
@@ -189,7 +190,6 @@ public class LeaveQuotaDB {
                 lv.setCount(rs.getInt(3));
                 //lv.setSrNo(k);
                 data.add(lv);
-                //System.out.println("selected====="+lv.getLeaveTypeName());
                 //k++;
             }
             rs.close();
@@ -222,7 +222,6 @@ public class LeaveQuotaDB {
                 lv.setCount(rs.getInt(3));
                 //lv.setSrNo(k);
                 data.add(lv);
-                //System.out.println("in LeaveTypeDB==="+data);;
                 //k++;
             }
             rs.close();
@@ -294,13 +293,11 @@ public class LeaveQuotaDB {
            ArrayList<LeaveQuota> allltypes = getAllotedQuota(empcode);
            ArrayList<LeaveQuota>combineData=new ArrayList<LeaveQuota>();
            for(LeaveQuota lq: allltypes){
-               //System.out.println("===LeaveType==="+lq.getLeaveType());
                LeaveQuota lquota = new LeaveQuota();
                lquota.setLeaveTypeName(lq.getLeaveTypeName());
                lquota.setCount(lq.getCount());
                int balleave=empballeave(lq.getLeaveType(), empcode);
                lquota.setBalanceCount(balleave);
-               //System.out.println(" combined data====balleave===="+balleave+"LeaveTypename==="+lq.getLeaveTypeName()+"LeaveType==="+lq.getLeaveType()+"empcode===="+empcode);
                combineData.add(lquota);
            }
             
@@ -323,7 +320,6 @@ public class LeaveQuotaDB {
             rs.close();
             ps.close();
             c.close();
-            //System.out.println(">>>> leave default value==== "+s);
             return s;
         } catch (Exception e) {
             return -1;
@@ -340,12 +336,10 @@ public class LeaveQuotaDB {
             while(rs.next()){
                 int s= rs.getInt(1);
                 totalleave=s+totalleave;
-                //System.out.println(">>>> emptotal leave==inside=== "+totalleave);
             }
             rs.close();
             ps.close();
             c.close();
-            //System.out.println(">>>> emptotal leave==outside=== "+totalleave);
             return totalleave;
         } catch (Exception e) {
             return -1;

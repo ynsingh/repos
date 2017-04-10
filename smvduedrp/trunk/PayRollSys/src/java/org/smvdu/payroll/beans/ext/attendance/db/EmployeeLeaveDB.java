@@ -9,16 +9,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import javax.faces.context.FacesContext;
+import org.hibernate.Query;
+import org.hibernate.Transaction;
+import org.smvdu.payroll.Hibernate.HibernateUtil;
 import org.smvdu.payroll.beans.Employee;
+import org.smvdu.payroll.beans.SessionMaster;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.ext.attendance.EmployeeLeave;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
 import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.beans.ext.attendance.EmpLeaveMaster;
+import org.smvdu.payroll.beans.ext.attendance.EmpLeaveRecord;
 
 /**
  *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ * Copyright (c) 2010 - 2011 SMVDU, Katra.
+ * Copyright (c) 2014 - 2017 ETRG, IITK.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -47,11 +55,16 @@ import org.smvdu.payroll.beans.UserInfo;
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
 *  Modified Date: 7 AUG 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+*  Modification : April 2017, Om Prakash (omprakashkgp@gmail.com)
+* 
 */
 public class EmployeeLeaveDB {
     private PreparedStatement ps;
     private ResultSet rs;
     private final UserInfo userBean;
+    private HibernateUtil helper;
+    private org.hibernate.Session sess;
+
     
     public EmployeeLeaveDB(){
         
@@ -67,7 +80,6 @@ public class EmployeeLeaveDB {
             ps=c.prepareStatement("insert into employee_leave_master(el_emp_code,"
                     + "el_date_from, el_date_to, el_count, el_quota_type, el_applied_date,"
                     + "el_approval_date, el_approval_status, el_org_id) values(?,?,?,?,?,?,?,?,?)");
-            //ps.setInt(1, Integer.parseInt(el.getEmpCode()));
             ps.setInt(1, empcode);
             ps.setString(2, el.getDateFrom());
             ps.setString(3, el.getDateTo());
@@ -77,7 +89,6 @@ public class EmployeeLeaveDB {
             ps.setString(7, null);
             ps.setInt(8,0);
             ps.setInt(9, userBean.getUserOrgCode());
-            //System.out.println("empcodefor ===="+el.getEmpCode());
             ps.executeUpdate();
             ps.close();
             c.close();
@@ -137,7 +148,7 @@ public class EmployeeLeaveDB {
 
     public ArrayList<EmployeeLeave> loadLeaves()   {
         try
-        {
+        {   
             Connection c = new CommonDB().getConnection();
             String q ="select el_id, el_emp_code, emp_name, dept_name, desig_name,"
                     + "date_format(el_date_from,'%d-%M-%y'),date_format(el_date_to,'%d-%M-%y'),"
@@ -157,11 +168,9 @@ public class EmployeeLeaveDB {
                 el.setEmpCode(rs.getString(2));
                 Employee emp = new Employee();
                 emp.setName(rs.getString(3));
-                //System.out.println("empleave Data=======empdeptName==="+rs.getString(11));
                 emp.setDeptName(rs.getString(4));
                 emp.setDesigName(rs.getString(5));
                 el.setEmployee(emp);
-                //System.out.println("empleave Data=======empdeptName=11==="+el.getEmployee().getName());
                 el.setDateFrom(rs.getString(6));
                 el.setDateTo(rs.getString(7));
                 el.setCount(rs.getInt(8));
@@ -169,14 +178,11 @@ public class EmployeeLeaveDB {
                 el.setAppliedDate(rs.getString(10));
                 if(rs.getInt(11)== 1)
                 {    
-                el.setActiveStatus("Approved");
-                //System.out.println("empleave Data==rs===in if condition======="+rs.getInt(11));
+                    el.setActiveStatus("Approved");
                 }
                 else{
-                el.setActiveStatus("Not Approved");
-                //System.out.println("empleave Data==rs==in else condition======="+rs.getInt(11));
+                    el.setActiveStatus("Not Approved");
                 }
-                //el.setStatus(rs.getInt(11));
                 data.add(el);
                
                 
@@ -239,7 +245,7 @@ public class EmployeeLeaveDB {
         {
                 
             Connection c = new CommonDB().getConnection();
-            String q="select el_id, el_emp_code,el_count,lt_name, el_approval_status from employee_leave_master "
+            String q="select el_id, el_emp_code, el_count, lt_name, el_approval_status from employee_leave_master "
                     + "left join leave_type_master on lt_id=el_quota_type "
                     + "where el_approval_status=1 and el_org_id='"+userBean.getUserOrgCode()+"' ";
             
@@ -278,7 +284,7 @@ public class EmployeeLeaveDB {
         }
     } 
    
-     public ArrayList<EmployeeLeave> getAllLeaveData()  {
+    public ArrayList<EmployeeLeave> getAllLeaveData()  {
         try
         {
             ArrayList<EmployeeLeave> allltypes = new ArrayList<EmployeeLeave>();
@@ -296,8 +302,7 @@ public class EmployeeLeaveDB {
                 el.setLeaveTypeName(data.getLeaveTypeName());
                 el.setAppliedDate(data.getAppliedDate());
                 el.setActiveStatus(data.getActiveStatus());
-                               
-               allltypes.add(el);
+                allltypes.add(el);
            }
            return  allltypes;
         }
@@ -331,7 +336,6 @@ public class EmployeeLeaveDB {
         try {
             int leavetypecode=getLeaveTypeCode(leavetypename);
             int empballeave= new LeaveQuotaDB().empballeave(leavetypecode,code);
-            //System.out.print("\n empballeave=check=="+empballeave);
             if(count <= empballeave){
                return true; 
             }
@@ -362,6 +366,236 @@ public class EmployeeLeaveDB {
             return -1;
         }
     }
+    /**
+     * This method has been created for display the list of all requested pending leave. 
+     */ 
+       public ArrayList<EmployeeLeave> getAllLeaveDetails()  {
+        try
+        {
+               
+            Connection c = new CommonDB().getConnection();
+            String q="select el_id, el_emp_code, emp_name, el_count,el_quota_type, lt_name, lq_count, el_approval_status, el_date_from, el_date_to, el_Covering_offcr, el_applied_date,"
+                    + " el_approval_date, el_Commnts from employee_leave_master left join employee_master on emp_code = el_emp_code"
+                    + " left join leave_type_master on lt_id=el_quota_type left join "
+                    + "leave_quota_master on lq_leave_type=el_quota_type and lq_org_id=el_org_id and lq_emp_type=emp_type_code"
+                    + " where el_approval_status='"+0+"' and el_org_id='"+userBean.getUserOrgCode()+"' ";
+            
+            ps=c.prepareStatement(q);
+            rs = ps.executeQuery();
+            ArrayList<EmployeeLeave> data = new ArrayList<EmployeeLeave>();
+            int k=1;
+            while(rs.next())
+            {
+                EmployeeLeave el = new EmployeeLeave();
+                el.setId(rs.getInt(1));
+                el.setEmpCode(rs.getString(2));
+                Employee emp = new Employee();
+                emp.setName(rs.getString(3));
+                el.setEmployee(emp);
+                el.setCount(rs.getInt(4));
+                el.setLeaveTypeCode(rs.getInt(5));
+                el.setLeaveTypeName(rs.getString(6));
+                el.setLeaveValue(rs.getInt(7));
+                if(rs.getInt(8)== 1)
+                {    
+                    el.setActiveStatus("Approved");
+                }
+                else{
+                    el.setActiveStatus("Not Approved");
+                
+                }
+                el.setDateFrom(rs.getString(9));
+                el.setDateTo(rs.getString(10));
+                el.setCoveringoff(rs.getString(11));
+                el.setAppliedDate(rs.getString(12));
+                el.setApprovaldate(rs.getString(13));
+                el.setComments(rs.getString(14));
+                el.setSrNo(k);
+                data.add(el);
+                k++;        
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return data;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    } 
    
+    /*
+     * This mathod has been created for accept the Leave request of employee. 
+     */
+    public boolean updateLeave(ArrayList<EmployeeLeave> empl)
+    {
+        boolean b=false;
+        sess = helper.getSessionFactory().openSession();
+        Transaction tx;
+        try{
+            for(EmployeeLeave el : empl)
+            {   
+                b= new EmployeeLeaveDB().checkappliedLeave(el.getEmpCode(), el.getLeaveTypeName(), el.getCount());
+                if(b==true)
+                {    
+                    tx = sess.beginTransaction();
+                    String cdate = userBean.getCurrentDate();
+                    EmpLeaveMaster emp = new EmpLeaveMaster();
+                    emp.setEmpId(el.getId());
+                    Query query1 = sess.createQuery("update EmpLeaveMaster set approvaldate ='" +cdate+ "', approvalstatus='" +1+ "', comments='" +el.getComments()+ "' "
+                                + " where empId='"+el.getId()+"' and empcode='" +el.getEmpCode()+ "'and orgid='" +userBean.getUserOrgCode()+ "'");
+                   
+                    query1.executeUpdate();
+                    tx.commit();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return b;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return false;
+        }
+        finally{
+            sess.close();
+        }
+    }
+
+   /*
+    * This mathod has been created for reject the Leave request of employee. 
+    */
+    public boolean rejectLeave(ArrayList<EmployeeLeave> empl)
+    {
+        boolean b = false;
+        sess = helper.getSessionFactory().openSession();
+        Transaction tx;
+        try{
+            for(EmployeeLeave el : empl)
+            {   
+                b= new EmployeeLeaveDB().checkappliedLeave(el.getEmpCode(), el.getLeaveTypeName(), el.getCount());
+                if(b==true)
+                {    
+                    tx = sess.beginTransaction();
+                    String cdate = userBean.getCurrentDate();
+                    EmpLeaveMaster emp = new EmpLeaveMaster();
+                    emp.setEmpId(el.getId());
+                    Query query1 = sess.createQuery("update EmpLeaveMaster set approvaldate ='" +cdate+ "', approvalstatus='" +0+ "', comments='" +el.getComments()+ "' "
+                                + " where empId='"+el.getId()+"' and empcode='" +el.getEmpCode()+ "'and orgid='" +userBean.getUserOrgCode()+ "'");
+                   
+                    query1.executeUpdate();
+                    tx.commit();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return b;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        finally{
+              sess.close();
+        }
+    }
+    
+    /*
+    * This mathod has been created for insert and update leave record of employee
+    * according his employee code , org code 
+    */
+    public void updateLeaveTypeValue(EmployeeLeave empl){
+    
+        try{
+             int b = getEmpOldLeaveValue(empl.getEmpCode(), empl.getLeaveTypeCode(), CurrentSessionName());
+             if(b<1){
+                    sess = helper.getSessionFactory().openSession();
+                    sess.beginTransaction();
+                    String csName=CurrentSessionName();
+                    EmpLeaveRecord emplr = new EmpLeaveRecord();
+                    emplr.setElrEmpCode(empl.getEmpCode());
+                    emplr.setElrleaveid(empl.getLeaveTypeCode());
+                    emplr.setElrcount(empl.getCount());
+                    emplr.setElrFyear(csName);
+                    sess.saveOrUpdate(emplr);
+                    sess.beginTransaction().commit();
+             }
+             else{
+                   int leavevalue = empl.getCount()+b;
+                   sess = helper.getSessionFactory().openSession();
+                   sess.beginTransaction();
+                   String csName=CurrentSessionName();
+                   Query query2 = sess.createQuery("update EmpLeaveRecord set elrcount ='"+leavevalue+"' where elrEmpCode ='"+empl.getEmpCode()+"' and "
+                    + " elrleaveid='"+empl.getLeaveTypeCode()+"' and elrFyear ='"+csName+"'");
+               
+                   query2.executeUpdate();
+                   sess.beginTransaction().commit();
+            }
+        }
+        catch(Exception ex){
+            sess.getTransaction().rollback();
+            ex.printStackTrace();
+        }
+        finally{
+            sess.close();
+        }
+    }
+    /*
+    * This method has been created for get the employee leave value taken in past.
+    */
+    public int getEmpOldLeaveValue(String empcode, int emplid, String fyear)
+    {
+        try{
+                sess = helper.getSessionFactory().openSession();
+                sess.beginTransaction();
+                Query query = sess.createQuery("select elrcount from EmpLeaveRecord where elrEmpCode='"+empcode+"' and elrleaveid='"+emplid+"' and elrFyear='"+fyear+"'");
+                List <Object> lvalue = query.list();
+                for(Object obj: lvalue){
+                    int leavevalue= obj.hashCode();
+                    sess.getTransaction().commit();
+                    return leavevalue;
+                }
+                return 0;
+            }
+        catch(Exception ex)
+        {   
+            sess.getTransaction().rollback();
+            ex.printStackTrace();
+            return 0;
+        }   
+  
+    }
+    /*
+    * this method has been created for get the current session name.
+    */
+    public String CurrentSessionName()
+    {
+        try{ 
+                sess = helper.getSessionFactory().openSession();
+                sess.beginTransaction();
+                Query query = sess.createQuery("select name from SessionMaster where current='"+1+"' and orgcode='"+userBean.getUserOrgCode()+"'");
+                List <Object> sname = query.list();
+               for(Object obg: sname){
+                      String sesname = obg.toString();
+                sess.getTransaction().commit();               
+                return sesname;
+               }
+               return null;
+             }
+        catch(Exception ex)
+        {
+            sess.getTransaction().rollback();
+            ex.printStackTrace();
+            return null;
+        }   
+    }
 
 }

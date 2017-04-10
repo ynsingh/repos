@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.smvdu.payroll.beans.ext.attendance.EmpLeaveRecord" table="emp_leave_record">
+  
+        <id name="elrId" type="java.lang.Integer">
+            <column name="elr_id" />
+            <generator class="identity"/>
+        </id>
+        <property name="elrEmpCode" type="java.lang.String">
+            <column name="elr_emp_code" length="30" not-null="true" />
+        </property>
+        <property name="elrleaveid" type="java.lang.Integer">
+            <column name="elr_leave_id" not-null="true"/>
+        </property>
+        <property name="elrcount" type="java.lang.Integer">
+            <column name="elr_count" not-null="true"/>
+        </property>
+	<property name="elrFyear" type="java.lang.String">
+            <column name="elr_f_year" length="100" not-null="true"/>
+        </property>
+
+  </class>    
+</hibernate-mapping>
+  

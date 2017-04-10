@@ -627,15 +627,20 @@ CREATE TABLE `employee_basic_master` (
 
 CREATE TABLE `employee_leave_master` (
   `el_id` int(11) NOT NULL auto_increment,
-  `el_emp_code` int(11) NOT NULL,
+  `el_emp_code` varchar(30) NOT NULL,
   `el_date_from` date NOT NULL,
   `el_date_to` date NOT NULL,
   `el_count` int(11) NOT NULL default '0',
   `el_quota_type` int(11) NOT NULL,
   `el_applied_date` date NOT NULL,
-   el_approval_date  date default NULL,
-   el_approval_status  int(11) NOT NULL,
-   el_org_id  int(11) NOT NULL,	
+  `el_approval_date`  date default NULL,
+  `el_approval_status`  int(11) NOT NULL,
+  `el_org_id`  int(11) NOT NULL,
+  `el_Reasonforleave` varchar(255) NOT NULL,
+  `el_ContractNo` varchar(255) default NULL,
+  `el_Reporting_offcr` varchar(255) default NULL,
+  `el_Covering_offcr` varchar(255) default NULL,
+  `el_Commnts` varchar(255) default NULL,	
    PRIMARY KEY  (`el_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -827,6 +832,7 @@ CREATE TABLE `leave_quota_master` (
   `lq_emp_type` int(11) NOT NULL,
   `lq_leave_type` int(11) NOT NULL,
   `lq_count` int(11) NOT NULL,
+  `lq_org_id` int(11) NOT NULL,
   KEY `lq_emp_type` (`lq_emp_type`),
   KEY `lq_leave_type` (`lq_leave_type`),
   CONSTRAINT `leave_quota_master_ibfk_1` FOREIGN KEY (`lq_emp_type`) REFERENCES `employee_type_master` (`emp_type_id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -843,6 +849,20 @@ CREATE TABLE `leave_value_master` (
   `lv_value` float(2,1) default NULL,
   PRIMARY KEY  (`lv_id`,`lv_name`),
   UNIQUE KEY `lt_name` (`lv_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# Structure for the `emp_leave_record` table :
+#
+CREATE TABLE emp_leave_record (
+        elr_id int(11) NOT NULL auto_increment,
+        elr_emp_code varchar(30) NOT NULL,
+        elr_leave_id int(11) NOT NULL,
+        elr_count int(11) NOT NULL,
+        elr_f_year varchar(100) NOT NULL ,
+        PRIMARY KEY  (`elr_id`),
+        UNIQUE KEY  (`elr_emp_code`, `elr_leave_id`, `elr_f_year` )
+
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

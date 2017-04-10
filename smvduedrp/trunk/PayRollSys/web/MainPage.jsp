@@ -205,7 +205,7 @@
                             <rich:menuItem id="hr42" onclick="return loadIframe('ifrm', 'attendance/LeaveManager.jsf')"  value="Leave Manager"/>
                             <%--<rich:menuItem onclick="return loadIframe('ifrm', 'attendance/LeaveValue.jsf')"  value="Leave Values Setup"/>--%>
                             <rich:menuItem id="hr43" onclick="return loadIframe('ifrm', 'attendance/LeaveDetail.jsf')"  value="Leave Detial"/>
-                        
+                            <rich:menuItem id="hr44" onclick="return loadIframe('ifrm', 'attendance/ViewLeaveRequest.jsf')" value="Leave Request" />
                        </rich:menuGroup>   
                         <rich:menuItem id="hr5" onclick="return loadIframe('ifrm', 'employee/EmpPayscaleHistory.jsf')" value="Employee Payscale History" disabled="true"/>
                         <rich:menuItem id="hr6" onclick="return loadIframe('ifrm', 'employee/EmployeePFNotification.jsf')" value="Employee PF notification" disabled="true"/>
