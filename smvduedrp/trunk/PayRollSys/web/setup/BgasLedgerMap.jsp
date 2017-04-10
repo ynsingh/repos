@@ -122,7 +122,7 @@
 
                 </h:panelGrid>
                 <h:column> 
-                <h:commandButton action="#{LedgerMapControllerBean.update}" value="Update"/>&nbsp;&nbsp;    
+                    <h:commandButton action="#{LedgerMapControllerBean.mapLedgers}" value="Update"/>&nbsp;&nbsp;    
                 <%--<c:choose>  
                  <c:when test="${not empty LedgerMapControllerBean.coaFormat}">
                 <h:commandButton action="#{LedgerMapControllerBean.update}" value="Update"/>&nbsp;&nbsp;

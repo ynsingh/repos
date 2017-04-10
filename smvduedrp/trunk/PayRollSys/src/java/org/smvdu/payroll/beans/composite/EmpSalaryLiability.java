@@ -45,7 +45,7 @@ import org.smvdu.payroll.beans.db.EmpSalaryLiabilityDB;
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  Contributors: Members of IITK Team @ IIT Kanpur
- *  Manorama Pal  7 AUG 2016, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
+ *  7 AUG 2016, IITK Manorama Pal (palseema30@gmail.com, kishore.shuklak@gmail.com)
  */
 
 public class EmpSalaryLiability implements Serializable{
@@ -307,10 +307,6 @@ public class EmpSalaryLiability implements Serializable{
     {
         try
         {
-            //int Amountexp= new EmpSalaryLiabilityDB().getALLEmpTotalExpenses();
-            //System.out.println("in callpage method==1==="+Amountexp);
-            //int amount= new EmpSalaryLiabilityDB().getEmpTotalLiabilityType("credit");
-            //System.out.println("in callpage method====="+amount);
             FacesContext.getCurrentInstance().getExternalContext().redirect("AllEmpLiability.jsf");
             return;
         }
@@ -378,27 +374,35 @@ public class EmpSalaryLiability implements Serializable{
     {
         try
         {
-            FacesMessage message = new FacesMessage();
+            //FacesMessage message = new FacesMessage();
             ArrayList<EmpSalaryLiability> datacopy = new ArrayList<EmpSalaryLiability>();
             ArrayList<EmpSalaryLiability> empsliab = (ArrayList<EmpSalaryLiability>)dataGrid1.getValue();
-            
             for(EmpSalaryLiability esl : empsliab)
             {   
                 if(esl.isChecked())
                 {
-                    datacopy.add(esl);
+                    boolean incDedflag=new EmpSalaryLiabilityDB().checkIncomeAndDeduction(esl);
+                    if(incDedflag){
+                        //System.out.println("incDedflag===="+incDedflag);
+                        datacopy.add(esl);
+                        
+                    }
                                        
                 } 
             }
-            boolean b=new EmpSalaryLiabilityDB().checkBudget(datacopy);
-            if(b== true){
+            boolean budgetflag=new EmpSalaryLiabilityDB().checkBudget(datacopy);
+            if(budgetflag){
                 Exception ee= new EmpSalaryLiabilityDB().EmployeeSalaryPaid(datacopy);
+                //System.out.println("checkboxes in 2nd line==);
                 if (ee == null) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Salary paid sucessfully ",""));
                 }
                 else {
-                throw ee;
+                    throw ee;
                 }
+                //} 
+               //else
+                //    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Salary not paid due to negative Amount ",""));
             }
             else{
                 FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Allocated Budget is not sufficient to process salary", ""));

@@ -239,7 +239,7 @@ public class EmpSalaryLiabilityDB {
             {
                 int estypeAmt=rs.getInt(1);
                     total+=estypeAmt;
-                    //System.out.println("totla in EmpTotalLiabilityType====="+total);
+                    //System.out.println("total====="+total);
                
             }
             rs.close();
@@ -341,22 +341,46 @@ public class EmpSalaryLiabilityDB {
             nsp.insertinEntries(TotalAmoutofsalary, TotalAmoutofsalary);
             //System.out.println("total of sum==specialcheck="+salaryPayableAmt+"TotalAmoutofsalary==="+TotalAmoutofsalary);
                 
-            // calculating the head wise total amount 
+            // calculating  head wise total amount 
             
             ArrayList<EmpSalaryLiability> empdata = new ArrayList<EmpSalaryLiability>(empsl);
             ArrayList<SalaryData> data=getTotalHeadValue(empsl);
             for(SalaryData sd : data){
                     
-                System.out.println("sdledgercode==empliadb=="+sd.getLedgerCode()+"headvaue====="+sd.getHeadValue()+"sdcheck===codehead===="+sd.getNumber()+"size===="+data.size());   
+                //System.out.println(sd.getLedgerCode()+"headvaue=====:"+sd.getHeadValue()+"sdcheck===codehead===="+sd.getNumber()+"size===="+data.size());   
                 if(sd.isUnder()){
                     
                     // insert data into BGAS entry_items======(emp incomes)==========// 
+                    //ledgercode start with 1 (Debit)
+                    if(sd.getLedgerCode().startsWith("1")){
+                        nsp.PaymentEntry(sd.getLedgerCode(),sd.getHeadValue(),"D");
+                    }
+                    //ledgercode start with 2 (Credit)
+                    else if(sd.getLedgerCode().startsWith("2"))
+                    {   
+                        nsp.PaymentEntry(sd.getLedgerCode(),sd.getHeadValue(),"C");
+                    } 
+                    else{
                     nsp.PaymentEntry(sd.getLedgerCode(),sd.getHeadValue(),"D");
+                    }
                                                             
                 }
                 else{
                     // insert data into BGAS entry_items======(emp deduction)==========// 
-                    nsp.PaymentEntry(sd.getLedgerCode(),sd.getHeadValue(),"C");
+                    //ledgercode start with 2 (Credit)
+                    
+                    if(sd.getLedgerCode().startsWith("1")){
+                        nsp.PaymentEntry(sd.getLedgerCode(),sd.getHeadValue(),"C");
+                    }
+                    //ledgercode start with 2 (Debit)
+                    else if(sd.getLedgerCode().startsWith("2"))
+                    {   
+                        nsp.PaymentEntry(sd.getLedgerCode(),sd.getHeadValue(),"D");
+                    } 
+                    else{
+                        
+                        nsp.PaymentEntry(sd.getLedgerCode(),sd.getHeadValue(),"C");
+                    }
                 }
                 
             } 
@@ -487,7 +511,7 @@ public class EmpSalaryLiabilityDB {
                         sd.setNumber(rs.getInt(3));
                         sd.setHeadValue(rs.getInt(4));
                         data.add(sd);
-                        //System.out.println("number=inifpart=="+sd.getNumber()+":"+sd.getLedgerCode()+":"+sd.getHeadValue());
+                        //System.out.println("=======:"+sd.getLedgerCode()+":"+sd.getHeadValue());
                     }
                     i++;
                 }
@@ -507,13 +531,13 @@ public class EmpSalaryLiabilityDB {
                                 sd.setNumber(rs.getInt(3));
                                 sd.setHeadValue(finaltotal);
                                 data.add(sd);
-                                //System.out.println("number=inielsepart=="+sd.getNumber()+":"+sd.getLedgerCode()+":"+sd.getHeadValue());
+                                //System.out.println("elsepart==":"+sd.getLedgerCode()+":"+sd.getHeadValue());
                                
                             }
                             // clone.remove(firstsd);
                         } 
-                        //data=(ArrayList<SalaryData>) clone.clone();
-                        //sortStones();
+                       
+                        
                            
                     }
                     i++;
@@ -534,7 +558,6 @@ public class EmpSalaryLiabilityDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-           // ps=c.prepareStatement("select sh_id,sh_code,sh_name from salary_head_master");
             ps=c.prepareStatement("select DISTINCT sd_head_code from salary_data");
             rs=ps.executeQuery();
             ArrayList<SalaryData> data = new ArrayList<SalaryData>();
@@ -619,11 +642,10 @@ public class EmpSalaryLiabilityDB {
     public int getTotalAmountSalaryPayable(ArrayList<EmpSalaryLiability> empsl){
         try{
             ArrayList<EmpSalaryLiability> diff = new ArrayList<EmpSalaryLiability>(empsl);
-            //System.out.println("diff======="+diff.size());
             int sum=0;
             for(EmpSalaryLiability esl : diff)
             {
-                EmpSalaryLiability dataesl = new EmpSalaryLiability();
+                //EmpSalaryLiability dataesl = new EmpSalaryLiability();
                 //System.out.println("empcode--in liabilityDBClass    --"+esl.getEmployee().getCode()+"liabilityamt==="+esl.getLiabiltyAmt());
                 sum=sum+esl.getLiabiltyAmt();
                                     
@@ -647,8 +669,8 @@ public class EmpSalaryLiabilityDB {
             int sum=0;
             for(EmpSalaryLiability esl : diff)
             {
-                EmpSalaryLiability dataesl = new EmpSalaryLiability();
-                System.out.println("empcode--in liabilityDBClass    --"+esl.getEmployee().getCode()+"liabilityamt==="+esl.getLiabiltyAmt());
+                //EmpSalaryLiability dataesl = new EmpSalaryLiability();
+                //System.out.println("empcode--in liabilityDBClass--"+esl.getEmployee().getCode()+"liabilityamt==="+esl.getLiabiltyAmt());
                 sum=sum+getEmpliability(month,year,esl.getEmployee().getCode());
                
             }
@@ -660,29 +682,54 @@ public class EmpSalaryLiabilityDB {
 
         }
     } 
+    /* this method check the available budget amount for salary */ 
+     
     public boolean checkBudget(ArrayList<EmpSalaryLiability> empsl){
         try{
          
-        
+            boolean booleanFlag= false; 
             int salaryPayableAmt=getTotalAmountSalaryPayable(empsl);
-            //System.out.println("Emptotalsalarytotal======"+salaryPayableAmt);
             NewSalaryProcessing nsp=new NewSalaryProcessing();
             int salcode = nsp.getsalarybudgetcode();
             int avalbud= nsp.getAvailableBudget(salcode);
             //System.out.println("available bug======"+avalbud);
             if(avalbud > salaryPayableAmt){
-                return true;
+                booleanFlag=true;
             
             }
-            else{
-                return false;
-            }
+            
+            return booleanFlag;
         
      }
      catch(Exception e) {
         e.printStackTrace();
         return false;
      }
-    }//mothod cloase
+    }//mothod close
+    
+    
+    /**
+     * This method check the total income and Total deduction of employee(total income should be positive)
+     * @param empsl
+     * @return boolean
+     */ 
+       
+    public boolean checkIncomeAndDeduction(EmpSalaryLiability empsl){
+        try{
+            boolean flag=false;
+            int Tincome=getEmpTIncome(empsl.getEmployee());
+            int Tdeduction=getEmpTDeduction(empsl.getEmployee());
+            if(Tincome > Tdeduction){
+              //System.out.println("empcode===="+empsl.getEmployee().getCode());
+                flag= true;
+            }     
+            return flag;
+        }
+        catch(Exception e) {
+        e.printStackTrace();
+        return false;
+        }
+       
+    }//mothod close
        
 }

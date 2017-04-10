@@ -1,6 +1,6 @@
 <%-- 
     Document   : SalaryPaid
-    Created on : Sep 1, 2014, 11:14:35 AM
+    Created on : jan 1, 2016, 11:14:35 AM
     Author     : guest
 --%>
 
@@ -27,7 +27,11 @@
                 <h:panelGrid columns="2">
                         <h:outputText value="Current Month :" style="font-size:1.2em;"/>
                         <h:outputText value="#{SalaryTool.copyTo}" style="font-size:1.2em;"/>
-                </h:panelGrid>
+             
+               </h:panelGrid>
+                <div align="right" >
+                <h:outputText style="font-size:1.2em;color:blue;" value="If Salary Amount is negative then Salary will not be paid to the employee ,please correct the Deduction Amount of the employee." />
+                </div>
                 <rich:messages layout="table" style="border:1;" >
                     <f:facet name="infoMarker">
                         <h:graphicImage url="/img/success.png"/>
@@ -81,7 +85,7 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText styleClass="Label" value="Total Liability"/>
+                                <h:outputText styleClass="Label" value="Total Salary"/>
                             </f:facet>
                                 <h:outputText value="#{empliab.liabiltyAmt}"/>
                         </h:column>
