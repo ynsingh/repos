@@ -185,6 +185,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 			else{
 				quizID = data.getParameters().getString("quizID","");
 			}
+            //ErrorDumpUtil.ErrorLog(" ------OLES_AttemptQuiz----- attemptQuiz()----quizID--->"+quizID);
+
 			String courseid=(String)user.getTemp("course_id");  
 			Vector<QuizFileEntry> questionVector = (Vector)user.getTemp("questionvector");
 			/**get path where the Exam directory,quiz setting and quiz question file stored */ 
@@ -250,7 +252,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 					}
 					xmlwriter=writer.WriteinSecurityxml(quizFilePath,securityPath);
 					//writer.updateSecurity(xmlwriter,student,security,ip,seq);
-					writer.updateSecurity(xmlwriter,student,security,ip,seq,quizFilePath,securityPath);
+					//writer.updateSecurity(xmlwriter,student,security,ip,seq,quizFilePath,securityPath);//sharad
 					//writer.updateSecurity(xmlwriter,student,security,ip,seq,quizFilePath,securityPath);
 				}
 			}
@@ -290,6 +292,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			String answerPath=uid+".xml"; 
 			File quizAnswerFile=new File(answerFilePath+"/"+answerPath);
 			/**responsible for writing student'a answer in userid.xml file*/
+            //ErrorDumpUtil.ErrorLog("----------OLES_Quiz method:saveAnswerQuiz ----------quizID-->"+quizID+"---quesID-->"+quesID+"--fileName-->"+fileName+"--answer-->"+answer+"--quesType-->"+quesType+"--courseid-->"+courseid+"--markPerQues-->"+markPerQues+"--type-->"+type+"--answerFilePath-->"+answerFilePath+"--answerPath-->"+answerPath+"--quizAnswerFile-->"+quizAnswerFile);
 			if(type.equalsIgnoreCase("practice")){
 				QuizMetaDataXmlWriter.xmlwriteFinalAnswerPractice(answerFilePath,answerPath,data);
 			}  
@@ -747,7 +750,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 				String quesType = filename.substring(lastIndex+1, lastIndex+4);
 				String studentAnswer="";
 				String awardedMarks = "0";
-				String option1,option2,option3,option4;
+				String option1,option2,option3,option4,min,max;
+                
 				option1=option2=option3=option4="";
 				int seq=-1;
 				if(quesType.equalsIgnoreCase("mcq")){
@@ -756,15 +760,29 @@ public class OLES_AttemptQuiz extends SecureAction{
 					option3=q.getOption3();
 					option4=q.getOption4();
 				}
+
 				/**read existing xml file(uid.xml) and write new xml file with old values
                                 *append final answers in existing xml (userid.xml) file
                                 *@see QuizMetaDataXmlWriter in Util
                                 *write xml in the given path 
                                 *@see XmlWriter (method: writeXmlFile()) in Util
                                 *modified by Jaivir/Manorama
-                                */
+                */
+                double min_r=0.0, max_r=0.0;
+                if(quesType.equalsIgnoreCase("sart"))
+                {
+//                        ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----SART");
+                    min=q.getMin();
+                    max=q.getMax();
+//                        ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----1449--min-->"); 
+                    min_r = Double.parseDouble(min);
+                    max_r = Double.parseDouble(max);
+//                        ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----1452--min-->"+min_r+"-max-->"+max_r);
+                }
+
 				xmlWriter=QuizMetaDataXmlWriter.WriteinStudtAnswerxml(studentAnswerFilePath,studentAnswerPath,quesType,seq);
-				QuizMetaDataXmlWriter.appendAnswerPractice(xmlWriter,quesid,filename,question,studentAnswer,realAnswer,markPerQues,awardedMarks,option1,option2,option3,option4,quesType,seq);
+//				QuizMetaDataXmlWriter.appendAnswerPractice(xmlWriter,quesid,filename,question,studentAnswer,realAnswer,markPerQues,awardedMarks,option1,option2,option3,option4,quesType,seq);
+                QuizMetaDataXmlWriter.appendAnswerPractice(xmlWriter,quesid,filename,question,studentAnswer,realAnswer,markPerQues,awardedMarks,option1,option2,option3,option4,min_r,max_r,quesType,seq);                
 				xmlWriter.writeXmlFile();						
 			}
 		}catch(Exception e){

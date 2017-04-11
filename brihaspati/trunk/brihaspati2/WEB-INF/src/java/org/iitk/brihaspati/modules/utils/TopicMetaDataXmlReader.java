@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)TopicMetaDataXmlReader.java
  *
- *  Copyright (c) 2005-2008,2009-10,2013 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2008,2009-10,2013,2017 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -64,8 +64,8 @@ import org.iitk.brihaspati.om.TurbineUser;
  * @modify date: 09-08-2012 (Priyanka),07-02-2013,10-06-2013
  * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
  * @modified date: 31-03-2014(Dewanshu Singh)
+ * @author <a href="mailto:sharad23nov@yahoo.com.com">Sharad Singh</a>@modify 07-02-2017
  */
-
 public class TopicMetaDataXmlReader
 {
 	XmlReader xr;
@@ -920,5 +920,51 @@ public class TopicMetaDataXmlReader
                 }
         return null;
 	}	
+    /**
+         *This method get all details of OLES
+         *@return Vector
+         */
+
+    public Vector getQuesBank_DetailAg()
+        {               
+                        Vector vt=new Vector();
+                try
+                {
+                        XmlData files[]=xr.getElements("Question");
+                        if(files!=null)
+                        {
+                                Attributes ats;
+                                String QuesId,Question,Min,Max,Description,ImgUrl;
+                                for(int j=0;j<files.length;j++)
+                                {
+                                        FileEntry fileEntry=new FileEntry();
+                                        ats=files[j].getAttributes();
+                                        QuesId=ats.getValue("Quesid");
+                                        Question=ats.getValue("Ques");
+                                        Min=ats.getValue("Min");
+                                        Max=ats.getValue("Max");
+                                        Description=ats.getValue("Description");
+                                        ImgUrl=ats.getValue("ImgUrl");
+
+                                        fileEntry.setquestionid(QuesId);
+                                        fileEntry.setquestion(Question);
+                                        fileEntry.setMin(Min);
+                                        fileEntry.setMax(Max);
+                                        fileEntry.setDescription(Description);
+                                        fileEntry.setUrl(ImgUrl);
+                                        vt.add(fileEntry);
+                                }
+                                return vt;
+                        }
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The exception in TopicMetaDataXmlReader getQuesBank_DetailAg() method ::"+e);
+                        System.out.println("See Exception message inExceptionLog.txt file:: ");
+                }
+        return null;
+    }
+
+
 }//end of  file
 

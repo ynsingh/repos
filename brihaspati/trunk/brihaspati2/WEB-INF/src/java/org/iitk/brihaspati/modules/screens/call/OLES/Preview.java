@@ -76,7 +76,9 @@ public class Preview extends  SecureScreen{
 	        *Get the UserName and put it in the context
 	        *for template use
 	        */
-	        ParameterParser pp=data.getParameters();
+//        ErrorDumpUtil.ErrorLog("------Preview.java------");
+
+	    ParameterParser pp=data.getParameters();
 		String LangFile=data.getUser().getTemp("LangFile").toString();
 		try{
 			XmlWriter xmlWriter=null;
@@ -95,6 +97,7 @@ public class Preview extends  SecureScreen{
 
 			String courseid=(String)user.getTemp("course_id");
 			String courseName=(String)user.getTemp("course_name");
+            ErrorDumpUtil.ErrorLog("----Preview.java------CourseName---->"+courseid);
 			String CoursePath=TurbineServlet.getRealPath("/Courses");
 			String count = pp.getString("count","");
 			String username=data.getUser().getName();
@@ -110,21 +113,28 @@ public class Preview extends  SecureScreen{
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
 			QuizMetaDataXmlReader insertedQuestionReader=null;
 			File ff=new File(filePath);
+
 			if(!ff.exists())
 				ff.mkdirs();
 			
+             
 			String questionPath = quizID+"_Questions.xml";
 			String quizPath=quizID+"_QuestionSetting.xml";
 			String quizQuestionPath="/"+quizID+"_Temp_Questions.xml";
 			File QuizQuestionxmls=new File(filePath+"/"+quizQuestionPath);
 			File questionXml = new File(filePath+"/"+questionPath);
+
+                ErrorDumpUtil.ErrorLog("------Preview.java------1");
 			QuizQuestionxmls.deleteOnExit();
 			if(QuizQuestionxmls.exists()) {
+                ErrorDumpUtil.ErrorLog("------Preview.java------2");
 				QuizQuestionxmls.delete();				
 			}
+                ErrorDumpUtil.ErrorLog("------Preview.java------3");
 			if(questionXml.exists()){
 				insertedQuestionReader=new QuizMetaDataXmlReader(filePath+"/"+questionPath);	
 				Vector insertedQues = insertedQuestionReader.getInsertedQuizQuestions();
+                ErrorDumpUtil.ErrorLog("------Preview.java------insertedQues--->");
 				if(insertedQues==null){
 					exist="disabled";					
 				}
@@ -159,6 +169,7 @@ public class Preview extends  SecureScreen{
 			context.put("enteredQuestion",enteredQuestions);
 			context.put("marks",mark);               			
 			allQuizSetting=quizmetadata.getQuizQuestionDetail();
+            ErrorDumpUtil.ErrorLog("------Preview.java------allQuizSetting---->"+allQuizSetting);
 			if(allQuizSetting==null){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquiz",LangFile));
 				return;
@@ -168,11 +179,13 @@ public class Preview extends  SecureScreen{
 			username=tempusername[1];
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
 			QuizMetaDataXmlReader questionReader=null;
+            ErrorDumpUtil.ErrorLog("------Preview.java------3");
 			Vector<QuizFileEntry> question=new Vector<QuizFileEntry>();
 			Vector<QuizFileEntry> finalQues = new Vector<QuizFileEntry>();
 			Set finalQuestion = new TreeSet();
 			boolean found = false;
 			int ans = 0;
+            //20-02-2017
 			if(allQuizSetting!=null & allQuizSetting.size()!=0){	        		
 				for(int j=0;j<allQuizSetting.size();j++){
 					topicName = (((QuizFileEntry) allQuizSetting.elementAt(j)).getTopic());
@@ -180,60 +193,125 @@ public class Preview extends  SecureScreen{
 					questionType = (((QuizFileEntry) allQuizSetting.elementAt(j)).getQuestionType());
 					noquestion = (((QuizFileEntry) allQuizSetting.elementAt(j)).getQuestionNumber());
 					markperquestion = (((QuizFileEntry) allQuizSetting.elementAt(j)).getMarksPerQuestion());
+                    ErrorDumpUtil.ErrorLog("------Preview.java------4"+"topicName--->"+topicName+"---questionLevel--->"+questionLevel+"---questionType--->"+questionType+"---Noof Ques--->"+noquestion);
+
 					fileName = topicName +"_"+questionLevel+"_"+questionType+".xml";
+                    ErrorDumpUtil.ErrorLog("------Preview.java------5---fileName--->"+fileName);
 					questionReader=new QuizMetaDataXmlReader(questionBankFilePath+"/"+fileName);
 					question = questionReader.getRandomQuizQuestions(questionType);
+                    ErrorDumpUtil.ErrorLog("------Preview.java------501--->"+question.size());
+
 					for(int i=0;i<Integer.parseInt(noquestion);i++){
+                        ErrorDumpUtil.ErrorLog("------Preview.java------551---");
+
 						Collections.shuffle(question);
 						for(int k=0;k<question.size();k++){  
+                            
+                            String Quest = ((QuizFileEntry)question.get(0)).getQuestion();
+                            String mi = ((QuizFileEntry)question.get(0)).getMin();
+                            String ma = ((QuizFileEntry)question.get(0)).getMax();
+                            String ane = ((QuizFileEntry)question.get(0)).getAnswer();
+                            ErrorDumpUtil.ErrorLog("------Preview.java------552-11---"+Quest);
+                            ErrorDumpUtil.ErrorLog("------Preview.java------552-12---"+mi);
+                            ErrorDumpUtil.ErrorLog("------Preview.java------552-13---"+ma);
+                            ErrorDumpUtil.ErrorLog("------Preview.java------552-14---"+ane);
 							found = false;
 							QuizFileEntry q = question.get(k);
+                            //String Questt = (QuizFileEntry)question;
 							q.setFileName(fileName);
 							q.setMarksPerQuestion(markperquestion);
 							q.setQuestionType(questionType);
 							Iterator it = finalQuestion.iterator();
+                            
+                            ErrorDumpUtil.ErrorLog("------Preview.java------552-1---"+finalQuestion);
 							while (it.hasNext()) {
 								QuizFileEntry a = (QuizFileEntry) it.next();
-								 String que = a.getQuestion();
-								String an = a.getAnswer();
-								if (que.equals(q.getQuestion())&& an.equals(q.getAnswer())){ // Are they exactly the same instance?
+								String que = a.getQuestion();
+//                                String an = a.getAnswer();
+
+                                String Min ="",Max="",an="";
+                                ErrorDumpUtil.ErrorLog("------Preview.java------553---que--->"+que);
+                                if(questionType.equals("sart"))
+                                {    
+                                     Min = a.getMin();
+                                     Max= a.getMax();
+                                }
+                                else
+								     an = a.getAnswer();
+                                ErrorDumpUtil.ErrorLog("------Preview.java------55---que--->"+que+"---an--->"+an+"---");
+                                if(questionType.equals("sart"))
+                                {
+                                    if (que.equals(q.getQuestion()) && Min.equals(q.getMin()) && Max.equals(q.getMax())){ // Are they exactly the same instance?
+                                        found=true;
+                                        ErrorDumpUtil.ErrorLog("------Preview.java------6---fileName--->found sart");
+
+                                        break;
+                                    }
+                                    
+                                }
+                                else
+                                {
+								    if (que.equals(q.getQuestion())&& an.equals(q.getAnswer())){ // Are they exactly the same instance?
+                                        ErrorDumpUtil.ErrorLog("------Preview.java------7---fileName--->found ");
 							    		found=true;
 							    		break;
-							    	}
+							        }
+                                }
+                                ErrorDumpUtil.ErrorLog("------Preview.java------77---");
 							}
 							if(found){//question bank element in the treeset is already present
+                                ErrorDumpUtil.ErrorLog("------Preview.java------8---");
 								continue;
 							}
 							else{
+                                ErrorDumpUtil.ErrorLog("------Preview.java------91---");
+                                try{
+                                
+                                ErrorDumpUtil.ErrorLog("------Preview.java------911---");
 								finalQuestion.add(q);
+                                }
+                                catch(Exception et){
+                                        ErrorDumpUtil.ErrorLog("------Preview.java------91-1---"+et);
+                                }
+                                ErrorDumpUtil.ErrorLog("------Preview.java------92---");
+
 								question.removeElementAt(k);
 								question.trimToSize();
 								break;
 							}
-						}
+						}//for
 					}				     	
 				}
 				if(finalQuestion==null){
+                                ErrorDumpUtil.ErrorLog("------Preview.java------10---");
 					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion",LangFile));
 					return;
 				}	                
-				String Quesid,Ques,opt1,opt2,opt3,opt4,Answer,markques,questionty,filename,type;
+                                ErrorDumpUtil.ErrorLog("------Preview.java------11---");
+				String Quesid,Ques,opt1,opt2,opt3,opt4,Answer,markques,questionty,filename,type,Min,Max;
 				opt1="";
 				opt2="";
 				opt3="";
 				opt4="";				
-				
+				Answer="";
+                Min="";
+                Max="";
 				finalQues.addAll(finalQuestion);
 				Iterator it = finalQues.iterator();
+                ErrorDumpUtil.ErrorLog("------Preview.java------12---finalQues--->"+finalQues);
 				if(finalQues.size()!=0){                   	
+                                ErrorDumpUtil.ErrorLog("------Preview.java------12-1---");
 					context.put("finalq",finalQues);
 				}
 				while (it.hasNext()) {
+                    ErrorDumpUtil.ErrorLog("------Preview.java------13---");
 					QuizFileEntry a = (QuizFileEntry) it.next();
 					questionty = a.getQuestionType();
 					Quesid = a.getQuestionID();
 					Ques = a.getQuestion();
-					Answer = a.getAnswer();
+//					Answer = a.getAnswer();
+//                    Min = a.getMin();
+//                    Max = a.getMax();
 					markques = a.getMarksPerQuestion();
 					filename = a.getFileName();
 					if(questionty.equalsIgnoreCase("mcq")){
@@ -242,11 +320,23 @@ public class Preview extends  SecureScreen{
 						opt3=a.getOption3();
 						opt4=a.getOption4();
 					}
+					if(questionty.equalsIgnoreCase("sart")){
+                        Min = a.getMin();
+                        Max = a.getMax();
+                        Answer="";
+                    }
+                    else
+                    {
+					    Answer = a.getAnswer();
+                    }
 					/**writing temporary xml file for final question list
 					 *@see QuizMetaDataXmlWriter in Util
 					 */
-					QuizMetaDataXmlWriter.xmlwriteFinalQuestion(filePath,quizQuestionPath,Quesid,Ques,opt1,opt2,opt3,opt4,Answer,markques,filename,questionty,Cur_date);
+					//QuizMetaDataXmlWriter.xmlwriteFinalQuestion(filePath,quizQuestionPath,Quesid,Ques,opt1,opt2,opt3,opt4,Answer,markques,filename,questionty,Cur_date);
+//check this method later for proper use(code review)
+					QuizMetaDataXmlWriter.xmlwriteFinalQuestion(filePath,quizQuestionPath,Quesid,Ques,opt1,opt2,opt3,opt4,Answer,markques,filename,questionty,Cur_date,Min,Max);
 				} 
+
 			}
 		}
 		catch(Exception e) {

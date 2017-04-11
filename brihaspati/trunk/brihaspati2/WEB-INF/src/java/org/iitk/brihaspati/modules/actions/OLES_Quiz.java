@@ -440,6 +440,8 @@ public class OLES_Quiz extends SecureAction{
 			/**Get parameters from template through Parameter Parser
                          * get LangFile for multingual changes
                          */
+
+            ErrorDumpUtil.ErrorLog("--------------------OLES_Quiz Action------------randomQuiz()-------");
 			ParameterParser pp=data.getParameters();
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String courseid=data.getParameters().getString("courseID","");
@@ -452,6 +454,9 @@ public class OLES_Quiz extends SecureAction{
 			String topicName = data.getParameters().getString("topicName","");
 			String typeName = data.getParameters().getString("typeName","");
 			String levelName = data.getParameters().getString("levelName","");
+    
+            ErrorDumpUtil.ErrorLog("----randomQuiz()-------"+typeName);
+
 	
 			/**get the count parameter of tab colour
 			 *put in the context for use in template
@@ -495,10 +500,13 @@ public class OLES_Quiz extends SecureAction{
                          	 * @see xmlReader QuizMetaDataXmlReader (reader of quizId_questionSetting.xml) in Util
                          	 * @return hashmap
 				 */	
+                ErrorDumpUtil.ErrorLog("----OLES_Quiz action----"); 
 				context.put("isFile","exist");
 				QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 				HashMap hm = new HashMap();
-				hm = questionReader.getQuizQuestionNoMarks(questionReader,quizID);
+				hm = questionReader.getQuizQuestionNoMarks(questionReader,quizID);//here---
+                
+                ErrorDumpUtil.ErrorLog("----OLES_Quiz action----1"); 
 				int mark =((Integer)hm.get("marks"));
 				int enteredQuestions = ((Integer)hm.get("noQuestion"));
 				if(enteredQuestions < Integer.parseInt(maxnoQuestions) | mark < Integer.parseInt(maxMarks)){
@@ -545,6 +553,7 @@ public class OLES_Quiz extends SecureAction{
 	public String[] insertQuestionRandomly(XmlWriter xmlWriter, String newFilePath, String numberQuestion,
 			String topicName, String typeName, String levelName, String marksQuestion, String status, RunData data, String username, String courseid, String questionSettingPath, String questionsPath){
 		String variable[]=new String[4];
+        ErrorDumpUtil.ErrorLog("----OLES_Quiz action----insertQuestionRandomly()");
 		try{
 			/**Get parameters from template through Parameter Parser
                          * get LangFile for multingual changes
@@ -567,9 +576,12 @@ public class OLES_Quiz extends SecureAction{
 			String option2="";
 			String option3="";
 			String option4="";
+            String min="";
+            String max="";
+            
 			data.getParameters().setString("count","3");
 			/**check for insert question one bye one mode
-			 * and get parameter according to the type of question(mcq, tft, sat,lat)
+			 * and get parameter according to the type of question(mcq, tft, sat, sart, lat)
 			 */
 			if(mode.equals("one")|quizMode.equals("one")){
 				questionID=data.getParameters().getString("questionID","");
@@ -582,7 +594,9 @@ public class OLES_Quiz extends SecureAction{
 					option4=data.getParameters().getString("option4","");
 				}    			
 			}
-
+            
+            ErrorDumpUtil.ErrorLog("----OLES_Quiz action----insertQuestionRandomly()---------");
+            ErrorDumpUtil.ErrorLog("questionID---->"+questionID+"---question---->"+question);
 				
 			String quizXmlPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
 			String quizXml="Quiz.xml";
@@ -671,7 +685,7 @@ public class OLES_Quiz extends SecureAction{
                                                  	 */
 							xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
 							xmlWriter=QuizMetaDataXmlWriter.RandomQuizWriteTempxml(newFilePath,questionsPath,typeName);
-							QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
+							QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,min,max,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
 							xmlWriter.writeXmlFile();
 							variable[0]="success";
 						}
@@ -708,7 +722,7 @@ public class OLES_Quiz extends SecureAction{
 								 */
 								xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
 								xmlWriter=QuizMetaDataXmlWriter.RandomQuizWriteTempxml(newFilePath,questionsPath,typeName);
-								QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
+								QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,min,max,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
 								xmlWriter.writeXmlFile();
 								variable[0]="success";
 							}
@@ -740,7 +754,7 @@ public class OLES_Quiz extends SecureAction{
                                                                  */
 								xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
 								xmlWriter=QuizMetaDataXmlWriter.RandomQuizWriteTempxml(newFilePath,questionsPath,typeName);
-								QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
+								QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,min,max,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
 								xmlWriter.writeXmlFile();
 								variable[0]="success";
 							}
@@ -1551,6 +1565,7 @@ public class OLES_Quiz extends SecureAction{
                          * get LangFile for multingual changes
 			 * and parameters put in the context for use in template
                          */	    
+            ErrorDumpUtil.ErrorLog("-----------OLES_Quiz action-----------showPreview Method------");
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();

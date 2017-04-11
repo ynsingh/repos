@@ -130,14 +130,14 @@ public class Evaluate extends  SecureScreen{
 			if(!quizID.equals("")){
 				String scoreXml="score.xml";
 				Double passingMarks=0.0;
-                       	 	Double passingPercentage = 33.0;
+                Double passingPercentage = 33.0;
 				String newfilepath=filePath+"/"+quizID;
 				String questionSettingPath=quizID+"_QuestionSetting.xml";
-                        	File f=new File(newfilepath+"/"+questionSettingPath);
-                        	if(!f.exists()){
-                                	data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionStoredToAttempt",LangFile));
-                           		return;
-                        	}
+                File f=new File(newfilepath+"/"+questionSettingPath);
+                if(!f.exists()){
+                    data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionStoredToAttempt",LangFile));
+                	return;
+                }
 				quizmetadata=new QuizMetaDataXmlReader(newfilepath+"/"+questionSettingPath);
 
 				/** Read the xml file and put in the vector (questionDetailVector)
@@ -147,12 +147,12 @@ public class Evaluate extends  SecureScreen{
                         	*/
 
 				boolean flag=true;
-                        	Vector questionDetailVector=quizmetadata.getQuizQuestionDetail(quizID);
-                        	if(questionDetailVector!=null && questionDetailVector.size()!=0){
-                                	for(int i=0;i<questionDetailVector.size();i++){
-                                		String quizQuestionType=((QuizFileEntry)questionDetailVector.elementAt(i)).getQuestionType();
+                Vector questionDetailVector=quizmetadata.getQuizQuestionDetail(quizID);
+                if(questionDetailVector!=null && questionDetailVector.size()!=0){
+                    for(int i=0;i<questionDetailVector.size();i++){
+                    	String quizQuestionType=((QuizFileEntry)questionDetailVector.elementAt(i)).getQuestionType();
 						if(!type.equals("result")){
-                                 			if(quizQuestionType.equalsIgnoreCase("sat")||quizQuestionType.equalsIgnoreCase("lat")){
+                            if(quizQuestionType.equalsIgnoreCase("sat")||quizQuestionType.equalsIgnoreCase("lat")){
                                         			flag=false;
                                                 		break;
                                        			}
@@ -161,7 +161,7 @@ public class Evaluate extends  SecureScreen{
                                         		}
 						}
 						else{
-							if(quizQuestionType.equalsIgnoreCase("mcq")||quizQuestionType.equalsIgnoreCase("tft")){
+							if(quizQuestionType.equalsIgnoreCase("mcq")||quizQuestionType.equalsIgnoreCase("tft")||quizQuestionType.equalsIgnoreCase("sart")){
 								flag=false;
 							}
 							else{

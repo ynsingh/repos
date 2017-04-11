@@ -60,30 +60,39 @@ public class ViewAllQuestionUtil{
 		Vector allfile=new Vector();
 		try
 		{
+            ErrorDumpUtil.ErrorLog("topic---->"+topic+"questiontype------->"+questype);
 			TopicMetaDataXmlReader topicmetadata=null;      
                         topicmetadata=new TopicMetaDataXmlReader(filepath+"/"+"QBtopiclist.xml");
                         Vector collect=topicmetadata.getQuesBanklist_Detail();
+                        //ErrorDumpUtil.ErrorLog("collect size--->"+collect.size());
                         if(collect!=null)
                         {
                                 for(int i=0;i<collect.size();i++)
                                 {//for
                                         String topicname =((FileEntry) collect.elementAt(i)).getTopic();
                                         String filename =((FileEntry) collect.elementAt(i)).getfileName();
-					if(topicname.equals(topic)){
-						if(questype.equals("All")&&(difflevel.equals("All"))){
-						allfile.add(filename);
-						}
-						else if(questype.equals("All")&&(filename.contains(difflevel))){
-						allfile.add(filename);
-						}
-						else if((filename.contains(questype))&&(difflevel.equals("All"))){
-						allfile.add(filename);
-						}
-						else{
-						if((filename.contains(questype))&&(filename.contains(difflevel)))
-						allfile.add(filename);
-						}
-					}		
+                                        ErrorDumpUtil.ErrorLog("tname--->"+topic + "----"+topicname);
+                                        //ErrorDumpUtil.ErrorLog("tname--->"+topicname+"fname--->"+filename);
+                					    if(topicname.equals(topic))
+                                        {
+				                		    if(questype.equals("All")&&(difflevel.equals("All")))
+                                            {
+						                        allfile.add(filename);
+						                    }
+						                    else if(questype.equals("All")&&(filename.contains(difflevel)))
+                                            {
+						                        allfile.add(filename);
+						                    }
+						                    else if((filename.contains(questype))&&(difflevel.equals("All")))
+                                            {
+						                        allfile.add(filename);
+						                    }
+						                    else
+                                            {
+						                        if((filename.contains(questype))&&(filename.contains(difflevel)))
+						                            allfile.add(filename);
+						                    }
+					                    }		
                                 }
                         }
 		}
@@ -94,33 +103,52 @@ public class ViewAllQuestionUtil{
 	{
 		Vector allques=new Vector();
 		try{
-			String quesid="",ques="",opt1="",opt2="",opt3="",opt4="",Answer="",Desc="",ImgUrl="";
+            ErrorDumpUtil.ErrorLog("-------------ViewAllQuestionUtil---------------ReadTopicAllFile()---");
+			String quesid="",ques="",opt1="",opt2="",opt3="",opt4="",Answer="",Desc="",ImgUrl="",Min="",Max="";
 			TopicMetaDataXmlReader topicmetadata=null;
-                        Vector allfile=getTopicAllFile(topic,filepath,questiontype,difflevel);
-                        for(int k=0;k<allfile.size();k++)
-                        {
+            //ErrorDumpUtil.ErrorLog("topic---->"+topic+"questiontype------->"+questiontype);       
+            Vector allfile=getTopicAllFile(topic,filepath,questiontype,difflevel);
+            //ErrorDumpUtil.ErrorLog("topic---->"+topic+"questiontype------->"+questiontype);       
+            ErrorDumpUtil.ErrorLog("allfile---->"+allfile);
+            for(int k=0;k<allfile.size();k++)
+            {
 				Vector Read=new Vector();
-                                String file=(String)allfile.get(k);
+                String file=(String)allfile.get(k);
+                ErrorDumpUtil.ErrorLog("file---->"+file);
 				String btwlist=StringUtils.substringBetween(file,"_",".");
 				String tpc[]=btwlist.split("_");
 				String diffval=tpc[0];
 				String qtypeval=tpc[1];
-                                topicmetadata=new TopicMetaDataXmlReader(filepath+"/"+file);
-                                if(questiontype.equals("mcq")){
-                                Read=topicmetadata.getQuesBank_Detail();
-                                }
-                                else{
-                                Read=topicmetadata.getQuesBank_Detail1();
-                                }
+                ErrorDumpUtil.ErrorLog("File---->"+file+"--diffval--"+diffval+"--qtypeval--"+qtypeval);
+                topicmetadata=new TopicMetaDataXmlReader(filepath+"/"+file);
+                if(questiontype.equals("mcq"))
+                {
+                    Read=topicmetadata.getQuesBank_Detail();
+                }
+                else if(questiontype.equals("sart"))
+                {
+                    ErrorDumpUtil.ErrorLog("I am in Detail 3");
+                    Read=topicmetadata.getQuesBank_DetailAg();
+                }
+                else
+                {
+                    //ErrorDumpUtil.ErrorLog("-------------ViewAllQuestionUtil---------------ReadTopicAllFile()---");
+                    ErrorDumpUtil.ErrorLog("I am in Detail 1");
+                    Read=topicmetadata.getQuesBank_Detail1();
+                    ErrorDumpUtil.ErrorLog("Size---->"+Read.size());
+                }
+
 				if(Read != null)
-                        	{
+                {
 					File fpath= new File(filepath);
 					File fileName = new File(fpath.getParent());
 					String userName=fileName.getName();
-                               		for(int n=0;n<Read.size();n++)
-                               		{
-                                       		quesid =((FileEntry)Read.elementAt(n)).getquestionid();
+                    ErrorDumpUtil.ErrorLog("userName---->"+userName);
+                    for(int n=0;n<Read.size();n++)
+                    {
+                      		                quesid =((FileEntry)Read.elementAt(n)).getquestionid();
                                        		ques =((FileEntry)Read.elementAt(n)).getquestion();
+                                            ErrorDumpUtil.ErrorLog("Question---->"+quesid);
                                        		if(questiontype.equals("mcq")){
                                        			opt1 =((FileEntry)Read.elementAt(n)).getoptionA();
                                        			opt2 =((FileEntry)Read.elementAt(n)).getoptionB();
@@ -128,6 +156,8 @@ public class ViewAllQuestionUtil{
                                         		opt4 =((FileEntry)Read.elementAt(n)).getoptionD();
                                         	}
                                         	Answer =((FileEntry)Read.elementAt(n)).getAnswer();
+                                        	Min =((FileEntry)Read.elementAt(n)).getMin();
+                                        	Max =((FileEntry)Read.elementAt(n)).getMax();
                                         	Desc =((FileEntry)Read.elementAt(n)).getDescription();
                                         	ImgUrl=((FileEntry)Read.elementAt(n)).getUrl();
                                         	Map map = new HashMap();
@@ -145,7 +175,21 @@ public class ViewAllQuestionUtil{
                                         		map.put("dlevel",diffval);
                                         		map.put("UserName",userName);
                                         	}
-                                        	else{
+                                            else if(questiontype.equals("sart"))
+                                            {
+                                                map.put("quesid",quesid);
+                                                map.put("ques",ques);
+                                                map.put("Min",Min);
+                                                map.put("Max",Max);
+                                                map.put("Desc",Desc);
+                                                map.put("ImgUrl",ImgUrl);
+                                                map.put("Qtype",qtypeval);
+                                                map.put("dlevel",diffval);
+                                                map.put("UserName",userName);
+                                            }
+                                        	else
+                                            {
+                                                ErrorDumpUtil.ErrorLog("I am in Detail 2");
                                         		map.put("quesid",quesid);
                                         		map.put("ques",ques);
                                         		map.put("Answer",Answer);

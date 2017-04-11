@@ -96,6 +96,10 @@ public class FileEntry
 	private String Difflevel;
         private String Description;
 	private String InstId;
+
+    private String Min;
+    private String Max;    
+
 	public void setemailId(String emailId)
         {
                 this.emailId=emailId;
@@ -464,6 +468,23 @@ public class FileEntry
         {
                 return StudentFullName;
         }
+        public void setMax(String Max)
+        {
+                this.Max=Max;
+        }
+        public void setMin(String Min)
+        {
+                this.Min=Min;
+        }
+        public String getMax()
+        {
+                return Max;
+        }
+        public String getMin()
+        {
+                return Min;
+        }
+
 
 
 		

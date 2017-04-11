@@ -172,14 +172,14 @@ $!data.getMessage()
            					<input type="RADIO" name="answer"  value="D" $!D>$!option4
             			</td>
 					</tr>
-					#elseif($quesType=="lat" || $quesType=="sat")
+					#elseif($quesType=="lat" || $quesType=="sat" || $quesType=="sart")
 ##sat & lat
 
 					<tr>
 						<td  align=left width="30%">
 							<b>$brih_answer</b>
 						<td align=left>
-							<textarea name="answer" id="textAnswer" wrap="physical" rows=2 cols=40 > $!finalAnswer </textarea>
+							<textarea name="answer" id="textAnswer" wrap="physical" rows=2 cols=40 >$!finalAnswer</textarea>
 						</td>
 					</tr>
 					#else

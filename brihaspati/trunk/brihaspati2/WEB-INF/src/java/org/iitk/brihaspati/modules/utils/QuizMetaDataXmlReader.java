@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)QuizMetaDataXmlReader.java
  *
- *  Copyright (c) 2010-2011,2013 DEI, Agra, IITK
+ *  Copyright (c) 2010-2011,2013 DEI, Agra, 2017 IITK
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -67,6 +67,7 @@ public class QuizMetaDataXmlReader{
 	 * @param file String
 	 */
 	public QuizMetaDataXmlReader(String file) throws Exception{
+ //       ErrorDumpUtil.ErrorLog("----------QuizMetaDataXmlReader---const()--------->"+file);
 		xr=new XmlReader(file);
 	}
 	
@@ -259,6 +260,11 @@ public class QuizMetaDataXmlReader{
 					fileEntry.setQuestionLevel(ats.getValue("QuestionLevel"));
 					fileEntry.setMarksPerQuestion(ats.getValue("QuestionMarks"));
 					fileEntry.setQuestionNumber(ats.getValue("QuestionNumber"));
+    //                ErrorDumpUtil.ErrorLog("---QuizMetaDataXmlReader Util-----getQuizQuestionDetail()-----");
+      //              ErrorDumpUtil.ErrorLog("----id---->"+ats.getValue("ID"));
+        //            ErrorDumpUtil.ErrorLog("----TopicName---->"+ats.getValue("TopicName"));
+          //          ErrorDumpUtil.ErrorLog("----QuestionType---->"+ats.getValue("QuestionType"));
+            //        ErrorDumpUtil.ErrorLog("----QuestionLevel---->"+ats.getValue("QuestionLevel"));
 					vt.add(fileEntry);					
 				}        			
 			}        		
@@ -277,6 +283,9 @@ public class QuizMetaDataXmlReader{
 	 * @author Nupur Dixit
 	 */
 	public HashMap getQuizQuestionNoMarks(QuizMetaDataXmlReader questionReader,String quizID, String id){
+     //   ErrorDumpUtil.ErrorLog("Test--->");
+       // ErrorDumpUtil.ErrorLog("----------QuizMetaDataXmlReader------------getQuizQuestionNoMarks()--------quizID--"+quizID+"----Id--"+id);
+
 		HashMap hm = new HashMap(); 
 		try{
 			int markscount = 0;
@@ -289,6 +298,8 @@ public class QuizMetaDataXmlReader{
 					int marks = Integer.parseInt(((QuizFileEntry) questionList.elementAt(j)).getMarksPerQuestion());
 					numberofquestionsInserted = numberofquestionsInserted + question;
 					markscount = markscount + question*marks;
+                    //ErrorDumpUtil.ErrorLog("----------QuizMetaDataXmlReader------------getQuizQuestionNoMarks()--------question----"+question+"----marks--"+marks);
+                    
 				}				     	
 			}
 			hm.put("marks", markscount);
@@ -307,6 +318,8 @@ public class QuizMetaDataXmlReader{
 	 * @author Nupur Dixit
 	 */
 	public HashMap getQuizQuestionNoMarks(QuizMetaDataXmlReader questionReader,String quizID){
+     //   ErrorDumpUtil.ErrorLog("----------QuizMetaDataXmlReader------------getQuizQuestionNoMarks()--------quizID--"+quizID);
+
 		HashMap hm = new HashMap(); 
 		try{
 			int markscount = 0;
@@ -502,13 +515,18 @@ public class QuizMetaDataXmlReader{
 	 * @return Vector
 	 * @author Aayushi Sr
 	 */
+
+
+
+    //you have to work here in quizfileentry java for max and min
 	public Vector getRandomQuizQuestions(String typeName){
 		Vector<QuizFileEntry> vt=new Vector<QuizFileEntry>();
 		try{
 			XmlData files[]=xr.getElements("Question");
 			if(files!=null){
+//                ErrorDumpUtil.ErrorLog("---QuizMetaDataXmlReader.java---getRandomQuizQuestions()---");
 				Attributes ats;
-				String questionID,question,option1,option2,option3,option4,answer;
+				String questionID,question,option1,option2,option3,option4,answer,Min,Max;
 				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
@@ -525,10 +543,16 @@ public class QuizMetaDataXmlReader{
 						fileEntry.setOption3(option3);
 						fileEntry.setOption4(option4);
 					}
+                    Min=ats.getValue("Min");        
+                    Max=ats.getValue("Max");        
 					answer=ats.getValue("Answer");
+                    //ErrorDumpUtil.ErrorLog("---QuizMetaDataXmlReader.java---getRandomQuizQuestions1---MIN-->"+Min+"--Max-->"+Max+"--answer-->"+answer);
 					fileEntry.setQuestionID(questionID);
 					fileEntry.setQuestion(question);                               
-					fileEntry.setAnswer(answer);                               
+					fileEntry.setAnswer(answer);                              
+                    fileEntry.setMin(Min);
+                    fileEntry.setMax(Max);
+                     
 					vt.add(fileEntry);
 				}
 				return vt;
@@ -707,6 +731,7 @@ public class QuizMetaDataXmlReader{
 	 * This method gets all question ids and filepaths (which are already inserted) from quizquestions file of a quiz
 	 * @return Vector
 	 * @author Nupur Dixit
+     * @author  Sharad Singh  
 	 */
 	public Vector getInsertedQuizQuestions(){
 		Vector vt=new Vector();
@@ -715,11 +740,16 @@ public class QuizMetaDataXmlReader{
 			if(files!=null){
 				Attributes ats;
 				String questionID,fileName,marksQuestion;
-				String question,optA,optB,optC,optD,answer,type;
+				String question,optA,optB,optC,optD,answer,type,min,max;
+     //           ErrorDumpUtil.ErrorLog("----------QuizMetaDataXmlReader------------getInsertedQuizQuestions---");
+            
 				optA="";
 				optB="";
 				optC="";
 				optD="";
+                min="";
+                max="";
+                
 				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
@@ -728,13 +758,24 @@ public class QuizMetaDataXmlReader{
 					fileName=ats.getValue("FileName");
 					int index=fileName.lastIndexOf('_'); 
 					type = fileName.substring((index+1),(index+4));
+                    if(type.equalsIgnoreCase("sar"))
+                        type ="sart";                    
+                    //ErrorDumpUtil.ErrorLog("----------QuizMetaDataXmlReader------------getInsertedQuizQuestions---type1--->"+fileName);
+                    //ErrorDumpUtil.ErrorLog("----------QuizMetaDataXmlReader------------getInsertedQuizQuestions---type--->"+index);
 					if(type.equalsIgnoreCase("mcq")){
 						optA = ats.getValue("OptionA");
 						optB = ats.getValue("OptionB");
 						optC = ats.getValue("OptionC");
 						optD = ats.getValue("OptionD");
 					}
-					answer = ats.getValue("Answer");
+					if(type.equalsIgnoreCase("sart"))
+                    {
+                        max = ats.getValue("Max");
+                        min = ats.getValue("Min");
+                        answer = "";
+                    }
+                    else
+                    	answer = ats.getValue("Answer");
 					marksQuestion=ats.getValue("QuestionMarks");
 					fileEntry.setQuestionID(questionID);
 					fileEntry.setQuestion(question);
@@ -744,7 +785,12 @@ public class QuizMetaDataXmlReader{
 						fileEntry.setOption3(optC);
 						fileEntry.setOption4(optD);
 					}
-					fileEntry.setAnswer(answer);
+                    if(type.equalsIgnoreCase("sart")){
+                        fileEntry.setMin(min);
+                        fileEntry.setMax(max);
+                    }                
+                    else
+					    fileEntry.setAnswer(answer);
 					fileEntry.setFileName(fileName);
 					fileEntry.setMarksPerQuestion(marksQuestion);
 					fileEntry.setQuestionType(type);
@@ -984,9 +1030,10 @@ public class QuizMetaDataXmlReader{
 		Vector vt=new Vector();
 		try{
 			XmlData files[]=xr.getElements("QuizQuestions");
+//            ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlReader----getFinalAnswer()-->");
 			if(files!=null){
 				Attributes ats;
-				String questionID,fileName,answer,awardedMarks,studentAnswer,instructorAnswer,question,questionMarks;		
+				String questionID,fileName,answer,awardedMarks,studentAnswer,instructorAnswer,question,questionMarks,min,max;;		
 				String type,optA,optB,optC,optD;
 				type = optA=optB=optC=optD="";
 				for(int j=0;j<files.length;j++){
@@ -999,27 +1046,49 @@ public class QuizMetaDataXmlReader{
 					answer = ats.getValue("Answer");
 					awardedMarks = ats.getValue("AwardedMarks");
 					studentAnswer = ats.getValue("StudentAnswer");
-					instructorAnswer = ats.getValue("InstructorAnswer");
+					//instructorAnswer = ats.getValue("InstructorAnswer");
 					questionMarks = ats.getValue("QuestionMarks");
 					int index=fileName.lastIndexOf('_'); 
 					type = fileName.substring((index+1),(index+4));
+                    if(type.equalsIgnoreCase("sar"))
+                        type ="sart";
+                
+//                    ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlReader----getFinalAnswer()-->"+questionID+"---"+question+"---"+fileName+"---"+answer+"---"+awardedMarks+"---"+studentAnswer+"------"+questionMarks+"---Type-->"+type+"---"+noofAts);
+                    
 					if(noofAts==11){
+//                        ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlReader----getFinalAnswer()-->11");
 						optA = ats.getValue("OptionA");
 						optB = ats.getValue("OptionB");
 						optC = ats.getValue("OptionC");
 						optD = ats.getValue("OptionD");
 						fileEntry.setOption1(optA);
-                                                fileEntry.setOption2(optB);
-                                                fileEntry.setOption3(optC);
-                                                fileEntry.setOption4(optD);
+                        fileEntry.setOption2(optB);
+                        fileEntry.setOption3(optC);
+                        fileEntry.setOption4(optD);
 					}
+                    if(type.equalsIgnoreCase("sart"))
+                    {
+//                        ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlReader----getFinalAnswer()-->12");
+                        min = ats.getValue("Min");   
+                        max = ats.getValue("Max"); 
+                        instructorAnswer = "";
+                        fileEntry.setMin(min);  
+                        fileEntry.setMax(max);  
+                    }
+                    else
+                    {
+                        instructorAnswer = ats.getValue("InstructorAnswer");
+                        fileEntry.setInstructorAnswer(instructorAnswer);
+//                        ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlReader----getFinalAnswer()-->13");   
+                    }
 					fileEntry.setQuestionID(questionID);
 					fileEntry.setQuestion(question);
 					fileEntry.setAnswer(answer);
 					fileEntry.setFileName(fileName);
 					fileEntry.setAwardedMarks(awardedMarks);
 					fileEntry.setStudentAnswer(studentAnswer);
-					fileEntry.setInstructorAnswer(instructorAnswer);
+                    //if(!type.equalsIgnoreCase("sart"))
+					//    fileEntry.setInstructorAnswer(instructorAnswer);
 					fileEntry.setQuestionType(type);
 					fileEntry.setMarksPerQuestion(questionMarks);
 					fileEntry.setnoofAttribute(Integer.toString(noofAts));
@@ -1556,10 +1625,12 @@ public class QuizMetaDataXmlReader{
 	public Vector getRandomTempQuizQuestions(String typeName){
 		Vector<QuizFileEntry> vt=new Vector<QuizFileEntry>();
 		try{
+//ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlReader----getRandomTempQuizQuestions()---typeName--->"+typeName);
 			XmlData files[]=xr.getElements("QuizQuestions");
 			if(files!=null){
 				Attributes ats;
-				String questionID,question,option1,option2,option3,option4,answer,QuesMarks,filename,creationdate;
+				//String questionID,question,option1,option2,option3,option4,answer,QuesMarks,filename,creationdate;
+				String questionID,question,option1,option2,option3,option4,answer,min,max,QuesMarks,filename,creationdate;
 				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
@@ -1577,13 +1648,25 @@ public class QuizMetaDataXmlReader{
 						fileEntry.setOption3(option3);
 						fileEntry.setOption4(option4);
 					}
-					answer=ats.getValue("Answer");
+                    if(noofAts==7)
+                    {
+                        
+						min=ats.getValue("Min");
+						max=ats.getValue("Max");
+						fileEntry.setMin(min);
+						fileEntry.setMax(max);
+                    }
+                    else
+                    {
+					    answer=ats.getValue("Answer");
+					    fileEntry.setAnswer(answer);                               
+                    }
 					QuesMarks=ats.getValue("QuestionMarks");
 					filename=ats.getValue("FileName");
 					creationdate=ats.getValue("CreationDate");
 					fileEntry.setQuestionID(questionID);
 					fileEntry.setQuestion(question);                               
-					fileEntry.setAnswer(answer);                               
+					//fileEntry.setAnswer(answer);                               
 					fileEntry.setMarksPerQuestion(QuesMarks);                               
 					fileEntry.setFileName(filename);                               
 					fileEntry.setCreationDate(creationdate);

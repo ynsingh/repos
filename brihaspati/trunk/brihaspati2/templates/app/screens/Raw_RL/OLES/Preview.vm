@@ -80,11 +80,9 @@ $page.setBgColor("bgcolor")
                               <td align=left width=20% >
                                 <font color="$ui.fontColorBlue"><b>$brih_entered1 $brih_qus
                        </td>
-
                 </tr>
         </table>
 </div>
-
 
 #foreach($finalQ in $finalq)
 	#if($velocityCount%2==0)
@@ -98,7 +96,20 @@ $page.setBgColor("bgcolor")
 	                <td> $!finalQ.getQuestion() </td>
 			<td colspan=2 width=30%> <font size=4> <b>$brih_qus</b></font></td>
 		</tr>
-		<tr align="right">	
+		<tr align="right">
+        #if($finalQ.getQuestionType() == "sart")
+        <td align=left colspan=2 width=30% >
+            <font size=4> <b>  $brih_min $brih_range   </b></font>
+        </td>
+        <td align=left colspan=2>
+            <input type="text" name="minr" value="$finalQ.getMin()" readonly>
+        </td>
+        #else
+        <td align=left colspan=2 width=30% >
+            <font size=4> <b>  Answer    </b></font>
+        </td>
+        #end  
+	
 	        <td colspan="2">
 			<table align=right border=0 cellpadding="5" width=100% >	
 				#set($a="")
@@ -137,7 +148,7 @@ $page.setBgColor("bgcolor")
 		                	            	$!finalQ.getOption3()
 							<b> $brih_c </b>
 		               				<INPUT TYPE="CHECKBOX" NAME="C" VALUE ="" $c disabled>
-		                		</td>
+    		                		</td>
 					</tr>
                 
 				#end
@@ -171,6 +182,14 @@ $page.setBgColor("bgcolor")
 				<textarea name="message" wrap="physical" rows=2 cols=40 "readonly" > $!finalQ.getAnswer() </textarea>
 			</td>
 		</tr>	
+    #elseif($finalQ.getQuestionType()=="sart")
+        <td align=left colspan=2 width=30% >
+            <font size=4> <b>  $brih_max $brih_range    </b></font>
+        </td>
+        <td align=left colspan=2>
+            <input type="text" name="maxr" value="$finalQ.getMax()" readonly>
+        </td>
+
 	#else
 		<tr>
 			<td align="right" colspan=2>

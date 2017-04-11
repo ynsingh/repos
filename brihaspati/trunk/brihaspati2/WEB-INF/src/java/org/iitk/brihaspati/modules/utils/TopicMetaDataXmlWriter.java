@@ -1160,6 +1160,40 @@ public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,Str
                 ats.addAttribute("","ImgUrl","","",StringUtil.replaceXmlSpecialCharacters(ImgUrl));
                 xmlWriter.appendElement("Question",null,ats);
         }
+
+        //method for creating xml file max and min range type question.
+
+        public static void appendQues_BankAg(XmlWriter xmlWriter,String Quesid,String Ques,String Min,String Max,String Description,String ImgUrl)
+        {
+                    ErrorDumpUtil.ErrorLog("-------------TopicMetaData XmlWriter --------appendQues_BankAg()-----");
+                    ErrorDumpUtil.ErrorLog("QuesId-->"+Quesid);
+                    ErrorDumpUtil.ErrorLog("Question-->"+Ques);
+                    ErrorDumpUtil.ErrorLog("Min-->"+Min);
+                    ErrorDumpUtil.ErrorLog("Max-->"+Max);
+                    ErrorDumpUtil.ErrorLog("Description-->"+Description);
+                    ErrorDumpUtil.ErrorLog("ImgUrl-->"+ImgUrl);
+
+                AttributesImpl ats=new AttributesImpl();
+                ats.addAttribute("","Quesid","","",StringUtil.replaceXmlSpecialCharacters(Quesid));
+                ats.addAttribute("","Ques","","",StringUtil.replaceXmlSpecialCharacters(Ques));
+                //ats.addAttribute("","Answer","","",StringUtil.replaceXmlSpecialCharacters(Answer));
+                ats.addAttribute("","Min","","",StringUtil.replaceXmlSpecialCharacters(Min));
+                ats.addAttribute("","Max","","",StringUtil.replaceXmlSpecialCharacters(Max));
+                ats.addAttribute("","Description","","",StringUtil.replaceXmlSpecialCharacters(Description));
+                ats.addAttribute("","ImgUrl","","",StringUtil.replaceXmlSpecialCharacters(ImgUrl));
+                try{
+                    xmlWriter.appendElement("Question",null,ats);
+                
+                                    
+                }
+                catch(Exception e)
+                {
+                    ErrorDumpUtil.ErrorLog("Error in appendQues_BankAg !!"+e);
+                    //data.setMessage("See ExceptionLog !! " );
+                }
+
+        }
+
         public static void appendQues_Banklist(XmlWriter xmlWriter,String Topicname,String Questiontype,String Difflevel,String Filename,String CreationDate)
         {
                 AttributesImpl ats=new AttributesImpl();
@@ -1226,6 +1260,55 @@ public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,Str
                 }
               return xmlWriter;
         }
+
+
+        //functionality and code has to be reviwed later @ sharad
+
+        public static XmlWriter Ques_BankXmlAg(String filePath,String xmlfile)
+        {
+            XmlWriter xmlWriter=null;
+            File descFile=new File(filePath+"/"+xmlfile);
+            try
+            {
+                TopicMetaDataXmlReader topicMetaDataReader=new TopicMetaDataXmlReader(filePath+"/"+xmlfile);
+                Vector v=topicMetaDataReader.getQuesBank_DetailAg();
+                descFile.delete();
+                OLESRootOnly(descFile.getAbsolutePath());
+                xmlWriter=new XmlWriter(filePath+"/"+xmlfile);
+                for(int i=0;i<v.size();i++)
+                {
+                    String QuesId=((FileEntry)v.get(i)).getquestionid();
+                    ErrorDumpUtil.ErrorLog("QId--->"+QuesId);
+                    String Question=((FileEntry)v.get(i)).getquestion();
+                    //String Answer=((FileEntry)v.get(i)).getAnswer();
+                    String Min=((FileEntry)v.get(i)).getMin();
+                    String Max=((FileEntry)v.get(i)).getMax();
+                    String Description=((FileEntry)v.get(i)).getDescription();
+                    String ImgUrl=((FileEntry)v.get(i)).getUrl();
+                    ErrorDumpUtil.ErrorLog("-------------XmlWriter --------Ques_BankXmlAg()-----");
+                    ErrorDumpUtil.ErrorLog("QuesId-->"+QuesId);
+                    ErrorDumpUtil.ErrorLog("Question-->"+Question);
+                    ErrorDumpUtil.ErrorLog("Min-->"+Min);
+                    ErrorDumpUtil.ErrorLog("Max-->"+Max);
+                    ErrorDumpUtil.ErrorLog("Description-->"+Description);
+                    ErrorDumpUtil.ErrorLog("ImgUrl-->"+ImgUrl);
+                    try{
+                    appendQues_BankAg(xmlWriter,QuesId,Question,Min,Max,Description,ImgUrl);
+                    }
+                    catch(Exception e)
+                    {
+                        ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil in ist try [XmlWriter Ques_BankXml_Ag]::"+e.getMessage());
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil [XmlWriter Ques_BankXml_Ag]::"+e.getMessage());
+                System.out.println("See Exception message in ExceptionLog.txt file:: ");
+            }
+            return xmlWriter;
+        }
+
 public static XmlWriter Ques_BankXmlist(String filePath,String xmlfile)
         {
                 XmlWriter xmlWriter=null;

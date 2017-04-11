@@ -85,6 +85,7 @@ $!data.getMessage()
 			<option value="tft"> #if($lang =="hindi" || $lang == "gujarati")$brih_true/$brih_false $brih_qus #else $brih_true/$brih_false $brih_type #end 
 			<option value="maq" disabled="true"> #if($lang =="hindi" || $lang == "gujarati")$brih_match $brih_qus #else $brih_match $brih_type #end
 			<option value="sat"> #if($lang =="hindi" || $lang == "gujarati")$brih_shortType $brih_answer $brih_qus #else $brih_shortType $brih_answer $brih_type #end
+			<option value="sart"> #if($lang =="hindi" || $lang == "gujarati")$brih_shortType $brih_answer $brih_qus$brih_ag #else  $brih_shortType $brih_answer $brih_range $brih_type #end 
 			<option value="lat"> #if($lang =="hindi" || $lang == "gujarati")$brih_long $brih_answer $brih_qus #else $brih_long $brih_answer $brih_type #end
 			</option>
                 	</select>
@@ -126,7 +127,7 @@ $!data.getMessage()
 	<input type="hidden" name="valdifflevel">
 	<input type="hidden" name="typeques" value="$typeques">
 	<input type="hidden" name="mode" value="$mode">
-	<input type="hidden" name="page" value="$page">
+    	<input type="hidden" name="page" value="$page">
 	<input type="hidden" name="status" value="$status">
 	<input type="hidden" name="addques" value="$addques">
 	<input type="hidden" name="count" value="$tdcolor">

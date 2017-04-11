@@ -92,6 +92,8 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
     	private String IPAddress;
     	private String Attributeno;
     	private String noofAttempt;
+        private String Min,Max;
+        
 
 //-----------------------------OLES
 	
@@ -114,34 +116,36 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 //	}	
 //---------------------------------Quiz(DEI Agra)-------------------------------
 	/*
-      	* compareTo method is overrided to make quizFileEntry objects comparable
-      	*/
-    	public int compareTo(QuizFileEntry o1){
-    		//ErrorDumpUtil.ErrorLog("\n questionbank's question"+o1.getQuestion());
-    		//ErrorDumpUtil.ErrorLog("\n tree set question"+this.getQuestion());
-    		if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?    	
-    			//ErrorDumpUtil.ErrorLog("inside exactly same");
-    			return 0;
-    		}
-		if (o1 == null){ // Is the object being compared null?
-			//ErrorDumpUtil.ErrorLog("inside null situation");
-			return 1;
-		}
+     * compareTo method is overrided to make quizFileEntry objects comparable
+     */
+    public int compareTo(QuizFileEntry o1){
+        //ErrorDumpUtil.ErrorLog("\n questionbank's question"+o1.getQuestion());
+        //ErrorDumpUtil.ErrorLog("\n tree set question"+this.getQuestion());
+        //if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?    	
+        if (o1.getQuestion().equals(this.getQuestion())){ // Are they exactly the same instance?    	
+    	    //ErrorDumpUtil.ErrorLog("inside exactly same");
+            return 0;
+        }
+    	if (o1 == null){ // Is the object being compared null?
+	    	//ErrorDumpUtil.ErrorLog("inside null situation");
+		    return 1;
+	    }
 
-		if (!(o1 instanceof QuizFileEntry)){ // Is the object being compared also a QuizFileEntry object?
-			//ErrorDumpUtil.ErrorLog("inside wrong object type");
-			return 1;
-		}
-		//ErrorDumpUtil.ErrorLog("after every condition check");
-    		return 1;
-    	}
+    	if (!(o1 instanceof QuizFileEntry)){ // Is the object being compared also a QuizFileEntry object?
+	    	//ErrorDumpUtil.ErrorLog("inside wrong object type");
+		    return 1;
+	    }
+    	//ErrorDumpUtil.ErrorLog("after every condition check");
+        return 1;
+    }
     
     
 	public boolean equals(QuizFileEntry o1)
-    	{
+    {
     		//ErrorDumpUtil.ErrorLog("o1 's question"+o1.getQuestion());
     		//ErrorDumpUtil.ErrorLog("this 's question"+this.getQuestion());
-    		if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?
+//    		if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?
+    		if (o1.getQuestion().equals(this.getQuestion())){ // Are they exactly the same instance?
     	 
     			//ErrorDumpUtil.ErrorLog("inside exactly same");
     			return true;
@@ -458,4 +462,22 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	public String getNoofAttempt(){
 		return noofAttempt;
 	}
+     public void setMin(String Min)
+     {
+             this.Min=Min;
+     }
+     public String  getMin()
+     {
+             return Min;
+     }
+    public void setMax(String Max)
+     {
+             this.Max=Max;
+     }
+     public String  getMax()
+     {
+             return Max;
+     }
+
+
 }

@@ -188,10 +188,23 @@ $!data.getMessage()
 					<td colspan=4>$brih_notAttempted</td>
 					#end					
 				</tr>
+                #if($answer.getQuestionType()=="sart")
+                <tr >
+                <td><b>$brih_min $brih_range</b></td>
+                <td> $answer.getMin()</td>
+
+                </tr>
+                <tr >
+                <td><b>$brih_max $brih_range</b></td>
+                <td> $answer.getMax()</td>
+                </tr>
+                #else
+
 				<tr >
 					<td><b>$brih_correct $brih_answer</td>
 					<td colspan=4>$!answer.getInstructorAnswer()</td>
 				</tr>
+                #end
 				<tr>
 					<td> <b>$brih_marks $brih_obtained</td>
 					<td colspan=4>$!answer.getAwardedMarks()</td>

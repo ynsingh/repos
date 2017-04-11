@@ -200,6 +200,8 @@ $!data.getMessage()
 		    			#set($tft='selected')                		
 				#elseif($questionType=='sat')						
 		    			#set($sat='selected')							
+                #elseif($questionType=='sart')                       
+                        #set($sart='selected')
 				#else						
 		    			#set($lat='selected')                		
 				#end
@@ -207,6 +209,7 @@ $!data.getMessage()
 			<option value="mcq" $mcq>$brih_multiplechoice
 			<option value="tft" $tft>$brih_true/$brih_false
 			<option value="sat" $sat>$brih_shortType $brih_answer
+			<option value="sart" $sat>$brih_shortType $brih_answer $brih_range
 			<option value="lat" $lat>$brih_long $brih_answer
 			</option>			
                 </select></td>        	

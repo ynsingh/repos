@@ -1,0 +1,219 @@
+#*
+ * @(#) Insert_Short_Ag.vm
+ * Copyright(c)2017, ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @Created date : 03-03-2017
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/autosaveform.js")"></script>
+<style>
+div.savestatus
+{
+ /* Style for the "Saving Form Contents" DIV that is shown at the top of the form */
+        width:180px;
+        padding:10px 10px;
+        margin: 60px 0 0 710px;
+        border:1px solid gray;
+        background:#fff6e5;
+        -webkit-box-shadow: 0 0 8px #818181;
+        box-shadow: 0 0 8px #818181;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius:5px;
+        color:red;
+        position:absolute;
+        top:-20px;
+}
+        form#feedbackform div{ /*CSS used by form*/
+        margin-bottom:9px;
+}
+</style>
+<script>
+var formsave1=new autosaveform({
+        formid: 'feedbackform2',
+        pause: 1000 //<--no comma following last option!
+})
+</script>
+</head>
+
+$page.setTitle("Enter the Question")
+$page.setBgColor($ui.bgcolor)
+$!data.getMessage()
+<table bgcolor="$ui.menuColor" width=100% cellspacing=0>
+<tr>
+        <td><b>
+	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+        <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("mode","$mode").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
+	#if($acttype=="viewques" || $acttype=="editques")
+	<a href=$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","$mode").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel)> #if($lang=="hindi")$brih_queBank $brih_view #else $brih_view $brih_queBank #end</a> |
+	#end
+	#if($acttype=="viewques")
+        #if($lang=="hindi")$brih_qus $brih_view #else $brih_view $brih_qus #end
+	#elseif($acttype=="editques")
+        #if($lang=="hindi")$brih_qus $brih_edit #else $brih_edit $brih_qus #end
+	#else	
+	#if($lang=="hindi")$brih_qus $brih_add #else $brih_add $brih_qus #end
+	#end
+        </b></td>
+</tr>
+</table>
+<form name="frm" id="feedbackform2" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Insert_Short_Ag.vm").setAction("OnlineExaminationSystem")>
+<table width="100%" bgcolor="$ui.tableColor" cellpadding="2">
+#if($acttype=="editques" || $acttype=="viewques")
+<tr bgcolor="$ui.menuColor">
+<td><b> $brih_queBank $brih_topic : $topic</b></td>
+#if($qsize.size()>0)
+<td><b> $brih_qus $brih_number : $qsize.size()</b></td>
+#end
+</tr>
+#else
+<tr bgcolor="$ui.menuColor">
+<td><b> $brih_queBank $brih_topic : $Topicname</b></td>
+#if($qsize.size()>0)
+<td><b> $brih_qus $brih_number : $qsize.size()</b></td>
+#end
+</tr>
+#end
+</table>
+<table width="100%" bgcolor="$ui.menuColor" cellpadding="2"> 
+##if($acttype!="editques")  
+<tr bgcolor="$ui.menuColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$crsId/$topic/$quesimage")" width="80" height="100"></td></tr>
+##end
+  <tr>
+   <td align="centre" width="30%">
+     <b><font face="$ui.sansSerifFonts">$brih_qus</font></b>
+   </td>
+   <td width=70% align="left" >
+     <font face="$ui.sansSerifFonts">
+      <textarea name="Question" rows=3 cols=50 #if($mode=="View") readonly #end>$!Ques</textarea >
+	</td>
+ </tr>
+ #if($typeques=="imgtypeques")
+#if($acttype !="viewques"))
+ <tr>
+	#fileUpload ("<b>$brih_Image $brih_upload </b><font color=Red>*</font>" "quesimg")
+ </tr>
+ #end
+ #end
+
+ <tr bgcolor="$ui.tableColor"> 
+#*
+  	<td width=30% align="centre" >
+    	<b><font face="$ui.sansSerifFonts"> #if($lang=="hindi")$brih_answer  #else Answer #end </font></b>
+   	</td>
+   	<td width=70% align="left" >
+    	<font face="$ui.sansSerifFonts">
+      <textarea name="Answer" rows=3 cols=50 #if($mode=="View") readonly #end>$!Ans </textarea >
+   	</td>
+*#
+
+    <td>
+        <b><font face="$ui.sansSerifFonts">$brih_min</td> ##if($lang=="hindi")$brih_min  #else $brih_min #end </font></b></td>
+
+            <td>
+                #if($mode=="View")
+                <input type="text" name="val1" value="$minval">
+                #else
+                <input type="text" name="val1" value="$!minval">
+                #end
+
+            </td>
+    <td>
+     <b><font face="$ui.sansSerifFonts"> $brih_max</td> ##if($lang=="hindi")$brih_max  #else $brih_max #end </font></b></td>
+    <td>
+            #if($mode=="View")
+                <input type="text" name="val2" value="$maxval">
+                #else
+                <input type="text" name="val2" value="$!maxval">
+                #end
+    </td>
+
+ </tr>
+  <tr> 
+	<td width=30% align="centre" >
+        <b><font face="$ui.sansSerifFonts">$brih_desc</font></b>
+        </td>
+        <td  width=70% align="left" >
+        <font face="$ui.sansSerifFonts">
+        <textarea name="hint" rows=3 cols=50 #if($mode=="View") readonly #end >$!Desc</textarea >
+        </td>
+	##formCell("Hint" "hint" "$!hint")
+
+ </tr> 
+<tr bgcolor="$ui.tableColor">
+<td align=center colspan=2 >  
+<font face ="$ui.sansserifFonts">
+		#if($acttype!="viewques")
+		#if($acttype=="editques")
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doEditQuestion" value="$brih_edit" onClick="checkValue(document.frm,this);">
+                <input type="reset" value="$brih_reset" class="button-ftextstyle">
+                #else
+	  	<input type="button" name="eventSubmit_doInserQuestion" class="button-ftextstyle" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
+  		<input type="button" name="eventSubmit_doFinishQuestion" class="button-ftextstyle" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
+		<input type="reset" value="$brih_reset" class="button-ftextstyle">
+		<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")" style="text-decoration:none;" class="input_button" > #if($lang=="hindi")$brih_queBank $brih_back #else $brih_back #end</a> 
+		#end
+		#end
+  <input type="hidden" name="actionName" value="">
+  <input type="hidden" name="mode" value="$mode">
+  <input type="hidden" name="status" value="$status">
+  <input type="hidden" name="Topicname" value="$Topicname">
+  <input type="hidden" name="typeques" value="$typeques">
+  <input type="hidden" name="valQuestype" value="$valQuestype">
+  <input type="hidden" name="valdifflevel" value="$valdifflevel">
+  <input type="hidden" name="acttype" value="$acttype">
+  <input type="hidden" name="topic" value="$topic">
+  <input type="hidden" name="count" value="$tdcolor">
+  <input type="hidden" name="quesid" value="$quesid">
+  <input type="hidden" name="questype" value="$questype">
+  <input type="hidden" name="difflevel" value="$difflevel">
+  <input type="hidden" name="dlevel" value="$dlevel">
+  <input type="hidden" name="qtype" value="$qtype">
+  <input type="hidden" name="quesimage" value="$quesimage">
+  <input type="hidden" name="username" value="$username">
+</font>
+</td>
+</tr>
+</table>
+</form>
+<script LANGUAGE="JAVASCRIPT">
+        function checkValue(frm,field)
+        {
+/*                if(frm.Question.value!="")
+                {
+			if(frm.Answer.value!="") 
+			{
+                        	frm.actionName.value=field.name;
+                        	frm.submit();
+			}
+			else
+			{
+                        	alert("Please write the answer !!");
+                        	frm.Answer.focus();
+			}
+                }
+                else
+                {
+                        alert("Please write Question !!");
+                        frm.Question.focus();
+                }
+*/
+          if((frm.Question.value!="") && (frm.val1.value!="") && (frm.val2.value!=""))
+            {
+                        frm.actionName.value=field.name;
+                            frm.submit();
+            }
+           //}
+           else
+           {
+                        alert("Please fill Question and Max,min Range!!");
+                        frm.Question.focus();
+           }
+
+        }
+</script>
