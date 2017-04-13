@@ -46,19 +46,14 @@ import org.xml.sax.helpers.AttributesImpl;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
+import org.iitk.brihaspati.modules.utils.FileLockUnlock;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.servlet.TurbineServlet;
-import org.iitk.brihaspati.modules.utils.FileLockUnlock;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
-
+import org.apache.commons.lang.math.Range;
 import org.apache.commons.lang.math.DoubleRange;
 import java.util.Random;
-import org.apache.commons.lang.math.Range; 
 /**
  * This class generate Xml file with attributes and values
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
@@ -81,75 +76,15 @@ public class QuizMetaDataXmlWriter
         fos.write( ("<QuizFile>\n</QuizFile>").getBytes() );
         fos.close();
 */
-        RandomAccessFile file = null;
-        FileLock fileLock = null;
-        try
+        FileLockUnlock fl =new FileLockUnlock(fileName);
+        boolean gl = fl.getlock();
+        if(gl)
         {
-/*
-            FileLockUnlock fl = new FileLockUnlock();
-            //FileLock fileLock = fl.filelock(fileName);
-            boolean lockget = fl.filelock(fileName);  
-            ErrorDumpUtil.ErrorLog("I m in locking file");       
-            if(lockget==true) 
-            {
-                FileOutputStream fos=new FileOutputStream(fileName);
-                fos.write( ("<QuizFile>\n</QuizFile>").getBytes());
-                fos.close();
-                
-            }
-*/
-//            else
-            
-
-         int attempt=1;
-         do {
-            
-            file = new RandomAccessFile(fileName, "rw");
-            FileChannel fileChannel = file.getChannel();
-            fileLock = fileChannel.tryLock();
-            if (fileLock != null)
-            {
-                try
-                {
-                    FileOutputStream fos = new FileOutputStream(fileName);
-                    fos.write( ("<QuizFile>\n</QuizFile>").getBytes() );
-                    fos.close();
-                }
-                catch (Exception exception)
-                {
-                    ErrorDumpUtil.ErrorLog("--Exception in QuizMetaDataXmlWriter -- OLESRootOnly method--"+exception);
-                }
-            } else {
-
-                //delay(Random(30*pow(2,attempt));
-                    Random randomgen = new Random();
-                    double attemptd = (double)attempt; 
-                    double powerval = Math.pow(2.0,attemptd);
-                    int ranval = randomgen.nextInt(30*(int)powerval);
-                    
-                    Thread.sleep(ranval);
-                    if(attempt <= 10) 
-                        attempt++;
-                    if(attempt >=20) break;
-            }
-         } while(fileLock == null);
-
+            FileOutputStream fop = new FileOutputStream(fileName);
+            fop.write(("<QuizFile>\n</QuizFile>").getBytes());
+            fop.close();
+            fl.releaselock();
         }
-
-        catch (Exception exception)
-        {
-            ErrorDumpUtil.ErrorLog("--Exception in QuizMetaDataXmlWriter -- OLESRootOnly method--"+exception);
-        }
-
-        finally
-        {
-            if (fileLock != null)
-            {
-                fileLock.release();
-            }
-        
-        }
-
     }
         
 	/**
