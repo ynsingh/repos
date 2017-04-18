@@ -14,6 +14,7 @@ class Report extends Controller {
 	function Report()
 	{
 		parent::Controller();
+		$this->load->model('newschedules_model');
 		$this->load->model('Setting_model');
 		$this->load->model('entry_model');
 		$this->load->model('Ledger_model');
@@ -24,6 +25,7 @@ class Report extends Controller {
 		$this->load->model('Tag_model');
 	        $this->load->helper('pdf_helper');
 		$this->load->library('session');
+		$this->load->helper('url');
 
 		/* Check access */
 		if ( ! check_access('view reports'))
@@ -346,7 +348,7 @@ class Report extends Controller {
 	function depreciation($period = NULL)
         {
 
-                $this->template->set('nav_links', array('report/depreciation' => 'Depreciation As Today', 'report/update' => 'Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
+                $this->template->set('nav_links', array('report/update' => 'Depreciiation Rate','report/add_old_asset_value' => 'Add Old Asset Register','report/depreciation' => 'Depreciation As Today','report/get_finaldeprec' => 'Final Depreciation','report/printpreview/depreciation' => 'Print Preview'));
                 $this->template->set('page_title', 'Depreciation Of Assets');
                 $data['left_width'] = "450";
                 $data['right_width'] = "450";
@@ -624,6 +626,7 @@ class Report extends Controller {
 		$counter=0;
 		$counter1=0;
 		$this->dep_master['dep'] = $check_asset_register;
+		//print_r($this->dep_master['dep']);
                 foreach ($check_asset_register as $id => $bud)
                 {
                         $name = 'budget_value'. "_" .$bud['id'];
@@ -2021,6 +2024,8 @@ class Report extends Controller {
                 /* Pagination setup */
                 $this->load->library('pagination');
         	$date1 = $this->session->userdata('date1');
+		echo "date1==========";
+		print_r($date1);
                 $this->template->set('page_title', 'Day Statement');
                 $this->template->set('nav_links', array('report/printpreview/dayst/' => 'Print Preview','report/pdf/dayst/'=> 'Download PDF'));
                 //$this->template->set('nav_links', array('report/download/dayst/'  => 'Download CSV', 'report/printpreview/dayst/' => 'Print Preview', 'report/pdf/dayst/' => 'Download PDF'));
@@ -2030,6 +2035,7 @@ class Report extends Controller {
 		 	$date1= date_today_php();
 		}else{
 			$exp_date=explode("-",$date1);
+			print_r($exp_date);
                         $date1=$exp_date[2]."/".$exp_date[1]."/".$exp_date[0];
 		}
 		 $data['entry_date1'] = array(
@@ -3965,9 +3971,276 @@ class Report extends Controller {
 	}
 
 
+	//@added by kanchan
+	function add_old_asset_value()
+	{
+
+		/* Form fields */
+		$this->template->set('page_title', 'Add Old Asset Register');
+	 	$data['date_of_purchase'] = array(
+                        'name' => 'date_of_purchase',
+                        'id' => 'date_of_purchase',
+                        'maxlength' => '11',
+                        'size' => '15',
+			'class'=>'date_of_purchase',
+                        'value' => '',
+                );
+
+		$data['cost'] = array(
+                        'name' => 'cost',
+                        'id' => 'cost',
+                        'maxlength' => '15',
+                        'size' => '25',
+			'class'=> 'cost',
+                        'value' => '',
+                );
+
+		$data['depreciated_value'] = array(
+                        'name' => 'depreciated_value',
+                        'id' => 'depreciated_value',
+                        'maxlength' => '15',
+                        'size' => '25',
+			'class'=> 'depreciated_value',
+                        'value' => '',
+                );
+
+		$data['current_value'] = array(
+                        'name' => 'current_value',
+                        'id' => 'current_value',
+                        'maxlength' => '15',
+                        'size' => '25',
+			'class' =>'current_value',
+                        'value' => '',
+                );
+
+		$data['asset_name'] = $this->newschedules_model->get_fixedasset_ledger_list();
+
+		$data['sanc_type'] = array(
+                        'select' => 'Select',
+                        'plan' => 'Plan',
+                        'non_plan' => 'Non Plan',
+                        'plan_sfc_scheme' => 'Plan - Specific Schemes',
+                        'plan_other_scheme' => 'Other Schemes'
+                );
+
+		//$data['active_sanc_type'] = 'non_plan';
+
+        /*        $data['plan'] = array(
+                        'select' => 'Select',
+                        'General OH:35' => 'General OH:35',
+                        'General OH:31' => 'General OH:31',
+                        'NER OH:31' => 'NER OH:31',
+                        'NER OH:35' => 'NER OH:35',
+                        'SCSP OH:35' => 'SCSP OH:35',
+                        'SCSP OH:31' => 'SCSP OH:31',
+                        'TSP OH:35' => 'TSP OH:35',
+                        'TSP OH:31' => 'TSP OH:31'
+                );
+
+                $data['active_plan'] = 'select';
+
+                $data['non_plan'] = array(
+                        'select' => 'Select',
+                        'Salary OH:36' => 'Salary OH:36',
+                        'Pension And Pensionary Benefit OH:31' => 'Pension And Pensionary Benefit OH:31',
+                        'Non Salary OH:31' => 'Non Salary OH:31'
+                );
+
+                $data['active_non_plan'] = 'select';  */
+
+		$data['left_width'] = "450";
+                $data['right_width'] = "450";
+                $data['print_preview'] =FALSE;
+                $text = '';
+                $data['search'] = '';
+		$data['search_by'] = array(
+                        "Select" => "Select",
+                        "ERPMIM_Item_Brief_Desc#asset_name" => "Asset Name",
+                        "IRD_WEF_Date#date_of_purchase"=> "Date of Purchase",
+                        "total_cost#cost" => "Total Cost",
+                        //"dep_amount" => "Dep.Amount",
+                        //"curr_value" => "Current Value",
+                );
+                $data['search_by_active'] = '';
+
+                $data['asset_type'] = array(
+                                "all_asset" => "All asset",
+                                "project_asset"=> "project asset",
+                                "fund_asset"=> "fund asset",
+                                "plan"=> "Plan",
+                                "non_plan"=> "Non plan",
+                );
+                $data['asset_type_active'] = '';
+
+                $data['text'] = array(
+                        'name' => 'text',
+                        'id' => 'text',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => '',
+                );
+
+
+		/* Form validations */
+
+		for($i = 1;$i<=5;$i++)
+                {
+		$this->form_validation->set_rules('asset_name['. $i .']', 'Asset Name', 'trim|required');
+	 	$this->form_validation->set_rules('date_of_purchase[' . $i .']', 'Date of Purchase', 'trim|required|is_date|is_date_within_range');
+		$this->form_validation->set_rules('cost[' . $i .']', 'Cost','trim|required');
+		$this->form_validation->set_rules('depreciated_value['. $i .']', 'Depreciated Value','trim|required');
+		$this->form_validation->set_rules('current_value['. $i .']', 'Current Value','trim|required');
+		}
+
+		 /* Repopulating form */
+                if ($_POST)
+                {
+		$data['date_of_purchase']['value'] = $this->input->post('date_of_purchase', TRUE);
+                $data['cost']['value'] = $this->input->post('cost', TRUE);
+                $data['depreciated_value']['value'] = $this->input->post('depreciated_value', TRUE);
+                $data['current_value']['value'] = $this->input->post('current_value', TRUE);
+                $data['asset_name']['value'] =  $this->newschedules_model->get_fixedasset_ledger_list();
+		$data['fund_list']['value'] = $this->input->post('fund_list', TRUE);
+		$data['active_sanc_type'] = $this->input->post('sanc_type', TRUE);
+           /*     if($data['active_sanc_type'] != 'select')
+                {
+                	if($data['active_sanc_type'] == 'plan')
+                	$data['active_plan'] = $this->input->post('plan', TRUE);
+                	else
+                	$data['active_non_plan'] = $this->input->post('non_plan', TRUE);
+            	} */
+		}
+
+		/* Validating form */
+         	if ($this->form_validation->run() == FALSE)
+       		{
+                	$this->messages->add(validation_errors(), 'error');
+                	$this->template->load('template', 'report/add_old_asset_value', $data);
+                        return;
+                }
+                else
+                {
+			
+                        $data_asset_name = $this->input->post('asset_name', TRUE);
+			$data_date_of_purchase = $this->input->post('date_of_purchase', TRUE);
+                        $data_cost = $this->input->post('cost', TRUE);
+                        $data_depreciated_value = $this->input->post('depreciated_value', TRUE);
+                        $data_current_value = $this->input->post('current_value', TRUE);  
+			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
+			$data_sanc_type = $this->input->post('sanc_type', TRUE);
+
+                    /*    if($data_sanc_type != 'select')
+                        {
+                                if($data_sanc_type == 'plan')
+                                        $sanc_value = $this->input->post('plan', TRUE);
+                                else
+                                        $sanc_value = $this->input->post('non_plan', TRUE);
+                        } */
+
+			//Assign each array to a variable
+			foreach($data_asset_name as $row=>$value)
+			{	
+			$asset_led_name=$value;
+			$asset_code = $this->newschedules_model->get_Fixedledger_code($asset_led_name);
+			$code=implode("#",$asset_code);
+			$purchase_date1=$data_date_of_purchase[$row];
+
+			//code for change date format
+                        $exp_date=explode("/",($purchase_date1));
+                        $purchase_date=$exp_date[2]."-".$exp_date[1]."-".$exp_date[0];
+			$cost=$data_cost[$row];
+			$dep_value=$data_depreciated_value[$row];
+			$current_value = $data_current_value[$row];
+			$fund_id = $data_all_fund_ledger[$row];
+			$sanc_type = $data_sanc_type[$row];
+		
+			//insert query for insert to data in db
+                        $this->db->trans_start();
+                        $insert_data=array(
+                                'asset_name' =>$asset_led_name,
+                                'date_of_purchase' =>$purchase_date,
+                                'code' =>$code,
+                                'cost' =>$cost,
+                                'depreciated_value' =>$dep_value,
+                                'current_value' =>$current_value,
+                                'sanc_type' => $sanc_type,
+                        );
+                        if ( ! $this->db->insert('old_asset_register', $insert_data))
+                        {
+                                $this->db->trans_rollback();
+                                $this->messages->add('Error addding Asset Value.', 'error');
+                                $this->logger->write_message("error", "Error adding Asset Value",$asset_led_name);
+                        }
+                        else{
+                                $this->db->trans_complete();
+                                $this->messages->add('Asset Data added successfully. ');
+                                $this->logger->write_message('Old Asset Data added successfully ');
+                        }
+
+
+			$code_ledg_fnd = $this->Ledger_model->get_code($fund_id);
+	
+                      	$this->db->from('ledgers')->where('id', $fund_id);
+                        $query_q = $this->db->get();
+                      	foreach($query_q->result() as $val_A)
+                       	{
+                        	$fund_name = $val_A->name;
+				$led_code = $val_A->code;
+
+                        } 
+			
+			$this->db->from('old_asset_register')->where('asset_name', $asset_led_name);
+                        $query_r = $this->db->get();
+                        foreach($query_r->result() as $val_B)
+                        { 
+                                $asset_id = $val_B->id;
+				$purchase_date = $val_B->date_of_purchase;
+                        }  
+
+			$is_asset_code = substr($led_code, 0, 4);
+                        if($is_asset_code ==  '1001' || $is_asset_code ==  '1002' || $is_asset_code ==  '1003')
+                        {
+                                $asset_register = array(
+                                        'fund_name' => $fund_name,
+					'code' =>  $led_code,
+					'asset_id' => $asset_id,
+					'date_of_purchase' => $purchase_date,
+
+                                );
+                                if ( ! $this->db->insert('old_fund_asset_register', $asset_register))
+                                {
+                                        $this->db->trans_rollback();
+                                        $this->logger->write_message("error", "Error adding fund in fund asset register.");
+                                }
+                        } 
+
+			$is_asset_code1 = substr($led_code, 0, 8);
+                        if($is_asset_code1 ==  '10040105')
+                        {
+                        	$asset_register = array(
+                                'asset_id' => $asset_id,
+                               	'project_name' => $fund_name,
+                                'code' =>  $led_code,
+                               	'date_of_purchase' => $purchase_date,
+                              	);
+                       		if ( ! $this->db->insert('old_sponsored_asset_register', $asset_register))
+                        	{
+                                	$this->db->trans_rollback();
+                                        $this->logger->write_message("error", "Error adding Assets in sponsored project.");
+                                }
+                        } 
+			}//foreach 
+                }//else 
+		//redirect('report/depreciation');
+		$this->template->load('template', 'report/depreciation', $data);
+	return;
+	} 
+
+
+
 /*	function inner_sub_schedule($ledger_id,$ledger_name)
 	{
-		echo "kanchan===$ledger_id====$ledger_name";
+		echo "ka/funchan===$ledger_id====$ledger_name";
 		$this->template->set('schedule', 'true');
 		$this->template->set('page_title', '<b>Schedule - ' . '4C(i)' . ' ' . 'PATENTS AND COPYRIGHTS</b>');
                 $data['id'] = $ledger_id;

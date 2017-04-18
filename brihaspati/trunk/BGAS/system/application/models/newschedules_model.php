@@ -952,8 +952,43 @@ function newschedules_model()
 		$total[5] = $capital_total;
 	
 		return $total;
-
 	}
+
+	//added by kanchan
+	function get_fixedasset_ledger_list()
+	{
+		//$counter = 0;
+		$options = array();
+		$new_id = '--Please Select--';
+                $options[$new_id] = '--Please Select--';
+
+		$this->db->select('id,name')->from('ledgers')->where('code  Like','2001%');
+		$ledg_res = $this->db->get();
+
+		foreach($ledg_res->result() as $ledger)
+		{	
+			$new_id = $ledger->name;
+			$options[$new_id] = $ledger->name;
+			$options['id'] = $ledger->id;
+			//$counter++;
+		}
+        	return $options; 
+	}
+	
+	//added by @kanchan
+	function get_Fixedledger_code($name)
+        {
+		$options = array();
+        	$this->db->select('code');
+                $this->db->from('ledgers')->where('name =', $name);
+                $ledger_result = $this->db->get();
+		foreach($ledger_result->result() as $led)
+                {
+                        $options['code'] = $led->code;
+			
+                }
+                return $options; 
+        }
 
 /*	function get_capital_total($ledger_id)
 	{
