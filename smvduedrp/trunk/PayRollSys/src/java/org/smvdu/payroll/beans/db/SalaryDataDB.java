@@ -22,14 +22,14 @@ import org.smvdu.payroll.beans.setup.SalaryGrade;
 
 /**
  *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
- *   Copyright (c) 2014 - 2017 ETRG, IITK.
-*  All Rights Reserved.
+ *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+ *  Copyright (c) 2014 - 2017 ETRG, IITK.
+*   All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
-*  without modification, are permitted provided that the following 
-*  conditions are met: 
+*   without modification, are permitted provided that the following 
+*   conditions are met: 
 **  Redistributions of source code must retain the above copyright 
-*  notice, this  list of conditions and the following disclaimer. 
+*   notice, this  list of conditions and the following disclaimer. 
 * 
 *  Redistribution in binary form must reproduce the above copyright
 *  notice, this list of conditions and the following disclaimer in 
@@ -53,8 +53,9 @@ import org.smvdu.payroll.beans.setup.SalaryGrade;
 *  Contributors: Members of ERP Team @ SMVDU, Katra
 *  Modified Date: 02 Dec 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *  Last Modification :(Salary Processing with Budgets), January 2017, Manorama Pal (palseema30@gmail.com).
+*  Last Modification :(Salary Processing), 14 April 2017, Manorama Pal (palseema30@gmail.com).
 *
- */
+*/
 public class SalaryDataDB {
 
     private PreparedStatement ps;
@@ -190,43 +191,29 @@ public class SalaryDataDB {
 
 
     
-public ArrayList<SalaryData> loadInit(Employee empCode)    {
+    public ArrayList<SalaryData> loadInit(Employee emp){
         try
         {
-            CommonDB cdb = new CommonDB();
-            Connection c = cdb.getConnection();
-            ps=c.prepareStatement("select sh_id,sh_name,sh_type,0,sf_sal_formula,"
-                    + "sh_alias,sh_scalable from emp_salary_head_master left join "
-                    + "salary_head_master on sh_id = st_sal_code left join "
-                    + "salary_formula  on sf_sal_id = sh_id  where  st_code = "
-                    + "(select emp_type_code from employee_master where emp_code=?) order by sh_id");
-            ps.setString(1,empCode.getCode());
-            rs=ps.executeQuery();
-            ArrayList<SalaryData> data = new ArrayList<SalaryData>();
-            while(rs.next())
+        
+            ArrayList<SalaryData> forvalues=LoadValuesWithFormula(emp);
+            ArrayList<SalaryData> combinedData = new ArrayList<SalaryData>();
+            for(SalaryData sdv : forvalues)
             {
                 SalaryData sd = new SalaryData();
-                sd.setHeadCode(rs.getInt(1));
-                sd.setHeadName(rs.getString(2));
-                sd.setCatagory(rs.getBoolean(3));
-                sd.setHeadValue(rs.getInt(4));
-                sd.setFormula(rs.getString(5));
-                sd.setAlias(rs.getString(6));
-                sd.setScalable(rs.getBoolean(7));
-                if(sd.getHeadCode()==1)
-                {
-                    sd.setHeadValue(empCode.getCurrentBasic());
-                }
-                if(sd.getHeadCode()==2)
-                {
-                    sd.setHeadValue(empCode.getGradePay());
-                }
-                data.add(sd);
+                sd.setHeadCode(sdv.getHeadCode());
+                sd.setHeadName(sdv.getHeadName());
+                sd.setCatagory(sdv.isCatagory());
+                int value=loadDefaultHeadValues(emp,sdv.getHeadCode());
+                //sd.setHeadValue(sdv.getHeadValue());
+                sd.setHeadValue(value);
+                sd.setFormula(sdv.getFormula());
+                sd.setAlias(sdv.getAlias());
+                sd.setScalable(sdv.isType());
+                combinedData.add(sd);
+            
             }
-            rs.close();
-            ps.close();
-            c.close();
-            return data;
+            //System.out.println("load init method seem4===="+combinedData.size());
+            return combinedData;
         }
         catch(Exception e)
         {
@@ -234,11 +221,6 @@ public ArrayList<SalaryData> loadInit(Employee empCode)    {
             return null;
         }
     }
-
-
-    
-
-
 
 
     public ArrayList<SalaryData> loadCurrentSalaryData(Employee empCode)    {
@@ -437,7 +419,8 @@ public ArrayList<SalaryGrade> loadEmpgrdPay(int empcode){
             
         }
     }
-        public void updateGradePay(){
+        
+    public void updateGradePay(){
         try
         {
             UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
@@ -503,6 +486,7 @@ public ArrayList<SalaryGrade> loadEmpgrdPay(int empcode){
             return null;
         }
     }
+    
     /**
      * Load and insert  data in table for generate salary of employees
      */
@@ -519,7 +503,7 @@ public ArrayList<SalaryGrade> loadEmpgrdPay(int empcode){
                 emp.setCode(rs.getString(1)); 
                 emp = new EmployeeDB().loadProfile(rs.getString(1),orgCode);
                               
-               // System.out.println("detail=="+rs.getString(1)+"grade===="+rs.getInt(3)+","+emp.getCode()+","+emp+",empbasic=="+rs.getString(2));
+                //System.out.println("detail=="+rs.getString(1)+"grade===="+rs.getInt(3)+","+emp.getCode()+","+emp+",empbasic=="+rs.getString(2));
                 ArrayList<SalaryData> salhead = new SalaryHeadDB().CombineDataofselectHead(rs.getInt(3),rs.getInt(4),emp);
                   
                 for(SalaryData sh : salhead)
@@ -573,6 +557,98 @@ public ArrayList<SalaryGrade> loadEmpgrdPay(int empcode){
             
         }
     }
-   
+    
+    /**
+     * Load Default values of employee according to salaryhead
+     * @param emp
+     * @param salhead
+     * @return headvalue
+     */
+    public int loadDefaultHeadValues(Employee emp, int salhead){
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+               
+            ps=c.prepareStatement("select ds_amount from default_salary_master "
+                + "where ds_emp_type= (select emp_salary_grade from employee_master where emp_code=?) and ds_sal_head=?  order by ds_sal_head");    
+            ps.setString(1,emp.getCode());
+            ps.setInt(2,salhead);
+            rs=ps.executeQuery();
+            int headvalue=0;
+            if(rs.next())
+            {
+                if(salhead==1)
+                {
+                    headvalue=emp.getCurrentBasic();
+                }
+                else if(salhead==2)
+                {
+                    headvalue=emp.getGradePay();
+                }
+                else{
+                    headvalue=rs.getInt(1);
+                }
+            // System.out.println("load init method=seem2==="+headvalue+":===="+ salhead);
+            
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return headvalue;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    
+    /**
+     * Load all salary head with formulas of employee
+     * @param emp
+     * @return data(arrayList)
+     */
+    public ArrayList<SalaryData> LoadValuesWithFormula(Employee emp)   {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select sh_id,sh_name,sh_type,0,sf_sal_formula,sh_alias,sh_scalable from emp_salary_head_master "
+                + "left join salary_head_master on sh_id = st_sal_code left join salary_formula on sh_id = sf_sal_id "
+                +"where st_code=(select emp_type_code from employee_master where emp_code=?) order by sh_id");
+            ps.setString(1,emp.getCode());
+            rs=ps.executeQuery();
+            ArrayList<SalaryData> data = new ArrayList<SalaryData>();
+            while(rs.next())
+            {
+                SalaryData sd = new SalaryData();
+                sd.setHeadCode(rs.getInt(1));
+                sd.setHeadName(rs.getString(2));
+                sd.setCatagory(rs.getBoolean(3));
+                sd.setHeadValue(rs.getInt(4));
+                sd.setFormula(rs.getString(5));
+                sd.setAlias(rs.getString(6));
+                sd.setScalable(rs.getBoolean(7));
+                if(sd.getHeadCode()==1)
+                {
+                    sd.setHeadValue(emp.getCurrentBasic());
+                }
+                if(sd.getHeadCode()==2)
+                {
+                    sd.setHeadValue(emp.getGradePay());
+                }
+                data.add(sd);
+                
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return data;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }
