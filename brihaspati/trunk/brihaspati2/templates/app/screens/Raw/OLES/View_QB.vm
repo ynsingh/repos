@@ -1,10 +1,11 @@
 #*
  * @(#)View_QB.vm
- * Copyright (c) 2010,2012-13 ETRG,IIT Kanpur.
+ * Copyright (c) 2010,2012-13,2017 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
  * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @author <a href="mailto:sharad23nov@yahoo.com ">Sharad Singh</a>
  * @modify date: 14aug2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -84,6 +85,7 @@ $!data.getMessage()
                         #if($questype=="tft") $brih_true/$brih_false $brih_type #end
                         #if($questype=="maq") $brih_match $brih_type #end
                         #if($questype=="sat") $brih_shortType $brih_answer $brih_type #end
+                        #if($questype=="sart") $brih_shortType $brih_answer $brih_range $brih_type #end
                         #if($questype=="lat") $brih_long $brih_answer $brih_type #end
                         </option>$!questype
                         #end
@@ -92,6 +94,7 @@ $!data.getMessage()
                         <option value="tft"> #if($lang=="hindi")$brih_true/$brih_false $brih_qus #else $brih_true/$brih_false $brih_type #end
                         <option value="maq"> #if($lang=="hindi")$brih_match $brih_qus #else $brih_match $brih_type #end
                         <option value="sat"> #if($lang=="hindi")$brih_shortType $brih_answer $brih_qus #else $brih_shortType $brih_answer $brih_type #end 
+                        <option value="sart"> #if($lang=="hindi")$brih_shortType $brih_answer $brih_qus #else $brih_shortType $brih_answer $brih_range $brih_type #end 
                         <option value="lat"> #if($lang=="hindi")$brih_long $brih_answer $brih_qus #else $brih_long $brih_answer $brih_type #end
                         </option>
                         </select>
@@ -150,6 +153,11 @@ $!data.getMessage()
 					<td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques").addPathInfo("username","$Ques.UserName")" style='text-decoration:none'>$Ques.ques</a></td>
 					<td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques").addPathInfo("username","$Ques.UserName")" style='text-decoration:none'>$brih_edit</a></td>
 					#end
+                    #if($questype=="sart")
+                    <td><a href="$link.setPage("call,OLES,Insert_Short_Ag.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques").addPathInfo("username","$Ques.UserName")" style='text-decoration:none'>$Ques.ques</a></td>
+                    <td><a href="$link.setPage("call,OLES,Insert_Short_Ag.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques").addPathInfo("username","$Ques.UserName")" style='text-decoration:none'>$brih_edit</a></td>
+                    #end
+
 					#if($questype=="All")
                                         #if($Ques.Qtype=="mcq")
                                         <td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques").addPathInfo("username","$Ques.UserName")" style='text-decoration:none'>$Ques.ques</a></td>
@@ -163,6 +171,11 @@ $!data.getMessage()
                                         <td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques").addPathInfo("username","$Ques.UserName")" style='text-decoration:none'>$Ques.ques</a></td>
                                         <td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques").addPathInfo("username","$Ques.UserName")" style='text-decoration:none'>$brih_edit</a></td>
                                         #end
+                                        #if($Ques.Qtype=="sart")
+                                        <td><a href="$link.setPage("call,OLES,Insert_Short_Ag.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques").addPathInfo("username","$Ques.UserName")" style='text-decoration:none'>$Ques.ques</a></td>
+                                        <td><a href="$link.setPage("call,OLES,Insert_Short_Ag.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques").addPathInfo("username","$Ques.UserName")" style='text-decoration:none'>$brih_edit</a></td>
+                                        #end
+
                                         #end
 				      <td><a href="$link.setPage("call,OLES,View_QB.vm").setAction("OnlineExaminationSystem").addPathInfo("mode","alllist").addPathInfo("deltype","quesdel").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("actionName","eventSubmit_dodeletetopic").addPathInfo("username","$Ques.UserName")" onclick="javascript:return confirm('Do you want to delete this Question')" style='text-decoration:none'>$brih_delete</a></td>
                                 </tr>

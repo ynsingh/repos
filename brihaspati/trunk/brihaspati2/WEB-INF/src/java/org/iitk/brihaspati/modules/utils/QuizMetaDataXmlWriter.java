@@ -610,7 +610,7 @@ public class QuizMetaDataXmlWriter
 			 */
 
 			if(!Tempxmls.exists()) {
-                ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----!Tempxmls.exists()-->");
+                //ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----!Tempxmls.exists()-->");
                 //ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----StudentAns-2-->"+quizXmlPath);
 				QuizMetaDataXmlWriter.OLESRootOnly(Tempxmls.getAbsolutePath());
                 
@@ -624,7 +624,7 @@ public class QuizMetaDataXmlWriter
 					for(int i=0;i<finalAnswer.size();i++) {
 						String quesid=((QuizFileEntry) finalAnswer.elementAt(i)).getQuestionID();
 						String filename=((QuizFileEntry) finalAnswer.elementAt(i)).getFileName();
-                        ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----Tempxmls.exists()-->");
+                        //ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----Tempxmls.exists()-->");
                         //ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----filename-->"+filename);
 						if((quesID.equals(quesid)) && (fileName.equals(filename)) ){
 							foundDuplicate=true;
@@ -635,7 +635,7 @@ public class QuizMetaDataXmlWriter
 				}//end if
                 
                 if((foundDuplicate==true) &&(seq!=-1)){			
-                    ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----foundDuplicate==true-->");
+                    //ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----foundDuplicate==true-->");
 					xmlWriter=WriteinStudtAnswerxml(filePath,quizXmlPath,quesType,-1);
 					QuizMetaDataXmlWriter.appendAnswerPractice(xmlWriter,quesID,fileName,question,studentAnswer,realAnswer,markPerQues,awardedMarks,option1,option2,option3,option4,min_r,max_r,quesType,seq);//call overload method at line 721
 					xmlWriter.writeXmlFile();
@@ -646,7 +646,7 @@ public class QuizMetaDataXmlWriter
 
 
 			if((foundDuplicate==false )&&(seq==-1)){
-                ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----foundDuplicate==false-->")     ;
+                //ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----foundDuplicate==false-->")     ;
 			    xmlWriter=new XmlWriter(filePath+"/"+quizXmlPath);
 //			QuizMetaDataXmlWriter.appendAnswer(xmlWriter,quesID,fileName,answer,markPerQues,awardedMarks,seq);
 			//----------------------------------modification done by seema and jaivir---------------------------//
@@ -716,7 +716,7 @@ public class QuizMetaDataXmlWriter
     //14 parameter 
 	public static void appendAnswerPractice(XmlWriter xmlWriter,String questionID,String fileName,String question,String studentAnswer,String realAnswer,String markPerQues,String awardedMarks,String option1,String option2,String option3,String option4,double min,double max,String quesType, int seq){
 		try{
-        ErrorDumpUtil.ErrorLog("---QuizMetaDataXmlWriter---appendAnswerPractice()---main");
+//        ErrorDumpUtil.ErrorLog("---QuizMetaDataXmlWriter---appendAnswerPractice()---main");
 		AttributesImpl ats=new AttributesImpl();
         String min_s = String.valueOf(min);//min.toString();
         String max_s = String.valueOf(max);//max.toString(); 
@@ -1261,7 +1261,7 @@ public class QuizMetaDataXmlWriter
 					/**If number of attribute is 10, call appendRandomQuizSettinglist for MultiChoiceType Question
 					  *else appendRandomQuizSettinglist for T/F,ShortAnswer, LongAnswer Type
 					  */	
-                    ErrorDumpUtil.ErrorLog("QuizMetaDataXmlWriter-----RandomQuizWriteTempxml()---1137---vectorsize--->"+question);
+                    //ErrorDumpUtil.ErrorLog("QuizMetaDataXmlWriter-----RandomQuizWriteTempxml()---1137---vectorsize--->"+question);
 
 					if(noOfAts.equals("10"))
                     {
@@ -1392,7 +1392,7 @@ public class QuizMetaDataXmlWriter
 		    /** Get the details from xml file and store in a vector
              *  after storing in xml file delete the xml file and create the new xml file
              */
-            ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----1399------>");
+            //ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----1399------>");
             QuizMetaDataXmlReader quizMetaData=new QuizMetaDataXmlReader(filePath+"/"+xmlfile);
            	Vector v=quizMetaData.getFinalAnswer();
            	descFile.delete();
@@ -1437,15 +1437,15 @@ public class QuizMetaDataXmlWriter
 					    appendAnswerPractice(xmlWriter,quesid,filename,ques,stdtans,Instans,quesmark,awardedmark,questype,seq);
 					}
 */
-                    if(questype.equalsIgnoreCase("sart")) 
+                    else if(questype.equalsIgnoreCase("sart")) 
                     {
-                        ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----SART");
+                        //ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----SART");
                         min=((QuizFileEntry)v.get(i)).getMin();                   
                         max=((QuizFileEntry)v.get(i)).getMax();                  
-                        ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----1449--min-->"); 
+                        //ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----1449--min-->"); 
                         double min_r = Double.parseDouble(min); 
                         double max_r = Double.parseDouble(max); 
-                        ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----1452--min-->"+min_r+"-max-->"+max_r);
+                        //ErrorDumpUtil.ErrorLog("----QuizMetaDataXmlWriter----WriteinStudtAnswerxml()----1452--min-->"+min_r+"-max-->"+max_r);
                         appendAnswerPractice(xmlWriter,quesid,filename,ques,stdtans,min_r,max_r,quesmark,awardedmark,questype,seq);
                     }
                     else
