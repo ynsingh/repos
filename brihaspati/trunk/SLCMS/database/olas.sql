@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 20, 2017 at 05:47 PM
+-- Generation Time: Apr 21, 2017 at 05:41 PM
 -- Server version: 5.6.27
 -- PHP Version: 5.6.15
 
@@ -32,6 +32,34 @@ CREATE TABLE `category` (
   `cat_code` varchar(255) NOT NULL,
   `cat_short` varchar(255) NOT NULL,
   `cat_desc` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `city`
+--
+
+CREATE TABLE `city` (
+  `city_id` int(11) NOT NULL,
+  `city_name` varchar(255) NOT NULL,
+  `city_code` varchar(255) NOT NULL,
+  `city_short` varchar(255) NOT NULL,
+  `city_desc` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `country`
+--
+
+CREATE TABLE `country` (
+  `contry_id` int(11) NOT NULL,
+  `county_name` varchar(255) DEFAULT NULL,
+  `country_code` varchar(255) DEFAULT NULL,
+  `country_short` varchar(255) DEFAULT NULL,
+  `country_desc` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -149,6 +177,13 @@ CREATE TABLE `org_profile` (
   `modify_date` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `org_profile`
+--
+
+INSERT INTO `org_profile` (`org_id`, `org_code`, `org_name`, `org_nickname`, `org_type`, `org_tagline`, `org_address1`, `org_address2`, `org_city`, `org_district`, `org_state`, `org_countrycode`, `org_pincode`, `org_phone`, `org_fax`, `org_email`, `org_web`, `org_institutedomain`, `org_tanno`, `org_logo`, `org_affiliation`, `org_status`, `org_reg_date`, `org_close_date`, `org_adminfn`, `org_adminln`, `org_admindesig`, `creatorid`, `create_date`, `modifierid`, `modify_date`) VALUES
+(1, 'CU001', 'Indira Gandhi National Tribal University', 'IGNTU', 'Central Govt', '', 'Lal Pur, Amarkantak', '', '', '', 'Madhya Pradesh', '91', '484887', '07629 269 701', '07629 269 701', 'admission@igntu.ac.in', 'www.igntu.ac.in', 'igntu.ac.in', '', '', 'MHRD', 'Active', 'July 2008', '', '', '', '', '1', '2017-04-21', '', '');
+
 -- --------------------------------------------------------
 
 --
@@ -216,6 +251,20 @@ CREATE TABLE `seat_reservation` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `state`
+--
+
+CREATE TABLE `state` (
+  `state_id` int(11) NOT NULL,
+  `state_name` varchar(255) NOT NULL,
+  `state_code` varchar(255) NOT NULL,
+  `state_short` varchar(255) NOT NULL,
+  `state_desc` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `student_education`
 --
 
@@ -271,6 +320,29 @@ CREATE TABLE `student_entrance_exam` (
   `seex_state` varchar(255) NOT NULL,
   `seex_subject` varchar(255) NOT NULL,
   `seex_passingyear` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student_fees`
+--
+
+CREATE TABLE `student_fees` (
+  `sfee_id` int(11) NOT NULL,
+  `sfee_smid` int(11) NOT NULL,
+  `sfee_spid` int(11) NOT NULL,
+  `sfee_feeamount` varchar(255) NOT NULL,
+  `sfee_duedate` varchar(255) NOT NULL,
+  `sfee_paymentmethod` varchar(255) NOT NULL,
+  `sfee_depositdate` varchar(255) NOT NULL,
+  `sfee_referenceno` varchar(255) NOT NULL,
+  `sfee_paymentgateway` varchar(255) NOT NULL,
+  `sfee_paymentstatus` varchar(255) NOT NULL,
+  `sfee_feespaidstatus` varchar(255) NOT NULL,
+  `sfee_remarks` varchar(255) NOT NULL,
+  `sfee_ext1` varchar(255) NOT NULL,
+  `sfee_ext2` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -368,6 +440,35 @@ CREATE TABLE `student_parent` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `student_program`
+--
+
+CREATE TABLE `student_program` (
+  `sp_id` int(11) NOT NULL,
+  `sp_smid` int(11) NOT NULL,
+  `sp_sccode` varchar(255) DEFAULT NULL,
+  `sp_pcategory` varchar(255) DEFAULT NULL,
+  `sp_programid` varchar(255) DEFAULT NULL,
+  `sp_branch` varchar(255) DEFAULT NULL,
+  `sp_acadyear` varchar(255) DEFAULT NULL,
+  `sp_semester` varchar(255) DEFAULT NULL,
+  `sp_sub1` varchar(255) DEFAULT NULL,
+  `sp_sub2` varchar(255) DEFAULT NULL,
+  `sp_sub3` varchar(255) DEFAULT NULL,
+  `sp_sub4` varchar(255) DEFAULT NULL,
+  `sp_sub5` varchar(255) DEFAULT NULL,
+  `sp_sub6` varchar(255) DEFAULT NULL,
+  `sp_sub7` varchar(255) DEFAULT NULL,
+  `sp_sub8` varchar(255) DEFAULT NULL,
+  `sp_sub9` varchar(255) DEFAULT NULL,
+  `sp_sub10` varchar(255) DEFAULT NULL,
+  `sp_ext1` varchar(255) DEFAULT NULL,
+  `sp_ext2` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `study_center`
 --
 
@@ -452,6 +553,18 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`cat_id`);
 
 --
+-- Indexes for table `city`
+--
+ALTER TABLE `city`
+  ADD PRIMARY KEY (`city_id`);
+
+--
+-- Indexes for table `country`
+--
+ALTER TABLE `country`
+  ADD PRIMARY KEY (`contry_id`);
+
+--
 -- Indexes for table `Department`
 --
 ALTER TABLE `Department`
@@ -510,6 +623,12 @@ ALTER TABLE `seat_reservation`
   ADD UNIQUE KEY `org_code` (`org_code`,`category_id`,`percentage`);
 
 --
+-- Indexes for table `state`
+--
+ALTER TABLE `state`
+  ADD PRIMARY KEY (`state_id`);
+
+--
 -- Indexes for table `student_education`
 --
 ALTER TABLE `student_education`
@@ -528,6 +647,13 @@ ALTER TABLE `student_entrance_exam`
   ADD PRIMARY KEY (`seex_id`);
 
 --
+-- Indexes for table `student_fees`
+--
+ALTER TABLE `student_fees`
+  ADD PRIMARY KEY (`sfee_id`),
+  ADD UNIQUE KEY `sfee_smid` (`sfee_smid`,`sfee_spid`);
+
+--
 -- Indexes for table `student_master`
 --
 ALTER TABLE `student_master`
@@ -538,6 +664,12 @@ ALTER TABLE `student_master`
 --
 ALTER TABLE `student_parent`
   ADD PRIMARY KEY (`spar_id`);
+
+--
+-- Indexes for table `student_program`
+--
+ALTER TABLE `student_program`
+  ADD PRIMARY KEY (`sp_id`);
 
 --
 -- Indexes for table `study_center`
@@ -572,10 +704,35 @@ ALTER TABLE `user_role_type`
 --
 
 --
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `city`
+--
+ALTER TABLE `city`
+  MODIFY `city_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `country`
+--
+ALTER TABLE `country`
+  MODIFY `contry_id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `Department`
 --
 ALTER TABLE `Department`
   MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `designation`
+--
+ALTER TABLE `designation`
+  MODIFY `desig_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `email_setting`
+--
+ALTER TABLE `email_setting`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `fees_master`
 --
@@ -585,7 +742,7 @@ ALTER TABLE `fees_master`
 -- AUTO_INCREMENT for table `org_profile`
 --
 ALTER TABLE `org_profile`
-  MODIFY `org_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `org_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `program`
 --
@@ -607,6 +764,11 @@ ALTER TABLE `seat_program_studycenter`
 ALTER TABLE `seat_reservation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `state`
+--
+ALTER TABLE `state`
+  MODIFY `state_id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `student_education`
 --
 ALTER TABLE `student_education`
@@ -622,6 +784,11 @@ ALTER TABLE `student_employment`
 ALTER TABLE `student_entrance_exam`
   MODIFY `seex_id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `student_fees`
+--
+ALTER TABLE `student_fees`
+  MODIFY `sfee_id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `student_master`
 --
 ALTER TABLE `student_master`
@@ -631,6 +798,11 @@ ALTER TABLE `student_master`
 --
 ALTER TABLE `student_parent`
   MODIFY `spar_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `student_program`
+--
+ALTER TABLE `student_program`
+  MODIFY `sp_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `study_center`
 --

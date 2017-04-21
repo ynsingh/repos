@@ -16,11 +16,11 @@ body {
 }
 
 #header {
-	background:none repeat scroll 0 0 #FFFFFF;
-	height:90px;
+	background:none repeat scroll 0 0 #067eb7;
+	height:101px;
 	margin:0;
 	position:relative;
-	text-align:left;
+	text-align:center;
 }
 
 #header #logo {

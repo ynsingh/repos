@@ -2,11 +2,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
  
-echo "<div id=\"header\">";
+
+echo "<div>";
 echo "<nav>";
 echo "<ul class=\"sf-menu\">";
+
 			echo "<li class=\"current\">";
-				echo "<a href=" . base_url() . "title=\"Dashboard\">Dashboard</a>";
+				echo "<a href=" . base_url() . ">Dashboard</a>";
 			echo "</li>";
 			echo "<li>";
 				echo anchor('setup', 'Setup', array('title' => 'Setup'));
@@ -18,6 +20,9 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('setup/role', 'Add Role', array('title' => 'Add Role'));
 					echo "</li>";
 					echo "<li>";
+						echo anchor('setup/category', 'Add Category', array('title' => 'Add Category'));
+					echo "</li>";
+					echo "<li>";
 						echo anchor('setup/seatreserve', 'Add Seat Reservation', array('title' => 'Add Seat Reservation'));
 					echo "</li>";
 					echo "<li>";
@@ -25,6 +30,9 @@ echo "<ul class=\"sf-menu\">";
 					echo "</li>";
 					echo "<li>";
 						echo anchor('setup/dept', 'Add Department', array('title' => 'Add Department'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('setup/desig', 'Add Designation', array('title' => 'Add Designation'));
 					echo "</li>";				
 					echo "<li>";
 						echo anchor('setup/program', 'Add Program', array('title' => 'Add Program'));
@@ -84,6 +92,9 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('home/logout', 'Logout', array('title' => 'Logout'));
 					echo "</li>";							
 				echo "</ul>";
+			echo "</li>";
+			echo "<li>";
+			echo anchor('home/logout', 'Logout', array('title' => 'Logout'));
 			echo "</li>";
 echo "</ul>";
 echo "</nav>";
