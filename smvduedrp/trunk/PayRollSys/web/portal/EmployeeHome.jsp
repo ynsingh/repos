@@ -31,7 +31,7 @@
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
    Modified Date: 01 March 2017, IITK (palseema30@gmail.com) add link Annual Salary Statement
-*
+*  Modification : April 2017, Om Prakash (omprakashkgp@gmail.com)
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -133,6 +133,7 @@
                                 <h:commandButton onclick="return loadIframe('ifrm', '../report/ReportExporter.jsf')" value="Monthly Salary Slip"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'AttendanceReport.jsf')" value="Monthly Attendance Report"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'EmpIndividualGrossSalary.jsf')"  value="Annual Salary Statement" />
+                                <h:commandButton onclick="return loadIframe('ifrm', 'LeaveReport.jsf')" value="Leave Management"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'TimeManager.jsf')" value="My TaskPad"  disabled="true"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'DailyWorkReport.jsf')" value="My daily Worksheet" disabled="true"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'IndividualAttendanceReport.jsf')" value="AttendanceReport" disabled="true"/>
@@ -140,7 +141,7 @@
                                 <h:commandButton onclick="return loadIframe('ifrm', 'AnnualSalaryReport.jsf')" value="Annual salary Report" disabled="true"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'TDSReport.jsf')" value="Annual TDS Report" disabled="true"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'PFReport.jsf')" value="Annual PF Report" disabled="true"/>
-                                <h:commandButton onclick="return loadIframe('ifrm', 'LeaveReport.jsf')" value="Leave Account Status" disabled="true"/>
+                                
                                 <h:commandButton onclick="return loadIframe('ifrm', 'LoanRequest.jsf')" value="Loans" disabled="true"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'TaskManager.jsf')" value="My Tasks" disabled="true"/>
                                 <h:commandButton onclick="return loadIframe('ifrm', 'EmpOrder.jsf')" value="My Team" disabled="true"/>

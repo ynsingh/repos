@@ -79,7 +79,8 @@ public class EmployeeLeaveDB {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into employee_leave_master(el_emp_code,"
                     + "el_date_from, el_date_to, el_count, el_quota_type, el_applied_date,"
-                    + "el_approval_date, el_approval_status, el_org_id) values(?,?,?,?,?,?,?,?,?)");
+                    + "el_approval_date, el_approval_status, el_org_id, el_Reasonforleave, "
+                    + "el_ContractNo, el_Reporting_offcr, el_Covering_offcr ) values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
             ps.setInt(1, empcode);
             ps.setString(2, el.getDateFrom());
             ps.setString(3, el.getDateTo());
@@ -89,6 +90,10 @@ public class EmployeeLeaveDB {
             ps.setString(7, null);
             ps.setInt(8,0);
             ps.setInt(9, userBean.getUserOrgCode());
+            ps.setString(10, el.getReasonfleave());
+            ps.setString(11, el.getContractno());
+            ps.setString(12, el.getReportingoff());
+            ps.setString(13, el.getCoveringoff());
             ps.executeUpdate();
             ps.close();
             c.close();
@@ -597,5 +602,93 @@ public class EmployeeLeaveDB {
             return null;
         }   
     }
-
+    
+    public ArrayList<EmployeeLeave> getLeaveAppData()
+    {
+        LoggedEmployee ec= (LoggedEmployee)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
+        try
+          {
+            Connection c = new CommonDB().getConnection();
+            String q="select el_id, el_date_from, el_date_to, el_count, el_quota_type, lt_name, el_applied_date, el_approval_date, el_approval_status,"
+                    + " el_reasonforleave, el_ContractNo, el_Reporting_offcr, el_covering_offcr from employee_leave_master "
+                    + " left join leave_type_master on lt_id=el_quota_type where el_emp_code='"+ec.getProfile().getCode()+"' and el_approval_status='"+1+"'";
+            
+            ps=c.prepareStatement(q);
+            rs = ps.executeQuery();
+            ArrayList<EmployeeLeave> data = new ArrayList<EmployeeLeave>();
+            int k=1;
+            while(rs.next())
+            {     
+                EmployeeLeave el = new EmployeeLeave();
+                el.setId(rs.getInt(1));
+                el.setDateFrom(rs.getString(2));
+                el.setDateTo(rs.getString(3));
+                el.setCount(rs.getInt(4));
+                el.setLeaveTypeCode(rs.getInt(5));
+                el.setLeaveTypeName(rs.getString(6));
+                el.setAppliedDate(rs.getString(7));
+                el.setApprovaldate(rs.getString(8));
+                //el.setActiveStatus(rs.getString(8));
+                el.setActiveStatus("Approved");
+                el.setReasonfleave(rs.getString(10));
+                el.setContractno(rs.getString(11));
+                el.setReportingoff(rs.getString(12));
+                el.setCoveringoff(rs.getString(13));
+                el.setSrNo(k);
+                data.add(el);
+                k++;
+            }
+            return data;
+          }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+     }
+                                  
+    public ArrayList<EmployeeLeave> getLeavePnData()
+    {
+        LoggedEmployee ec= (LoggedEmployee)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
+        try
+          {
+            Connection c = new CommonDB().getConnection();
+            String q="select el_id, el_date_from, el_date_to, el_count, el_quota_type, lt_name, el_applied_date, el_approval_date, el_approval_status,"
+                    + " el_reasonforleave, el_ContractNo, el_Reporting_offcr, el_covering_offcr from employee_leave_master "
+                    + " left join leave_type_master on lt_id=el_quota_type where el_emp_code='"+ec.getProfile().getCode()+"' and el_approval_status='"+0+"'";
+            
+            ps=c.prepareStatement(q);
+            rs = ps.executeQuery();
+            ArrayList<EmployeeLeave> data = new ArrayList<EmployeeLeave>();
+            int k=1;
+            while(rs.next())
+            {     
+                EmployeeLeave el = new EmployeeLeave();
+                el.setId(rs.getInt(1));
+                el.setDateFrom(rs.getString(2));
+                el.setDateTo(rs.getString(3));
+                el.setCount(rs.getInt(4));
+                el.setLeaveTypeCode(rs.getInt(5));
+                el.setLeaveTypeName(rs.getString(6));
+                el.setAppliedDate(rs.getString(7));
+                el.setApprovaldate(rs.getString(8));
+                //el.setActiveStatus(rs.getString(8));
+                el.setActiveStatus("Not Approved");
+                el.setReasonfleave(rs.getString(10));
+                el.setContractno(rs.getString(11));
+                el.setReportingoff(rs.getString(12));
+                el.setCoveringoff(rs.getString(13));
+                el.setSrNo(k);
+                data.add(el);
+                k++;
+            }
+            return data;
+          }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+     }
+                                  
 }

@@ -82,6 +82,7 @@ public class EmployeeLeave implements Serializable{
     private int srNo;
     private int orgId;
     private String empCode;
+    private String empc;
     
      public EmployeeLeave(EmployeeLeaveData empld)
      {
@@ -110,6 +111,14 @@ public class EmployeeLeave implements Serializable{
         this.empId = empId;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     private UIData dataGrid;
    
         
@@ -121,9 +130,53 @@ public class EmployeeLeave implements Serializable{
         this.dataGrid = dataGrid;
     }
     
+    private UIData dataGrid1;
+    private UIData dataGrid2;
+    private UIData dataGrid3;
+    private UIData dataGrid4;
+
+    public UIData getDataGrid1() {
+        return dataGrid1;
+    }
+
+    public void setDataGrid1(UIData dataGrid1) {
+        this.dataGrid1 = dataGrid1;
+    }
+
+    public UIData getDataGrid2() {
+        return dataGrid2;
+    }
+
+    public void setDataGrid2(UIData dataGrid2) {
+        this.dataGrid2 = dataGrid2;
+    }
+
+    public UIData getDataGrid3() {
+        return dataGrid3;
+    }
+
+    public void setDataGrid3(UIData dataGrid3) {
+        this.dataGrid3 = dataGrid3;
+    }
+
+    public UIData getDataGrid4() {
+        return dataGrid4;
+    }
+
+    public void setDataGrid4(UIData dataGrid4) {
+        this.dataGrid4 = dataGrid4;
+    }
+       
     private ArrayList<EmployeeLeave> leaveData;
     private ArrayList<EmployeeLeave> singleLeaveData;
     private ArrayList<EmployeeLeave> allLeaveDetails;
+    
+    private ArrayList<EmployeeLeave> leaveAData;
+    private ArrayList<EmployeeLeave> leaveEmpData;
+    private ArrayList<EmployeeLeave> LeavefData;
+    private ArrayList<EmployeeLeave> LeavepenData;
+    private ArrayList<EmployeeLeave> LeaveRejecData;
+    
 
     public ArrayList<EmployeeLeave> getAllLeaveDetails() {
         allLeaveDetails = new EmployeeLeaveDB().getAllLeaveDetails();
@@ -157,7 +210,53 @@ public class EmployeeLeave implements Serializable{
         this.leaveData = leaveData;
     }
 
-    public String getReasonfleave() {
+    public ArrayList<EmployeeLeave> getLeaveAData() {
+        leaveAData = new EmployeeLeaveDB().getLeaveAppData();
+        dataGrid4.setValue(leaveAData);
+        return leaveAData;
+    }
+
+    public void setLeaveAData(ArrayList<EmployeeLeave> leaveAData) {
+        this.leaveAData = leaveAData;
+    }
+
+    public ArrayList<EmployeeLeave> getLeaveEmpData() {
+        return leaveEmpData;
+    }
+
+    public void setLeaveEmpData(ArrayList<EmployeeLeave> leaveEmpData) {
+        this.leaveEmpData = leaveEmpData;
+    }
+
+    public ArrayList<EmployeeLeave> getLeavefData() {
+        LeavefData = new EmployeeLeaveDB().getLeaveAppData();
+        dataGrid3.setValue(LeavefData);
+        return LeavefData;
+    }
+
+    public void setLeavefData(ArrayList<EmployeeLeave> LeavefData) {
+        this.LeavefData = LeavefData;
+    }
+
+    public ArrayList<EmployeeLeave> getLeavepenData() {
+        LeavepenData = new EmployeeLeaveDB().getLeavePnData();
+        dataGrid1.setValue(LeavepenData);
+        return LeavepenData;
+    }
+
+    public void setLeavepenData(ArrayList<EmployeeLeave> LeavepenData) {
+        this.LeavepenData = LeavepenData;
+    }
+
+    public ArrayList<EmployeeLeave> getLeaveRejecData() {
+        return LeaveRejecData;
+    }
+
+    public void setLeaveRejecData(ArrayList<EmployeeLeave> LeaveRejecData) {
+        this.LeaveRejecData = LeaveRejecData;
+    }
+ 
+     public String getReasonfleave() {
         return reasonfleave;
     }
 
@@ -205,6 +304,20 @@ public class EmployeeLeave implements Serializable{
         this.count = count;
     }
 
+    public String getEmpc() {
+        LoggedEmployee ec= (LoggedEmployee)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
+        if(ec!=null&&ec.getProfile()!=null)
+        {
+            empc = ec.getProfile().getCode();
+        }
+        return empc;
+    }
+
+    public void setEmpc(String empc) {
+        this.empc = empc;
+    }
+
+        
     public int getLeaveValue() {
         String csName=new EmployeeLeaveDB().CurrentSessionName();
         int b = new EmployeeLeaveDB().getEmpOldLeaveValue(empCode, leaveTypeCode, csName);
@@ -352,7 +465,6 @@ public class EmployeeLeave implements Serializable{
     public void save()
     {
         this.count = new CommonDB().getDateDiff(dateFrom, dateTo);
-        
         if(count<0)
         {
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dates are wrong", ""));
