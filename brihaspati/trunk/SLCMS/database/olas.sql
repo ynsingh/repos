@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 21, 2017 at 05:41 PM
+-- Generation Time: Apr 24, 2017 at 07:09 PM
 -- Server version: 5.6.27
 -- PHP Version: 5.6.15
 
@@ -55,12 +55,19 @@ CREATE TABLE `city` (
 --
 
 CREATE TABLE `country` (
-  `contry_id` int(11) NOT NULL,
-  `county_name` varchar(255) DEFAULT NULL,
+  `country_id` int(11) NOT NULL,
+  `country_name` varchar(255) DEFAULT NULL,
   `country_code` varchar(255) DEFAULT NULL,
   `country_short` varchar(255) DEFAULT NULL,
   `country_desc` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `country`
+--
+
+INSERT INTO `country` (`country_id`, `country_name`, `country_code`, `country_short`, `country_desc`) VALUES
+(1, 'India', '91', 'IN', NULL);
 
 -- --------------------------------------------------------
 
@@ -182,7 +189,7 @@ CREATE TABLE `org_profile` (
 --
 
 INSERT INTO `org_profile` (`org_id`, `org_code`, `org_name`, `org_nickname`, `org_type`, `org_tagline`, `org_address1`, `org_address2`, `org_city`, `org_district`, `org_state`, `org_countrycode`, `org_pincode`, `org_phone`, `org_fax`, `org_email`, `org_web`, `org_institutedomain`, `org_tanno`, `org_logo`, `org_affiliation`, `org_status`, `org_reg_date`, `org_close_date`, `org_adminfn`, `org_adminln`, `org_admindesig`, `creatorid`, `create_date`, `modifierid`, `modify_date`) VALUES
-(1, 'CU001', 'Indira Gandhi National Tribal University', 'IGNTU', 'Central Govt', '', 'Lal Pur, Amarkantak', '', '', '', 'Madhya Pradesh', '91', '484887', '07629 269 701', '07629 269 701', 'admission@igntu.ac.in', 'www.igntu.ac.in', 'igntu.ac.in', '', '', 'MHRD', 'Active', 'July 2008', '', '', '', '', '1', '2017-04-21', '', '');
+(1, 'CU001', 'Indira Gandhi National Tribal University', 'IGNTU', 'Central Govt', '', 'Lal Pur, Amarkantak', '', '', '', 'Madhya Pradesh', '91', '484887', '07629 269 701', '07629 269 701', 'admission@igntu.ac.in', 'www.igntu.ac.in', 'igntu.ac.in', '', '', 'MHRD', 'Active', 'July 2008', '', 'Prof T V', 'Kattimani', 'Vice Chancellor', '1', '2017-04-21', '', '');
 
 -- --------------------------------------------------------
 
@@ -562,7 +569,7 @@ ALTER TABLE `city`
 -- Indexes for table `country`
 --
 ALTER TABLE `country`
-  ADD PRIMARY KEY (`contry_id`);
+  ADD PRIMARY KEY (`country_id`);
 
 --
 -- Indexes for table `Department`
@@ -717,7 +724,7 @@ ALTER TABLE `city`
 -- AUTO_INCREMENT for table `country`
 --
 ALTER TABLE `country`
-  MODIFY `contry_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `Department`
 --
