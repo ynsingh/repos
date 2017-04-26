@@ -1,4 +1,4 @@
-   Copyright (c) 2013 ETRG,IIT Kanpur. 
+   Copyright (c) 2017 Brihaspati ETRG,IIT Kanpur. 
    All Rights Reserved.
  
    Redistribution and use in source and binary forms, with or 
@@ -25,4 +25,4 @@
    OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
-   Contributors : members of ETRG, IIT Kanpur  
+   Contributors : members of Brihaspati ETRG, IIT Kanpur  
