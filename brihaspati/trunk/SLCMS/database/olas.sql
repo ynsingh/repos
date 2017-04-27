@@ -202,6 +202,7 @@ CREATE TABLE `program` (
   `prg_category` varchar(255) NOT NULL,
   `prg_name` varchar(255) NOT NULL,
   `prg_branch` varchar(255) NOT NULL,
+  `prg_seat` int(5) NOT NULL,
   `prg_code` varchar(255) NOT NULL,
   `prg_short` varchar(255) NOT NULL,
   `prg_desc` varchar(255) NOT NULL,

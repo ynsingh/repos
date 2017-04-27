@@ -118,6 +118,12 @@ CREATE TABLE `bgasuserrolegroup` (
   `aggtype` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `bgasuserrolegroup`
+--
+
+insert into bgasuserrolegroup values (1,1,'administrator','*','');
+insert into bgasuserrolegroup values (2,2,'guest','*','');
 
 --
 -- Table structure for table `edrpuser`
@@ -159,6 +165,11 @@ CREATE TABLE `emailSetting` (
   `email_password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `emailSetting`
+--
+
+INSERT INTO emailSetting VALUES (1,'','','','','');
 
 --
 -- Table structure for table `forgotPass`
@@ -190,6 +201,12 @@ CREATE TABLE `userlaststatus` (
   `status` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `userlaststatus`
+--
+
+insert into userlaststatus values (1,1,'English','',1,'','','',1);
+insert into userlaststatus values (2,2,'English','',1,'','','',1);
 
 
 --
@@ -212,6 +229,8 @@ CREATE TABLE `userprofile` (
 -- Dumping data for table `userprofile`
 --
 
+insert into userprofile values (1,1,'Y.N.','Singh','','','','English',1);
+insert into userprofile values (2,2,'Guest','','','','','English',1);
 
 
 
