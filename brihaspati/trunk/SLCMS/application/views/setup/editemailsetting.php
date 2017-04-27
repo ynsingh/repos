@@ -47,12 +47,12 @@
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
             echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
             echo "Setup";
-            echo " ";
-            echo " | ";
-            echo " ";
-            echo anchor('setup/dispemailsetting/', "View Email Setting", array('title' => 'Add Detail' , 'class' => 'top_parent')) . " ";
-            echo " ";
-            echo "| ";
+            echo "<span  style='padding: 8px 8px 8px 20px;'> ";
+            echo "|";
+            //echo "<span  style='padding: 8px 8px 8px 20px;'> ";
+            echo anchor('setup/dispemailsetting/', "View Email Setting", array('title' => 'Add Detail' , 'class' => 'top_parent'));
+            echo "<span  style='padding: 8px 8px 8px 20px;'> ";
+            echo "|";
             echo "<span  style='padding: 8px 8px 8px 20px;'>";
             echo "Edit Email Setting";
             echo "</span>";
