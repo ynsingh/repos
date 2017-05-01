@@ -3,6 +3,7 @@
 /* 
  * @name Setup.php
  * @author Manorama Pal(palseema30@gmail.com)
+ * @author Sharad Singh(sharad23nov@yahoo.com)
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -279,4 +280,234 @@ class Setup extends CI_Controller
 	redirect('setup/editemailsetting/');
 
     }//function end
+
+    /*********** Program Module ***************/
+
+    public function program() 
+    {
+        $data['title'] = 'Add program';
+        if(isset($_POST['program'])) 
+        {
+            $this->form_validation->set_rules('prgcat','Program Category','trim|xss_clean|required');
+            $this->form_validation->set_rules('prgname','Program Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean|required');
+            $this->form_validation->set_rules('prgseat','Seat Available','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('prgcode','Program Code','trim|xss_clean|required');
+            $this->form_validation->set_rules('prgshort','Program Short','trim|xss_clean|required');
+            $this->form_validation->set_rules('prgdesc','Program Description','trim|xss_clean|required');
+            $this->form_validation->set_rules('prgmaxtime','Program Min Time','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('prgmintime','Program Max Time','trim|xss_clean|required|numeric');
+
+            $prgcat = $this->input->post('prgcat');
+            $prgname = $this->input->post('prgname');
+            $prgseat = $this->input->post('prgseat');
+            $prgbranch = $this->input->post('prgbranch');
+            $prgcode = $this->input->post('prgcode');
+            $prgshort = $this->input->post('prgshort');
+            $prgdesc = $this->input->post('prgdesc');
+            $prgmaxtime = $this->input->post('prgmaxtime');
+            $prgmintime = $this->input->post('prgmintime');
+            $prgcrtid = $this->session->userdata('username'); 
+            $currdate = date("Y/m/d");
+            $prgdate  = $currdate;
+
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/program');
+            return;
+        }
+        else
+        {
+            $data = array('prg_category'=>$prgcat,'prg_name'=>$prgname,'prg_branch'=>$prgbranch,'prg_seat'=>$prgseat,'prg_code'=>$prgcode,'prg_short'=>$prgshort,'prg_desc'=>$prgdesc,'prg_mintime'=>$prgmintime,'prg_maxtime'=>$prgmaxtime,'creatorid'=>$prgcrtid,'createdate'=>$prgdate);
+            $this->db->trans_start();
+            if(!$this->db->insert('program',$data))
+            {
+                $this->db->trans_rollback();
+                log_message('error', "Error  in adding program data " . $prgcrtid . " [Program id:" . $prg_id . "]");
+                log_message('debug', "Problem in adding program" . $prgcrtid );
+                $this->session->set_flashdata('Error in adding Program - ' . $prgcrtid . '.', 'error');
+                log_message('info', "Error  in adding  Program record " . $prgcrtid . " [Program_id:" . $prg_id . "]");
+                $this->load->view('setup/program');
+            }
+            else
+            {
+                $this->db->trans_complete();
+                $this->logger->write_logmessage("Added","Program Setting Added", "Program details added successfully");
+                $this->session->set_flashdata("success", "Program added successfully");
+                $this->load->view('setup/program');
+            }    
+        }
+    }
+
+    /* method to view program detail */
+
+    public function viewprogram()
+    {
+        $this->db->from('program');
+        $getprg = $this->db->get();
+        $getres = $getprg->result();
+        $data['prgres'] = $getres;
+        $msg="";
+        $data['msg'] = $msg;
+        $this->load->view('setup/viewprogram', $data);
+        $this->logger->write_logmessage("view"," View Program Details", "View Program details...");
+    }
+
+    /* method to modify program detail */
+
+    public function editprogram($prgid){
+        $this->db->from('program')->where('prg_id', $prgid);
+        $program_data_q = $this->db->get();
+        if ($program_data_q->num_rows() < 1)
+        {
+            redirect('setup/viewporgram/');
+        }
+        $program_data = $program_data_q->row();
+
+        /* Form Field */
+
+        $data['prgcat'] = array('name' => 'prgcat','id' => 'prgcat','maxlength' => '100','size' => '40','value' => $program_data->prg_category,'',);
+        $data['prgname'] = array('name' => 'prgname','id' => 'prgname','maxlength' => '100','size' => '40','value' => $program_data->prg_name,'',);
+        $data['prgbranch'] = array('name' => 'prgbranch','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_branch,'',);
+        $data['prgseat'] = array('name' => 'prgseat','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_seat,'',);
+        $data['prgcode'] = array('name' => 'prgcode','id' => 'prgcode','maxlength' => '100','size' => '40','value' => $program_data->prg_code,'',);
+        $data['prgshort'] = array('name' => 'prgshort','id' => 'prgshort','maxlength' => '100','size' => '40','value' => $program_data->prg_short,'',);
+        $data['prgdesc'] = array('name' => 'prgdesc','id' => 'prgdesc','maxlength' => '100','size' => '40','value' => $program_data->prg_desc,'',);
+        $data['prgmintime'] = array('name' => 'prgmintime','id' => 'prgmintime','maxlength' => '100','size' => '40','value' => $program_data->prg_mintime,'',);
+        $data['prgmaxtime'] = array('name' => 'prgmaxtime','id' => 'prgmaxtime','maxlength' => '100','size' => '40','value' => $program_data->prg_maxtime,'',);
+        $data['prgcreatorid'] = array('name' => 'prgcrtid','id' => 'prgcrtid','maxlength' => '100','size' => '40','value' => $program_data->creatorid,'readonly'=>'true',);
+        $data['prgid'] = $prgid;
+
+        print_r($program_data->prg_category);
+        /* form validation */
+
+        $this->form_validation->set_rules('prgcat','Program Category','trim|xss_clean|required');
+        $this->form_validation->set_rules('prgname','Program Name','trim|xss_clean|required');
+        $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean|required');
+        $this->form_validation->set_rules('prgseat','Seat Available','trim|xss_clean|required|numeric');
+        $this->form_validation->set_rules('prgcode','Program Code','trim|xss_clean|required');
+        $this->form_validation->set_rules('prgshort','Program Short','trim|xss_clean|required');
+        $this->form_validation->set_rules('prgdesc','Program Description','trim|xss_clean|required');
+        $this->form_validation->set_rules('prgmaxtime','Program Min Time','trim|xss_clean|required|numeric');
+        $this->form_validation->set_rules('prgmintime','Program Max Time','trim|xss_clean|required|numeric');
+
+        /* update Program Records */
+
+        if($_POST)
+        {
+            $data['prgcat']['value'] = $this->input->post('prgcat', TRUE);
+            $data['prgname']['value'] = $this->input->post('prgname', TRUE);
+            $data['prgbranch']['value'] = $this->input->post('prgbranch', TRUE);
+            $data['prgseat']['value'] = $this->input->post('prgseat', TRUE);
+            $data['prgcode']['value'] = $this->input->post('prgcode', TRUE);
+            $data['prgshort']['value'] = $this->input->post('prgshort', TRUE);
+            $data['prgdesc']['value'] = $this->input->post('prgdesc', TRUE);
+            $data['prgmintime']['value'] = $this->input->post('prgmintime', TRUE);
+            $data['prgmaxtime']['value'] = $this->input->post('prgmaxtime', TRUE);
+            $data['prgcreatorid']['value'] = $this->input->post('prgcreatorid', TRUE);
+
+        }
+
+        if ($this->form_validation->run() == TRUE)
+        {
+            //echo $data['prgcat'];
+            //echo $data_prgcat;
+            $data_prgcat = $this->input->post('prgcat', TRUE);
+            $data_prgname = $this->input->post('prgname', TRUE);
+            $data_prgbranch = $this->input->post('prgbranch', TRUE);
+            $data_prgseat = $this->input->post('prgseat', TRUE);
+            $data_prgcode = $this->input->post('prgcode', TRUE);
+            $data_prgshort = $this->input->post('prgshort', TRUE);
+            $data_prgdesc = $this->input->post('prgdesc', TRUE);
+            $data_prgmintime = $this->input->post('prgmintime', TRUE);
+            $data_prgmaxtime = $this->input->post('prgmaxtime', TRUE);
+            $data_prgcreatorid = $this->input->post('prgcreatorid', TRUE);
+            $data_prgid = $prgid;
+            $logmessage = "";
+            if($program_data->prg_category != $data_prgcat)
+                $logmessage = "Program Category " .$program_data->prg_category. " changed by " .$data_prgcat;
+            if($program_data->prg_name != $data_prgname)
+                $logmessage = $logmessage ." Program Name " .$program_data->prgname. " changed by " .$data_prgname;
+            if($program_data->prg_branch != $data_prgbranch)
+                $logmessage = $logmessage ." Program Branch " .$program_data->prgbranch. " changed by " .$data_prgbranch;
+            if($program_data->prg_seat != $data_prgseat)
+                $logmessage = $logmessage ." Seat Available " .$program_data->prgseat. " changed by ". $data_prgseat;
+            if($program_data->prg_short != $data_prgshort)
+                $logmessage = $logmessage ." Program Short Name ".$program_data->prgshort. " changed by ".$data_prgshort;
+            if($program_data->prg_code != $data_prgcode)
+                $logmessage = $logmessage ." Program Code " .$program_data->prgcode ." changed by ".$data_prgcode;
+            if($program_data->prg_desc != $data_prgdesc)
+                $logmessage = $logmessage . "Program Desc " .$program_data->prgdesc. " changed by" .$data_prgdesc;
+            if($program_data->prg_mintime != $data_prgmintime)
+                $logmessage = $logmessage . "Program Min Time ".$program_data->prgmintime ." changed by".$data_prgmintime;
+            if($program_data->prg_maxtime != $data_prgmaxtime)
+                $logmessage = $logmessage . "Program Max Time " .$program_data->prgmaxtime. " changed by".$data_prgmaxtime;
+              
+                
+                
+
+            /* update program records*/
+
+            $this->db->trans_start();
+            $update_prgdata = array('prg_category' => $data_prgcat,'prg_name' => $data_prgname,'prg_branch' => $data_prgbranch,'prg_seat' => $data_prgseat,'prg_code' => $data_prgcode,'prg_short' => $data_prgshort,'prg_desc' => $data_prgdesc,'prg_mintime' => $data_prgmintime, 'prg_maxtime' => $data_prgmaxtime);
+
+            if (!$this->db->where('prg_id', $data_prgid)->update('program', $update_prgdata))
+            {
+                $this->db->trans_rollback();
+                log_message('error', "Error  in updating program data " . $prgcrtid . " [Program id:" . $prg_id . "]");
+
+                $this->session->set_flashdata('flash_data', 'Program Name' .$data_prgname. 'cannot Updated.');
+                log_message('info', "Error  in updating  Program record " . $prgcrtid . " [Program_id:" . $prg_id . "]");
+                $this->load->view('setup/editprogram', $data);
+            } 
+            else 
+            {
+                $this->db->trans_complete();
+                $this->logger->write_logmessage("update","Program Detail Updated", $logmessage);
+                $this->session->set_flashdata('success', 'Program Name ' .$data_prgname. ' Successfully Updated.');
+                redirect('setup/viewprogram/');
+            }
+        }
+        $this->load->view('setup/editprogram',$data);
+    }
+
+    /* deletion of program */
+
+    function deleteprogram($prg_id)
+    {
+        $this->db->from('program')->where('prg_id', $prg_id);
+        $program_q = $this->db->get();
+        if ($program_q->num_rows() < 1)
+        {
+            $this->session->set_flashdata('Invalid program records.', 'error');
+            redirect('setup/viewprogram');
+        } 
+        else 
+        {
+            $program_data = $program_q->row();
+        }
+        $this->db->trans_start();
+        if ( ! $this->db->delete('program', array('prg_id' => $prg_id)))
+        {        
+            $this->db->trans_rollback();
+            log_message('error', 'Error in deleting program  record - '. $program_data->prg_category . '.' );
+            log_message('debug', 'Program Information.');
+            $this->session->set_flashdata('Error in deleting program - ' . $program_data->prg_category . '.', 'error');
+            log_message("info", "Error  in deleting program records " . $program_data->prg_category . " [prg_id:" . $prg_id . "]");
+            redirect('setup/viewprogram');
+        }
+        else
+        {
+            $this->db->trans_complete();
+            $this->session->set_flashdata("success", 'Deleted Program Record '. $program_data->prg_category .' Successfully');
+            $this->logger->write_logmessage("update", "Deleted Program called " . $program_data->prg_category . " [prg_id:" . $prg_did . "]");
+            redirect('setup/viewprogram');
+        }
+        $this->load->view('setup/viewprogram');
+    }
+    
+    /** Program Module End **/
+
 }
