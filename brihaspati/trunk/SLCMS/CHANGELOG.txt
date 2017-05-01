@@ -1,0 +1,32 @@
+SLCMS  Version 1.0 2017-04-27
+-----------------------------
+
+    * Added email setting module
+    * Added logger lib
+    * Mofdified menu list
+    * Changed in program table - one field seat added
+    * Added default values in login schema  for admin and guest
+
+SLCMS  Version 1.0 2017-04-24
+-----------------------------
+
+    * Modified table country and puted default value for India
+    * Added University Model
+    * Added University information to dashboard  
+
+SLCMS  Version 1.0 2017-04-21
+-----------------------------
+
+    * Added 5 table (city, state, country, student program and  student fees) create statement
+    * Added auto increment in  three table (designation,category and email setting) statement
+    * Changed in login page
+    * Changed in header clour
+    * Added two submenu (category and designation) in setup menu 
+
+SLCMS  Version 1.0 2017-04-19
+------------------------------
+
+    * Start Apache License, Version 2.0
+    * Added 7 tables create statements
+    * Added menu and submenu
+    

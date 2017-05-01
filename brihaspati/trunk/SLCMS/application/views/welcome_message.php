@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 
-<!--<div id="container"> -->
+
 <div>
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php if(isset($_SESSION)) {
         	echo $this->session->flashdata('flash_data');
     	} ?>
- <br><br>
+ 	<br><br>
     	<form action="<?= site_url('welcome') ?>" method="post">
         	<label for="username">Username</label>
         	<input type="text" name="username" /> <br><br>

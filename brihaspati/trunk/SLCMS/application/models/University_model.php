@@ -31,6 +31,21 @@ class University_model extends CI_Model
 	return $this->db->get('org_profile')->row();
     }
 
+    public function get_scnamecode(){
+   	 $this->db->select("sc_code,sc_name");
+   	 return $this->db->get('study_center')->result();
+    }   
+   
+    public function get_unamecode(){
+   	 $this->db->select("org_code,org_name");
+   	 return $this->db->get('org_profile')->row();
+    }
+
+    public function get_list($tbname){
+         $this->db->from($tbname);
+         return $this->db->get()->result();
+    }
+
     function __destruct() {
         $this->db->close();
     }

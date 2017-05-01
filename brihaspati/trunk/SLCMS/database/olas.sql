@@ -236,8 +236,12 @@ CREATE TABLE `seat_program_studycenter` (
   `spsc_sc_code` varchar(255) NOT NULL,
   `spsc_gender` varchar(255) NOT NULL,
   `spsc_totalseat` varchar(255) NOT NULL,
-  `spsc_ext1` varchar(255) NOT NULL,
-  `spsc_ext2` varchar(255) NOT NULL
+  `spsc_acadyear` varchar(255) NOT NULL,
+  `spsc_sem` varchar(255) NOT NULL,
+  `spsc_creatorid` varchar(255) NOT NULL,
+  `spsc_createdate` varchar(255) NOT NULL,
+  `spsc_modifierid` varchar(255) NOT NULL,
+  `spsc_modifydate` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -691,8 +695,6 @@ ALTER TABLE `study_center`
 --
 ALTER TABLE `subject`
   ADD PRIMARY KEY (`sub_id`),
-  ADD UNIQUE KEY `sub_name` (`sub_name`),
-  ADD UNIQUE KEY `sub_code` (`sub_code`),
   ADD UNIQUE KEY `sub_name_2` (`sub_name`,`sub_code`);
 
 --
