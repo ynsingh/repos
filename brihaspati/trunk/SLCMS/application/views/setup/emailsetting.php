@@ -6,39 +6,8 @@
         <?php $this->load->view('template/header'); ?>
             <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
-        <style>
-            .isa_info, .isa_success, .isa_warning, .isa_error {
-                margin: 10px 0px;
-                padding:12px;
- 
-            }
-            .isa_info {
-                color: #00529B;
-                background-color: #BDE5F8;
-            }
-            .isa_success {
-                color: #4F8A10;
-                background-color: #DFF2BF;
-            }
-            .isa_warning {
-                color: #9F6000;
-                background-color: #FEEFB3;
-            }
-            .isa_error {
-                color: #D8000C;
-                background-color: #FFBABA;
-            }
-            .isa_info i, .isa_success i, .isa_warning i, .isa_error i {
-                margin:10px 22px;
-                font-size:2em;
-                vertical-align:middle;
-            }
-            .top_parent{
-                color:white;
-                text-decoration: none;
-                padding: 8px 8px 8px 20px;
-            }
-        </style>      
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/message.css">
+      
     </head>    
     <body>
 
