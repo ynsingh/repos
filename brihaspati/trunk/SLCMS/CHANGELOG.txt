@@ -1,3 +1,11 @@
+SLCMS  Version 1.0 2017-05-05
+-----------------------------
+
+    * Modified table subject_paper -addes few more field (type -UG,PG,R,Dip, paper number, degree, acad year, insert and modified date)
+    * Added Common model for select and delete
+    * Mofdified menu list - added subject link in setup
+
+
 SLCMS  Version 1.0 2017-04-27
 -----------------------------
 

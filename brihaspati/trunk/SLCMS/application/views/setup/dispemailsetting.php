@@ -59,7 +59,8 @@
                     echo "<table border=0 cellpadding=13 style=\"padding: 8px 8px 8px 20px;\">";
                     echo "<thead><tr align=\"left\"><th>Email Protocol</th><th>Email Host</th><th>Email Port</th><th>Username</th><th>Password</th><th>Sendername</th><th>Creator Id</th><th>Creation Date</th><th>Modifier Id</th><th>Modified Date</th><th>Action</th><th></th></tr></thead>";
                     //  echo "<thead><tr><th>Id</th><th>EmailProtocol</th><th>EmailHost</th><th>EmailPort</th><th>UserName</th><th>Password</th><th>SenderName</th><th>CreatorId</th><th>CreationDate</th><th>ModifierId</th><th>ModifiedDate</th><th>Action</th><th></th></tr></thead>";
-                    foreach ($query->result() as $row)
+                    //foreach ($query->result() as $row)
+                    foreach ($this->result as $row)
                     {
                         echo "<tr>";
                        // echo "<td>" . $row->id   . "</td>";

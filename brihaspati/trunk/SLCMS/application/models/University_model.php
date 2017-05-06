@@ -41,11 +41,6 @@ class University_model extends CI_Model
    	 return $this->db->get('org_profile')->row();
     }
 
-    public function get_list($tbname){
-         $this->db->from($tbname);
-         return $this->db->get()->result();
-    }
-
     function __destruct() {
         $this->db->close();
     }

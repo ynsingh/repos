@@ -13,7 +13,7 @@ class Setup extends CI_Controller
 {
     function __construct() {
         parent::__construct();
- 
+	$this->load->model("common_model"); 
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -86,12 +86,9 @@ class Setup extends CI_Controller
      */
     public function dispemailsetting() {
         
-        //$this->template->set('nav_links', array('setup' => 'emailsetting', 'setup/emailsetting' => 'Add Email-setting'));
-        $this->db->from('email_setting');
-        $query = $this->db->get();
-        $data['query'] = $query;
+	 $this->result = $this->common_model->get_list('email_setting');
         $this->logger->write_logmessage("view"," View Email Setting", "Email setting details...");
-        $this->load->view('setup/dispemailsetting',$data);
+        $this->load->view('setup/dispemailsetting',$this->result);
     }
     
     /**This function Delete the Eamil setting records
@@ -380,7 +377,7 @@ class Setup extends CI_Controller
         $data['prgcreatorid'] = array('name' => 'prgcrtid','id' => 'prgcrtid','maxlength' => '100','size' => '40','value' => $program_data->creatorid,'readonly'=>'true',);
         $data['prgid'] = $prgid;
 
-        print_r($program_data->prg_category);
+        //print_r($program_data->prg_category);
         /* form validation */
 
         $this->form_validation->set_rules('prgcat','Program Category','trim|xss_clean|required');

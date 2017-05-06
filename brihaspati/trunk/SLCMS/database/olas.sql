@@ -533,12 +533,20 @@ CREATE TABLE `subject` (
 CREATE TABLE `subject_paper` (
   `subp_id` int(11) NOT NULL,
   `subp_sub_id` int(11) NOT NULL,
+  `subp_subtype` VARCHAR(255) NOT NULL,
+  `subp_paperno` VARCHAR(50) NOT NULL,
   `subp_name` varchar(255) NOT NULL,
   `subp_code` varchar(100) NOT NULL,
   `subp_short` varchar(255) NOT NULL,
   `subp_desp` varchar(255) NOT NULL,
+  `subp_degree` VARCHAR(20) NOT NULL,
+  `subp_acadyear` VARCHAR(20) NOT NULL,
   `subp_ext1` varchar(255) NOT NULL,
-  `subp_ext2` varchar(255) NOT NULL
+  `subp_ext2` varchar(255) NOT NULL,
+  `creatorid` VARCHAR(255) NOT NULL,
+  `createdate` VARCHAR(255) NOT NULL,
+  `modifierid` VARCHAR(255) NOT NULL,
+  `modifydate` VARCHAR(255) NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

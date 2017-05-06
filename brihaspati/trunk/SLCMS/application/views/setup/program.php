@@ -53,19 +53,22 @@
         <label for="prgcat">Program Category</label></td>
         <td><input type="text" name="prgcat"/>
         </td><td><?php echo form_error('prgcat')?>
+	</td><td>Example : UG, PG, R, Dip etc
     </td></tr> 
     <tr><td>
         <label for="prgname">Program Name</label></td>
         <td><input type="text" name="prgname" />
         </td><td><?php echo form_error('prgname')?>
+	</td><td>Example : Batchlor of Art, Master of Art etc  
     </td></tr>
     <tr><td>
         <label for="prgbranch">Program Branch</label></td>
         <td><input type="text" name="prgbranch" />
         </td><td><?php echo form_error('prgbranch')?>
+	</td><td>Example : Physics, Math  etc
     </td></tr>
     <tr><td>
-        <label for="prgseat">Seat Available</label></td>
+        <label for="prgseat">Total Seat</label></td>
         <td><input type="text" name="prgseat" />
         </td><td><?php echo form_error('prgseat')?>
     </td></tr>

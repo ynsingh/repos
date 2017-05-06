@@ -39,6 +39,9 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('setup/viewprogram', 'Add Program and Seat', array('title' => 'Add Program and Seat'));
 					echo "</li>";
 					echo "<li>";
+						echo anchor('setup/subject', 'Add Subject', array('title' => 'Add Subject'));
+					echo "</li>";
+					echo "<li>";
 						echo anchor('setup/fees', 'Add Program Fees', array('title' => 'Add Program Fees'));
 					echo "</li>";
 					
