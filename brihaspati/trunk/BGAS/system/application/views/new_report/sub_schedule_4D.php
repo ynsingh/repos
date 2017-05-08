@@ -90,7 +90,7 @@
         echo "<br>";
         echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
         $object = new Reportlist1();
-  	$object->FixedAsset_B('2001','4D');
+  	$object->FixedAsset_B('2001','4D','NULL',"view");
 	$op_bal2 = $object->opening_balance;
         $dr_total2 = $object->debit_total;
         $cr_total2 = $object->credit_total;

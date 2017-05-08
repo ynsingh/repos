@@ -687,7 +687,7 @@ d Investments')
 		$count1 = 1;
 		$sum = 0;
 		$CI =& get_instance();
-		$id = $CI->group_model->get_group_id($code);
+		$id = $CI->Group_model->get_group_id($code);
 		$CI->db->select('id,name,code')->from('groups')->where('parent_id', $id);
 		$group_detail = $CI->db->get();
                 $group_result = $group_detail->result();
@@ -1380,7 +1380,7 @@ d Investments')
 		$dep_opening_value = 0;
 		
 		$CI =& get_instance();
-                $id = $CI->group_model->get_group_id($code);
+                $id = $CI->Group_model->get_group_id($code);
                 $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
                 $group_detail = $CI->db->get();
                 foreach($group_detail->result() as $row)
@@ -1671,7 +1671,7 @@ d Investments')
 		$dep_opening_value = 0;
 		
 		$CI =& get_instance();
-                $id = $CI->group_model->get_group_id($code);
+                $id = $CI->Group_model->get_group_id($code);
                 $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
                 $group_detail = $CI->db->get();
                 foreach($group_detail->result() as $row)
@@ -3172,8 +3172,8 @@ d Investments')
 		$counter=1;
 		$sum = 0;
 		$CI = & get_instance();
-                $id = $CI->group_model->get_group_id($code);
-                $name = $CI->group_model->get_group_name($id);
+                $id = $CI->Group_model->get_group_id($code);
+                $name = $CI->Group_model->get_group_name($id);
                 $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
                 $group_detail = $CI->db->get();
                 $group_result = $group_detail->result();

@@ -45,6 +45,6 @@
                 echo "<td> 31.03..... </td>";
         echo "</tr>";
 	$object = new Reportlist1();
-	$object->FixedAsset_C('2001',4);
+	$object->FixedAsset_C('2001',4,"view",'NULL');
 	echo "</table>";
 ?>

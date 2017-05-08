@@ -414,7 +414,7 @@ $(document).ready(function() {
                                         echo"</li>";
 
 					echo"<li>";
-                                           //     echo anchor('report2/negative_trans_report','Negative Transaction Report', array('title'=>'Negative Transaction Report'));
+                                                echo anchor('report2/negative_trans_report','Negative Transaction Report', array('title'=>'Negative Transaction Report'));
                                         echo"</li>";
 
 				echo"</ul>";
