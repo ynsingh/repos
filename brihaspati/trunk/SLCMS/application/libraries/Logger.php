@@ -32,7 +32,7 @@ class Logger
 		//$config =& get_config();
 		
 //echo		$this->log_path = ($CI->config->item('log_path') != '') ? $CI->config->item('log_path') : BASEPATH.'logs/';
-echo		$this->log_path = ($CI->config->item('log_path') != '') ? $CI->config->item('log_path') : APPPATH.'logs/';
+		$this->log_path = ($CI->config->item('log_path') != '') ? $CI->config->item('log_path') : APPPATH.'logs/';
 
 		
 		$date = date("Y-m-d H:i:s");

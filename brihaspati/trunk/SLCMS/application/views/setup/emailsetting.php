@@ -39,7 +39,7 @@
                     <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
                     <?php
                     };
                     ?>

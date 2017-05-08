@@ -5,12 +5,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @name: Common model
  * @author: Nagendra Kumar Singh
  */
+
 class Common_model extends CI_Model
 {
  
     function __construct() {
         parent::__construct();
         $this->load->database();
+    }
+
+// check the record is already exist
+    public function isduplicate($tbname,$fieldname,$fieldvalue) {
+    	$this->db->from($tbname);
+	$this->db->where($fieldname, $fieldvalue);
+    	$query = $this->db->get();
+     	if ($query->num_rows() > 0) {
+        	return true;
+    	} else {
+        	return false;
+    	}
+    }
+
+//insert the complete record from specific table
+    public function insertrec($tbname, $datar){
+	 $this->db->trans_start();
+	 if(! $this->db->insert($tbname, $datar))
+         {
+            $this->db->trans_rollback();
+            return false;
+	 }
+	 else {
+            $this->db->trans_complete();
+            return true;
+	 }
+    }
+
+
+//update the complete record from specific table
+    public function updaterec($tbname, $datar,$fieldname,$fieldvalue){
+	 $this->db->trans_start();
+	 if(! $this->db->where($fieldname, $fieldvalue)->update($tbname, $datar))
+	 {
+            $this->db->trans_rollback();
+            return false;
+	 }
+         else {
+            $this->db->trans_complete();
+            return true;
+	 }
     }
 
 //get the complete record from specific table
@@ -61,5 +103,4 @@ class Common_model extends CI_Model
         $this->db->close();
     }
 }
-
 
