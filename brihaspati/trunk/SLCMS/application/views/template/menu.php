@@ -21,7 +21,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('setup/role', 'Add Role', array('title' => 'Add Role'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('setup/category', 'Add Category', array('title' => 'Add Category'));
+						echo anchor('setup/displaycategory', 'Add Category', array('title' => 'Add Category'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('setup/seatreserve', 'Add Seat Reservation', array('title' => 'Add Seat Reservation'));

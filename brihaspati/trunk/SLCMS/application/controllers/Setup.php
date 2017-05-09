@@ -2,8 +2,9 @@
 
 /* 
  * @name Setup.php
- * @author Manorama Pal(palseema30@gmail.com)
- * @author Sharad Singh(sharad23nov@yahoo.com)
+ * @author Manorama Pal(palseema30@gmail.com)  add email setting
+ * @author Sharad Singh(sharad23nov@yahoo.com) add program
+ * @author Om Prakash(omprakashkgp@gmail.com)  add category
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -506,5 +507,219 @@ class Setup extends CI_Controller
     }
     
     /** Program Module End **/
+
+ // =============== Add Category Module =========================================================================================================== 
+
+ /* this function for add category record */
+  public function category(){
+
+        if(isset($_POST['category'])) {
+            $this->form_validation->set_rules('cname','Category Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+            $this->form_validation->set_rules('ccode','Category Code','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('csname','Category Short Name','strtoupper|trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('cdesc','Category Description','ucfirst|trim|xss_clean|required|alpha_numeric_spaces');
+
+            if($this->form_validation->run()==TRUE){
+
+            $data = array(
+                'cat_name'=>$_POST['cname'],
+                'cat_code'=>$_POST['ccode'],
+                'cat_short'=>$_POST['csname'],
+                'cat_desc'=>$_POST['cdesc']
+
+            );
+	   $catflag=$this->common_model->insertrec('category', $data) ;
+	   if(!$catflag)
+	   {
+                log_message('error', "Error  in adding Category " . $displayerror . " [Category id:" . $cat_id . "]" );
+                log_message('debug', "Problem in adding Category" . $displayerror  );
+                $this->logger->write_logmessage("insert"," Error in adding category ", " Category data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding category ", " Category data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding Category - ' . $cat_name . '.', 'error');
+                $this->load->view('setup/category');
+	   }	
+	  else{		
+		$this->logger->write_logmessage("insert"," add category ", "Category record added successfully..."  );
+		$this->logger->write_dblogmessage("insert"," add category ", "Category record added successfully..." );
+            	$this->session->set_flashdata("success", "Category added successfully...");
+            	redirect("setup/displaycategory", "refresh");
+	      }
+           }
+
+        }
+      $this->load->view('setup/category');
+   }
+
+
+  /* Display Category record */
+
+  public function displaycategory(){
+
+	$this->result = $this->common_model->get_list('category');
+        $this->logger->write_logmessage("view"," View Category", "Category record display successfully..." );
+        $this->logger->write_dblogmessage("view"," View Category", "Category record display successfully..." );
+        $this->load->view('setup/displaycategory',$this->result);
+    }
+
+  /* this function is used for delete category record */
+  public function deletecategory($cat_id) {
+
+	$catflag=$this->common_model->deleterow('category', 'cat_id', $cat_id) ;
+        if(!$catflag)
+        {
+            log_message('error', 'Error in deleting category record - ' .$category_data->cat_name . '.' );
+            log_message('debug', 'Category info ');
+            $this->logger->write_logmessage("delete", "Deleted Category ", "Error in  Category   $category_data->cat_name .  [cat_id:" . $cat_id . "] delete.. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Category ","Error in Category  $category_data->cat_name .   [cat_id:" . $cat_id . "] delete.. " );
+            $this->session->set_flashdata('err_message','Error in deleting Category - ' . $category_data->cat_name . '.', 'error');
+            redirect('setup/displaycategory');
+        }
+        else {
+
+            $this->logger->write_logmessage("delete", "Deleted Category ", "Category   $category_data->cat_name .  [cat_id:" . $cat_id . "] deleted successfully.. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Category ","Category  $category_data->cat_name .   [cat_id:" . $cat_id . "] deleted successfully.. " );
+ 	    $this->session->set_flashdata("success", 'Category Record Deleted successfully...' );
+            redirect('setup/displaycategory');
+        }
+        $this->load->view('setup/displaycategory',$data);
+
+    }
+
+ /**This function is used for update category details
+     * @param type $cat_id
+     * @return type
+     */
+    public function editcategory($cat_id) {
+
+        $this->db->from('category')->where('cat_id', $cat_id);
+        $cat_data_q = $this->db->get();
+        if ($cat_data_q->num_rows() < 1)
+        {
+           redirect('setup/editcategory');
+        }
+        $category_data = $cat_data_q->row();
+
+        /* Form fields */
+
+        $data['cname'] = array(
+            'name' => 'cname',
+            'id' => 'cname',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $category_data->cat_name,
+
+        );
+        $data['ccode'] = array(
+           'name' => 'ccode',
+           'id' => 'ccode',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $category_data->cat_code,
+
+        );
+
+        $data['csname'] = array(
+           'name' => 'csname',
+           'id' => 'csname',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $category_data->cat_short,
+
+        );
+
+        $data['cdesc'] = array(
+           'name' => 'cdesc',
+           'id' => 'cdesc',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $category_data->cat_desc,
+
+        );
+
+        $data['cat_id'] = $cat_id;
+
+        $this->form_validation->set_rules('cname','Category Name ','ucwords|trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+        $this->form_validation->set_rules('ccode','Category Code ','trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+        $this->form_validation->set_rules('csname','Category Short Name ','strtoupper|trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+        $this->form_validation->set_rules('cdesc','Category Description ','ucfirst|trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+
+        if ($_POST)
+        {
+            $data['cname']['value'] = $this->input->post('cname', TRUE);
+            $data['ccode']['value'] = $this->input->post('ccode', TRUE);
+            $data['csname']['value'] = $this->input->post('csname', TRUE);
+            $data['cdesc']['value'] = $this->input->post('cdesc', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editcategory', $data);
+            return;
+        }
+	else
+        {
+
+            $data_cname = $this->input->post('cname', TRUE);
+            $data_ccode = $this->input->post('ccode', TRUE);
+            $data_csname = $this->input->post('csname', TRUE);
+            $data_cdesc = $this->input->post('cdesc', TRUE);
+            $data_cid = $cat_id;
+	    $logmessage = "";
+            if($category_data->cat_name != $data_cname)
+                $logmessage = "Add Category " .$category_data->cat_name. " changed by " .$data_cname;
+            if($category_data->cat_code != $data_ccode)
+                $logmessage = "Add Category " .$category_data->cat_code. " changed by " .$data_ccode;
+            if($category_data->cat_short != $data_csname)
+                $logmessage = "Add Category " .$category_data->cat_short. " changed by " .$data_csname;
+            if($category_data->cat_desc != $data_cdesc)
+                $logmessage = "Add Category " .$category_data->cat_desc. " changed by " .$data_cdesc;
+
+            $update_data = array(
+               'cat_name' => $data_cname,
+               'cat_code' => $data_ccode,
+               'cat_short' => $data_csname,
+               'cat_desc'  => $data_cdesc
+            );
+
+	   $catflag=$this->common_model->updaterec('category', $update_data, 'cat_id', $data_cid);
+	   if(!$catflag)	
+            {
+                log_message('error', "Error in updating category record " . $logmessage. " [cat_id:" . $data_cid . "]" );
+                log_message('debug', 'Edit Category ');
+                $this->logger->write_logmessage("error","Error in update Category ", "Error in Category record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update Category ", "Error in Category record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating category - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editcategory', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Category", "Category record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Category", "Category record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Category record updated successfully...');
+                redirect('setup/displaycategory/');
+                }
+        }//else
+        redirect('setup/editcategory/');
+    }
+
+
+/** This function check for duplicate entry
+    * @return type
+    */
+
+ public function value_exists($key)
+ {
+     $is_exist = $this->common_model->isduplicate('category','cat_name',$key);
+
+     if($is_exist) {
+        $this->form_validation->set_message(
+            'value_exists', 'Category  '. $key. '  is already exist.'
+        );
+        return false;
+    } else {
+    return true;
+  }
+
+}
+
+ //====================End of Add Category Module ============================================
 
 }
