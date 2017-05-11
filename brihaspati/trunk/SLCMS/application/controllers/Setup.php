@@ -491,7 +491,6 @@ class Setup extends CI_Controller
         {        
             $this->db->trans_rollback();
             log_message('error', 'Error in deleting program  record - '. $program_data->prg_category . '.' );
-            log_message('debug', 'Program Information.');
             $this->session->set_flashdata('Error in deleting program - ' . $program_data->prg_category . '.', 'error');
             log_message("info", "Error  in deleting program records " . $program_data->prg_category . " [prg_id:" . $prg_id . "]");
             redirect('setup/viewprogram');
@@ -531,8 +530,6 @@ class Setup extends CI_Controller
 	   $catflag=$this->common_model->insertrec('category', $data) ;
 	   if(!$catflag)
 	   {
-                log_message('error', "Error  in adding Category " . $displayerror . " [Category id:" . $cat_id . "]" );
-                log_message('debug', "Problem in adding Category" . $displayerror  );
                 $this->logger->write_logmessage("insert"," Error in adding category ", " Category data insert error . "  );
                 $this->logger->write_dblogmessage("insert"," Error in adding category ", " Category data insert error . " );
                 $this->session->set_flashdata('err_message','Error in adding Category - ' . $cat_name . '.', 'error');
@@ -567,8 +564,6 @@ class Setup extends CI_Controller
 	$catflag=$this->common_model->deleterow('category', 'cat_id', $cat_id) ;
         if(!$catflag)
         {
-            log_message('error', 'Error in deleting category record - ' .$category_data->cat_name . '.' );
-            log_message('debug', 'Category info ');
             $this->logger->write_logmessage("delete", "Deleted Category ", "Error in  Category   $category_data->cat_name .  [cat_id:" . $cat_id . "] delete.. " );
             $this->logger->write_dblogmessage("delete", "Deleted Category ","Error in Category  $category_data->cat_name .   [cat_id:" . $cat_id . "] delete.. " );
             $this->session->set_flashdata('err_message','Error in deleting Category - ' . $category_data->cat_name . '.', 'error');
@@ -683,8 +678,6 @@ class Setup extends CI_Controller
 	   $catflag=$this->common_model->updaterec('category', $update_data, 'cat_id', $data_cid);
 	   if(!$catflag)	
             {
-                log_message('error', "Error in updating category record " . $logmessage. " [cat_id:" . $data_cid . "]" );
-                log_message('debug', 'Edit Category ');
                 $this->logger->write_logmessage("error","Error in update Category ", "Error in Category record update. $logmessage . " );
                 $this->logger->write_dblogmessage("error","Error in update Category ", "Error in Category record update. $logmessage ." );
                 $this->session->set_flashdata('err_message','Error updating category - ' . $logmessage . '.', 'error');
@@ -721,5 +714,230 @@ class Setup extends CI_Controller
 }
 
  //====================End of Add Category Module ============================================
+//*************************Start Department**************************************//
 
+     public function dept(){
+        $this->scresult = $this->common_model->get_listspfic('study_center','sc_code', 'sc_name');
+        $this->uresult = $this->common_model->get_listspfic('org_profile','org_code','org_name');
+
+        if(isset($_POST['dept'])) {
+              //  $this->form_validation->set_rules('dept_orgcode','University','trim|xss_clean|required');
+               // $this->form_validation->set_rules('dept_sccode','Campus','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric|required');
+                $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_name','Department name','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_short','Depatment Nice','trim|xss_clean|required|alpha_numeric');
+                $this->form_validation->set_rules('dept_descripation','Department Description','trim|xss_clean|required');
+
+            //if form validation true
+                if($this->form_validation->run()==TRUE){
+                        if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){
+                        $data = array(
+                                'dept_orgcode'=>$_POST['orgprofile'],
+                                'dept_sccode'=>$_POST['studycenter'],
+                                'dept_schoolcode'=>$_POST['dept_schoolcode'],
+                                'dept_schoolname'=>$_POST['dept_schoolname'],
+                                'dept_code'=>$_POST['dept_code'],
+                                'dept_name'=>$_POST['dept_name'],
+                                'dept_short'=>$_POST['dept_short'],
+                                'dept_description'=>$_POST['dept_descripation'],
+                        );
+                        $deptflag=$this->common_model->insertrec('Department', $data) ;
+                        if(!$deptflag)
+                        {
+                                $this->logger->write_logmessage("insert"," Error in adding Department ", " Department data insert error . ".$dept_name  );
+                                $this->logger->write_dblogmessage("insert"," Error in adding Department ", " Department data insert error . ".$dept_name );
+                                $this->session->set_flashdata('err_message','Error in adding Department - ' . $dept_name . '.', 'error');
+                                redirect('setup/dept');
+                        }
+                        else{
+                                $this->logger->write_logmessage("insert"," add Department ", "Department record added successfully.".$dept_name  );
+                                $this->logger->write_dblogmessage("insert"," add Deaprtment ", "Department record added successfully.".$dept_name );
+                                $this->session->set_flashdata("success", "Department added successfully...");
+                                redirect('setup/dept');
+                        }
+                        }
+                }
+        }
+        $this->load->view('setup/dept');
+    }
+    /** This function Display the Department list records
+     * @return type
+     */
+    public function dispdepartment() {
+        $this->deptresult = $this->common_model->get_list('Department');
+        $this->logger->write_logmessage("view"," View Department list", "department list display");
+        $this->logger->write_dblogmessage("view"," View Department list", "department list display");
+        $this->load->view('setup/dispdepartment');
+       }
+    /* this function is used for delete department record */
+    public function deletedept($deptid) {
+
+        $deptflag=$this->common_model->deleterow('Department', 'dept_id', $deptid) ;
+        if(!$deptflag)
+        {
+            $this->logger->write_logmessage("delete", "Deleted Department ", "Error in  Department ". $dept_data->dept_name . " [dept_id:" . $deptid . "] delete. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Department ","Error in Department ".  $dept_data->dept_name . "  [dept_id:" . $deptid . "] delete. " );
+            $this->session->set_flashdata('err_message','Error in deleting Department - ' . $dept_data->dept_name . '.', 'error');
+            redirect('setup/dispdepartment');
+        }
+        else {
+
+            $this->logger->write_logmessage("delete", "Deleted Department ", "Department  ". $dept_data->dept_name . " [deptid:" . $deptid . "] deleted successfully. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Department ","Department ". $dept_data->dept_name . " [deptid:" . $deptid . "] deleted successfully. " );
+            $this->session->set_flashdata("success", 'Department Record Deleted successfully.' );
+            redirect('setup/dispdepartment');
+        }
+        $this->load->view('setup/dispdepartment',$data);
+
+    }
+     /* this function is used for update department record */
+    public function editdepartment($id) {
+
+      $this->db->from('Department')->where('dept_id', $id);
+      $dept_data_q = $this->db->get();
+      if ($dept_data_q->num_rows() < 1)
+        {
+            redirect('setup/dispdepartment');
+        }
+        $dept_data = $dept_data_q->row();
+
+        /* Form fields */
+          $data['deptorgcode'] = array(
+            'name' => 'deptorgcode',
+            'id' => 'deptorgcode',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $dept_data->dept_orgcode,
+	    'readonly' => 'readonly'
+             );
+        $data['deptsccode'] = array(
+            'name' => 'deptsccode',
+            'id' => 'deptsccode',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $dept_data->dept_sccode,
+	    'readonly' => 'readonly'
+        );
+        $data['deptschoolcode'] = array(
+            'name' => 'deptschoolcode',
+            'id' => 'deptschoolcode',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $dept_data->dept_schoolcode,
+        );
+        $data['deptschoolname'] = array(
+           'name' => 'deptschoolname',
+           'id' => 'deptschoolname',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $dept_data->dept_schoolname,
+        );
+        $data['deptcode'] = array(
+           'name' => 'deptcode',
+           'id' => 'deptcode',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $dept_data->dept_code,
+        );
+	$data['deptname'] = array(
+           'name' => 'deptname',
+           'id' => 'deptname',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $dept_data->dept_name,
+        );
+        $data['deptshort'] = array(
+           'name' => ' deptshort',
+           'id' => 'deptshort',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $dept_data->dept_short,
+        );
+        $data['deptdescription'] = array(
+           'name' => 'deptdescription',
+           'id' => 'deptdescription',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $dept_data->dept_description,
+        );
+        $data['id'] = $id;
+
+        /*Form Validation*/
+        $this->form_validation->set_rules('dept_orgcode','University','trim|xss_clean|required');
+        $this->form_validation->set_rules('dept_sccode','Campus','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptschoolcode','Schoolcode','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptschoolname','Schoolname','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptcode','dept_code','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptname','dept_name','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptshort','dept_short','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptdescription','dept_description','trim|xss_clean|required');
+        /* Re-populating form */
+        if ($_POST)
+        {
+            $data['deptorgcode']['value'] = $this->input->post('deptorgcode', TRUE);
+            $data['deptsccode']['value'] = $this->input->post('deptsccode', TRUE);
+            $data['deptschoolcode']['value'] = $this->input->post('deptschoolcode', TRUE);
+            $data['deptschoolname']['value'] = $this->input->post('deptschoolname', TRUE);
+            $data['deptcode']['value'] = $this->input->post('deptcode', TRUE);
+            $data['deptname']['value'] = $this->input->post('deptname', TRUE);
+            $data['deptshort']['value'] = $this->input->post('deptshort', TRUE);
+            $data['deptdescription']['value'] = $this->input->post('deptdescription', TRUE);
+        }
+
+	if ($this->form_validation->run() == FALSE)
+        {
+                $this->load->view('setup/editdepartment', $data);
+        }
+        else{
+            $schoolcode= $this->input->post('deptschoolcode', TRUE);
+            $schoolname = $this->input->post('deptschoolname', TRUE);
+            $departmentcode = $this->input->post('deptcode', TRUE);
+            $departmentname = $this->input->post('deptname', TRUE);
+            $departmentshort = $this->input->post('deptshort', TRUE);
+            $departmentdescription = $this->input->post('deptdescription', TRUE);
+            $deptsccode = $this->input->post('deptsccode',TRUE);
+            $deptorgcode = $this->input->post('deptorgcode', TRUE);
+
+	    $logmessage = "";
+            if($dept_data->dept_schoolcode != $schoolcode)
+                $logmessage = $logmessage ." update school code " .$dept_data->dept_schoolcode. " changed by " .$schoolcode;
+            if($dept_data->dept_schoolname != $schoolname)
+                $logmessage = $logmessage ." update school name " .$dept_data->dept_schoolname. " changed by " .$schoolname;
+            if($dept_data->dept_code != $departmentcode)
+                $logmessage = $logmessage ." update dept code " .$dept_data->dept_code. " changed by " .$departmentcode;
+            if($dept_data->dept_name != $departmentname)
+                $logmessage = $logmessage ." update dept name " .$dept_data->dept_name. " changed by " .$departmentname;
+            if($dept_data->dept_short != $departmentshort)
+                $logmessage = $logmessage ." update dept short " .$dept_data->dept_short. " changed by " .$departmentshort;
+            if($dept_data->dept_description != $departmentdescription)
+                $logmessage = $logmessage ." update dept description " .$dept_data->dept_description. " changed by " .$departmentdescription;
+
+            $update_data = array(
+               'dept_schoolcode' => $schoolcode,
+               'dept_schoolname' => $schoolname,
+               'dept_code' => $departmentcode,
+               'dept_name'  => $departmentname,
+               'dept_short'  => $departmentshort,
+               'dept_description' => $departmentdescription,
+               'dept_sccode' => $deptsccode,
+               'dept_orgcode' => $deptorgcode
+            );
+           $deptflag=$this->common_model->updaterec('Department', $update_data, 'dept_id', $id);
+           if(!$deptflag)
+            {
+                $this->logger->write_logmessage("error","Error in update Department ", "Error in Department record update". $logmessage );
+                $this->logger->write_dblogmessage("error","Error in update Department ", "Error in Department record update". $logmessage );
+                $this->session->set_flashdata('err_message','Error updating Department - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editdepartment', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Department", "Department record updated successfully..". $logmessage );
+                $this->logger->write_dblogmessage("update","Edit Department", "Department record updated successfully..". $logmessage );
+                $this->session->set_flashdata('success','Department record updated successfully...');
+                redirect('setup/dispdepartment');
+                }
+            }
+        }
 }
