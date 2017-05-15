@@ -9,28 +9,8 @@
         <?php $this->load->view('template/header'); ?>
         <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/message.css">
-  
     </head>
     <body>
-        <?php
-            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
-            echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
-            echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
-            echo "Setup";
-            echo "<span  style='padding: 8px 8px 8px 20px;'> ";
-            echo "|";
-            echo anchor('setup/displaycategory/', "View Category", array('title' => 'Add Detail' , 'class' => 'top_parent'));
-            echo "<span  style='padding: 8px 8px 8px 20px;'> ";
-            echo "|";
-            echo "<span  style='padding: 8px 8px 8px 20px;'>";
-            echo "Edit Category";
-            echo "</span>";
-            echo "</td>";
-            echo "</tr>";
-            echo "</table>";
-        ?>
- 
        <table>
             <tr colspan="2"><td>
                 <div style="margin-left:30px;width:1700px;">
@@ -52,11 +32,8 @@
                 </div></br> 
             </td></tr>
         </table>
-
         <table style="padding: 8px 8px 8px 30px;">  
- 
         <?php
-
             echo form_open('setup/editcategory/' . $cat_id);
        
             echo "<tr>";
@@ -120,7 +97,8 @@
                     echo form_submit('submit', 'Update');
                     echo " ";
         
-                    echo anchor('setup/displaycategory', 'Back', 'Back to Display Category page');
+                    //echo anchor('setup/displaycategory', 'Back', 'Back to Display Category page');
+                    echo anchor('setup/displaycategory', 'Back', array('class' => 'top_parent'));
                     // echo "</p>";
                 echo "</td>";
             echo "</tr>";
