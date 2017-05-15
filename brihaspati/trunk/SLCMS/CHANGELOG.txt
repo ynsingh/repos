@@ -1,3 +1,12 @@
+SLCMS  Version 1.0 2017-05-15
+-----------------------------
+    * Modified table User role type -addes few more field 
+    * Added some function in common model
+    * Added role functionality
+    * Mofdified menu list
+
+
+
 SLCMS  Version 1.0 2017-05-05
 -----------------------------
 

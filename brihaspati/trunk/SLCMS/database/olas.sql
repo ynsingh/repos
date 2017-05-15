@@ -579,6 +579,8 @@ CREATE TABLE `subject_paper` (
 CREATE TABLE `user_role_type` (
   `userid` int(11) NOT NULL,
   `roleid` int(11) NOT NULL,
+  `scid` int(10) NOT NULL,
+  `deptid` int(10) NOT NULL,
   `usertype` varchar(255) NOT NULL,
   `ext1` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

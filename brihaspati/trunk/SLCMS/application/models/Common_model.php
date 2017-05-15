@@ -55,19 +55,6 @@ class Common_model extends CI_Model
 	 }
     }
 
-//get the complete record from specific table
-    public function get_list($tbname){
-         $this->db->from($tbname);
-         return $this->db->get()->result();
-    }
-
-//get the complete of record for specific value
-    public function get_listrow($tbname,$fieldname,$fieldvalue){
-         $this->db->from($tbname);
-	 $this->db->where($fieldname, $fieldvalue);
-         return $this->db->get()->result();
-    }
-
 // delete the specific record form specific table
     public function deleterow($tbname,$fieldname,$fieldvalue){
 	$this->db->trans_start();
@@ -82,8 +69,54 @@ class Common_model extends CI_Model
 	 }
     }
 
+//get the latest one record from specific table
+    public function get_elist($tbname){
+         $this->db->from($tbname);
+         return $this->db->get()->row();
+    }
+
+
+//get the complete record from specific table
+    public function get_list($tbname){
+         $this->db->from($tbname);
+         return $this->db->get()->result();
+    }
+
+//get the complete of record for specific value
+    public function get_listrow($tbname,$fieldname,$fieldvalue){
+         $this->db->from($tbname);
+	 $this->db->where($fieldname, $fieldvalue);
+         return $this->db->get()->result();
+    }
+
+
+//get the list of all/specific  records with  one specific fields for specific values
+    public function get_listspfic1($tbname,$selfield1,$fieldname='',$fieldvalue=''){
+	$this->db->flush_cache();
+	$this->db->from($tbname);
+	$this->db->select($selfield1);
+	if (($fieldname != '') && ($fieldvalue !='')){
+		$this->db->where($fieldname, $fieldvalue);
+	}
+        return $this->db->get()->result();
+    }
+
+
+//get the list of all records with  two specific fields for specific values
+    public function get_listspfic2($tbname,$selfield1,$selfield2,$fieldname='',$fieldvalue=''){
+	$this->db->flush_cache();
+	$this->db->from($tbname);
+	$this->db->select($selfield1);
+	$this->db->select($selfield2);
+	if (($fieldname != '') && ($fieldvalue !='')){
+		$this->db->where($fieldname, $fieldvalue);
+	}
+        return $this->db->get()->result();
+    }
+
 //get the list of all records with  five specific fields for specific values
     public function get_listspfic($tbname,$selfield1='',$selfield2='',$selfield3='',$selfield4='',$selfield5='',$fieldname='',$fieldvalue=''){
+	$this->db->flush_cache();
 	$this->db->from($tbname);
 	if (($selfield1 != '') && ($selfield2 != '') && ($selfield3 != '') && ($selfield4 != '') && ($selfield5 != '')){
 		$this->db->select($selfield1);
@@ -115,6 +148,16 @@ class Common_model extends CI_Model
 		$this->db->where($fieldname, $fieldvalue);
 	}
         return $this->db->get()->result();
+    }
+
+// Generate random number any length
+    function randNum($length)
+    {
+    	$str = mt_rand(1, 9); // first number (0 not allowed)
+    	for ($i = 1; $i < $length; $i++)
+        	$str .= mt_rand(0, 9);
+
+    	return $str;
     }
 
     function __destruct() {

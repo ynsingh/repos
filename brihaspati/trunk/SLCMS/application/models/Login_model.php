@@ -26,6 +26,20 @@ class Login_model extends CI_Model
 	$this->db1->where('till_date >=', now());
 	return $this->db1->get('authority_map')->row();
     }
+//insert the complete record from specific table
+    public function insertrec($tbname, $datar){
+         $this->db1->trans_start();
+         if(! $this->db1->insert($tbname, $datar))
+         {
+            $this->db1->trans_rollback();
+            return false;
+         }
+         else {
+            $this->db1->trans_complete();
+            return true;
+         }
+    }
+
     function __destruct() {
         $this->db1->close();
     }

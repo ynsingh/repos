@@ -1,7 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/message.css">
 </head>
 <body>
 <div>
