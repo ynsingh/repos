@@ -5,6 +5,7 @@
  * @author Manorama Pal(palseema30@gmail.com)  add email setting
  * @author Sharad Singh(sharad23nov@yahoo.com) add program
  * @author Om Prakash(omprakashkgp@gmail.com)  add category
+ * @author Kishore kr shukla(kishore.shukla@gmail.com) add role
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -940,4 +941,184 @@ class Setup extends CI_Controller
                 }
             }
         }
+
+       /****************************************** Add Role Module ********************************************/
+
+    /** This function for add role
+     * @return type
+     */
+
+    public function role()
+                {
+                 if(isset($_POST['role'])) {
+                 $this->form_validation->set_rules('role_name','Role Name','trim|xss_clean|required|alpha_numeric_spaces|callback_isRoleExist');
+                 $this->form_validation->set_rules('role_desc','Role Desc','trim|xss_clean|required|alpha_numeric_spaces');
+                 if($this->form_validation->run()==TRUE){
+                 //echo 'form-validated';
+
+                 $data = array(
+                'role_name'=>ucwords(strtolower($_POST['role_name'])),
+                'role_desc'=>$_POST['role_desc'],
+                 );
+                $rflag=$this->common_model->insertrec('role', $data);
+                if (!$rflag)
+                {
+                    $this->logger->write_logmessage("insert","Trying to add role", "Role is not added ".$role_name);
+                    $this->logger->write_dblogmessage("insert","Trying to add role", "Role is not added ".$role_name);
+                    $this->session->set_flashdata('err_message','Error in adding role setting - '  , 'error');
+                    redirect('setup/role');
+
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Add role Setting", "Role".$_POST['role_name']." added  successfully...");
+                    $this->logger->write_dblogmessage("insert","Add role Setting", "Role ".$_POST['role_name']."added  successfully...");
+                    $this->session->set_flashdata("success", "Role add successfully...");
+                    redirect("setup/displayrole");
+                }
+
+            }
+        }
+        $this->load->view('setup/role');
+    }
+
+    /** This function check for duplicate role
+     * @return type
+    */
+
+    public function isRoleExist($role_name) {
+
+        $is_exist = $this->common_model->isduplicate('role','role_name',$role_name);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isRoleExist', 'Role is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    /** This function Display the role records
+     * @return type
+    */
+
+    public function displayrole() {
+        $this->result = $this->common_model->get_list('role');
+        $this->logger->write_logmessage("view"," View role setting", "Role setting details...");
+        $this->logger->write_dblogmessage("view"," View role setting", "Role setting details...");
+        $this->load->view('setup/displayrole',$this->result);
+       }
+
+    /**This function Delete the role records
+     * @param type $id
+     * @return type
+     */
+
+         public function delete_role($id) {
+
+          $roledflag=$this->common_model->deleterow('role','role_id', $id);
+          if(!$roledflag)
+          {
+            $this->logger->write_message("error", "Error  in deleting role " ."[role_id:" . $id . "]");
+            $this->logger->write_dbmessage("error", "Error  in deleting role "." [role_id:" . $id . "]");
+            $this->session->set_flashdata('err_message', 'Error in Deleting role - ', 'error');
+            redirect('setup/displayrole');
+           return;
+          }
+        else{
+            $this->logger->write_logmessage("delete", "Deleted   role " . "[role_id:" . $id . "] deleted successfully.. " );
+            $this->logger->write_dblogmessage("delete", "Deleted role" ." [role_id:" . $id . "] deleted successfully.. " );
+            $this->session->set_flashdata("success", 'Role Deleted successfully...' );
+            redirect('setup/displayrole');
+        }
+        $this->load->view('setup/displayrole',$data);
 }
+
+    /**This function is used for update role records
+     * @param type $id
+     * @return type
+     */
+
+    public function editrole($id) {
+
+        $this->db->from('role')->where('role_id', $id);
+        $eset_data_q = $this->db->get();
+        if ($eset_data_q->num_rows() < 1)
+        {
+            redirect('setup/editrole');
+        }
+        $editeset_data = $eset_data_q->row();
+
+        /* Form fields */
+
+                $data['role_name'] = array(
+                'name' => 'role_name',
+                'id' => 'role_name',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editeset_data->role_name,
+
+                );
+        $data['role_desc'] = array(
+           'name' => 'role_desc',
+            'id' => 'role_desc',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editeset_data->role_desc,
+
+        );
+        $data['id'] = $id;
+        /*Form Validation*/
+        $this->form_validation->set_rules('role_name','Role name','trim|xss_clean|required|alpha_numeric_spaces|callback_isRoleExist');
+        $this->form_validation->set_rules('role_desc','Role Desc','trim|xss_clean|required|alpha_numeric_spaces');
+
+        /* Re-populating form */
+        if ($_POST)
+        {
+            $data['role_name']['value'] = $this->input->post('role_name', TRUE);
+            $data['role_desc']['value'] = $this->input->post('role_desc', TRUE);
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editrole', $data);
+            return;
+        }
+        else{
+
+            $data_erole = ucwords(strtolower($this->input->post('role_name', TRUE)));
+            $data_eroledesc = $this->input->post('role_desc', TRUE);
+            $data_eid = $id;
+            $logmessage = "";
+            if($editeset_data->role_name != $data_erole)
+                $logmessage = "Add Role " .$editeset_data->role_name. " changed by " .$data_erole;
+            if($editeset_data->role_desc != $data_eroledesc)
+                $logmessage = "Add Role " .$editeset_data->role_desc. " changed by " .$data_eroledesc;
+
+            $update_data = array(
+               'role_name' => $data_erole,
+               'role_desc' => $data_eroledesc,
+            );
+
+        $roledflag=$this->common_model->updaterec('role', $update_data,' role_id', $data_eid);
+        if(!$roledflag)
+            {
+                $this->logger->write_logmessage("error","Edit role Setting error", "Edit role Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit role Setting error", "Edit role Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating role - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editrole', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit role Setting", "Edit role Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit role Setting", "Edit role Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Role  detail updated successfully..');
+                redirect('setup/displayrole/');
+                }
+        }//else
+        redirect('setup/editrole/');
+
+    }//Add role function end
+
+}
+ 
+

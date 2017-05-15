@@ -18,7 +18,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('setup/dispemailsetting', 'Email Setting', array('title' => 'Email Setting'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('setup/role', 'Add Role', array('title' => 'Add Role'));
+						echo anchor('setup/displayrole', 'Add Role', array('title' => 'Add Role'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('setup/displaycategory', 'Add Category', array('title' => 'Add Category'));
@@ -44,7 +44,6 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('setup/fees', 'Add Program Fees', array('title' => 'Add Program Fees'));
 					echo "</li>";
-					
 				echo "</ul>";
 			echo "</li>";
 			echo "<li>";
