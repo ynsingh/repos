@@ -4,12 +4,13 @@
 </head>
 <body>
 <div>
-<?php $this->load->view('template/header.php');
-$this->load->view('template/menu.php');
+<?php $this->load->view('template/header.php');?>
+<h1>Welcome <?= $this->session->userdata('username')?> </h1>
+<?php $this->load->view('template/menu.php');
 ?>
 </div>
 <?php
-    echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
+/*    echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
     echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
     echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
     echo "Setup";
@@ -25,9 +26,20 @@ $this->load->view('template/menu.php');
     echo "</td>";
     echo "</tr>";
     echo "</table>";
+*/
 ?>
 
-<div align='left'>
+<br>
+<div align="left">
+<table style="margin-left:10px;">
+<tr><td>
+<?php echo anchor('setup/viewprogram/', "Program List" ,array('title' => 'Program List' , 'class' => 'top_parent'));?>
+</td></tr>
+</table>
+</div>
+
+
+<div align='left' style="margin-left:30px;">
 <!--    <form action="setup/editprogram" method="POST">-->
 <?php
     echo "<table>";
@@ -35,7 +47,7 @@ $this->load->view('template/menu.php');
     echo form_open('setup/editprogram/'. $prgid);
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Program Category', 'prgcat');
+        echo form_label('Program Category', 'prgcat');
     echo"</td><td>";
     echo form_input($prgcat);
     echo "</td>";

@@ -3,7 +3,7 @@
 /* 
  * @name Setup.php
  * @author Manorama Pal(palseema30@gmail.com)  add email setting
- * @author Sharad Singh(sharad23nov@yahoo.com) add program
+ * @author Sharad Singh(sharad23nov@yahoo.com) add program, add subject
  * @author Om Prakash(omprakashkgp@gmail.com)  add category
  * @author Kishore kr shukla(kishore.shukla@gmail.com) add role
  */
@@ -15,7 +15,7 @@ class Setup extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-	$this->load->model("common_model"); 
+	$this->load->model('common_model'); 
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -310,6 +310,14 @@ class Setup extends CI_Controller
             $currdate = date("Y/m/d");
             $prgdate  = $currdate;
 
+            /* check for duplicate record*/
+            $result = $this->common_model->isduplicate('program','prg_category',$prgcat);
+            if($result == 1)
+            {
+                $this->session->set_flashdata('error','Program category <b>' .$prgcat . '</b> already exist' );
+                redirect('setup/program');
+            }
+
         }
 
         if ($this->form_validation->run() == FALSE)
@@ -335,7 +343,7 @@ class Setup extends CI_Controller
                 $this->db->trans_complete();
                 $this->logger->write_logmessage("Added","Program Setting Added", "Program details added successfully");
                 $this->session->set_flashdata("success", "Program added successfully");
-                $this->load->view('setup/program');
+                redirect('setup/viewprogram');
             }    
         }
     }
@@ -379,7 +387,6 @@ class Setup extends CI_Controller
         $data['prgcreatorid'] = array('name' => 'prgcrtid','id' => 'prgcrtid','maxlength' => '100','size' => '40','value' => $program_data->creatorid,'readonly'=>'true',);
         $data['prgid'] = $prgid;
 
-        //print_r($program_data->prg_category);
         /* form validation */
 
         $this->form_validation->set_rules('prgcat','Program Category','trim|xss_clean|required');
@@ -438,11 +445,11 @@ class Setup extends CI_Controller
             if($program_data->prg_code != $data_prgcode)
                 $logmessage = $logmessage ." Program Code " .$program_data->prgcode ." changed by ".$data_prgcode;
             if($program_data->prg_desc != $data_prgdesc)
-                $logmessage = $logmessage . "Program Desc " .$program_data->prgdesc. " changed by" .$data_prgdesc;
+                $logmessage = $logmessage . "Program Desc " .$program_data->prgdesc. " changed by " .$data_prgdesc;
             if($program_data->prg_mintime != $data_prgmintime)
-                $logmessage = $logmessage . "Program Min Time ".$program_data->prgmintime ." changed by".$data_prgmintime;
+                $logmessage = $logmessage . "Program Min Time ".$program_data->prgmintime ." changed by " .$data_prgmintime;
             if($program_data->prg_maxtime != $data_prgmaxtime)
-                $logmessage = $logmessage . "Program Max Time " .$program_data->prgmaxtime. " changed by".$data_prgmaxtime;
+                $logmessage = $logmessage . "Program Max Time " .$program_data->prgmaxtime. " changed by " .$data_prgmaxtime;
               
                 
                 
@@ -465,6 +472,7 @@ class Setup extends CI_Controller
             {
                 $this->db->trans_complete();
                 $this->logger->write_logmessage("update","Program Detail Updated", $logmessage);
+                $this->logger->write_dblogmessage("update","Program Detail Updated", $logmessage);
                 $this->session->set_flashdata('success', 'Program Name ' .$data_prgname. ' Successfully Updated.');
                 redirect('setup/viewprogram/');
             }
@@ -474,7 +482,7 @@ class Setup extends CI_Controller
 
     /* deletion of program */
 
-    function deleteprogram($prg_id)
+    public function deleteprogram($prg_id)
     {
         $this->db->from('program')->where('prg_id', $prg_id);
         $program_q = $this->db->get();
@@ -508,6 +516,177 @@ class Setup extends CI_Controller
     
     /** Program Module End **/
 
+    /** Subject Module **/
+
+
+    public function subject()
+    {
+        
+        $data['subname'] = array('name' => 'subname','id' => 'subname','maxlength' => '100','size' => '40','value' => '',);
+        $data['subcode'] = array('name' => 'subcode','id' => 'subcode','maxlength' => '100','size' => '40','value' => '',);
+        $data['subshort'] = array('name' => 'subshort','id' => 'subshort','maxlength' => '100','size' => '40','value' => '',);
+        $data['subdesc'] = array('name' => 'subdesc','id' => 'subdesc','maxlength' => '100','size' => '40','value' => '',);
+        $data['subext1'] = array('name' => 'subext1','id' => 'subext1','maxlength' => '100','size' => '40','value' => '',);
+        $data['subext2'] = array('name' => 'subext2','id' => 'subext2','maxlength' => '100','size' => '40','value' => '',);
+       
+        $this->form_validation->set_rules('subname','Subject Name','trim|xss_clean|required');
+        $this->form_validation->set_rules('subcode','Subject Code','trim|xss_clean|required');
+        $this->form_validation->set_rules('subshort','Subject Short','trim|xss_clean|required');
+        $this->form_validation->set_rules('subdesc','Subject Description','trim|xss_clean|required');
+        $this->form_validation->set_rules('subext1','Subject Ext1','trim|xss_clean|required');
+        $this->form_validation->set_rules('subext2','Subject Ext2','trim|xss_clean|required');
+
+        if($this->form_validation->run() == TRUE)
+        {
+        
+            $this->load->helper('form');
+            $this->load->helper('html');
+            $this->load->model('setup_model','setupmod');
+            if( $this->input->post('submit')) 
+            {
+                $this->setupmod->addsubjectrecords();
+            }
+        }
+    $this->load->view('setup/subject',$data);
+    return;
+    }
+    /* method to view subject detail */
+
+    public function viewsubject()
+    {
+        $data = array();
+        $this->load->model('setup_model','getsubjectlist');
+        $this->data['subjectlists'] = $this->getsubjectlist->viewsubject();
+        $this->load->view('setup/viewsubject',$this->data);
+    }
+    
+    /* method to update subject detail */
+    
+    public function editsubject($subid)
+    {
+        /* get record to be updated */
+        $username = $this->session->userdata('username');
+        $this->load->model('setup_model','setupmod');
+        if($subid != "")
+            $subresult = $this->setupmod->getsubject_byid($subid);
+        foreach ($subresult as $value) 
+        {
+            $subname = $value->sub_name;
+            $subcode = $value->sub_code;
+            $subshort = $value->sub_short;
+            $subdesc = $value->sub_desc;
+            $subext1 = $value->sub_ext1;
+            $subext2 = $value->sub_ext2;
+        }
+
+        /* Form Field */
+                 
+        $data['subname'] = array('name' => 'subname','id' => 'subname','maxlength' => '100','size' => '40','value' => $subname,);
+        $data['subcode'] = array('name' => 'subcode','id' => 'subcode','maxlength' => '100','size' => '40','value' => $subcode,);
+        $data['subshort'] = array('name' => 'subshort','id' => 'subshort','maxlength' => '100','size' => '40','value' => $subshort,);
+        $data['subdesc'] = array('name' => 'subdesc','id' => 'subdesc','maxlength' => '100','size' => '40','value' => $subdesc,);
+        $data['subext1'] = array('name' => 'subext1','id' => 'subext1','maxlength' => '100','size' => '40','value' => $subext1,);
+        $data['subext2'] = array('name' => 'subext2','id' => 'subext2','maxlength' => '100','size' => '40','value' => $subext2,);
+        
+        $data['subid'] = $subid;
+        
+        /* form validation */
+
+        $this->form_validation->set_rules('subname','Subject Name','trim|xss_clean|required');
+        $this->form_validation->set_rules('subcode','Subject Code','trim|xss_clean|required');
+        $this->form_validation->set_rules('subshort','Subject Short','trim|xss_clean|required');
+        $this->form_validation->set_rules('subdesc','Subject Description','trim|xss_clean|required');
+        $this->form_validation->set_rules('subext1','Subject Ext1','trim|xss_clean|required');
+        $this->form_validation->set_rules('subext2','Subject Ext2','trim|xss_clean|required');
+
+        if($_POST)
+        {
+            $data['subname'] = $this->input->post('subname', TRUE);
+            $data['subcode'] = $this->input->post('subcode', TRUE);
+            $data['subshort'] = $this->input->post('subshort', TRUE);
+            $data['subdesc'] = $this->input->post('subdesc', TRUE);
+            $data['subext1'] = $this->input->post('subext1', TRUE);
+            $data['subext2'] = $this->input->post('subext2', TRUE);
+        }
+        
+        if ($this->form_validation->run() == TRUE)
+        {
+            $data_subname = $this->input->post('subname', TRUE);
+            $data_subcode = $this->input->post('subcode', TRUE);
+            $data_subshort = $this->input->post('subshort', TRUE);
+            $data_subdesc = $this->input->post('subdesc', TRUE);
+            $data_subext1 = $this->input->post('subext1', TRUE);
+            $data_subext2 = $this->input->post('subext2', TRUE);
+            $data_subid = $subid;
+
+            /* check and store updated values for log */
+
+            $logmessage = "";
+            if($subname != $data_subname)
+                $logmessage = "Subject Name " .$subname. " changed by " .$data_subname;
+            if($subcode != $data_subcode)
+                $logmessage = $logmessage ." Subject Code " .$subcode. " changed by " .$data_subcode;
+            if($subshort != $data_subshort)
+                $logmessage = $logmessage ." Subject Short Name " .$subshort. " changed by " .$data_subshort;
+            if($subdesc != $data_subdesc)
+                $logmessage = $logmessage ." Subject Description " .$subdesc. " changed by ". $data_subdesc;
+            if($subext1 != $data_subext1)
+                $logmessage = $logmessage ." Subject Extra ".$subext1. " changed by ".$data_subext1;
+            if($subext2 != $data_subext2)
+                $logmessage = $logmessage ." Subject Extra " .$subext2 ." changed by ".$data_subext2;
+
+            $update_subdata = array('sub_name' => $data_subname,'sub_code' => $data_subcode,'sub_short' => $data_subshort,'sub_desc' => $data_subdesc,'sub_ext1' => $data_subext1,'sub_ext2' => $data_subext2);
+            $this->db->trans_start();
+
+            /* update records */
+                
+            $subresult = $this->setupmod->update_subject_byid($subid,$update_subdata);    
+            if($subresult != 1)
+            {
+                $this->db->trans_rollback();
+                /* log for file and db */
+                $this->logger->write_logmessage("update"," Try to update Subject Detail - ",  $logmessage . ' by '. $username);
+                $this->logger->write_dblogmessage("update"," Try to update subject Detail - ", $logmessage . ' by '. $username);
+                $this->session->set_flashdata('flash_data', 'subject name' .$subname. ' cannot be Updated '. ' by '.$username);
+                $this->load->view('setup/editsubject', $data);                
+            }
+            else
+            {
+                $this->db->trans_complete();
+                /* log for file and db */
+                $this->logger->write_logmessage("update"," Subject Detail Updated - ",  $logmessage . ' by '. $username);
+                $this->logger->write_dblogmessage("update"," Subject Detail Updated - ", $logmessage . ' by '. $username);
+                $this->session->set_flashdata('success', 'Subject Record <b>' .$subname. '</b> Successfully Updated '.' by '.$username);
+                redirect('setup/viewsubject/');
+            }
+        }   
+    $this->load->view('setup/editsubject',$data);       
+    }
+
+    /* method to delete subject detail */
+
+    function deletesubject($subid,$subname)
+    {
+        $result = $this->common_model->deleterow('subject','sub_id',$subid);
+
+        if ($result != 1 )
+        {        
+            $this->session->set_flashdata('error','Error in deleting subject - ' . $subname . '.' );
+            $this->logger->write_logmessage("update", "Error in Deleting subject  " . $subname, " by ".  $subname );
+            $this->logger->write_dblogmessage("update", "Error in Deleting subject  " , $subname. " by ".  $subname );
+            redirect('setup/viewsubject');
+        }
+        else
+        {
+            $this->session->set_flashdata("success", "Subject record <b>". $subname ."</b> deleted successfully");
+            $this->logger->write_logmessage("update", "Deleted subject record " . $subname , " by". $subname);
+            $this->logger->write_dblogmessage("update", "Deleted subject record " , $subname . " by". $subname);
+            redirect('setup/viewsubject');
+        }
+
+    }
+        
+        
  // =============== Add Category Module =========================================================================================================== 
 
  /* this function for add category record */
@@ -713,6 +892,8 @@ class Setup extends CI_Controller
   }
 
 }
+
+
 
  //====================End of Add Category Module ============================================
 //*************************Start Department**************************************//
@@ -941,7 +1122,7 @@ class Setup extends CI_Controller
                 }
             }
         }
-
+   /* 
        /****************************************** Add Role Module ********************************************/
 
     /** This function for add role
