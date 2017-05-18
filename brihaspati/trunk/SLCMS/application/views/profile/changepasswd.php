@@ -1,0 +1,75 @@
+<html>
+    <head>  
+        <title>Change Password</title>  
+        <?php $this->load->view('template/header'); ?>
+        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+	<?php $this->load->view('template/menu');?>
+    </head>
+<body>
+ <!--?php
+            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
+            echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
+            echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
+            echo "Profile";
+            echo "<span  style='padding: 8px 8px 8px 20px;'>";
+            echo "|";
+            echo "<span  style='padding: 8px 8px 8px 20px;'>";
+            echo "Change Password";
+            echo "</span>";
+            echo "</table>";
+?-->
+<table>
+            <tr colspan="2">
+                <td>
+                    <div align="left" style="margin-left:30px;width:1700px;">  
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                    <?php if(isset($_SESSION['success'])){?>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <?php
+                    };
+                    ?>
+		    <?php if(isset($_SESSION['err_message'])){?>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <?php
+                    };
+		?>	
+                </div>
+            </td>
+     </tr> 
+<tr>  
+                <div style="margin-left:30px;margin-top:-18px"> 
+                <br/>    
+       
+                    <form action="<?php echo site_url('profile/changepasswd');?>" method="POST" class="form-inline">
+                        <table style="margin-left:30px;">
+                            <tr>  
+                                <td><label for="oldpassword" class="control-label"><b>Old Password</b></label></td>
+                                <td><input type="password" name="oldpassword" class="form-control" size="30"><br></td>
+				<td><?php echo form_error('oldpassword')?></td>
+                            </tr>
+
+				<tr>
+                                <td><label for="newpassword" class="control-label"><b>New Password</b></label></td>
+                                <td><input type="password" name="newpassword"  class="form-control" size="30" /><br></td>
+                                <td><?php echo form_error('newpassword')?></td>
+                            </tr>
+
+			    <tr>
+                                <td><label for="confirmpassword" class="control-label"><b>New Password (Confirm)</b></label></td>
+                                <td><input type="password" name="confirmpassword"  class="form-control" size="30" /><br></td>
+                                <td><?php echo form_error('confirmpassword')?></td>
+                            </tr>
+			<tr>
+                                <td colspan="2">
+                                <button name="changepasswd"><b>Update Password</b></button>
+                                </td>
+                            </tr>
+
+
+</tr>
+</div>
+</table>
+</body>
+    <div align="center"> <?php $this->load->view('template/footer');?></div>
+</html>

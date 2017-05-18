@@ -39,7 +39,25 @@ class Login_model extends CI_Model
             return true;
          }
     }
+   public function getpassword($datau) {
+ 	$this->db1->select('password');
+        $this->db1->where('username', $datau);
+        return $this->db1->get('edrpuser')->row();
+    }
 
+//update the complete record from specific table
+    public function updaterec($tbname, $datar,$fieldname,$fieldvalue){
+         $this->db1->trans_start();
+         if(! $this->db1->where($fieldname, $fieldvalue)->update($tbname, $datar))
+         {
+            $this->db1->trans_rollback();
+            return false;
+         }
+         else {
+            $this->db1->trans_complete();
+            return true;
+         }
+    }
     function __destruct() {
         $this->db1->close();
     }

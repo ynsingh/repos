@@ -18,7 +18,7 @@ class Mailsend_model extends CI_Model
 	public function mailsnd($tomal, $sub, $mess,$attach=''){
 		//getting the values from database
 
-		$this->emresult = $this->common_model->get_elist();	
+		$this->emresult = $this->common_model->get_elist("email_setting");	
 		// The mail sending protocol.
 		//$config['protocol'] = 'smtp';
 		$config['protocol'] = $this->emresult->emailprotocol;
