@@ -98,7 +98,7 @@ class Common_model extends CI_Model
 	if (($fieldname != '') && ($fieldvalue !='')){
 		$this->db->where($fieldname, $fieldvalue);
 	}
-        return $this->db->get()->result();
+        return $this->db->get()->row();
     }
 
 
@@ -158,6 +158,17 @@ class Common_model extends CI_Model
         	$str .= mt_rand(0, 9);
 
     	return $str;
+    }
+
+// Check the number is positive integer
+    function pinteger($value){
+	if ((is_int($value) || ctype_digit($value)) && ((int)$value > 0 )) { 
+		return true;// int 
+	}
+	else {
+		return false;
+	}
+
     }
 
     function __destruct() {

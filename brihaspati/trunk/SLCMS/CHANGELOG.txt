@@ -1,48 +1,78 @@
+SLCMS  Version 1.0 2017-05-18
+-----------------------------
+    * Added table teacher subject programe and paper table
+    * Added upload teacher list
+    * Added function for check positive integer common model
+    * Modified menu
+
+SLCMS  Version 1.0 2017-05-17
+-----------------------------
+    * Added mapping module for campus, programe and seats - Manorama
+
+SLCMS  Version 1.0 2017-05-16
+-----------------------------
+    * Added subject management related module - Sharad
+
 SLCMS  Version 1.0 2017-05-15
 -----------------------------
-    * Modified table User role type -addes few more field 
-    * Added some function in common model
-    * Added role functionality
-    * Mofdified menu list
+    * Added mail send model for sending the mail to user with and without attachment.- NKS
+    * Modified table User role type -addes few more field  - NKS
+    * Added some function in common model - NKS
+    * Mofdified menu list- NKS
+    * Added role functionality - Kishore
 
-
-
-SLCMS  Version 1.0 2017-05-05
+SLCMS  Version 1.0 2017-05-11
 -----------------------------
+    * functionality to add department - added. - Raju
 
-    * Modified table subject_paper -addes few more field (type -UG,PG,R,Dip, paper number, degree, acad year, insert and modified date)
-    * Added Common model for select and delete
-    * Mofdified menu list - added subject link in setup
+SLCMS  Version 1.0 2017-05-09
+-----------------------------
+    * functionality to add categories, added. - Om Prakash
 
+SLCMS  Version 1.0 2017-05-08
+-----------------------------
+    * add logs table in database, modified logger lib for write log in db - NKS
+
+SLCMS  Version 1.0 2017-05-07
+-----------------------------
+    * add logs table in database, modified logger lib for write log in db - NKS
+
+SLCMS  Version 1.0 2017-05-06
+-----------------------------
+    * Modified table subject_paper -addes few more field (type -UG,PG,R,Dip, paper number, degree, acad year, insert and modified date) -NKS
+    * Added Common model for select and delete - NKS
+    * Mofdified menu list - added subject link in setup -NKS
+
+SLCMS  Version 1.0 2017-05-01
+-----------------------------
+    * modification in table SC_program_sheet, extra unique keys in subject table removed, model updated for efficiency. - NKS
+    * CSS stylesheet added as common formating code across the whole codebase -Manorama
+    * program addtion and editing mechanism added. -Sharad
 
 SLCMS  Version 1.0 2017-04-27
 -----------------------------
-
-    * Added email setting module
-    * Added logger lib
-    * Mofdified menu list
-    * Changed in program table - one field seat added
-    * Added default values in login schema  for admin and guest
+    * Added default values in login schema  for admin and guest- NKS
+    * Changed in program table - one field seat added - NKS
+    * Mofdified menu list - NKS
+    * Added logger lib - NKS
+    * Added email setting module - Manorama
 
 SLCMS  Version 1.0 2017-04-24
 -----------------------------
-
-    * Modified table country and puted default value for India
-    * Added University Model
-    * Added University information to dashboard  
+    * Modified table country and puted default value for India - NKS
+    * Added University Model - NKS
+    * Added University information to dashboard    - NKS
 
 SLCMS  Version 1.0 2017-04-21
 -----------------------------
-
-    * Added 5 table (city, state, country, student program and  student fees) create statement
-    * Added auto increment in  three table (designation,category and email setting) statement
-    * Changed in login page
-    * Changed in header clour
-    * Added two submenu (category and designation) in setup menu 
+    * Added 5 table (city, state, country, student program and  student fees) create statement -NKS
+    * Added auto increment in  three table (designation,category and email setting) statement - NKS
+    * Changed in login page - NKS
+    * Changed in header clour -NKS
+    * Added two submenu (category and designation) in setup menu - NKS
 
 SLCMS  Version 1.0 2017-04-19
 ------------------------------
-
     * Start Apache License, Version 2.0
     * Added 7 tables create statements
     * Added menu and submenu

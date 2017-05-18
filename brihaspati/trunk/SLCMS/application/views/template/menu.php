@@ -33,7 +33,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('setup/dept', 'Department', array('title' => 'Department'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('setup/desig', 'Designation', array('title' => 'Designation'));
+					//	echo anchor('setup/desig', 'Designation', array('title' => 'Designation'));
 					echo "</li>";				
 					echo "<li>";
 						echo anchor('setup/viewprogram', 'Program and Seat', array('title' => 'Program and Seat'));
@@ -56,13 +56,13 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('map/viewscprgseat', 'Map Study Center and Program with Seat', array('title' => 'Map Study Center and Program with Seat'));
 					echo "</li>";	
 					echo "<li>";
-						echo anchor('map/programsubject', 'Map Program with Subject', array('title' => 'Map Program with Subject'));
-					echo "</li>";
-					echo "<li>";
-						echo anchor('map/subjectpaper', 'Map Subject with Paper', array('title' => 'Map Subject with Paper'));
+						echo anchor('map/programsubject', 'Map Program with Subject and paper', array('title' => 'Map Program with Subject and paper'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('map/subjectteacher', 'Map Subject and Paper with Teacher', array('title' => 'Map Subject and Paper with Teacher'));
+					echo "</li>";
+					echo "<li>";
+
 					echo "</li>";
 					
 					

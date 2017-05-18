@@ -32,6 +32,7 @@
         echo "<tbody align=\"left\">";
 */
 	echo "</br>";
+	echo "<table><tr><td>";
 	echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
         echo "<td style=\"padding: 8px 8px 8px 20px; text-align:center;\">";
@@ -60,7 +61,6 @@
 	echo $this->result->org_address2;echo ",\t";echo $this->result->org_city;echo "\t";echo $this->result->org_state;echo ",\t"; echo $this->contryname->country_name; echo ",\t"; echo $this->result->org_pincode;
 	echo "</td></tr>";
         echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">University Email</td><td>";
-
 	echo $this->result->org_email;
 	echo "</td></tr>";
         echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">University Fax</td><td>";
@@ -80,6 +80,54 @@
 	echo "</td>";
 	echo "</tr>";
         echo "</table>";
+
+	echo "</td><td>";
+
+	echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
+        echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
+        echo "<td style=\"padding: 8px 8px 8px 20px; text-align:center;\">";
+        echo "University Program and Seat";
+        echo "</td>";
+        echo "</tr>";
+        echo "<tr>";
+        echo "<td>";
+        echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
+        echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+        echo "<tbody align=\"left\">";
+	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">";
+
+        echo "</td></tr>";
+        echo "</tbody>";
+        echo "</table>";
+        echo "</td>";
+        echo "</tr>";
+        echo "</table>";
+
+	echo "</td><td>";
+
+        echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
+        echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
+        echo "<td style=\"padding: 8px 8px 8px 20px; text-align:center;\">";
+        echo "University Program and Fees";
+        echo "</td>";
+        echo "</tr>";
+        echo "<tr>";
+        echo "<td>";
+        echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
+        echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+        echo "<tbody align=\"left\">";
+	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">";
+
+	echo "</td></tr>";
+        echo "</tbody>";
+        echo "</table>";
+        echo "</td>";
+        echo "</tr>";
+        echo "</table>";
+
+	echo "</td>";
+	echo "</tr></table>";
+
 ?>
 
 	</div>
