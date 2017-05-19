@@ -1,4 +1,11 @@
-  <html>
+  
+<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+
+<!--@name editdepartment.php 
+  @author Raju Kamal(kamalraju8@gmail.com)
+ -->
+  
+<html>
   <head>    
     <title>Edit Department</title>
         <?php $this->load->view('template/header'); ?>
@@ -7,8 +14,9 @@
       
     </head>
     <body>
+<!--
         <?php
-            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
+           echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
             echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
             echo "Setup";
@@ -17,18 +25,25 @@
             //echo "<span  style='padding: 8px 8px 8px 20px;'> ";
             echo anchor('setup/dispdepartment/', "View Department", array('title' => 'Add Detail' , 'class' => 'top_parent'));
             echo "<span  style='padding: 8px 8px 8px 20px;'> ";
-            echo "|";
+          //  echo "|";
             echo "<span  style='padding: 8px 8px 8px 20px;'>";
-            echo "Edit Department";
+           // echo "Edit Department";
             echo "</span>";
             echo "</td>";
             echo "</tr>";
             echo "</table>";
-        ?>
-        <table style="margin-left:30px;"> 
+        ?>-->
+        <table>
+   <font color=blue size=4pt> 
+   <div style="margin-left:30px; width:200px;">
+      <legend>Update Department</legend>
+      <!-- <?php echo anchor('','Update Department',array('title'=>'Edit Detail')); ?>-->
+      <!--<a href="<?php echo site_url('')?>" <h2>Update Department</h2></a>-->
+      
+     <style="margin-left:0px;"> 
             <tr colspan="2"><td>    
-                <div style="margin-left:30px;width:1200px;">
-                    <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
+                <div style="margin-left:0px;width:1700px;">
+                    <?php echo validation_errors('<div style="margin-left:50px;" class="isa_warning">','</div>');?>
                     <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
@@ -40,7 +55,7 @@
                 </div>  
             </td></tr>  
         </table>    
-        <table style="padding: 8px 8px 8px 30px;">  
+        <table style="padding: 8px 8px 8px 50px;">  
  
         <?php
 
@@ -77,7 +92,7 @@
                 echo form_input($deptschoolcode);
                 echo "</td>";
                 echo "<td>";
-                    echo "Example: SBS";
+                    echo "Example: Sbs";
                 echo "</td>";
             echo "</tr>";
             echo "<tr>";

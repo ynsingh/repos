@@ -6,6 +6,7 @@
  * @author Sharad Singh(sharad23nov@yahoo.com) add program, add subject
  * @author Om Prakash(omprakashkgp@gmail.com)  add category
  * @author Kishore kr shukla(kishore.shukla@gmail.com) add role
+ * @author Raju Kamal(kamalraju8@gmail.com)    add department
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -897,31 +898,35 @@ class Setup extends CI_Controller
 
  //====================End of Add Category Module ============================================
 //*************************Start Department**************************************//
+ 	  public function dept(){
+        	$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
+   	        $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
+               // $this->scresult = $this->common_model->get_listspfic('study_center','sc_name');
+              //  $this->uresult = $this->common_model->get_listspfic('org_profile','org_name');
 
-     public function dept(){
-        $this->scresult = $this->common_model->get_listspfic('study_center','sc_code', 'sc_name');
-        $this->uresult = $this->common_model->get_listspfic('org_profile','org_code','org_name');
-
-        if(isset($_POST['dept'])) {
-              //  $this->form_validation->set_rules('dept_orgcode','University','trim|xss_clean|required');
-               // $this->form_validation->set_rules('dept_sccode','Campus','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric|required');
-                $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required');
+            
+	   if(isset($_POST['dept'])) { 
+               
+                $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
+                $this->form_validation->set_rules('studycenter','Campus','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_schoolcode','School code','trim|xss_clean|alpha_numeric|required');
+                $this->form_validation->set_rules('dept_schoolname','School name','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_code','Department code','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_name','Department name','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_short','Depatment Nice','trim|xss_clean|required|alpha_numeric');
-                $this->form_validation->set_rules('dept_descripation','Department Description','trim|xss_clean|required');
-
+                $this->form_validation->set_rules('dept_short','Department nick','trim|xss_clean|required|alpha_numeric');
+                $this->form_validation->set_rules('dept_descripation','Department description','trim|xss_clean|required');
+                       
             //if form validation true
                 if($this->form_validation->run()==TRUE){
-                        if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){
-                        $data = array(
-                                'dept_orgcode'=>$_POST['orgprofile'],
-                                'dept_sccode'=>$_POST['studycenter'],
-                                'dept_schoolcode'=>$_POST['dept_schoolcode'],
-                                'dept_schoolname'=>$_POST['dept_schoolname'],
-                                'dept_code'=>$_POST['dept_code'],
-                                'dept_name'=>$_POST['dept_name'],
+
+                 if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){  
+                 $data = array(
+                                'dept_orgcode'=>strtoupper($_POST['orgprofile']),
+                                'dept_sccode'=>strtoupper($_POST['studycenter']),
+                                'dept_schoolcode'=>strtoupper($_POST['dept_schoolcode']),
+                                'dept_schoolname'=>ucwords(strtolower($_POST['dept_schoolname'])),
+                                'dept_code'=>strtoupper($_POST['dept_code']),
+                                'dept_name'=>ucwords(strtolower($_POST['dept_name'])),
                                 'dept_short'=>$_POST['dept_short'],
                                 'dept_description'=>$_POST['dept_descripation'],
                         );
@@ -937,10 +942,15 @@ class Setup extends CI_Controller
                                 $this->logger->write_logmessage("insert"," add Department ", "Department record added successfully.".$dept_name  );
                                 $this->logger->write_dblogmessage("insert"," add Deaprtment ", "Department record added successfully.".$dept_name );
                                 $this->session->set_flashdata("success", "Department added successfully...");
-                                redirect('setup/dept');
+                                redirect('setup/dispdepartment');
                         }
                         }
+		//	$this->session->set_flashdata('err_message','You are not selecting either university or campus - ', 'error');
+        	//	$this->load->view('setup/dept');
+			return;
                 }
+	//	$this->session->set_flashdata('err_message','Field validation failed - ', 'error');
+        //	$this->load->view('setup/dept');
         }
         $this->load->view('setup/dept');
     }
@@ -959,31 +969,32 @@ class Setup extends CI_Controller
         $deptflag=$this->common_model->deleterow('Department', 'dept_id', $deptid) ;
         if(!$deptflag)
         {
-            $this->logger->write_logmessage("delete", "Deleted Department ", "Error in  Department ". $dept_data->dept_name . " [dept_id:" . $deptid . "] delete. " );
-            $this->logger->write_dblogmessage("delete", "Deleted Department ","Error in Department ".  $dept_data->dept_name . "  [dept_id:" . $deptid . "] delete. " );
-            $this->session->set_flashdata('err_message','Error in deleting Department - ' . $dept_data->dept_name . '.', 'error');
+            $this->logger->write_logmessage("delete", "Deleted Department ", "Error in  Department  [dept_id:" . $deptid . "] delete. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Department ","Error in Department  [dept_id:" . $deptid . "] delete. " );
+            $this->session->set_flashdata('err_message','Error in deleting Department - ' , 'error');
             redirect('setup/dispdepartment');
         }
         else {
 
-            $this->logger->write_logmessage("delete", "Deleted Department ", "Department  ". $dept_data->dept_name . " [deptid:" . $deptid . "] deleted successfully. " );
-            $this->logger->write_dblogmessage("delete", "Deleted Department ","Department ". $dept_data->dept_name . " [deptid:" . $deptid . "] deleted successfully. " );
+            $this->logger->write_logmessage("delete", "Deleted Department ", "Department  [deptid:" . $deptid . "] deleted successfully. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Department ","Department [deptid:" . $deptid . "] deleted successfully. " );
             $this->session->set_flashdata("success", 'Department Record Deleted successfully.' );
             redirect('setup/dispdepartment');
         }
-        $this->load->view('setup/dispdepartment',$data);
+//        $this->load->view('setup/dispdepartment',$data);
+          $this->load->view('setup/dept',$data);
 
     }
      /* this function is used for update department record */
     public function editdepartment($id) {
 
-      $this->db->from('Department')->where('dept_id', $id);
-      $dept_data_q = $this->db->get();
-      if ($dept_data_q->num_rows() < 1)
+	$deptrow=$this->common_model->get_listrow('Department','dept_id', $id);
+        if ($deptrow->num_rows() < 1)
         {
             redirect('setup/dispdepartment');
         }
-        $dept_data = $dept_data_q->row();
+
+        $dept_data = $deptrow->row();
 
         /* Form fields */
           $data['deptorgcode'] = array(
@@ -1047,18 +1058,21 @@ class Setup extends CI_Controller
         $data['id'] = $id;
 
         /*Form Validation*/
-        $this->form_validation->set_rules('dept_orgcode','University','trim|xss_clean|required');
-        $this->form_validation->set_rules('dept_sccode','Campus','trim|xss_clean|required');
-        $this->form_validation->set_rules('deptschoolcode','Schoolcode','trim|xss_clean|required');
-        $this->form_validation->set_rules('deptschoolname','Schoolname','trim|xss_clean|required');
-        $this->form_validation->set_rules('deptcode','dept_code','trim|xss_clean|required');
-        $this->form_validation->set_rules('deptname','dept_name','trim|xss_clean|required');
-        $this->form_validation->set_rules('deptshort','dept_short','trim|xss_clean|required');
-        $this->form_validation->set_rules('deptdescription','dept_description','trim|xss_clean|required');
+        
+       // $this->form_validation->set_rules('dept_orgcode','University','trim|xss_clean|required');
+       // $this->form_validation->set_rules('dept_sccode','Campus','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptschoolcode','School code','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptschoolname','School name','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptcode','Department code','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptname','Department name','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptshort','Department nick','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptdescription','Department description','trim|xss_clean|required');
+     
         /* Re-populating form */
         if ($_POST)
         {
-            $data['deptorgcode']['value'] = $this->input->post('deptorgcode', TRUE);
+             $this->input->post('deptorgcode', TRUE);
+           // $data['deptorgcode']['value'] = $this->input->post('deptorgcode', TRUE);
             $data['deptsccode']['value'] = $this->input->post('deptsccode', TRUE);
             $data['deptschoolcode']['value'] = $this->input->post('deptschoolcode', TRUE);
             $data['deptschoolname']['value'] = $this->input->post('deptschoolname', TRUE);
@@ -1068,19 +1082,20 @@ class Setup extends CI_Controller
             $data['deptdescription']['value'] = $this->input->post('deptdescription', TRUE);
         }
 
-	if ($this->form_validation->run() == FALSE)
-        {
+	if ($this->form_validation->run() ==FALSE )
+       {            
+                $this->session->set_flashdata(validation_errors(), 'error');
                 $this->load->view('setup/editdepartment', $data);
         }
         else{
-            $schoolcode= $this->input->post('deptschoolcode', TRUE);
-            $schoolname = $this->input->post('deptschoolname', TRUE);
-            $departmentcode = $this->input->post('deptcode', TRUE);
-            $departmentname = $this->input->post('deptname', TRUE);
+            $schoolcode=strtoupper($this->input->post('deptschoolcode', TRUE));
+            $schoolname = ucwords(strtolower($this->input->post('deptschoolname', TRUE)));
+            $departmentcode = strtoupper($this->input->post('deptcode', TRUE));
+            $departmentname = ucwords(strtolower($this->input->post('deptname', TRUE)));
             $departmentshort = $this->input->post('deptshort', TRUE);
             $departmentdescription = $this->input->post('deptdescription', TRUE);
-            $deptsccode = $this->input->post('deptsccode',TRUE);
-            $deptorgcode = $this->input->post('deptorgcode', TRUE);
+            $deptsccode = strtoupper($this->input->post('deptsccode',TRUE));
+            $deptorgcode = strtoupper($this->input->post('deptorgcode', TRUE));
 
 	    $logmessage = "";
             if($dept_data->dept_schoolcode != $schoolcode)

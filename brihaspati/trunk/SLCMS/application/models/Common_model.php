@@ -86,7 +86,7 @@ class Common_model extends CI_Model
     public function get_listrow($tbname,$fieldname,$fieldvalue){
          $this->db->from($tbname);
 	 $this->db->where($fieldname, $fieldvalue);
-         return $this->db->get()->result();
+         return $this->db->get();
     }
 
 

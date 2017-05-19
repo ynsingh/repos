@@ -81,7 +81,7 @@
 	echo "</tr>";
         echo "</table>";
 
-	echo "</td><td>";
+	echo "</td><td valign=\"top\">";
 
 	echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -103,7 +103,7 @@
         echo "</tr>";
         echo "</table>";
 
-	echo "</td><td>";
+	echo "</td><td valign=\"top\">";
 
         echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
