@@ -8,17 +8,11 @@
         <?php $this->load->view('template/header'); ?>
             <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">    
        <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>-->
-        <style>
-            thead th{
-               
-                background-color: #DCDCDC;
-                
-            }
-        </style>
-      
+        
     </head>    
     <body>
         
@@ -67,7 +61,7 @@
         </table>  
         <br/>
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" style="margin-left:30px;">
+            <table cellpadding="16" style="margin-left:30px;" class="TFtable">
             <thead >
             <tr align="center">
                 <th>Sr.No</th>
@@ -82,9 +76,9 @@
                 <th>Modifier Name</th>
                 <th>Modify Date</th>-->
                 <th>Action</th>
-                <th></th>
+               <!-- <th></th>-->
             </tr>
-            <tr></tr>
+           <!-- <tr></tr>-->
         </thead>
         <tbody>
            <?php $serial_no = 1;?>

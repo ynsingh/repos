@@ -1,0 +1,32 @@
+/* 
+    Created on : May 19, 2017, 4:12:18 PM
+    Author     : Manorama Pal (palseema30@gmail.com)
+*/
+
+.TFtable th{
+        background-color: #9d9d9d;
+    }
+    .TFtable{
+	width:96%; 
+	border-collapse:collapse; 
+    }
+    .TFtable td{ 
+        //padding:7px; border:#4e95f4 1px solid;
+        padding:7px; border:#4e95f4 0px solid;
+    }
+    /* provide some minimal visual accomodation for IE8 and below */
+    .TFtable tr{
+        //background: #b8d1f3;
+        background:#999;
+    }
+    /*  Define the background color for all the ODD background rows  */
+    .TFtable tr:nth-child(odd){ 
+	//background: #b8d1f3;
+        background: lightgray;
+    }
+    /*  Define the background color for all the EVEN background rows  */
+    .TFtable tr:nth-child(even){
+	//background: #dae5f4;
+        background: whitesmoke;
+    }
+

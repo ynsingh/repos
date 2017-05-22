@@ -35,8 +35,6 @@ class Setup extends CI_Controller
     
     public function emailsetting() {
               
- //       $this->load->library('form_validation'); 
-        
         if(isset($_POST['emailsetting'])) {
         
             $this->form_validation->set_rules('emailprotocol','Emailprotocol','trim|xss_clean|required|alpha');
@@ -61,20 +59,18 @@ class Setup extends CI_Controller
                     'modifierid'=>$this->session->userdata('username'),
                     'modifidate'=>date('y-m-d')
                 );
-                $this->db->trans_start();
-                if ( ! $this->db->insert('email_setting', $data))
+                $emailflag=$this->common_model->insertrec('email_setting', $data) ;
+                if ( ! $emailflag)
                 {
-                    $this->db->trans_rollback();
-                    log_message('error', "Error  in adding  Email Setting record called " . $eset_data->username . " [id:" . $id . "]");
-                    log_message('debug', ' Problem in adding Email setting' . $eset_data->username );
-                    $this->session->set_flashdata('Error in adding email setting - ' . $eset_data->username . '.', 'error');
-                    log_message("info", "Error  in adding  Email Setting record called " . $eset_data->username . " [id:" . $id . "]");
+                    $this->logger->write_logmessage("insert", "Error in adding email configuration detail  " .$data->emailprotocol);
+                    $this->logger->write_dblogmessage("insert", "Error in adding email configuration detail  " .$data->emailprotocol);
+                    $this->session->set_flashdata("err_message",'Error in adding email configuration detail - ' .$data->emailprotocol );
                     redirect('setup/emailsetting');
 
                 }
                 else{
-                    $this->db->trans_complete();
-                    $this->logger->write_logmessage("insert","Add Email Setting", "Email setting record insert successfully...");
+                    $this->logger->write_logmessage("insert","Email setting record insert successfully " .$data->emailprotocol);
+                    $this->logger->write_dblogmessage("insert", "Add Email Setting record " .$data->emailprotocol);
                     $this->session->set_flashdata("success", "Email setting add successfully...");
                     redirect("setup/dispemailsetting");
                 }
@@ -89,7 +85,7 @@ class Setup extends CI_Controller
      */
     public function dispemailsetting() {
         
-	 $this->result = $this->common_model->get_list('email_setting');
+	$this->result = $this->common_model->get_list('email_setting');
         $this->logger->write_logmessage("view"," View Email Setting", "Email setting details...");
         $this->load->view('setup/dispemailsetting',$this->result);
     }
@@ -98,39 +94,22 @@ class Setup extends CI_Controller
      * @param type $id
      * @return type
      */
-    public function delete_eset($id) {
+    public function delete_eset($id,$emailprotocol) {
         
-        //$this->template->set('nav_links', array('setup' => 'emailsetting', 'setup/emailsetting' => 'Add Email-setting'));
         /* Deleting emailsetting */
-        $this->db->from('email_setting')->where('id', $id);
-        $eset_q = $this->db->get();
-        if ($eset_q->num_rows() < 1)
-        {
-            $this->session->set_flashdata('Invalid Email setting.', 'error');
+        $delflag=$this->common_model->deleterow('email_setting','id',$id);
+        if (! delflag   )
+        {   
+            $this->logger->write_logmessage("delete", "Error in adding email configuration detail  " .$emailprotocol . " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Error in adding email configuration detail  " .$emailprotocol . " [id:" . $id . "]");
+            $this->session->set_flashdata('Error in deleting email setting - ' . $emailprotocol);
             redirect('setup/dispemailsetting');
         }
         else {
-            $eset_data = $eset_q->row();
-        }
-        $this->db->trans_start();
-        if ( ! $this->db->delete('email_setting', array('id' => $id)))
-        {
-            $this->db->trans_rollback();
-            log_message('error', 'Error in deleting email setting record - ' .$eset_data->username . '.' );
-
-            log_message('debug', 'Email Setting info ');
-
-            $this->session->set_flashdata('Error in deleting email setting - ' . $eset_data->username . '.', 'error');
-            log_message("info", "Error  in deleting Email Setting called " . $eset_data->username . " [id:" . $id . "]");
-            redirect('setup/dispemailsetting');
-        }
-        else {
-            
-        //    $this->db->where('id', $id);
-          //  $this->db->delete('email_setting');
-            $this->db->trans_complete();
-            $this->session->set_flashdata("success", 'Deleted email setting Record ...' );
-            $this->logger->write_logmessage("update", "Deleted Email setting called " . $eset_data->username . " [id:" . $id . "]");
+         
+            $this->logger->write_logmessage("delete", " Deleted email setting Record  " .$emailprotocol . " [id:" . $id . "]");
+            $this->logger->write_dblogmessage("delete", "Deleted email setting Record  " .$emailprotocol . " [id:" . $id . "]");
+            $this->session->set_flashdata("success", 'Deleted email setting Record successfully ...' );
             redirect('setup/dispemailsetting');
         }
         $this->load->view('setup/dispemailsetting',$data);
@@ -142,16 +121,9 @@ class Setup extends CI_Controller
      * @return type
      */
     public function editemailsetting($id) {
-        
-        //$this->template->set('nav_links', array('setup' => 'emailsetting', 'setup/emailsetting' => 'Add Email-setting'));
-        
+               
         $this->db->from('email_setting')->where('id', $id);
         $eset_data_q = $this->db->get();
-        if ($eset_data_q->num_rows() < 1)
-        {
-           // $this->messages->add('Invalid Email Setting.', 'error');
-            redirect('setup/editemailsetting');
-        }
         $editeset_data = $eset_data_q->row();
                 
         /* Form fields */
@@ -247,9 +219,19 @@ class Setup extends CI_Controller
             $data_esendername = $this->input->post('sendername', TRUE);
             $data_emodfid = $this->input->post('modifidate', TRUE);
             $data_eid = $id;
-                    
-            $this->db->select('id')->from('email_setting')->where('id', $data_eid);
-            $this->db->trans_start();
+            
+            /* check and store updated values for log */
+
+            $logmessage = "";
+            if($editeset_data->emailprotocol != $data_eprotocol)
+                $logmessage = "Email Protocol " .$editeset_data->emailprotocol. " changed by " .$data_eprotocol;
+            if($editeset_data->emailhost != $data_ehost)
+                $logmessage = $logmessage ." Email Host " .$editeset_data->emailhost. " changed by " .$data_ehost;
+            if($editeset_data->emailport != $data_eport)
+                $logmessage = $logmessage ." Email Port " .$editeset_data->emailport. " changed by " .$data_eport;
+            if($editeset_data->sendername != $data_esendername)
+                $logmessage = $logmessage ." Sender Name " .$editeset_data->sendername. " changed by ". $data_esendername;
+
             $update_data = array(
                'emailprotocol' => $data_eprotocol,
                'emailhost' => $data_ehost,
@@ -260,19 +242,17 @@ class Setup extends CI_Controller
                'modifierid' => $this->session->userdata('username'), 
                'modifidate' => date('y-m-d')
             ); 
-                    
-            if ( ! $this->db->where('id', $data_eid)->update('email_setting', $update_data))
+            $editflag=$this->common_model->updaterec('email_setting', $update_data,'id',$data_eid);
+            if(! $editflag)
             {
-                $this->db->trans_rollback();
-                log_message('error', "Error in updating email setting details " . $data_eusername . $data_esendername . " [id:" . $data_eid . "]"  . ' by user ' . $username);
-
-                log_message('debug', 'Edit Email Setting ');
-                $this->session->set_flashdata('Error updating emailsetting - ' . $data_eusername . '.', 'error');
+                $this->logger->write_logmessage("update", "Error in updating email configuration detail  ", $logmessage );
+                $this->logger->write_dblogmessage("update", "Error in updating email configuration detail  ",$logmessage);
+                $this->session->set_flashdata('err_message','Error updating emailsetting - ' . $data_eusername);
                 $this->load->view('setup/editemailsetting', $data);
             }  
             else{
-                $this->db->trans_complete();
-                $this->logger->write_logmessage("update","Edit Email Setting", "Edit Email Setting details..");
+                $this->logger->write_logmessage("update", "Edit Email Setting details  ", $logmessage );
+                $this->logger->write_dblogmessage("update", "Edit Email Setting details ",$logmessage);
                 $this->session->set_flashdata('success','Updated email setting details successfully...');
                 redirect('setup/dispemailsetting/');
             }

@@ -132,7 +132,7 @@
             <tr>
                <td></td>
                 <td colspan="2">   
-                <button name="submit" >Submit</button>
+                <button name="mapscprgseat" >Submit</button>
                 <button name="reset" >Clear</button>
                 </td>
                

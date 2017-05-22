@@ -9,7 +9,7 @@
        
     </head>
     <body>
-        <?php
+        <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
             echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
@@ -26,9 +26,10 @@
             echo "</td>";
             echo "</tr>";
             echo "</table>";
-        ?>
-        <table> 
-            <tr colspan="2"><td>    
+        ?-->
+        <table style="margin-left:30px;" > 
+            <tr colspan="2"><td>
+                <?php echo anchor('setup/dispemailsetting/', "View Email Configuration" ,array('title' => ' Email Configuration Detail ' , 'class' => 'top_parent'));?>    
                 <div style="margin-left:30px;width:1700px;">
                     <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
                     <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
@@ -39,6 +40,12 @@
                     <?php
                     };
                     ?>
+                    <?php if(isset($_SESSION['err_message'])){?>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+
+                    <?php
+                    };
+                    ?>    
                 </div> </br> 
             </td></tr>  
         </table>    
@@ -54,7 +61,13 @@
                     echo form_label('Email Protocol', 'emailprotocol');
                 echo "</td>";
                 echo "<td>";
-                    echo form_input($emailprotocol);
+                   // echo form_input($emailprotocol);
+                echo "<select name='emailprotocol' style=\"width: 350px;\">;
+                <option value=\"$emailprotocol[value]\">$emailprotocol[value]</option>;  
+                <option value=\"SMTP\">SMTP</option>;
+                <option value=\"IMAP\">IMAP</option>;
+                <option value=\"POP\">POP</option>;
+                </select>";
                 echo "</td>";
                 echo "<td>";
                     echo "Example: smtp";
@@ -132,6 +145,8 @@
             echo "</tr>";
         
             echo "<tr>";
+            echo "<td>";
+            echo "</td>";
                 echo "<td>";
                     echo form_hidden('id', $id);
                     echo form_submit('submit', 'Update');

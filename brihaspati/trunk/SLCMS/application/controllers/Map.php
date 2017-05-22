@@ -44,61 +44,62 @@ class Map extends CI_Controller
        
         $data['campus'] = $this->mapmodel->get_Campus();
         $data['program'] =$this->mapmodel->get_Programlist();
-        /*Form Validation*/
-        $this->form_validation->set_rules('campus','Campus','trim|required|callback_ischeck');
-        $this->form_validation->set_rules('program','Program','trim|required|callback_ischeck');
-        $this->form_validation->set_rules('seatno','Number of Seat','trim|required|is_numeric|callback_ischeck|callback_check_prgseat');
-        $this->form_validation->set_rules('gender','Gender','trim|required|callback_ischeck');
-        $this->form_validation->set_rules('academicyear','AcademicYear','trim|required|callback_ischeck');
-        $this->form_validation->set_rules('semester','Semester','trim|required');
-        
-        if($this->form_validation->run() == TRUE)
-        {  
-            //echo "this is prgid============";
-            $program = $this->input->post('program', TRUE);
-            $campus = $this->input->post('campus', TRUE);
-            $gender = $this->input->post('gender', TRUE);
-            $seatno = $this->input->post('seatno', TRUE);
-            $academicyear= $this->input->post('academicyear', TRUE);
-            $semester = $this->input->post('semester', TRUE);
-            
-            $data_prg=explode('#',$program);
-            $newcampus=explode('#',$campus);
-            $data = array(
-                'spsc_prg_id'=>$data_prg[0],
-                'spsc_sc_code'=>$newcampus[0],
-                'spsc_gender'=>$gender,
-                'spsc_totalseat'=>$seatno,
-                'spsc_acadyear'=>$academicyear,
-                'spsc_sem'=>$semester,
-                'spsc_creatorid'=>$this->session->userdata('username'),
-                'spsc_createdate'=>date('y-m-d'),
-                'spsc_modifierid'=>$this->session->userdata('username'),
-                'psc_modifydate'=>date('y-m-d')
-               
-            );
-           
-            $mapscprg=$this->commodel->insertrec('seat_program_studycenter', $data);
-            if(! $mapscprg )
-            {
-                $this->logger->write_logmessage("error","Error  in maping study center eith program seat", $data_campus[1].$data_prg[1].$$data_prg[2]);
-                $this->logger->write_dblogmessage("error","Error  in maping study center eith program seat", $data_campus[1].$data_prg[1].$$data_prg[2]);
-                log_message('debug', ' Problem in maping studycenter with program seat' . $data_campus[1].$data_prg[1].$$data_prg[2] );
-                $this->session->set_flashdata('err_message','Error in maping study center with program seat - ' .$data_campus[1].$data_prg[1].$$data_prg[2]);
-                redirect('map/mapscprgseat');
+        if(isset($_POST['mapscprgseat'])) {
 
-            }
-            else{
-                        
-                $this->logger->write_logmessage("insert","Map study center program seat", "Map Study center eith program seat successfully.....".$data_campus[1].$data_prg[1].$$data_prg[2]);
-                $this->logger->write_dblogmessage("insert","Map study center program seat", "Map Study center eith program seat successfully....." .$data_campus[1].$data_prg[1].$$data_prg[2]);
-                $this->session->set_flashdata("success", "Map Study center with program seat successfully...");
-                redirect("map/viewscprgseat");
-               
-            }
-         
+            /*Form Validation*/
+            $this->form_validation->set_rules('campus','Campus','trim|required|callback_ischeck');
+            $this->form_validation->set_rules('program','Program','trim|required|callback_ischeck');
+            $this->form_validation->set_rules('seatno','Number of Seat','trim|required|is_numeric|callback_ischeck|callback_check_prgseat');
+            $this->form_validation->set_rules('gender','Gender','trim|required|callback_ischeck');
+            $this->form_validation->set_rules('academicyear','AcademicYear','trim|required|callback_ischeck');
+            $this->form_validation->set_rules('semester','Semester','trim|required');
         
-        }//if
+            if($this->form_validation->run() == TRUE)
+            {  
+                //echo "this is prgid============";
+                $program = $this->input->post('program', TRUE);
+                $campus = $this->input->post('campus', TRUE);
+                $gender = $this->input->post('gender', TRUE);
+                $seatno = $this->input->post('seatno', TRUE);
+                $academicyear= $this->input->post('academicyear', TRUE);
+                $semester = $this->input->post('semester', TRUE);
+            
+                $data_prg=explode('#',$program);
+                $newcampus=explode('#',$campus);
+                $data = array(
+                    'spsc_prg_id'=>$data_prg[0],
+                    'spsc_sc_code'=>$newcampus[0],
+                    'spsc_gender'=>$gender,
+                    'spsc_totalseat'=>$seatno,
+                    'spsc_acadyear'=>$academicyear,
+                    'spsc_sem'=>$semester,
+                    'spsc_creatorid'=>$this->session->userdata('username'),
+                    'spsc_createdate'=>date('y-m-d'),
+                    'spsc_modifierid'=>$this->session->userdata('username'),
+                    'psc_modifydate'=>date('y-m-d')
+                );
+           
+                $mapscprg=$this->commodel->insertrec('seat_program_studycenter', $data);
+                if(! $mapscprg )
+                {
+                    $this->logger->write_logmessage("error","Error  in maping study center with program seat", $data_campus[1].$data_prg[1].$$data_prg[2]);
+                    $this->logger->write_dblogmessage("error","Error  in maping study center with program seat", $data_campus[1].$data_prg[1].$$data_prg[2]);
+                    log_message('debug', ' Problem in maping studycenter with program seat' . $data_campus[1].$data_prg[1].$$data_prg[2] );
+                    $this->session->set_flashdata('err_message','Error in maping study center with program seat - ' .$data_campus[1].$data_prg[1].$$data_prg[2]);
+                    redirect('map/mapscprgseat');
+
+                }
+                else{
+                        
+                    $this->logger->write_logmessage("insert","Map study center program seat", "Map Study center eith program seat successfully.....".$data_campus[1].$data_prg[1].$$data_prg[2]);
+                    $this->logger->write_dblogmessage("insert","Map study center program seat", "Map Study center eith program seat successfully....." .$data_campus[1].$data_prg[1].$$data_prg[2]);
+                    $this->session->set_flashdata("success", "Map Study center with program seat successfully...");
+                    redirect("map/viewscprgseat");
+               
+                }
+               
+            }//if
+        }//ifpost    
         $this->load->view('map/mapscprgseat',$data);
     
     }
