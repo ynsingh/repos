@@ -26,7 +26,7 @@ class Login_model extends CI_Model
 	$this->db1->where('till_date >=', now());
 	return $this->db1->get('authority_map')->row();
     }
-//insert the complete record from specific table
+    //insert the complete record from specific table
     public function insertrec($tbname, $datar){
          $this->db1->trans_start();
          if(! $this->db1->insert($tbname, $datar))
@@ -39,13 +39,13 @@ class Login_model extends CI_Model
             return true;
          }
     }
-   public function getpassword($datau) {
+    public function getpassword($datau) {
  	$this->db1->select('password');
         $this->db1->where('username', $datau);
         return $this->db1->get('edrpuser')->row();
     }
 
-//update the complete record from specific table
+    //update the complete record from specific table
     public function updaterec($tbname, $datar,$fieldname,$fieldvalue){
          $this->db1->trans_start();
          if(! $this->db1->where($fieldname, $fieldvalue)->update($tbname, $datar))
@@ -58,6 +58,30 @@ class Login_model extends CI_Model
             return true;
          }
     }
+    
+    //get the list of all/specific  records with  one specific fields for specific values
+    public function get_listspfic1($tbname,$selfield1,$fieldname='',$fieldvalue=''){
+	$this->db1->flush_cache();
+	$this->db1->select($selfield1);
+	if (($fieldname != '') && ($fieldvalue !='')){
+		$this->db1->where($fieldname, $fieldvalue);
+	}
+        return $this->db1->get($tbname)->row();
+    }
+
+    // check the record is already exist
+    public function isduplicate($tbname,$fieldname,$fieldvalue) {
+        $this->db1->from($tbname);
+        $this->db1->where($fieldname, $fieldvalue);
+        $query = $this->db1->get();
+        if ($query->num_rows() > 0) {
+                return true;
+        } else {
+                return false;
+        }
+    }
+
+
     function __destruct() {
         $this->db1->close();
     }
