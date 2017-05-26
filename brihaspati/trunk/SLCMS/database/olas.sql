@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 -- Database: `olas`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `AdmissionMeritList`
+--
+
+CREATE TABLE `admissionmeritlist` (
+        `id` INT(11) NOT NULL AUTO_INCREMENT ,
+        `application_no` VARCHAR(255) NOT NULL ,
+        `course_name` VARCHAR(255) NOT NULL ,
+        `student_name` VARCHAR(255) NOT NULL ,
+        `father_name` VARCHAR(255) NOT NULL ,
+        `marks` INT(5) NOT NULL ,
+        `admission_quota` VARCHAR(255) NOT NULL ,
+        `category` VARCHAR(255) NOT NULL ,
+        `meritlist_no` VARCHAR(255) NOT NULL ,
+        `lastdate_admission` VARCHAR(255) NOT NULL ,
+        `admission_taken` VARCHAR(255) NOT NULL ,
+        `admission_date` VARCHAR(255) NOT NULL ,
+        `ext1` VARCHAR(255) NULL ,
+        PRIMARY KEY (`id`),
+        UNIQUE (`application_no`, `course_name`, `student_name`)
+) ENGINE = InnoDB;
+
 -- --------------------------------------------------------
 
 --
@@ -267,6 +292,15 @@ CREATE TABLE `role` (
   `role_name` varchar(255) NOT NULL,
   `role_desc` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (1, 'Administrator', 'Responsible for Admin job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (2, 'Faculty', 'Responsible for Teacher job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (3, 'Student', 'Responsible for Student job');
+
 
 -- --------------------------------------------------------
 
@@ -614,15 +648,6 @@ CREATE TABLE `user_role_type` (
 
 
 --
--- AUTO_INCREMENT for dumped tables
---
-
-
---
--- Indexes for dumped tables
---
-
---
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
@@ -773,7 +798,6 @@ ALTER TABLE `subject`
 --
 ALTER TABLE `subject_paper`
   ADD PRIMARY KEY (`subp_id`);
-
 --
 -- Indexes for table `user_role_type`
 --

@@ -1,9 +1,24 @@
+
+SLCMS  Version 1.0 2017-05-23
+-----------------------------
+    * Teacher list upload mechanism updated - NKS, Manorama
+
+SLCMS  Version 1.0 2017-05-22
+-----------------------------
+    * Mail setting module updated - Manorama
+
+SLCMS  Version 1.0 2017-05-19
+-----------------------------
+    * Department modeule modified and updated - Raju
+    
+
 SLCMS  Version 1.0 2017-05-18
 -----------------------------
-    * Added table teacher subject programe and paper table
-    * Added upload teacher list
-    * Added function for check positive integer common model
-    * Modified menu
+    * Added table teacher subject programe and paper table - NKS
+    * Added upload teacher list  _NKS
+    * Added function for check positive integer common model - NKS
+    * Modified menu  - NKS
+    * Added change password facility - Deepika
 
 SLCMS  Version 1.0 2017-05-17
 -----------------------------
