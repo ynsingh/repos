@@ -24,6 +24,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `AdmissionEnterneceData`
+--
+
+
+
+
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `AdmissionMeritList`
 --
 
@@ -44,6 +55,32 @@ CREATE TABLE `admissionmeritlist` (
         PRIMARY KEY (`id`),
         UNIQUE (`application_no`, `course_name`, `student_name`)
 ) ENGINE = InnoDB;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `AdmissionStep`
+--
+
+CREATE TABLE `admissionstep` ( 
+	`id` INT(11) NOT NULL AUTO_INCREMENT , 
+	`application_no` VARCHAR(255) NOT NULL , 
+	`student_masterid` VARCHAR(255) NOT NULL , 
+	`step1_status` VARCHAR(255) NOT NULL , 
+	`step1_date` VARCHAR(255) NOT NULL ,
+	`step2_status` VARCHAR(255) NOT NULL , 
+	`step2_date` VARCHAR(255) NOT NULL ,
+	`step3_status` VARCHAR(255) NOT NULL , 
+	`step3_date` VARCHAR(255) NOT NULL ,
+	`step4_status` VARCHAR(255) NOT NULL , 
+	`step4_date` VARCHAR(255) NOT NULL ,
+	`step5_status` VARCHAR(255) NOT NULL , 
+	`step5_date` VARCHAR(255) NOT NULL , 
+	`ext1` VARCHAR(255) NULL , 
+	PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
 
 -- --------------------------------------------------------
 
@@ -459,6 +496,7 @@ CREATE TABLE `student_master` (
   `sm_pob` varchar(255) DEFAULT NULL,
   `sm_email` varchar(255) DEFAULT NULL,
   `sm_secemail` varchar(255) DEFAULT NULL,
+  `sm_mobile` varchar(12) DEFAULT NULL,
   `sm_category` varchar(255) DEFAULT NULL,
   `sm_caste` varchar(255) DEFAULT NULL,
   `sm_gender` varchar(255) DEFAULT NULL,
@@ -491,12 +529,14 @@ CREATE TABLE `student_parent` (
   `spar_fatheremail` varchar(255) DEFAULT NULL,
   `spar_fatherphoneno` varchar(255) DEFAULT NULL,
   `spar_fatheroccupation` varchar(255) DEFAULT NULL,
+  `spar_fatherincome` varchar(255) DEFAULT NULL,
   `spar_motherfname` varchar(255) DEFAULT NULL,
   `spar_mothermname` varchar(255) DEFAULT NULL,
   `spar_motherlname` varchar(255) DEFAULT NULL,
   `spar_motheremail` varchar(255) DEFAULT NULL,
   `spar_motherphoneno` varchar(255) DEFAULT NULL,
   `spar_motheroccupation` varchar(255) DEFAULT NULL,
+  `spar_motherincome` varchar(255) DEFAULT NULL,
   `spar_paddress` varchar(255) DEFAULT NULL,
   `spar_pcity` varchar(255) DEFAULT NULL,
   `spar_pdistrict` varchar(255) DEFAULT NULL,
@@ -515,6 +555,7 @@ CREATE TABLE `student_parent` (
   `spar_garemail` varchar(255) DEFAULT NULL,
   `spar_garphoneno` varchar(255) DEFAULT NULL,
   `spar_garoccupation` varchar(255) DEFAULT NULL,
+  `spar_garincome` varchar(255) DEFAULT NULL,
   `spar_garaddress` varchar(255) DEFAULT NULL,
   `spar_garcity` varchar(255) DEFAULT NULL,
   `spar_gardistrict` varchar(255) DEFAULT NULL,
@@ -624,7 +665,8 @@ CREATE TABLE `subject_paper` (
   `creatorid` VARCHAR(255) NOT NULL,
   `createdate` VARCHAR(255) NOT NULL,
   `modifierid` VARCHAR(255) NOT NULL,
-  `modifydate` VARCHAR(255) NOT NULL 
+  `modifydate` VARCHAR(255) NOT NULL,
+UNIQUE (`subp_degree`, `subp_acadyear`, `subp_sub_id`,`subp_subtype`,`subp_paperno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -637,10 +679,12 @@ CREATE TABLE `user_role_type` (
   `userid` int(11) NOT NULL,
   `roleid` int(11) NOT NULL,
   `scid` int(10) NOT NULL,
-  `deptid` int(10) NOT NULL,
+  `deptid` int(10) DEFAULT NULL,
   `usertype` varchar(255) NOT NULL,
   `ext1` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+insert into user_role_type values (1,1,1,1,'Administrator','');
 
 --
 -- Indexes for dumped tables

@@ -217,7 +217,9 @@ class Upl extends CI_Controller
                             $isdup= $this->login_model->isduplicate('edrpuser','username',$email );
                             if(!$isdup){
                                 //generate 10 digit random password
-				$password=$this->common_model->randNum(10);	
+				    $passwd=$this->common_model->randNum(10);	
+				// generate the hash of password
+				    $password=md5($passwd);
 				// insert data into edrp user db1
 				$dataeu = array(
                                     'username'=> $email,
@@ -256,7 +258,7 @@ class Upl extends CI_Controller
 					$userflagurt=$this->common_model->insertrec('user_role_type', $dataurt) ;
 					if($userflagurt){
                                             $sub='Teacher Registration' ;
-                                            $mess="You are registration is complete. The user id ".$email ." and password is ".$password ;
+                                            $mess="You are registration is complete. The user id ".$email ." and password is ".$passwd ;
                                             $mails = $this->mailsend_model->mailsnd($email, $sub, $mess);
 								
                                             $error[] ="At row".$i."sufficient data and mail sent sucessfully";

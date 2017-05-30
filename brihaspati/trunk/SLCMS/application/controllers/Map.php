@@ -76,7 +76,7 @@ class Map extends CI_Controller
                     'spsc_creatorid'=>$this->session->userdata('username'),
                     'spsc_createdate'=>date('y-m-d'),
                     'spsc_modifierid'=>$this->session->userdata('username'),
-                    'psc_modifydate'=>date('y-m-d')
+                    'spsc_modifydate'=>date('y-m-d')
                 );
            
                 $mapscprg=$this->commodel->insertrec('seat_program_studycenter', $data);
@@ -250,7 +250,7 @@ class Map extends CI_Controller
                'spsc_acadyear'  => $data_academicyear,
                'spsc_sem' => $data_semester,
                'spsc_modifierid' => $this->session->userdata('username'), 
-               'psc_modifydate' => date('y-m-d')
+               'spsc_modifydate' => date('y-m-d')
             ); 
             $result=$this->commodel->updaterec('seat_program_studycenter', $update_data,'spsc_id',$id);
             if(! $result)
