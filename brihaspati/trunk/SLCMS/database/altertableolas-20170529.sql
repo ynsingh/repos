@@ -28,4 +28,4 @@ alter table student_master add  `sm_mobile` varchar(12) DEFAULT NULL after `sm_s
 alter table user_role_type change `deptid` `deptid` int(10) DEFAULT NULL; 
 alter table seat_program_studycenter change  `psc_modifydate` `spsc_modifydate` varchar(255);
 
-alter table subject_paper add NIQUE (`subp_degree`, `subp_acadyear`, `subp_sub_id`,`subp_subtype`,`subp_paperno`);
+alter table subject_paper add UNIQUE (`subp_degree`, `subp_acadyear`, `subp_sub_id`,`subp_subtype`,`subp_paperno`);
