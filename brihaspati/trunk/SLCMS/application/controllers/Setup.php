@@ -7,6 +7,7 @@
  * @author Om Prakash(omprakashkgp@gmail.com)  add category
  * @author Kishore kr shukla(kishore.shukla@gmail.com) add role
  * @author Raju Kamal(kamalraju8@gmail.com)    add department
+ * @author Vijay(vijay.pal428@gmail.com)    add program fees
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -1295,6 +1296,269 @@ class Setup extends CI_Controller
 
     }//Add role function end
 
-}
+		
+	//Fees Program set up
+
+     public function fees() {
+
+		$this->prgresult = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
+                $this->catresult = $this->common_model->get_listspfic2('category','cat_id','cat_name');
+
+
+    		if(isset($_POST['fees'])) {
+                        $this->form_validation->set_rules('program','Program Name','trim|xss_clean|required');
+                        $this->form_validation->set_rules('acadyear','Academic Year','trim|xss_clean');
+                        $this->form_validation->set_rules('semester','Semester','trim|xss_clean|required');
+                        $this->form_validation->set_rules('category','Category','trim|xss_clean|required');
+                        $this->form_validation->set_rules('gender','Gender','trim|xss_clean|required');
+                        $this->form_validation->set_rules('head','Head','trim|xss_clean|required');
+                        $this->form_validation->set_rules('amount','Amount','trim|xss_clean|required|numeric');
+                        //$this->form_validation->set_rules('installment','Installment','trim|xss_clean|required|numeric');
+                        $this->form_validation->set_rules('descripation','Description','trim|xss_clean');
+                        //$this->form_validation->set_rules('frmdate','From Date','trim|xss_clean|required');
+                        //$this->form_validation->set_rules('todate','To Date','trim|xss_clean|required');
+		}
+
+                //if form validation true
+
+                if($this->form_validation->run()==TRUE){
+              		$data = array(
+                        	'fm_programid'=>$_POST['program'],
+                                'fm_acadyear'=>$_POST['acadyear'],
+                                'fm_semester'=>$_POST['semester'],
+                                'fm_category'=>$_POST['category'],
+                                'fm_gender'=>$_POST['gender'],
+                                'fm_head'=>ucwords(strtolower($_POST['head'])),
+                                'fm_amount'=>$_POST['amount'],
+                                //'fm_installment'=>ucwords(strtolower($_POST['installment'])),
+                                'fm_desc'=>$_POST['description'],
+                             // 'fm_frmdate'=>$_POST['frmdate'],
+                              //'fm_todate'=>$_POST['todate'],
+                        );
+                        $fmflag=$this->common_model->insertrec('fees_master', $data);
+                	if (!$fmflag)
+                	{
+                    		$this->logger->write_logmessage("insert","Trying to add fees with head  ", "fees is not added ".$_POST['head']);
+                    		$this->logger->write_dblogmessage("insert","Trying to add fees with head", "Fees is not added ".$_POST['head']);
+                    		$this->session->set_flashdata('err_message','Error in adding fees with head - '.$_POST['head']  , 'error');
+                    		redirect('setup/fees');
+
+                	}
+                	else{
+                    		$this->logger->write_logmessage("insert","Add fees with head ", "Fees".$_POST['head']." added  successfully...");
+                    		$this->logger->write_dblogmessage("insert","Add fees with head ", "Fees ".$_POST['head']."added  successfully...");
+                    		$this->session->set_flashdata("success", " Program fees add successfully... head is ".$_POST['head']);
+                    		redirect("setup/displayfees");
+                	}
+		}
+  		$this->load->view('setup/fees');  
+		
+	}
+	/** This function Display the fees with headwise list records */
+        public function displayfees() {
+        	$this->fmresult = $this->common_model->get_list('fees_master');
+	        $this->logger->write_logmessage("view"," View fees list head wise", "Fees setting details...");
+        	$this->logger->write_dblogmessage("view"," View fees list head wise", "Fees setting details...");
+	        $this->load->view('setup/displayfees');
+        }
+	/* this function is used for delete fees with headwise record */
+        public function delete_fees($id) {
+
+	        $fmdflag=$this->common_model->deleterow('fees_master','fm_id', $id);
+          	if(!$fmdflag)
+          	{
+           		$this->logger->write_message("error", "Error  in deleting role " ."[fm_id:" . $id . "]");
+	            	$this->logger->write_dbmessage("error", "Error  in deleting role "." [fm_id:" . $id . "]");
+        	    	$this->session->set_flashdata('err_message', 'Error in Deleting role - ', 'error');
+            		redirect('setup/displayfees');
+	           	//return;
+        	  }
+	          else{
+        	    	$this->logger->write_logmessage("delete", "Deleted   fees " . "[fm_id:" . $id . "] deleted successfully.. " );
+            		$this->logger->write_dblogmessage("delete", "Deleted fees" ." [fm_id:" . $id . "] deleted successfully.. " );
+	            	$this->session->set_flashdata("success", "Program Fees record deleted successfully..." );
+        	    	redirect('setup/displayfees');
+          	}
+          $this->load->view('setup/displayfees',$data);
+	}
+
  
+	public function editfees($id) {
+
+	$fmrow=$this->common_model->get_listrow('fees_master','fm_id', $id);
+        if ($fmrow->num_rows() < 1)
+        {
+            redirect('setup/editfees');
+        }
+        $fm_data = $fmrow->row();
+
+        /* Form fields */
+          $data['fm_programid'] = array(
+            'name' => 'fm_programid',
+            'id' => 'prgcode',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $this->common_model->get_listspfic1('program','prg_name','prg_id',$fm_data->fm_programid)->prg_name,
+	    'readonly' => 'readonly'
+          );
+		
+	  $data['fm_acadyear'] = array(
+              'value' => $fm_data->fm_acadyear,
+	  );
+          $data['fm_semester'] = array(
+            'value' => $fm_data->fm_semester,
+       	  );
+          $data['fm_category'] = array(
+            'name' => 'fm_category',
+            'id' => 'fm_category',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $this->common_model->get_listspfic1('category','cat_name','cat_id',$fm_data->fm_category)->cat_name,
+	    'readonly' => 'readonly'
+          );
+	  $data['fm_gender'] = array(
+           'value' => $fm_data->fm_gender,
+	  );
+	  $data['fm_head'] = array(
+           'name' => 'fm_head',
+            'id' => 'fm_head',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $fm_data->fm_head,
+       	  );
+	  $data['fm_amount'] = array(
+           'name' => 'fm_amount',
+            'id' => 'fm_amount',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $fm_data->fm_amount,
+      	  );
+	  /*$data['fm_installment'] = array(
+           'name' => 'fm_installment',
+            'id' => 'fm_installment',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $fm_data->fm_installment,
+          );*/
+	   $data['fm_desc'] = array(
+           'name' => 'fm_desc',
+            'id' => 'fm_desc',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $fm_data->fm_desc,
+          );
+/*	  $data['fm_frmdate'] = array(
+           'name' => 'fm_frmdate',
+            'id' => 'fm_frmdate',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editeset_data->fm_frmdate,
+       	   );
+    	   $data['fm_todate'] = array(
+           'name' => 'fm_todate',
+            'id' => 'fm_todate',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editeset_data->fm_todate,
+
+        );
+*/
+	
+	$data['id'] = $id;
+
+         /*Form Validation*/
+
+
+	  	$this->form_validation->set_rules('program','Program Name','trim|xss_clean');
+                $this->form_validation->set_rules('acadyear','Academic Year','trim|alpha_numeric_spaces|xss_clean');
+                $this->form_validation->set_rules('semester','Semester','trim|xss_clean');
+                $this->form_validation->set_rules('category','Category','trim|xss_clean');
+                $this->form_validation->set_rules('gender','Gender','trim|xss_clean');
+                $this->form_validation->set_rules('head','Head','trim|xss_clean');
+                $this->form_validation->set_rules('amount','Amount','trim|xss_clean|numeric');
+               // $this->form_validation->set_rules('installment','Installment','trim|xss_clean|numeric');
+                $this->form_validation->set_rules('descripation','Description','trim|xss_clean');
+
+        /* Re-populating form */
+        if ($_POST)
+        {
+	    print_r($_POST);
+            $data['fm_programid']['value'] = $this->input->post('programid', TRUE);
+            $data['fm_acadyear']['value'] = $this->input->post('fm_acadyear', TRUE);
+	    $data['fm_semester']['value'] = $this->input->post('fm_semester', TRUE);
+            $data['fm_category']['value'] = $this->input->post('category', TRUE);
+            $data['fm_gender']['value'] = $this->input->post('fm_gender', TRUE);
+            $data['fm_head']['value'] = $this->input->post('fm_head', TRUE);
+            $data['fm_amount']['value'] = $this->input->post('fm_amount', TRUE);
+          //$data['fm_installment']['value'] = $this->input->post('fm_installment', TRUE);
+	    $data['fm_desc']['value'] = $this->input->post('fm_desc', TRUE);
+
+        }
+        if ($this->form_validation->run() ==FALSE )
+        {
+                $this->session->set_flashdata(validation_errors(), 'error');
+                $this->load->view('setup/editfees', $data);
+        }
+        else{
+            $programname1=$this->input->post('fm_programid', TRUE);
+	    $programname=$this->common_model->get_listspfic1('program','prg_id','prg_name',$programname1)->prg_id;
+            $acadyear = $this->input->post('fm_acadyear', TRUE);
+            $semester = strtoupper($this->input->post('fm_semester', TRUE));
+            $category1 = $this->input->post('fm_category', TRUE);
+	    $category = $this->common_model->get_listspfic1('category','cat_id','cat_name',$category1)->cat_id;
+            $gender = ucwords(strtolower($this->input->post('fm_gender', TRUE)));
+            $head= ucwords(strtolower($this->input->post('fm_head', TRUE)));
+            $amount = $this->input->post('fm_amount',TRUE);
+           // $installment = $this->input->post('fm_installment', TRUE);
+	    $description = $this->input->post('fm_desc', TRUE);
+
+            $logmessage = "";
+            if($fm_data->fm_programid != $programname)
+                $logmessage = $logmessage ." update program name " .$fm_data->fm_programid. " changed by " .$programname;
+            if($fm_data->fm_acadyear != $acadyear)
+                $logmessage = $logmessage ." update academic year " .$fm_data->fm_acadyear. " changed by " .$acadyear;
+            if($fm_data->fm_semester != $semester)
+                $logmessage = $logmessage ." update semester " .$fm_data->fm_semester. " changed by " .$semester;
+            if($fm_data->fm_category != $category)
+                $logmessage = $logmessage ." update category " .$fm_data->fm_category. " changed by " .$category;
+            if($fm_data->fm_gender != $gender)
+                $logmessage = $logmessage ." update gender " .$fm_data->fm_gender. " changed by " .$gender;
+            if($fm_data->fm_head != $head)
+                $logmessage = $logmessage ." update head " .$fm_data->fm_head. " changed by " .$head;
+	    if($fm_data->fm_amount != $head)
+                $logmessage = $logmessage ." update amount " .$fm_data->fm_amount. " changed by " .$amount;
+	    //if($fm_data->fm_installment != $installment)
+              //  $logmessage = $logmessage ." update installment " .$fm_data->fm_installment. " changed by " .$installment;
+	    if($fm_data->fm_desc != $description)
+                $logmessage = $logmessage ." update description " .$fm_data->fm_desc. " changed by " .$description;
+	
+
+	$update_data = array(
+               'fm_programid' => $programname,
+               'fm_acadyear' => $acadyear,
+               'fm_semester' => $semester,
+               'fm_category'  => $category,
+               'fm_gender'  => $gender,
+               'fm_head' => $head,
+               'fm_amount' => $amount,
+              // 'fm_installment' => $installment,
+               'fm_desc' => $description
+             );
+           $fmflag=$this->common_model->updaterec('fees_master', $update_data, 'fm_id', $id);
+           if(!$fmflag)
+              {
+                $this->logger->write_logmessage("error","Error in update Fees ", "Error in Fees record update". $logmessage );
+                $this->logger->write_dblogmessage("error","Error in update Fees ", "Error in Fees record update". $logmessage );
+                $this->session->set_flashdata('err_message','Error updating Fees - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editfees', $data);
+              }
+            else{
+                $this->logger->write_logmessage("update","Edit Fees", "Fees headwise record updated successfully..". $logmessage );
+                $this->logger->write_dblogmessage("update","Edit Fees", "Fees headwise record updated successfully..". $logmessage );
+                $this->session->set_flashdata('success', "Program fees record updated successfully..." );
+                redirect('setup/displayfees');
+                }
+	  }
+    }
+}
 
