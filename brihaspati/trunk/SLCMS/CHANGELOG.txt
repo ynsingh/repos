@@ -1,4 +1,18 @@
 
+SLCMS  Version 1.0 2017-05-31
+-----------------------------
+    * Student menu updated. - NKS
+    * Data structure updated. - NKS
+    * Program fee  master functionality added. - Vijay
+
+SLCMS  Version 1.0 2017-05-30
+-----------------------------
+    * created new data structure for student admission and modified some of the tables.- NKS
+
+SLCMS  Version 1.0 2017-05-26
+-----------------------------
+    * Admin menu list updated. New table added for admission merit list.- NKS
+
 SLCMS  Version 1.0 2017-05-23
 -----------------------------
     * Teacher list upload mechanism updated - NKS, Manorama

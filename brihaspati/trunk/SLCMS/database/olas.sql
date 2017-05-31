@@ -48,9 +48,9 @@ CREATE TABLE `admissionmeritlist` (
         `admission_quota` VARCHAR(255) NOT NULL ,
         `category` VARCHAR(255) NOT NULL ,
         `meritlist_no` VARCHAR(255) NOT NULL ,
-        `lastdate_admission` VARCHAR(255) NOT NULL ,
+        `lastdate_admission` DATE DEFAULT NULL ,
         `admission_taken` VARCHAR(255) NOT NULL ,
-        `admission_date` VARCHAR(255) NOT NULL ,
+        `admission_date` DATE DEFAULT NULL ,
         `ext1` VARCHAR(255) NULL ,
         PRIMARY KEY (`id`),
         UNIQUE (`application_no`, `course_name`, `student_name`)
@@ -68,15 +68,15 @@ CREATE TABLE `admissionstep` (
 	`application_no` VARCHAR(255) NOT NULL , 
 	`student_masterid` VARCHAR(255) NOT NULL , 
 	`step1_status` VARCHAR(255) NOT NULL , 
-	`step1_date` VARCHAR(255) NOT NULL ,
+	`step1_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
 	`step2_status` VARCHAR(255) NOT NULL , 
-	`step2_date` VARCHAR(255) NOT NULL ,
+	`step2_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
 	`step3_status` VARCHAR(255) NOT NULL , 
-	`step3_date` VARCHAR(255) NOT NULL ,
+	`step3_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
 	`step4_status` VARCHAR(255) NOT NULL , 
-	`step4_date` VARCHAR(255) NOT NULL ,
+	`step4_date` DATETIME DEFAULT CURRENT_TIMESTAMP ,
 	`step5_status` VARCHAR(255) NOT NULL , 
-	`step5_date` VARCHAR(255) NOT NULL , 
+	`step5_date` DATETIME DEFAULT CURRENT_TIMESTAMP , 
 	`ext1` VARCHAR(255) NULL , 
 	PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
@@ -178,9 +178,9 @@ CREATE TABLE `email_setting` (
   `password` varchar(255) NOT NULL,
   `sendername` varchar(255) NOT NULL,
   `creatorid` varchar(255) NOT NULL,
-  `createdate` varchar(50) NOT NULL,
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `modifierid` varchar(255) NOT NULL,
-  `modifidate` varchar(50) NOT NULL
+  `modifidate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -198,9 +198,8 @@ CREATE TABLE `fees_master` (
   `fm_gender` varchar(50) NOT NULL,
   `fm_category` varchar(100) NOT NULL,
   `fm_amount` int(11) NOT NULL,
-  `fm_installment` varchar(55) NOT NULL,
-  `fm_frmdate` varchar(55) NOT NULL,
-  `fm_todate` varchar(255) NOT NULL,
+  `fm_frmdate` DATE DEFAULT NULL,
+  `fm_todate` DATE DEFAULT NULL,
   `fm_desc` varchar(255) NOT NULL,
   `fm_ext1` varchar(255) NOT NULL,
   `fm_ext2` varchar(255) NOT NULL
@@ -256,15 +255,15 @@ CREATE TABLE `org_profile` (
   `org_logo` varchar(255) NOT NULL,
   `org_affiliation` varchar(255) NOT NULL,
   `org_status` varchar(255) NOT NULL,
-  `org_reg_date` varchar(255) NOT NULL,
-  `org_close_date` varchar(255) NOT NULL,
+  `org_reg_date` DATE DEFAULT NULL,
+  `org_close_date` DATE DEFAULT NULL,
   `org_adminfn` varchar(255) NOT NULL,
   `org_adminln` varchar(255) NOT NULL,
   `org_admindesig` varchar(255) NOT NULL,
   `creatorid` varchar(255) NOT NULL,
-  `create_date` varchar(255) NOT NULL,
+  `create_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `modifierid` varchar(255) NOT NULL,
-  `modify_date` varchar(255) NOT NULL
+  `modify_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -272,7 +271,7 @@ CREATE TABLE `org_profile` (
 --
 
 INSERT INTO `org_profile` (`org_id`, `org_code`, `org_name`, `org_nickname`, `org_type`, `org_tagline`, `org_address1`, `org_address2`, `org_city`, `org_district`, `org_state`, `org_countrycode`, `org_pincode`, `org_phone`, `org_fax`, `org_email`, `org_web`, `org_institutedomain`, `org_tanno`, `org_logo`, `org_affiliation`, `org_status`, `org_reg_date`, `org_close_date`, `org_adminfn`, `org_adminln`, `org_admindesig`, `creatorid`, `create_date`, `modifierid`, `modify_date`) VALUES
-(1, 'CU001', 'Indira Gandhi National Tribal University', 'IGNTU', 'Central Govt', '', 'Lal Pur, Amarkantak', '', '', '', 'Madhya Pradesh', '91', '484887', '07629 269 701', '07629 269 701', 'admission@igntu.ac.in', 'www.igntu.ac.in', 'igntu.ac.in', '', '', 'MHRD', 'Active', 'July 2008', '', 'Prof T V', 'Kattimani', 'Vice Chancellor', '1', '2017-04-21', '', '');
+(1, 'CU001', 'Indira Gandhi National Tribal University', 'IGNTU', 'Central Govt', '', 'Lal Pur, Amarkantak', '', '', '', 'Madhya Pradesh', '91', '484887', '07629 269 701', '07629 269 701', 'admission@igntu.ac.in', 'www.igntu.ac.in', 'igntu.ac.in', '', '', 'MHRD', 'Active', '2008-07-01', '', 'Prof T V', 'Kattimani', 'Vice Chancellor', '1', '2017-04-21', '', '');
 
 -- --------------------------------------------------------
 
@@ -292,7 +291,7 @@ CREATE TABLE `program` (
   `prg_mintime` varchar(255) NOT NULL,
   `prg_maxtime` varchar(255) NOT NULL,
   `creatorid` varchar(255) NOT NULL,
-  `createdate` varchar(255) NOT NULL
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -313,9 +312,9 @@ CREATE TABLE `program_subject_teacher` (
   `pstp_ext1` varchar(255) DEFAULT NULL,
   `pstp_ext2` varchar(255) DEFAULT NULL,
   `pstp_creatorid` varchar(50) NOT NULL,
-  `pstp_createdate` varchar(50) NOT NULL,
+  `pstp_createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `pstp_modifierid` varchar(50) NOT NULL,
-  `pstp_modifydate` varchar(50) NOT NULL
+  `pstp_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ---------------------------------------------------------------------
@@ -354,9 +353,9 @@ CREATE TABLE `seat_program_studycenter` (
   `spsc_acadyear` varchar(255) NOT NULL,
   `spsc_sem` varchar(255) NOT NULL,
   `spsc_creatorid` varchar(255) NOT NULL,
-  `spsc_createdate` varchar(255) NOT NULL,
+  `spsc_createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `spsc_modifierid` varchar(255) NOT NULL,
-  `spsc_modifydate` varchar(255) NOT NULL
+  `spsc_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -372,7 +371,7 @@ CREATE TABLE `seat_reservation` (
   `percentage` varchar(10) NOT NULL,
   `noofseat` int(4) NOT NULL,
   `creatorid` varchar(255) NOT NULL,
-  `createdate` varchar(20) NOT NULL
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -459,10 +458,13 @@ CREATE TABLE `student_fees` (
   `sfee_id` int(11) NOT NULL,
   `sfee_smid` int(11) NOT NULL,
   `sfee_spid` int(11) NOT NULL,
+  `sfee_feename` varchar(255) NOT NULL,
   `sfee_feeamount` varchar(255) NOT NULL,
-  `sfee_duedate` varchar(255) NOT NULL,
+  `sfee_installment` varchar(55) NOT NULL,
+  `sfee_installment_date` DATE DEFAULT NULL,
+  `sfee_duedate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `sfee_paymentmethod` varchar(255) NOT NULL,
-  `sfee_depositdate` varchar(255) NOT NULL,
+  `sfee_depositdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `sfee_referenceno` varchar(255) NOT NULL,
   `sfee_paymentgateway` varchar(255) NOT NULL,
   `sfee_paymentstatus` varchar(255) NOT NULL,
@@ -492,7 +494,7 @@ CREATE TABLE `student_master` (
   `sm_mname` varchar(255) DEFAULT NULL,
   `sm_lname` varchar(255) DEFAULT NULL,
   `sm_nameinhindi` varchar(255) DEFAULT NULL,
-  `sm_dob` varchar(255) DEFAULT NULL,
+  `sm_dob` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `sm_pob` varchar(255) DEFAULT NULL,
   `sm_email` varchar(255) DEFAULT NULL,
   `sm_secemail` varchar(255) DEFAULT NULL,
@@ -618,13 +620,13 @@ CREATE TABLE `study_center` (
   `sc_phone` varchar(255) NOT NULL,
   `sc_fax` varchar(255) NOT NULL,
   `sc_status` varchar(255) NOT NULL,
-  `sc_startdate` varchar(25) NOT NULL,
-  `sc_closedate` varchar(25) NOT NULL,
+  `sc_startdate` DATE DEFAULT NULL,
+  `sc_closedate` DATE DEFAULT NULL,
   `sc_website` varchar(255) NOT NULL,
   `sc_incharge` varchar(255) NOT NULL,
   `sc_mobile` varchar(25) NOT NULL,
   `creatorid` varchar(255) NOT NULL,
-  `createdate` varchar(55) NOT NULL
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -663,9 +665,9 @@ CREATE TABLE `subject_paper` (
   `subp_ext1` varchar(255) NOT NULL,
   `subp_ext2` varchar(255) NOT NULL,
   `creatorid` VARCHAR(255) NOT NULL,
-  `createdate` VARCHAR(255) NOT NULL,
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `modifierid` VARCHAR(255) NOT NULL,
-  `modifydate` VARCHAR(255) NOT NULL,
+  `modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 UNIQUE (`subp_degree`, `subp_acadyear`, `subp_sub_id`,`subp_subtype`,`subp_paperno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

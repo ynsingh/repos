@@ -11,60 +11,71 @@ echo "<ul class=\"sf-menu\">";
 				echo "<a href=" . base_url() . ">Dashboard</a>";
 			echo "</li>";
 			echo "<li>";
-			//	echo anchor('setup', 'Setup', array('title' => 'Setup'));
-				echo "<a href=" . ">Request</a>";
+				echo "<a href=" . ">Fees</a>";
 				echo "<ul>";
 					echo "<li>";
-						echo anchor('setup/dispemailsetting', 'Semester Registration', array('title' => 'Email Setting'));
+						echo anchor('student/feesrecord', 'Fees Record', array('title' => 'Fees Record'));
+					echo "</li>";
+				echo "</ul>";
+				
+			echo "</li>";
+			echo "<li>";
+			//	echo anchor('setup', 'Setup', array('title' => 'Setup'));
+				echo "<a href=" . ">Subject</a>";
+				echo "<ul>";
+					echo "<li>";
+						echo anchor('student/subjectrecord', 'Subject Record ', array('title' => 'Subject Record'));
 					echo "</li>";
 				echo "</ul>";
 			
 			echo "</li>";
 			echo "<li>";
-				echo "<a href=" . ">Fees</a>";
-			/*	echo "<ul>";
-					echo "<li>";
-						echo anchor('map/userroletype', 'Map User with Role', array('title' => 'Map User with Role'));
-					echo "</li>";
-				echo "</ul>";
-				*/
-			echo "</li>";
-			echo "<li>";
-			//	echo anchor('setup', 'Setup', array('title' => 'Setup'));
-				echo "<a href=" . ">Subject</a>";
-			/*	echo "<ul>";
-					echo "<li>";
-						echo anchor('setup/dispemailsetting', 'Email Setting', array('title' => 'Email Setting'));
-					echo "</li>";
-				echo "</ul>";
-			*/
-			echo "</li>";
-			echo "<li>";
-				echo "<a href=" . ">Fees</a>";
-			/*	echo "<ul>";
-					echo "<li>";
-						echo anchor('map/userroletype', 'Map User with Role', array('title' => 'Map User with Role'));
-					echo "</li>";
-				echo "</ul>";
-				*/
-			echo "</li>";
-			echo "<li>";
 				echo "<a href=" . ">Marks</a>";
-			/*	echo "<ul>";
+				echo "<ul>";
 					echo "<li>";
-						echo anchor('upl/uploadlogo', 'Upload Logo', array('title' => 'Upload Logo'));
+						echo anchor('student/marksrecord', 'Marks Record', array('title' => 'Marks Record'));
 					echo "</li>";
 				echo "</ul>";
-			 */
+			 
 			echo "</li>";
 			echo "<li>";
 				echo "<a href=" . ">Grade</a>";
-			/*	echo "<ul>";
+				echo "<ul>";
 					echo "<li>";
-						echo anchor('upl/uploadlogo', 'Upload Logo', array('title' => 'Upload Logo'));
+						echo anchor('student/graderecord', 'Grade Card', array('title' => 'Display Grade Card'));
 					echo "</li>";
 				echo "</ul>";
-			 */
+			 
+			echo "</li>";
+			echo "<li>";
+				echo "<a href=" . ">Request</a>";
+				echo "<ul>";
+					echo "<li>";
+						echo anchor('student/registartionsemester', 'Semester Registration', array('title' => 'Semester registration Form'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('student/registrationexam', 'Exam Registration', array('title' => 'Semester Exam Form'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('student/depositfees', 'Fees deposit', array('title' => 'Semester Fees Deposit'));
+					echo "</li>";
+				echo "</ul>";
+			
+			echo "</li>";
+			echo "<li>";
+				echo "<a href=" . ">Download</a>";
+				echo "<ul>";
+					echo "<li>";
+						echo anchor('student/admitcard', 'Admit Card', array('title' => 'Downlaod admit Card'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('student/markscard', 'Marks Card', array('title' => 'Download Marks Card'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('student/gradecard', 'Grade Card', array('title' => 'Downlaod Grade Card'));
+					echo "</li>";
+				echo "</ul>";
+				
 			echo "</li>";
 			echo "<li>";
 				echo "<a href=" . ">Profile</a>";
