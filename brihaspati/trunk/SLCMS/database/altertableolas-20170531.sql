@@ -1,6 +1,6 @@
-update `org_profile` set org_reg_date='2008-07-01', org_close_date='2118-07-01' where org_id=1;
+update `org_profile` set org_reg_date='2008-07-01', org_close_date='2118-07-01',modify_date='2017-05-21' where org_id=1;
 
-alter table `admissionmeritlist` change `admission_date` `admission_date` DATE DEiFAULT NULL; 
+alter table `admissionmeritlist` change `admission_date` `admission_date` DATE DEFAULT NULL; 
 alter table `admissionmeritlist` change `lastdate_admission` `lastdate_admission` DATE DEFAULT NULL; 
 alter table `admissionstep` change `step1_date`  `step1_date` DATETIME DEFAULT CURRENT_TIMESTAMP; 
 alter table `admissionstep` change `step2_date`  `step2_date`  DATETIME DEFAULT CURRENT_TIMESTAMP; 
