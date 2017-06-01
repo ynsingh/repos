@@ -23,6 +23,15 @@
     echo "</tr>";
     echo "</table>";
 */
+		    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+                    echo "<tr valign=\"top\">";
+                    echo "<td>";
+                    $help_uri = site_url()."/help/helpdoc#ProgramandSeat";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
+
 ?>
 <br>
 <div align="left">

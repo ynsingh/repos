@@ -14,6 +14,18 @@
 
         <?php $this->load->view('template/menu'); ?>
 </div>
+ <?php
+
+                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+                    echo "<tr valign=\"top\">";
+                    echo "<td>";
+                    $help_uri = site_url()."/help/helpdoc#ProgramFees";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
+                    ?>
+
 
 	 <table>
                 <font size=4pt>
@@ -81,9 +93,9 @@
                     	</select>
                 	</td></tr>
 
-			<tr><td> Categary: </td><td>
+			<tr><td> Category: </td><td>
                         <select name="category" style="width:100%;">
-                        <option value=""disabled selected>----Select Categary----</option>
+                        <option value=""disabled selected>----Select Category----</option>
 			<?php foreach($this->catresult as $datas): ?>
                         <option value="<?php echo $datas->cat_id;?>"><?php echo $datas->cat_name; ?></option>
 			<?php endforeach; ?>

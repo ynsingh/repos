@@ -111,6 +111,14 @@ echo "<ul class=\"sf-menu\">";
 				echo "</ul>";
 			echo "</li>";
 			echo "<li>";
+                                echo "<a href=" . ">Help</a>";
+                        echo "<ul>";
+                                        echo "<li>";
+                                                echo anchor('help/helpdoc', 'User Manuual', array('title' => 'User Manuual'));
+                                        echo "</li>";
+                                        echo "</ul>";
+
+			echo "<li>";
 			echo anchor('home/logout', 'Logout', array('title' => 'Logout'));
 			echo "</li>";
 echo "</ul>";

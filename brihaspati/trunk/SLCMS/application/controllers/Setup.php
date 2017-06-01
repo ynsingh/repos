@@ -1312,7 +1312,7 @@ class Setup extends CI_Controller
                         $this->form_validation->set_rules('category','Category','trim|xss_clean|required');
                         $this->form_validation->set_rules('gender','Gender','trim|xss_clean|required');
                         $this->form_validation->set_rules('head','Head','trim|xss_clean|required');
-                        $this->form_validation->set_rules('amount','Amount','trim|xss_clean|required|numeric');
+                        $this->form_validation->set_rules('amount','Amount','trim|xss_clean|required|is_natural_no_zero');
                         //$this->form_validation->set_rules('installment','Installment','trim|xss_clean|required|numeric');
                         $this->form_validation->set_rules('descripation','Description','trim|xss_clean');
                         //$this->form_validation->set_rules('frmdate','From Date','trim|xss_clean|required');
@@ -1475,7 +1475,7 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('category','Category','trim|xss_clean');
                 $this->form_validation->set_rules('gender','Gender','trim|xss_clean');
                 $this->form_validation->set_rules('head','Head','trim|xss_clean');
-                $this->form_validation->set_rules('amount','Amount','trim|xss_clean|numeric');
+                $this->form_validation->set_rules('amount','Amount','trim|xss_clean|is_natural_no_zero');
                // $this->form_validation->set_rules('installment','Installment','trim|xss_clean|numeric');
                 $this->form_validation->set_rules('descripation','Description','trim|xss_clean');
 

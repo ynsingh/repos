@@ -18,11 +18,23 @@
         echo "</tr>";
         echo "</table>";
         ?>--!>
+		<?php
+
+                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+                    echo "<tr valign=\"top\">";
+                    echo "<td>";
+                    $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
+                    ?>
+
       <table>
             <tr colspan="2"><td>
                 <div align="left" style="margin-left:30px;">
                 <?php echo anchor('setup/role/', "Add Role", array('title' => 'Add Detail','class' =>'top_parent'));?>
-                <div  style="width:2000px;">
+                <div  style="width:1500px;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>

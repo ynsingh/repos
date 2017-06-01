@@ -12,6 +12,17 @@
 	<?php $this->load->view('template/menu');?>
  </head>    
    <body>
+		 <?php
+                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+                    echo "<tr valign=\"top\">";
+                    echo "<td>";
+                    $help_uri = site_url()."/help/helpdoc#Category";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
+                    ?>
+
      <table style="padding: 8px 8px 8px 20px;"> 
        <tr colspan="2"><td>
    	<div align="left">
