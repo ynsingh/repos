@@ -23,9 +23,9 @@
                     echo "</table>";
                     ?>
 
-     <table style="padding: 8px 8px 8px 20px;"> 
+     <table> 
        <tr colspan="2"><td>
-   	<div align="left">
+   	<div style="margin-left:16px;" >
     	<font color=blue size=4pt>
        	<?php
            echo anchor('setup/displaycategory', 'Category List', array('class' => 'top_parent'));
@@ -34,7 +34,7 @@
    	</div>
         <div align="left" style="margin-left:30px;width:1700px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+        <?php echo form_error('<div class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
         <div class="alert alert-success"><?php echo $_SESSION['success'];?></div>
         <?php
@@ -90,7 +90,7 @@
  		<td><?php echo form_error('cdesc')?></td>
 		<td> Example : Reserved Category, Unreserved Category. </td>
             </tr>
-            <tr>
+            <tr><td></td>
                 <td colspan="2">   
                 <button name="category" >Add Category </button>
 		<input type="reset" name="Reset" value="Clear"/>

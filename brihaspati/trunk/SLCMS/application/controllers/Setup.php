@@ -675,17 +675,17 @@ class Setup extends CI_Controller
   public function category(){
 
         if(isset($_POST['category'])) {
-            $this->form_validation->set_rules('cname','Category Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+            $this->form_validation->set_rules('cname','Category Name','trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
             $this->form_validation->set_rules('ccode','Category Code','trim|xss_clean|required|alpha_dash');
-            $this->form_validation->set_rules('csname','Category Short Name','strtoupper|trim|xss_clean|required|alpha_numeric_spaces');
-            $this->form_validation->set_rules('cdesc','Category Description','ucfirst|trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('csname','Category Short Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('cdesc','Category Description','trim|xss_clean|alpha_numeric_spaces');
 
             if($this->form_validation->run()==TRUE){
 
             $data = array(
-                'cat_name'=>$_POST['cname'],
-                'cat_code'=>$_POST['ccode'],
-                'cat_short'=>$_POST['csname'],
+                'cat_name'=>ucwords(strtolower($_POST['cname'])),
+                'cat_code'=>strtoupper($_POST['ccode']),
+                'cat_short'=>strtoupper($_POST['csname']),
                 'cat_desc'=>$_POST['cdesc']
 
             );
@@ -694,7 +694,7 @@ class Setup extends CI_Controller
 	   {
                 $this->logger->write_logmessage("insert"," Error in adding category ", " Category data insert error . "  );
                 $this->logger->write_dblogmessage("insert"," Error in adding category ", " Category data insert error . " );
-                $this->session->set_flashdata('err_message','Error in adding Category - ' . $cat_name . '.', 'error');
+                $this->session->set_flashdata('err_message','Error in adding Category - ' . $_POST['cname'] , 'error');
                 $this->load->view('setup/category');
 	   }	
 	  else{		
@@ -726,19 +726,18 @@ class Setup extends CI_Controller
 	$catflag=$this->common_model->deleterow('category', 'cat_id', $cat_id) ;
         if(!$catflag)
         {
-            $this->logger->write_logmessage("delete", "Deleted Category ", "Error in  Category   $category_data->cat_name .  [cat_id:" . $cat_id . "] delete.. " );
-            $this->logger->write_dblogmessage("delete", "Deleted Category ","Error in Category  $category_data->cat_name .   [cat_id:" . $cat_id . "] delete.. " );
-            $this->session->set_flashdata('err_message','Error in deleting Category - ' . $category_data->cat_name . '.', 'error');
+            $this->logger->write_logmessage("delete", "Deleted Category ", "Error in  Category  [cat_id:" . $cat_id . "] delete.. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Category ","Error in Category  [cat_id:" . $cat_id . "] delete.. " );
+            $this->session->set_flashdata('err_message','Error in deleting Category - ' , 'Error');
             redirect('setup/displaycategory');
         }
         else {
 
-            $this->logger->write_logmessage("delete", "Deleted Category ", "Category   $category_data->cat_name .  [cat_id:" . $cat_id . "] deleted successfully.. " );
-            $this->logger->write_dblogmessage("delete", "Deleted Category ","Category  $category_data->cat_name .   [cat_id:" . $cat_id . "] deleted successfully.. " );
- 	    $this->session->set_flashdata("success", 'Category Record Deleted successfully...' );
+            $this->logger->write_logmessage("delete", "Deleted Category ", "Category [cat_id:" . $cat_id . "] deleted successfully. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Category ","Category [cat_id:" . $cat_id . "] deleted successfully. " );
+ 	    $this->session->set_flashdata("success", 'Category Record Deleted successfully.' );
             redirect('setup/displaycategory');
         }
-        $this->load->view('setup/displaycategory',$data);
 
     }
 
@@ -747,9 +746,7 @@ class Setup extends CI_Controller
      * @return type
      */
     public function editcategory($cat_id) {
-
-        $this->db->from('category')->where('cat_id', $cat_id);
-        $cat_data_q = $this->db->get();
+	$cat_data_q=$this->common_model->get_listrow('category','cat_id', $cat_id);
         if ($cat_data_q->num_rows() < 1)
         {
            redirect('setup/editcategory');
@@ -764,7 +761,7 @@ class Setup extends CI_Controller
             'maxlength' => '50',
             'size' => '40',
             'value' => $category_data->cat_name,
-
+	    'readonly' => 'readonly'	
         );
         $data['ccode'] = array(
            'name' => 'ccode',
@@ -795,10 +792,10 @@ class Setup extends CI_Controller
 
         $data['cat_id'] = $cat_id;
 
-        $this->form_validation->set_rules('cname','Category Name ','ucwords|trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
-        $this->form_validation->set_rules('ccode','Category Code ','trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
-        $this->form_validation->set_rules('csname','Category Short Name ','strtoupper|trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
-        $this->form_validation->set_rules('cdesc','Category Description ','ucfirst|trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+        $this->form_validation->set_rules('cname','Category Name ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('ccode','Category Code ','trim|xss_clean|required|alpha_dash');
+        $this->form_validation->set_rules('csname','Category Short Name ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('cdesc','Category Description ','trim|xss_clean|alpha_numeric_spaces');
 
         if ($_POST)
         {
@@ -815,9 +812,9 @@ class Setup extends CI_Controller
 	else
         {
 
-            $data_cname = $this->input->post('cname', TRUE);
-            $data_ccode = $this->input->post('ccode', TRUE);
-            $data_csname = $this->input->post('csname', TRUE);
+            $data_cname = ucwords(strtolower($this->input->post('cname', TRUE)));
+            $data_ccode = strtoupper($this->input->post('ccode', TRUE));
+            $data_csname = strtoupper($this->input->post('csname', TRUE));
             $data_cdesc = $this->input->post('cdesc', TRUE);
             $data_cid = $cat_id;
 	    $logmessage = "";
@@ -1118,8 +1115,8 @@ class Setup extends CI_Controller
                 }
             }
         }
-   /* 
-       /****************************************** Add Role Module ********************************************/
+  
+ /****************************************** Add Role Module ********************************************/
 
     /** This function for add role
      * @return type
@@ -1209,6 +1206,7 @@ class Setup extends CI_Controller
             redirect('setup/displayrole');
         }
         $this->load->view('setup/displayrole',$data);
+
 }
 
     /**This function is used for update role records

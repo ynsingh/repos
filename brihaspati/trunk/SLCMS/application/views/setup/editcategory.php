@@ -14,11 +14,11 @@
        <table>
             <tr colspan="2"><td>
                 <div style="margin-left:30px;width:1700px;">
-                    <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
@@ -92,12 +92,10 @@
             // echo "<p>";
         
             echo "<tr>";
+		echo "<td></td>";
                 echo "<td>";
                     echo form_hidden('cat_id', $cat_id);
                     echo form_submit('submit', 'Update');
-                    echo " ";
-        
-                    //echo anchor('setup/displaycategory', 'Back', 'Back to Display Category page');
                     echo anchor('setup/displaycategory', 'Back', array('class' => 'top_parent'));
                     // echo "</p>";
                 echo "</td>";
