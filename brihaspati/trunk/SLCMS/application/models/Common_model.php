@@ -26,6 +26,21 @@ class Common_model extends CI_Model
     	}
     }
 
+// check the record is already exist with as many field you want
+//$data = array('name' => $name, 'title' => $title, 'status' => $status);
+    public function isduplicatemore($tbname,$data) {
+	$this->db->flush_cache();
+	$this->db->from($tbname);
+	$this->db->where($data);
+   	$query = $this->db->get();
+     	if ($query->num_rows() > 0) {
+        	return true;
+    	} else {
+        	return false;
+    	}
+    }
+
+
 //insert the complete record from specific table
     public function insertrec($tbname, $datar){
 	 $this->db->trans_start();
