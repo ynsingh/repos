@@ -4,7 +4,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
   <head>
-    <?php $this->load->view('template/header'); ?>
+   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+   <?php $this->load->view('template/header'); ?>
     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
     <?php $this->load->view('template/menu');?>
   </head>
@@ -53,25 +54,23 @@
 <table>
 <tr>
 <div align="left" style="margin-left:40px;">
+<table cellpadding="16" style="margin-left:30px;" class="TFtable" >
+<tr align="center">
+<thead><th>Sr.No</th><th>Role Name</th><th>Role Description</th><th>Action</th><th></tr></thead>
 
    <?php
-        echo "<table>";
-        echo "<tr valign=\"top\">";
-        echo "<td>";
-        echo "<table border=0 cellpadding=15 style=\"padding: 8px 8px 8px 20px;\">";
-        echo "<thead><tralign=\"left\"><th>Sr.No</th><th>Role Name</th><th>Role Description</th><th>Action</th><th></tr></thead>";
         $count =0;
         //foreach ($query->result() as $row)
         foreach ($this->result as $row)
         {  
          ?>
-             <tr>
+             <tr align="center">
             <td> <?php echo ++$count; ?> </td> 
             <td> <?php echo $row->role_name ?></td>
             <td> <?php echo $row->role_desc ?></td>
            <?php
             echo "<td>" . anchor('setup/delete_role/' . $row->role_id , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
-            echo "<td>" . anchor('setup/editrole/' . $row->role_id , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
+            echo"<td>" . anchor('setup/editrole/' . $row->role_id , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
             echo "</br>";
             echo "</tr>";
           

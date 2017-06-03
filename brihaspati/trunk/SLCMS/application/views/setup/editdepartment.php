@@ -14,6 +14,12 @@
       
     </head>
     <body>
+<script>
+        function goBack() {
+        window.history.back();
+        }
+    </script>
+
 <!--
         <?php
            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
@@ -34,9 +40,8 @@
             echo "</table>";
         ?>-->
         <table>
-   <font color=blue size=4pt> 
+   <font color=0 size=4pt> 
    <div style="margin-left:30px; width:200px;">
-      <legend>Update Department</legend>
       <!-- <?php echo anchor('','Update Department',array('title'=>'Edit Detail')); ?>-->
       <!--<a href="<?php echo site_url('')?>" <h2>Update Department</h2></a>-->
       
@@ -65,7 +70,11 @@
                 echo form_label('University Code', 'deptorgcode');
                 echo "</td>";
                 echo "<td>";
+ //             	$whval= $deptorgcode['value'];
+   //             $whname['value']= $this->common_model->get_listspfic1('org_profile','org_name','org_code',$whval)->org_name;
+     //           echo form_input($whname);
                 echo form_input($deptorgcode);
+
                 echo "</td>";
                 echo "<td>";
                     
@@ -76,12 +85,11 @@
                 echo form_label('Campus Code', 'deptsccode');
                 echo "</td>";
                 echo "<td>";
-                echo form_input($deptsccode);
-                echo "</td>";
-                echo "<td>";
-                    
-                echo "</td>";
-            echo "</tr>";
+                 echo form_input($deptsccode);
+                 echo "</td>";
+                 echo "<td>";
+                 echo "</td>";
+                 echo "</tr>";
 
        
             echo "<tr>";
@@ -159,22 +167,17 @@
             echo "</tr>";
         
             echo "<tr>";
-                echo "<td>";
-                    echo form_hidden('id', $id);
-                    echo form_submit('submit', 'Update');
-                    echo " ";
-        
-                    echo anchor('setup/dispdepartment', 'Back', 'Back to setup dept');
-                    
-                echo "</td>";
-            echo "</tr>";
-
-            echo form_close();
+                echo "<td colspan=2>";
+                   echo form_hidden('id', $id);
+                   echo form_submit('submit', 'Update');
+           	   echo form_close();
+ 	   echo "<button onclick=\"goBack()\" >Go Back</button>";  
+                  echo "</td>";
+                  echo "</tr>";
         ?>
- 
-        </table>
 
-    </body>
+        </table>
+  </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>
 

@@ -13,6 +13,8 @@ echo "<head>";
     echo"</h1>";
     $this->load->view('template/menu');
 ?>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/tablestyle.css">
+
 <?php
 echo "</head>";
 echo "<body>";
@@ -76,8 +78,8 @@ echo "<body>";
 
 /* form data */
 
-    echo "<table border=0 cellpadding=13 style=\"padding: 8px 8px 8px 20px;\">";
-    echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Extention</th><th>Subject Extention</th><th>Action</th><th></th></tr></thead>";
+         echo "<table border=0 cellpadding=13 style=\"padding: 8px 8px 8px 20px;\" class=\"TFtable\">";
+         echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Extention</th><th>Subject Extention</th><th>Action</th><th></th></tr></thead>";
 
     $srno = 0;
     foreach($subjectlists as $subjectlist)

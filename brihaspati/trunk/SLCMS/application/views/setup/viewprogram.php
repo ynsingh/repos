@@ -5,6 +5,7 @@
 <?php $this->load->view('template/header.php');?>
 <h1>Welcome <?= $this->session->userdata('username')?> </h1>
 <?php $this->load->view('template/menu.php');?>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 </div>
 
  <?php   
@@ -61,11 +62,28 @@
         </td></tr>   
         </table>   
     <div align="left" style="margin-left:30px;">
-    <table border=0 cellpadding=5 style=\"padding: 8px 8px 8px ;\>
-    <!--<table>-->
-    <tr>
-    <td><strong>No</strong></td><td><strong>Program Category</strong></td><td><strong>Program Name</strong></td><td><strong>Program Branch</strong></td> <td><strong>Seat Available</strong></td><td><strong>Program Code</strong></td><td><strong>Program Short</strong></td><td><strong>Program Description</strong></td><td><strong>Program Min Time</strong></td><td><strong>Program Max Time</strong></td><td><strong>Creator Name</strong></td><td><strong>Creatoion Date</strong></td><td><strong>Edit/Delete</strong></td>
-    </tr> 
+    <table  cellpadding="16" class="TFtable">
+    <!--<table border=0 cellpadding=16 style="padding: 8px 8px 8px 25px;margin-left:30px;" class="TFtable">
+    <table>-->
+
+	<thead>
+	    <tr align="center">
+		<th>No</th>
+		<th>Program Category</th>
+		<th>Program Name</th>
+		<th>Program Branch</th>
+		<th>Seat Available</th>
+		<th>Program Code</th>
+		<th>Program Short</th>
+		<th>Program Description</th>
+		<th>Program Min Time</th>
+		<th>Program Max Time</th>
+		<th>Creator Name</th>
+		<th>Creatoion Date</th>
+		<th>Edit/Delete</th>
+    <!--<td><strong>No</strong></td><td><strong>Program Category</strong></td><td><strong>Program Name</strong></td><td><strong>Program Branch</strong></td> <td><strong>Seat Available</strong></td><td><strong>Program Code</strong></td><td><strong>Program Short</strong></td><td><strong>Program Description</strong></td><td><strong>Program Min Time</strong></td><td><strong>Program Max Time</strong></td><td><strong>Creator Name</strong></td><td><strong>Creatoion Date</strong></td><td><strong>Edit/Delete</strong></td> -->
+    	</tr> 
+	</thead>
 
     <?php  
         $count=0;

@@ -32,27 +32,28 @@
 	?>-->
  <?php   
 
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#Department";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?>
+	echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+        echo "<tr valign=\"top\">";
+        echo "<td>";
+        $help_uri = site_url()."/help/helpdoc#Department";
+        echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
+        echo "</td>";
+        echo "</tr>";
+        echo "</table>";
+?>
 
-      <table>  
+      	<table>  
 	        <font size=4pt> 
   	        <div style="margin-left:20px; width:200px;">
-  	        <?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); ?>
-               </font>
- 
-	   <tr colspan="2"><td>    
-                <div align="left" style="margin-left:55px;width:1700px;">
+  		        <?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); ?>
+		</div>
+               	</font>
+ 		
+	   	<tr colspan="2"><td>    
+                <div align="left" style="margin-left:50px;width:1700px;">
        
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                    <?php echo form_error('<div style="margin-left:50px;class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -61,9 +62,9 @@
                     ?>
                
                 </div>
-            </td></tr>  
-              <tr>
-         <form action="<?php echo site_url('setup/dept');?>" method="POST" class="form-inline">
+            	</td></tr>  
+              	<tr>
+         	<form action="<?php echo site_url('setup/dept');?>" method="POST" class="form-inline">
       		<table style="margin-left:55px;"> 
 
 		<tr><td>
@@ -71,58 +72,56 @@
         		Choose your University:</td><td>
     			<select name="orgprofile">
     			<option value=""disabled selected>--------------Select university------------</option>
-			  <?php foreach($this->uresult as $datas): ?>	
-   			<option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option> 
-                        <!-- <option value="<?php echo $datas->org_name; ?>"><?php echo $datas->org_name; ?></option>--> 
- 		<?php endforeach; ?>
+			<?php foreach($this->uresult as $datas): ?>	
+   				<option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option> 
+ 			<?php endforeach; ?>
    			</select>          
    			</td></tr><tr><td>    
  			Choose your Campus: </td><td>         
  			<select name="studycenter">
  			<option value=""disabled selected>-------------Select campus---------------</option>
                       
-			  <?php foreach($this->scresult as $datas): ?>	
-			<option value="<?php echo $datas->sc_code; ?>"><?php echo $datas->sc_name; ?></option>
-                     <!-- <option value="<?php echo $datas->sc_name; ?>"><?php echo $datas->sc_name; ?></option>-->
+			<?php foreach($this->scresult as $datas): ?>	
+				<option value="<?php echo $datas->sc_code; ?>"><?php echo $datas->sc_name; ?></option>
 			<?php endforeach; ?>
 			</select>   
 			</td></tr>                       
           		<tr>  
                                 <td><label>School Code:</label></td>
-                                <td><input type="text"placeholder="School Code" name="dept_schoolcode"  size="27" /></td> 
+                                <td><input type="text"placeholder="School Code" name="dept_schoolcode"  size="33" /></td> 
                                 <td><?php echo form_error('dept_schoolcode')?></td>
                                  <td>Example: Sbs</td>
                             </tr>
                             <tr> 
                                 <td><label>School Name:</label></td>
-                                <td><input type="text"placeholder="School Name"name="dept_schoolname"  size="27"  /> </td>
+                                <td><input type="text"placeholder="School Name"name="dept_schoolname"  size="33"  /> </td>
                                 <td><?php echo form_error('dept_schoolname')?></td> 
                                <td>Example: School of basic science  </td>
                                             
                             </tr>
                             <tr>
                                 <td><label>Department Code:</label></td>
-                                <td><input type="text"placeholder="Department Code"size="27" name="dept_code" /> </td>
+                                <td><input type="text"placeholder="Department Code" size="33" name="dept_code" /> </td>
                                 <td><?php echo form_error('dept_code')?></td>
                                  <td>Example: Phy </td>          
                             </tr>
                             <tr>
                                 <td><label>Department Name:</label></td>
-                                <td><input type="text"placeholder="Department Name" name="dept_name"  size="27"  /></td>
+                                <td><input type="text"placeholder="Department Name" name="dept_name"  size="33"  /></td>
                                 <td><?php echo form_error('dept_name')?></td> 
                                <td>Example:Physics Department </td>                               
                 
                             </tr>
                             <tr>
                                 <td><label>Department Nick Name:</label></td>
-                                <td><input type="text"placeholder="Department Nick Name"name="dept_short" size="27"  /> </td>
+                                <td><input type="text"placeholder="Department Nick Name"name="dept_short" size="33"  /> </td>
                                 <td><?php echo form_error('dept_short')?></td>
                                  <td>Example:Phy </td>
                                 
                             </tr>
                             <tr>
                                 <td><label>Department Description:</label></td>    
-                                <td><input type="text"placeholder="Dapartment Description"name="dept_descripation"size="27"/> </td>   
+                                <td><input type="text"placeholder="Dapartment Description"name="dept_descripation"size="33"/> </td>   
                                  <td><?php echo form_error('dept_descripation')?></td>
                                  <td>Example:Department of Physics  </td>           
                             </tr>

@@ -879,8 +879,6 @@ class Setup extends CI_Controller
  	  public function dept(){
         	$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
    	        $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
-               // $this->scresult = $this->common_model->get_listspfic('study_center','sc_name');
-              //  $this->uresult = $this->common_model->get_listspfic('org_profile','org_name');
 
             
 	   if(isset($_POST['dept'])) { 
@@ -894,7 +892,6 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('dept_short','Department nick','trim|xss_clean|required|alpha_numeric');
                 $this->form_validation->set_rules('dept_descripation','Department description','trim|xss_clean|required');
                        
-            //if form validation true
                 if($this->form_validation->run()==TRUE){
 
                  if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){  
@@ -914,7 +911,7 @@ class Setup extends CI_Controller
                                 $this->logger->write_logmessage("insert"," Error in adding Department ", " Department data insert error . ".$dept_name  );
                                 $this->logger->write_dblogmessage("insert"," Error in adding Department ", " Department data insert error . ".$dept_name );
                                 $this->session->set_flashdata('err_message','Error in adding Department - ' . $dept_name . '.', 'error');
-                                redirect('setup/dept');
+                                redirect('setup/dispdepartment');
                         }
                         else{
                                 $this->logger->write_logmessage("insert"," add Department ", "Department record added successfully.".$dept_name  );
@@ -923,12 +920,8 @@ class Setup extends CI_Controller
                                 redirect('setup/dispdepartment');
                         }
                         }
-		//	$this->session->set_flashdata('err_message','You are not selecting either university or campus - ', 'error');
-        	//	$this->load->view('setup/dept');
 			return;
                 }
-	//	$this->session->set_flashdata('err_message','Field validation failed - ', 'error');
-        //	$this->load->view('setup/dept');
         }
         $this->load->view('setup/dept');
     }
@@ -959,7 +952,6 @@ class Setup extends CI_Controller
             $this->session->set_flashdata("success", 'Department Record Deleted successfully.' );
             redirect('setup/dispdepartment');
         }
-//        $this->load->view('setup/dispdepartment',$data);
           $this->load->view('setup/dept',$data);
 
     }
@@ -975,20 +967,20 @@ class Setup extends CI_Controller
         $dept_data = $deptrow->row();
 
         /* Form fields */
-          $data['deptorgcode'] = array(
+         $data['deptorgcode'] = array(
             'name' => 'deptorgcode',
             'id' => 'deptorgcode',
             'maxlength' => '50',
             'size' => '40',
-            'value' => $dept_data->dept_orgcode,
+            'value' => $this->common_model->get_listspfic1('org_profile','org_name','org_code',$dept_data->dept_orgcode)->org_name,
 	    'readonly' => 'readonly'
              );
-        $data['deptsccode'] = array(
+         $data['deptsccode'] = array(
             'name' => 'deptsccode',
             'id' => 'deptsccode',
             'maxlength' => '50',
             'size' => '40',
-            'value' => $dept_data->dept_sccode,
+           'value' => $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$dept_data->dept_sccode)->sc_name,
 	    'readonly' => 'readonly'
         );
         $data['deptschoolcode'] = array(
@@ -1049,9 +1041,9 @@ class Setup extends CI_Controller
         /* Re-populating form */
         if ($_POST)
         {
-             $this->input->post('deptorgcode', TRUE);
+    //         $this->input->post('deptorgcode', TRUE);
            // $data['deptorgcode']['value'] = $this->input->post('deptorgcode', TRUE);
-            $data['deptsccode']['value'] = $this->input->post('deptsccode', TRUE);
+      //      $data['deptsccode']['value'] = $this->input->post('deptsccode', TRUE);
             $data['deptschoolcode']['value'] = $this->input->post('deptschoolcode', TRUE);
             $data['deptschoolname']['value'] = $this->input->post('deptschoolname', TRUE);
             $data['deptcode']['value'] = $this->input->post('deptcode', TRUE);
@@ -1072,8 +1064,8 @@ class Setup extends CI_Controller
             $departmentname = ucwords(strtolower($this->input->post('deptname', TRUE)));
             $departmentshort = $this->input->post('deptshort', TRUE);
             $departmentdescription = $this->input->post('deptdescription', TRUE);
-            $deptsccode = strtoupper($this->input->post('deptsccode',TRUE));
-            $deptorgcode = strtoupper($this->input->post('deptorgcode', TRUE));
+//            $deptsccode = strtoupper($this->input->post('deptsccode',TRUE));
+  //          $deptorgcode = strtoupper($this->input->post('deptorgcode', TRUE));
 
 	    $logmessage = "";
             if($dept_data->dept_schoolcode != $schoolcode)
@@ -1096,8 +1088,8 @@ class Setup extends CI_Controller
                'dept_name'  => $departmentname,
                'dept_short'  => $departmentshort,
                'dept_description' => $departmentdescription,
-               'dept_sccode' => $deptsccode,
-               'dept_orgcode' => $deptorgcode
+              // 'dept_sccode' => $deptsccode,
+               //'dept_orgcode' => $deptorgcode
             );
            $deptflag=$this->common_model->updaterec('Department', $update_data, 'dept_id', $id);
            if(!$deptflag)
