@@ -174,7 +174,7 @@ class Map extends CI_Controller
            'value' => $editeset_data->spsc_gender,
             
         );
-        
+         
         $data['academicyear'] = array(
             'value' => $editeset_data->spsc_acadyear,
         );
@@ -333,6 +333,7 @@ class Map extends CI_Controller
             return true;
         }
     }
+
     public function availableseat($prgseat,$allotedseat) {
         $availsno=0;
         if($prgseat > $allotedseat){
@@ -341,5 +342,238 @@ class Map extends CI_Controller
         }
         return $availsno;
     }
-       
+    
+    /* add subject paper with program */
+
+    public function addprogramsubject()
+    {
+        //get subject record from subject table
+        $username = $this->session->userdata('username');
+        $data['subject'] = $this->mapmodel->getsubject();
+        $data['program'] = $this->mapmodel->getprogram();
+
+        $data['papername'] = array('name' => 'papername','id' => 'papername','maxlength' => '100','size' => '30','value' => '',);
+        $data['subjectno'] = array('name' => 'subjectno','id' => 'subjectno','maxlength' => '100','size' => '30','value' => '',);
+        $data['subjectcode'] = array('name' => 'subjectcode','id' => 'subjectcode','maxlength' => '100','size' => '30','value' => '',);
+        $data['subjectshrname'] = array('name' => 'subjectshrname','id' => 'subjectshrname','maxlength' => '100','size' => '30','value' => '',);
+        $data['subjectdesc'] = array('name' => 'subjectdesc','id' => 'subjectdesc','maxlength' => '100','size' => '30','value' => '',);
+        $this->form_validation->set_rules('subjectname','Subject Name','trim|required');
+        $this->form_validation->set_rules('subjecttype','Paper Category','trim|required');
+        $this->form_validation->set_rules('subjectno','Paper No','trim|required|numeric');
+        $this->form_validation->set_rules('papername','Paper Name','trim|required');
+        $this->form_validation->set_rules('subjectcode','Paper Code','trim|required');
+        $this->form_validation->set_rules('subjectshrname','Paper Short Name','trim');
+        $this->form_validation->set_rules('subjectdesc','Paper Description','trim');
+        $this->form_validation->set_rules('acadyear','Academic Year','trim|required');
+        $this->form_validation->set_rules('degree','Degree','trim|required');
+        
+        if($_POST)
+        {
+            $subject_name = $this->input->post('subjectname',TRUE);
+            $subject_type = $this->input->post('subjecttype',TRUE);
+            $paper_name = $this->input->post('papername',TRUE);
+            $subject_no = $this->input->post('subjectno',TRUE);
+            $subject_code = $this->input->post('subjectcode',TRUE);
+            $subject_shrname = $this->input->post('subjectshrname',TRUE);
+            $subject_desc = $this->input->post('subjectdesc',TRUE);
+            $acadyear = $this->input->post('acadyear',TRUE);
+            $degree = $this->input->post('degree',TRUE);
+        }
+        
+        if($this->form_validation->run() == TRUE)
+        {
+            $currdate = date("y-m-d");
+
+            $data_sub = explode('#',$subject_name);
+            $data_prg = explode('#',$degree);
+            //check for combination of record exist.      
+            $is_existst = $this->mapmodel->ispaper('subject_paper',$data_sub[1], $subject_type,$subject_no,$acadyear,$data_prg[1]);
+            if($is_existst > 0) 
+            {
+                $this->session->set_flashdata('error', 'Paper no-<b>'.$subject_no.'</b> of Subject<b> '.$data_sub[0].  ' </b> for degree '.$data_prg[0] .' for academic year '.$acadyear.' is already exist.');
+                $this->load->view("map/addprogramsubject",$data);
+                return;
+            }
+            else
+            {
+                $insertdata_paper = array('subp_sub_id' => $data_sub[1],'subp_subtype' => $subject_type,'subp_paperno' => $subject_no,'subp_name' => ucwords(strtolower($paper_name)),'subp_code' => strtoupper($subject_code),'subp_short' => ucwords(strtolower($subject_shrname)),'subp_desp' => $subject_desc, 'subp_degree' => $data_prg[1],'subp_acadyear' => $acadyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
+
+                $res=$this->commodel->insertrec('subject_paper', $insertdata_paper);                 
+                if ($res != 1)
+                {
+                    $this->session->set_flashdata("error","Error  in Adding Paper - ", $data_sub[0]);
+                    $this->logger->write_logmessage("error","Error  in Adding Paper", $data_sub[0]." by ". $username);
+                    $this->logger->write_dblogmessage("error","Error  in Adding Paper", $data_sub[0]." by ". $username);
+                    redirect("map/addprogramsubject");
+                }
+                else
+                {
+                    $this->logger->write_logmessage("insert","Paper added successfully", $data_sub[0]." by ". $username);
+                    $this->logger->write_dblogmessage("insert","Paper added successfully", $data_sub[0]." by ". $username);
+                    //$this->session->set_flashdata("success", "Paper added successfully - ", $data_sub[0]);
+                    $this->session->set_flashdata("success", "Paper added successfully  ",'' );
+                    redirect("map/programsubject");
+                }
+            }
+        }
+        $this->load->view('map/addprogramsubject',$data);
+    }
+
+    public function ispaper()
+    {
+        $subject_name = $this->input->post('subjectname',TRUE);
+        $subject_type = $this->input->post('subjecttype',TRUE);
+        $subject_no = $this->input->post('subjectno',TRUE);
+        $acadyear = $this->input->post('acadyear',TRUE);
+        $degree = $this->input->post('degree',TRUE);
+        $data_sub = explode('#',$subject_name);
+        $data_prg = explode('#',$degree);
+        if($is_exist) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    /* view paper subject */
+    public function programsubject()
+    {
+        //$data['paperrecords'] = $this->mapmodel->get_program_subject_paper();
+        $data['paperrecords'] = $this->commodel->get_list('subject_paper');
+        $this->load->view('map/programsubject',$data);
+    }
+    /* delete  subject paper */
+    public function deleteprogramsubject($paperid)
+    {
+        $username = $this->session->userdata('username');
+        //$data['paperrecords'] = $this->mapmodel->get_program_subject_paper();
+        $data['paperrecords'] = $this->commodel->get_list('subject_paper');
+        /* get deleted record data */
+        //$papersubjectrecord = $this->mapmodel->paper_subject_record($paperid);
+        $papsubrec = $this->commodel->get_listrow('subject_paper','subp_id',$paperid);
+        $papersubjectrecord = $papsubrec->result();
+        foreach($papersubjectrecord as $row)
+        {
+            $subpaper_id = $row->subp_id;
+            $subject_id = $row->subp_sub_id;
+            $subject_type = $row->subp_subtype;
+            $subpaper_no = $row->subp_paperno;
+            $subpaper_code = $row->subp_code;
+            $paper_name = $row->subp_name;    
+        }
+        /* delete record */ 
+        $delres=$this->commodel->deleterow('subject_paper','subp_id',$paperid);        
+        if(! $delres)
+        {
+            $this->logger->write_logmessage("error","Error  in deleting subject paper - ", $paperid.   "SubjectPaper id- " .$subpaper_id. " Type- ".$subject_type. " Paper no- ".$subpaper_no." Paper Name ".$paper_name );
+            $this->logger->write_dblogmessage("error","Error  in deleting subject paper - ", $paperid.   "SubjectPaper id- " .$subpaper_id. " Type- ".$subject_type. " Paper no- ".$subpaper_no." Paper Name ".$paper_name );
+            log_message('debug', "Error  in deleting subject paper - ", $paperid.   "SubjectPaper id- " .$subpaper_id. " Type- ".$subject_type. " Paper no- ".$subpaper_no." Paper Name ".$paper_name);
+            $this->session->set_flashdata('err_message','Error in deleting Subject Paper',"SubjectPaper id- " .$subpaper_id. " Type- ".$subject_type. " Paper no- ".$subpaper_no." Paper Name ".$paper_name );
+            redirect('map/programsubject',$data);
+        }
+        else {
+
+            $this->logger->write_logmessage("update", "deleted subject paper - "  . "SubjectPaper id- " .$subpaper_id. " Type- ".$subject_type. " Paper no- ".$subpaper_no." Paper Name ".$paper_name);
+            $this->logger->write_dblogmessage("update", "deleted subject paper - "  . "SubjectPaper id- " .$subpaper_id. " Type- ".$subject_type. " Paper no- ".$subpaper_no." Paper Name ".$paper_name);
+            $this->session->set_flashdata("success", 'Deleted record successfully ...' ."SubjectPaper id- " .$subpaper_id." and Paper Name ".$paper_name);
+            redirect('map/programsubject',$data);
+        }
+
+        $this->load->view('map/programsubject',$data);
+    }
+
+    /* update subject paper */
+
+    public function editprogramsubject($paperid)
+    {
+        $username = $this->session->userdata('username');
+        $data['subject'] = $this->mapmodel->getsubject();
+        $data['program'] = $this->mapmodel->getprogram();
+
+//       $papersubjectrecord = $this->mapmodel->paper_subject_record($paperid);
+        $papsubrec = $this->commodel->get_listrow('subject_paper','subp_id',$paperid);
+        $papersubjectrecord = $papsubrec->result();
+
+        foreach($papersubjectrecord as $row)
+        {
+            $subpaper_id = $row->subp_id;
+            $subject_id = $row->subp_sub_id;
+            $subject_type = $row->subp_subtype;
+            $subpaper_no = $row->subp_paperno;
+            $paper_name = $row->subp_name;
+            $subpaper_code = $row->subp_code;
+            $subshort = $row->subp_short;  
+            $subdesc = $row->subp_desp;
+            $subdegree = $row->subp_degree;
+            $degyear = $row->subp_acadyear;
+            $moddate = date("y-m-d");
+        }
+
+        /*$this->db->from('program')->where('prg_id', $subdegree);
+        $prgdata = $this->db->get();
+        */
+        $prgdata = $this->commodel->get_listrow('program','prg_id',$subdegree);
+        $prg_data = $prgdata->row();
+//        print_r($prg_data);
+
+        /*$this->db->from('subject')->where('sub_id', $subject_id);
+        $subdata = $this->db->get();*/
+
+        $subdata = $this->commodel->get_listrow('subject','sub_id',$subject_id);
+        $sub_data = $subdata->row();
+        
+        $data['degree'] = array('name' => 'degree','id' => 'degree','maxlength' => '100','size' => '30','readonly'=>'true','value' => $prg_data->prg_name,);
+        $data['acadyear'] = array('name' => 'acadyear','id' => 'acadyear','maxlength' => '100','size' => '30','value' => $degyear,'readonly'=>'true',);
+        $data['subjectname'] = array('name' => 'subjectname','id' => 'subjectname','maxlength' => '100','size' => '30','value' =>$sub_data->sub_name ,'readonly'=>'true',);
+        $data['papercat'] = array('name' => 'papercat','id' => 'papercat','maxlength' => '100','size' => '30','value' => $subject_type ,'readonly'=>'true',);
+
+        $data['subjectno'] = array('name' => 'subjectno','id' => 'subjectno','maxlength' => '100','size' => '30','value' =>$subpaper_no ,'readonly'=>'true',);
+        $data['papername'] = array('name' => 'papername','id' => 'papername','maxlength' => '100','size' => '30','value' => $paper_name,);
+        $data['subjectcode'] = array('name' => 'subjectcode','id' => 'subjectcode','maxlength' => '100','size' => '30','value' =>$subpaper_code ,'readonly'=>'true',);
+        $data['subjectshrname'] = array('name' => 'subjectshrname','id' => 'subjectshrname','maxlength' => '100','size' => '30','value' => $subshort,);
+        $data['subjectdesc'] = array('name' => 'subjectdesc','id' => 'subjectdesc','maxlength' => '100','size' => '30','value' => $subdesc,);
+        $data['paperid'] = $paperid;
+
+        $this->form_validation->set_rules('subjectname','Subject Name','trim|required');
+        $this->form_validation->set_rules('papercat','Paper Category','trim|required');
+        $this->form_validation->set_rules('subjectno','Paper No','trim|required|numeric');
+        $this->form_validation->set_rules('papername','Paper Name','trim|required');
+        $this->form_validation->set_rules('subjectcode','Paper Code','trim|required');
+        $this->form_validation->set_rules('subjectshrname','Paper Short Name','trim');
+        $this->form_validation->set_rules('subjectdesc','Paper Description','trim');
+        $this->form_validation->set_rules('acadyear','Academic Year','trim|required');
+        $this->form_validation->set_rules('degree','Degree','trim|required');
+
+
+        if($_POST)
+        {
+            $papname = $this->input->post('papername',TRUE);
+            $subjshrname = $this->input->post('subjectshrname',TRUE);
+            $subjdesc = $this->input->post('subjectdesc',TRUE);
+        }
+        if($this->form_validation->run() == TRUE)
+        {
+            $currdate = date("y-m-d");
+            $updatedata_paper = array('subp_name' => ucwords(strtolower($papname)),'subp_short' => $subjshrname,'subp_desp' => $subjdesc, 'modifierid' => $username,'modifydate' => $moddate);
+            $updatepaper = $this->commodel->updaterec('subject_paper', $updatedata_paper,'subp_id',$paperid);
+            if($updatepaper != 1)
+            {
+                $this->session->set_flashdata('error','Error in updating subject paper - ' . $prg_data->prg_name . $sub_data->sub_name . '.' );
+                $this->logger->write_logmessage("update", "Error in updating subject paper " .  $prg_data->prg_name . $sub_data->sub_name, " by ".  $username);
+                $this->logger->write_dblogmessage("update", "Error in updating subject paper " ,  $prg_data->prg_name . $sub_data->sub_name. " by ".  $username);
+                redirect('map/programsubject');
+            }
+            else
+            {
+                $this->session->set_flashdata("success", "Subject paper updated of degree <b>".  $prg_data->prg_name ." of ". $sub_data->sub_name ."</b>  successfully");
+                $this->logger->write_logmessage("update", "Subject paper updated <b> " . $prg_data->prg_name . $sub_data->sub_name , " by". $username);
+                $this->logger->write_dblogmessage("update", "Subject paper updated <b> " , $prg_data->prg_name . $sub_data->sub_name . " by". $username);
+                redirect('map/programsubject');
+            }
+            
+        }        
+    
+        $this->load->view('map/editprogramsubject',$data);    
+    }
 }    

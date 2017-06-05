@@ -1,5 +1,4 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
@@ -119,8 +118,82 @@ class Map_model extends CI_Model
         
         
     }
-   
-}
- 
+    
+    /* get subject record */
 
- ?>
+    public function getsubject(){
+        $subsel = array();
+        //$subsel[0] = "Please Select";
+        $this->db->from('subject')->order_by('sub_name', 'asc');
+        $subject = $this->db->get();
+        foreach ($subject->result() as $row)
+        {
+            
+            $subid ="$row->sub_name"."#"."$row->sub_id";
+            $subsel[$subid] = $row->sub_name;
+        }
+        return $subsel;
+    }
+
+    /* get program degree */   
+
+    public function getprogram(){
+        $prgsel = array();
+        //$subsel[0] = "Please Select";
+        $this->db->from('program')->order_by('prg_name', 'asc');
+        $program = $this->db->get();
+        foreach ($program->result() as $row)
+        {
+
+            $prgid ="$row->prg_name"."#"."$row->prg_id";
+            $prgsel[$prgid] = $row->prg_name;
+        }
+        return $prgsel;
+    }
+    
+    public function get_subjectname($subjectid)
+    {
+        $this->db->from('subject');
+        $this->db->where("sub_id", $subjectid);
+        $subname = $this->db->get();
+        foreach ($subname->result() as $row)
+        {
+            $sub_name = $row->sub_name;
+        }
+        $sub_name;
+        return $sub_name;
+    }
+    public function get_programname($programid)
+    {
+        $this->db->from('program');
+        $this->db->where("prg_id", $programid);
+        $prgname = $this->db->get();
+        foreach ($prgname->result() as $row)
+        {
+            $prg_name = $row->prg_name;
+        }
+        $prg_name;
+        return $prg_name;
+    }
+
+    public function ispaper($tbname,$subjectname,$subjecttype,$subjectno,$acadyear,$degree)
+    {
+        $this->db->distinct();
+        $this->db->from($tbname);
+        $this->db->where("subp_sub_id", $subjectname);
+        $this->db->where("subp_subtype", $subjecttype);
+        $this->db->where("subp_paperno",$subjectno);
+        $this->db->where("subp_acadyear", $acadyear);
+        $this->db->where("subp_degree", $degree);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) 
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
+}
+?>

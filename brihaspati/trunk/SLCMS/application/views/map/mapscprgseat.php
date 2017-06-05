@@ -47,7 +47,8 @@
          </br>    
         <table> 
             
-            
+            <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+ 
             <tr colspan="2"><td>  
                 <div style="margin-left:30px;">    
                 <?php echo anchor('map/viewscprgseat/', "Campus Program Seat List ", array('title' => 'View Detail' , 'class' => 'top_parent'));?>
@@ -63,6 +64,7 @@
                 };
                 ?>
                  <?php if(isset($_SESSION['err_message'])){?>
+
                     <div style="margin-left:30px;"  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 
                 <?php

@@ -44,6 +44,8 @@ class Common_model extends CI_Model
 //insert the complete record from specific table
     public function insertrec($tbname, $datar){
 	 $this->db->trans_start();
+    
+    echo "value at --->".print_r($datar);
 	 if(! $this->db->insert($tbname, $datar))
          {
             $this->db->trans_rollback();
@@ -53,6 +55,7 @@ class Common_model extends CI_Model
             $this->db->trans_complete();
             return true;
 	 }
+
     }
 
 
