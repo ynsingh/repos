@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @name Home.php
  * @author Nagendra Kumar Singh
+ * modified by Manorama Pal 06june2017  
  */
 class Home extends CI_Controller
 {
@@ -18,6 +19,9 @@ class Home extends CI_Controller
     }
  
     public function index() {
+	/* set user role in session, Role id 1 is for Administrator */
+	$data = [ 'id_role' => 1 ];
+        $this->session->set_userdata($data);
 	$this->result = $this->universitym->get_udetails();
 	$contcode=$this->result->org_countrycode;
 	$this->contryname = $this->universitym->get_countryname($contcode);
@@ -27,7 +31,6 @@ class Home extends CI_Controller
     public function logout() {
         $data = ['id_user', 'id'];
         $this->session->unset_userdata($data);
- 
         redirect('welcome');
     }
 }

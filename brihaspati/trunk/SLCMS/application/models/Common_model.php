@@ -137,6 +137,7 @@ class Common_model extends CI_Model
 	if (($fieldname != '') && ($fieldvalue !='')){
 		$this->db->where($fieldname, $fieldvalue);
 	}
+       // print_r($this->db->get()->result());
         return $this->db->get()->result();
     }
 
@@ -195,6 +196,12 @@ class Common_model extends CI_Model
 		return false;
 	}
 
+    }
+    
+    //get the list of one/specific  records with  one specific fields for specific values
+    public function get_depid($tbname,$userid,$roleid){
+        $this->db->select('deptid')->from('user_role_type')->where('userid',$userid)->where('roleid',$roleid);
+	return $this->db->get()->row();
     }
 
     function __destruct() {
