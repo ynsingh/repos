@@ -260,10 +260,17 @@ class Upl extends CI_Controller
                                             $sub='Teacher Registration' ;
                                             $mess="You are registration is complete. The user id ".$email ." and password is ".$passwd ;
                                             $mails = $this->mailsend_model->mailsnd($email, $sub, $mess);
-								
-                                            $error[] ="At row".$i."sufficient data and mail sent sucessfully";
-                                            $this->logger->write_logmessage("insert"," add teacher edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email );
-                                            $this->logger->write_dblogmessage("insert"," add teacher edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email );
+					    //  mail flag check 			
+					    if($mails){
+                                	            $error[] ="At row".$i."sufficient data and mail sent sucessfully";
+                        	                    $this->logger->write_logmessage("insert"," add teacher edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email );
+						    $this->logger->write_dblogmessage("insert"," add teacher edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email );
+					    }
+					    else{
+        	                                    $error[] ="At row".$i."sufficient data and mail does sent";
+	                                            $this->logger->write_logmessage("insert"," add teacher edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email ." and mail does sent");
+						    $this->logger->write_dblogmessage("insert"," add teacher edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email." and mail does sent" );
+					    }
 					}else{
                                             //set the message for error in entering data in user role type
                                             $this->logger->write_logmessage("insert"," Error in adding teacher edrpuser,profile and user role type ", " data insert error . ".$name ." ".$email );

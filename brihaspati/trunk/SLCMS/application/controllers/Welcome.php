@@ -35,58 +35,62 @@ class Welcome extends CI_Controller {
 
 	public function index() {
             if($_POST) {
-          
                 $result = $this->login->validate_user($_POST);
                 /*get role by using model class and set templates according to role*/
                 $roles=$this->commodel->get_listspficarry('user_role_type','roleid','userid',$result->id);
                 if(!empty($result)) {
-                
-                    if(count($roles) == 1){
-                        foreach($roles as $row):
-                            if($row->roleid == 1){
-                                $data = [
-                                'id_user' => $result->id,
-                                'username' => $result->username,
-                                'id_role' => $row->roleid
-                                ];
-                                $this->session->set_userdata($data);
-                                redirect('home');
-                    
-                            } 
-                            if($row->roleid == 2){
-                                $data = [
-                                'id_user' => $result->id,
-                                'username' => $result->username,
-                                'id_role' => $row->roleid
-                                ];
-                                $this->session->set_userdata($data);
-                                redirect('facultyhome'); 
-                  
-                            }
-            
-                        endforeach;   
-                    } 
-                    else{
-                        foreach($roles as $row):
-                            $data = [
-                                'id_user' => $result->id,
-                                'username' => $result->username,
-                                                                    
-                                ];
-                            $this->session->set_userdata($data);
-                            redirect('rolehome'); 
-                        endforeach;
-                        
-                    }
-                  
-                }//ifempty close 
+             		if(!empty($roles)){   
+                    		if(count($roles) == 1){
+                        		foreach($roles as $row):
+                            			if($row->roleid == 1){
+                                			$data = [
+			                                'id_user' => $result->id,
+                        			        'username' => $result->username,
+			                                'id_role' => $row->roleid
+                        			        ];
+			                                $this->session->set_userdata($data);
+                        			        redirect('home');
+                           			} 
+                            			if($row->roleid == 2){
+			                                $data = [
+                        			        'id_user' => $result->id,
+			                                'username' => $result->username,
+                        			        'id_role' => $row->roleid
+			                                ];
+                        			        $this->session->set_userdata($data);
+			                                redirect('facultyhome'); 
+                        			}
+                            			if($row->roleid == 3){
+			                                $data = [
+                        			        'id_user' => $result->id,
+			                                'username' => $result->username,
+                        			        'id_role' => $row->roleid
+			                                ];
+                        			        $this->session->set_userdata($data);
+			                                redirect('studenthome'); 
+                        			}
+                        		endforeach;   
+                    		}else{
+                        		foreach($roles as $row):
+                            			$data = [
+		                                'id_user' => $result->id,
+                		                'username' => $result->username,                                    
+                                		];
+                            			$this->session->set_userdata($data);
+                            			redirect('rolehome'); 
+                        		endforeach;
+                    		}
+			}else{ //if close role empty
+                    		$this->session->set_flashdata('flash_data', 'You do not have any role in this system!');
+                    		redirect('welcome');
+            		}
+                }//if empty result validate close 
                 else {
                     $this->session->set_flashdata('flash_data', 'Username or password is wrong!');
                     redirect('welcome');
                 }
-           
             }    
             $this->load->view("welcome_message");
-        }
+        }//close index function
 	
-    }
+    }//close class

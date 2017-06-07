@@ -677,7 +677,9 @@ UNIQUE (`subp_degree`, `subp_acadyear`, `subp_sub_id`,`subp_subtype`,`subp_paper
 -- Table structure for table `user_role_type`
 --
 
+
 CREATE TABLE `user_role_type` (
+  `id` INT(11) PRIMARY KEY AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
   `roleid` int(11) NOT NULL,
   `scid` int(10) NOT NULL,
@@ -686,7 +688,7 @@ CREATE TABLE `user_role_type` (
   `ext1` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-insert into user_role_type values (1,1,1,1,'Administrator','');
+insert into user_role_type values (1,1,1,1,1,'Administrator','');
 
 --
 -- Indexes for dumped tables

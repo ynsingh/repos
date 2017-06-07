@@ -19,6 +19,8 @@ class Mailsend_model extends CI_Model
 		//getting the values from database
 
 		$this->emresult = $this->common_model->get_elist("email_setting");	
+		if (count($this->emresult) > 0) {
+//		if($this->emresult->num_rows()>0){
 		// The mail sending protocol.
 		//$config['protocol'] = 'smtp';
 		$config['protocol'] = $this->emresult->emailprotocol;
@@ -61,6 +63,8 @@ class Mailsend_model extends CI_Model
 		else{
 			return false;
 		}
+		}//close for if record exist
+		return false;
 	}
 
     	function __destruct() {

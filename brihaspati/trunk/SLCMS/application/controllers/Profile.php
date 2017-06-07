@@ -57,11 +57,19 @@ public function changepasswd()
 	               		$this->logger->write_dblogmessage("error","Error in update password", "Error in change password update". $data_user_name);
                        		$this->session->set_flashdata('err_message'.'Error in change password....');
 		       		redirect('profile/changepasswd');
-                        }else{
-                       		$this->logger->write_logmessage("update"," Password change", " successfully" .$data_user_name);
-                       		$this->logger->write_dblogmessage("update","Password change", "successfully".$data_user_name );     
-                                $this->mailsend_model->mailsnd($data_user_name,$sub,$mess,'');
-                       		$this->session->set_flashdata("success", 'Password has been changed successfully !! Mail sent Sucessfully !!' );
+			}else{
+
+                                $mails=$this->mailsend_model->mailsnd($data_user_name,$sub,$mess,'');
+				if($mails){
+		                       		$this->logger->write_logmessage("update"," Password change", " successfully" .$data_user_name);
+                		       		$this->logger->write_dblogmessage("update","Password change", "successfully".$data_user_name );     
+                       				$this->session->set_flashdata("success", 'Password has been changed successfully !! Mail sent Sucessfully !!' );
+				}
+                                else{
+                       				$this->logger->write_logmessage("update"," Password change", " successfully" .$data_user_name);
+                		       		$this->logger->write_dblogmessage("update","Password change", "successfully".$data_user_name );     
+		                       		$this->session->set_flashdata("success", 'Password has been changed successfully !! Mail does not sent !!' );
+                                }
                        		redirect ('profile/changepasswd');
                              }
                 	}
