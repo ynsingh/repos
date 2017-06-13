@@ -3,12 +3,20 @@
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
+<title>Edit Role</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
             <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
     </head>
     <body>
+ <script>
+        function goBack() {
+        window.history.back();
+        }
+    </script>
+
+
         <!--<//?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -78,17 +86,19 @@
         
                 echo "<td>";
                     echo form_hidden('role_id', $id);
+                   echo"<td>";
                     echo form_submit('submit', 'Update');
-                    echo " ";
-        
-                    echo anchor('setup/displayrole', 'Back', array('class' =>'top_parent'));
-                echo "</td>";
-            echo "</tr>";
-
+                   echo " ";
+       
             echo form_close();
-        ?>
+            echo "<button onclick=\"goBack()\" >Back</button>";
+            echo "</td>";
+            echo "</tr>";
+            echo"</td>";
+ ?>
  
-       </table>   
+       </table> 
+          
 </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

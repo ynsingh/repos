@@ -99,7 +99,7 @@
         <div>
         <div class="collapse navbar-collapse" id="MainMenu">
             <ul class="nav navbar-nav menu-list">
-                <li><a href="#">Dashboard</a></li>
+                <li><a href="<?php echo site_url(); ?>/facultyhome">Dashboard</a></li>
                 <li class="dropdown list-category"><a href="#">Subject</a>
                     <ul class="dropdown-menu mega-dropdown-menu" style="background-color:#2a8fcf;">
                     <li><a href="#">Subject List with Program</a></li>

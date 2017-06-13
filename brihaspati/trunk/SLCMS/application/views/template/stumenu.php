@@ -8,7 +8,8 @@ echo "<nav>";
 echo "<ul class=\"sf-menu\">";
 
 			echo "<li class=\"current\">";
-				echo "<a href=" . base_url() . ">Dashboard</a>";
+//				echo "<a href=" . base_url() . ">Dashboard</a>";
+				echo "<a href=" . site_url() ."/studenthome> Dashboard</a>";
 			echo "</li>";
 			echo "<li>";
 				echo "<a href=" . ">Fees</a>";

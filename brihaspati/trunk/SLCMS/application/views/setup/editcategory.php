@@ -5,13 +5,20 @@
  -->
 
 <html>
+<title>Edit Category</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
         <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
     </head>
     <body>
-       <table>
+<script>
+        function goBack() {
+        window.history.back();
+        }
+    </script>
+
+      <table>
             <tr colspan="2"><td>
                 <div style="margin-left:30px;width:1700px;">
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -96,13 +103,14 @@
                 echo "<td>";
                     echo form_hidden('cat_id', $cat_id);
                     echo form_submit('submit', 'Update');
-                    echo anchor('setup/displaycategory', 'Back', array('class' => 'top_parent'));
-                    // echo "</p>";
-                echo "</td>";
+              //   echo anchor('setup/displaycategory', 'Back', array('class' => 'top_parent'));
+               // echo "</p>";
+            echo form_close();
+            echo "<button onclick=\"goBack()\" >Back</button>";
+            echo "</td>";
             echo "</tr>";
 
-            echo form_close();
-        ?>
+       ?>
  
         </table>   
     </body>

@@ -2,6 +2,7 @@
   @author Manorama Pal(palseema30@gmail.com)
  -->
 <html>
+ <title>View Email Setting</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
             <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
@@ -90,11 +91,12 @@
               <?php if( count($this->result) ): ?>
                     <?php foreach($this->result as $row){ ?>
                         <tr align="center">
-                            <td><?php echo $row->emailprotocol ;?></td>
+                            <td><?php echo $row->emailprotocol; ?></td>
                             <td><?php echo $row->emailhost; ?></td>
                             <td><?php echo $row->emailport; ?></td>
                             <td><?php echo $row->username; ?></td>
                             <td><?php echo $row->password; ?></td>
+                         
                             <td><?php echo $row->sendername ; ?></td>
                             <!-- <td><//?php echo $row->creatorid; ?></td>
                             <td><//?php echo $row->createdate; ?></td>

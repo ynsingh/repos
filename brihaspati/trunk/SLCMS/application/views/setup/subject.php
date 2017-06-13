@@ -5,6 +5,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 echo "<html>";
+echo"<title>Add Subject</title>";
 echo "<head>";
 
     $this->load->view('template/header');
@@ -126,8 +127,9 @@ echo "<body>";
     echo "</td><td>";echo form_error('subext2');echo"</td></tr>";
     echo "</p>";
 
-    echo "<p>";
+  //  echo "<p>";
     echo "<tr><td>";
+    echo"<td>";
     echo form_submit('submit', 'Submit');
     //echo form_button('submit', 'Submit');
     echo"</td></tr>";
@@ -135,7 +137,6 @@ echo "<body>";
     echo form_close();
     echo "</table>";
     /* Form */
-
 echo"</body>";
 echo "<div align=\"center\">";  
     $this->load->view('template/footer');

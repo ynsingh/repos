@@ -3,6 +3,7 @@
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
+<title>View Role</title>
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
@@ -56,7 +57,7 @@
 <div align="left" style="margin-left:40px;">
 <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
 <tr align="center">
-<thead><th>Sr.No</th><th>Role Name</th><th>Role Description</th><th>Action</th><th></tr></thead>
+<thead><th>Sr.No</th><th>Role Name</th><th>Role Description</th><th>Action</th></tr></thead>
 
    <?php
         $count =0;
@@ -68,10 +69,14 @@
             <td> <?php echo ++$count; ?> </td> 
             <td> <?php echo $row->role_name ?></td>
             <td> <?php echo $row->role_desc ?></td>
-           <?php
-            echo "<td>" . anchor('setup/delete_role/' . $row->role_id , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
-            echo"<td>" . anchor('setup/editrole/' . $row->role_id , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
-            echo "</br>";
+	    <td>
+            <?php  
+		if ($row->role_id > 3){
+	    		echo anchor('setup/delete_role/' . $row->role_id , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
+	    		echo "&nbsp; ";
+            		echo anchor('setup/editrole/' . $row->role_id , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
+		}
+            echo "</td>";
             echo "</tr>";
           
         }
@@ -79,7 +84,7 @@
         echo "</td>";
         echo "</tr>";
         echo "</table>";
-        ?>
+          ?>
 </div>
 </tr>
 </table>

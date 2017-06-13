@@ -5,6 +5,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 echo "<html>";
+echo"<title>View Subject</title>";
 echo "<head>";
 
     $this->load->view('template/header');
@@ -93,7 +94,7 @@ echo "<body>";
         echo "<td>"; echo $subjectlist->sub_desc; echo"</td>";
         echo "<td>"; echo $subjectlist->sub_ext1; echo"</td>";
         echo "<td>"; echo $subjectlist->sub_ext2; echo"</td>";
-        echo "<td>"; echo anchor('setup/editsubject/' . $subjectlist->sub_id , "Edit", array('title' => 'Edit Subject', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; echo anchor('setup/deletesubject/' . $subjectlist->sub_id ."/".$subjectlist->sub_name, "Delete", array('title' => 'Delete Subject', 'class' => 'red-link')); echo"</td>";
+        echo "<td>"; echo anchor('setup/editsubject/' . $subjectlist->sub_id , "Edit", array('title' => 'Edit Subject', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; echo anchor('setup/deletesubject/' . $subjectlist->sub_id ."/".$subjectlist->sub_name, "Delete", array('title' => 'Delete Subject', 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")); echo"</td>";
 //        echo "<td>"; echo anchor('setup/editsubject/' . $subjectlist->sub_id , "Edit", array('title' => 'Edit Subject', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; echo anchor('setup/deletesubject/' . $subjectlist->sub_id ."/".$subjectlist->sub_name, "Delete"); echo"</td>";
 
         echo "</tr>";

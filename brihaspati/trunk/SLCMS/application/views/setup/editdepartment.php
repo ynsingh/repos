@@ -43,7 +43,6 @@
    <font color=0 size=4pt> 
    <div style="margin-left:30px; width:200px;">
       <!-- <?php echo anchor('','Update Department',array('title'=>'Edit Detail')); ?>-->
-      <!--<a href="<?php echo site_url('')?>" <h2>Update Department</h2></a>-->
       
      <style="margin-left:0px;"> 
             <tr colspan="2"><td>    
@@ -167,13 +166,15 @@
             echo "</tr>";
         
             echo "<tr>";
-                echo "<td colspan=2>";
+                   echo "<td>";
+                   echo "</td>";
+                   echo "<td>";
                    echo form_hidden('id', $id);
                    echo form_submit('submit', 'Update');
            	   echo form_close();
- 	   echo "<button onclick=\"goBack()\" >Go Back</button>";  
-                  echo "</td>";
-                  echo "</tr>";
+ 	   	   echo "<button onclick=\"goBack()\" >Back</button>";  
+                   echo "</td>";
+                   echo "</tr>";
         ?>
 
         </table>

@@ -182,12 +182,14 @@ echo "<body>";
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_submit('submit', 'Submit');
+    echo"<td>";
+    echo form_submit('submit', 'Update');
+    echo anchor('map/programsubject', 'Back', array('class' =>'top_parent'));
     //echo form_reset('reset','Clear');
-    //echo form_button('submit', 'Submit');
+   // echo form_button('submit', 'Submit');
     echo"</td></tr>";
     echo "</p>";
-
+    echo"</td>";
     echo form_close();
     echo "</table>";
 /* Form */

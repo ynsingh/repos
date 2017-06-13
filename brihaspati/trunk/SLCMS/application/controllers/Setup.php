@@ -43,7 +43,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('emailport','Emailport','trim|xss_clean|required|min_length[2]|max_length[5]|is_numeric',
                 array ('required' => 'insert numeric value only'));
             $this->form_validation->set_rules('username','Username','trim|xss_clean|required');
-            $this->form_validation->set_rules('password','Password','trim|xss_clean|required|alpha_numeric');
+            $this->form_validation->set_rules('usrpass','Password','trim|xss_clean|required|alpha_numeric');
             $this->form_validation->set_rules('sendername','Sendername','trim|xss_clean|required');
             //if form validation true
             if($this->form_validation->run()==TRUE){
@@ -53,7 +53,7 @@ class Setup extends CI_Controller
                     'emailhost'=>$_POST['emailhost'],
                     'emailport'=>$_POST['emailport'],
                     'username'=>$_POST['username'],
-                    'password'=>$_POST['password'],
+                    'password'=>$_POST['usrpass'],
                     'sendername'=>$_POST['sendername'],
                     'creatorid'=> $this->session->userdata('username'),  
                     'createdate'=>date('y-m-d'),
@@ -937,12 +937,12 @@ class Setup extends CI_Controller
                
                 $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
                 $this->form_validation->set_rules('studycenter','Campus','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_schoolcode','School code','trim|xss_clean|alpha_numeric|required');
-                $this->form_validation->set_rules('dept_schoolname','School name','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_code','Department code','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_name','Department name','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_short','Department nick','trim|xss_clean|required|alpha_numeric');
-                $this->form_validation->set_rules('dept_descripation','Department description','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric|required');
+                $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_name','Department Name','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_short','Department Nick','trim|xss_clean|required|alpha_numeric');
+                $this->form_validation->set_rules('dept_descripation','Department Description','trim|xss_clean|required');
                        
                 if($this->form_validation->run()==TRUE){
 

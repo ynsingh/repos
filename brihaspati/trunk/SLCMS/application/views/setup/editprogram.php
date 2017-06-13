@@ -3,6 +3,12 @@
 <head>
 </head>
 <body>
+<title>Edit Program</title>
+<script>
+        function goBack() {
+        window.history.back();
+        }
+    </script>
 <div>
 <?php $this->load->view('template/header.php');?>
 <h1>Welcome <?= $this->session->userdata('username')?> </h1>
@@ -45,23 +51,23 @@
     echo "<table>";
     echo validation_errors();
     echo form_open('setup/editprogram/'. $prgid);
-     echo "<p>";
+    echo "<p>";
     echo "<tr><td>";
-        echo form_label('Campus', 'prgcampus');
+    echo form_label('Campus', 'prgcampus');
     echo"</td><td>";
     echo form_input($prgcampus);
     echo "</td>";
     echo "</p>";
-     echo "<p>";
+    echo "<p>";
     echo "<tr><td>";
-        echo form_label('Department', 'prgdepartment');
+    echo form_label('Department', 'prgdepartment');
     echo"</td><td>";
     echo form_input($prgdepartment);
     echo "</td>";
     echo "</p>";
     echo "<p>";
     echo "<tr><td>";
-        echo form_label('Program Category', 'prgcat');
+    echo form_label('Program Category', 'prgcat');
     echo"</td><td>";
     echo form_input($prgcat);
     echo "</td>";
@@ -150,7 +156,11 @@
     echo "<td> </td>";
     echo "<td>";
     echo form_hidden('prg_id', $prgid);
+   // echo"<td>";
     echo form_submit('submit', 'Update');
+    echo form_close();
+    echo "<button onclick=\"goBack()\" >Go Back</button>";
+
     echo "</td>";
     echo "</tr>";
     echo "</p>";

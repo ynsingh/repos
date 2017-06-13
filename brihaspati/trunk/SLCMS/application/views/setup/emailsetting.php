@@ -2,6 +2,8 @@
   @author Manorama Pal(palseema30@gmail.com)
  -->
 <html>
+<title>Add Email Setting</title>
+
     <head>    
         <?php $this->load->view('template/header'); ?>
             <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
@@ -100,7 +102,7 @@
                         </tr>
                         <tr>
                             <td><label for="password" class="control-label">Password:</label></td>
-                            <td><input type="text" name="password" size="50"  /> <br></td>
+                            <td><input type="password" name="password" size="50"  /> <br></td>
                             <td><?php echo form_error('password')?></td>
                             <td> Example : ****** </td>
                         </tr>

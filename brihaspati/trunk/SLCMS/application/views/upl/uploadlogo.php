@@ -27,16 +27,16 @@
 
 	<div>
 <?php
-	echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
-        echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
-        echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
-	echo "Upload"; 
-	echo "<span  style='padding: 8px 8px 8px 20px;'>";
-	echo "|"; 
-	echo "<span  style='padding: 8px 8px 8px 20px;'>";
-	echo "Upload University Logo";
-        echo "</td>";
-        echo "</tr>";
+//	echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
+//        echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
+//        echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
+//	echo "Upload"; 
+//	echo "<span  style='padding: 8px 8px 8px 20px;'>";
+//	echo "|"; 
+//	echo "<span  style='padding: 8px 8px 8px 20px;'>";
+//	echo "Upload University Logo";
+//        echo "</td>";
+//        echo "</tr>";
 	echo "<tr>";
 	echo "<td>";
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";

@@ -34,7 +34,7 @@
                 <td>
                     <div align="left" style="margin-left:30px;width:1700px;">  
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                   <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
                     <?php if(isset($_SESSION['success'])){?>
                     <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                     <?php
@@ -72,7 +72,9 @@
                                 <td><?php echo form_error('confirmpassword')?></td>
                             </tr>
 			<tr>
-                                <td colspan="2">
+                                <td>
+                                </td>
+                                <td>
                                 <button name="changepasswd"><b>Update Password</b></button>
                                 </td>
                             </tr>

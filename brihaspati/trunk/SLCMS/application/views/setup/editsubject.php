@@ -5,6 +5,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 echo "<html>";
+echo"<title>Edit Subject</title>";
 echo "<head>";
 
     $this->load->view('template/header');
@@ -34,6 +35,14 @@ echo "<body>";
     echo"</br>";
 */
 ?>
+<body>
+<script>
+        function goBack() {
+        window.history.back();
+        }
+    </script>
+
+</body>
 <br>
 <div align="left">
 <table style="margin-left:10px;">
@@ -119,11 +128,16 @@ echo "<body>";
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_submit('submit', 'Submit');
+    echo"<td>";
+    echo form_submit('submit', 'Update');
     //echo form_button('submit', 'Submit');
-    echo"</td></tr>";
-    echo "</p>";
+    echo"";
+//    echo anchor('setup/viewsubject', 'Back', array('class' => 'top_parent'));
+  //  echo"</td></tr>";
+ //   echo "</p>";
     echo form_close();
+    echo "<button onclick=\"goBack()\" >Back</button>";
+    echo"</td>";
     echo "</table>";
     /* Form */
 

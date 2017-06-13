@@ -2,6 +2,8 @@
   @author Manorama Pal(palseema30@gmail.com)
  -->
 <html>
+ <title> Edit Email Setting</title>
+
     <head>    
         <?php $this->load->view('template/header'); ?>
             <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
@@ -9,6 +11,12 @@
        
     </head>
     <body>
+<script>
+        function goBack() {
+        window.history.back();
+        }
+    </script>
+
         <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -58,7 +66,7 @@
        
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Email Protocol', 'emailprotocol');
+                echo form_label('Email Protocol', 'emailprotocol');
                 echo "</td>";
                 echo "<td>";
                    // echo form_input($emailprotocol);
@@ -118,7 +126,7 @@
             // echo "<p>";
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Password', 'password');
+                echo form_label('Password', 'password');
                     // echo "<br />";
                 echo "</td>";
                 echo "<td>";
@@ -148,16 +156,14 @@
             echo "<td>";
             echo "</td>";
                 echo "<td>";
-                    echo form_hidden('id', $id);
-                    echo form_submit('submit', 'Update');
-                    echo " ";
-        
-                    echo anchor('setup/dispemailsetting', 'Back', 'Back to setup emailsetting');
-                    // echo "</p>";
-                echo "</td>";
-            echo "</tr>";
-
-            echo form_close();
+                   echo form_hidden('id', $id);
+                   echo form_submit('submit', 'Update');
+             echo " ";
+             echo form_close();
+             echo "<button onclick=\"goBack()\" >Back</button>";
+             echo "</td>";
+             echo "</tr>";
+             echo"</td>";         
         ?>
  
         </table>   

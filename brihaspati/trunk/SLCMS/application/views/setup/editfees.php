@@ -153,7 +153,7 @@
             	echo "</tr>";
 
         
-           	echo "<tr>";
+           	echo "<td>";
                 echo "<td colspan=2>";
                     echo form_hidden('id', $id);
                     echo form_submit('submit', 'Update');
@@ -161,7 +161,7 @@
 		    echo "<button onclick=\"goBack()\" >Back</button>";
 
                 echo "</td>";
-            	echo "</tr>";
+            	echo "</td>";
           ?>
         </table>
     </body>
