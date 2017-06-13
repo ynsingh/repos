@@ -75,7 +75,7 @@ echo "<body>";
 
 /* Form */
 
-    $subtype = array('UG'=>'UG','PG'=>'PG','R'=>'R','DIP'=>'DIP');    
+    $subtype = array('Under Graduate'=>'Under Graduate','Post Graduate'=>'Post Graduate','Research'=>'Research','Diploma Course'=>'Diploma Course');    
     $acadyear = array();
     for($i = 2016; $i < date("Y")+10; $i++)
     {

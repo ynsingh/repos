@@ -45,6 +45,20 @@
     echo "<table>";
     echo validation_errors();
     echo form_open('setup/editprogram/'. $prgid);
+     echo "<p>";
+    echo "<tr><td>";
+        echo form_label('Campus', 'prgcampus');
+    echo"</td><td>";
+    echo form_input($prgcampus);
+    echo "</td>";
+    echo "</p>";
+     echo "<p>";
+    echo "<tr><td>";
+        echo form_label('Department', 'prgdepartment');
+    echo"</td><td>";
+    echo form_input($prgdepartment);
+    echo "</td>";
+    echo "</p>";
     echo "<p>";
     echo "<tr><td>";
         echo form_label('Program Category', 'prgcat');
@@ -107,6 +121,9 @@
     echo"</td><td>";
     echo form_input($prgmintime);
     echo "</td>";
+    echo "<td>";
+    echo "in Years";
+    echo "</td>";
     echo "</p>";
 
     echo "<p>";
@@ -115,21 +132,27 @@
     echo"</td><td>";    
     echo form_input($prgmaxtime);
     echo "</td>";
+     echo "<td>";
+    echo "in Years";
+    echo "</td>";
     echo "</p>";
 
-    echo "<p>";
+  /*  echo "<p>";
     echo "<tr><td>";
     echo form_label('Program Creator Id', 'prgcrtid');
     echo"</td><td>";
     echo form_input($prgcreatorid);
     echo "</td>";
-    echo "</p>";
+    echo "</p>";*/
 
     echo "<p>";
-    echo "<tr><td>";
+    echo "<tr>";
+    echo "<td> </td>";
+    echo "<td>";
     echo form_hidden('prg_id', $prgid);
     echo form_submit('submit', 'Update');
-    echo"</td>";
+    echo "</td>";
+    echo "</tr>";
     echo "</p>";
     echo "</table>";
 ?>

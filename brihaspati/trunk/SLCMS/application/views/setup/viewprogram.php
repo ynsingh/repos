@@ -69,6 +69,8 @@
 	<thead>
 	    <tr align="center">
 		<th>No</th>
+                <th>Campus Name</th>
+                <th>Department Name</th>
 		<th>Program Category</th>
 		<th>Program Name</th>
 		<th>Program Branch</th>
@@ -76,11 +78,11 @@
 		<th>Program Code</th>
 		<th>Program Short</th>
 		<th>Program Description</th>
-		<th>Program Min Time</th>
-		<th>Program Max Time</th>
-		<th>Creator Name</th>
-		<th>Creatoion Date</th>
-		<th>Edit/Delete</th>
+		<th>Program Min Time (Years)</th>
+		<th>Program Max Time (Years)</th>
+		<!--<th>Creator Name</th>
+		<th>Creatoion Date</th>-->
+		<th>Action</th>
     <!--<td><strong>No</strong></td><td><strong>Program Category</strong></td><td><strong>Program Name</strong></td><td><strong>Program Branch</strong></td> <td><strong>Seat Available</strong></td><td><strong>Program Code</strong></td><td><strong>Program Short</strong></td><td><strong>Program Description</strong></td><td><strong>Program Min Time</strong></td><td><strong>Program Max Time</strong></td><td><strong>Creator Name</strong></td><td><strong>Creatoion Date</strong></td><td><strong>Edit/Delete</strong></td> -->
     	</tr> 
 	</thead>
@@ -93,6 +95,8 @@
     ?>
             <tr align='center'>
             <td><?php echo $count;?></td>
+            <td><?php echo $this->common_model->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;?></td>
+            <td><?php echo $this->common_model->get_listspfic1('Department','dept_name','dept_id',$row->prg_deptid)->dept_name;?></td>
             <td><?php echo $row->prg_category;?></td>
             <td><?php echo $row->prg_name;?></td>
             <td><?php echo $row->prg_branch;?></td>
@@ -102,9 +106,10 @@
             <td><?php echo $row->prg_desc;?></td>
             <td><?php echo $row->prg_mintime;?></td>
             <td><?php echo $row->prg_maxtime;?></td>
-            <td><?php echo $row->creatorid;?></td>
-            <td><?php echo $row->createdate;?></td>
-            <td><?php echo anchor('setup/editprogram/' . $row->prg_id , "Edit", array('title' => 'Edit Program', 'class' => 'red-link'));echo " | "?> <?php echo anchor('setup/deleteprogram/' . $row->prg_id , "Delete", array('title' => 'Delete Program', 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')"));?>
+           <!-- <td><?php //echo $row->creatorid;?></td>
+            <td><?php //echo $row->createdate;?></td>-->
+            <td><?php echo anchor('setup/editprogram/' . $row->prg_id , "Edit", array('title' => 'Edit Program', 'class' => 'red-link'));?>
+             <?php echo anchor('setup/deleteprogram/' . $row->prg_id , "Delete", array('title' => 'Delete Program', 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')"));?>
             </td>
     <?php        
          }?>  

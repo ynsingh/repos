@@ -63,55 +63,90 @@
 
     <form action="<?php echo site_url('setup/program');?>" method="POST" class="form-inline">
     <table style="margin-left:30px;">
-    <tr><td>
-        <label for="prgcat">Program Category</label></td>
-        <td><input type="text" name="prgcat"/>
-        </td><td><?php echo form_error('prgcat')?>
-	</td><td>Example : UG, PG, R, Dip etc
-    </td></tr> 
+    <tr>
+        <td><label for="prgcampus">Select Campus</label></td>
+        <td>
+            <select name="prgcampus">
+        	<option value=""disabled selected>--------------Select Campus------------</option>
+                <?php foreach($this->scresult as $datas): ?>	
+                    <option value="<?php echo $datas->sc_id; ?>"><?php echo $datas->sc_name; ?></option>
+		<?php endforeach; ?>
+	    </select>          
+        <td>
+        
+    </tr>
+    <tr>
+        <td><label for="prgdepartment">Select Depatment</label></td>
+         <td>
+            <select name="prgdepartment">
+        	<option value=""disabled selected>--------------Select Department----------</option>
+                <?php foreach($this->deptresult as $deptdata): ?>	
+                    <option value="<?php echo $deptdata->dept_id; ?>"><?php echo $deptdata->dept_name; ?></option>
+		<?php endforeach; ?>
+	    </select>          
+        <td>
+        
+    </tr> 
+    <tr>
+        <td><label for="prgcat">Program Category</label></td>
+        <td>
+            <select name="prgcat">
+                <option value=""disabled selected>--------------Select Category------------</option>
+                <option value="Under Graduate" class="dropdown-item">Under Graduate</option>
+                <option value="Post Graduate" class="dropdown-item">Post Graduate</option>
+                <option value="Research" class="dropdown-item">Research</option>
+                <option value="Diploma Course" class="dropdown-item">Diploma Course</option>
+            </select>    
+        </td>
+           <!-- <input type="text" name="prgcat" size="35"/>-->
+        <td><?php echo form_error('prgcat')?></td>
+	<!--<td>Example : UG, PG, R, Dip etc</td>-->
+    </tr> 
     <tr><td>
         <label for="prgname">Program Name</label></td>
-        <td><input type="text" name="prgname" />
+        <td><input type="text" name="prgname" size="35"/>
         </td><td><?php echo form_error('prgname')?>
 	</td><td>Example : Batchlor of Art, Master of Art etc  
     </td></tr>
     <tr><td>
         <label for="prgbranch">Program Branch</label></td>
-        <td><input type="text" name="prgbranch" />
+        <td><input type="text" name="prgbranch" size="35"/>
         </td><td><?php echo form_error('prgbranch')?>
 	</td><td>Example : Physics, Math  etc
     </td></tr>
     <tr><td>
         <label for="prgseat">Total Seat</label></td>
-        <td><input type="text" name="prgseat" />
+        <td><input type="text" name="prgseat" size="35"/>
         </td><td><?php echo form_error('prgseat')?>
     </td></tr>
 
     <tr><td>
         <label for="prgcode">Program Code</label></td>
-        <td><input type="text" name="prgcode" />
+        <td><input type="text" name="prgcode" size="35"/>
         </td><td><?php echo form_error('prgcode')?>
     </td></tr>
     <tr><td>
         <label for="prgshort">Program Short</label></td>
-        <td><input type="text" name="prgshort" />
+        <td><input type="text" name="prgshort" size="35"/>
         </td><td><?php echo form_error('prgshort')?>
     </td></tr>
     <tr><td>
         <label for="prgdesc">Program Description</label></td>
-        <td><input type="text" name="prgdesc" />
+        <td><input type="text" name="prgdesc" size="35"/>
         </td><td><?php echo form_error('prgdesc')?>
     </td></tr>
-    <tr><td>
-        <label for="prgmintime">Program Min Time</label></td>
-        <td><input type="text" name="prgmintime" />
-        </td><td><?php echo form_error('prgmintime')?>
-    </td></tr>
-    <tr><td>
-        <label for="prgmaxtime">Program Max Time</label></td>
-        <td><input type="text" name="prgmaxtime" />
-        </td><td><?php echo form_error('prgmaxtime')?>
-    </td></tr>
+    <tr>
+        <td><label for="prgmintime">Program Min Time</label></td>
+        <td><input type="text" name="prgmintime" size="35"/>
+        </td><td><?php echo form_error('prgmintime')?></td>
+        <td>in Years</td>
+    </tr>
+    <tr>
+        <td><label for="prgmaxtime">Program Max Time</label></td>
+        <td><input type="text" name="prgmaxtime" size="35"/>
+        </td><td><?php echo form_error('prgmaxtime')?></td>
+         <td>in Years</td>
+    </tr>
 <!--    <tr><td>
         <label for="prgcrtid">Program Creator Id</label></td>
         <td><input type="text" name="prgcrtid" />
@@ -122,10 +157,10 @@
         <input type="submit" name="submit" value="Add Program">
     </td></tr>
 -->
-    <tr>
+    <tr><td></td>
     <td colspan="2">   
         <button name="program" >Submit</button>
-        <button name="reset" >Reset</button>
+        <button name="reset" >Clear</button>
     </td>
     </tr>
     </table>

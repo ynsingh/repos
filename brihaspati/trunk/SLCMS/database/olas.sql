@@ -281,6 +281,8 @@ INSERT INTO `org_profile` (`org_id`, `org_code`, `org_name`, `org_nickname`, `or
 
 CREATE TABLE `program` (
   `prg_id` int(11) NOT NULL,
+  `prg_scid`  INT(11) NOT NULL,
+  `prg_deptid`  INT(11) NOT NULL,
   `prg_category` varchar(255) NOT NULL,
   `prg_name` varchar(255) NOT NULL,
   `prg_branch` varchar(255) NOT NULL,
@@ -295,7 +297,6 @@ CREATE TABLE `program` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `program_subject_teacher`
 --

@@ -266,9 +266,13 @@ class Setup extends CI_Controller
 
     public function program() 
     {
+        $this->scresult = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
+        $this->deptresult = $this->common_model->get_listspfic2('Department','dept_id', 'dept_name');
         $data['title'] = 'Add program';
         if(isset($_POST['program'])) 
         {
+            $this->form_validation->set_rules('prgcampus','Campus','trim|xss_clean|required');
+            $this->form_validation->set_rules('prgdepartment','Department','trim|xss_clean|required');
             $this->form_validation->set_rules('prgcat','Program Category','trim|xss_clean|required');
             $this->form_validation->set_rules('prgname','Program Name','trim|xss_clean|required');
             $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean|required');
@@ -279,6 +283,9 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('prgmaxtime','Program Min Time','trim|xss_clean|required|numeric');
             $this->form_validation->set_rules('prgmintime','Program Max Time','trim|xss_clean|required|numeric');
 
+            
+            $prgcampus = $this->input->post('prgcampus');
+            $prgdepartment = $this->input->post('prgdepartment');
             $prgcat = $this->input->post('prgcat');
             $prgname = $this->input->post('prgname');
             $prgseat = $this->input->post('prgseat');
@@ -292,13 +299,13 @@ class Setup extends CI_Controller
             $currdate = date("Y/m/d");
             $prgdate  = $currdate;
 
-            /* check for duplicate record*/
+            /* check for duplicate record
             $result = $this->common_model->isduplicate('program','prg_category',$prgcat);
             if($result == 1)
             {
                 $this->session->set_flashdata('error','Program category <b>' .$prgcat . '</b> already exist' );
                 redirect('setup/program');
-            }
+            }*/
 
         }
 
@@ -309,7 +316,21 @@ class Setup extends CI_Controller
         }
         else
         {
-            $data = array('prg_category'=>$prgcat,'prg_name'=>$prgname,'prg_branch'=>$prgbranch,'prg_seat'=>$prgseat,'prg_code'=>$prgcode,'prg_short'=>$prgshort,'prg_desc'=>$prgdesc,'prg_mintime'=>$prgmintime,'prg_maxtime'=>$prgmaxtime,'creatorid'=>$prgcrtid,'createdate'=>$prgdate);
+            $data = array(
+                'prg_scid'=>$prgcampus,
+                'prg_deptid'=>$prgdepartment,
+                'prg_category'=>ucwords(strtolower($prgcat)),
+                'prg_name'=>ucwords(strtolower($prgname)),
+                'prg_branch'=>ucwords(strtolower($prgbranch)),
+                'prg_seat'=>$prgseat,
+                'prg_code'=>strtoupper($prgcode),
+                'prg_short'=>strtoupper($prgshort),
+                'prg_desc'=>$prgdesc,
+                'prg_mintime'=>$prgmintime,
+                'prg_maxtime'=>$prgmaxtime,
+                'creatorid'=>$prgcrtid,
+                'createdate'=>$prgdate
+            );
             $this->db->trans_start();
             if(!$this->db->insert('program',$data))
             {
@@ -356,8 +377,23 @@ class Setup extends CI_Controller
         $program_data = $program_data_q->row();
 
         /* Form Field */
-
-        $data['prgcat'] = array('name' => 'prgcat','id' => 'prgcat','maxlength' => '100','size' => '40','value' => $program_data->prg_category,'',);
+        
+        $data['prgcampus'] = array(
+            'name' => 'prgcampus',
+            'id' => 'prgcampus',
+            'size' => '35',
+            'value' => $this->common_model->get_listspfic1('study_center','sc_name','sc_id',$program_data->prg_scid)->sc_name,
+            'readonly'=>'true',
+            );
+        $data['prgdepartment'] = array(
+            'name' => 'prgdepartment',
+            'id' => 'prgdepartment',
+            'size' => '40',
+            'value' => $this->common_model->get_listspfic1('Department','dept_name','dept_id',$program_data->prg_deptid)->dept_name,
+            'readonly'=>'true',
+            );
+        
+        $data['prgcat'] = array('name' => 'prgcat','id' => 'prgcat','maxlength' => '100','size' => '40','value' => $program_data->prg_category,'readonly'=>'true');
         $data['prgname'] = array('name' => 'prgname','id' => 'prgname','maxlength' => '100','size' => '40','value' => $program_data->prg_name,'',);
         $data['prgbranch'] = array('name' => 'prgbranch','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_branch,'',);
         $data['prgseat'] = array('name' => 'prgseat','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_seat,'',);
@@ -385,7 +421,9 @@ class Setup extends CI_Controller
 
         if($_POST)
         {
-            $data['prgcat']['value'] = $this->input->post('prgcat', TRUE);
+           // $data['prgcampus']['value'] = $this->input->post('prgcampus', TRUE);
+            //$data['prgdepartment']['value'] = $this->input->post('prgdepartment', TRUE);
+           // $data['prgcat']['value'] = $this->input->post('prgcat', TRUE);
             $data['prgname']['value'] = $this->input->post('prgname', TRUE);
             $data['prgbranch']['value'] = $this->input->post('prgbranch', TRUE);
             $data['prgseat']['value'] = $this->input->post('prgseat', TRUE);
@@ -402,6 +440,8 @@ class Setup extends CI_Controller
         {
             //echo $data['prgcat'];
             //echo $data_prgcat;
+            $data_prgcampus = $this->input->post('prgcampus', TRUE);
+            $data_prgdepartment = $this->input->post('prgdepartment', TRUE);
             $data_prgcat = $this->input->post('prgcat', TRUE);
             $data_prgname = $this->input->post('prgname', TRUE);
             $data_prgbranch = $this->input->post('prgbranch', TRUE);
@@ -439,7 +479,19 @@ class Setup extends CI_Controller
             /* update program records*/
 
             $this->db->trans_start();
-            $update_prgdata = array('prg_category' => $data_prgcat,'prg_name' => $data_prgname,'prg_branch' => $data_prgbranch,'prg_seat' => $data_prgseat,'prg_code' => $data_prgcode,'prg_short' => $data_prgshort,'prg_desc' => $data_prgdesc,'prg_mintime' => $data_prgmintime, 'prg_maxtime' => $data_prgmaxtime);
+            $update_prgdata = array(
+//                'prg_scid' => $program_data->prg_scid,
+  //              'prg_deptid' => $program_data->prg_deptid,
+               // 'prg_category' => ucwords(strtolower($data_prgcat)),
+                'prg_name' => ucwords(strtolower($data_prgname)),
+                'prg_branch' => ucwords(strtolower($data_prgbranch)),
+                'prg_seat' => $data_prgseat,
+                'prg_code' => strtoupper($data_prgcode),
+                'prg_short' => strtoupper($data_prgshort),
+                'prg_desc' => $data_prgdesc,
+                'prg_mintime' => $data_prgmintime,
+                'prg_maxtime' => $data_prgmaxtime
+            );
 
             if (!$this->db->where('prg_id', $data_prgid)->update('program', $update_prgdata))
             {
