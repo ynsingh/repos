@@ -26,6 +26,36 @@ class User_model extends CI_Model
 	return $this->db->get('role')->row();
     }
 
+    public function getcurrentAcadYear(){
+	    // get the current year
+		$cyear = date("Y");
+	   //  get the current month
+		$cmonth = date('m');
+		//  generate academic yaer
+		if($cmonth>6){
+			$current= $cyear.'-'.($cyear+1); 
+		}
+		if($cmonth<7){
+			$current= ($cyear-1).'-'.$cyear; 
+		}
+		return $current;
+    }
+
+
+    public function getcurrentSemester(){
+	    //  get the current month
+		$cmonth = date('m');
+	    //  generate current semester(even-jan/odd-july)
+		if($cmonth>6){
+         	$current= "Odd" ;
+        }
+   	if($cmonth<7){
+                $current= "Even";
+        }
+		return $current;
+    }
+
+
     function __destruct() {
         $this->db->close();
     }

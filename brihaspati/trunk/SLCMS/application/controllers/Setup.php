@@ -43,7 +43,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('emailport','Emailport','trim|xss_clean|required|min_length[2]|max_length[5]|is_numeric',
                 array ('required' => 'insert numeric value only'));
             $this->form_validation->set_rules('username','Username','trim|xss_clean|required');
-            $this->form_validation->set_rules('usrpass','Password','trim|xss_clean|required|alpha_numeric');
+            $this->form_validation->set_rules('password','Password','trim|xss_clean|required|alpha_numeric');
             $this->form_validation->set_rules('sendername','Sendername','trim|xss_clean|required');
             //if form validation true
             if($this->form_validation->run()==TRUE){
@@ -53,7 +53,7 @@ class Setup extends CI_Controller
                     'emailhost'=>$_POST['emailhost'],
                     'emailport'=>$_POST['emailport'],
                     'username'=>$_POST['username'],
-                    'password'=>$_POST['usrpass'],
+                    'password'=>$_POST['password'],
                     'sendername'=>$_POST['sendername'],
                     'creatorid'=> $this->session->userdata('username'),  
                     'createdate'=>date('y-m-d'),
@@ -1511,13 +1511,13 @@ class Setup extends CI_Controller
          /*Form Validation*/
 
 
-	  	$this->form_validation->set_rules('program','Program Name','trim|xss_clean');
-                $this->form_validation->set_rules('acadyear','Academic Year','trim|alpha_numeric_spaces|xss_clean');
-                $this->form_validation->set_rules('semester','Semester','trim|xss_clean');
-                $this->form_validation->set_rules('category','Category','trim|xss_clean');
-                $this->form_validation->set_rules('gender','Gender','trim|xss_clean');
-                $this->form_validation->set_rules('head','Head','trim|xss_clean');
-                $this->form_validation->set_rules('amount','Amount','trim|xss_clean|is_natural_no_zero');
+	  	$this->form_validation->set_rules('program','Program Name','trim|xss_clean|required');
+                $this->form_validation->set_rules('acadyear','Academic Year','trim|alpha_numeric_spaces|xss_clean|required');
+                $this->form_validation->set_rules('semester','Semester','trim|xss_clean|required');
+                $this->form_validation->set_rules('category','Category','trim|xss_clean|required');
+                $this->form_validation->set_rules('gender','Gender','trim|xss_clean|required');
+                $this->form_validation->set_rules('head','Head','trim|xss_clean|required');
+                $this->form_validation->set_rules('amount','Amount','trim|xss_clean|is_natural_no_zero|required');
                // $this->form_validation->set_rules('installment','Installment','trim|xss_clean|numeric');
                 $this->form_validation->set_rules('descripation','Description','trim|xss_clean');
 

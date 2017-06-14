@@ -1,4 +1,22 @@
 
+SLCMS  Version 1.0 2017-06-06
+-----------------------------
+    * Update mail send and put the check for empty record. - NKS
+    * Role Page added, teacher functionality menu added. - Manorama
+
+SLCMS  Version 1.0 2017-06-05
+-----------------------------
+    * Mapping of program, subject and paper - functionality added. - Sharad
+
+SLCMS  Version 1.0 2017-06-03
+-----------------------------
+    * Admin GUI updated. - Raju
+    * adding one function for check duplicate with as many as field . NKS
+
+SLCMS  Version 1.0 2017-06-01
+-----------------------------
+    * help documentation and links on pages added. - Deepika
+
 SLCMS  Version 1.0 2017-05-31
 -----------------------------
     * Student menu updated. - NKS
