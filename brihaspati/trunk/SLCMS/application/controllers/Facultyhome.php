@@ -14,6 +14,7 @@ class Facultyhome extends CI_Controller
         parent::__construct();
         $this->load->model("Login_model", "login");
         $this->load->model("Common_model", "cmodel");
+        $this->load->model("User_model", "usrmodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('welcome');
@@ -36,7 +37,17 @@ class Facultyhome extends CI_Controller
         $this->orgname=$this->cmodel->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);
         $this->dptid=$this->cmodel->get_depid('user_role_type',$this->session->userdata('id_user'),2);
         $this->deptname=$this->cmodel->get_listspfic1('Department','dept_name','dept_id',$this->dptid->deptid);
-	$this->load->view('facultyhome');
+        /*get course Detail*/
+        $selectfield=array('pstp_prgid','pstp_subid','pstp_papid','pstp_acadyear','pstp_sem');
+        $this->admcyear=$this->usrmodel->getcurrentAcadYear();
+        $data=array(
+            'pstp_scid' =>$this->campusid,
+            'pstp_teachid' => $this->session->userdata('id_user'),
+            'pstp_acadyear' => $this->admcyear
+           
+        );
+        $this->cdetail=$this->cmodel->get_listspficemore('program_subject_teacher',$selectfield,$data);
+        $this->load->view('facultyhome');
     }
  
 }

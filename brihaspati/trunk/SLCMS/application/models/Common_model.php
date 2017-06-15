@@ -206,7 +206,16 @@ class Common_model extends CI_Model
         $this->db->select('deptid')->from('user_role_type')->where('userid',$userid)->where('roleid',$roleid);
 	return $this->db->get()->row();
     }
-
+    
+    public function get_listspficemore($tbname,$selectfield,$data){
+	$this->db->flush_cache();
+	$this->db->from($tbname);
+        $this->db->select($selectfield);
+        $this->db->where($data);
+        return $this->db->get()->result();
+    
+    }
+    
     function __destruct() {
         $this->db->close();
     }

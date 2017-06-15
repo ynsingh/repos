@@ -102,7 +102,7 @@
                 <li><a href="<?php echo site_url(); ?>/facultyhome">Dashboard</a></li>
                 <li class="dropdown list-category"><a href="#">Subject</a>
                     <ul class="dropdown-menu mega-dropdown-menu" style="background-color:#2a8fcf;">
-                    <li><a href="#">Subject List with Program</a></li>
+                    <li><a href="<?php echo site_url(); ?>/SubprgList/subjectlist">Subject List with Program</a></li>
                     <li><a href="#">Choose Subject Paper for Academic year and Semester</a></li>    
                     </ul>
                 </li>
