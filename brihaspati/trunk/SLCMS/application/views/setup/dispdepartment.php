@@ -55,7 +55,7 @@
           <table cellpadding="16" style="margin-left:30px;" class="TFtable">
           <thead>
           <tr align="center">
-       <th>University Name</th><th>Campus Name</th><th>School Code</th><th>School Name</th><th>Department Code</th><th>Department Name</th><th>Department Nike Name</th><th>Department Description</th><th>Action</th><th></th></tr></thead>
+       <th>University Name</th><th>Campus Name</th><th>School/Faculty Code</th><th>School/Faculty Name</th><th>Department Code</th><th>Department Name</th><th>Department Nike Name</th><th>Department Description</th><th>Action</th><th></th></tr></thead>
                  <?php
                     foreach ($this->deptresult as $row)
                     {

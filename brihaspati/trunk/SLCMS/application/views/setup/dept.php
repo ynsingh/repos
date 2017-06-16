@@ -78,13 +78,13 @@
 			</select>   
 			</td></tr>                       
           		<tr>  
-                                <td><label>School Code:</label></td>
+                                <td><label>School/Faculty Code:</label></td>
                                 <td><input type="text"placeholder="School Code" name="dept_schoolcode"  size="33" /></td> 
                                 <td><?php echo form_error('dept_schoolcode')?></td>
                                  <td>Example: Sbs</td>
                             </tr>
                             <tr> 
-                                <td><label>School Name:</label></td>
+                                <td><label>School/Faculty Name:</label></td>
                                 <td><input type="text"placeholder="School Name"name="dept_schoolname"  size="33"  /> </td>
                                 <td><?php echo form_error('dept_schoolname')?></td> 
                                <td>Example: School of basic science  </td>

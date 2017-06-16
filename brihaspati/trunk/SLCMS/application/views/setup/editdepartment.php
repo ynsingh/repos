@@ -93,7 +93,7 @@
        
             echo "<tr>";
                 echo "<td>";
-                echo form_label('School Code', 'deptschoolcode');
+                echo form_label('School/Faculty Code', 'deptschoolcode');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($deptschoolcode);
@@ -104,7 +104,7 @@
             echo "</tr>";
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('School Name', 'deptschoolname');
+                    echo form_label('School/Faculty Name', 'deptschoolname');
                     
                 echo "</td>";
                 echo "<td>";

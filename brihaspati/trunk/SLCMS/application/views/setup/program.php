@@ -90,6 +90,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
                 <option value="Post Graduate" class="dropdown-item">Post Graduate</option>
                 <option value="Research" class="dropdown-item">Research</option>
                 <option value="Diploma Course" class="dropdown-item">Diploma Course</option>
+                <option value="Certificate Course" class="dropdown-item">Certificate Course</option>
             </select>    
         </td>
            <!-- <input type="text" name="prgcat" size="35"/>-->
