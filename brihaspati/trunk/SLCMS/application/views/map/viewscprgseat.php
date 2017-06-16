@@ -15,17 +15,6 @@
         
     </head>    
     <body>
-			<?php
-
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#ViewStudyCenterandProgramwithSeat";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?>
         
     
         <!--<//?php
@@ -46,10 +35,13 @@
             echo "</table>";
         ?>-->
         <!-- </br>   --> 
-        <table style="margin-left:30px;"> 
+        <table style="margin-left:7px;"> 
            
             <tr colspan="2"><td> 
-                 <?php echo anchor('map/mapscprgseat/', "Map Campus Program Seat ", array('title' => 'Add Detail' , 'class' => 'top_parent'));?>
+                 <?php echo anchor('map/mapscprgseat/', "Map Campus Program Seat ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
+		 $help_uri = site_url()."/help/helpdoc#ViewStudyCenterandProgramwithSeat";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+		 ?>
                 <div  style="width:1700px;">
   
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -113,7 +105,7 @@
                      </tr>
                 <?php }; ?>
             <?php else : ?>  
-                  <td colspan= "7" align="center"> No Records found...!</td>
+                  <td colspan= "10" align="center"> No Records found...!</td>
             <?php endif;?> 
                   
                     

@@ -12,25 +12,15 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 	
 </head>    
  <body>
-		 <?php   
-
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#ViewCategaryDetail";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?>
-
-   <table style="padding: 8px 8px 8px 10px;">
+<table style="margin-left:8px;">
      <tr colspan="2"><td>
       <div align=left">
-	<font color=blue size=4pt>
          <?php
             echo anchor('setup/category/', 'Add Category', array('class' => 'top_parent'));
+	    $help_uri = site_url()."/help/helpdoc#ViewCategaryDetail";
+	     echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:79%\">Click for Help</b></a>";
          ?>
+
 	</div>
        </div>
        <div style="margin-left:20px;width:1700px;">

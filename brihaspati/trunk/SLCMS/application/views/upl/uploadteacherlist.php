@@ -15,11 +15,11 @@
 
 	</div>
 		   <?php
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#UploadTeacherList";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
+		    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:15px;margin-left:43%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";

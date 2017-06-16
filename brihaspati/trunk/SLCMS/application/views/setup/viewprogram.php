@@ -8,18 +8,6 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 </div>
 
- <?php   
-
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#ViewProgramandseatDetail";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?>
-
 <?php
 /*
     echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
@@ -44,7 +32,10 @@
 <div align="left">
 <table style="margin-left:10px;">
 <tr><td>
-<?php echo anchor('setup/program/', "Add Program", array('title' => 'Add Program' , 'class' => 'top_parent'));?>
+<?php echo anchor('setup/program/', "Add Program", array('title' => 'Add Program' , 'class' => 'top_parent'));
+$help_uri = site_url()."/help/helpdoc#ViewProgramandseatDetail";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:80%\">Click for Help</b></a>";
+?>
 </td></tr>
 </table>
 </div>

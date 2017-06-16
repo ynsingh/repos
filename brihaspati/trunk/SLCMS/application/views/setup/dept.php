@@ -30,25 +30,16 @@
             echo "</table>";
          
 	?>-->
- <?php   
 
-	echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-        echo "<tr valign=\"top\">";
-        echo "<td>";
-        $help_uri = site_url()."/help/helpdoc#Department";
-        echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
-?>
-
-      	<table>  
-	        <font size=4pt> 
-  	        <div style="margin-left:20px; width:200px;">
-  		        <?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); ?>
+      	<table>
+		<tr colspan="2"><td>  
+  	        <div style="margin-left:36px">
+  		<?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); 
+		$help_uri = site_url()."/help/helpdoc#Department";
+                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+		?>
 		</div>
-               	</font>
- 		
+ 		</tr></td>
 	   	<tr colspan="2"><td>    
                 <div align="left" style="margin-left:50px;width:1700px;">
        

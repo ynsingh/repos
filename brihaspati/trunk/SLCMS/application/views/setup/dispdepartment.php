@@ -13,17 +13,6 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>    
     <body>
- <?php   
-
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?>
 
        <!-- <?//php
            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
@@ -42,11 +31,13 @@
             echo "</tr>";
             echo "</table>";
         ?>-->
-      <table> 
-           <font color=0 size=4pt> 
-  	   <div style="margin-left:-10px; width:200px;">
-	   <?php echo anchor('setup/dept','Add Department',array( 'class' => 'top_parent' ,'title'=>'Add Detail')); ?>
-
+	   <table style="margin-left:8px;">
+	    <tr colspan="2"><td>
+  	   <div>
+	   <?php echo anchor('setup/dept','Add Department',array( 'class' => 'top_parent' ,'title'=>'Add Detail')); 
+	   $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
+           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:78%\">Click for Help</b></a>";
+           ?>
             <tr colspan="2"><td>    
                 <div  style="margin-left:30px;width:1700px;">
                 <?php echo validation_errors('<div style="margin-left:50px;" class="isa_warning>','</div>');?>

@@ -11,24 +11,14 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-		   <?php
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#ViewProgramFeeswithHead";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?>
-
-
         <table style="margin-left:10px;">
 
             <tr colspan="2"><td>
 	     <?php
-        	  echo anchor('setup/fees/', "Add Program Fees with Head ",array('title' => 'fees Configuration Detail ' , 'class' => 'top_parent'));
-            ?>
+        	 echo anchor('setup/fees/', "Add Program Fees with Head ",array('title' => 'fees Configuration Detail ' , 'class' => 'top_parent'));
+		 $help_uri = site_url()."/help/helpdoc#ViewProgramFeeswithHead";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:71%\">Click for Help</b></a>";
+            	?>
 
 
             <div  style="margin-left:-06px;width:1793px;">
@@ -87,7 +77,7 @@
                         </tr>
                     <?php }; ?>
                 <?php else : ?>
-                    <td colspan= "7" align="center"> No Records found...!</td>
+                    <td colspan= "10" align="center"> No Records found...!</td>
                 <?php endif;?>
 
             </tbody>

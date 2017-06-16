@@ -16,16 +16,6 @@
     </head>    
     <body>
        
-		   <?php
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#MapStudyCenterandProgramwithSeat";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?>
         <!--<//?php
            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -50,8 +40,11 @@
             <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
  
             <tr colspan="2"><td>  
-                <div style="margin-left:30px;">    
-                <?php echo anchor('map/viewscprgseat/', "Campus Program Seat List ", array('title' => 'View Detail' , 'class' => 'top_parent'));?>
+                <div style="margin-left:31px;">    
+                <?php echo anchor('map/viewscprgseat/', "Campus Program Seat List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
+		$help_uri = site_url()."/help/helpdoc#MapStudyCenterandProgramwithSeat";
+		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+		?>
                 </div>
                 <div align="left" style="margin-left:30px;width:1700px;">
                  

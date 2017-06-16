@@ -14,24 +14,13 @@
 
         <?php $this->load->view('template/menu'); ?>
 </div>
- <?php
-
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#ProgramFees";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?>
-
-
-	 <table>
-                <font size=4pt>
-                <div style="margin-left:; width:300px;">
-                <?php echo anchor('setup/displayfees',' Program Fees with Head List',array('title'=>'View Detail','class' => 'top_parent'  )); ?>
-                </font>
+<table style="margin-left:10px;">
+           	<tr colspan="2"><td>
+                <?php echo anchor('setup/displayfees',' Program Fees with Head List',array('title'=>'View Detail','class' => 'top_parent'  )); 
+		$help_uri = site_url()."/help/helpdoc#ProgramFees";
+		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+		?>
+</tr></td>
 
         	<div>
              	<tr colspan="2"><td>
@@ -48,7 +37,7 @@
 
                 </div>
             </td></tr>
-
+</table>
      <form action="<?php echo site_url('setup/fees');?>" method="POST" class="form-inline">
 
 
@@ -105,7 +94,7 @@
                         <td>Gender :</td>
                         <td>
                         <select name="gender" id="" class="my_dropdown" style="width:100%;">
-                        <option value="" disabled selected >------Select Semester------</option>
+                        <option value="" disabled selected >------Select Gender------</option>
                         <option value="Male" class="dropdown-item">Male</option>
                         <option value="Female" class="dropdown-item">Female</option>
                         <option value="Transgender" class="dropdown-item">Transgender</option>

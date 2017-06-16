@@ -10,16 +10,6 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">    
     </head>    
     <body>
-		   <?php
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?>
 
         <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
@@ -41,16 +31,18 @@
         ?-->
    
         </br>    
-        <table style="margin-left:30px;"> 
+        <table style="margin-left:8px;"> 
      
             <tr colspan="2"><td>  
             <?php
                 if(count($this->result) == 0){
                     echo anchor('setup/emailsetting/', "Add Email Setting" ,array('title' => ' Add Email Configuration Detail ' , 'class' => 'top_parent'));
+                    $help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
                 }
             ?>
         
-            <div  style="margin-left:30px;width:1700px;">
+            <div  style="margin-left:-9px;width:1700px;">
   
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 

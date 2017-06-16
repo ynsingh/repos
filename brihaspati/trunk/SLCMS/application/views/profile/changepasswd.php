@@ -1,3 +1,8 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<!--@name changepasswd.php 
+  @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
+ -->
+
 <html>
     <head>  
         <title>Change Password</title>  
@@ -19,11 +24,11 @@
             echo "</table>";
 ?-->
  		    <?php
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
+                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#ChangePassword";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
+		    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:15px;margin-left:43%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
@@ -48,11 +53,11 @@
                 </div>
             </td>
      </tr> 
+</table>
 <tr>  
                 <div style="margin-left:30px;margin-top:-18px"> 
-                <br/>    
-       
-                    <form action="<?php echo site_url('profile/changepasswd');?>" method="POST" class="form-inline">
+                <br>    
+                           <form action="<?php echo site_url('profile/changepasswd');?>" method="POST" class="form-inline">
                         <table style="margin-left:30px;">
                             <tr>  
                                 <td><label for="oldpassword" class="control-label"><b>Old Password</b></label></td>
@@ -82,6 +87,7 @@
 
 </tr>
 </div>
+</form>
 </table>
 </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>

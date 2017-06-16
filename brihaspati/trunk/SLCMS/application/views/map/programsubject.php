@@ -47,7 +47,10 @@ echo "<body>";
 <div align="left">
 <table style="margin-left:10px;">
 <tr><td>
-<?php echo anchor('map/addprogramsubject/', " Add Subject Paper" ,array('title' => 'Subject List' , 'class' => 'top_parent'));?>
+<?php echo anchor('map/addprogramsubject/', " Add Subject Paper" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
+$help_uri = site_url()."/help/helpdoc#ViewSubjectPaperList";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+?>
 </td></tr>
 </table>
 </div>

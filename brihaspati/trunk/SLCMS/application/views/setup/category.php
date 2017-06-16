@@ -12,23 +12,13 @@
 	<?php $this->load->view('template/menu');?>
  </head>    
    <body>
-		 <?php
-                    echo "<table style=\"padding: 8px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#Category";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:20px;margin-right:-837%;margin-top:-2%\">Click for Help</b></a>";
-                    echo "</td>";
-                    echo "</tr>";
-                    echo "</table>";
-                    ?>
-
      <table> 
        <tr colspan="2"><td>
-   	<div style="margin-left:16px;" >
-    	<font color=blue size=4pt>
+   	<div style="margin-left:10px;" >
        	<?php
            echo anchor('setup/displaycategory', 'Category List', array('class' => 'top_parent'));
+	   $help_uri = site_url()."/help/helpdoc#Category";
+	   echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
        	?>
     	</font>
    	</div>
