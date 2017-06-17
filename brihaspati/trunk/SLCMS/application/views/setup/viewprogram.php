@@ -63,12 +63,13 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
                 <th>Campus Name</th>
                 <th>Department Name</th>
 		<th>Program Category</th>
+		<th>Program Pattern</th>
 		<th>Program Name</th>
 		<th>Program Branch</th>
-		<th>Seat Available</th>
 		<th>Program Code</th>
 		<th>Program Short</th>
 		<th>Program Description</th>
+		<th>Seat Available</th>
 		<th>Program Min Time (Years)</th>
 		<th>Program Max Time (Years)</th>
 		<!--<th>Creator Name</th>
@@ -89,12 +90,13 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
             <td><?php echo $this->common_model->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;?></td>
             <td><?php echo $this->common_model->get_listspfic1('Department','dept_name','dept_id',$row->prg_deptid)->dept_name;?></td>
             <td><?php echo $row->prg_category;?></td>
+            <td><?php echo $row->prg_pattern;?></td>
             <td><?php echo $row->prg_name;?></td>
             <td><?php echo $row->prg_branch;?></td>
-            <td><?php echo $row->prg_seat;?></td>
             <td><?php echo $row->prg_code;?></td>
             <td><?php echo $row->prg_short;?></td>
             <td><?php echo $row->prg_desc;?></td>
+            <td><?php echo $row->prg_seat;?></td>
             <td><?php echo $row->prg_mintime;?></td>
             <td><?php echo $row->prg_maxtime;?></td>
            <!-- <td><?php //echo $row->creatorid;?></td>

@@ -275,11 +275,12 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('prgdepartment','Department','trim|xss_clean|required');
             $this->form_validation->set_rules('prgcat','Program Category','trim|xss_clean|required');
             $this->form_validation->set_rules('prgname','Program Name','trim|xss_clean|required');
-            $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean|required');
+            $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean');
+            $this->form_validation->set_rules('prgpattern','Program Pattern','trim|xss_clean|required');
             $this->form_validation->set_rules('prgseat','Seat Available','trim|xss_clean|required|numeric');
             $this->form_validation->set_rules('prgcode','Program Code','trim|xss_clean|required');
             $this->form_validation->set_rules('prgshort','Program Short','trim|xss_clean|required');
-            $this->form_validation->set_rules('prgdesc','Program Description','trim|xss_clean|required');
+            $this->form_validation->set_rules('prgdesc','Program Description','trim|xss_clean');
             $this->form_validation->set_rules('prgmaxtime','Program Min Time','trim|xss_clean|required|numeric');
             $this->form_validation->set_rules('prgmintime','Program Max Time','trim|xss_clean|required|numeric');
 
@@ -290,6 +291,7 @@ class Setup extends CI_Controller
             $prgname = $this->input->post('prgname');
             $prgseat = $this->input->post('prgseat');
             $prgbranch = $this->input->post('prgbranch');
+            $prgpattern = $this->input->post('prgpattern');
             $prgcode = $this->input->post('prgcode');
             $prgshort = $this->input->post('prgshort');
             $prgdesc = $this->input->post('prgdesc');
@@ -322,6 +324,7 @@ class Setup extends CI_Controller
                 'prg_category'=>ucwords(strtolower($prgcat)),
                 'prg_name'=>ucwords(strtolower($prgname)),
                 'prg_branch'=>ucwords(strtolower($prgbranch)),
+                'prg_pattern'=>ucwords(strtolower($prgpattern)),
                 'prg_seat'=>$prgseat,
                 'prg_code'=>strtoupper($prgcode),
                 'prg_short'=>strtoupper($prgshort),
@@ -396,6 +399,7 @@ class Setup extends CI_Controller
         $data['prgcat'] = array('name' => 'prgcat','id' => 'prgcat','maxlength' => '100','size' => '40','value' => $program_data->prg_category,'readonly'=>'true');
         $data['prgname'] = array('name' => 'prgname','id' => 'prgname','maxlength' => '100','size' => '40','value' => $program_data->prg_name,'',);
         $data['prgbranch'] = array('name' => 'prgbranch','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_branch,'',);
+        $data['prgpattern'] = array('name' => 'prgpattern','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_pattern,'',);
         $data['prgseat'] = array('name' => 'prgseat','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_seat,'',);
         $data['prgcode'] = array('name' => 'prgcode','id' => 'prgcode','maxlength' => '100','size' => '40','value' => $program_data->prg_code,'',);
         $data['prgshort'] = array('name' => 'prgshort','id' => 'prgshort','maxlength' => '100','size' => '40','value' => $program_data->prg_short,'',);
@@ -409,11 +413,12 @@ class Setup extends CI_Controller
 
         $this->form_validation->set_rules('prgcat','Program Category','trim|xss_clean|required');
         $this->form_validation->set_rules('prgname','Program Name','trim|xss_clean|required');
-        $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean|required');
+        $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean');
+        $this->form_validation->set_rules('prgpattern','Program Pattern','trim|xss_clean');
         $this->form_validation->set_rules('prgseat','Seat Available','trim|xss_clean|required|numeric');
         $this->form_validation->set_rules('prgcode','Program Code','trim|xss_clean|required');
         $this->form_validation->set_rules('prgshort','Program Short','trim|xss_clean|required');
-        $this->form_validation->set_rules('prgdesc','Program Description','trim|xss_clean|required');
+        $this->form_validation->set_rules('prgdesc','Program Description','trim|xss_clean');
         $this->form_validation->set_rules('prgmaxtime','Program Min Time','trim|xss_clean|required|numeric');
         $this->form_validation->set_rules('prgmintime','Program Max Time','trim|xss_clean|required|numeric');
 
@@ -426,6 +431,7 @@ class Setup extends CI_Controller
            // $data['prgcat']['value'] = $this->input->post('prgcat', TRUE);
             $data['prgname']['value'] = $this->input->post('prgname', TRUE);
             $data['prgbranch']['value'] = $this->input->post('prgbranch', TRUE);
+            $data['prgpattern']['value'] = $this->input->post('prgpattern', TRUE);
             $data['prgseat']['value'] = $this->input->post('prgseat', TRUE);
             $data['prgcode']['value'] = $this->input->post('prgcode', TRUE);
             $data['prgshort']['value'] = $this->input->post('prgshort', TRUE);
@@ -445,6 +451,7 @@ class Setup extends CI_Controller
             $data_prgcat = $this->input->post('prgcat', TRUE);
             $data_prgname = $this->input->post('prgname', TRUE);
             $data_prgbranch = $this->input->post('prgbranch', TRUE);
+            $data_prgpattern = $this->input->post('prgpattern', TRUE);
             $data_prgseat = $this->input->post('prgseat', TRUE);
             $data_prgcode = $this->input->post('prgcode', TRUE);
             $data_prgshort = $this->input->post('prgshort', TRUE);
@@ -460,6 +467,8 @@ class Setup extends CI_Controller
                 $logmessage = $logmessage ." Program Name " .$program_data->prgname. " changed by " .$data_prgname;
             if($program_data->prg_branch != $data_prgbranch)
                 $logmessage = $logmessage ." Program Branch " .$program_data->prgbranch. " changed by " .$data_prgbranch;
+            if($program_data->prg_pattern != $data_prgpattern)
+                $logmessage = $logmessage ." Program Pattern " .$program_data->prgpattern. " changed by " .$data_prgpattern;
             if($program_data->prg_seat != $data_prgseat)
                 $logmessage = $logmessage ." Seat Available " .$program_data->prgseat. " changed by ". $data_prgseat;
             if($program_data->prg_short != $data_prgshort)
@@ -485,6 +494,7 @@ class Setup extends CI_Controller
                // 'prg_category' => ucwords(strtolower($data_prgcat)),
                 'prg_name' => ucwords(strtolower($data_prgname)),
                 'prg_branch' => ucwords(strtolower($data_prgbranch)),
+                'prg_pattern' => $data_prgpattern,
                 'prg_seat' => $data_prgseat,
                 'prg_code' => strtoupper($data_prgcode),
                 'prg_short' => strtoupper($data_prgshort),
@@ -566,9 +576,9 @@ class Setup extends CI_Controller
         $this->form_validation->set_rules('subname','Subject Name','trim|xss_clean|required');
         $this->form_validation->set_rules('subcode','Subject Code','trim|xss_clean|required');
         $this->form_validation->set_rules('subshort','Subject Short','trim|xss_clean|required');
-        $this->form_validation->set_rules('subdesc','Subject Description','trim|xss_clean|required');
-        $this->form_validation->set_rules('subext1','Subject Ext1','trim|xss_clean|required');
-        $this->form_validation->set_rules('subext2','Subject Ext2','trim|xss_clean|required');
+        $this->form_validation->set_rules('subdesc','Subject Description','trim|xss_clean');
+        $this->form_validation->set_rules('subext1','Subject Ext1','trim|xss_clean');
+        $this->form_validation->set_rules('subext2','Subject Ext2','trim|xss_clean');
 
         if($this->form_validation->run() == TRUE)
         {
@@ -629,9 +639,9 @@ class Setup extends CI_Controller
         $this->form_validation->set_rules('subname','Subject Name','trim|xss_clean|required');
         $this->form_validation->set_rules('subcode','Subject Code','trim|xss_clean|required');
         $this->form_validation->set_rules('subshort','Subject Short','trim|xss_clean|required');
-        $this->form_validation->set_rules('subdesc','Subject Description','trim|xss_clean|required');
-        $this->form_validation->set_rules('subext1','Subject Ext1','trim|xss_clean|required');
-        $this->form_validation->set_rules('subext2','Subject Ext2','trim|xss_clean|required');
+        $this->form_validation->set_rules('subdesc','Subject Description','trim|xss_clean');
+        $this->form_validation->set_rules('subext1','Subject Ext1','trim|xss_clean');
+        $this->form_validation->set_rules('subext2','Subject Ext2','trim|xss_clean');
 
         if($_POST)
         {
@@ -937,12 +947,12 @@ class Setup extends CI_Controller
                
                 $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
                 $this->form_validation->set_rules('studycenter','Campus','trim|xss_clean|required');
-                $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric|required');
-                $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric');
+                $this->form_validation->set_rules('dept_schoolname','School Name','trim|xss_clean');
                 $this->form_validation->set_rules('dept_code','Department Code','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_name','Department Name','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_short','Department Nick','trim|xss_clean|required|alpha_numeric');
-                $this->form_validation->set_rules('dept_descripation','Department Description','trim|xss_clean|required');
+                $this->form_validation->set_rules('dept_descripation','Department Description','trim|xss_clean');
                        
                 if($this->form_validation->run()==TRUE){
 
@@ -1083,12 +1093,12 @@ class Setup extends CI_Controller
         
        // $this->form_validation->set_rules('dept_orgcode','University','trim|xss_clean|required');
        // $this->form_validation->set_rules('dept_sccode','Campus','trim|xss_clean|required');
-        $this->form_validation->set_rules('deptschoolcode','School code','trim|xss_clean|required');
-        $this->form_validation->set_rules('deptschoolname','School name','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptschoolcode','School code','trim|xss_clean');
+        $this->form_validation->set_rules('deptschoolname','School name','trim|xss_clean');
         $this->form_validation->set_rules('deptcode','Department code','trim|xss_clean|required');
         $this->form_validation->set_rules('deptname','Department name','trim|xss_clean|required');
         $this->form_validation->set_rules('deptshort','Department nick','trim|xss_clean|required');
-        $this->form_validation->set_rules('deptdescription','Department description','trim|xss_clean|required');
+        $this->form_validation->set_rules('deptdescription','Department description','trim|xss_clean');
      
         /* Re-populating form */
         if ($_POST)

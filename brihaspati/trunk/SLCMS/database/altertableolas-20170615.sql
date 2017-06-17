@@ -1,4 +1,4 @@
-olas;
+use olas;
 
 CREATE TABLE `student_marks` (
   `smr_id` int(11) NOT NULL,

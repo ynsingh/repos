@@ -126,6 +126,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "<tr><td>";
     echo"<td>";
     echo form_submit('submit', 'Submit');
+    echo form_submit('reset', 'Clear');
     //echo form_button('submit', 'Submit');
     echo"</td></tr>";
     echo "</p>";

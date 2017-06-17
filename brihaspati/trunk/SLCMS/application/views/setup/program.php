@@ -97,6 +97,17 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         <td><?php echo form_error('prgcat')?></td>
 	<!--<td>Example : UG, PG, R, Dip etc</td>-->
     </tr> 
+	<tr>
+        <td><label for="prgpattern">Program Pattern</label></td>
+        <td>
+            <select name="prgpattern">
+                <option value=""disabled selected>--------------Select Pattern------------</option>
+                <option value="Yearly" class="dropdown-item">Yearly</option>
+                <option value="Semester" class="dropdown-item">Semester</option>
+            </select>
+        </td>
+        <td><?php echo form_error('prgpattern')?></td>
+    </tr>
     <tr><td>
         <label for="prgname">Program Name</label></td>
         <td><input type="text" name="prgname" size="35"/>
@@ -108,11 +119,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         <td><input type="text" name="prgbranch" size="35"/>
         </td><td><?php echo form_error('prgbranch')?>
 	</td><td>Example : Physics, Math  etc
-    </td></tr>
-    <tr><td>
-        <label for="prgseat">Total Seat</label></td>
-        <td><input type="text" name="prgseat" size="35"/>
-        </td><td><?php echo form_error('prgseat')?>
     </td></tr>
 
     <tr><td>
@@ -129,6 +135,11 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         <label for="prgdesc">Program Description</label></td>
         <td><input type="text" name="prgdesc" size="35"/>
         </td><td><?php echo form_error('prgdesc')?>
+    </td></tr>
+    <tr><td>
+        <label for="prgseat">Total Seat</label></td>
+        <td><input type="text" name="prgseat" size="35"/>
+        </td><td><?php echo form_error('prgseat')?>
     </td></tr>
     <tr>
         <td><label for="prgmintime">Program Min Time</label></td>

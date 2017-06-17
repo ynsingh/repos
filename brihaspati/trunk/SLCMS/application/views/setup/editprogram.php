@@ -72,6 +72,16 @@
     echo form_input($prgcat);
     echo "</td>";
     echo "</p>";
+
+
+    echo "<p>";
+    echo "<tr><td>";
+    echo form_label('Program Pattern', 'prgpattern');
+    echo"</td><td>";
+    echo form_input($prgpattern);
+    echo "</td>";
+    echo "</p>";
+
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Program Name', 'prgname');
@@ -85,14 +95,6 @@
     echo form_label('Program Branch', 'prgbranch');
     echo"</td><td>";
     echo form_input($prgbranch);
-    echo "</td>";
-    echo "</p>";
-
-    echo "<p>";
-    echo "<tr><td>";
-    echo form_label('Seat Available', 'prgseat');
-    echo"</td><td>";
-    echo form_input($prgseat);
     echo "</td>";
     echo "</p>";
 
@@ -118,6 +120,14 @@
     echo form_label('Program Description', 'prgdesc');
     echo"</td><td>";
     echo form_input($prgdesc);
+    echo "</td>";
+    echo "</p>";
+
+    echo "<p>";
+    echo "<tr><td>";
+    echo form_label('Seat Available', 'prgseat');
+    echo"</td><td>";
+    echo form_input($prgseat);
     echo "</td>";
     echo "</p>";
 
