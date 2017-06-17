@@ -76,27 +76,16 @@
                echo "<td>";
                echo "</td>";
                echo "</tr>";
-	       ?>
+	       
+	       echo "<tr>";
+               echo "<td>";
+               echo form_label('Semester: ', 'fm_semester');
+               echo "</td>";
+               echo "<td>";
+               echo form_input($fm_semester);
+               echo "</td>";
+               echo "</tr>";
 
-	       <tr>
-               <td>Semester :</td>
-               <td>
-                    <select name="fm_semester" class="my_dropdown" style="width:100%;">
-                    <option value="<?php echo $fm_semester['value'];?>" style="display:none"><?php echo $fm_semester['value'];?></option>
-                    <option value=" disabled selected">------Select Semester ------</option>
-		    <option value="1">1</option>
-                    <option value="2">2</option>
-		    <option value="3">3</option>
-                    <option value="4">4</option>
-		    <option value="5">5</option>
-                    <option value="6">6</option>
-		    <option value="7">7</option>
-                    <option value="8">8</option>
-                    </select>
-                </td>
-                </tr>
-
-	       <?php
                echo "<tr>";
                echo "<td>";
                echo form_label('Category: ', 'fm_category ');
@@ -115,7 +104,7 @@
 		$gen=$fm_gender['value'];
 		    echo "<select name=\"fm_gender\"class=\"my_dropdown\" style=\"width:100%;\">";
 		    echo "<option value=$gen class=\"dropdown-item\">$gen</option>";
-                    echo "<option value=\" disabled selected\">------Select Gender------</option>";
+                    echo "<option value=\"disabled selected\">------Select Gender------</option>";
                     echo "<option value=\"Male\" class=\"dropdown-item\">Male</option>";
                     echo "<option value=\"Female\" class=\"dropdown-item\">Female</option>";
                     echo "<option value=\"Transgender\" class=\"dropdown-item\" >Transgender</option>";
@@ -153,15 +142,16 @@
             	echo "</tr>";
 
         
-           	echo "<td>";
+           	echo "<tr>";
+		echo "<td>";
                 echo "<td colspan=2>";
                     echo form_hidden('id', $id);
                     echo form_submit('submit', 'Update');
             	    echo form_close();
 		    echo "<button onclick=\"goBack()\" >Back</button>";
-
+		echo "</td>";
                 echo "</td>";
-            	echo "</td>";
+            	echo "</tr>";
           ?>
         </table>
     </body>

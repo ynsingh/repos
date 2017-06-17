@@ -1349,7 +1349,7 @@ class Setup extends CI_Controller
 
     		if(isset($_POST['fees'])) {
                         $this->form_validation->set_rules('program','Program Name','trim|xss_clean|required');
-                        $this->form_validation->set_rules('acadyear','Academic Year','trim|xss_clean');
+                        $this->form_validation->set_rules('acadyear','Academic Year','trim|xss_clean|required');
                         $this->form_validation->set_rules('semester','Semester','trim|xss_clean|required');
                         $this->form_validation->set_rules('category','Category','trim|xss_clean|required');
                         $this->form_validation->set_rules('gender','Gender','trim|xss_clean|required');
@@ -1448,7 +1448,13 @@ class Setup extends CI_Controller
               'value' => $fm_data->fm_acadyear,
 	  );
           $data['fm_semester'] = array(
-            'value' => $fm_data->fm_semester,
+	     'name' => 'fm_semester',
+             'id' => 'fm_semester',
+             'maxlength' => '50',
+             'size' => '40',
+             'value' => $fm_data->fm_semester,
+             'readonly' => 'readonly'
+
        	  );
           $data['fm_category'] = array(
             'name' => 'fm_category',
@@ -1509,26 +1515,23 @@ class Setup extends CI_Controller
 	$data['id'] = $id;
 
          /*Form Validation*/
-
-
-	  	$this->form_validation->set_rules('program','Program Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('acadyear','Academic Year','trim|alpha_numeric_spaces|xss_clean|required');
-                $this->form_validation->set_rules('semester','Semester','trim|xss_clean|required');
-                $this->form_validation->set_rules('category','Category','trim|xss_clean|required');
-                $this->form_validation->set_rules('gender','Gender','trim|xss_clean|required');
-                $this->form_validation->set_rules('head','Head','trim|xss_clean|required');
-                $this->form_validation->set_rules('amount','Amount','trim|xss_clean|is_natural_no_zero|required');
+	  	//$this->form_validation->set_rules('program','Program Name','trim|xss_clean|required');
+                $this->form_validation->set_rules('fm_acadyear','Academic Year','trim|xss_clean|required');
+               // $this->form_validation->set_rules('fm_semester','Semester','trim|xss_clean|required');
+               // $this->form_validation->set_rules('category','Category','trim|xss_clean|required');
+                $this->form_validation->set_rules('fm_gender','Gender','trim|xss_clean|required');
+                $this->form_validation->set_rules('fm_head','Head','trim|xss_clean|required');
+                $this->form_validation->set_rules('fm_amount','Amount','trim|xss_clean|is_natural_no_zero|required');
                // $this->form_validation->set_rules('installment','Installment','trim|xss_clean|numeric');
-                $this->form_validation->set_rules('descripation','Description','trim|xss_clean');
+                $this->form_validation->set_rules('fm_descripation','Description','trim|xss_clean');
 
         /* Re-populating form */
         if ($_POST)
         {
-	    print_r($_POST);
-            $data['fm_programid']['value'] = $this->input->post('programid', TRUE);
+            //$data['fm_programid']['value'] = $this->input->post('programid', TRUE);
             $data['fm_acadyear']['value'] = $this->input->post('fm_acadyear', TRUE);
-	    $data['fm_semester']['value'] = $this->input->post('fm_semester', TRUE);
-            $data['fm_category']['value'] = $this->input->post('category', TRUE);
+	    //$data['fm_semester']['value'] = $this->input->post('fm_semester', TRUE);
+            //$data['fm_category']['value'] = $this->input->post('category', TRUE);
             $data['fm_gender']['value'] = $this->input->post('fm_gender', TRUE);
             $data['fm_head']['value'] = $this->input->post('fm_head', TRUE);
             $data['fm_amount']['value'] = $this->input->post('fm_amount', TRUE);
@@ -1542,12 +1545,12 @@ class Setup extends CI_Controller
                 $this->load->view('setup/editfees', $data);
         }
         else{
-            $programname1=$this->input->post('fm_programid', TRUE);
-	    $programname=$this->common_model->get_listspfic1('program','prg_id','prg_name',$programname1)->prg_id;
+           // $programname1=$this->input->post('fm_programid', TRUE);
+	    //$programname=$this->common_model->get_listspfic1('program','prg_id','prg_name',$programname1)->prg_id;
             $acadyear = $this->input->post('fm_acadyear', TRUE);
-            $semester = strtoupper($this->input->post('fm_semester', TRUE));
-            $category1 = $this->input->post('fm_category', TRUE);
-	    $category = $this->common_model->get_listspfic1('category','cat_id','cat_name',$category1)->cat_id;
+            //$semester = strtoupper($this->input->post('fm_semester', TRUE));
+            //$category1 = $this->input->post('fm_category', TRUE);
+	    //$category = $this->common_model->get_listspfic1('category','cat_id','cat_name',$category1)->cat_id;
             $gender = ucwords(strtolower($this->input->post('fm_gender', TRUE)));
             $head= ucwords(strtolower($this->input->post('fm_head', TRUE)));
             $amount = $this->input->post('fm_amount',TRUE);
@@ -1555,14 +1558,14 @@ class Setup extends CI_Controller
 	    $description = $this->input->post('fm_desc', TRUE);
 
             $logmessage = "";
-            if($fm_data->fm_programid != $programname)
-                $logmessage = $logmessage ." update program name " .$fm_data->fm_programid. " changed by " .$programname;
+          //  if($fm_data->fm_programid != $programname)
+            //    $logmessage = $logmessage ." update program name " .$fm_data->fm_programid. " changed by " .$programname;
             if($fm_data->fm_acadyear != $acadyear)
                 $logmessage = $logmessage ." update academic year " .$fm_data->fm_acadyear. " changed by " .$acadyear;
-            if($fm_data->fm_semester != $semester)
-                $logmessage = $logmessage ." update semester " .$fm_data->fm_semester. " changed by " .$semester;
-            if($fm_data->fm_category != $category)
-                $logmessage = $logmessage ." update category " .$fm_data->fm_category. " changed by " .$category;
+            //if($fm_data->fm_semester != $semester)
+              //  $logmessage = $logmessage ." update semester " .$fm_data->fm_semester. " changed by " .$semester;
+            //if($fm_data->fm_category != $category)
+              //  $logmessage = $logmessage ." update category " .$fm_data->fm_category. " changed by " .$category;
             if($fm_data->fm_gender != $gender)
                 $logmessage = $logmessage ." update gender " .$fm_data->fm_gender. " changed by " .$gender;
             if($fm_data->fm_head != $head)
@@ -1576,10 +1579,10 @@ class Setup extends CI_Controller
 	
 
 	$update_data = array(
-               'fm_programid' => $programname,
+              // 'fm_programid' => $programname,
                'fm_acadyear' => $acadyear,
-               'fm_semester' => $semester,
-               'fm_category'  => $category,
+               //'fm_semester' => $semester,
+               //'fm_category'  => $category,
                'fm_gender'  => $gender,
                'fm_head' => $head,
                'fm_amount' => $amount,
@@ -1601,6 +1604,7 @@ class Setup extends CI_Controller
                 redirect('setup/displayfees');
                 }
 	  }
+
     }
 }
 
