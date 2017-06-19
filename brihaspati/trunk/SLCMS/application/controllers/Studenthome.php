@@ -26,8 +26,8 @@ class Studenthome extends CI_Controller
 	    $this->session->set_userdata($data);
 	    //get the student masterid
 	    $this->result;
-	    if(!empty($this->result)) {
-		    $smid=$this->result->sm_id;
+	   // if(!empty($this->result)) {
+	//	    $smid=$this->result->sm_id;
 		    // get the name of dept
 	    	//get the value of current semester and academic year
 
@@ -44,10 +44,10 @@ class Studenthome extends CI_Controller
 	    //update the student program table
 	    //send mail to student
 	    //go to dashboard
-	    }else{
-		$this->session->set_flashdata('flash_data', 'You do not have student role in this system!');
-                redirect('welcome');
-	    }
+	  //  }else{
+	//	$this->session->set_flashdata('flash_data', 'You do not have student role in this system!');
+          //      redirect('welcome');
+	   // }
 
 //	    $this->result = $this->universitym->get_udetails();
 

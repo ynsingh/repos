@@ -298,6 +298,29 @@ CREATE TABLE `program` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
+
+CREATE TABLE `programcategory` (
+  `prgcat_id` int(11) NOT NULL,
+  `prgcat_name` varchar(255) NOT NULL,
+  `prgcat_code` varchar(255)  NULL,
+  `prgcat_short` varchar(255)NULL,
+  `prgcat_desc` varchar(255)  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `programcategory`
+  ADD PRIMARY KEY (`prgcat_id`),
+  ADD UNIQUE KEY `prgcat_name` (`prgcat_name`);
+
+ALTER TABLE `programcategory`
+  MODIFY `prgcat_id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+
 --
 -- Table structure for table `program_subject_teacher`
 --
@@ -468,6 +491,7 @@ CREATE TABLE `student_fees` (
   `sfee_paymentmethod` varchar(255) NOT NULL,
   `sfee_depositdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `sfee_referenceno` varchar(255) NOT NULL,
+  `sfee_bankname` VARCHAR(255) NULL,
   `sfee_paymentgateway` varchar(255) NOT NULL,
   `sfee_paymentstatus` varchar(255) NOT NULL,
   `sfee_feespaidstatus` varchar(255) NOT NULL,
@@ -477,6 +501,36 @@ CREATE TABLE `student_fees` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `student_marks`
+--
+
+CREATE TABLE `student_marks` (
+  `smr_id` int(11) NOT NULL,
+  `smr_scid` int(11) NOT NULL,
+  `smr_deptid` int(11) NOT NULL,
+  `smr_prgid` int(11) NOT NULL,
+  `smr_subid` int(11) NOT NULL,
+  `smr_papid` int(11) NOT NULL,
+  `smr_acadyear` varchar(50) NOT NULL,
+  `smr_sem` varchar(10) NOT NULL,
+  `smr_mmmarks` int(10) NOT NULL,
+  `smr_marks` int(11) NOT NULL,
+  `smr_creatorid` varchar(50) NOT NULL,
+  `smr_createdate`  DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `smr_modifierid` varchar(50) NOT NULL,
+  `smr_modifydate`  DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `student_marks`
+  ADD PRIMARY KEY (`smr_id`),
+  ADD UNIQUE KEY `smr_scid` (`smr_scid`,`smr_prgid`,`smr_subid`,`smr_papid`,`smr_acadyear`,`smr_sem`);
+
+ALTER TABLE `student_marks`
+  MODIFY `smr_id` int(11) NOT NULL AUTO_INCREMENT;
+
+------------------------------------------------------
 
 --
 -- Table structure for table `student_master`
@@ -538,12 +592,14 @@ CREATE TABLE `student_parent` (
   `spar_motheroccupation` varchar(255) DEFAULT NULL,
   `spar_motherincome` varchar(255) DEFAULT NULL,
   `spar_paddress` varchar(255) DEFAULT NULL,
+  `spar_ppostoffice` VARCHAR(255) NULL,
   `spar_pcity` varchar(255) DEFAULT NULL,
   `spar_pdistrict` varchar(255) DEFAULT NULL,
   `spar_pstate` varchar(255) DEFAULT NULL,
   `spar_pcountry` varchar(255) DEFAULT NULL,
   `spar_ppincode` varchar(255) DEFAULT NULL,
   `spar_caddress` varchar(255) DEFAULT NULL,
+  `spar_cpostoffice` VARCHAR(255) NULL.
   `spar_ccity` varchar(255) DEFAULT NULL,
   `spar_cdistrict` varchar(255) DEFAULT NULL,
   `spar_cstate` varchar(255) DEFAULT NULL,

@@ -213,9 +213,16 @@ class Common_model extends CI_Model
         $this->db->select($selectfield);
         $this->db->where($data);
         return $this->db->get()->result();
-    
     }
-    
+
+//    getting different field from table - $selectfield ('a,b,c');
+    public function get_listmore($tbname,$selectfield){
+        $this->db->flush_cache();
+        $this->db->from($tbname);
+        $this->db->select($selectfield);
+        return $this->db->get()->result();
+    }
+
     function __destruct() {
         $this->db->close();
     }

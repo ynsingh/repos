@@ -1,3 +1,31 @@
+SLCMS  Version 1.0 2017-06-19
+-----------------------------
+    * Modifiacation in admin home page and display the program seat data -NKS
+    * Add data staructure of Program category- NKS
+    * Add on function in common model for getting different field from table
+
+SLCMS  Version 1.0 2017-06-17
+-----------------------------
+    * Bug fixes. Additions to database, GUI - NKS
+    * Bug fixes in program fees set up module -Vijay
+
+SLCMS  Version 1.0 2017-06-16
+-----------------------------
+    * Database updated, added student marks table - NKS
+    * GUI modification and help documentation - Deepika
+
+SLCMS  Version 1.0 2017-06-15
+-----------------------------
+    * teachers subject list mechanism added - Manorama
+
+SLCMS  Version 1.0 2017-06-14
+-----------------------------
+    * Bug fix and adding two function ( get acadyear and semester )in common model - NKS
+
+SLCMS  Version 1.0 2017-06-13
+-----------------------------
+    * modification in program data structure - manorama
+    * Modification in GUI - Raju
 
 SLCMS  Version 1.0 2017-06-06
 -----------------------------
