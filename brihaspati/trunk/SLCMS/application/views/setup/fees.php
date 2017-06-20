@@ -95,6 +95,7 @@
                         <td>
                         <select name="gender" id="" class="my_dropdown" style="width:100%;">
                         <option value="" disabled selected >------Select Gender------</option>
+                        <option value="All" class="dropdown-item">All</option>
                         <option value="Male" class="dropdown-item">Male</option>
                         <option value="Female" class="dropdown-item">Female</option>
                         <option value="Transgender" class="dropdown-item">Transgender</option>

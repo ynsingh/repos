@@ -45,6 +45,8 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('username','Username','trim|xss_clean|required');
             $this->form_validation->set_rules('password','Password','trim|xss_clean|required|alpha_numeric');
             $this->form_validation->set_rules('sendername','Sendername','trim|xss_clean|required');
+            $this->form_validation->set_rules('senderemail','Senderemail','trim|xss_clean|valid_email');
+            $this->form_validation->set_rules('modulename','Modulename','trim|xss_clean');
             //if form validation true
             if($this->form_validation->run()==TRUE){
             
@@ -55,6 +57,8 @@ class Setup extends CI_Controller
                     'username'=>$_POST['username'],
                     'password'=>$_POST['password'],
                     'sendername'=>$_POST['sendername'],
+                    'senderemail'=>$_POST['senderemail'],
+                    'modulename'=>ucwords(strtolower($_POST['modulename'])),
                     'creatorid'=> $this->session->userdata('username'),  
                     'createdate'=>date('y-m-d'),
                     'modifierid'=>$this->session->userdata('username'),
@@ -179,19 +183,35 @@ class Setup extends CI_Controller
            'maxlength' => '255',
            'size' => '40',
            'value' => $editeset_data->sendername,
-                        
         );
                 
+        $data['senderemail'] = array(
+           'name' => 'senderemail',
+           'id' => 'senderemail',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $editeset_data->senderemail,
+        );
+
+        $data['modulename'] = array(
+           'name' => 'modulename',
+           'id' => 'modulename',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $editeset_data->modulename,
+        );
         $data['id'] = $id;
            
         /*Form Validation*/
-        $this->form_validation->set_rules('emailprotocol','Emailprotocol','trim|required|alpha');
-        $this->form_validation->set_rules('emailhost','Emailhost','trim|required');
-        $this->form_validation->set_rules('emailport','Emailport','trim|required|min_length[2]|max_length[5]|is_numeric',
+        $this->form_validation->set_rules('emailprotocol','Emailprotocol','trim|required|alpha|xss_clean');
+        $this->form_validation->set_rules('emailhost','Emailhost','trim|required|xss_clean');
+        $this->form_validation->set_rules('emailport','Emailport','trim|required|min_length[2]|max_length[5]|is_numeric|xss_clean',
         array ('required' => ' Email Port -- insert numeric value only'));
         $this->form_validation->set_rules('username','Username','trim|xss_clean|required');
-        $this->form_validation->set_rules('password','Password','trim|required|alpha_numeric');
-        $this->form_validation->set_rules('sendername','Sendername','trim|required');
+        $this->form_validation->set_rules('password','Password','trim|required|alpha_numeric|xss_clean');
+        $this->form_validation->set_rules('sendername','Sendername','trim|required|xss_clean');
+        $this->form_validation->set_rules('senderemail','Senderemail','trim|valid_email|xss_clean');
+        $this->form_validation->set_rules('modulename','modulename','trim|xss_clean');
                    
         /* Re-populating form */
         if ($_POST)
@@ -202,6 +222,8 @@ class Setup extends CI_Controller
             $data['username']['value'] = $this->input->post('username', TRUE);
             $data['password']['value'] = $this->input->post('password', TRUE);
             $data['sendername']['value'] = $this->input->post('sendername', TRUE);
+            $data['senderemail']['value'] = $this->input->post('senderemail', TRUE);
+            $data['modulename']['value'] = $this->input->post('modulename', TRUE);
             $data['modifidate']['value'] = $this->input->post('modifidate', TRUE);
         }
 
@@ -218,6 +240,8 @@ class Setup extends CI_Controller
             $data_eusername = $this->input->post('username', TRUE);
             $data_epassword = $this->input->post('password', TRUE);
             $data_esendername = $this->input->post('sendername', TRUE);
+            $data_esenderemail = $this->input->post('senderemail', TRUE);
+            $data_emodulename = ucwords(strtolower($this->input->post('modulename', TRUE)));
             $data_emodfid = $this->input->post('modifidate', TRUE);
             $data_eid = $id;
             
@@ -232,6 +256,10 @@ class Setup extends CI_Controller
                 $logmessage = $logmessage ." Email Port " .$editeset_data->emailport. " changed by " .$data_eport;
             if($editeset_data->sendername != $data_esendername)
                 $logmessage = $logmessage ." Sender Name " .$editeset_data->sendername. " changed by ". $data_esendername;
+            if($editeset_data->senderemail != $data_esenderemail)
+                $logmessage = $logmessage ." Sender Email " .$editeset_data->senderemail. " changed by ". $data_esenderemail;
+            if($editeset_data->modulename != $data_emodulename)
+		    $logmessage = $logmessage ." Module Name " .$editeset_data->modulename. " changed by ". $data_emodulename;
 
             $update_data = array(
                'emailprotocol' => $data_eprotocol,
@@ -240,6 +268,8 @@ class Setup extends CI_Controller
                'username'  => $data_eusername,
                'password'  => $data_epassword,
                'sendername' => $data_esendername,
+               'senderemail' => $data_esenderemail,
+               'modulename' => $data_emodulename,
                'modifierid' => $this->session->userdata('username'), 
                'modifidate' => date('y-m-d')
             ); 
@@ -1586,7 +1616,31 @@ class Setup extends CI_Controller
               //  $logmessage = $logmessage ." update installment " .$fm_data->fm_installment. " changed by " .$installment;
 	    if($fm_data->fm_desc != $description)
                 $logmessage = $logmessage ." update description " .$fm_data->fm_desc. " changed by " .$description;
-	
+	// insert data into fee master archive table	
+	$insertdata= array(
+		 'fma_fmid'=>$fm_data->fm_id,
+		 'fma_programid'=>$fm_data->fm_programid,
+                 'fma_acadyear'=>$fm_data->fm_acadyear,
+                 'fma_semester'=>$fm_data->fm_semester,
+                 'fma_category'=>$fm_data->fm_category,
+                 'fma_gender'=>$fm_data->fm_gender,
+                 'fma_head'=>ucwords(strtolower($fm_data->fm_head)),
+                 'fma_amount'=>$fm_data->fm_amount,
+                 'fma_desc'=>$fm_data->fm_desc,
+                 'fma_frmdate'=>$fm_data->fm_frmdate,
+                 'fma_todate'=>$fm_data->fm_todate,
+                 'fma_ext1'=>$fm_data->fm_ext1,
+                 'fma_ext2'=>$fm_data->fm_ext2,
+		 'creatorid'=>$this->session->userdata('username'),
+		 'createdate'=>date('y-m-d'),
+        );
+	    $fmaflag=$this->common_model->insertrec('fees_master_archive', $insertdata);
+	    if(!$fmflag)
+            {
+		      $this->logger->write_dblogmessage("error","Error in insert in Fees master archive ", "Error in Fees master archive record insert". $logmessage );
+	    }else{
+		     $this->logger->write_dblogmessage("insert","Insert Fees master archive", "Fees headwise record inserted in fees master archive successfully..". $logmessage );
+	    }
 
 	$update_data = array(
               // 'fm_programid' => $programname,

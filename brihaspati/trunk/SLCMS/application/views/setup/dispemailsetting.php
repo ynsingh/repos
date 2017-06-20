@@ -71,6 +71,8 @@
                     <th>User Name</th>
                     <th>Password</th>
                     <th>Sender Name</th>
+                    <th>Sender Email</th>
+                    <th>Module Name</th>
                     <!--<th>Creator Name</th>
                     <th>Creation Date</th>
                     <th>Modifier Name</th>
@@ -90,6 +92,8 @@
                             <td><?php echo $row->password; ?></td>
                          
                             <td><?php echo $row->sendername ; ?></td>
+                            <td><?php echo $row->senderemail ; ?></td>
+                            <td><?php echo $row->modulename ; ?></td>
                             <!-- <td><//?php echo $row->creatorid; ?></td>
                             <td><//?php echo $row->createdate; ?></td>
                             <td><//?php echo $row->modifierid; ?></td>

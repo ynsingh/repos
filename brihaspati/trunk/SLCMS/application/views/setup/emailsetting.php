@@ -105,7 +105,18 @@
                             <td><input type="text" name="sendername" size="50"  /> <br></td>
                             <td><?php echo form_error('sendername')?></td>
                             <td> Example : Seema Pal    or    palseema30@gmail.com </td>
-               
+                        </tr>
+                        <tr>
+                            <td><label for="senderemail" class="control-label">Senderemail:</label></td>    
+                            <td><input type="text" name="senderemail" size="50"  /> <br></td>
+                            <td><?php echo form_error('senderemail')?></td>
+                            <td> Example : Finance Officer    or    fo@igntu.ac.in </td>
+                        </tr>
+                        <tr>
+                            <td><label for="modulename" class="control-label">Modulename:</label></td>    
+                            <td><input type="text" name="modulename" size="50"  /> <br></td>
+                            <td><?php echo form_error('modulename')?></td>
+                            <td> Example : Account Section </td>
                         </tr>
                         <tr>
                             <td></td>

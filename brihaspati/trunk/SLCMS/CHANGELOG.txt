@@ -1,8 +1,11 @@
+	* Modification in mail setting
+
+
 SLCMS  Version 1.0 2017-06-19
 -----------------------------
-    * Modifiacation in admin home page and display the program seat data -NKS
+    * Modification in admin home page and display the program seat data -NKS
     * Add data staructure of Program category- NKS
-    * Add on function in common model for getting different field from table
+    * Add on function in common model for getting different field from table - NKS
 
 SLCMS  Version 1.0 2017-06-17
 -----------------------------

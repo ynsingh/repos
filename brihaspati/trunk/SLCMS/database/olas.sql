@@ -96,6 +96,8 @@ CREATE TABLE `category` (
   `cat_desc` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+insert into category values (1,'All','01','All','All Category');
+
 -- --------------------------------------------------------
 
 --
@@ -177,6 +179,8 @@ CREATE TABLE `email_setting` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `sendername` varchar(255) NOT NULL,
+  `senderemail` VARCHAR(255) NULL,
+  `modulename` VARCHAR(255) NULL,
   `creatorid` varchar(255) NOT NULL,
   `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `modifierid` varchar(255) NOT NULL,
@@ -206,7 +210,36 @@ CREATE TABLE `fees_master` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `fees_master_archive`
+--
 
+CREATE TABLE `fees_master_archive` (
+  `fma_id` int(11) NOT NULL,
+  `fma_fmid` int(11) NOT NULL,
+  `fma_head` varchar(255) NOT NULL,
+  `fma_programid` int(11) NOT NULL,
+  `fma_acadyear` varchar(50) NOT NULL,
+  `fma_semester` varchar(50) NOT NULL,
+  `fma_gender` varchar(50) NOT NULL,
+  `fma_category` varchar(100) NOT NULL,
+  `fma_amount` int(11) NOT NULL,
+  `fma_frmdate` DATE DEFAULT NULL,
+  `fma_todate` DATE DEFAULT NULL,
+  `fma_desc` varchar(255) NOT NULL,
+  `fma_ext1` varchar(255) NOT NULL,
+  `fma_ext2` varchar(255) NOT NULL,
+  `creatorid` varchar(255) NOT NULL,
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE `fees_master_archive`
+  ADD PRIMARY KEY (`fma_id`);
+
+ALTER TABLE `fees_master_archive`
+  MODIFY `fma_id` int(11) NOT NULL AUTO_INCREMENT;
+-- --------------------------------------------------------
 --
 -- Table structure for table `logs`
 --
@@ -592,14 +625,14 @@ CREATE TABLE `student_parent` (
   `spar_motheroccupation` varchar(255) DEFAULT NULL,
   `spar_motherincome` varchar(255) DEFAULT NULL,
   `spar_paddress` varchar(255) DEFAULT NULL,
-  `spar_ppostoffice` VARCHAR(255) NULL,
+  `spar_ppostoffice` VARCHAR(255) DEFAULT NULL,
   `spar_pcity` varchar(255) DEFAULT NULL,
   `spar_pdistrict` varchar(255) DEFAULT NULL,
   `spar_pstate` varchar(255) DEFAULT NULL,
   `spar_pcountry` varchar(255) DEFAULT NULL,
   `spar_ppincode` varchar(255) DEFAULT NULL,
   `spar_caddress` varchar(255) DEFAULT NULL,
-  `spar_cpostoffice` VARCHAR(255) NULL.
+  `spar_cpostoffice` VARCHAR(255) DEFAULT NULL,
   `spar_ccity` varchar(255) DEFAULT NULL,
   `spar_cdistrict` varchar(255) DEFAULT NULL,
   `spar_cstate` varchar(255) DEFAULT NULL,
@@ -859,7 +892,7 @@ ALTER TABLE `student_entrance_exam`
 -- Indexes for table `student_fees`
 --
 ALTER TABLE `student_fees`
-  ADD PRIMARY KEY (`sfee_id`),
+  ADD PRIMARY KEY (`sfee_id`);
 
 --
 -- Indexes for table `student_master`
@@ -891,7 +924,7 @@ ALTER TABLE `study_center`
 --
 ALTER TABLE `subject`
   ADD PRIMARY KEY (`sub_id`),
-  ADD UNIQUE KEY `sub_name_2` (`sub_name`,`sub_code`);
+  ADD UNIQUE KEY `sub_name` (`sub_name`,`sub_code`);
 
 --
 -- Indexes for table `subject_paper`
