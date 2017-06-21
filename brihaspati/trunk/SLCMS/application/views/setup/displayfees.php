@@ -4,6 +4,7 @@
   @author Vijay (vijay.pal428@gmail.com)
  -->
 <html>
+<title>View Fees</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
         <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>

@@ -10,6 +10,12 @@
        
     </head>
     <body>
+   <script>
+        function goBack() {
+        window.history.back();
+        }
+    </script>
+
     <!--  <//?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -123,14 +129,18 @@
                <td></td>
                 <td colspan="2">   
                 <button name="editscprgseat" >Update</button>
-                <?php echo anchor('map/viewscprgseat', 'Back', 'Back to ViewPage');?>
+                <//?php echo anchor('map/viewscprgseat', 'Back', 'Back to ViewPage');?>
                 </td>
                
             </tr>
             <?php echo form_hidden('id', $id);?>
-            
-        </form>    
-        </table>
+        </form>
+      <td>
+     <td> 
+       <?php echo "<button onclick=\"goBack()\" >Back</button>";?>
+    </td>
+   
+      </table>
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

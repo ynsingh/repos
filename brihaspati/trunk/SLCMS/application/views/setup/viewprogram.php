@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
+<title>View Program</title>
 <body>
 <div>
 <?php $this->load->view('template/header.php');?>

@@ -6,6 +6,7 @@
 
 
 <html>
+<title>Add Fees</title>
 <head>
 <title>Fees</title>
   <div id="body">

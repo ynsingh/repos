@@ -7,7 +7,8 @@
  * @author Om Prakash(omprakashkgp@gmail.com)  add category
  * @author Kishore kr shukla(kishore.shukla@gmail.com) add role
  * @author Raju Kamal(kamalraju8@gmail.com)    add department
- * @author Vijay(vijay.pal428@gmail.com)    add program fees
+ * @author Vijay(vijay.pal428@gmail.com)       add program fees
+ * @author Raju Kamal(kamalraju8@gmail.com)    category program 
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -1668,7 +1669,189 @@ class Setup extends CI_Controller
                 redirect('setup/displayfees');
                 }
 	  }
+        
+    }
+
+                           /*******************programcategory***********************/
+ public function programcat(){
+
+        if(isset($_POST['programcat'])) {
+            $this->form_validation->set_rules('procatname','Program Category Name','trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+            $this->form_validation->set_rules('procatcode','Program Category Code','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('proshrtname','Program Category Short Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('prodesc','Program Category Description','trim|xss_clean|alpha_numeric_spaces');
+
+            if($this->form_validation->run()==TRUE){
+
+            $data = array(
+                'prgcat_name'=>ucwords(strtolower($_POST['procatname'])),
+                'prgcat_code'=>strtoupper($_POST['procatcode']),
+                'prgcat_short'=>strtoupper($_POST['proshrtname']),
+                'prgcat_desc'=>$_POST['prodesc']
+
+            );
+	   $prgcatflag=$this->common_model->insertrec('programcategory', $data) ;
+	   if(!$prgcatflag)
+	   {
+                $this->logger->write_logmessage("insert"," Error in adding program category ", " program Category data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding program category ", "  program Category data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding program Category - ' . $_POST['procatname'] , 'error');
+                $this->load->view('setup/programcat');
+	   }	
+	  else{		
+		$this->logger->write_logmessage("insert"," add Program category ", "Program Category record added successfully..."  );
+		$this->logger->write_dblogmessage("insert"," add Program category ", "Program Category record added successfully..." );
+            	$this->session->set_flashdata("success", "Program Category added successfully...");
+            	redirect("setup/viewprogramcat", "refresh");
+	      }
+           }
+
+        }
+      $this->load->view('setup/programcat');
+   }
+
+
+  /* Display Category record */
+
+ public function viewprogramcat(){
+
+	$this->result = $this->common_model->get_list('programcategory');
+        $this->logger->write_logmessage("view"," View Category", "Category record display successfully..." );
+        $this->logger->write_dblogmessage("view"," View Category", "Category record display successfully..." );
+        $this->load->view('setup/viewprogramcat',$this->result);
+    }
+
+  /* this function is used for delete category record */
+  public function deletePrgcat($prgcat_id) {
+
+	$prgcatflag=$this->common_model->deleterow('programcategory', 'prgcat_id', $prgcat_id) ;
+        if(!$prgcatflag)
+        {
+            $this->logger->write_logmessage("delete", "Deleted Program Category ", "Error in  Program Category  [prgcat_id:" . $prgcat_id . "] delete.. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Progrm Category ","Error in Program Category  [prgcat_id:" . $prgcat_id . "] delete.. " );
+            $this->session->set_flashdata('err_message','Error in deleting program Category - ' , 'Error');
+            redirect('setup/viewprogramcat');
+        }
+        else {
+
+            $this->logger->write_logmessage("delete", "Deleted Program Category ", "Program Category [prgcat_id:" . $prgcat_id . "] deleted successfully. " );
+            $this->logger->write_dblogmessage("delete", "Deleted  Program Category ","Program Category [prgcat_id:" . $prgcat_id . "] deleted successfully. " );
+ 	    $this->session->set_flashdata("success", 'Program Category Record Deleted successfully.' );
+            redirect('setup/viewprogramcat');
+        }
 
     }
+
+ /**This function is used for update category details
+     * @param type $cat_id
+     * @return type
+     */
+    public function editprogramcat($prgcat_id) {
+	$prgcat_data_q=$this->common_model->get_listrow('programcategory','prgcat_id', $prgcat_id);
+        if ($prgcat_data_q->num_rows() < 1)
+        {
+           redirect('setup/editprogramcat');
+        }
+        $programcategory_data = $prgcat_data_q->row();
+
+        /* Form fields */
+
+        $data['procatname'] = array(
+            'name' => 'procatname',
+            'id' => 'procatname',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $programcategory_data->prgcat_name,
+	    //'readonly' => 'readonly'	
+        );
+        $data['procatcode'] = array(
+           'name' => 'procatcode',
+           'id' => 'procatcode',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $programcategory_data->prgcat_code,
+
+        );
+
+        $data['proshrtname'] = array(
+           'name' => 'proshrtname',
+           'id' => 'proshrtname',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $programcategory_data->prgcat_short,
+
+        );
+
+        $data['prodesc'] = array(
+           'name' => 'prodesc',
+           'id' => 'prodesc',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $programcategory_data->prgcat_desc,
+
+        );
+
+        $data['prgcat_id'] = $prgcat_id;
+
+        $this->form_validation->set_rules('procatname','Program Category Name ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('procatcode','Program Category Code ','trim|xss_clean|required|alpha_dash');
+        $this->form_validation->set_rules('proshrtname','Program Category Short Name ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('prodesc','Program Category Description ','trim|xss_clean|alpha_numeric_spaces');
+
+        if ($_POST)
+        {
+            $data['procatname']['value'] = $this->input->post('procatname', TRUE);
+            $data['procatcode']['value'] = $this->input->post('procatcode', TRUE);
+            $data['proshrtname']['value'] = $this->input->post('proshrtname', TRUE);
+            $data['prodesc']['value'] = $this->input->post('prodesc', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editprogramcat', $data);
+            return;
+        }
+	else
+        {
+
+            $data_procatname = ucwords(strtolower($this->input->post('procatname', TRUE)));
+            $data_procatcode = strtoupper($this->input->post('procatcode', TRUE));
+            $data_proshrtname = strtoupper($this->input->post('proshrtname', TRUE));
+            $data_prodesc = $this->input->post('prodesc', TRUE);
+            $data_pcid = $prgcat_id;
+	    $logmessage = "";
+            if($programcategory_data->cat_name != $data_procatname)
+                $logmessage = "Add Category " .$programcategory_data->prgcat_name. " changed by " .$data_procatname;
+            if($programcategory_data->cat_code != $data_procatcode)
+                $logmessage = "Add Category " .$programcategory_data->prgcat_code. " changed by " .$data_procatcode;
+            if($programcategory_data->prgcat_short != $data_proshrtname)
+                $logmessage = "Add Category " .$programcategory_data->prgcat_short. " changed by " .$data_proshrtname;
+            if($programcategory_data->prgcat_desc != $data_prodesc)
+                $logmessage = "Add Category " .$programcategory_data->prgcat_desc. " changed by " .$data_prodesc;
+
+            $update_data = array(
+               'prgcat_name' => $data_procatname,
+               'prgcat_code' => $data_procatcode,
+               'prgcat_short' => $data_proshrtname,
+               'prgcat_desc'  => $data_prodesc
+            );
+
+	   $prgcatflag=$this->common_model->updaterec('programcategory', $update_data, 'prgcat_id', $data_pcid);
+	   if(!$prgcatflag)	
+            {
+                $this->logger->write_logmessage("error","Error in update Program Category ", "Error in  Program Category record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update Program Category ", "Error in  Program Category record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating Program category - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editprogramcat', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Program Category", "Program Category record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Program Category", "Program Category record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Program Category record updated successfully...');
+                redirect('setup/viewprogramcat/');
+                }
+        }//else
+        redirect('setup/editprogramcat/');
+    }
 }
+
 

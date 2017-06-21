@@ -5,6 +5,7 @@
  -->
 
 <html>
+<title>View Category</title>
 <head>    
     <?php $this->load->view('template/header'); ?>
     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
