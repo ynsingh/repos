@@ -1,3 +1,7 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<!--@name changepasswd.php 
+  @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
+ -->
 <html>
 <head>
 <title>User Manual</title>  
@@ -108,19 +112,19 @@ Online Admission System is to automate the Academic university admission structu
 						</tr>
 						<tr>
 						<td><B>Email protocol</B></td>
-						<td>smtp, IMAP, POP</td>
+						<td>Select Email protocol Ex:-smtp, IMAP, POP</td>
 						</tr>
 						<tr>
 						<td><B>Email Hostname</B></td>
-						<td>smtp.cc.iitk.ac.in or IP Address: 172.3.1.5</td>
+						<td>Ex:-smtp.cc.iitk.ac.in or IP Address: 172.3.1.5</td>
 						</tr>
 						<tr>
 						<td><B>Email Port</B></td>
-						<td>25</td>
+						<td>Ex:-25</td>
 						</tr>
 						<tr>
 						<td><B>Username</B></td>
-						<td>palseema30 or palseema30@gmail.com</td>
+						<td>Ex:-palseema30 or palseema30@gmail.com</td>
 						</tr>
 						<tr>
 						<td><B>Password</B></td>
@@ -128,7 +132,7 @@ Online Admission System is to automate the Academic university admission structu
 						</tr>
 						<tr>
 						<td><B>Sendername</B></td>
-						<td>smtp.cc.iitk.ac.in or IP Address: 172.3.1.5</td>
+						<td>Ex:-Brihaspati</td>
 						</tr>
 						</P>
 						</table>					
@@ -627,7 +631,7 @@ Admin can also view Study Center and Program with Seat after adding campus progr
 
                                          </div>
                                     </section>
-<section id="Map Program with Subject and Paper">
+<section id="MapProgramwithSubjectandPaper">
                                         <div class="row-fluid">
                                                 <h2>Map Program with Subject and Paper</h2>
                                         </div>
@@ -635,25 +639,75 @@ Admin can also view Study Center and Program with Seat after adding campus progr
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
+Admin can Add subject paper list by adding Degree, Academic Year, Subject Name, Paper Category, Paper No, Paper Name, Paper Code, Paper Short Name, Paper Description.<br>
+The format of add subject paper list are given below:-
+                                                <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
+                                                <table border="2px solid black" style="width:700px">
+                                                <tr>
+                                                <td><B>Field</B></td>
+                                                <td><B>Description</B></td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Degree</B></td>
+                                                <td>Select Degree Ex:- Batchlor of Art, Master of Art etc  </td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Academic Year</B></td>
+                                                <td>Select Acedemic Year Ex:-2016-2017, 2017-2018 </td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Subject Name</B></td>
+                                                <td>Select Subject Name Ex:-English, Hindi </td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Paper Category</B></td>
+                                                <td>Select Paper Category Ex:Under Graduate, Post Graduate, Research, Diploma Course</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Paper No</B></td>
+                                                <td>Enter Paper No. Ex:-1, 2</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Paper Name</B></td>
+                                                <td>Enter Paper Name Ex:-Physics</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Paper Code</B></td>
+                                                <td>Enter Paper Code Ex:-phy001</td>
+                                                </tr>
+						<tr>
+                                                <td><B>Paper Short Name</B></td>
+                                                <td>Enter Paper Short Name Ex:-phy</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Description</B></td>
+                                                <td>Enter description Ex:-The branch of science concerned with the nature and properties of matter and energy.</td>
+                                                </tr>
+                                                </table>
+                                                </P>
+
                                                                  </p>
                                                         </ol>
+<img src="<?php echo base_url(); ?>uploads/helpscreenshot/addsublist.png" height="100%" width="100%">       </font>
                                                 </font>
+                                         </div>
+                                    </section>
+<section id="ViewSubjectPaperList">
+                                        <div class="row-fluid">
+                                                <h2>View Subject Paper List</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+Admin can also view subject paper list after adding subject paper Detail. We can edit and delete this data.
+                                                                 </p>
+                                                        </ol>
+                                         <img src="<?php echo base_url(); ?>uploads/helpscreenshot/viewsublist.png" height="70%" width="100%">       </font>
+
                                          </div>
                                     </section>
 
-			<section id="Map Program with Subject and Paper">
-                                        <div class="row-fluid">
-                                                <h2>Map Program with Subject and Paper</h2>
-                                        </div>
-                                        <div class="row-fluid">
-                                                <font size="4">
-                                                        <ol>
-                                                                <p align="justify" STYLE="line-height: 150%">
-                                                                 </p>
-                                                        </ol>
-                                                </font>
-                                         </div>
-                                    </section>
 			<section id="MapSubjectandPaperwithTeacher">
                                         <div class="row-fluid">
                                                 <h2>Map Subject and Paper with Teacher</h2>
@@ -748,9 +802,11 @@ All information are mandatory except mobile number.
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
+    User Profile display of personal data associted with specific user. From here user see Login Information and Other Information.
                                                                  </p>
                                                         </ol>
                                                 </font>
+	<img src="<?php echo base_url(); ?>uploads/helpscreenshot/userprofile.png" height="130%" width="100%">
                                          </div>
                                     </section>
 <section id="ChangePassword">

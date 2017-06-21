@@ -1,0 +1,46 @@
+/* 
+    Author     : Deepika Chaudhary (chaudharydeepika88@gmail.com)
+*/
+.profile-main{
+        margin-left:10%;
+	width: 75%;
+	height: 90%;
+        font-size:20px;
+}
+.container2{
+	width:65%;
+	height: 90%;
+	float:left;
+	margin-left: 2%;
+}
+.heading1{
+	color:#333333;
+	font-size:20px;
+	border-bottom: 3px #0099cc solid;
+	width:250%;
+	height: 40px;
+        margin-left:71%;
+	
+}
+.heading2{
+	color:#333333;
+	font-size:20px;
+	border-bottom: 3px #0099cc solid;
+	width:190%;
+	height: 40px;
+	clear: both;
+        margin-left:55%;
+           
+}
+.profile-content{
+	width:100%;
+}
+
+.left-content{
+	width: 179%;
+	text-align: left;
+	float: left;
+}
+
+
+
