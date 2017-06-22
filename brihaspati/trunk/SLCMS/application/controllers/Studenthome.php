@@ -101,26 +101,27 @@ class Studenthome extends CI_Controller
                 foreach($semesterrec as $row)
                 {
                     $semester = $row->sp_semester;             
-                    
-                    $semres = fmod($semester,2);
+                    if($semres !=0)
+                    {
+                        $semres = fmod($semester,2);
                      
-                    if($semres != 0)
-                    { 
-                        if($semestertype == "ODD")
-                        {
-                            $semester = $row->sp_semester;     
-                        }    
-                        else
-                        {
-                            $semester = "Please do the registration in semester ".$semester + 1  ;            
-                        } 
+                        if($semres != 0)
+                        { 
+                            if($semestertype == "ODD")
+                            {
+                                $semester = $row->sp_semester;     
+                            }    
+                            else
+                            {
+                                $semester = "Please do the registration in semester ".$semester + 1 ;            
+                            } 
+                        }
                     }
                 }
             }
+            $data['acadyear'] = $acadyear;
             $data['semester'] = $semester; 
-        
-            
-                        
+            $data['stid'] = $stid;       
 
             //check the registration in current academic session with semester ---
             //if not then ask for the semester registeration---
@@ -201,6 +202,8 @@ class Studenthome extends CI_Controller
             $data['subject'] = $subject;
             }
             $stud_par_rec = $this->commodel->get_listrow('student_parent','spar_smid',$stid);
+            if((!empty($stud_par_rec->row()->spar_paddress)) && (!empty($stud_par_rec->row()->spar_pcity)) && (!empty($stud_par_rec->row()->spar_pdistrict)) && (!empty($stud_par_rec->row()->spar_pstate)) && (!empty($stud_par_rec->row()->spar_pcountry)) && (!empty($stud_par_rec->row()->spar_ppincode)))
+            {
             $stud_address = $stud_par_rec->row()->spar_paddress;
             $stud_city = $stud_par_rec->row()->spar_pcity;
             $stud_dist = $stud_par_rec->row()->spar_pdistrict;
@@ -209,6 +212,9 @@ class Studenthome extends CI_Controller
             $stud_pin= $stud_par_rec->row()->spar_ppincode;
             $student_address = $stud_address.", ".$stud_city."<br>".$stud_dist.", ".$stud_stat."<br>".$stud_count." - ".$stud_pin;
             $data['student_address'] = $student_address;
+            }
+            else
+            $data['student_address'] = "Please fill the Address properly";
         
            // $this->load->model("student_model", "studentmodel");
             $studprogrec = $this->studentmodel->get_student_program($stid);
@@ -242,4 +248,34 @@ class Studenthome extends CI_Controller
 
      // $this->load->view('student/studenthome');
     }
+    
+    /* Student subject registration in semester */    
+
+    public function studentsubject($studparam)
+    {
+        
+        $stid = $this->uri->segment(3);
+        $acadyear = $this->uri->segment(4);
+        $semester = $this->uri->segment(5);
+
+        //get student record 
+        $stud_mast_rec = $this->commodel->get_listrow('student_master','sm_id',$stid);        
+        $fname = $stud_mast_rec->row()->sm_fname;
+        $mname = $stud_mast_rec->row()->sm_mname;
+        $lname = $stud_mast_rec->row()->sm_lname;
+        $enrollno = $stud_mast_rec->row()->sm_enrollmentno;       
+        $rollno = $stud_mast_rec->row()->sm_rollno;       
+        $compname = $fname." ".$mname." ".$lname;
+
+        $data['compname'] = $compname;
+        $data['enrollno'] = $enrollno;
+        $data['rollno'] = $rollno;
+        
+ 
+        //echo $studparam;
+        //echo "I m here";
+        $student_id   ; 
+        //redirect('student/studentsubject');
+        $this->load->view('student/studentsubject',$data);    
+    } 
 }
