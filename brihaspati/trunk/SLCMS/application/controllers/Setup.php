@@ -1852,6 +1852,447 @@ class Setup extends CI_Controller
         }//else
         redirect('setup/editprogramcat/');
     }
+
+
+/****************************************** Add Study Center Module ********************************************/
+
+    	public function sc(){
+            	$this->uresult = $this->common_model->get_listspfic('org_profile','org_code','org_name');
+
+                $prefs =array(
+                       'start_date' => 'monday',
+                        'show_next_prev' => true,
+                        'next_prev_url' => base_url()
+                        );
+                $this->load->library('calendar',$prefs  );  
+
+           if(isset($_POST['sc']))
+                {
+                $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
+                $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric|required');
+                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces|callback_isStudyCenterExist');
+                $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|alpha_numeric_spaces|required');
+                $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('countries','Country','ucwords|trim|xss_clean|alpha_numeric_spaces');
+                $this->form_validation->set_rules('states','State','ucwords|trim|xss_clean');
+                $this->form_validation->set_rules('cities','City','ucwords|trim|xss_clean|alpha_numeric_spaces');
+                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|required');
+                $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|required|numeric|max_length[6]');
+                $this->form_validation->set_rules('phone','Phone','trim|xss_clean|required|numeric|max_length[12]');
+                $this->form_validation->set_rules('fax','Fax','trim|xss_clean|required|numeric|max_length[12]');
+                $this->form_validation->set_rules('status','Status','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('startdate','Startdate','trim|xss_clean');
+                $this->form_validation->set_rules('closedate','Closedate','trim|xss_clean');
+                $this->form_validation->set_rules('website','Website','trim|xss_clean|required|valid_url');
+                $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('mobile','Mobile','trim|max_length[12]');
+               }
+                   
+
+
+            //if form validation true
+                if($this->form_validation->run()==TRUE){
+                       // if (($_POST['orgprofile'] != ''))
+	                $data = array(
+        		           'org_code'=>$_POST['orgprofile'],
+                         	   'sc_code'=>$_POST['institutecode'],
+                   		   'sc_name'=>$_POST['name'],
+		                   'sc_nickname'=>$_POST['nickname'],
+		                   'sc_address'=>$_POST['address'],
+		                   'sc_country'=>$_POST['country'],
+		                   'sc_state'=>$_POST['state'],
+		                   'sc_city'=>$_POST['city'],
+		                   'sc_district'=>$_POST['district'],
+		                   'sc_pincode'=>$_POST['pincode'],
+		                   'sc_phone'=>$_POST['phone'],
+		                   'sc_fax'=>$_POST['fax'],
+		                   'sc_status'=>$_POST['status'],
+		                   'sc_startdate'=>$_POST['startdate'],
+		                   'sc_closedate '=>$_POST['closedate'],
+		                   'sc_website'=>$_POST['website'],
+		                   'sc_incharge'=>$_POST['incharge'],
+		                   'sc_mobile'=>$_POST['mobile'],
+                    );
+                     	$scflag=$this->common_model->insertrec('study_center', $data) ;
+                        if(!$scflag)
+                        {
+                                $this->logger->write_logmessage("insert"," Error in adding Study center ", " Study center data insert error . ".$data['sc_name']  );
+                                $this->logger->write_dblogmessage("insert"," Error in adding Study center ", " Study center data insert error . ".$data['sc_name'] );
+                                $this->session->set_flashdata('err_message','Error in adding Study center - ' . $data['sc_name'] . '.', 'error');
+                                //redirect('setup/sc');
+				 $this->load->view('setup/sc');
+                        }
+                        else{
+                                $this->logger->write_logmessage("insert"," add Study center ", "Study center record added successfully.".$data['sc_name']  );
+                                $this->logger->write_dblogmessage("insert"," add Study center ", "Study center record added successfully.".$data['sc_name'] );
+                                $this->session->set_flashdata("success", "Study center added successfully...");
+                                redirect('setup/viewsc');
+			//	 $this->load->view('setup/sc');
+    
+				}
+                        }
+        $this->load->view('setup/sc');
+    }
+
+       
+ /** This function check for duplicate entry
+     * @return type
+    */
+
+    public function isStudyCenterExist($sc_name) {
+
+        $is_exist = $this->common_model->isduplicate('study_center','sc_name',$sc_name);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isStudyCenterExist', 'Study Center is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+ 
+
+/** This function Display the study center list records
+     * @return type
+     */
+    public function viewsc() {
+        $this->result = $this->common_model->get_list('study_center');
+        $this->logger->write_logmessage("view"," View Study center list", "study center list display");
+        $this->logger->write_dblogmessage("view"," View Study center list", "study center list display");
+	$this->load->view('setup/viewsc',$this->result);
+       }
+ /* this function is used for delete study center record */
+
+    public function deletesc($scid) {
+
+        $scflag=$this->common_model->deleterow('study_center', 'sc_id', $scid) ;
+        if(!$scflag)
+        {
+            $this->logger->write_logmessage("delete", "Deleted Study center ", "Error in  Study center ". $sc_data->sc_name . " [sc_id:" . $scid . "] delete. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Study center ","Error in Study center ".  $sc_data->sc_name . "  [sc_id:" . $scid . "] delete. " );
+            $this->session->set_flashdata('err_message','Error in deleting Study center - ' . $sc_data->sc_name . '.', 'error');
+            redirect('setup/viewsc');
+        }
+        else {
+
+            $this->logger->write_logmessage("delete", "Deleted Study center ", "Study center  ". $sc_data->sc_name . " [sc_id:" . $scid . "] deleted successfully. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Study center ","Study center ". $sc_data->sc_name . " [sc_id:" . $scid . "] deleted successfully. " );
+            $this->session->set_flashdata("success", 'Study center Record Deleted successfully.' );
+            redirect('setup/viewsc');
+        }
+        $this->load->view('setup/viewsc',$data);
+
+    }
+
+/* this function is used for update study center record */
+
+    public function editsc($id) {
+	$sc_data_q=$this->common_model->get_listrow('study_center','sc_id', $id);
+
+        if ($sc_data_q->num_rows() < 1)
+        {
+            redirect('setup/viewsc');
+        }
+        $sc_data = $sc_data_q->row();
+           /* Form fields */
+          
+                $data['orgprofile'] = array(
+             	'name' => 'orgprofile',
+             	'id' => 'orgprofile',
+             	'maxlength' => '50',
+             	'size' => '40',
+             	'value' => $sc_data->org_code,
+             	'readonly' => 'readonly'
+             	);
+
+
+                $data['institutecode'] = array(
+                'name' => 'institutecode',
+                'id' => 'institutecode',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_code,
+                'readonly' => 'readonly'
+                );
+
+               $data['name'] = array(
+                'name' => 'name',
+                'id' => 'name',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_name,
+                );
+
+
+                $data['nickname'] = array(
+                'name' => 'nickname',
+                'id' => 'nickname',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_nickname,
+                );
+
+               $data['address'] = array(
+                'name' => 'address',
+                'id' => 'address',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_address,
+                );
+                
+                $data['country'] = array(
+                'name' => 'country',
+                'id' => 'country',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_country,
+                );
+
+               $data['state'] = array(
+                'name' => 'state',
+                'id' => 'state',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_state,
+                );
+
+
+               $data['city'] = array(
+                'name' => 'city',
+                'id' => 'city',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_city,
+                );
+
+               $data['district'] = array(
+                'name' => 'district',
+                'id' => 'district',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_district,
+                );
+
+               $data['pincode'] = array(
+                'name' => 'pincode',
+                'id' => 'pincode',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_pincode,
+                );
+
+               $data['phone'] = array(
+                'name' => 'phone',
+                'id' => 'phone',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_phone,
+                );
+
+               $data['fax'] = array(
+                'name' => 'fax',
+                'id' => 'fax',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_fax,
+                );
+
+               $data['status'] = array(
+                'name' => 'status',
+                'id' => 'status',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_status,
+                );
+
+                $data['startdate'] = array(
+                'name' => 'startdate',
+                'id' => 'startdate',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_startdate,
+                );
+
+               $data['closedate'] = array(
+                'name' => 'closedate',
+                'id' => 'closedate',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_closedate,
+                );
+
+               $data['website'] = array(
+                'name' => 'website',
+                'id' => 'website',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_website,
+                );
+
+              $data['incharge'] = array(
+                'name' => 'incharge',
+                'id' => 'incharge',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_incharge,
+                );
+
+              $data['mobile'] = array(
+                'name' => 'mobile',
+                'id' => 'mobile',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $sc_data->sc_mobile,
+                );
+          $data['id'] = $id;
+         /*Form Validation*/
+
+             	$this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
+                $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric_spaces|required');
+                $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('country','Country','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('state','State','ucwords|trim|xss_clean|required');
+                $this->form_validation->set_rules('city','City','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|required|alpha');
+                $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|numeric|required|max_length[6]');
+                $this->form_validation->set_rules('phone','Phone','trim|xss_clean|required|numeric|max_length[12]');
+                $this->form_validation->set_rules('fax','Fax','trim|xss_clean|numeric|required|max_length[12]');
+                $this->form_validation->set_rules('status','Status','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('startdate','Startdate','trim|xss_clean|required');
+                $this->form_validation->set_rules('closedate','Closedate','trim|xss_clean|required');
+                $this->form_validation->set_rules('website','Website','trim|xss_clean|required|valid_url');
+                $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('mobile','Mobile','trim|xss_clean|numeric|required|max_length[12]');
+               /* Re-populating form */
+
+                if ($_POST)
+                       {
+                        $data['orgprofile']['value'] = $this->input->post('orgprofile', TRUE);
+                        $data['institutecode']['value'] = $this->input->post('institutecode', TRUE);
+			$data['name']['value'] = $this->input->post('name', TRUE);
+			$data['nickname']['value'] = $this->input->post('nickname', TRUE);
+			$data['address']['value'] = $this->input->post('address', TRUE);
+			$data['country']['value'] = $this->input->post('country', TRUE);
+			$data['state']['value'] = $this->input->post('state', TRUE);
+			$data['city']['value'] = $this->input->post('city', TRUE);
+			$data['district']['value'] = $this->input->post('district', TRUE);
+			$data['pincode']['value'] = $this->input->post('pincode', TRUE);
+			$data['phone']['value'] = $this->input->post('phone', TRUE);
+			$data['fax']['value'] = $this->input->post('fax', TRUE);
+			$data['status']['value'] = $this->input->post('status', TRUE);
+			$data['startdate']['value'] = $this->input->post('startdate', TRUE);
+			$data['closedate']['value'] = $this->input->post('closedate', TRUE);
+			$data['website']['value'] = $this->input->post('website', TRUE);
+			$data['incharge']['value'] = $this->input->post('incharge', TRUE);
+			$data['mobile']['value'] = $this->input->post('mobile', TRUE);
+ 		       }
+                       if ($this->form_validation->run() == FALSE)
+                      {
+                      $this->load->view('setup/editsc', $data);
+                      }
+                    else{
+                	    $data_orgprofile = $this->input->post('orgprofile', TRUE);
+		            $data_institutecode = $this->input->post('institutecode', TRUE);
+		            $data_name = $this->input->post('name', TRUE);
+		            $data_nickname = $this->input->post('nickname', TRUE);
+		            $data_address = $this->input->post('address', TRUE);
+		            $data_country = $this->input->post('country', TRUE);
+		            $data_state = $this->input->post('state', TRUE);
+		            $data_city = $this->input->post('city', TRUE);
+		            $data_district = $this->input->post('district', TRUE);
+		            $data_pincode = $this->input->post('pincode', TRUE);
+		            $data_phone = $this->input->post('phone', TRUE);
+		            $data_fax = $this->input->post('fax', TRUE);
+		            $data_status = $this->input->post('status', TRUE);
+		            $data_startdate = $this->input->post('startdate', TRUE);
+		            $data_closedate = $this->input->post('closedate', TRUE);
+		            $data_website = $this->input->post('website', TRUE);
+		            $data_incharge = $this->input->post('incharge', TRUE);
+		            $data_mobile = $this->input->post('mobile', TRUE);
+
+                            
+                           $data_scid = $id;  
+                           $logmessage = "";
+				if($sc_data->org_code != $data_orgprofile)
+				$logmessage = $logmessage = "University Name " .$sc_data->orgprofile. " changed by " .$data_orgprofile;
+ 				if($sc_data->sc_code != $data_institutecode)
+				$logmessage = $logmessage ." Campus Code " .$sc_data->institutecode. " changed by " .$data_institutecode;
+        	                if($sc_data->sc_name != $data_name)
+                		$logmessage = $logmessage ." Campus Name " .$sc_data->name. " changed by " .$data_name;
+              			if($sc_data->sc_nickname != $data_nickname)
+               			$logmessage = $logmessage ." Nickname " .$sc_data->nickname. " changed by ". $data_nickname;
+	               		if($sc_data->sc_address != $data_address)
+         			$logmessage = $logmessage ." Address ".$sc_data->address. " changed by ".$data_address;
+            			if($sc_data->sc_country != $data_country)
+           			$logmessage = $logmessage . "Country " .$sc_data->country. " changed by".$data_country;
+              			if($sc_data->sc_state != $data_state)
+          			$logmessage = $logmessage . "State ".$sc_data->state ." changed by".$data_state;
+                		if($sc_data->sc_city != $data_city)
+               			$logmessage = $logmessage ." City " .$sc_data->city ." changed by ".$data_city;
+               			if($sc_data->sc_district != $data_district)
+         			$logmessage = $logmessage . "District " .$sc_data->district. " changed by" .$data_district;
+			        if($sc_data->sc_pincode != $data_pincode)
+           			$logmessage = $logmessage .  "Pincode " .$sc_data->pincode ." changed by " .$data_pincode;
+		                if($sc_data->sc_phone != $data_phone)
+             			$logmessage = $logmessage ." Phone " .$sc_data->phone. " changed by " .$data_phone;
+             	        	if($sc_data->sc_fax != $data_fax)
+               			$logmessage = $logmessage ." Fax " .$sc_data->fax. " changed by " .$data_fax;
+	                        if($sc_data->sc_status != $data_status)
+          		 	$logmessage = $logmessage ." Status " .$sc_data->status. " changed by ". $data_status;
+          		       	if($sc_data->sc_startdate != $data_startdate)
+              		       	$logmessage = $logmessage ." Startdate ".$sc_data->startdate. " changed by ".$data_startdate;
+          	                if($sc_data->sc_closedate != $data_closedate)
+              			$logmessage = $logmessage ." Closedate " .$sc_data->closedate ." changed by ".$data_closedate;
+ 		              	if($sc_data->sc_website != $data_website)
+                		$logmessage = $logmessage . "Website " .$sc_data->website. " changed by" .$data_website;
+	   	                if($sc_data->sc_incharge != $data_sc_incharge)
+                	        $logmessage = $logmessage . "Incharge ".$sc_data->incharge ." changed by".$data_incharge;
+       			        if($sc_data->sc_mobile != $data_mobile)
+          			$logmessage = $logmessage . "Mobile " .$sc_data->mobile. " changed by".$data_mobile;
+                                $update_data = array(
+
+				   'org_code'=>$data_orgprofile,
+                                   'sc_code'=>$data_institutecode,
+                                   'sc_name'=>$data_name,
+                                   'sc_nickname'=>$data_nickname,
+                                   'sc_address'=>$data_address,
+                                   'sc_country'=>$data_country,
+                                   'sc_state'=>$data_state,
+                                   'sc_city'=>$data_city,
+                                   'sc_district'=>$data_district,
+                                   'sc_pincode'=>$data_pincode,
+                                   'sc_phone'=>$data_phone,
+                                   'sc_fax'=>$data_fax,
+                                   'sc_status'=>$data_status,
+                                   'sc_startdate'=>$data_startdate,
+                                   'sc_closedate'=>$data_closedate,
+                                   'sc_website'=>$data_website,
+                                   'sc_incharge'=>$data_incharge,
+                                   'sc_mobile'=>$data_mobile,
+
+                        );
+			$scflag=$this->common_model->updaterec('study_center', $update_data, 'sc_id', $id);
+                        if(!$scflag)
+		                {
+                		$this->logger->write_logmessage("error","Error in update Study center ", "Error in Study center record update". $logmessage );
+		        	$this->logger->write_dblogmessage("error","Error in update Study center ", "Error in Study center record update". $logmessage );
+		                $this->session->set_flashdata('err_message','Error updating Study center - ' . $logmessage . '.', 'error');
+		                $this->load->view('setup/editsc', $data);
+           			}
+	            else{
+        		        $this->logger->write_logmessage("update","Edit Study center", "Study center record updated successfully..". $logmessage );
+            			$this->logger->write_dblogmessage("update","Edit Study center", "Study center record updated successfully..". $logmessage );
+		                $this->session->set_flashdata('success','Study center record updated successfully...');
+		                redirect('setup/viewsc');
+                }
+       
+    }
+
+    }
 }
 
 
