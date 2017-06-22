@@ -82,20 +82,20 @@ public function viewprofile(){
         /* get logged user detail from different tables (firstname, lastname, email, address, mobile number, secondary email, campus name, org name)
          * using login model and common model
          */
-	    $this->currentlog=$this->session->userdata('username');
+	$this->currentlog=$this->session->userdata('username');
         //$this->roleid=$this->common_model->get_listspfic1('user_role_type','roleid','userid');
         $this->roleid=$this->session->userdata('id_role');
         $this->currentrole=$this->common_model->get_listspfic1('role','role_name','role_id',$this->roleid);
-        $this->name=$this->login_model->get_listspfic1('userprofile','firstname','userid');
-        $this->lastn=$this->login_model->get_listspfic1('userprofile','lastname','userid');
-        $this->address=$this->login_model->get_listspfic1('userprofile','address','userid');
-	    $this->secmail=$this->login_model->get_listspfic1('userprofile','secmail','userid');
-        $this->mobile=$this->login_model->get_listspfic1('userprofile','mobile','userid');
-        $this->email=$this->login_model->get_listspfic1('edrpuser','email','id');
-        $this->campusid=$this->common_model->get_listspfic1('user_role_type','scid','userid');
-        $this->campusname=$this->common_model->get_listspfic1('study_center','sc_name','sc_id');
-        $this->orgcode=$this->common_model->get_listspfic1('study_center','org_code','sc_id');
-        $this->orgname=$this->common_model->get_listspfic1('org_profile','org_name','org_code');
+        $this->name=$this->login_model->get_listspfic1('userprofile','firstname','userid',$this->session->userdata('id_user'));
+        $this->lastn=$this->login_model->get_listspfic1('userprofile','lastname','userid',$this->session->userdata('id_user'));
+        $this->address=$this->login_model->get_listspfic1('userprofile','address','userid',$this->session->userdata('id_user'));
+	$this->secmail=$this->login_model->get_listspfic1('userprofile','secmail','userid',$this->session->userdata('id_user'));
+        $this->mobile=$this->login_model->get_listspfic1('userprofile','mobile','userid',$this->session->userdata('id_user'));
+        $this->email=$this->login_model->get_listspfic1('edrpuser','email','id',$this->session->userdata('id_user'));
+	$this->campusid=$this->common_model->get_listspfic1('user_role_type','scid','userid',$this->session->userdata('id_user'))->scid;
+	$this->campusname=$this->common_model->get_listspfic1('study_center','sc_name','sc_id',$this->campusid);
+        $this->orgcode=$this->common_model->get_listspfic1('study_center','org_code','sc_id',$this->campusid);
+        $this->orgname=$this->common_model->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);
         $this->load->view('profile/viewprofile');
 }
  }//end class

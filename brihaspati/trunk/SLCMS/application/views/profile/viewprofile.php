@@ -11,7 +11,18 @@
             <div>
                 <?php $this->load->view('template/header'); ?>
 		<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-                <?php $this->load->view('template/menu');?>
+                <?php 
+			if($this->session->userdata('id_role') == 1){
+				$this->load->view('template/menu');
+			}
+			if($this->session->userdata('id_role') == 2){
+				$this->load->view('template/facultymenu');
+			}
+			if($this->session->userdata('id_role') == 3){
+				$this->load->view('template/stumenu');
+			}
+
+		?>
             </div><br> 		    
                     <?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
