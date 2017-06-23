@@ -393,11 +393,11 @@
         <column name="ROLL_NO" required="true" type="VARCHAR" size="255" />
         <column name="PROGRAM" required="true" type="VARCHAR" size="255"/>
         <column name="INSTITUTE_ID" required="true" type="VARCHAR" size="255"/> 
-	<column name="EXPIRY_DATE" default="0000-00-00" required="true" type="TIMESTAMP"/>
+	<column name="EXPIRY_DATE" required="true" type="TIMESTAMP" DEFAULT="CURRENT_TIMESTAMP" />
 	<unique>
 	   	<unique-column name="ROLL_NO"/>
 	   	<unique-column name="PROGRAM"/>
-	    <unique-column name="INSTITUTE_ID"/> 
+	        <unique-column name="INSTITUTE_ID"/> 
 	</unique>
 </table>
 <!-- ===============================TIME TABLE==================================== -->
@@ -595,7 +595,7 @@
 	<column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
 	<column name="USER_LANG" required="true" size="32" type="VARCHAR" default="english"/>
 	<column name="ACTIVATION" required="true" size="150" type="VARCHAR" default="NULL"/>
-	 <column name="PASSWORD_EXPIRY" required="true" type="TIMESTAMP" default="0000-00-00"/>
+	<column name="PASSWORD_EXPIRY" required="true" type="TIMESTAMP" DEFAULT="CURRENT_TIMESTAMP" />
 	<unique>
         	<unique-column name="USER_ID"/>
 	</unique>
