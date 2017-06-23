@@ -1,5 +1,12 @@
-	* Modification in mail setting
 
+
+SLCMS  Version 1.0 2017-06-20
+-----------------------------
+    * Multiple mail id as source used for sending mail to user -NKS
+    * Fees Master archival mechanism -NKS
+    * Display of archived fees master - NKS
+    * Category all is added for fees -NKS
+    * Student dashboard functionality added -Sharad
 
 SLCMS  Version 1.0 2017-06-19
 -----------------------------

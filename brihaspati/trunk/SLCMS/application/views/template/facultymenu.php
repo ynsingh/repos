@@ -117,8 +117,14 @@
                 <li><a href="#">TimeTable</a></li>
                 <li class="dropdown list-category" style="color:red;"><a href="#">Profile</a>
                     <ul class="dropdown-menu mega-dropdown-menu" style="background-color:#2a8fcf; color:red;">
-                    <li><a href="#"> View Profile</a></li>
-                    <li> <a href="#">Change Password</a></li>
+		    <li>
+			<?php echo anchor('profile/viewprofile', 'View Profile', array('title' => 'View Profile'));?>
+				<!--<a href="#"> View Profile</a> -->
+		    </li>
+		    <li> 
+			<?php echo anchor('profile/changepasswd', 'Change Password', array('title' => 'Change Password'));?>
+			<!--	<a href="#">Change Password</a> -->
+		    </li>
                     <li> <?php echo anchor('home/logout', 'Logout', array('title' => 'Logout'));?></li>
                 </ul>   
                     
