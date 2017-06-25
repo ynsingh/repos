@@ -134,7 +134,34 @@ INSERT INTO `country` (`country_id`, `country_name`, `country_code`, `country_sh
 (1, 'India', '91', 'IN', NULL);
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `credit_rule`
+--
 
+CREATE TABLE `credit_rule` (
+  `cr_id` int(11) NOT NULL,
+  `cr_subtype` VARCHAR(255) NOT NULL,
+  `cr_degree` VARCHAR(255) NOT NULL,
+  `cr_branch` VARCHAR(255),
+  `cr_sub_id` int(11) NOT NULL,
+  `cr_subpid` int(11) NOT NULL,
+  `cr_credit` VARCHAR(50) NOT NULL,
+  `cr_ext1` varchar(255) NOT NULL,
+  `cr_ext2` varchar(255) NOT NULL,	
+  `creatorid` VARCHAR(255) NOT NULL,
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `modifierid` VARCHAR(255) NOT NULL,
+  `modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+UNIQUE (`cr_degree`, `cr_branch`, `cr_sub_id`,`cr_subtype`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `credit_rule`
+  ADD PRIMARY KEY (`cr_id`);
+
+ALTER TABLE `credit_rule`
+  MODIFY `cr_id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `Department`
 --
@@ -324,6 +351,7 @@ CREATE TABLE `program` (
   `prg_desc` varchar(255) NOT NULL,
   `prg_pattern` varchar(255) NOT NULL,
   `prg_seat` int(5) NOT NULL,
+  `prg_credit` VARCHAR(255) DEFAULT NULL, 
   `prg_mintime` varchar(255) NOT NULL,
   `prg_maxtime` varchar(255) NOT NULL,
   `creatorid` varchar(255) NOT NULL,
@@ -746,7 +774,8 @@ CREATE TABLE `subject_paper` (
   `subp_code` varchar(100) NOT NULL,
   `subp_short` varchar(255) NOT NULL,
   `subp_desp` varchar(255) NOT NULL,
-  `subp_degree` VARCHAR(20) NOT NULL,
+  `subp_degree` VARCHAR(255) NOT NULL,
+  `subp_branch` VARCHAR(255) DEFAULT NULL,
   `subp_acadyear` VARCHAR(20) NOT NULL,
   `subp_ext1` varchar(255) NOT NULL,
   `subp_ext2` varchar(255) NOT NULL,
@@ -759,6 +788,63 @@ UNIQUE (`subp_degree`, `subp_acadyear`, `subp_sub_id`,`subp_subtype`,`subp_paper
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `subject_paper_archive`
+--
+
+CREATE TABLE `subject_paper_archive` (
+  `subpa_id` int(11) NOT NULL,
+  `subpa_subpid` int(11) NOT NULL,
+  `subpa_sub_id` int(11) NOT NULL,
+  `subpa_subtype` VARCHAR(255) NOT NULL,
+  `subpa_paperno` VARCHAR(50) NOT NULL,
+  `subpa_name` varchar(255) NOT NULL,
+  `subpa_code` varchar(100) NOT NULL,
+  `subpa_short` varchar(255) NOT NULL,
+  `subpa_desp` varchar(255) NOT NULL,
+  `subpa_degree` VARCHAR(255) NOT NULL,
+  `subpa_branch` VARCHAR(255) DEFAULT NULL,
+  `subpa_acadyear` VARCHAR(20) NOT NULL,
+  `subpa_ext1` varchar(255) NOT NULL,
+  `subpa_ext2` varchar(255) NOT NULL,
+  `creatorid` VARCHAR(255) NOT NULL,
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `modifierid` VARCHAR(255) NOT NULL,
+  `modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+UNIQUE (`subpa_degree`, `subpa_acadyear`, `subpa_sub_id`,`subpa_subtype`,`subpa_paperno`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `subject_paper_archive`
+  ADD PRIMARY KEY (`subpa_id`);
+
+ALTER TABLE `subject_paper_archive`
+  MODIFY `subpa_id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `subject_prerequisite`
+--
+CREATE TABLE `subject_prerequisite` (
+  `spreq_id` int(11) NOT NULL,
+  `spreq_subid` int(11) NOT NULL,
+  `spreq_depsubid` int(11) NOT NULL,
+  `spreq_subpid` int(11) NOT NULL,
+  `spreq_depsubpid` int(11) NOT NULL,
+  `spreq_ext1` varchar(255) NOT NULL,
+  `spreq_ext2` varchar(255) NOT NULL,
+  `creatorid` VARCHAR(255) NOT NULL,
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `modifierid` VARCHAR(255) NOT NULL,
+  `modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `subject_prerequisite`
+  ADD PRIMARY KEY (`spreq_id`);
+
+ALTER TABLE `subject_prerequisite`
+  MODIFY `spreq_id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `user_role_type`
 --

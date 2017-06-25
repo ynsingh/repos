@@ -89,6 +89,14 @@ echo "<body>";
 
     echo "<p>";
     echo "<tr><td>";
+    echo form_label('Paper Category','papercat');
+    echo "</td><td>";
+    echo form_input($papercat);
+    echo "</td></tr>";
+    echo "</p>";
+    
+    echo "<p>";
+    echo "<tr><td>";
     echo form_label('Degree','degree');
     echo "</td><td>";
     echo form_input($degree);
@@ -100,13 +108,13 @@ echo "<body>";
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Academic Year','acadyear');
+    echo form_label('Branch','prgbranch');
     echo "</td><td>";
-    echo form_input($acadyear);
-    echo "</td>";
-    //echo form_error('subjectcode');
-    //echo"</td><td>"; echo "Optional";
-    echo "</tr>";
+    echo form_input($prgbranch);    
+    echo "</td><td>";
+    //echo form_error('subjectno');
+    echo"</td><td>"; echo "Example : Physics, Computer Science & Engineering ";
+    echo "</td></tr>";
     echo "</p>";
 
     echo "<p>";
@@ -116,14 +124,19 @@ echo "<body>";
     echo form_input($subjectname);
     echo "</td></tr>";
     echo "</p>";
-
+    
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Paper Category','papercat');
+    echo form_label('Academic Year','acadyear');
     echo "</td><td>";
-    echo form_input($papercat);
-    echo "</td></tr>";
+    echo form_input($acadyear);
+    echo "</td>";
+    //echo form_error('subjectcode');
+    //echo"</td><td>"; echo "Optional";
+    echo "</tr>";
     echo "</p>";
+
+   
 
     echo "<p>";
     echo "<tr><td>";

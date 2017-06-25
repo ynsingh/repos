@@ -1,4 +1,27 @@
+SLCMS  Version 1.0 2017-06-25
+-----------------------------
+    * Program Subject Paper archival mechanism -NKS
+    * Data structure modified ( program, subject paper)- NKS
+    * Data Structure added ( subject_paper_archive,credit_rule,subject_prerequisite) - NKS
+    * Modification for credit system and branch in ( Subject, Program and subject program paper)- NKS
+    * Add drop down in email setting  for modules -NKS
+    * Display mechanism  for Program Subject Paper archival-NKS
 
+SLCMS  Version 1.0 2017-06-23
+-----------------------------
+    * Menu list updated, new menu added under map,setup and archive -NKS
+    * Display mechanism  for audit trails-NKS
+
+SLCMS  Version 1.0 2017-06-22
+-----------------------------
+    * Bug fix in profile and Student home - Sharad
+    * Study center related management screens added- Rekhai
+    * Bug fix in profile - Deepika
+
+SLCMS  Version 1.0 2017-06-21
+-----------------------------
+    * View profile functionality added -Deepika
+    * Program category added -Raju
 
 SLCMS  Version 1.0 2017-06-20
 -----------------------------

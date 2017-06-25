@@ -112,7 +112,7 @@ echo "<body>";
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Subject Ext1', 'subext1');
+    echo form_label('Subject Credit', 'subext1');
     echo"</td><td>";
     echo form_input($subext1);
     echo "</td><td>";echo form_error('subext1');echo"</td></tr>";
@@ -120,7 +120,7 @@ echo "<body>";
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Subject Ext2', 'subext2');
+    echo form_label('Subject Ext1', 'subext2');
     echo"</td><td>";
     echo form_input($subext2);
     echo "</td><td>";echo form_error('subext2');echo"</td></tr>";

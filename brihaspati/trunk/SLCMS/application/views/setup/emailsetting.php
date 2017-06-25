@@ -113,8 +113,20 @@
                             <td> Example : Finance Officer    or    fo@igntu.ac.in </td>
                         </tr>
                         <tr>
-                            <td><label for="modulename" class="control-label">Modulename:</label></td>    
-                            <td><input type="text" name="modulename" size="50"  /> <br></td>
+                            <td><label for="modulename" class="control-label">Modulename:</label></td>  
+                            <td>
+                                <select name="modulename" id="" class="my_dropdown" style="width:430px;">
+                                    <option value="" disabled selected >------Select Email Protocol------</option>
+                                    <option value="All" class="dropdown-item">Default</option>
+                                    <option value="Admission" class="dropdown-item">Admission</option>
+                                    <option value="Account" class="dropdown-item">Account</option>
+                                    <option value="Academic" class="dropdown-item">Academic</option>
+                                    <option value="Exam" class="dropdown-item">Exam</option>
+                                    <option value="Establishment" class="dropdown-item">Establishment</option>
+                                </select>
+
+                            </td>  
+                            <!--<td><input type="text" name="modulename" size="50"  /> <br></td> -->
                             <td><?php echo form_error('modulename')?></td>
                             <td> Example : Account Section </td>
                         </tr>

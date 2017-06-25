@@ -125,6 +125,14 @@
 
     echo "<p>";
     echo "<tr><td>";
+    echo form_label('Program Credit', 'prgcredit');
+    echo"</td><td>";
+    echo form_input($prgcredit);
+    echo "</td>";
+    echo "</p>";
+
+    echo "<p>";
+    echo "<tr><td>";
     echo form_label('Seat Available', 'prgseat');
     echo"</td><td>";
     echo form_input($prgseat);

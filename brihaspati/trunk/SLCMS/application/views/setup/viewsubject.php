@@ -72,7 +72,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 /* form data */
 
          echo "<table border=0 cellpadding=13 style=\"padding: 8px 8px 8px 20px;\" class=\"TFtable\">";
-         echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Extention</th><th>Subject Extention</th><th>Action</th><th></th></tr></thead>";
+         echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th><th></th></tr></thead>";
 
     $srno = 0;
     foreach($subjectlists as $subjectlist)

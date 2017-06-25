@@ -70,6 +70,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 		<th>Program Code</th>
 		<th>Program Short</th>
 		<th>Program Description</th>
+		<th>Program Credit</th>
 		<th>Seat Available</th>
 		<th>Program Min Time (Years)</th>
 		<th>Program Max Time (Years)</th>
@@ -97,6 +98,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
             <td><?php echo $row->prg_code;?></td>
             <td><?php echo $row->prg_short;?></td>
             <td><?php echo $row->prg_desc;?></td>
+             <td><?php echo $row->prg_credit;?></td>
             <td><?php echo $row->prg_seat;?></td>
             <td><?php echo $row->prg_mintime;?></td>
             <td><?php echo $row->prg_maxtime;?></td>

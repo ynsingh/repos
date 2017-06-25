@@ -136,6 +136,11 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         </td><td><?php echo form_error('prgdesc')?>
     </td></tr>
     <tr><td>
+        <label for="prgcredit">Program Credit</label></td>
+        <td><input type="text" name="prgcredit" size="35"/>
+        </td><td><?php echo form_error('prgcredit')?>
+    </td></tr>
+    <tr><td>
         <label for="prgseat">Total Seat</label></td>
         <td><input type="text" name="prgseat" size="35"/>
         </td><td><?php echo form_error('prgseat')?>

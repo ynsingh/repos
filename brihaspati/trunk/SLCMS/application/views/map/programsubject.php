@@ -77,7 +77,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
 /* Form */
     echo "<table border=0 cellpadding=13 style=\"padding: 8px 8px 8px 20px;\" class=\"TFTable\">";
-    echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Paper Category</th><th>Degree</th><th>Academic Year </th><th>Subject Name</th><th>Paper No</th><th>Paper Name</th><th>Paper Code</th><th>Paper Short Name</th><th>Available Action</th></tr></thead>";
+    echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Paper Category</th><th>Degree</th><th>Branch </th><th>Academic Year </th><th>Subject Name</th><th>Paper No</th><th>Paper Name</th><th>Paper Code</th><th>Paper Short Name</th><th>Available Action</th></tr></thead>";
 $this->load->model('Map_model',"mapmodel");
 $srno = 0;
 foreach($paperrecords as $row)
@@ -90,6 +90,7 @@ foreach($paperrecords as $row)
     echo "<td>"; echo $srno; echo"</td>";
     echo "<td>"; echo $row->subp_subtype; echo"</td>";
     echo "<td>"; echo $program_name; echo"</td>";
+     echo "<td>"; echo $row->subp_branch; echo"</td>";
     echo "<td>"; echo $row->subp_acadyear; echo"</td>";
     echo "<td>"; echo $subject_name; echo"</td>";
  //   echo "<td>"; echo $row->subp_subtype; echo"</td>";

@@ -92,6 +92,14 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
     echo "<p>";
     echo "<tr><td>";
+    echo form_label('Program Category','subjecttype');
+    echo "</td><td>";
+    echo form_dropdown('subjecttype',$subtype,'','class="abc"');
+    echo "</td></tr>";
+    echo "</p>";
+
+    echo "<p>";
+    echo "<tr><td>";
     echo form_label('Degree','degree');
     echo "</td><td>";
     echo form_dropdown('degree',$program,'','class="abc"');
@@ -101,6 +109,26 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "</td></tr>";
     echo "</p>";
 
+
+    echo "<p>";
+    echo "<tr><td>";
+    echo form_label('Branch', 'prgbranch');
+    echo "</td><td>";
+    echo form_input($prgbranch);
+    echo "</td><td>";
+     echo"</td><td>";
+    echo "Example : Physics, Computer Science & Engineering  ";
+    echo "</td></tr>";
+    echo "</p>";
+
+    echo "<p>";
+    echo "<tr><td>";
+    echo form_label('Subject Name', 'subjectname');
+    echo "</td><td>";
+    echo form_dropdown('subjectname', $subject,'','class="abc"');
+    echo "</td></tr>";
+    echo "</p>";
+   
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Academic Year','acadyear');
@@ -111,23 +139,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     //echo"</td><td>"; echo "Optional";
     echo "</tr>";
     echo "</p>";
-
-    echo "<p>";
-    echo "<tr><td>";
-    echo form_label('Subject Name', 'subjectname');
-    echo "</td><td>";
-    echo form_dropdown('subjectname', $subject,'','class="abc"');
-    echo "</td></tr>";
-    echo "</p>";
-
-    echo "<p>";
-    echo "<tr><td>";
-    echo form_label('Paper Category','subjecttype');
-    echo "</td><td>";
-    echo form_dropdown('subjecttype',$subtype,'','class="abc"');
-    echo "</td></tr>";
-    echo "</p>";
-
+        
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Paper No','subjectno');

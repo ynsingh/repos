@@ -2,6 +2,7 @@
 
 /* 
  * @name Setup.php
+ * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)  
  * @author Manorama Pal(palseema30@gmail.com)  add email setting
  * @author Sharad Singh(sharad23nov@yahoo.com) add program, add subject
  * @author Om Prakash(omprakashkgp@gmail.com)  add category
@@ -309,6 +310,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean');
             $this->form_validation->set_rules('prgpattern','Program Pattern','trim|xss_clean|required');
             $this->form_validation->set_rules('prgseat','Seat Available','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('prgcredit','Program Credit','trim|xss_clean|numeric');
             $this->form_validation->set_rules('prgcode','Program Code','trim|xss_clean|required');
             $this->form_validation->set_rules('prgshort','Program Short','trim|xss_clean|required');
             $this->form_validation->set_rules('prgdesc','Program Description','trim|xss_clean');
@@ -321,6 +323,7 @@ class Setup extends CI_Controller
             $prgcat = $this->input->post('prgcat');
             $prgname = $this->input->post('prgname');
             $prgseat = $this->input->post('prgseat');
+            $prgcredit = $this->input->post('prgcredit');
             $prgbranch = $this->input->post('prgbranch');
             $prgpattern = $this->input->post('prgpattern');
             $prgcode = $this->input->post('prgcode');
@@ -357,6 +360,7 @@ class Setup extends CI_Controller
                 'prg_branch'=>ucwords(strtolower($prgbranch)),
                 'prg_pattern'=>ucwords(strtolower($prgpattern)),
                 'prg_seat'=>$prgseat,
+                'prg_credit'=>$prgcredit,
                 'prg_code'=>strtoupper($prgcode),
                 'prg_short'=>strtoupper($prgshort),
                 'prg_desc'=>$prgdesc,
@@ -432,6 +436,7 @@ class Setup extends CI_Controller
         $data['prgbranch'] = array('name' => 'prgbranch','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_branch,'',);
         $data['prgpattern'] = array('name' => 'prgpattern','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_pattern,'',);
         $data['prgseat'] = array('name' => 'prgseat','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_seat,'',);
+        $data['prgcredit'] = array('name' => 'prgcredit','id' => '','maxlength' => '100','size' => '40','value' => $program_data->prg_credit,'',);
         $data['prgcode'] = array('name' => 'prgcode','id' => 'prgcode','maxlength' => '100','size' => '40','value' => $program_data->prg_code,'',);
         $data['prgshort'] = array('name' => 'prgshort','id' => 'prgshort','maxlength' => '100','size' => '40','value' => $program_data->prg_short,'',);
         $data['prgdesc'] = array('name' => 'prgdesc','id' => 'prgdesc','maxlength' => '100','size' => '40','value' => $program_data->prg_desc,'',);
@@ -447,6 +452,7 @@ class Setup extends CI_Controller
         $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean');
         $this->form_validation->set_rules('prgpattern','Program Pattern','trim|xss_clean');
         $this->form_validation->set_rules('prgseat','Seat Available','trim|xss_clean|required|numeric');
+        $this->form_validation->set_rules('prgcredit','Program Credit','trim|xss_clean|numeric');
         $this->form_validation->set_rules('prgcode','Program Code','trim|xss_clean|required');
         $this->form_validation->set_rules('prgshort','Program Short','trim|xss_clean|required');
         $this->form_validation->set_rules('prgdesc','Program Description','trim|xss_clean');
@@ -464,6 +470,7 @@ class Setup extends CI_Controller
             $data['prgbranch']['value'] = $this->input->post('prgbranch', TRUE);
             $data['prgpattern']['value'] = $this->input->post('prgpattern', TRUE);
             $data['prgseat']['value'] = $this->input->post('prgseat', TRUE);
+            $data['prgcredit']['value'] = $this->input->post('prgcredit', TRUE);
             $data['prgcode']['value'] = $this->input->post('prgcode', TRUE);
             $data['prgshort']['value'] = $this->input->post('prgshort', TRUE);
             $data['prgdesc']['value'] = $this->input->post('prgdesc', TRUE);
@@ -484,6 +491,7 @@ class Setup extends CI_Controller
             $data_prgbranch = $this->input->post('prgbranch', TRUE);
             $data_prgpattern = $this->input->post('prgpattern', TRUE);
             $data_prgseat = $this->input->post('prgseat', TRUE);
+            $data_prgcredit = $this->input->post('prgcredit', TRUE);
             $data_prgcode = $this->input->post('prgcode', TRUE);
             $data_prgshort = $this->input->post('prgshort', TRUE);
             $data_prgdesc = $this->input->post('prgdesc', TRUE);
@@ -495,23 +503,25 @@ class Setup extends CI_Controller
             if($program_data->prg_category != $data_prgcat)
                 $logmessage = "Program Category " .$program_data->prg_category. " changed by " .$data_prgcat;
             if($program_data->prg_name != $data_prgname)
-                $logmessage = $logmessage ." Program Name " .$program_data->prgname. " changed by " .$data_prgname;
+                $logmessage = $logmessage ." Program Name " .$program_data->prg_name. " changed by " .$data_prgname;
             if($program_data->prg_branch != $data_prgbranch)
-                $logmessage = $logmessage ." Program Branch " .$program_data->prgbranch. " changed by " .$data_prgbranch;
+                $logmessage = $logmessage ." Program Branch " .$program_data->prg_branch. " changed by " .$data_prgbranch;
             if($program_data->prg_pattern != $data_prgpattern)
-                $logmessage = $logmessage ." Program Pattern " .$program_data->prgpattern. " changed by " .$data_prgpattern;
+                $logmessage = $logmessage ." Program Pattern " .$program_data->prg_pattern. " changed by " .$data_prgpattern;
             if($program_data->prg_seat != $data_prgseat)
-                $logmessage = $logmessage ." Seat Available " .$program_data->prgseat. " changed by ". $data_prgseat;
+                $logmessage = $logmessage ." Seat Available " .$program_data->prg_seat. " changed by ". $data_prgseat;
             if($program_data->prg_short != $data_prgshort)
-                $logmessage = $logmessage ." Program Short Name ".$program_data->prgshort. " changed by ".$data_prgshort;
+                $logmessage = $logmessage ." Program Short Name ".$program_data->prg_short. " changed by ".$data_prgshort;
             if($program_data->prg_code != $data_prgcode)
-                $logmessage = $logmessage ." Program Code " .$program_data->prgcode ." changed by ".$data_prgcode;
+                $logmessage = $logmessage ." Program Code " .$program_data->prg_code ." changed by ".$data_prgcode;
             if($program_data->prg_desc != $data_prgdesc)
-                $logmessage = $logmessage . "Program Desc " .$program_data->prgdesc. " changed by " .$data_prgdesc;
+                $logmessage = $logmessage . "Program Desc " .$program_data->prg_desc. " changed by " .$data_prgdesc;
             if($program_data->prg_mintime != $data_prgmintime)
-                $logmessage = $logmessage . "Program Min Time ".$program_data->prgmintime ." changed by " .$data_prgmintime;
+                $logmessage = $logmessage . "Program Min Time ".$program_data->prg_mintime ." changed by " .$data_prgmintime;
             if($program_data->prg_maxtime != $data_prgmaxtime)
-                $logmessage = $logmessage . "Program Max Time " .$program_data->prgmaxtime. " changed by " .$data_prgmaxtime;
+                $logmessage = $logmessage . "Program Max Time " .$program_data->prg_maxtime. " changed by " .$data_prgmaxtime;
+                 if($program_data->prg_credit != $data_prgcredit)
+                $logmessage = $logmessage . "Program Credit " .$program_data->prg_credit. " changed by " .$data_prgcredit;
               
                 
                 
@@ -527,6 +537,7 @@ class Setup extends CI_Controller
                 'prg_branch' => ucwords(strtolower($data_prgbranch)),
                 'prg_pattern' => $data_prgpattern,
                 'prg_seat' => $data_prgseat,
+                'prg_credit' => $data_prgcredit,
                 'prg_code' => strtoupper($data_prgcode),
                 'prg_short' => strtoupper($data_prgshort),
                 'prg_desc' => $data_prgdesc,
