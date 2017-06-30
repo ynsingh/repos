@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @name: Student Model
  * @author: Sharad Singh
+ * @author: Sumit Saxena (sumitsesaxena@gmail.com)
  */
 
 class Student_model extends CI_Model
@@ -44,6 +45,17 @@ class Student_model extends CI_Model
         //print_r(sizeof($query));
         return $query;
     }
+
+	
+    function showCourse(){
+			$this->db->select('course_name');
+			$this->db->group_by('course_name');
+			$this->db->from('admissionmeritlist');
+			$query = $this->db->get();
+			$results = $query->result();
+			return $results; 
+		}
+
 
     function __destruct() {
         $this->db->close();

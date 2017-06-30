@@ -110,10 +110,10 @@ class Common_model extends CI_Model
 		$this->db->flush_cache();
 		$this->db->select($selfield1);
 		$this->db->from($tbname);
-//		print_r($tbname);
+ //		print_r($tbname);
 //		print_r($selfield1);
 		$this->db->limit(1);
-		if (($fieldname != '') && ($fieldvalue !='')){
+		if (($fieldname != '') && ($fieldvalue != '')){
 			$this->db->where($fieldname, $fieldvalue);
 		}
 //		print_r($this->db->get()->row());
@@ -178,6 +178,16 @@ class Common_model extends CI_Model
 			$this->db->where($fieldname, $fieldvalue);
 		}
      return $this->db->get()->result();
+    }
+	//get the list of all/specific  records with  one or many specific fields for specific values
+	//$sarray='name,age';	
+	//$wharray = array('name' => $name, 'title' => $title, 'status' => $status);
+    public function get_listarry($tbname,$sarray,$wharray){
+		//$this->db->flush_cache();
+		$this->db->from($tbname);
+		$this->db->select($sarray);
+		$this->db->where($wharray);
+	return $this->db->get()->result();
     }
 
 // Generate random number any length

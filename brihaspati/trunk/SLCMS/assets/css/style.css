@@ -8,6 +8,8 @@ body {
 	text-align:center;
 }
 
+
+label{font-size:18px;}
 #container {
 	margin:0 auto 0;
 	min-width:100%;

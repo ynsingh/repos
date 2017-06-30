@@ -1,0 +1,30 @@
+/******************************************************
+* @name Studentsteps.css(student steps css)	      *
+* @author Sumit Saxena(sumitsesaxena@gmail.com)       *
+*******************************************************/
+
+#styleTable th{background-color:#38B0DE;color:white;font-size:22px;height:10px;}
+#gap{margin:20px 0px 20px 0px; font-size:18px;}
+#formbody{border:2px solid black;width:90%;}
+.textname{background-color:#38B0DE;color:white;font-size:20px;opacity:1.5;height:30px;padding:5px;margin-top:-3px;}
+.photo{border:2px solid black;height:120px;width:130%;}
+.sign{border:2px solid black;height:60px;width:250%;}
+thead tr th{background-color:black;color:white;font-size:18px;}
+body tr td{font-size:16px;font-weight:bold;}
+#logo2 img{width:100%;height:100px;}
+#logo {
+	background:none repeat scroll 0 0 #067eb7;
+	height:101px;
+	margin:0;
+	position:relative;
+	text-align:center;
+}
+#b1{width:100%;height:40px;font-size:20px;}
+#b2{width:100%;height:40px;font-size:20px;}
+#sign img{width:300px;height:80px;}
+#photo img{width:140px;height:130px;}
+#photo{float:right;margin:10px 40px 10px 0px;}
+ol li{text-align: justify;}
+#formbody2{width:98%;}
+.signlabel{text-decoration: underline;font-size:20px;}
+

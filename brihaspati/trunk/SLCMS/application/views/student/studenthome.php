@@ -230,7 +230,7 @@
                     echo "</td><td style=\"padding: 8px 8px 8px 20px;\"> ";
                     echo $row1->sfee_feeamount;
                     echo "</td><td style=\"padding: 8px 8px 8px 20px;\"> ";
-                    echo $row1->sfee_feespaidstatus;
+                    echo $row1->sfee_paymentmethod."  ".$row1->sfee_feespaidstatus;
                     echo "</td></tr>";
                 }
                 else

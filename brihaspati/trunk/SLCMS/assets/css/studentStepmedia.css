@@ -1,0 +1,45 @@
+/******************************************************
+* @name studentStepmedie.css(print page css)	      *
+* @author Sumit Saxena(sumitsesaxena@gmail.com)       *
+*******************************************************/
+/**************************************Step 5 print page code start********************************************/
+	@page {
+	
+ 	/*position:absolute; */	
+	size: auto;
+ 	 margin: 0mm;
+       }
+
+#foohide{display:none;}
+#b1{display:none;}
+#b2{display:none;}
+
+.textname{background-color:#38B0DE;color:white;font-size:20px;opacity:1.5;height:30px;padding:5px;margin-top:-3px;font-weight:bold;}
+#styleTable th{background-color:#38B0DE;color:white;font-size:20px;height:10px;border-bottom:1px solid black;}
+.TFtable td{font-weight:normal;}
+.TFtable{width:98%;}
+#gap{margin-top:10px;font-size:15px;}
+#academic{margin-top:10px;}
+#acadhead2 tr th{font-size:15px;}
+#padd{margin-top:0px;}
+
+#formbody2{margin-top:30px;}
+#declaration{margin-top:0px;font-size:15px;}
+#declaration2{margin-top:10px;font-size:15px;}
+#declaration3{margin-top:0px;font-size:15px;}
+#declare{font-weight:normal; text-align: justify;}
+#undertaking{margin-top:0px;font-size:15px;}
+#policy h2{margin-top:0px;font-size:15px;}
+#feegap{margin-top:5px;}
+#sign{margin-right:50px;margin-top:-30px;margin-bottom:-10px;}
+#sign img{width:200px;height:60px;}
+#photo img{margin-top:-20px;}
+#logo2 img{height:70px;}
+#subCat tr td{margin-left:-200px;}
+#formbody2{width:98%;}
+.terms{width:100%;}
+.terms tr td{font-size:18px;}
+ol li{font-weight:normal;text-align: justify;}
+
+
+/**************************************Step 5 print page code end********************************************/
