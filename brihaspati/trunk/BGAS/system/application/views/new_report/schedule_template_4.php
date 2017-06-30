@@ -1,3 +1,4 @@
+
 <?php
 
         setlocale(LC_MONETARY, 'en_IN');
@@ -11,6 +12,7 @@
         }
         $fy_start=explode("-",$date1);
         $fy_end=explode("-",$date2);
+	//print_r($fy_end);
         $curr_year = $fy_start[0] ."-" .$fy_end[0];
         $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
 
@@ -20,8 +22,8 @@
         $net_total = 0.00;
         $net_current_year = 0.00;
         $net_previous_year = 0.00;
-        echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
-        echo "<thead><tr><th></th><th align=\"center\" colspan=\"5\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GROSS BLOCK</th><th align=\"center\" colspan=\"4\">DEPRECIATION FOR THE YEAR......</th><th align=\"center\" colspan=\"2\">NET BLOCK</th></tr></thead>";
+        echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\">";
+        echo "<thead><tr><th></th><th align=\"center\"></th><th align=\"center\" colspan=\"4\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GROSS BLOCK</th><th align=\"center\" colspan=\"4\">DEPRECIATION FOR THE YEAR......</th><th boder=2 align=\"center\" colspan=\"2\">NET BLOCK</th></tr></thead>";
 
         echo "<tr>";
                 echo "<td>S. No.</td>";
@@ -35,13 +37,15 @@
 		echo "<td> Deductions/ <br> Adjustment</td>";
 		echo "<td> Total <br> Depreciation</td>";
 		echo "<td> 31.03.".$fy_end[0]."</td>";
-		echo "<td> 31.03.".$fy_end[0]."</td>";
+		echo "<td> 31.03.".$fy_start[0]."</td>";
 	echo "</tr>";
 	$object = new Reportlist1();
 	$object->FixedAsset_A('2001',4,'view', 'NULL');
 	$opening_balanceA = $object->opening_balance;
 	$debit_totalA = $object->debit_total;
+	//$credit_totalA = $object->credit_total;
 	$credit_totalA = $object->credit_total;
+	//	print_r(" credit_totalA=== ". $credit_totalA );
 	$closing_balanceA = $object->closing_balance;
 	$dep_opening_balanceA = $object->dep_opening_balance;
 	$current_depreciation_amountA = $object->current_depreciation_amount;
@@ -100,12 +104,13 @@
 
 	echo "</table>";
 	echo "<br>";
-	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
+	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\">";
 	$object = new Reportlist1();
 	$object->FixedAsset_B('2001',4, 'view', 'NULL');
 	$opening_balanceB = $object->opening_balance;
         $debit_totalB = $object->debit_total;
         $credit_totalB = $object->credit_total;
+
         $closing_balanceB = $object->closing_balance;
         $dep_opening_balanceB = $object->dep_opening_balance;
         $current_depreciation_amountB = $object->current_depreciation_amount;
@@ -115,8 +120,8 @@
 
 	echo "</table>";
 	echo "<br>";
-	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
-        echo "<thead><tr><th></th><th align=\"center\" colspan=\"5\">GROSS BLOCK</th><th align=\"center\" colspan=\"4\">DEPRECIATION FOR THE YEAR</th><th align=\"center\" colspan=\"2\">NET BLOCK</th></tr></thead>";
+	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\">";
+        echo "<thead><tr><th></th><th></th><th align=\"center\" colspan=\"4\">GROSS BLOCK</th><th align=\"center\" colspan=\"4\">DEPRECIATION FOR THE YEAR</th><th align=\"center\" colspan=\"2\">NET BLOCK</th></tr></thead>";
 	 $id = 131;
          $this->db->select('id,name,code')->from('groups')->where('parent_id', $id);
          $group_detail = $this->db->get();
@@ -134,7 +139,7 @@
 
         	}
 		echo "</td>";
-                echo "<td align=\"center\">Op Balance 01.04.".$fy_start[0]."</td>";
+                echo "<td>Op Balance 01.04.".$fy_start[0]."</td>";
                 echo "<td>Addition</td>";
                 echo "<td>Deductions</td>";
                 echo "<td>CI Balance</td>";
@@ -143,13 +148,14 @@
                 echo "<td> Deductions/ <br> Adjustment</td>";
                 echo "<td> Total <br> Depreciation</td>";
                 echo "<td> 31.03.".$fy_end[0]." </td>";
-                echo "<td> 31.03.".$fy_end[0]."</td>";
+                echo "<td> 31.03.".$fy_start[0]."</td>";
         echo "</tr>";
 	$object = new Reportlist1();
         $object->FixedAsset_C('2001',4,'view','NULL');
 	$opening_balanceC = $object->opening_balance;
         $debit_totalC = $object->debit_total;
         $credit_totalC = $object->credit_total;
+
         $closing_balanceC = $object->closing_balance;
         $dep_opening_balanceC = $object->dep_opening_balance;
         $current_depreciation_amountC = $object->current_depreciation_amount;
@@ -206,9 +212,9 @@
 	echo "</table>";
 
 		echo "<br>";
-        	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
+        	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\">";
 		echo "<tr class=\"tr-group\">";
-		echo "<td align=\"center\" class=\"td-group\" width=\"280\">";
+		echo "<td align=\"center\" class=\"td-group\" width=\"24%\">";
                 echo "<strong>GRAND TOTAL(A+B+C)</strong>";
                 echo "</td>";
 		$total_opening_balance = ($opening_balanceA + $opening_balanceB + $opening_balanceC);
@@ -221,43 +227,57 @@
 		$grand_current_year = ($current_yearA + $current_yearB + $current_yearC);
 		$prev_total = ($prev_total1 + $prev_total2 + $prev_total3);
 		
-                echo "<td align=\"right\">";
+                echo "<td align=\"right\" width=\"7%\">";
+		//echo "<td align=\"right\" width=\"130\">";
+
                 echo "<strong>" . convert_amount_dc($total_opening_balance) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+               // echo "<td align=\"right\" width=\"95\">";
+		echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($total_debit_total) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
-                echo "<strong>" . convert_amount_dc($total_credit_total) . "</strong>";
+                //echo "<td align=\"right\" width=\"125\">";
+		 echo "<td align=\"right\" width=\"7%\">";
+                echo "<strong>" . convert_amount_dc(-$total_credit_total) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                //echo "<td align=\"right\" width=\"125\">";
+		 echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($total_closing_balance) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+               // echo "<td align=\"right\" width=\"150\">";
+		 echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($total_dep_opening_balance) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                //echo "<td align=\"right\" width=\"140\">";
+		echo "<td align=\"right\" width=\"7%\">";
+
                 echo "<strong>" . convert_amount_dc($total_current_depreciation_amount) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                //echo "<td align=\"right\" width=\"145\">";
+		echo "<td align=\"right\" width=\"7%\">";
+
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+               // echo "<td align=\"right\" width=\"140\">";
+		echo "<td align=\"right\" width=\"7%\">";
+
 		echo "<strong>" . money_format('%!i', convert_cur($grand_total_depreciation)) . "</strong>";
                 echo "</td>";
 
-		echo "<td align=\"right\">";
+		//echo "<td align=\"right\" width=\"130\">";
+		 echo "<td align=\"right\" width=\"7%\">";
+
                 echo "<strong>" . convert_amount_dc($grand_current_year) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($prev_total) . "</strong>";
                 echo "</td>";
 		echo "</tr>";

@@ -348,7 +348,7 @@ class Report extends Controller {
 	function depreciation($period = NULL)
         {
 
-                $this->template->set('nav_links', array('report/update' => 'Depreciiation Rate','report/add_old_asset_value' => 'Add Old Asset Register','report/depreciation' => 'Depreciation As Today','report/get_finaldeprec' => 'Final Depreciation','report/printpreview/depreciation' => 'Print Preview'));
+                $this->template->set('nav_links', array('report/update' => 'Depreciiation Rate','report/add_old_asset_value' => 'Add Old Asset Register','report/depreciation' => 'Depreciation As Today','report/printpreview/depreciation' => 'Print Preview'));
                 $this->template->set('page_title', 'Depreciation Of Assets');
                 $data['left_width'] = "450";
                 $data['right_width'] = "450";
@@ -532,6 +532,11 @@ class Report extends Controller {
                 $this->session->set_userdata($newrange);	
 		$data['search'] = $data_search_by;
 		$data['asset_type_value'] = $data_asset_type;
+		
+		/* add  data by @kanchan*/	
+		$this->Depreciation_model->get_asset_data($data_search_by,$data_text,$data_asset_type);
+		$this->Depreciation_model->get_deprecvalue($data_search_by,$data_text,$data_asset_type);
+
 		$this->template->load('template', 'report/depreciation', $data);
                 return;
         }

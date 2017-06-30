@@ -807,7 +807,7 @@ d Investments')
 
 	function FixedAsset_A($code,$count,$type,$database)
 	{
-		  //echo "count====$count";
+		
                 $sum = 0;
                 $sum1 = 0;
                 $sum2= 0;
@@ -854,10 +854,12 @@ d Investments')
                         	$sum = $sum + $opening_bal;
               		        $dr_total = $value[2];
                         	$sum1 = $sum1 + $dr_total;
-                     		$cr_total = $value[3];
-                        	$sum2 = $sum2 + $cr_total;
+				$cr_totalded = $value[3];
+				$add_value = $opening_bal + $dr_total;
+                        	$sum2 = $sum2 + $cr_totalded;
                		        $closing_bal = $value[4];
                         	$sum3 = $sum3 + $closing_bal;
+				$cr_amountdep = -$value[5];
 
          	                $result1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
                         	$dep_op_balance = $result1[0];
@@ -868,11 +870,14 @@ d Investments')
                         	$new_dep_amount = $result2[1];
 
 			//Adding opening balance for the ledger head.
-                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount + $cr_amountdep);
 			$sum5 = $sum5 + $current_depreciation;
 			$total_depreciation = $dep_op_balance + $current_depreciation;
 			$sum6 = $sum6 + $total_depreciation;
-			$net_total = ($opening_bal + $dr_total) - $cr_total;
+			if($total_depreciation > 0)
+			$net_total = ($closing_bal)-($total_depreciation);
+			else
+			$net_total = ($closing_bal)+($total_depreciation);
 			$sum7 = $sum7 + $net_total;
 			$current_year_value = $net_total;
 			
@@ -880,11 +885,11 @@ d Investments')
                         {
 			if($type == 'view'){
                         echo "<tr class=\"tr-group\">";
-                        echo "<td class=\"td-group\">";
+                        echo "<td class=\"td-group\" width=\"4%\">";
                         echo $counter;
                         $counter++;
                         echo "</td>";
-			echo "<td>";
+			echo "<td width=\"20%\">";
                         if($group_name == 'Others Fixed Assets'){
                         echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $row1->id . '/' . $row1->name, $row1->name, array('title' => $row1->name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
 			$group_name=$row1->name;
@@ -918,41 +923,45 @@ d Investments')
 				$ledsum7 = 0;
 
 				$ledger_id = $id;
-				//echo "legerid======>>>>$ledger_id==============";
 				$value = $CI->newschedules_model->fixed_asset($ledger_id);
-				//print_r($value);
                                 $opening_bal1 = $value[0];
                                 $opening_bal_dc1 = $value[1];
                                 $ledsum = $ledsum + $opening_bal1;
                                 $dr_total1 = $value[2];
                                 $ledsum1 = $ledsum1 + $dr_total1;
-                                $cr_total1 = $value[3];
-                                $ledsum2 = $ledsum2 + $cr_total1;
+                                $cr_amountded1 = $value[3];
+                                $ledsum2 = $ledsum2 + $cr_amountded1;
                                 $closing_bal1 = $value[4];
                                 $ledsum3 = $ledsum3 + $closing_bal1;
+				$cr_totaldep1 = -$value[5];	
 
 				$result1 = $CI->newschedules_model->get_old_asset_depvalue($ledger_id);
-				//print_r($result1);
                                 $dep_op_balance1 = $result1[0];
                                 $ledsum4 = $ledsum4 + $dep_op_balance1;
                                 $old_dep_amount1 = $result1[1];
 
                                 $result2 = $CI->newschedules_model->get_new_asset_depvalue($ledger_id);
                                 $new_dep_amount1 = $result2[1];
-				print_r($new_dep_amount1);
 				
 				//Adding opening balance for the ledger head.
-                        	$current_depreciation1 = ($old_dep_amount1 + $new_dep_amount1);
+                        	$current_depreciation1 = ($old_dep_amount1 + $new_dep_amount1+$cr_totaldep1);
                         	$ledsum5 = $ledsum5 + $current_depreciation1;
                         	$total_depreciation1 = $dep_op_balance1 + $current_depreciation1;
                         	$ledsum6 = $ledsum6 + $total_depreciation1;
-                        	$net_total1 = ($opening_bal1 + $dr_total1) - $cr_total1;
+				if($total_depreciation1 > 0)
+                        	$net_total1 = ($closing_bal1)-($total_depreciation1);
+                        	else
+                        	$net_total1 = ($closing_bal1)+($total_depreciation1);
+
+                        	//$net_total1 = ($opening_bal1 + $dr_total1) - $cr_total1;
+				//$net_total1 = $closing_bal1 - $total_depreciation1;
+
                         	$ledsum7 = $ledsum7 + $net_total1;
                         	$current_year_value1 = $net_total1;
 				
 				$direct_opbal = $opening_bal +  $opening_bal1;
 				$direct_drtotal= $dr_total +  $dr_total1;
-				$direct_crtotal= $cr_total +  $cr_total1;
+				$direct_crtotal= $cr_totalded +  $cr_amountded1;
 				$direct_clbal =  $closing_bal +  $closing_bal1;
 				$direct_depr_opbal = $dep_op_balance + $dep_op_balance1;
 				$direct_old_depamount =  $old_dep_amount+ $old_dep_amount1;
@@ -976,55 +985,56 @@ d Investments')
 
 				// code for display value in table
 				if($type == 'view'){
-				echo "<td align=\"right\">" . convert_amount_dc($direct_opbal) . "</td>";
-                        	echo "<td align=\"right\">" . convert_amount_dc($direct_drtotal) . "</td>";
-                        	echo "<td align=\"right\">" . convert_amount_dc(-$direct_crtotal) . "</td>";
-                        	echo "<td align=\"right\">" . convert_amount_dc($direct_clbal) . "</td>";
+				echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($direct_opbal) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($direct_drtotal) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$direct_crtotal) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($direct_clbal) . "</td>";
                         	if($direct_depr_opbal > 0){
-                        	echo "<td align=\"right\">" . convert_amount_dc(+$direct_depr_opbal) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$direct_depr_opbal) . "</td>";
                         	}else{
-                        	echo "<td align=\"right\">" . convert_amount_dc(-$direct_depr_opbal) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$direct_depr_opbal) . "</td>";
                         	}
-                        	echo "<td align=\"right\">" . convert_amount_dc(+$direct_curr_depr) . "</td>";
-                        	echo "<td align=\"right\" width=\"9%\">";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$direct_curr_depr) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">";
                         	echo "0.00";
                         	echo "</td>";
-                        	echo "<td align=\"center\">";
+                        	echo "<td align=\"center\" width=\"7%\">";
                         	echo money_format('%!i', convert_cur($direct_totaldepr));
                         	echo "</td>";
                         	if($direct_curr_yrvalue > 0){
-                        	echo "<td align=\"right\">" . convert_amount_dc($direct_curr_yrvalue) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($direct_curr_yrvalue) . "</td>";
                         	}else{
-                        	echo "<td align=\"right\">" . convert_amount_dc($direct_curr_yrvalue) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($direct_curr_yrvalue) . "</td>";
                         	}
-				echo "<td align=\"right\">" . convert_amount_dc($previous_bal) . "</td>";
+				echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($previous_bal) . "</td>";
 				}else{
 					$data = $CI->payment_model->xml_creation('schedule_'.$count,'',$database,$group_name,$curr_year,$direct_curr_yrvalue);
 				}
 			}else{	
 				if($type == 'view'){
-                        	echo "<td align=\"right\">" . convert_amount_dc($opening_bal) . "</td>";
-                        	echo "<td align=\"right\">" . convert_amount_dc($dr_total) . "</td>";
-                        	echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
-                        	echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+				
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_bal) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($dr_total) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$cr_totalded) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($closing_bal) . "</td>";
 				if($dep_op_balance > 0){
-                        	echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
 				}else{
-				echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+				echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
 				}
-                        	echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
-                        	echo "<td align=\"right\" width=\"9%\">";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">";
                         	echo "0.00";
                         	echo "</td>";
-                        	echo "<td align=\"center\">";
+                        	echo "<td align=\"center\" width=\"7%\">";
                         	echo money_format('%!i', convert_cur($total_depreciation));
                         	echo "</td>";
 				if($current_year_value > 0){
-                        	echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+                        	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 				}else{
-				echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+				echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 				}
-				echo "<td align=\"right\">" . convert_amount_dc($previous_bal) . "</td>";
+				echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($previous_bal) . "</td>";
 				}else{
 					$data = $CI->payment_model->xml_creation('schedule_'.$count,'',$database,$group_name,$curr_year,$current_year_value);
 				}
@@ -1073,16 +1083,17 @@ d Investments')
                 $group_id =$group_result->id;
                 $group_name = $group_result->name;
 
-                $value = $CI->newschedules_model->fixed_asset($group_id, $count);
+                $value = $CI->newschedules_model->fixed_asset($group_id);
 		$opening_bal = $value[0];
                 $opening_bal_dc = $value[1];
                 $sum = $sum + $opening_bal;
                 $dr_total = $value[2];
                	$sum1 = $sum1 + $dr_total;
-                $cr_total = $value[3];
-                $sum2 = $sum2 + $cr_total;
+		$cr_amountded = $value[3];
+                $sum2 = $sum2 + $cr_amountded;
                 $closing_bal = $value[4];
                 $sum3 = $sum3 + $closing_bal;
+		$cr_amountdep = -$value[5];
 
                 $result1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
 		$dep_op_balance = $result1[0];
@@ -1093,11 +1104,17 @@ d Investments')
 		$new_dep_amount = $result2[1];
 
                         //Adding opening balance for the ledger head.
-                        $current_depreciation = ($old_dep_amount + $new_dep_amount);
+                        $current_depreciation = ($old_dep_amount + $new_dep_amount+$cr_amountdep);
                         $sum5 = $sum5 + $current_depreciation;
                         $total_depreciation = $dep_op_balance + $current_depreciation;
                         $sum6 = $sum6 + $total_depreciation;
-                        $net_total = ($opening_bal + $dr_total) - $cr_total;
+                        //$net_total = ($opening_bal + $dr_total) - $cr_total;
+			if($total_depreciation > 0)
+                        $net_total = ($closing_bal)-($total_depreciation);
+                        else
+                        $net_total = ($closing_bal)+($total_depreciation);
+
+			//$net_total = $closing_bal - $total_depreciation;	
                         $sum7 = $sum7 + $net_total;
                         $current_year_value = $net_total;
 			$previous_bal=$CI->payment_model->xml_read($tt,$group_name);
@@ -1105,11 +1122,11 @@ d Investments')
                         if($type ==  'view'){
 	
                 	echo "<tr class=\"tr-group\">";
-                	echo "<td class=\"td-group\" width=\"40\">";
+			echo "<td class=\"td-group\" width=\"4%\">";
                 	echo $counter;
                 	echo "</td>";
 			if($count == "4"){
-                	echo "<td class=\"td-group\" width=\"225\">";
+			echo "<td class=\"td-group\" width=\"20%\">";
                 	if($group_name == 'Capital Work-In-Progress')
                 	echo "&nbsp;&nbsp;&nbsp;&nbsp;" . anchor_popup('report/new_sub_schedule/' . $group_id . '/' .  $group_name, $group_name, array('title' => $group_name, 'style' => 'color:#000000;text-decoration:none;font-weight:bold;')) . "(Subschedule)";
                 	else
@@ -1117,32 +1134,35 @@ d Investments')
                 	echo '<b>(B)</b>';
                 	echo "</td>";
 			}else{
-			echo "<td class=\"td-group\" width=\"225\">";
+			echo "<td class=\"td-group\">";
 			echo "&nbsp;" .  $group_name;
                         echo "</td>";
 			}
-			echo "<td align=\"right\">" . convert_amount_dc($opening_bal) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($dr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_bal) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($dr_total) . "</td>";
+                       	echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$cr_amountded) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($closing_bal) . "</td>";
 			if($dep_op_balance > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
-                        echo "<td align=\"right\" width=\"9%\">";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">";
                         echo "0.00";
                         echo "</td>";
-                        echo "<td align=\"center\">";
+			echo "<td align=\"center\" width=\"7%\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
 			if($current_year_value > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			 echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
+
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
+
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc($previous_bal) . "</td>"; 
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($previous_bal) . "</td>"; 
 			}else{
                                   $data = $CI->payment_model->xml_creation('schedule_'.$count,$group_id,$database,$group_name,$curr_year,$current_year_value);
                         }
@@ -1191,7 +1211,7 @@ d Investments')
                         $sum = $sum + $opening_bal;
               		$dr_total = $result[2];
                         $sum1 = $sum1 + $dr_total;
-                     	$cr_total = $result[3];
+			$cr_total = $result[3];
                         $sum2 = $sum2 + $cr_total;
                		$closing_bal = $result[4];
                         $sum3 = $sum3 + $closing_bal;
@@ -1214,37 +1234,37 @@ d Investments')
 			$current_year_value = $net_total;
 			if($type == 'view'){
                 	echo "<tr class=\"tr-group\" colspan=\"2\">";
-                	echo "<td class=\"td-group\">";
+                	echo "<td class=\"td-group\" width=\"4%\">";
                 	echo $counter;
                 	$counter++;
                 	echo "</td>";
-                	echo "<td class=\"td-group\" width=\"225\">";
+			echo "<td class=\"td-group\" width=\"20%\">";
                 	echo "&nbsp;" .  $ledg_name;
                 	echo "</td>"; 
 			$previous_bal=$CI->payment_model->xml_read($tt, $ledg_name);
 			$prev_total=$prev_total+$previous_bal;
-			echo "<td align=\"right\">" . convert_amount_dc($opening_bal) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($dr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_bal) . "</td>";
+                        echo "<td align=\"right\"  width=\"7%\">" . convert_amount_dc($dr_total) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$cr_total) . "</td>";
+                        echo "<td align=\"right\"  width=\"7%\">" . convert_amount_dc($closing_bal) . "</td>";
 			if($dep_op_balance > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+                        echo "<td align=\"right\"  width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			echo "<td align=\"right\"  width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
-                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "<td align=\"right\"  width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+			echo "<td align=\"right\"  width=\"7%\">";
                         echo "0.00";
                         echo "</td>";
-                        echo "<td align=\"center\">";
+                        echo "<td align=\"center\"  width=\"7%\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
 			if($current_year_value > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+                        echo "<td align=\"right\"  width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			echo "<td align=\"right\"  width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc($previous_bal) . "</td>"; 
+                        echo "<td align=\"right\"  width=\"7%\">" . convert_amount_dc($previous_bal) . "</td>"; 
                 	echo "</tr>";
 			}else{
                                 $data = $CI->payment_model->xml_creation('schedule_'.$count,$ledg_id,$database,$ledg_name,$curr_year,$current_year_value);
@@ -1262,10 +1282,13 @@ d Investments')
 		$this->prev_total=$prev_total;
         }
 
-	function Fixed_Asset_Others($code,$count)
+
+/*	function Fixed_Asset_OthersA($code,$count)
 	{
 		$counter = 1;
-		$sum = 0;
+		$other_cr_total = 0;
+		$other_dr_total = 0;
+		$other_cl_sum = 0;
 		$sum1 = 0;
 		$sum2 = 0;
 		$sum3 = 0;
@@ -1273,94 +1296,211 @@ d Investments')
 		$sum5 = 0;
 		$sum6 = 0;
 		$sum7 = 0;
-
-		$CI = & get_instance();
-                //Get current label.
-                $current_active_account = $CI->session->userdata('active_account');
-		$prev_year=$this->get_fy_year();
-                $year=explode("-",$prev_year);
-                $curr_year=($year[0]+1) ."-" . ($year[1]+1);
-
-		$group_id = $CI->ledger_model->get_group_id($code);
-		$CI->db->select('id,name')->from('ledgers')->where('group_id', $group_id);
-		$query_r = $CI->db->get();
+		$current_dep_value4a = 0;
+		$total_dep4a = 0;
+		$dep_opening_value = 0;
 		
-		foreach($query_r->result() as $row)
+		$CI =& get_instance();
+                $id = $CI->Group_model->get_group_id($code);
+                $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+                $group_detail = $CI->db->get();
+                foreach($group_detail->result() as $row)
                 {
-                        $ledger_id = $row->id;
-                        $ledger_name = $row->name;
-			echo "<tr class=\"tr-group\">";
-                        echo "<td class=\"td-group\">";
+                        $g_id =$row->id;
+                        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$g_id);
+                        $child_detail = $CI->db->get();
+                        foreach($child_detail->result() as $row1)
+                        {
+                        $group_id =$row1->id;
+                        $group_name = $row1->name;
+			if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
+                        {
+			//to get other schedule data from model function
+			$result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
+			$opening_balance = $result4a[0];
+                        $sum1 = $sum1 + $opening_balance;
+                        $opening_bal_dc = $result4a[1];
+			$other_dr_amount = $result4a[12];
+			$other_dr_total = $other_dr_total + $other_dr_amount;
+			$other_cr_ded = $result4a[11];
+			$other_cr_total = $other_cr_total + $other_cr_ded;
+			$other_closing_bal = $result4a[13];
+			$other_cl_sum = $other_cl_sum + $other_closing_bal;
+			$other_cr_dep = $result4a[10];
+
+			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
+                        $dep_op_balance = $dep1[2];
+			$dep_opening_value  = $dep_opening_value + $dep_op_balance;
+			$old_dep_amount = $dep1[3];
+				
+			$dep2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
+                        $new_dep_amount = $dep2[3];
+
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount + $other_cr_dep);
+			$sum3 = $sum3 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum4 = $sum4 + $total_depreciation;
+			if($total_depreciation > 0)
+			$net_total = ($other_closing_bal)-($total_depreciation);
+			else
+			$net_total = ($other_closing_bal)+($total_depreciation);
+			//$net_total = ($opening_balance + $plan_dr_amount) - $plan_cr_amount;
+			$sum5 = $sum5 + $net_total;
+			$current_year_value = $net_total;
+
+                        //if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
+                        //{
+                        echo "<tr class=\"tr-group\">";
+                        //echo "<td class=\"td-group\">";	
+			echo "<td class=\"td-group\" width=\"4%\">";
                         echo $counter;
                         $counter++;
                         echo "</td>";
-			echo "<td>";
-                        echo "&nbsp;" .  $ledger_name;
-                        echo "</td>";
-                	$result = $CI->newschedules_model->fixed_assetledg($ledger_id);
-			$opening_bal = $result[0];
-			$opening_bal_dc = $result[1];
-                        $sum = $sum + $opening_bal;
-              		$dr_total = $result[2];
-                        $sum1 = $sum1 + $dr_total;
-                     	$cr_total = $result[3];
-                        $sum2 = $sum2 + $cr_total;
-               		$closing_bal = $result[4];
-                        $sum3 = $sum3 + $closing_bal;
+			//echo "<td class=\"td-group\" width=\"225\">";
+			echo "<td width=\"20%\">";
+                	echo "&nbsp;" .  $group_name;
+                	echo "</td>";
 
-         	        $result1 = $CI->newschedules_model->get_old_asset_depvalue1($ledger_id);
-                        $dep_op_balance = $result1[0];
-                        $sum4 = $sum4 + $dep_op_balance;
-			$old_dep_amount = $result1[1];
-				
-			$result2 = $CI->newschedules_model->get_new_asset_depvalue1($ledger_id);
-                        $new_dep_amount = $result2[1];
-
-			//Adding opening balance for the ledger head.
-                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
-			$sum5 = $sum5 + $current_depreciation;
-			$total_depreciation = $dep_op_balance + $current_depreciation;
-			$sum6 = $sum6 + $total_depreciation;
-			$net_total = ($opening_bal + $dr_total) - $cr_total;
-			$sum7 = $sum7 + $net_total;
-			$current_year_value = $net_total;  
-
-			echo "<td align=\"right\">" . convert_amount_dc($opening_bal) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($dr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(-$cr_total) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($other_dr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$other_cr_ded) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($other_closing_bal) . "</td>";
 			if($dep_op_balance > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
-                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">";
                         echo "0.00";
                         echo "</td>";
-                        echo "<td align=\"center\">";
+                        echo "<td align=\"center\" width=\"7%\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
 			if($current_year_value > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>"; 
-			
-                echo "</tr>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(0) . "</td>";
 
-                }//foreach 
-                $this->opening_balance1 = $sum;
-                $this->debit_total1 = $sum1;
-                $this->credit_total1 = $sum2;
-                $this->closing_balance1 = $sum3;
-                $this->dep_opening_balance1 = $sum4;
-                $this->current_depreciation_amount1 = $sum5;
-                $this->total_depreciation1 = $sum6;
-		$this->curr_amount1 = $sum7; 
-
+		 	}//ifcondition
+                    }//childgroup
+                }//foreach group
+		$this->opening_bal1 = $sum1;
+		$this->cr_other_total1 = $other_cr_total;
+		$this->dr_other_total1 = $other_dr_total;
+		$this->closing_sum1 = $other_cl_sum;
+		$this->dep_opening = $dep_opening_value;
+		$this->current_dep_total = $sum3;
+		$this->total_depreciation = $sum4;
+		$this->curr_amount = $sum5;
 	}
+
+
+	function Fixed_Asset_OthersB($id,$count)
+	{
+		$counter = 17;
+		$other_cr_total = 0;
+                $other_dr_total = 0;
+                $other_cl_sum = 0;
+		$sum1 = 0;
+		$sum2 = 0;
+		$sum3 = 0;
+		$sum4 = 0;
+		$sum5 = 0;
+		$sum6 = 0;
+		$sum7 = 0;
+		$current_dep_value4a = 0;
+		$total_dep4a = 0;
+		$dep_opening_value = 0;
+
+		$CI =& get_instance();
+                $CI->db->select('name,code,id')->from('groups')->where('id',$id);
+                $group_detail = $CI->db->get();
+                $group_result = $group_detail->row();
+                $group_id =$group_result->id;
+                $group_name = $group_result->name;
+
+                echo "<tr class=\"tr-group\">";
+                //echo "<td class=\"td-group\" width=\"40\">";
+		echo "<td class=\"td-group\" width=\"4%\">";
+                echo $counter;
+                echo "</td>";
+		echo "<td class=\"td-group\" width=\"20%\">";
+		//echo "<td class=\"td-group\" width=\"225\">";
+                echo "&nbsp;" .  $group_name . "<b>(B)</b>";
+                echo "</td>";
+			$result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);		
+			$opening_balance = $result4a[0];
+			$sum1 = $sum1 + $opening_balance;
+			$opening_bal_dc = $result4a[1];
+                        $other_dr_amount = $result4a[12];
+                        $other_dr_total = $other_dr_total + $other_dr_amount;
+                        $other_cr_ded = $result4a[11];
+                        $other_cr_total = $other_cr_total + $other_cr_ded;
+                        $other_closing_bal = $result4a[13];
+                        $other_cl_sum = $other_cl_sum + $other_closing_bal;
+                        $other_cr_dep = $result4a[10];
+			
+
+			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
+                        $dep_op_balance = $dep1[2];
+			$dep_opening_value  = $dep_opening_value + $dep_op_balance;
+			$old_dep_amount = $dep1[3];
+				
+			$dep2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
+                        $new_dep_amount = $dep2[3];
+
+			//Adding opening balance for the ledger head.
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount + $other_cr_dep);
+			$sum3 = $sum3 + $current_depreciation;
+			$total_depreciation = $dep_op_balance + $current_depreciation;
+			$sum4 = $sum4 + $total_depreciation;
+			if($total_depreciation > 0)
+			$net_total = ($other_closing_bal)-($total_depreciation);
+			else
+			$net_total = ($other_closing_bal)+($total_depreciation);
+			//$net_total = ($opening_balance + $plan_dr_amount) - $plan_cr_amount;
+			$sum5 = $sum5 + $net_total;
+			$current_year_value = $net_total;
+
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($other_dr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$other_cr_ded) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($other_closing_bal) . "</td>";
+			if($dep_op_balance > 0){
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+			}else{
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">";
+                        echo "0.00";
+                        echo "</td>";
+                        echo "<td align=\"right\" width=\"7%\">";
+                        echo money_format('%!i', convert_cur($total_depreciation));
+                        echo "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(0) . "</td>";
+                echo "</tr>";
+		
+		$this->opening_bal2 = $sum1;
+		$this->cr_other_total2 = $other_cr_total;
+		$this->dr_other_total2 = $other_dr_total;
+		$this->closing_sum2 = $other_cl_sum;
+		$this->dep_opening2 = $dep_opening_value;
+		$this->current_dep_total2 = $sum3;
+		$this->total_depreciation2 = $sum4;
+		$this->curr_amount2 = $sum5;
+	} */
+
+
 
 	function Plan_Fixed_Sub_ScheduleA($code,$count)
 	{
@@ -1392,16 +1532,20 @@ d Investments')
                         {
                         $group_id =$row1->id;
                         $group_name = $row1->name;
+		
+			if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
+                        {
 	                $result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
 			$opening_balance = $result4a[0];
-			$sum1 = $sum1 + $opening_balance;
-			$opening_bal_dc = $result4a[1];
-                	$plan_dr_amount = $result4a[2];
-			$dr_plan_total = $dr_plan_total + $plan_dr_amount;
-			$plan_cr_amount = $result4a[3];
-			$cr_plan_total = $cr_plan_total + $plan_cr_amount;
-			$closing_bal = $result4a[6];
+                        $sum1 = $sum1 + $opening_balance;
+                        $opening_bal_dc = $result4a[1];
+			$plan_dr_amount = $result4a[2];
+                        $dr_plan_total = $dr_plan_total + $plan_dr_amount;
+                        $plan_cr_ded = $result4a[3];
+                        $cr_plan_total = $cr_plan_total + $plan_cr_ded;
+                        $closing_bal = $result4a[6];
                         $sum2 = $sum2 + $closing_bal;
+			$plan_cr_dep = $result4a[8];
 
 			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
                         $dep_op_balance = $dep1[2];
@@ -1412,47 +1556,53 @@ d Investments')
                         $new_dep_amount = $dep2[3];
 
 			//Adding opening balance for the ledger head.
-                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount + $plan_cr_dep);
 			$sum3 = $sum3 + $current_depreciation;
 			$total_depreciation = $dep_op_balance + $current_depreciation;
 			$sum4 = $sum4 + $total_depreciation;
-			$net_total = ($opening_balance + $plan_dr_amount) - $plan_cr_amount;
+			if($total_depreciation > 0)
+			$net_total = ($closing_bal)-($total_depreciation);
+			else
+			$net_total = ($closing_bal)+($total_depreciation);
+			//$net_total = ($opening_balance + $plan_dr_amount) - $plan_cr_amount;
 			$sum5 = $sum5 + $net_total;
 			$current_year_value = $net_total;
 
-                        if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
-                        {
+                        //if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
+                        //{
                         echo "<tr class=\"tr-group\">";
-                        echo "<td class=\"td-group\">";
+                        //echo "<td class=\"td-group\">";	
+			echo "<td class=\"td-group\" width=\"4%\">";
                         echo $counter;
                         $counter++;
                         echo "</td>";
-			echo "<td class=\"td-group\" width=\"225\">";
+			//echo "<td class=\"td-group\" width=\"225\">";
+			echo "<td width=\"20%\">";
                 	echo "&nbsp;" .  $group_name;
                 	echo "</td>";
 
-			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($plan_dr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(-$plan_cr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($plan_dr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$plan_cr_ded) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($closing_bal) . "</td>";
 			if($dep_op_balance > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
-                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">";
                         echo "0.00";
                         echo "</td>";
-                        echo "<td align=\"center\">";
+                        echo "<td align=\"center\" width=\"7%\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
 			if($current_year_value > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(0) . "</td>";
 
 		 	}//ifcondition
                     }//childgroup
@@ -1493,23 +1643,26 @@ d Investments')
                 $group_name = $group_result->name;
 
                 echo "<tr class=\"tr-group\">";
-                echo "<td class=\"td-group\" width=\"40\">";
+                //echo "<td class=\"td-group\" width=\"40\">";
+		echo "<td class=\"td-group\" width=\"4%\">";
                 echo $counter;
                 echo "</td>";
-		echo "<td class=\"td-group\" width=\"225\">";
+		echo "<td class=\"td-group\" width=\"20%\">";
+		//echo "<td class=\"td-group\" width=\"225\">";
                 echo "&nbsp;" .  $group_name . "<b>(B)</b>";
                 echo "</td>";
-
 		 	$result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
 			$opening_balance = $result4a[0];
 			$sum1 = $sum1 + $opening_balance;
 			$opening_bal_dc = $result4a[1];
                 	$plan_dr_amount = $result4a[2];
 			$dr_plan_total = $dr_plan_total + $plan_dr_amount;
-			$plan_cr_amount = $result4a[3];
-			$cr_plan_total = $cr_plan_total + $plan_cr_amount;
+			//$plan_cr_amount = $result4a[3];
+			$plan_cr_ded = $result4a[3];
+			$cr_plan_total = $cr_plan_total + $plan_cr_ded;
 			$closing_bal = $result4a[6];
                         $sum2 = $sum2 + $closing_bal;
+			$plan_cr_dep = $result4a[8];
 
 			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
                         $dep_op_balance = $dep1[2];
@@ -1520,36 +1673,40 @@ d Investments')
                         $new_dep_amount = $dep2[3];
 
 			//Adding opening balance for the ledger head.
-                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount + $plan_cr_dep);
 			$sum3 = $sum3 + $current_depreciation;
 			$total_depreciation = $dep_op_balance + $current_depreciation;
 			$sum4 = $sum4 + $total_depreciation;
-			$net_total = ($opening_balance + $plan_dr_amount) - $plan_cr_amount;
+			if($total_depreciation > 0)
+			$net_total = ($closing_bal)-($total_depreciation);
+			else
+			$net_total = ($closing_bal)+($total_depreciation);
+			//$net_total = ($opening_balance + $plan_dr_amount) - $plan_cr_amount;
 			$sum5 = $sum5 + $net_total;
 			$current_year_value = $net_total;
 
-			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($plan_dr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(-$plan_cr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($plan_dr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$plan_cr_ded) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($closing_bal) . "</td>";
 			if($dep_op_balance > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
-                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">";
                         echo "0.00";
                         echo "</td>";
-                        echo "<td align=\"center\">";
+                        echo "<td align=\"right\" width=\"7%\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
 			if($current_year_value > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(0) . "</td>";
                 echo "</tr>";
 		
 		$this->opening_bal2 = $sum1;
@@ -1582,11 +1739,13 @@ d Investments')
                 	$ledg_id =$row->id;
                 	$ledg_name = $row->name;
                 	echo "<tr class=\"tr-group\" colspan=\"2\">";
-               	 	echo "<td class=\"td-group\">";
+               	 	//echo "<td class=\"td-group\">";
+			echo "<td class=\"td-group\" width=\"4%\">";
                 	echo $counter;
                 	$counter++;
                 	echo "</td>";
-                	echo "<td class=\"td-group\" width=\"225\">";
+                	//echo "<td class=\"td-group\" width=\"225\">";
+			echo "<td class=\"td-group\" width=\"20%\">";
                 	echo "&nbsp;" .  $ledg_name;
                 	echo "</td>";
 
@@ -1619,28 +1778,28 @@ d Investments')
 			$sum5 = $sum5 + $net_total;
 			$current_year_value = $net_total;
 
-			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($plan_dr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(-$plan_cr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($plan_dr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$plan_cr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($closing_bal) . "</td>";
 			if($dep_op_balance > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
-                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">";
                         echo "0.00";
                         echo "</td>";
-                        echo "<td align=\"center\">";
+                        echo "<td align=\"center\" width=\"7%\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
 			if($current_year_value > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(0) . "</td>";
                 }//foreach
 
 		$this->opening_bal3 = $sum1;
@@ -1683,16 +1842,20 @@ d Investments')
                         {
                         $group_id =$row1->id;
                         $group_name = $row1->name;
+
+			if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
+                        {
 	                $result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
 			$opening_balance = $result4a[0];
 			$sum1 = $sum1 + $opening_balance;
 			$opening_bal_dc = $result4a[1];
                 	$nonplan_dr_amount = $result4a[4];
 			$dr_nonplan_total = $dr_nonplan_total + $nonplan_dr_amount;
-			$nonplan_cr_amount = $result4a[5];
-			$cr_nonplan_total = $cr_nonplan_total + $nonplan_cr_amount;
+			$nonplan_cr_ded = $result4a[5];
+			$cr_nonplan_total = $cr_nonplan_total + $nonplan_cr_ded;
 			$closing_bal = $result4a[7];
                         $sum2 = $sum2 + $closing_bal;
+			$nonplan_cr_dep = $result4a[9];
 
 			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
                         $dep_op_balance = $dep1[5];
@@ -1703,54 +1866,60 @@ d Investments')
                         $new_dep_amount = $dep2[4];
 
 			//Adding opening balance for the ledger head.
-                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount + $nonplan_cr_dep);
 			$sum3 = $sum3 + $current_depreciation;
 			$total_depreciation = $dep_op_balance + $current_depreciation;
 			$sum4 = $sum4 + $total_depreciation;
-			$net_total = ($opening_balance + $nonplan_dr_amount) - $nonplan_cr_amount;
+			if($total_depreciation > 0)
+			$net_total = ($closing_bal)-($total_depreciation);
+			else
+			$net_total = ($closing_bal)+($total_depreciation);
+			//$net_total = ($opening_balance + $nonplan_dr_amount) - $nonplan_cr_amount;
 			$sum5 = $sum5 + $net_total;
 			$current_year_value = $net_total;
 
-                        if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
-                        {
+                        //if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
+                        //{
                         echo "<tr class=\"tr-group\">";
-                        echo "<td class=\"td-group\">";
+                        //echo "<td class=\"td-group\">";
+			echo "<td class=\"td-group\" width=\"4%\">";
                         echo $counter;
                         $counter++;
                         echo "</td>";
-			echo "<td class=\"td-group\" width=\"225\">";
+			echo "<td width=\"20%\">";
+			//echo "<td class=\"td-group\" width=\"225\">";
                 	echo "&nbsp;" .  $group_name;
                 	echo "</td>";
 
-			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($nonplan_dr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(-$nonplan_cr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($nonplan_dr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$nonplan_cr_ded) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($closing_bal) . "</td>";
 			if($dep_op_balance > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
-                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">";
                         echo "0.00";
                         echo "</td>";
-                        echo "<td align=\"center\">";
+                        echo "<td align=\"center\" width=\"7%\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
 			if($current_year_value > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(0) . "</td>";
 
 		 	}//ifcondition
                     }//childgroup
                 }//foreach group
 		$this->opening_bal1 = $sum1;
-		$this->cr_plan_total1 = $cr_nonplan_total;
-		$this->dr_plan_total1 = $dr_nonplan_total;
+		$this->cr_nonplan_total1 = $cr_nonplan_total;
+		$this->dr_nonplan_total1 = $dr_nonplan_total;
 		$this->closing_sum1 = $sum2;
 		$this->dep_opening = $dep_opening_value;
 		$this->current_dep_total = $sum3;
@@ -1784,10 +1953,12 @@ d Investments')
                 $group_name = $group_result->name;
 
                 echo "<tr class=\"tr-group\">";
-                echo "<td class=\"td-group\" width=\"40\">";
+		echo "<td class=\"td-group\" width=\"4%\">";
+                //echo "<td class=\"td-group\" width=\"40\">";
                 echo $counter;
                 echo "</td>";
-		echo "<td class=\"td-group\" width=\"225\">";
+		echo "<td class=\"td-group\" width=\"20%\">";
+		//echo "<td class=\"td-group\" width=\"225\">";
                 echo "&nbsp;" .  $group_name . "<b>(B)</b>";
                 echo "</td>";
 
@@ -1797,10 +1968,11 @@ d Investments')
 			$opening_bal_dc = $result4a[1];
                 	$nonplan_dr_amount = $result4a[4];
 			$dr_nonplan_total = $dr_nonplan_total + $nonplan_dr_amount;
-			$nonplan_cr_amount = $result4a[5];
-			$cr_nonplan_total = $cr_nonplan_total + $nonplan_cr_amount;
+			$nonplan_cr_ded = $result4a[5];
+			$cr_nonplan_total = $cr_nonplan_total + $nonplan_cr_ded;
 			$closing_bal = $result4a[7];
                         $sum2 = $sum2 + $closing_bal;
+			$nonplan_cr_dep = $result4a[9];
 
 			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
                         $dep_op_balance = $dep1[5];
@@ -1811,41 +1983,45 @@ d Investments')
                         $new_dep_amount = $dep2[4];
 
 			//Adding opening balance for the ledger head.
-                	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+                	$current_depreciation = ($old_dep_amount + $new_dep_amount + $nonplan_cr_dep);
 			$sum3 = $sum3 + $current_depreciation;
 			$total_depreciation = $dep_op_balance + $current_depreciation;
 			$sum4 = $sum4 + $total_depreciation;
-			$net_total = ($opening_balance + $nonplan_dr_amount) - $nonplan_cr_amount;
+			if($total_depreciation > 0)
+			$net_total = ($closing_bal)-($total_depreciation);
+			else
+			$net_total = ($closing_bal)+($total_depreciation);
+			//$net_total = ($opening_balance + $nonplan_dr_amount) - $nonplan_cr_amount;
 			$sum5 = $sum5 + $net_total;
 			$current_year_value = $net_total;
 
-			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($nonplan_dr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(-$nonplan_cr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($nonplan_dr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$nonplan_cr_ded) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($closing_bal) . "</td>";
 			if($dep_op_balance > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(+$current_depreciation) . "</td>";
-                        echo "<td align=\"right\" width=\"9%\">";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">";
                         echo "0.00";
                         echo "</td>";
-                        echo "<td align=\"center\">";
+                        echo "<td align=\"center\" width=\"7%\">";
                         echo money_format('%!i', convert_cur($total_depreciation));
                         echo "</td>";
 			if($current_year_value > 0){
-                        echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}else{
-			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
 			}
-                        echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(0) . "</td>";
                 echo "</tr>";
 		
 		$this->opening_bal2 = $sum1;
-		$this->cr_plan_total2 = $cr_nonplan_total;
-		$this->dr_plan_total2 = $dr_nonplan_total;
+		$this->cr_nonplan_total2 = $cr_nonplan_total;
+		$this->dr_nonplan_total2 = $dr_nonplan_total;
 		$this->closing_sum2 = $sum2;
 		$this->dep_opening2 = $dep_opening_value;
 		$this->current_dep_total2 = $sum3;
@@ -1875,11 +2051,13 @@ d Investments')
                 	$ledg_id =$row->id;
                 	$ledg_name = $row->name;
                 	echo "<tr class=\"tr-group\" colspan=\"2\">";
-               	 	echo "<td class=\"td-group\">";
+			echo "<td class=\"td-group\" width=\"4%\">";
+               	 	//echo "<td class=\"td-group\">";
                 	echo $counter;
                 	$counter++;
                 	echo "</td>";
-                	echo "<td class=\"td-group\" width=\"225\">";
+			echo "<td class=\"td-group\" width=\"20%\">";
+                	//echo "<td class=\"td-group\" width=\"225\">";
                 	echo "&nbsp;" .  $ledg_name;
                 	echo "</td>";
 
@@ -1896,7 +2074,7 @@ d Investments')
                         $sum2 = $sum2 + $closing_bal;
 
 			$dep3 = $CI->newschedules_model->get_old_asset_depvalue1($ledg_id); 
-                        $dep_op_balance = $dep3[2];
+                        $dep_op_balance = $dep3[5];
 			$dep_opening_value  = $dep_opening_value + $dep_op_balance;
 			$old_dep_amount = $dep3[4];
 			
@@ -1912,9 +2090,119 @@ d Investments')
 			$sum5 = $sum5 + $net_total;
 			$current_year_value = $net_total;
 
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($nonplan_dr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$nonplan_cr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($closing_bal) . "</td>";
+			if($dep_op_balance > 0){
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+			}else{
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+			}
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">";
+                        echo "0.00";
+                        echo "</td>";
+                        echo "<td align=\"center\" width=\"7%\">";
+                        echo money_format('%!i', convert_cur($total_depreciation));
+                        echo "</td>";
+			if($current_year_value > 0){
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
+			}else{
+			echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
+			}
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(0) . "</td>";
+                }//foreach
+
+		$this->opening_bal3 = $sum1;
+		$this->cr_plan_total3 = $cr_nonplan_total;
+		$this->dr_plan_total3 = $dr_nonplan_total;
+		$this->closing_sum3 = $sum2;
+		$this->dep_opening3 = $dep_opening_value;
+		$this->current_dep_total3 = $sum3;
+		$this->total_depreciation3 = $sum4;
+		$this->curr_amount3 = $sum5;
+
+	} 
+
+	function Fixed_OtherA($code,$count)
+	{
+		$counter = 1;
+		$cr_other_total = 0;
+		$dr_other_total = 0;
+		$closing_sum = 0;
+		$sum1 = 0;
+		$sum2 = 0;
+		$sum3 = 0;
+		$sum4 = 0;
+		$sum5 = 0;
+		$sum6 = 0;
+		$sum7 = 0;
+		$current_dep_value4a = 0;
+		$total_dep4a = 0;
+		$dep_opening_value = 0;
+		
+		$CI =& get_instance();
+                $id = $CI->Group_model->get_group_id($code);
+                $CI->db->select('name,code,id')->from('groups')->where('parent_id',$id);
+                $group_detail = $CI->db->get();
+                foreach($group_detail->result() as $row)
+                {
+                        $g_id =$row->id;
+                        $CI->db->select('name,code,id')->from('groups')->where('parent_id',$g_id);
+                        $child_detail = $CI->db->get();
+                        foreach($child_detail->result() as $row1)
+                        {
+                        $group_id =$row1->id;
+                        $group_name = $row1->name;
+	                $result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
+			$opening_balance = $result4a[0];
+			$sum1 = $sum1 + $opening_balance;
+			$opening_bal_dc = $result4a[1];
+                	$other_dr_amount = $result4a[12];
+			$dr_other_total = $dr_other_total + $other_dr_amount;
+			$other_cr_ded = $result4a[11];
+			$cr_other_total = $cr_other_total + $other_cr_ded;
+			$closing_bal = $result4a[13];
+                        $sum2 = $sum2 + $closing_bal;
+			$other_cr_dep = $result4a[10];
+
+			$dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
+                        $dep_op_balance = $dep1[6];
+                        $dep_opening_value  = $dep_opening_value + $dep_op_balance;
+                        $old_dep_amount = $dep1[7];
+
+                        $dep2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
+                        $new_dep_amount = $dep2[7];
+
+                        //Adding opening balance for the ledger head.
+                        $current_depreciation = ($old_dep_amount + $new_dep_amount + $other_cr_dep);
+                        $sum3 = $sum3 + $current_depreciation;
+                        $total_depreciation = $dep_op_balance + $current_depreciation;
+                        $sum4 = $sum4 + $total_depreciation;
+                        if($total_depreciation > 0)
+                        $net_total = ($closing_bal)-($total_depreciation);
+                        else
+                        $net_total = ($closing_bal)+($total_depreciation);
+                        //$net_total = ($opening_balance + $nonplan_dr_amount) - $nonplan_cr_amount;
+                        $sum5 = $sum5 + $net_total;
+                        $current_year_value = $net_total;
+
+
+                        if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
+                        {
+                        echo "<tr class=\"tr-group\">";
+                        echo "<td class=\"td-group\">";
+                        echo $counter;
+                        $counter++;
+                        echo "</td>";
+			echo "<td class=\"td-group\" width=\"225\">";
+                	echo "&nbsp;" .  $group_name;
+                	echo "</td>";
+
 			echo "<td align=\"right\">" . convert_amount_dc($opening_balance) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($nonplan_dr_amount) . "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc(-$nonplan_cr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc($other_dr_amount) . "</td>";
+                        echo "<td align=\"right\">" . convert_amount_dc(-$other_cr_ded) . "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc($closing_bal) . "</td>";
 			if($dep_op_balance > 0){
                         echo "<td align=\"right\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
@@ -1934,18 +2222,122 @@ d Investments')
 			echo "<td align=\"right\">" . convert_amount_dc($current_year_value) . "</td>";
 			}
                         echo "<td align=\"right\">" . convert_amount_dc(0) . "</td>";
-                }//foreach
 
-		$this->opening_bal3 = $sum1;
-		$this->cr_plan_total3 = $cr_nonplan_total;
-		$this->dr_plan_total3 = $dr_nonplan_total;
-		$this->closing_sum3 = $sum2;
-		$this->dep_opening3 = $dep_opening_value;
-		$this->current_dep_total3 = $sum3;
-		$this->total_depreciation3 = $sum4;
-		$this->curr_amount3 = $sum5;
+		 	}//ifcondition
+                    }//childgroup
+                }//foreach group
+		$this->opening_bal1 = $sum1;
+		$this->cr_other_total1 = $cr_other_total;
+		$this->dr_other_total1 = $dr_other_total;
+		$this->closing_sum1 = $sum2;
+		$this->dep_opening = $dep_opening_value;
+		$this->current_dep_total = $sum3;
+		$this->total_depreciation = $sum4;
+		$this->curr_amount = $sum5;
+	}
 
-	} 
+	function Fixed_OtherB($id)
+        {
+                $counter = 17;
+                $cr_other_total = 0;
+                $dr_other_total = 0;
+                $closing_sum = 0;
+                $sum1 = 0;
+                $sum2 = 0;
+                $sum3 = 0;
+                $sum4 = 0;
+                $sum5 = 0;
+                $sum6 = 0;
+                $sum7 = 0;
+                $current_dep_value4a = 0;
+                $total_dep4a = 0;
+                $dep_opening_value = 0;
+
+                $CI =& get_instance();
+                $CI->db->select('name,code,id')->from('groups')->where('id',$id);
+                $group_detail = $CI->db->get();
+                $group_result = $group_detail->row();
+                $group_id =$group_result->id;
+                $group_name = $group_result->name;
+
+                echo "<tr class=\"tr-group\">";
+                echo "<td class=\"td-group\" width=\"4%\">";
+                //echo "<td class=\"td-group\" width=\"40\">";
+                echo $counter;
+                echo "</td>";
+                echo "<td class=\"td-group\" width=\"20%\">";
+                //echo "<td class=\"td-group\" width=\"225\">";
+                echo "&nbsp;" .  $group_name . "<b>(B)</b>";
+                echo "</td>";
+
+                        $result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
+                        $opening_balance = $result4a[0];
+                        $sum1 = $sum1 + $opening_balance;
+                        $opening_bal_dc = $result4a[1];
+                        $other_dr_amount = $result4a[12];
+                        $dr_other_total = $dr_other_total + $other_dr_amount;
+                        $other_cr_ded = $result4a[11];
+                        $cr_other_total = $cr_other_total + $other_cr_ded;
+                        $closing_bal = $result4a[13];
+                        $sum2 = $sum2 + $closing_bal;
+			$other_cr_dep = $result4a[10];
+
+
+                        $dep1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
+                        $dep_op_balance = $dep1[6];
+                        $dep_opening_value  = $dep_opening_value + $dep_op_balance;
+                        $old_dep_amount = $dep1[7];
+
+                        $dep2 = $CI->newschedules_model->get_new_asset_depvalue($group_id);
+                        $new_dep_amount = $dep2[7];
+
+                        //Adding opening balance for the ledger head.
+                        $current_depreciation = ($old_dep_amount + $new_dep_amount + $other_cr_dep);
+                        $sum3 = $sum3 + $current_depreciation;
+                        $total_depreciation = $dep_op_balance + $current_depreciation;
+                        $sum4 = $sum4 + $total_depreciation;
+                        if($total_depreciation > 0)
+                        $net_total = ($closing_bal)-($total_depreciation);
+                        else
+                        $net_total = ($closing_bal)+($total_depreciation);
+                        //$net_total = ($opening_balance + $nonplan_dr_amount) - $nonplan_cr_amount;
+                        $sum5 = $sum5 + $net_total;
+                        $current_year_value = $net_total;
+
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($opening_balance) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($other_dr_amount) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$other_cr_ded) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($closing_bal) . "</td>";
+                        if($dep_op_balance > 0){
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$dep_op_balance) . "</td>";
+                        }else{
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(-$dep_op_balance) . "</td>";
+                        }
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(+$current_depreciation) . "</td>";
+                        echo "<td align=\"right\" width=\"7%\">";
+                        echo "0.00";
+                        echo "</td>";
+                        echo "<td align=\"center\" width=\"7%\">";
+                        echo money_format('%!i', convert_cur($total_depreciation));
+                        echo "</td>";
+                        if($current_year_value > 0){
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
+                        }else{
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc($current_year_value) . "</td>";
+                        }
+                        echo "<td align=\"right\" width=\"7%\">" . convert_amount_dc(0) . "</td>";
+                echo "</tr>";
+
+                $this->opening_bal2 = $sum1;
+                $this->cr_other_total2 = $cr_other_total;
+                $this->dr_other_total2 = $dr_other_total;
+                $this->closing_sum2 = $sum2;
+                $this->dep_opening2 = $dep_opening_value;
+		$this->current_dep_total2 = $sum3;
+                $this->total_depreciation2 = $sum4;
+                $this->curr_amount2 = $sum5;
+        }
+
 
 	function Fixed_Sub_ScheduleCi($code,$count)
 	{

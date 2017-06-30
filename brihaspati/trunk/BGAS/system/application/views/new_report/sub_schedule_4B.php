@@ -2,13 +2,26 @@
 
         setlocale(LC_MONETARY, 'en_IN');
         $this->load->library('reportlist1');
-        $this->load->library('session');
+	$this->db->from('settings');
+        $detail = $this->db->get();
+        foreach ($detail->result() as $row)
+        {
+        $date1 = $row->fy_start;
+        $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+        //print_r($fy_end);
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+
+/*        $this->load->library('session');
         $date1 = $this->session->userdata('date1');
         $date2 = $this->session->userdata('date2');
         $fy_start=explode("-",$date1);
         $fy_end=explode("-",$date2);
         $curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
-        $prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
+        $prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')'; */
 
         $net_dr = 0.00;
         $net_opening_bal = 0.00;
@@ -31,13 +44,13 @@
 		 echo "<td> Deductions/ <br> Adjustment</td>";
                 echo "<td> Total <br> Depreciation</td>";
                 echo "<td> 31.03.".$fy_end[0]."</td>";
-                echo "<td> 31.03.".$fy_end[0]."</td>";
+                echo "<td> 31.03.".$fy_start[0]."</td>";
         echo "</tr>";
         $object = new Reportlist1();
         $object->Nonplan_Fixed_Sub_ScheduleA('2001',4);
 	$op_balance1 = $object->opening_bal1;
-	$dr_total1 = $object->dr_plan_total1;
-	$cr_total1 = $object->cr_plan_total1;
+	$dr_total1 = $object->dr_nonplan_total1;
+	$cr_total1 = $object->cr_nonplan_total1;
 	$closing_total1 = $object->closing_sum1;
 	$depreciation_opbal1 = $object->dep_opening;
 	$current_dep_amount1 = $object->current_dep_total;
@@ -101,8 +114,8 @@
         $object = new Reportlist1();
         $object->Nonplan_Fixed_Sub_ScheduleB(149);
 	$op_balance2 = $object->opening_bal2;
-        $cr_total2 = $object->cr_plan_total2;
-        $dr_total2 = $object->dr_plan_total2;
+        $cr_total2 = $object->cr_nonplan_total2;
+        $dr_total2 = $object->dr_nonplan_total2;
         $closing_total2 = $object->closing_sum2;
         $depreciation_opbal2 = $object->dep_opening2;
         $current_dep_amount2 = $object->current_dep_total2;
@@ -140,7 +153,7 @@
                 echo "<td> Deductions/ <br> Adjustment</td>";
                 echo "<td> Total <br> Depreciation</td>";
                 echo "<td> 31.03.".$fy_end[0]." </td>";
-                echo "<td> 31.03.".$fy_end[0]."</td>";
+                echo "<td> 31.03.".$fy_start[0]."</td>";
         echo "</tr>";
 		$object = new Reportlist1();
 	        $object->Nonplan_Fixed_Sub_ScheduleC(152);
@@ -206,7 +219,7 @@
                 echo "<br>";
                 echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
                 echo "<tr class=\"tr-group\">";
-                echo "<td align=\"center\" class=\"td-group\" width=\"280\">";
+                echo "<td align=\"center\" class=\"td-group\" width=\"24%\">";
                 echo "<strong>GRAND TOTAL(A+B+C)</strong>";
                 echo "</td>";
 
@@ -219,43 +232,43 @@
 		$grand_total_depreciation = ($total_dep1 + $total_dep2 + $total_dep3);
 		$grand_current_year = ($current_year_value1 + $current_year_value2 + $current_year_value3);
 		
-                echo "<td align=\"right\">";
+                echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($total_opening_balance) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($total_debit_total) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($total_credit_total) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($total_closing_balance) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($total_dep_opening_balance) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($total_current_depreciation_amount) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                echo "<td align=\"right\" width=\"7%\">";
 		echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
 
-		echo "<td align=\"right\">";
+		echo "<td align=\"right\" width=\"7%\">";
 		echo "<strong>" . money_format('%!i', convert_cur($grand_total_depreciation)) . "</strong>";
                 echo "</td>";
 
-		echo "<td align=\"right\">";
+		echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc($grand_current_year) . "</strong>";
                 echo "</td>";
 
-                echo "<td align=\"right\">";
+                echo "<td align=\"right\" width=\"7%\">";
                 echo "<strong>" . convert_amount_dc(0) . "</strong>";
                 echo "</td>";
 

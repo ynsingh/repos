@@ -1184,7 +1184,9 @@ $width="100%";
                         	      
 				if ($data_ledger_id < 1)
 					continue;
-
+				$code_ledg_dat = $this->Ledger_model->get_code($data_ledger_id);
+                                if(!($this->startsWith($code_ledg_dat, '2001')))
+                                {
 				if ($data_all_ledger_dc[$id] == "D")
 				{
 					$data_amount = $data_all_dr_amount[$id];
@@ -1194,8 +1196,11 @@ $width="100%";
 				{
 					$data_amount = $data_all_cr_amount[$id];
 					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
+				}
 				}	
 				$data_ledger_id;
+				$op_balance = $this->Ledger_model->get_op_balance($data_ledger_id);
+                                $opening_bal = $op_balance[0];
 
 				if($data_ledger_dc == "D")
 				{//001
@@ -1219,10 +1224,53 @@ $width="100%";
 				$code_ledg_dat = $this->Ledger_model->get_code($data_ledger_id);
 				$code_ledg_fnd = $this->Ledger_model->get_code($fund_ledger);
 				$code_ledg_inc = $this->Ledger_model->get_code($income_id);
-				//////////////////////////////////////	
 				
+				//added by kanchan
+				$add_value = $opening_bal + $dr_total;
+                                if($this->startsWith($code_ledg_dat, '2001'))
+                                {
+                                        $dr_total1 = $this->Ledger_model->get_dr_total($data_ledger_id);
+                                        if ($data_all_ledger_dc[$id] == "D")
+                                        {
+                                        $data_amount = $data_all_dr_amount[$id];
+                                        $dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
+                                        $insert_ledger_data = array(
+                                        'entry_id' => $entry_id,
+                                        'ledger_id' => $data_ledger_id,
+                                        'amount' => $data_amount,
+                                        'dc' => $data_ledger_dc,
+                                        'update_date' => $data_date,
+                                        'forward_refrence_id' => '0',
+                                        'backward_refrence_id' => $data_back_refrence,
+                                        'secunitid' => $secunitid,
+                                        'ledger_code' => $code_ledg_dat,
+                                        );
+                                        }
+                                $add_value = $opening_bal + $dr_total1;
+                                if($data_ledger_dc == "C")
+                                {
+                                        $data_amount = $data_all_cr_amount[$id];
+                                        $cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
+
+                                if(($opening_bal > 0 || $dr_total1 > 0) && ($opening_bal >= $cr_total || $dr_total1 >= $cr_total || $add_value >= $cr_total))
+                                {
+                                         $insert_ledger_data = array(
+                                        'entry_id' => $entry_id,
+                                        'ledger_id' => $data_ledger_id,
+                                        'amount' => $data_amount,
+                                        'dc' => $data_ledger_dc,
+                                        'update_date' => $data_date,
+                                        'forward_refrence_id' => '0',
+					'backward_refrence_id' => $data_back_refrence,
+                                        'secunitid' => $secunitid,
+                                        'ledger_code' => $code_ledg_dat,
+                                );
+                                }else{
+                                }
+                                }
+                                }else{
                                 $insert_ledger_data = array(
-                                	'entry_id' => $entry_id,
+                                        'entry_id' => $entry_id,
                                         'ledger_id' => $data_ledger_id,
                                         'amount' => $data_amount,
                                         'dc' => $data_ledger_dc,
@@ -1232,6 +1280,9 @@ $width="100%";
                                         'secunitid' => $secunitid,
                                         'ledger_code' => $code_ledg_dat,
                                 );
+                                }
+
+
                                 if ( ! $this->db->insert('entry_items', $insert_ledger_data))
                                 {
                                		$this->db->trans_rollback();

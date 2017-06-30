@@ -42,7 +42,7 @@
 	echo "<br/>";
 		
 	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-	echo "<thead><tr><th align=\"center\" width=\"30%\">SOURCES OF FUNDS</th><th align=\"center\">Schedule</th><th align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
+	echo "<thead><tr><th align=\"center\" width=\"30%\">SOURCES OF FUNDS</th><th align=\"center\" width=\"30%\">Schedule</th><th align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
 	$this->load->library('reportlist1');
         $liability = new Reportlist1();
 	$income = new Reportlist1();
@@ -70,7 +70,7 @@
         echo "</tr>";
         echo "</table>";
 	echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"100%\" >";
-        echo "<thead><tr><th align=\"center\" width=\"30%\">APPLICATION OF FUNDS</th><th align=\"center\">Schedule</th><th align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
+        echo "<thead><tr><th align=\"center\" width=\"30%\">APPLICATION OF FUNDS</th><th width=\"30%\" align=\"center\">Schedule</th><th align=\"center\">Current Year<br>$curr_year</th><th align=\"center\">Previous Year<br>$prev_year</th></tr></thead>";
 
         $this->load->library('reportlist1');
         $asset = new Reportlist1();

@@ -5,8 +5,16 @@ function newschedules_model()
 {
         parent::Model();
 }
+
+	function startsWith($str1, $str2)
+        {
+                return !strncmp($str1, $str2, strlen($str2));
+        }
+
 	function fixed_asset($id)
 	{
+		$cr_amountdep = 0;
+		$cr_amountded = 0;
 		$cr_amount = 0;
                	$dr_amount = 0;
 		$op_balance = 0;
@@ -16,7 +24,8 @@ function newschedules_model()
 		$cl_balance = 0;
 		$net_total = 0;
 		$net_total = 0;
-		$total = array();
+		$total = array();	
+		$entry_date = "";
 		
 		$CI = & get_instance();
         	$CI->db->select('id,name,code,op_balance,op_balance_dc')->from('ledgers')->where('group_id', $id);
@@ -34,40 +43,57 @@ function newschedules_model()
             		}elseif($op_balance_dc == 'D'){
                 		$op_bal_dr = $op_bal_dr + $op_balance;
             		}
-
-			$CI->db->select('id, amount, dc')->from('entry_items')->where('ledger_id', $ledger_id);
+			//new added lines by @kanchan
+			$CI->db->select('entry_id,amount,dc,id,ledger_code')->from('entry_items')->where('ledger_id',$ledger_id);
                 	$entry_items_q = $CI->db->get();
                 	$entry_items_result = $entry_items_q->result();
-                	foreach ($entry_items_result as $row5)
+                	foreach ($entry_items_result as $row3)
                 	{
-                		if($row5->dc == 'C')
-                		{
-                		$cr_amount = $cr_amount + $row5->amount;
-                		}
-                		else
-                		{
-                		$dr_amount = $dr_amount + $row5->amount;
-                		}
-                	}//foreach
-			}
-			
-			//Adding opening balance for the ledger head.
+				$entryid = $row3->entry_id;
+				//$entry_date = $row3->update_date;
+				$ledger_code = $row3->ledger_code;
 
+				if($row3->dc == 'C')
+                                {
+				$CI->db->select('ledger_code')->from('entry_items')->where('entry_id',$entryid);
+                                $entryq = $CI->db->get();
+                                foreach ($entryq->result() as $row4)
+				{
+					$led_code = $row4->ledger_code;
+					if($this->startsWith($led_code, $ledger_code)){
+					}
+					else if($this->startsWith($led_code, '4007'))
+					{
+							$cr_amountdep = $row3->amount;
+					}else{
+					$cr_amountded = $row3->amount;
+					}
+                                }
+				}//if
+                                else
+                                {
+                                $dr_amount = $dr_amount + $row3->amount;
+                                }
+							
+			}	
+				
+			}
+
+			//Adding opening balance for the ledger head.
 			$op_bal = $op_bal_dr - $op_bal_cr;
                         if($op_bal > 0){
                                 $op_bal_dc = 'D';
                         }else{
                                 $op_bal_dc = 'C';
                         }
-
-			$cl_balance = ($op_bal + $dr_amount - $cr_amount);
+			$cl_balance = ($op_bal + $dr_amount - $cr_amountded);
 			//$net_total = ($op_balance + $dr_amount) - $cr_amount;
 			$total[0] = $op_bal;
 			$total[1] = $op_bal_dc;
 			$total[2] = $dr_amount;
-			$total[3] = $cr_amount;
+			$total[3] = $cr_amountded;
 			$total[4] = $cl_balance;
-
+			$total[5] = $cr_amountdep;
 			return $total; 
 
 	}//fixedgroup
@@ -78,10 +104,22 @@ function newschedules_model()
                 $dr_amount = 0.00;
 		$op_bal_dr = 0;
 		$op_bal_cr = 0;
-		$ledg_plan_cr_total1 = 0;
-		$ledg_plan_dr_total1 = 0;
-		$ledg_nonplan_dr_total1 = 0;
-		$ledg_nonplan_cr_total1 = 0;
+		$op_balance4a = 0;
+                $cl_balance4a = 0;
+		$ledg_other_cr_ded = 0;
+		$ledg_other_cr_dep = 0;
+		$ledg_other_dr_total = 0;
+		$ledg_plan_cr_ded = 0;
+		$ledg_plan_cr_dep = 0;
+                $ledg_plan_dr_total = 0;
+                $ledg_nonplan_dr_total = 0;
+               	$ledg_nonplan_cr_ded = 0;
+		$ledg_nonplan_cr_dep = 0;
+
+		//$ledg_plan_cr_total1 = 0;
+		//$ledg_plan_dr_total1 = 0;
+		//$ledg_nonplan_dr_total1 = 0;
+		//$ledg_nonplan_cr_total1 = 0;
 		
                 $op_balance = "";
                 $cl_balance = "";
@@ -105,7 +143,7 @@ function newschedules_model()
                 		$op_bal_dr = $op_bal_dr + $op_balance;
             		}
 			
-			$CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc,entry_items.id as entry_items_id,entries.sanc_type as sanc_type');
+			$CI->db->select('entry_items.entry_id as entry_id,entry_items.ledger_code as ledger_code,entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc,entry_items.id as entry_items_id,entries.sanc_type as sanc_type');
                         $CI->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id);
                         $result12 =$CI->db->get();
                         $entry_result = $result12->result();
@@ -116,6 +154,8 @@ function newschedules_model()
                                 $sum = $row5->entry_items_amount;
                                 $entry_item_id =$row5->entry_items_id;
                                 $sanc_type = $row5->sanc_type;
+				$entry_id = $row5->entry_id;
+				$ledger_code = $row5->ledger_code;				
 
 				if($dc == 'C')
                                 {
@@ -129,67 +169,130 @@ function newschedules_model()
 
                                 if($sanc_type != "select")
                                 {
-                                        if($sanc_type == "plan")
+                                        if($sanc_type == "plan" || $sanc_type == "plan_sfc_scheme")
                                         {
                                                 if($dc == "C")
                                                 {
-                                                $ledg_plan_cr_total1 = $ledg_plan_cr_total1 + $sum;
-                                                }elseif($dc == "D"){
-                                                $ledg_plan_dr_total1 = $ledg_plan_dr_total1 + $sum;
+						$CI->db->select('ledger_code')->from('entry_items')->where('entry_id',$entry_id);
+                                                $entryq = $CI->db->get();
+                                                foreach ($entryq->result() as $res_row)
+                                                {
+                                                $led_code = $res_row->ledger_code;
+                                                if($this->startsWith($led_code, $ledger_code)){
                                                 }
-                                        }//if
-                                //}//if(!select)
+                                                elseif($this->startsWith($led_code, '4007'))
+                                                {
+                                                        $ledg_plan_cr_dep = $ledg_plan_cr_dep + $sum;
+                                                        //$cr_amountdep = $row3->amount;
+                                                }else{
+                                                        $ledg_plan_cr_ded = $ledg_plan_cr_ded + $sum;
+                                                        //$cr_amountded = $row3->amount;
+                                                }
+						}//foreach
+						}//if
+                                                elseif($dc == "D"){
+                                                $ledg_plan_dr_total = $ledg_plan_dr_total + $sum;
+                                                }
+                                        }//ifsanc_type
                                 elseif($sanc_type == "non_plan")
                                 {
+                                	if($dc == "C")
+                                        {
+					$CI->db->select('ledger_code')->from('entry_items')->where('entry_id',$entry_id);
+                                        $entryq = $CI->db->get();
+                                        foreach ($entryq->result() as $res_row)
+                                        {
+                                        $led_code = $res_row->ledger_code;
+                                        if($this->startsWith($led_code, $ledger_code)){
+                                        }
+                                        else if($this->startsWith($led_code, '4007'))
+                                       	{
+                                    	$ledg_nonplan_cr_dep = $ledg_nonplan_cr_dep + $sum;
+					}else{
+                                        $ledg_nonplan_cr_ded = $ledg_nonplan_cr_ded + $sum;
+                                        }
+                                        }//foreach
+                                        }//if 
+					elseif($dc == "D"){
+                                    	$ledg_nonplan_dr_total = $ledg_nonplan_dr_total + $sum;
+                                	}
+				}//sanc_type=nonplan
+				elseif($sanc_type == "plan_other_scheme")
+                                {
+                                	//echo "sanc type======$sanc_type";
                                         if($dc == "C")
                                         {
-					$ledg_nonplan_cr_total1 = $ledg_nonplan_cr_total1 + $sum;
-                                	}elseif($dc == "D"){
-                                    	$ledg_nonplan_dr_total1 = $ledg_nonplan_dr_total1 + $sum;
-                                	}
-                            	}//elseif
-				}//if(!select)
+                                        $CI->db->select('ledger_code')->from('entry_items')->where('entry_id',$entry_id);
+                                        $entryq = $CI->db->get();
+                                        foreach ($entryq->result() as $res_row)
+                                        {
+                                        $led_code = $res_row->ledger_code;
+                                        if($this->startsWith($led_code, $ledger_code)){
+                                        }
+                                        else if($this->startsWith($led_code, '4007'))
+                                        {
+                                        $ledg_other_cr_dep = $ledg_other_cr_dep + $sum;
+                                        }else{
+                                        $ledg_other_cr_ded = $ledg_other_cr_ded + $sum;
+                                        }
+                                        }//foreach
+                                        }//if 
+                                        elseif($dc == "D"){
+                                        $ledg_other_dr_total = $ledg_other_dr_total + $sum;
+                                        }
+                                }//sanc_type=other
+				}//if(select)
 
 			}//foreach
 		}//foreach
 
-
 		//Adding opening balance for the ledger head.
-			$op_bal = $op_bal_dr - $op_bal_cr;
-                        if($op_bal > 0){
-                                $op_bal_dc = 'D';
+
+		$op_bal = $op_bal_dr - $op_bal_cr;
+                if($op_bal > 0){
+                	$op_bal_dc = 'D';
                         }else{
-                                $op_bal_dc = 'C';
+               		$op_bal_dc = 'C';
                         }
+		$cl_balance = ($op_bal + $dr_amount - $cr_amount);
+               	$cl_balance4a = $op_bal + $ledg_plan_dr_total - $ledg_plan_cr_ded;
+		$cl_balance4b = $op_bal + $ledg_nonplan_dr_total - $ledg_nonplan_cr_ded;
+		$cl_bal_ohter = $op_bal + $ledg_other_dr_total - $ledg_other_cr_ded;
 
-			$cl_balance = ($op_bal + $dr_amount - $cr_amount);
-			$cl_balance4a = $op_bal + $ledg_plan_dr_total1 - $ledg_plan_cr_total1;
-			$cl_balance4b = $op_bal + $ledg_nonplan_dr_total1 - $ledg_nonplan_cr_total1;
-			//$net_total = ($op_balance + $dr_amount) - $cr_amount;
-			$total2[0] = $op_bal;
-			$total2[1] = $op_bal_dc;
-			$total2[2] = $dr_amount;
-			$total2[3] = $cr_amount;
-			$total2[4] = $cl_balance;
-			$total2[5] = $ledg_plan_dr_total1;
-			$total2[6] = $ledg_plan_cr_total1;
-			$total2[7] = $ledg_nonplan_dr_total1;
-			$total2[8] = $ledg_nonplan_cr_total1;
-			$total2[9] = $cl_balance4a;
-			$total2[10] = $cl_balance4b;
-
+		$total2[0] = $op_bal;
+		$total2[1] = $op_bal_dc;
+		$total2[2] = $dr_amount;
+                $total2[3] = $cr_amount;
+               	$total2[4] = $cl_balance;
+		$total2[5] = $ledg_plan_dr_total;
+		$total2[6] = $ledg_plan_cr_ded;
+		$total2[7] = $ledg_nonplan_dr_total;
+		$total2[8] = $ledg_nonplan_cr_ded;
+		$total2[9] = $cl_balance4a;
+		$total2[10] = $cl_balance4b;
+		$total2[11] = -$ledg_plan_cr_dep;
+		$total2[12] = -$ledg_nonplan_cr_dep;
+		$total2[13] = $ledg_other_cr_dep;
+		$total2[14] = $ledg_other_cr_ded;
+		$total2[15] = $ledg_other_dr_total;
+		$total2[16] = $cl_bal_ohter;
+		
 		return $total2; 
 	}//fixed for children
 
 	function get_old_asset_depvalue($id)
 	{
-		$dep_op_value = "";
+		//$dep_op_value = "";
+		$dep_op_sum  = "";
+		$old_curr_sum = "";
 		$dep_opening_value1 = 0;
 		$dep_opening_value2 = 0;
+		$dep_opening_value3 = 0;
 		$old_curr_plan = 0;
 		$old_curr_nonplan = 0;
-                $current_dep_value = "";
-		$old_current_value = "";
+		$old_curr_other = 0;
+                //$current_dep_value = "";
+		//$old_current_value = "";
                 $total_dep = 0.00;
 		$old_asset_dep = array();
 
@@ -207,44 +310,58 @@ function newschedules_model()
                         foreach ($asset_result as $row3)
                         {
                                 $asset_name = $row3->asset_name;
+				//echo "asset name =========$asset_name";
                                 $dep_op_value = $row3->depreciated_value;
+				$dep_op_sum = $dep_op_sum + $dep_op_value;
                                 $old_current_amount = $row3->current_value;
+				$old_curr_sum = $old_curr_sum + $old_current_amount;
+				//echo "old current amount ====>>$old_current_amount";
                                 $asset_cost = $row3->cost;
 				$sanc_type = $row3->sanc_type;
+				//echo "sanc_type====>>>> $sanc_type ";
 
 				if($sanc_type != "select")
                         	{
-                            		if($sanc_type == "plan")
+                            		if($sanc_type == "plan" || $sanc_type == "plan_sfc_scheme")
                             		{
 						$dep_opening_value1 = $dep_opening_value1 + $dep_op_value;
 						$old_curr_plan = $old_curr_plan + $old_current_amount;
 					}elseif($sanc_type == "non_plan"){
 						$dep_opening_value2 = $dep_opening_value2 + $dep_op_value;
                                                 $old_curr_nonplan = $old_curr_nonplan + $old_current_amount;
-
-                            		}
+                            		}elseif($sanc_type == "plan_other_scheme"){
+					 	$dep_opening_value3 = $dep_opening_value3 + $dep_op_value;
+                                         	$old_curr_other = $old_curr_other + $old_current_amount;
+					}
 				}//if(!select)
 			}//foreach old_asset
-                }
-		$old_asset_dep[0] = $dep_op_value;
-		$old_asset_dep[1] = $old_current_value;
+		}
+		//echo "</br>out of function----------------$asset_name------------------";
+		$old_asset_dep[0] = $dep_op_sum;
+		$old_asset_dep[1] = $old_curr_sum;
 		$old_asset_dep[2] = $dep_opening_value1;
 		$old_asset_dep[3] = $old_curr_plan;
 		$old_asset_dep[4] = $old_curr_nonplan;
 		$old_asset_dep[5] = $dep_opening_value2;
-	
+		$old_asset_dep[6] = $dep_opening_value3;	
+		$old_asset_dep[7] = $old_curr_other;
+
                 return $old_asset_dep;
 
         }
 
 	function get_new_asset_depvalue($id)
 	{
-		$dep_op_value = "";
+		//$dep_op_value = "";
+		$dep_op_sum = "";
+		$new_curr_sum = "";
                 $current_dep_value = "";
 		$dep_opening_value1 = 0;
 		$dep_opening_value2 = 0;
+		$dep_opening_value3 = 0;
                 $new_curr_plan = 0;
 		$new_curr_nonplan = 0;
+		$new_curr_other = 0;
 		$new_current_value = "";
                 $total_dep = 0.00;
                 $new_asset_dep = array();
@@ -266,13 +383,15 @@ function newschedules_model()
 				//print_r($row4);
                                 $asset_name = $row4->asset_name;
                                 $dep_op_value = $row4->depreciated_value;
+				$dep_op_sum = $dep_op_sum + $dep_op_value;
                                 $new_current_amount = $row4->current_value;
+				$new_curr_sum = $new_curr_sum  + $new_current_amount;
                                 $asset_cost = $row4->cost; 
 				$sanc_type = $row4->sanc_type;
 
                                 if($sanc_type != "select")
                                 {
-                                       	if($sanc_type == "plan")
+                                       	if($sanc_type == "plan" || $sanc_type == "plan_sfc_scheme")
                                        	{
                                                 $dep_opening_value1 = $dep_opening_value1 + $dep_op_value;
                                                 $new_curr_plan = $new_curr_plan + $new_current_amount;
@@ -280,16 +399,22 @@ function newschedules_model()
                                                 $dep_opening_value2 = $dep_opening_value2 + $dep_op_value;
                                                 $new_curr_nonplan = $new_curr_nonplan + $new_current_amount;
 
+                                        }elseif($sanc_type == "plan_other_scheme"){
+                                                $dep_opening_value3 = $dep_opening_value3 + $dep_op_value;
+                                                $new_curr_other = $new_curr_other + $new_current_amount;
                                         }
                                 }//if(!select)
                 	}//foreach new_asset
 		}
-		$new_asset_dep[0] = $dep_op_value;
-                $new_asset_dep[1] = $new_current_value;
+		$new_asset_dep[0] = $dep_op_sum;
+                $new_asset_dep[1] = $new_curr_sum;
 		$new_asset_dep[2] = $dep_opening_value1;
                 $new_asset_dep[3] = $new_curr_plan;
 		$new_asset_dep[4] = $new_curr_nonplan;
 		$new_asset_dep[5] = $dep_opening_value2;
+		$new_asset_dep[6] = $dep_opening_value3;
+                $new_asset_dep[7] = $new_curr_other;
+
 
                 return $new_asset_dep;
 	}
@@ -553,11 +678,16 @@ function newschedules_model()
 		$op_bal_dr = 0;
 		$op_bal_cr = 0;
                 $dep_op_value = "";
+		$ledg_other_cr_ded = 0;
+		$ledg_other_cr_dep = 0;
+		$ledg_other_dr_total = 0;
                 $current_dep_value = "";
-		$ledg_plan_cr_total = 0;
+		$ledg_plan_cr_ded = 0;
+		$ledg_plan_cr_dep = 0;
                 $ledg_plan_dr_total = 0;
                 $ledg_nonplan_dr_total = 0;
-               	$ledg_nonplan_cr_total = 0;
+               	$ledg_nonplan_cr_ded = 0;
+		$ledg_nonplan_cr_dep = 0;
 		$total4a = array();
 
                 $total_dep = "";
@@ -577,7 +707,7 @@ function newschedules_model()
                 		$op_bal_dr = $op_bal_dr + $op_balance;
             		}
 
-			$CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc,entry_items.id as entry_items_id,entries.sanc_type as sanc_type');
+			$CI->db->select('entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc,entry_items.id as entry_items_id,entries.sanc_type as sanc_type,entry_items.ledger_code as ledger_code,entry_items.entry_id as entry_id');
                     	$CI->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id);
                     	$result12 =$CI->db->get();
                     	$entry_result = $result12->result();
@@ -588,30 +718,86 @@ function newschedules_model()
                         	$sum = $query_row->entry_items_amount;
                         	$entry_item_id =$query_row->entry_items_id;
                         	$sanc_type = $query_row->sanc_type;
-
+				$ledger_code = $query_row->ledger_code;
+				$entry_id = $query_row->entry_id;
 				if($sanc_type != "select")
                         	{
-                            		if($sanc_type == "plan")
+                            		if($sanc_type == "plan" || $sanc_type == "plan_sfc_scheme")
                             		{
                                 		if($dc == "C")
                                 		{
-                                    		$ledg_plan_cr_total = $ledg_plan_cr_total + $sum;
-                                		}elseif($dc == "D"){
+						$CI->db->select('ledger_code')->from('entry_items')->where('entry_id',$entry_id);
+                                		$entryq = $CI->db->get();
+                                		foreach ($entryq->result() as $res_row)
+                                		{
+                                        	$led_code = $res_row->ledger_code;
+                                        	if($this->startsWith($led_code, $ledger_code)){
+                                        	}
+                                       	 	else if($this->startsWith($led_code, '4007'))
+                                        	{
+							$ledg_plan_cr_dep = $ledg_plan_cr_dep + $sum;
+                                                        //$cr_amountdep = $row3->amount;
+                                        	}else{
+							$ledg_plan_cr_ded = $ledg_plan_cr_ded + $sum;
+                                        		//$cr_amountded = $row3->amount;
+                                        	}
+						}//foreach
+						}//if 
+						elseif($dc == "D"){
                                     		$ledg_plan_dr_total = $ledg_plan_dr_total + $sum;
 						}
-					}//if
-                                //}//if(!select)
+					}//ifsanc_type
 				elseif($sanc_type == "non_plan")
 				{
+					 //echo "sanc type======$sanc_type";
                                 	if($dc == "C")
                                 	{
-                                    	$ledg_nonplan_cr_total = $ledg_nonplan_cr_total + $sum;
-                                	}elseif($dc == "D"){
+					$CI->db->select('ledger_code')->from('entry_items')->where('entry_id',$entry_id);
+                                        $entryq = $CI->db->get();
+                                        foreach ($entryq->result() as $res_row)
+                                        {
+                                        $led_code = $res_row->ledger_code;
+                                        if($this->startsWith($led_code, $ledger_code)){
+                                        }
+                                        else if($this->startsWith($led_code, '4007'))
+                                       	{
+                                    	$ledg_nonplan_cr_dep = $ledg_nonplan_cr_dep + $sum;
+					}else{
+                                        $ledg_nonplan_cr_ded = $ledg_nonplan_cr_ded + $sum;
+                                        }
+                                        }//foreach
+                                        }//if 
+					elseif($dc == "D"){
                                     	$ledg_nonplan_dr_total = $ledg_nonplan_dr_total + $sum;
                                 	}
-                            	}//elseif
-				}//if(!select)
-
+				}//sanc_type=nonplan
+				elseif($sanc_type == "plan_other_scheme")
+                                {
+                                         //echo "sanc type======$sanc_type";
+                                        if($dc == "C")
+                                        {
+                                        $CI->db->select('ledger_code')->from('entry_items')->where('entry_id',$entry_id);
+                                        $entryq = $CI->db->get();
+                                        foreach ($entryq->result() as $res_row)
+                                        {
+                                        $led_code = $res_row->ledger_code;
+                                        if($this->startsWith($led_code, $ledger_code)){
+                                        }
+                                        else if($this->startsWith($led_code, '4007'))
+                                        {
+                                        $ledg_other_cr_dep = $ledg_other_cr_dep + $sum;
+                                        }else{
+                                        $ledg_other_cr_ded = $ledg_other_cr_ded + $sum;
+                                        }
+                                        }//foreach
+                                        }//if 
+                                        elseif($dc == "D"){
+                                        $ledg_other_dr_total = $ledg_other_dr_total + $sum;
+                                        }
+                                }//sanc_type=other
+				}//ifselect
+				//}//else
+				//}//if(!select)
 			}//foreach
 		}//foreach
 			$op_bal = $op_bal_dr - $op_bal_cr;
@@ -620,18 +806,24 @@ function newschedules_model()
                         }else{
                                 $op_bal_dc = 'C';
                         }
-                	$cl_balance4a = $op_bal + $ledg_plan_dr_total - $ledg_plan_cr_total;
-			$cl_balance4b = $op_bal + $ledg_nonplan_dr_total - $ledg_nonplan_cr_total;
-
+                	$cl_balance4a = $op_bal + $ledg_plan_dr_total - $ledg_plan_cr_ded;
+			$cl_balance4b = $op_bal + $ledg_nonplan_dr_total - $ledg_nonplan_cr_ded;
+			$cl_bal_ohter = $op_bal + $ledg_other_dr_total - $ledg_other_cr_ded;
 
 		$total4a[0] = $op_bal;
 		$total4a[1] = $op_bal_dc;
 		$total4a[2] = $ledg_plan_dr_total;
-		$total4a[3] = $ledg_plan_cr_total;
+		$total4a[3] = $ledg_plan_cr_ded;
 		$total4a[4] = $ledg_nonplan_dr_total;
-		$total4a[5] = $ledg_nonplan_cr_total;
+		$total4a[5] = $ledg_nonplan_cr_ded;
 		$total4a[6] = $cl_balance4a;
 		$total4a[7] = $cl_balance4b;
+		$total4a[8] = -$ledg_plan_cr_dep;
+		$total4a[9] = -$ledg_nonplan_cr_dep;
+		$total4a[10] = $ledg_other_cr_dep;
+		$total4a[11] = $ledg_other_cr_ded;
+		$total4a[12] = $ledg_other_dr_total;
+		$total4a[13] = $cl_bal_ohter;
 
 	return $total4a; 
 	}
@@ -989,6 +1181,28 @@ function newschedules_model()
                 }
                 return $options; 
         }
+	function get_dr_total($data_ledger_id)
+	{
+		
+		$this->db->select('amount,dc')->from('entry_items')->where('ledger_id',$data_ledger_id);
+                $res = $this->db->get();
+                $resq = $res->result();
+                foreach($resq as $row)
+                {
+			$amount = $row->amount;
+			$dc = $row->dc;
+
+			 if($dc == 'C')
+                         {
+                         $cr_total = $amount;
+                         }else{
+                         $dr_total = $amount;
+			echo "dr total in model file ==== $dr_total";
+                         }
+		}
+		echo "dr total in model file out of function==== $dr_total";
+		return $dr_total;
+	}
 
 /*	function get_capital_total($ledger_id)
 	{

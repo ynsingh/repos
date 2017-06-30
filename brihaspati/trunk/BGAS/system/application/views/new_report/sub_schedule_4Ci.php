@@ -2,13 +2,26 @@
 
         setlocale(LC_MONETARY, 'en_IN');
         $this->load->library('reportlist1');
-        $this->load->library('session');
+	$this->db->from('settings');
+        $detail = $this->db->get();
+        foreach ($detail->result() as $row)
+        {
+        $date1 = $row->fy_start;
+        $date2 = $row->fy_end;
+        }
+        $fy_start=explode("-",$date1);
+        $fy_end=explode("-",$date2);
+        //print_r($fy_end);
+        $curr_year = $fy_start[0] ."-" .$fy_end[0];
+        $prev_year = ($fy_start[0]-1) ."-" . ($fy_end[0]-1);
+
+  /*      $this->load->library('session');
         $date1 = $this->session->userdata('date1');
         $date2 = $this->session->userdata('date2');
         $fy_start=explode("-",$date1);
         $fy_end=explode("-",$date2);
         $curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
-        $prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
+        $prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')'; */
 
         $net_dr = 0.00;
         $net_opening_bal = 0.00;
@@ -30,8 +43,8 @@
                 echo "<td>Depreciation <br> for the Year</td>";
 		 echo "<td> Deductions/ <br> Adjustment</td>";
                 echo "<td> Total <br> Depreciation</td>";
-                echo "<td> 31.03..... </td>";
-                echo "<td> 31.03..... </td>";
+                echo "<td>31.03.".$fy_end[0]." </td>";
+                echo "<td>31.03.".$fy_start[0]." </td>";
         echo "</tr>";
 
 	echo "</table>";
