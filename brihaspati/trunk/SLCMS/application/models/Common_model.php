@@ -70,6 +70,22 @@ class Common_model extends CI_Model
 	 	}
     }
 
+//update the complete record from specific table with multiple where condition
+//$datawh = array('name' => $name, 'title' => $title, 'status' => $status);
+    public function updaterecarry($tbname, $datar,$datawh){
+	 	$this->db->trans_start();
+	 	if(! $this->db->where($datawh)->update($tbname, $datar))
+	 	{
+            $this->db->trans_rollback();
+            return false;
+	 	}
+      else {
+            $this->db->trans_complete();
+            return true;
+	 	}
+    }
+
+
 // delete the specific record form specific table
     public function deleterow($tbname,$fieldname,$fieldvalue){
 		$this->db->trans_start();

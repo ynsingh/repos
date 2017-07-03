@@ -1,3 +1,14 @@
+SLCMS  Version 1.0 2017-07-03
+-----------------------------
+    * Data structure added (degree rule, semester rule, subject semester,master grade)- NKS
+    * Function added in common modele to update record with different where condition -NKS
+    * Data structure modified (student marks add grade field, remove credit rule) -NKS
+    * Student subject registration module added - Sharad
+
+SLCMS  Version 1.0 2017-06-30
+-----------------------------
+    * Student admission after entrance module, offline fee deposit mechanism -NKS, Sumit
+
 SLCMS  Version 1.0 2017-06-25
 -----------------------------
     * Program Subject Paper archival mechanism -NKS
