@@ -46,6 +46,44 @@ class Student_model extends CI_Model
         return $query;
     }
 
+    public function update_subject($updatedata,$acadyear,$semester,$studentid,$rid)
+    {
+
+        print_r($updatedata);
+        echo $acadyear;
+        echo $semester;
+        echo $studentid;
+        $this->db->trans_start();
+        $this->db->where('sp_id',$rid);
+//        $this->db->where('sp_acadyear',$acadyear);
+//        $this->db->where('sp_semester',$semester);
+        $this->db->update('student_program',$updatedata);
+
+//        print_r($this->db->where('sp_smid',$studentid)->where('sp_acadyear',$acadyear)->where('sp_semester',$semester)->update('student_program',$updatedata));
+/*        if(!$this->db->where('sp_smid',$studentid)->where('sp_acadyear',$acadyear)->where('sp_semester',$semester)->update('student_program',$updatedata)){
+        //if(!$this->db->update('student_program',$updatedata))
+        //{
+            $this->db->trans_rollback();
+            return false;
+        }
+        else 
+        {
+            $this->db->trans_complete();
+            return true;
+        }
+*/
+    }
+    
+    public function stud_sem_sub($studentid,$acadyear,$semester)
+    {
+        $this->db->from('student_program');
+        $this->db->select('*');
+        $this->db->where('sp_smid', $studentid);
+        $this->db->where('sp_acadyear',$acadyear );
+        $this->db->where('sp_semester',$semester );
+        return $this->db->get();
+    }
+
 	
     function showCourse(){
 			$this->db->select('course_name');

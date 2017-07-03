@@ -34,6 +34,10 @@
 */
 	echo "</br>";
      //	echo $this->session->userdata('id_user'); 
+/*echo $stid;
+echo $acadyear;
+echo $semester;
+*/
 	echo "<table><tr><td>";
 	echo "<table align = \"center\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -76,20 +80,27 @@
         echo $subject;
     }
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b> Email<b></td><td>";
+    echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b> Email<b></td><td>";
 	echo $stud_email;//email of the student
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Phone<b></td><td>";
+    echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Phone<b></td><td>";
 	echo $stud_phone; //phone number of the student
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Address<b></td><td>";
+    echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Address<b></td><td>";
 	echo $student_address;//address of the student
 	echo "</td></tr>";
-     	echo "</tbody>";
+    $studparam = $stid ."/".$acadyear."/".$semester;
+    //just for test
+    //echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>For Test<b></td><td>";
+    //echo anchor('studenthome/studentsubject/'.$studparam, " Student Subject" ,array('title' => 'Student Subject' , 'class' => 'top_parent')); 
+    //echo "</td></tr>";
+
+
+    echo "</tbody>";
 	echo "</table>";
 	echo "</td>";
 	echo "</tr>";
-        echo "</table>";
+    echo "</table>";
 
 	echo "</td><td valign=\"top\">";
 
