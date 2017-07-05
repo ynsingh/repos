@@ -40,6 +40,18 @@ class Common_model extends CI_Model
     	}
     }
 
+// get the number of rows in table where record is already exist with as many field you want
+//$data = array('name' => $name, 'title' => $title, 'status' => $status);
+    public function getnoofrows($tbname,$data='') {
+        $this->db->flush_cache();
+        $this->db->from($tbname);
+        if($data != ''){
+            $this->db->where($data);
+        }
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
 
 //insert the complete record from specific table
     public function insertrec($tbname, $datar){

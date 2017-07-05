@@ -56,7 +56,6 @@ CREATE TABLE `admissionmeritlist` (
         UNIQUE (`application_no`, `course_name`, `student_name`)
 ) ENGINE = InnoDB;
 
-
 -- --------------------------------------------------------
 
 --
@@ -134,9 +133,11 @@ INSERT INTO `country` (`country_id`, `country_name`, `country_code`, `country_sh
 (1, 'India', '91', 'IN', NULL);
 
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `degree_rule`
 --
+
 CREATE TABLE `degree_rule` (
   `dr_id` int(11) NOT NULL,
   `dr_prgid` int(11) NOT NULL,
@@ -237,6 +238,7 @@ CREATE TABLE `fees_master` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `fees_master_archive`
 --
@@ -266,7 +268,9 @@ ALTER TABLE `fees_master_archive`
 
 ALTER TABLE `fees_master_archive`
   MODIFY `fma_id` int(11) NOT NULL AUTO_INCREMENT;
+
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `grade master`
 --
@@ -291,11 +295,12 @@ ALTER TABLE `grade_master`
   MODIFY `gm_id` int(11) NOT NULL AUTO_INCREMENT;
 
 insert into `grade_master` values (1,'A','10','','','admin','2017-07-04','admin','2017-07-04'),(2,'B','8','','','admin','2017-07-04','admin','2017-07-04'),(3,'C','6','','','admin','2017-07-04','admin','2017-07-04'),(4,'D','4','','','admin','2017-07-04','admin','2017-07-04'),(5,'E','2','','','admin','2017-07-04','admin','2017-07-04'),(6,'F','0','','','admin','2017-07-04','admin','2017-07-04');
+
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `logs`
 --
-
 
 CREATE TABLE IF NOT EXISTS logs (
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -386,28 +391,6 @@ CREATE TABLE `program` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
---
-
-CREATE TABLE `programcategory` (
-  `prgcat_id` int(11) NOT NULL,
-  `prgcat_name` varchar(255) NOT NULL,
-  `prgcat_code` varchar(255)  NULL,
-  `prgcat_short` varchar(255)NULL,
-  `prgcat_desc` varchar(255)  NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-ALTER TABLE `programcategory`
-  ADD PRIMARY KEY (`prgcat_id`),
-  ADD UNIQUE KEY `prgcat_name` (`prgcat_name`);
-
-ALTER TABLE `programcategory`
-  MODIFY `prgcat_id` int(11) NOT NULL AUTO_INCREMENT;
-
--- --------------------------------------------------------
-
-
---
 -- Table structure for table `program_subject_teacher`
 --
 
@@ -427,6 +410,27 @@ CREATE TABLE `program_subject_teacher` (
   `pstp_modifierid` varchar(50) NOT NULL,
   `pstp_modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table ` program category`
+--
+
+CREATE TABLE `programcategory` (
+  `prgcat_id` int(11) NOT NULL,
+  `prgcat_name` varchar(255) NOT NULL,
+  `prgcat_code` varchar(255)  NULL,
+  `prgcat_short` varchar(255)NULL,
+  `prgcat_desc` varchar(255)  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `programcategory`
+  ADD PRIMARY KEY (`prgcat_id`),
+  ADD UNIQUE KEY `prgcat_name` (`prgcat_name`);
+
+ALTER TABLE `programcategory`
+  MODIFY `prgcat_id` int(11) NOT NULL AUTO_INCREMENT;
 
 ---------------------------------------------------------------------
 
@@ -507,11 +511,11 @@ CREATE TABLE `semester_rule` (
   `modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-ALTER TABLE `subject_semester`
-  ADD PRIMARY KEY (`subsem_id`);
+ALTER TABLE `semester_rule`
+  ADD PRIMARY KEY (`semcr_id`);
 
-ALTER TABLE `subject_semester`
-  MODIFY `subsem_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `semester_rule`
+  MODIFY `semcr_id` int(11) NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 
@@ -586,6 +590,44 @@ CREATE TABLE `student_entrance_exam` (
   `seex_subject` varchar(255) NOT NULL,
   `seex_passingyear` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student_entry_exit`
+--
+
+CREATE TABLE `student_entry_exit` (
+  `senex_id` int(11) NOT NULL,
+  `senex_smid` int(11) NOT NULL,
+  `senex_prgid` int(11) NOT NULL,
+  `senex_rollno` varchar(255) NOT NULL,
+  `senex_dateofadmission` DATETIME DEFAULT NULL,
+  `senex_grade` varchar(15) DEFAULT NULL,
+  `senex_gradedate` DATETIME DEFAULT NULL,
+  `senex_idcardvalidity` DATETIME DEFAULT NULL,
+  `senex_idcardissuedate` DATETIME DEFAULT NULL,
+  `senex_entexamname` varchar(255) DEFAULT NULL,
+  `senex_entexamrollno` varchar(255) DEFAULT  NULL,
+  `senex_entexamrank` varchar(255) DEFAULT  NULL,
+  `senex_entexamapplicationno` varchar(255) DEFAULT  NULL,
+  `senex_entexammeritno` varchar(255) DEFAULT  NULL,
+  `senex_cpi` varchar(255) DEFAULT  NULL,
+  `senex_noduesgiven` varchar(255) DEFAULT  NULL,
+  `senex_noduesdate` DATETIME DEFAULT NULL,
+  `senex_ext` varchar(255) DEFAULT  NULL,
+  `creatorid` VARCHAR(255) NOT NULL,
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `modifierid` VARCHAR(255) NOT NULL,
+  `modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `student_entry_exit`
+  ADD PRIMARY KEY (`senex_id`),
+  ADD UNIQUE KEY `senex_smid` (`senex_smid`,`senex_prgid`,`senex_rollno`);
+
+ALTER TABLE `student_entry_exit`
+  MODIFY `senex_id` int(11) NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 
@@ -816,32 +858,6 @@ CREATE TABLE `subject` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `subject semester`
---
-
-CREATE TABLE `subject_semester` (
-  `subsem_id` int(11) NOT NULL,
-  `subsem_subid` int(11) NOT NULL,
-  `subsem_prgid` int(11) NOT NULL,
-  `subsem_semester` int(5) NOT NULL,
-  `subsem_subtype` varchar(255) NOT NULL,
-  `subsem_ext1` varchar(255) NOT NULL,
-  `subsem_ext2` varchar(255) NOT NULL,
-  `creatorid` VARCHAR(255) NOT NULL,
-  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `modifierid` VARCHAR(255) NOT NULL,
-  `modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-ALTER TABLE `subject_semester`
-  ADD PRIMARY KEY (`subsem_id`);
-
-ALTER TABLE `subject_semester`
-  MODIFY `subsem_id` int(11) NOT NULL AUTO_INCREMENT;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `subject_paper`
 --
 
@@ -923,6 +939,32 @@ ALTER TABLE `subject_prerequisite`
 
 ALTER TABLE `subject_prerequisite`
   MODIFY `spreq_id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subject semester`
+--
+
+CREATE TABLE `subject_semester` (
+  `subsem_id` int(11) NOT NULL,
+  `subsem_subid` int(11) NOT NULL,
+  `subsem_prgid` int(11) NOT NULL,
+  `subsem_semester` int(5) NOT NULL,
+  `subsem_subtype` varchar(255) NOT NULL,
+  `subsem_ext1` varchar(255) NOT NULL,
+  `subsem_ext2` varchar(255) NOT NULL,
+  `creatorid` VARCHAR(255) NOT NULL,
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `modifierid` VARCHAR(255) NOT NULL,
+  `modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `subject_semester`
+  ADD PRIMARY KEY (`subsem_id`);
+
+ALTER TABLE `subject_semester`
+  MODIFY `subsem_id` int(11) NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 --

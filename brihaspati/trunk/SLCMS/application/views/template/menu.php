@@ -49,7 +49,13 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('setup/displayfees', 'Program Fees', array('title' => 'Program Fees'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('setup/creditrules', 'Credit Rules', array('title' => 'Credit Rules'));
+						echo anchor('setup2/degreerules', 'Degree Rules', array('title' => 'Degree Rules'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('setup2/semesterrules', 'Semester Rules', array('title' => 'Semester Rules'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('setup2/grademaster', 'Master Grade', array('title' => 'Master Grade'));
 					echo "</li>";
 				echo "</ul>";
 			echo "</li>";
@@ -72,7 +78,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('map/prerequisite', 'Map Subject and Paper with Prerequisite', array('title' => 'Map Subject and Paper with Prerequisite'));
 					echo "</li>";
 					echo "<li>";
-
+						echo anchor('map/subjectsemester', 'Map Subject and Semester', array('title' => 'Map Subject and Semester'));
 					echo "</li>";
 					
 					

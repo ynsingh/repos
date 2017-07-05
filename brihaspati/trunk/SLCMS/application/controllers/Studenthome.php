@@ -3,8 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
  * @name Studenthome.php
+ * @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author Sharad Singh
- * @author Nagendra Kumar Singh
  */
 class Studenthome extends CI_Controller
 {
