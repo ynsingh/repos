@@ -160,11 +160,14 @@ class Common_model extends CI_Model
 
 
 //get the list of all records with  two specific fields for specific values
-    public function get_listspfic2($tbname,$selfield1,$selfield2,$fieldname='',$fieldvalue=''){
+    public function get_listspfic2($tbname,$selfield1,$selfield2,$fieldname='',$fieldvalue='',$grpby=''){
 		$this->db->flush_cache();
 		$this->db->from($tbname);
 		$this->db->select($selfield1);
 		$this->db->select($selfield2);
+		if($grpby != ''){
+			$this->db->group_by($grpby);
+		}
 		if (($fieldname != '') && ($fieldvalue !='')){
 			$this->db->where($fieldname, $fieldvalue);
 		}
