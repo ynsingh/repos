@@ -60,10 +60,12 @@
                         <tr align="center">
                          <td><?php
                         $this->uresult = $this->common_model-> get_listspfic1('org_profile','org_name','org_code',$row->org_code);
+                        
                         echo $this->uresult->org_name;?></td>
                         <td><?php echo $row->sc_name .",&nbsp;"."&nbsp;(". $row->sc_code .",&nbsp; ". $row->sc_nickname .")&nbsp;"?></td>
-                        <td><?php echo $row->sc_address . ",&nbsp;". $row->sc_city . ",&nbsp;". $row->sc_district .
-                          ",&nbsp;". $row->sc_state . ",&nbsp;". $row->sc_country . ",&nbsp;". $row->sc_pincode?></td>
+                        <td><?php echo $row->sc_address . ",&nbsp;".$this->common_model->get_listspfic1('cities','name','id',$row->sc_city)->name.","
+                         . $row->sc_district .",&nbsp;".$this->common_model->get_listspfic1('states','name','id',$row->sc_state)->name. ",&nbsp;". $this->common_model->get_listspfic1('countries','name','id',$row->sc_country)->name;?>
+                      	<?php echo ",&nbsp;". $row->sc_pincode?></td>
                         <td><?php echo $row->sc_phone?></td>
                         <td><?php echo $row->sc_fax?></td>
                         <td><?php echo $row->sc_status?></td>

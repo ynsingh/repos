@@ -1869,6 +1869,7 @@ class Setup extends CI_Controller
 
     	public function sc(){
             	$this->uresult = $this->common_model->get_listspfic('org_profile','org_code','org_name');
+                $this->cresult = $this->common_model->get_listspfic('countries','id','name');
 
                 $prefs =array(
                        'start_date' => 'monday',
@@ -2000,6 +2001,7 @@ class Setup extends CI_Controller
 /* this function is used for update study center record */
 
     public function editsc($id) {
+	$this->cresult = $this->common_model->get_listspfic('countries','id','name');
 	$sc_data_q=$this->common_model->get_listrow('study_center','sc_id', $id);
 
         if ($sc_data_q->num_rows() < 1)
@@ -2058,15 +2060,15 @@ class Setup extends CI_Controller
                 'id' => 'country',
                 'maxlength' => '50',
                 'size' => '40',
-                'value' => $sc_data->sc_country,
+              	'value' => $sc_data->sc_country, 
                 );
-
+		//echo "this is seema".$data['country']['value'];
                $data['state'] = array(
                 'name' => 'state',
                 'id' => 'state',
                 'maxlength' => '50',
                 'size' => '40',
-                'value' => $sc_data->sc_state,
+               'value' => $sc_data->sc_state,
                 );
 
 
@@ -2165,9 +2167,9 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
                 $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
                 $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('country','Country','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('state','State','ucwords|trim|xss_clean|required');
-                $this->form_validation->set_rules('city','City','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('country','Country','ucwords|trim|xss_clean');
+                $this->form_validation->set_rules('state','State','ucwords|trim|xss_clean');
+                $this->form_validation->set_rules('city','City','ucwords|trim|xss_clean');
                 $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|required|alpha');
                 $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|numeric|required|max_length[6]');
                 $this->form_validation->set_rules('phone','Phone','trim|xss_clean|required|numeric|max_length[12]');
@@ -2304,6 +2306,38 @@ class Setup extends CI_Controller
     }
 
     }
+
+  public function get_state(){
+        $cid=$this->input->post('cid');
+        $statelist=$this->common_model->get_state($cid);
+        if(count($statelist)>0){
+            $pro_select_box ='';
+            $pro_select_box.= '<option value="">Select states';
+            foreach($statelist as $slist){
+                $pro_select_box.='<option value='.$slist->id.'>'.$slist->name;
+                }
+            echo json_encode($pro_select_box);
+
+        }
+    }
+
+public function get_city(){
+        $citid=$this->input->post('sid');
+       $citylist=$this->common_model->get_city($citid);
+        if(count($citylist)>0){
+            $pro_select_box ='';
+            $pro_select_box.= '<option value="">Select cities';
+            foreach($citylist as $clist){
+            $pro_select_box.='<option value='.$clist->id.'>'.$clist->name;
+            }
+            echo json_encode($pro_select_box);
+
+        }
+    }
+
+
+
+
 }
 
 

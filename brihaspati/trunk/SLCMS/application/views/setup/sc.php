@@ -4,27 +4,92 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
  <head>
-
-
-     <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-     <?php $this->load->view('template/menu');?>
-
-			          <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
+                                                 
+                                  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
                                   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
       				  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
+                                  <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
       				  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
-                                 <script>
-                                $( function() {
-                                $( "#datepicker" ).datepicker({dateFormat: 'yy/mm/dd'});
-                                } );
-                                </script>
-                              <script>
-                                $( function() {
-                                $( "#datepicker1" ).datepicker({dateFormat: 'yy/mm/dd'});
-                                } );
-                              </script>
+          	                  <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+
+<script>$(document).ready(function(){
+$("#StartDate").datepicker({
+dateFormat: 'yy/mm/dd',
+numberOfMonths: 1,
+onSelect: function(selected) {
+$("#EndDate").datepicker("option","minDate", selected)
+}
+});
+
+$("#EndDate").datepicker({ 
+dateFormat: 'yy/mm/dd',
+numberOfMonths: 1,
+onSelect: function(selected) {
+$("#StartDate").datepicker("option","maxDate", selected)
+}
+}); 
+});
+</script>
+<script>
+    $(document).ready(function(){
+       $('#country_id').on('change',function(){
+           var cid = $(this).val();
+           if(cid == ''){
+               $('#stname').prop('disabled',true);
+               
+           }
+           else{
+              	 $('#stname').prop('disabled',false); 
+               $.ajax({
+                   url: "<?php echo base_url();?>index.php/setup/get_state",
+                   type: "POST",
+                   data: {"cid" : cid},
+                   dataType:"html",
+                   success:function(data){
+                      $('#stname').html(data);
+                       
+                   },
+                   error:function(data){
+                       
+                   }
+               });
+           }
+       }); 
+
+
+$('#stname').on('change',function(){
+           var sid = $(this).val();
+           if(sid == ''){
+               $('#citname').prop('disabled',true);
+               
+           }
+           else{
+                 $('#citname').prop('disabled',false); 
+               $.ajax({
+                   url: "<?php echo base_url();?>index.php/setup/get_city",
+                   type: "POST",
+                   data: {"sid" : sid},
+                   dataType:"html",
+                   success:function(data){
+                      $('#citname').html(data);
+                       
+                   },
+                   error:function(data){
+                       
+                   }
+               });
+           }
+       }); 
+    });
+</script>   
+</head> 
  <body>
+ <div id="body">
+        <?php $this->load->view('template/header'); ?>
+        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <?php $this->load->view('template/menu'); ?>
+</div>
+
      <table>
             <tr colspan="2"><td>
                 <div align="left" style="margin-left:40px;">
@@ -96,21 +161,27 @@
                                 <td><input type="text" name="address"  class="form-control" size="26" /><br></td>
                                 <td><?php echo form_error('address')?></td>
                                 </tr>
-                               <tr>
-                                <td><label for="country" class="control-label">Country:</label></td>
-                                <td><input type="text" name="country"  class="form-control" size="26" /><br></td>
-                                <td><?php echo form_error('country')?></td>
-                              <tr>
-                                <td><label for="state" class="control-label">State:</label></td>
-                                <td><input type="text" name="state"  class="form-control" size="26" /><br></td>
-                                <td><?php echo form_error('state')?></td>
+                                <tr><td>Country: </td><td>
+  				<select name="country"  id="country_id">
+					<option value="">Select Country</option>
+					<?php foreach($this->cresult as $datas): ?>
+                                	<option value="<?php echo $datas->id; ?>"><?php echo $datas->name; ?></option>
+                        		<?php endforeach; ?>
+				</select>
                                  
-                                <tr>
-                                <td><label for="city" class="control-label">City:</label></td>
-                                <td><input type="text" name="city"  class="form-control" size="26" /><br></td>
-                                <td><?php echo form_error('city')?></td>
-                                </tr>
+		
+                                <tr><td>State: </td><td>                        
+				<select style="height:35px;" name="state" id="stname" disabled="">
+					<option value="">Select state</option>
+				</select>
+                                </tr></td>
                                  
+                                <tr><td>City: </td><td>
+				<select style="height:35px;" name="city" id="citname" disabled="">
+                                    <option value="">Select city</option>
+                                </select>
+                                 </tr></td>
+                                                                                   
                                 <tr>
                                 <td><label for="district" class="control-label">District:</label></td>
                                 <td><input type="text" name="district"  class="form-control" size="26" /><br></td>
@@ -145,22 +216,28 @@
 				
                                 <tr>
                                 <td><label for="startdate" class="control-label">Start Date:</label></td>
-                                <td><input type="text" name="startdate" id="datepicker" class="form-control" size="26" /><br>
+                                <td><input type="text" name="startdate" id="StartDate" class="form-control" size="26" /><br>
                                 <td><?php echo form_error('startdate')?></td>
 	                        </td>
                                 </tr>
 
                                 <tr>
                                 <td><label for="closedate" class="control-label">Close Date:</label></td>
-                                <td><input type="text" name="closedate" id="datepicker1" class="form-control" size="26" /><br>
+                                <td><input type="text" name="closedate" id="EndDate" class="form-control" size="26" /><br>
                                 <td><?php echo form_error('closedate')?></td>
                                 </td>
                                 </tr>
+                                </tr>
+
 
                                 <tr>
                                 <td><label for="website" class="control-label">Website:</label></td>
                                 <td><input type="text" name="website"  class="form-control" size="26" /><br></td>
-                                <td><?php echo form_error('website')?><td>
+                                <td><?php echo form_error('website')?></td>
+                                <td>
+                                 Example: http://www.igntu.nic.in
+                                </td>
+
                                 </tr>
  
 				<tr>
@@ -181,7 +258,7 @@
                                     <tr>
                                     <td colspan="2" style="margin-left:30px;">
 					 <button name="sc" style="margin-left:175px;" name="submit" >Submit</button>
-					 <button name="reset" >Reset</button>
+					 <button name="clear" >Clear</button>
 					 </td>
                                       </tr>
 				</body>
