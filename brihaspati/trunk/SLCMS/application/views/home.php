@@ -94,10 +94,10 @@
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
         echo "<table style=\"padding: 8px 8px 8px 20px;\">";
         echo "<tbody align=\"left\">";
-	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> Campus Name</td><td style=\"padding: 8px 8px 8px 20px;\">Program Category</td><td style=\"padding: 8px 8px 8px 20px;\">Program Name</td> <td style=\"padding: 8px 8px 8px 20px;\">Seat</td></tr>";
+	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> Campus Name</td><td style=\"padding: 8px 8px 8px 20px;\">Program Category</td><td style=\"padding: 8px 8px 8px 20px;\">Program Name</td><td style=\"padding: 8px 8px 8px 20px;\">Program Branch</td> <td style=\"padding: 8px 8px 8px 20px;\">Seat</td></tr>";
 	foreach($this->prgseat as $row){
 		$scname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;
-		echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> $scname </td><td style=\"padding: 8px 8px 8px 20px;\">$row->prg_category</td><td style=\"padding: 8px 8px 8px 20px;\">$row->prg_name</td> <td style=\"padding: 8px 8px 8px 20px;\">$row->prg_seat</td></tr>";
+		echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> $scname </td><td style=\"padding: 8px 8px 8px 20px;\">$row->prg_category</td><td style=\"padding: 8px 8px 8px 20px;\">$row->prg_name</td> <td style=\"padding: 8px 8px 8px 20px;\">$row->prg_branch</td><td style=\"padding: 8px 8px 8px 20px;\">$row->prg_seat</td></tr>";
 	}
         echo "</tbody>";
         echo "</table>";

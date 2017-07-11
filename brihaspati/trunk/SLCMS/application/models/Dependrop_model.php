@@ -17,7 +17,7 @@ class Dependrop_model extends CI_Model
 
     /*This function has been created for display the list of branch on the basis of program*/
     public function get_branchlist($pgid){
-	$brlist = $this->common_model->get_listrow('program','prg_name', $pgid);
+	$brlist = $this->commodel->get_listrow('program','prg_name', $pgid);
         $branch_data = $brlist->result();
         if(count($branch_data)>0){
                 $pro_select_box = '';

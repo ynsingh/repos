@@ -307,7 +307,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('prgdepartment','Department','trim|xss_clean|required');
             $this->form_validation->set_rules('prgcat','Program Category','trim|xss_clean|required');
             $this->form_validation->set_rules('prgname','Program Name','trim|xss_clean|required');
-            $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean');
+            $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean|required');
             $this->form_validation->set_rules('prgpattern','Program Pattern','trim|xss_clean|required');
             $this->form_validation->set_rules('prgseat','Seat Available','trim|xss_clean|required|numeric');
             $this->form_validation->set_rules('prgcredit','Program Credit','trim|xss_clean|numeric');
@@ -449,8 +449,8 @@ class Setup extends CI_Controller
 
         $this->form_validation->set_rules('prgcat','Program Category','trim|xss_clean|required');
         $this->form_validation->set_rules('prgname','Program Name','trim|xss_clean|required');
-        $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean');
-        $this->form_validation->set_rules('prgpattern','Program Pattern','trim|xss_clean');
+        $this->form_validation->set_rules('prgbranch','Program Branch','trim|xss_clean|required');
+        $this->form_validation->set_rules('prgpattern','Program Pattern','trim|xss_clean|required');
         $this->form_validation->set_rules('prgseat','Seat Available','trim|xss_clean|required|numeric');
         $this->form_validation->set_rules('prgcredit','Program Credit','trim|xss_clean|numeric');
         $this->form_validation->set_rules('prgcode','Program Code','trim|xss_clean|required');

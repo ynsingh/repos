@@ -60,8 +60,8 @@
          ?>
              <tr align="center">
             <td> <?php echo ++$count; ?> </td> 
-            <td> <?php echo  $this->common_model->get_listspfic1('program','prg_name','prg_id',$row->semcr_prgid)->prg_name ?></td>
-            <td> <?php echo $sub1 = $this->common_model->get_listspfic1('program','prg_branch','prg_id',$row->semcr_prgid)->prg_branch  ?></td>
+            <td> <?php echo  $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->semcr_prgid)->prg_name ?></td>
+            <td> <?php echo $sub1 = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->semcr_prgid)->prg_branch  ?></td>
             <td> <?php echo $row->semcr_semester ?></td>
             <td> <?php echo $row->semcr_mincredit ?></td>
             <td> <?php echo $row->semcr_maxcredit ?></td>

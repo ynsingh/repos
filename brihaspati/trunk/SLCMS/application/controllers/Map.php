@@ -604,9 +604,80 @@ class Map extends CI_Controller
                 $this->logger->write_dblogmessage("update", "Subject paper updated <b> " , $prg_data->prg_name . $sub_data->sub_name . " by". $username);
                 redirect('map/programsubject');
             }
-            
         }        
-    
         $this->load->view('map/editprogramsubject',$data);    
     }
+
+    /**This function is used for view details of subject semseter program and dept seats */
+
+    public function subjectsemester(){
+        $data['subsemrec']= $this->commodel->get_list('subject_semester');
+        $this->logger->write_logmessage("view","Map subject semseter program with dept", "view details...");
+        $this->logger->write_dblogmessage("view"," Map subject semester program with dept", "view details...");
+        $this->load->view('map/subjectsemester',$data);
+    }
+
+    /** This function is used for map subject semester program and department */
+    public function mapsubsem(){
+	    $data['dept'] = $this->commodel->get_listmore('Department','dept_id,dept_name');
+	    $data['subres'] = $this->commodel->get_listmore('subject','sub_id,sub_name');
+	    $data['prgresult'] = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
+        if(isset($_POST['mapsubsem'])) {
+            /*Form Validation*/
+            $this->form_validation->set_rules('subsem_deptid','Department','trim|required');
+            $this->form_validation->set_rules('subsem_prgid','Program','trim|required');
+            $this->form_validation->set_rules('subsem_semester','Semester','trim|required');
+            $this->form_validation->set_rules('subsem_subid','Subject','trim|required');
+            $this->form_validation->set_rules('subsem_subtype','Subject Type','trim|required');
+            if($this->form_validation->run() == TRUE)
+            {  
+                //echo "this is prgid============";
+                $prgid = $this->input->post('subsem_prgid', TRUE);
+                $deptid = $this->input->post('subsem_deptid', TRUE);
+                $subid = $this->input->post('subsem_subid', TRUE);
+                $subtype = $this->input->post('subsem_subtype', TRUE);
+                $semester = $this->input->post('subsem_semester', TRUE);
+
+		$datawh=array('subsem_subid' => $subid, 'subsem_prgid' => $prgid, 'subsem_semester' => $semester);
+        	$is_exist = $this->commodel->isduplicatemore('subject_semester',$datawh);
+
+        	if($is_exist) {
+			$this->form_validation->set_message('ischeck', 'Subject id-->'.$subid.'-->Program id-->'.$prgid . '-->semester -->'. $semester  .' is already exist with selected combintaion.' );
+			redirect('map/mapsubsem');
+            		return false;
+        	}
+        	else {
+                $data = array(
+                    'subsem_subid'=>$subid,
+                    'subsem_prgid'=>$prgid,
+                    'subsem_semester'=>$semester,
+                    'subsem_subtype'=>$subtype,
+                    'subsem_ext1'=>$deptid,
+                    'creatorid'=>$this->session->userdata('username'),
+                    'createdate'=>date('y-m-d'),
+                    'modifierid'=>$this->session->userdata('username'),
+                    'modifydate'=>date('y-m-d')
+                );
+           
+                $mapscprg=$this->commodel->insertrec('subject_semester', $data);
+                if(! $mapscprg )
+                {
+                    $this->logger->write_logmessage("error","Error  in maping subject semester with program dept", $subid.$prgid.$deptid);
+                    $this->logger->write_dblogmessage("error","Error  in maping subject semester with program dept", $subid.$prgid.$deptid);
+                    $this->session->set_flashdata('err_message','Error in maping subject semester with program dept - ' .$subid.$prgid.$deptid);
+                    redirect('map/mapsubsem');
+                }
+                else{
+			$this->logger->write_logmessage("insert","Map subject semester program seat", "Map Subject semester with program dept successfully.....".$subid.$prgid.$deptid);
+			
+                    $this->logger->write_dblogmessage("insert","Map subject semester program seat", "Map Subject semester with program dept successfully....." .$subid.$prgid.$deptid);
+                    $this->session->set_flashdata("success", "Map Subject semester with program dept successfully...");
+                    redirect("map/subjectsemester");
+		}//database error check
+	    	}//else duplicate exist
+            }//if validation
+        }//ifpost    
+        $this->load->view('map/mapsubsem',$data);
+    }
+
 }    

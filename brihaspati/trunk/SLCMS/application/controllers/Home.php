@@ -23,13 +23,14 @@ class Home extends CI_Controller
 	/* set user role in session, Role id 1 is for Administrator */
 	$data = [ 'id_role' => 1 ];
 	$this->session->set_userdata($data);
-	//	$whdata= [];
-	$selectfield = 'prg_scid,prg_category,prg_name,prg_seat';
 	// get the values of program and seat
+	$selectfield = 'prg_scid,prg_category,prg_name,prg_branch,prg_seat';
 	$this->prgseat=$this->commodel->get_listmore('program',$selectfield);
+	// get the values of university 
 	$this->result = $this->universitym->get_udetails();
 	$contcode=$this->result->org_countrycode;
 	$this->contryname = $this->universitym->get_countryname($contcode);
+	//get values of fees record
         $this->load->view('home');
     }
  

@@ -12,8 +12,8 @@ class Setup2 extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-	$this->load->model('common_model'); 
-	$this->load->model('dependrop_model'); 
+	$this->load->model('common_model','commodel'); 
+	$this->load->model('dependrop_model','depmodel'); 
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -56,7 +56,7 @@ class Setup2 extends CI_Controller
         	            	'modifierid'=>$this->session->userdata('username'),
                 	    	'modifydate'=>date('y-m-d')
 	                 );
-        	        $rflag=$this->common_model->insertrec('grade_master', $data);
+        	        $rflag=$this->commodel->insertrec('grade_master', $data);
                 	if (!$rflag)
                 	{
                     		$this->logger->write_logmessage("insert","Trying to add grade", "Grade is not added ".$_POST['gm_gradename']);
@@ -79,7 +79,7 @@ class Setup2 extends CI_Controller
      * @return type
     */
     public function isgradeExist($gm_gradename) {
-        $is_exist = $this->common_model->isduplicate('grade_master','gm_gradename',$gm_gradename);
+        $is_exist = $this->commodel->isduplicate('grade_master','gm_gradename',$gm_gradename);
         if ($is_exist)
         {
             $this->form_validation->set_message('isgradeExist', 'Grade is already exist.');
@@ -96,7 +96,7 @@ class Setup2 extends CI_Controller
      * @return type
      */
      public function deletegrade($id) {
-          $gradedflag=$this->common_model->deleterow('grade_master','gm_id', $id);
+          $gradedflag=$this->commodel->deleterow('grade_master','gm_id', $id);
           if(!$gradedflag)
           {
           	$this->logger->write_message("error", "Error  in deleting grade " ."[gm_id:" . $id . "]");
@@ -209,7 +209,7 @@ class Setup2 extends CI_Controller
                'modifydate'=>date('y-m-d')
             );
 
-        $gradedflag=$this->common_model->updaterec('grade_master', $update_data,'gm_id', $data_eid);
+        $gradedflag=$this->commodel->updaterec('grade_master', $update_data,'gm_id', $data_eid);
         if(!$gradedflag)
             {
                 $this->logger->write_logmessage("error","Edit grade Setting error", "Edit grade Setting details. $logmessage ");
@@ -231,7 +231,7 @@ class Setup2 extends CI_Controller
      	* @return type
      	*/
     	public function semesterrules() {
-        	$this->result = $this->common_model->get_list('semester_rule');
+        	$this->result = $this->commodel->get_list('semester_rule');
         	$this->logger->write_logmessage("view"," View Semester Rule", "Semester Rule details...");
         	$this->logger->write_dblogmessage("view"," View Semester Rule", "Semester Rule record display successfully..." );
         	$this->load->view('setup2/semesterrules',$this->result);
@@ -243,7 +243,7 @@ class Setup2 extends CI_Controller
      	*/
         public function deletesemrule($id) {
 
-        	$gradedflag=$this->common_model->deleterow('semester_rule','semcr_id', $id);
+        	$gradedflag=$this->commodel->deleterow('semester_rule','semcr_id', $id);
           	if(!$gradedflag)
           	{
             		$this->logger->write_message("error", "Error  in deleting semester rule " ."[semcr_id:" . $id . "]");
@@ -266,7 +266,7 @@ class Setup2 extends CI_Controller
      	*/
 	public function addsemrule()
 	{
-		$this->prgresult = $this->common_model->get_listspfic2('program','prg_name', '','','','prg_name');
+		$this->prgresult = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
         	if(isset($_POST['addsemrule'])) {
                 	$this->form_validation->set_rules('semcr_prgid','Program Branch','trim|xss_clean|required|callback_issemruleExist');
                  	$this->form_validation->set_rules('semcr_semester','Semester','trim|xss_clean|required|is_natural');
@@ -286,7 +286,7 @@ class Setup2 extends CI_Controller
                                 	'modifierid'=>$this->session->userdata('username'),
                                 	'modifydate'=>date('y-m-d')
                          	);
-                        	$rflag=$this->common_model->insertrec('semester_rule', $data);
+                        	$rflag=$this->commodel->insertrec('semester_rule', $data);
                         	if (!$rflag)
                         	{
                                 	$this->logger->write_logmessage("insert","Trying to add Semester rule", "Semester rule is not added ".$_POST['gm_gradename']);
@@ -309,7 +309,7 @@ class Setup2 extends CI_Controller
      	* @return type
     	*/
     	public function issemruleExist($semcr_prgid) {
-        	$is_exist = $this->common_model->isduplicate('semester_rule','semcr_prgid',$semcr_prgid);
+        	$is_exist = $this->commodel->isduplicate('semester_rule','semcr_prgid',$semcr_prgid);
         	if ($is_exist)
         	{
             		$this->form_validation->set_message('issemruleExist', 'Semester rule for this program and branch is already exist.');
@@ -334,13 +334,12 @@ class Setup2 extends CI_Controller
         $editsemrule_data = $semrule_data_q->row();
 
 	/* Form fields */
-
         $data['semcr_programname'] = array(
                 'name' => 'semcr_programname',
                 'id' => 'semcr_programname',
                 'maxlength' => '50',
                 'size' => '40',
-		'value' => $this->common_model->get_listspfic1('program','prg_name','prg_id',$editsemrule_data->semcr_prgid)->prg_name,
+		'value' => $this->commodel->get_listspfic1('program','prg_name','prg_id',$editsemrule_data->semcr_prgid)->prg_name,
             'readonly' => 'readonly'
 	);
 
@@ -349,7 +348,7 @@ class Setup2 extends CI_Controller
                 'id' => 'semcr_branchname',
                 'maxlength' => '50',
                 'size' => '40',
-		'value' => $this->common_model->get_listspfic1('program','prg_branch','prg_id',$editsemrule_data->semcr_prgid)->prg_branch,
+		'value' => $this->commodel->get_listspfic1('program','prg_branch','prg_id',$editsemrule_data->semcr_prgid)->prg_branch,
 		'readonly' => 'readonly'
 	);
 
@@ -423,6 +422,28 @@ class Setup2 extends CI_Controller
                 $logmessage = "Edit Maximum Credit  " .$editsemrule_data->semcr_maxcredit. " changed by " .$data_emaxcredit;
             if($editsemrule_data->semcr_semcpi != $data_esemcpi)
                 $logmessage = "Edit Semester CPI " .$editsemrule_data->semcr_semcpi. " changed by " .$data_esemcpi;
+		// insert data into semester rule archive table    
+        	$insertdata= array(
+                 'semcra_semcrid'=>$editsemrule_data->semcr_id,
+                 'semcra_prgid'=>$editsemrule_data->semcr_prgid,
+                 'semcra_semester'=>$editsemrule_data->semcr_semester,
+                 'semcra_mincredit'=>$editsemrule_data->semcr_mincredit,
+                 'semcra_maxcredit'=>$editsemrule_data->semcr_maxcredit,
+                 'semcra_semcpi'=>$editsemrule_data->semcr_semcpi,
+                 'semcra_ext1'=>$editsemrule_data->semcr_ext1,
+                 'semcra_ext2'=>$editsemrule_data->semcr_ext2,
+                 'creatorid'=>$this->session->userdata('username'),
+                 'createdate'=>date('y-m-d'),
+                 'modifierid'=>$this->session->userdata('username'),
+                 'modifydate'=>date('y-m-d'),
+        	);
+            	$fmaflag=$this->commodel->insertrec('semester_rule_archive', $insertdata);
+            	if(!$fmflag)
+            	{
+                      $this->logger->write_dblogmessage("error","Error in insert in  semester rule archive ", "Error in semester rule archive record insert". $logmessage );
+            	}else{
+                     $this->logger->write_dblogmessage("insert","Insert Fees master archive", "semester rule record inserted in semester rule archive successfully..". $logmessage );
+            	}
 
             $update_data = array(
                'semcr_semester' => $data_esemester,
@@ -433,7 +454,7 @@ class Setup2 extends CI_Controller
                'modifydate'=>date('y-m-d')
             );
 
-        $semruledflag=$this->common_model->updaterec('semester_rule', $update_data,'semcr_id', $data_eid);
+        $semruledflag=$this->commodel->updaterec('semester_rule', $update_data,'semcr_id', $data_eid);
         if(!$semruledflag)
             {
                 $this->logger->write_logmessage("error","Edit semester rule Setting error", "Edit semester rule Setting details. $logmessage ");
@@ -455,7 +476,7 @@ class Setup2 extends CI_Controller
 	/*This function has been created for display the list of branch on the basis of program*/
         public function branchlist(){
 		$pgid = $this->input->post('programname');   
-		$this->dependrop_model->get_branchlist($pgid);
+		$this->depmodel->get_branchlist($pgid);
         } 
 }
 

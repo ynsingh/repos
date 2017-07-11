@@ -37,6 +37,22 @@ class Archive extends CI_Controller
 	        $this->logger->write_logmessage("view"," View Subject paper archive ", "Program Subject paper archive details...");
         	$this->logger->write_dblogmessage("view"," View subject paper archive", "Program Subject Paper archive details...");
 	        $this->load->view('archive/prgsubpapa');
-        }
+	}
+
+	/** This function Display the semester rule list archive records */
+        public function semrulea() {
+        	$this->sraresult = $this->common_model->get_list('semester_rule_archive');
+	        $this->logger->write_logmessage("view"," View semester rule archive ", "Semester rule archive details...");
+        	$this->logger->write_dblogmessage("view"," View semester rule archive", "Semester rule archive details...");
+	        $this->load->view('archive/semrulea');
+	}
+
+	/** This function Display the Subject semester Program list archive records */
+        public function subsema() {
+        	$this->ssaresult = $this->common_model->get_list('subject_semester_archive');
+	        $this->logger->write_logmessage("view"," View Subject semester Program archive ", "Subject semester Program archive details...");
+        	$this->logger->write_dblogmessage("view"," View Subject semester Program archive", "Subject Semester Program archive details...");
+	        $this->load->view('archive/subsema');
+	}
 }
 

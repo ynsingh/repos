@@ -117,7 +117,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         <label for="prgbranch">Program Branch</label></td>
         <td><input type="text" name="prgbranch" size="35"/>
         </td><td><?php echo form_error('prgbranch')?>
-	</td><td>Example : Physics, Math  etc
+	</td><td>Example :UG (Arts, Science, commerce etc), PG (Physics, Math  etc)
     </td></tr>
 
     <tr><td>
@@ -160,7 +160,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 <!--    <tr><td>
         <label for="prgcrtid">Program Creator Id</label></td>
         <td><input type="text" name="prgcrtid" />
-        </td><td><?php echo form_error('prgcrtid')?>
+        </td><td><?//php echo form_error('prgcrtid')?>
     </td></tr>
 -->
 <!--    <tr><td>
