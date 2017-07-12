@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @name Studenthome.php
  * @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author Sharad Singh
+ * @author Manorama Pal (palseema30@gmail.com) Student List of selected program
  */
 class Studenthome extends CI_Controller
 {
@@ -12,8 +13,8 @@ class Studenthome extends CI_Controller
     function __construct() {
         parent::__construct();
  	$this->load->model("common_model", "commodel");
-    $this->load->model("user_model","usermodel");
-    $this->load->model("student_model", "studentmodel");
+        $this->load->model("user_model","usermodel");
+        $this->load->model("student_model", "studentmodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('welcome');
@@ -81,6 +82,7 @@ class Studenthome extends CI_Controller
              */
             $noofsemester = sizeof($stud_prg_rec->result());
             $degree_name = $this->commodel->get_listrow('program','prg_id',$degree_id)->row()->prg_name;
+            $this->load->model("student_model", "studentmodel");           
             $data['degree_name'] = $degree_name;
             //get the value of current semester and academic year,semestertype(odd or even)
 
@@ -137,7 +139,8 @@ class Studenthome extends CI_Controller
             {
                 foreach($semesterrec as $row)
                 {
-                    $semester = $row->sp_semester;             
+                    $semester = $row->sp_semester; 
+                    if($semester!=0){
                     if($semres !=0)
                     {
                         $semres = fmod($semester,2);
@@ -154,6 +157,7 @@ class Studenthome extends CI_Controller
                             } 
                         }
                     }
+                    }
                 }
             }
 */
@@ -164,8 +168,6 @@ class Studenthome extends CI_Controller
             //after filling form redierect to fees payment---
             //after payment---
             //check the student program table for subject for current academic year and semester
-
-
             //if subject exist
             //go to dash board
             //else go to subject selection page
@@ -173,6 +175,7 @@ class Studenthome extends CI_Controller
             //update the student program table
             //send mail to student
             //go to dashboard
+            
             //redirect('student/studenthome');
 
             /* get subject in current semester */
@@ -269,6 +272,9 @@ class Studenthome extends CI_Controller
             $feearray = array();
             $this->load->view('student/studenthome',$data);
 	    }
+	    	//check the registration in current academic session with semester
+	    //if not then ask for the semester registeration
+	    //if yes then open registration form
 	    //after filling form redierect to fees payment
 	    //after payment
 	    //check the student program table for subject for current academic year and semester
@@ -458,5 +464,79 @@ class Studenthome extends CI_Controller
         } 
                 
         $this->load->view('student/studentsubject',$data);    
-    } 
+    }
+    
+    /* get student list acording to program and campus*/
+    
+    public function studentlist() {
+        //get the value of current semester and academic year
+        
+        $acadyear = $this->usermodel->getcurrentAcadYear();
+        $datarec['academicyear']=$acadyear;
+        $semestertype = $this->usermodel->getcurrentSemester();
+        $datarec['semester']=$semestertype;
+        
+        //get program list of current academic year  and semester 
+        
+        $uid=$this->session->userdata('id_user');
+        $this->campusid=$this->commodel->get_listspfic1('user_role_type','scid','userid',$uid)->scid;
+        $selectfield=array('pstp_prgid','pstp_subid','pstp_papid','pstp_acadyear','pstp_sem');
+        $data=array(
+            'pstp_scid' =>$this->campusid,
+            'pstp_teachid' => $uid,
+            'pstp_acadyear' => $acadyear,
+            'pstp_sem'    => $semestertype
+        );
+        $this->prgsublist=$this->commodel->get_listspficemore('program_subject_teacher',$selectfield,$data);
+        $datarec['prgsublist']=$this->prgsublist;
+        if(isset($_POST)){
+            /* without search get all student list according to selected program*/
+            
+            $prgname=$this->input->post('programname',TRUE);
+            if(!empty($prgname)){
+                $datarec['selprg_name']=$prgname;
+            }
+            else{
+                $datarec['selprg_name']= "";
+            }
+            $sfield=array('sp_smid','sp_deptid','sp_subid1','sp_subid2','sp_subid3','sp_subid4','sp_subid5','sp_subid6','sp_subid7','sp_subid8','sp_subid9','sp_subid10');
+            $this->campucode=$this->commodel->get_listspfic1('study_center','sc_code','sc_id',$this->campusid)->sc_code;
+            $datarec['ccode']=$this->campucode;
+            $stdntdata=array(
+                'sp_sccode'   =>$this->campucode,
+                'sp_programid' =>$prgname,
+                'sp_acadyear' =>$acadyear,
+                'sp_semester'  =>  $semestertype
+            );
+       
+            $filter = $this->input->post('filter');
+            $field  = $this->input->post('field');
+            $search = $this->input->post('search');
+            $prgname2=$this->input->post('prgname',TRUE);
+            if(!empty($prgname2)){
+                $datarec['filprg_name']=$prgname2;
+                
+            }
+            else{
+                $datarec['filprg_name']= "";
+            }
+            if (isset($filter) && !empty($search)) {
+                $stdntdata2=array(
+                'sp_sccode'   =>$this->campucode,
+                'sp_programid' =>$prgname2,
+                'sp_acadyear' =>$acadyear,
+                'sp_semester'  =>$semestertype
+                );
+                $datarec['studentdetail'] = $this->studentmodel->getStudentsWhereLike($field, $search,$stdntdata2);
+            }
+            else{
+                /* without search*/ 
+                $stud_prg_rec = $this->commodel->get_listspficemore('student_program',$sfield,$stdntdata);
+                $datarec['studentdetail']=$stud_prg_rec;
+            }
+        
+        }//ifpost
+        $this->load->view('student/studentlist',$datarec);
+    }
+		 
 }

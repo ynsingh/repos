@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @name: Student Model
  * @author: Sharad Singh
  * @author: Sumit Saxena (sumitsesaxena@gmail.com)
+ * @author: Manorama Pal (palseema30@gmail.com)
  */
 
 class Student_model extends CI_Model
@@ -45,7 +46,7 @@ class Student_model extends CI_Model
         //print_r(sizeof($query));
         return $query;
     }
-
+    
     public function update_subject($updatedata,$acadyear,$semester,$studentid,$rid)
     {
 
@@ -97,6 +98,17 @@ class Student_model extends CI_Model
 
     function __destruct() {
         $this->db->close();
+    }
+    
+    public function getStudentsWhereLike($field, $search,$data)
+    {
+        
+        $this->db->select('student_program.sp_smid','student_program.sp_deptid','student_master.sm_fname','student_master.sm_mname','student_master.sm_lname','student_master.sm_rollno','student_master.sm_enrollmentno','student_master.sm_uid','student_master.sm_email','student_master.sm_mobile');
+        //$this->db->select('student_program.sp_smid','student_program.sp_deptid','student_program.sp_subid1','student_program.sp_subid2','student_program.sp_subid3','student_program.sp_subid4','student_program.sp_subid5','student_program.sp_subid6','student_program.sp_subid7','student_program.sp_subid8','student_program.sp_subid9','student_program.sp_subid10','student_master.sm_fname','student_master.sm_mname','student_master.sm_lname','student_master.sm_rollno','student_master.sm_enrollmentno','student_master.sm_uid','student_master.sm_email','student_master.sm_mobile');       
+        $this->db->from('student_program')->where($data)->where($field.' LIKE', '%' . $search . '%')->order_by('student_master.sm_fname','asc');;
+        $this->db->join('student_master','student_master.sm_id = student_program.sp_smid','LEFT');
+        $query=$this->db->get();
+        return $query->result();
     }
 }
 
