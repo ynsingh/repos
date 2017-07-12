@@ -72,7 +72,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('map/programsubject', 'Map Program with Subject and paper', array('title' => 'Map Program with Subject and paper'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('map/subjectteacher', 'Map Subject and Paper with Teacher', array('title' => 'Map Subject and Paper with Teacher'));
+						echo anchor('map/listsubjectteacher', 'Map Subject and Paper with Teacher', array('title' => 'Map Subject and Paper with Teacher'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('map/prerequisite', 'Map Subject and Paper with Prerequisite', array('title' => 'Map Subject and Paper with Prerequisite'));
@@ -80,7 +80,6 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('map/subjectsemester', 'Map Subject and Semester', array('title' => 'Map Subject and Semester'));
 					echo "</li>";
-					
 					
 				echo "</ul>";
 			echo "</li>";

@@ -4,6 +4,7 @@
  * @name Map.php
  * @author Nagendra Kumar Singh(Nksinghiitk@gmail.com)
  * @author Manorama Pal(palseema30@gmail.com)
+ * @author Om Prakash (omprakashkgp@gmail.com) Map Subject and Paper with Teacher  
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -14,8 +15,10 @@ class Map extends CI_Controller
     function __construct() {
         parent::__construct();
         /*Loading model calsses*/
+        $this->load->model('Dependrop_model',"depmodel");
         $this->load->model('Map_model',"mapmodel");
         $this->load->model('Common_model',"commodel"); 
+        $this->load->model('Login_model',"loginmodel"); 
         
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
@@ -343,7 +346,8 @@ class Map extends CI_Controller
         }
         return $availsno;
     }
-    
+
+
     /* add subject paper with program */
 
     public function addprogramsubject()
@@ -604,7 +608,8 @@ class Map extends CI_Controller
                 $this->logger->write_dblogmessage("update", "Subject paper updated <b> " , $prg_data->prg_name . $sub_data->sub_name . " by". $username);
                 redirect('map/programsubject');
             }
-        }        
+                $this->deptresult = $this->commodel->get_listspfic2('Department','dept_id', 'dept_name');
+}        
         $this->load->view('map/editprogramsubject',$data);    
     }
 
@@ -678,6 +683,334 @@ class Map extends CI_Controller
             }//if validation
         }//ifpost    
         $this->load->view('map/mapsubsem',$data);
-    }
+ }
 
+//==================  Map Subject and Paper with Teacher ===========================================================================
+
+  /*
+   * this function has been created for display the list of program subject and teacher record.
+   */
+   public function listsubjectteacher(){
+        $this->result = $this->commodel->get_list('program_subject_teacher');
+        $this->logger->write_logmessage("view"," View Subject and Paper with Teacher", "Map Subject and Paper with Teacher record display successfully." );
+        $this->logger->write_dblogmessage("view"," View Subject and Paper with Teacher", "Map Subject and Paper with Teacher record display successfully." );
+        $this->load->view('map/listsubjectteacher',$this->result);
+   }
+
+ /*
+  * this function has been created for add the new program subject and teacher record.
+  */
+   public function subjectteacher(){
+        $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
+        $this->pnresult = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
+	
+       if(isset($_POST['subjectteacher'])) {
+            $this->form_validation->set_rules('campusname','Campus Name','xss_clean|required');
+            $this->form_validation->set_rules('deptname','Department Name','xss_clean|required');
+            $this->form_validation->set_rules('academicyear','Academic Year','trim|xss_clean|required');
+            $this->form_validation->set_rules('programname','Program Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('branchname','Branch Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('semester','Semester ','trim|xss_clean|required');
+            $this->form_validation->set_rules('subjectname','Subject Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('papername','Paper Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('teachername','Teacher Name','trim|xss_clean|required');
+
+        if($this->form_validation->run()==TRUE){
+	  
+	   $subid = $this->input->post("subjectname");
+	   $paperid = $this->input->post("papername");
+	   $teachid = $this->input->post("teachername");
+	   $subname = $this->commodel->get_listspfic1('subject', 'sub_name', 'sub_id', $subid)->sub_name;
+           $papername = $this->commodel->get_listspfic1('subject_paper', 'subp_name', 'subp_id', $paperid)->subp_name;
+           $teacher = $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $teachid)->firstname . $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $teachid)->lastname;
+
+	$pstdatacheck = array('pstp_scid'=>$_POST['campusname'], 'pstp_prgid'=>$_POST['branchname'], 'pstp_subid'=>$_POST['subjectname'], 'pstp_papid'=>$_POST['papername'], 'pstp_teachid'=>$_POST['teachername'], 'pstp_acadyear'=>$_POST['academicyear'], 'pstp_sem'=>$_POST['semester'] );
+
+        $datapst = array(
+        'pstp_scid'=>$_POST['campusname'],
+        'pstp_prgid'=>$_POST['branchname'],
+        'pstp_subid'=>$_POST['subjectname'],
+        'pstp_papid'=>$_POST['papername'],
+        'pstp_teachid'=>$_POST['teachername'],
+        'pstp_acadyear'=>$_POST['academicyear'],
+        'pstp_sem'=>$_POST['semester'],
+        'pstp_ext1'=>'NULL',
+        'pstp_ext2'=>'NULL',
+        'pstp_creatorid'=> $this->session->userdata('username'),
+        'pstp_createdate'=> date('Y-m-d'),
+        'pstp_modifierid'=> $this->session->userdata('username'),
+        'pstp_modifydate'=> date('Y-m-d')
+        );
+
+     	$pstdatadup = $this->commodel->isduplicatemore('program_subject_teacher', $pstdatacheck);
+	
+        if($pstdatadup == 1 ){
+
+		$this->session->set_flashdata("err_message", "Rcord is already exist with this combination. 'Subject Name' = $subname  , 'Paper Name' = $papername , 'Teacher Name' = $teacher  .");
+                redirect('map/subjectteacher');
+		return;
+	}
+        else{	
+      
+        $pstflag = $this->commodel->insertrec('program_subject_teacher', $datapst) ;
+        if(!$pstflag)
+          {
+        	$this->logger->write_logmessage("insert"," Error in adding subject paper teacher ", " Subject and Paper with teacher data insert error .'Subject Name' = $subname  , 'Paper Name' = $papername , 'Teacher Name' = $teacher  "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding subject paper teacher ", " Subject and Paper with teacher data insert error .'Subject Name' = $subname  , 'Paper Name' = $papername , 'Teacher Name' = $teacher  " );
+                $this->session->set_flashdata('err_message','Error in adding subject paper teacher - ' . $teacher . '.', 'error');
+                $this->load->view('map/subjectteacher');
+	  }
+          else{
+                $this->logger->write_logmessage("insert"," map subject Paper teacher ", "map subject paper teacher record added successfully. 'Subject Name' = $subname  , 'Paper Name' = $papername , 'Teacher Name' = $teacher " );
+                $this->logger->write_dblogmessage("insert"," map subject Paper teacher ", "map subject Paper teacher record added successfully. 'Subject Name' = $subname  , 'Paper Name' = $papername , 'Teacher Name' = $teacher " );
+		$this->session->set_flashdata("success", "Record added successfully...'Subject Name' = $subname  , 'Paper Name' = $papername , 'Teacher Name' = $teacher ");
+                redirect('map/listsubjectteacher');
+
+	   }	
+        }
+	}
+	}
+	$this->load->view('map/subjectteacher');
+   }
+  /*
+   * this function has been created for delete the program subject teacher record.
+   */
+   public function deletepsteacher($pstp_id){
+	$pst_data=$this->commodel->get_listrow('program_subject_teacher','pstp_id', $pstp_id);
+        $pst_data_d = $pst_data->row();
+        $subname = $this->commodel->get_listspfic1('subject', 'sub_name', 'sub_id', $pst_data_d->pstp_subid)->sub_name;
+        $papername = $this->commodel->get_listspfic1('subject_paper', 'subp_name', 'subp_id', $pst_data_d->pstp_papid)->subp_name;
+        $teacher = $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $pst_data_d->pstp_teachid)->firstname . $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $pst_data_d->pstp_teachid)->lastname;
+        $pstflag=$this->commodel->deleterow('program_subject_teacher', 'pstp_id', $pstp_id);
+        if(!$pstflag)
+        {
+            $this->logger->write_logmessage("delete", "Error in Deleting subject and Paper with teacher ", "Error in  Subject and paper with Teacher [pstp_id: $pstp_id , $teacher ] delete.. " );
+            $this->logger->write_dblogmessage("delete", "Error in Deleting subject paper teacher ","Error in Subject and Paper with Teacher [pstp_id:  $pstp_id , $teacher ] delete.. " );
+            $this->session->set_flashdata('err_message','Error in deleting subject paper teacher - ', 'error');
+            redirect('map/listsubjectteacher');
+        }
+        else {
+
+            $this->logger->write_logmessage("delete", "Deleted Subject and paper with Teacher ", "Subject and Paper with Teacher [pstp_id:  $pstp_id , $teacher  ] deleted successfully.. " );
+            $this->logger->write_dblogmessage("delete", "Deleted Subject and paper with Teacher ","Subject and Paper with Teacher [pstp_id:  $pstp_id , $teacher ] deleted successfully.. " );
+            $this->session->set_flashdata("success", "Record Deleted successfully..'Subject Name' = $subname , 'Paper Name' = $papername , 'Teacher Name' = $teacher ");
+            redirect('map/listsubjectteacher');
+        }
+           $this->load->view('map/listsubjectteacher');
+  }
+ /*
+  * this function has been created for update the program subject teacher record.
+  */
+  public function editsubjectteacher($pstp_id){
+        $this->tresult = $this->commodel->get_listspfic2('user_role_type','userid', 'roleid');
+	$pst_data_q=$this->commodel->get_listrow('program_subject_teacher','pstp_id', $pstp_id);
+        if ($pst_data_q->num_rows() < 1)
+        {
+           redirect('map/editsubjectteacher');
+        }
+        $editpst_data = $pst_data_q->row();
+
+        /* Form fields */
+
+        $data['campusname']= array(
+            'name' => 'campusname',
+            'id' => 'campusname',
+            'maxlength' => '40',
+            'size' => '40',
+            'value' => $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editpst_data->pstp_scid)->sc_name,
+            'readonly' => 'readonly'
+        );
+
+        $data['deptname']= array(
+            'name' => 'deptname',
+            'id' => 'deptname',
+            'maxlength' => '40',
+            'size' => '40',
+            'value' => $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $this->commodel->get_listspfic1('user_role_type', 'deptid', 'userid', $editpst_data->pstp_teachid)->deptid)->dept_name,
+            'readonly' => 'readonly'
+        );
+
+        $data['academicyear'] = array(
+            'name' => 'academicyear',
+            'id' => 'academicyear',
+            'maxlength' => '40',
+            'size' => '40',
+            'value' => $editpst_data->pstp_acadyear,
+           'readonly' => 'readonly'
+        );
+
+        $data['programname'] = array(
+            'name' => 'programname',
+            'id' => 'programname',
+            'maxlength' => '40',
+            'size' => '40',
+            'value' => $this->commodel->get_listspfic1('program', 'prg_name', 'prg_id', $editpst_data->pstp_prgid)->prg_name,
+            'readonly' => 'readonly'
+	    	
+        );
+
+        $data['branchname'] = array(
+            'name' => 'branchname',
+            'id' => 'branchname',
+            'maxlength' => '40',
+            'size' => '40',
+            'value' => $this->commodel->get_listspfic1('program', 'prg_branch', 'prg_id', $editpst_data->pstp_prgid)->prg_branch,
+            'readonly' => 'readonly'
+        );
+
+        $data['semester'] = array(
+            'name' => 'semester',
+            'id' => 'semester',
+            'maxlength' => '40',
+            'size' => '40',
+            'value' => $editpst_data->pstp_sem,
+            'readonly' => 'readonly'
+        );
+
+        $data['subjectname'] = array(
+            'name' => 'subjectname',
+            'id' => 'subjectname',
+            'maxlength' => '40',
+            'size' => '40',
+            'value' => $this->commodel->get_listspfic1('subject', 'sub_name', 'sub_id', $editpst_data->pstp_subid)->sub_name,
+            'readonly' => 'readonly'  
+        );
+
+        $data['papername'] = array(
+            'name' => 'papername',
+            'id' => 'papername',
+            'maxlength' => '40',
+            'size' => '40',
+            'value' => $this->commodel->get_listspfic1('subject_paper', 'subp_name', 'subp_id', $editpst_data->pstp_papid)->subp_name,
+            'readonly' => 'readonly'
+        );
+
+        $data['teachername'] = array(
+            'name' => 'teachername',
+            'id' => 'teachername',
+            'maxlength' => '40',
+            'size' => '40',
+            'value' => $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $editpst_data->pstp_teachid)->firstname,
+            
+        );
+
+	$data['pstp_id'] = $pstp_id;
+
+        $this->form_validation->set_rules('teachername','Teacher Name ','trim|xss_clean');
+
+        if ($_POST)
+        {
+            $data['teachername']['value'] = $this->input->post('teachername', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('map/editsubjectteacher', $data);
+            return;
+        }
+      else
+        {
+            $data_campusname = $this->input->post('campusname', TRUE);
+            $data_deptname = $this->input->post('deptname', TRUE);
+            $data_programname = $this->input->post('branchname', TRUE);
+            $data_subjectname = $this->input->post('subjectname', TRUE);
+            $data_papername = $this->input->post('papername', TRUE);
+            $data_teachername = $this->input->post('teachername', TRUE);
+            $data_academicyear = $this->input->post('academicyear', TRUE);
+            $data_semester = $this->input->post('semester', TRUE);
+            $data_pstpid = $pstp_id;
+            $logmessage = "";
+            if($editpst_data->pstp_scid != $data_campusname)
+                $logmessage = "Campus Name " .$editpst_data->pstp_scid. " changed by " .$data_campusname;
+            if($editpst_data->pstp_prgid != $data_programname)
+                $logmessage = "Program Name " .$editpst_data->pstp_prgid. " changed by " .$data_programname;
+            if($editpst_data->pstp_subid != $data_subjectname)
+                $logmessage = "Subject Name " .$editpst_data->pstp_subid. " changed by " .$data_subjectname;
+            if($editpst_data->pstp_papid != $data_papername)
+                $logmessage = "Paper Name " .$editpst_data->pstp_papid. " changed by " .$data_papername;
+            if($editpst_data->pstp_teachid != $data_teachername)
+                $logmessage = "Teacher Name " .$this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $editpst_data->pstp_teachid)->firstname. " " .$this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $editpst_data->pstp_teachid)->lastname. " changed by " .$data_teachername;
+            if($editpst_data->pstp_acadyear != $data_academicyear)
+                $logmessage = "Academic Year " .$editpst_data->pstp_acadyear. " changed by " .$data_academicyear;
+            if($editpst_data->pstp_sem != $data_semester)
+                $logmessage = "Semester Name " .$editpst_data->pstp_sem. " changed by " .$data_semester;
+
+	$pstdataedit = array('pstp_scid'=>$this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_name', $data_campusname)->sc_id,
+			     'pstp_prgid'=>$this->commodel->get_listspfic1('program', 'prg_id', 'prg_branch', $data_programname)->prg_id,
+			     'pstp_subid'=>$this->commodel->get_listspfic1('subject', 'sub_id', 'sub_name', $data_subjectname)->sub_id,
+			     'pstp_papid'=>$this->commodel->get_listspfic1('subject_paper', 'subp_id', 'subp_name', $data_papername)->subp_id, 
+                             'pstp_teachid'=>$this->loginmodel->get_listspfic1('userprofile', 'userid', 'firstname', $data_teachername)->userid,
+                             'pstp_acadyear'=>$data_academicyear, 'pstp_sem'=>$data_semester );
+	
+	$update_data = array(
+               'pstp_scid' => $this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_name', ($data_campusname))->sc_id,
+               'pstp_prgid' => $this->commodel->get_listspfic1('program', 'prg_id', 'prg_branch', ($data_programname))->prg_id,
+               'pstp_subid' =>  $this->commodel->get_listspfic1('subject', 'sub_id', 'sub_name', ($data_subjectname))->sub_id,
+               'pstp_papid' => $this->commodel->get_listspfic1('subject_paper', 'subp_id', 'subp_name', ($data_papername))->subp_id,
+               'pstp_teachid' => $this->loginmodel->get_listspfic1('userprofile', 'userid', 'firstname', ($data_teachername))->userid,
+               'pstp_acadyear' => $data_academicyear,
+               'pstp_sem' => $data_semester,
+               'pstp_modifierid' =>$this->session->userdata('username'),
+               'pstp_modifydate' =>date('Y-m-d')
+            );
+
+        $pstdatadup = $this->commodel->isduplicatemore('program_subject_teacher', $pstdataedit);
+        if($pstdatadup == 1 ){
+                $this->session->set_flashdata("err_message", "Rcord is already exist with this combination. Subject Name = '$data_subjectname' , Paper Name =' $data_papername' , Teacher Name =' $data_teachername' ");
+                redirect('map/listsubjectteacher/');
+        	return;
+            }
+        else{
+
+	   $catflag=$this->commodel->updaterec('program_subject_teacher', $update_data, 'pstp_id', $data_pstpid);
+           if(!$catflag)
+            {
+                $this->logger->write_logmessage("error","Error in updating Program Subject Teacher ", "Error in Map Subject, Paper with Teacher record updating. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in updating Program Subject Teacher ", "Error in Map Subject, Paper with Teacher record updating. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error in updating Program Subject Teacher ' . $logmessage . '.', 'error');
+                $this->load->view('map/editsubjectteacher', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Subject and Paper with Teacher", " Subject and Paper with Teacher record updated successfully. $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Subject Teacher", "Subject and Paper with Teacher record updated successfully. $logmessage ." );
+                $this->session->set_flashdata('success',"Record updated successfully. The  $logmessage ." );
+                redirect('map/listsubjectteacher/');
+                }
+         }//else
+         $this->load->view('map/editsubjectteacher');
+     }
+  }
+
+
+/* This function has been created for get list of Department on the basis of campus */
+	public function getdeptlist(){
+	    $scid = $this->input->post('campusname');
+	    $this->depmodel->getdeptlist_model($scid);
+	}
+
+/*This function has been created for display teacher list on the basis of Department*/
+	public function teacherlist(){
+		$deptid = $this->input->post('deptname');
+	    	$this->depmodel->get_teacherlist($deptid);
+        }
+
+/*This function has been created for display the list of branch on the basis of program*/
+	public function branchlist(){
+	$pgid = $this->input->post('programname');	
+	    	$this->depmodel->get_branchlist($pgid);
+        }
+
+/*This function has been created for display subject on the basis of program and branch*/
+	public function subjectlist(){
+	$branchid = $this->input->post("branchname");
+	    	$this->depmodel->get_subjectlist($branchid);
+	}
+
+/*This function has been created for display paper name on the basis of subject */
+	public function paperlist(){
+		$subid = $this->input->post("subjectname");
+	    	$this->depmodel->get_paperlist($subid);
+        }
+
+ //==================  End of Map Subject and Paper with Teacher ==============================================================
+ 
 }    
