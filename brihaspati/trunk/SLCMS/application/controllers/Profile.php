@@ -97,5 +97,117 @@ public function viewprofile(){
         $this->orgcode=$this->common_model->get_listspfic1('study_center','org_code','sc_id',$this->campusid);
         $this->orgname=$this->common_model->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);
         $this->load->view('profile/viewprofile');
-}
- }//end class
+}//end function
+/* this function is used for update user profile */
+	public function editprofile(){
+		$id=$this->session->userdata('id_user');
+		$profile_data_q=$this->login_model->get_listrow('userprofile','userid', $id);
+	        if ($profile_data_q->num_rows() < 1)
+        	{
+	        	redirect('profile/editprofile');
+			return;
+        	}
+       		$profile_data = $profile_data_q->row();
+ 		/* Form fields */
+          	$data['firstname'] = array(
+            		'name' => 'firstname',
+            		'id' => 'firstname',
+            		'maxlength' => '50',
+            		'size' => '40',
+            		'value' => $profile_data->firstname,
+            	);
+            	$data['lastname'] = array(
+            		'name' => 'lastname',
+            		'id' => 'lastname',
+            		'maxlength' => '50',
+            		'size' => '40',
+	    		'value' => $profile_data->lastname,
+            	);
+	    	$data['address'] = array(
+            		'name' => 'address',
+            		'id' => 'address',
+            		'maxlength' => '50',
+            		'size' => '40',
+            		'value' => $profile_data->address,
+	     	);
+	        $data['secmail'] = array(
+            		'name' => 'secmail',
+            		'id' => 'secmail',
+            		'maxlength' => '50',
+            		'size' => '40',
+            		'value' => $profile_data->secmail,
+	     	);
+	    	$data['mobile'] = array(
+            		'name' => 'mobile',
+            		'id' => 'mobile',
+          		'maxlength' => '50',
+           		'size' => '40',
+            		'value' => $profile_data->mobile,
+            	);
+		$data['id'] = $id;
+ 		/*Form Validation*/
+
+ 		$this->form_validation->set_rules('firstname','First Name','trim|xss_clean|required');
+ 		$this->form_validation->set_rules('lastname','Last Name','trim|xss_clean|required');
+        	$this->form_validation->set_rules('address','Address','trim|xss_clean|required');
+ 		$this->form_validation->set_rules('secmail','Secondary Email ID','trim|xss_clean|valid_email');
+ 		$this->form_validation->set_rules('mobile','Mobile','trim|xss_clean|required|max_length[12]|is_numeric');
+		/* Re-populating form */
+        	if ($_POST){
+			$data['firstname']['value'] = $this->input->post('firstname', TRUE);
+			$data['lastname']['value'] = $this->input->post('lastname', TRUE);
+			$data['address']['value'] = $this->input->post('address', TRUE);
+			$data['secmail']['value'] = $this->input->post('secmail', TRUE);
+			$data['mobile']['value'] = $this->input->post('mobile', TRUE);
+		}		
+		if ($this->form_validation->run() ==FALSE )
+      	        {
+                	$this->session->set_flashdata(validation_errors(), 'error');
+                	$this->load->view('profile/editprofile', $data);
+			return;
+       		 }else{
+			$firstname = ucwords(strtolower($this->input->post('firstname', TRUE)));
+			$lastname = ucwords(strtolower($this->input->post('lastname', TRUE)));
+			$address = $this->input->post('address', TRUE);
+			$secmail =$this->input->post('secmail', TRUE);
+			$mobile = $this->input->post('mobile', TRUE);
+
+		$logmessage = "";
+        	        if($profile_data->firstname != $firstname)
+            		$logmessage = $logmessage ." update first name " .$profile_data->firstname. " changed by " .$firstname;
+	    		if($profile_data->lastname != $lastname)
+            		$logmessage = $logmessage ." update last name" .$profile_data->lastname. " changed by " .$lastname;
+	    		if($profile_data->address != $address)
+            		$logmessage = $logmessage ." update address " .$profile_data->address. " changed by " .$address;
+	    		if($profile_data->secmail != $secmail)
+            		$logmessage = $logmessage ." update secondry mail " .$profile_data->secmail. " changed by " .$secmail;
+	    		if($profile_data->mobile != $mobile)
+            		$logmessage = $logmessage ." update mobile " .$profile_data->mobile. " changed by " .$mobile;
+
+	       $update_data = array(
+             		'firstname' => $firstname,
+               		'lastname' => $lastname,
+	      		'address' => $address,
+               	        'secmail' => $secmail,
+               		'mobile' => $mobile,
+		);
+		
+		$profileflag=$this->login_model->updaterec('userprofile', $update_data, 'userid', $id);
+           		if(!$profileflag){
+                		$this->logger->write_logmessage("error","Error in update profile", "Error in profile record update". $logmessage );
+                		$this->logger->write_dblogmessage("error","Error in update profile ", "Error in profile record update". $logmessage );
+                		$this->session->set_flashdata('err_message','Error updating profile - ' . $logmessage . '.', 'error');
+                		$this->load->view('profile/editprofile', $data);
+			return;
+                	}
+         	         else{
+                		$this->logger->write_logmessage("update","Edit Profile", "Profile record updated successfully..". $logmessage );
+               			$this->logger->write_dblogmessage("update","Edit Profile", "Profile record updated successfully..". $logmessage );
+                		$this->session->set_flashdata('success','Profile record updated successfully...');
+				redirect('profile/viewprofile');
+			return;
+        	        }
+		}
+		$this->load->view('profile/editprofile',$data);
+	}//end function
+}//end class

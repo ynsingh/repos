@@ -81,6 +81,12 @@ class Login_model extends CI_Model
         }
     }
 
+//get the complete of record for specific value
+    public function get_listrow($tbname,$fieldname,$fieldvalue){
+         $this->db1->from($tbname);
+                        $this->db1->where($fieldname, $fieldvalue);
+         return $this->db1->get();
+    }
 
     function __destruct() {
         $this->db1->close();

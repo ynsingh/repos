@@ -34,6 +34,27 @@
                     echo "</tr>";
                     echo "</table>";
                     ?>
+ <table>
+            <tr colspan="2">
+                <td>
+                    <div align="left" style="margin-left:30px;width:1700px;">
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                   <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                    <?php if(isset($_SESSION['success'])){?>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <?php
+                    };
+                    ?>
+                    <?php if(isset($_SESSION['err_message'])){?>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <?php
+                    };
+                ?>
+                </div>
+            </td>
+     </tr>
+</table>
+
 <table>
       <tr>
            <td>   
@@ -81,11 +102,12 @@
              <td>
 		<div class="heading2">
                 <p>Other Information</p>
+		<div class="heading-col2"><a href="editprofile" title="Edit Profile"><img src="<?php echo base_url(); ?>uploads/icons/edit.png" width="20" height="20"></a></div>
                 </div>
 		<div class="profile-content">
                 <div class="left-content">
 		<tr>
-                   <td style="padding: 8px 8px 8px 334px;">User Name :</td> 
+                   <td style="padding: 8px 8px 8px 334px;">Name :</td> 
                    <td style="padding: 8px 8px 8px 75px">
                    <?php  echo $this->name->firstname ;?>&nbsp;&nbsp;<?php echo  $this->lastn->lastname ;?></td>
                 </tr>
