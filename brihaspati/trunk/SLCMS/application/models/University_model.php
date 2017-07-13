@@ -21,9 +21,9 @@ class University_model extends CI_Model
     }
  */
     public function get_countryname($contcode){
-	$this->db->select("country_name");
-	$this->db->where('country_code',$contcode);
-	return $this->db->get('country')->row();
+	$this->db->select("name");
+	$this->db->where('id',$contcode);
+	return $this->db->get('countries')->row();
     }	
 
     public function get_udetails(){

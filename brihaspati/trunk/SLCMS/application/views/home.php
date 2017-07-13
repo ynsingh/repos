@@ -58,7 +58,7 @@
         echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">University Address</td><td>";
 	echo $this->result->org_address1;
 	echo "\t";
-	echo $this->result->org_address2;echo ",\t";echo $this->result->org_city;echo "\t";echo $this->result->org_state;echo ",\t"; echo $this->contryname->country_name; echo ",\t"; echo $this->result->org_pincode;
+	echo $this->result->org_address2;echo ",\t";echo $this->result->org_city;echo "\t";echo $this->result->org_state;echo ",\t"; echo $this->contryname->name; echo ",\t"; echo $this->result->org_pincode;
 	echo "</td></tr>";
         echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">University Email</td><td>";
 	echo $this->result->org_email;

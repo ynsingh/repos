@@ -270,18 +270,5 @@ class Common_model extends CI_Model
         $this->db->close();
     }
 
-
-
-public function get_state($cid){
-        $query=$this->db->get_where('states',array('country_id' => $cid));
-        return $query->result();
-    }
-
-public function get_city($sid){
-        $query=$this->db->get_where('cities',array('state_id' => $sid));
-        return $query->result();
-    }
-
-
 }
 

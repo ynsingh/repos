@@ -20,6 +20,7 @@ class Setup extends CI_Controller
     function __construct() {
         parent::__construct();
 	$this->load->model('common_model'); 
+        $this->load->model('dependrop_model','depmodel');
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -2307,35 +2308,17 @@ class Setup extends CI_Controller
 
     }
 
-  public function get_state(){
-        $cid=$this->input->post('cid');
-        $statelist=$this->common_model->get_state($cid);
-        if(count($statelist)>0){
-            $pro_select_box ='';
-            $pro_select_box.= '<option value="">Select states';
-            foreach($statelist as $slist){
-                $pro_select_box.='<option value='.$slist->id.'>'.$slist->name;
-                }
-            echo json_encode($pro_select_box);
 
-        }
-    }
+public function get_state(){
+               $contid = $this->input->post('cid');   
+               $this->depmodel->get_statelist($contid);
+        } 
+
 
 public function get_city(){
-        $citid=$this->input->post('sid');
-       $citylist=$this->common_model->get_city($citid);
-        if(count($citylist)>0){
-            $pro_select_box ='';
-            $pro_select_box.= '<option value="">Select cities';
-            foreach($citylist as $clist){
-            $pro_select_box.='<option value='.$clist->id.'>'.$clist->name;
-            }
-            echo json_encode($pro_select_box);
-
+               $statid = $this->input->post('sid');       
+               $this->depmodel->get_citylist($statid);
         }
-    }
-
-
 
 
 }
