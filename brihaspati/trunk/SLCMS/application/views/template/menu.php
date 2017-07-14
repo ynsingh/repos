@@ -25,7 +25,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('setup/displaycategory', 'Category', array('title' => 'Category'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('setup/seatreserve', 'Seat Reservation', array('title' => 'Seat Reservation'));
+						echo anchor('setup/dispseatsetting', 'Seat Reservation', array('title' => 'Seat Reservation'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('setup/viewsc', 'Study center', array('title' => 'Study center'));

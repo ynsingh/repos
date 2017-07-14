@@ -28,7 +28,7 @@ class Setup2 extends CI_Controller
      * @return type
      */
     public function grademaster() {
-	$this->result = $this->common_model->get_list('grade_master');
+	$this->result = $this->commodel->get_list('grade_master');
 	$this->logger->write_logmessage("view"," View Master Grade", "Master Grade details...");
 	$this->logger->write_dblogmessage("view"," View Master Grade", "Master Grade record display successfully..." );
         $this->load->view('setup2/grademaster',$this->result);

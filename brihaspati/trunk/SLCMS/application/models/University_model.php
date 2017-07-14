@@ -41,6 +41,17 @@ class University_model extends CI_Model
    	 return $this->db->get('org_profile')->row();
     }
 
+    public function totalnoofseat() {
+                $seattmp=0;
+                $seatresult = $this->common_model->get_listmore('program','prg_seat');
+                foreach($seatresult as $row){
+                        $sno=$row->prg_seat;
+                        $seattmp+=$sno;
+                }
+                return $seattmp;
+        }
+
+
     function __destruct() {
         $this->db->close();
     }

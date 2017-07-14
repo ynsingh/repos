@@ -75,7 +75,7 @@
                         </tr>
                     <?php }; ?>
                 <?php else : ?>
-                    <td colspan= "10" align="center"> No Records found...!</td>
+                    <td colspan= "16" align="center"> No Records found...!</td>
                 <?php endif;?>
 
             </tbody>

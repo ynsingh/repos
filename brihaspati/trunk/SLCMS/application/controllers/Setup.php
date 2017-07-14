@@ -21,6 +21,7 @@ class Setup extends CI_Controller
         parent::__construct();
 	$this->load->model('common_model'); 
         $this->load->model('dependrop_model','depmodel');
+        $this->load->model('university_model','unimodel');
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -2297,30 +2298,249 @@ class Setup extends CI_Controller
 		                $this->session->set_flashdata('err_message','Error updating Study center - ' . $logmessage . '.', 'error');
 		                $this->load->view('setup/editsc', $data);
            			}
-	            else{
+	            	else{
         		        $this->logger->write_logmessage("update","Edit Study center", "Study center record updated successfully..". $logmessage );
             			$this->logger->write_dblogmessage("update","Edit Study center", "Study center record updated successfully..". $logmessage );
 		                $this->session->set_flashdata('success','Study center record updated successfully...');
 		                redirect('setup/viewsc');
-                }
-       
-    }
-
-    }
+                	}
+    		}
+    	}
 
 
-public function get_state(){
+	public function get_state(){
                $contid = $this->input->post('cid');   
                $this->depmodel->get_statelist($contid);
         } 
 
 
-public function get_city(){
+	public function get_city(){
                $statid = $this->input->post('sid');       
                $this->depmodel->get_citylist($statid);
         }
 
+	/** This function Display the seat setting records
+     	* @return type
+     	*/
+    	public function dispseatsetting() {
+		$this->srresult = $this->common_model->get_list('seat_reservation');
+        	$this->logger->write_logmessage("view"," View  Seat Setting list", " Seat reservation list display");
+        	$this->logger->write_dblogmessage("view"," View Seat reservation list", "Seat reservation list display");
+		$this->load->view('setup/dispseatsetting');
+	}
+
+	public function isCategoryExist($key)
+ 	{
+     		$is_exist = $this->common_model->isduplicate('seat_reservation','category_id',$key);
+     		if($is_exist) {
+        		$this->form_validation->set_message('value_exists', 'Category  '. $key. '  is already exist.');
+		}
+	}
+
+	public function seatsetting() {
+             	$this->uresult=$this->common_model->get_listspfic2('org_profile','org_code','org_name');
+    	     	$this->catresult = $this->common_model->get_listspfic2('category','cat_name','cat_id');
+	     	$this->totalseat=$this->unimodel->totalnoofseat();
+	     	if(isset($_POST['seatsetting'])) {
+			$this->form_validation->set_rules('org_profile','University','trim|xss_clean|required');
+			 $this->form_validation->set_rules('category','category','trim|xss_clean|required');
+			 $this->form_validation->set_rules('percentage','percentage','trim|xss_clean|required|numeric');
+			 if($this->form_validation->run()==TRUE){
+				 $catname=$this->common_model->get_listspfic1('category','cat_name','cat_id',$_POST['category'])->cat_name;
+				 $datawh = array('category_id' => $_POST['category']);
+				 $is_exist = $this->common_model->isduplicatemore('seat_reservation',$datawh);
+				 if($is_exist){
+					  $this->session->set_flashdata('err_message','duplicate record in adding Seat reservation - ' . $catname . '.', 'error');
+					  redirect('setup/dispseatsetting');
+					  return;
+				 }
+				 $pert = $_POST['percentage'];
+				 $srresult = $this->common_model->get_listmore('seat_reservation','percentage');
+				 $ttpert=0;
+				 foreach($srresult as $rw){
+					 $ttpert =$ttpert + $rw->percentage;
+				 }
+				$rp = 100 - $ttpert;
+				if($pert <= $rp){
+	            			$data = array(
+        	    				'org_code'=>$_POST['org_profile'],
+            					'category_id'=>$_POST['category'],
+						'percentage'=>$_POST['percentage'],
+						'noofseat' =>$_POST['numberofseat'],
+						'creatorid'=>$this->session->userdata('username'),
+			                	'createdate'=>date('y-m-d'),
+             				);
+					$srflag=$this->common_model->insertrec('seat_reservation', $data) ;
+                        		if(!$srflag){
+						$this->logger->write_logmessage("insert"," Error in adding Seat reseravation ", " Seat reservation data insert error . ".$_POST['category']  );
+	             		                $this->logger->write_dblogmessage("insert"," Error in adding Seat reservation ", " Seat reservation data insert error . ".$_POST['category'] );
+        	                                $this->session->set_flashdata('err_message','Error in adding Seat reservation - ' . $catname . '.', 'error');	
+						redirect('setup/seatsetting');
+					//	return;
+					}
+                        		else{
+                                		$this->logger->write_logmessage("insert","Add Seat reservation ", "Seat".$_POST['category']. $catname." added  successfully...");
+	                                	$this->logger->write_dblogmessage("insert","Add Seat reservation ", "Seat ".$_POST['category'] .$catname."added  successfully...");
+		                               	$this->session->set_flashdata("success", " Seat reservation add successfully... Category is ".$catname);
+						redirect('setup/dispseatsetting');
+					//	return;
+					}
+				}
+				else{
+					$this->session->set_flashdata('err_message','The availabel percentage is '.$rp . 'Kindly use this or less .', 'error');
+					redirect('setup/dispseatsetting');
+					//return;
+				}
+                	}//validation
+            	}//end post
+            	$this->load->view('setup/seatsetting');
+    	}
+					
+	public function delete_eseat($id) {
+		$eset_q=$this->common_model->get_listrow('seat_reservation','id', $id);
+                if ($eset_q->num_rows() < 1)
+        	{
+                	$this->session->set_flashdata('Invalid Seat setting.', 'error');
+                	redirect('setup/dispseatsetting');
+        	}
+            	else {
+	                $eset_data = $eset_q->row();
+		}
+		$seatrflag=$this->common_model->deleterow('seat_reservation', 'id', $id) ;
+        	if(!$seatrflag)
+        	{
+            		$this->logger->write_logmessage("delete", "Error in deleting seat reservation ", "Error in deleting seat reservation  [catid:" . $eset_data->category_id . "] delete.. " );
+            		$this->logger->write_dblogmessage("delete", "Error in deleting seat reservation ","Error in deleting seat reservation  [catid:" . $eset_data->category_id . "] delete.. " );
+            		$this->session->set_flashdata('err_message','Error in deleting seat reservation - cat_id:' . $eset_data->category_id , 'Error');
+            		redirect('setup/dispseatsetting');
+        	}
+        	else {
+            		$this->logger->write_logmessage("delete", "Deleted seat reservation ", "seat reservation [cat_id:" . $eset_data->category_id . "] deleted successfully. " );
+            		$this->logger->write_dblogmessage("delete", "Deleted seat reservation ","seat reservation [cat_id:" . $eset_data->category_id . "] deleted successfully. " );
+            		$this->session->set_flashdata("success", 'Seat reservation Record Deleted successfully. cat_id:' . $eset_data->category_id );
+            		redirect('setup/dispseatsetting');
+        	}
+                $this->load->view('setup/dispseatsetting');
+	}
+
+	/**This function is used for update seat setting details
+     	* @param type $id
+     	* @return type
+     	*/
+	public function editseatsetting($id) {
+//		$this->catresult = $this->common_model->get_listspfic2('category','cat_name','cat_id');
+		$eset_data_q=$this->common_model->get_listrow('seat_reservation','id', $id);
+                if ($eset_data_q->num_rows() < 1)
+        	{
+                	redirect('setup/editseatsetting');
+        	}
+		$editeset_data = $eset_data_q->row();
+                $this->totalseat=$this->unimodel->totalnoofseat();
+
+        /* Form fields */
+
+                $data['org_code'] = array(
+                'name' => 'university',
+                'id' => 'university',
+                'maxlength' => '50',
+                'value' => $this->common_model->get_listspfic1('org_profile','org_name','org_code',$editeset_data->org_code)->org_name,
+                'size' => '40',
+                'readonly' => 'readonly'
+        	);
+                $data['category'] = array(
+                'name' => 'category',
+                'id' => 'category',
+                'maxlength' => '50',
+                'size' => '40',
+		'value' => $this->common_model->get_listspfic1('category','cat_name','cat_id',$editeset_data->category_id)->cat_name,
+		'readonly' => 'readonly'
+        	);
+
+                $data['percentage'] = array(
+                'name' => 'percentage',
+                'id' => 'percentage',
+                'maxlength' => '6',
+                'size' => '40',
+                'value' => $editeset_data->percentage,
+        	);
+
+                $data['numberofseat'] = array(
+                'name' => 'numberofseat',
+                'id' => 'numberofseat',
+                'maxlength' => '5',
+                'size' => '40',
+                'value' => $editeset_data->noofseat,
+        	);
+
+                $data['id'] = $id;
+
+        /*Form Validation*/
+               // $this->form_validation->set_rules('category','Category name','trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('percentage','percentage','required|trim|xss_clean');
+                $this->form_validation->set_rules('numberofseat','numberofseat','required|trim|xss_clean');
+
+        /* Re-populating form */
+                if ($_POST)
+        	{
+                //	$data['university']['value'] = $this->input->post('university', TRUE);
+                //	$data['category']['value'] = $this->input->post('category', TRUE);
+                	$data['percentage']['value'] = $this->input->post('percentage', TRUE);
+                	$data['noofseat']['value'] =$this->input->post('noofseat',TRUE);
+        	}
+
+                if ($this->form_validation->run() == FALSE)
+        	{
+                	$this->load->view('setup/editseatsetting', $data);
+                	return;
+        	}
+        	else{
+
+              //  $data_university = $this->input->post('university', TRUE);
+              //  $data_category = $this->input->post('category', TRUE);
+                $data_percentage = $this->input->post('percentage', TRUE);
+                $data_noofseat = $this->input->post('numberofseat', TRUE);
+                $data_eid = $id;
+
+		$srresult = $this->common_model->get_listmore('seat_reservation','id,percentage');
+                $ttpert=0;
+		foreach($srresult as $rw){
+			if ($rw->id != $id){
+				$ttpert =$ttpert + $rw->percentage;
+			}
+                }
+                $rp = 100 - $ttpert;
+                if($data_percentage <= $rp){
+		
+			$logmessage = "";
+	          //      if($editeset_data->category_id != $data_category)
+        	    //            $logmessage = "Edit Seat Setting " .$editeset_data->category_id. " changed by " .$data_category;
+                	if($editeset_data->percentage != $data_percentage)
+                        	$logmessage = "Edit Seat Setting " .$editeset_data->percentage. " changed by " .$data_percentage;
+	                if($editeset_data->noofseat!= $data_noofseat)
+        	                $logmessage = "Edit Seat Setting " .$editeset_data->noofseat. " changed by " .$data_noofseat;
+                	$update_data = array(
+                //        	'category_id' => $data_category,
+	                        'percentage' => $data_percentage,
+        	                'noofseat' =>$data_noofseat,
+                	);
+	                $prgcatflag=$this->common_model->updaterec('seat_reservation', $update_data, 'id', $data_eid);
+        	        if(!$prgcatflag)
+                	{
+		                $this->logger->write_logmessage("error","Error in update Seat Reservation ", "Error in  Seat Reservation record update. $logmessage . " );
+                		$this->logger->write_dblogmessage("error","Error in update Seat Reservation ", "Error in Seat Reservation record update. $logmessage ." );
+		                $this->session->set_flashdata('err_message','Error seat reservation - ' . $logmessage . '.', 'error');
+                		$this->load->view('setup/editseatsetting', $data);
+                	}
+                	else{
+		                $this->logger->write_logmessage("update","Edit Seat Category", "Seat Setting record updated successfully... $logmessage . " );
+                		$this->logger->write_dblogmessage("update","Edit Seat Category", "Seat Setting record updated successfully... $logmessage ." );
+		                $this->session->set_flashdata('success','Updated seat setting record  details successfully...');
+                		redirect('setup/dispseatsetting/');
+	                }
+
+		}//check for 100 percent
+        }//else
+    	redirect('setup/editseatsetting/');
+    }//function end
 
 }
-
-

@@ -32,7 +32,7 @@
         echo "<tbody align=\"left\">";
 */
 	echo "</br>";
-	echo "<table><tr align=center><td>";
+	echo "<table><tr align=center><td valign=\"top\">";
 	echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
         echo "<td style=\"padding: 8px 8px 8px 20px; text-align:center;\">";
@@ -120,7 +120,6 @@
         echo "<tbody align=\"left\">";
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> Program Name</td><td style=\"padding: 8px 8px 8px 20px;\">Semester</td><td style=\"padding: 8px 8px 8px 20px;\">Gender</td> <td style=\"padding: 8px 8px 8px 20px;\">Category</td> <td style=\"padding: 8px 8px 8px 20px;\"> Fees</td></tr>";
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">";
-
 	echo "</td></tr>";
         echo "</tbody>";
         echo "</table>";
