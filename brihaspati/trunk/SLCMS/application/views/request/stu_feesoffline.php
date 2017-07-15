@@ -1,11 +1,11 @@
 <!-------------------------------------------------------
-    -- @name offlinePayment.php --	
+    -- @name stu_feesoffline.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
 --------------------------------------------------------->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-if (isset($this->session->userdata['sm_id'])) {
-$id = ($this->session->userdata['sm_id']);
+//if (isset($this->session->userdata['sm_id'])) {
+//$id = ($this->session->userdata['sm_id']);
 //print_r($id);
 //$firstname = ($this->session->userdata['sm_fname']);
 //$applino = ($this->session->userdata['sm_applicationno']);
@@ -13,12 +13,13 @@ $id = ($this->session->userdata['sm_id']);
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>IGNTU:offline payment</title>
+	<title>IGNTU:Student offline payment</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css">
-<style>tr td {font-size:17px;font-weight:bold;}
+<style>
+tr td {font-size:17px;font-weight:bold;}
 </style>
 </head>
 <body>
@@ -27,8 +28,9 @@ $id = ($this->session->userdata['sm_id']);
 <div>
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
-	<nav> 	<h1>Welcome to IGNTU  </h1></nav>
-	<?php $this->load->view('student/stuStepshead');?>
+	</br>
+	<?php $this->load->view('template/stumenu'); ?>
+	<?php //$this->load->view('student/stuStepshead');?>
 	
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 <?php
@@ -72,9 +74,9 @@ echo "</center>";
 		?>  
       </div>
 <center>
-<h1>Offline payment</h1>
+<h1>Fees payment</h1>
 
-<form action="<?php echo site_url('Student/offlinePayment'); ?>" method="POST">
+<form action="<?php echo site_url('request/stufeespayment'); ?>" method="POST">
 	<table>
 		<tr>	
 		
@@ -106,7 +108,7 @@ echo "</center>";
 				<option value="semfee">Semester fees</option>
 				<option value="exmfee">Exam fees</option>
 				<option value="finefee">Panality fees</option>
-				<option value="otherfee">Other fees</option>
+				<!---<option value="otherfee">Other fees</option>--->
 			</select>
 		</td>
 		</tr>
@@ -120,19 +122,19 @@ echo "</center>";
 		<input type="hidden" name="smobile" value="<?php //echo $this->Common_model->get_listspfic1('student_master','sm_mobile','sm_id',$id)->sm_mobile;?>">-->
 
 
-		<input type="submit" name="addFees" value="Submit" style="font-size:17px;">
+		<input type="submit" name="payment" value="Submit" style="font-size:17px;">
 		
 		<input type="submit" name="refNo" value="Clear" style="font-size:17px;"></td>
 		</tr>
 	</tr>
 	</table>
-<span style="font-size:15px;"><b>Note : In any cirumstances your fees details is wrong then your registration will be cancelled.</b></span>
+<span style="font-size:15px;"><b>Note : If any cirumstances your fee detail is wrong your registration is cancelled.</b></span>
 
 </form>
 </center>
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 
 <?php $this->load->view('template/footer'); ?>
-<?php  } else {  header("location:student/student_step0"); }?>
+<?php // } else {  header("location:student/student_step0"); }?>
 </body>
 </html>

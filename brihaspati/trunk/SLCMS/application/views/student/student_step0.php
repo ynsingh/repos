@@ -9,14 +9,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <head>
 	<meta charset="utf-8">
 	<title>Welcome to IGNTU</title>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 
 <style type="text/css">
 label{font-size:18px;}
 input[type='text']{font-size:17px;width:120%;height:30px;}
+input[type='email']{font-size:17px;width:120%;height:30px;}
 input[type='button']{font-size:16px;}
 </style>
+<script>
+function change_getcat(){
+	var xmlhttp = new XMLHttpRequest();
 
+	xmlhttp.open("GET","<?php echo site_url('student/getcatbr'); ?>?catbranch="+document.getElementById("register_name").value,false);
+
+	xmlhttp.send(null);
+	
+	document.getElementById("getbranch").innerHTML = xmlhttp.responseText; 
+	}
+
+/* function getbranchname(branch){
+                var branch = branch;
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>index.php/map/branchlist",
+                data: {"programname" : branch},
+                dataType:"html",
+                success: function(data){
+                $('#branchname').html(data);
+                }
+            }); 
+        }*/
+
+</script>
 </head>
 <body>
 
@@ -78,20 +104,46 @@ echo "</center>";
 		<tr ><td>
         	<label for="text">Program/Courses</label>
 		</td><td>
-			<select name="Sprogram" class="form-control" id="register_name" style="width:122%;height:40px;font-size:18px;font-weight:bold;">
+			<select name="Sprogram" class="form-control" id="register_name" onChange='change_getcat()' style="width:122%;height:40px;font-size:18px;font-weight:bold;">
 			<option selected="true" disabled="disabled" style="font-size:18px;">programme/courses</option>
 				<?php 
 				$result=$this->Student_model->showCourse(); 
 				if(isset($result)):
-				$count = count($result);
-				for($i = 0 ; $i<$count ; $i++){
-				
+					$count = count($result);
+					for($i = 0 ; $i<$count ; $i++){
 			        ?>
 				<option value="<?php echo $result[$i]->course_name;?>"><?php echo $result[$i]->course_name;?>
 			<?php } endif; ?>
-	  </select>		
+	  </select>
+		<!---<select name="programname" id="programname"  style="width:122%;height:40px;font-size:18px;font-weight:bold;" onchange="getbranchname(this.value)" >
+                <option value="" disabled selected >-------Select Program-------</option>
+                <?php foreach($this->pnresult as $dataspt): ?>
+               	 	<option value="<?php echo $dataspt->prg_name; ?>"><?php echo $dataspt->prg_name;?></option>
+		<?php endforeach; ?>	
+		</select>-->	
 		</td>
 		</tr>
+		<tr><td>
+			<!---<span style="color:red;"><?php echo form_error('Stypeprogramme');?></span>--->
+			<label for="nnumber">Select Branch</label></br></td>
+			<td>
+				<select id="getbranch" style="width:122%;height:40px;font-size:18px;font-weight:bold;" name="Sbranch">
+					<option selected="true" disabled="disabled">Select branch</option>
+				</select>
+
+			<!--<select name="branchname" id="branchname"  style="width:122%;height:40px;font-size:18px;font-weight:bold;">
+              		  <option value="" selected="true" disabled="disabled" >-------Select Branch --------</option>
+			</select>--->
+
+			<!--<select name="Stypeprogramme" class="form-control" style="width:122%;height:40px;font-size:18px;font-weight:bold;">
+
+			<option selected="true" disabled="disabled" style="font-size:18px;">Select Branch Name</option>
+					<?php foreach( $this->prgbranch as $prog): ?>	
+						<option value="<?php echo $prog->prg_id;?>"><?php echo $prog->prg_branch; ?></option>
+					<?php endforeach; ?>
+			</select>--->		
+	
+		</td></tr>
 		<tr><td>
 		<label for="text">Student Name</label>
 		</td><td>
@@ -99,7 +151,7 @@ echo "</center>";
 		<?php //if(isset($msg)){ 
 			//echo $msg;
 			//} ?>
-        	<input type="text" name="Sname" placeholder="Enter Your Name"/><br>
+        	<input type="email" name="Semail" placeholder="Enter Your Email-id"/><br>
 		</td></tr>
 		<tr>
         	<td></td>

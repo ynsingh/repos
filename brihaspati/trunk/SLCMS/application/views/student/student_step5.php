@@ -32,6 +32,17 @@ function myFunction() {
 </head>
 <body>
 
+<?php
+
+echo "<center>";
+	if($this->session->flashdata('msg')){
+	echo" <div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;'>";
+		echo $this->session->flashdata('msg');
+	echo "<div>";
+}
+echo "</center>";
+?>
+
 <page size="A4">
 	<div id="body">
 	
@@ -72,12 +83,25 @@ function myFunction() {
 				<td>Date of birth :</td>
 				<td><?php echo $this->dob;?></td>
 			</tr>
-			
+
 			<tr>
+					<td>Mobile/Phone Number</td><td><?php echo $this->mobile;?></td>
+				
+					<td>E-mail</td><td><?php echo $this->email;?></td>
+			</tr>
+			<tr >
+				<td>Category</td>
+				<td >
+					<?php echo $this->catename;//echo $this->Common_model->get_listspfic1('student_master','sm_category','sm_id',$id)->sm_category;?>
+				</td>
 				<td >Aadhar Number :</td>
 				<td><?php echo $this->uid;?></td>
+				
+			</tr>
+			<tr>
+				
 				<td>Blood Group :</td>
-				<td><?php echo $this->bgroup;?></td>
+				<td colspan=4><?php echo $this->bgroup;?></td>
 			</tr>
 		</table>
 
@@ -115,30 +139,17 @@ function myFunction() {
 					<td>Pincode</td><td><?php echo $this->ppin;?></td>
 					<td colspan=2><?php echo $this->cpin;?></td>
 				</tr>
-				<tr>
-					<td>Mobile/Phone Number</td><td><?php echo $this->mobile;?></td>
-				
-					<td>E-mail</td><td><?php echo $this->email;?></td>
-				</tr>
-				<tr >
-				<td>Category</td>
-				<td colspan=4>
-					<?php echo $this->catename;//echo $this->Common_model->get_listspfic1('student_master','sm_category','sm_id',$id)->sm_category;?>
-				</td>
-				
-			</tr>
-
 				
 			</tbody>	
 		</table>
-		<table class="TFtable" id="subCat">
+		<!---<table class="TFtable" id="subCat">
 
 			<tr>
 				<td width="360"></td><td>Defence<Input type="checkbox"></td><td>Sports<Input type="checkbox"></td>
 				<td>NSS<Input type="checkbox"></td><td>NCC<Input type="checkbox"></td>
 				<td>Kashmiri Migrants<Input type="checkbox"></td>
 			</tr>
-		</table>
+		</table>--->
 	
 		<div id="gap">	
 		<b>Note:GOI format of caste certificate should be submitted at the time of physical verification documents.</b>

@@ -1,11 +1,11 @@
 <!-------------------------------------------------------
-    -- @name student_step4.php --	
+    -- @name student_feesdetail.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
 --------------------------------------------------------->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-if (isset($this->session->userdata['sm_id'])) {
-$id = ($this->session->userdata['sm_id']);
+//if (isset($this->session->userdata['sm_id'])) {
+//$id = ($this->session->userdata['sm_id']);
 //$firstname = ($this->session->userdata['sm_fname']);
 //$applino = ($this->session->userdata['sm_applicationno']);
 ?><!DOCTYPE html>
@@ -47,8 +47,9 @@ select{width:100%;font-size:17px;height:40px;}
 <div>
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
-	<nav> 	<h1>Welcome to IGNTU  </h1></nav>
-	<?php $this->load->view('student/stuStepshead');?>
+	</br>
+	<?php $this->load->view('template/stumenu'); ?>
+	
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 <?php
 echo "<center>";
@@ -59,16 +60,6 @@ echo "<div style='font-size:20px;text-align:center;width:50%;height:30px;'>";
 }
 echo "<div>";
 echo "</center>";
-	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
-		echo "<div style=\"margin-left:30px;width:1700px;text-align:left;font-size:18px;border:1px ridge white;\" class=\"isa_success\">";
-		echo '<div style="margin-left:40px;">'.$_SESSION['success'].'</div>';
-		echo "</div>";
-	}
-	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
-		echo "<div style=\"margin-left:30px;width:1700px;align:left;\" class=\"isa_error\">";
-		echo $_SESSION['error'];
-		echo "</div>";
-	}
 ?>
 
 <?php //echo $this->email=$this->Common_model->get_listspfic1('student_master','sm_email','sm_id',$id)->sm_email;?>
@@ -80,7 +71,7 @@ echo "</center>";
 	</br>
 <table>
 	<tr>
-		<td>Student Id :</td><td><?php echo $id;?></td>
+		<td>Student Id :</td><td><?php echo $this->Stuid;?></td>
 		<td  width="200"></td>
 		
 		<td>Applicaton Number :</td><td><?php echo $this->appno;?></td>
@@ -105,7 +96,7 @@ echo "</center>";
 		<td></td>
 		<td>Semester : </td>
 	
-		<td>1<sup>st</sup> Sem.</td>
+		<td><?php echo $this->cusem;?> Sem.</td>
 		
 		
 	</tr>
@@ -156,7 +147,7 @@ echo "</center>";
 	<form action="" method="POST">
 		<!---<input type="hidden" name="totalfees" value="<?php echo $totalfees;?>" >--->
 		<input type="submit" value="Online payment" style="font-size:18px;">
-		<a href="<?php echo site_url('Student/offlinePayment');?>" style="text-decoration:none;" ><input type="button" value="Offline payment"style="font-size:18px;"></a>
+		<a href="<?php echo site_url('request/stufeespayment');?>" style="text-decoration:none;" ><input type="button" value="Offline payment"style="font-size:18px;"></a>
 	</form>
 
 </div>
@@ -165,7 +156,7 @@ echo "</center>";
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 
 <?php $this->load->view('template/footer'); ?>
-<?php  } //else {  header("location:student/student_step0"); }
-else{header("location:".base_url()."Student/Step0");}?>
+<?php // } //else {  header("location:student/student_step0"); }
+//else{header("location:".base_url()."studenthome/studentsubject");}?>
 </body>
 </html>

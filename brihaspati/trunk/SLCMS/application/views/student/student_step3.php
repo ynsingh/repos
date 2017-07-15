@@ -123,12 +123,8 @@ value="<?php //echo $this->Common_model->get_listspfic1('student_master','sm_fna
 		
 	</table>	
 	</form>
+		<h3>Note : Photo size 200kb and signature size 20kb.</h3>
 	<center>
-
-
-
-
-
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 
 <?php $this->load->view('template/footer'); ?>

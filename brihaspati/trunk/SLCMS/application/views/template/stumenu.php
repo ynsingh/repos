@@ -52,7 +52,7 @@ echo "<ul class=\"sf-menu\">";
 				echo "<a href=" . ">Request</a>";
 				echo "<ul>";
 					echo "<li>";
-						echo anchor('student/registartionsemester', 'Semester Registration', array('title' => 'Semester registration Form'));
+						echo anchor('request/semesterregi', 'Semester Registration', array('title' => 'Semester registration Form'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('student/registrationexam', 'Exam Registration', array('title' => 'Semester Exam Form'));

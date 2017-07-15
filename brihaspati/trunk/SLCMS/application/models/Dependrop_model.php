@@ -21,7 +21,7 @@ class Dependrop_model extends CI_Model
         $branch_data = $brlist->result();
         if(count($branch_data)>0){
                 $pro_select_box = '';
-                $pro_select_box.= '<option value="">-------Select Branch --------';
+                $pro_select_box.= '<option value="" selected="true" disabled="disabled">-------Select Branch --------';
                 foreach($branch_data as $branch){
                         $pro_select_box.='<option value='.$branch->prg_id.'>'.$branch->prg_branch;
                 }

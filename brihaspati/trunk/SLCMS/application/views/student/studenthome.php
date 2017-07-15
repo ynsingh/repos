@@ -14,7 +14,19 @@
 
 	</div>
 	<div align="center">
+<?php if(isset($_SESSION['err_message'])){ ?>
+             <?php 
+			echo "<div style='font-size:16px;text-align:center;background-color: #FFBABA;width:80%;height:30px;color: #D8000C;'>";
+			echo "<span style='margin-top:50px;'>";
+			echo $_SESSION['err_message'];
+			echo "<span>";
+			echo "</div>";
+		?>
+        <?php
+        };
+	?>
 <?php
+
 /*
 	echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";

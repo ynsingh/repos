@@ -27,7 +27,20 @@ tr th{background:black;color:white;font-weight:bold;}
 select{width:100%;font-size:17px;height:40px;}
 
 </style>
+<script type="text/javascript">
 
+function change_getcat(){
+
+	var xmlhttp = new XMLHttpRequest();
+
+	xmlhttp.open("GET","<?php echo site_url('student/getcatbr'); ?>?catbranch="+document.getElementById("register_name").value,false);
+
+	xmlhttp.send(null);
+	
+	document.getElementById("Actlocation").innerHTML = xmlhttp.responseText; 
+	}
+
+</script>
 </head>
 <body>
 
@@ -41,19 +54,20 @@ select{width:100%;font-size:17px;height:40px;}
         	//echo $this->session->flashdata('flash_data');
     	//} ?>
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
+
 <?php
-//echo "<center>";
-//echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:red;visibility:hidden;'>";
-	//if($this->session->flashdata('msg')){
-	//echo $this->session->flashdata('msg');
-	
-//}
-//echo "<div>";
-//echo "</center>";
+	/*if($this->session->flashdata('msg')){
+		echo "<div align='left' class='isa_warning' style='margin-left:30px;width:1680px;font-size:18px;'>";
+		echo $this->session->flashdata('msg');
+		echo "</div>";
+		echo "<div align='left' class='isa_warning' style='margin-left:30px;width:1680px;font-size:18px;'>";
+		echo $this->session->flashdata('msg1');
+		echo "</div>";
+	}*/
 ?>
 	<div align="left" style="margin-left:30px;width:1700px;font-size:18px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+        <?php echo form_error('<div style="margin-left:30px;" class="">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
         <div class="alert alert-success"><?php echo $_SESSION['success'];?></div>
         <?php
@@ -61,10 +75,12 @@ select{width:100%;font-size:17px;height:40px;}
        	?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
-             <div class="isa_error" ><div ><?php echo $_SESSION['err_message'];?></div></div>
+             <div class="" style='margin-left:30px;width:1680px;font-size:18px;'><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
 	?>  
+	
+
       </div>
 	</br> 
 	<?php $this->load->view('student/stuStepshead');?>
@@ -94,7 +110,7 @@ select{width:100%;font-size:17px;height:40px;}
 		<td>	<!---<span style="color:red;"><?php echo form_error('Scenters');?></span>--->
 			<label for="nnumber">Study Centers</label></br>
 			
-			<select name="Scenters" class="form-control" id="register_name" style="height:37px;font-size:18px;font-weight:bold;" >
+			<select name="Scenters" class="form-control"  style="height:37px;font-size:18px;font-weight:bold;" >
  			<option  disabled selected>Study Centers</option>
                       
 			<?php 
@@ -108,25 +124,24 @@ select{width:100%;font-size:17px;height:40px;}
 		<td/>
 
 		<td>	<!---<span style="color:red;"><?php echo form_error('Stypeprogramme');?></span>--->
-			<label for="nnumber">Type of programme/courses</label></br>
-			<select name="Stypeprogramme" class="form-control" id="register_name" style="height:37px;font-size:18px;font-weight:bold;">
+			<label for="nnumber">Programme Category</label></br>
+			<select name="Stypeprogramme" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Type of programme/courses</option>
-					<?php foreach($this->progresult as $prog): //print_r($prog);?>	
-					<option value="<?php echo $prog->prg_code; ?>"><?php echo $prog->prg_category; ?></option>
+					<?php foreach($this->prgname as $progcat): ?>	
+					<option value="<?php echo $progcat->prgcat_id;?>"><?php echo $progcat->prgcat_name; ?></option>
 					<?php endforeach; ?>
 			</select>		
 		<td/>
 		<td>	
 			<label for="nnumber">Name of programme/course</label></br>
 			<select name="Snameprogramme" class="form-control" id="register_name" style="height:37px;font-size:18px;font-weight:bold;">
-				<?php //foreach($this->programesult1 as $progname): ?>	
-					<option value="<?php echo $this->categid;//$progname->prg_id; ?>"><?php echo $this->couname;//$progname->prg_name; ?></option>
+				<?php //foreach($this->prgname as $progname): ?>	
+					<option value="<?php echo $this->categid;?>"><?php echo $this->couname; ?></option>
 				<?php //endforeach; ?>
-	  		</select>	
-				
+	  		</select>
+			<!---<input type="text" name="Snameprogramme" placeholder="Enter your name" value="<?php echo $this->couname;?>" readonly>--->	
 		<td/>
-	
 	</tr>
 
 				
@@ -134,7 +149,20 @@ select{width:100%;font-size:17px;height:40px;}
 
 	<tr>
 		
-	
+		<td>	
+			<label for="nnumber">SelectBranch</label></br>
+			<div id="Actlocation">			
+			<select name="Sbranchname" class="form-control"  style="height:37px;font-size:18px;font-weight:bold;">
+			<!--<option selected="true" disabled="disabled" style="font-size:18px;">Select Branch Name</option>-->
+					<?php //foreach( $this->prgbranch as $prog): ?>	
+						<option value="<?php echo $this->categid;?>"><?php echo $this->progname; ?></option>
+					<?php //endforeach; ?>
+			</select>	
+			</div>
+			
+			<!---<input type="text" name="Sbranchname" placeholder="Enter your branch name" value="<?php echo $this->progname;?>" readonly>-->
+			
+		<td/>
 		<td>	
 			<!---<span style="color:red;"><?php echo form_error('Smothername');?></span>--->
 			<label for="nnumber">Mother name</label></br>	
@@ -150,7 +178,7 @@ select{width:100%;font-size:17px;height:40px;}
 		<td>	
 			<!---<span style="color:red;"><?php echo form_error('Scategory');?></span>--->
 			<label for="nnumber">Category</label></br>
-			<select name="Scategory" class="form-control" id="register_name" style="height:37px;font-size:18px;font-weight:bold;">
+			<select name="Scategory" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Category</option>
 					<?php foreach($this->scatresult as $cate): ?>	
@@ -167,6 +195,11 @@ select{width:100%;font-size:17px;height:40px;}
 			</select>  
 			<!--<input type="text" name="Sgender" placeholder="Enter Gender" >--->		
 		<td/>
+		
+		
+	<tr>
+		<tr height=10></tr>
+	<tr>	
 		<td>	<!---<span style="color:red;"><?php echo form_error('Sdob');?></span>--->
 			  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
   			  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
@@ -194,17 +227,10 @@ select{width:100%;font-size:17px;height:40px;}
 				});
 			</script>	
 		<td/>
-		
-	<tr>
-		<tr height=10></tr>
-	<tr>	
-		
-
-		
 
 		<td>	<!---<span style="color:red;"><?php echo form_error('Saadharnumber');?></span>--->
 			<label for="nnumber">Aadhar number</label></br>	
-			<input type="text" name="Saadharnumber" placeholder="Enter Aadhar Number" value="<?php echo @$this->data['Saadharnumber']; ?>"/>		
+			<input type="text" name="Saadharnumber" placeholder="Enter Aadhar Number" MaxLength="12" value="<?php echo @$this->data['Saadharnumber']; ?>"/>		
 		<td/>
 
 		<!-------write dropdown of department------------>
@@ -272,16 +298,16 @@ select{width:100%;font-size:17px;height:40px;}
 </script>
 		<td/>
 		
-		<td>	<!---<span style="color:red;"><?php echo form_error('Spaddress');?></span>--->
-			<label>Postal Address</label></br>
-			<input type="text" name="Spaddress" placeholder="Enter Postal Address" value="<?php echo @$this->data['Spaddress']; ?>"/>		
-		<td/>
+
 		
 	<tr>
 
 		<tr height=10></tr>
 	<tr>
-		
+		<td>	<!---<span style="color:red;"><?php echo form_error('Spaddress');?></span>--->
+			<label>Postal Address</label></br>
+			<input type="text" name="Spaddress" placeholder="Enter Postal Address" value="<?php echo @$this->data['Spaddress']; ?>"/>		
+		<td/>
 	
 		<td>	<!--<span style="color:red;"><?php echo form_error('Semail');?></span>-->
 			<label>District</label></br>
@@ -300,31 +326,29 @@ select{width:100%;font-size:17px;height:40px;}
 			<label>State</label></br>
 			<input type="text" name="Sstate" placeholder="Enter Your State" value="<?php echo @$this->data['Sstate']; ?>"/>		
 		<td/>
-		<td>	<!---<span style="color:red;"><?php echo form_error('Spincode');?></span>--->
-			<label>Country</label></br>
-			<input type="text" name="Scountry" placeholder="Enter Your Country" value="<?php echo @$this->data['Scountry']; ?>"/>		
-		<td/>
-
 		
 	<tr>
 		
 	<tr height=10></tr>
 	<tr>
 		<td>	<!---<span style="color:red;"><?php echo form_error('Spincode');?></span>--->
+			<label>Country</label></br>
+			<input type="text" name="Scountry" placeholder="Enter Your Country" value="<?php echo @$this->data['Scountry']; ?>"/>		
+		<td/>
+
+		<td>	<!---<span style="color:red;"><?php echo form_error('Spincode');?></span>--->
 			<label>Pincode</label></br>
-			<input type="text" name="Spincode" placeholder="Enter Your Pincode" value="<?php echo @$this->data['Spincode']; ?>"/>		
+			<input type="text" name="Spincode" placeholder="Enter Your Pincode" MaxLength="6" value="<?php echo @$this->data['Spincode']; ?>"/>		
 		<td/>
 		
 		<td>	<!---<span style="color:red;"><?php echo form_error('Smobile');?></span>--->
 			<label>Mobile/Phone no.</label></br>
-			<input type="text" name="Smobile" placeholder="Enter Mobile Number" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo @$this->data['Smobile']; ?>"/>		
+			<input type="text" name="Smobile" placeholder="Enter Mobile Number" MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo @$this->data['Smobile']; ?>"/>		
 		<td/>
 		<td>	<!--<span style="color:red;"><?php echo form_error('Semail');?></span>-->
 			<label>Email-Id</label></br>
-	    <input type="email" name="Semail" placeholder="Enter Your Email-Id" style="height:30px;width:100%;" value="<?php echo @$this->data['Semail']; ?>"/>		
+	    <input type="email" name="Semail" placeholder="Enter Your Email-Id" style="height:30px;width:100%;" value="<?php echo $this->semail ?>" readonly/>		
 		<td/>
-
-		
 	
 	</tr>
 	
@@ -335,7 +359,7 @@ select{width:100%;font-size:17px;height:40px;}
 		</thead>
 
 		<thead style="font-size:20px;">
-			<th>No.</th><th>Programmes</th><th>Course</th><th>Subjects/Specialization</th><th>Board/University</th><th>Year of complition</th>
+			<th>No.</th><th>Programmes</th><th>Course</th><th>Subjects/Specialization</th><th>Board/University</th><th>Year of completion</th>
 			<th>Passed or appeared</th>
 		</thead>
 		
