@@ -63,7 +63,7 @@ echo "<ul class=\"sf-menu\">";
 				echo "<a href=" . ">Map</a>";
 				echo "<ul>";
 					echo "<li>";
-						echo anchor('map/userroletype', 'Map User with Role', array('title' => 'Map User with Role'));
+						echo anchor('map/viewuserrole', 'Map User with Role', array('title' => 'Map User with Role'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('map/viewscprgseat', 'Map Study Center and Program with Seat', array('title' => 'Map Study Center and Program with Seat'));

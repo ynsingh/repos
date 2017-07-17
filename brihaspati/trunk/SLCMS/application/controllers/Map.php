@@ -5,6 +5,7 @@
  * @author Nagendra Kumar Singh(Nksinghiitk@gmail.com)
  * @author Manorama Pal(palseema30@gmail.com)
  * @author Om Prakash (omprakashkgp@gmail.com) Map Subject and Paper with Teacher  
+ * @author Kishore kr Shukla (kishore.shukla@gmail.com) Map user with Role.
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -17,7 +18,7 @@ class Map extends CI_Controller
         /*Loading model calsses*/
         $this->load->model('Dependrop_model',"depmodel");
         $this->load->model('Map_model',"mapmodel");
-        $this->load->model('Common_model',"commodel"); 
+        $this->load->model('Common_model',"commodel");
         $this->load->model('Login_model',"loginmodel"); 
         
         if(empty($this->session->userdata('id_user'))) {
@@ -44,7 +45,7 @@ class Map extends CI_Controller
     
     /** This function is for map study center with program seat */
      
-    public function mapscprgseat(){
+	public function mapscprgseat(){
        
         $data['campus'] = $this->mapmodel->get_Campus();
         $data['program'] =$this->mapmodel->get_Programlist();
@@ -72,7 +73,7 @@ class Map extends CI_Controller
                 $newcampus=explode('#',$campus);
                 $data = array(
                     'spsc_prg_id'=>$data_prg[0],
-                    'spsc_sc_code'=>$newcampus[0],
+                    'spsc_sc_code'=>$newcampus[0],                   
                     'spsc_gender'=>$gender,
                     'spsc_totalseat'=>$seatno,
                     'spsc_acadyear'=>$academicyear,
@@ -683,7 +684,7 @@ class Map extends CI_Controller
             }//if validation
         }//ifpost    
         $this->load->view('map/mapsubsem',$data);
- }
+	}
 
 //==================  Map Subject and Paper with Teacher ===========================================================================
 
@@ -1013,4 +1014,225 @@ class Map extends CI_Controller
 
  //==================  End of Map Subject and Paper with Teacher ==============================================================
  
-}    
+    /****************************************** Map user wirh Role ********************************************/
+
+     /**This function is used for view details of map user with role */
+
+    public function viewuserrole()
+     {
+        $this->result = $this->commodel->get_list('user_role_type');
+        $this->logger->write_logmessage("view"," View map user with role setting", "user map setting details...");
+        $this->logger->write_dblogmessage("view"," View map user with role setting", "Role setting details...");
+        $this->load->view('map/viewuserrole',$this->result);
+     }
+   
+    /** This function is for map user with role */
+
+        public function userroletype()
+        {
+        $this->scresult   = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
+        $this->roleresult = $this->commodel->get_listspfic2('role','role_id', 'role_name');
+        $this->loginuser  = $this->loginmodel->get_userlist('edrpuser','id','username');
+
+        if(isset($_POST['userroletype'])) {
+
+        /*Form Validation*/
+        $this->form_validation->set_rules('campus','Campus Name','trim|xss_clean|required');
+        $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean|required');
+        $this->form_validation->set_rules('role_name','Role Name','trim|xss_clean|required');
+        $this->form_validation->set_rules('usertype','Usertype','trim|xss_clean|required');
+        $this->form_validation->set_rules('username','User Name','trim|xss_clean|required');
+
+        if($this->form_validation->run() == TRUE)
+        {
+               $Campus = $this->input->post('campus',TRUE);
+		//check for duplicate
+	        $datadup = array('roleid' => $_POST['role_name'],'usertype'=>$_POST['usertype'],'userid'=>$_POST['username']);
+               		$datauserrole = array(
+                	//	'scid'=>$this->scid,
+                		'scid'=>$Campus,
+                		'deptid'=>$_POST['dept_name'],
+                		'roleid'=>$_POST['role_name'],
+                		'usertype'=>$_POST['usertype'],
+                		'userid'=>$_POST['username'],
+                		'ext1'=>'null',
+          		);
+       	$this->is_exist = $this->commodel->isduplicatemore('user_role_type',$datadup);
+      	if ($this->is_exist == 1)
+        	{
+            		//$this->form_validation->set_message('isduplicateuserrole', 'Map user role already exit');
+			$this->session->set_flashdata('err_message','Map user role already exits.');
+			redirect('map/userroletype');
+            		return false;
+		}
+
+          else{
+
+            $userrole=$this->commodel->insertrec('user_role_type', $datauserrole);
+          /**Geting value according to 'id' and using these values for maintaing logs*/
+             $this->username = $this->commodel->loginmodel->get_listspfic1('edrpuser','username','id',$_POST['username'])->username;
+             $this->rolename = $this->commodel->get_listspfic1('role','role_name', 'role_id', $_POST['role_name'])->role_name;
+            if(! $userrole )
+            {
+                 $this->logger->write_logmessage("error","Error  in maping user with role"  .$username.$rolename.$usertype);
+                 $this->logger->write_dblogmessage("error","Error  in maping user with role" .$username.$rolename.$usertype);
+                 log_message('debug', ' Problem in maping user with role' .$username.$rolename.$usertype);
+                 $this->session->set_flashdata('err_message','Error in maping user with role -' .$username.$rolename.$usertype);
+                 redirect('map/userroletype');
+
+            }
+            else{
+
+                 $this->logger->write_logmessage("insert","Map user with role", "Map user with role successfully.....".$username.$rolename.$usertype);
+                 $this->logger->write_dblogmessage("insert","Map user with role", "Map user with role successfully....." .$username.$rolename.$usertype);
+                 $this->session->set_flashdata("success", "Record added successfully "."["." UserName : "." ".$this->username.", "."RoleName : "." " .$this->rolename." ". ", "."UserType : "." " .$_POST['usertype']." ". "]");
+                 redirect("map/viewuserrole");
+
+            }
+
+        }//is duplicate
+     }//if
+  
+   }
+
+        $this->load->view('map/userroletype');
+ }
+
+      public function deleteuserrole($id)
+      {
+           /**Geting value according to 'id' and using these values for maintaing logs*/
+          $username = $this->input->post('username',TRUE);
+          $this->username = $this->commodel->loginmodel->get_listspfic1('edrpuser','username','id',$username)->username;
+          $rolename= $this->input->post('role_name',TRUE);
+          $this->rolename = $this->commodel->get_listspfic1('role','role_name', 'role_id', $rolename)->role_name;
+          $roledflag=$this->commodel->deleterow('user_role_type','id', $id);
+          if(!$roledflag)
+          {
+            $this->logger->write_message("error", "Error in maping with user role deleting  " ."[role_id:" . $id . "]");
+            $this->logger->write_dbmessage("error", "Error in mapping with user roledeleting role "." [role_id:" . $id . "]");
+            $this->session->set_flashdata('err_message', 'Error in mapping with user role Deleting role - ', 'error');
+            redirect('map/viewuserrole');
+           return;
+          }
+        else{
+             $this->logger->write_logmessage("delete", "Deleted map with user role " . "[role_id:" . $id . "] deleted successfully.. " );
+             $this->logger->write_dblogmessage("delete", "Deleted map with user role" ." [role_id:" . $id . "] deleted successfully.. " );
+             $this->session->set_flashdata("success", "Record deleted successfully "."["." UserName : "." ".$this->username." "."RoleName : "." " .$this->rolename." ". "]" );
+            redirect('map/viewuserrole');
+           }
+        $this->load->view('map/viewuserrole',$data);
+    }
+   
+   /**This function is used for update record of  maped user with role 
+    * @param type $id
+    */
+
+        public function edituserrole($id){
+	$this->roleresult = $this->commodel->get_listspfic2('role','role_id', 'role_name');
+        $this->db->from('user_role_type')->where('id', $id);
+        $eset_data_q = $this->db->get();
+        $editeset_data = $eset_data_q->row();
+   
+        /* Form fields */
+        $data['scid']= array(
+            //'value' =>$editeset_data->scid,
+            'value' =>$this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$editeset_data->scid)->sc_name,
+            'size'  =>'35',
+            'readonly'=>'true',
+        );
+               
+        $data['username'] =array(
+            'value' => $this->loginmodel->get_listspfic1('edrpuser','username','id',$editeset_data->userid)->username,
+            'size'  =>'35',
+            'readonly'=>'true',
+        );
+       
+        $data['roleid'] = array(
+           'size' => '35',
+           'value' =>$this->commodel->get_listspfic1('role','role_name', 'role_id',$editeset_data->roleid)->role_name
+        );
+       
+        $data['usertype'] = array(
+            'value' => $editeset_data->usertype,
+             'size' => '35',
+            
+        );
+         
+        $data['deptid'] = array(
+            'value' =>$this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$editeset_data->deptid)->dept_name,
+            'size'=>'35',
+            'readonly'=>'true',
+        );
+        
+        $data['id'] = $id;
+        
+        /*Form Validation*/
+        $this->form_validation->set_rules('roleid','Rolename','trim|xss_clean|required');
+        $this->form_validation->set_rules('usertype','Usertype','trim|xss_clean|required');
+
+         /* Re-populating form */
+   
+        if ($_POST)
+        {
+               $data['roleid']['value'] = $this->input->post('roleid', TRUE);
+               $data['usertype']['value'] = $this->input->post('usertype', TRUE);
+                 
+        }
+     
+        if ($this->form_validation->run() == FALSE)
+        {
+            //echo "this is testing...2";
+            $this->session->set_flashdata(validation_errors(), 'error');
+            $this->load->view('map/edituserrole',$data);
+        }
+        else
+        {    
+            $data_roleid = $this->input->post('roleid', TRUE);
+            $data_usertype = $this->input->post('usertype', TRUE);
+             
+            $data_eid = $id;
+           
+            $update_data = array(
+            'roleid'=>$data_roleid,
+            'usertype'=>$data_usertype,
+          
+            );
+        $datadup = array('roleid' =>$data_roleid,'usertype'=>$data_usertype,'userid'=>$id);  
+        $this->is_exist = $this->commodel->isduplicatemore('user_role_type',$update_data);
+        if ($this->is_exist == 1)
+                {
+                        //$this->form_validation->set_message('isduplicateuserrole', 'Map user role already exit');
+                        $this->session->set_flashdata('err_message','Map user role already exits.');
+                        redirect('map/viewuserrole');
+                        return false;
+                }
+
+          else{
+            $result=$this->commodel->updaterec('user_role_type', $update_data,'id',$id);
+             //$this->username = $this->commodel->loginmodel->get_listspfic1('edrpuser','username','id',$_POST['username'])->username;
+            // $rolename= $this->input->post('role_name',TRUE);
+            $this->rolename = $this->commodel->get_listspfic1('role','role_name', 'role_id', $data_roleid)->role_name;
+            if(! $result)
+            {
+              $this->logger->write_logmessage("error", "Error in update study center with program seat " . $rolename."rolename--- "." changed by".$data_usertype);
+              $this->logger->write_dblogmessage("error", "Error in update study center with program seat" . $rolename."rolename--- "." changed by".$data_usertype );
+              log_message('debug', 'Problem in maping studycenter with program seat'. $rolename."rolename--- "." changed by".$data_usertype);
+              $this->session->set_flashdata('err_message','Error in update study center with program seat - '. $rolename."rolename--- "." changed by".$data_usertype);
+                redirect("map/edituserrole");
+            }
+            else {  
+                  /*old role name*/ 
+		$this->oldrole=$this->commodel->get_listspfic1('role','role_name', 'role_id',$editeset_data->roleid)->role_name;       
+                $this->logger->write_logmessage("update", "updated user with role "  . $data_roleid."rolename--- "." changed by".$data_usertype);
+                $this->logger->write_dblogmessage("update", "updated user with role "  . $data_roleid."rolename--- "." changed by".$data_usertype);
+                $this->session->set_flashdata("success", 'Record updated successfully.... '." "."["." " ."Role:"." ".$this->oldrole." "."changed by" ." "."Role: ". $this->rolename." "."and"." "."Usertype:"." ".$editeset_data->usertype." "."changed by"." ".$data_usertype." "."]");
+                redirect("map/viewuserrole");
+                               
+          
+             }
+	}	
+      }  
+                        
+  }
+}
+    

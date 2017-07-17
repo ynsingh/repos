@@ -88,6 +88,14 @@ class Login_model extends CI_Model
          return $this->db1->get();
     }
 
+	//get the list of all records with  two specific fields for specific values
+    public function get_userlist($tbname){
+         $this->db1->select("id,username");
+	 $this->db1->where('username !=','admin');
+	 $this->db1->where('username !=','guest'); 	
+         return $this->db1->get('edrpuser')->result();
+    }
+
     function __destruct() {
         $this->db1->close();
     }
