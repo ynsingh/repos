@@ -1013,7 +1013,75 @@ class Map extends CI_Controller
         }
 
  //==================  End of Map Subject and Paper with Teacher ==============================================================
- 
+  /**This function is used for view prerequite of subject  */
+
+    public function prerequisite(){
+        $data['subprerec']= $this->commodel->get_list('subject_prerequisite');
+        $this->logger->write_logmessage("view","Map subject prerequisite program with dept", "view details...");
+        $this->logger->write_dblogmessage("view"," Map subject prerequisite program with dept", "view details...");
+        $this->load->view('map/prerequisite',$data);
+    }
+
+    /** This function is used for map subject prerequisite program and department */
+    public function mapsubpre(){
+	    $data['subpres'] = $this->commodel->get_listmore('subject_paper','subp_id,subp_name');
+	    $data['subres'] = $this->commodel->get_listmore('subject','sub_id,sub_name');
+	    $data['prgresult'] = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
+        if(isset($_POST['mapsubpre'])) {
+            /*Form Validation*/
+            $this->form_validation->set_rules('spreq_prgid','Program','trim|required');
+            $this->form_validation->set_rules('spreq_subid','Subject','trim|required');
+            if($this->form_validation->run() == TRUE)
+            {  
+                //echo "this is prgid============";
+                $prgid = $this->input->post('spreq_prgid', TRUE);
+		$subid = $this->input->post('spreq_subid', TRUE);
+		$subdepid = $this->input->post('spreq_subdepid', TRUE);
+		$subpid = $this->input->post('spreq_subpid', TRUE);
+		$subpdepid = $this->input->post('spreq_subpdepid', TRUE);
+
+		$datawh=array('spreq_subid' => $subid, 'spreq_prgid' => $prgid,'spreq_depsubid' =>$subdepid);
+        	$is_exist = $this->commodel->isduplicatemore('subject_prerequisite',$datawh);
+
+        	if($is_exist) {
+			$this->session->set_flashdata('err_message', 'Subject id-->'.$subid.'-->Program id-->'.$prgid . '-->subject prerequisite -->'. $subdepid  .' is already exist with selected combintaion.' );
+			redirect('map/mapsubpre');
+            		return false;
+        	}
+        	else {
+                $data = array(
+                    'spreq_prgid'=>$prgid,
+                    'spreq_subid'=>$subid,
+                    'spreq_depsubid'=>$subdepid,
+                    'spreq_subpid'=>$subpid,
+                    'spreq_depsubpid'=>$subpdepid,
+                    'creatorid'=>$this->session->userdata('username'),
+                    'createdate'=>date('y-m-d'),
+                    'modifierid'=>$this->session->userdata('username'),
+                    'modifydate'=>date('y-m-d')
+                );
+           
+                $mapscprg=$this->commodel->insertrec('subject_prerequisite', $data);
+                if(! $mapscprg )
+                {
+                    $this->logger->write_logmessage("error","Error  in maping subject Prerequisite", $subid.$prgid.$subdepid);
+                    $this->logger->write_dblogmessage("error","Error  in maping subject Prerequisite", $subid.$prgid.$subdepid);
+                    $this->session->set_flashdata('err_message','Error in maping subject Prerequisite - ' .$subid.$prgid.$subdepid);
+                    redirect('map/mapsubpre');
+                }
+                else{
+			$this->logger->write_logmessage("insert","Map subject Prerequisite", "Map Subject Prerequisite successfully.....".$subid.$prgid.$subdepid);
+			
+                    $this->logger->write_dblogmessage("insert","Map subject Prerequisite", "Map Subject Prerequisite successfully....." .$subid.$prgid.$subdepid);
+                    $this->session->set_flashdata("success", "Map Subject Prerequisite  successfully...".$subid.$prgid.$subdepid);
+                    redirect("map/prerequisite");
+		}//database error check
+	    	}//else duplicate exist
+            }//if validation
+        }//ifpost    
+        $this->load->view('map/mapsubpre',$data);
+ }
+
     /****************************************** Map user wirh Role ********************************************/
 
      /**This function is used for view details of map user with role */

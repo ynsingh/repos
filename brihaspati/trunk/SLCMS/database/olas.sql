@@ -941,12 +941,13 @@ ALTER TABLE `subject_paper_archive`
 --
 CREATE TABLE `subject_prerequisite` (
   `spreq_id` int(11) NOT NULL,
+  `spreq_prgid` int(11) NOT NULL,
   `spreq_subid` int(11) NOT NULL,
-  `spreq_depsubid` int(11) NOT NULL,
-  `spreq_subpid` int(11) NOT NULL,
-  `spreq_depsubpid` int(11) NOT NULL,
-  `spreq_ext1` varchar(255) NOT NULL,
-  `spreq_ext2` varchar(255) NOT NULL,
+  `spreq_depsubid` int(11) DEFAULT NULL,
+  `spreq_subpid` int(11) DEFAULT NULL,
+  `spreq_depsubpid` int(11) DEFAULT NULL,
+  `spreq_ext1` varchar(255) DEFAULT NULL,
+  `spreq_ext2` varchar(255) DEFAULT NULL,
   `creatorid` VARCHAR(255) NOT NULL,
   `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `modifierid` VARCHAR(255) NOT NULL,
