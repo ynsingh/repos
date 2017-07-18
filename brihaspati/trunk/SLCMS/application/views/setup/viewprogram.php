@@ -31,20 +31,20 @@
 ?>
 <br>
 <div align="left">
-<table style="margin-left:10px;">
+<table style="margin-left:2%;">
 <tr><td>
 <?php echo anchor('setup/program/', "Add Program", array('title' => 'Add Program' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#ViewProgramandseatDetail";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:80%\">Click for Help</b></a>";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
 ?>
 </td></tr>
 </table>
 </div>
 
         <table> 
-            <tr colspan="2"><td>    
-                <div  style="margin-left:30px;width:1700px;">
-                <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning>','</div>');?>
+            <tr><td>    
+                <div>
+                <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                     <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
@@ -53,7 +53,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
             </div>
         </td></tr>   
         </table>   
-    <div align="left" style="margin-left:30px;">
+    <div align="left" style="margin-left:2%;">
     <table  cellpadding="16" class="TFtable">
     <!--<table border=0 cellpadding=16 style="padding: 8px 8px 8px 25px;margin-left:30px;" class="TFtable">
     <table>-->
@@ -62,18 +62,18 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 	    <tr align="center">
 		<th>No</th>
                 <th>Campus Name</th>
-                <th>Department Name</th>
-		<th>Program Category</th>
-		<th>Program Pattern</th>
-		<th>Program Name</th>
-		<th>Program Branch</th>
-		<th>Program Code</th>
-		<th>Program Short</th>
-		<th>Program Description</th>
-		<th>Program Credit</th>
-		<th>Seat Available</th>
-		<th>Program Min Time (Years)</th>
-		<th>Program Max Time (Years)</th>
+                <th>Deptt. Name</th>
+		<th>Prog Category</th>
+		<th>Prog Pattern</th>
+		<th>Prog Name</th>
+		<th>Prog Branch</th>
+		<th>Prog Code</th>
+		<th>Prog Short</th>
+		<th>Prog Desc</th>
+		<th>Prog Credit</th>
+		<th>Seat Avail</th>
+		<th>Prog Min Time (Years)</th>
+		<th>Prog Max Time (Years)</th>
 		<!--<th>Creator Name</th>
 		<th>Creatoion Date</th>-->
 		<th>Action</th>

@@ -19,15 +19,15 @@
 	}
     </script>
 
-	<table style="margin-left:30px;" >
+	<table style="margin-left:2%;width:100%;">
            <tr><td>
                 <?php //echo anchor('setup/displayfees/', " Edit Program Fees" ,array('title' => ' Fees Configuration Detail ' , 'class' => 'top_parent'));?>
-                <div style="margin-left:30px;width:1700px;">
-                    <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                <div style="margin-left:2%;">
+                    <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };

@@ -15,20 +15,21 @@
 
         <?php $this->load->view('template/menu'); ?>
 </div>
-<table style="margin-left:10px;">
-           	<tr colspan="2"><td>
+ <table width= "100%">
+            <tr><td>
+                <div align="left">
                 <?php echo anchor('setup/displayfees',' Program Fees with Head List',array('title'=>'View Detail','class' => 'top_parent'  )); 
 		$help_uri = site_url()."/help/helpdoc#ProgramFees";
-		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:68%\">Click for Help</b></a>";
 		?>
 </tr></td>
 
         	<div>
-             	<tr colspan="2"><td>
-                <div align="left" style="margin-left:30px;width:1700px;">
+             	<tr><td>
+                <div align="left" style="margin-left:2%;">
 
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                    <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -43,7 +44,7 @@
 
 
 
-                <table style="margin-left:30px;">
+                <table style="margin-left:1%;">
 
                 	<tr><td> Program Name: </td><td>
 			<select name="program" style="width:100%;">
@@ -131,8 +132,8 @@
 
 			
                         <tr>
-                        <td colspan="2" style="margin-left:30px;">
-                        <button name="fees" style="margin-left:115px;">Add Fees </button>
+                        <td colspan="2" style="margin-left:40%;">
+                        <button name="fees" style="margin-left:32%;">Add Fees </button>
 			<button name="clear">Clear</button>
                         </td>
                         </tr>

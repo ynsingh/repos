@@ -13,18 +13,17 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 	
 </head>    
  <body>
-<table style="margin-left:8px;">
-     <tr colspan="2"><td>
+<table width='100%' style="margin-left:2%;">
+     <tr><td>
       <div align=left">
          <?php
             echo anchor('setup/category/', 'Add Category', array('class' => 'top_parent'));
 	    $help_uri = site_url()."/help/helpdoc#ViewCategaryDetail";
-	     echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:79%\">Click for Help</b></a>";
+	     echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
          ?>
 
 	</div>
-       </div>
-       <div style="margin-left:20px;width:1700px;">
+        <div style="margin-left:2%;">
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
@@ -41,7 +40,7 @@
         </div> 
     </td></tr>
   </table>
-  <table cellpadding="16" style="margin-left:30px;" class="TFtable">
+  <table cellpadding="16" style="margin-left:2%;" class="TFtable">
         <thead >
         <tr align="center">
         <th>Sr.No</th>

@@ -37,7 +37,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
 <table> 
     <tr colspan="2"><td>    
-    <div align="left" style="margin-left:30px;width:1700px;">
+    <div align="left" style="margin-left:30px;width:1000px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -60,7 +60,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         <td><label for="prgcampus">Select Campus</label></td>
         <td>
             <select name="prgcampus">
-        	<option value=""disabled selected>--------------Select Campus------------</option>
+        	<option value=""disabled selected>------------------Select Campus------------</option>
                 <?php foreach($this->scresult as $datas): ?>	
                     <option value="<?php echo $datas->sc_id; ?>"><?php echo $datas->sc_name; ?></option>
 		<?php endforeach; ?>
@@ -84,7 +84,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         <td><label for="prgcat">Program Category</label></td>
         <td>
             <select name="prgcat">
-                <option value=""disabled selected>--------------Select Category------------</option>
+                <option value=""disabled selected>-----------------Select Category------------</option>
                 <option value="Under Graduate" class="dropdown-item">Under Graduate</option>
                 <option value="Post Graduate" class="dropdown-item">Post Graduate</option>
                 <option value="Research" class="dropdown-item">Research</option>
@@ -100,7 +100,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         <td><label for="prgpattern">Program Pattern</label></td>
         <td>
             <select name="prgpattern">
-                <option value=""disabled selected>--------------Select Pattern------------</option>
+                <option value=""disabled selected>--------------------Select Pattern------------</option>
                 <option value="Yearly" class="dropdown-item">Yearly</option>
                 <option value="Semester" class="dropdown-item">Semester</option>
             </select>

@@ -11,14 +11,17 @@
     <body>
 
         </br>
-        <table style="margin-left:10px;">
+        <table style="margin-left:2%;">
 
             <tr colspan="2"><td>
             <?php
                     echo anchor('setup/sc/', "Add Study Center " ,array('title' => ' Add study center Configuration Detail ' , 'class' => 'top_parent'));
+                    $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
+           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:75%\">Click for Help</b></a>";
+
             ?>
 
-            <div  style="width:1800px;">
+            <div  style="width:1000px;">
 
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
@@ -38,11 +41,11 @@
             </div>
             </td></tr>
         </table>
-        <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
+        <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
             <thead>
                 <tr align="center">
         
-                        <th>University</th>
+                        <th>IGNTU</th>
                         <th> Campus Name</th>
 			<th>Address</th>
 			<th>Phone</th>

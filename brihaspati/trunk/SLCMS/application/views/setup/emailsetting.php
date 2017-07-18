@@ -28,14 +28,15 @@
             echo "</table>";
         
         ?-->
-        <table style="margin-left:40px;"> 
-            <tr colspan="2"><td>
+        <table width="100%">
+            <div align="left" style="margin-left:0.2%;">
+             <tr><td>
                 <?php echo anchor('setup/dispemailsetting/', "View Email Setting" ,array('title' => 'Email Configuration Detail ' , 'class' => 'top_parent'));?>
                  <?php
 		 $help_uri = site_url()."/help/helpdoc#EmailSetting";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:75%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
                  ?>
-                <div align="left" style=width:1700px;">
+                <div align="left" style=width:90%;">
        
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -57,14 +58,14 @@
             </td></tr> 
         </table><br/>
         <tr>  
-            <div style="margin-left:30px;">
-                <form action="<?php echo site_url('setup/emailsetting');?>" method="POST" class="form-inline">
-                    <table style="margin-left:30px;">
+            <div>
+                <form action="<?php echo site_url('setup/emailsetting');?>" method="POST" class="form-inline"></div>
+                    <table style="margin-left:1%;">
                         <tr>  
                             <td><label for="emailprotocol" class="control-label">Email Protocol:</label></td>
                             <!--<td><input type="text" name="emailprotocol"  class="form-control" size="50" /><br></td>-->
                             <td>
-                                <select name="emailprotocol" id="" class="my_dropdown" style="width:430px;">
+                                <select name="emailprotocol" id="" class="my_dropdown" style="width:100%;">
                                     <option value="" disabled selected >------Select Email Protocol------</option>
                                     <option value="SMTP" class="dropdown-item">SMTP</option>
                                     <option value="IMAP" class="dropdown-item">IMAP</option>
@@ -73,7 +74,7 @@
 
                             </td>
                             <td><?php echo form_error('emailporotcol')?></td>
-                            <td>Example: smtp</td>
+                            <td>Example: smtpfmkgjdfgjgjdhjgdhdgfljhdlfkhjjh</td>
                 
                         </tr>
                         <tr> 
@@ -115,7 +116,7 @@
                         <tr>
                             <td><label for="modulename" class="control-label">Modulename:</label></td>  
                             <td>
-                                <select name="modulename" id="" class="my_dropdown" style="width:430px;">
+                                <select name="modulename" id="" class="my_dropdown" style="width:100%;">
                                     <option value="" disabled selected >------Select Email Protocol------</option>
                                     <option value="All" class="dropdown-item">Default</option>
                                     <option value="Admission" class="dropdown-item">Admission</option>

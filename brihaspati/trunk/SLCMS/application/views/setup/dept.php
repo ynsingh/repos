@@ -31,20 +31,20 @@
          
 	?>-->
 
-      	<table>
-		<tr colspan="2"><td>  
-  	        <div style="margin-left:36px">
+      	<table width="100%">
+		<tr><td>  
+  	        <div style="margin-left:0.5%">
   		<?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); 
 		$help_uri = site_url()."/help/helpdoc#Department";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
 		?>
 		</div>
  		</tr></td>
-	   	<tr colspan="2"><td>    
-                <div align="left" style="margin-left:50px;width:1700px;">
+	   	<tr><td>    
+                <div align="left" style="margin-left:2%;width:90%;">
        
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:50px;class="isa_error">','</div>');?>
+                    <?php echo form_error('<div style="margin-left:2%;class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -56,21 +56,21 @@
             	</td></tr>  
               	<tr>
          	<form action="<?php echo site_url('setup/dept');?>" method="POST" class="form-inline">
-      		<table style="margin-left:55px;"> 
+      		<table style="margin-left:1.5%;"> 
 
 		<tr><td>
                           
         		Choose your University:</td><td>
-    			<select name="orgprofile">
-    			<option value=""disabled selected>--------------Select university------------</option>
+    			<select name="orgprofile" width="100%">
+    			<option value=""disabled selected>--------------------Select university------------------</option>
 			<?php foreach($this->uresult as $datas): ?>	
    				<option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option> 
  			<?php endforeach; ?>
    			</select>          
    			</td></tr><tr><td>    
  			Choose your Campus: </td><td>         
- 			<select name="studycenter">
- 			<option value=""disabled selected>-------------Select campus---------------</option>
+ 			<select name="studycenter" width="100%">
+ 			<option value=""disabled selected>----------------------Select campus-------------------</option>
                       
 			<?php foreach($this->scresult as $datas): ?>	
 				<option value="<?php echo $datas->sc_code; ?>"><?php echo $datas->sc_name; ?></option>
@@ -119,9 +119,9 @@
 			                    
                             <tr>
                           
-                          <td colspan="2" style="margin-left:30px;">     
+                          <td colspan="2" style="margin-left:40%;">     
 	         
-                         <button name="dept" style="margin-left:175px;">Add Department </button>
+                         <button name="dept" style="margin-left:38%;">Add Department </button>
                           <button name="reset" >Clear</button>
                              <?php echo form_close(); ?>
                                 </td>

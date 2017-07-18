@@ -90,11 +90,14 @@ $('#stname').on('change',function(){
         <?php $this->load->view('template/menu'); ?>
 </div>
 
-     <table>
-            <tr colspan="2"><td>
-                <div align="left" style="margin-left:40px;">
-                <?php echo anchor('setup/viewsc/', "View Study Center Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
-                <div  style="width:2000px;">
+     <table width="100%">
+            <tr><td>
+                <div align="left" style="margin-left:2%;">
+                <?php echo anchor('setup/viewsc/', "View Study Center Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
+                $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
+           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:60%\">Click for Help</b></a>";?>
+
+                <div  style="width:90%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -111,11 +114,11 @@ $('#stname').on('change',function(){
         </table>
 
             <tr>
-                <div style="margin-left:30px;">
+                <div style="margin-left:3%;">
                 <br/>
                     
                 <form action="<?php echo site_url('setup/sc');?>" method="POST" class="form-inline">
-                <table style="margin-left:30Px;">
+                <table style="margin-left:0.2%;">
                           <tr><td>
                         Choose your University:</td><td>
                         <select name="orgprofile" style="width:100%">

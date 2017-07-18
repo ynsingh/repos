@@ -37,11 +37,14 @@
 <table> 
 			<font size=3pt>
 			<div style="margin-left: 7px; width:200px;">
-			<?php echo anchor('setup/dispseatsetting', "Seat Reservation List", array('title' => 'Add Detail' , 'class' => 'top_parent')) . " "; ?>
+			<?php echo anchor('setup/dispseatsetting', "Seat Reservation List", array('title' => 'Add Detail' , 'class' => 'top_parent')) . " ";
+                        $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
+           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+             ?>
 			</font>
      
             <tr colspan="2"><td>    
-            <div align="left" style="margin-left:30px;width:1700px;">
+            <div align="left" style="margin-left:30px;width:1000px;">
        
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
@@ -70,7 +73,7 @@
                                           
 				<tr><td>
 					University:</td><td>
-					<select name="org_profile">
+					<select name="org_profile" style="width:100%;">
 					<option value=""disabled selected>----------Select university---------</option>
                      <?php foreach($this->uresult as $datas):?> 
 					<option value ="<?php echo $datas->org_code;?>"><?php echo $datas->org_name;?></option>

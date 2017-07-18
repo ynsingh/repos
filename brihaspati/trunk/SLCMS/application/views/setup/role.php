@@ -21,15 +21,15 @@
         echo "</table>";
         ?>-->
 
-     <table>
-            <tr colspan="2"><td>
-                <div align="left" style="margin-left:40px;">
+     <table width="100%">
+            <tr><td>
+                <div align="left">
                 <?php echo anchor('setup/displayrole/', "View Role Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
                 <?php
                  $help_uri = site_url()."/help/helpdoc#Role";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73%\">Click for Help</b></a>";
                  ?>
-                <div  style="width:1500px;">
+                <div  style="width:100%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -46,9 +46,9 @@
         </table>
  
     <tr>
-    <div style="margin-left:30px;">
+    <div>
     <form action="<?php echo site_url('setup/role');?>" method="POST" class="form-inline">
-            <table style="margin-left:30px;">
+            <table style="margin-left:1%;">
             <tr>
                 <td><label for="role_name" class="control-label">Role Name:</label></td>
                 <td>
@@ -77,7 +77,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td></td><td>
                 <button name="role" >Add Role</button>
                 <button name="reset" >Clear</button>
                 </td>

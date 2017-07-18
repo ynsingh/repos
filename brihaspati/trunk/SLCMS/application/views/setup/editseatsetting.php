@@ -49,7 +49,7 @@
 	<?php echo anchor('setup/dispseatsetting/', "View Seat Reservation", array('title' => 'Add Detail' , 'class' => 'top_parent')) . " "; ?>
 	</font>
             <tr colspan="2"><td>    
-            <div style="margin-left:30px;width:1700px;">
+            <div style="margin-left:30px;width:1000px;">
             <?php  echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
             <?php  echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
 

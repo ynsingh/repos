@@ -31,23 +31,23 @@
         ?-->
    
         </br>    
-        <table style="margin-left:8px;"> 
+        <table style="margin-left:2%;"> 
      
             <tr colspan="2"><td>  
             <?php
-                if(count($this->result) == 0){
+           
                     echo anchor('setup/emailsetting/', "Add Email Setting" ,array('title' => ' Add Email Configuration Detail ' , 'class' => 'top_parent'));
                     $help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
-                }
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
+          
             ?>
         
-            <div  style="margin-left:-9px;width:1700px;">
+            <div  style="margin-left:2%;">
   
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };
@@ -62,7 +62,7 @@
             </div>
             </td></tr> 
         </table>   
-        <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
+        <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
             <thead>
                 <tr align="center">
                     <th>Email Protocol</th>

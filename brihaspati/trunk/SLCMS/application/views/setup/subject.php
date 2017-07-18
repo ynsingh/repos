@@ -37,8 +37,8 @@ echo "<body>";
 */
 ?>
 <br>
-<table style="margin-left:9px;">
-<tr colspan="2"><td>
+<table width="100%;">
+<tr><td>
 <div>
 <?php echo anchor('setup/viewsubject/', "Subject List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#Subject";
@@ -49,8 +49,8 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 </div>
 
     <table>
-    <tr colspan=2><td>
-    <div  style="margin-left:30px;width:1700px;">
+    <tr><td>
+    <div  style="margin-left:30px;">
 
     <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning>','</div>');?>
     <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
@@ -108,7 +108,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Subject Credit', 'subext1');
+    echo form_label('Subject points', 'subext1');
     echo"</td><td>";
     echo form_input($subext1);
     echo "</td><td>";echo form_error('subext1');echo"</td></tr>";
@@ -134,7 +134,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "</table>";
     /* Form */
 echo"</body>";
-echo "<div align=\"center\">";  
+echo "<div align=\"left\">";  
     $this->load->view('template/footer');
 echo "</div>";
 echo "</html>";

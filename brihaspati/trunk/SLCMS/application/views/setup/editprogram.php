@@ -37,7 +37,7 @@
 
 <br>
 <div align="left">
-<table style="margin-left:10px;">
+<table style="margin-left:0.2%;">
 <tr><td>
 <?php echo anchor('setup/viewprogram/', "Program List" ,array('title' => 'Program List' , 'class' => 'top_parent'));?>
 </td></tr>
@@ -45,7 +45,7 @@
 </div>
 
 
-<div align='left' style="margin-left:30px;">
+<div align='left' style="margin-left:2%;">
 <!--    <form action="setup/editprogram" method="POST">-->
 <?php
     echo "<table>";

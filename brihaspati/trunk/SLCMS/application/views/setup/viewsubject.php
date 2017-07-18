@@ -40,38 +40,38 @@ echo "<body>";
 
 <br>
 <div align="left">
-<table style="margin-left:10px;">
+<table style="margin-left:2%;">
 <tr><td>
 <?php echo anchor('setup/subject/', "Add Subject " ,array('title' => 'Add Subject' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#ViewSubjectDetail";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73%\">Click for Help</b></a>";
 ?>
 </td></tr>
 </table>
 </div>
 
     <table>
-    <tr colspan=2><td>
-    <div  style="margin-left:10px;">
+    <tr><td>
+    <div  style="margin-left:2%;">
 
-    <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning>','</div>');?>
-    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+    <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
+    <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
      <?php if(isset($_SESSION['success'])){?>
-       <div style="margin-left:30px" class="isa_success"><?php echo str_replace("%20"," ",$_SESSION['success']);?></div>
+       <div style="margin-left:2%" class="isa_success"><?php echo str_replace("%20"," ",$_SESSION['success']);?></div>
 <?php    }
     if(isset($_SESSION['error']))
     {
-?>        <div style="margin-left:30px"; class="isa_success">"<?php echo str_replace("%20"," ",$_SESSION['error']);?> </div>
+?>        <div style="margin-left:2%"; class="isa_success">"<?php echo str_replace("%20"," ",$_SESSION['error']);?> </div>
 <?php
     }
     echo "</div>";
     echo "</td></tr>";
     echo "</table>";
-    echo "<div style=\"margin-left:30px;\">";
+    echo "<div style=\"margin-left:2%;\">";
 
 /* form data */
 
-         echo "<table border=0 cellpadding=13 style=\"padding: 8px 8px 8px 20px;\" class=\"TFtable\">";
+         echo "<table border=0 cellpadding=10 style=\"padding: 8px 8px 8px 25px;\" class=\"TFtable\">";
          echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th><th></th></tr></thead>";
 
     $srno = 0;

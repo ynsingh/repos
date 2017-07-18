@@ -20,13 +20,14 @@ class Setup2 extends CI_Controller
         }
     }
 
-    public function index() {
-        $this->grademaster();
+   
+    public function index () {
+          $this->grademaster();
     }
 
     /** This function display the grade master
      * @return type
-     */
+    */
     public function grademaster() {
 	$this->result = $this->commodel->get_list('grade_master');
 	$this->logger->write_logmessage("view"," View Master Grade", "Master Grade details...");
@@ -75,9 +76,9 @@ class Setup2 extends CI_Controller
         $this->load->view('setup2/addgrade');
     }
  
-    /** This function check for duplicate grade
+   /** This function check for duplicate grade
      * @return type
-    */
+     */
     public function isgradeExist($gm_gradename) {
         $is_exist = $this->commodel->isduplicate('grade_master','gm_gradename',$gm_gradename);
         if ($is_exist)
@@ -96,6 +97,12 @@ class Setup2 extends CI_Controller
      * @return type
      */
      public function deletegrade($id) {
+	$gm_data_q=$this->commodel->get_listrow('grade_master','gm_id', $id);
+        if ($gm_data_q->num_rows() < 1)
+        {
+            redirect('setup2/grademaster');
+        }
+
           $gradedflag=$this->commodel->deleterow('grade_master','gm_id', $id);
           if(!$gradedflag)
           {
@@ -119,10 +126,9 @@ class Setup2 extends CI_Controller
      * @return type
      */
     public function editgrade($id) {
-        $this->db->from('grade_master')->where('gm_id', $id);
-        $gm_data_q = $this->db->get();
+	$gm_data_q=$this->commodel->get_listrow('grade_master','gm_id', $id);
         if ($gm_data_q->num_rows() < 1)
-        {
+      	{
             redirect('setup2/editgrade');
         }
         $editgm_data = $gm_data_q->row();
@@ -218,8 +224,8 @@ class Setup2 extends CI_Controller
                 $this->load->view('setup2/editgrade', $data);
             }
             else{
-                $this->logger->write_logmessage("update","Edit grade Setting", "Edit grade Setting details. $logmessage ");
-                $this->logger->write_dblogmessage("update","Edit grade Setting", "Edit grade Setting details. $logmessage ");
+                $this->logger->write_logmessage("update","Edit grade Setting by".$this->session->userdata('username') , "Edit grade Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit grade Setting by".$this->session->userdata('username') , "Edit grade Setting details. $logmessage ");
                 $this->session->set_flashdata('success','Grade  detail updated successfully..');
                 redirect('setup2/grademaster');
                 }
@@ -243,7 +249,12 @@ class Setup2 extends CI_Controller
      	*/
         public function deletesemrule($id) {
 
-        	$gradedflag=$this->commodel->deleterow('semester_rule','semcr_id', $id);
+                $semcr_data_q=$this->commodel->get_listrow('semester_rule','semcr_id', $id);
+            if ($semcr_data_q->num_rows()  < 1)
+        {
+            redirect('setup2/semestersrules');
+        }
+                $gradedflag=$this->commodel->deleterow('semester_rule','semcr_id', $id);
           	if(!$gradedflag)
           	{
             		$this->logger->write_message("error", "Error  in deleting semester rule " ."[semcr_id:" . $id . "]");
@@ -325,21 +336,22 @@ class Setup2 extends CI_Controller
      * @return type
      */
     public function editsemrule($id) {
-        $this->db->from('semester_rule')->where('semcr_id', $id);
-        $semrule_data_q = $this->db->get();
-        if ($semrule_data_q->num_rows() < 1)
+        $semcr_data_q=$this->commodel->get_listrow('semester_rule','semcr_id', $id);
+        if ($semcr_data_q->num_rows() < 1)
         {
             redirect('setup2/editsemrule');
         }
-        $editsemrule_data = $semrule_data_q->row();
+        $editsemrule_data = $semcr_data_q->row();
 
 	/* Form fields */
+        $prgname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$editsemrule_data->semcr_prgid)->prg_name;
+        $prgbranchm=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$editsemrule_data->semcr_prgid)->prg_branch;
         $data['semcr_programname'] = array(
                 'name' => 'semcr_programname',
                 'id' => 'semcr_programname',
                 'maxlength' => '50',
                 'size' => '40',
-		'value' => $this->commodel->get_listspfic1('program','prg_name','prg_id',$editsemrule_data->semcr_prgid)->prg_name,
+		'value' => $prgname,
             'readonly' => 'readonly'
 	);
 
@@ -348,7 +360,7 @@ class Setup2 extends CI_Controller
                 'id' => 'semcr_branchname',
                 'maxlength' => '50',
                 'size' => '40',
-		'value' => $this->commodel->get_listspfic1('program','prg_branch','prg_id',$editsemrule_data->semcr_prgid)->prg_branch,
+		'value' => $prgbranchm,
 		'readonly' => 'readonly'
 	);
 
@@ -422,7 +434,7 @@ class Setup2 extends CI_Controller
                 $logmessage = "Edit Maximum Credit  " .$editsemrule_data->semcr_maxcredit. " changed by " .$data_emaxcredit;
             if($editsemrule_data->semcr_semcpi != $data_esemcpi)
                 $logmessage = "Edit Semester CPI " .$editsemrule_data->semcr_semcpi. " changed by " .$data_esemcpi;
-		// insert data into semester rule archive table    
+	//insert data into semester rule archive table    
         	$insertdata= array(
                  'semcra_semcrid'=>$editsemrule_data->semcr_id,
                  'semcra_prgid'=>$editsemrule_data->semcr_prgid,
@@ -436,7 +448,7 @@ class Setup2 extends CI_Controller
                  'createdate'=>date('y-m-d'),
                  'modifierid'=>$this->session->userdata('username'),
                  'modifydate'=>date('y-m-d'),
-        	);
+               	);
             	$fmaflag=$this->commodel->insertrec('semester_rule_archive', $insertdata);
             	if(!$fmflag)
             	{
@@ -463,9 +475,9 @@ class Setup2 extends CI_Controller
                 $this->load->view('setup2/editsemrule', $data);
             }
             else{
-                $this->logger->write_logmessage("update","Edit semester rule Setting", "Edit semster rule Setting details. $logmessage ");
-                $this->logger->write_dblogmessage("update","Edit semester rule Setting", "Edit semester rule Setting details. $logmessage ");
-                $this->session->set_flashdata('success','Semester rule  detail updated successfully..');
+                $this->logger->write_logmessage("update","Edit semester rule Setting by".$this->session->userdata('username') , "Edit semster rule Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit semester rule Setting by".$this->session->userdata('username') , "Edit semester rule Setting details. $logmessage ");
+                $this->session->set_flashdata('success',$prgname .' and ' . $prgbranchm .' Semester rule  detail updated successfully..');
                 redirect('setup2/semesterrules');
                 }
         }//else
@@ -473,11 +485,353 @@ class Setup2 extends CI_Controller
 
     }//Edit Semster rule function end
 
-	/*This function has been created for display the list of branch on the basis of program*/
-        public function branchlist(){
-		$pgid = $this->input->post('programname');   
-		$this->depmodel->get_branchlist($pgid);
-        } 
-}
+/*This function has been created for display the list of branch on the basis of program*/
+     public function branchlist(){
+	$pgid = $this->input->post('programname');   
+	$this->depmodel->get_branchlist($pgid);
+    }
+/** This function display the degree rules
+  * @param type  
+  * @return type
+  */
+    
+     public function degreerules() {
+        $this->result = $this->commodel->get_list('degree_rule');
+        $this->logger->write_logmessage("view"," View Degree rules", "Degree rules details...");
+        $this->logger->write_dblogmessage("view"," View Degree rules" , "Degree rules record display successfully..." );
+        $this->load->view('setup2/degreerules',$this->result);
+       }
+
+   /** This function add the degree rules
+     * @return type
+     */
+
+    public function adddegreerules()
+    {       
+                 $this->prgresult = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
+               
+        if(isset($_POST['adddegreerules'])) {
+                 $this->form_validation->set_rules('dr_prgid','Choose Branch','trim|xss_clean|required|callback_isbranchExist');
+                 $this->form_validation->set_rules('dr_mincredit','minimum credit','trim|xss_clean|required|is_natural');
+                 $this->form_validation->set_rules('dr_minsubcredit','minimum subject credit','trim|xss_clean|required|is_natural');
+                 $this->form_validation->set_rules('dr_minthesiscredit','minimum thesis credit','trim|xss_clean|required|is_natural');
+                 $this->form_validation->set_rules('dr_minsub','minimum subject','trim|xss_clean|required|integer');
+                 $this->form_validation->set_rules('dr_minsemester','minimum semester','trim|xss_clean|required|integer');
+                 $this->form_validation->set_rules('dr_mincpi','minimum cpi','trim|xss_clean|required|integer');
+                 $this->form_validation->set_rules('dr_maxcredit','maximum credit','trim|xss_clean|required|is_natural');
+                 $this->form_validation->set_rules('dr_maxsemeter','maximum semeter','trim|xss_clean|required|integer');
+                 if($this->form_validation->run()==TRUE){
+                 //echo 'form-validated';
+                        $data = array(
+                                'dr_prgid'=>$_POST['dr_prgid'],
+                                'dr_mincredit'=>$_POST['dr_mincredit'],
+                                'dr_minsubcredit'=>$_POST['dr_minsubcredit'],
+                                'dr_minthesiscredit'=>$_POST['dr_minthesiscredit'],
+                                'dr_minsub'=>$_POST['dr_minsub'],
+                                'dr_minsemester'=>$_POST['dr_minsemester'],
+                                'dr_mincpi'=>$_POST['dr_mincpi'],
+                                'dr_maxcredit'=>$_POST['dr_maxcredit'],
+                                'dr_maxsemeter'=>$_POST['dr_maxsemeter'],
+                                'creatorid'=> $this->session->userdata('username'),
+                                'createdate'=>date('y-m-d'),
+                                'modifierid'=>$this->session->userdata('username'),
+                                'modifydate'=>date('y-m-d')
+                        );
+			$dr_prgid=$_POST['dr_prgid'];
+		       $prgname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$dr_prgid)->prg_name;
+                       $prgbranchn= $this->commodel->get_listspfic1('program','prg_branch','prg_id',$dr_prgid)->prg_branch;
+                       $rflag=$this->commodel->insertrec('degree_rule', $data);
+                       if (!$rflag)
+                       {
+                                $this->logger->write_logmessage("insert","Trying to add programme " . $prgname .'('. $prgbranchn .')', "programme " . $prgname .'('. $prgbranchn .") is not added ".$_POST['dr_prgid']);
+                                $this->logger->write_dblogmessage("insert","Trying to add programme". $prgname .'('. $prgbranchn .')', "programme " . $prgname .'('. $prgbranchn .") is not added ".$_POST['dr_prgid']);
+                                $this->session->set_flashdata('err_message','Error in adding ' . $prgname .'('. $prgbranchn .')  setting - '  , 'error');
+                                redirect('setup2/adddegreerules');
+                       }
+                        else{
+                                $this->logger->write_logmessage("insert","Add programme Setting", "progrmme ". $prgname .'('. $prgbranchn .") added  successfully...");
+                                $this->logger->write_dblogmessage("insert","Add programme Setting", "programme ". $prgname .'('. $prgbranchn .") added  successfully...");
+                                $this->session->set_flashdata("success","Degree rule for " . $prgname .'('. $prgbranchn .")  added successfully...");
+                                redirect("setup2/degreerules");
+                        }
+                }//close if vallidation
+        }//
+        $this->load->view('setup2/adddegreerules');
+       
+         }
+
+   /** This function check for duplicate degree rule
+     * @return type
+     */
+
+    public function isbranchExist($dr_prgid) {
+        $is_exist = $this->commodel->isduplicate('degree_rule','dr_prgid',$dr_prgid);
+        if ($is_exist)
+        {
+            $prgname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$dr_prgid)->prg_name;
+            $prgbranchn= $this->commodel->get_listspfic1('program','prg_branch','prg_id',$dr_prgid)->prg_branch;
+            $this->form_validation->set_message('isbranchExist','degree rule for this '.$prgname .'  program and '.$prgbranchn. ' branch is already exist.');
+    	        return false;
+            }
+            else {
+                 return true;
+            }
+        }
 
 
+    /**This function Delete the degree rule records
+     * @param type $id
+     * @return type
+     */
+
+    public function deletedegreerule($id) {
+          $dr_data_q=$this->commodel->get_listrow('degree_rule','dr_id', $id);
+        if ($dr_data_q->num_rows() < 1)
+        {
+            redirect('setup2/degreerules');
+        }
+        $gradedflag=$this->commodel->deleterow('degree_rule','dr_id', $id);
+        if(!$gradedflag)
+          {
+            $this->logger->write_message("error", "Error  in deleting degree rule " ."[dr_id:" . $id . "]");
+            $this->logger->write_dbmessage("error", "Error  in deleting degree rule "." [dr_id:" . $id . "]");
+            $this->session->set_flashdata('err_message', 'Error in Deleting degree rule - ', 'error');
+            redirect('setup2/degreerules');
+           return;
+          }
+        else{
+            $this->logger->write_logmessage("delete", "Deleted   degree rule " . "[dr_prgid:" . $id . "] deleted successfully.. " );
+            $this->logger->write_dblogmessage("delete", "Deleted degree rule" ." [dr_prgid:" . $id . "] deleted successfully.. " );
+            $this->session->set_flashdata("success", 'degree rule Deleted successfully...' );
+            redirect('setup2/degreerules');
+        }
+        $this->load->view('setup2/degreerules',$data);
+
+    }
+
+     /**This function is used for update degreerules records
+       * @param type $id degree rule id
+       * @return type
+       */
+
+    public function editdegreerule($id) {
+        $dr_data_q=$this->commodel->get_listrow('degree_rule','dr_id', $id);
+        if ($dr_data_q->num_rows() < 1)
+        {
+            redirect('setup2/degreerules');
+        }
+        $editdegreerule_data = $dr_data_q->row();
+
+               /* Form fields */
+        $prgname=$this->commodel->get_listspfic1('program','prg_name','prg_id',$editdegreerule_data->dr_prgid)->prg_name;
+        $prgbranchn= $this->commodel->get_listspfic1('program','prg_branch','prg_id',$editdegreerule_data->dr_prgid)->prg_branch;
+        $data['dr_programname'] = array(
+                'name' => 'dr_programname',
+                'id' => 'dr_programname',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $prgname,
+            'readonly' => 'readonly'
+        );
+
+
+         $data['dr_branchname'] = array(
+               'name' => 'dr_branchname',
+               'id' => 'dr_branchname',
+               'maxlength' => '50',
+               'size' => '40',
+               'value' => $prgbranchn,
+               'readonly' => 'readonly'
+        );
+
+                
+        $data['dr_mincredit'] = array(
+                'name' => 'dr_mincredit',
+                'id'=>'dr_mincredit',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdegreerule_data->dr_mincredit,
+
+                );
+
+        $data['dr_minsubcredit'] = array(
+                'name' => 'dr_minsubcredit',
+                'id' => 'dr_minsubcredit',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdegreerule_data->dr_minsubcredit,
+
+                );
+
+        $data['dr_minthesiscredit'] = array(
+                'name' => 'dr_minthesiscredit',
+                'id' => 'dr_minthesiscredit',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdegreerule_data->dr_minthesiscredit,
+               
+                 );
+
+        $data['dr_minsub'] = array(
+                'name' => 'dr_minsub',
+                'id' => 'dr_minsub',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdegreerule_data->dr_minsub,
+
+                );
+
+        $data['dr_minsemester'] = array(
+                'name' => 'dr_minsemester',
+                'id' => 'dr_minsemester',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdegreerule_data->dr_minsemester,
+
+                );
+
+        $data['dr_mincpi'] = array(
+                'name' => 'dr_mincpi',
+                'id' => 'dr_mincpi',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdegreerule_data->dr_mincpi,
+
+                );
+
+       $data['dr_maxcredit'] = array(
+                'name' => 'dr_maxcredit',
+                'id' => 'dr_maxcredit',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdegreerule_data->dr_maxcredit,
+               
+                );
+
+       $data['dr_maxsemeter'] = array(
+                'name' => 'dr_maxsemeter',
+                'id' => 'dr_maxsemeter',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdegreerule_data->dr_maxsemeter,
+
+                );
+
+
+        $data['id'] = $id;
+        /*Form Validation*/
+        $this->form_validation->set_rules('dr_mincredit','minimum credit','trim|xss_clean|required|is_natural');
+        $this->form_validation->set_rules('dr_minsubcredit','minimum subject credit','trim|xss_clean|required|is_natural');
+        $this->form_validation->set_rules('dr_minthesiscredit','minimum thesis credit','trim|xss_clean|required|is_natural');
+        $this->form_validation->set_rules('dr_minsub','minimum subject','trim|xss_clean|required|is_natural');
+        $this->form_validation->set_rules('dr_minsemester','minimum semester','trim|xss_clean|required|is_natural');
+        $this->form_validation->set_rules('dr_mincpi','minimum cpi','trim|xss_clean|required|decimal');
+        $this->form_validation->set_rules('dr_maxcredit','maximum credit','trim|xss_clean|required|is_natural');
+        $this->form_validation->set_rules('dr_maxsemeter','maximum semeter','trim|xss_clean|required|is_natural');
+
+
+       /* Re-populating form */
+
+        if ($_POST)
+        {
+            $data['dr_prgid']['value'] = $editdegreerule_data->dr_prgid;
+            $data['dr_mincredit']['value'] = $this->input->post('dr_mincredit', TRUE);
+            $data['dr_minsubcredit']['value'] = $this->input->post('dr_minsubcredit', TRUE);
+            $data['dr_minthesiscredit']['value'] = $this->input->post('dr_minthesiscredit', TRUE);
+            $data['dr_minsub']['value'] = $this->input->post('dr_minsub', TRUE);
+            $data['dr_minsemester']['value'] = $this->input->post('dr_minsemester', TRUE);
+            $data['dr_mincpi']['value'] = $this->input->post('dr_mincpi', TRUE);
+            $data['dr_maxcredit']['value'] = $this->input->post('dr_maxcredit', TRUE);
+            $data['dr_maxsemeter']['value'] = $this->input->post('dr_maxsemeter', TRUE);
+
+
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup2/editdegreerules', $data);
+            return;
+
+       }
+        else{
+
+            $data_eminimumcredit = $this->input->post('dr_mincredit', TRUE);
+            $data_eminimumsubjectcredit = $this->input->post('dr_minsubcredit', TRUE);
+            $data_eminimumthesiscredit = $this->input->post('dr_minthesiscredit', TRUE);
+            $data_eminimumsubject = $this->input->post('dr_minsub', TRUE);
+            $data_eminimumsemester = $this->input->post('dr_minsemester', TRUE);
+            $data_eminimumcpi = $this->input->post('dr_mincpi', TRUE);
+            $data_emaximumcredit = $this->input->post('dr_maxcredit', TRUE);
+            $data_emaximumsemeter = $this->input->post('dr_maxsemeter', TRUE);
+            $data_eid = $id;
+            $logmessage = $prgname ."and ". $prgbranchn ."changed values";
+            if($editdegreerule_data->dr_mincredit != $data_eminimumcredit)
+                $logmessage = "Edit minimum credit  " .$editdegreerule_data->dr_mincredit. " changed by " .$data_eminimumcredit;
+            if($editdegreerule_data->dr_minsubcredit != $data_eminimumsubjectcredit)
+                $logmessage = "Edit minimum subject credit " .$editdegreerule_data->dr_minsubcredit. " changed by " .$data_eminimumsubjectcredit;
+            if($editdegreerule_data->dr_minthesiscredit != $data_eminimumthesiscredit)
+                $logmessage = "Edit minimum thesis credit  " .$editdegreerule_data->dr_minthesiscredit. " changed by " .$data_eminimumthesiscredit;
+            if($editdegreerule_data->dr_minsub != $data_eminimumsubject)
+                $logmessage = "Edit minimum subject  " .$editdegreerule_data->dr_minsub. " changed by " .$data_eminimumsubject;           
+            if($editdegreerule_data->dr_minsemester != $data_eminimumsemester)
+                $logmessage = "Edit minimum semester  " .$editdegreerule_data->dr_minsemester. " changed by " .$data_eminimumsemester;
+            if($editdegreerule_data->dr_mincpi != $data_eminimumcpi)
+                $logmessage = "Edit minimum cpi  " .$editdegreerule_data->dr_mincpi. " changed by " .$data_eminimumcpi;
+            if($editdegreerule_data->dr_maxcredit != $data_emaximumcredit)
+                $logmessage = "Edit maximum credit  " .$editdegreerule_data->dr_maxcredit. " changed by " .$data_emaximumcredit;
+             if($editdegreerule_data->dr_maxsemeter != $data_emaximumsemeter)
+                $logmessage = "Edit maximum semeter  " .$editdegreerule_data->dr_maxsemeter. " changed by " .$data_emaximumsemeter;        
+            // insert data into degree rule archive table    
+  //              $insertdata= array(
+    //             'dr_prgid'=>$editdegreerule_data->dr_prgid,
+      //           'dr_mincredit'=>$editdegreerule_data->dr_mincredit,
+        //         'dr_minsubcredit'=>$editdegreerule_data->dr_minsubcredit,
+          //       'dr_minsub'=>$editdegreerule_data->dr_minsub,
+            //     'dr_mincpi'=>$editdegreerule_data->dr_mincpi,
+              //   'dr_maxcredit'=>$editdegreerule_data->dr_maxcredit,
+                // 'dr_maxsemeter'=>$editdegreerule_data->dr_maxsemeter,
+       //          'creatorid'=>$this->session->userdata('username'),
+         //        'createdate'=>date('y-m-d'),
+           //      'modifierid'=>$this->session->userdata('username'),
+            //     'modifydate'=>date('y-m-d'),
+             //   );
+               // $fmaflag=$this->commodel->insertrec('degree_rule', $insertdata);
+               // if(!$fmflag)
+      //          {
+        //              $this->logger->write_dblogmessage("error","Error in insert in  degree rule archive ", "Error in degree rule archive record insert". $logmessage );
+          //      }else{
+            //         $this->logger->write_dblogmessage("insert","Insert Fees master archive", "degree rule record inserted in degree rule archive successfully..". $logmessage );
+              //  } 
+ 
+            $update_data = array(  
+               'dr_mincredit' => $data_eminimumcredit,
+               'dr_minsubcredit' => $data_eminimumsubjectcredit,
+               'dr_minthesiscredit' => $data_eminimumthesiscredit,
+               'dr_minsub' => $data_eminimumsubject,
+               'dr_minsemester' => $data_eminimumsemester,
+               'dr_mincpi' => $data_eminimumcpi,
+               'dr_maxcredit' => $data_emaximumcredit,
+               'dr_maxsemeter' => $data_emaximumsemeter,
+               'modifierid'=>$this->session->userdata('username'),
+               'modifydate'=>date('y-m-d')
+            );
+
+        $degreeruledflag=$this->commodel->updaterec('degree_rule', $update_data,'dr_id', $data_eid);
+        if(!$degreeruledflag)
+            {
+                $this->logger->write_logmessage("error","Edit degree rule  Setting error", "Edit degree rule  Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit degree rule Setting error", "Edit degree rule Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating degree rule for  '.$prgname .' and '.$prgbranchn . $logmessage . '.', 'error');
+                $this->load->view('setup2/editdegreerules', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit degree rule  Setting by".$this->session->userdata('username'), "Edit degree rule Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit degree rule Setting by".$this->session->userdata('username'), "Edit degree rule Setting details. $logmessage ");
+                $this->session->set_flashdata('success',$prgname .' and '.$prgbranchn.' degree rule  detail updated successfully... ');
+                redirect('setup2/degreerules');
+                }
+ }//else
+ redirect('setup2/editdegreerules');
+
+ }// edit degree rule function end
+} 

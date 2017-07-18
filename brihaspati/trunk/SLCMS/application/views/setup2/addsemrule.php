@@ -39,15 +39,15 @@
         echo "</table>";
         ?>-->
 
-     <table>
-            <tr colspan="2"><td>
-                <div align="left" style="margin-left:40px;">
+     <table width="100%">
+            <tr><td>
+                <div align="left" style="margin-left:0.2%;">
                 <?php echo anchor('setup2/semesterrules/', "View Semester Rule ", array('title' => 'View Semester Rule' ,'class' =>'top_parent'));?>
                 <?php
                  $help_uri = site_url()."/help/helpdoc#";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
                  ?>
-                <div  style="width:1500px;">
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -64,14 +64,14 @@
         </table>
  
     <tr>
-    <div style="margin-left:30px;">
+    <div style="margin-left:0.6%;">
     <form action="<?php echo site_url('setup2/addsemrule');?>" method="POST" class="form-inline">
-		<table style="margin-left:30px;">
+		<table style="margin-left:0.6%;">
 		<tr>
            	<td>Program Name :</td>
            	<td>
                 <select name="programname" id="programname" class="my_dropdown" style="width:300px;" onchange="getbranchname(this.value)" >
-                <option value="" disabled selected >------Select Program Name--------------</option>
+                <option value="" disabled  selected >------Select Program Name--------------</option>
                 <?php foreach($this->prgresult as $dataspt): ?>
                 <option value="<?php echo $dataspt->prg_name ?>"><?php echo $dataspt->prg_name; ?></option>
                 <?php endforeach; ?>
@@ -81,7 +81,7 @@
            <td>Branch Name :</td>
            <td>
                 <select name="semcr_prgid" id="semcr_prgid" class="my_dropdown" style="width:300px;">
-                <option value="" disabled selected >------Select Branch Name--------------</option>
+                <option value="" disabled  selected >------Select Branch Name--------------</option>
            </td>
         </tr>
 

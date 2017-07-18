@@ -21,15 +21,15 @@
         echo "</table>";
         ?>--!>
 
-      <table width "100%">
-            <tr colspan="2"><td width "200%">
-                <div align="left" style="margin-left:8px;">
+      <table width="100%">
+            <tr><td>
+                <div align="left" style="margin-left:2%;">
                 <?php echo anchor('setup/role/', "Add Role", array('title' => 'Add Detail','class' =>'top_parent'));?>
                  <?php
                  $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:82%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:78%\">Click for Help</b></a>";
                  ?>
-                <div  style="width:1500px;margin-left:20px">
+                <div  style="width:70%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -45,10 +45,10 @@
              </td></tr>
        </table>
 
-<table>
+<table width="100%">
 <tr>
-<div align="left" style="margin-left:40px;">
-<table cellpadding="16" style="margin-left:30px;" class="TFtable" >
+<div align="left" style="margin-left:2%;">
+<table cellpadding="16" style="margin-left:2%;" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Role Name</th><th>Role Description</th><th>Action</th></tr></thead>
 

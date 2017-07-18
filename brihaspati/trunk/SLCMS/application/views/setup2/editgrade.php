@@ -35,13 +35,13 @@
             echo "</tr>";
             echo "</table>";
         ?>--!>
-        <table style="margin-left:30px;"> 
-        	<tr colspan="2"><td>    
-                	<div style="width:1700px;">
+        <table width="100%"> 
+        	<tr><td>    
+                	<div margin="2%">
                     	<?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                     	<?php echo form_error('<div class="isa_error">','</div>');?>
 	                <?php if(isset($_SESSION['success'])){?>			
-                        	<div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        	<div class="isa_success"><?php echo $_SESSION['success'];?></div>
                     	<?php }; ?>
                 	</div> </br> 
        	 	</td></tr>  

@@ -18,8 +18,8 @@
     </script>
 
         <!--?php
-            echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
-            echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
+            echo "<table width=\"100%\" border=\5"\" style=\"color: yellow;  border-collapse:collapse; border:2px solid #BBBBBB;\">";
+            echo "<tr style=\"text-align:center; font-weight:bold; background-color:#66C1E6;\">";
             echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
             echo "Setup";
             echo "<span  style='padding: 8px 8px 8px 20px;'> ";
@@ -35,10 +35,10 @@
             echo "</tr>";
             echo "</table>";
         ?-->
-        <table style="margin-left:30px;" > 
-            <tr colspan="2"><td>
+        <table width="100%"> 
+            <tr><td>
                 <?php echo anchor('setup/dispemailsetting/', "View Email Configuration" ,array('title' => ' Email Configuration Detail ' , 'class' => 'top_parent'));?>    
-                <div style="margin-left:30px;width:1700px;">
+                <div style="margin-left:10%;width:80%;">
                     <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
                     <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
 
@@ -57,7 +57,7 @@
                 </div> </br> 
             </td></tr>  
         </table>    
-        <table style="margin-left:50px;">  
+        <table style="margin-left:1%;">  
  
         <?php
 
@@ -70,7 +70,7 @@
                 echo "</td>";
                 echo "<td>";
                    // echo form_input($emailprotocol);
-                echo "<select name='emailprotocol' style=\"width: 350px;\">;
+                echo "<select name='emailprotocol' style=\"width:62%;\">;
                 <option value=\"$emailprotocol[value]\">$emailprotocol[value]</option>;  
                 <option value=\"SMTP\">SMTP</option>;
                 <option value=\"IMAP\">IMAP</option>;

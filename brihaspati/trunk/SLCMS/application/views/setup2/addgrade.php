@@ -3,7 +3,7 @@
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
-<title>Add Geade</title>
+<title>Add grade</title>
 
  <head>
      <?php $this->load->view('template/header'); ?>
@@ -21,15 +21,15 @@
         echo "</table>";
         ?>-->
 
-     <table>
-            <tr colspan="2"><td>
-                <div align="left" style="margin-left:40px;">
+     <table width="100%" >
+            <tr><td>
+                <div align="left">
                 <?php echo anchor('setup2/grademaster/', "View Grade Master ", array('title' => 'View Grade Master' ,'class' =>'top_parent'));?>
                 <?php
                  $help_uri = site_url()."/help/helpdoc#";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
                  ?>
-                <div  style="width:1500px;">
+                <div  style="width:100%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -46,9 +46,9 @@
         </table>
  
     <tr>
-    <div style="margin-left:30px;">
+    <div> 
     <form action="<?php echo site_url('setup2/addgrade');?>" method="POST" class="form-inline">
-            <table style="margin-left:30px;">
+            <table style="margin-left:1%;">
             <tr>
                 <td><label for="gm_gradename" class="control-label">Grade Name:</label></td>
                 <td>

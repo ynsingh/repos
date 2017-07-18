@@ -21,16 +21,16 @@
         echo "</table>";
         ?>--!>
 
-      <table width "100%">
-            <tr colspan="2"><td width "200%">
-                <div align="left" style="margin-left:8px;">
+      <table width="100%"  style="margin-left:2%;">
+            <tr><td>
+                <div align="left">
 		<?php  echo anchor('setup2/addsemrule/', "Add Semester Rule", array('title' => 'Add Semseter Rule','class' =>'top_parent'));
 		?>
                  <?php
                  $help_uri = site_url()."/help/helpdoc#";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:82%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73.5%\">Click for Help</b></a>";
                  ?>
-                <div  style="width:1500px;margin-left:20px">
+                <div  style="width:90%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -43,18 +43,20 @@
                 };
                ?>
               </div>
+          </div>   
              </td></tr>
        </table>
 
 <table>
 <tr>
-<div align="left" style="margin-left:40px;">
-<table cellpadding="16" style="margin-left:30px;" class="TFtable" >
+<div align="left" style="margin-left:2%;">
+<table cellpadding="16" style="margin-left:2%;" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Program Name</th><th>Branch</th><th>Semester</th><th>Minimum Credit</th><th>Maximum Credit</th><th>Semester CPI</th><th>Action</th></tr></thead>
 
    <?php
         $count =0;
+        if( count($this->result) ):
         foreach ($this->result as $row)
         {  
          ?>
@@ -77,11 +79,19 @@
             echo "</tr>";
           
         }
+        else :
+        echo "<tr>";
+            echo "<td colspan= \"8\" align=\"center\"> No Records found...!</td>";
+        echo "</tr>";
+        endif;
+
         echo "</table>";
         echo "</td>";
         echo "</tr>";
         echo "</table>";
-          ?>
+//        echo "<td colspan= \"10\" align=\"center\"> No Records found...!</td>";
+           ?>
+
 </div>
 </tr>
 </table>

@@ -20,7 +20,7 @@
 
       <table>
             <tr colspan="2"><td>
-                <div style="margin-left:30px;width:1700px;">
+                <div style="margin-left:30px;width:1000px;">
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?>
 

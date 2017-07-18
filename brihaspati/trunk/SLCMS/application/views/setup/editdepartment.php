@@ -39,19 +39,18 @@
             echo "</tr>";
             echo "</table>";
         ?>-->
-        <table>
-   <font color=0 size=4pt> 
-   <div style="margin-left:30px; width:200px;">
+        <table width="100%">
+    <div style="margin-left:4%; width:100%;">
       <!-- <?php echo anchor('','Update Department',array('title'=>'Edit Detail')); ?>-->
       
-     <style="margin-left:0px;"> 
-            <tr colspan="2"><td>    
-                <div style="margin-left:0px;width:1700px;">
-                    <?php echo validation_errors('<div style="margin-left:50px;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+     <style="margin-left:4%;"> 
+            <tr><td>    
+                <div style="margin-left:4%;width:100%;">
+                    <?php echo validation_errors('<div style="margin-left:4%;" class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div style="margin-left:4%;" class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div style="margin-left:4%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };

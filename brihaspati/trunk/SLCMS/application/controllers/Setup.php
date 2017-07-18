@@ -562,7 +562,7 @@ class Setup extends CI_Controller
                 $this->logger->write_logmessage("update","Program Detail Updated", $logmessage);
                 $this->logger->write_dblogmessage("update","Program Detail Updated", $logmessage);
                 $this->session->set_flashdata('success', 'Program Name ' .$data_prgname. ' Successfully Updated.');
-                redirect('setup/viewprogram/');
+                redirect('setup/viewprogram');
             }
         }
         $this->load->view('setup/editprogram',$data);
@@ -572,14 +572,13 @@ class Setup extends CI_Controller
 
     public function deleteprogram($prg_id)
     {
-        $this->db->from('program')->where('prg_id', $prg_id);
-        $program_q = $this->db->get();
-        if ($program_q->num_rows() < 1)
-        {
+       $program_q=$this->common_model->get_listrow('program','prg_id', $prg_id);
+       if ($program_q->num_rows() < 1)
+       {
             $this->session->set_flashdata('Invalid program records.', 'error');
-            redirect('setup/viewprogram');
-        } 
-        else 
+          	redirect('setup/viewprogram');
+    	} 
+  	else 
         {
             $program_data = $program_q->row();
         }
@@ -588,7 +587,7 @@ class Setup extends CI_Controller
         {        
             $this->db->trans_rollback();
             log_message('error', 'Error in deleting program  record - '. $program_data->prg_category . '.' );
-            $this->session->set_flashdata('Error in deleting program - ' . $program_data->prg_category . '.', 'error');
+            $this->session->set_flashdata('Error in deleting program - ' . $program_data->prg_category.'and'.$program_data->prg_name . '.', 'error');
             log_message("info", "Error  in deleting program records " . $program_data->prg_category . " [prg_id:" . $prg_id . "]");
             redirect('setup/viewprogram');
         }
@@ -828,7 +827,7 @@ class Setup extends CI_Controller
 
   /* this function is used for delete category record */
   public function deletecategory($cat_id) {
-
+       
 	$catflag=$this->common_model->deleterow('category', 'cat_id', $cat_id) ;
         if(!$catflag)
         {
@@ -1388,7 +1387,6 @@ class Setup extends CI_Controller
                 redirect('setup/displayrole/');
                 }
         }//else
-        redirect('setup/editrole/');
 
     }//Add role function end
 
@@ -1396,8 +1394,8 @@ class Setup extends CI_Controller
 	//Fees Program set up
 
      public function fees() {
-
-		$this->prgresult = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
+               
+        	$this->prgresult = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
                 $this->catresult = $this->common_model->get_listspfic2('category','cat_id','cat_name');
 
 
@@ -1407,7 +1405,7 @@ class Setup extends CI_Controller
                         $this->form_validation->set_rules('semester','Semester','trim|xss_clean|required');
                         $this->form_validation->set_rules('category','Category','trim|xss_clean|required');
                         $this->form_validation->set_rules('gender','Gender','trim|xss_clean|required');
-                        $this->form_validation->set_rules('head','Head','trim|xss_clean|required');
+                        $this->form_validation->set_rules('head','Head','trim|xss_clean|required|callback_isheadExist');
                         $this->form_validation->set_rules('amount','Amount','trim|xss_clean|required|is_natural_no_zero');
                         //$this->form_validation->set_rules('installment','Installment','trim|xss_clean|required|numeric');
                         $this->form_validation->set_rules('descripation','Description','trim|xss_clean');
@@ -1449,7 +1447,24 @@ class Setup extends CI_Controller
 		}
   		$this->load->view('setup/fees');  
 		
-	}
+	}  
+       /** This function check for duplicate fees master
+     * @return type
+     */
+
+    public function isheadExist($fm_head) {
+        $is_exist = $this->common_model->isduplicate('fees_master','fm_head',$fm_head);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isheadExist', 'fees master for ' . $fm_head . ' already exist.');
+                return false;
+            }
+            else {
+                 return true;
+            }
+        }
+
+
 	/** This function Display the fees with headwise list records */
         public function displayfees() {
         	$this->fmresult = $this->common_model->get_list('fees_master');
@@ -1458,9 +1473,14 @@ class Setup extends CI_Controller
 	        $this->load->view('setup/displayfees');
         }
 	/* this function is used for delete fees with headwise record */
-        public function delete_fees($id) {
+        public function delete_fees($id) { 
 
-	        $fmdflag=$this->common_model->deleterow('fees_master','fm_id', $id);
+          $fm_data_q=$this->common_model->get_listrow('fees_master','fm_id', $id);
+      if ($fm_data_q->num_rows() < 1)
+        {
+            redirect('setup2/displayfees');
+        }
+                $fmdflag=$this->common_model->deleterow('fees_master','fm_id', $id);
           	if(!$fmdflag)
           	{
            		$this->logger->write_message("error", "Error  in deleting role " ."[fm_id:" . $id . "]");
@@ -1736,7 +1756,12 @@ class Setup extends CI_Controller
 
   /* this function is used for delete category record */
   public function deletePrgcat($prgcat_id) {
-
+        $prgcat_data_q=$this->common_model->get_listrow('programcategory','prgcat_id', $prgcat_id);
+        if ($prgcat_data_q->num_rows() < 1)
+        {
+	    $this->session->set_flashdata('Invalid program category records.', 'error');
+            redirect('setup/viewprogramcat');
+        }
 	$prgcatflag=$this->common_model->deleterow('programcategory', 'prgcat_id', $prgcat_id) ;
         if(!$prgcatflag)
         {
@@ -1752,7 +1777,6 @@ class Setup extends CI_Controller
  	    $this->session->set_flashdata("success", 'Program Category Record Deleted successfully.' );
             redirect('setup/viewprogramcat');
         }
-
     }
 
  /**This function is used for update category details
@@ -1958,7 +1982,7 @@ class Setup extends CI_Controller
         $is_exist = $this->common_model->isduplicate('study_center','sc_name',$sc_name);
         if ($is_exist)
         {
-            $this->form_validation->set_message('isStudyCenterExist', 'Study Center is already exist.');
+            $this->form_validation->set_message('isStudyCenterExist', 'Study Center ' . $sc_name .' already exist.');
             return false;
         }
         else {
