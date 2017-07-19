@@ -10,13 +10,11 @@ class Request extends CI_Controller {
 /******************************************************************************/	
 	public function __construct(){
 		parent::__construct();
-		$this->db2 = $this->load->database('login', TRUE);
 		$this->load->model('user_model');
-		$this->load->model("common_model");
-		$this->load->model("student_model");
-		$this->load->model("login_model");
-		$this->load->model("mailsend_model");
-		$this->load->model("DateSem_model");
+		$this->load->model('Common_model',"commodel");
+		$this->load->model("Student_model","stumodel");
+		$this->load->model("Mailsend_model","mailmodel");
+		$this->load->model("DateSem_model","datmodel");
 	}
 /******************************************************************************/	
 //$this->load->helper('url');
@@ -42,12 +40,12 @@ class Request extends CI_Controller {
 	public function semesterregi(){
 		$suid=$this->session->userdata('id_user');
 		//print_r($suid);
-		$Stuid=$this->common_model->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
+		$Stuid=$this->commodel->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
 		//print_r($Stuid);
            	//get current academic year
            	//$acadyear = $this->user_model->getcurrentAcadYear();
-		$this->appno = $this->common_model->get_listspfic1('student_entry_exit','senex_entexamapplicationno','senex_smid',$Stuid)->senex_entexamapplicationno;
-		$stud_prg_rec = $this->common_model->get_listrow('student_program','sp_smid',$Stuid);
+		$this->appno = $this->commodel->get_listspfic1('student_entry_exit','senex_entexamapplicationno','senex_smid',$Stuid)->senex_entexamapplicationno;
+		$stud_prg_rec = $this->commodel->get_listrow('student_program','sp_smid',$Stuid);
            	$degree_id = $stud_prg_rec->row()->sp_programid;
            	$noofsemester = sizeof($stud_prg_rec->result());
 		
@@ -55,111 +53,84 @@ class Request extends CI_Controller {
 		//print_r($cacadyer);
             	$semestertype = $this->user_model->getcurrentSemester();
         	//print_r($semestertype);
-            	$semesterrec = $this->student_model->get_semester_no($Stuid,$cacadyer);
+            	$semesterrec = $this->stumodel->get_semester_no($Stuid,$cacadyer);
            	$semsize = sizeof($semesterrec);
 		$this->curresem = $semsize;
 		//print_r($semsize);
 		
-            	if($semestertype == "Odd")
-            	{
-               		 if($semsize == 1)
-                	{
-                    		$semester = $noofsemester;
-                	}
-                	else
-                	{
-                    		$semester = $noofsemester + 1;
-                    		$semester = "Please register in the semester ".$semester;
-				//redirect('request/semesterregi');
-                    		//echo message for semester registration
-                	}
-            	}
-
-           	 if($semestertype == "Even")
-           	 {
-                	if($semsize == 2)
-                	{
-                  	  	$semester = $noofsemester;
-                	}
-                	else
-                	{
-                    		$semester = $noofsemester + 1;
-                    		$semester = "Please register in the semester ".$semester;
-				//redirect('request/semesterregi');
-                	}
-           	 }
+            	
 		
 		//student personnel detail
-		$this->name=$this->common_model->get_listspfic1("student_master","sm_fname","sm_userid",$suid)->sm_fname;
-		$this->sturollno = $this->common_model->get_listspfic1('student_entry_exit','senex_rollno','senex_smid',$Stuid)->senex_rollno;
-		$this->mobile=$this->common_model->get_listspfic1('student_master','sm_mobile','sm_id',$Stuid)->sm_mobile;
-		$this->email=$this->common_model->get_listspfic1('student_master','sm_email','sm_id',$Stuid)->sm_email;
-		$this->dob=$this->common_model->get_listspfic1('student_master','sm_dob','sm_id',$Stuid)->sm_dob;
-		$this->uid=$this->common_model->get_listspfic1('student_master','sm_uid','sm_id',$Stuid)->sm_uid;
-		$this->bgroup=$this->common_model->get_listspfic1('student_master','sm_bloodgroup','sm_id',$Stuid)->sm_bloodgroup;
-		$this->gender=$this->common_model->get_listspfic1('student_master','sm_gender','sm_id',$Stuid)->sm_gender;
-		$this->religname=$this->common_model->get_listspfic1('student_master','sm_religion','sm_id',$Stuid)->sm_religion;
+		$this->name=$this->commodel->get_listspfic1("student_master","sm_fname","sm_userid",$suid)->sm_fname;
+		$this->sturollno = $this->commodel->get_listspfic1('student_entry_exit','senex_rollno','senex_smid',$Stuid)->senex_rollno;
+		$this->mobile=$this->commodel->get_listspfic1('student_master','sm_mobile','sm_id',$Stuid)->sm_mobile;
+		$this->email=$this->commodel->get_listspfic1('student_master','sm_email','sm_id',$Stuid)->sm_email;
+		$this->dob=$this->commodel->get_listspfic1('student_master','sm_dob','sm_id',$Stuid)->sm_dob;
+		$this->uid=$this->commodel->get_listspfic1('student_master','sm_uid','sm_id',$Stuid)->sm_uid;
+		$this->bgroup=$this->commodel->get_listspfic1('student_master','sm_bloodgroup','sm_id',$Stuid)->sm_bloodgroup;
+		$this->gender=$this->commodel->get_listspfic1('student_master','sm_gender','sm_id',$Stuid)->sm_gender;
+		$this->religname=$this->commodel->get_listspfic1('student_master','sm_religion','sm_id',$Stuid)->sm_religion;
 
 		//student parent and course detail
-		$this->mname = $this->common_model->get_listspfic1('student_parent','spar_mothername','spar_smid',$Stuid)->spar_mothername;		
-		$this->fathname=$this->common_model->get_listspfic1('student_parent','spar_fathername','spar_smid',$Stuid)->spar_fathername;
+		$this->mname = $this->commodel->get_listspfic1('student_parent','spar_mothername','spar_smid',$Stuid)->spar_mothername;		
+		$this->fathname=$this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$Stuid)->spar_fathername;
 		
-		$this->sem = $this->common_model->get_listspfic1('student_program','sp_semester','sp_smid',$Stuid)->sp_semester;
+		$this->sem = $this->commodel->get_listspfic1('student_program','sp_semester','sp_smid',$Stuid)->sp_semester;
 		
-		$this->ncid = $this->common_model->get_listspfic1('student_program','sp_programid','sp_smid',$Stuid)->sp_programid;
+		$this->ncid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Stuid)->sp_programid;
 		//get programe name
-		$this->pname = $this->common_model->get_listspfic1('program','prg_name','prg_id',$this->ncid)->prg_name;
-		$this->progid = $this->common_model->get_listspfic1('program','prg_id','prg_name',$this->pname)->prg_id;
+		$this->pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$this->ncid)->prg_name;
+		$this->progid = $this->commodel->get_listspfic1('program','prg_id','prg_name',$this->pname)->prg_id;
 		
 		//get program category name
-		$this->pcatid = $this->common_model->get_listspfic1('student_program','sp_pcategory','sp_smid',$Stuid)->sp_pcategory;
-		$this->pcatname = $this->common_model->get_listspfic1('programcategory','prgcat_name','prgcat_id',$this->pcatid)->prgcat_name;
+		$this->pcatid = $this->commodel->get_listspfic1('student_program','sp_pcategory','sp_smid',$Stuid)->sp_pcategory;
+		$this->pcatname = $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$this->pcatid)->prgcat_name;
 
 		//postal address detail
-		$this->padd=$this->common_model->get_listspfic1('student_parent','spar_caddress','spar_smid',$Stuid)->spar_caddress;
-		$this->pcity=$this->common_model->get_listspfic1('student_parent','spar_ccity','spar_smid',$Stuid)->spar_ccity;
-		$this->ppost=$this->common_model->get_listspfic1('student_parent','spar_cpostoffice','spar_smid',$Stuid)->spar_cpostoffice;
-		$this->pdist=$this->common_model->get_listspfic1('student_parent','spar_cdistrict','spar_smid',$Stuid)->spar_cdistrict;
-		$this->pstat=$this->common_model->get_listspfic1('student_parent','spar_cstate','spar_smid',$Stuid)->spar_cstate;
-		$this->ppin=$this->common_model->get_listspfic1('student_parent','spar_cpincode','spar_smid',$Stuid)->spar_cpincode;
-		$this->pcounname=$this->common_model->get_listspfic1('student_parent','spar_ccountry','spar_smid',$Stuid)->spar_ccountry;
+		$this->padd=$this->commodel->get_listspfic1('student_parent','spar_caddress','spar_smid',$Stuid)->spar_caddress;
+		$this->pcity=$this->commodel->get_listspfic1('student_parent','spar_ccity','spar_smid',$Stuid)->spar_ccity;
+		$this->ppost=$this->commodel->get_listspfic1('student_parent','spar_cpostoffice','spar_smid',$Stuid)->spar_cpostoffice;
+		$this->pdist=$this->commodel->get_listspfic1('student_parent','spar_cdistrict','spar_smid',$Stuid)->spar_cdistrict;
+		$this->pstat=$this->commodel->get_listspfic1('student_parent','spar_cstate','spar_smid',$Stuid)->spar_cstate;
+		$this->ppin=$this->commodel->get_listspfic1('student_parent','spar_cpincode','spar_smid',$Stuid)->spar_cpincode;
+		$this->pcounname=$this->commodel->get_listspfic1('student_parent','spar_ccountry','spar_smid',$Stuid)->spar_ccountry;
 		
 		//get student category
-		$this->cateid=$this->common_model->get_listspfic1('student_master','sm_category','sm_id',$Stuid)->sm_category;
-		$this->catename=$this->common_model->get_listspfic1('category','cat_name','cat_id',$this->cateid)->cat_name;
+		$this->cateid=$this->commodel->get_listspfic1('student_master','sm_category','sm_id',$Stuid)->sm_category;
+		$this->catename=$this->commodel->get_listspfic1('category','cat_name','cat_id',$this->cateid)->cat_name;
 
 		//get study center
-		$this->sccode=$this->common_model->get_listspfic1('student_master','sm_sccode','sm_id',$Stuid)->sm_sccode;
-		$this->scname=$this->common_model->get_listspfic1('study_center','sc_name','sc_code',$this->sccode)->sc_name;
+		$this->sccode=$this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$Stuid)->sm_sccode;
+		$this->scname=$this->commodel->get_listspfic1('study_center','sc_name','sc_code',$this->sccode)->sc_name;
 		//get branch name
-		$this->brid=$this->common_model->get_listspfic1('student_program','sp_branch','sp_smid',$Stuid)->sp_branch;
-		$this->brname=$this->common_model->get_listspfic1('program','prg_branch','prg_id',$this->brid)->prg_branch;
+		$this->brid=$this->commodel->get_listspfic1('student_program','sp_branch','sp_smid',$Stuid)->sp_branch;
+		$this->brname=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$this->brid)->prg_branch;
 		//get department name
-		$this->depid=$this->common_model->get_listspfic1('student_program','sp_deptid','sp_smid',$Stuid)->sp_deptid;
-		$this->depname=$this->common_model->get_listspfic1('Department','dept_name','dept_id',$this->depid)->dept_name;
+		$this->depid=$this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$Stuid)->sp_deptid;
+		$this->depname=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$this->depid)->dept_name;
 
-		//$sprogid = $this->common_model->get_listspfic1('student_program','sp_id','sp_smid',$Stuid)->sp_id;
+		//$sprogid = $this->commodel->get_listspfic1('student_program','sp_id','sp_smid',$Stuid)->sp_id;
 		//print_r($sprogid);
 
 		//$this->db->select('sp_id')->from('student_program')->where('sp_smid',$Stuid)->where('sp_semester',$semsize);
 		//$spstid = $this->db->get()->row();
 		$getspid = array('sp_smid' => $Stuid, 'sp_semester' => $semsize);
-	    	$spstid = $this->common_model->get_listspficemore('student_program','sp_id',$getspid);
+	    	$spstid = $this->commodel->get_listspficemore('student_program','sp_id',$getspid);
 		
 		//print_r($spstid);
 		foreach($spstid as $stspid){
-			$this->cusem = $this->common_model->get_listspfic1('student_program','sp_semester','sp_id',$stspid->sp_id)->sp_semester;
+			$this->cusem = $this->commodel->get_listspfic1('student_program','sp_semester','sp_id',$stspid->sp_id)->sp_semester;
 			//print_r($this->cusem);
 		}
 			$datawh = array('sp_smid' => $Stuid, 'sp_semester' => $semsize);
-	    		$diffdate = $this->common_model->get_listspficemore('student_program','sp_programid,sp_semregdate',$datawh);
+	    		$diffdate = $this->commodel->get_listspficemore('student_program','sp_programid,sp_semregdate',$datawh);
 			//print_r($diffdate);
 			foreach($diffdate as $spdate):
-				$semdiffdate = $this->DateSem_model->diffdays($spdate->sp_semregdate);
+				$semdiffdate = $this->datmodel->diffdays($spdate->sp_semregdate);
 				$spprgid = $spdate->sp_programid;
 			endforeach;	
 			//print_r($semdiffdate);
-			$prgpattern=$this->common_model->get_listspfic1('program','prg_pattern','prg_id',$spprgid)->prg_pattern;
+			$prgpattern=$this->commodel->get_listspfic1('program','prg_pattern','prg_id',$spprgid)->prg_pattern;
 			$tmonth = $semdiffdate/30;
 			//print_r($this->tdate);
 			
@@ -232,7 +203,7 @@ class Request extends CI_Controller {
       					 } else {	
             					//if everything went right, commit the data to the database
            					$this->db->trans_commit();
-			 			$message = '<h3>You are semester registration successfully done.</h3>';
+			 			$message = '<h3>Your registration successfully done.</h3>';
 	  					$this->session->set_flashdata('msg',$message);			
 						$this->logger->write_logmessage("update", "Student registration successfull update record in student_master table");
                     				$this->logger->write_dblogmessage("update", "Student registration successfull update record in student_master table" );
@@ -255,9 +226,9 @@ class Request extends CI_Controller {
 	public function stufeesdetail(){
 		$suid=$this->session->userdata('id_user');
 		//print_r($suid);
-		$this->Stuid=$this->common_model->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
+		$this->Stuid=$this->commodel->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
 		
-		$stud_prg_rec = $this->common_model->get_listrow('student_program','sp_smid',$this->Stuid);
+		$stud_prg_rec = $this->commodel->get_listrow('student_program','sp_smid',$this->Stuid);
            	$degree_id = $stud_prg_rec->row()->sp_programid;
            	$noofsemester = sizeof($stud_prg_rec->result());
 		
@@ -265,10 +236,10 @@ class Request extends CI_Controller {
 		//print_r($cacadyer);
             	$semestertype = $this->user_model->getcurrentSemester();
         	//print_r($semestertype);
-            	$semesterrec = $this->student_model->get_semester_no($this->Stuid,$cacadyer);
+            	$semesterrec = $this->stumodel->get_semester_no($this->Stuid,$cacadyer);
            	$semsize = sizeof($semesterrec);
 		
-		//$getmail = $this->common_model->get_elist('email_setting');
+		//$getmail = $this->commodel->get_elist('email_setting');
 		//print_r($getmail);
 		//$Sid = $this->session->userdata['sm_id'];
 		//$totalfees = $_POST['totalfees'];
@@ -277,21 +248,21 @@ class Request extends CI_Controller {
 		$spid = $this->db->get()->row();
 		//print_r($spid);
 		foreach($spid as $stspid){
-			$this->cusem = $this->common_model->get_listspfic1('student_program','sp_semester','sp_id',$stspid)->sp_semester;
+			$this->cusem = $this->commodel->get_listspfic1('student_program','sp_semester','sp_id',$stspid)->sp_semester;
 			//print_r($this->cusem);
 		}
 		
-		$this->appno=$this->common_model->get_listspfic1('student_entry_exit','senex_entexamapplicationno','senex_smid',$this->Stuid)->senex_entexamapplicationno;
-		$this->sname=$this->common_model->get_listspfic1('student_master','sm_fname','sm_id',$this->Stuid)->sm_fname;
-		$this->fname=$this->common_model->get_listspfic1('student_parent','spar_fathername','spar_smid',$this->Stuid)->spar_fathername;
-		$this->gender=$this->common_model->get_listspfic1('student_master','sm_gender','sm_id',$this->Stuid)->sm_gender;
+		$this->appno=$this->commodel->get_listspfic1('student_entry_exit','senex_entexamapplicationno','senex_smid',$this->Stuid)->senex_entexamapplicationno;
+		$this->sname=$this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$this->Stuid)->sm_fname;
+		$this->fname=$this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$this->Stuid)->spar_fathername;
+		$this->gender=$this->commodel->get_listspfic1('student_master','sm_gender','sm_id',$this->Stuid)->sm_gender;
 		$this->acadyear=$this->user_model->getcurrentAcadYearfadm();
-		$this->prgid=$this->common_model->get_listspfic1('student_program','sp_programid','sp_smid',$this->Stuid)->sp_programid;
+		$this->prgid=$this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$this->Stuid)->sp_programid;
 		$sarray='prg_name,prg_branch';	
 		$wharray = array('prg_id' => $this->prgid);
-    		$this->resultprg=$this->common_model->get_listarry("program",$sarray,$wharray);
+    		$this->resultprg=$this->commodel->get_listarry("program",$sarray,$wharray);
 
-		$this->catid=$this->common_model->get_listspfic1('student_master','sm_category','sm_id',$this->Stuid)->sm_category;
+		$this->catid=$this->commodel->get_listspfic1('student_master','sm_category','sm_id',$this->Stuid)->sm_category;
 		$wharray = array('fm_programid' => $this->prgid, 'fm_semester' => $this->cusem);
 		$sarray = 'fm_head,fm_amount';
 		$wgenr = array('All', $this->gender);
@@ -312,12 +283,12 @@ class Request extends CI_Controller {
 	public function stufeespayment(){
 		$suid=$this->session->userdata('id_user');
 		//print_r($suid);
-		$Stuid=$this->common_model->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
+		$Stuid=$this->commodel->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
 		
-		$email= $this->common_model->get_listspfic1('student_master','sm_email','sm_id',$Stuid)->sm_email;
-		$name= $this->common_model->get_listspfic1('student_master','sm_fname','sm_id',$Stuid)->sm_fname;
+		$email= $this->commodel->get_listspfic1('student_master','sm_email','sm_id',$Stuid)->sm_email;
+		$name= $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$Stuid)->sm_fname;
 
-		$stud_prg_rec = $this->common_model->get_listrow('student_program','sp_smid',$Stuid);
+		$stud_prg_rec = $this->commodel->get_listrow('student_program','sp_smid',$Stuid);
            	$degree_id = $stud_prg_rec->row()->sp_programid;
            	$noofsemester = sizeof($stud_prg_rec->result());
 		
@@ -325,10 +296,10 @@ class Request extends CI_Controller {
 		//print_r($cacadyer);
             	$semestertype = $this->user_model->getcurrentSemester();
         	//print_r($semestertype);
-            	$semesterrec = $this->student_model->get_semester_no($Stuid,$cacadyer);
+            	$semesterrec = $this->stumodel->get_semester_no($Stuid,$cacadyer);
            	$semsize = sizeof($semesterrec);
 		
-		//$getmail = $this->common_model->get_elist('email_setting');
+		//$getmail = $this->commodel->get_elist('email_setting');
 		//print_r($getmail);
 		//$Sid = $this->session->userdata['sm_id'];
 		//$totalfees = $_POST['totalfees'];
@@ -337,14 +308,14 @@ class Request extends CI_Controller {
 		$spid = $this->db->get()->row();
 		//print_r($spid);
 		foreach($spid as $stspid){
-			$this->cusem = $this->common_model->get_listspfic1('student_program','sp_semester','sp_id',$stspid)->sp_semester;
+			$this->cusem = $this->commodel->get_listspfic1('student_program','sp_semester','sp_id',$stspid)->sp_semester;
 			//print_r($this->cusem);
 		}
 
-		$this->gender=$this->common_model->get_listspfic1('student_master','sm_gender','sm_id',$Stuid)->sm_gender;
+		$this->gender=$this->commodel->get_listspfic1('student_master','sm_gender','sm_id',$Stuid)->sm_gender;
 		$this->acadyear=$this->user_model->getcurrentAcadYearfadm();
-		$this->prgid=$this->common_model->get_listspfic1('student_program','sp_programid','sp_smid',$Stuid)->sp_programid;
-		$this->catid=$this->common_model->get_listspfic1('student_master','sm_category','sm_id',$Stuid)->sm_category;
+		$this->prgid=$this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Stuid)->sp_programid;
+		$this->catid=$this->commodel->get_listspfic1('student_master','sm_category','sm_id',$Stuid)->sm_category;
 		$wharray = array('fm_programid' => $this->prgid, 'fm_semester' => $this->cusem);
 		$sarray = 'fm_head,fm_amount';
 		$wgenr = array('All', $this->gender);
@@ -433,7 +404,7 @@ class Request extends CI_Controller {
 					//if sucess send mail to user with login details 
 		 					$sub='Student Semester Registration' ;
                         				$mess="Your registration is complete. Student email is ".$email." and name is ".$name ;
-                	       				$mails = $this->mailsend_model->mailsnd($email, $sub, $mess);
+                	       				$mails = $this->mailmodel->mailsnd($email, $sub, $mess);
 							 //  mail flag check 			
 							if($mails){
                         					$error[] ="At row".$i."sufficient data and mail sent sucessfully";
@@ -458,6 +429,145 @@ class Request extends CI_Controller {
 
 		}//close if post
 		$this->load->view('request/stu_feesoffline');
+	}
+	
+	public function exam_regi(){
+		$suid=$this->session->userdata('id_user');
+		//print_r($suid);
+		$Stuid=$this->commodel->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
+		//print_r($Stuid);
+           	//get current academic year
+           	//$acadyear = $this->user_model->getcurrentAcadYear();
+		$this->cdate = date('d-m-Y');
+		$this->appno = $this->commodel->get_listspfic1('student_entry_exit','senex_entexamapplicationno','senex_smid',$Stuid)->senex_entexamapplicationno;
+		$stud_prg_rec = $this->commodel->get_listrow('student_program','sp_smid',$Stuid);
+           	$degree_id = $stud_prg_rec->row()->sp_programid;
+           	$noofsemester = sizeof($stud_prg_rec->result());
+		
+		$this->cacadyer = $this->user_model->getcurrentAcadYear();
+		//print_r($this->cacadyer);
+            	$semestertype = $this->user_model->getcurrentSemester();
+        	//print_r($semestertype);
+            	$semesterrec = $this->stumodel->get_semester_no($Stuid,$this->cacadyer);
+           	$semsize = sizeof($semesterrec);
+		$this->curresem = $semsize;
+		//print_r($semsize);
+		
+		$this->signresult = $this->commodel->get_listspfic1('student_master','sm_signature','sm_id',$Stuid)->sm_signature;
+            	$this->seresult = $this->commodel->get_listrow('student_education','sedu_smid',$Stuid)->result();
+		$this->phresult = $this->commodel->get_listspfic1('student_master','sm_photo','sm_id',$Stuid)->sm_photo;
+		//student personnel detail
+		$this->name=$this->commodel->get_listspfic1("student_master","sm_fname","sm_userid",$suid)->sm_fname;
+		
+		$this->mobile=$this->commodel->get_listspfic1('student_master','sm_mobile','sm_id',$Stuid)->sm_mobile;
+		$this->email=$this->commodel->get_listspfic1('student_master','sm_email','sm_id',$Stuid)->sm_email;
+		$this->dob=$this->commodel->get_listspfic1('student_master','sm_dob','sm_id',$Stuid)->sm_dob;
+		$this->uid=$this->commodel->get_listspfic1('student_master','sm_uid','sm_id',$Stuid)->sm_uid;
+		$this->bgroup=$this->commodel->get_listspfic1('student_master','sm_bloodgroup','sm_id',$Stuid)->sm_bloodgroup;
+		$this->gender=$this->commodel->get_listspfic1('student_master','sm_gender','sm_id',$Stuid)->sm_gender;
+		$this->religname=$this->commodel->get_listspfic1('student_master','sm_religion','sm_id',$Stuid)->sm_religion;
+
+		//student parent and course detail
+		$this->mname = $this->commodel->get_listspfic1('student_parent','spar_mothername','spar_smid',$Stuid)->spar_mothername;		
+		$this->fathname=$this->commodel->get_listspfic1('student_parent','spar_fathername','spar_smid',$Stuid)->spar_fathername;
+		
+		$this->sem = $this->commodel->get_listspfic1('student_program','sp_semester','sp_smid',$Stuid)->sp_semester;
+		
+		$this->ncid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Stuid)->sp_programid;
+		//get programe name
+		$this->pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$this->ncid)->prg_name;
+		$this->progid = $this->commodel->get_listspfic1('program','prg_id','prg_name',$this->pname)->prg_id;
+		
+		//get program category name
+		$this->pcatid = $this->commodel->get_listspfic1('student_program','sp_pcategory','sp_smid',$Stuid)->sp_pcategory;
+		$this->pcatname = $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$this->pcatid)->prgcat_name;
+
+		//postal address detail
+		$this->padd=$this->commodel->get_listspfic1('student_parent','spar_caddress','spar_smid',$Stuid)->spar_caddress;
+		$this->pcity=$this->commodel->get_listspfic1('student_parent','spar_ccity','spar_smid',$Stuid)->spar_ccity;
+		$this->ppost=$this->commodel->get_listspfic1('student_parent','spar_cpostoffice','spar_smid',$Stuid)->spar_cpostoffice;
+		$this->pdist=$this->commodel->get_listspfic1('student_parent','spar_cdistrict','spar_smid',$Stuid)->spar_cdistrict;
+		$this->pstat=$this->commodel->get_listspfic1('student_parent','spar_cstate','spar_smid',$Stuid)->spar_cstate;
+		$this->ppin=$this->commodel->get_listspfic1('student_parent','spar_cpincode','spar_smid',$Stuid)->spar_cpincode;
+		$this->pcounname=$this->commodel->get_listspfic1('student_parent','spar_ccountry','spar_smid',$Stuid)->spar_ccountry;
+		
+		//get student category
+		$this->cateid=$this->commodel->get_listspfic1('student_master','sm_category','sm_id',$Stuid)->sm_category;
+		$this->catename=$this->commodel->get_listspfic1('category','cat_name','cat_id',$this->cateid)->cat_name;
+
+		//get study center
+		$this->sccode=$this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$Stuid)->sm_sccode;
+		$this->scname=$this->commodel->get_listspfic1('study_center','sc_name','sc_code',$this->sccode)->sc_name;
+		//get branch name
+		$this->brid=$this->commodel->get_listspfic1('student_program','sp_branch','sp_smid',$Stuid)->sp_branch;
+		$this->brname=$this->commodel->get_listspfic1('program','prg_branch','prg_id',$this->brid)->prg_branch;
+		//get department name
+		$this->depid=$this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$Stuid)->sp_deptid;
+		$this->depname=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$this->depid)->dept_name;
+
+		//$sprogid = $this->commodel->get_listspfic1('student_program','sp_id','sp_smid',$Stuid)->sp_id;
+		//print_r($sprogid);
+
+		//$this->db->select('sp_id')->from('student_program')->where('sp_smid',$Stuid)->where('sp_semester',$semsize);
+		//$spstid = $this->db->get()->row();
+		$getspid = array('sp_smid' => $Stuid, 'sp_semester' => $semsize);
+	    	$spstid = $this->commodel->get_listspficemore('student_program','sp_id',$getspid);
+		
+		//print_r($spstid);
+		foreach($spstid as $stspid){
+			$this->cusem = $this->commodel->get_listspfic1('student_program','sp_semester','sp_id',$stspid->sp_id)->sp_semester;
+			//print_r($this->cusem);
+		}
+			$datawh = array('sp_smid' => $Stuid, 'sp_semester' => $semsize);
+	    		$diffdate = $this->commodel->get_listspficemore('student_program','sp_programid,sp_semregdate',$datawh);
+			//print_r($diffdate);
+			foreach($diffdate as $spdate):
+				$semdiffdate = $this->datmodel->diffdays($spdate->sp_semregdate);
+				$spprgid = $spdate->sp_programid;
+			endforeach;	
+			//print_r($semdiffdate);
+			$prgpattern=$this->commodel->get_listspfic1('program','prg_pattern','prg_id',$spprgid)->prg_pattern;
+			$tmonth = $semdiffdate/30;
+	if(isset($_POST['exm_regi']))
+	{
+		redirect('request/admit_card');
+	}
+
+	$this->load->view('request/stu_exam_regi');
+	}
+	
+	public function admit_card(){
+		$suid=$this->session->userdata('id_user');
+		//print_r($suid);
+		$Stuid=$this->commodel->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
+		$this->cacadyer = $this->user_model->getcurrentAcadYear();
+		$this->name=$this->commodel->get_listspfic1("student_master","sm_fname","sm_userid",$suid)->sm_fname;
+		$this->enrono=$this->commodel->get_listspfic1("student_master","sm_enrollmentno","sm_userid",$suid)->sm_enrollmentno;
+		$this->enrono=$this->commodel->get_listspfic1("student_master","sm_enrollmentno","sm_userid",$suid)->sm_enrollmentno;
+		$this->rollno=$this->commodel->get_listspfic1("student_entry_exit","senex_rollno","senex_smid",$Stuid)->senex_rollno;
+		//get study center
+		$this->sccode=$this->commodel->get_listspfic1('student_master','sm_sccode','sm_id',$Stuid)->sm_sccode;
+		$this->scname=$this->commodel->get_listspfic1('study_center','sc_name','sc_code',$this->sccode)->sc_name;
+		$this->cacadyer = $this->user_model->getcurrentAcadYear();
+		//print_r($this->cacadyer);
+            	$semestertype = $this->user_model->getcurrentSemester();
+        	//print_r($semestertype);
+            	$semesterrec = $this->stumodel->get_semester_no($Stuid,$this->cacadyer);
+           	$semsize = sizeof($semesterrec);
+		$this->curresem = $semsize;
+		$getspid = array('sp_smid' => $Stuid, 'sp_semester' => $semsize);
+	    	$spstid = $this->commodel->get_listspficemore('student_program','sp_id',$getspid);
+		$this->ncid = $this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Stuid)->sp_programid;
+		//get programe name
+		$this->pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$this->ncid)->prg_name;
+		//print_r($spstid);
+		foreach($spstid as $stspid){
+			$this->cusem = $this->commodel->get_listspfic1('student_program','sp_semester','sp_id',$stspid->sp_id)->sp_semester;
+			//print_r($this->cusem);
+		}
+		$this->phresult = $this->commodel->get_listspfic1('student_master','sm_photo','sm_id',$Stuid)->sm_photo;
+
+		$this->load->view('request/stu_admit_card');
 	}
 
 

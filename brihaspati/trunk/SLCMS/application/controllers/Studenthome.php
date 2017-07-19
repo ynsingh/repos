@@ -188,7 +188,7 @@ class Studenthome extends CI_Controller
             if($subjectid1 == 0)
             {
                // $this->load->view('student/studentsubject',$data);
-                redirect('studenthome/studentsubject/');
+               // redirect('studenthome/studentsubject/');
                 //$data['submsg'] = "Please fillup the subject of current semester.";
             }
             else
@@ -292,7 +292,7 @@ class Studenthome extends CI_Controller
         else
         {
 		    $this->session->set_flashdata('flash_data', 'You do not have student role in this system!');
-            redirect('welcome');
+           	    redirect('welcome');
 	    }
 
      // $this->load->view('student/studenthome');
@@ -305,9 +305,12 @@ class Studenthome extends CI_Controller
         $suid = $this->session->userdata('id_user');
         $username = $this->session->userdata('username');   
         $studmaster = $this->commodel->get_listrow('student_master','sm_userid',$suid);
-        
-        $stud_master = $studmaster->result();
-        $stud_master1 = $studmaster->row();
+
+        $smid= $this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$suid)->sm_id;
+	$sturollno = $this->commodel->get_listspfic1('student_entry_exit','senex_rollno','senex_smid',$smid);
+       
+	 $stud_master = $studmaster->result();
+         $stud_master1 = $studmaster->row();
         //get student details        
         if(!empty($stud_master)) {
             $stid = $stud_master1->sm_id;
@@ -319,7 +322,7 @@ class Studenthome extends CI_Controller
             $lname = $stud_master1->sm_lname;
             $compname = $fname." ".$mname." ".$lname;
             $enrollno = $stud_master1->sm_enrollmentno;       
-            $rollno = $stud_master1->sm_rollno;       
+            $rollno = $sturollno->senex_rollno;       
             $data['compname'] = $compname;
             $data['enrollno'] = $enrollno;
             $data['rollno'] = $rollno;

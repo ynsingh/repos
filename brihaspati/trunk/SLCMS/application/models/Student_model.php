@@ -85,16 +85,14 @@ class Student_model extends CI_Model
         return $this->db->get();
     }
 
-	
     function showCourse(){
-			$this->db->select('course_name');
+			$this->db->select('course_name,id');
 			$this->db->group_by('course_name');
 			$this->db->from('admissionmeritlist');
 			$query = $this->db->get();
 			$results = $query->result();
 			return $results; 
 		}
-
 
     function __destruct() {
         $this->db->close();

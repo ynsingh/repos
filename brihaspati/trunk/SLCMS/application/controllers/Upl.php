@@ -13,9 +13,9 @@ class Upl extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-	$this->load->model("common_model"); 
-	$this->load->model("login_model"); 
-	$this->load->model("mailsend_model"); 
+		$this->load->model('Common_model',"commodel");
+		$this->load->model('Login_model',"logmodel"); 
+		$this->load->model("Mailsend_model","mailmodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -67,6 +67,7 @@ class Upl extends CI_Controller
 	$this->load->view('upl/uploadlogo');	
     }
     // This function is used for upload student list in the system
+
     public function uploadstulist(){
         // for clearing the previous sucess/error flashdata
 	$array_items = array('success' => '', 'error' => '', 'warning' =>'');
@@ -132,7 +133,6 @@ class Upl extends CI_Controller
 				$this->session->set_flashdata('error', ' insufficient data');
 				$this->load->view('upl/uploadstulist');
 		                return;
-
 			}
                     }
                     if($flag){
@@ -146,7 +146,7 @@ class Upl extends CI_Controller
             {
             	$error =  array('error' => $this->upload->display_errors());
 	        foreach ($error as $item => $value):
-                    $ferror = $item .":". $value;
+                $ferror = $item .":". $value;
         	endforeach;
                 $this->logger->write_logmessage("update","logo update error", $ferror);
 	        $this->logger->write_dblogmessage("update","logo update error", $ferror);
@@ -214,10 +214,10 @@ class Upl extends CI_Controller
                             $mobile='';
 
                             // check for duplicate
-                            $isdup= $this->login_model->isduplicate('edrpuser','username',$email );
+                            $isdup= $this->logmodel->isduplicate('edrpuser','username',$email );
                             if(!$isdup){
                                 //generate 10 digit random password
-				    $passwd=$this->common_model->randNum(10);	
+				    $passwd=$this->commodel->randNum(10);	
 				// generate the hash of password
 				    $password=md5($passwd);
 				// insert data into edrp user db1
@@ -231,9 +231,9 @@ class Upl extends CI_Controller
                                     'category_type'=>$role,
                                     'is_verified'=>1
             			);
-				$userflageu=$this->login_model->insertrec('edrpuser', $dataeu) ;
+				$userflageu=$this->logmodel->insertrec('edrpuser', $dataeu) ;
 				//get the insert id of edrp user
-				$insertid= $this->login_model->get_listspfic1('edrpuser','id','username',$email );
+				$insertid= $this->logmodel->get_listspfic1('edrpuser','id','username',$email );
 				$insid=$insertid->id;
                                 //print_r("this is testing upload file===".$userflageu."and id-> " .$insid);
 				if($userflageu){
@@ -245,7 +245,7 @@ class Upl extends CI_Controller
 					'mobile'=>$mobile,
 					'status'=>1
                                     );
-				    $userflagup=$this->login_model->insertrec('userprofile', $dataup) ;
+				    $userflagup=$this->logmodel->insertrec('userprofile', $dataup) ;
                                     if($userflagup){
 				    	// insert into user role type db
 					$dataurt = array(
@@ -255,11 +255,11 @@ class Upl extends CI_Controller
 				            'scid'=> $sc,
 				            'usertype'=>$role,
         	    			);
-					$userflagurt=$this->common_model->insertrec('user_role_type', $dataurt) ;
+					$userflagurt=$this->commodel->insertrec('user_role_type', $dataurt) ;
 					if($userflagurt){
                                             $sub='Teacher Registration' ;
                                             $mess="You are registration is complete. The user id ".$email ." and password is ".$passwd ;
-                                            $mails = $this->mailsend_model->mailsnd($email, $sub, $mess);
+                                            $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
 					    //  mail flag check 			
 					    if($mails){
                                 	            $error[] ="At row".$i."sufficient data and mail sent sucessfully";
@@ -276,16 +276,16 @@ class Upl extends CI_Controller
                                             $this->logger->write_logmessage("insert"," Error in adding teacher edrpuser,profile and user role type ", " data insert error . ".$name ." ".$email );
                                             $this->logger->write_dblogmessage("insert"," Error in adding teacher edrpuser,profile and user role type ", " data insert error . ".$name ." ".$email);
                                             // delete edrp user data
-                                            $result = $this->login_model->deleterow('edrpuser','id',$insid);
+                                            $result = $this->logmodel->deleterow('edrpuser','id',$insid);
                                             // delete user profile data
-                                            $result = $this->login_model->deleterow('userprofile','userid',$insid);
+                                            $result = $this->logmodel->deleterow('userprofile','userid',$insid);
 					}
                                     }else{
 					//set the message for error in entering data in user profile table
 					$this->logger->write_logmessage("insert"," Error in adding teacher edrpuser,profile ", " data insert error . ".$name ." ".$email  );
                                 	$this->logger->write_dblogmessage("insert"," Error in adding teacher edrpuser,profile ", " data insert error . ".$name ." ".$email );
 					// delete edrp user data
-					$result = $this->login_model->deleterow('edrpuser','id',$insid);
+					$result = $this->logmodel->deleterow('edrpuser','id',$insid);
 				    }
 				}else{
                                     // set the message for error in entering data in edrp table

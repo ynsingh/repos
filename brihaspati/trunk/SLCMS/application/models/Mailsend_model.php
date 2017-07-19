@@ -18,10 +18,10 @@ class Mailsend_model extends CI_Model
 	public function mailsnd($tomal, $sub, $mess,$attach=''){
 		//getting the values from database
 
-		$this->emresult = $this->common_model->get_elist("email_setting");	
+		$this->emresult = $this->commodel->get_elist("email_setting");	
 		if (count($this->emresult) > 0) {
-//		if($this->emresult->num_rows()>0){
-		// The mail sending protocol.
+		//if($this->emresult->num_rows()>0){
+		//The mail sending protocol.
 		//$config['protocol'] = 'smtp';
 		$config['protocol'] = $this->emresult->emailprotocol;
 		// SMTP Server Address for Gmail.

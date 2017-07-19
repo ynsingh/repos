@@ -12,14 +12,13 @@ class Student extends CI_Controller {
 /******************************************************************************/	
 	public function __construct(){
 		parent::__construct();
-		$this->db2 = $this->load->database('login', TRUE);
+		//$this->db2 = $this->load->database('login', TRUE);
 		$this->load->model('user_model');
-		$this->load->model("common_model","commodel");
-		$this->load->model("Student_model");
-		$this->load->model("login_model");
-		$this->load->model("mailsend_model");
-		$this->load->model("Dependrop_model");
-		$this->load->model("DateSem_model");
+		$this->load->model('Common_model',"commodel");
+		$this->load->model("Student_model","stumodel");
+		$this->load->model('Login_model',"logmodel"); 
+		$this->load->model("Mailsend_model","mailmodel");
+		$this->load->model("DateSem_model","datmodel");
 	}
 /******************************************************************************/	
 //$this->load->helper('url');
@@ -39,20 +38,24 @@ class Student extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function getcatbr()
-	{  
-	        $this->load->view('template/getCatbranch');
-	}
+	//public function getcatbr()
+	//{  
+	//        $this->load->view('template/getCatbranch');
+	//}
 	
 	/*************************************************************************************************************/
-	/*This function has been created for display the list of branch on the basis of program
+	//This function has been created for display the list of branch on the basis of program
 	public function branchlist(){
-		$pgid = $this->input->post('programname');
-	    	$brlist=$this->dependrop_model->get_branchlist($pgid);
-	       }*/
-
+			$pgid = $this->input->post('Sprogramname');
+			$list = $this->commodel->get_listspfic2('admissionmeritlist','id','branchname','course_name',$pgid,'branchname');
+			foreach($list as $datas): ?>   
+      		  		<option  id='branchname' value="<?php echo $datas->id;?>"><?php echo $datas->branchname; ?></option>
+<?php   		endforeach;
+	 }
+	
 	// Check for user admission login process
 	public function student_step0() {
+		
 		 $array_items = array('success' => '', 'error' => '', 'warning' =>'');
        		 $this->session->set_flashdata($array_items);
 		 //$this->prgbranch = $this->commodel->get_list('program');
@@ -60,8 +63,8 @@ class Student extends CI_Controller {
 
 		if(isset($_POST['login'])){
 			$this->form_validation->set_rules('Sanumber', 'Application Number', 'required');
-			$this->form_validation->set_rules('Sprogram', 'Program/Course', 'required');
-			$this->form_validation->set_rules('Sbranch', 'Branch', 'required');
+			$this->form_validation->set_rules('Sprogramname', 'Program/Course', 'required');
+			$this->form_validation->set_rules('Sbranchname', 'Branch', 'required');
 			$this->form_validation->set_rules('Semail', 'Student Email-id', 'required');
 		
 				if ($this->form_validation->run() == FALSE) {	
@@ -69,16 +72,16 @@ class Student extends CI_Controller {
 					}else{	
 											
 						$data = array(
-						'application_no' => $this->input->post('Sanumber'),
-						'course_name' => $this->input->post('Sprogram'),
-						//'branchname' => $this->input->post('Sbranch'),
-						'student_email' => $this->input->post('Semail')				
-							      );
+							'application_no' => $this->input->post('Sanumber'),
+							'course_name'    => $this->input->post('Sprogramname'),
+							//'branchname'     => $this->input->post('Sbranchname'),
+							'student_email'  => $this->input->post('Semail')				
+						);
 						
 						//for verification use the dupliacatemore in common model
 						$result = $this->commodel->isduplicatemore("admissionmeritlist",$data);
 						print_r($result);
-						//$result = $this->Student_model->login($data);
+						//$result = $this->stumodel->login($data);
 						if ($result == true) {
 							$number = $this->input->post('Sanumber');
 							//call studentstep function and that function will decide in which page you are landing after putting the correct crediential
@@ -197,7 +200,7 @@ class Student extends CI_Controller {
 				$suid=$smres->sm_userid;
 				//print_r($suid.$smres);				
 				//get the username from edrpuser
-				$usernme=$this->login_model->get_listspfic1('edrpuser','username','id',$suid)->username;
+				$usernme=$this->logmodel->get_listspfic1('edrpuser','username','id',$suid)->username;
 				//check the value set in session if not then
 				// set the student master and application number in session
 				$data = [
@@ -292,7 +295,7 @@ class Student extends CI_Controller {
 		//$result1 = $this->commodel->get_listrow("admissionmeritlist","application_no",$number);
 		//print_r($result1);
 		$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','application_no',$this->number)->lastdate_admission;
-		$admidate = $this->DateSem_model->comparedate($ldate);
+		$admidate = $this->datmodel->comparedate($ldate);
 		$cdate = date("Y-m-d h:i:sa");
 		if($admidate == $cdate)
 		{
@@ -315,15 +318,15 @@ class Student extends CI_Controller {
           		$this->form_validation->set_rules('Stypeprogramme','Program/Course type','trim|xss_clean|required');
 			$this->form_validation->set_rules('Sdepart','Departmnet not select','trim|xss_clean|required');
 
-			$this->form_validation->set_rules('Smothername','Mother name','trim|xss_clean|required');
+			$this->form_validation->set_rules('Smothername','Mother name','trim|xss_clean|required|alpha');
           		$this->form_validation->set_rules('Sfathername','Father name','trim|xss_clean');
            		$this->form_validation->set_rules('Scategory','Category','trim|xss_clean|required');
            		$this->form_validation->set_rules('Spaddress','Postal address','trim|xss_clean|required');
-			$this->form_validation->set_rules('Sdist','District','trim|xss_clean|required');
+			$this->form_validation->set_rules('Sdist','District','trim|xss_clean|required|alpha');
 			$this->form_validation->set_rules('Spost','Post office','trim|xss_clean|required');
-	   		$this->form_validation->set_rules('Scity','City','trim|xss_clean|required');
-			$this->form_validation->set_rules('Sstate','State','trim|xss_clean|required');
-          		$this->form_validation->set_rules('Scountry','Country','trim|xss_clean|required');
+	   		$this->form_validation->set_rules('Scity','City','trim|xss_clean|required|alpha');
+			$this->form_validation->set_rules('Sstate','State','trim|xss_clean|required|alpha');
+          		$this->form_validation->set_rules('Scountry','Country','trim|xss_clean|required|alpha');
            		$this->form_validation->set_rules('Spincode','Pincode','trim|xss_clean|max_length[6]|required|is_numeric');
 
 			$this->form_validation->set_rules('Hcname','High school name','trim|xss_clean|required');
@@ -613,7 +616,7 @@ class Student extends CI_Controller {
 				 );
 		$this->db->insert('student_entry_exit',$stuentry);
 
-			//$result1 = $this->Student_model->studentId($insertid);
+			//$result1 = $this->stumodel->studentId($insertid);
 			//print_r($result1);
 			$session_data = array(
 					'sm_id'=> $insertid,
@@ -925,6 +928,19 @@ class Student extends CI_Controller {
 	}
 
 /******************************************Offline payment code start**********************************************************/
+//This function check for duplicate reference number 		   
+    public function renoexist($reno) {
+        $is_exist = $this->commodel->isduplicate('student_fees','sfee_referenceno',$reno);
+	//print_r($is_exist);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('renoexist','Reference number'." " .$reno. " ".'is already exist check your refernce number again.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 
 	public function offlinePayment(){
 		$ano = $this->session->userdata['app_no'];
@@ -968,9 +984,9 @@ class Student extends CI_Controller {
 					
 		if(isset($_POST['addFees'])) {	
 						
-			$this->form_validation->set_rules('refNo','Reference number','trim|xss_clean|numeric|required');
-            		$this->form_validation->set_rules('bank','Bank detail','trim|xss_clean|required');
-            		$this->form_validation->set_rules('amount','Amount','trim|xss_clean|required');
+			$this->form_validation->set_rules('refNo','Reference number','trim|xss_clean|numeric|required|callback_renoexist');
+            		$this->form_validation->set_rules('bank','Bank detail','trim|xss_clean|required|alpha');
+            		$this->form_validation->set_rules('amount','Amount','trim|xss_clean|required|numeric');
             		$this->form_validation->set_rules('ftype','fees type field','trim|xss_clean|required');
 
 			if($_POST){
@@ -1019,7 +1035,7 @@ class Student extends CI_Controller {
 				//print_r($sccode);		
 				//insert into edrpuser in login database
 				// check for duplicate
-                            	$isdupl= $this->login_model->isduplicate('edrpuser','username',$email);
+                            	$isdupl= $this->logmodel->isduplicate('edrpuser','username',$email);
 			
                             	if(!$isdupl){
                                 	//generate 10 digit random password
@@ -1037,13 +1053,14 @@ class Student extends CI_Controller {
                                    		'category_type'=>'Student',
                                    		'is_verified'=>1
             				);
-					$this->db2->insert('edrpuser',$dataeu);
+					//$this->db2->insert('edrpuser',$dataeu);
+					$this->logmodel->insertrec('edrpuser',$dataeu);
 					$this->logger->write_logmessage("insert", "Step 4 data insert in edrpuser table.");
                     			$this->logger->write_dblogmessage("insert", "Step 4 data insert in edrpuser table." );
 					
 					//get the insert id of edrp user
 					
-					$getid= $this->login_model->get_listspfic1('edrpuser','id','username',$email);
+					$getid= $this->logmodel->get_listspfic1('edrpuser','id','username',$email);
 					$insid=$getid->id;
 					//print_r($insid);
 					// get user id from  edrp table  in login database
@@ -1055,7 +1072,8 @@ class Student extends CI_Controller {
 						'mobile'=>$mobile,
 						'status'=>1
                                     	);
-					$this->db2->insert('userprofile',$dataup);
+					//$this->db2->insert('userprofile',$dataup);
+					$this->logmodel->insertrec('userprofile', $dataup);
 					$this->logger->write_logmessage("insert", "Step 4 data insert in userprofile table.");
                     			$this->logger->write_dblogmessage("insert", "Step 4 data insert in userprofile table." );
 					//insert into userroletype group
@@ -1070,7 +1088,8 @@ class Student extends CI_Controller {
 				           	'scid'  => $scid,
 				           	'usertype'=>"Student"
         	    			);
-					$this->db->insert('user_role_type',$dataurt);
+					//$this->db->insert('user_role_type',$dataurt);
+					$this->commodel->insertrec('user_role_type',$dataurt);
 					$this->logger->write_logmessage("insert", "Step 4 data insert in user_role_type table.");
                     			$this->logger->write_dblogmessage("insert", "Step 4 data insert in user_role_type table." );
 
@@ -1101,7 +1120,7 @@ class Student extends CI_Controller {
 						'senex_dateofadmission'	 =>	$sdate,
 						'modifierid'		 =>	$Sid  	
 	           	     		);
-					//$this->db->insert('student_entry_exit',$stuentpdate);
+					
 		             		$this->db->where('senex_smid',$Sid);
     					$this->db->update('student_entry_exit',$stuentpdate);
 					$this->logger->write_logmessage("update", "Step 4 user id update in student_entry_exit table.");
@@ -1150,8 +1169,8 @@ class Student extends CI_Controller {
             					//if something went wrong, rollback everything
             					$this->db->trans_rollback();
 						//else stay with step4
-						$message = '<h3>Your some field are incorrect.</h3>';
-	  					$this->session->set_flashdata('msg',$message);
+						$msg = '<h3>You are already exist.</h3>';
+  						$this->session->set_flashdata('err_message',$msg);	
 						$this->logger->write_logmessage("insert", "Step 4 error update and insert");
                     				$this->logger->write_dblogmessage("insert", "Step 4 error update and insert" );
 						redirect('student/offlinePayment');
@@ -1166,7 +1185,7 @@ class Student extends CI_Controller {
 							//if sucess send mail to user with login details 
 		 					$sub='Student Registration' ;
                         				$mess="Your registration is complete. The user id ".$email." and password is ".$passwd ;
-                	       				$mails = $this->mailsend_model->mailsnd($email, $sub, $mess);
+                	       				$mails = $this->mailmodel->mailsnd($email, $sub, $mess);
 							 //  mail flag check 			
 							if($mails){
                         					$error[] ="At row".$i."sufficient data and mail sent sucessfully";
@@ -1277,7 +1296,7 @@ class Student extends CI_Controller {
 				$suid=$smres->sm_userid;
 				 //print_r($smres);				
 				//get the username from edrpuser
-				$usernme=$this->login_model->get_listspfic1('edrpuser','username','id',$suid)->username;
+				$usernme=$this->logmodel->get_listspfic1('edrpuser','username','id',$suid)->username;
 				  //print_r($usernme);
 				 //check the value set in session if not then
 				//set the student master and application number in session

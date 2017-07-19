@@ -19,28 +19,28 @@ input[type='email']{font-size:17px;width:120%;height:30px;}
 input[type='button']{font-size:16px;}
 </style>
 <script>
-function change_getcat(){
+/*function change_getcat(){
 	var xmlhttp = new XMLHttpRequest();
 
-	xmlhttp.open("GET","<?php echo site_url('student/getcatbr'); ?>?catbranch="+document.getElementById("register_name").value,false);
+	xmlhttp.open("GET","<?php echo site_url('student/student_step0'); ?>?catbranch="+document.getElementById("register_name").value,false);
 
 	xmlhttp.send(null);
 	
 	document.getElementById("getbranch").innerHTML = xmlhttp.responseText; 
-	}
+	}*/
 
-/* function getbranchname(branch){
+ function getbranchname(branch){
                 var branch = branch;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>index.php/map/branchlist",
-                data: {"programname" : branch},
+                url: "<?php echo base_url();?>index.php/student/branchlist",
+                data: {"Sprogramname" : branch},
                 dataType:"html",
                 success: function(data){
                 $('#branchname').html(data);
                 }
             }); 
-        }*/
+        }
 
 </script>
 </head>
@@ -75,8 +75,6 @@ function change_getcat(){
       </div>
 
 		<?php $this->load->view('student/studentCrieteria');?>
-
-		
 	<center>
 <?php
 echo "<center style='color:#B21f35;text-align:center;font-size:20px;'>";
@@ -104,10 +102,10 @@ echo "</center>";
 		<tr ><td>
         	<label for="text">Program/Courses</label>
 		</td><td>
-			<select name="Sprogram" class="form-control" id="register_name" onChange='change_getcat()' style="width:122%;height:40px;font-size:18px;font-weight:bold;">
+			<select name="Sprogramname" id="programname" class="form-control" id="register_name" onchange="getbranchname(this.value)" style="width:122%;height:40px;font-size:18px;font-weight:bold;">
 			<option selected="true" disabled="disabled" style="font-size:18px;">programme/courses</option>
 				<?php 
-				$result=$this->Student_model->showCourse(); 
+				$result=$this->stumodel->showCourse(); 
 				if(isset($result)):
 					$count = count($result);
 					for($i = 0 ; $i<$count ; $i++){
@@ -127,21 +125,13 @@ echo "</center>";
 			<!---<span style="color:red;"><?php echo form_error('Stypeprogramme');?></span>--->
 			<label for="nnumber">Select Branch</label></br></td>
 			<td>
-				<select id="getbranch" style="width:122%;height:40px;font-size:18px;font-weight:bold;" name="Sbranch">
+				<!--<select id="getbranch" style="width:122%;height:40px;font-size:18px;font-weight:bold;" name="Sbranch">
 					<option selected="true" disabled="disabled">Select branch</option>
-				</select>
-
-			<!--<select name="branchname" id="branchname"  style="width:122%;height:40px;font-size:18px;font-weight:bold;">
-              		  <option value="" selected="true" disabled="disabled" >-------Select Branch --------</option>
-			</select>--->
-
-			<!--<select name="Stypeprogramme" class="form-control" style="width:122%;height:40px;font-size:18px;font-weight:bold;">
-
-			<option selected="true" disabled="disabled" style="font-size:18px;">Select Branch Name</option>
-					<?php foreach( $this->prgbranch as $prog): ?>	
-						<option value="<?php echo $prog->prg_id;?>"><?php echo $prog->prg_branch; ?></option>
-					<?php endforeach; ?>
-			</select>--->		
+				</select>--->
+			
+			<select name="Sbranchname" id="branchname"  style="width:122%;height:40px;font-size:18px;font-weight:bold;">
+              		  <option value="" selected="true" disabled="disabled" >Select Branch</option>
+			</select>
 	
 		</td></tr>
 		<tr><td>

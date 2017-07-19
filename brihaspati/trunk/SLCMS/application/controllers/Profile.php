@@ -13,9 +13,10 @@ class Profile  extends CI_Controller
     {
     function __construct() {
         parent::__construct();
-        $this->load->model("login_model");
-        $this->load->model("mailsend_model");
-        $this->load->model("common_model");
+
+		$this->load->model('Common_model',"commodel");
+		$this->load->model('Login_model',"logmodel"); 
+		$this->load->model("Mailsend_model","mailmodel");
         if(empty($this->session->userdata('id_user'))) {
           $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('welcome');
@@ -24,7 +25,7 @@ class Profile  extends CI_Controller
 public function changepasswd()
 	{
 	$data_user_name= $this->session->userdata('username');
-	$passold=$this->login_model->getpassword($data_user_name)->password;
+	$passold=$this->logmodel->getpassword($data_user_name)->password;
 
          /* Form validations */
 	 $this->form_validation->set_rules('oldpassword', 'Old Password', 'trim|xss_clean|required');
@@ -49,7 +50,7 @@ public function changepasswd()
                         $update_data = array(
                         'password'=>md5($newpassword),
                       	);
-                	$pflag=$this->login_model->updaterec('edrpuser', $update_data,'username',$data_user_name);
+                	$pflag=$this->logmodel->updaterec('edrpuser', $update_data,'username',$data_user_name);
 			$sub='New Password';   
                         $mess='Your password has been changed. Your new password is '.$newpassword.' You can change it later on as per your convenience.';
 	       		if ( ! $pflag)
@@ -60,7 +61,7 @@ public function changepasswd()
 		       		redirect('profile/changepasswd');
 			}else{
 
-                                $mails=$this->mailsend_model->mailsnd($data_user_name,$sub,$mess,'');
+                                $mails=$this->mailmodel->mailsnd($data_user_name,$sub,$mess,'');
 				if($mails){
 		                       		$this->logger->write_logmessage("update"," Password change", " successfully" .$data_user_name);
                 		       		$this->logger->write_dblogmessage("update","Password change", "successfully".$data_user_name );     
@@ -83,25 +84,25 @@ public function viewprofile(){
          * using login model and common model
          */
 	$this->currentlog=$this->session->userdata('username');
-        //$this->roleid=$this->common_model->get_listspfic1('user_role_type','roleid','userid');
+        //$this->roleid=$this->commodel->get_listspfic1('user_role_type','roleid','userid');
         $this->roleid=$this->session->userdata('id_role');
-        $this->currentrole=$this->common_model->get_listspfic1('role','role_name','role_id',$this->roleid);
-        $this->name=$this->login_model->get_listspfic1('userprofile','firstname','userid',$this->session->userdata('id_user'));
-        $this->lastn=$this->login_model->get_listspfic1('userprofile','lastname','userid',$this->session->userdata('id_user'));
-        $this->address=$this->login_model->get_listspfic1('userprofile','address','userid',$this->session->userdata('id_user'));
-	$this->secmail=$this->login_model->get_listspfic1('userprofile','secmail','userid',$this->session->userdata('id_user'));
-        $this->mobile=$this->login_model->get_listspfic1('userprofile','mobile','userid',$this->session->userdata('id_user'));
-        $this->email=$this->login_model->get_listspfic1('edrpuser','email','id',$this->session->userdata('id_user'));
-	$this->campusid=$this->common_model->get_listspfic1('user_role_type','scid','userid',$this->session->userdata('id_user'))->scid;
-	$this->campusname=$this->common_model->get_listspfic1('study_center','sc_name','sc_id',$this->campusid);
-        $this->orgcode=$this->common_model->get_listspfic1('study_center','org_code','sc_id',$this->campusid);
-        $this->orgname=$this->common_model->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);
+        $this->currentrole=$this->commodel->get_listspfic1('role','role_name','role_id',$this->roleid);
+        $this->name=$this->logmodel->get_listspfic1('userprofile','firstname','userid',$this->session->userdata('id_user'));
+        $this->lastn=$this->logmodel->get_listspfic1('userprofile','lastname','userid',$this->session->userdata('id_user'));
+        $this->address=$this->logmodel->get_listspfic1('userprofile','address','userid',$this->session->userdata('id_user'));
+	$this->secmail=$this->logmodel->get_listspfic1('userprofile','secmail','userid',$this->session->userdata('id_user'));
+        $this->mobile=$this->logmodel->get_listspfic1('userprofile','mobile','userid',$this->session->userdata('id_user'));
+        $this->email=$this->logmodel->get_listspfic1('edrpuser','email','id',$this->session->userdata('id_user'));
+	$this->campusid=$this->commodel->get_listspfic1('user_role_type','scid','userid',$this->session->userdata('id_user'))->scid;
+	$this->campusname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$this->campusid);
+        $this->orgcode=$this->commodel->get_listspfic1('study_center','org_code','sc_id',$this->campusid);
+        $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_code',$this->orgcode->org_code);
         $this->load->view('profile/viewprofile');
 }//end function
 /* this function is used for update user profile */
 	public function editprofile(){
 		$id=$this->session->userdata('id_user');
-		$profile_data_q=$this->login_model->get_listrow('userprofile','userid', $id);
+		$profile_data_q=$this->logmodel->get_listrow('userprofile','userid', $id);
 	        if ($profile_data_q->num_rows() < 1)
         	{
 	        	redirect('profile/editprofile');
@@ -192,7 +193,7 @@ public function viewprofile(){
                		'mobile' => $mobile,
 		);
 		
-		$profileflag=$this->login_model->updaterec('userprofile', $update_data, 'userid', $id);
+		$profileflag=$this->logmodel->updaterec('userprofile', $update_data, 'userid', $id);
            		if(!$profileflag){
                 		$this->logger->write_logmessage("error","Error in update profile", "Error in profile record update". $logmessage );
                 		$this->logger->write_dblogmessage("error","Error in update profile ", "Error in profile record update". $logmessage );

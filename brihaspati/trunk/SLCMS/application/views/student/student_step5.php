@@ -31,17 +31,18 @@ function myFunction() {
 </script>
 </head>
 <body>
-
+<div>
 <?php
-
+/*
 echo "<center>";
 	if($this->session->flashdata('msg')){
 	echo" <div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;'>";
 		echo $this->session->flashdata('msg');
 	echo "<div>";
 }
-echo "</center>";
+echo "</center>";*/
 ?>
+</div>
 
 <page size="A4">
 	<div id="body">
