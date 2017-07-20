@@ -1,3 +1,41 @@
+
+SLCMS  Version 1.0 2017-07-17
+-----------------------------
+    * Functionality to map users with different role added.-Kishore
+
+SLCMS  Version 1.0 2017-07-15
+-----------------------------
+    * Improvement in Student admission, student semester registeration added.-Sumit
+
+SLCMS  Version 1.0 2017-07-14
+-----------------------------
+    * Seat reservation mechanism added; date difference and limits -mechanism added, bug fixes.-NKS, Abhay
+
+SLCMS  Version 1.0 2017-07-13
+-----------------------------
+    * Editing of profile now added.-Deepika
+    * Study center related multiple sql files merged into single one.-Rekha
+
+SLCMS  Version 1.0 2017-07-12
+-----------------------------
+    * Mapping functionlity for subject and paper to teacher, added.-OP
+    * Program's students list in faculty interface.- Manorama
+
+SLCMS  Version 1.0 2017-07-11
+-----------------------------
+    * Subect, semester and subject-semester rules archival system added.-NKS 
+    * Templates for subject-sem mapping done.-NKS
+    * Dropdown and calendar features added in during form fillup.-Rekha
+
+SLCMS  Version 1.0 2017-07-08
+-----------------------------
+    * Add, update and display of semester rules now functional.- NKS
+
+SLCMS  Version 1.0 2017-07-05
+-----------------------------
+    * Modification in semester rule table - NKS
+    * Grade master created, student entry and exit table added, admin menu modifications done -NKS
+
 SLCMS  Version 1.0 2017-07-03
 -----------------------------
     * Data structure added (degree rule, semester rule, subject semester,master grade)- NKS

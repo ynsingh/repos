@@ -39,21 +39,21 @@
    
                                         echo "<tr>";
 					echo "<td align=\"center\">";
-					echo $this->loginm->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;
+					echo $this->logmodel->get_listspfic1('userprofile','firstname','userid',$row->userid)->firstname;
 					echo "&nbsp; ";
-					echo $this->loginm->get_listspfic1('userprofile','lastname','userid',$row->userid)->lastname;
+					echo $this->logmodel->get_listspfic1('userprofile','lastname','userid',$row->userid)->lastname;
 					echo "</td>";
 					echo " <td align=\"center\">";
-					echo $this->loginm->get_listspfic1('edrpuser','username','id',$row->userid)->username;
+					echo $this->logmodel->get_listspfic1('edrpuser','username','id',$row->userid)->username;
 					echo " </td>";
 					echo " <td align=\"center\"> ";
-					echo $this->loginm->get_listspfic1('userprofile','mobile','userid',$row->userid)->mobile;
+					echo $this->logmodel->get_listspfic1('userprofile','mobile','userid',$row->userid)->mobile;
 					echo "</td>";
 					echo " <td align=\"center\">";
-					echo $this->cmodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;
+					echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->scid)->sc_name;
 					echo "</td>";
 					echo " <td align=\"center\">";
-				        echo $this->cmodel->get_listspfic1('Department','dept_name','dept_id',$row->deptid)->dept_name;
+				        echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->deptid)->dept_name;
 					echo "</td>";
                                         echo "</tr>";
                                 };
