@@ -3,6 +3,7 @@
 /* 
  * @name Upl.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
+ * @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
  * 
  */
  
@@ -253,7 +254,7 @@ class Upl extends CI_Controller
 				           'roleid'=> $role,
 				            'deptid'=> $dept,
 				            'scid'=> $sc,
-				            'usertype'=>$role,
+                                            'usertype'=>'Faculty'
         	    			);
 					$userflagurt=$this->commodel->insertrec('user_role_type', $dataurt) ;
 					if($userflagurt){
@@ -342,4 +343,187 @@ class Upl extends CI_Controller
         $this->load->view('upl/uploadteacherlist');
     }
 
+ // upload staff list
+    public function uploadslist(){
+        // for clearing the previous sucess/error flashdata
+        $array_items = array('success' => '', 'error' => '', 'warning' =>'');
+        $this->session->set_flashdata($array_items);
+        $error =array();
+        if(isset($_POST['uploadslist'])) {
+            $ferror='';
+            if ( isset($_FILES["userfile"]))
+            {
+                $errors= array();
+                $file_name = $_FILES['userfile']['name'];
+                //      $file_size = $_FILES['userfile']['size'];
+                //      $file_tmp = $_FILES['userfile']['tmp_name'];
+                //      $file_type = $_FILES['userfile']['type'];
+                $file_ext=strtolower(end((explode('.',$file_name))));
+
+                $expensions= array("txt","csv");
+
+                if(in_array($file_ext,$expensions)=== false){
+                    $ferror="extension not allowed, please choose a txt or csv file.";
+                    $this->session->set_flashdata('error', $ferror);
+                    $this->load->view('upl/uploadstafflist');
+                    return;
+                }
+
+                //      if($file_size > 2097152) {
+                //              $errors[]='File size must be excately 2 MB';
+                //      }
+
+                //      if ($_FILES["userfile"]["error"] > 0) {
+                //              echo "Return Code: " . $_FILES["userfile"]["error"] . "<br />";
+                //      }
+                else {
+                    $flag=true;
+                    $datal = array();
+                    $uploadedfile = $_FILES['userfile']['tmp_name'];
+                    $h = fopen($uploadedfile,"r");
+                    $i=1;
+                    while (false !== ($line = fgets($h)))
+                    {
+                        $datal = explode(",", $line);
+                        $flag=false;
+        //              print_r($datal);
+                        if (count($datal) >= 5){
+                            $name = $datal[0];
+                            $email = $datal[1];
+                            $dept = $datal[2];
+                            $role = $datal[3];
+                            $sc = $datal[4];
+                            if (count($datal) > 5)
+                                $mobile = $datal[5];
+                             else
+                            $mobile='';
+
+                            // check for duplicate
+                            $isdup= $this->logmodel->isduplicate('edrpuser','username',$email );
+                            if(!$isdup){
+                                //generate 10 digit random password
+                                    $passwd=$this->commodel->randNum(10);
+                                // generate the hash of password
+                                    $password=md5($passwd);
+                                // insert data into edrp user db1
+                                $dataeu = array(
+                                    'username'=> $email,
+                                    'password'=> $password,
+                                    'email'=> $email,
+                                    'componentreg'=> '*',
+                                    'mobile'=>$mobile,
+                                    'status'=>1,
+                                    'category_type'=>$role,
+                                    'is_verified'=>1
+                                );
+                                $userflageu=$this->logmodel->insertrec('edrpuser', $dataeu);
+                                //get the insert id of edrp user
+                                $insertid= $this->logmodel->get_listspfic1('edrpuser','id','username',$email );
+                                $insid=$insertid->id;
+                                //print_r("this is testing upload file===".$userflageu."and id-> " .$insid);
+                                if($userflageu){
+                                    // insert into  user profile db1
+                                    $dataup = array(
+                                        'userid'=> $insid,
+                                        'firstname'=> $name,
+                                        'lang'=> 'english',
+                                        'mobile'=>$mobile,
+                                        'status'=>1
+                                    );
+                                    $userflagup=$this->logmodel->insertrec('userprofile', $dataup) ;
+                                    if($userflagup){
+                                        // insert into user role type db
+                                        $dataurt = array(
+                                           'userid'=> $insid,
+                                           'roleid'=> $role,
+                                            'deptid'=> $dept,
+                                            'scid'=> $sc,
+                                            'usertype'=>'Staff'
+                                        );
+                                        $userflagurt=$this->commodel->insertrec('user_role_type', $dataurt) ;
+                                        if($userflagurt){
+                                            $sub='Staff  Registration' ;
+                                            $mess="You are registration is complete. The user id ".$email ." and password is ".$passwd ;
+                                            $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
+                                            //  mail flag check                         
+                                            if($mails){
+                                                       $error[] ="At row".$i."sufficient data and mail sent sucessfully";
+                                                    $this->logger->write_logmessage("insert"," add staff edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email );
+                                                    $this->logger->write_dblogmessage("insert"," add staff edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email );
+                                            }
+                                            else{
+                                                    $error[] ="At row".$i."sufficient data and mail does sent";
+                                                    $this->logger->write_logmessage("insert"," add staff edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email ." and mail does sent");
+                                                    $this->logger->write_dblogmessage("insert"," add staff edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email." and mail does sent" );
+                                            }
+                                        }else{
+                                            //set the message for error in entering data in user role type
+                                            $this->logger->write_logmessage("insert"," Error in adding staff edrpuser,profile and user role type ", " data insert error . ".$name ." ".$email );
+                                            $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser,profile and user role type ", " data insert error . ".$name ." ".$email);
+                                            // delete edrp user data
+                                            $result = $this->logmodel->deleterow('edrpuser','id',$insid);
+                                            // delete user profile data
+                                            $result = $this->logmodel->deleterow('userprofile','userid',$insid);
+                                        }
+                                    }else{
+                                        //set the message for error in entering data in user profile table
+                                        $this->logger->write_logmessage("insert"," Error in adding staff edrpuser,profile ", " data insert error . ".$name ." ".$email  );
+                                        $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser,profile ", " data insert error . ".$name ." ".$email );
+                                        // delete edrp user data
+                                        $result = $this->logmodel->deleterow('edrpuser','id',$insid);
+                                    }
+                                }else{
+                                    // set the message for error in entering data in edrp table
+                                    $this->logger->write_logmessage("insert"," Error in adding staff edrpuser ", " data insert error . ".$name ." ".$email  );
+                                    $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser ", "data insert error . ".$name ." ".$email );
+                                }
+                                // $this->session->set_flashdata('success', ' sufficient data');        
+                            }//close for is dup
+                            else{
+                                $error[] ="At row".$i."duplicate data";
+                                $this->logger->write_logmessage("insert"," Error in adding staff edrpuser ", "At row".$i."duplicate data"  );
+                                $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser ", "At row".$i."duplicate data" );
+                            }
+                            $i++;
+                        }
+                        else{
+                            //  insufficient data
+                            $error[] ="At row".$i."insufficient data";
+                             $this->logger->write_logmessage("insert"," Error in adding staff edrpuser ", "At row".$i."insufficient data"  );
+                            $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser ", "At row".$i."insufficient data" );
+                            //  $this->session->set_flashdata('error', ' insufficient data');
+                            $i++;
+
+                        }
+                    }
+                    if($flag){
+                        $this->session->set_flashdata('error', ' File without data');
+                        $this->load->view('upl/uploadstafflist');
+                        return;
+                    }else{
+                        //                                      print_r($error);
+                        foreach ($error as $item => $value):
+                            $ferror = $ferror ."</br>". $item .":". $value;
+                        endforeach;
+                        //display error of array
+                        //put ferror in log file.
+                        $this->session->set_flashdata('success', $ferror);
+                        $this->load->view('upl/uploadstafflist');
+                        return;
+                    }
+                }
+            }//userfile checks
+            else
+            {
+                //$error = array( 'error' => $this->upload->display_errors());
+                foreach ($error as $item => $value):
+                    $ferror = $ferror ."</br>".$item .":". $value;
+                endforeach;
+                $this->session->set_flashdata('error', $ferror);
+                $this->load->view('upl/uploadstafflist');
+                return;
+            }
+        }// check for pressing correct button
+        $this->load->view('upl/uploadstafflist');
+    }
 }

@@ -91,10 +91,13 @@ echo "<ul class=\"sf-menu\">";
 					echo "</li>";
 				/*	echo "<li>";
 						echo anchor('upl/uploadstulist', 'Upload Student List', array('title' => 'Upload Student List'));
-					echo "</li>";
-				 */	echo "<li>";
+					echo "</li>";*/
+				 	echo "<li>";
 						echo anchor('upl/uploadtlist', 'Upload Teacher List', array('title' => 'Upload Teacher List'));
-					echo "</li>";					
+					echo "</li>";
+     				        echo "<li>";
+                                                echo anchor('upl/uploadslist', 'Upload Staff List', array('title' => 'Upload Staff List'));
+                                        echo "</li>";					
 				echo "</ul>";
 			echo "</li>";
 			echo "<li>";
