@@ -20,7 +20,7 @@
                 dataType:"html",
                 success: function(data){
                 //alert(data);
-                $('#subsem_prgid').html(data);
+                $('#subsem_prgid').html(data.replace(/^"|"$/g, ''));
                 }
             }); 
         }

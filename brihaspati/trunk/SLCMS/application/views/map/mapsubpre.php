@@ -20,7 +20,7 @@
                 dataType:"html",
                 success: function(data){
                 //alert(data);
-                $('#spreq_prgid').html(data);
+                $('#spreq_prgid').html(data.replace(/^"|"$/g, ''));
                 }
             }); 
 	}
@@ -33,7 +33,7 @@
                 data: {"spreq_prgid" : subj},
                 dataType:"html",
                 success: function(data){
-                $('#spreq_subid').html(data);
+                $('#spreq_subid').html(data.replace(/^"|"$/g, ''));
                 }
              });
         }
@@ -46,7 +46,7 @@
                 data: {"spreq_subid" : paper},
                 dataType:"html",
                 success: function(data){
-                $('#spreq_subpid').html(data);
+                $('#spreq_subpid').html(data.replace(/^"|"$/g, ''));
                 }
             });
 	}

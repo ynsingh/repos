@@ -46,7 +46,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
                    data: {"cid" : cid},
                    dataType:"html",
                    success:function(data){
-                      $('#stname').html(data);
+                      $('#stname').html(data.replace(/^"|"$/g, ''));
                        
                    },
                    error:function(data){
@@ -71,7 +71,7 @@ $('#stname').on('change',function(){
                    data: {"sid" : sid},
                    dataType:"html",
                    success:function(data){
-                      $('#citname').html(data);
+                      $('#citname').html(data.replace(/^"|"$/g, ''));
                        
                    },
                    error:function(data){

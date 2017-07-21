@@ -1923,8 +1923,9 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('closedate','Closedate','trim|xss_clean');
                 $this->form_validation->set_rules('website','Website','trim|xss_clean|required|valid_url');
                 $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('mobile','Mobile','trim|max_length[12]');
-               }
+                $this->form_validation->set_rules('mobile','Mobile','trim|numeric|required|max_length[12]');
+
+             }
                    
 
 
@@ -2205,8 +2206,9 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('closedate','Closedate','trim|xss_clean|required');
                 $this->form_validation->set_rules('website','Website','trim|xss_clean|required|valid_url');
                 $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('mobile','Mobile','trim|xss_clean|numeric|required|max_length[12]');
-               /* Re-populating form */
+                $this->form_validation->set_rules('mobile','Mobile','trim|numeric|required|max_length[12]');
+               
+             /* Re-populating form */
 
                 if ($_POST)
                        {
@@ -2261,37 +2263,6 @@ class Setup extends CI_Controller
  				if($sc_data->sc_code != $data_institutecode)
 				$logmessage = $logmessage ." Campus Code " .$sc_data->institutecode. " changed by " .$data_institutecode;
         	                if($sc_data->sc_name != $data_name)
-                		$logmessage = $logmessage ." Campus Name " .$sc_data->name. " changed by " .$data_name;
-              			if($sc_data->sc_nickname != $data_nickname)
-               			$logmessage = $logmessage ." Nickname " .$sc_data->nickname. " changed by ". $data_nickname;
-	               		if($sc_data->sc_address != $data_address)
-         			$logmessage = $logmessage ." Address ".$sc_data->address. " changed by ".$data_address;
-            			if($sc_data->sc_country != $data_country)
-           			$logmessage = $logmessage . "Country " .$sc_data->country. " changed by".$data_country;
-              			if($sc_data->sc_state != $data_state)
-          			$logmessage = $logmessage . "State ".$sc_data->state ." changed by".$data_state;
-                		if($sc_data->sc_city != $data_city)
-               			$logmessage = $logmessage ." City " .$sc_data->city ." changed by ".$data_city;
-               			if($sc_data->sc_district != $data_district)
-         			$logmessage = $logmessage . "District " .$sc_data->district. " changed by" .$data_district;
-			        if($sc_data->sc_pincode != $data_pincode)
-           			$logmessage = $logmessage .  "Pincode " .$sc_data->pincode ." changed by " .$data_pincode;
-		                if($sc_data->sc_phone != $data_phone)
-             			$logmessage = $logmessage ." Phone " .$sc_data->phone. " changed by " .$data_phone;
-             	        	if($sc_data->sc_fax != $data_fax)
-               			$logmessage = $logmessage ." Fax " .$sc_data->fax. " changed by " .$data_fax;
-	                        if($sc_data->sc_status != $data_status)
-          		 	$logmessage = $logmessage ." Status " .$sc_data->status. " changed by ". $data_status;
-          		       	if($sc_data->sc_startdate != $data_startdate)
-              		       	$logmessage = $logmessage ." Startdate ".$sc_data->startdate. " changed by ".$data_startdate;
-          	                if($sc_data->sc_closedate != $data_closedate)
-              			$logmessage = $logmessage ." Closedate " .$sc_data->closedate ." changed by ".$data_closedate;
- 		              	if($sc_data->sc_website != $data_website)
-                		$logmessage = $logmessage . "Website " .$sc_data->website. " changed by" .$data_website;
-	   	                if($sc_data->sc_incharge != $data_sc_incharge)
-                	        $logmessage = $logmessage . "Incharge ".$sc_data->incharge ." changed by".$data_incharge;
-       			        if($sc_data->sc_mobile != $data_mobile)
-          			$logmessage = $logmessage . "Mobile " .$sc_data->mobile. " changed by".$data_mobile;
                                 $update_data = array(
 
 				   'org_code'=>$data_orgprofile,

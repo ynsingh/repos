@@ -50,7 +50,7 @@ class Student extends CI_Controller {
 			$list = $this->commodel->get_listspfic2('admissionmeritlist','id','branchname','course_name',$pgid,'branchname');
 			foreach($list as $datas): ?>   
       		  		<option  id='branchname' value="<?php echo $datas->branchname;?>"><?php echo $datas->branchname; ?></option>
-<?   		endforeach;
+<?php   		endforeach;
 	 }
 	
 	// Check for user admission login process

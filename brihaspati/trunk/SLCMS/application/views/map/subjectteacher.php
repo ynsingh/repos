@@ -24,7 +24,7 @@
 		data: {"campusname" : val},
 		dataType:"html",
 		success: function(data){
-		$('#deptname').html(data);
+		$('#deptname').html(data.replace(/^"|"$/g, ''));
 		}
 	     });
 	   }
@@ -37,7 +37,7 @@
                 data: {"deptname" : tl},
                 dataType:"html",
                 success: function(data){
-                $('#teachername').html(data);
+                $('#teachername').html(data.replace(/^"|"$/g, ''));
                 }
              });
         }
@@ -50,7 +50,7 @@
                 data: {"branchname" : subj},
 		dataType:"html",
 		success: function(data){
-                $('#subjectname').html(data);
+                $('#subjectname').html(data.replace(/^"|"$/g, ''));
 		}
 	     });	
         }
@@ -63,7 +63,7 @@
                 data: {"subjectname" : paper},
 		dataType:"html",
 		success: function(data){
-                $('#papername').html(data);
+                $('#papername').html(data.replace(/^"|"$/g, ''));
 		}
 	    });	
         }
@@ -76,7 +76,7 @@
                 data: {"programname" : branch},
                 dataType:"html",
                 success: function(data){
-                $('#branchname').html(data);
+                $('#branchname').html(data.replace(/^"|"$/g, ''));
                 }
             }); 
         }
