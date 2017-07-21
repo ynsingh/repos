@@ -27,19 +27,20 @@ tr th{background:black;color:white;font-weight:bold;}
 select{width:100%;font-size:17px;height:40px;}
 
 </style>
-<script type="text/javascript">
 
+<script type="text/javascript">
+/*
 function change_getcat(){
 
 	var xmlhttp = new XMLHttpRequest();
 
-	xmlhttp.open("GET","<?php echo site_url('student/getcatbr'); ?>?catbranch="+document.getElementById("register_name").value,false);
+	xmlhttp.open("GET","<?php //echo site_url('student/getcatbr'); ?>?catbranch="+document.getElementById("register_name").value,false);
 
 	xmlhttp.send(null);
 	
 	document.getElementById("Actlocation").innerHTML = xmlhttp.responseText; 
 	}
-
+*/
 </script>
 </head>
 <body>
@@ -136,11 +137,8 @@ function change_getcat(){
 		<td>	
 			<label for="nnumber">Name of programme/course</label></br>
 			<select name="Snameprogramme" class="form-control" id="register_name" style="height:37px;font-size:18px;font-weight:bold;">
-				<?php //foreach($this->prgname as $progname): ?>	
-					<option value="<?php echo $this->categid;?>"><?php echo $this->couname; ?></option>
-				<?php //endforeach; ?>
+				<option value="<?php echo $this->categid;?>"><?php echo $this->couname; ?></option>
 	  		</select>
-			<!---<input type="text" name="Snameprogramme" placeholder="Enter your name" value="<?php echo $this->couname;?>" readonly>--->	
 		<td/>
 	</tr>
 
@@ -153,30 +151,23 @@ function change_getcat(){
 			<label for="nnumber">SelectBranch</label></br>
 			<div id="Actlocation">			
 			<select name="Sbranchname" class="form-control"  style="height:37px;font-size:18px;font-weight:bold;">
-			<!--<option selected="true" disabled="disabled" style="font-size:18px;">Select Branch Name</option>-->
-					<?php //foreach( $this->prgbranch as $prog): ?>	
-						<option value="<?php echo $this->categid;?>"><?php echo $this->progname; ?></option>
-					<?php //endforeach; ?>
+				<option value="<?php echo $this->categid;?>"><?php echo $this->progname; ?></option>
 			</select>	
 			</div>
 			
-			<!---<input type="text" name="Sbranchname" placeholder="Enter your branch name" value="<?php echo $this->progname;?>" readonly>-->
 			
 		<td/>
 		<td>	
-			<!---<span style="color:red;"><?php echo form_error('Smothername');?></span>--->
 			<label for="nnumber">Mother name</label></br>	
 			<input type="text" name="Smothername" placeholder="Enter Mother Name" value="<?php echo @$this->data['Smothername']; ?>"/>		
 		<td/>
 
 		<td>	
-			<!---<span style="color:red;"><?php echo form_error('Sfathername');?></span>--->
 			<label>Father Name</label></br>
 			<input type="text" name="Sfathername" placeholder="Enter Father Name" value="<?php echo $this->fathname ?>"/>		
 		<td/>
 
 		<td>	
-			<!---<span style="color:red;"><?php echo form_error('Scategory');?></span>--->
 			<label for="nnumber">Category</label></br>
 			<select name="Scategory" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 

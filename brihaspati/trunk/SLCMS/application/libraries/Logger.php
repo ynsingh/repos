@@ -7,10 +7,14 @@
 
 class Logger
 {
-	function Logger()
+	public function __construct()
 	{
 		return;
 	}
+//	function Logger()
+//	{
+//		return;
+//	}
 
 	/*
 	 * Write message to file log  Levels defined are :

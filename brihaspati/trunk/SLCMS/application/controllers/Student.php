@@ -49,8 +49,8 @@ class Student extends CI_Controller {
 			$pgid = $this->input->post('Sprogramname');
 			$list = $this->commodel->get_listspfic2('admissionmeritlist','id','branchname','course_name',$pgid,'branchname');
 			foreach($list as $datas): ?>   
-      		  		<option  id='branchname' value="<?php echo $datas->id;?>"><?php echo $datas->branchname; ?></option>
-<?php   		endforeach;
+      		  		<option  id='branchname' value="<?php echo $datas->branchname;?>"><?php echo $datas->branchname; ?></option>
+<?   		endforeach;
 	 }
 	
 	// Check for user admission login process
@@ -74,11 +74,11 @@ class Student extends CI_Controller {
 						$data = array(
 							'application_no' => $this->input->post('Sanumber'),
 							'course_name'    => $this->input->post('Sprogramname'),
-							//'branchname'     => $this->input->post('Sbranchname'),
+							'branchname'     => $this->input->post('Sbranchname'),
 							'student_email'  => $this->input->post('Semail')				
 						);
 						
-						//for verification use the dupliacatemore in common model
+						//verify the data existance filled by user 
 						$result = $this->commodel->isduplicatemore("admissionmeritlist",$data);
 						print_r($result);
 						//$result = $this->stumodel->login($data);
@@ -259,45 +259,39 @@ class Student extends CI_Controller {
 		$array_items = array('success' => '', 'error' => '', 'warning' =>'');
        		$this->session->set_flashdata($array_items);
 		
-		$this->scresult = $this->commodel->get_list('study_center');
-		$this->progresult = $this->commodel->get_listspfic2('program','prg_code', 'prg_category');
-		$this->programesult1 = $this->commodel->get_list('program');
-		$this->scatresult = $this->commodel->get_list('category');
-		$this->depresult = $this->commodel->get_list('Department');
-         	$this->prgbranch = $this->commodel->get_list('program');
-
 		$this->number = $this->session->userdata['app_no'];	
 		$this->name=$this->commodel->get_listspfic1("admissionmeritlist","student_name","application_no",$this->number)->student_name;
-		$this->fathname=$this->commodel->get_listspfic1("admissionmeritlist","father_name","application_no",$this->number)->father_name;
+		$this->scresult = $this->commodel->get_list('study_center');
+		$this->prgname=$this->commodel->get_list("programcategory");
 		$this->couname=$this->commodel->get_listspfic1("admissionmeritlist","course_name","application_no",$this->number)->course_name;
-		//print_r($this->couname);
 		$this->progname=$this->commodel->get_listspfic1("admissionmeritlist","branchname","application_no",$this->number)->branchname;
 		$sarray='prg_id';	
 		$wharray = array('prg_name' => $this->couname, 'prg_branch' => $this->progname);
     		$resultprg=$this->commodel->get_listarry("program",$sarray,$wharray);
-		//print_r($resultprg);
-		//print_r($this->couname.$this->progname);
 		foreach($resultprg as $dataprg){
 			$this->categid=$dataprg->prg_id;
 		}
-		//print_r($this->categid);		
-
+		$this->fathname=$this->commodel->get_listspfic1("admissionmeritlist","father_name","application_no",$this->number)->father_name;
+		$this->scatresult = $this->commodel->get_list('category');
+		$this->depresult = $this->commodel->get_list('Department');
 		$this->semail=$this->commodel->get_listspfic1("admissionmeritlist","student_email","application_no",$this->number)->student_email;
 
-		$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","application_no",$this->number)->id;
-		$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","application_no",$this->number)->entexamname;
-		$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","application_no",$this->number)->entexamrollno;
-		$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","application_no",$this->number)->meritlist_no;	
+
+		//$this->progresult = $this->commodel->get_listspfic2('program','prg_code', 'prg_category');
+		//$this->programesult1 = $this->commodel->get_list('program');
+         	//$this->prgbranch = $this->commodel->get_list('program');
+
+		//print_r($this->couname);
+		//print_r($resultprg);
+		//print_r($this->couname.$this->progname);
+		//print_r($this->categid);		
+
+
 		
-		//$this->categid=$this->commodel->get_listspfic1("program","prg_id","prg_name",$this->couname)->prg_id;
-		$this->prgname=$this->commodel->get_list("programcategory");
-		//print_r($this->name);
-		//$result1 = $this->commodel->get_listrow("admissionmeritlist","application_no",$number);
-		//print_r($result1);
 		$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','application_no',$this->number)->lastdate_admission;
 		$admidate = $this->datmodel->comparedate($ldate);
-		$cdate = date("Y-m-d h:i:sa");
-		if($admidate == $cdate)
+	//	if($admidate == $cdate)
+		if($admidate)
 		{
 			//$this->load->view('student/student_step1');			
 			//redirect('student/student_step1');
@@ -426,14 +420,14 @@ class Student extends CI_Controller {
 		else{
 	    	// get the current academic year
 			$cacadyer = $this->user_model->getcurrentAcadYear();
-			 $protype = $this->input->post['Snameprogramme'];
+		//	 $protype = $this->input->post['Snameprogramme'];
 			//print_r($protype);
 		// get the program id
-			$prgid = $this->commodel->get_listspfic1('program','prg_id','prg_category',$protype);
+		//	$prgid = $this->commodel->get_listspfic1('program','prg_id','prg_category',$protype);
 			//print_r($prgid);
 		// get the study code 
-			$studycentr = $this->input->post['Scenters'];
-			$sccode = $this->commodel->get_listspfic1('study_center','sc_code','sc_name',$studycentr);
+//			$studycentr = $this->input->post['Scenters'];
+//			$sccode = $this->commodel->get_listspfic1('study_center','sc_code','sc_name',$studycentr);
 			//print_r($sccode);
 			
 		//insert into student master
@@ -570,6 +564,7 @@ class Student extends CI_Controller {
 		$this->db->insert('student_entrance_exam',$enterence);
 
 		//insert into student program
+		$cdate = date("Y-m-d h:i:sa");
 		$sem=1;
 		$stuprog = array(
 			'sp_smid'		=>	$insertid,
@@ -604,9 +599,13 @@ class Student extends CI_Controller {
                 );
 		$this->db->insert('admissionstep', $stuadmission);
 		
+		$ameritid = $this->commodel->get_listspfic1("admissionmeritlist","id","application_no",$this->number)->id;
+		$ameritexname = $this->commodel->get_listspfic1("admissionmeritlist","entexamname","application_no",$this->number)->entexamname;
+		$ameritrollno = $this->commodel->get_listspfic1("admissionmeritlist","entexamrollno","application_no",$this->number)->entexamrollno;
+		$ameritno = $this->commodel->get_listspfic1("admissionmeritlist","meritlist_no","application_no",$this->number)->meritlist_no;	
 		//insert  into student entry exit
 		$stuentry = array(
-				'senex_prgid'			=>	$getprogid,
+				'senex_prgid'			=>	$_POST['Snameprogramme'],
 				'senex_smid'			=>	$insertid,
 				'senex_entexamapplicationno'   	=>	$_POST['Sanumber'],
 				'senex_entexamname'		=>	$ameritexname,
