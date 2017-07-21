@@ -21,7 +21,7 @@
                 dataType:"html",
                 success: function(data){
                 //alert(data);
-                $('#semcr_prgid').html(data);
+                $('#semcr_prgid').html(data.replace(/^"|"$/g, ''));
                 }
             }); 
         }
@@ -104,7 +104,7 @@
 
                 <td><label for="semcr_mincredit" class="control-label">Semester Minimum Credit:</label></td>
                 <td>
-                <input type="text" name="semcr_mincredit"  class="form-control" size="30" /><br>
+                <input type="text" name="semcr_mincredit"  class="form-control" size="33" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('semcr_mincredit')?>
@@ -116,7 +116,7 @@
 		<tr>
                 <td><label for="semcr_maxcredit" class="control-label">Semester Maximum Credit:</label></td>
                 <td>
-                <input type="text" name="semcr_maxcredit"  class="form-control" size="30" /><br>
+                <input type="text" name="semcr_maxcredit"  class="form-control" size="33" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('semcr_maxcredit')?>
@@ -130,7 +130,7 @@
                 <label for="semcr_semcpi" class="control-label">Semester CPI:</label>
                 </td>
                 <td>
-                    <input type="text" name="semcr_semcpi" size="30"  class="form-control" /> <br>
+                    <input type="text" name="semcr_semcpi" size="33"  class="form-control" /> <br>
                 </td>
                 <td>
                     <?php //echo form_error('semcr_semcpi ')?>

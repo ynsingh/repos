@@ -104,7 +104,7 @@ $('#stname').on('change',function(){
    <div style="margin-left:2%; width:100%;">
       <br>
 <div align="left">
-<table style="margin-left:1.6%;">
+<table style="margin-left:2%;">
 <tr><td>
 <?php echo anchor('setup/viewsc/', "Study Center List" ,array('title' => 'Study Center List' , 'class' => 'top_parent'));?>
 </td></tr>
@@ -112,14 +112,14 @@ $('#stname').on('change',function(){
 </div>
 
 
-     <style="margin-left:0.2%;">
+     <style="margin-left:2%;">
             <tr><td>
-                <div style="margin-left:0.2%;width:90%;">
-                    <?php echo validation_errors('<div style="margin-left:0.2%;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:0.2%;" class="isa_error">','</div>');?>
+                <div style="margin-left:2%;width:90%;">
+                    <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:0.2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };

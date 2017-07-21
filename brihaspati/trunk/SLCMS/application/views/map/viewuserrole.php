@@ -20,10 +20,15 @@
        </style>
     </head>    
     <body>
-         <table style="margin-left:30px;"> 
-          <tr colspan="2"><td> 
+         <table style="margin-left:2%;width:100%"> 
+          <tr><td> 
                <?php echo anchor('map/userroletype/', "Map with User Role List ", array('title' => 'Add Detail' , 'class' => 'top_parent'));?>
-               <div  style="width:1700px;">
+               <?php
+                 $help_uri = site_url()."/help/helpdoc#EmailSetting";
+                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+                 ?>
+
+               <div  style="margin-left:2%; width:90%;" >
                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -35,12 +40,12 @@
                 <?php
                 };
                 ?>        
-        </div>
+        	</div>
         </td></tr>  
         </table>  
         <br/>
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" style="margin-left:30px;" class="TFtable">
+            <table cellpadding="16" style="margin-left:2%;" class="TFtable">
             <thead >
             <tr align="center">
                 <th>Sr.No</th>

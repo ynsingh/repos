@@ -47,30 +47,30 @@
             echo "</table>";
         ?>-->
          </br>    
-        <table> 
+        <table width="100%"> 
             
-            <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+            <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
  
-            <tr colspan="2"><td>  
-                <div style="margin-left:31px;">    
+            <tr><td>  
+                <div style="margin-left:2%;">    
                 <?php echo anchor('map/subjectsemester/', "Subject Semester Program Department List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
 		$help_uri = site_url()."/help/helpdoc#";
-		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:50%\">Click for Help</b></a>";
 		?>
                 </div>
-                <div align="left" style="margin-left:30px;width:1700px;">
+                <div align="left" style="margin-left:2%;">
                  
-                <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
+                <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };
                 ?>
                  <?php if(isset($_SESSION['err_message'])){?>
 
-                    <div style="margin-left:30px;"  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div style="margin-left:2%;"  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 
                 <?php
                 };
@@ -82,11 +82,11 @@
         <br/>
             
 	<form action="<?php echo site_url('map/mapsubsem');?>" method="POST" class="form-inline">
-	<table style="margin-left:30px;">
+	<table style="margin-left:2%;">
 		<tr>
                 <td>Department Name :</td>
                 <td>
-                <select name="subsem_deptid" id="subsem_deptid" class="my_dropdown" style="width:300px;" >
+                <select name="subsem_deptid" id="subsem_deptid" class="my_dropdown" style="width:100%;" >
                 <option value="" disabled selected >------Select Department Name--------------</option>
                 <?php foreach($dept as $dataspt): ?>
                 <option value="<?php echo $dataspt->dept_id ?>"><?php echo $dataspt->dept_name; ?></option>
@@ -97,7 +97,7 @@
 		<tr>
            	<td>Program Name :</td>
            	<td>
-                <select name="programname" id="programname" class="my_dropdown" style="width:300px;" onchange="getbranchname(this.value)" >
+                <select name="programname" id="programname" class="my_dropdown" style="width:100%;" onchange="getbranchname(this.value)" >
                 <option value="" disabled selected >------Select Program Name--------------</option>
                 <?php foreach($prgresult as $dataspt): ?>
                 <option value="<?php echo $dataspt->prg_name ?>"><?php echo $dataspt->prg_name; ?></option>
@@ -108,7 +108,7 @@
         	<tr>
            	<td>Branch Name :</td>
            	<td>
-                <select name="subsem_prgid" id="subsem_prgid" class="my_dropdown" style="width:300px;">
+                <select name="subsem_prgid" id="subsem_prgid" class="my_dropdown" style="width:100%;">
                 <option value="" disabled selected >------Select Branch Name--------------</option>
            	</td>
 		</tr>
@@ -133,7 +133,7 @@
 		<tr>
                 <td>Subject Name :</td>
                 <td>
-                <select name="subsem_subid" id="subsem_subname" class="my_dropdown" style="width:300px;" >
+                <select name="subsem_subid" id="subsem_subname" class="my_dropdown" style="width:100%;" >
                 <option value="" disabled selected >------Select Subject Name--------------</option>
                 <?php foreach($subres as $dataspt): ?>
                 <option value="<?php echo $dataspt->sub_id ?>"><?php echo $dataspt->sub_name; ?></option>
@@ -144,7 +144,7 @@
             	<tr>
                 <td> Subject Type:</td>
                 <td>
-                <select name="subsem_subtype"class="my_dropdown" style="width:300px;">
+                <select name="subsem_subtype"class="my_dropdown" style="width:100%;">
                 <option value="" disabled selected>------Select Subject Type------</option>  
                 <option value="Compulsory" class="dropdown-item">Compulsory</option>
                 <option value="Elective" class="dropdown-item">Elective</option>

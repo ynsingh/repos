@@ -11,9 +11,9 @@
         <?php $this->load->view('template/menu');?>
  </head>
    <body>
-     <table>
-       <tr colspan="2"><td>
-        <div style="margin-left:10px;" >
+     <table width="100%">
+       <tr><td>
+        <div style="margin-left:2%;" >
         <?php
            echo anchor('setup/viewprogramcat', 'Program Categroy List', array('class' => 'top_parent'));
            $help_uri = site_url()."/help/helpdoc#Category";
@@ -21,7 +21,7 @@
         ?>
         </font>
         </div>
-        <div align="left" style="margin-left:30px;width:1000px;">
+        <div align="left" style="margin-left:2%;width:90%;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>

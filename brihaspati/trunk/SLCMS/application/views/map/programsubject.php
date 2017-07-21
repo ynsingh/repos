@@ -30,7 +30,6 @@ echo "<body>";
     echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
     echo "Map";
     echo "<span  style=\"padding: 8px 8px 8px 20px;\"> ";
-    echo "|";
     echo anchor('map/programsubject/', "Map Program with Subject", array('title' => 'Add Detail' , 'class' => 'top_parent'));
     echo "<span  style=\"padding: 8px 8px 8px 20px;\"> ";
     echo "|";
@@ -45,29 +44,29 @@ echo "<body>";
 ?>
 <br>
 <div align="left">
-<table style="margin-left:10px;">
+<table style="margin-left:2%;width:100%">
 <tr><td>
 <?php echo anchor('map/addprogramsubject/', " Add Subject Paper" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#ViewSubjectPaperList";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
 ?>
 </td></tr>
 </table>
 </div>
 
-    <table>
-    <tr colspan=2><td>
-    <div  style="margin-left:30px;width:1700px;">
+    <table width="100%">
+    <tr><td>
+    <div  style="margin-left:2%;width:90%;">
 
-    <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning>','</div>');?>
+    <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
     <!--?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?-->
 
      <?php if(isset($_SESSION['success'])){?>
-       <div style="margin-left:30px" class="isa_success"><?php echo $_SESSION['success'];?></div>
+       <div style="margin-left:2%" class="isa_success"><?php echo $_SESSION['success'];?></div>
 <?php    }
     if(isset($_SESSION['error']))
     {
-?>        <div style="margin-left:30px"; class="isa_error">"<?php echo $_SESSION['error'];?> </div>
+?>        <div style="margin-left:2%"; class="isa_error">"<?php echo $_SESSION['error'];?> </div>
 <?php
     }
     echo "</td></tr>";
@@ -80,6 +79,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Paper Category</th><th>Degree</th><th>Branch </th><th>Academic Year </th><th>Subject Name</th><th>Paper No</th><th>Paper Name</th><th>Paper Code</th><th>Paper Short Name</th><th>Available Action</th></tr></thead>";
 $this->load->model('Map_model',"mapmodel");
 $srno = 0;
+if( count($paperrecords) ) 
 foreach($paperrecords as $row)
 {
     $subject_name = $this->mapmodel->get_subjectname($row->subp_sub_id);
@@ -101,6 +101,12 @@ foreach($paperrecords as $row)
     echo "<td>"; echo anchor('map/editprogramsubject/' .$row->subp_id  , "Edit", array('title' => 'Edit Subject Program', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; echo anchor('map/deleteprogramsubject/' .$row->subp_id ,"Delete", array('title' => 'Delete Subject', 'class' => 'red-link')); echo"</td>";
     echo "</tr>";
 }
+   else{ 
+    echo "<tr>";
+         echo "<td colspan= \"11\" align=\"center\"> No Records found...!</td>";
+    echo "</tr>";
+   }
+
 
     echo "</table>";
 /* Form */

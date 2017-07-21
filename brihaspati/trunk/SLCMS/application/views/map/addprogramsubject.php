@@ -44,27 +44,27 @@ echo "<body>";
 ?>
 <br>
 <div align="left">
-<table style="margin-left:10px;">
+<table style="margin-left:2%;width:100%">
 <tr><td>
 <?php echo anchor('map/programsubject/', " Subject Paper List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#MapProgramwithSubjectandPaper";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
 ?>
 </td></tr>
 </table>
 </div>
-<table>
-    <tr colspan="2"><td>
-    <div align="left" style="margin-left:30px;width:1700px;">
+<table width="100%">
+    <tr><td>
+    <div align="left" style="margin-left:2%;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+        <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
         <?php
         };
         if(isset($_SESSION['error']))
         {
-        ?> <div style="margin-left:30px"; class="isa_success">"<?php echo $_SESSION['error'];?> </div>
+        ?> <div style="margin-left:2%"; class="isa_success">"<?php echo $_SESSION['error'];?> </div>
         <?php
         }
         ?>
@@ -87,7 +87,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         $acadyear[$temp ] = $temp;
     }
 
-    echo "<table style= \"margin-left:30px;\">";
+    echo "<table style= \"margin-left:2%;\">";
     echo form_open('map/addprogramsubject');
 
     echo "<p>";
@@ -197,6 +197,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
     echo "<p>";
     echo "<tr><td>";
+    echo "</td><td>";
     echo form_submit('submit', 'Submit');
     echo form_reset('reset','Clear');
     //echo form_button('submit', 'Submit');

@@ -3,7 +3,7 @@
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html> 
-<title>Add Degree rules</title>
+<title>Add Degree Rules</title>
 
  <head>
       <?php $this->load->view('template/header'); ?>
@@ -21,7 +21,7 @@
                 dataType:"html",
                 success: function(data){
                // alert(data);
-                $('#dr_prgid').html(data);
+                $('#dr_prgid').html(data.replace(/^"|"$/g, ''));
                 }
             }); 
         }
@@ -42,7 +42,7 @@
      <table width="100%">
             <tr><td>
                 <div align="left" style="margin-left:0.2%;">
-                <?php echo anchor('setup2/degreerules/', "View Degree rules ", array('title' => 'View Degree rules' ,'class' =>'top_parent'));?>
+                <?php echo anchor('setup2/degreerules/', "View Degree Rules ", array('title' => 'View Degree rules' ,'class' =>'top_parent'));?>
                 <?php
                  $help_uri = site_url()."/help/helpdoc#";
                  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:60%\">Click for Help</b></a>";
@@ -87,7 +87,7 @@
               <tr>
                <td><label for="dr_mincredit" class="control-label">Degree minimum Credit:</label></td>
                <td>
-               <input type="text" name="dr_mincredit"  class="form-control" size="30" /><br>
+               <input type="text" name="dr_mincredit"  class="form-control" size="33" /><br>
                </td>
                <td>
                   <?php //echo form_error('dr_mincredit')?>
@@ -96,7 +96,7 @@
             <tr>
                 <td><label for="dr_minsubcredit" class="control-label">Minimum Subject Credit:</label></td>
                 <td>
-                <input type="text" name="dr_minsubcredit" class="form-control" size="30" /><br>
+                <input type="text" name="dr_minsubcredit" class="form-control" size="33" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('dr_minsubcredit')?>
@@ -105,7 +105,7 @@
               <tr>
                 <td><label for="dr_minthesiscredit" class="control-label">Minimum Thesis Credit:</label></td>
                 <td>
-                <input type="text" name="dr_minthesiscredit" class="form-control" size="30" /><br>
+                <input type="text" name="dr_minthesiscredit" class="form-control" size="33" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('dr_minthesiscredit')?>
@@ -114,7 +114,7 @@
               <tr>
                 <td><label for="dr_minsub" class="control-label">Minimum Subjects:</label></td>
                 <td>
-                <input type="text" name="dr_minsub" class="form-control" size="30" /><br>
+                <input type="text" name="dr_minsub" class="form-control" size="33" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('dr_minsub')?>
@@ -123,7 +123,7 @@
               <tr>
                 <td><label for="dr_minsemester" class="control-label">Minimum Semesters:</label></td>
                 <td>
-                <input type="text" name="dr_minsemester" class="form-control" size="30" /><br>
+                <input type="text" name="dr_minsemester" class="form-control" size="33" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('dr_minsemester')?>
@@ -132,7 +132,7 @@
               <tr>
                 <td><label for="dr_mincpi" class="control-label">Minimum CPI:</label></td>
                 <td>
-                <input type="text" name="dr_mincpi" class="form-control" size="30" /><br>
+                <input type="text" name="dr_mincpi" class="form-control" size="33" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('dr_mincpi')?>
@@ -141,7 +141,7 @@
               <tr>
                 <td><label for="dr_maxcredit" class="control-label">Maximum Credit:</label></td>
                 <td>
-                <input type="text" name="dr_maxcredit" class="form-control" size="30" /><br>
+                <input type="text" name="dr_maxcredit" class="form-control" size="33" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('dr_maxcredit')?>
@@ -150,7 +150,7 @@
               <tr>
                 <td><label for=" dr_maxsemeter" class="control-label">Maximum Semesters:</label></td>
                 <td>
-                <input type="text" name="dr_maxsemeter" class="form-control" size="30" /><br>
+                <input type="text" name="dr_maxsemeter" class="form-control" size="33" /><br>
                 </td>
                 <td>
                     <?php //echo form_error('dr_maxsemeter')?>

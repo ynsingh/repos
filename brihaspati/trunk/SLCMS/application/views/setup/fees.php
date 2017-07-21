@@ -106,17 +106,17 @@
 
 			<tr>
                         <td><label>Head:</label></td>
-			<td><input type="text"placeholder="Head" name="head"  size="27" /></td>
+			<td><input type="text"placeholder="Head" name="head"  size="30" /></td>
                         <?php echo form_error('fm_head')?></td>
 			</tr>
 			<tr>
                         <td><label>Amount:</label></td>
-			<td><input type="text"placeholder="Amount" name="amount"  size="27" /></td>
+			<td><input type="text"placeholder="Amount" name="amount"  size="30" /></td>
                         <?php echo form_error('fm_amount')?></td>
                         </tr>
                         <tr>
                         <td><label>Description:</label></td>
-			<td><input type="text"placeholder="Description" name="description"  size="27" /></td>
+			<td><input type="text"placeholder="Description" name="description"  size="30" /></td>
                         <?php echo form_error('fm_description')?></td>
                         </tr>
                         <!--!tr>

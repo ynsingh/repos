@@ -34,20 +34,20 @@
             echo "</tr>";
             echo "</table>";
         ?>  -->
-        <table style="margin-left:30px;"> 
-            <tr colspan="2"><td>    
-                <div style="margin-left:30px;width:1700px;">
-                    <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+        <table width="100%"> 
+            <tr><td>    
+                <div style="margin-left:2%;">
+                    <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
                     ?>
                     <?php if(isset($_SESSION['err_message'])){?>
-                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div style="margin-left:2%;"  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 
                     <?php
                     };
@@ -59,7 +59,7 @@
     <tr><td align="left"> Edit Campus Program seat</td></tr> 
     </table><br/>-->
    
-    <table style="margin-left:50px;">
+    <table style="margin-left:2%;">
           <form action="<?php echo site_url('map/editscprgseat/' .$id );?>" method="POST" class="form-inline">
             
               <tr>
@@ -89,7 +89,7 @@
                 <td>Gender :</td>
                 <td>
                  
-                  <select name="gender" class="my_dropdown" style="width:310px;">
+                  <select name="gender" class="my_dropdown" style="width:100%;">
                     <option value="<?php echo $gender['value'];?>" style="display:none"><?php echo $gender['value'];?></option>                 
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -100,7 +100,7 @@
             <tr>
                 <td>Academic Year :</td>
                 <td>
-                    <select name="academicyear" class="my_dropdown" style="width:310px;">
+                    <select name="academicyear" class="my_dropdown" style="width:100%;">
                         <option value="<?php echo $academicyear['value'];?>" style="display:none"><?php echo $academicyear['value'];?></option>                 
                     <?php
                                                                            
@@ -117,7 +117,7 @@
             <tr>
                 <td>Semester :</td>
                 <td>
-                    <select name="semester" class="my_dropdown" style="width:310px;">
+                    <select name="semester" class="my_dropdown" style="width:100%;">
                     <option value="<?php echo $semester['value'];?>" style="display:none"><?php echo $semester['value'];?></option>                 
                     <option value="ODD">ODD</option>
                     <option value="Even">Even</option>
@@ -129,17 +129,13 @@
                <td></td>
                 <td colspan="2">   
                 <button name="editscprgseat" >Update</button>
+       		<?php echo "<button onclick=\"goBack()\" >Back</button>";?>
                 <//?php echo anchor('map/viewscprgseat', 'Back', 'Back to ViewPage');?>
                 </td>
                
             </tr>
             <?php echo form_hidden('id', $id);?>
         </form>
-      <td>
-     <td> 
-       <?php echo "<button onclick=\"goBack()\" >Back</button>";?>
-    </td>
-   
       </table>
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>

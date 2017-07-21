@@ -24,7 +24,7 @@
       <table width= "100%" style="margin-left:2%;">
             <tr><td>
                 <div align="left">
-                <?php  echo anchor('setup2/adddegreerules/', "Add degreerules", array('title' => 'Add degreerule Detail','class' =>'top_parent'));
+                <?php  echo anchor('setup2/adddegreerules/', "Add Degree Rules", array('title' => 'Add Degree Rule Detail','class' =>'top_parent'));
                 ?>
                    <?php
                    $help_uri = site_url()."/help/helpdoc#";

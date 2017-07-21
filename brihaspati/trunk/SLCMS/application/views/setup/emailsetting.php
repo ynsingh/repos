@@ -29,7 +29,7 @@
         
         ?-->
         <table width="100%">
-            <div align="left" style="margin-left:0.2%;">
+            <div align="left" style="margin-left:2%;">
              <tr><td>
                 <?php echo anchor('setup/dispemailsetting/', "View Email Setting" ,array('title' => 'Email Configuration Detail ' , 'class' => 'top_parent'));?>
                  <?php
@@ -60,7 +60,7 @@
         <tr>  
             <div>
                 <form action="<?php echo site_url('setup/emailsetting');?>" method="POST" class="form-inline"></div>
-                    <table style="margin-left:1%;">
+                    <table style="margin-left:2%;">
                         <tr>  
                             <td><label for="emailprotocol" class="control-label">Email Protocol:</label></td>
                             <!--<td><input type="text" name="emailprotocol"  class="form-control" size="50" /><br></td>-->

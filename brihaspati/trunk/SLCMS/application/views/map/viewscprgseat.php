@@ -35,14 +35,14 @@
             echo "</table>";
         ?>-->
         <!-- </br>   --> 
-        <table style="margin-left:7px;"> 
+        <table style="margin-left:2%;width:100%"> 
            
-            <tr colspan="2"><td> 
+            <tr><td> 
                  <?php echo anchor('map/mapscprgseat/', "Map Campus Program Seat ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
 		 $help_uri = site_url()."/help/helpdoc#ViewStudyCenterandProgramwithSeat";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
 		 ?>
-                <div  style="width:1700px;">
+                <div style="margin-left:2%; width:90%;">
   
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
 
@@ -59,12 +59,12 @@
                 };
                 ?>        
     
-            </div>
+                </div>
         </td></tr>  
         </table>  
-        <br/>
+        
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" style="margin-left:30px;" class="TFtable">
+            <table cellpadding="16" style="margin-left:2%;" class="TFtable">
             <thead >
             <tr align="center">
                 <th>Sr.No</th>
@@ -85,28 +85,30 @@
         </thead>
         <tbody>
            <?php $serial_no = 1;?>
-            <?php if( count($records) ): ?>
-                <?php foreach($records as $record){ ?>
-                    <tr align="center">
-                        
-                    <td><?php echo $serial_no++; ?></td>   
-                    <td><?php echo $this->mapmodel->get_studycenername($record->spsc_sc_code) ; ?></td>
-                    <td><?php echo $this->mapmodel->get_Programseat($record->spsc_prg_id); ?></td>
-                    <td><?php echo $record->spsc_gender; ?></td>
-                    <td><?php echo $record->spsc_acadyear; ?></td>
-                    <td><?php echo $record->spsc_sem; ?></td>
-                    <td><?php echo $record->spsc_totalseat; ?></td>
-                    <!-- <td><//?php echo $record->spsc_creatorid; ?></td>
-                    <td><//?php echo $record->spsc_createdate; ?></td>
-                    <td><//?php echo $record->spsc_modifierid; ?></td>
-                    <td><//?php echo $record->psc_modifydate; ?></td> -->
-                    <td> <?php  echo anchor("map/deletescprgseat/{$record->spsc_id}","Delete",array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
-                    &nbsp;<?php  echo anchor("map/editscprgseat/{$record->spsc_id}","Edit",array('title' => 'Details' , 'class' => 'red-link')); ?></td>
-                     </tr>
-                <?php }; ?>
-            <?php else : ?>  
-                  <td colspan= "10" align="center"> No Records found...!</td>
-            <?php endif;?> 
+    <?php if( count($records) ): ?>
+	<?php foreach($records as $record){ ?>
+	    <tr align="center">
+		
+	    <td><?php echo $serial_no++; ?></td>   
+	    <td><?php echo $this->mapmodel->get_studycenername($record->spsc_sc_code) ; ?></td>
+	    <td><?php echo $this->mapmodel->get_Programseat($record->spsc_prg_id); ?></td>
+	    <td><?php echo $record->spsc_gender; ?></td>
+	    <td><?php echo $record->spsc_acadyear; ?></td>
+	    <td><?php echo $record->spsc_sem; ?></td>
+	    <td><?php echo $record->spsc_totalseat; ?></td>
+	    <!-- <td><//?php echo $record->spsc_creatorid; ?></td>
+	    <td><//?php echo $record->spsc_createdate; ?></td>
+	    <td><//?php echo $record->spsc_modifierid; ?></td>
+	    <td><//?php echo $record->psc_modifydate; ?></td> -->
+	    <td> <?php  echo anchor("map/deletescprgseat/{$record->spsc_id}","Delete",array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
+	    &nbsp;<?php  echo anchor("map/editscprgseat/{$record->spsc_id}","Edit",array('title' => 'Details' , 'class' => 'red-link')); ?></td>
+	     </tr>
+	<?php }; ?>
+    <?php else : ?>  
+	     <tr>
+	  <td colspan= "10" align="center"> No Records found...!</td>
+	     </tr>
+    <?php endif;?> 
                   
                     
             

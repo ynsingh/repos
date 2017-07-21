@@ -12,6 +12,12 @@
 
     </head>
     <body>
+	<script>
+        function goBack() {
+         window.history.back();
+        }
+        </script>
+
        <table>
           <tr colspan="2"><td>
           <div style="margin-left:30px;width:1700px;">
@@ -84,7 +90,7 @@
             <tr>
                 <td>Teacher Name</td>
                 <td> 
-                    <select name="teachername" id="" class="my_dropdown" style="width:300px;">
+                    <select name="teachername" id="" class="my_dropdown" style="width:350px;">
                     <option value="<?php echo $teachername['value'];?>" style="display:none"><?php echo $teachername['value'];?></option>
                     <?php foreach($this->tresult as $dataspt): ?>
                         <?php if ((($dataspt->roleid)==2)&&(($this->commodel->get_listspfic1('user_role_type', 'deptid', 'userid', $dataspt->userid)->deptid)== $this->commodel->get_listspfic1('Department', 'dept_id', 'dept_name', ($deptname['value']))->dept_id)) { ?>
@@ -96,7 +102,7 @@
 	  <tr><td></td>
 	   <td>
 		<button name "submit" >Update</button>
-		<?php  echo anchor('map/listsubjectteacher', 'Back', array('class' => 'top_parent')); ?> 
+		<?php echo "<button onclick=\"goBack()\" >Back</button>";?>
 	   </td>	
 	  </tr>
 		<?php echo form_hidden( 'pstp_id', $pstp_id );?>

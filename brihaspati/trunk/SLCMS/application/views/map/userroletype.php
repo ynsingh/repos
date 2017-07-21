@@ -42,23 +42,28 @@
             <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?> 
         </br>    
-        <table> 
+        <table width="100%"> 
        
-            <tr colspan="2"><td>  
-                <div style="margin-left:30px;">    
+            <tr><td>  
+                <div style="margin-left:2%;">    
                 <?php echo anchor('map/viewuserrole/', "Map User Role List ", array('title' => 'View Detail' , 'class' => 'top_parent'));?>
+               <?php
+                 $help_uri = site_url()."/help/helpdoc#EmailSetting";
+                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+                 ?>
+
                 </div>
-                <div align="left" style="margin-left:30px;width:1700px;">
-                 <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
-                  <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                <div align="left" style="margin-left:2%;">
+                 <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
+                  <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
                 
 	        <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                 ?>
                  <?php if(isset($_SESSION['err_message'])){?>
-                    <div style="margin-left:30px;"  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div style="margin-left:2%;"  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
                 <?php
                 };
                 ?>    
@@ -67,11 +72,11 @@
         </td></tr>  
         </table>  
         <br/>
-        <table style="margin-left:50px;">
+        <table style="margin-left:2%;">
             
            <form action="<?php echo site_url('map/userroletype');?>" method="POST">
                          <tr><td> Choose your Campus: </td><td>
-                         <select name="campus" id="camp" style="width:300px;">
+                         <select name="campus" id="camp" style="width:100%;">
                          <option value="">-------------Select Campus---------------</option>
                          <?php foreach($this->scresult as $datas): ?>
  		         <option value="<?php echo $datas->sc_id; ?>"><?php echo $datas->sc_name; ?></option>
@@ -79,12 +84,12 @@
                          </select>
                         </td></tr><tr><td>
                         Choose your Department: </td><td>
-                        <select name="dept_name" id="scid" disabled="" style="width:300px;">
+                        <select name="dept_name" id="scid" disabled="" style="width:100%;">
                         <option value="">select department</option>
                         </select>
                         </td></tr>
                         <tr><td> Select your Role: </td><td>
-                        <select name="role_name"  style="width:300px;">
+                        <select name="role_name"  style="width:100%;">
                         <option value="" disabled selected>-------------Select Role---------------</option>
                         <?php foreach($this->roleresult as $datas): ?>
                         <option value="<?php echo $datas->role_id; ?>"><?php echo $datas->role_name; ?></option>
@@ -94,7 +99,7 @@
                        <tr>
                       <td>User Type :</td>
                  <td>
-                    <select name="usertype" class="my_dropdown" style="width:300px;">
+                    <select name="usertype" class="my_dropdown" style="width:100%;">
                     <option value="" disabled selected>------Select User Type------</option>  
                     <option value="Administrator" class="dropdown-item">Administrator</option>
                     <option value="Faculty" class="dropdown-item">Faculty</option>
@@ -105,7 +110,7 @@
                 </td> 
             </tr>
              <tr><td> Select Username: </td><td>
-                        <select name="username" class="my_dropdown" style="width:300px;">
+                        <select name="username" class="my_dropdown" style="width:100%;">
                         <option value="" disabled selected>-------------Select Username---------------</option>
                           <?php foreach($this->loginuser as $datas): ?>
                         <option value="<?php echo $datas->id; ?>"><?php echo $datas->username; ?></option>

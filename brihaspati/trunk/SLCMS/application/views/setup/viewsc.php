@@ -17,16 +17,16 @@
             <?php
                     echo anchor('setup/sc/', "Add Study Center " ,array('title' => ' Add study center Configuration Detail ' , 'class' => 'top_parent'));
                     $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
-           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:75%\">Click for Help</b></a>";
+           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
 
             ?>
 
-            <div  style="width:1000px;">
+            <div  style="width:100%;">
 
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };

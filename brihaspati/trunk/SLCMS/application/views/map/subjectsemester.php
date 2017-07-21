@@ -6,7 +6,7 @@
 <html>
 <title>Subject Semester Program with Department List</title>
     <head>    
-        <?php $this->load->view('template/header'); ?>
+            <?php      $this->load->view('template/header'); ?>
             <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">    
@@ -36,14 +36,14 @@
             echo "</table>";
         ?>-->
         <!-- </br>   --> 
-        <table style="margin-left:7px;"> 
+        <table style="margin-left:2%;width:100%;"> 
            
-            <tr colspan="2"><td> 
+            <tr><td> 
                  <?php echo anchor('map/mapsubsem/', "Map Subject Semester Program Department ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
 		 $help_uri = site_url()."/help/helpdoc#";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:52%\">Click for Help</b></a>";
 		 ?>
-                <div  style="width:1700px;">
+                <div>
   
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
 
@@ -65,16 +65,16 @@
         </table>  
         <br/>
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" style="margin-left:30px;" class="TFtable">
+            <table cellpadding="16" style="margin-left:2%;" class="TFtable">
             <thead >
             <tr align="center">
                 <th>Sr.No</th>
-                <th>Department Name</th>
-                <th>Program Name</th>
-                <th>Program Branch</th>
-                <th>Program Pattern</th>
-                <th>Semester/Year</th>
-                <th>Subject Name</th>
+                <th>Deptt. Name</th>
+                <th>Prog Name</th>
+                <th>Prog Branch</th>
+                <th>Prog Pattern</th>
+                <th>Sem/Year</th>
+                <th>Sub Name</th>
                 <th>Subject Type</th>
                 <!--<th>Creator Name</th>
                 <th>Creation Date</th>

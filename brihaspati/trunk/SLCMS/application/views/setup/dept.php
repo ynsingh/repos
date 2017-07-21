@@ -33,7 +33,7 @@
 
       	<table width="100%">
 		<tr><td>  
-  	        <div style="margin-left:0.5%">
+  	        <div style="margin-left:2%">
   		<?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); 
 		$help_uri = site_url()."/help/helpdoc#Department";
                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
@@ -79,40 +79,40 @@
 			</td></tr>                       
           		<tr>  
                                 <td><label>School/Faculty Code:</label></td>
-                                <td><input type="text"placeholder="School Code" name="dept_schoolcode"  size="33" /></td> 
+                                <td><input type="text"placeholder="School Code" name="dept_schoolcode"  size="43" /></td> 
                                 <td><?php echo form_error('dept_schoolcode')?></td>
                                  <td>Example: Sbs</td>
                             </tr>
                             <tr> 
                                 <td><label>School/Faculty Name:</label></td>
-                                <td><input type="text"placeholder="School Name"name="dept_schoolname"  size="33"  /> </td>
+                                <td><input type="text"placeholder="School Name"name="dept_schoolname"  size="43"  /> </td>
                                 <td><?php echo form_error('dept_schoolname')?></td> 
                                <td>Example: School of basic science  </td>
                                             
                             </tr>
                             <tr>
                                 <td><label>Department Code:</label></td>
-                                <td><input type="text"placeholder="Department Code" size="33" name="dept_code" /> </td>
+                                <td><input type="text"placeholder="Department Code" size="43" name="dept_code" /> </td>
                                 <td><?php echo form_error('dept_code')?></td>
                                  <td>Example: Phy </td>          
                             </tr>
                             <tr>
                                 <td><label>Department Name:</label></td>
-                                <td><input type="text"placeholder="Department Name" name="dept_name"  size="33"  /></td>
+                                <td><input type="text"placeholder="Department Name" name="dept_name"  size="43"  /></td>
                                 <td><?php echo form_error('dept_name')?></td> 
                                <td>Example:Physics Department </td>                               
                 
                             </tr>
                             <tr>
                                 <td><label>Department Nick Name:</label></td>
-                                <td><input type="text"placeholder="Department Nick Name"name="dept_short" size="33"  /> </td>
+                                <td><input type="text"placeholder="Department Nick Name"name="dept_short" size="43"  /> </td>
                                 <td><?php echo form_error('dept_short')?></td>
                                  <td>Example:Phy </td>
                                 
                             </tr>
                             <tr>
                                 <td><label>Department Description:</label></td>    
-                                <td><input type="text"placeholder="Dapartment Description"name="dept_descripation"size="33"/> </td>   
+                                <td><input type="text"placeholder="Dapartment Description"name="dept_descripation"size="43"/> </td>   
                                  <td><?php echo form_error('dept_descripation')?></td>
                                  <td>Example:Department of Physics  </td>           
                             </tr>
