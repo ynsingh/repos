@@ -30,15 +30,15 @@ table tr td a{text-decoration:none;font-size:20px;color:black;}
 //	echo $file."</br>";
 //}
 ?>
-<table style="width:20%;" align="center" border=1>
+<table style="width:50%;" align="center" border=1>
 	<tr align="center">
-		<td><a href="sisindex.php">SIS</a></td>
+		<td><a href="sisindex.php">Brihaspati Staff Information System (BSIS)</a></td>
 	</tr>
 	<tr align="center">
-		<td><a href="slcmsindex.php">SLCMS</a></td>
+		<td><a href="slcmsindex.php">Brihaspati Student Life Cycle Management System (On line Admission) (SLCMS)</a></td>
 	</tr>
 	<tr align="center">
-		<td><a href="">BHR</a></td>
+		<td><a href="hrmindex.php">Brihaspati Human Resource Management (BHRM)</a></td>
 	</tr>
 </table>
 
@@ -46,7 +46,7 @@ table tr td a{text-decoration:none;font-size:20px;color:black;}
 
 <div id="footer">
 <center>
-	<span>2017 © <a href="#">Brihaspati ERP Team IIT Kanpur</a> All rights reserved. <a href="<?php echo base_url(); ?>brihaspati-license.txt">Click here </a> for distribution license</span>
+	<span>2017 © <a href="#">Brihaspati ERP Team IIT Kanpur</a> All rights reserved. <a href="brihaspati-license.txt">Click here </a> for distribution license</span>
 </center>
 </div>
 
