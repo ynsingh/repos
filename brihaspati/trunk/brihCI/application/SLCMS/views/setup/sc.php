@@ -41,7 +41,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
            else{
               	 $('#stname').prop('disabled',false); 
                $.ajax({
-                   url: "<?php echo base_url();?>index.php/setup/get_state",
+                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_state",
                    type: "POST",
                    data: {"cid" : cid},
                    dataType:"html",
@@ -66,7 +66,7 @@ $('#stname').on('change',function(){
            else{
                  $('#citname').prop('disabled',false); 
                $.ajax({
-                   url: "<?php echo base_url();?>index.php/setup/get_city",
+                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_city",
                    type: "POST",
                    data: {"sid" : sid},
                    dataType:"html",

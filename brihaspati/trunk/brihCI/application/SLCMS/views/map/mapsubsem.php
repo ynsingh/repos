@@ -15,7 +15,7 @@
                 //alert(branch);
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>index.php/setup2/branchlist",
+                url: "<?php echo base_url();?>slcmsindex.php/setup2/branchlist",
                 data: {"programname" : branch},
                 dataType:"html",
                 success: function(data){

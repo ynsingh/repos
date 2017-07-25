@@ -19,12 +19,12 @@
              
                $('#scid').prop('disabled',false);
                $.ajax({
-                   url: "<?php echo base_url();?>index.php/map/getdeptlist",
+                   url: "<?php echo base_url();?>slcmsindex.php/map/getdeptlist",
                    type: "POST",
                    data: {"campusname" : sc_code},
                    dataType:"html",
                    success:function(data){
-                      $('#scid').html(data);
+                      $('#scid').html(data.replace(/^"|"$/g, ''));
                        
                    },
                    error:function(data){
