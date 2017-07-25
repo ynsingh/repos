@@ -3,8 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
  * @name Studenthome.php
+ * @author Sharad Singh (sharad23nov@yahoo.com) Student dashboard,Student semester registration,Student subject registration 
  * @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
- * @author Sharad Singh
  * @author Manorama Pal (palseema30@gmail.com) Student List of selected program
  */
 class Studenthome extends CI_Controller
@@ -107,6 +107,8 @@ class Studenthome extends CI_Controller
                     $semester = $noofsemester + 1;
                     $semester = "Please register in the semester ".$semester;
                     //echo message for semester registration
+                    // redirect('studenthome/studentsubject/');
+                    // return;
                 }
             }
             if($semestertype == "Even")
@@ -119,6 +121,8 @@ class Studenthome extends CI_Controller
                 {
                     $semester = $noofsemester + 1;
                     $semester = "Please register in the semester ".$semester;
+                    // redirect('studenthome/studentsubject/');
+                    // return;
 
                 }
             }
@@ -183,13 +187,12 @@ class Studenthome extends CI_Controller
             $studsemsubject = $this->studentmodel->stud_sem_sub($stid,$acadyear,$semester); 
             //print_r($studsemsubject);
              
-            
+            //get sfee_spid(student program id) from student_program
+            $stud_prg_id = $studsemsubject->row()->sp_id; 
             $subjectid1 = $studsemsubject->row()->sp_subid1;
             if($subjectid1 == 0)
             {
-               // $this->load->view('student/studentsubject',$data);
-               // redirect('studenthome/studentsubject/');
-                //$data['submsg'] = "Please fillup the subject of current semester.";
+                redirect('studenthome/studentsubject/');
             }
             else
             {
@@ -204,7 +207,6 @@ class Studenthome extends CI_Controller
                 $subjectid10 = $studsemsubject->row()->sp_subid10;
             
             //get subject name 
-            //$subject1 =  $this->commodel->get_subjectname($subjectid1)->sub_name;
                 if($subjectid1 != 0)
                     $subject1 = $this->commodel->get_listspfic1('subject','sub_name','sub_id',$subjectid1)->sub_name; 
                 if($subjectid2 != 0)
@@ -244,7 +246,7 @@ class Studenthome extends CI_Controller
                     if(!empty($subject9))
                         $subject = $subject.",".$subject9;
                     if(!empty($subject10))
-                        $subject = $subject.",".$subject10;
+                        $subject = $subject.",<br>".$subject10;
                     //$subject;
         
                 $data['subject'] = $subject;
@@ -263,32 +265,31 @@ class Studenthome extends CI_Controller
             $data['student_address'] = $student_address;
             }
             else
-            $data['student_address'] = "Please fill the Address properly";
+                $data['student_address'] = "Please fill the Address properly";
         
-           // $this->load->model("student_model", "studentmodel");
             $studprogrec = $this->studentmodel->get_student_program($stid);
-            //print_r($studprogrec);
             $data['studprogrec'] = $studprogrec;
-            $feearray = array();
+            
+            /* fee details */
+            //get fee details of student ,if fee not deposited in a semester, ask to him for deposit.
+            
+            //get fee record where sfee_smid = $stid and sfee_spid = $stud_prg_id;
+            $feedata = array('sfee_smid' => $stid, 'sfee_spid' => $stud_prg_id);
+            $stud_fee_rec = $this->commodel->get_listspficemore1('student_fees',$feedata);
+            //print_r(sizeof($stud_fee_rec));
+            if(sizeof($stud_fee_rec) == 0 )
+            {
+                redirect('request/stufeesdetail');
+                
+                 $fees = "Please deposit fee of ".$semester;
+                $data['fees'] = $fees;
+                $data['stud_fee_rec'] = $stud_fee_rec;
+            }
+            else
+                $data['stud_fee_rec'] = $stud_fee_rec;
+            
             $this->load->view('student/studenthome',$data);
 	    }
-	    	//check the registration in current academic session with semester
-	    //if not then ask for the semester registeration
-	    //if yes then open registration form
-	    //after filling form redierect to fees payment
-	    //after payment
-	    //check the student program table for subject for current academic year and semester
-	    //if subject exist
-	    //go to dash board
-	    //else go to subject selection page
-	    //select the subject and paper
-	    //update the student program table
-	    //send mail to student
-	    //go to dashboard
-	  //  }else{
-	//	$this->session->set_flashdata('flash_data', 'You do not have student role in this system!');
-          //      redirect('welcome');
-	   // }
         else
         {
 		    $this->session->set_flashdata('flash_data', 'You do not have student role in this system!');
@@ -311,6 +312,7 @@ class Studenthome extends CI_Controller
        
 	 $stud_master = $studmaster->result();
          $stud_master1 = $studmaster->row();
+        $semtotalcr=0;
         //get student details        
         if(!empty($stud_master)) {
             $stid = $stud_master1->sm_id;
@@ -322,10 +324,10 @@ class Studenthome extends CI_Controller
             $lname = $stud_master1->sm_lname;
             $compname = $fname." ".$mname." ".$lname;
             $enrollno = $stud_master1->sm_enrollmentno;       
-            $rollno = $sturollno->senex_rollno;       
+            //$rollno = $sturollno->senex_rollno;       
             $data['compname'] = $compname;
             $data['enrollno'] = $enrollno;
-            $data['rollno'] = $rollno;
+            //$data['rollno'] = $rollno;
             $data['stud_email'] = $stud_email;
             $data['stud_phone'] = $stud_phone;
         }
@@ -336,134 +338,134 @@ class Studenthome extends CI_Controller
             $semes = $prgrec->sp_semester;
             $acad = $prgrec->sp_acadyear;
             $rid = $prgrec->sp_id;
+            $prg_id = $prgrec->sp_programid;
         }
-        //echo "Rid-->".$rid;
+        //get program name
+        $prg_name = $this->commodel->get_listrow('program','prg_id',$prg_id)->row()->prg_name;
         $semester = $semes;
         $acadyear = $acad;    
+        $prg_id = $prg_id;
         $data['acadyear'] = $acadyear;
         $data['semester'] = $semester;
         $data['rid'] = $rid;
-    
+        $data['prg_name'] = $prg_name;
+
+        //get semester rule, semester min credit max credit of a program
+        $wheredata = array('semcr_prgid' => $prg_id,'semcr_semester' => $semester);
+        $selectfield = 'semcr_mincredit,semcr_maxcredit,semcr_semcpi';
+        $semrule = $this->commodel->get_listspficemore('semester_rule',$selectfield,$wheredata);
+        foreach($semrule as $row)
+        {
+            $semmincredit = $row->semcr_mincredit;
+            $semmaxcredit = $row->semcr_maxcredit;
+            $semcpi = $row->semcr_semcpi;
+        }
+        $data['semmincredit'] = $semmincredit;
+        $data['semmaxcredit'] = $semmaxcredit;
+        $data['semcpi'] = $semcpi;
+        //get subject/papers in a semester of a program from subject_semester
+        $wheredata1 = array('subsem_prgid' => $prg_id,'subsem_semester' => $semester);
+        $selectfield1 = 'subsem_subid,subsem_subtype';
+        $semsubject =  $this->commodel->get_listspficemore('subject_semester',$selectfield1,$wheredata1);    
+        
+        $subjectsem = array();
+        $compcr = 0;
+        $upsubdata = array();
+        $incrid = 1;
+        foreach($semsubject as $row)
+        {
+            $subid = $row->subsem_subid;
+            $subtype = $row->subsem_subtype; 
+            $substring = $subid."#".$subtype;
+            $subjectsem[] = $substring;
+            if($subtype == "Compulsory")
+            {
+                //$incrid = 1;
+                $subcr = $this->commodel->get_listrow('subject','sub_id',$subid)->row()->sub_ext1;
+                $compcr = $compcr + $subcr;
+                
+                $upsubdata[] =  $subid;
+                $incrid = $incrid + 1;
+            }
+            //$updatedata = array('sp_subid'.$incrid => $subid);
+            //$incrid = $incrid + 1;
+        }
+        //print_r($upsubdata);
+        //echo $sompcr;
+        $data['subjectsem']  = $subjectsem;
+
         //get subject from subject table
         $this->load->model("map_model", "mapmodel");
         $data['subject_list'] = $this->mapmodel->getsubject();
-        $this->form_validation->set_rules('subjectlist1','Subject1','trim|xss_clean|required');
-        $this->form_validation->set_rules('subjectlist2','Subject2','trim|xss_clean|required');
-        $this->form_validation->set_rules('subjectlist3','Subject3','trim|xss_clean|required');
-        $this->form_validation->set_rules('subjectlist4','Subject4','trim|xss_clean');
-        $this->form_validation->set_rules('subjectlist5','Subject5','trim|xss_clean');
-        $this->form_validation->set_rules('subjectlist6','Subject6','trim|xss_clean');
-        $this->form_validation->set_rules('subjectlist7','Subject7','trim|xss_clean');
-        $this->form_validation->set_rules('subjectlist8','Subject8','trim|xss_clean');
-        $this->form_validation->set_rules('subjectlist9','Subject9','trim|xss_clean');
-        $this->form_validation->set_rules('subjectlist10','Subject10','trim|xss_clean');
+
         //update subject of student
         if($_POST)
-        {
-            $sub1 = $this->input->post('subjectlist1', TRUE);
-            $sub2 = $this->input->post('subjectlist2', TRUE);
-            $sub3 = $this->input->post('subjectlist3', TRUE);
-            $sub4 = $this->input->post('subjectlist4', TRUE);
-            $sub5 = $this->input->post('subjectlist5', TRUE);
-            $sub6 = $this->input->post('subjectlist6', TRUE);
-            $sub7 = $this->input->post('subjectlist7', TRUE);
-            $sub8 = $this->input->post('subjectlist8', TRUE);
-            $sub9 = $this->input->post('subjectlist9', TRUE);
-            $sub10 = $this->input->post('subjectlist10', TRUE);
-            $datasub1 = explode('#',$sub1);    
-            if(sizeof($datasub1)==1)
-                $subt1 = 0;
-            else
-                $subt1 = $datasub1[1];
-            $datasub2 = explode('#',$sub2);    
-            if(sizeof($datasub2)==1)
-                $subt2 = 0;
-            else
-                $subt2 = $datasub2[1];
-            $datasub3 = explode('#',$sub3);    
-            if(sizeof($datasub3)==1)
-                $subt3 = 0;
-            else
-                $subt3 = $datasub3[1];
-
-            $datasub4 = explode('#',$sub4);    
-            if(sizeof($datasub4)==1)
-                $subt4 = 0;
-            else
-                $subt4 = $datasub4[1];
-
-            $datasub5 = explode('#',$sub5);    
-            if(sizeof($datasub5)==1)
-                $subt5 = 0;
-            else
-                $subt5 = $datasub5[1];
-
-            $datasub6 = explode('#',$sub6);    
-            if(sizeof($datasub6)==1)
-                $subt6 = 0;
-            else
-                $subt6 = $datasub6[1];
-
-            $datasub7 = explode('#',$sub7);    
-            if(sizeof($datasub7)==1)
-                $subt7 = 0;
-            else
-                $subt7 = $datasub7[1];
-
-            $datasub8 = explode('#',$sub8);    
-            if(sizeof($datasub8)==1)
-                $subt8 = 0;
-            else
-                $subt8 = $datasub8[1];
-
-            $datasub9 = explode('#',$sub9);    
-            if(sizeof($datasub9)==1)
-                $subt9 = 0;
-            else
-                $subt9 = $datasub9[1];
-
-            $datasub10 = explode('#',$sub10);    
-            if(sizeof($datasub10)==1)
-                $subt10 = 0;
-            else
-                $subt10 = $datasub10[1];
-
-            if ($this->form_validation->run() == TRUE)
+        {   $elecsubjectcr_total = 0;
+            if (!empty($this->input->post('elecsubject'))) 
             {
-                $update_subject = array(
-                'sp_subid1' => $subt1,
-                'sp_subid2' => $subt2,
-                'sp_subid3' => $subt3,
-                'sp_subid4' => $subt4,
-                'sp_subid5' => $subt5,
-                'sp_subid6' => $subt6,
-                'sp_subid7' => $subt7,
-                'sp_subid8' => $subt8,
-                'sp_subid9' => $subt9,
-                'sp_subid10' => $subt10,
-                );
-                //update subject in a semester
-                $updatesubject = $this->commodel->updaterec('student_program', $update_subject,'sp_id',$rid);               
-
-                if(!$updatesubject)
+                foreach ($this->input->post('elecsubject') as $key => $val) 
                 {
-                    $this->db->trans_rollback();
-                    $this->session->set_flashdata('Error in adding subject in semester '.$semester." in acdemic year " .$acadyear, 'error');
-                    $this->logger->write_dblogmessage("update","Error in adding subject in semester ".$semester." in acdemic year " .$acadyear1, ' by '.$username);
-                    $this->logger->write_logmessage("update","Error in adding subject in semester ".$semester." in acdemic year " .$acadyear1, ' by '.$username);
-                    redirect('studenthome/index');
-                        
+                    $elecdata[] = array('elecsubject' => $_POST['elecsubject'][$key]);
+                }
+//                $elecsubjectcr_total = 0;
+//            }
+            foreach ($elecdata as $item) 
+            {    
+                $elecsubid = $item['elecsubject'];
+                $elecsubjectcr = $this->commodel->get_listrow('subject','sub_id',$elecsubid)->row()->sub_ext1;
+                $elecsubjectcr_total = $elecsubjectcr_total + $elecsubjectcr;
+                $upsubdata[] = $elecsubid;
+            }
+            }
+            $updatesubject = array();
+            for($j = 0;$j < sizeof($upsubdata); $j++)
+            {
+                $t = $j+1; 
+                $updatesubject['sp_subid'.$t] =  $upsubdata[$j] ;
+            }
+//            print_r($updatesubject);
+
+            //if total credit (compulsory + elective) in a semester should be lies bewtween min and max credit.
+//            echo $semmincredit;
+//            echo $semmaxcredit;
+            echo $semtotalcr = $compcr + $elecsubjectcr_total;
+
+            echo $rid;
+            if(sizeof($updatesubject)<=10)
+            {
+                if(($semtotalcr >= $semmincredit) && ($semtotalcr <= $semmaxcredit)) 
+                {
+                    $updatesemsubject = $this->commodel->updaterec('student_program',$updatesubject,'sp_id',$rid);        
+    
+                    if(!$updatesemsubject)
+                    {
+                        $this->db->trans_rollback();
+                        $this->session->set_flashdata("warning",'Error in adding subject in semester '.$semester." in acdemic year " .$acadyear);
+                        $this->logger->write_dblogmessage("update","Error in adding subject in semester ".$semester." in acdemic year " .$acadyear1, ' by '.$username);
+                        $this->logger->write_logmessage("update","Error in adding subject in semester ".$semester." in acdemic year " .$acadyear1, ' by '.$username);
+                        redirect('studenthome/index');
+
+                    }
+                    else
+                    {
+                        $this->db->trans_complete();
+                        $this->logger->write_logmessage("update","Subject added in semester ".$semester." in acdemic year " .$acadyear, ' by '.$username);
+                        $this->logger->write_dblogmessage("update","Subject added in semester ".$semester." in acdemic year " .$acadyear, ' by '.$username);
+                        $this->session->set_flashdata("success", " Subject updated successfully");
+                        redirect('studenthome/index');
+                    }
                 }
                 else
                 {
-                    $this->db->trans_complete();
-                    $this->logger->write_logmessage("update","Subject added in semester ".$semester." in acdemic year " .$acadyear, ' by '.$username);
-                    $this->logger->write_dblogmessage("update","Subject added in semester ".$semester." in acdemic year " .$acadyear, ' by '.$username);
-                    $this->session->set_flashdata("success", " Subject updated successfully");
-                    redirect('studenthome/index');
-                } 
-
-            } 
+                    //echo "NOk";
+                    $this->session->set_flashdata("warning", "Total Credit must be between ".$semmincredit. "and". $semmaxcredit);
+                }
+            }
+            else
+            {
+                $this->session->set_flashdata("warning", "Maximum 10 subject is allowed in a semester,contact to the department head");
+            }
+                
         } 
                 
         $this->load->view('student/studentsubject',$data);    
@@ -535,7 +537,7 @@ class Studenthome extends CI_Controller
             else{
                 /* without search*/ 
                 $stud_prg_rec = $this->commodel->get_listspficemore('student_program',$sfield,$stdntdata);
-                $datarec['studentdetail']=$stud_prg_rec;
+                $datarec['studentdetail'] = $stud_prg_rec;
             }
         
         }//ifpost

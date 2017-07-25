@@ -46,10 +46,6 @@
 */
 	echo "</br>";
      //	echo $this->session->userdata('id_user'); 
-/*echo $stid;
-echo $acadyear;
-echo $semester;
-*/
 	echo "<table><tr><td>";
 	echo "<table align = \"center\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -62,7 +58,6 @@ echo $semester;
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
 	echo "<table style=\"padding: 8px 8px 8px 20px;\">";
         echo "<tbody align=\"left\">";
-//print_r($feearray);
 
   	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Name</b></td><td>";
 	echo $compname; //name of the student
@@ -130,17 +125,15 @@ echo $semester;
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Program Name</b></td><td>";
     echo $degree_name; //name of the program
 	echo "</td></tr>";
-	//echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> Subject Name</td><td style=\"padding: 8px 8px 8px 20px;\">Academic Year</td><td style=\"padding: 8px 8px 8px 20px;\">Semester</td> <td style=\"padding: 8px 8px 8px 20px;\">Qualify Status</td></tr><tr><td style=\"padding: 8px 8px 8px 20px;\">";
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b> Subject Name</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Academic Year</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Semester</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b>Qualify Status</b></td></tr>";
-    //print_r($tarray);
     if(count($studprogrec))
     {
     foreach($studprogrec as $row)
     {
-    //echo $subject; //name of the subject
         $sub1=$row->sp_subid1; $sub2=$row->sp_subid2; $sub3=$row->sp_subid3; $sub4=$row->sp_subid4; $sub5=$row->sp_subid5; $sub6=$row->sp_subid6; $sub7=$row->sp_subid7; $sub8=$row->sp_subid8; $sub9=$row->sp_subid9; $sub10=$row->sp_subid10;
-
+            if(!empty ($sub1)){
             $sub1 = $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid1)->sub_name;
+            }
             if($sub2 !=0)
             $sub2 = $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid2)->sub_name;
             if($sub3 !=0)
@@ -223,29 +216,13 @@ echo $semester;
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b>Program Name</b></td><td>";
     echo $degree_name; //name of the program
         echo "</td></tr>";
-   // print_r($feearray);
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"><b> Academic Year</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Semester</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Fees Type</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b>Fees Amount</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b>Fees Status</b></td></tr>";
-/*foreach($output[$arraykey] as $key => $value){
-    echo $value;
-}
-*/
-
-   // foreach($feearray as $fees=>$value)
-    foreach($studprogrec as $row)
-    {
-        $studprogrec_studid = $row->sp_smid;
-        $studmaster_sp_id = $row->sp_id;
-        $studmaster_sp_acadyear = $row->sp_acadyear;
-        $studmaster_sp_semester = $row->sp_semester;
-        $studfeerec = $this->studentmodel->get_student_fee($studmaster_sp_id);
-            foreach($studfeerec as $row1){
-                $studfeerec_stud_id = $row1->sfee_smid;
-                if($studprogrec_studid == $studfeerec_stud_id)
-                {
+            if(sizeof($stud_fee_rec)!=0)
+            foreach($stud_fee_rec as $row1){
                     echo"<tr><td style=\"padding: 8px 8px 8px 20px;\">";
-                    echo $studmaster_sp_acadyear;
+                    echo $acadyear;
                     echo "</td><td style=\"padding: 8px 8px 8px 20px;\">";
-                    echo $studmaster_sp_semester;
+                    echo $semester;
                     echo "</td>";
  
                     echo "<td style=\"padding: 8px 8px 8px 20px;\">";
@@ -255,15 +232,20 @@ echo $semester;
                     echo "</td><td style=\"padding: 8px 8px 8px 20px;\"> ";
                     echo $row1->sfee_paymentmethod."  ".$row1->sfee_feespaidstatus;
                     echo "</td></tr>";
-                }
-                else
-                echo "Please pay the fees";
             }
+            else
+                    echo"<tr><td style=\"padding: 8px 8px 8px 20px;\">";
+                    echo $acadyear;
+                    echo "</td><td style=\"padding: 8px 8px 8px 20px;\">";
+                    echo $semester;
+                    echo "</td>";
+                    echo "<td style=\"padding: 8px 8px 8px 20px;\">";        
+                    echo $fees;
+                    echo "</td></tr>";
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\">";
 
 	echo "</td></tr>";
         
-    }
         echo "</tbody>";
         echo "</table>";
         echo "</td>";

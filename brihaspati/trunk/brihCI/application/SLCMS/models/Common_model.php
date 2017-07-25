@@ -251,13 +251,18 @@ class Common_model extends CI_Model
     //$data = array('name' => $name, 'title' => $title, 'status' => $status);
     //    getting different field from table - $selectfield ('a,b,c');
     public function get_listspficemore($tbname,$selectfield,$data){
-	$this->db->flush_cache();
-	$this->db->from($tbname);
+	    $this->db->flush_cache();
+	    $this->db->from($tbname);
         $this->db->select($selectfield);
         $this->db->where($data);
         return $this->db->get()->result();
     }
-
+    //get subject name by id
+    public function get_subjectname($subjectid)
+    {
+        $this->db->select('sub_name')->from('subject')->where('sub_id',$subjectid);
+        return $this->db->get()->row();
+    }
 //    getting different field from table - $selectfield ('a,b,c');
     public function get_listmore($tbname,$selectfield){
         $this->db->flush_cache();
@@ -265,6 +270,16 @@ class Common_model extends CI_Model
         $this->db->select($selectfield);
         return $this->db->get()->result();
     }
+
+   //$data = array('name' => $name, 'title' => $title, 'status' => $status);
+    //    getting different field from table - $selectfield ('a,b,c');
+    public function get_listspficemore1($tbname,$data){
+        $this->db->flush_cache();
+        $this->db->from($tbname);
+        $this->db->where($data);
+        return $this->db->get()->result();
+    }
+
 
     function __destruct() {
         $this->db->close();

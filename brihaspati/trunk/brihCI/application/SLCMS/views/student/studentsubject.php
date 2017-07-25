@@ -18,24 +18,6 @@ echo "<head>";
 <?php
 echo "</head>";
 echo "<body>";
-/*
-    echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
-    echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
-    echo "<td style=\"padding: 8px 8px 8px 20px;color:white;\">";
-    echo "Map";
-    echo "<span  style=\"padding: 8px 8px 8px 20px;\"> ";
-    echo "|";
-    echo anchor('setup/viewsubject/', "View Subject", array('title' => 'Subject Detail' , 'class' => 'top_parent'));
-    echo "<span  style=\"padding: 8px 8px 8px 20px;\"> ";
-    echo "|";
-    echo "<span  style=\"padding: 8px 8px 8px 20px;\">";
-    echo "Add Subject";
-    echo "</span>";
-    echo "</td>";
-    echo "</tr>";
-    echo "</table>";
-    echo"</br>";
-*/
 ?>
 <br>
 <table style="margin-left:9px;">
@@ -61,7 +43,12 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 <?php    }
     if(isset($_SESSION['error']))
     {
-?>        <div style="margin-left:30px"; class="isa_success">"<?php echo $_SESSION['error'];?> </div>
+?>        <div style="margin-left:30px"; class="isa_error">"<?php echo $_SESSION['error'];?> </div>
+<?php
+    }
+    if(isset($_SESSION['warning']))
+    {
+?>        <div style="margin-left:30px"; class="isa_warning">"<?php echo $_SESSION['warning'];?> </div>
 <?php
     }
 
@@ -75,8 +62,22 @@ echo $stid;
 echo $acadyear;
 echo $semester;
 */
+    //print_r($subjectsem);
+    $compsubject = array();
+    $elecsubject = array();
+    for($i=0; $i<sizeof($subjectsem); $i++)
+    {
+        $subdata = $subjectsem[$i];
+        $sub_data=explode('#',$subdata);
+        $subid = $sub_data[0];
+        $subtype = $sub_data[1];
+        if($subtype == "Compulsory")
+            $compsubject[] = $subid;
+        else
+            $elecsubject[] = $subid;
+            
+    }
     echo "<table>";
-    //echo form_open('studenthome/studentsubject/'.$acadyear."/".$stid."/".$semester);
     echo form_open('studenthome/studentsubject/');
     echo "<p>";
     echo "<tr><td>";
@@ -88,6 +89,17 @@ echo $semester;
 
     echo "<p>";
     echo "<tr><td>";
+    echo form_label('Program Name', 'prgname');
+    echo"</td><td>";
+    echo $prg_name;
+    echo "</td><td>";
+    echo form_error('prgname');
+    echo"</td><td>";
+    echo "</p>";
+
+
+    echo "<p>";
+    echo "<tr><td>";
     echo form_label('Enrollment No', 'enrollno');
     echo"</td><td>";
     echo $enrollno;
@@ -95,7 +107,7 @@ echo $semester;
     echo form_error('enrollno');  
     echo"</td><td>";
     echo "</p>";
-
+/*
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Roll No', 'rollno');
@@ -103,7 +115,7 @@ echo $semester;
     echo $rollno;
     echo "</td><td>";echo form_error('rollno');echo"</td></tr>";
     echo "</p>";
-
+*/
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Academic Year', 'acadyear');
@@ -120,108 +132,81 @@ echo $semester;
     echo "</td><td>";echo form_error('rollno');echo"</td></tr>";
     echo "</p>";
 
-
-
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Subject1', 'subjectlist1');
+    echo form_label('Minimum Credit : ', 'semester');
     echo"</td><td>";
-    echo form_dropdown('subjectlist1',$subject_list,'','class="abc"');
-    //echo form_input();
-    echo "</td><td>";echo form_error('subdesc');echo"</td>";
-//    echo "<td>". img(array('src' => base_url() . "images/add.png", 'border' => '0', 'alt' => 'Add Subject', 'class' => 'addrow')) ;    echo  "</td>";
-    echo "</tr>";
+    echo $semmincredit;
+    echo "</td><td>";echo form_error('rollno');echo"</td></tr>";
     echo "</p>";
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Subject2', 'subjectlist2');
+    echo form_label('Maximum Credit : ', 'semester');
     echo"</td><td>";
-    echo form_dropdown('subjectlist2',$subject_list,'','class="abc"');
-    echo "</td><td>";echo form_error('subdesc');echo"</td>";
-    echo "</tr>";
+    echo $semmaxcredit;
+    echo "</td><td>";echo form_error('rollno');echo"</td></tr>";
     echo "</p>";
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Subject3', 'subjectlist3');
+    echo form_label('Semester CPI : ', 'semester');
     echo"</td><td>";
-    echo form_dropdown('subjectlist3',$subject_list,'','class="abc"');
-    echo "</td><td>";echo form_error('subdesc');echo"</td>";
-    echo "</tr>";
+    echo $semcpi;
+    echo "</td><td>";echo form_error('rollno');echo"</td></tr>";
     echo "</p>";
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Subject4', 'subjectlist4');
+    echo form_label('Compulsory Subject', 'subjectlist1');
     echo"</td><td>";
-    echo form_dropdown('subjectlist4',$subject_list,'','class="abc"');
-    echo "</td><td>";echo form_error('subdesc');echo"</td>";
-    echo "</tr>";
-    echo "</p>";
-    echo "<p>";
-
-    echo "<tr><td>";
-    echo form_label('Subject5', 'subjectlist5');
-    echo"</td><td>";
-    echo form_dropdown('subjectlist5',$subject_list,'','class="abc"');
-    echo "</td><td>";echo form_error('subdesc');echo"</td>";
-    echo "</tr>";
-    echo "</p>";
-
-    echo "<p>";
-    echo "<tr><td>";
-    echo form_label('Subject6', 'subjectlist6');
-    echo"</td><td>";
-    echo form_dropdown('subjectlist6',$subject_list,'','class="abc"');
-    echo "</td><td>";echo form_error('subdesc');echo"</td>";
-    echo "</tr>";
+    $totalcr = 0;
+    for($i = 0; $i<sizeof($compsubject); $i++)
+    {
+        echo "<tr>";
+        //echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". $compsubject[$i];
+        $subjectdata = $this->commodel->get_listrow('subject','sub_id',$compsubject[$i]);
+        
+        echo"<td><i>";echo "&nbsp;&nbsp;&nbsp;".$subjectdata->row()->sub_name;echo"</i></td>"; 
+        echo"<td>";echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$subjectdata->row()->sub_ext1;echo"</td>"; 
+        $totalcr = $totalcr + $subjectdata->row()->sub_ext1;
+        
+    echo "<tr>";
+    }
+    echo "<tr><td>";echo "&nbsp;&nbsp;&nbsp;Total";echo "</td><td>";echo"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". $totalcr ;echo "</td></tr>";  
+    echo "</td></tr>";
     echo "</p>";
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Subject7', 'subjectlist7');
+    echo form_label('Elective Subject', 'subjectlist1');
     echo"</td><td>";
-    echo form_dropdown('subjectlist7',$subject_list,'','class="abc"');
-    echo "</td><td>";echo form_error('subdesc');echo"</td>";
-    echo "</tr>";
+    $totalcr_el = 0;
+    for($i = 0; $i<sizeof($elecsubject); $i++)
+    {
+        echo "<tr>";
+        $elecsubjectdata = $this->commodel->get_listrow('subject','sub_id',$elecsubject[$i]);
+        echo"<td>"; 
+?>
+        <input type="checkbox" name="elecsubject[]" value="<?= $elecsubject[$i]?>">
+<?php
+        echo "<i>&nbsp;&nbsp;&nbsp;".$elecsubjectdata->row()->sub_name;echo"</i></td>";
+        echo"<td>";echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$elecsubjectdata->row()->sub_ext1;echo"</td>";
+
+        $totalcr_el = $totalcr_el + $elecsubjectdata->row()->sub_ext1;
+
+        echo "</tr>";
+    }
+    echo "<tr><td>";echo "&nbsp;&nbsp;&nbsp;Total";echo "</td><td>";echo"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". $totalcr_el ;echo "</td></tr>";
+    echo "</td></tr>";
     echo "</p>";
 
-    echo "<p>";
-    echo "<tr><td>";
-    echo form_label('Subject8', 'subjectlist8');
-    echo"</td><td>";
-    echo form_dropdown('subjectlist8',$subject_list,'','class="abc"');
-    echo "</td><td>";echo form_error('subdesc');echo"</td>";
-    echo "</tr>";
-    echo "</p>";
-
-    echo "<p>";
-    echo "<tr><td>";
-    echo form_label('Subject9', 'subjectlist9');
-    echo"</td><td>";
-    echo form_dropdown('subjectlist9',$subject_list,'','class="abc"');
-    echo "</td><td>";echo form_error('subdesc');echo"</td>";
-    echo "</tr>";
-    echo "</p>";
-
-    echo "<p>";
-    echo "<tr><td>";
-    echo form_label('Subject10', 'subjectlist10');
-    echo"</td><td>";
-    echo form_dropdown('subjectlist10',$subject_list,'','class="abc"');
-    echo "</td><td>";echo form_error('subdesc');echo"</td>";
-    echo "</tr>";
-    echo "</p>";
 
 
     echo "<p>";
     echo "<tr><td>";
-//    echo form_hidden('acdayear1', $acadyear);
-//    echo form_hidden('semester1', $semester);
-//    echo form_hidden('stid1', $stid);
+    echo form_hidden('ctotal', $totalcr);
     echo form_submit('submit', 'Submit');
-    //echo form_button('submit', 'Submit');
     echo"</td></tr>";
     echo "</p>";
 
