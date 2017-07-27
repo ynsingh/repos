@@ -20,7 +20,7 @@
 		var val=val;
 	   	$.ajax({
 		type: "POST",
-		url: "<?php echo base_url();?>index.php/map/getdeptlist",
+		url: "<?php echo base_url();?>sisindex.php/map/getdeptlist",
 		data: {"campusname" : val},
 		dataType:"html",
 		success: function(data){
@@ -33,7 +33,7 @@
 	        var tl=tl;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>index.php/map/teacherlist",
+                url: "<?php echo base_url();?>sisindex.php/map/teacherlist",
                 data: {"deptname" : tl},
                 dataType:"html",
                 success: function(data){
@@ -46,7 +46,7 @@
             var subj = subj;
 	   	$.ajax({
 	    	type: "POST",
-                url: "<?php echo base_url();?>index.php/map/subjectlist",
+                url: "<?php echo base_url();?>sisindex.php/map/subjectlist",
                 data: {"branchname" : subj},
 		dataType:"html",
 		success: function(data){
@@ -59,7 +59,7 @@
            	var paper = paper;
 	   	$.ajax({
 	    	type: "POST",
-                url: "<?php echo base_url();?>index.php/map/paperlist",
+                url: "<?php echo base_url();?>sisindex.php/map/paperlist",
                 data: {"subjectname" : paper},
 		dataType:"html",
 		success: function(data){
@@ -72,7 +72,7 @@
                 var branch = branch;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>index.php/map/branchlist",
+                url: "<?php echo base_url();?>sisindex.php/map/branchlist",
                 data: {"programname" : branch},
                 dataType:"html",
                 success: function(data){

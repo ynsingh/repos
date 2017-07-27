@@ -15,7 +15,7 @@
                 //alert(branch);
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>index.php/map/branchlist",
+                url: "<?php echo base_url();?>sisindex.php/map/branchlist",
                 data: {"programname" : branch},
                 dataType:"html",
                 success: function(data){
@@ -29,7 +29,7 @@
             var subj = subj;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>index.php/map/subjectlist",
+                url: "<?php echo base_url();?>sisindex.php/map/subjectlist",
                 data: {"spreq_prgid" : subj},
                 dataType:"html",
                 success: function(data){
@@ -42,7 +42,7 @@
                 var paper = paper;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>index.php/map/paperlist",
+                url: "<?php echo base_url();?>sisindex.php/map/paperlist",
                 data: {"spreq_subid" : paper},
                 dataType:"html",
                 success: function(data){

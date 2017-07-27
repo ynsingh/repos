@@ -747,7 +747,7 @@ class Map extends CI_Controller
 	
         if($pstdatadup == 1 ){
 
-		$this->session->set_flashdata("err_message", "Rcord is already exist with this combination. 'Subject Name' = $subname  , 'Paper Name' = $papername , 'Teacher Name' = $teacher  .");
+		$this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Subject Name' = $subname  , 'Paper Name' = $papername , 'Teacher Name' = $teacher  .");
                 redirect('map/subjectteacher');
 		return;
 	}
@@ -956,7 +956,7 @@ class Map extends CI_Controller
 
         $pstdatadup = $this->commodel->isduplicatemore('program_subject_teacher', $pstdataedit);
         if($pstdatadup == 1 ){
-                $this->session->set_flashdata("err_message", "Rcord is already exist with this combination. Subject Name = '$data_subjectname' , Paper Name =' $data_papername' , Teacher Name =' $data_teachername' ");
+                $this->session->set_flashdata("err_message", "Record is already exist with this combination. Subject Name = '$data_subjectname' , Paper Name =' $data_papername' , Teacher Name =' $data_teachername' ");
                 redirect('map/listsubjectteacher/');
         	return;
             }

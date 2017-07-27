@@ -33,11 +33,11 @@ input[type='button']{font-size:16px;}
                 var branch = branch;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>index.php/student/branchlist",
+                url: "<?php echo base_url();?>hrmindex.php/student/branchlist",
                 data: {"Sprogramname" : branch},
                 dataType:"html",
                 success: function(data){
-                $('#branchname').html(data);
+                $('#branchname').html(data.replace(/^"|"$/g, ''));
                 }
             }); 
         }
