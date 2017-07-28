@@ -45,7 +45,7 @@
         <table width="100%"> 
        
             <tr><td>  
-                <div style="margin-left:2%;">    
+                <div style="margin-left:2%;width:90%;">    
                 <?php echo anchor('map/viewuserrole/', "Map User Role List ", array('title' => 'View Detail' , 'class' => 'top_parent'));?>
                <?php
                  $help_uri = site_url()."/help/helpdoc#EmailSetting";
@@ -53,7 +53,7 @@
                  ?>
 
                 </div>
-                <div align="left" style="margin-left:2%;">
+                <div align="left" style="margin-left:2%;width:90%;">
                  <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
                   <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
                 

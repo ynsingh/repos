@@ -55,7 +55,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 </div>
 <table width="100%">
     <tr><td>
-    <div align="left" style="margin-left:2%;">
+    <div align="left" style="margin-left:2%;width:90%">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>

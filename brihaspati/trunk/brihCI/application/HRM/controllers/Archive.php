@@ -13,6 +13,8 @@ class Archive extends CI_Controller
 	function __construct() {
         	parent::__construct();
 		$this->load->model('common_model'); 
+		$this->load->model('login_model','logmodel'); 
+		
         	if(empty($this->session->userdata('id_user'))) {
 	        	$this->session->set_flashdata('flash_data', 'You don\'t have access!');
 			redirect('welcome');
@@ -53,6 +55,13 @@ class Archive extends CI_Controller
 	        $this->logger->write_logmessage("view"," View Subject semester Program archive ", "Subject semester Program archive details...");
         	$this->logger->write_dblogmessage("view"," View Subject semester Program archive", "Subject Semester Program archive details...");
 	        $this->load->view('archive/subsema');
+	}
+	/** This function Display the Authority list archive records */
+        public function authoritya() {
+        	$this->authresult = $this->logmodel->get_list('authority_archive');
+	        $this->logger->write_logmessage("view"," View Authority archive ", "Authority archive details...");
+        	$this->logger->write_dblogmessage("view"," View Authority archive", "Authority archive details...");
+	        $this->load->view('archive/authoritya');
 	}
 }
 

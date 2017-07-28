@@ -41,7 +41,7 @@
 
      <table width="100%">
             <tr><td>
-                <div align="left" style="margin-left:0.2%;">
+                <div align="left" style="margin-left:2%;">
                 <?php echo anchor('setup2/semesterrules/', "View Semester Rule ", array('title' => 'View Semester Rule' ,'class' =>'top_parent'));?>
                 <?php
                  $help_uri = site_url()."/help/helpdoc#";
@@ -64,13 +64,13 @@
         </table>
  
     <tr>
-    <div style="margin-left:0.6%;">
+    <div style="margin-left:2%;">
     <form action="<?php echo site_url('setup2/addsemrule');?>" method="POST" class="form-inline">
-		<table style="margin-left:0.6%;">
+		<table style="margin-left:2%;">
 		<tr>
            	<td>Program Name :</td>
            	<td>
-                <select name="programname" id="programname" class="my_dropdown" style="width:300px;" onchange="getbranchname(this.value)" >
+                <select name="programname" id="programname" class="my_dropdown" style="width:100%;" onchange="getbranchname(this.value)" >
                 <option value="" disabled  selected >------Select Program Name--------------</option>
                 <?php foreach($this->prgresult as $dataspt): ?>
                 <option value="<?php echo $dataspt->prg_name ?>"><?php echo $dataspt->prg_name; ?></option>
@@ -80,7 +80,7 @@
         <tr>
            <td>Branch Name :</td>
            <td>
-                <select name="semcr_prgid" id="semcr_prgid" class="my_dropdown" style="width:300px;">
+                <select name="semcr_prgid" id="semcr_prgid" class="my_dropdown" style="width:100%;">
                 <option value="" disabled  selected >------Select Branch Name--------------</option>
            </td>
         </tr>

@@ -80,6 +80,12 @@ class Login_model extends CI_Model
                 return false;
         }
     }
+    //get the complete record from specific table
+    public function get_list($tbname){
+         $this->db1->from($tbname);
+         return $this->db1->get()->result();
+    }
+
 
 //get the complete of record for specific value
     public function get_listrow($tbname,$fieldname,$fieldvalue){

@@ -29,7 +29,7 @@
                  $help_uri = site_url()."/help/helpdoc#";
 		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
                  ?>
-                <div  style="width:100%">
+                <div  style="width:90%;margin-left:2%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -48,7 +48,7 @@
     <tr>
     <div> 
     <form action="<?php echo site_url('setup2/addgrade');?>" method="POST" class="form-inline">
-            <table style="margin-left:1%;">
+            <table style="margin-left:2%;">
             <tr>
                 <td><label for="gm_gradename" class="control-label">Grade Name:</label></td>
                 <td>

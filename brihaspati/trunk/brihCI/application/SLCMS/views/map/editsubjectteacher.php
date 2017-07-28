@@ -18,9 +18,9 @@
         }
         </script>
 
-       <table>
+       <table  width="100%">
           <tr colspan="2"><td>
-          <div style="margin-left:30px;width:1700px;">
+          <div style="margin-left:2%;">
                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                <?php echo form_error('<div class="isa_error">','</div>');?>
                <?php if(isset($_SESSION['success'])){?>
@@ -36,7 +36,7 @@
                </div></br>
             </td></tr>
         </table>
-    <table style="margin-left:50px;">
+    <table style="margin-left:2%;">
         <form action="<?php echo site_url('map/editsubjectteacher/' . $pstp_id);?>" method="POST" class="form-inline">
             <tr>
                 <td> Campus Name </td>

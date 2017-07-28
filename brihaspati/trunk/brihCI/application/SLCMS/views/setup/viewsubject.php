@@ -50,9 +50,9 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 </table>
 </div>
 
-    <table>
+    <table width="100%">
     <tr><td>
-    <div  style="margin-left:2%;">
+    <div  style="margin-left:2%;width:90%;">
 
     <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
     <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
@@ -71,10 +71,11 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
 /* form data */
 
-         echo "<table border=0 cellpadding=10 style=\"padding: 8px 8px 8px 25px;\" class=\"TFtable\">";
-         echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th><th></th></tr></thead>";
+         echo "<table border=0 cellpadding=10 style=\"padding: 8px 8px 8px 4px;\" class=\"TFtable\">";
+         echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th></tr></thead>";
 
-    $srno = 0;
+	 $srno = 0;
+	 if( count($subjectlists) ):
     foreach($subjectlists as $subjectlist)
     {
         $srno = $srno + 1;
@@ -86,11 +87,17 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         echo "<td>"; echo $subjectlist->sub_desc; echo"</td>";
         echo "<td>"; echo $subjectlist->sub_ext1; echo"</td>";
         echo "<td>"; echo $subjectlist->sub_ext2; echo"</td>";
-        echo "<td>"; echo anchor('setup/editsubject/' . $subjectlist->sub_id , "Edit", array('title' => 'Edit Subject', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; echo anchor('setup/deletesubject/' . $subjectlist->sub_id ."/".$subjectlist->sub_name, "Delete", array('title' => 'Delete Subject', 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")); echo"</td>";
+	echo "<td>"; echo anchor('setup/editsubject/' . $subjectlist->sub_id , "Edit", array('title' => 'Edit Subject', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; echo anchor('setup/deletesubject/' . $subjectlist->sub_id ."/".$subjectlist->sub_name, "Delete", array('title' => 'Delete Subject', 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")); 
+	echo"</td>";
 //        echo "<td>"; echo anchor('setup/editsubject/' . $subjectlist->sub_id , "Edit", array('title' => 'Edit Subject', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; echo anchor('setup/deletesubject/' . $subjectlist->sub_id ."/".$subjectlist->sub_name, "Delete"); echo"</td>";
 
         echo "</tr>";
-    }    
+    }
+      else :
+        echo "<tr>";
+        echo "<td colspan= \"17\" align=\"center\"> No Records found...!</td>";
+	echo "</tr>";	 
+	 endif;
     echo "</table>";        
 
 /* form data */

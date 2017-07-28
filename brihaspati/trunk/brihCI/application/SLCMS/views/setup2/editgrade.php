@@ -35,7 +35,7 @@
             echo "</tr>";
             echo "</table>";
         ?>--!>
-        <table width="100%"> 
+        <table width="90%"> 
         	<tr><td>    
                 	<div margin="2%">
                     	<?php echo validation_errors('<div  class="isa_warning">','</div>');?>

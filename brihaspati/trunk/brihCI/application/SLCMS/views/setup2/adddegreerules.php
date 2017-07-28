@@ -41,7 +41,7 @@
 
      <table width="100%">
             <tr><td>
-                <div align="left" style="margin-left:0.2%;">
+                <div align="left" style="margin-left:2%;width:90%;">
                 <?php echo anchor('setup2/degreerules/', "View Degree Rules ", array('title' => 'View Degree rules' ,'class' =>'top_parent'));?>
                 <?php
                  $help_uri = site_url()."/help/helpdoc#";
@@ -63,9 +63,9 @@
 	</div>
          </td></tr>
     </table>
-    <div style="margin-left:0.6%;">
+    <div style="margin-left:i2%;">
     <form action="<?php echo site_url('setup2/adddegreerules');?>" method="POST" class="form-inline">
-            <table style="margin-left:0.6%;">
+            <table style="margin-left:2%;">
     		<tr><td><label for="programname" class="control-label"> Choose Programme:</label></td><td>
              <select name="programname" id="programname" class="my_dropdown" style="width:300px;" onchange="getbranchname(this.value)" >
              <option value="" disabled  selected >------Select Program Name--------------</option>

@@ -39,7 +39,7 @@
 		 $help_uri = site_url()."/help/helpdoc#";
 		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
 		 ?>
-                <div>
+                <div  style="margin-left:2%;width:90%;">
   
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
 

@@ -2,8 +2,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
- * @name: Common model
- * @author: Nagendra Kumar Singh
+ * @name: Mailsend_model
+ * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
  */
 
 class Mailsend_model extends CI_Model
