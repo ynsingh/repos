@@ -1,4 +1,4 @@
-<?php
+ <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
@@ -94,6 +94,25 @@ class Login_model extends CI_Model
 	 $this->db1->where('username !=','admin');
 	 $this->db1->where('username !=','guest'); 	
          return $this->db1->get('edrpuser')->result();
+    }
+
+//get the complete record from specific table
+    public function get_list($tbname){
+         $this->db1->from($tbname);
+         return $this->db1->get()->result();
+    }
+// delete the specific record form specific table
+    public function deleterow($tbname,$fieldname,$fieldvalue){
+                $this->db1->trans_start();
+        if ( ! $this->db1->delete($tbname, array($fieldname => $fieldvalue)))
+        {
+            $this->db1->trans_rollback();
+            return false;
+                  }
+        else {
+            $this->db1->trans_complete();
+            return true;
+                  }
     }
 
     function __destruct() {

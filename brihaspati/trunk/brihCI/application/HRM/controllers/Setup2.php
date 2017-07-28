@@ -14,6 +14,7 @@ class Setup2 extends CI_Controller
         parent::__construct();
 	$this->load->model('common_model','commodel'); 
 	$this->load->model('dependrop_model','depmodel'); 
+        $this->load->model('login_model','logmodel');
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -834,4 +835,402 @@ class Setup2 extends CI_Controller
  redirect('setup2/editdegreerules');
 
  }// edit degree rule function end
-} 
+
+               /*   -------------***********DESIGNATION STARTS****************--------------------   */
+
+/** This function display the designation                                                                                                                                                        
+  * @param type  
+  * @return type
+  */
+
+     public function designation() {
+        $this->result = $this->commodel->get_list('designation');
+        $this->logger->write_logmessage("view"," View Designation ", "Designation details...");
+        $this->logger->write_dblogmessage("view"," View Designation" , "Designation record display successfully..." );
+        $this->load->view('setup2/designation',$this->result);
+       }
+
+   /** This function add the designation
+     * @return type
+     */                 
+
+    public function adddesignation()
+    {
+         if(isset($_POST['adddesignation'])) {
+                 $this->form_validation->set_rules('desig_name','Designation Name','trim|xss_clean|required|callback_isnameExist');
+                 $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|required');
+                 $this->form_validation->set_rules('desig_short','Designation Short','trim|xss_clean|required');
+                 $this->form_validation->set_rules('desig_desc','Designation Description','trim|xss_clean');
+                 if($this->form_validation->run()==TRUE){
+                 //echo 'form-validated';
+                        $data = array(
+                                'desig_name'=>ucfirst(strtolower($_POST['desig_name'])),
+                                'desig_code'=>strtoupper($_POST['desig_code']),
+                                'desig_short'=>strtoupper($_POST['desig_short']),
+                                'desig_desc'=>$_POST['desig_desc'],
+                           );
+                           $rflag=$this->commodel->insertrec('designation', $data);
+                           if (!$rflag)
+                        {
+                                $this->logger->write_logmessage("insert","Trying to designation", "designation is not added ".$_POST['desig_name']);
+                                $this->logger->write_dblogmessage("insert","Trying to designation", "designation is not added ".$_POST['desig_name']);
+                                $this->session->set_flashdata('err_message','Error in adding designation setting - '  , 'error');
+                                redirect('setup2/adddesignation');
+                        }
+                        else{
+                                $this->logger->write_logmessage("insert","Add designation Setting", "Designation".$_POST['desig_name']." added  successfully...");
+                                $this->logger->write_dblogmessage("insert","Add designation Setting", "Designation ".$_POST['desig_name']."added  successfully...");
+                                $this->session->set_flashdata("success", "Designation add successfully...");
+                                redirect("setup2/designation");
+                        }
+                }//close if vallidation
+        }//  
+               
+        $this->load->view('setup2/adddesignation');
+    }
+
+   /** This function check for duplicate designation
+     * @return type
+     */
+    public function isnameExist($desig_name) {
+        $is_exist = $this->commodel->isduplicate('designation','desig_name',$desig_name);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isnameExist', 'Designation is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    /**This function Delete the designation records
+     * @param type $id
+     * @return type
+     */
+     public function deletedesignation($id) {
+        $desig_data_q=$this->commodel->get_listrow('designation','desig_id ', $id);
+        if ($desig_data_q->num_rows() < 1)
+        {
+            redirect('setup2/designation');
+        }
+
+          $gradedflag=$this->commodel->deleterow('designation','desig_id', $id);
+          if(!$gradedflag)
+          {
+                $this->logger->write_message("error", "Error  in deleting designation " ."[desig_id:" . $id . "]");
+                $this->logger->write_dbmessage("error", "Error  in deleting designation "." [desig_id:" . $id . "]");
+                $this->session->set_flashdata('err_message', 'Error in Deleting designation - ', 'error');
+                redirect('setup2/designation');
+                return;
+          }
+          else{
+                $this->logger->write_logmessage("delete", "Deleted   designation " . "[desig_id:" . $id . "] deleted successfully.. " );
+                $this->logger->write_dblogmessage("delete", "Deleted designation" ." [desig_id:" . $id . "] deleted successfully.. " );
+                $this->session->set_flashdata("success", 'Designation Deleted successfully...' );
+                redirect('setup2/designation');
+        }
+        $this->load->view('setup2/designation',$data);
+    }
+
+    /**This function is used for update designation records
+     * @param type $id designation id
+     * @return type
+     */
+    public function editdesignation($desig_id) {
+        $desig_data_q=$this->commodel->get_listrow('designation','desig_id', $desig_id);
+        if ($desig_data_q->num_rows() < 1)
+        {
+            redirect('setup2/editdesignation');
+        }
+        $editdesig_data = $desig_data_q->row();
+
+        /* Form fields */
+
+        $data['desig_name'] = array(
+                'name' => 'desig_name',
+                'id' => 'desig_name',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdesig_data->desig_name,
+        	'readonly' => 'readonly'
+        );
+        $data['desig_code'] = array(
+                'name' => 'desig_code',
+                'id' => 'desig_code',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdesig_data->desig_code,
+
+                );
+        $data['desig_short'] = array(
+                'name' => 'desig_short',
+                'id' => 'desig_short',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdesig_data->desig_short,
+
+                );
+
+        $data['desig_desc'] = array(
+                'name' => 'desig_desc',
+                'id' => 'desig_desc',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdesig_data->desig_desc,
+            
+                );
+        $data['desig_id'] = $desig_id;
+        /*Form Validation*/
+        $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|required');
+        $this->form_validation->set_rules('desig_short','Designation Short','trim|xss_clean');
+        $this->form_validation->set_rules('desig_desc','Designation Description','trim|xss_clean');
+
+        /* Re-populating form */
+        if ($_POST)
+        {
+            $data['desig_code']['value'] = $this->input->post('desig_code', TRUE);
+            $data['desig_short']['value'] = $this->input->post('desig_short', TRUE);
+            $data['desig_desc']['value'] = $this->input->post('desig_desc', TRUE);
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup2/editdesignation', $data);
+            echo"fdjfkkg";
+            return;
+        }
+        else{
+
+            $desig_code= strtoupper($this->input->post('desig_code', TRUE));
+            $desig_short = $this->input->post('desig_short', TRUE);
+            $desig_desc= $this->input->post('desig_desc', TRUE);
+          //  $data_edesig_id = $desg_id;
+            $logmessage = "";
+	    if($editdesig_data->desig_code != $desig_code)
+                $logmessage = "Edit Designation Code " .$editdesig_data->desig_code. " changed by " .$desig_code;
+            if($editdesig_data->desig_short !=  $desig_short)
+                $logmessage = "Edit Designation short  " .$editdesig_data->desig_short. " changed by " . $desig_short;
+            if($editdesig_data->desig_desc != $desig_desc)
+                $logmessage = "Edit  Designation desc " .$editdesig_data->desig_desc. " changed by " .$desig_desc;
+
+               //'desig_name' => $data_edesignationname,
+            $update_data = array(
+               'desig_code' => $desig_code,
+               'desig_short' => $desig_short,
+               'desig_desc' => $desig_desc,
+            );
+               //'modifierid'=>$this->session->userdata('username'),
+               //'modifydate'=>date('y-m-d')
+
+        $gradedflag=$this->commodel->updaterec('designation', $update_data,'desig_id', $desig_id);
+        if(!$gradedflag)
+            {
+                $this->logger->write_logmessage("error","Edit designation Setting error", "Edit designation Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit designation Setting error", "Edit designation Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating designation - ' . $logmessage . '.', 'error');
+                $this->load->view('setup2/editdesignation', $data);
+           }
+            else{
+                $this->logger->write_logmessage("update","Edit designation Setting by".$this->session->userdata('username') , "Edit designation Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit designation Setting by".$this->session->userdata('username') , "Edit designation Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Designation  detail updated successfully..');
+                redirect('setup2/designation');
+                }
+        }//else
+        redirect('setup2/editdesignation');
+    }//Edit Designation function end
+
+                                                                                                                                                                                
+                           /* --------****Authority Starts****------------ */
+     
+
+/** This function display the Authorities                                                                                                                                                        
+  * @param type  
+  * @return type
+  */
+
+     public function authority() {
+        $this->result = $this->logmodel->get_list('authorities');
+        $this->logger->write_logmessage("view"," View Authorities ", "Authorities details...");
+        $this->logger->write_dblogmessage("view"," View Authorities " , "Authorities record display successfully..." );
+        $this->load->view('setup2/authority',$this->result);
+       }
+   
+ /** This function add the authority
+     * @return type
+     */
+
+   public function addauthority()
+    {
+         if(isset($_POST['addauthority'])) {
+                 $this->form_validation->set_rules('name','Authority Name','trim|xss_clean|required');
+                 $this->form_validation->set_rules('nickname','Authority Nickname','trim|xss_clean|required');
+                 $this->form_validation->set_rules('authority_email','Authority Email','trim|xss_clean|valid_email|callback_isemailExist');
+                 if($this->form_validation->run()==TRUE){
+                 //echo 'form-validated';
+                        $data = array(
+                                'name'=>ucfirst(strtolower($_POST['name'])),
+                                'nickname'=>($_POST['nickname']),
+                                'authority_email'=>($_POST['authority_email']),
+                                );
+                           $rflag=$this->logmodel->insertrec('authorities', $data);
+                           if (!$rflag)
+                        {
+                                $this->logger->write_logmessage("insert","Trying to add authority ", "authority is not added ".$_POST['name']);
+                                $this->logger->write_dblogmessage("insert","Trying to add authority", "authority is not added ".$_POST['name']);
+                                $this->session->set_flashdata('err_message','Error in adding authority setting - '  , 'error');
+                                redirect('setup2/addauthority');
+                        }
+                        else{
+                                $this->logger->write_logmessage("insert","Add authority Setting", "Authority".$_POST['name']." added  successfully...");
+                                $this->logger->write_dblogmessage("insert","Add  authority  Setting", "Authority  ".$_POST['name']."added  successfully...");
+                                $this->session->set_flashdata("success", " Authority  add successfully...");
+                                redirect("setup2/authority");
+                        }
+                }//close if vallidation
+        }//
+        $this->load->view('setup2/addauthority');
+    }
+
+
+   /** This function check for duplicate authority
+     * @return type
+     */
+    public function isEmailExist($authority_email) {
+        $is_exist = $this->logmodel->isduplicate('authorities','authority_email',$authority_email);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isemailExist', 'Authority is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }  
+ 
+
+  /**This function Delete the authority records
+     * @param type $id
+     * @return type
+     */
+
+   public function deleteauthority($id) {
+        $_data_q=$this->logmodel->get_listrow('authorities','id ', $id);
+        if ($_data_q->num_rows() < 1)
+        {
+            redirect('setup2/authority');
+        }
+
+          $gradedflag=$this->logmodel->deleterow('authorities','id', $id);
+          if(!$gradedflag)
+          {
+                $this->logger->write_message("error", "Error  in deleting authorities " ."[id:" . $id . "]");
+                $this->logger->write_dbmessage("error", "Error  in deleting authorities "." [id:" . $id . "]");
+                $this->session->set_flashdata('err_message', 'Error in Deleting authorities - ', 'error');
+                redirect('setup2/authority');
+                return;
+          }
+          else{
+                $this->logger->write_logmessage("delete", "Deleted   authorities " . "[id:" . $id . "] deleted successfully.. " );
+                $this->logger->write_dblogmessage("delete", "Deleted authorities" ." [id:" . $id . "] deleted successfully.. " );
+                $this->session->set_flashdata("success", 'Authority Deleted successfully...' );
+                redirect('setup2/authority');
+        }
+        $this->load->view('setup2/authority',$data);
+    } 
+
+  /**This function is used for update authorities records
+     * @param type $id authorities id
+     * @return type
+     */
+
+    public function editauthority($id) {
+        $data_q=$this->logmodel->get_listrow('authorities','id', $id);
+        if ($data_q->num_rows() < 1)
+        {
+            redirect('setup2/editauthority');
+        }
+        $edit_data = $data_q->row();
+
+        /* Form fields */
+
+        $data['name'] = array(
+                'name' => 'name',
+                'id' => 'name',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $edit_data-> name,
+                 
+                );
+        $data['nickname'] = array(
+                'name' => 'nickname',
+                'id' => 'nickname',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $edit_data->nickname,
+
+                );
+        $data['authority_email'] = array(
+                'name' => 'authority_email',
+                'id' => 'authority_email',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $edit_data->authority_email,
+                'readonly' => 'readonly'
+                );                      
+        $data['id'] = $id;
+        /*Form Validation*/
+
+        $this->form_validation->set_rules('name','Authorities Name','trim|xss_clean');
+        $this->form_validation->set_rules('nickname ','Authorities Nickname ','trim|xss_clean');
+        
+        /* Re-populating form */
+
+        if ($_POST)
+        {
+            $data['name']['value'] = $this->input->post('name', TRUE);
+            $data['nickname']['value'] = $this->input->post('nickname', TRUE);
+            
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup2/editauthority', $data);
+            return;
+        }
+        else{
+
+            $name = ucfirst(strtolower($this->input->post('name', TRUE)));
+            $nickname = ($this->input->post('nickname', TRUE));
+            
+            $logmessage = "";
+            if($edit_data-> name != $name)
+                     $logmessage = "Edit Authorities Name " .$edit_data-> name. " changed by " .$name;
+            if($edit_data->nickname != $nickname)
+                $logmessage = "Edit Authorities Nickname   " .$edit_data->nickname. " changed by " .$nickname;
+            //'desig_name' => $data_edesignationname,
+            $update_data = array(
+               'name' => $name,
+               'nickname' => $nickname,
+               );
+               //'modifierid'=>$this->session->userdata('username'),
+               //'modifydate'=>date('y-m-d')
+
+        $gradedflag=$this->logmodel->updaterec('authorities', $update_data,'id', $id);
+        if(!$gradedflag)
+            {
+                $this->logger->write_logmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating authorities - ' . $logmessage . '.', 'error');
+                $this->load->view('setup2/editauthority', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit authorities Setting by".$this->session->userdata('username') , "Edit authorities Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit authorities Setting by".$this->session->userdata('username') , "Edit authorities Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Authority detail updated successfully..');
+                redirect('setup2/authority');
+               }                
+        }//else
+        redirect('setup2/editauthority');
+    }//Edit Authority function end
+}//end class
