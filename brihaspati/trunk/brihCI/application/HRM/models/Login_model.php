@@ -102,11 +102,6 @@ class Login_model extends CI_Model
          return $this->db1->get('edrpuser')->result();
     }
 
-//get the complete record from specific table
-    public function get_list($tbname){
-         $this->db1->from($tbname);
-         return $this->db1->get()->result();
-    }
 // delete the specific record form specific table
     public function deleterow($tbname,$fieldname,$fieldvalue){
                 $this->db1->trans_start();
