@@ -83,7 +83,7 @@
 
 	echo "</td><td valign=\"top\" >";
 
-	echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;  \">";
+	/*echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;  \">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
         echo "<td style=\"padding: 8px 8px 8px 20px; text-align:center;\">";
         echo "University Program and Seat";
@@ -103,9 +103,9 @@
         echo "</table>";
         echo "</td>";
         echo "</tr>";
-        echo "</table>";
+        echo "</table>";*/
 
-	echo "</td><td valign=\"top\">";
+	/*echo "</td><td valign=\"top\">";
 
         echo "<table border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
         echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -125,7 +125,7 @@
         echo "</table>";
         echo "</td>";
         echo "</tr>";
-        echo "</table>";
+        echo "</table>";*/
 
 	echo "</td>";
 	echo "</tr></table>";

@@ -6,17 +6,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title>Welcome to IGNTU</title>
 	 <link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
-<!--	<style type="text/css">
+	 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
+	<style type="text/css">
 
-	::selection { background-color: #E13300; color: white; }
-	::-moz-selection { background-color: #E13300; color: white; }
-
+	/*::selection { background-color: #E13300; color: white; }
+	::-moz-selection { background-color: #E13300; color: white; }*/
+	tr td a{text-decoration:none;font-size:15px;color:black;font-weight:bold;}
+	
 	</style>
--->
 </head>
 <body>
-
-
 <div>
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
@@ -24,11 +23,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php if(isset($_SESSION)) {
         	echo $this->session->flashdata('flash_data');
     	} ?>
- 	<br><br>
+ 	</br>
+	<?php $this->load->view('template/welcome_head'); ?>
+</br></br>
 	<center>
     	<form action="<?= site_url('welcome') ?>" method="post">
-        	<table>
-		<tr><td>
+        <table style="width:100%;" border=0>
+		<tr>
+		   <td width="770" align="center"><h2 style="color:#ff0000;"><span style="color:black;">Note : </span>Fees paid will not refunded or readjusted in any circumstances.</h2></td>
+ 		   <td align="center"><a href="">View Advertisement</a></br>
+			</br><span style="font-size:15px;color:black;font-weight:bold;">New Applicant</span>
+			</br><a href="<?php echo site_url('carrier/applicant_step1')?>" style="color:blue;">(Click Here)</a>
+			</br></br><a href="">Applicant Status</a>
+			</br></br><a href="">Applicant print</a></td>
+		   <td>
+	<table align="center">
+		<tr>
+		<td>
         	<label for="username">Username</label>
 		</td>
 		<td>		
@@ -41,11 +52,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         	<input type="password" name="password" /></td></tr>
 		<tr><td></td>
 		<td>
-        	<button type="submit" style="font-size:17px;">Login</button>
+        	<button type="submit" style="font-size:17px;width:49%;">Login</button>
 		
-		<a href="<?php echo site_url('Student/student_step0');?>" style="text-decoration:none;" title="Click to open student detail form">
-		<input type="button" value="New Student" style="font-size:17px;"></a></td></tr>
-		</table>
+		<input type="reset" value="reset" style="font-size:17px;width:49%;"></td></tr>
+		<tr><td></td>
+		<td><a href=""><input type="button" value="Forget Password" style="font-size:17px;width:100%;"></a></td>
+		</tr>
+	</table>
+	</td>
+	</tr>
+	</table>
     	</form>
 </center>
 	</div>
