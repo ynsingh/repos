@@ -8,6 +8,9 @@ body {
 	text-align:center;
 }
 
+#head {background-color:#067eb7;color:white;width:100%;font-size:16px;font-weight:bold;height:40px;}
+
+#head tr td a{color:white;text-decoration:none;}
 
 label{font-size:18px;}
 #container {
