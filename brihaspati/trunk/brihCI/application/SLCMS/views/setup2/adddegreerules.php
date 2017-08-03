@@ -44,7 +44,7 @@
                 <div align="left" style="margin-left:2%;width:90%;">
                 <?php echo anchor('setup2/degreerules/', "View Degree Rules ", array('title' => 'View Degree rules' ,'class' =>'top_parent'));?>
                 <?php
-                 $help_uri = site_url()."/help/helpdoc#";
+                 $help_uri = site_url()."/help/helpdoc#DegreeRule";
                  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:60%\">Click for Help</b></a>";
                  ?>
                 <div>

@@ -44,7 +44,7 @@
                 <div align="left" style="margin-left:2%;">
                 <?php echo anchor('setup2/semesterrules/', "View Semester Rule ", array('title' => 'View Semester Rule' ,'class' =>'top_parent'));?>
                 <?php
-                 $help_uri = site_url()."/help/helpdoc#";
+                 $help_uri = site_url()."/help/helpdoc#SemesterRule";
 		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
                  ?>
                 <div>

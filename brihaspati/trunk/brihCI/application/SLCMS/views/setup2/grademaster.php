@@ -27,8 +27,8 @@
 		<?php  echo anchor('setup2/addgrade/', "Add Grade", array('title' => 'Add Grade Detail','class' =>'top_parent'));
 		?>
                  <?php
-                 $help_uri = site_url()."/help/helpdoc#";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:79.30%\">Click for Help</b></a>";
+                 $help_uri = site_url()."/help/helpdoc#ViewGrade";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
                  ?>
                 <div  style="width:90%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>

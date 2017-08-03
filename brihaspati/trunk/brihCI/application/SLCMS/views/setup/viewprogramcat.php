@@ -17,7 +17,7 @@
       <div align=left" style="margin-left:2%;">
          <?php
             echo anchor('setup/programcat/', 'Add Program Category', array('class' => 'top_parent'));
-            $help_uri = site_url()."/help/helpdoc#ViewCategaryDetail";
+            $help_uri = site_url()."/help/helpdoc#ViewProgramCategory";
              echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
          ?>
 

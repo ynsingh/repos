@@ -3,7 +3,7 @@
 <!--@name listfac.php 
   @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
   @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
-  @author Malvika Upadhyay (chaudharydeepika88@gmail.com)
+  @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
 
  -->
 <html>
@@ -15,14 +15,17 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-        <!--table style="margin-left:10px;">
-            <tr colspan="2"><td-->
-             <!--?php
-                 echo anchor('setup/faclist/', "Add Faculty list ",array('title' => 'faculty list Detail ' , 'class' => 'top_parent'));
-                 $help_uri = site_url()."/help/helpdoc#ViewFacultylistwithHead";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:71%\">Click for Help</b></a>";
-                ?>
-	<table-->
+                   <?php
+                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<tr valign=\"top\">";
+                    echo "<td>";
+                    $help_uri = site_url()."/help/helpdoc#FacultyList";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:39%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
+                    ?>
+
 	    <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
             <thead>
                 <tr align="center">

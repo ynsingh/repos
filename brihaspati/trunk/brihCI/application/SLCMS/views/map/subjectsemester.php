@@ -40,8 +40,8 @@
            
             <tr><td> 
                  <?php echo anchor('map/mapsubsem/', "Map Subject Semester Program Department ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
-		 $help_uri = site_url()."/help/helpdoc#";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:52%\">Click for Help</b></a>";
+		 $help_uri = site_url()."/help/helpdoc#ViewMapSubjectandSemester";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:60%\">Click for Help</b></a>";
 		 ?>
                 <div>
   

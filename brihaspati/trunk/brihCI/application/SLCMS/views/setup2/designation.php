@@ -25,8 +25,10 @@
             <tr><td>
                 <div align="left">
                 <?php  echo anchor('setup2/adddesignation/', "Add Designation", array('title' => 'Add  Designation  Detail','class' =>'top_parent'));
+		$help_uri = site_url()."/help/helpdoc#ViewDesignation";
+           	echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
                 ?>
-                  </div>
+                </div>
                 <div  style="width:90%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
               <?php if(isset($_SESSION['success'])){?>

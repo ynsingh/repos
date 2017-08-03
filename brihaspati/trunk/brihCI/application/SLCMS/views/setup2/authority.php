@@ -25,6 +25,8 @@
             <tr><td>
                 <div align="left">
                 <?php  echo anchor('setup2/addauthority/', "Add  Authority", array('title' => 'Add   Authority  Detail','class' =>'top_parent'));
+		$help_uri = site_url()."/help/helpdoc#ViewAuthority";
+           	echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
                 ?>
                   </div>
                 <div  style="width:90%;margin-left:2%">

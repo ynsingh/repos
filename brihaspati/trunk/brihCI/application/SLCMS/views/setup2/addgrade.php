@@ -26,7 +26,7 @@
                 <div align="left">
                 <?php echo anchor('setup2/grademaster/', "View Grade Master ", array('title' => 'View Grade Master' ,'class' =>'top_parent'));?>
                 <?php
-                 $help_uri = site_url()."/help/helpdoc#";
+                 $help_uri = site_url()."/help/helpdoc#GradeMaster";
 		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
                  ?>
                 <div  style="width:90%;margin-left:2%;">

@@ -14,10 +14,11 @@
    <table style="padding: 8px 8px 8px 20px;width:100%;">
      <tr><td>
       <div align="left">
-        <font color=blue size=4pt>
          <?php
             echo anchor('map/subjectteacher/', 'Map Subject and Paper With Teacher', array('class' => 'top_parent'));
-         ?>
+	    $help_uri = site_url()."/help/helpdoc#ViewMapSubjectandPaperwithTeacher";
+            echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
+            ?>
         </div>
        </div>
        <div style="margin-left:2%;width:90%;">

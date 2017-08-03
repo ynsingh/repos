@@ -19,7 +19,7 @@
         <?php $this->load->view('template/menu'); ?>
 
         </div>
-                   <!--?php
+                   <?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
@@ -28,7 +28,7 @@
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
-                    ?-->
+                    ?>
 
            <div>
 <?php

@@ -74,7 +74,7 @@
 
                             </td>
                             <td><?php echo form_error('emailporotcol')?></td>
-                            <td>Example: smtpfmkgjdfgjgjdhjgdhdgfljhdlfkhjjh</td>
+                            <td>Example: smtp</td>
                 
                         </tr>
                         <tr> 

@@ -15,7 +15,7 @@
                 <?php  echo anchor('setup/seatsetting/', "Add seat Setting", array('title' => 'Add Seat Setting Detail','class' =>'top_parent'));
                 ?>
                  <?php
-                 $help_uri = site_url()."/help/helpdoc#";
+                 $help_uri = site_url()."/help/helpdoc#ViewSeatSetting";
                  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
                  ?>
                 <div  style="width:90%;margin-left:2%">

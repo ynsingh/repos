@@ -16,7 +16,7 @@
             <tr colspan="2"><td>
             <?php
                     echo anchor('setup/sc/', "Add Study Center " ,array('title' => ' Add study center Configuration Detail ' , 'class' => 'top_parent'));
-                    $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
+                    $help_uri = site_url()."/help/helpdoc#ViewStudyCenter";
            echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
 
             ?>

@@ -27,7 +27,7 @@
 		<?php  echo anchor('setup2/addsemrule/', "Add Semester Rule", array('title' => 'Add Semseter Rule','class' =>'top_parent'));
 		?>
                  <?php
-                 $help_uri = site_url()."/help/helpdoc#";
+                 $help_uri = site_url()."/help/helpdoc#ViewSemesterRule";
 		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73.5%\">Click for Help</b></a>";
                  ?>
                 <div  style="width:90%;margin-left:2%">

@@ -27,7 +27,7 @@
                 <?php  echo anchor('setup2/adddegreerules/', "Add Degree Rules", array('title' => 'Add Degree Rule Detail','class' =>'top_parent'));
                 ?>
                    <?php
-                   $help_uri = site_url()."/help/helpdoc#";
+                   $help_uri = site_url()."/help/helpdoc#ViewDegreeRule";
                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
                  ?>
                   </div>

@@ -38,7 +38,7 @@
 			<font size=3pt>
 			<div style="margin-left: 7px; width:200px;">
 			<?php echo anchor('setup/dispseatsetting', "Seat Reservation List", array('title' => 'Add Detail' , 'class' => 'top_parent')) . " ";
-                        $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
+                        $help_uri = site_url()."/help/helpdoc#SeatReservation";
            echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
              ?>
 			</font>
