@@ -23,10 +23,6 @@ echo "<body>";
 <table style="margin-left:9px;">
 <tr colspan="2"><td>
 <div>
-<?php echo anchor('setup/viewsubject/', "Subject List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
-$help_uri = site_url()."/help/helpdoc#Subject";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:80%\">Click for Help</b></a>";
-?>
 </td></tr>
 </table>
 </div>
