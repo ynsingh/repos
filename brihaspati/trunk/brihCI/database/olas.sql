@@ -41,8 +41,12 @@ SET time_zone = "+00:00";
 CREATE TABLE `admissionmeritlist` (
         `id` INT(11) NOT NULL AUTO_INCREMENT ,
         `application_no` VARCHAR(255) NOT NULL ,
+        `entexamname` VARCHAR(255) DEFAULT NULL ,
+        `entexamrollno` VARCHAR(255) DEFAULT NULL ,
         `course_name` VARCHAR(255) NOT NULL ,
+        `branchname` VARCHAR(255) DEFAULT NULL ,
         `student_name` VARCHAR(255) NOT NULL ,
+        `student_email` VARCHAR(255) NOT NULL ,
         `father_name` VARCHAR(255) NOT NULL ,
         `marks` INT(5) NOT NULL ,
         `admission_quota` VARCHAR(255) NOT NULL ,
@@ -53,11 +57,10 @@ CREATE TABLE `admissionmeritlist` (
         `admission_date` DATE DEFAULT NULL ,
         `ext1` VARCHAR(255) NULL ,
         PRIMARY KEY (`id`),
-        UNIQUE (`application_no`, `course_name`, `student_name`)
+        UNIQUE (`application_no`, `course_name`, `student_email`)
 ) ENGINE = InnoDB;
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `AdmissionStep`
 --
@@ -874,6 +877,7 @@ CREATE TABLE `student_program` (
   `sp_branch` varchar(255) DEFAULT NULL,
   `sp_acadyear` varchar(255) DEFAULT NULL,
   `sp_semester` varchar(255) DEFAULT NULL,
+  `sp_semregdate`  DATE NOT NULL,
   `sp_subid1` int(11) DEFAULT NULL,
   `sp_subid2` int(11) DEFAULT NULL,
   `sp_subid3` int(11) DEFAULT NULL,
@@ -1139,7 +1143,7 @@ ALTER TABLE `org_profile`
 --
 ALTER TABLE `program`
   ADD PRIMARY KEY (`prg_id`),
-  ADD UNIQUE KEY `prg_category` (`prg_category`,`prg_name`,`prg_branch`);
+  ADD UNIQUE KEY `prg_category` (`prg_cid`,`prg_category`,`prg_name`,`prg_branch`);
 
 --
 -- Indexes for table `program_subject_teacher`
