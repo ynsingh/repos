@@ -540,7 +540,7 @@ public class Institute_RootAdmin extends SecureAction_Admin
 		String instadd=pp.getString("IADDRESS");
 		String instcity=pp.getString("ICITY");
 		String instpincode=pp.getString("IPINCODE");
-		String instcountry=pp.getString("ICOUNTRY");
+		//String instcountry=pp.getString("ICOUNTRY");
 		String inststate=pp.getString("ISTATE");
 		String instlandln=pp.getString("ILANDLINE");
 		String instdomain=pp.getString("IDOMAIN");
@@ -574,7 +574,7 @@ public class Institute_RootAdmin extends SecureAction_Admin
 			crit.add(InstituteAdminRegistrationPeer.INSTIUTE_ADDRESS,instadd);	
 			crit.add(InstituteAdminRegistrationPeer.CITY,instcity);	
 			crit.add(InstituteAdminRegistrationPeer.PINCODE,instpincode);
-			crit.add(InstituteAdminRegistrationPeer.COUNTRY,instcountry);
+			//crit.add(InstituteAdminRegistrationPeer.COUNTRY,instcountry);
 			crit.add(InstituteAdminRegistrationPeer.STATE,inststate);	
 			crit.add(InstituteAdminRegistrationPeer.LANDLINE_NO,instlandln);	
 			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_DOMAIN,instdomain);	
