@@ -1405,7 +1405,7 @@ class Setup extends CI_Controller
                         $this->form_validation->set_rules('semester','Semester','trim|xss_clean|required');
                         $this->form_validation->set_rules('category','Category','trim|xss_clean|required');
                         $this->form_validation->set_rules('gender','Gender','trim|xss_clean|required');
-                        $this->form_validation->set_rules('head','Head','trim|xss_clean|required|callback_isheadExist');
+                        $this->form_validation->set_rules('head','Head','trim|xss_clean|required');
                         $this->form_validation->set_rules('amount','Amount','trim|xss_clean|required|is_natural_no_zero');
                         //$this->form_validation->set_rules('installment','Installment','trim|xss_clean|required|numeric');
                         $this->form_validation->set_rules('descripation','Description','trim|xss_clean');
@@ -1416,34 +1416,45 @@ class Setup extends CI_Controller
                 //if form validation true
 
                 if($this->form_validation->run()==TRUE){
-              		$data = array(
-                        	'fm_programid'=>$_POST['program'],
-                                'fm_acadyear'=>$_POST['acadyear'],
-                                'fm_semester'=>$_POST['semester'],
-                                'fm_category'=>$_POST['category'],
-                                'fm_gender'=>$_POST['gender'],
-                                'fm_head'=>ucwords(strtolower($_POST['head'])),
-                                'fm_amount'=>$_POST['amount'],
-                                //'fm_installment'=>ucwords(strtolower($_POST['installment'])),
-                                'fm_desc'=>$_POST['description'],
-                             // 'fm_frmdate'=>$_POST['frmdate'],
-                              //'fm_todate'=>$_POST['todate'],
-                        );
-                        $fmflag=$this->common_model->insertrec('fees_master', $data);
-                	if (!$fmflag)
-                	{
-                    		$this->logger->write_logmessage("insert","Trying to add fees with head  ", "fees is not added ".$_POST['head']);
-                    		$this->logger->write_dblogmessage("insert","Trying to add fees with head", "Fees is not added ".$_POST['head']);
-                    		$this->session->set_flashdata('err_message','Error in adding fees with head - '.$_POST['head']  , 'error');
-                    		redirect('setup/fees');
-
-                	}
-                	else{
-                    		$this->logger->write_logmessage("insert","Add fees with head ", "Fees".$_POST['head']." added  successfully...");
-                    		$this->logger->write_dblogmessage("insert","Add fees with head ", "Fees ".$_POST['head']."added  successfully...");
-                    		$this->session->set_flashdata("success", " Program fees add successfully... head is ".$_POST['head']);
-                    		redirect("setup/displayfees");
-                	}
+			
+			$datawh = array('fm_programid' => $_POST['program'], 'fm_semester' => $_POST['semester'], 'fm_category' => $_POST['category'], 'fm_gender'=> $_POST['gender'], 'fm_head'=>ucwords(strtolower($_POST['head'])));
+			$is_exist = $this->common_model->isduplicatemore('fees_master',$datawh);
+			if(!$is_exist){
+        	      		$data = array(
+	                        	'fm_programid'=>$_POST['program'],
+                	                'fm_acadyear'=>$_POST['acadyear'],
+                        	        'fm_semester'=>$_POST['semester'],
+                                	'fm_category'=>$_POST['category'],
+	                                'fm_gender'=>$_POST['gender'],
+        	                        'fm_head'=>ucwords(strtolower($_POST['head'])),
+                	                'fm_amount'=>$_POST['amount'],
+                        	        //'fm_installment'=>ucwords(strtolower($_POST['installment'])),
+                                	'fm_desc'=>$_POST['description'],
+	                             // 'fm_frmdate'=>$_POST['frmdate'],
+        	                      //'fm_todate'=>$_POST['todate'],
+                	        );
+                        	$fmflag=$this->common_model->insertrec('fees_master', $data);
+	                	if (!$fmflag)
+        	        	{
+                	    		$this->logger->write_logmessage("insert","Trying to add fees with head  ", "fees is not added ".$_POST['head']);
+                    			$this->logger->write_dblogmessage("insert","Trying to add fees with head", "Fees is not added ".$_POST['head']);
+                    			$this->session->set_flashdata('err_message','Error in adding fees with head - '.$_POST['head']  , 'error');
+	                    		redirect('setup/fees');
+	
+        	        	}
+                		else{
+                    			$this->logger->write_logmessage("insert","Add fees with head ", "Fees".$_POST['head']." added  successfully...");
+                    			$this->logger->write_dblogmessage("insert","Add fees with head ", "Fees ".$_POST['head']."added  successfully...");
+	                    		$this->session->set_flashdata("success", " Program fees add successfully... head is ".$_POST['head']);
+        	            		redirect("setup/displayfees");
+                		}
+			}
+			else{
+				$this->logger->write_logmessage("insert","Trying to add fees with head  ", "fees is not added because combination is already exist ".$_POST['head']);
+                                $this->logger->write_dblogmessage("insert","Trying to add fees with head", "Fees is not added because combination is already exist ".$_POST['head']);
+                                $this->session->set_flashdata('err_message','Error in adding fees with head because combination is already exist - '.$_POST['head']  , 'error');
+                                redirect('setup/fees');
+			}
 		}
   		$this->load->view('setup/fees');  
 		
@@ -1453,7 +1464,7 @@ class Setup extends CI_Controller
      */
 
     public function isheadExist($fm_head) {
-        $is_exist = $this->common_model->isduplicate('fees_master','fm_head',$fm_head);
+        $is_exist = $this->common_model->isduplicatemore('fees_master',$fm_head);
         if ($is_exist)
         {
             $this->form_validation->set_message('isheadExist', 'fees master for ' . $fm_head . ' already exist.');
@@ -1508,13 +1519,14 @@ class Setup extends CI_Controller
         }
         $fm_data = $fmrow->row();
 
+            //'value' => $this->common_model->get_listspfic1('program','prg_name','prg_id',$fm_data->fm_programid)->prg_name,
         /* Form fields */
           $data['fm_programid'] = array(
             'name' => 'fm_programid',
             'id' => 'prgcode',
             'maxlength' => '50',
             'size' => '40',
-            'value' => $this->common_model->get_listspfic1('program','prg_name','prg_id',$fm_data->fm_programid)->prg_name,
+            'value' => $fm_data->fm_programid,
 	    'readonly' => 'readonly'
           );
 		

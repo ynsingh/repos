@@ -65,7 +65,8 @@
 		     <td> <?php echo ++$count; ?> </td>
 			<?php  
 			echo "<td>";
-			echo  $this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fm_programid)->prg_name;
+			echo  $row->fm_programid;
+			//echo  $this->common_model->get_listspfic1('program','prg_name','prg_id',$row->fm_programid)->prg_name;
 			echo "</td>";
 			?>
 			 <td> <?php echo $row->fm_acadyear ?></td>

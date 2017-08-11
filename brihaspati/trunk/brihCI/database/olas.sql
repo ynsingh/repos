@@ -219,7 +219,7 @@ CREATE TABLE `email_setting` (
 CREATE TABLE `fees_master` (
   `fm_id` int(11) NOT NULL,
   `fm_head` varchar(255) NOT NULL,
-  `fm_programid` int(11) NOT NULL,
+  `fm_programid` varchar(255) NOT NULL,
   `fm_acadyear` varchar(50) NOT NULL,
   `fm_semester` varchar(50) NOT NULL,
   `fm_gender` varchar(50) NOT NULL,
@@ -1130,6 +1130,7 @@ ALTER TABLE `email_setting`
 --
 ALTER TABLE `fees_master`
   ADD PRIMARY KEY (`fm_id`);
+  ADD UNIQUE KEY `fm_head` (`fm_programid`,`fm_semester`,`fm_gender`,`fm_category`,`fm_head`);
 
 --
 -- Indexes for table `org_profile`
