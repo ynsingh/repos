@@ -76,8 +76,8 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'erpgroup',
-	'password' => 'grouperp',
+	'username' => 'xxxxx',
+	'password' => 'xxxxx',
 	'database' => 'olas',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -99,8 +99,8 @@ $db['default'] = array(
 $db['login'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'erpgroup',
-	'password' => 'grouperp',
+	'username' => 'xxxxx',
+	'password' => 'xxxxx',
 	'database' => 'login',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -117,3 +117,48 @@ $db['login'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+$db['payroll'] = array(
+        'dsn'   => '',
+        'hostname' => 'localhost',
+        'username' => 'xxxxx',
+        'password' => 'xxxxx',
+        'database' => 'payroll',
+        'dbdriver' => 'mysqli',
+        'dbprefix' => '',
+        'pconnect' => FALSE,
+        'db_debug' => (ENVIRONMENT !== 'production'),
+        'cache_on' => FALSE,
+        'cachedir' => '',
+        'char_set' => 'utf8',
+        'dbcollat' => 'utf8_general_ci',
+        'swap_pre' => '',
+        'encrypt' => FALSE,
+        'compress' => FALSE,
+        'stricton' => FALSE,
+        'failover' => array(),
+        'save_queries' => TRUE
+);
+
+$db['bhrm'] = array(
+        'dsn'   => '',
+        'hostname' => 'localhost',
+        'username' => 'xxxxx',
+        'password' => 'xxxxx',
+        'database' => 'bhrm',
+        'dbdriver' => 'mysqli',
+        'dbprefix' => '',
+        'pconnect' => FALSE,
+        'db_debug' => (ENVIRONMENT !== 'production'),
+        'cache_on' => FALSE,
+        'cachedir' => '',
+        'char_set' => 'utf8',
+        'dbcollat' => 'utf8_general_ci',
+        'swap_pre' => '',
+        'encrypt' => FALSE,
+        'compress' => FALSE,
+        'stricton' => FALSE,
+        'failover' => array(),
+        'save_queries' => TRUE
+);
+

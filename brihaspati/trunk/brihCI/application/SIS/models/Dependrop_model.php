@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @name: Dependrop model
  * @author: Om Prakash (omprakashkgp@gmail.com)
+ * @author: Manorama Pal (palseema30@gmail.com)// dependent dropdown for deparment scheme list
  */
 
 class Dependrop_model extends CI_Model
@@ -111,10 +112,23 @@ class Dependrop_model extends CI_Model
                 $sub_select_box.='<option value="">-------Select Subject Name --------';
                 foreach($subject_data as $subj){
                         $sub_select_box.='<option value='.$subj->sub_id.'>'.$subj->sub_name.' ';
-                }
+               }
                 echo json_encode($sub_select_box);
         }
-  }
+    }
+    
+    /* This function for get schemelist on the basis of selected department */
+    public function get_sschemelist($deptid){
+         $datawh=array('msd_deptid' => $deptid);
+         $schemes=$this->sismodel->get_listspficemore('map_scheme_department','msd_schmid',$datawh);
+         $schm_select_box ='';
+         $schm_select_box.='<option value="">-------Scheme Name --------';
+         foreach($schemes as $schmid){
+            $schmidiname=$this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id',$schmid->msd_schmid)->sd_name;
+            $schm_select_box.='<option value='.$schmid->msd_schmid.'>'.$schmidiname.' ';
+        }
+                echo json_encode($schm_select_box);
+   }
 
  function __destruct() {
         $this->db->close();
