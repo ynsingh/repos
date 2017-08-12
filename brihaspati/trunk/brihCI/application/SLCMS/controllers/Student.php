@@ -900,6 +900,7 @@ class Student extends CI_Controller {
 		$this->acadyear=$this->user_model->getcurrentAcadYearfadm();
 		//$this->prgid=$this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;
 		$this->prgid=$this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;
+		$prgname =$this->commodel->get_listspfic1('program','prg_name','prg_id',$this->prgid)->prg_name;
 		$sarray='prg_name,prg_branch';	
 		$wharray = array('prg_id' => $this->prgid);
     		$this->resultprg=$this->commodel->get_listarry("program",$sarray,$wharray);
@@ -908,7 +909,7 @@ class Student extends CI_Controller {
 		// in future we add acdamic year
 		//$wharray = array('fm_programid' => $this->prgid,('fm_gender' => (All)||($this->gender))&&('fm_category'=>(All)||($this->catid)));
 		// display fees detail on the basis of gender, category and program with semester
-		$wharray = array('fm_programid' => $this->prgid, 'fm_semester' => 1);
+		$wharray = array('fm_programid' => $prgname, 'fm_semester' => 1);
 		$sarray = 'fm_head,fm_amount';
 		$wgenr = array('All', $this->gender);
 		$wcateid = array('1', $this->catid);
@@ -955,12 +956,14 @@ class Student extends CI_Controller {
 		$this->gender=$this->commodel->get_listspfic1('student_master','sm_gender','sm_id',$Sid)->sm_gender;
 		$this->acadyear=$this->user_model->getcurrentAcadYearfadm();
 		$this->prgid=$this->commodel->get_listspfic1('student_program','sp_programid','sp_smid',$Sid)->sp_programid;
+		//get the program name;
+		$this->prgname =$this->commodel->get_listspfic1('program','prg_name','prg_id',$this->prgid)->prg_name;
 		$this->catid=$this->commodel->get_listspfic1('student_master','sm_category','sm_id',$Sid)->sm_category;
 		//calculate total payble fees
 		// in future we add acdamic year
 		//$wharray = array('fm_programid' => $this->prgid,('fm_gender' => (All)||($this->gender))&&('fm_category'=>(All)||($this->catid)));
 		//
-		$wharray = array('fm_programid' => $this->prgid, 'fm_semester' => 1);
+		$wharray = array('fm_programid' => $this->prgname, 'fm_semester' => 1);
 		$sarray = 'fm_head,fm_amount';
 		$wgenr = array('All', $this->gender);
 		$wcateid = array('1', $this->catid);
@@ -1113,7 +1116,7 @@ class Student extends CI_Controller {
 					{
 						$rollno = $maxrollno+1;
 					}
-					else{$rollno = $ydate.'4321';}
+					else{$rollno = $ydate.'0001';}
 					$stuentpdate = array(
 		                		'senex_rollno'           =>	$rollno,
 						'senex_dateofadmission'	 =>	$sdate,
@@ -1134,7 +1137,7 @@ class Student extends CI_Controller {
 					{
 						$enrollno=$maxeno+1;
 					}
-					else{$enrollno = $Ydate.'1234';}
+					else{$enrollno = $Ydate.'0001';}
 					$Supdate = array(
 		                		'sm_userid'          	 =>		$insid,
 						'sm_enrollmentno'	 =>		$enrollno
