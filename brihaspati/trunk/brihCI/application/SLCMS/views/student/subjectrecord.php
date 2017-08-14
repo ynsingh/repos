@@ -60,7 +60,45 @@
                 echo "</td>";
                 echo "<td>" . $row->sp_semester ."</td>";
 		echo "<td>" . $row->sp_acadyear ."</td>";
-		 echo "<td>" . $row->sp_subid1.','.  $row->sp_subid2 .','. $row->sp_subid3 .','. $row->sp_subid4 .','. $row->sp_subid5 .','. $row->sp_subid6 .','. $row->sp_subid7 .','. $row->sp_subid8 .','. $row->sp_subid9 .','. $row->sp_subid10 ."</td>";
+		echo "<td>" . $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid1)->sub_name ;
+		if($row->sp_subid2 != ""){
+		echo ", ";  
+		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid2)->sub_name;
+		}
+		if($row->sp_subid3 != ""){
+		echo ", "; 
+		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid3)->sub_name;
+		}
+		if($row->sp_subid4 != ""){
+		echo ", "; 
+		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid4)->sub_name;
+		}
+		if($row->sp_subid5 != ""){
+		echo ", "; 
+		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid5)->sub_name;
+		}
+		if($row->sp_subid6 != ""){
+		echo ", "; 
+		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid6)->sub_name;
+		}
+		if($row->sp_subid7 != ""){
+		echo ", "; 
+		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid7)->sub_name;
+		}
+		if($row->sp_subid8 != ""){
+		echo ", "; 
+		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid8)->sub_name;
+		}
+		if($row->sp_subid9 != ""){
+		echo ", "; 
+		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid9)->sub_name;
+		}
+		if($row->sp_subid10 != ""){
+		echo ", "; 
+		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid10)->sub_name;
+		}
+//		echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->sp_subid2)->sub_name;
+//		echo $row->sp_subid3 .','. $row->sp_subid4 .','. $row->sp_subid5 .','. $row->sp_subid6 .','. $row->sp_subid7 .','. $row->sp_subid8 .','. $row->sp_subid9 .','. $row->sp_subid10 ."</td>";
                 echo "<td>" . "<a > </a>" ."</td>";
                 echo "</tr>";
                 }

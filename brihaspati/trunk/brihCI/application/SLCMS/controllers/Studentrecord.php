@@ -28,7 +28,10 @@ class Studentrecord extends CI_Controller
     }
     public function subjectrecord()
     {
-	$this->result = $this->commodel->get_list('student_program');
+	$userid = $this->session->userdata('id_user');
+	$smid =$this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
+	$whdata= array('sp_smid' => $smid);
+	$this->result = $this->commodel->get_listarry('student_program','*',$whdata);
         $this->logger->write_logmessage("view"," View Student program and  subject", "View Student program and  subject");
         $this->logger->write_dblogmessage("view"," View Student program and  subject", "View Student program and  subject");
         $this->load->view('student/subjectrecord',$this->result);
