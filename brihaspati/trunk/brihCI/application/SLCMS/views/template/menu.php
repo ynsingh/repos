@@ -92,6 +92,9 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('upl/uploadlogo', 'Upload Logo', array('title' => 'Upload Logo'));
 					echo "</li>";
+					echo "<li>";
+						echo anchor('upl/uploadstumerit', 'Upload Student Admission Merit List', array('title' => 'Upload Student Admission Merit List'));
+					echo "</li>";
 				/*	echo "<li>";
 						echo anchor('upl/uploadstulist', 'Upload Student List', array('title' => 'Upload Student List'));
 					echo "</li>";*/

@@ -47,7 +47,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('emailport','Emailport','trim|xss_clean|required|min_length[2]|max_length[5]|is_numeric',
                 array ('required' => 'insert numeric value only'));
             $this->form_validation->set_rules('username','Username','trim|xss_clean|required');
-            $this->form_validation->set_rules('password','Password','trim|xss_clean|required|alpha_numeric');
+            $this->form_validation->set_rules('password','Password','trim|xss_clean|required');
             $this->form_validation->set_rules('sendername','Sendername','trim|xss_clean|required');
             $this->form_validation->set_rules('senderemail','Senderemail','trim|xss_clean|valid_email');
             $this->form_validation->set_rules('modulename','Modulename','trim|xss_clean');
@@ -212,7 +212,7 @@ class Setup extends CI_Controller
         $this->form_validation->set_rules('emailport','Emailport','trim|required|min_length[2]|max_length[5]|is_numeric|xss_clean',
         array ('required' => ' Email Port -- insert numeric value only'));
         $this->form_validation->set_rules('username','Username','trim|xss_clean|required');
-        $this->form_validation->set_rules('password','Password','trim|required|alpha_numeric|xss_clean');
+        $this->form_validation->set_rules('password','Password','trim|required|xss_clean');
         $this->form_validation->set_rules('sendername','Sendername','trim|required|xss_clean');
         $this->form_validation->set_rules('senderemail','Senderemail','trim|valid_email|xss_clean');
         $this->form_validation->set_rules('modulename','modulename','trim|xss_clean');

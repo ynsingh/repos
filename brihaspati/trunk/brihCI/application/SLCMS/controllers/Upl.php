@@ -159,6 +159,147 @@ class Upl extends CI_Controller
         $this->load->view('upl/uploadstulist');
     }
 
+    // upload student merit list
+    public function uploadstumerit(){
+	// for clearing the previous sucess/error flashdata
+        $array_items = array('success' => '', 'error' => '', 'warning' =>'');
+       	$this->session->set_flashdata($array_items);
+	$error =array();
+       	if(isset($_POST['uploadstumerit'])) {
+            $ferror='';
+            if ( isset($_FILES["userfile"]))
+            {
+		$errors= array();
+      		$file_name = $_FILES['userfile']['name'];
+		//	$file_size = $_FILES['userfile']['size'];
+      		//	$file_tmp = $_FILES['userfile']['tmp_name'];
+      		//	$file_type = $_FILES['userfile']['type'];
+      		$file_ext=strtolower(end((explode('.',$file_name))));
+      
+      		$expensions= array("txt","csv");
+      
+      		if(in_array($file_ext,$expensions)=== false){
+                    $ferror="extension not allowed, please choose a txt or csv file.";
+        	    $this->session->set_flashdata('error', $ferror);
+                    $this->load->view('upl/uploadstumerit');
+                    return;
+      		}
+        	else {
+                    $flag=true;
+                    $datal = array();
+                    $uploadedfile = $_FILES['userfile']['tmp_name'];
+                    $h = fopen($uploadedfile,"r");
+                    $i=1;
+                    while (false !== ($line = fgets($h)))
+                    {       
+                        $datal = explode(",", $line);
+			$flag=false;
+	//		print_r($datal);
+			if (count($datal) >= 13){
+                            $appno = $datal[0];
+                            $entexamname = $datal[1];
+                            $entexamrollno = $datal[2];
+                            $course_name = $datal[3];
+                            $branchname = $datal[4];
+                            $name = $datal[5];
+                            $email = $datal[6];
+                            $father_name = $datal[7];
+                            $marks = $datal[8];
+                            $admission_quota = $datal[9];
+                            $category  = $datal[10];
+                            $meritlist_no = $datal[11];
+                            $lastdate_admission = $datal[12];
+
+                            // check for duplicate
+                            $isdup= $this->commodel->isduplicate('admissionmeritlist','student_email',$email );
+                            if(!$isdup){
+				    	// insert into student merit list db
+					$dataurt = array(
+				           'application_no'=> $appno,
+				           'entexamname'=> $entexamname,
+				           'entexamrollno'=> $entexamrollno,
+				           'course_name'=> $course_name,
+				           'branchname'=> $branchname,
+				           'student_name'=> $name,
+				           'student_email'=> $email,
+				           'father_name'=> $father_name,
+				           'marks'=> $marks,
+				           'admission_quota'=> $admission_quota,
+				           'category'=> $category,
+				           'meritlist_no'=> $meritlist_no,
+				           'lastdate_admission'=> $lastdate_admission,
+				           'admission_taken'=> 'No'
+        	    			);
+					$userflagurt=$this->commodel->insertrec('admissionmeritlist', $dataurt) ;
+					if($userflagurt){
+                                            $sub='You are eligible for the admission' ;
+                                            $mess="You are eligible for the admission. Kindly chek with website" ;
+                                            $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
+					    //  mail flag check 			
+					    if($mails){
+                                	            $error[] ="At row".$i."sufficient data and mail sent sucessfully";
+                        	                    $this->logger->write_logmessage("insert"," add student merit list ", "record added successfully for.".$name ." ".$email );
+						    $this->logger->write_dblogmessage("insert"," add student merit list ", "record added successfully for.".$name ." ".$email );
+					    }
+					    else{
+        	                                    $error[] ="At row".$i."sufficient data and mail does sent";
+	                                            $this->logger->write_logmessage("insert"," add student merit list ", "record added successfully for.".$name ." ".$email ." and mail does sent");
+						    $this->logger->write_dblogmessage("insert"," add student merit list ", "record added successfully for.".$name ." ".$email." and mail does sent" );
+					    }
+					}else{
+                                            //set the message for error in entering data in student merit list
+                                            $this->logger->write_logmessage("insert"," Error in adding student merit list ", " data insert error . ".$name ." ".$email );
+                                            $this->logger->write_dblogmessage("insert"," Error in adding student merit list ", " data insert error . ".$name ." ".$email);
+					}
+                            }//close for is dup
+                            else{
+				$error[] ="At row".$i."duplicate data";
+				$this->logger->write_logmessage("insert"," Error in adding student merit list ", "At row".$i."duplicate data"  );
+	                        $this->logger->write_dblogmessage("insert"," Error in adding student merit list ", "At row".$i."duplicate data" );
+			    }
+                            $i++;
+			}
+			else{
+                            //	insufficient data
+                            $error[] ="At row".$i."insufficient data";
+                            $this->logger->write_logmessage("insert"," Error in adding student merit list ", "At row".$i."insufficient data"  );
+                            $this->logger->write_dblogmessage("insert"," Error in adding student merit list ", "At row".$i."insufficient data" );
+                            //	$this->session->set_flashdata('error', ' insufficient data');
+			    $i++;
+
+			}
+                    }
+                    if($flag){
+			$this->session->set_flashdata('error', ' File without data');
+			$this->load->view('upl/uploadstumerit');
+		        return;
+		    }else{
+                        //					print_r($error);
+			foreach ($error as $item => $value):
+			    $ferror = $ferror ."</br>". $item .":". $value;
+                        endforeach;
+			//display error of array
+			//put ferror in log file.
+			$this->session->set_flashdata('success', $ferror);	
+	                $this->load->view('upl/uploadstumerit');
+			return;
+                    }
+		}
+            }//userfile checks
+            else
+            {
+                //		$error = array( 'error' => $this->upload->display_errors());
+		foreach ($error as $item => $value):
+        	    $ferror = $ferror ."</br>".$item .":". $value;
+                endforeach;
+                $this->session->set_flashdata('error', $ferror);
+                $this->load->view('upl/uploadstumerit');
+                return;
+            }
+        }// check for pressing correct button
+        $this->load->view('upl/uploadstumerit');
+    }
+
     // upload teacher list
     public function uploadtlist(){
 	// for clearing the previous sucess/error flashdata
