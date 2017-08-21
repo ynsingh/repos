@@ -47,7 +47,7 @@ class Student extends CI_Controller {
 	//This function has been created for display the list of branch on the basis of program
 	public function branchlist(){
 			$pgid = $this->input->post('Sprogramname');
-			$list = $this->commodel->get_listspfic2('admissionmeritlist','id','branchname','course_name',$pgid,'branchname');
+			$list = $this->commodel->get_listspfic2('admissionmeritlist','','branchname','course_name',$pgid,'branchname');
 			foreach($list as $datas): ?>   
       		  		<option  id='branchname' value="<?php echo $datas->branchname;?>"><?php echo $datas->branchname; ?></option>
 <?php   		endforeach;

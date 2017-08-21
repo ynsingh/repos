@@ -52,13 +52,13 @@ echo "<ul class=\"sf-menu\">";
 				echo "<a href=" . ">Request</a>";
 				echo "<ul>";
 					echo "<li>";
-						echo anchor('request/semesterregi', 'Semester Registration', array('title' => 'Semester registration Form'));
+						echo anchor('request/semesterregi', 'Semester Registration', array('title' => 'Semester Registration Form'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('student/registrationexam', 'Exam Registration', array('title' => 'Semester Exam Form'));
+						echo anchor('request/exam_regi', 'Exam Registration', array('title' => 'Semester Exam Form'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('student/depositfees', 'Fees deposit', array('title' => 'Semester Fees Deposit'));
+						echo anchor('request/fees_deposit', 'Fees deposit', array('title' => 'Semester Fees Deposit'));
 					echo "</li>";
 				echo "</ul>";
 			
