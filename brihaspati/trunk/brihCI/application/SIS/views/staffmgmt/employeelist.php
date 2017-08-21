@@ -16,7 +16,10 @@
         </div>
         <table style="margin-left:1%;width:97%;"><tr><td>
         <?php echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));?>
-        </td></tr></table>
+        </td>
+        
+        </tr>
+        </table>
         <div align="left" style="margin-left:2%;width:95%;">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -38,6 +41,7 @@
             <thead>
                 <tr align="center">
                     <th>Sr.No</th>
+                    <th></th>
                     <th>Employee Name</th>
                     <th>Campus Name</th>
                     <th>University Officer Control</th>
@@ -59,8 +63,9 @@
               <?php if( count($records) ):  ?>
                     <?php foreach($records as $record){ ?>
                         <tr align="center">
-                            
                             <td><?php echo $serial_no++; ?></td>
+                            <?php //$img=$record->emp_code;?>
+                            <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_code);?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
                             <td><?php echo $record->emp_name."<br/>" ."("."PF No:".$record->emp_code.")"; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name; ?></td>
                             <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name; ?></td>
@@ -81,7 +86,7 @@
                         </tr>
                     <?php }; ?>
                 <?php else : ?>
-                    <td colspan= "7" align="center"> No Records found...!</td>
+                    <td colspan= "12" align="center"> No Records found...!</td>
                 <?php endif;?>
 
             </tbody>

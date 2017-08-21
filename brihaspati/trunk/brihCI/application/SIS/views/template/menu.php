@@ -93,7 +93,7 @@ echo "<ul class=\"sf-menu\">";
 				echo "<a href=" . ">Staff Management</a>";
 				echo "<ul>";
                                         echo "<li>";
-                                                echo anchor('staffmgmt/staffprofile', 'Staff Profile', array('title' => 'Staff Profile'));
+                                                echo anchor('staffmgmt/employeelist', 'Staff Profile', array('title' => 'Staff Profile'));
                                         echo "</li>";
                                         echo "<li>";
                                                 echo anchor('staffmgmt/staffposition', 'Staff Position', array('title' => 'Staff Position'));

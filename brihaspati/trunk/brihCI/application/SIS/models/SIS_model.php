@@ -85,5 +85,14 @@ class SIS_model extends CI_Model
          return $this->db2->get()->result();
     }
     
+    //get the complete of record for specific value
+    public function get_listrow($tbname,$fieldname,$fieldvalue){
+         $this->db2->from($tbname);
+	 		$this->db2->where($fieldname, $fieldvalue);
+         return $this->db2->get();
+    }
     
+    function __destruct() {
+        $this->db2->close();
+    }
 }    

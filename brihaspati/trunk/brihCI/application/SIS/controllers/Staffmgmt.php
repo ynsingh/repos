@@ -40,7 +40,7 @@ class Staffmgmt extends CI_Controller
 
     public function staffprofile(){
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
-        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',2)->org_code;
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
         $this->uoc=$this->lgnmodel->get_list('authorities');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
@@ -233,16 +233,16 @@ class Staffmgmt extends CI_Controller
                     $msg='';
                     if(!empty($_FILES['userfile']['name'])){
                         $empcode=$_POST['empcode'];
-                        $newFileName = $_FILES['userfile']['name'];
-                        $fileExt1 = explode('.', $newFileName);
-                        $file_ext = end( $fileExt1);
-                        $new_name = $empcode.".".$file_ext; 
+                        //$newFileName = $_FILES['userfile']['name'];
+                       // $fileExt1 = explode('.', $newFileName);
+                        //$file_ext = end( $fileExt1);
+                        $new_name = $empcode; 
                                                 
                         $config = array(
                             'upload_path' =>  "./uploads/SIS/empphoto",
                             'allowed_types' => "gif|jpg|png|jpeg",
                             'overwrite' => TRUE,
-                            'max_size' => "10000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                            'max_size' => "10000", // Can be set to particular file size 
                             'max_height' => "768",
                             'max_width' => "1024",
                             //'encrypt_name' => TRUE,
@@ -333,5 +333,190 @@ class Staffmgmt extends CI_Controller
         
        
     }
-
+    /****************************  START OPEN EDIT FORM WITH DATA *************/
+    function editempprofile($id){
+        /*get detail of selected emplyee by passing id for edit*/
+        $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
+        $this->uoc=$this->lgnmodel->get_list('authorities');
+        $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
+        $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+        $empmaster_data=$this->sismodel->get_listrow('employee_master','emp_id', $id);
+        $editemp_data['editdata'] = $empmaster_data->row();
+        $this->load->view('staffmgmt/editempprofile',$editemp_data);     
+        
+    }
+    /****************************  START OPEN EDIT FORM WITH DATA *************/
+    
+    /****************************  START UPDATE DATA *************************/
+    public function update_profile($id)
+    {
+        if(isset($_POST['updateprofile'])) {
+            /*Form Validation*/
+            $this->form_validation->set_rules('empcode','EmployeeCode','trim|required|xss_clean|alpha_numeric|callback_isEmpPFNoExist');
+            $this->form_validation->set_rules('empname','EmployeeName','trim|required|xssclean');
+            $this->form_validation->set_rules('specialisation','Specialisation','trim|xss_clean');
+            $this->form_validation->set_rules('campus','Campus','trim|required|xss_clean');
+            $this->form_validation->set_rules('uocontrol','UniversityOfficerControl','trim|required|xss_clean');
+            $this->form_validation->set_rules('department','Department','trim|required|xss_clean');
+            
+            $this->form_validation->set_rules('schemecode','Scheme Name','trim|required|x1ss_clean');
+            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+            $this->form_validation->set_rules('emppost','Employeepost','trim|xss_clean');
+            $this->form_validation->set_rules('gender','Gender','trim|xss_clean');
+            $this->form_validation->set_rules('community','Community','trim|xss_clean');
+            $this->form_validation->set_rules('religion','Religion','trim|xss_clean');
+            $this->form_validation->set_rules('caste','Caste','trim|xss_clean|alpha');
+            $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');
+            
+            $this->form_validation->set_rules('emptype','Employee Type','trim|xss_clean');
+            $this->form_validation->set_rules('payband','PayBand','required|xss_clean');
+            $this->form_validation->set_rules('basicpay','Basicpay','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('emolution','Emolution','trim|xss_clean|numeric');
+            $this->form_validation->set_rules('empnhisidno','NHisIDno','trim|xss_clean');
+            $this->form_validation->set_rules('dateofjoining','Date of Joining','trim|required|xss_clean');
+            $this->form_validation->set_rules('pnp','Paln / Non Plan','trim|xss_clean');
+            $this->form_validation->set_rules('phdstatus','Phd Status','trim|xss_clean');
+            
+            $this->form_validation->set_rules('Dateofphd','Date of Phd Finish','trim|xss_clean');
+            $this->form_validation->set_rules('assrexam','AssrExam','xss_clean');
+            $this->form_validation->set_rules('assrexamdate','Date of AssrExam','xss_clean');
+            $this->form_validation->set_rules('dateofretirement','Date of Retirement','trim|xss_clean');
+            $this->form_validation->set_rules('dateofhgp','Date of HGP','trim|xss_clean');
+            $this->form_validation->set_rules('panno','Pan No','trim|alpha_numeric');
+            $this->form_validation->set_rules('Aadharrno','Aadhaar No','trim|required|xss_clean|numeric');
+            
+            $this->form_validation->set_rules('bankname','Bank Name','trim|xss_clean');
+            $this->form_validation->set_rules('ifsccode','IFSC CODE','trim|xss_clean|alpha_numeric');
+            $this->form_validation->set_rules('bankacno','Bank ACC No','trim|required|xss_clean|alpha_numeric');
+            $this->form_validation->set_rules('DateofBirth','Date of Birth','trim|required|xss_clean');
+            $this->form_validation->set_rules('fathername','Father Name','trim|xss_clean');
+            $this->form_validation->set_rules('emailid','E-Mail ID','trim|required|valid_email');
+            $this->form_validation->set_rules('Address','Address','trim|xss_clean');
+            
+            $this->form_validation->set_rules('mothertongue','MotherTongue','trim|xss_clean');
+            $this->form_validation->set_rules('nativity','Nativity','trim|xss_clean');
+            $this->form_validation->set_rules('phonemobileno','Phone/Mobile','trim|xss_clean|numeric');
+            
+            $bankname=$this->input->post('bankname');
+            $ifsccode= $this->input->post('ifsccode');       
+            $data = array(
+                /*'emp_name'                       => $this->input->post('empname'),*/
+                'emp_specialisationid'           => $this->input->post('specialisation'),
+                'emp_scid'                       => $this->input->post('campus'),
+                'emp_uocid'                      => $this->input->post('uocontrol'),
+                'emp_dept_code'                  => $this->input->post('department'),
+                'emp_schemeid'                   => $this->input->post('schemecode'),
+                'emp_desig_code'                 => $this->input->post('designation'),
+                
+                'emp_post'                       => $this->input->post('emppost'),
+                'emp_gender'                     => $this->input->post('gender'),
+                'emp_community'                  => $this->input->post('community'),
+                'emp_religion'                   => $this->input->post('religion'),
+                
+                'emp_caste'                      => $this->input->post('caste'),
+                'emp_worktype'                   => $this->input->post('workingtype'),
+                'emp_type_code'                  => $this->input->post('emptype'),
+                'emp_salary_grade'               => $this->input->post('payband'),
+                
+                'emp_basic'                      => $this->input->post('basicpay'),
+                'emp_emolution'                  => $this->input->post('emolution'),
+                'emp_nhisidno'                   => $this->input->post('empnhisidno'),
+                'emp_doj'                        => $this->input->post('dateofjoining'),
+                
+                'emp_pnp'                        => $this->input->post('pnp'),
+                'emp_phd_status'                 => $this->input->post('phdstatus'),
+                'emp_dateofphd'                  => $this->input->post('dateofphd'),
+                'emp_AssrExam_status'            => $this->input->post('assrexam'),
+                
+                'emp_dateofAssrExam'             => $this->input->post('assrexamdate'),
+                'emp_dor'                        => $this->input->post('dateofretirement'),
+                'emp_dateofHGP'                  => $this->input->post('dateofhgp'),
+                'emp_pan_no'                     => $this->input->post('panno'),
+                
+                'emp_aadhaar_no'                 => $this->input->post('Aadharrno'),
+               // 'emp_bank_ifsc_code'             => $this->input->post('bankname'),
+                'emp_bank_ifsc_code'             => $bankname.','.$ifsccode,
+                'emp_dob'                        => $this->input->post('DateofBirth'),
+                'emp_father'                     => $this->input->post('fathername'),
+                
+                'emp_address'                    => $this->input->post('Address'),
+                'emp_mothertongue'               => $this->input->post('mothertongue'),
+                'emp_citizen'                    => $this->input->post('nativity'),
+                'emp_phone'                      => $this->input->post('phonemobileno'),
+                'emp_name'                        => $this->input->post('empname'),
+                              
+                               
+            );
+            /* upload photo*/
+            $msg='';
+            if(!empty($_FILES['userfile']['name'])){
+                $empcode=$_POST['empcode'];
+                //$newFileName = $_FILES['userfile']['name'];
+                // $fileExt1 = explode('.', $newFileName);
+                //$file_ext = end( $fileExt1);
+                $new_name = $empcode; 
+                                                
+                $config = array(
+                    'upload_path' =>  "./uploads/SIS/empphoto",
+                    'allowed_types' => "gif|jpg|png|jpeg",
+                    'overwrite' => TRUE,
+                    'max_size' => "10000", // Can be set to particular file size 
+                    'max_height' => "768",
+                    'max_width' => "1024",
+                            //'encrypt_name' => TRUE,
+                    'file_name' => $new_name
+                );
+                $this->load->library('upload',$config);
+                if(! $this->upload->do_upload()){
+                    $ferror='';
+                    $error = array('error' => $this->upload->display_errors()); 
+                    foreach ($error as $item => $value):
+                    $ferror = $ferror ."</br>". $item .":". $value;
+                    endforeach;
+                    // $ferror=str_replace("\r\n","",$ferror);
+                    $simsg = "The permitted size of Photo is 100kb";
+                    $ferror = $simsg.$ferror;
+                    $this->logger->write_logmessage("uploadphoto","photo upload in sis error", $ferror);
+                    $this->logger->write_dblogmessage("uploadphoto","photo upload in sis error", $ferror);
+                    $this->session->set_flashdata('err_message', $ferror);
+                    $this->load->view('staffmgmt/staffprofile');
+                      
+                }
+                else { 
+                    $upload_data=$this->upload->data();
+                    $msgphoto=" and photo" ;
+                } 
+            }//check for empphoto
+            $upempdata_flag=$this->sismodel->updaterec('employee_master', $data,'emp_id',$id);
+            if(!upempdata_flag){
+                $this->logger->write_logmessage("error","Error in update staff profile ", "Error in staff profile record update" );
+                $this->logger->write_dblogmessage("error","Error in update staff profile", "Error in staff profile record update");
+                $this->session->set_flashdata('err_message','Error in updating staff profile - ', 'error');
+                $this->load->view('staffmgmt/editempprofile', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","update staff profile ", " Employee record updated successfully ");
+                $this->logger->write_dblogmessage("update","staff profile", "Employee record updated successfully");
+                $this->session->set_flashdata('success', 'Employee data' .$msgphoto." ".'updated Successfully......'." "."["." "."Employee PF NO:"." ".$_POST['empcode']." and "."EmailId:"." ".$_POST['emailid']." "."]");
+                redirect('staffmgmt/employeelist');
+            }
+        }//closeissetform    
+    }
+    /****************************  END UPDATE DATA ****************************/
+    
+    
+    /**
+    * Get Download PDF File
+    * @return Response
+   */
+/*
+   function mypdf(){
+	$this->load->library('pdf');
+  	$this->pdf->load_view('staffmgmt/mypdf');
+  	$this->pdf->render();
+  	$this->pdf->stream("welcome.pdf");
+   }
+*/
 }    
