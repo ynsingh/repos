@@ -175,41 +175,6 @@ class Common_model extends CI_Model
         return $this->db->get()->result();
     }
 
-//get the list of all records with  five specific fields for specific values
-    public function get_listspfic($tbname,$selfield1='',$selfield2='',$selfield3='',$selfield4='',$selfield5='',$fieldname='',$fieldvalue=''){
-		$this->db->flush_cache();
-		$this->db->from($tbname);
-		if (($selfield1 != '') && ($selfield2 != '') && ($selfield3 != '') && ($selfield4 != '') && ($selfield5 != '')){
-			$this->db->select($selfield1);
-			$this->db->select($selfield2);
-			$this->db->select($selfield3);
-			$this->db->select($selfield4);
-			$this->db->select($selfield5);
-		}
-		else if (($selfield1 != '') && ($selfield2 != '') && ($selfield3 != '') && ($selfield4 != '')){
-			$this->db->select($selfield1);
-			$this->db->select($selfield2);
-			$this->db->select($selfield3);
-			$this->db->select($selfield4);
-		}
-		else if (($selfield1 != '') && ($selfield2 != '') && ($selfield3 != '') ){
-			$this->db->select($selfield1);
-			$this->db->select($selfield2);
-			$this->db->select($selfield3);
-		}
-		else if (($selfield1 != '') && ($selfield2 != '') ){
-			$this->db->select($selfield1);
-			$this->db->select($selfield2);
-		}
-		else if (($selfield1 != '')  ){
-			$this->db->select($selfield1);
-		}
-
-		if (($fieldname != '') && ($fieldvalue !='')){
-			$this->db->where($fieldname, $fieldvalue);
-		}
-     return $this->db->get()->result();
-    }
 	//get the list of all/specific  records with  one or many specific fields for specific values
 	//$sarray='name,age';	
 	//$wharray = array('name' => $name, 'title' => $title, 'status' => $status);
@@ -265,6 +230,29 @@ class Common_model extends CI_Model
         $this->db->select($selectfield);
         return $this->db->get()->result();
     }
+
+
+     // get the distict value
+    public function get_distinctrecord($tbname,$selectfield,$whdata){
+            $this->db->flush_cache();
+            $this->db->distinct();
+            $this->db->select($selectfield);
+            $this->db->from($tbname);
+            if($whdata != ''){
+                        $this->db->where($whdata);
+            }
+        return $this->db->get()->result();
+    }
+
+    // get the sum of values
+    public function get_sumofvalue($tbname,$selectfield,$whdata){
+            $this->db->flush_cache();
+            $this->db->select_sum($selectfield);
+            $this->db->from($tbname);
+            $this->db->where($whdata);
+            return $this->db->get()->result();
+    }
+
 
     function __destruct() {
         $this->db->close();

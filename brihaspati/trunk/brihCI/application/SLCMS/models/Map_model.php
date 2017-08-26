@@ -146,7 +146,7 @@ class Map_model extends CI_Model
         {
 
             $prgid ="$row->prg_name"."#"."$row->prg_id";
-            $prgsel[$prgid] = $row->prg_name;
+            $prgsel[$prgid] = $row->prg_name." "."( $row->prg_branch )";
         }
         return $prgsel;
     }

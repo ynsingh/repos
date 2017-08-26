@@ -109,7 +109,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "</td></tr>";
     echo "</p>";
 
-
+/*
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Branch', 'prgbranch');
@@ -120,7 +120,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "Example : Physics, Computer Science & Engineering  ";
     echo "</td></tr>";
     echo "</p>";
-
+ */
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Subject Name', 'subjectname');

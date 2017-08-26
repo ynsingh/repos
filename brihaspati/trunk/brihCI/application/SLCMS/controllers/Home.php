@@ -31,7 +31,66 @@ class Home extends CI_Controller
 	$contcode=$this->result->org_countrycode;
 	$this->contryname = $this->universitym->get_countryname($contcode);
 	//get values of fees record
-        $this->load->view('home');
+	
+	// get the programid
+	$prglist=$this->commodel->get_distinctrecord('fees_master','fm_programid','');
+	// program loop
+	$i=0;
+	$fdata = array();
+	foreach($prglist as $row){
+		$prgname=$row->fm_programid;
+		$whdata= array('fm_programid'=>$prgname);
+		$semlist=$this->commodel->get_distinctrecord('fees_master','fm_semester',$whdata);
+		//	 semester loop 
+		foreach($semlist as $row1){
+			$sem=$row1->fm_semester;
+			$whdata1= array('fm_programid'=>$prgname, 'fm_semester'=>$sem);
+			$catlist=$this->commodel->get_distinctrecord('fees_master','fm_category',$whdata1);
+			//	gender and cat loop
+			foreach($catlist as $row2){
+				$catid = $row2->fm_category;
+				$catname=$this->commodel->get_listspfic1('category','cat_name','cat_id',$catid)->cat_name;
+				$gen = "Male";
+				// get the fees data as per program, semester, gender and category
+			//	if($catid !=1){
+					$whdata = "fm_category IN (1, $catid) AND fm_gender IN ('All', '$gen') AND fm_semester = $sem AND fm_programid = '$prgname'";
+			//	}
+			//	else{
+			//		$whdata = "fm_category = 1 AND fm_gender IN array('All', $gen) AND fm_semester = $sem AND fm_programid = $prgname";
+			//	}
+				$query = $this->commodel->get_sumofvalue('fees_master','fm_amount',$whdata);
+				foreach($query as $famt){
+					$amt = $famt->fm_amount;
+				}
+				//put in array
+				$fdata['prgname']= $prgname;
+				$fdata['prgsem']= $sem;
+				$fdata['prgcat']= $catname;
+				$fdata['prggen']= $gen;
+				$fdata['prgfee']= $amt;
+				$data['frecord'][$i] = $fdata;
+				$i++;
+				//
+				$gen = "Female";
+				$whdata = "fm_category IN (1, $catid) AND fm_gender IN ('All', '$gen') AND fm_semester = $sem AND fm_programid = '$prgname'";
+				$query = $this->commodel->get_sumofvalue('fees_master','fm_amount',$whdata);
+				foreach($query as $famt){
+					$amt = $famt->fm_amount;
+				}
+			        //put in array
+			        $fdata['prgname']= $prgname;
+			        $fdata['prgsem']= $sem;
+			        $fdata['prgcat']= $catname;
+			        $fdata['prggen']= $gen;
+				$fdata['prgfee']= $amt;
+			        //
+				$data['frecord'][$i] = $fdata;
+			        $i++;
+			       //
+			}
+		}
+	}
+        $this->load->view('home',$data);
     }
  
     public function logout() {

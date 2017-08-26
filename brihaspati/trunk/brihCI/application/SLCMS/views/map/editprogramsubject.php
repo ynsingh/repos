@@ -113,7 +113,7 @@ echo "<body>";
     //echo"</td><td>"; echo "Optional";
     echo "</td></tr>";
     echo "</p>";
-
+/*
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Branch','prgbranch');
@@ -124,7 +124,7 @@ echo "<body>";
     echo"</td><td>"; echo "Example : Physics, Computer Science & Engineering ";
     echo "</td></tr>";
     echo "</p>";
-
+ */
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Subject Name', 'subjectname');

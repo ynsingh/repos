@@ -357,7 +357,7 @@ class Map extends CI_Controller
         $username = $this->session->userdata('username');
         $data['subject'] = $this->mapmodel->getsubject();
         $data['program'] = $this->mapmodel->getprogram();
-        $data['prgbranch'] = array('name' => 'prgbranch','id' => 'prgbranch','maxlength' => '100','size' => '30','value' => '',);
+//        $data['prgbranch'] = array('name' => 'prgbranch','id' => 'prgbranch','maxlength' => '100','size' => '30','value' => '',);
         $data['papername'] = array('name' => 'papername','id' => 'papername','maxlength' => '100','size' => '30','value' => '',);
         $data['subjectno'] = array('name' => 'subjectno','id' => 'subjectno','maxlength' => '100','size' => '30','value' => '',);
         $data['subjectcode'] = array('name' => 'subjectcode','id' => 'subjectcode','maxlength' => '100','size' => '30','value' => '',);
@@ -365,7 +365,7 @@ class Map extends CI_Controller
         $data['subjectdesc'] = array('name' => 'subjectdesc','id' => 'subjectdesc','maxlength' => '100','size' => '30','value' => '',);
         $this->form_validation->set_rules('subjectname','Subject Name','trim|required');
         $this->form_validation->set_rules('subjecttype','Paper Category','trim|required');
-        $this->form_validation->set_rules('prgbranch','Branch','trim|xss_clean');
+  //      $this->form_validation->set_rules('prgbranch','Branch','trim|xss_clean');
         $this->form_validation->set_rules('subjectno','Paper No','trim|required|numeric');
         $this->form_validation->set_rules('papername','Paper Name','trim|required');
         $this->form_validation->set_rules('subjectcode','Paper Code','trim|required');
@@ -380,7 +380,7 @@ class Map extends CI_Controller
             $subject_type = $this->input->post('subjecttype',TRUE);
             $paper_name = $this->input->post('papername',TRUE);
             $subject_no = $this->input->post('subjectno',TRUE);
-            $prgbranch = $this->input->post('prgbranch',TRUE);
+    //        $prgbranch = $this->input->post('prgbranch',TRUE);
             $subject_code = $this->input->post('subjectcode',TRUE);
             $subject_shrname = $this->input->post('subjectshrname',TRUE);
             $subject_desc = $this->input->post('subjectdesc',TRUE);
@@ -404,7 +404,7 @@ class Map extends CI_Controller
             }
             else
             {
-                $insertdata_paper = array('subp_sub_id' => $data_sub[1],'subp_subtype' => $subject_type,'subp_paperno' => $subject_no,'subp_name' => ucwords(strtolower($paper_name)),'subp_code' => strtoupper($subject_code),'subp_short' => ucwords(strtolower($subject_shrname)),'subp_desp' => $subject_desc, 'subp_degree' => $data_prg[1],'subp_branch' => ucwords(strtolower($prgbranch)),'subp_acadyear' => $acadyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
+                $insertdata_paper = array('subp_sub_id' => $data_sub[1],'subp_subtype' => $subject_type,'subp_paperno' => $subject_no,'subp_name' => ucwords(strtolower($paper_name)),'subp_code' => strtoupper($subject_code),'subp_short' => ucwords(strtolower($subject_shrname)),'subp_desp' => $subject_desc, 'subp_degree' => $data_prg[1],'subp_acadyear' => $acadyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
 
                 $res=$this->commodel->insertrec('subject_paper', $insertdata_paper);                 
                 if ($res != 1)
@@ -514,7 +514,7 @@ class Map extends CI_Controller
             $subshort = $row->subp_short;  
             $subdesc = $row->subp_desp;
             $subdegree = $row->subp_degree;
-            $prgbranch = $row->subp_branch;
+//            $prgbranch = $row->subp_branch;
             $degyear = $row->subp_acadyear;
             $moddate = date("y-m-d");
         }
@@ -532,11 +532,11 @@ class Map extends CI_Controller
         $subdata = $this->commodel->get_listrow('subject','sub_id',$subject_id);
         $sub_data = $subdata->row();
         
-        $data['degree'] = array('name' => 'degree','id' => 'degree','maxlength' => '100','size' => '30','readonly'=>'true','value' => $prg_data->prg_name,);
+        $data['degree'] = array('name' => 'degree','id' => 'degree','maxlength' => '100','size' => '30','readonly'=>'true','value' => $prg_data->prg_name." ( ".$prg_data->prg_branch." ) " ,);
         $data['acadyear'] = array('name' => 'acadyear','id' => 'acadyear','maxlength' => '100','size' => '30','value' => $degyear,'readonly'=>'true',);
         $data['subjectname'] = array('name' => 'subjectname','id' => 'subjectname','maxlength' => '100','size' => '30','value' =>$sub_data->sub_name ,'readonly'=>'true',);
         $data['papercat'] = array('name' => 'papercat','id' => 'papercat','maxlength' => '100','size' => '30','value' => $subject_type ,'readonly'=>'true',);
-        $data['prgbranch'] = array('name' => 'prgbranch','id' => 'prgbranch','maxlength' => '100','size' => '30','value' =>$prgbranch ,'readonly'=>'true',);
+  //      $data['prgbranch'] = array('name' => 'prgbranch','id' => 'prgbranch','maxlength' => '100','size' => '30','value' =>$prgbranch ,'readonly'=>'true',);
         $data['subjectno'] = array('name' => 'subjectno','id' => 'subjectno','maxlength' => '100','size' => '30','value' =>$subpaper_no ,'readonly'=>'true',);
         $data['papername'] = array('name' => 'papername','id' => 'papername','maxlength' => '100','size' => '30','value' => $paper_name,);
         $data['subjectcode'] = array('name' => 'subjectcode','id' => 'subjectcode','maxlength' => '100','size' => '30','value' =>$subpaper_code ,'readonly'=>'true',);
@@ -553,7 +553,7 @@ class Map extends CI_Controller
         $this->form_validation->set_rules('subjectdesc','Paper Description','trim');
         $this->form_validation->set_rules('acadyear','Academic Year','trim|required');
         $this->form_validation->set_rules('degree','Degree','trim|required');
-        $this->form_validation->set_rules('prgbranch','Branch','trim|xss_clean');
+    //    $this->form_validation->set_rules('prgbranch','Branch','trim|xss_clean');
 
 
         if($_POST)
@@ -575,11 +575,11 @@ class Map extends CI_Controller
             $subshort = $row->subp_short;
             $subdesc = $row->subp_desp;
             $subdegree = $row->subp_degree;
-            $prgbranch = $row->subp_branch;
+      //      $prgbranch = $row->subp_branch;
             $degyear = $row->subp_acadyear;
 
 		// insert data into subject paper archive table  
-		$insertdata_paper = array('subpa_subpid' => $paperid,'subpa_sub_id' => $subject_id ,'subpa_subtype' => $subject_type,'subpa_paperno' => $subpaper_no,'subpa_name' => ucwords(strtolower($paper_name)),'subpa_code' => strtoupper($subpaper_code),'subpa_short' => ucwords(strtolower($subshort)),'subpa_desp' => $subdesc, 'subpa_degree' => $subdegree,'subpa_branch' => ucwords(strtolower($prgbranch)),'subpa_acadyear' => $degyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
+		$insertdata_paper = array('subpa_subpid' => $paperid,'subpa_sub_id' => $subject_id ,'subpa_subtype' => $subject_type,'subpa_paperno' => $subpaper_no,'subpa_name' => ucwords(strtolower($paper_name)),'subpa_code' => strtoupper($subpaper_code),'subpa_short' => ucwords(strtolower($subshort)),'subpa_desp' => $subdesc, 'subpa_degree' => $subdegree,'subpa_acadyear' => $degyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
 
                 $res=$this->commodel->insertrec('subject_paper_archive', $insertdata_paper);
                 if ($res != 1)

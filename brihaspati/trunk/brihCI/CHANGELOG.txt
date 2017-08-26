@@ -1,3 +1,93 @@
+SLCMS, HRM  Version 1.0 2017-08-21
+-----------------------------
+    * Student fees payment and exam regiistartion form added- NKS, Sumit
+    * Edit facility for staff profile added - Seema
+
+SLCMS, HRM Version 1.0 2017-08-18
+-----------------------------
+    * Upload merit list facility and modification semester rule, password validation in email setting -NKS
+
+SLCMS, HRM  Version 1.0 2017-08-14
+-----------------------------
+    * Student subject record display system  - NKS
+    * Subject name display - NKS
+
+SLCMS, HRM  Version 1.0 2017-08-12
+-----------------------------
+    * HRM  Help doc updated - Deepika
+    * Table  added student attendance and bug fix as per fees master change - NKS
+
+SLCMS, HRM  Version 1.0 2017-08-11
+-----------------------------
+    * Bug fix in fees master- set the unique key also made the change the display - NKS
+    * Staff profile adding mechanism added - Manorama 
+
+SLCMS, HRM  Version 1.0 2017-08-09
+-----------------------------
+    * Database olas table updated - NKS
+    * Display bug fix  - NKS
+
+SLCMS, HRM  Version 1.0 2017-08-04
+-----------------------------
+    * Design flaw fixed in student phase. Sharad
+
+SLCMS, HRM  Version 1.0 2017-08-03
+-----------------------------
+    * Help doc updated in SLCMS - Deepika
+
+SLCMS, HRM  Version 1.0 2017-08-02
+-----------------------------
+    * Adding db connectivity for HRM component- NKS
+    * Bug fix in menu  for HRM component - NKS
+
+SLCMS, HRM  Version 1.0 2017-08-01
+-----------------------------
+    * Mechanism for adding and view of advirtisement detail, dash board for HR management,-NKS, Sumit
+
+SLCMS, HRM  Version 1.0 2017-07-31
+-----------------------------
+    * Database schema file added for hrms - NKS
+
+SLCMS  Version 1.0 2017-07-29
+-----------------------------
+    * Bug  fix - NKS
+
+SLCMS  Version 1.0 2017-07-28
+-----------------------------
+    * Authority and designation module added with add and update -Siddarth,Deepika
+    * Bug fix and authority archive mechanism added. NKS
+
+SLCMS  Version 1.0 2017-07-27
+-----------------------------
+    * Made change in dropdown in existing system in new application- OP
+
+SLCMS  Version 1.0 2017-07-25
+-----------------------------
+    * Update in HR mgt related stuff -NKS
+
+SLCMS  Version 1.0 2017-07-22
+-----------------------------
+    * Add schema for student exam apply and exam attendance, modification in student marks, add some menu in  admin and student - NKS
+
+SLCMS  Version 1.0 2017-07-21
+-----------------------------
+    * Bug fix and extra code removal in student admission step 0 and 1 - NKS
+    * Bug fix -remove double quote in list last element, bug fix in sc - OP, Rekha
+    * Uniform GUI in setup and bug fix -NKS, Siddharth
+
+SLCMS  Version 1.0 2017-07-20
+-----------------------------
+    * Upload staff  list and view list of faculty and staff- Malvika, Deepika
+    * Logger improvement - NKS
+
+SLCMS  Version 1.0 2017-07-19
+-----------------------------
+    * Inprovement in registartion and student admission - Sumit
+
+SLCMS  Version 1.0 2017-07-18
+-----------------------------
+    * Subject prerequisite mechanism added. NKS
+    * Degree rules view, edit, add mechanism added. Minor GUI modifications for uniformity. Siddharth
 
 SLCMS  Version 1.0 2017-07-17
 -----------------------------
