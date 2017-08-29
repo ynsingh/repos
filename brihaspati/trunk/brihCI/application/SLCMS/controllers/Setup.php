@@ -1906,8 +1906,10 @@ class Setup extends CI_Controller
 /****************************************** Add Study Center Module ********************************************/
 
     	public function sc(){
-            	$this->uresult = $this->common_model->get_listspfic('org_profile','org_code','org_name');
-                $this->cresult = $this->common_model->get_listspfic('countries','id','name');
+            	//$this->uresult = $this->common_model->get_listspfic('org_profile','org_code','org_name');
+            	$this->uresult = $this->common_model->get_listmore('org_profile','org_code,org_name');
+                //$this->cresult = $this->common_model->get_listspfic('countries','id','name');
+		$this->cresult = $this->common_model->get_listmore('countries','id,name');
 
                 $prefs =array(
                        'start_date' => 'monday',
@@ -2040,7 +2042,8 @@ class Setup extends CI_Controller
 /* this function is used for update study center record */
 
     public function editsc($id) {
-	$this->cresult = $this->common_model->get_listspfic('countries','id','name');
+//	$this->cresult = $this->common_model->get_listspfic('countries','id','name');
+	$this->cresult = $this->common_model->get_listmore('countries','id,name');
 	$sc_data_q=$this->common_model->get_listrow('study_center','sc_id', $id);
 
         if ($sc_data_q->num_rows() < 1)

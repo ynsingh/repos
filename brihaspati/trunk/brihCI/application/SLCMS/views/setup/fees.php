@@ -27,7 +27,7 @@
 
         	<div>
              	<tr><td>
-                <div align="left" style="margin-left:2%;">
+                <div align="left" style="margin-left:2%;width:90%;">
 
 		<?php 
 		     echo validation_errors('<div class="isa_warning">','</div>');

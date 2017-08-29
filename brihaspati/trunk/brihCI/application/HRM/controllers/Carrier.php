@@ -258,7 +258,7 @@ class Carrier extends CI_Controller {
        		$this->session->set_flashdata($array_items);
 		//check the date current date is less than the last date
 		$cdate = date('Y-m-d H:i:s');
-		$this->advtno = $this->hrmmodel->get_listspfic2('job_open','job_id', 'job_adverno','job_lastdateonlineform>',$cdate,'job_adverno');
+		$this->advtno = $this->hrmmodel->get_listspfic2('job_open', 'job_adverno','','job_lastdateonlineform>',$cdate,'job_adverno');
 
 		if(isset($_POST['register'])){
 			$this->form_validation->set_rules('aadvt','Advertisement number','trim|xss_clean|required');
@@ -969,26 +969,34 @@ class Carrier extends CI_Controller {
 
 	public function getplastdate(){
 	    $postdate = $this->input->post('aadvt');
-	    $list1 = $this->hrmmodel->get_listspfic2('job_open','job_id','job_lastdateonlineform','job_adverno',$postdate,'job_lastdateonlineform');
-		foreach($list1 as $datas1): ?>  
-		
-      			<option  id='actoffdate' value="<?php echo $datas1->job_id;?>"><?php echo $datas1->job_lastdateonlineform; ?></option>
+	    $list1 = $this->hrmmodel->get_listspfic2('job_open','','job_lastdateonlineform','job_adverno',$postdate,'job_lastdateonlineform');
+		foreach($list1 as $datas1):   
+			$job_id =  $this->hrmmodel->get_listspfic1('job_open','job_id','job_adverno',$postdate)->job_id;	?>
+      			<option  id='actoffdate' value="<?php echo $job_id;?>"><?php echo $datas1->job_lastdateonlineform; ?></option>
 <?php   	endforeach;
 	}
 /****************************get department list dependent dropdown*****************************************************/
 	public function getdepartment(){
 	    $deptname = $this->input->post('apost');
-           $postname =	$this->hrmmodel->get_listspfic1('job_open','job_nameofpost','job_id',$deptname)->job_nameofpost;	
-	    $dept = $this->hrmmodel->get_listspfic2('job_open','job_id','job_department','job_nameofpost',$postname,'job_department');
-		foreach($dept as $deptn): ?>   
+            $postname =	$this->hrmmodel->get_listspfic1('job_open','job_nameofpost','job_id',$deptname)->job_nameofpost;	
+            $postadno =	$this->hrmmodel->get_listspfic1('job_open','job_adverno','job_id',$deptname)->job_adverno;	
+	    $selectfield='job_id,job_department';
+	    $datawh=array('job_nameofpost'=>$postname, 'job_adverno'=>$postadno);
+	    $dept=$this->hrmmodel->get_listspficemore('job_open',$selectfield,$datawh);		
+	   // $dept = $this->hrmmodel->get_listspfic2('job_open','job_id','job_department','job_nameofpost',$postname,'job_department');
+		foreach($dept as $deptn): ?>
       			<option  id='adept' value="<?php echo $deptn->job_id;?>"><?php echo $deptn->job_department; ?></option>
 <?php   	endforeach;
 	}
 
 	public function getpost_code(){
 	    $deptname = $this->input->post('apost');
-            $postcode =	$this->hrmmodel->get_listspfic1('job_open','job_nameofpost','job_id',$deptname)->job_nameofpost;	
-	    $pcode = $this->hrmmodel->get_listspfic2('job_open','job_id','job_postcode','job_nameofpost',$postcode,'job_postcode');
+            $postname =	$this->hrmmodel->get_listspfic1('job_open','job_nameofpost','job_id',$deptname)->job_nameofpost;	
+	    $postadno = $this->hrmmodel->get_listspfic1('job_open','job_adverno','job_id',$deptname)->job_adverno;
+            $selectfield='job_id,job_postcode';
+            $datawh=array('job_nameofpost'=>$postname, 'job_adverno'=>$postadno);
+            $pcode=$this->hrmmodel->get_listspficemore('job_open',$selectfield,$datawh);
+	  //  $pcode = $this->hrmmodel->get_listspfic2('job_open','job_id','job_postcode','job_nameofpost',$postcode,'job_postcode');
 		foreach($pcode as $code): ?>   
       			<option  id='apcode' value="<?php echo $code->job_id;?>"><?php echo $code->job_postcode; ?></option>
 <?php   	endforeach;

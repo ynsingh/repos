@@ -172,11 +172,11 @@ echo "</center>";
 			<input type="text" name="Jemolu" placeholder="Enter post emoluments" value="<?php echo @$this->data['Jemolu'];?>">		
 		<td/>
 		<td>	
-			<label for="nnumber">Job age limit</label></br>
+			<label for="nnumber">Job age limit(In Number)</label></br>
 			<input type="text" name="Jagelimit" placeholder="Enter post age limit" value="<?php echo @$this->data['Jagelimit'];?>">		
 		<td/>
 		<td>	
-			<label for="nnumber">Job group</label></br>
+			<label for="nnumber">Job Group</label></br>
 			<input type="text" name="Jgroup" placeholder="Enter post group" value="<?php echo @$this->data['Jgroup'];?>">		
 		<td/>
 		<td>	
@@ -192,15 +192,15 @@ echo "</center>";
 		
 		
 		<td>	
-			<label>Job experience</label></br>
+			<label>Job Experience</label></br>
 			<textarea name="Jexper" rows="1" cols="19" placeholder="Enter post experience" value="<?php echo @$this->data['Jexper'];?>"></textarea>		
 		<td/>
 		<td>	
-			<label for="nnumber">Job desirable</label></br>
+			<label for="nnumber">Job Desirable</label></br>
 			<textarea name="Jdesir" rows="1" cols="19" placeholder="Enter post desirable"value="<?php echo @$this->data['Jdesir'];?>" ></textarea>
 		<td/>
 		<td>	
-			<label>Job responsible</label></br>
+			<label>Job Responsibilities</label></br>
 			<textarea name="Jrespon" rows="1" cols="19" placeholder="Enter post responsible" value="<?php echo @$this->data['Jrespon'];?>"></textarea>
 		<td/>
 		<td>	

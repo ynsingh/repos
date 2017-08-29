@@ -66,7 +66,7 @@
                     <th>Essential</th>
                     <th>Experience</th>
                     <th>Desirable</th>
-                    <th>Job Responsible</th>
+                    <th>Job Responsibilities</th>
 		    <th>Online Form Start Date</th>	
                     <th>Online Form Last Date</th>
 		    <th>Form Reached Last Date</th>	
