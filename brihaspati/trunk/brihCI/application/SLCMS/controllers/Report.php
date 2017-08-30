@@ -36,15 +36,14 @@ class Report  extends CI_Controller
         $this->load->view('report/liststaff');
         return;
 	}
-}
 
 // view students list 
-/*
+
     public function liststu() {
         $datawh = array('roleid' => '3');
         $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',3);
         $this->load->view('report/liststu');
    } 
-*/ 
+}
 
 
