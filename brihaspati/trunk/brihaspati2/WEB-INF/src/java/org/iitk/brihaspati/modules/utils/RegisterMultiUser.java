@@ -133,7 +133,7 @@ public class RegisterMultiUser
 				else 
 				{
 					username=st2.nextToken().trim();
-					if((username.equals(";"))||(org.apache.commons.lang.StringUtils.isBlank(org.apache.commons.lang.StringUtils.substringBefore(username,"@"))))
+					if((username.equals(";"))|| (username.contains(" "))||(org.apache.commons.lang.StringUtils.isBlank(org.apache.commons.lang.StringUtils.substringBefore(username,"@"))))
 						{error=2;}
 			      		else 
 					{
@@ -366,7 +366,7 @@ public class RegisterMultiUser
                                         	else{
                                         		st1.nextToken();
                                         		email=st1.nextToken().trim();
-                                        		if(email.equals(";")){
+                                        		if((email.equals(";"))||(email.contains(" "))){
                                         			error=2;}
                                         		else{
                                         			st1.nextToken();

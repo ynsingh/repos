@@ -90,7 +90,8 @@ public class Zipcreate extends SecureScreen
                         out=data.getResponse().getOutputStream();
                         String mimeTp="application/x-download";
                         data.getResponse().setHeader("Content-Type",mimeTp);
-                        data.getResponse().setHeader("Content-Disposition","inline;filename="+Dest+".zip");
+                        data.getResponse().setHeader("Content-Disposition","attachment;filename="+Dest+".zip");
+                        //data.getResponse().setHeader("Content-Disposition","inline;filename="+Dest+".zip");
                         int readCount;
                         byte[] buf=new byte[4*1024];
                         while((readCount=fis.read(buf)) !=-1)
