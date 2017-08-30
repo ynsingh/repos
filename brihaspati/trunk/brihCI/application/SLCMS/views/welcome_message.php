@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Welcome to IGNTU</title>
+	<title>Welcome </title>
 	 <link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 <!--	<style type="text/css">
 
@@ -20,7 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div>
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
-	<nav> 	<h1>Welcome to IGNTU  </h1></nav>
+	<nav> 	<h1>Welcome  </h1></nav>
 	<?php if(isset($_SESSION)) {
         	echo $this->session->flashdata('flash_data');
     	} ?>

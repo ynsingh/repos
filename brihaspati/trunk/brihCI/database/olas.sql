@@ -1161,7 +1161,7 @@ ALTER TABLE `email_setting`
 -- Indexes for table `fees_master`
 --
 ALTER TABLE `fees_master`
-  ADD PRIMARY KEY (`fm_id`);
+  ADD PRIMARY KEY (`fm_id`),
   ADD UNIQUE KEY `fm_head` (`fm_programid`,`fm_semester`,`fm_gender`,`fm_category`,`fm_head`);
 
 --
@@ -1176,7 +1176,7 @@ ALTER TABLE `org_profile`
 --
 ALTER TABLE `program`
   ADD PRIMARY KEY (`prg_id`),
-  ADD UNIQUE KEY `prg_category` (`prg_cid`,`prg_category`,`prg_name`,`prg_branch`);
+  ADD UNIQUE KEY `prg_category` (`prg_scid`,`prg_category`,`prg_name`,`prg_branch`);
 
 --
 -- Indexes for table `program_subject_teacher`
