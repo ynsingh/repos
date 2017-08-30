@@ -16,6 +16,8 @@
         <font color=blue size=4pt>
          <?php
             echo anchor('staffmgmt/newstaffposition/', ' Staff Position ', array('class' => 'top_parent'));
+	    $help_uri = site_url()."/help/helpdoc#ViewStaffPosition";
+            echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
          ?>
         </div>
        </div>

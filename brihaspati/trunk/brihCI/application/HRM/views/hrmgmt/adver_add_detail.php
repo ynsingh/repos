@@ -97,8 +97,8 @@ echo "</center>";
 		<tr><td style="font-size:18px;margin-left:100px;">
 		<?php
                     echo anchor('hrmgmt/view_advertisement/', "View Advertisement" ,array('title' => 'View job advertisement' , 'class' => 'top_parent'));
-                    //$help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
-                    //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
+                    $help_uri = site_url()."/help/helpdoc#ListofAdvertisement";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
           
            	 ?>
 	</tr></td>

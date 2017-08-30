@@ -195,7 +195,10 @@
         
         </div> 
         <table style="margin-left:1%;width:97%;"><tr><td>
-        <?php echo anchor('staffmgmt/employeelist/', "View Employee List" ,array('title' => 'View Employee List ' , 'class' => 'top_parent'));?>
+        <?php echo anchor('staffmgmt/employeelist/', "View Employee List" ,array('title' => 'View Employee List ' , 'class' => 'top_parent'));
+        $help_uri = site_url()."/help/helpdoc#StaffProfile";
+        echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+?>
         </td></tr></table>
         <div align="left" style="margin-left:2%;width:97%;">
             

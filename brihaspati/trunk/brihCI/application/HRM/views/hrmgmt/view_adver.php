@@ -17,12 +17,10 @@
      
             <tr colspan="2"><td>  
             <?php
-           
                     echo anchor('hrmgmt/add_advertisement/', "Add Advertisement" ,array('title' => 'Add job advertisement' , 'class' => 'top_parent'));
-                  //  $help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
-                   // echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
-          
-            ?>
+                    $help_uri = site_url()."/help/helpdoc#ViewAdvertisement";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
+            	    ?>
         
             <div  style="margin-left:2%;">
   

@@ -24,7 +24,10 @@
      <table width="90%">
             <tr><td>
                 <div align="left" style="margin-left:2%;">
-                <?php echo anchor('setup2/authority/', "View Authority list", array('title' => 'View Designation list' ,'class' =>'top_parent'));?>
+                <?php echo anchor('setup2/authority/', "View Authority list", array('title' => 'View Designation list' ,'class' =>'top_parent'));
+		$help_uri = site_url()."/help/helpdoc#Authority";
+                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+		?>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                  <?php if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>

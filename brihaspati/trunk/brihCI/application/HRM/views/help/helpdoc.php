@@ -24,7 +24,7 @@
 			<li><a href="#EmailSetting">Email Setting</a></li>
 			<li><a href="#Role">Role</a></li>
 			<li><a href="#Category">Category</a></li>
-			<li><a href="#SeatReservation">Seat Reservation</a></li>
+			<!--li><a href="#SeatReservation">Seat Reservation</a></li-->
 			<li><a href="#StudyCenter">Study Center</a></li> 
 			<li><a href="#Department">Department</a></li>
                         <li><a href="#Designation">Designation</a></li>
@@ -167,7 +167,7 @@ Brihaspati Human Resource Management is the management of human resources. It is
 						</table>					
 								</ol>
 							</font>
-						<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addemail.png" height="110%" width="100%">
+						<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addemail.png" height="100%" width="100%">
 						</div>
 					</section>
 					<section id="ViewEmailSetting">
@@ -182,7 +182,7 @@ Brihaspati Human Resource Management is the management of human resources. It is
                                                                  </p>
                                                         </ol>
                                                 </font>
-					<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewemail.png" height="90%" width="100%">
+					<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewemail.png" height="40%" width="100%">
 
                                         </div>
                                         </section>
@@ -217,16 +217,12 @@ The format of Add Role are given below:-
 
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addrole.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addrole.png" height="55%" width="100%">
                                                 </font>
                                        
                                         </section>
 </section>
-
-
-
-
-			<section id="ViewRoleDetail">
+<section id="ViewRoleDetail">
                                         <div class="row-fluid">
                                                 <h2>View Role Detail</h2>
                                         </div>
@@ -237,7 +233,7 @@ The format of Add Role are given below:-
 				Admin can view role after adding role details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewrole.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewrole.png" height="60%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -299,7 +295,7 @@ The format of Add category are given below:-
 				Admin can also view category after adding Category Detail. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewcategory.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewcategory.png" height="60%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -467,7 +463,7 @@ The format of Add Study Center are given below:-
 				Admin can also view study center after adding study center Detail. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstudycenter.png" height="75%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstudycenter.png" height="60%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -526,7 +522,7 @@ The format of Add Study Center are given below:-
 						</p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/adddepartment.png" height="120%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/adddepartment.png" height="110%" width="100%">
                                         </div>
                                         </section>
 <section id="ViewDepartmentDetail">
@@ -541,7 +537,7 @@ The format of Add Study Center are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdeptment.png" height="100%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdeptment.png" height="60%" width="100%">
                                         </div>
                                         </section>
 <section id="Designation">
@@ -596,7 +592,7 @@ The format of Add Study Center are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdesignation.png" height="100%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdesignation.png" height="60%" width="100%">
                                         </div>
                                         </section>
 
@@ -648,7 +644,7 @@ The format of Add Study Center are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewauthority.png" height="100%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewauthority.png" height="65%" width="100%">
                                         </div>
                                         </section>
 
@@ -1175,7 +1171,7 @@ The format of Map User with Role list are given below:-
 Admin can also View Map with User Role List after adding Map User Role details. Admin can edit and delete this data.
                                                         </p>
                                                         </ol>
-                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewmaprole.png" height="90%" width="100%">       
+                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewmaprole.png" height="60%" width="100%">       
 					</font>
                                          </div>
                                     </section>
@@ -1290,9 +1286,9 @@ The format of Add Advertisement are given below:-
                                          </div>
                                     </section>
 
-<section id="ViewMapwithUserRoleList">
+<section id="ViewAdvertisement">
                                         <div class="row-fluid">
-                                                <h2>View Map with User Role List</h2>
+                                                <h2>View Advertisement</h2>
                                         </div>
                                         <div class="row-fluid">
                                                 <font size="4">
@@ -1301,7 +1297,7 @@ The format of Add Advertisement are given below:-
 Admin can also View Advertisment List after adding Advertisment details. Admin can edit and delete this data.
                                                         </p>
                                                         </ol>
-                                         <img src="<?php echo base_url(); ?>uploads/HRM/helpscreenshot/viewadvertisment.png" height="70%" width="100%">
+                                         <img src="<?php echo base_url(); ?>uploads/HRM/helpscreenshot/viewadvertisment.png" height="35%" width="100%">
                                         </font>
                                          </div>
                                     </section>
@@ -1648,7 +1644,7 @@ Admin can also view Map Subject and Semester after adding Subject and Semester D
 				Administrators can upload their logo from here. Image must be a png, jpg format and size is 500 K.B.
                                                                  </p>
                                                       </ol>
-				<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadlogo.png" height="80%" width="100%">
+				<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadlogo.png" height="50%" width="100%">
                                                 </font>
                                          </div>
                                     </section>
@@ -1668,7 +1664,7 @@ deepika,deepika@gmail.com,01,02,01,9415938783<br>
 All information are mandatory except mobile number.			
                                                                  </p>
                                                       </ol>
-				<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadteacher.png" height="80%" width="100%">
+				<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadteacher.png" height="50%" width="100%">
                                                 </font>
                                          </div>
                                     </section>
@@ -1689,7 +1685,7 @@ All information are mandatory except mobile number.
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadstaff.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadstaff.png" height="50%" width="100%">
                                          </div>
                                     </section>
 
@@ -1726,7 +1722,7 @@ All information are mandatory except mobile number.
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewfaculty.png" height="60%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewfaculty.png" height="40%" width="100%">
                                          </div>
                                     </section>
 <section id="StaffList">
@@ -1742,7 +1738,7 @@ All information are mandatory except mobile number.
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstaff.png" height="60%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstaff.png" height="40%" width="100%">
                                          </div>
                                     </section>
 <section id="Archives">
@@ -1881,7 +1877,7 @@ This page consists of View Audit Trails, Insert Audit Trails, Update Audit Trail
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/changepassword.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/changepassword.png" height="70%" width="100%">
 
                                          </div>
                                     </section>

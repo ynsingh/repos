@@ -19,7 +19,7 @@
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#UploadLogo";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:15px;margin-left:43%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:17px;margin-left:38%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";

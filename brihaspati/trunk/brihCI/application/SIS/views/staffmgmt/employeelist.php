@@ -15,7 +15,10 @@
         
         </div>
         <table style="margin-left:1%;width:97%;"><tr><td>
-        <?php echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));?>
+        <?php echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));
+	$help_uri = site_url()."/help/helpdoc#ViewEmployeeList";
+        echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:75%\">Click for Help</b></a>";
+        ?>
         </td>
         
         </tr>
@@ -94,4 +97,4 @@
         <div align="center">  <?php $this->load->view('template/footer');?></div>
         
     </body>    
-</html>    
+</html>   

@@ -106,7 +106,7 @@ Online Admission System is to automate the Academic university admission structu
 									</p>
 								</ol>
 							</font>						
-						<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/dashboard.png" height="130%" width="100%">
+						<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/dashboard.png" height="120%" width="100%">
 						</div>
 					</section>
 
@@ -163,7 +163,7 @@ Online Admission System is to automate the Academic university admission structu
 						</table>					
 								</ol>
 							</font>
-						<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addemail.png" height="110%" width="100%">
+						<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addemail.png" height="80%" width="100%">
 						</div>
 					</section>
 					<section id="ViewEmailSetting">
@@ -178,7 +178,7 @@ Online Admission System is to automate the Academic university admission structu
                                                                  </p>
                                                         </ol>
                                                 </font>
-					<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewemail.png" height="90%" width="100%">
+					<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewemail.png" height="50%" width="100%">
 
                                         </div>
                                         </section>
@@ -213,7 +213,7 @@ The format of Add Role are given below:-
 
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addrole.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addrole.png" height="55%" width="100%">
                                                 </font>
                                        
                                         </section>
@@ -233,7 +233,7 @@ The format of Add Role are given below:-
 				Admin can view role after adding role details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewrole.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewrole.png" height="60%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -279,7 +279,7 @@ The format of Add category are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addcategory.png" height="100%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addcategory.png" height="90%" width="100%">
                                         </div>
                                         </section>
 
@@ -295,7 +295,7 @@ The format of Add category are given below:-
 				Admin can also view category after adding Category Detail. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewcategory.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewcategory.png" height="60%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -338,7 +338,7 @@ The format of Add seat are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addseat.png" height="90%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addseat.png" height="75%" width="100%">
                                         </div>
                                         </section>
 <section id="ViewSeatSetting">
@@ -352,7 +352,7 @@ The format of Add seat are given below:-
 				Admin can also view seat after adding seat Detail. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewseat.png" height="70%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewseat.png" height="50%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -449,7 +449,7 @@ The format of Add Study Center are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addstudycenter.png" height="160%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addstudycenter.png" height="150%" width="100%">
                                         </div>
                                         </section>
 <section id="ViewStudyCenter">
@@ -463,7 +463,7 @@ The format of Add Study Center are given below:-
 				Admin can also view study center after adding study center Detail. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstudycenter.png" height="75%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstudycenter.png" height="60%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -522,7 +522,7 @@ The format of Add Study Center are given below:-
 						</p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/adddepartment.png" height="120%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/adddepartment.png" height="90%" width="100%">
                                         </div>
                                         </section>
 <section id="ViewDepartmentDetail">
@@ -537,7 +537,7 @@ The format of Add Study Center are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdeptment.png" height="100%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdeptment.png" height="50%" width="100%">
                                         </div>
                                         </section>
 			<section id="Designation">
@@ -577,7 +577,7 @@ The format of Add Study Center are given below:-
                                                 </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/adddesignation.png" height="90%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/adddesignation.png" height="75%" width="100%">
                                         </div>
                                         </section>
 <section id="ViewDesignation">
@@ -592,7 +592,7 @@ The format of Add Study Center are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdesignation.png" height="100%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdesignation.png" height="50%" width="100%">
                                         </div>
                                         </section>
 
@@ -629,7 +629,7 @@ The format of Add Study Center are given below:-
                                                 </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addauthority.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addauthority.png" height="75%" width="100%">
                                         </div>
                                         </section>
 <section id="ViewAuthority">
@@ -644,7 +644,7 @@ The format of Add Study Center are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewauthority.png" height="100%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewauthority.png" height="80%" width="100%">
                                         </div>
                                         </section>
 <section id="ProgramCategory">
@@ -685,7 +685,7 @@ The format of Add Program Category are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/programcategory.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/programcategory.png" height="70%" width="100%">
                                         </div>
                                         </section>
 <section id="ViewProgramCategory">
@@ -700,7 +700,7 @@ The format of Add Program Category are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewprogramcategory.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewprogramcategory.png" height="50%" width="100%">
                                         </div>
                                         </section>
 			<section id="ProgramandSeat">
@@ -726,7 +726,7 @@ The format of Add Program and fees are given below:-
 						</tr>
 						<tr>
 						<td><B>Program Name</B></td>
-						<td>Batchlor of Art, Master of Art etc </td>
+						<td>Bachelor of Art, Master of Art etc </td>
 						</tr>
 						<tr>
 						<td><B>Program Branch</B></td>
@@ -760,7 +760,7 @@ The format of Add Program and fees are given below:-
 						</P>          
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addprog.png" height="120%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addprog.png" height="100%" width="100%">
                                         </div>
                                         </section>
 
@@ -775,7 +775,7 @@ The format of Add Program and fees are given below:-
 				Admin can also view program and seat after adding program and seat Detail. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewprog.png" height="90%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewprog.png" height="60%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -817,7 +817,7 @@ Admin can add subject by filling Subject Name, Subject Code, Subject Short, Subj
 </P>
 
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addsub.png" height="120%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addsub.png" height="90%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -834,7 +834,7 @@ Admin can add subject by filling Subject Name, Subject Code, Subject Short, Subj
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsub.png" height="90%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsub.png" height="60%" width="100%">
                                         </div>
                                         </section>
 
@@ -856,7 +856,7 @@ The format of add program fees with head list are given below:-
 						</tr>
 						<tr>
 						<td><B>Program name</B></td>
-						<td>Select Program Ex:- Batchlor of Art, Master of Art etc  </td>
+						<td>Select Program Ex:- Bachelor of Art, Master of Art etc  </td>
 						</tr>
 						<tr>
 						<td><B>Academic Year</B></td>
@@ -893,7 +893,7 @@ The format of add program fees with head list are given below:-
                                                 </font>
 
                                         </div>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/fees.png" height="120%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/fees.png" height="110%" width="100%">
                                        </section>
 <section id="ViewProgramFeeswithHead">
                                         <div class="row-fluid">
@@ -906,7 +906,7 @@ The format of add program fees with head list are given below:-
 Admin can also View Campus Program Seat List after adding Program Fees with Head Detail. We can edit and delete this data.
                                                                  </p>
                                                         </ol>
-                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewfees.png" height="90%" width="100%">      
+                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewfees.png" height="50%" width="100%">      
 					 </font>
                                          </div>
                                     </section>
@@ -974,7 +974,7 @@ The format of add Degree Rules with head list are given below:-
                                                 </font>
 
                                         </div>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/degreerule.png" height="100%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/degreerule.png" height="110%" width="100%">
                                        </section>
 <section id="ViewDegreeRule">
                                         <div class="row-fluid">
@@ -988,7 +988,7 @@ Admin can also View Degree Rules after adding Degree Rules Detail. We can edit a
                                                                  </p>
                                                         </ol>
 					 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdegreerule.png" height="90%" width="100%">      
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdegreerule.png" height="50%" width="100%">      
                                          </div>
                                     </section>
 
@@ -1052,7 +1052,7 @@ The format of add program fees with head list are given below:-
 Admin can also View Semester Rule after adding Semester Rule details. Admin can edit and delete this data.
 							</p>
                                                         </ol>
-                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsemesterrule.png" height="60%" width="100%">       </font>
+                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsemesterrule.png" height="45%" width="100%">       </font>
 
                                          </div>
                                     </section>
@@ -1155,7 +1155,7 @@ The format of Map User with Role list are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/maprole.png" height="110%" width="100%"> 
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/maprole.png" height="100%" width="100%"> 
                                          </div>
                                     </section>
 
@@ -1170,7 +1170,7 @@ The format of Map User with Role list are given below:-
 Admin can also View Map with User Role List after adding Map User Role details. Admin can edit and delete this data.
                                                         </p>
                                                         </ol>
-                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewmaprole.png" height="90%" width="100%">       
+                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewmaprole.png" height="70%" width="100%">       
 					</font>
                                          </div>
                                     </section>
@@ -1200,7 +1200,7 @@ Add the number of seat for program in set a campus.
 Admin can also view Study Center and Program with Seat after adding campus program seat list Detail. We can edit and delete this data.
                                                                  </p>
                                                         </ol>
-                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewmapps.png" height="90%" width="100%">       </font>
+                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewmapps.png" height="60%" width="100%">       </font>
 
                                          </div>
                                     </section>
@@ -1261,7 +1261,7 @@ The format of add Program with Subject and Paperlist are given below:-
 
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addsublist.png" height="100%" width="100%">       </font>
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addsublist.png" height="110%" width="100%">       </font>
                                                 </font>
                                          </div>
                                     </section>
@@ -1276,7 +1276,7 @@ The format of add Program with Subject and Paperlist are given below:-
 Admin can also view subject paper list after adding subject paper Detail. We can edit and delete this data.
                                                                  </p>
                                                         </ol>
-                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsublist.png" height="70%" width="100%">      
+                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsublist.png" height="50%" width="100%">      
 					 </font>
                                          </div>
                                     </section>
@@ -1506,7 +1506,7 @@ Admin can also view Map Subject and Semester after adding Subject and Semester D
 				Administrators can upload their logo from here. Image must be a png, jpg format and size is 500 K.B.
                                                                  </p>
                                                       </ol>
-				<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadlogo.png" height="80%" width="100%">
+				<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadlogo.png" height="50%" width="100%">
                                                 </font>
                                          </div>
                                     </section>
@@ -1526,7 +1526,7 @@ deepika,deepika@gmail.com,01,02,01,9415938783<br>
 All information are mandatory except mobile number.			
                                                                  </p>
                                                       </ol>
-				<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadteacher.png" height="80%" width="100%">
+				<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadteacher.png" height="50%" width="100%">
                                                 </font>
                                          </div>
                                     </section>
@@ -1547,7 +1547,7 @@ All information are mandatory except mobile number.
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadstaff.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadstaff.png" height="50%" width="100%">
                                          </div>
                                     </section>
 
@@ -1584,7 +1584,7 @@ All information are mandatory except mobile number.
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewfaculty.png" height="60%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewfaculty.png" height="40%" width="100%">
                                          </div>
                                     </section>
 <section id="StaffList">
@@ -1600,7 +1600,7 @@ All information are mandatory except mobile number.
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstaff.png" height="60%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstaff.png" height="40%" width="100%">
                                          </div>
                                     </section>
 <section id="Archives">
@@ -1621,7 +1621,7 @@ This module will display the earlier data. which is not used now.
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/fmarchive.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/fmarchive.png" height="60%" width="100%">
                                          </div>
                                     </section>
 <section id="ProgramSubjectPapaerArchive">
@@ -1637,7 +1637,7 @@ This module will display the earlier data. which is not used now.
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/psparchive.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/psparchive.png" height="60%" width="100%">
                                          </div>
                                     </section>
 <section id="SemesterRuleArchive">
@@ -1653,7 +1653,7 @@ This module will display the earlier data. which is not used now.
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/srarchive.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/srarchive.png" height="60%" width="100%">
                                          </div>
                                     </section>
 <section id="SubjectSemesterProgramwithDeparmentArchive">
@@ -1739,7 +1739,7 @@ This page consists of View Audit Trails, Insert Audit Trails, Update Audit Trail
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/changepassword.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/changepassword.png" height="70%" width="100%">
 
                                          </div>
                                     </section>

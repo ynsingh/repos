@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
-<!--@name changepasswd.php 
+<!--@name helpdoc.php 
   @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  -->
 <html>
@@ -12,39 +12,52 @@
 </head>
 <body>
 	<div class="wrapper" width="100%"  style="background-color: #DDDDDD;"> 
-	<div class="head">Online Addmision System</div>
+	<div class="head">Brihaspati Staff Information System (BSIS)</div>
 	<div class="content">
 	<div class="sideleft">
         <div id="cssmenu">
         	<ul>
-<li><a href="#AboutOnlineAddmisionSystem">About Online Addmision System</a></li>
+<li><a href="#BrihaspatiStaffInformationSystem">Brihaspati Staff Information System (BSIS)</a></li>
 	     <li><a href="#Dashboard">Dashboard</a></li>
 	     <li class='has-sub'><a href="#Setup">Setup</a>
 			<ul>
 			<li><a href="#EmailSetting">Email Setting</a></li>
 			<li><a href="#Role">Role</a></li>
 			<li><a href="#Category">Category</a></li>
-			<li><a href="#SeatReservation">Seat Reservation</a></li>
 			<li><a href="#StudyCenter">Study Center</a></li>
 			<li><a href="#Department">Department</a></li>
-			<li><a href="#ProgramandSeat">Program and Seat</a></li>
-			<li><a href="#Subject">Subject</a></li>
-			<li><a href="#ProgramFees">Program Fees</a></li>
+                        <li><a href="#Designation">Designation</a></li>
+                        <li><a href="#Authority">Authority</a></li>
+			<li><a href="#Subject">Subject	</a></li>
 			</ul>
 	    <li class='has-sub'><a href="#Map">Map</a>
 			<ul>
 			<li><a href="#MapUserwithRole">Map User with Role</a></li>
-			<li><a href="#MapStudyCenterandProgramwithSeat">Map Study Center and Program with Seat</a></li>
-			<li><a href="#MapProgramwithSubjectandPaper">Map Program with Subject and Paper</a></li>
-			<li><a href="#MapSubjectandPaperwithTeacher">Map Subject and Paper with Teacher</a></li>
 			</ul>
+	    <li class='has-sub'><a href="#StaffManagement">Staff Management</a>
+                        <ul>
+                        <li><a href="#StaffProfile">Staff Profile</a></li>
+			<li><a href="#StaffPosition">Staff Position</a></li>
+			<li><a href="#StaffTransferandPosting">Staff Transfer and Posting</a></li>
+                        </ul>
+
 	    <li class='has-sub'><a href="#Upload">Upload</a>
 			<ul>
 			<li><a href="#UploadLogo">Upload Logo</a></li>
 			<li><a href="#UploadStudentList">Upload Student List</a></li>
-			<li><a href="#UploadTeacherList">Upload Teacher List</a></li>
 			</ul>
-	    <li><a href="#Report">Report</a></li>
+           <li class='has-sub'><a href="#Report">Report</a>
+		         <ul>
+			 <li><a href="#StaffList">Staff List</a></li>
+                         </ul>	
+	    <li class='has-sub'><a href="#Archivers">Archives</a>
+                        <ul>
+                        <li><a href="#AuthorityArchive">Authority Archive</a></li>
+			</ul>
+	    <li class='has-sub'><a href="#AuditTrails">Audit Trails</a>
+                        <ul>
+                        <li><a href="#LogDetails">Log Details</a></li>
+                        </ul>
 	    <li class='has-sub'><a href="#Profile">Profile</a>
 			<ul>
 			<li><a href="#ViewProfile">View Profile</a></li>
@@ -54,15 +67,15 @@
                 </div>
             </div>
                 <div class="sideright">
-					<section id="AboutOnlineAddmisionSystem">
+					<section id="BrihaspatiStaffInformationSystem">
 					<div class="row-fluid">
-						<h2>About Online Addmision System</h2>
+						<h2>Brihaspati Staff Information System (BSIS)</h2>
 					</div>
 					<div class="row-fluid">
 						<font size="4">
 							<ol>
 								<p align="justify" STYLE="line-height: 150%">
-Online Admission System is to automate the Academic university admission structure and its related operation and functionality. The objective of the initiative is to provide support to the administration and admission seeking candidates by providing a faster, transparent and easy way of keeping records and use them for reference and further proceedings. 
+This Web-based information system was designed to allow you to view and maintain your employee information throughout the year. You should use this system to maintain your biographical information on your employee record. Changes made on the Employee Information System will not update any other university biographical information such as student or applicant information.
 								</p>
 							</ol>
 						</font>
@@ -81,10 +94,9 @@ Online Admission System is to automate the Academic university admission structu
 									</p>
 								</ol>
 							</font>						
-						<img src="<?php echo base_url(); ?>uploads/helpscreenshot/dashboard.png" height="130%" width="100%">
+						<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/dashboard.png" height="130%" width="100%">
 						</div>
 					</section>
-
 
 					<section id="Setup">
 						<div class="row-fluid">
@@ -138,7 +150,7 @@ Online Admission System is to automate the Academic university admission structu
 						</table>					
 								</ol>
 							</font>
-						<img src="<?php echo base_url(); ?>uploads/helpscreenshot/addemail.png" height="110%" width="100%">
+						<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addemail.png" height="100%" width="100%">
 						</div>
 					</section>
 					<section id="ViewEmailSetting">
@@ -153,13 +165,12 @@ Online Admission System is to automate the Academic university admission structu
                                                                  </p>
                                                         </ol>
                                                 </font>
-					<img src="<?php echo base_url(); ?>uploads/helpscreenshot/viewemail.png" height="90%" width="100%">
+					<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewemail.png" height="50%" width="100%">
 
                                         </div>
                                         </section>
 
-<section id="Role">
-                                        
+<section id="Role">                                     
                                                 <h2>Role</h2>
                                         <section id="AddRole">
  					<h2>Add Role</h2>
@@ -185,18 +196,13 @@ The format of Add Role are given below:-
 						</table>
 </P>
 
-
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/addrole.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addrole.png" height="60%" width="100%">
                                                 </font>
                                        
                                         </section>
 </section>
-
-
-
-
 			<section id="ViewRoleDetail">
                                         <div class="row-fluid">
                                                 <h2>View Role Detail</h2>
@@ -208,7 +214,7 @@ The format of Add Role are given below:-
 				Admin can view role after adding role details. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/viewrole.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewrole.png" height="65%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -254,7 +260,7 @@ The format of Add category are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/addcategory.png" height="100%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addcategory.png" height="100%" width="100%">
                                         </div>
                                         </section>
 
@@ -270,26 +276,11 @@ The format of Add category are given below:-
 				Admin can also view category after adding Category Detail. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/viewcategory.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewcategory.png" height="70%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
-
-			<section id="SeatReservation">
-                                        <div class="row-fluid">
-                                                <h2>Seat Reservation</h2>
-                                        </div>
-                                        <div class="row-fluid">
-                                                <font size="4">
-                                                        <ol>
-                                                                <p align="justify" STYLE="line-height: 150%">
-                                                                 </p>
-                                                        </ol>
-                                                </font>
-                                        </div>
-                                        </section>
-
-			<section id="StudyCenter">
+ <section id="StudyCenter">
                                         <div class="row-fluid">
                                                 <h2>Study Center</h2>
                                         </div>
@@ -297,11 +288,110 @@ The format of Add category are given below:-
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
+Admin can add study center by Select your University, Campus Code, Campus Name, Campus Nick Name, Address, Country, State, City, District, Pincode, Phone, Fax, Status, Start Date, Close Date, Website, Incharge, Mobile.<br>
+The format of Add Study Center are given below:-
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
+                                                <table border="2px solid black" style="width:700px">
+                                                <tr>
+                                                <td><B>Field</B></td>
+                                                <td><B>Description</B></td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Choose your University</B></td>
+                                                <td>Ex:-Indira Gandhi National Tribal University</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Campus Code</B></td>
+                                                <td>Ex:-CU001</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Campus Name</B></td>
+                                                <td>Ex:-Regional Campus</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Campus Nick Name</B></td>
+                                                <td>Ex:-RC</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Address</B></td>
+                                                <td>Enter Address</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Country</B></td>
+                                                <td>Select Country</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>State</B></td>
+                                                <td>Select State</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>City</B></td>
+                                                <td>Select City</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>District</B></td>
+                                                <td>Enter District</td>
+                                                </tr>
+						 <tr>
+                                                <td><B>Pincode</B></td>
+                                                <td>Enter Pincode</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Phone</B></td>
+                                                <td>Enter Phone Number</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Fax</B></td>
+                                                <td>Enter Fax Number</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Status</B></td>
+                                                <td>Enter Status Ex:-Active, Inactive</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Start Date</B></td>
+                                                <td>Select Start Date </td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Close Date</B></td>
+                                                <td>Select Close Date</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Website</B></td>
+                                                <td>Enter Your Website</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Incharge</B></td>
+                                                <td>Enter Incharge Name</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Mobile</B></td>
+                                                <td>Enter Mobile Number</td>
+                                                </tr>
+                                                </table>
+                                                </P>
                                                                  </p>
                                                         </ol>
                                                 </font>
+		<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addstudycenter.png" height="160%" width="100%">
                                         </div>
                                         </section>
+<section id="ViewStudyCenter">
+                                        <div class="row-fluid">
+                                                <h2>View Study Center</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+                                Admin can also view study center after adding study center Detail. Admin can edit and delete this data.
+                                                                 </p>
+                                                        </ol>
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstudycenter.png" height="60%" width="100%">
+                                                </font>
+                                        </div>
+                                        </section>
+
 			<section id="Department">
                                         <div class="row-fluid">
                                                 <h2>Department</h2>
@@ -358,7 +448,7 @@ The format of Add category are given below:-
 </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/adddepartment.png" height="120%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/adddepartment.png" height="120%" width="100%">
                                         </div>
                                         </section>
 <section id="ViewDepartmentDetail">
@@ -373,13 +463,67 @@ The format of Add category are given below:-
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/viewdeptment.png" height="100%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdeptment.png" height="50%" width="100%">
+                                        </div>
+                                        </section>
+<section id="Designation">
+                                        <div class="row-fluid">
+                                                <h2>Designation</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+                        Admin can add Designation by enter Designation Name, Designation Code, Designation short, Designation Description.<br>
+                         The format of Add category are given below:-
+			<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
+                                                <table border="2px solid black" style="width:700px">
+                                                <tr>
+                                                <td><B>Field</B></td>
+                                                <td><B>Description</B></td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Designation Name</B></td>
+                                                <td>Enter Designation Name Ex:-Manager, Assistant Manager</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Designation Code</B></td>
+                                                <td>Enter Designation Code.Ex:-01,02</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Designation short</B></td>
+                                                <td>Enter Designation short. Ex:-AM, AR</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Designation Description</B></td>
+                                                <td>Enter Designation Description.</td>
+                                                </tr>
+						 </table>
+                                                </P>
+                                                </p>
+                                                        </ol>
+                                                </font>
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/adddesignation.png" height="75%" width="100%">
+                                        </div>
+                                        </section>
+<section id="ViewDesignation">
+                                        <div class="row-fluid">
+                                                <h2>View Designation</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+                                Admin can view Designation after adding Designation Detail. Admin can edit and delete this data.
+                                                                 </p>
+                                                        </ol>
+                                                </font>
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewdesignation.png" height="50%" width="100%">
                                         </div>
                                         </section>
 
 
-
-			<section id="ProgramandSeat">
+			<!--section id="ProgramandSeat">
                                         <div class="row-fluid">
                                                 <h2>Program and Seat</h2>
                                         </div>
@@ -436,7 +580,7 @@ The format of Add Program and fees are given below:-
 						</P>          
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/addprog.png" height="120%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addprog.png" height="120%" width="100%">
                                         </div>
                                         </section>
 
@@ -451,13 +595,63 @@ The format of Add Program and fees are given below:-
 				Admin can also view program and seat after adding program and seat Detail. Admin can edit and delete this data.
                                                                  </p>
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/viewprog.png" height="90%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewprog.png" height="90%" width="100%">
                                                 </font>
                                         </div>
+                                        </section-->
+			
+  <section id="Authority">
+                                        <div class="row-fluid">
+                                                <h2>Authority</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+                        Admin can add  Authority by enter Authority Name, Authority Nick Name,  Authority Email.<br>
+                         The format of Add category are given below:-
+                        <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
+                                                <table border="2px solid black" style="width:700px">
+                                                <tr>
+                                                <td><B>Field</B></td>
+                                                <td><B>Description</B></td>
+                                                </tr>
+                                                <tr>
+                                                <td><B> Authority Name</B></td>
+                                                <td>Enter Authority Name Ex:-Director, Finance Officer, Deputy Registar Account, Assistant Registar Account</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Authority Nickname</B></td>
+                                                <td>Enter Authority Nickname.Ex:-FO, DRA, ARA</td>
+                                                </tr>
+                                                <tr>
+                                                <td><B>Authority Email</B></td>
+                                                <td>Enter Authority Email. Ex:-aracc@iitk.ac.in, dracc@iitk.ac.in</td>
+                                                </tr>
+                                                 </table>
+                                                </P>
+                                                </p>
+                                                        </ol>
+                                                </font>
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addauthority.png" height="80%" width="100%">
+                                        </div>
                                         </section>
-
-
-			<section id="Subject">
+<section id="ViewAuthority">
+                                        <div class="row-fluid">
+                                                <h2>View Authority</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+                                Admin can view Authority after adding Authority Detail. Admin can edit and delete this data.
+                                                                 </p>
+                                                        </ol>
+                                                </font>
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewauthority.png" height="65%" width="100%">
+                                        </div>
+                                        </section>
+<section id="Subject">
                                         <div class="row-fluid">
                                                 <h2>Subject</h2>
                                         </div>
@@ -493,7 +687,7 @@ Admin can add subject by filling Subject Name, Subject Code, Subject Short, Subj
 </P>
 
                                                         </ol>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/addsub.png" height="120%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/addsub.png" height="120%" width="100%">
                                                 </font>
                                         </div>
                                         </section>
@@ -510,11 +704,12 @@ Admin can add subject by filling Subject Name, Subject Code, Subject Short, Subj
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/viewsub.png" height="90%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewsub.png" height="90%" width="100%">
                                         </div>
                                         </section>
 
-			<section id="ProgramFees">
+
+			<!--section id="ProgramFees">
                                         <div class="row-fluid">
                                                 <h2>Program Fees</h2>
                                         </div>
@@ -585,9 +780,8 @@ Admin can also View Campus Program Seat List after adding Program Fees with Head
                                          <img src="<?php echo base_url(); ?>uploads/helpscreenshot/viewfees.png" height="90%" width="100%">       </font>
 
                                          </div>
-                                    </section>
-
-				<section id="MapUserwithRole">
+                                    </section-->
+<section id="MapUserwithRole">
                                         <div class="row-fluid">
                                                 <h2>Map User with Role</h2>
                                         </div>
@@ -595,13 +789,137 @@ Admin can also View Campus Program Seat List after adding Program Fees with Head
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
+From here admin can Map User with Role by Choose your Campus, Choose your Department, Select your Role, Select User Type, Select Username.<br>
+The format of Map User with Role list are given below:-
+						<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 150%">
+                                                <table border="2px solid black" style="width:700px">
+                                                <tr>
+                                                <td><B>Field</B></td>
+                                                <td><B>Description</B></td>
+                                                </tr>
+						<tr>
+                                                <td><B>Choose your Campus</B></td>
+                                                <td>Select Campus from dropdown.</td>
+                                                </tr>
+						<tr>
+                                                <td><B>Choose your Department</B></td>
+                                                <td>Select Department from dropdown.</td>
+                                                </tr>
+						<tr>
+                                                <td><B>Select your Role</B></td>
+                                                <td>Select Role from dropdown.</td>
+                                                </tr>
+						<tr>
+                                                <td><B>User Type</B></td>
+                                                <td>Select User Type from dropdown.</td>
+                                                </tr>
+						<tr>
+                                                <td><B>Select Username</B></td>
+                                                <td>Select Username from dropdown.</td>
+                                                </tr>
+						</table>
+						</P>
                                                                  </p>
                                                         </ol>
                                                 </font>
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/maprole.png" height="110%" width="100%"> 
                                          </div>
                                     </section>
 
-			<section id="MapStudyCenterandProgramwithSeat">
+<section id="ViewMapwithUserRoleList">
+                                        <div class="row-fluid">
+                                                <h2>View Map with User Role List</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+Admin can also View Map with User Role List after adding Map User Role details. Admin can edit and delete this data.
+                                                        </p>
+                                                        </ol>
+                                         <img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewmaprole.png" height="60%" width="100%">       
+					</font>
+                                         </div>
+                                    </section>
+<section id="StaffManangement">
+                                        <div class="row-fluid">
+                                                <h2>Staff Management</h2>
+                                        </div>
+</section>
+<section id="StaffProfile">
+                                        <div class="row-fluid">
+                                                <h2>Staff Profile</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+Admin can add Staff Profile:<br>
+Enter the details in the given fields.<br>
+Fill all information and now press the Submit Button for Staff Registration.
+                                                        </p>
+                                                        </ol>
+                                         <img src="<?php echo base_url(); ?>uploads/SIS/helpscreenshot/staffprofile.png" height="130%" width="100%">       
+					</font>
+                                         </div>
+                                    </section>
+<section id="ViewEmployeeList">
+                                        <div class="row-fluid">
+                                                <h2>View Employee List</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+Admin can also View staff List after adding Staff details. Admin can edit and delete this data.
+                                                        </p>
+                                                        </ol>
+                                         <img src="<?php echo base_url(); ?>uploads/SIS/helpscreenshot/viewstafflist.png" height="60%" width="100%">       
+					</font>
+                                         </div>
+                                    </section>
+
+		<section id="StaffPosition">
+                                        <div class="row-fluid">
+                                                <h2>Staff Position</h2>
+                                        </div>
+ <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+
+Job position within a chain of command of an organization that has the responsibility of providing information and advice to personnel in the line position. See also line and staff management.<br>
+Admin can add staff position.  Enter the details in the given fields.<br>
+Fill all information and now press the Submit Button for Staff Position.
+                                                        </p>
+                                                        </ol>
+                                         <img src="<?php echo base_url(); ?>uploads/SIS/helpscreenshot/staffposition.png" height="100%" width="100%">       
+					</font>
+                                         </div>
+</section>
+<section id="ViewStaffPosition">
+                                        <div class="row-fluid">
+                                                <h2>View Staff Position</h2>
+                                        </div>
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+Admin can also View staff Position after adding Staff Position details. Admin can edit and delete this data.
+                                                        </p>
+                                                        </ol>
+                                         <img src="<?php echo base_url(); ?>uploads/SIS/helpscreenshot/viewstaffposition.png" height="80%" width="100%">       
+					</font>
+                                         </div>
+                                    </section>
+
+<section id="StaffTransferandPosting">
+                                        <div class="row-fluid">
+                                                <h2>Staff Transfer and Posting</h2>
+                                        </div>
+</section>
+
+			<!--section id="MapStudyCenterandProgramwithSeat">
                                         <div class="row-fluid">
                                                 <h2>Map Study Center and Program with Seat</h2>
                                         </div>
@@ -720,7 +1038,7 @@ Admin can also view subject paper list after adding subject paper Detail. We can
                                                         </ol>
                                                 </font>
                                          </div>
-                                    </section>
+                                    </section--->
 			<section id="Upload">
                                         <div class="row-fluid">
                                                 <h2>Upload</h2>
@@ -737,11 +1055,11 @@ Admin can also view subject paper list after adding subject paper Detail. We can
 				Administrators can upload their logo from here. Image must be a png, jpg format and size is 500 K.B.
                                                                  </p>
                                                       </ol>
-				<img src="<?php echo base_url(); ?>uploads/helpscreenshot/uploadlogo.png" height="80%" width="100%">
+				<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadlogo.png" height="60%" width="100%">
                                                 </font>
                                          </div>
                                     </section>
-			<section id="UploadTeacherList">
+			<!--section id="UploadTeacherList">
                                         <div class="row-fluid">
                                                 <h2>Upload Teacher List</h2>
                                         </div>
@@ -760,21 +1078,29 @@ All information are mandatory except mobile number.
 				<img src="<?php echo base_url(); ?>uploads/helpscreenshot/uploadteacher.png" height="80%" width="100%">
                                                 </font>
                                          </div>
-                                    </section>
+                                    </section-->
 
-		<section id="UploadStudentList">
+		<section id="UploadStaffList">
                                         <div class="row-fluid">
-                                                <h2>Upload Student List</h2>
+                                                <h2>Upload Staff List</h2>
                                         </div>
                                         <div class="row-fluid">
                                                 <font size="4">
                                                         <ol>
                                                                 <p align="justify" STYLE="line-height: 150%">
+Administrators can upload multiple staff at a time. The file should have ".csv" extension & proper format. The files contain name, email, departmentid, roleid, campusid and mobile no all separated by  comma.<br>
+<b>Example</b><br>
+<b>name,email,departmentid,roleid,campasid,mobileno</b><br>
+kanchan,kanchan@gmail.com,01,04,01,9415938783<br>
+<b>Note:-</b></br>
+All information are mandatory except mobile number.
                                                                  </p>
                                                         </ol>
                                                 </font>
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/uploadstaff.png" height="50%" width="100%">
                                          </div>
                                     </section>
+
 		<section id="Report">
                                         <div class="row-fluid">
                                                 <h2>Report</h2>
@@ -788,12 +1114,66 @@ All information are mandatory except mobile number.
                                                 </font>
                                          </div>
                                     </section>
+<section id="StaffList">
+                                        <div class="row-fluid">
+                                                <h2>Staff List</h2>
+                                        </div>
 
-			<section id="Profile">
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+ Admin can also view list of staff after uploading csv file.	
+                                                                 </p>
+                                                        </ol>
+                                                </font>
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/viewstaff.png" height="40%" width="100%">
+                                         </div>
+                                    </section>
+<section id="Archives">
+                                        <div class="row-fluid">
+                                                <h2>Archives</h2>
+                                        </div>
+                                        </section>
+<section id="AuthorityArchive">
+                                        <div class="row-fluid">
+                                                <h2>Authority Archive</h2>
+                                        </div>
+
+                                        <div class="row-fluid">
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+This module will display the earlier data. which is not used now.
+                                                                 </p>
+                                                        </ol>
+                                                </font>
+<!--img src="<?php echo base_url(); ?>uploads/helpscreenshot/sspdarchive.png" height="60%" width="100%"-->
+                                         </div>
+                                    </section>
+<section id="AuditTrails">
+                                        <div class="row-fluid">
+                                                <h2>Audit Trails</h2>
+                                        </div>
+<section id="LogDetails">
+                                        <div class="row-fluid">
+                                                <h2>Log Details</h2>
+                                                <font size="4">
+                                                        <ol>
+                                                                <p align="justify" STYLE="line-height: 150%">
+This page consists of View Audit Trails, Insert Audit Trails, Update Audit Trails and summary recent activity. The page is constantly updated on the basis of the activities carried out in the system.	
+                                                                 </p>
+                                                        </ol>
+                                                </font>
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/audittrails.png" height="130%" width="100%">
+                                         </div>
+                                    </section>
+
+<section id="Profile">
                                         <div class="row-fluid">
                                                 <h2>Profile</h2>
                                         </div>
-				</section>
+</section>
 			<section id="ViewProfile">
                                         <div class="row-fluid">
                                                 <h2>View Profile</h2>
@@ -806,7 +1186,7 @@ All information are mandatory except mobile number.
                                                                  </p>
                                                         </ol>
                                                 </font>
-	<img src="<?php echo base_url(); ?>uploads/helpscreenshot/userprofile.png" height="130%" width="100%">
+	<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/userprofile.png" height="130%" width="100%">
                                          </div>
                                     </section>
 <section id="ChangePassword">
@@ -821,7 +1201,7 @@ All information are mandatory except mobile number.
                                                                  </p>
                                                         </ol>
                                                 </font>
-<img src="<?php echo base_url(); ?>uploads/helpscreenshot/changepassword.png" height="80%" width="100%">
+<img src="<?php echo base_url(); ?>uploads/SLCMS/helpscreenshot/changepassword.png" height="80%" width="100%">
 
                                          </div>
                                     </section>

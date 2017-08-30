@@ -2,7 +2,7 @@
 <!--@name liststaff.php 
   @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
   @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
-  @author Malvika Upadhyay (chaudharydeepika88@gmail.com)
+  @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
  -->
 <html>
     <head>

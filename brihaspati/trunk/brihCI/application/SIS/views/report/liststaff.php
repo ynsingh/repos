@@ -16,6 +16,17 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
+ <?php
+                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<tr valign=\"top\">";
+                    echo "<td>";
+                    $help_uri = site_url()."/help/helpdoc#StaffList";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:35%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
+                    ?>
+
         <!--table style="margin-left:10px;">
             <tr colspan="2"><td-->
              <!--?php
