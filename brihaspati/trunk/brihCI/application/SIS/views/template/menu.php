@@ -50,6 +50,21 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('setup/viewsubject', 'Subject', array('title' => 'Subject'));
 					echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('setup/displayscheme', 'Scheme', array('title' => 'Scheme'));
+                                        echo "</li>";
+                                       echo "<li>";
+                                                echo anchor('setup/displaysalarygrademaster', 'Salary Grade Master', array('title' => 'Salary Grade Master'));
+                                        echo "</li>"; 
+                                        echo "<li>";
+                                                echo anchor('setup/taxslab', 'Tax Slab', array('title' => 'Tax Slab'));
+                                        echo "</li>";
+
+                                         echo "<li>";
+                                                echo anchor('setup/leavetype', 'Leave Type', array('title' => 'Leave Type'));
+                                        echo "</li>";
+
+
 				/*	echo "<li>";
 						echo anchor('setup/displayfees', 'Program Fees', array('title' => 'Program Fees'));
 					echo "</li>";
@@ -71,6 +86,9 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('map/viewuserrole', 'Map User with Role', array('title' => 'Map User with Role'));
 					echo "</li>";
+                                         echo "<li>";
+                                                echo anchor('map/viewschemedept', 'Map Scheme with Department', array('title' => 'Map Scheme with Department'));
+                                        echo "</li>"; 
 /*					echo "<li>";
 						echo anchor('map/viewscprgseat', 'Map Study Center and Program with Seat', array('title' => 'Map Study Center and Program with Seat'));
 					echo "</li>";	

@@ -20,6 +20,7 @@ class Setup extends CI_Controller
     function __construct() {
         parent::__construct();
 	$this->load->model('common_model'); 
+        $this->load->model('SIS_model');
         $this->load->model('dependrop_model','depmodel');
         $this->load->model('university_model','unimodel');
         if(empty($this->session->userdata('id_user'))) {
@@ -1058,7 +1059,6 @@ class Setup extends CI_Controller
             redirect('setup/dispdepartment');
         }
           $this->load->view('setup/dept',$data);
-
     }
      /* this function is used for update department record */
     public function editdepartment($id) {
@@ -1894,10 +1894,8 @@ class Setup extends CI_Controller
 /****************************************** Add Study Center Module ********************************************/
 
     	public function sc(){
-           // 	$this->uresult = $this->common_model->get_listspfic('org_profile','org_code','org_name');
-            	$this->uresult = $this->common_model->get_listmore('org_profile','org_code,org_name');
-//		$this->cresult = $this->common_model->get_listspfic('countries','id','name');
-		$this->cresult = $this->common_model->get_listmore('countries','id,name');
+            	$this->uresult = $this->common_model->get_listspfic('org_profile','org_code','org_name');
+                $this->cresult = $this->common_model->get_listspfic('countries','id','name');
 
                 $prefs =array(
                        'start_date' => 'monday',
@@ -2030,8 +2028,7 @@ class Setup extends CI_Controller
 /* this function is used for update study center record */
 
     public function editsc($id) {
-//	    $this->cresult = $this->common_model->get_listspfic('countries','id','name');
-	    $this->cresult = $this->common_model->get_listmore('countries','id,name');
+	$this->cresult = $this->common_model->get_listspfic('countries','id','name');
 	$sc_data_q=$this->common_model->get_listrow('study_center','sc_id', $id);
 
         if ($sc_data_q->num_rows() < 1)
@@ -2533,7 +2530,7 @@ class Setup extends CI_Controller
 		                $this->logger->write_logmessage("update","Edit Seat Category", "Seat Setting record updated successfully... $logmessage . " );
                 		$this->logger->write_dblogmessage("update","Edit Seat Category", "Seat Setting record updated successfully... $logmessage ." );
 		                $this->session->set_flashdata('success','Updated seat setting record  details successfully...');
-                		redirect('setup/dispseatsetting/');
+               		redirect('setup/dispseatsetting/');
 	                }
 
 		}//check for 100 percent
@@ -2541,4 +2538,185 @@ class Setup extends CI_Controller
     	redirect('setup/editseatsetting/');
     }//function end
 
+
+/****************************************** Scheme Module ********************************************/
+
+ public function scheme(){
+
+        if(isset($_POST['scheme'])) {
+            $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean|required|alpha_numeric_spaces|callback_isSchemeExist');
+            $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('ssname','Scheme Short Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('sdesc','Scheme Description','trim|xss_clean|alpha_numeric_spaces');
+
+            if($this->form_validation->run()==TRUE){
+
+            $data = array(
+                'sd_name'=>ucwords(strtolower($_POST['sname'])),
+                'sd_code'=>strtoupper($_POST['scode']),
+                'sd_short'=>strtoupper($_POST['ssname']),
+                'sd_desc'=>$_POST['sdesc']
+
+            );
+           $schflag=$this->SIS_model->insertrec('scheme_department', $data) ;
+           if(!$schflag)
+           {
+                $this->logger->write_logmessage("insert"," Error in adding scheme ", " Scheme data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding scheme ", " Scheme data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding scheme - ' . $_POST['sname'] , 'error');
+                $this->load->view('setup/scheme');
+           }
+          else{
+                $this->logger->write_logmessage("insert"," add scheme ", "Scheme record added successfully..."  );
+                $this->logger->write_dblogmessage("insert"," add scheme ", "Scheme record added successfully..." );
+                $this->session->set_flashdata("success", "Scheme added successfully...");
+                redirect("setup/displayscheme", "refresh");
+              }
+           }
+
+        }
+      $this->load->view('setup/scheme');
+   }
+
+
+/** This function check for duplicate scheme
+     * @return type
+    */
+
+    public function isSchemeExist($sd_name) {
+
+        $is_exist = $this->SIS_model->isduplicate('scheme_department','sd_name',$sd_name);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isSchemeExist', 'Scheme is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+
+
+ /* Display Scheme record */
+
+  public function displayscheme(){
+
+        $this->result = $this->SIS_model->get_list('scheme_department');
+        $this->logger->write_logmessage("view"," View ", "Scheme record display successfully..." );
+        $this->logger->write_dblogmessage("view"," View Scheme", "Scheme record display successfully..." );
+        $this->load->view('setup/displayscheme',$this->result);
+    }
+
+ /**This function is used for update scheme details
+     * @param type $sd_id
+     * @return type
+     */
+    public function editscheme($sd_id) {
+	$sch_data_q=$this->SIS_model->get_listrow('scheme_department','sd_id', $sd_id);
+        if ($sch_data_q->num_rows() < 1)
+        {
+           redirect('setup/editscheme');
+        }
+        $scheme_data = $sch_data_q->row();
+
+        /* Form fields */
+
+        $data['sname'] = array(
+            'name' => 'sname',
+            'id' => 'sname',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $scheme_data->sd_name,
+	    'readonly' => 'readonly'	
+        );
+        $data['scode'] = array(
+           'name' => 'scode',
+           'id' => 'scode',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $scheme_data->sd_code,
+
+        );
+
+        $data['ssname'] = array(
+           'name' => 'ssname',
+           'id' => 'ssname',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $scheme_data->sd_short,
+
+        );
+
+        $data['sdesc'] = array(
+           'name' => 'sdesc',
+           'id' => 'sdesc',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $scheme_data->sd_desc,
+
+        );
+
+        $data['sd_id'] = $sd_id;
+
+        $this->form_validation->set_rules('sname','Scheme Name ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('scode','Scheme Code ','trim|xss_clean|required|alpha_dash');
+        $this->form_validation->set_rules('ssname','Scheme Short Name ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('sdesc','Scheme Description ','trim|xss_clean|alpha_numeric_spaces');
+
+        if ($_POST)
+        {
+            $data['sname']['value'] = $this->input->post('sname', TRUE);
+            $data['scode']['value'] = $this->input->post('scode', TRUE);
+            $data['ssname']['value'] = $this->input->post('ssname', TRUE);
+            $data['sdesc']['value'] = $this->input->post('sdesc', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editscheme', $data);
+            return;
+        }
+	else
+        {
+
+            $data_sname = ucwords(strtolower($this->input->post('sname', TRUE)));
+            $data_scode = strtoupper($this->input->post('scode', TRUE));
+            $data_ssname = strtoupper($this->input->post('ssname', TRUE));
+            $data_sdesc = $this->input->post('sdesc', TRUE);
+            $data_sid = $sd_id;
+	    $logmessage = "";
+            if($scheme_data->sd_name != $data_sname)
+                $logmessage = "Add Scheme " .$scheme_data->sd_name. " changed by " .$data_sname;
+            if($scheme_data->sd_code != $data_scode)
+                $logmessage = "Add Scheme " .$scheme_data->sd_code. " changed by " .$data_scode;
+            if($scheme_data->sd_short != $data_csname)
+                $logmessage = "Add Scheme " .$scheme_data->sd_short. " changed by " .$data_ssname;
+            if($scheme_data->sd_desc != $data_sdesc)
+                $logmessage = "Add Scheme " .$scheme_data->sd_desc. " changed by " .$data_sdesc;
+
+            $update_data = array(
+               'sd_name' => $data_sname,
+               'sd_code' => $data_scode,
+               'sd_short' => $data_ssname,
+               'sd_desc'  => $data_sdesc
+            );
+
+	   $schflag=$this->SIS_model->updaterec('scheme_department', $update_data, 'sd_id', $data_sid);
+	   if(!$schflag)	
+            {
+                $this->logger->write_logmessage("error","Error in update Scheme ", "Error in Scheme record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update Scheme ", "Error in Scheme record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating scheme - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editscheme', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Scheme", "Scheme record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Scheme", "Scheme record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Scheme record updated successfully...');
+                redirect('setup/displayscheme/');
+                }
+        }//else
+        redirect('setup/editscheme/');
+    }
 }
+
