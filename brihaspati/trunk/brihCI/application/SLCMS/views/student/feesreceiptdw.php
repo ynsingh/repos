@@ -28,9 +28,20 @@
            <td>Program:<?php echo " ".$this->prgname;?> </td>
            <td>Branch & Semester:<?php echo " ". $this->branch ." & ". $this->semester;?></td>
            <td>Category: <?php echo " ".$this->scategoryn ;?> </td>
-         </tr>
+	 </tr>
+<?php 
+	if($this->ftype == "semfee"){
+		$fetype="Semester Fees";
+	}
+	if($this->ftype == "semfee"){
+		$fetype="Exam Fee";
+	}
+	if($this->ftype == "semfee"){
+		$fetype="Penalty/Fine Fee";
+	}
+?>
            <tr> 
-           <td>Fees Type: <?php echo " ". $this->ftype;?></td>
+           <td>Fees Type: <?php echo " ". $fetype;?></td>
            <td>Payment Mode: <?php echo " ".$this->fstatus;?></td>
            <td>Reference No: <?php echo " ".$this->refno;?></td>
           </tr>
@@ -72,7 +83,7 @@
          	} 
 		echo "<tr><td align=right>Total</td><td>".$totalfees."</td></tr>";	
 	}
-		echo "<tr><td align=right>Paid Fees</td><td>". $this->feeamount;"</td></tr>":
+		echo "<tr><td align=right>Paid Fees</td><td>". $this->feeamount;"</td></tr>";
 	if($this->ftype == "semfee"){
 		$due=$totalfees-$this->feeamount;
 		if($due == 0){
