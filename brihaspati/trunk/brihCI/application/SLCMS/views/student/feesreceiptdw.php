@@ -33,10 +33,10 @@
 	if($this->ftype == "semfee"){
 		$fetype="Semester Fees";
 	}
-	if($this->ftype == "semfee"){
+	if($this->ftype == "exmfee"){
 		$fetype="Exam Fee";
 	}
-	if($this->ftype == "semfee"){
+	if($this->ftype == "finefee"){
 		$fetype="Penalty/Fine Fee";
 	}
 ?>
