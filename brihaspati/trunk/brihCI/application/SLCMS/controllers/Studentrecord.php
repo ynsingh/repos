@@ -53,10 +53,19 @@ class Studentrecord extends CI_Controller
     * @return Response
    */
 
-   function feesreceiptdw($sfee_id){
+   function feesreceiptdw(){
 	$userid = $this->session->userdata('id_user');
 	// get the smid
-        $smid =$this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
+	$smid =$this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
+	$sfee_id=$this->uri->segment(3);
+	//get the latest sfeeid if $sfee_isd is null
+	if (empty ($sfee_id)){
+		$sfeeid=$this->commodel->get_listspficarry('student_fees','sfee_id','sfee_smid ',$smid);
+                foreach($sfeeid as $row1){
+                	$sfee_id= $row1->sfee_id;
+                }
+	}
+
 	//get the value of spid,
         $spid=$this->commodel->get_listspfic1('student_fees','sfee_spid','sfee_id',$sfee_id)->sfee_spid;
 	
@@ -84,7 +93,7 @@ class Studentrecord extends CI_Controller
         $this->branch =$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
        
        //get program(semesters) of a student 
-        $stud_prg_rec = $this->commodel->get_listrow('student_program','sp_smid',$smid);
+  /*      $stud_prg_rec = $this->commodel->get_listrow('student_program','sp_smid',$smid);
         $degree_id = $stud_prg_rec->row()->sp_programid;
         $this->noofsemester = sizeof($stud_prg_rec->result());
         if($this->noofsemester == 1)
@@ -93,10 +102,11 @@ class Studentrecord extends CI_Controller
         }
         else
             $this->acadyear  = $this->usrmodel->getcurrentAcadYear();
-
+*/
 	//get the record form fees master on the basis of prg id and semester gender category
 	$this->semester=$this->commodel->get_listspfic1('student_program','sp_semester','sp_id',$spid)->sp_semester;
-
+	$this->acadyear=$this->commodel->get_listspfic1('student_program','sp_acadyear','sp_id',$spid)->sp_acadyear;
+	if($this->ftype == "semfee"){
 	//put all the values in feesrec array
           $wharray = array('fm_programid' => $this->prgname, 'fm_semester' => $this->semester);
                 $sarray = 'fm_head,fm_amount';
@@ -107,7 +117,8 @@ class Studentrecord extends CI_Controller
                 $this->db->where_in('fm_gender',$wgenr);
                 $this->db->where_in('fm_category',$wcateid);
                 $this->db->where($wharray);
-                $this->feesresult =  $this->db->get()->result();
+		$this->feesresult =  $this->db->get()->result();
+	}
         $this->load->library('pdf');
         $this->pdf->load_view('student/feesreceiptdw');
         $this->pdf->render();

@@ -57,45 +57,44 @@
         </thead>
 	
         <tbody>
-        <?php
+<?php
+	if($this->ftype == "semfee"){
                 $totalfees = '';
                 //$this->progresult = $this->Common_model->get_list('fees_master');
                 foreach($this->feesresult as $d2){
-                 ?>
-                <tr>
-                <td><?php echo $d2->fm_head;?></td>
+                 
+                	echo "<tr>";
+                	echo "<td>". $d2->fm_head."</td>";
+                	echo "<td>". $d2->fm_amount."</td>";
+                	$totalfees = $totalfees+$d2->fm_amount;
+                	echo "</tr>";
 
-                <td><?php echo $d2->fm_amount;?></td>
-                <?php $totalfees = $totalfees+$d2->fm_amount;?>
-                </tr>
-
-        <?php } ?>
-		<tr><td></td><td>Total: <?php echo $totalfees;?></td></tr>
-			
-		<tr><td></td><td>Paid Fees: <?php echo $this->feeamount;?></td></tr>
-		<?php $due=$totalfees-$this->feeamount;
+         	} 
+		echo "<tr><td align=right>Total</td><td>".$totalfees."</td></tr>";	
+	}
+		echo "<tr><td align=right>Paid Fees</td><td>". $this->feeamount;"</td></tr>":
+	if($this->ftype == "semfee"){
+		$due=$totalfees-$this->feeamount;
 		if($due == 0){
-			echo "<tr><td></td><td>Balence Amount:". $due ."</td></tr>";
+			echo "<tr><td align=right> Balence Amount</td><td>". $due ."</td></tr>";
 		}
 		if($due > 0){
-			echo "<tr><td></td><td>Dues Amount:". $due ."</td></tr>";
+			echo "<tr><td align=right> Dues Amount</td><td>". $due ."</td></tr>";
 		}
 		if($due < 0){
-			echo "<tr><td></td><td>Excess Amount:". $due ."</td></tr>";
+			echo "<tr><td align=right>Excess Amount </td><td>". $due ."</td></tr>";
 		}
-		
-		?>
+	}
+?>
 
         </tbody>
-
 </table>
-
 <table style="margin-top:20px;">
 	<tr>
 		<td>Date of deposit : <?php echo $this->fdepositedate;?></td>
 	</tr>
 </table>
-  </div>
+</div>
 <table>
 	<tr>
 		<td style="color:"><i>This is computer generated receipt and no signature required.</i></td>

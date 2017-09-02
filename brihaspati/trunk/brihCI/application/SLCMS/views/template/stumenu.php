@@ -73,7 +73,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('studentrecord/examform', 'Exam Form', array('title' => 'Downlaod Exam Form'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('studentrecord/feesform', 'Fees Receipt', array('title' => 'Downlaod Fees Receipt'));
+						echo anchor('studentrecord/feesreceiptdw', 'Fees Receipt', array('title' => 'Downlaod Fees Receipt'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('studentrecord/admitcard', 'Admit Card', array('title' => 'Downlaod admit Card'));
