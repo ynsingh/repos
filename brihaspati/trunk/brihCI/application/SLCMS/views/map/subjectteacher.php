@@ -138,7 +138,7 @@
                 <?php
                 for($i = date("Y")-2; $i < date("Y")+3; $i++){
                     $j=$i+1;
-                    echo '<option value="'.$i.' - '.$j.'">'.$i.' - '.$j.'</option>';
+                    echo '<option value="'.$i.'-'.$j.'">'.$i.' - '.$j.'</option>';
                     }
                     ?>
                 </select>

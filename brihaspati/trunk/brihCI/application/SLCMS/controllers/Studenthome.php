@@ -490,7 +490,7 @@ class Studenthome extends CI_Controller
             'pstp_scid' =>$this->campusid,
             'pstp_teachid' => $uid,
             'pstp_acadyear' => $acadyear,
-            'pstp_sem'    => $semestertype
+    //        'pstp_sem'    => $semestertype
         );
         $this->prgsublist=$this->commodel->get_listspficemore('program_subject_teacher',$selectfield,$data);
         $datarec['prgsublist']=$this->prgsublist;
@@ -511,7 +511,7 @@ class Studenthome extends CI_Controller
                 'sp_sccode'   =>$this->campucode,
                 'sp_programid' =>$prgname,
                 'sp_acadyear' =>$acadyear,
-                'sp_semester'  =>  $semestertype
+     //           'sp_semester'  =>  $semestertype
             );
        
             $filter = $this->input->post('filter');
@@ -530,7 +530,7 @@ class Studenthome extends CI_Controller
                 'sp_sccode'   =>$this->campucode,
                 'sp_programid' =>$prgname2,
                 'sp_acadyear' =>$acadyear,
-                'sp_semester'  =>$semestertype
+      //          'sp_semester'  =>$semestertype
                 );
                 $datarec['studentdetail'] = $this->studentmodel->getStudentsWhereLike($field, $search,$stdntdata2);
             }
