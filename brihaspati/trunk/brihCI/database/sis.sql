@@ -323,6 +323,42 @@ CREATE TABLE `staff_transfer_detail` (
 )ENGINE = InnoDB;
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `tax_slab_master`
+--
+
+
+CREATE TABLE `tax_slab_master` (
+  `tsm_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `tsm_fy` varchar(255) NOT NULL,
+  `tsm_name` varchar(255) NOT NULL,
+  `tsm_startvalue` varchar(255) NOT NULL,
+  `tsm_endvalue` varchar(255) NOT NULL,
+  `tsm_type` varchar(20) NOT NULL,
+  `tsm_gender` varchar(20) NOT NULL,
+  `tsm_percent` varchar(10) NOT NULL,
+  `tsm_remarks` varchar(255) default NULL,
+   PRIMARY KEY  (`tsm_id`),
+   UNIQUE KEY `tsm_fy` (`tsm_fy`,`tsm_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `leave_type_master`
+--
+
+CREATE TABLE `leave_type_master` (
+  `lt_id` int(11) NOT NULL auto_increment,
+  `lt_name` varchar(50) NOT NULL,
+  `lt_value` int(11) default '0',
+  `lt_remarks` varchar(255) default NULL,
+   PRIMARY KEY  (`lt_id`),
+   UNIQUE KEY `lt_name` (`lt_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `user_role_type`

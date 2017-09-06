@@ -2718,5 +2718,239 @@ class Setup extends CI_Controller
         }//else
         redirect('setup/editscheme/');
     }
+
+/******************************************Tax Slab Master ********************************************/
+
+public function taxslab(){
+
+        if(isset($_POST['taxslab'])) {
+            $this->form_validation->set_rules('tsmfy','Financial Year','trim|xss_clean|required');
+            $this->form_validation->set_rules('tsmname','Tax Slab Master Name','trim|xss_clean|required|alpha_numeric_spaces|callback_isTaxSlabMasterExist');
+            $this->form_validation->set_rules('tsmstartvalue','Tax Slab Start Value','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('tsmendvalue','Tax Slab End Value','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('tsmtype','Tax Slab Type','trim|xss_clean|required');
+            $this->form_validation->set_rules('tsmgender','Tax Slab Gender','trim|xss_clean|required');
+            $this->form_validation->set_rules('tsmpercent','Tax Slab Percent','trim|xss_clean|numeric');
+
+            if($this->form_validation->run()==TRUE){
+
+            $data = array(
+                'tsm_fy' =>$_POST['tsmfy'],
+                'tsm_name'=>$_POST['tsmname'],
+                'tsm_startvalue'=>$_POST['tsmstartvalue'],
+                'tsm_endvalue'=>$_POST['tsmendvalue'],
+                'tsm_type'=>$_POST['tsmtype'],
+                'tsm_percent'=>$_POST['tsmpercent'],
+                'tsm_gender'=>$_POST['tsmgender'],
+
+            );
+           $tsmflag=$this->SIS_model->insertrec('tax_slab_master', $data) ;
+           if(!$tsmflag)
+           {
+                $this->logger->write_logmessage("insert"," Error in adding Tax slabmastername ", " Tax Slab Master Name data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding Tax slabmastername ", " Tax Slab Master Name data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding Tax slabmastername - ' . $_POST['tsmname'] , 'error');
+                $this->load->view('setup/taxslab');
+           }
+          else{
+                $this->logger->write_logmessage("insert"," add slabmastername ", "Tax Slab Master Name record added successfully..."  );
+                $this->logger->write_dblogmessage("insert"," add slabmastername ", "Tax Slab Master Name record added successfully..." );
+                $this->session->set_flashdata("success", "slabmastername added successfully...");
+                redirect("setup/displaytaxslab", "refresh");
+              }
+           }
+
+        }
+      $this->load->view('setup/taxslab');
+   }
+
+
+/** This function check for duplicate Tax Slab Master
+     * @return type
+    */
+
+    public function isTaxSlabMasterExist($tsm_name) {
+
+        $is_exist = $this->SIS_model->isduplicate('tax_slab_master','tsm_name',$tsm_name);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isTax SlabMasterExist', 'Tax Slab Master is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+
+/* Display Tax Slab Master record */
+
+public function displaytaxslab(){
+
+        $this->result = $this->SIS_model->get_list('tax_slab_master');
+        $this->logger->write_logmessage("view"," View ", "Tax Slab Master display successfully..." );
+        $this->logger->write_dblogmessage("view"," View Tax Slab Master", "Tax Slab Master successfully..." );
+        $this->load->view('setup/displaytaxslab',$this->result);
+    }
+
+ /**This function is used for update Tax Slab Master details
+     * @param type $tsm_id
+     * @return type
+     */
+    public function edittaxslab($tsm_id) {
+        $tsm_data_q=$this->SIS_model->get_listrow('tax_slab_master','tsm_id', $tsm_id);
+        if ($tsm_data_q->num_rows() < 1)
+        {
+           redirect('setup/edittaxslab');
+        }
+        $TaxSlabMaster_data = $tsm_data_q->row();
+        /* Form fields */
+
+
+        $data['tsm_fy'] = array(
+              'value' => $TaxSlabMaster_data->tsm_fy,
+         );
+
+        $data['tsm_name'] = array(
+            'name' => 'tsm_name',
+            'id' => 'tsm_name',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $TaxSlabMaster_data->tsm_name,
+           // 'readonly' => 'readonly'
+        );
+
+        $data['tsm_startvalue'] = array(
+           'name' => 'tsm_startvalue',
+           'id' => 'tsm_startvalue',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $TaxSlabMaster_data->tsm_startvalue,
+
+        );
+
+        $data['tsm_endvalue'] = array(
+           'name' => 'tsm_endvalue',
+           'id' => 'tsm_endvalue',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $TaxSlabMaster_data->tsm_endvalue,
+
+        );
+         
+        $data['tsm_type'] = array(
+           'name' => 'tsm_type',
+           'id' => 'tsm_type',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $TaxSlabMaster_data->tsm_type,
+
+        );
+
+       $data['tsm_gender'] = array(
+           'name' => 'tsm_gender',
+           'id' => 'tsm_gender',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $TaxSlabMaster_data->tsm_gender,
+
+        );
+  
+
+        $data['tsm_percent'] = array(
+           'name' => 'tsm_percent',
+           'id' => 'tsm_percent',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $TaxSlabMaster_data->tsm_percent,
+        );
+
+
+        $data['tsm_id'] = $tsm_id;
+
+        $this->form_validation->set_rules('tsm_fy','Financial Year','trim|xss_clean|required');
+        $this->form_validation->set_rules('tsm_name','Tax Slab Name','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('tsm_startvalue','Tax Slab Start Value','trim|xss_clean|required|numeric');
+        $this->form_validation->set_rules('tsm_endvalue','Tax Slab End Value ','trim|xss_clean|required|numeric');
+        $this->form_validation->set_rules('tsm_type','Tax Slab Type','trim|xss_clean|alpha_numeric_spaces');
+        $this->form_validation->set_rules('tsm_gender','Tax Slab Gender','trim|xss_clean|alpha_numeric_spaces');
+        $this->form_validation->set_rules('tsm_percent','Tax Slab Percent','trim|xss_clean|numeric');
+
+        if ($_POST)
+        {
+            $data['tsm_fy']['value'] = $this->input->post('tsm_fy', TRUE);
+            $data['tsm_name']['value'] = $this->input->post('tsm_name', TRUE);
+            $data['tsm_startvalue']['value'] = $this->input->post('tsm_startvalue', TRUE);
+            $data['tsm_end']['valuevalue'] = $this->input->post('tsm_endvalue', TRUE);
+            $data['tsm_type']['value'] = $this->input->post('tsm_type', TRUE);
+            $data['tsm_gender']['value'] = $this->input->post('tsm_gender', TRUE);
+            $data['tsm_percent']['value'] = $this->input->post('tsm_percent', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/edittaxslab', $data);
+            return;
+        }
+        else
+        {
+            $tsm_fy = $this->input->post('tsm_fy', TRUE);   
+            $tsm_name = ucwords(strtolower($this->input->post('tsm_name', TRUE)));
+            $tsm_startvalue = strtoupper($this->input->post('tsm_startvalue', TRUE));
+            $tsm_endvalue = strtoupper($this->input->post('tsm_endvalue', TRUE));
+            $tsm_type = $this->input->post('tsm_type', TRUE);
+            $tsm_gender = $this->input->post('tsm_gender', TRUE);
+            $tsm_percent = $this->input->post('tsm_percent', TRUE);
+            //$sgm_id = $sgm_id;
+            $logmessage = "";
+
+            if($TaxSlabMaster_data->tsm_fy != $tsm_fy)
+                $logmessage = "Add Tax Slab Master " .$TaxSlabMaster_data->tsm_fy. " changed by " .$tsm_fy;
+            if($TaxSlabMaster_data->tsm_name != $tsm_name)
+                $logmessage = "Add Tax Slab Master " .$TaxSlabMaster_data->tsm_name. " changed by " .$tsm_name;
+            if($TaxSlabMaster_data->tsm_startvalue != $tsm_startvalue)
+                $logmessage = "Add Tax Slab Master " .$TaxSlabMaster_data->tsm_startvalue. " changed by " .$tsm_startvalue;
+
+            if($TaxSlabMaster_data->tsm_endvalue != $tsm_endvalue)
+                $logmessage = "Add Tax Slab Master " .$TaxSlabMaster_data->tsm_endvalue. " changed by " .$tsm_endvalue;
+            if($TaxSlabMaster_data->tsm_type != $tsm_type)
+                $logmessage = "Add Tax Slab Master " .$TaxSlabMaster_data->tsm_type. " changed by " .$tsm_type;
+            if($TaxSlabMaster_data->tsm_type != $tsm_type)
+                $logmessage = "Add Tax Slab Master " .$TaxSlabMaster_data->tsm_gender. " changed by " .$tsm_gender;
+
+              
+            if($TaxSlabMaster_data->tsm_percent != $tsm_percent)
+                $logmessage = "Add Tax Slab Master " .$TaxSlabMaster_data->tsm_percent. " changed by " .$tsm_percent;
+
+            $update_data = array(
+               'tsm_fy' =>$tsm_fy,
+               'tsm_name' => $tsm_name,
+               'tsm_startvalue' => $tsm_startvalue,
+               'tsm_endvalue' => $tsm_endvalue,
+               'tsm_type'=>$tsm_type,
+               'tsm_gender'=>$tsm_gender,
+               'tsm_percent'=> $tsm_percent,
+
+            );
+
+           $tsmflag=$this->SIS_model->updaterec('tax_slab_master', $update_data, 'tsm_id', $tsm_id);
+           if(!$tsmflag)
+            {
+                $this->logger->write_logmessage("error","Error in update Tax Slab Master ", "Error in Tax Slab Master record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update Tax Slab Master ", "Error in Tax Slab Master record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating Tax Slab Master - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/edittaxslab', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Tax Slab Master", "Tax Slab Master record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Tax Slab Master", "Tax Slab Master record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Tax Slab Master record updated successfully...');
+                redirect('setup/displaytaxslab/');
+                }
+        }//else
+        redirect('setup/edittaxslab/');
+    }
+
+
+
 }
 
