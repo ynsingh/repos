@@ -59,8 +59,10 @@ class Studentrecord extends CI_Controller
 	$smid =$this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
 	$sfee_id=$this->uri->segment(3);
 	//get the latest sfeeid if $sfee_isd is null
+	// add reconsillation check in future
 	if (empty ($sfee_id)){
-		$sfeeid=$this->commodel->get_listspficarry('student_fees','sfee_id','sfee_smid ',$smid);
+		$wharray = array('sfee_smid' => $smid, 'sfee_feeamount>' => 0);
+		$sfeeid=$this->commodel->get_listarry('student_fees','sfee_id',$wharray);
                 foreach($sfeeid as $row1){
                 	$sfee_id= $row1->sfee_id;
                 }
@@ -125,6 +127,19 @@ class Studentrecord extends CI_Controller
         $this->pdf->stream("feesreceipt.pdf");
    }
 
+   // marks display to te student
+   public function marksrecord()
+      {
+        $userid = $this->session->userdata('id_user');
+        $smid = $this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
+        $whdata= array('smr_smid' => $smid);
+        $this->result = $this->commodel->get_listarry('student_marks','*',$whdata);
+        print_r($this->result);
+        $this->logger->write_logmessage("view"," View Student program and marks", "View Student program and marks");
+        $this->logger->write_dblogmessage("view"," View Student program and marks", "View Student program and marks");
+        $this->load->view('student/studentmarks');
+        //$this->load->view('student/studentmarks',$this->result);
+       }
 
  
 }
