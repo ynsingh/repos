@@ -16,7 +16,8 @@
 
             <tr colspan="2"><td>
              <?php
-                 echo anchor('setup/stulist/', "Add Students list ",array('title' => 'student list Detail ' , 'class' => 'top_parent'));
+ //                echo anchor('setup/stulist/', "Add Students list ",array('title' => 'student list Detail ' , 'class' => 'top_parent'));
+		echo " ";
                  $help_uri = site_url()."/help/helpdoc#ViewStudentlistwithHead";
                  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:71%\">Click for Help</b></a>";
                 ?>
@@ -100,7 +101,7 @@
 
                                 };
                         else :
-                                echo "<td colspan=\"6\" align=\"center\"> No Records found...!</td>";
+                                echo "<td colspan=\"16\" align=\"center\"> No Records found...!</td>";
                         endif;
 
                 ?>
