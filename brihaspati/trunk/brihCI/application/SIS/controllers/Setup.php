@@ -2951,6 +2951,317 @@ public function displaytaxslab(){
     }
 
 
+/****************************************** Salary Grade Master ********************************************/
+
+public function salarygrademaster(){
+
+        if(isset($_POST['salarygrademaster'])) {
+            $this->form_validation->set_rules('sgmname','Salary Grade Master Name','trim|xss_clean|required|alpha_numeric_spaces|callback_value_exists');
+            $this->form_validation->set_rules('sgmmax','Salary Grade Master Max','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('sgmmin','Salary Grade Master Min','trim|xss_clean|required|numeric');
+            $this->form_validation->set_rules('sgmgradepay','Salary Grade Master Gradepay','trim|xss_clean|numeric');
+
+            if($this->form_validation->run()==TRUE){
+
+            $data = array(
+                'sgm_name'=>ucwords(strtolower($_POST['sgmname'])),
+                'sgm_max'=>strtoupper($_POST['sgmmax']),
+                'sgm_min'=>strtoupper($_POST['sgmmin']),
+                'sgm_gradepay'=>$_POST['sgmgradepay']
+
+            );
+           $sgmflag=$this->SIS_model->insertrec('salary_grade_master', $data) ;
+           if(!$sgmflag)
+           {
+                $this->logger->write_logmessage("insert"," Error in adding salarygrademaster ", " Salary Grade Master data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding salarygrademaster ", " Salary Grade Master data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding salarygrademaster - ' . $_POST['sgmname'] , 'error');
+                $this->load->view('setup/salarygrademaster');
+           }
+          else{
+                $this->logger->write_logmessage("insert"," add salarygrademaster ", "Salary Grade Master record added successfully..."  );
+                $this->logger->write_dblogmessage("insert"," add salarygrademaster ", "Salary Grade Master record added successfully..." );
+                $this->session->set_flashdata("success", "Salary Grade Master added successfully...");
+                redirect("setup/displaysalarygrademaster", "refresh");
+              }
+           }
+
+        }
+      $this->load->view('setup/salarygrademaster');
+   }
+
+
+/* Display Salary Grade Master record */
+
+public function displaysalarygrademaster(){
+
+        $this->result = $this->SIS_model->get_list('salary_grade_master');
+        $this->logger->write_logmessage("view"," View ", "Salary Grade Master display successfully..." );
+        $this->logger->write_dblogmessage("view"," View Salary Grade Master", "Salary Grade Master successfully..." );
+        $this->load->view('setup/displaysalarygrademaster',$this->result);
+    }
+
+ /**This function is used for update Salary Grade Master details
+     * @param type $sgm_id
+     * @return type
+     */
+   public function editsalarygrademaster($sgm_id) {
+        $sgm_data_q=$this->SIS_model->get_listrow('salary_grade_master','sgm_id', $sgm_id);
+        if ($sgm_data_q->num_rows() < 1)
+        {
+           redirect('setup/editsalarygrademaster');
+        }
+        $SalaryGradeMaster_data = $sgm_data_q->row();
+        /* Form fields */
+
+        $data['sgm_name'] = array(
+            'name' => 'sgm_name',
+            'id' => 'sgm_name',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $SalaryGradeMaster_data->sgm_name,
+            'readonly' => 'readonly'
+        );
+        $data['sgm_max'] = array(
+           'name' => 'sgm_max',
+           'id' => 'sgm_max',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $SalaryGradeMaster_data->sgm_max,
+
+        );
+
+        $data['sgm_min'] = array(
+           'name' => 'sgm_min',
+           'id' => 'sgm_min',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $SalaryGradeMaster_data->sgm_min,
+
+        );
+
+        $data['sgm_gradepay'] = array(
+           'name' => 'sgm_gradepay',
+           'id' => 'sgm_gradepay',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $SalaryGradeMaster_data->sgm_gradepay,
+
+        );
+
+        $data['sgm_id'] = $sgm_id;
+
+        $this->form_validation->set_rules('sgm_name','Salary Grade Master Name  ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('sgm_max','Salary Grade Master Max ','trim|xss_clean|required|numeric');
+        $this->form_validation->set_rules('sgm_min','Salary Grade Master Min ','trim|xss_clean|required|numeric');
+        $this->form_validation->set_rules('sgm_gradepay','Salary Grade Master Gradepay ','trim|xss_clean|numeric');
+
+        if ($_POST)
+        {
+            $data['sgm_name']['value'] = $this->input->post('sgm_name', TRUE);
+            $data['sgm_max']['value'] = $this->input->post('sgm_max', TRUE);
+            $data['sgm_min']['value'] = $this->input->post('sgm_min', TRUE);
+            $data['sgm_gradepay']['value'] = $this->input->post('sgm_gradepay', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editsalarygrademaster', $data);
+            return;
+        }
+        else
+        {
+
+            $sgm_name = ucwords(strtolower($this->input->post('sgm_name', TRUE)));
+            $sgm_max = strtoupper($this->input->post('sgm_max', TRUE));
+            $sgm_min = strtoupper($this->input->post('sgm_min', TRUE));
+            $sgm_gradepay = $this->input->post('sgm_gradepay', TRUE);
+            //$sgm_id = $sgm_id;
+            $logmessage = "";
+            if($SalaryGradeMaster_data->sgm_name != $sgm_name)
+                $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_name. " changed by " .$sgm_name;
+            if($SalaryGradeMaster_data->sgm_max != $sgm_max)
+                $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_max. " changed by " .$sgm_max;
+            if($SalaryGradeMaster_data->sgm_min != $sgm_min)
+                $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_min. " changed by " .$sgm_min;
+            if($SalaryGradeMaster_data->sgm_gradepay != $sgm_gradepay)
+                $logmessage = "Add Salary Grade Master " .$SalaryGradeMaster_data->sgm_gradepay. " changed by " .$sgm_gradepay;
+
+            $update_data = array(
+               'sgm_name' => $sgm_name,
+               'sgm_max' => $sgm_max,
+               'sgm_min' => $sgm_min,
+               'sgm_gradepay'=> $sgm_gradepay,
+            );
+
+           $sgmflag=$this->SIS_model->updaterec('salary_grade_master', $update_data, 'sgm_id', $sgm_id);
+           if(!$sgmflag)
+            {
+                $this->logger->write_logmessage("error","Error in update Salary Grade Master ", "Error in Salary Grade Master record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update Salary Grade Master ", "Error in Salary Grade Master record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating Salary Grade Master - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editsalarygrademaster', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Salary Grade Master", "Salary Grade Master record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Salary Grade Master", "Salary Grade Master record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Salary Grade Master record updated successfully...');
+                redirect('setup/displaysalarygrademaster/');
+                }
+        }//else
+        redirect('setup/editsalarygrademaster/');
+    }
+
+/****************************************** Leave Type ********************************************/
+
+public function leavetype(){
+
+        if(isset($_POST['leavetype'])) {
+            $this->form_validation->set_rules('lt_name','Leave Type Master Name','trim|xss_clean|required|alpha_numeric_spaces|callback_isLeaveTypeExist');
+            $this->form_validation->set_rules('lt_value','Leave Type Master Value','trim|xss_clean|required|numeric');
+
+            if($this->form_validation->run()==TRUE){
+
+            $data = array(
+                'lt_name'=>ucwords(strtolower($_POST['lt_name'])),
+                'lt_value'=>strtoupper($_POST['lt_value']),
+
+            );
+           $ltflag=$this->SIS_model->insertrec('leave_type_master', $data) ;
+           if(!$ltflag)
+           {
+                $this->logger->write_logmessage("insert"," Error in adding  leavetypemaster ", " Leave Type Master data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding  leavetypemaster ", "Leave Type Master data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding leavetypemaster - ' . $_POST['ltname'] , 'error');
+                $this->load->view('setup/leavetype');
+           }
+          else{
+                $this->logger->write_logmessage("insert"," add leavetypemaster ", "Leave Type Master record added successfully..."  );
+                $this->logger->write_dblogmessage("insert"," add leavetypemaster ", "Leave Type Master record added successfully..." );
+                $this->session->set_flashdata("success", "Leave Type Master added successfully...");
+                redirect("setup/displayleavetype", "refresh");
+              }
+           }
+
+        }
+      $this->load->view('setup/leavetype');
+   }
+
+
+/** This function check for duplicate role
+     * @return type
+    */
+
+    public function isLeaveTypeExist($lt_name) {
+
+        $is_exist = $this->SIS_model->isduplicate('leave_type_master','lt_name',$lt_name);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isLeaveTypeExist', 'Leave Type is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+
+/* Display Salary Grade Master record */
+
+public function displayleavetype(){
+
+        $this->result = $this->SIS_model->get_list('leave_type_master');
+        $this->logger->write_logmessage("view"," View ", "Leave Type Master display successfully..." );
+        $this->logger->write_dblogmessage("view"," View Leave Type Master", "Leave Type Master successfully..." );
+        $this->load->view('setup/displayleavetype',$this->result);
+    }
+/**This function is used for update Leave Type records
+     * @param type $id
+     * @return type
+     */
+
+
+       public function editleave($lt_id) {
+        $lt_data_q=$this->SIS_model->get_listrow('leave_type_master','lt_id', $lt_id);
+         
+        if ($lt_data_q->num_rows() < 1)
+        {
+           redirect('setup/editleave');
+        }
+        $LeaveType_data = $lt_data_q->row();
+        /* Form fields */
+
+
+
+        $data['lt_name'] = array(
+            'name' => 'lt_name',
+            'id' => 'lt_name',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $LeaveType_data->lt_name,
+           'readonly' => 'readonly'
+        );
+
+        $data['lt_value'] = array(
+           'name' => 'lt_value',
+           'id' => 'lt_value',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $LeaveType_data->lt_value,
+
+        );
+
+    $data['lt_id'] = $lt_id;
+
+        $this->form_validation->set_rules('lt_name','Leave Type name','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('lt_value','Leave Type Value','trim|xss_clean|required|alpha_numeric_spaces');
+
+
+        if ($_POST)
+        {
+            $data['lt_name']['value'] = $this->input->post('lt_name', TRUE);
+            $data['lt_value']['value'] = $this->input->post('lt_value', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editleave', $data);
+            return;
+        }
+        else
+        {
+            $lt_name = ucwords(strtolower($this->input->post('lt_name', TRUE)));
+            $lt_value = strtoupper($this->input->post('lt_value', TRUE));
+            //$sgm_id = $sgm_id;
+            $logmessage = "";
+
+            if($LeaveType_data->lt_name != $lt_name)
+                $logmessage = "Add Leave Type " .$LeaveType_data->lt_name. " changed by " .$lt_name;
+            if($TaxSlabMaster_data->lt_value != $lt_value)
+                $logmessage = "Add Leave Type " .$TaxSlabMaster_data->lt_value. " changed by " .$lt_value;
+
+            $update_data = array(
+               'lt_name' =>$lt_name,
+               'lt_value' => $lt_value,
+
+            );
+
+           $ltflag=$this->SIS_model->updaterec('leave_type_master', $update_data, 'lt_id', $lt_id);
+           if(!$ltflag)
+            {
+                $this->logger->write_logmessage("error","Error in update Leave Type ", "Error in Leave Type record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update LeaveType ", "Error in Leave Type record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating Leave Type - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editleave', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Leave Type", "Leave Type record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Leave Type", "Leave Type record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Leave Type record updated successfully...');
+                redirect('setup/displayleavetype/');
+                }
+        }//else
+        redirect('setup/editleave/');
+    }
+
 
 }
 

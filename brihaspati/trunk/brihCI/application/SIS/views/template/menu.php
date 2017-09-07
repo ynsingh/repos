@@ -54,14 +54,14 @@ echo "<ul class=\"sf-menu\">";
                                                 echo anchor('setup/displayscheme', 'Scheme', array('title' => 'Scheme'));
                                         echo "</li>";
                                        echo "<li>";
-                                                echo anchor('setup/salarygrademaster', 'Salary Grade Master', array('title' => 'Salary Grade Master'));
+                                                echo anchor('setup/displaysalarygrademaster', 'Salary Grade Master', array('title' => 'Salary Grade Master'));
                                         echo "</li>"; 
                                         echo "<li>";
                                                 echo anchor('setup/displaytaxslab', 'Tax Slab', array('title' => 'Tax Slab'));
                                         echo "</li>";
 
                                          echo "<li>";
-                                                echo anchor('setup/leavetype', 'Leave Type', array('title' => 'Leave Type'));
+                                                echo anchor('setup/displayleavetype', 'Leave Type', array('title' => 'Leave Type'));
                                         echo "</li>";
 
 
