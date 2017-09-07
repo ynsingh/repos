@@ -1,39 +1,39 @@
 package org.iitk.brihaspati.modules.screens.call.OLES;
 
 /*
- * @(#)OLES_ReEvaluation.java	
+ * @(#)OLES_ReEvaluation.java
  *
  *	Copyright (c) 2010 DEI Agra.
  *  All Rights Reserved.
  *
- *  Redistribution and use in source and binary forms, with or 
- *  without modification, are permitted provided that the following 
+ *  Redistribution and use in source and binary forms, with or
+ *  without modification, are permitted provided that the following
  *  conditions are met:
- * 
- *  Redistributions of source code must retain the above copyright  
+ *
+ *  Redistributions of source code must retain the above copyright
  *  notice, this  list of conditions and the following disclaimer.
- * 
- *  Redistribution in binary form must reproducuce the above copyright 
- *  notice, this list of conditions and the following disclaimer in 
- *  the documentation and/or other materials provided with the 
+ *
+ *  Redistribution in binary form must reproducuce the above copyright
+ *  notice, this list of conditions and the following disclaimer in
+ *  the documentation and/or other materials provided with the
  *  distribution.
- * 
- * 
+ *
+ *
  *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  *  DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
- *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+ *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
  *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
- *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
  *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- *  
+ *
+ *
  *  Contributors: Members of MHRD Project, DEI Agra
- * 
+ *
  */
 //Jdk
 
@@ -64,35 +64,48 @@ public class OLES_ReEvaluation extends SecureScreen{
 	public void doBuildTemplate( RunData data,Context context ){
 		ParameterParser pp=data.getParameters();
 		String langfile=data.getUser().getTemp("LangFile").toString();
-		try {			
+		try {
 			User user=data.getUser();
 			String uname=user.getName();
 			String courseid=(String)user.getTemp("course_id");
 			String courseName=(String)user.getTemp("course_name");
-			String uid=Integer.toString(UserUtil.getUID(uname));				
+			String uid=Integer.toString(UserUtil.getUID(uname));
 			String quizID=pp.getString("quizID","");
 			context.put("quizID",quizID);
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);
-			String count = pp.getString("count","6");			
+			String count = pp.getString("count","6");
 			context.put("tdcolor",count);
 			String studentLoginName=pp.getString("studentLoginName","0");
-			context.put("studentLoginName",studentLoginName);	
+			context.put("studentLoginName",studentLoginName);
 			String studentID=Integer.toString(UserUtil.getUID(studentLoginName));
 			String fullName = UserUtil.getFullName(Integer.valueOf(studentID));
 			context.put("fullName",fullName);
 			context.put("studentID",studentID);
 			Vector collectScore=new Vector();
 			List collectStudentLoginName=new ArrayList();
+			/*
+				@Anand Gupta
+				changes in the file path 
+				Read the reevaluation part in Evaluatescore.xml file.
+			*/
 			String quizScorePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-			String scoreFilePath = "score.xml";						
+			String scoreFilePath = "Evaluatescore.xml";
+			//ErrorDumpUtil.ErrorLog("OLES_REEVALUATION CALLED ");
+			//ErrorDumpUtil.ErrorLog("quizScorePath is "+quizScorePath);
+		//	File scoreFile= new File(quizScorePath+"/"+scoreFilePath);
+		//	ErrorDumpUtil.ErrorLog("OLES_REEVALUATION CALLED quizid "+quizID);
 			File scoreFile= new File(quizScorePath+"/"+scoreFilePath);
+		//	ErrorDumpUtil.ErrorLog("OLES_REEVALUATION CALLED ");
+		//	ErrorDumpUtil.ErrorLog("scorefile in reevaluation is "+quizScorePath+"/"+scoreFilePath);
+
 			boolean flag=false;
 			if(!scoreFile.exists()){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noreevaluation",langfile));
 				return;
 			}
 			else{
+				//QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizScorePath+"/"+scoreFilePath);
 				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizScorePath+"/"+scoreFilePath);
 				collectScore = quizmetadata.attemptedQuiz();
 				if(collectScore==null || collectScore.size()==0){
@@ -132,42 +145,9 @@ public class OLES_ReEvaluation extends SecureScreen{
 
 		}
 		catch(Exception exc){
-			ErrorDumpUtil.ErrorLog("The exception in OLES_ReEvaluation.java file!!"+exc); 
+			ErrorDumpUtil.ErrorLog("The exception in OLES_ReEvaluation.java file!!"+exc);
 			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+exc,langfile));
-		}	
+		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -1,38 +1,38 @@
-package org.iitk.brihaspati.modules.screens.call.OLES; 
+package org.iitk.brihaspati.modules.screens.call.OLES;
 
 /*
  * @(#)Evaluate.java
  *
- *  Copyright (c) 2010-2011,2013 MHRD, DEI Agra, IITK. 
+ *  Copyright (c) 2010-2011,2013 MHRD, DEI Agra, IITK.
  *  All Rights Reserved.
  *
- *  Redistribution and use in source and binary forms, with or 
- *  without modification, are permitted provided that the following 
+ *  Redistribution and use in source and binary forms, with or
+ *  without modification, are permitted provided that the following
  *  conditions are met:
- * 
- *  Redistributions of source code must retain the above copyright  
+ *
+ *  Redistributions of source code must retain the above copyright
  *  notice, this  list of conditions and the following disclaimer.
- * 
- *  Redistribution in binary form must reproducuce the above copyright 
- *  notice, this list of conditions and the following disclaimer in 
- *  the documentation and/or other materials provided with the 
+ *
+ *  Redistribution in binary form must reproducuce the above copyright
+ *  notice, this list of conditions and the following disclaimer in
+ *  the documentation and/or other materials provided with the
  *  distribution.
- * 
- * 
+ *
+ *
  *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  *  DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
- *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+ *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
  *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
- *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
  *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- *  
- *  Contributors: Members of MHRD, DEI Agra, IITK. 
+ *
+ *
+ *  Contributors: Members of MHRD, DEI Agra, IITK.
  */
 
 
@@ -60,16 +60,16 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
- *@author  <a href="noopur.here@gmail.com">Nupur Dixit</a> 
+ *@author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
  *@author  <a href="jaivirpal@gmail.com">Jaivir Singh</a>02May2013
- *@modified date: 22may2013(Manorama Pal) 
+ *@modified date: 22may2013(Manorama Pal)
  */
 
-public class Evaluate extends  SecureScreen{               
+public class Evaluate extends  SecureScreen{
 	public void doBuildTemplate(RunData data,Context context){
 		ParameterParser pp=data.getParameters();
 		String LangFile=(String)data.getUser().getTemp("LangFile");
-		try{		
+		try{
 			User user=data.getUser();
 			String uname=user.getName();
 			String courseid=(String)user.getTemp("course_id");
@@ -85,8 +85,8 @@ public class Evaluate extends  SecureScreen{
                          }
 			/** Get parameters from template through Parameter Parser
 			* put in context for use in template
-			*/	
-			String count = pp.getString("count","4");			
+			*/
+			String count = pp.getString("count","4");
 			context.put("tdcolor",count);
 			String type = pp.getString("type","");
 			context.put("type",type);
@@ -97,7 +97,7 @@ public class Evaluate extends  SecureScreen{
 			String studentLoginName=pp.getString("studentLoginName","");
 			/**get path where the quizand quiz xmlfile stored */
 			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-			String quizPath="/Quiz.xml";  
+			String quizPath="/Quiz.xml";
 			File file=new File(filePath+"/"+quizPath);
 			Vector quizList=new Vector();
 			Vector instructorQuizList=new Vector();
@@ -110,7 +110,7 @@ public class Evaluate extends  SecureScreen{
 				/** Gets the list of all the quizzes which are announced and announced time is over
 				* put in context for use in template
 				*/
-				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
+				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
 				quizList=quizmetadata.listAnnouncedAndExpiredQuiz();
 				if(quizList!=null && quizList.size()!=0){
 					for(int i=0; i<quizList.size();i++){
@@ -200,8 +200,9 @@ public class Evaluate extends  SecureScreen{
 				* get path of institute profile directory get list configurationvalue
 				* put all details in vector for use in template
 				*/
-
+				//String filepath_new=filePath+"/"+quizID;
 				Vector collect=GetQuizAttemptStudentList(filePath,scoreXml,courseid,quizID,maxMarks);
+				//Vector collect=GetQuizAttemptStudentList(newfilepath,scoreXml,courseid,quizID,maxMarks);
 				String  inst_id=(String)user.getTemp("Institute_id");
 				String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir"+"/"+inst_id+"Admin.properties";
                         	String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
@@ -226,11 +227,14 @@ public class Evaluate extends  SecureScreen{
 			String finalResult="";
 			QuizMetaDataXmlReader quizmetadata=null;
 			Vector scoreCollect=new Vector();
-                        File file=new File(examPath+"/"+scoreXml);      
-			String quizAnswerPath=examPath+"/"+qid; 
+      //File file=new File(examPath+"/"+scoreXml);
+			File file=new File(examPath+"/"+qid+"/"+scoreXml);
+			//ErrorDumpUtil.ErrorLog("quizid in screen is"+qid);
+			String quizAnswerPath=examPath+"/"+qid;
 			Map map=new HashMap();
                         if(file.exists()){
-                                quizmetadata=new QuizMetaDataXmlReader(examPath+"/"+scoreXml);
+                                //quizmetadata=new QuizMetaDataXmlReader(examPath+"/"+scoreXml);
+				quizmetadata=new QuizMetaDataXmlReader(examPath+"/"+qid+"/"+scoreXml);
                                 scoreCollect=quizmetadata.attemptedQuiz();
                                 if(scoreCollect!=null && scoreCollect.size()!=0){
                                         for(int i=0;i<scoreCollect.size();i++){
@@ -257,7 +261,7 @@ public class Evaluate extends  SecureScreen{
                                                        	map.put("evaluate",evaluate);
 							else
                                                        	map.put("evaluate","notchecked");
-							
+
                                                         collect.add(map);
                                                  }//if
                                        	}//for
@@ -267,6 +271,6 @@ public class Evaluate extends  SecureScreen{
 		catch(Exception ex){
 			ErrorDumpUtil.ErrorLog("Error in screen Evaluate[ method:GetQuizAttemptStudentList !!] "+ex);
 		}
-		return collect; 
+		return collect;
 	}//method
-}//class			
+}//class

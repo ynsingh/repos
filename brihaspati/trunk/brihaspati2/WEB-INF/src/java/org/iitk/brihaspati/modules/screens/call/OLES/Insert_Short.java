@@ -47,27 +47,37 @@ import java.util.Vector;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.util.parser.ParameterParser;  
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 //Brihaspati
 import org.iitk.brihaspati.modules.utils.FileEntry;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil; 
-import org.iitk.brihaspati.modules.screens.call.SecureScreen; 
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.ViewAllQuestionUtil;
+import java.util.Base64;
+import java.util.Base64.Decoder;
+import java.util.Base64.Encoder;
+import java.io.UnsupportedEncodingException;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.io.*;
 
 public class Insert_Short extends SecureScreen
 {
-    
+
     /*
      * Places all the data objects in the context for further use
      */
  	String QuestionBankPath=TurbineServlet.getRealPath("/QuestionBank");
- 
+  String images=TurbineServlet.getRealPath("/images");
+
+
 	public void doBuildTemplate(RunData data,Context context)
 	{
 		try
@@ -99,6 +109,11 @@ public class Insert_Short extends SecureScreen
 			String actype=pp.getString("acttype","");
                         context.put("acttype",actype);
                        	String filepath=QuestionBankPath+"/"+username+"/"+crsId;
+                        ErrorDumpUtil.ErrorLog("filepath new is"+filepath);
+                       String newfilepath=QuestionBankPath+"/"+username+"/"+crsId;
+                       ErrorDumpUtil.ErrorLog("newfilepath new is"+newfilepath);
+                       ErrorDumpUtil.ErrorLog("topic is"+topic);
+
 			Vector allQuestion=ViewAllQuestionUtil.ReadTopicAllFile(topic,filepath,Questype,difflevel);
                         context.put("qsize",allQuestion);
 
@@ -109,7 +124,7 @@ public class Insert_Short extends SecureScreen
                         	String quesid=pp.getString("quesid","");
                        		String questiontype=pp.getString("qtype","");
                         	context.put("qtype",questiontype);
-				String selquestiontype=pp.getString("questype","");
+				                  String selquestiontype=pp.getString("questype","");
                                 context.put("questype",selquestiontype);
                                 String difflevel12=pp.getString("dlevel","");
                         	context.put("dlevel",difflevel12);
@@ -120,6 +135,7 @@ public class Insert_Short extends SecureScreen
                         	TopicMetaDataXmlReader tr=null;
                         	tr =new TopicMetaDataXmlReader(filepath+"/"+fulltopic+".xml");
                         	Read=tr.getQuesBank_Detail1();
+
                         	if(Read != null)
                         	{
                         		for(int n=0;n<Read.size();n++)
@@ -129,19 +145,45 @@ public class Insert_Short extends SecureScreen
                                         	String Ans=((FileEntry)Read.elementAt(n)).getAnswer();
                                         	String desc=((FileEntry)Read.elementAt(n)).getDescription();
                                         	String Quesimage=((FileEntry)Read.elementAt(n)).getUrl();
+                                          ErrorDumpUtil.ErrorLog("filepath new inside loop is"+filepath);
+                                          //String new_newfilepath=newfilepath+"jpeg"+"/"+Quesimage;
+			/*
+				@Anand Gupta
+					use base64 method for image and send it via string to vm.
+			*/
+                                          String imageDataString="";
+                                          String new_newfilepath=newfilepath+"/"+edtopic+"/"+Quesimage;
+					                                     if(!Quesimage.equals(""))
+					                                          {
+                                          //ErrorDumpUtil.ErrorLog("edtopic is"+edtopic);
+                                          //ErrorDumpUtil.ErrorLog("new_newfilepath"+new_newfilepath);
+                                          File file=new File(new_newfilepath);
+
+                                          FileInputStream imageFile=new FileInputStream(file);
+                                          byte imageData[]=new byte[(int)file.length()];
+                                          imageFile.read(imageData);
+                                          imageDataString=Base64.getEncoder().encodeToString(imageData);
+                                          imageFile.close();
+                                                  }
+                                          //ErrorDumpUtil.ErrorLog("filepath new inside loop is"+newfilepath);
+                                        //  ErrorDumpUtil.ErrorLog("String length is"+imageDataString);
+
 						if(questionid.equals(quesid))
                                         	{
                                         		context.put("quesid",questionid);
                                         		context.put("Ques",ques);
                                         	        context.put("Ans",Ans);
                                         	        context.put("Desc",desc);
-                                        	        context.put("quesimage",Quesimage);
-							if(!Quesimage.equals(""))
+                                        	        //context.put("quesimage",Quesimage);
+							 if(!Quesimage.equals(""))
+                                                  context.put("quesimage",imageDataString);
+
+							else
 							context.put("typeques","imgtypeques");
                                         	}
 					}
 				}
-			}
+				}
 			/**
                          *Time calculaion for how long user use this page.
                          */
@@ -162,4 +204,3 @@ public class Insert_Short extends SecureScreen
                                 }
 	}
 }
-

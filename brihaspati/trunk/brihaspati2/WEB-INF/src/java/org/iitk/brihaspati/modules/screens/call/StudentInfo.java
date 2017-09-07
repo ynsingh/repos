@@ -30,10 +30,10 @@ package org.iitk.brihaspati.modules.screens.call;
  *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *                      
- *                      
+ *
+ *
  *  Contributors: Members of ETRG, I.I.T. Kanpur
- *                      
+ *
  */
 
 
@@ -101,11 +101,11 @@ public class StudentInfo extends SecureScreen{
         	                context.put("marksDSize",v.size());
 				if(v.size()!=0)
 				{
-					
+
 					String msg1=MultilingualUtil.ConvertedString("Marks_msg8",LangFile);
 					context.put("marksMsg",msg1);
 				}
-					
+
 			}
 
 			// code for assignment
@@ -172,7 +172,7 @@ public class StudentInfo extends SecureScreen{
                			                        String filereader =((FileEntry) Assignmentlist.elementAt(c)).getfileName();
 	                        	                String username=((FileEntry) Assignmentlist.elementAt(c)).getUserName();
 	                                        	if(semail.equals(username))
-	               		                        {	
+	               		                        {
         	       		                                filestudent=filereader;
                 	               		                studentfilecheck="ok";
 								duedate =((FileEntry) Assignmentlist.elementAt(c)).getDuedate();
@@ -195,7 +195,7 @@ public class StudentInfo extends SecureScreen{
                        			                                                	{
 													grade =((FileEntry) Assignmentlist1.elementAt(intgrade)).getGrade();
 				                                                                        feedback =((FileEntry) Assignmentlist1.elementAt(intgrade)).getfeedback();
-                	                				
+
 								                                        gradecheck="ok";
 												}
 											}
@@ -272,7 +272,8 @@ public class StudentInfo extends SecureScreen{
 						String quizname = (((QuizFileEntry)QuizDetail.elementAt(i)).getQuizName());
 						String quizCrtdate = (((QuizFileEntry)QuizDetail.elementAt(i)).getCreationDate());
                                 		//ErrorDumpUtil.ErrorLog("quizId from QuizDetail-------------"+quizId);
-						quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+scorePath);
+						//quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+scorePath);
+            					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizId+"/"+scorePath);
 						Vector totalQuiz = quizmetadata.attemptedQuiz();
 						q = new QuizFileEntry();
 						if(totalQuiz!=null && totalQuiz.size()!=0){
@@ -285,8 +286,8 @@ public class StudentInfo extends SecureScreen{
 									String evaluate = (((QuizFileEntry)totalQuiz.get(j)).getEvaluate());
 									if(StringUtils.isNotBlank(evaluate))
 	                                                                        map.put("Evaluate",evaluate);
-                                                                        else              
-										map.put("Evaluate","Quiz is not Evaluated Yet");                                      
+                                                                        else
+										map.put("Evaluate","Quiz is not Evaluated Yet");
 									String marksObtain = (((QuizFileEntry)totalQuiz.get(j)).getScore());
 									String questionSettingPath=quizId+"_QuestionSetting.xml";
                                                                                         QuizMetaDataXmlReader quesmetadata=null;

@@ -115,7 +115,11 @@ $!data.getMessage()
 			<table width=100% >
 				<tr >
 					<td width="30%"><b>$brih_qus</td>							
-					<td colspan=3>$!answer.getQuestion()</td>
+					<td colspan=3>$!answer.getQuestion()
+					#if ($!answer.getImg() !="")
+				<img src="data:image/jpeg;charset=utf-8;base64,$!answer.getImg()" width="450" height="150" align="center"/>
+					#end
+					</td>
 					<td align="right">$answer.getMarksPerQuestion()</td>
 				</tr>
 				<tr>					

@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.screens.call.OLES;
 
 /*
- * @(#)Report_Card.java	
+ * @(#)Report_Card.java
  *
  *  Copyright (c) 2010,2013 MHRD, DEI Agra, IITK .
  *  All Rights Reserved.
@@ -70,37 +70,41 @@ public class Report_Card extends SecureScreen{
 		ParameterParser pp=data.getParameters();
 		String file=data.getUser().getTemp("LangFile").toString();
 		try{
-			/**Get user name and put in context for use in template*/			
+			/**Get user name and put in context for use in template*/
 			User user=data.getUser();
 			String uname=user.getName();
 			context.put("userName",uname);
-			ErrorDumpUtil.ErrorLog("report card screen");
+			ErrorDumpUtil.ErrorLog("report card screen"+uname);
 
 			/**Get CourseId from temp*/
 			String courseid=(String)user.getTemp("course_id");
+			String quizid="";
 
 			/**Get userid according to User name
                          *@see UserUtil in utils
                          */
 			String uid=Integer.toString(UserUtil.getUID(uname));
-			ErrorDumpUtil.ErrorLog("user id is :"+uid);
+			//ErrorDumpUtil.ErrorLog("user id is :"+uid);
 			int index = courseid.lastIndexOf("_");
 			int instID = Integer.valueOf(courseid.substring(index+1, courseid.length()));
-			ErrorDumpUtil.ErrorLog("institute id is :"+instID);
+			//ErrorDumpUtil.ErrorLog("institute id is :"+instID);
 			String rollNo="";
 
 			/*Select Roll Number from 'StudentRollno' table */
 			Criteria crit=new Criteria();
 			crit.add(StudentRollnoPeer.EMAIL_ID,uname);
 			crit.add(StudentRollnoPeer.INSTITUTE_ID,instID);
-			ErrorDumpUtil.ErrorLog("criteriaIS :"+crit);
-			List v=StudentRollnoPeer.doSelect(crit);
 
+			//ErrorDumpUtil.ErrorLog("criteriaIS :"+crit);
+			List v=StudentRollnoPeer.doSelect(crit);
+			//ErrorDumpUtil.ErrorLog("uname is 1:"+uname+":"+instID);
+			ErrorDumpUtil.ErrorLog("vector size is"+v.size());
 			/*Check Rollno. exist or not */
 
 			if(v.size()!=0){
 				StudentRollno element=(StudentRollno)v.get(0);
 				rollNo=element.getRollNo().toString();
+				ErrorDumpUtil.ErrorLog("uname is 2:"+uname+":"+instID+":"+rollNo);
 			}
 			String fullName = UserUtil.getFullName(Integer.valueOf(uid));
 			context.put("fullName",fullName);
@@ -110,25 +114,25 @@ public class Report_Card extends SecureScreen{
                          *put in context to use in templates
                          */
 			String quizName=pp.getString("quizName","");
-			context.put("quizName",quizName);	
+			context.put("quizName",quizName);
 			String quizID=pp.getString("quizID","");
-			context.put("quizID",quizID);	
+			context.put("quizID",quizID);
 			String maxTime=pp.getString("maxTime","");
-			context.put("maxTime",maxTime);	
-			String maxMarks=pp.getString("maxMarks","");				
+			context.put("maxTime",maxTime);
+			String maxMarks=pp.getString("maxMarks","");
 			String maxQuestion=pp.getString("maxQuestion","");
 			String marksQuestions = pp.getString("maxMarksQuestion","");
 			context.put("maxMarks",maxMarks);
 			context.put("maxQuestion",maxQuestion);
 			String answerSheetFlag = pp.getString("answerSheetFlag","no");
 			context.put("answerSheetFlag",answerSheetFlag);
-			ErrorDumpUtil.ErrorLog("answer sheet flag"+answerSheetFlag);
-			Double passingMarks=0.0;			
+			//ErrorDumpUtil.ErrorLog("answer sheet flag"+answerSheetFlag);
+			Double passingMarks=0.0;
 			Double passingPercentage = 33.0;
 			String finalResult="";
-			ErrorDumpUtil.ErrorLog("max marks "+maxMarks);
+			//ErrorDumpUtil.ErrorLog("max marks "+maxMarks);
 			passingMarks = (Double.parseDouble(maxMarks)/100)*passingPercentage;
-			ErrorDumpUtil.ErrorLog("passing marks of student"+passingMarks);
+			//ErrorDumpUtil.ErrorLog("passing marks of student"+passingMarks);
 			int noCorrectAns = 0;
 			context.put("passingMarks",Math.round(passingMarks));
 			Vector answerDetail=new Vector();
@@ -136,12 +140,13 @@ public class Report_Card extends SecureScreen{
 
 			/**Find the Path where the 'quiz answer file' and 'score.xml'  exists */
 			String quizAnswerPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);
-			String quizAnswerFile = uid+".xml";	
+			String quizAnswerFile = uid+".xml";
 			String quizPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/");
 			String quizXmlFile = "score.xml";
 			String usedTime="00:00";
 			File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
-			File quizFile= new File(quizPath+"/"+quizXmlFile);
+			//File quizFile= new File(quizPath+"/"+quizXmlFile);
+			File quizFile= new File(quizPath+"/"+quizID+"/"+quizXmlFile);
 
 			/**Check the "score.xml" file exists or not */
 			if(!quizFile.exists()){
@@ -151,7 +156,8 @@ public class Report_Card extends SecureScreen{
 			else{
 
 				/**Get details from "score.xml" file and store in a vector. */
-				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizPath+"/"+quizXmlFile);
+				//QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizPath+"/"+quizXmlFile);
+				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizPath+"/"+quizID+"/"+quizXmlFile);
 				Vector quizDetail = quizmetadata.getFinalScore(uid);
 				if(quizDetail==null || quizDetail.size()==0){
 					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
@@ -159,13 +165,13 @@ public class Report_Card extends SecureScreen{
 				}
 				else{
 					for(int i=0;i<quizDetail.size();i++){
-						String quizid = (((QuizFileEntry) quizDetail.elementAt(i)).getQuizID());
+						quizid = (((QuizFileEntry) quizDetail.elementAt(i)).getQuizID());
 						if(quizid.equalsIgnoreCase(quizID)){
 							usedTime = (((QuizFileEntry) quizDetail.elementAt(i)).getUsedTime());
-							ErrorDumpUtil.ErrorLog("\n used time is :"+usedTime); 
+							ErrorDumpUtil.ErrorLog("\n used time is :"+usedTime);
 							break;
 						}
-						
+
 					}
 					context.put("usedTime",usedTime);
 				}
@@ -174,13 +180,13 @@ public class Report_Card extends SecureScreen{
                         String cid=(String)user.getTemp("course_id");
                         String examPath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
                         String scoreXml="score.xml";
-                        File scorefile=new File(examPath+"/"+scoreXml);
+                        File scorefile=new File(examPath+"/"+quizid+"/"+scoreXml);
                         QuizMetaDataXmlReader qdata=null;
                         Vector scoreCollect=new Vector();
                         String evaluate="";
                         String qid="";
                         if(scorefile.exists()){
-                                qdata=new QuizMetaDataXmlReader(examPath+"/"+scoreXml);
+                                qdata=new QuizMetaDataXmlReader(examPath+"/"+quizid+"/"+scoreXml);
                                 scoreCollect=qdata.getFinalScore(uid);
                                 if(scoreCollect!=null && scoreCollect.size()!=0){
                                         for(int i=0;i<scoreCollect.size();i++){
@@ -229,15 +235,15 @@ public class Report_Card extends SecureScreen{
 							else
 								finalResult="Fail";
 							context.put("finalResult",finalResult);
-						}				
+						}
 					}
-				}//if evaluate complete                                                                                 
+				}//if evaluate complete
                         }//if evaluate null
                         else{
                                 hbtn="true";
                                 data.setMessage(MultilingualUtil.ConvertedString("quiz_reportcard",file));
                         }
-                                context.put("hbtn",hbtn);				
+                                context.put("hbtn",hbtn);
 			/**
                          *Time calculaion for how long user use this page.
                          */
@@ -248,13 +254,11 @@ public class Report_Card extends SecureScreen{
 				int eid=0;
 				 ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
                          }
-							
-		}	
+
+		}
 		catch(Exception ex){
-			ErrorDumpUtil.ErrorLog("The exception in report card file!!"+ex); 
+			ErrorDumpUtil.ErrorLog("The exception in report card file!!"+ex);
 			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+ex,file));
 		}
 	}
 }
-
-

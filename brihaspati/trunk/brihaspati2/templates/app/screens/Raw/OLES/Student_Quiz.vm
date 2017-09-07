@@ -47,14 +47,14 @@ $page.setBgColor("#ffffff")
 <form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Attempt_Quiz.vm").setAction("OLES_AttemptQuiz")>
 #end
 <table width=100% align="left">
-
+#*
 #if($futureQuizList.size()!=0)
 	#foreach($futureqid in $futureQuizList)
 		<tr>	
 			<td>$velocityCount .<td colspan="5">$brih_quiz "$futureqid.getQuizName()" $brih_quizSchedule $futureqid.getExamDate() $brih_at $futureqid.getStartTime()</td>
 		</tr>
 	#end	        						
-#end	
+#end *#	
 
 <tr bgcolor="$ui.tableColor">
 	#if(($user_role == "student")||(($user_role == "teacher_assistant")&&($flag==false)))
@@ -92,6 +92,14 @@ $page.setBgColor("#ffffff")
 	
    	</tr>
 	<tr>
+	#if($futureQuizList.size()!=0)
+        #foreach($futureqid in $futureQuizList)
+                <tr bgcolor="$ui.tableColor">
+                        <td>$velocityCount .<td colspan="5">$brih_quiz "$futureqid.getQuizName()" $brih_quizSchedule $futureqid.getExamDate() $brih_at $futureqid.getStartTime()</td>
+                </tr>
+        #end                                                            
+#end    
+
 </tr>
 </table>
 	##Drop down list to select a quiz

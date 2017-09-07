@@ -59,7 +59,7 @@ $!data.getMessage()
         #if($lang=="hindi")$brih_qus $brih_view #else $brih_view $brih_qus #end
 	#elseif($acttype=="editques")
         #if($lang=="hindi")$brih_qus $brih_edit #else $brih_edit $brih_qus #end
-	#else	
+	#else
 	#if($lang=="hindi")$brih_qus $brih_add #else $brih_add $brih_qus #end
 	#end
         </b></td>
@@ -83,10 +83,11 @@ $!data.getMessage()
 </tr>
 #end
 </table>
-<table width="100%" bgcolor="$ui.menuColor" cellpadding="2"> 
-##if($acttype!="editques")  
+<table width="100%" bgcolor="$ui.menuColor" cellpadding="2">
+##if($acttype!="editques")
 #if($quesimage !="")
-<tr bgcolor="$ui.menuColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$crsId/$topic/$quesimage")" width="80" height="100"></td></tr>
+##<tr bgcolor="$ui.menuColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$crsId/$topic/$quesimage")" width="80" height="100"></td></tr>
+<tr bgcolor="$ui.menuColor"><td width="100%" align="center" colspan="2"><img src="data:image/jpeg;charset=utf-8;base64,$quesimage" width="450" height="150"/></td></tr>
 #end
 ##end
   <tr>
@@ -105,7 +106,7 @@ $!data.getMessage()
  </tr>
  #end
  #end
-  <tr bgcolor="$ui.tableColor"> 
+  <tr bgcolor="$ui.tableColor">
   	<td width=30% align="centre" >
     	<b><font face="$ui.sansSerifFonts"> #if($lang=="hindi")$brih_answer  #else Answer #end </font></b>
    	</td>
@@ -114,7 +115,7 @@ $!data.getMessage()
       <textarea name="Answer" rows=3 cols=50 #if($mode=="View") readonly #end>$!Ans </textarea >
    	</td>
  </tr>
-  <tr> 
+  <tr>
 	<td width=30% align="centre" >
         <b><font face="$ui.sansSerifFonts">$brih_desc</font></b>
         </td>
@@ -124,19 +125,19 @@ $!data.getMessage()
         </td>
 	##formCell("Hint" "hint" "$!hint")
 
- </tr> 
+ </tr>
 <tr bgcolor="$ui.tableColor">
-<td align=center colspan=2 >  
+<td align=center colspan=2 >
 <font face ="$ui.sansserifFonts">
 		#if($acttype!="viewques")
 		#if($acttype=="editques")
                 <input type="button" class="button-ftextstyle" name="eventSubmit_doEditQuestion" value="$brih_update" onClick="checkValue(document.frm,this);">
                 <input type="reset" value="$brih_reset" class="button-ftextstyle">
                 #else
-	  	<input type="button" name="eventSubmit_doInserQuestion" class="button-ftextstyle" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
-  		<input type="button" name="eventSubmit_doFinishQuestion" class="button-ftextstyle" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
+	  	<input type="button" name="eventSubmit_doInserQuestion" class="button-ftextstyle" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);">
+  		<input type="button" name="eventSubmit_doFinishQuestion" class="button-ftextstyle" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);">
 		<input type="reset" value="$brih_reset" class="button-ftextstyle">
-		<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")" style="text-decoration:none;" class="input_button" > #if($lang=="hindi")$brih_queBank $brih_back #else $brih_back #end</a> 
+		<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")" style="text-decoration:none;" class="input_button" > #if($lang=="hindi")$brih_queBank $brih_back #else $brih_back #end</a>
 		#end
 		#end
   <input type="hidden" name="actionName" value="">
@@ -179,7 +180,7 @@ $!data.getMessage()
 
                 if(frm.Question.value!="")
                 {
-			if(frm.Answer.value!="") 
+			if(frm.Answer.value!="")
 			{
                         	frm.actionName.value=field.name;
                         	frm.submit();

@@ -18,7 +18,7 @@ $page.setBgColor($ui.bgcolor)
 <script type="text/javascript" src="$content.getURI("/scrpts/jquery/autosaveform.js")"></script>
 <style>
 div.savestatus
-{ 
+{
 /* Style for the "Saving Form Contents" DIV that is shown at the top of the form */
 	width:180px;
 	padding:10px 10px;
@@ -86,10 +86,12 @@ $!data.getMessage()
 </tr>
 #end
 </table>
-<table width="100%" bgcolor="$ui.tableColor" cellpadding="2"> 
-##if($acttype!="editques") 
+<table width="100%" bgcolor="$ui.tableColor" cellpadding="2">
+##if($acttype!="editques")
 #if($quesimage !="")
-<tr bgcolor="$ui.tableColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$crsId/$topic/$quesimage")" width="80" height="100"></td></tr>
+##<tr bgcolor="$ui.tableColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$crsId/$topic/$quesimage")" width="80" height="100"></td></tr>
+<tr bgcolor="$ui.tableColor"><td width="100%" align="center" colspan="2"><img src="data:image/jpeg;charset=utf-8;base64,$quesimage"  width="450" height="150"/></td></tr>
+
 #end
 ##end
   <tr>
@@ -101,27 +103,27 @@ $!data.getMessage()
       <textarea name="Question" rows=3 cols=50 #if($mode=="View") readonly #end >$!Ques</textarea >
      </td>
  </tr>
-  <tr bgcolor="$ui.menuColor"> 
+  <tr bgcolor="$ui.menuColor">
 	#formCell("$brih_option $brih_a" "op1" "$!opt1")
- </tr> 
-  <tr> 
+ </tr>
+  <tr>
 	#formCell("$brih_option $brih_b" "op2" "$!opt2")
- </tr> 
-  <tr bgcolor="$ui.menuColor"> 
+ </tr>
+  <tr bgcolor="$ui.menuColor">
 	#formCell("$brih_option $brih_c" "op3" "$!opt3")
- </tr> 
-  <tr> 
+ </tr>
+  <tr>
 	#formCell("$brih_option $brih_d" "op4" "$!opt4")
- </tr> 
+ </tr>
  #if($typeques=="imgtypeques")
-#if($acttype !="viewques"))  
+#if($acttype !="viewques")
  <tr>
 	#fileUpload ("<b> $brih_Image $brih_upload </b><font color=Red>*</font>" "quesimg")
  </tr>
  #end
  #end
-  <tr bgcolor="$ui.menuColor"> 
-  	<td width=30% align="centre"> 
+  <tr bgcolor="$ui.menuColor">
+  	<td width=30% align="centre">
     	<b><font face="$ui.sansSerifFonts"> #if($lang=="hindi") $brih_answer #else Answer #end</font></i>
    	</td>
    	<td width=70% align="left">
@@ -132,10 +134,10 @@ $!data.getMessage()
          <option value="B">B</option>
          <option value="C">C</option>
          <option value="D">D</option>
-      	</select> 
+      	</select>
    	</td>
  </tr>
-  <tr> 
+  <tr>
 	<td width=30% align="centre">
         <b><font face="$ui.sansSerifFonts">$brih_desc</font></b>
         </td>
@@ -145,18 +147,18 @@ $!data.getMessage()
         </td>
 	##formCell("Hint" "hint" "$!hint")
 
- </tr> 
+ </tr>
 <tr bgcolor="$ui.tableColor">
-<td align=center colspan=2>  
+<td align=center colspan=2>
 <font face ="$ui.sansserifFonts">
 		#if($acttype!="viewques")
 		#if($acttype=="editques")
-  		<input type="button" class="button-ftextstyle" name="eventSubmit_doEditQuestion" value="$brih_update" onClick="checkValue(document.frm,this);"> 
-		<input type="reset" class="button-ftextstyle" value="$brih_reset"> 
+  		<input type="button" class="button-ftextstyle" name="eventSubmit_doEditQuestion" value="$brih_update" onClick="checkValue(document.frm,this);">
+		<input type="reset" class="button-ftextstyle" value="$brih_reset">
 		#else
-		<input type="reset" value="$brih_reset" class="button-ftextstyle"> 
+		<input type="reset" value="$brih_reset" class="button-ftextstyle">
   		<input type="button" class="button-ftextstyle" name="eventSubmit_doInserQuestion" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);">
-  		<input type="button" class="button-ftextstyle" name="eventSubmit_doFinishQuestion" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
+  		<input type="button" class="button-ftextstyle" name="eventSubmit_doFinishQuestion" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);">
 		<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")" style="text-decoration:none;" class="input_button" > #if($lang=="hindi")$brih_queBank $brih_back #else $brih_back #end </a>
 		#end
 		#end

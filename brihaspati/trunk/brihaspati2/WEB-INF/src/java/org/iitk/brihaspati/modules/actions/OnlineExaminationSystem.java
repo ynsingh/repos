@@ -1,33 +1,33 @@
 package org.iitk.brihaspati.modules.actions;
 /*
- * @(#)OnlineExaminationSystem.java	
+ * @(#)OnlineExaminationSystem.java
  *
- *  Copyright (c) 2010,2012-13 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010,2012-13 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
- *  Redistribution and use in source and binary forms, with or 
- *  without modification, are permitted provided that the following 
+ *  Redistribution and use in source and binary forms, with or
+ *  without modification, are permitted provided that the following
  *  conditions are met:
- * 
- *  Redistributions of source code must retain the above copyright  
+ *
+ *  Redistributions of source code must retain the above copyright
  *  notice, this  list of conditions and the following disclaimer.
- * 
- *  Redistribution in binary form must reproducuce the above copyright 
- *  notice, this list of conditions and the following disclaimer in 
- *  the documentation and/or other materials provided with the 
+ *
+ *  Redistribution in binary form must reproducuce the above copyright
+ *  notice, this list of conditions and the following disclaimer in
+ *  the documentation and/or other materials provided with the
  *  distribution.
- * 
- * 
+ *
+ *
  *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  *  DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
- *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+ *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
  *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
- *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
  *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 //JDK
@@ -47,6 +47,11 @@ import org.apache.velocity.context.Context;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import javax.servlet.ServletOutputStream;
+import org.apache.turbine.om.security.User;
+import java.io.File;
+import org.apache.turbine.om.security.User;
+
 //Brihaspati
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
@@ -61,29 +66,31 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 //import org.apache.commons.lang.StringUtils;
 
 /**
- * This Action class for Online Examination system 
- * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a> 
- * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar singh</a> 
- * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28-Dec-2012, 05march2013 
+ * This Action class for Online Examination system
+ * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar singh</a>
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28-Dec-2012, 05march2013
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modify date:14aug2013 
+ * @modify date:14aug2013
  */
 public class OnlineExaminationSystem extends SecureAction
 {
 	String QuestionBankPath=TurbineServlet.getRealPath("/QuestionBank");
+	//String QuestionBankPath="";
 	private String LangFile=new String();
 	private String crsId=new String();
-	
+
 	/** This method is responsible for uploading multiple question in QBR in single step
  	  * @param data RunData instance
  	  * @param context Context instance
  	  * @exception Exception, a generic exception
- 	  */		
+ 	  */
 	public void doUploadQues_Bank(RunData data, Context context){
 		try
 		{//try
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			crsId=(String)data.getUser().getTemp("course_id");
+			//QuestionBankPath=data.getServletContext().getRealPath("/QuestionBank");
 		 	ParameterParser pp=data.getParameters();
 			User user=data.getUser();
                         String username=data.getUser().getName();
@@ -143,7 +150,7 @@ public class OnlineExaminationSystem extends SecureAction
 					else{
 						if(tn==4){
 						xmlwritetopiclist(filepath,topic,Questype,difflevel,QBpath1,Cur_date,QBpath,data);
-						}	
+						}
 						else{
 						data.setMessage(MultilingualUtil.ConvertedString("quesformate",LangFile));
 						}
@@ -173,13 +180,13 @@ public class OnlineExaminationSystem extends SecureAction
                        	 data.setMessage("Error in action[OLES:doUploadQues_Bank]"+e);
                	}
 	}//method
-	
+
 	/** This method is responsible for seting templates on the basis of type of question
  	* @param data RunData instance
         * @param context Context instance
         * @exception Exception, a generic exception
         */
-	
+
 	public void doSettemplate_QB(RunData data, Context context)
 	{
 		try
@@ -212,8 +219,8 @@ public class OnlineExaminationSystem extends SecureAction
 			ErrorDumpUtil.ErrorLog("The exception in On Line Examination Action - doSettemplate_QB "+e);
             	 	data.setMessage("Error in action[OLES:doSettemplate_QB]"+e);
         	}
-	}//method	
-		
+	}//method
+
 	/** This method is responsible for writing the question in QBR under respective topic
 	  * @param data RunData instance
           * @param context Context instance
@@ -223,7 +230,7 @@ public class OnlineExaminationSystem extends SecureAction
 	{
 	    try
 	 	{//try
-            ErrorDumpUtil.ErrorLog("status");
+            //ErrorDumpUtil.ErrorLog("status");
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			crsId=(String)data.getUser().getTemp("course_id");
         	ParameterParser pp=data.getParameters();
@@ -231,7 +238,7 @@ public class OnlineExaminationSystem extends SecureAction
         	//String username=data.getUser().getName();
         	String username=pp.getString("username","");
 			String topic=pp.getString("Topicname","");
-                   
+
             String Questype=pp.getString("valQuestype","");
             String difflevel=pp.getString("valdifflevel","");
             String typeques=pp.getString("typeques","");
@@ -244,25 +251,25 @@ public class OnlineExaminationSystem extends SecureAction
             String option4=pp.getString("op4","");
             String minval = pp.getString("val1","");
             String maxval = pp.getString("val2","");
-            
+
 
             //ErrorDumpUtil.ErrorLog("minval--->"+minval);
-            ErrorDumpUtil.ErrorLog("Questype"+Questype);
+           // ErrorDumpUtil.ErrorLog("Questype"+Questype);
             //ErrorDumpUtil.ErrorLog("Topicname--"+topic+ "Questype--"+ Questype+"difflevel"+difflevel+"typeques"+typeques+"Ques"+Ques+"Answer"+Answer+" Desc"+ Desc+"option1"+option1+"option2"+option2+"option3"+option3+"option4"+option4);
 			String ImgUrl="";
 			String filepath=QuestionBankPath+"/"+username+"/"+crsId;
-            //ErrorDumpUtil.ErrorLog("Questtype--->"+filepath);
+            //ErrorDumpUtil.ErrorLog("filepath is 564"+filepath);
         	File ff=new File(filepath);
         	if(!ff.exists())
             	ff.mkdirs();
 			String QBpath="/QBtopiclist.xml";
 			String fulltopic=topic+"_"+difflevel+"_"+Questype;
-            ErrorDumpUtil.ErrorLog("Questtype--->"+fulltopic);
+            //ErrorDumpUtil.ErrorLog("Questtype--->"+fulltopic);
 			File QBpathxml=new File(filepath+"/"+fulltopic+".xml");
        		if(!QBpathxml.exists()){
             			TopicMetaDataXmlWriter.OLESRootOnly(QBpathxml.getAbsolutePath());
        		}//if
-             	
+
        		String QBpath1=fulltopic+".xml";
        		String Cur_date=ExpiryUtil.getCurrentDate("-");
 			String Quesid=getMaxQuesid(filepath,QBpath1,Questype,data);
@@ -270,7 +277,7 @@ public class OnlineExaminationSystem extends SecureAction
 			if(typeques.equals("imgtypeques"))
             {
 				FileItem fileItem=pp.getFileItem("quesimg");
-				if((fileItem.getSize() >0)&& (fileItem.getSize()<100000)) 
+				if((fileItem.getSize() >0)&& (fileItem.getSize()<100000))
                 {
         				long size=fileItem.getSize();
             			Long size1=new Long(size);
@@ -281,7 +288,7 @@ public class OnlineExaminationSystem extends SecureAction
             			StringTokenizer st=new StringTokenizer(tempFile,".");
             			String fileExt=null;
             			for(int a=0;st.hasMoreTokens();a++)
-                        { 
+                        {
                				fileExt=st.nextToken();
                 			quesimg=Quesid+"_"+topic+"_"+difflevel+"_"+Questype;
                         }
@@ -290,7 +297,8 @@ public class OnlineExaminationSystem extends SecureAction
                 		    int i=Integer.parseInt(Byte.toString(Filesize));
                 			if(i<10000)
                             {
-							    String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
+							    //String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
+									String imagepath=TurbineServlet.getRealPath("/QuestionBank");
 							    File imgPath=new File(imagepath+"/"+username+"/"+crsId+"/"+topic);
 							    if(!imgPath.exists())
                  				    imgPath.mkdirs();
@@ -303,17 +311,17 @@ public class OnlineExaminationSystem extends SecureAction
                         {
                             option1=minval;
                             option2=maxval;
-                            xmlwriteQues(filepath,Questype,Quesid,Ques,option1,option2,option3,option4,Answer,Desc,quesimg,QBpath1,data);   
+                            xmlwriteQues(filepath,Questype,Quesid,Ques,option1,option2,option3,option4,Answer,Desc,quesimg,QBpath1,data);
                         }
-                        
+
                         else*/
 					        xmlwriteQues(filepath,Questype,Quesid,Ques,option1,option2,option3,option4,Answer,Desc,quesimg,QBpath1,data);
-                        
+
 				}
 				else{
 					data.setMessage(MultilingualUtil.ConvertedString("qbimagesize",LangFile));
 				}
-				
+
 			}//if
 			else{
 			    xmlwritetopiclist(filepath,topic,Questype,difflevel,fulltopic+".xml",Cur_date,QBpath,data);
@@ -326,8 +334,8 @@ public class OnlineExaminationSystem extends SecureAction
                 }
                 else
     			    xmlwriteQues(filepath,Questype,Quesid,Ques,option1,option2,option3,option4,Answer,Desc,quesimg,QBpath1,data);
-           
-			}	
+
+			}
 			if(status.equals("More")){
 				if(Questype.equals("mcq"))
                     setTemplate(data,"call,OLES,Insert_Multiple.vm");
@@ -410,7 +418,8 @@ public class OnlineExaminationSystem extends SecureAction
                         				str=DeleteEntry(filepath,fulltopic+".xml",quesid,deltype,questiontype,data);
 							if(!imgurl.equals(""))
 							{
-								String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
+								//String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
+								String imagepath=TurbineServlet.getRealPath("/QuestionBank");
                                                 		File imgPath=new File(imagepath+"/"+username+"/"+crsId+"/"+topic+"/"+imgurl);
 								imgPath.delete();
 							}
@@ -478,7 +487,8 @@ public class OnlineExaminationSystem extends SecureAction
                                         if(fileExt.equals("jpg")|| fileExt.equals("gif")|| fileExt.equals("png")){
                                         	int i=Integer.parseInt(Byte.toString(Filesize));
                                                 if(i<10000){
-                                        		String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
+                                        	//	String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
+							String imagepath=TurbineServlet.getRealPath("/QuestionBank");
                                         		File imgPath=new File(imagepath+"/"+username+"/"+crsId+"/"+topic);
                                                         imgPath=new File(imgPath+"/"+quesimg);
                                                         fileItem.write(imgPath);
@@ -487,7 +497,7 @@ public class OnlineExaminationSystem extends SecureAction
 					UpdateQuestion(filepath,fulltopic,questiontype,quesid,ques,opt1,opt2,opt3,opt4,Answer,Desc,quesimg,data);
                                 }
 				else{
-					data.setMessage(MultilingualUtil.ConvertedString("qbimagesize",LangFile));	
+					data.setMessage(MultilingualUtil.ConvertedString("qbimagesize",LangFile));
 				}
                         }
 			else{
@@ -532,6 +542,7 @@ public class OnlineExaminationSystem extends SecureAction
 						else
 						{
 							xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml1(filepath,fulltopic+".xml");
+    			                                //ErrorDumpUtil.ErrorLog("test 25july "+xmlWriter);
                                                         TopicMetaDataXmlWriter.appendQues_Bank1(xmlWriter,quesid,ques,Answer,Desc,quesimg);
                                                         xmlWriter.writeXmlFile();
                                                         str=DeleteEntry(filepath,fulltopic+".xml",quesid,deltype,questiontype,data);
@@ -549,7 +560,7 @@ public class OnlineExaminationSystem extends SecureAction
                 }
 	}
 	/**
- 	  * This method is invoked when no button corresponding to 
+ 	  * This method is invoked when no button corresponding to
  	  * Action is found
  	  * @param data RunData
   	  * @param context Context
@@ -570,16 +581,16 @@ public class OnlineExaminationSystem extends SecureAction
                         doDeleteTopic(data,context);
 		else if(action.equals("eventSubmit_doEditQuestion"))
                         doEditQuestion(data,context);
-		
+
 		else
 		data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));
-			
-		
+
+
 	}
-	/** This method is responsible for creating xml file for topic 
- 	  * @param filepath String 
+	/** This method is responsible for creating xml file for topic
+ 	  * @param filepath String
           * @param topicname String Name of topic in QBR
-          * @param Questiontype String Type of question 
+          * @param Questiontype String Type of question
           * @param Difflevel String
           * @param CreationDate String
           * @param QBpath String
@@ -600,7 +611,7 @@ public class OnlineExaminationSystem extends SecureAction
                         if(!QBxmls.exists())
                         {
 				TopicMetaDataXmlWriter.OLESRootOnly(QBxmls.getAbsolutePath());
-                                xmlWriter=new XmlWriter(filepath+"/"+QBpath);                               
+                                xmlWriter=new XmlWriter(filepath+"/"+QBpath);
                         }
                         /**
                         *Checking for  the existing topic
@@ -627,10 +638,10 @@ public class OnlineExaminationSystem extends SecureAction
                         }//else
                         if(found==false)
                         {
-                                xmlWriter=new XmlWriter(filepath+"/"+QBpath);                               
-                                xmlWriter=TopicMetaDataXmlWriter.Ques_BankXmlist(filepath,QBpath);                               
+                                xmlWriter=new XmlWriter(filepath+"/"+QBpath);
+                                xmlWriter=TopicMetaDataXmlWriter.Ques_BankXmlist(filepath,QBpath);
                                 TopicMetaDataXmlWriter.appendQues_Banklist(xmlWriter,topicname,Questiontype,Difflevel,Filename,CreationDate);
-                                xmlWriter.writeXmlFile();                               
+                                xmlWriter.writeXmlFile();
                         }
                 }//try
                 catch(Exception e){
@@ -638,14 +649,14 @@ public class OnlineExaminationSystem extends SecureAction
                         data.setMessage("See ExceptionLog !! " );
                 }
         }//method save
-	/** This method is responsible for writing question in xml file  
- 	  * @param filepath String 
-          * @param Questiontype String Type of question 
-          * @param opt1 String 
-          * @param opt2 String 
-          * @param opt3 String 
-          * @param opt4 String 
-          * @param Question String 
+	/** This method is responsible for writing question in xml file
+ 	  * @param filepath String
+          * @param Questiontype String Type of question
+          * @param opt1 String
+          * @param opt2 String
+          * @param opt3 String
+          * @param opt4 String
+          * @param Question String
           * @param Answer String
           * @param Quesid String
           * @param Description String
@@ -658,24 +669,11 @@ public class OnlineExaminationSystem extends SecureAction
 	{
 		try
 		{
-			
+
 			XmlWriter xmlWriter=null;
 			ParameterParser pp=data.getParameters();
             String typeques=pp.getString("typeques","");
-            ErrorDumpUtil.ErrorLog("---------------------OnlineExaminationSystem---xmlwriteQues method()------------------");
-            ErrorDumpUtil.ErrorLog("typeques1---->"+filepath);       
-            ErrorDumpUtil.ErrorLog("typeques2---->"+Questiontype);       
-            ErrorDumpUtil.ErrorLog("typeques3---->"+Quesid);       
-            ErrorDumpUtil.ErrorLog("typeques4---->"+Question);       
-            ErrorDumpUtil.ErrorLog("typeques5---->"+opt1);       
-            ErrorDumpUtil.ErrorLog("typeques6---->"+opt2);       
-            ErrorDumpUtil.ErrorLog("typeques7---->"+opt3);       
-            ErrorDumpUtil.ErrorLog("typeques8---->"+opt4);       
-            ErrorDumpUtil.ErrorLog("typeques9---->"+Answer);       
-            ErrorDumpUtil.ErrorLog("typeques10---->"+Description);       
-            ErrorDumpUtil.ErrorLog("typeques11---->"+ImgUrl);       
-            ErrorDumpUtil.ErrorLog("typeques12---->"+QBtopicpath);       
-            ErrorDumpUtil.ErrorLog("typeques13---->"+data);       
+            //ErrorDumpUtil.ErrorLog("---------------------OnlineExaminationSystem---xmlwriteQues method()------------------");
 			/**
                         *Creating the blank xml for the maintaining the record
                         *and also mainting the record in this xmlfile
@@ -712,7 +710,7 @@ public class OnlineExaminationSystem extends SecureAction
                     }//for
                 }//if
             }//else
-           
+
             if(found==false)
             {
 				if(!Quesid.equals(""))
@@ -724,9 +722,9 @@ public class OnlineExaminationSystem extends SecureAction
                         TopicMetaDataXmlWriter.appendQues_Bank(xmlWriter,Quesid,Question,opt1,opt2,opt3,opt4,Answer,Description,ImgUrl);
                     }
 				    else
-        	        {   
-                        ErrorDumpUtil.ErrorLog("typeques11---->"+Questiontype);
-                                                         
+        	        {
+                        //ErrorDumpUtil.ErrorLog("typeques11---->"+Questiontype);
+
                         xmlWriter=new XmlWriter(filepath+"/"+QBtopicpath);
 					   // xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml1(filepath,QBtopicpath);
                         if(Questiontype.equals("sart"))
@@ -749,7 +747,7 @@ public class OnlineExaminationSystem extends SecureAction
 					    else
 						    data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
 				    }
-                    else 
+                    else
                     {
 					    if(LangFile.endsWith("_urd.properties"))
 						    data.setMessage(mU.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Uploaded",LangFile));
@@ -766,10 +764,10 @@ public class OnlineExaminationSystem extends SecureAction
         data.setMessage("See ExceptionLog !! " );
     }
 }
-	/** This method is responsible for delete entry in  xml file 
- 	  * @param filepath String 
-          * @param xmlfile String 
-          * @param tname String Type of question 
+	/** This method is responsible for delete entry in  xml file
+ 	  * @param filepath String
+          * @param xmlfile String
+          * @param tname String Type of question
           * @param deltype String
           * @param questiontype String
           * @param data RunData instance
@@ -815,7 +813,7 @@ public class OnlineExaminationSystem extends SecureAction
                         	xmlWriter=TopicMetaDataXmlWriter.Ques_BankXmlist(filePath,xmlfile);
 			else
 			{
-				if(questiontype.equals("mcq"))	
+				if(questiontype.equals("mcq"))
                        			xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml(filePath,xmlfile);
 				else
                        			xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml1(filePath,xmlfile);
@@ -874,6 +872,7 @@ public class OnlineExaminationSystem extends SecureAction
 			Vector rr=new Vector();
                         TopicMetaDataXmlReader tr =new TopicMetaDataXmlReader(filepath+"/"+xmlfile);
                         if(questiontype.equals("mcq"))
+			
 			{
                                 Read=tr.getQuesBank_Detail();
 			}
@@ -890,7 +889,7 @@ public class OnlineExaminationSystem extends SecureAction
 				Collections.sort(rr);
 				for(int k=0;k<rr.size();k++)
 				{
-					String qid=(String)rr.get(k); 
+					String qid=(String)rr.get(k);
                                		for(int n=0;n<Read.size();n++)
 					{
                                         	quesid =((FileEntry)Read.elementAt(n)).getquestionid();
@@ -953,14 +952,14 @@ public class OnlineExaminationSystem extends SecureAction
                         	String Quesno="",Ques="",option1="",option2="",option3="",option4="",Answer="",Desc="",Quesnonew="";
                         	int error=0;
                         	String errMsg="";
-				while(st1.hasMoreTokens()) { 
+				while(st1.hasMoreTokens()) {
 					if(st1.countTokens()<8)//if#2
                                         	{error=1;}
                                 	else
 					{
 						if(addques.equals("addques")){
 							flag=FileExistsinXml(filepath,QBpath1);
-							if(flag==true){	
+							if(flag==true){
                         				Quesnonew=getMaxQuesid(filepath,QBpath1,Questype,data);
 							}
 							else
@@ -1066,7 +1065,7 @@ public class OnlineExaminationSystem extends SecureAction
 				while(st1.hasMoreTokens()) {
                                 	if(st1.countTokens()<4)//if#2
                                         	{error=1;}
-                                	else 
+                                	else
                                 	{
 						 if(addques.equals("addques")){
                                                        flag=FileExistsinXml(filepath,QBpath1);
@@ -1125,7 +1124,7 @@ public class OnlineExaminationSystem extends SecureAction
                         data.addMessage("See ExceptionLog !! " );
                 }
         }//method
-	
+
 	public static boolean FileExistsinXml(String filePath,String xmlfile)
         {
                 boolean flag=false;
@@ -1186,7 +1185,7 @@ public class OnlineExaminationSystem extends SecureAction
 
 	public  int TokenNumber(File f)
         {
-		int num=0;			
+		int num=0;
                 try{
                         FileReader fr=new FileReader(f);
                         BufferedReader br=new BufferedReader(fr);
@@ -1202,4 +1201,3 @@ public class OnlineExaminationSystem extends SecureAction
 		return num;
 	}
 }
-

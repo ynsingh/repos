@@ -45,24 +45,32 @@ import java.util.Vector;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.util.parser.ParameterParser;  
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 //Brihaspati
 import org.iitk.brihaspati.modules.utils.FileEntry;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil; 
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen; 
+import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.ViewAllQuestionUtil;
+import java.util.Base64;
+import java.util.Base64.Decoder;
+import java.util.Base64.Encoder;
+import java.io.UnsupportedEncodingException;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.io.*;
 public class Insert_TF extends SecureScreen
 {
-    
+
     /*
      * Places all the data objects in the context for further use
      */
  	String QuestionBankPath=TurbineServlet.getRealPath("/QuestionBank");
- 
+
 	public void doBuildTemplate(RunData data,Context context)
 	{
 		try
@@ -94,6 +102,7 @@ public class Insert_TF extends SecureScreen
                 	String actype=pp.getString("acttype","");
                 	context.put("acttype",actype);
                         String filepath=QuestionBankPath+"/"+username+"/"+crsId;
+                          //ErrorDumpUtil.ErrorLog("filepath for tf is"+filepath);
 			Vector allQuestion=ViewAllQuestionUtil.ReadTopicAllFile(topic,filepath,Questype,difflevel);
                 	context.put("qsize",allQuestion);
 
@@ -124,14 +133,30 @@ public class Insert_TF extends SecureScreen
                                         	String ques=((FileEntry)Read.elementAt(n)).getquestion();
                                         	String Ans=((FileEntry)Read.elementAt(n)).getAnswer();
                                         	String desc=((FileEntry)Read.elementAt(n)).getDescription();
-						String Quesimage=((FileEntry)Read.elementAt(n)).getUrl();
+					        String Quesimage=((FileEntry)Read.elementAt(n)).getUrl();
+                                        	String new_newfilepath=filepath+"/"+edtopic+"/"+Quesimage;
+                                         	String imageDataString="";
+			/*
+				@Anand Gupta
+					use base64 method for image and send it via string to vm.
+			*/
+                                          if(!Quesimage.equals("")){
+                                          File file=new File(new_newfilepath);
+                                          FileInputStream imageFile=new FileInputStream(file);
+                                          byte imageData[]=new byte[(int)file.length()];
+                                          imageFile.read(imageData);
+                                          imageDataString=Base64.getEncoder().encodeToString(imageData);
+                                          imageFile.close();
+                                          }
+                                          //ErrorDumpUtil.ErrorLog("new_newfilepath inside loop is"+new_newfilepath);
                                         	if(questionid.equals(quesid))
                                         	{
-							context.put("quesid",questionid);
-                                        		context.put("Ques",ques);
-                                                	context.put("Ans",Ans);
-                                                	context.put("Desc",desc);
-							context.put("quesimage",Quesimage);
+					    context.put("quesid",questionid);
+                                            context.put("Ques",ques);
+                                            context.put("Ans",Ans);
+                                            context.put("Desc",desc);
+					 //context.put("quesimage",Quesimage);
+                                           context.put("quesimage",imageDataString );
 							if(!Quesimage.equals("")){
                                                         context.put("typeques","imgtypeques");}
                                         	}
@@ -157,4 +182,3 @@ public class Insert_TF extends SecureScreen
 
 	}
 }
-

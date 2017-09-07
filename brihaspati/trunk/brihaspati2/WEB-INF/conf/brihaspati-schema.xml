@@ -45,9 +45,9 @@
 	<column name="CREATIONDATE" type="DATE"/>
 	<column name="LASTMODIFIED" type="DATE"/>
 	<column name="LASTACCESS" type="DATE"/>
-	<column name="QUOTA" required="true" type="NUMERIC" default="100"/>	
+	<column name="QUOTA" required="true" type="NUMERIC" default="100"/>
 	<column name="ONLINECONF" required="true" type="INTEGER" default="0"/>
-	
+
 </table>
 <table name="CAL_INFORMATION" idMethod="idbroker">
 	<column name="INFO_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
@@ -134,7 +134,7 @@
 	<column name="PUBLISH_DATE" required="true" type="DATE"/>
 	<column name="EXPIRY" required="true" type="INTEGER"/>
 	<column name="EXPIRY_DATE" required="true" type="DATE"/>
-</table> 
+</table>
 <table name="NOTICE_SEND" idMethod="idbroker">
 	<column name="NOTICE_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
 	<column name="NOTICE_SUBJECT" size="255" type="VARCHAR"/>
@@ -392,19 +392,19 @@
 	<column name="EMAIL_ID" required="true" type="VARCHAR" size="255"/>
         <column name="ROLL_NO" required="true" type="VARCHAR" size="255" />
         <column name="PROGRAM" required="true" type="VARCHAR" size="255"/>
-        <column name="INSTITUTE_ID" required="true" type="VARCHAR" size="255"/> 
+        <column name="INSTITUTE_ID" required="true" type="VARCHAR" size="255"/>
 	<column name="EXPIRY_DATE" required="true" type="TIMESTAMP" DEFAULT="CURRENT_TIMESTAMP" />
 	<unique>
 	   	<unique-column name="ROLL_NO"/>
 	   	<unique-column name="PROGRAM"/>
-	        <unique-column name="INSTITUTE_ID"/> 
+	        <unique-column name="INSTITUTE_ID"/>
 	</unique>
 </table>
 <!-- ===============================TIME TABLE==================================== -->
   <table name="EVENTS" description="Entire List of Timetable Events">
     <column name="EVENT" required="FALSE" type="BLOB" description="Event Object"/>
   </table>
-  
+
   <table name="TABLE_ID">
     <column name="TAB_ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
     <column name="PATH" size="255" type="VARCHAR"/>
@@ -412,7 +412,7 @@
     <column name="DEPARTMENT" size="255" type="VARCHAR"/>
     <column name="DATE" type="DATE"/>
   </table>
-  
+
   <table name="FAC_INFO" description="Faculty Information">
   	<column name="FAC_ID" type="INTEGER"/>
   	<column name="NAME" required="true" size="255" type="VARCHAR"/>
@@ -420,12 +420,12 @@
   	<column name="INSTITUTE" required="true" size="255" type="VARCHAR"/>
   	<column name="ID" required="true" size="10" type="VARCHAR"/>
   </table>
-    
+
   <table name="FACULTY_COURSE" description="Faculty to Course Mapping">
   	<column name="COURSE_CODE" required="true" size="10" type="VARCHAR"/>
   	<column name="FACULTY_ID" required="true" size="10" type="VARCHAR"/>
   </table>
-  
+
   <table name="COURSE_INFO" description="Course Information">
   	<column name="COURSE_CODE" size="10" required="true" type="VARCHAR"/>
   	<column name="COURSE_TYPE" size="3" required="true" type="VARCHAR"/>
@@ -436,18 +436,18 @@
   	<column name="VENUE_CODE" size="10" type="VARCHAR"/>
   	<column name="SCHEDULED" type="INTEGER"/>
   </table>
-  
+
   <table name="BATCH" description="Batch Information">
   	<column name="BATCH_CODE" required="true" size="10" type="VARCHAR"/>
   	<column name="STRENGTH" type="INTEGER"/>
   	<column name="BATCH_NAME" size="255" type="VARCHAR"/>
   </table>
-    
+
   <table name="BATCH_COURSE" description="Batch to Course Mapping">
   	<column name="COURSE_CODE" required="true" size="10" type="VARCHAR"/>
   	<column name="BATCH_CODE" required="true" size="10" type="VARCHAR"/>
   </table>
-    
+
   <table name="VENUE" description="Venue Information">
   	<column name="CODE" required="true" size="10" type="VARCHAR"/>
   	<column name="CAPACITY" required="true" type="INTEGER"/>
@@ -467,7 +467,7 @@
 		<unique-column name="PROGRAM_CODE"/>
 	</unique>
 
-</table> 
+</table>
 
 <table name="INSTITUTE_PROGRAM" idMethod="idbroker">
 	<column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
@@ -578,7 +578,7 @@
         <column name="MLOGIN_DATETIME" required="true" type="TIMESTAMP" />
         <column name="MTIME" type="INTEGER"/>
   </table>
-	
+
 <!-- ===============================COURSE PROGRAM SCHEMA==================================== -->
 <table name="COURSE_PROGRAM" idMethod="idbroker">
         <column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
@@ -602,7 +602,7 @@
 <!--	<foreign-key foreignTable="TURBINE_USER">
 	      <reference local="USER_ID" foreign="USER_ID"/>
 	</foreign-key>-->
-	
+
 </table>
 
 <!-- ==========================scorm learner tracking======================================================== -->
@@ -709,5 +709,12 @@
         <column name="PASS_DATE" Type="DATE" size="255"/>
         <column name="EXPIRY_DATE" Type="DATE" size="255" />
 </table>
-
+<!-- ==========================ip address tracking======================================================== -->
+<table name="QUIZ_IPADDRESS" idMethod="idbroker" description="IP_ADDRESS_STORAGE">
+        <column name="ID" required="true" primaryKey="true" autoIncrement="true" Type="INTEGER"/>
+        <column name="USER_ID" required="true" Type="INTEGER"/>
+        <column name="QUIZ_ID" required="true" Type="VARCHAR" size="255"/>
+        <column name="IP_ADDRESS" required="true" Type="VARCHAR" size="16"/>
+        <column name="QUIZ_DATE" type="DATE"/>
+</table>
 </database>

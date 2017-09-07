@@ -93,6 +93,9 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
     	private String Attributeno;
     	private String noofAttempt;
         private String Min,Max;
+        private String url;
+	private String img;
+
         
 
 //-----------------------------OLES
@@ -135,7 +138,7 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	    	//ErrorDumpUtil.ErrorLog("inside wrong object type");
 		    return 1;
 	    }
-    	//ErrorDumpUtil.ErrorLog("after every condition check");
+    	 //ErrorDumpUtil.ErrorLog("after every condition check");
         return 1;
     }
     
@@ -162,6 +165,14 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 		//ErrorDumpUtil.ErrorLog("after every condition check");
     		return false;
     	}
+	public void setImg(String img)
+		{
+			this.img=img;
+		}
+	public String getImg()
+		{
+			return img;
+		}
     
 	public void setQuizID(String quizID){
 		this.quizID = quizID;
@@ -346,7 +357,16 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
      {
              return id;
      }
-     
+     public void setUrl(String url)
+                {
+                       this.url=url;
+                }
+                public String  getUrl()
+                {
+                        return url;
+                }
+
+
      public void setExamDate(String examDate){
  		this.examDate = examDate;
  	}

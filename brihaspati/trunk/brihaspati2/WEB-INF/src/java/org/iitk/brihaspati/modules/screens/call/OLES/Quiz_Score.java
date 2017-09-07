@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.screens.call.OLES;
 
 /*
- * @(#)Quiz_Score.java	
+ * @(#)Quiz_Score.java
  *
  *  Copyright (c) 2010 MHRD, DEI Agra, 2013 IITK.
  *  All Rights Reserved.
@@ -58,7 +58,7 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
  *   This class is used to show score of student after attempting the quiz
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
  *   @author  <a href="jaivirpal@gmail.com">Jaivir Singh</a>26Apr2013
- *   @modified date: 14may2013(Manorama Pal)  
+ *   @modified date: 14may2013(Manorama Pal)
  */
 
 public class Quiz_Score extends SecureScreen{
@@ -76,7 +76,7 @@ public class Quiz_Score extends SecureScreen{
 			String type1=pp.getString("type","");
 			context.put("type",type1);
 			String quizName=pp.getString("quizName","");
-			context.put("quizName",quizName);	
+			context.put("quizName",quizName);
 			String quizID=pp.getString("quizID","");
 			context.put("quizID",quizID);
 			String maxTime="";
@@ -87,10 +87,10 @@ public class Quiz_Score extends SecureScreen{
 			if(role.equalsIgnoreCase("instructor")){
 				context.put("setVisible","hidden");
 				//String quizPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/");
-				String quizXmlPath = "Quiz.xml";	
+				String quizXmlPath = "Quiz.xml";
 				File quizFile= new File(quizPath+"/"+quizXmlPath);
 				Vector<QuizFileEntry> quizDetail =new Vector<QuizFileEntry>();
-				
+
 				if(!quizFile.exists()){
 				}
 				else{
@@ -103,19 +103,19 @@ public class Quiz_Score extends SecureScreen{
 					QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizPath+"/"+quizXmlPath);
 					quizDetail = quizmetadata.getQuiz_Detail(quizID);
 					if(quizDetail==null || quizDetail.size()==0){
-						data.setMessage(MultilingualUtil.ConvertedString("brih_deletequizEntry",file));						
+						data.setMessage(MultilingualUtil.ConvertedString("brih_deletequizEntry",file));
 					}
 					else{
 						for(QuizFileEntry a:quizDetail){
 							 maxTime = a.getMaxTime();
 						}
 					}
-				}				
+				}
 			}
 			else if(role.equalsIgnoreCase("student")){
-				context.put("setVisible","visible");				
-				maxTime=pp.getString("maxTime","");				
-				maxMarks=pp.getString("maxMarks","");				
+				context.put("setVisible","visible");
+				maxTime=pp.getString("maxTime","");
+				maxMarks=pp.getString("maxMarks","");
 				maxQuestion=pp.getString("maxQuestion","");
 				//this code block for general quiz not for practice quiz
 				String marksQuestions = pp.getString("maxMarksQuestion","");
@@ -134,8 +134,8 @@ public class Quiz_Score extends SecureScreen{
             				QuizMetaDataXmlReader quizmetadata1=null;
 					Vector collect=new Vector();
 					if(file1.exists()){
-						quizmetadata1=new QuizMetaDataXmlReader(filePath1+"/"+quizSettingPath);	
-						collect=quizmetadata1.getQuizQuestionDetail(quizID);		
+						quizmetadata1=new QuizMetaDataXmlReader(filePath1+"/"+quizSettingPath);
+						collect=quizmetadata1.getQuizQuestionDetail(quizID);
 						if(collect!=null && collect.size()!=0){
 								for(int i=0;i<collect.size();i++){
 										type=((QuizFileEntry)collect.elementAt(i)).getQuestionType();
@@ -152,16 +152,16 @@ public class Quiz_Score extends SecureScreen{
 						context.put("setVisible","hidden");
 					}
 			}
-			context.put("maxTime",maxTime);	
+			context.put("maxTime",maxTime);
 			context.put("maxMarks",maxMarks);
 			context.put("maxQuestion",maxQuestion);
 			String answerSheetFlag = pp.getString("answerSheetFlag","no");
 			context.put("answerSheetFlag",answerSheetFlag);
-			Double passingMarks=0.0;			
+			Double passingMarks=0.0;
 			Double passingPercentage = 33.0;
 			String finalResult="";
 			passingMarks = (Double.parseDouble(maxMarks)/100)*passingPercentage;
-			
+
 			context.put("passingMarks",Math.round(passingMarks));
 			Vector answerDetail=new Vector();
 			int studentMarks=0;
@@ -174,21 +174,23 @@ public class Quiz_Score extends SecureScreen{
 			}
 			else if(role.equalsIgnoreCase("student")){
 				context.put("studentLoginName",uname);
-				//uid=Integer.toString(UserUtil.getUID(studentLoginName));	
-				uid=Integer.toString(UserUtil.getUID(uname));			
+				//uid=Integer.toString(UserUtil.getUID(studentLoginName));
+				uid=Integer.toString(UserUtil.getUID(uname));
 			}
 			//------------------------------------------jaivir singh--------------------//
 			String hbtn="";
 			//String cid=(String)user.getTemp("course_id");
 			//String examPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
                        	String scoreXml="score.xml";
-			File scorefile=new File(quizPath+"/"+scoreXml);
+			//File scorefile=new File(quizPath+"/"+scoreXml);
+			File scorefile=new File(quizPath+"/"+quizID+"/"+scoreXml);
 			QuizMetaDataXmlReader qdata=null;
 			Vector scoreCollect=new Vector();
 			String evaluate="";
 			String qid="";
 			if(scorefile.exists()){
-                               	qdata=new QuizMetaDataXmlReader(quizPath+"/"+scoreXml);
+                               	//qdata=new QuizMetaDataXmlReader(quizPath+"/"+scoreXml);
+				qdata=new QuizMetaDataXmlReader(quizPath+"/"+quizID+"/"+scoreXml);
                                	scoreCollect=qdata.getFinalScore(uid);
                                	if(scoreCollect!=null && scoreCollect.size()!=0){
                                        	for(int i=0;i<scoreCollect.size();i++){
@@ -202,7 +204,7 @@ public class Quiz_Score extends SecureScreen{
 			if(((evaluate!=null)&&(evaluate.equals("complete")))||(type1.equals("practice"))){
 				//if(evaluate.equals("complete"){
 			//------------------------------------------jaivir singh--------------------//
-				String quizAnswerFile = uid+".xml";						
+				String quizAnswerFile = uid+".xml";
 				File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
 					if(!answerFile.exists()){
 						data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
@@ -210,7 +212,18 @@ public class Quiz_Score extends SecureScreen{
 					}
 					else{
 						QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizAnswerPath+"/"+quizAnswerFile);
-						answerDetail = quizmetadata.getFinalAnswer();
+						//answerDetail = quizmetadata.getFinalAnswer();
+
+							ErrorDumpUtil.ErrorLog("Quiz_score called");
+							String [] parts=quizID.split("_", 2);
+							String qzowner=parts[1];
+							ErrorDumpUtil.ErrorLog("Quiz_id available"+quizID+"   "+qzowner);
+							String quesbankpath=TurbineServlet.getRealPath("/QuestionBank"+"/"+qzowner+"/"+courseid);
+			/*
+				@Anand Gupta
+					Call getFinalAnswer() overloading method to display images.
+			*/
+						answerDetail = quizmetadata.getFinalAnswer(courseid,uname,quesbankpath);
 						if(answerDetail==null || answerDetail.size()==0){
 							data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 							return;
@@ -218,7 +231,7 @@ public class Quiz_Score extends SecureScreen{
 						else{
 							context.put("answerDetail",answerDetail);
 							for(int i=0;i<answerDetail.size();i++){
-								int studentMark = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getAwardedMarks());					
+								int studentMark = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getAwardedMarks());
 								studentMarks +=studentMark;
 							}
 							context.put("studentMarks",studentMarks);
@@ -229,15 +242,15 @@ public class Quiz_Score extends SecureScreen{
 							else
 								finalResult="Fail";
 								context.put("finalResult",finalResult);
-						}			
+						}
 					}
-				//}//if evaluate complete											
+				//}//if evaluate complete
 			}//if evaluate null
 			else{
 				hbtn="true";
 				//data.setMessage("Quiz is not verified");
 				data.setMessage(MultilingualUtil.ConvertedString("quiznverified",file));
-			}											
+			}
 			context.put("hbtn",hbtn);
 			/**
                          *Time calculaion for how long user use this page.
@@ -249,12 +262,10 @@ public class Quiz_Score extends SecureScreen{
 				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
                          }
 
-		}	
+		}
 		catch(Exception ex){
 			ErrorDumpUtil.ErrorLog("The exception in detail Score Quiz file!!"+ex);
 			data.setMessage(MultilingualUtil.ConvertedString("brih_exception",file));
 		}
 	}
 }
-
-

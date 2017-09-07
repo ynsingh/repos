@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.screens.call.OLES;
 
 /*
- * @(#)Quiz_Score.java	
+ * @(#)Quiz_Score.java
  *
  *  Copyright (c) 2010 MHRD, DEI Agra.
  *  All Rights Reserved.
@@ -67,7 +67,7 @@ public class Evaluate_Quiz extends SecureScreen{
 			User user=data.getUser();
 			String uname=user.getName();
 			String courseid=(String)user.getTemp("course_id");
-			String uid=Integer.toString(UserUtil.getUID(uname));				
+			String uid=Integer.toString(UserUtil.getUID(uname));
 			String quizID=pp.getString("quizID","");
 			context.put("quizID",quizID);
 			String quizName=pp.getString("quizName","");
@@ -76,24 +76,28 @@ public class Evaluate_Quiz extends SecureScreen{
 			context.put("tdcolor",count);
 			String type1=pp.getString("type","");
 			context.put("type",type1);
-			
 			String studentLoginName=pp.getString("studentLoginName","0");
-			context.put("studentLoginName",studentLoginName);	
+			context.put("studentLoginName",studentLoginName);
 			String studentID=Integer.toString(UserUtil.getUID(studentLoginName));
 			String fullName = UserUtil.getFullName(Integer.valueOf(studentID));
 			context.put("fullName",fullName);
 			Vector answerDetail=new Vector();
 
 			String quizAnswerPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);
-			String quizAnswerFile = studentID+".xml";						
+			String quizAnswerFile = studentID+".xml";
 			File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
 			if(!answerFile.exists()){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 				return;
 			}
 			else{
+				//ErrorDumpUtil.ErrorLog("Calling Evaluate_Quiz.java here!!!");
 				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizAnswerPath+"/"+quizAnswerFile);
-				answerDetail = quizmetadata.getFinalAnswer();
+				String QBfilepath=TurbineServlet.getRealPath("/QuestionBank"+"/"+uname+"/"+courseid);
+					//ErrorDumpUtil.ErrorLog("evaluate_quiz called");
+				//overloading method of getFinalAnswer is used to display images.
+				//@Anand Gupta
+				answerDetail = quizmetadata.getFinalAnswer(courseid,uname,QBfilepath);
 				if(answerDetail==null || answerDetail.size()==0){
 					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 					return;
@@ -108,13 +112,13 @@ public class Evaluate_Quiz extends SecureScreen{
 					}
 					context.put("flag",flag);
 					context.put("answerDetail",answerDetail);
-				}				
-			}					
+				}
+			}
 			/**
                          *Time calculaion for how long user use this page.
                          */
-			
-			String Role = (String)user.getTemp("role");	
+
+			String Role = (String)user.getTemp("role");
 			int userid=UserUtil.getUID(user.getName());
                          if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
@@ -123,12 +127,10 @@ public class Evaluate_Quiz extends SecureScreen{
 
                          }
 
-		}	
+		}
 		catch(Exception ex){
-			ErrorDumpUtil.ErrorLog("The exception in detail Score Quiz file!!"+ex); 
+			ErrorDumpUtil.ErrorLog("The exception in detail Score Quiz file!!"+ex);
 			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+ex,file));
 		}
 	}
 }
-
-
