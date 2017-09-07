@@ -764,10 +764,15 @@ CREATE TABLE `student_fees` (
   `sfee_paymentgateway` varchar(255) NOT NULL,
   `sfee_paymentstatus` varchar(255) NOT NULL,
   `sfee_feespaidstatus` varchar(255) NOT NULL,
+  `sfee_reconcilestatus` VARCHAR(10) NOT NULL DEFAULT 'N',
+  `sfee_whoreconcile` VARCHAR(255) NULL,
+  `sfee_reconciledate` VARCHAR(255) NULL,
+  `sfee_reconcileremark` int(255) NULL,
   `sfee_remarks` varchar(255) NOT NULL,
   `sfee_ext1` varchar(255) NOT NULL,
   `sfee_ext2` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 

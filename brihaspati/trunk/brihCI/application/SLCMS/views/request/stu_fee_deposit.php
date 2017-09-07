@@ -141,9 +141,9 @@ echo "</center>";
 	</tr>
 	<tr height="10"></tr>
 	<tr >
-	<td>Gender</td><td><?php echo $this->gender;?></td>
+	<td>Gender :</td><td><?php echo $this->gender;?></td>
 	<td></td>
-	<td>Programme</td><td>
+	<td>Programme :</td><td>
 	<?php foreach($this->resultprg as $prresult){
 		 echo $prresult->prg_name.'('.$prresult->prg_branch.')';
 	 }?>

@@ -215,22 +215,7 @@ echo "</center>";
 		<td/>
 		</tr>
 <tr height=30></tr>
-<?php
- $compsubject = array();
-    $elecsubject = array();
-    for($i=0; $i<sizeof($subjectsem); $i++)
-    {
-        $subdata = $subjectsem[$i];
-        $sub_data=explode('#',$subdata);
-        $subid = $sub_data[0];
-        $subtype = $sub_data[1];
-        if($subtype == "Compulsory")
-            $compsubject[] = $subid;
-        else
-            $elecsubject[] = $subid;
-            
-    }
-?>
+
 	<table class="TFtable" id="academic" style="width:52%;">	
 			<thead id="styleTable"><th colspan=7>
 			Details of earlier passed examination
@@ -262,11 +247,27 @@ echo "</center>";
 			</tbody>
 		</table>
 	</br></br>
-		<table class="TFtable" id="academic" style="width:52%;">	
+<?php
+ $compsubject = array();
+    $elecsubject = array();
+    for($i=0; $i<sizeof($subjectsem); $i++)
+    {
+        $subdata = $subjectsem[$i];
+        $sub_data=explode('#',$subdata);
+        $subid = $sub_data[0];
+        $subtype = $sub_data[1];
+        if($subtype == "Compulsory")
+            $compsubject[] = $subid;
+        else
+            $elecsubject[] = $subid;
+            
+    }
+?>
+		<table class="TFtable" id="" style="width:52%;">	
 			<thead id="styleTable"><th colspan=7>
 			Title of the papers
 			</th></thead>
-			<thead id="acadhead2">
+			<thead id="">
 			<tr>
 				<!--<th><span style="">S. No.</span></th>--->
 				<th><span style="">Compulsory Papers</span></th>

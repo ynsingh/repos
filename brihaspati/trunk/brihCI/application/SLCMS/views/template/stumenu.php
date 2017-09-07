@@ -1,8 +1,6 @@
 
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
- 
-
 echo "<div>";
 echo "<nav>";
 echo "<ul class=\"sf-menu\">";
@@ -67,10 +65,12 @@ echo "<ul class=\"sf-menu\">";
 				echo "<a href=" . ">Download</a>";
 				echo "<ul>";
 					echo "<li>";
-						echo anchor('studentrecord/admissionform', 'Admission Form', array('title' => 'Downlaod Admission Form'));
+						//$data = $this->commodel->get_elist('student_master');
+						echo anchor('studentrecord/admissionformdw/', 'Admission Form', array('title' => 'Downlaod Admission Form'));
+						
 					echo "</li>";
 					echo "<li>";
-						echo anchor('studentrecord/examform', 'Exam Form', array('title' => 'Downlaod Exam Form'));
+						echo anchor('studentrecord/examformdw', 'Exam Form', array('title' => 'Downlaod Exam Form'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('studentrecord/feesreceiptdw', 'Fees Receipt', array('title' => 'Downlaod Fees Receipt'));
