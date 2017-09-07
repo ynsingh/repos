@@ -30,7 +30,8 @@ input[type='button']{font-size:16px;}
 	}*/
 
  function getbranchname(branch){
-                var branch = branch;
+		var branch = branch;
+		//alert (branch);
                 $.ajax({
                 type: "POST",
                 url: "<?php echo base_url();?>slcmsindex.php/student/branchlist",

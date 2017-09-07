@@ -172,9 +172,10 @@ function change_getcat(){
 			<select name="Scategory" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Category</option>
-					<?php foreach($this->scatresult as $cate): ?>	
+					<?php foreach($this->scatresult as $cate): 	
+						if ($cate->cat_name != 'All'){ ?>
 						<option value="<?php echo $cate->cat_id; ?>"><?php echo $cate->cat_name; ?></option>
-					<?php endforeach; ?>
+					<?php } endforeach; ?>
 			</select>
 		<td/>
 		<td>	<!---<span style="color:red;"><?php echo form_error('Sgender');?></span>--->

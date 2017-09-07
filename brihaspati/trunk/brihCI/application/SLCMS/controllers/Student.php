@@ -120,7 +120,7 @@ class Student extends CI_Controller {
 				
 			// set the student role and application number in session
  				$data = [
-                        	        
+                        		'username' => $applicationno,        
 					'app_no' => $applicationno,
 			                'id_role' => 3
 			                ];
@@ -138,6 +138,7 @@ class Student extends CI_Controller {
 				
 				// set the student master and application number in session
 				$data = [
+					'username' => $applicationno,
                         	        'sm_id' => $this->smid,
 					'app_no' => $applicationno,
 			                'id_role' => 3
@@ -152,7 +153,8 @@ class Student extends CI_Controller {
 					//$this->smid= $this->commodel->get_listspfic1('student_master','sm_id','sm_applicationno',$applicationno)->sm_id;
 					$this->smid= $this->commodel->get_listspfic1('student_entry_exit','senex_smid','senex_entexamapplicationno',$applicationno)->senex_smid;
 				// set the student master and application number in session
-				$data = [
+					$data = [
+						'username' => $applicationno,
                         	        'sm_id' => $this->smid,
 					'app_no' => $applicationno,
 			                'id_role' => 3
@@ -163,11 +165,12 @@ class Student extends CI_Controller {
 			}
 			else if($stp4 == 0 || $stp4 == NULL){
 				//check the value set in session if not then
-				// get the student master id
+				// get t'username' => $applicationno,he student master id
 				//$this->smid= $this->commodel->get_listspfic1('student_master','sm_id','sm_applicationno',$applicationno)->sm_id;
 				$this->smid= $this->commodel->get_listspfic1('student_entry_exit','senex_smid','senex_entexamapplicationno',$applicationno)->senex_smid;
 				// set the student master and application number in session
 				$data = [
+					'username' => $applicationno,
                         	        'sm_id' => $this->smid,
 					'app_no' => $applicationno,
 			                'id_role' => 3
@@ -183,6 +186,7 @@ class Student extends CI_Controller {
 				$this->smid= $this->commodel->get_listspfic1('student_entry_exit','senex_smid','senex_entexamapplicationno',$applicationno)->senex_smid;
 				// set the student master and application number in session
 				$data = [
+					'username' => $applicationno,
                         	        'sm_id' => $this->smid,
 					'app_no' => $applicationno,
 			                'id_role' => 3
@@ -258,7 +262,7 @@ class Student extends CI_Controller {
 	 public function student_step1(){
 		$array_items = array('success' => '', 'error' => '', 'warning' =>'');
        		$this->session->set_flashdata($array_items);
-		
+
 		$this->number = $this->session->userdata['app_no'];	
 		$this->name=$this->commodel->get_listspfic1("admissionmeritlist","student_name","application_no",$this->number)->student_name;
 		$this->scresult = $this->commodel->get_list('study_center');
@@ -277,25 +281,11 @@ class Student extends CI_Controller {
 		$this->semail=$this->commodel->get_listspfic1("admissionmeritlist","student_email","application_no",$this->number)->student_email;
 
 
-		//$this->progresult = $this->commodel->get_listspfic2('program','prg_code', 'prg_category');
-		//$this->programesult1 = $this->commodel->get_list('program');
-         	//$this->prgbranch = $this->commodel->get_list('program');
-
-		//print_r($this->couname);
-		//print_r($resultprg);
-		//print_r($this->couname.$this->progname);
-		//print_r($this->categid);		
-
-
-		
 		$ldate = $this->commodel->get_listspfic1('admissionmeritlist','lastdate_admission','application_no',$this->number)->lastdate_admission;
 		$admidate = $this->datmodel->comparedate($ldate);
 	//	if($admidate == $cdate)
 		if($admidate)
 		{
-			//$this->load->view('student/student_step1');			
-			//redirect('student/student_step1');
-		
          	 if(isset($_POST['addstudent'])) {
 
             		$this->form_validation->set_rules('Sanumber','Application no.','trim|xss_clean|numeric');
@@ -312,15 +302,15 @@ class Student extends CI_Controller {
           		$this->form_validation->set_rules('Stypeprogramme','Program/Course type','trim|xss_clean|required');
 			$this->form_validation->set_rules('Sdepart','Departmnet not select','trim|xss_clean|required');
 
-			$this->form_validation->set_rules('Smothername','Mother name','trim|xss_clean|required|alpha');
-          		$this->form_validation->set_rules('Sfathername','Father name','trim|xss_clean');
+			$this->form_validation->set_rules('Smothername','Mother name','trim|xss_clean|required');
+          		$this->form_validation->set_rules('Sfathername','Father name','trim|xss_clean|required');
            		$this->form_validation->set_rules('Scategory','Category','trim|xss_clean|required');
            		$this->form_validation->set_rules('Spaddress','Postal address','trim|xss_clean|required');
-			$this->form_validation->set_rules('Sdist','District','trim|xss_clean|required|alpha');
+			$this->form_validation->set_rules('Sdist','District','trim|xss_clean|required');
 			$this->form_validation->set_rules('Spost','Post office','trim|xss_clean|required');
-	   		$this->form_validation->set_rules('Scity','City','trim|xss_clean|required|alpha');
-			$this->form_validation->set_rules('Sstate','State','trim|xss_clean|required|alpha');
-          		$this->form_validation->set_rules('Scountry','Country','trim|xss_clean|required|alpha');
+	   		$this->form_validation->set_rules('Scity','City','trim|xss_clean|required');
+			$this->form_validation->set_rules('Sstate','State','trim|xss_clean|required');
+          		$this->form_validation->set_rules('Scountry','Country','trim|xss_clean|required');
            		$this->form_validation->set_rules('Spincode','Pincode','trim|xss_clean|max_length[6]|required|is_numeric');
 
 			$this->form_validation->set_rules('Hcname','High school name','trim|xss_clean|required');
@@ -428,7 +418,13 @@ class Student extends CI_Controller {
 		// get the study code 
 //			$studycentr = $this->input->post['Scenters'];
 //			$sccode = $this->commodel->get_listspfic1('study_center','sc_code','sc_name',$studycentr);
-			//print_r($sccode);
+			//print_r($sccodie);
+		//get the number of rows in student master table
+		$seqno = $this->commodel->getnoofrows('student_master');
+		//get the code of studyceneter
+		$scno = $_POST['Scenters'];
+		// generate the enrollnomber
+		$enroollno = date("Y").$scno.$seqno;
 			
 		//insert into student master
 		 $data = array(
@@ -448,7 +444,7 @@ class Student extends CI_Controller {
        	 	$this->db->trans_begin();
 		$this->db->insert('student_master', $data);	
 		$insertid = $this->db->insert_id();
-		print_r($insertid);			
+		//print_r($insertid);			
 	
 		//insert into student parent
 		$parent = array(
@@ -681,7 +677,7 @@ class Student extends CI_Controller {
 			}else{
 				//if yes then update admissionstep table
 				//start the transaction
-       	 			$this->db->trans_begin();
+       	// 			$this->db->trans_begin();
 				$cdate = date('Y-m-d H:i:s');
 				//$id= $this->input->get_post('Sid');	
 				$step2 = array(
@@ -693,12 +689,13 @@ class Student extends CI_Controller {
 				//$this->db->update('admissionstep', $step2);		
 				//set flag for each step, if any step fails revert all steps and return to same step
 				//make transaction complete
-        			$this->db->trans_complete();
+        //			$this->db->trans_complete();
 			
 	 			//check if transaction status TRUE or FALSE
-        			if ($this->db->trans_status() === FALSE) {
+        			//if ($this->db->trans_status() === FALSE) {
+        			if ($updatst2 === FALSE) {
             				//if something went wrong, rollback everything
-            				$this->db->trans_rollback();
+            		//		$this->db->trans_rollback();
 					//else stay with step2 or redirect to login page
 					$this->logger->write_logmessage("update", "Error in step2 to update admission step");
                     			$this->logger->write_dblogmessage("update", "Error in step2 to update admission step" );
@@ -706,7 +703,7 @@ class Student extends CI_Controller {
            				//return FALSE;
       				} else {
             				//if everything went right, commit the data to the database
-           		 		$this->db->trans_commit();
+           		 //		$this->db->trans_commit();
            				// return TRUE;
 					//$message = '<h3>Upload your sign and photo .</h3>';
 					//$this->session->set_flashdata('msg',$message);
@@ -811,11 +808,11 @@ class Student extends CI_Controller {
 					'sm_signature'         	 =>		$id.$name2 
            	     		);
 				
-        	     		$this->db->where('sm_id', $id);
-		    		$update = $this->db->update('student_master',$userData);
+        	     		//$this->db->where('sm_id', $id);
+		    		//$update = $this->db->update('student_master',$userData);
+           			$updst = $this->commodel->updaterec('student_master',$userData,'sm_id', $id);
 				$this->logger->write_logmessage("update", "Step 3 student_master table upload file updated.");
                     		$this->logger->write_dblogmessage("update", "Step 3 student_master table upload file updated." );
-           			//$updst = $this->commodel->updaterec('student_master',$userData,'sm_id', $id);
 				
         	    		//Storing insertion status message. update admissionstep table
 				//update student master
@@ -1018,7 +1015,7 @@ class Student extends CI_Controller {
 					$this->db->where('sfee_smid',$Sid);
 					$this->db->update('student_fees', $step4); 
 				}
-				else {	print_r($getmail);				
+				else {	//print_r($getmail);				
 					$message = '<h3>The payble fees and fees deposit in bank should be equal.</h3>';
 	  				$this->session->set_flashdata('msg',$message);
 					$this->logger->write_logmessage("view", "Offline payment  fees match error.");
@@ -1213,6 +1210,10 @@ class Student extends CI_Controller {
 						redirect('student/student_step5');
        					}// close else transcation failure and else is missing
 				}// close of if is duplication
+				else{
+					$message = '<h3>Your registration is failure due to email id is already exist in system.Contact to authority</h3>';
+                                        $this->session->set_flashdata('msg',$message);
+				}
 			}/*close else validation*/
 		}/*close post submit*/
 		//set flag for each step, if any step fails revert all steps and return to same step
