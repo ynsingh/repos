@@ -16,6 +16,17 @@
         <?php $this->load->view('template/facultymenu');?>
         </div>
        <!-- <div>-->
+<?php
+                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<tr valign=\"top\">";
+                    echo "<td>";
+                    $help_uri = site_url()."/help/helpdocfaculty#SubjectListwithProgram";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:49%;position:absolute;margin-top:-0%\">Click for Help</b></a>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
+                    ?>
+
         <br/><table style="margin-left:30px;" class="TFtable">
             <thead >
                 <tr style="text-align: center;">

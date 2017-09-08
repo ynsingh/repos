@@ -65,6 +65,7 @@ class SubprgList extends CI_Controller
         );
         $this->pagination->initialize($config);
         $this->cdetail=$this->pagemodel->get_listspficemore2('program_subject_teacher',$selectfield,$data,$config['per_page'],$this->uri->segment(3));
+	//print_r($this->cdetail);
        	$this->load->view('subject/subprg_list',$this->cdetail);    
         
         

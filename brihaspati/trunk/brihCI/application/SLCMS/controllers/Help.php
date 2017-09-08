@@ -10,5 +10,15 @@ class Help extends CI_Controller
 		$this->load->view('help/helpdoc');
                 return;
       	}
+ function helpdocfaculty(){
+                $this->load->view('help/helpdocfaculty');
+                return;
+        }
+ function helpdocstudent(){
+                $this->load->view('help/helpdocstudent');
+                return;
+        }
+
+
 }
 

@@ -129,6 +129,13 @@
                 </ul>   
                     
                 </li>
+		    <li class="dropdown list-category" style="color:red;"><a href="#">Help</a>
+                    <ul class="dropdown-menu mega-dropdown-menu" style="background-color:#2a8fcf; color:red;">
+                    <li>
+                        <?php echo anchor('help/helpdocfaculty', 'User Mannual', array('title' => 'User Mannual'));?>
+                    </ul>
+                    </li>
+                </li>
                 <li><?php echo anchor('home/logout', 'Logout', array('title' => 'Logout'));?></li>
             </ul>
             <!--<form id="mega-search" class="navbar-form navbar-right">

@@ -21,6 +21,7 @@
 	?>
     </head>
 <body>
+<br>
  <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -38,7 +39,7 @@
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#ChangePassword";
-		    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:15px;margin-left:43%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+		    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:17px;margin-left:80%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";

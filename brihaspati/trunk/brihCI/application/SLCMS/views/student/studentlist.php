@@ -13,6 +13,18 @@
             <?php $this->load->view('template/facultymenu');?>
         </div>
         <br/>
+        <br>
+<?php
+                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<tr valign=\"top\">";
+                    echo "<td>";
+                    $help_uri = site_url()."/help/helpdocfaculty#StudentList";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:80%;position:absolute;margin-top:-1.6%\">Click for Help</b></a>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
+                    ?>
+
         <form action="<?php echo site_url('Studenthome/studentlist');?>" method="POST" class="form-inline">
         <table style="margin-left:30px; width:96%;">
             <tr style="font-weight:bold; background-color:lightslategray;">

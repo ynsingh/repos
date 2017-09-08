@@ -20,6 +20,16 @@
        </style>
     </head>
     <body>
+<?php
+                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<tr valign=\"top\">";
+                    echo "<td>";
+                    $help_uri = site_url()."/help/helpdocstudent#SubjectRecord";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:39%;position:absolute;margin-top:-0%\">Click for Help</b></a>";
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
+                    ?>
          <table style="margin-left:2%;width:100%">
           <tr><td>
                <div  style="margin-left:2%; width:90%;" >
