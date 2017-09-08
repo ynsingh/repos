@@ -44,7 +44,7 @@ class Studentrecord extends CI_Controller
      {
 		$userid = $this->session->userdata('id_user');
         	$smid =$this->commodel->get_listspfic1('student_master','sm_id','sm_userid',$userid)->sm_id;
-        	$whdata= array('sfee_smid' => $smid);
+        	$whdata= array('sfee_smid' => $smid,'sfee_reconcilestatus' => 'Y');
         	$this->result = $this->commodel->get_listarry('student_fees','*',$whdata);
                 $this->logger->write_logmessage("view"," View map user with role setting", "user map setting details...");
                 $this->logger->write_dblogmessage("view"," View map user with role setting", "Role setting details...");
@@ -64,13 +64,16 @@ class Studentrecord extends CI_Controller
 	//get the latest sfeeid if $sfee_isd is null
 	// add reconsillation check in future
 	if (empty ($sfee_id)){
-		$wharray = array('sfee_smid' => $smid, 'sfee_feeamount>' => 0);
+		$wharray = array('sfee_smid' => $smid, 'sfee_feeamount>' => 0,'sfee_reconcilestatus' => 'Y');
 		$sfeeid=$this->commodel->get_listarry('student_fees','sfee_id',$wharray);
                 foreach($sfeeid as $row1){
                 	$sfee_id= $row1->sfee_id;
                 }
 	}
-
+	if (empty ($sfee_id)){
+		$this->session->set_flashdata('flash_data', 'Your fees is pending for reconcilation');
+	}
+	else{
 	//get the value of spid,
         $spid=$this->commodel->get_listspfic1('student_fees','sfee_spid','sfee_id',$sfee_id)->sfee_spid;
 	
@@ -118,6 +121,7 @@ class Studentrecord extends CI_Controller
         $this->pdf->render();
         $this->pdf->stream("feesreceipt.pdf");
        // $this->pdf->stream("feesreceiptdw.pdf");
+	}
    }
 
    // marks display to te student
