@@ -356,7 +356,7 @@ CREATE TABLE `org_profile` (
 --
 
 INSERT INTO `org_profile` (`org_id`, `org_code`, `org_name`, `org_nickname`, `org_type`, `org_tagline`, `org_address1`, `org_address2`, `org_city`, `org_district`, `org_state`, `org_countrycode`, `org_pincode`, `org_phone`, `org_fax`, `org_email`, `org_web`, `org_institutedomain`, `org_tanno`, `org_logo`, `org_affiliation`, `org_status`, `org_reg_date`, `org_close_date`, `org_adminfn`, `org_adminln`, `org_admindesig`, `creatorid`, `create_date`, `modifierid`, `modify_date`) VALUES
-(1, 'CU001', 'Indira Gandhi National Tribal University', 'IGNTU', 'Central Govt', '', 'Lal Pur, Amarkantak', '', '', '', 'Madhya Pradesh', '101', '484887', '07629 269 701', '07629 269 701', 'admission@igntu.ac.in', 'www.igntu.ac.in', 'igntu.ac.in', '', '', 'MHRD', 'Active', '2008-07-01', '', 'Prof T V', 'Kattimani', 'Vice Chancellor', '1', '2017-04-21', '', '');
+(1, 'CU001', 'Indira Gandhi National Tribal University', 'IGNTU', 'Central Government', '', 'Lal Pur, Amarkantak', '', '', '', 'Madhya Pradesh', '101', '484887', '+91-7629 269 701', '+91-7629 269 701', 'admission@igntu.ac.in', 'www.igntu.ac.in', 'igntu.ac.in', '', '', 'MHRD', 'Active', '2008-07-01', '', 'Prof. T. V.', 'Kattimani', 'Vice-Chancellor', '1', '2017-04-21', '', '');
 
 -- --------------------------------------------------------
 
@@ -446,7 +446,7 @@ CREATE TABLE `role` (
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (1, 'Administrator', 'Responsible for Admin related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (2, 'Faculty', 'Responsible for Teacher rellated job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (3, 'Student', 'Responsible for Student related job');
-INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (4, 'Staff', 'Responsible for Staff related job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (4, 'Employee', 'Responsible for Staff related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (5, 'HoD', 'Responsible for Head of Department related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (6, 'COE', 'Responsible for Controller of Examination related job');
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (7, 'AccountOfficer', 'Responsible for Account related job');
