@@ -89,12 +89,13 @@ echo "<ul class=\"sf-menu\">";
                                          echo "<li>";
                                                 echo anchor('map/viewschemedept', 'Map Scheme with Department', array('title' => 'Map Scheme with Department'));
                                         echo "</li>"; 
-/*					echo "<li>";
-						echo anchor('map/viewscprgseat', 'Map Study Center and Program with Seat', array('title' => 'Map Study Center and Program with Seat'));
+					echo "<li>";
+						echo anchor('map/viewauthuser', 'Map Authority and User', array('title' => 'Map Authority and User'));
 					echo "</li>";	
 					echo "<li>";
-						echo anchor('map/programsubject', 'Map Program with Subject and paper', array('title' => 'Map Program with Subject and paper'));
+						echo anchor('map/viewddouco', 'Map DDO with UCO', array('title' => 'Map DDO with UCO'));
 					echo "</li>";
+					/*
 					echo "<li>";
 						echo anchor('map/listsubjectteacher', 'Map Subject and Paper with Teacher', array('title' => 'Map Subject and Paper with Teacher'));
 					echo "</li>";
@@ -164,10 +165,10 @@ echo "<ul class=\"sf-menu\">";
 					echo "</li>";
 					echo "<li>";
 						echo anchor('archive/semrulea', 'Semester Rule Archive', array('title' => 'Semester Rule Archive'));
-					echo "</li>";
+					echo "</li>";*/
 					echo "<li>";
-						echo anchor('archive/subsema', 'Subject Semester Program with Department Archive', array('title' => 'Subject Semester Program with Department Archive'));
-					echo "</li>"; */
+						echo anchor('archive/ddoucoa', 'DDO with UCO Archive', array('title' => 'DDO with UCO Archive'));
+					echo "</li>"; 
 					echo "<li>";
 						echo anchor('archive/authoritya', 'Authority Archive', array('title' => 'Authority Archive'));
 					echo "</li>";

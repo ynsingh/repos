@@ -62,6 +62,8 @@ CREATE TABLE `employee_master` (
   `emp_citizen` varchar(255) default NULL,
   `emp_aadhaar_no` varchar(100) default NULL,
   `emp_uocid` int(11) NOT NULL,
+  `emp_uocuserid` int(11) NOT NULL,
+  `emp_ddouserid` int(11) NOT NULL,
   `emp_schemeid` int(11) NOT NULL,
   `emp_nhisidno` VARCHAR(255) default NULL,
   `emp_scid` int(11) NOT NULL,

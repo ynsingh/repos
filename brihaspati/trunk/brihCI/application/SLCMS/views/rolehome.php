@@ -6,7 +6,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
     <head>
-        <title>Welcome to IGNTU</title>
+        <title>Welcome  </title>
         <?php $this->load->view('template/header'); ?>
         <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
             
@@ -78,31 +78,53 @@
                 <div class="modal-body">
                     <table align="center">  
                 
-                        <?php  foreach($this->roles as $row){ ?>
-                            <?php 
+			<?php  
+			foreach($this->roles as $row){ 
+                             
                             if($row->roleid == 1){ 
                                 echo "<tr><td><p>"; 
                                 echo anchor("home", "Login As Administrator" ,array('title' => ' Login As Admin ' , 'class' => 'top_parent'));
                                 echo "</p></td></tr>";
-                            }
-                           ;?>
-                            <?php
+			    }
+
                             if($row->roleid == 2){
                                 echo "<tr><td><p>"; 
                                 echo anchor("facultyhome", "Login As Faculty" ,array('title' => ' Login As Faculty ' , 'class' => 'top_parent'));
                                 echo "</p></td></tr>";
                             }
                 
-                            ?>
-                            <?php
                             if($row->roleid == 3){
                                 echo "<tr><td><p>";
-                                echo anchor("studenthome", "Login As Student" ,array('title' => ' Login As Student ' , 'class' => 'top_parent'));
+                                echo anchor("student/studenthome", "Login As Student" ,array('title' => ' Login As Student ' , 'class' => 'top_parent'));
                                 echo"</p></td></tr>";
                             }
               
-                            ?>
-                        <?php };?>
+                            if($row->roleid == 4){
+                                echo "<tr><td><p>";
+                                echo anchor("staffhome", "Login As Staff" ,array('title' => ' Login As Staff ' , 'class' => 'top_parent'));
+                                echo"</p></td></tr>";
+                            }
+              
+                            if($row->roleid == 5){
+                                echo "<tr><td><p>";
+                                echo anchor("hodhome", "Login As HoD" ,array('title' => ' Login As HoD ' , 'class' => 'top_parent'));
+                                echo"</p></td></tr>";
+                            }
+              
+                            if($row->roleid == 6){
+                                echo "<tr><td><p>";
+                                echo anchor("coehome", "Login As CoE" ,array('title' => ' Login As CoE ' , 'class' => 'top_parent'));
+                                echo"</p></td></tr>";
+                            }
+              
+                            if($row->roleid == 7){
+                                echo "<tr><td><p>";
+                                echo anchor("accontoffhome", "Login As Account Officer" ,array('title' => ' Login As Account Officer ' , 'class' => 'top_parent'));
+                                echo"</p></td></tr>";
+                            }
+                            
+		}
+		?>
                     </table>
                 </div>
            

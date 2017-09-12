@@ -443,9 +443,13 @@ CREATE TABLE `role` (
 -- Dumping data for table `role`
 --
 
-INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (1, 'Administrator', 'Responsible for Admin job');
-INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (2, 'Faculty', 'Responsible for Teacher job');
-INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (3, 'Student', 'Responsible for Student job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (1, 'Administrator', 'Responsible for Admin related job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (2, 'Faculty', 'Responsible for Teacher rellated job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (3, 'Student', 'Responsible for Student related job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (4, 'Staff', 'Responsible for Staff related job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (5, 'HoD', 'Responsible for Head of Department related job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (6, 'COE', 'Responsible for Controller of Examination related job');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES (7, 'AccountOfficer', 'Responsible for Account related job');
 
 
 -- --------------------------------------------------------
