@@ -51,6 +51,15 @@
                 echo form_open('setup2/editauthority/'. $id);
                 echo "<tr>";
                 echo "<td>";
+                echo form_label('Authority Code : ', 'code');
+                echo "</td>";
+                echo "<td>";
+                echo form_input($code);
+                echo "</td>";
+		echo "</tr>";
+
+                echo "<tr>";
+                echo "<td>";
                 echo form_label('Authority Name : ', 'name');
                 echo "</td>";
                 echo "<td>";

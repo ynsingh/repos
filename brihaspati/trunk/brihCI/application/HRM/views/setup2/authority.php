@@ -25,8 +25,8 @@
             <tr><td>
                 <div align="left">
                 <?php  echo anchor('setup2/addauthority/', "Add  Authority", array('title' => 'Add   Authority  Detail','class' =>'top_parent'));
- 		$help_uri = site_url()."/help/helpdoc#ViewAuthority";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
+		 $help_uri = site_url()."/help/helpdoc#ViewAuthority";
+                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
                 ?>
                   </div>
                 <div  style="width:90%;margin-left:2%">
@@ -50,7 +50,7 @@
 <div align="left" style="margin-left:2%;">
 <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
 <tr align="center">
-<thead><th>Sr.No</th><th>Authority Name</th><th>Authority Nickname</th><th>Authority  Email</th><th>Action</th></tr></thead>
+<thead><th>Sr.No</th><th>Authority Code</th><th>Authority Name</th><th>Authority Nickname</th><th>Authority  Email</th><th>Action</th></tr></thead>
  <?php
         $count =0;
         if( count($this->result) ):
@@ -59,6 +59,7 @@
          ?>
              <tr align="center">
             <td> <?php echo ++$count; ?> </td>
+            <td> <?php echo $row-> code ?></td>
             <td> <?php echo $row-> name ?></td>
             <td> <?php echo $row->nickname   ?></td>
             <td> <?php echo $row->authority_email  ?></td>

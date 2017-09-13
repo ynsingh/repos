@@ -40,6 +40,7 @@ CREATE TABLE `aggregateaccounts` (
 
 CREATE TABLE `authorities` (
   `id` int(11) NOT NULL,
+  `code` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `nickname` varchar(255) NOT NULL,
   `authority_email` varchar(255) DEFAULT NULL
@@ -49,12 +50,12 @@ CREATE TABLE `authorities` (
 -- Dumping data for table `authorities`
 --
 
-INSERT INTO `authorities` (`id`, `name`, `nickname`, `authority_email`) VALUES
-(1, 'Director', 'Dir', 'dir@iitk.ac.in'),
-(2, 'Finance Officer', 'FO', 'fo@iitk.ac.in'),
-(3, 'Deputy Registar Account', 'DRAcc', 'dracc@iitk.ac.in'),
-(4, 'Assistant Registar Account', 'ARAcc', 'aracc@iitk.ac.in'),
-(5, 'Accountant', 'acc', 'acc@iitk.ac.in');
+INSERT INTO `authorities` (`id`, `code`,`name`, `nickname`, `authority_email`) VALUES
+(1, 'D','Director', 'Dir', 'dir@iitk.ac.in'),
+(2, 'FO','Finance Officer', 'FO', 'fo@iitk.ac.in'),
+(3, 'DRA','Deputy Registar Account', 'DRAcc', 'dracc@iitk.ac.in'),
+(4, 'ARA','Assistant Registar Account', 'ARAcc', 'aracc@iitk.ac.in'),
+(5, 'ACC','Accountant', 'acc', 'acc@iitk.ac.in');
 
 -- --------------------------------------------------------
 

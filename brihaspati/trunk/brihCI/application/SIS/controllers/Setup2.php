@@ -280,13 +280,16 @@ class Setup2 extends CI_Controller
 	{
 		$this->prgresult = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
         	if(isset($_POST['addsemrule'])) {
-                	$this->form_validation->set_rules('semcr_prgid','Program Branch','trim|xss_clean|required|callback_issemruleExist');
+                	$this->form_validation->set_rules('semcr_prgid','Program Branch','trim|xss_clean|required');
                  	$this->form_validation->set_rules('semcr_semester','Semester','trim|xss_clean|required|is_natural');
                  	$this->form_validation->set_rules('semcr_mincredit','Minimum Credit','trim|xss_clean|is_natural|required');
                  	$this->form_validation->set_rules('semcr_maxcredit','Maximum Credit','trim|xss_clean|is_natural|required');
                  	$this->form_validation->set_rules('semcr_semcpi','CPI','trim|xss_clean|required');
                  	if($this->form_validation->run()==TRUE){
-                 	//echo 'form-validated';
+				//echo 'form-validated';
+				$whdata = array('semcr_prgid' => $_POST['semcr_prgid'], 'semcr_semester' => $_POST['semcr_semester']);
+				$is_exist = $this->commodel->isduplicatemore('semester_rule',$whdata);
+				if(!$is_exist){
                         	$data = array(
                                 	'semcr_prgid'=>$_POST['semcr_prgid'],
                                 	'semcr_semester'=>$_POST['semcr_semester'],
@@ -311,7 +314,13 @@ class Setup2 extends CI_Controller
                                 	$this->logger->write_dblogmessage("insert","Add Semester rule Setting", "Semester rule for this ".$_POST['gm_gradename']."added  successfully...");
                                 	$this->session->set_flashdata("success", "Semester rule for this program and branch added successfully...");
                                 	redirect("setup2/semesterrules");
-                        	}
+				}
+				}
+                                else{
+                                        $this->session->set_flashdata("success", "Semester rule for this program already exist.");
+                                        $this->load->view('setup2/addsemrule');
+                                }
+
                 	}//close if vallidation
         	}//
         	$this->load->view('setup2/addsemrule');
@@ -1062,13 +1071,15 @@ class Setup2 extends CI_Controller
 
    public function addauthority()
     {
-         if(isset($_POST['addauthority'])) {
+	    if(isset($_POST['addauthority'])) {
+                 $this->form_validation->set_rules('code','Authority Code','trim|xss_clean|required');
                  $this->form_validation->set_rules('name','Authority Name','trim|xss_clean|required');
                  $this->form_validation->set_rules('nickname','Authority Nickname','trim|xss_clean|required');
                  $this->form_validation->set_rules('authority_email','Authority Email','trim|xss_clean|valid_email|callback_isemailExist');
                  if($this->form_validation->run()==TRUE){
                  //echo 'form-validated';
                         $data = array(
+                                'code'=>strtoupper($_POST['code']),
                                 'name'=>ucfirst(strtolower($_POST['name'])),
                                 'nickname'=>($_POST['nickname']),
                                 'authority_email'=>($_POST['authority_email']),
@@ -1154,13 +1165,19 @@ class Setup2 extends CI_Controller
 
         /* Form fields */
 
+        $data['code'] = array(
+                'code' => 'code',
+                'id' => 'code',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $edit_data-> code,
+                );
         $data['name'] = array(
                 'name' => 'name',
                 'id' => 'name',
                 'maxlength' => '50',
                 'size' => '40',
                 'value' => $edit_data-> name,
-                 
                 );
         $data['nickname'] = array(
                 'name' => 'nickname',
@@ -1181,6 +1198,7 @@ class Setup2 extends CI_Controller
         $data['id'] = $id;
         /*Form Validation*/
 
+        $this->form_validation->set_rules('code','Authorities Code','trim|xss_clean');
         $this->form_validation->set_rules('name','Authorities Name','trim|xss_clean');
         $this->form_validation->set_rules('nickname ','Authorities Nickname ','trim|xss_clean');
         
@@ -1188,6 +1206,7 @@ class Setup2 extends CI_Controller
 
         if ($_POST)
         {
+            $data['code']['value'] = $this->input->post('code', TRUE);
             $data['name']['value'] = $this->input->post('name', TRUE);
             $data['nickname']['value'] = $this->input->post('nickname', TRUE);
             
@@ -1199,17 +1218,20 @@ class Setup2 extends CI_Controller
             return;
         }
         else{
-
+	    $code = strtoupper($this->input->post('code', TRUE));
             $name = ucfirst(strtolower($this->input->post('name', TRUE)));
             $nickname = ($this->input->post('nickname', TRUE));
             
             $logmessage = "";
+            if($edit_data-> code != $code)
+                     $logmessage = "Edit Authorities Code " .$edit_data-> code. " changed by " .$code;
             if($edit_data-> name != $name)
                      $logmessage = "Edit Authorities Name " .$edit_data-> name. " changed by " .$name;
             if($edit_data->nickname != $nickname)
                 $logmessage = "Edit Authorities Nickname   " .$edit_data->nickname. " changed by " .$nickname;
             //'desig_name' => $data_edesignationname,
             $update_data = array(
+               'code' => $code,
                'name' => $name,
                'nickname' => $nickname,
                );

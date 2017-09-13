@@ -351,7 +351,7 @@
             <tr style="height:10px;"></tr>
             <tr>
                 <td>Date of Appointment:</td><td><input type="text" name="dateofjoining" value="<?php echo isset($_POST["dateofjoining"]) ? $_POST["dateofjoining"] : ''; ?>" id="StartDate"  size="25" required="required"></td>       
-                <td>Paln / Non Plan:</td><td>
+                <td>Plan / Non Plan:</td><td>
                     <select name="pnp"> 
                         <option value="">--------Plan/Non Plan -----</option>
                         <option value="Plan">Plan</option>

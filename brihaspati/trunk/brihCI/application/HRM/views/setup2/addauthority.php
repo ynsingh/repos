@@ -47,6 +47,15 @@
     <form action="<?php echo site_url('setup2/addauthority');?>" method="POST" class="form-inline">
             <table>
             <tr>
+               <td><label for="code" class="control-label">Authority Code:</label></td>
+               <td>
+               <input type="text" name="code"  class="form-control" size="33" /><br>
+               </td>
+               <td>
+                  <?php //echo form_error('dr_mincredit')?>
+               </td>
+            </tr>
+            <tr>
                <td><label for="name" class="control-label">Authority Name:</label></td>
                <td>
                <input type="text" name="name"  class="form-control" size="33" /><br>

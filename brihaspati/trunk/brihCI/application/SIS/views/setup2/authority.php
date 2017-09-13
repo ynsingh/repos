@@ -50,7 +50,7 @@
 <div align="left" style="margin-left:2%;">
 <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
 <tr align="center">
-<thead><th>Sr.No</th><th>Authority Name</th><th>Authority Nickname</th><th>Authority  Email</th><th>Action</th></tr></thead>
+<thead><th>Sr.No</th><th>Authority Code</th><th>Authority Name</th><th>Authority Nickname</th><th>Authority  Email</th><th>Action</th></tr></thead>
  <?php
         $count =0;
         if( count($this->result) ):
@@ -59,6 +59,7 @@
          ?>
              <tr align="center">
             <td> <?php echo ++$count; ?> </td>
+            <td> <?php echo $row-> code ?></td>
             <td> <?php echo $row-> name ?></td>
             <td> <?php echo $row->nickname   ?></td>
             <td> <?php echo $row->authority_email  ?></td>

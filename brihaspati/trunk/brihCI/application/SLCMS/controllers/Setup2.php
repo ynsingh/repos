@@ -1071,12 +1071,14 @@ class Setup2 extends CI_Controller
    public function addauthority()
     {
          if(isset($_POST['addauthority'])) {
+                 $this->form_validation->set_rules('code','Authority Code','trim|xss_clean|required');
                  $this->form_validation->set_rules('name','Authority Name','trim|xss_clean|required');
                  $this->form_validation->set_rules('nickname','Authority Nickname','trim|xss_clean|required');
                  $this->form_validation->set_rules('authority_email','Authority Email','trim|xss_clean|valid_email|callback_isemailExist');
                  if($this->form_validation->run()==TRUE){
                  //echo 'form-validated';
-                        $data = array(
+			 $data = array(
+				'code'=>strtoupper($_POST['code']),
                                 'name'=>ucfirst(strtolower($_POST['name'])),
                                 'nickname'=>($_POST['nickname']),
                                 'authority_email'=>($_POST['authority_email']),
@@ -1162,6 +1164,14 @@ class Setup2 extends CI_Controller
 
         /* Form fields */
 
+	$data['code'] = array(
+                 'code' => 'code',
+                 'id' => 'code',
+                 'maxlength' => '50',
+                 'size' => '40',
+                 'value' => $edit_data-> code,
+                 );
+
         $data['name'] = array(
                 'name' => 'name',
                 'id' => 'name',
@@ -1188,14 +1198,15 @@ class Setup2 extends CI_Controller
                 );                      
         $data['id'] = $id;
         /*Form Validation*/
-
+	$this->form_validation->set_rules('code','Authorities Code','trim|xss_clean');
         $this->form_validation->set_rules('name','Authorities Name','trim|xss_clean');
         $this->form_validation->set_rules('nickname ','Authorities Nickname ','trim|xss_clean');
         
         /* Re-populating form */
 
         if ($_POST)
-        {
+	{
+	    $data['code']['value'] = $this->input->post('code', TRUE);	
             $data['name']['value'] = $this->input->post('name', TRUE);
             $data['nickname']['value'] = $this->input->post('nickname', TRUE);
             
@@ -1208,16 +1219,20 @@ class Setup2 extends CI_Controller
         }
         else{
 
+            $code = strtoupper($this->input->post('code', TRUE));
             $name = ucfirst(strtolower($this->input->post('name', TRUE)));
             $nickname = ($this->input->post('nickname', TRUE));
             
-            $logmessage = "";
+	    $logmessage = "";
+	    if($edit_data-> code != $code)
+                    $logmessage = "Edit Authorities Code " .$edit_data-> code. " changed by " .$code;
             if($edit_data-> name != $name)
                      $logmessage = "Edit Authorities Name " .$edit_data-> name. " changed by " .$name;
             if($edit_data->nickname != $nickname)
                 $logmessage = "Edit Authorities Nickname   " .$edit_data->nickname. " changed by " .$nickname;
             //'desig_name' => $data_edesignationname,
-            $update_data = array(
+	    $update_data = array(
+	       'code' => $code,    
                'name' => $name,
                'nickname' => $nickname,
                );
