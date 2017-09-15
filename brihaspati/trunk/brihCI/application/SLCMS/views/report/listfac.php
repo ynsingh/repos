@@ -67,6 +67,8 @@
                 ?>
             </thead>
         </table>
+
+ </div><?php $this->load->view('template/footer'); ?></div>
     </body>
 </html>
 

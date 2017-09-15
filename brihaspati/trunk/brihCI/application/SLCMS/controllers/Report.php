@@ -5,6 +5,7 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  * @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
+ * @author Sumit Saxena(sumitsesaxena@gmail.com)[View Admission merit list]	
  */
 
 class Report  extends CI_Controller
@@ -44,6 +45,15 @@ class Report  extends CI_Controller
         $this->tresult=$this->commodel->get_listspficarry('user_role_type','userid,scid,deptid','roleid',3);
         $this->load->view('report/liststu');
    } 
+
+// view admission merit list 
+
+    public function admission_meritlist() {
+      //  $datawh = array('roleid' => '3');
+        $this->admission=$this->commodel->get_list('admissionmeritlist');
+        $this->load->view('report/admission_meritlist');
+   } 
+
 }
 
 

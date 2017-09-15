@@ -35,7 +35,7 @@
                  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:71%\">Click for Help</b></a>";
                 ?>
              </table-->
-        </table>
+      
                 <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
             <thead>
                 <tr align="center"> 
@@ -79,6 +79,7 @@
                 ?>
             </thead>
         </table>
+ </div><?php $this->load->view('template/footer'); ?></div>
     </body>
 </html>
 

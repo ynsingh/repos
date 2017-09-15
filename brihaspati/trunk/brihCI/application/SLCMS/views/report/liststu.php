@@ -12,36 +12,16 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-        <table style="margin-left:10px;">
-
-            <tr colspan="2"><td>
-             <?php
- //                echo anchor('setup/stulist/', "Add Students list ",array('title' => 'student list Detail ' , 'class' => 'top_parent'));
-		echo " ";
+	<table style="width:93%;">
+	<tr><td>
+		<?php
                  $help_uri = site_url()."/help/helpdoc#ViewStudentlistwithHead";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:71%\">Click for Help</b></a>";
+                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:relative;margin-top:-10px;\">Click for Help</b></a>";
                 ?>
-
-
-            <div  style="margin-left:-06px;width:1793px;">
-
-                <?php echo validation_errors('<div class="isa_warning>','</div>');?>
-
-                <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
-
-                <?php
-                };
-                ?>
-                <?php if(isset($_SESSION['err_message'])){?>
-                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
-
-                <?php
-                };
-                ?>
-  </div>
-            </td></tr>
- </table>
+	</td></tr>
+	</table>
+	</br>
+        
                 <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
             <thead>
                 <tr align="left">
@@ -107,6 +87,8 @@
                 ?>
             </thead>
         </table>
+
+ </div><?php $this->load->view('template/footer'); ?></div>
     </body>
 </html>
 
