@@ -136,7 +136,7 @@ echo "</center>";
 	
 		</td></tr>
 		<tr><td>
-		<label for="text">Student Name</label>
+		<label for="text">Email-Id</label>
 		</td><td>
 		<?php //echo "<span style='color:red;font-size:18px;float:left;'>";echo form_error('Sname'); echo "</span>";?>
 		<?php //if(isset($msg)){ 

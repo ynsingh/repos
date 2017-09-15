@@ -7,7 +7,7 @@
     <body>
 
 <div >
-<div id="body">
+<div>
 	<?php $this->load->view('template/header'); ?>
      <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
   
@@ -24,8 +24,26 @@
                     echo "</tr>";
                     echo "</table>";
                     ?>
-
-	<div>
+<table>
+<tr><td>
+<?php 
+echo "<div style=\"margin-left:30px;text-align:left;\">";
+	echo "<b>";
+	echo " Note :The file should be in csv or txt file. The format of upload teacher list . ";
+	echo "<br>";
+	//echo "application no,enterance exam name,enterance exam rollno,course name,branch name,student name ,student email,father name,marks,admission quota,category,meritlist no,last date of admission";
+	echo "<br>";
+	//echo "123456,JEE,17009875,Master Of Art,Hindi,Ram Kumar,ramkumar@iitk.ac.in,Mohan Kumar,400,General,General,1,2017-08-27";
+	echo "name,email,departmentid,roleid,campusid,mobileno";
+	echo "<br>";
+	echo "deepika,deepika@gmail.com,01,02,01,9415938783";	
+	echo "</b>";
+	echo "</div>";
+	echo "</div>";
+?>
+</td></tr>
+</table>
+	
 <?php
 //	echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
 //        echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -64,6 +82,8 @@
         endforeach;
 */
 	echo "</div>";
+	
+	
 
 	//echo $error;
 	echo form_open_multipart('upl/uploadtlist');
@@ -80,7 +100,7 @@
 	echo "</tr>";
         echo "</table>";
 ?>
-	</div>
+	
 	<?php $this->load->view('template/footer'); ?>
 	
 </div>

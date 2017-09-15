@@ -9,8 +9,8 @@
 <div >
 <div id="body">
 	<?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-  
+       <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+  	
 	<?php $this->load->view('template/menu'); ?>
 
 	</div>
@@ -63,14 +63,13 @@
 			echo "</br>";
         endforeach;
 	 */
-
 	echo "<div style=\"margin-left:30px;\">";
 	echo "<b>";
-	echo " Note :The format of admission merit list file is ";
+	echo " Note :The file should be in csv or txt file. The format of admission merit list file is : ";
 	echo "<br>";
 	echo "application no,enterance exam name,enterance exam rollno,course name,branch name,student name ,student email,father name,marks,admission quota,category,meritlist no,last date of admission";
 	echo "<br>";
-	echo "123456,'JEE',17009875,'Master Of Art','Hindi','Ram Kumar','ramkumar@iitk.ac.in','Mohan Kumar',400,'General','General',1,'2017-08-27'";
+	echo "123456,JEE,17009875,Master Of Art,Hindi,Ram Kumar,ramkumar@iitk.ac.in,Mohan Kumar,400,General,General,1,2017-08-27";
 	echo "</b>";
 	echo "</div>";
 	echo "</div>";
