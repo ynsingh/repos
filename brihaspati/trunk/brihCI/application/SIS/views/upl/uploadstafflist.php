@@ -68,6 +68,16 @@
                         echo "</br>";
         endforeach;
 */
+	/* OP: instruction for upload csv file for staff profile  ragistration */
+	echo "<div style=\"margin-left:30px;\">";
+        echo "<b>";
+        echo " Note : The file extension should be in csv. The format of Staff list file is ";
+        echo "<br>";
+        echo " | employee_pfno &nbsp;| emp_name &nbsp;| campus name &nbsp;&nbsp;| UOC &nbsp;| UOC UserId  &nbsp;| DDO UserId &nbsp;| Department &nbsp;| Scheme Name &nbsp;| Designation &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Payband | Date of Appoint | Date of Birth &nbsp;| Bank Acc No &nbsp;| Aadhar No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Email Id ";
+        echo "<br>";
+        echo "</b>";
+        echo " | 20041201 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Gautam b &nbsp;&nbsp;&nbsp;&nbsp;| Atmospheric Sc &nbsp;| Dev &nbsp;&nbsp;&nbsp;| 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Electrical &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| UPS-Embryo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Project Associate &nbsp;| PB1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 2017/08/14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 1975/01/10 &nbsp;&nbsp;&nbsp;&nbsp;| 20040183598 &nbsp;| 632004183598 &nbsp;| op@gmail.com ";
+        echo "</div>";
         echo "</div>";
 
          //echo $error;
@@ -84,7 +94,7 @@
         echo "</td>";
         echo "</tr>";
         echo "</table>";
-?>
+	?>
         </div>
         <?php $this->load->view('template/footer'); ?>
 

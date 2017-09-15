@@ -150,7 +150,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('report/listfac', 'Faculty List', array('title' => 'Faculty List'));
 					echo "</li>";*/
 					echo "<li>";
-						echo anchor('report/liststaff', 'Staff List', array('title' => 'Staff List'));
+						echo anchor('staffmgmt/employeelist', 'Staff List', array('title' => 'Staff List'));
 					echo "</li>";					
 				echo "</ul>";
 			echo "</li>";
