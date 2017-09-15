@@ -69,6 +69,42 @@ class Welcome extends CI_Controller {
                         			        $this->session->set_userdata($data);
 			                                redirect('studenthome'); 
                         			}
+                            			if($row->roleid == 4){
+			                                $data = [
+                        			        'id_user' => $result->id,
+			                                'username' => $result->username,
+                        			        'id_role' => $row->roleid
+			                                ];
+                        			        $this->session->set_userdata($data);
+			                                redirect('staffhome'); 
+                        			}
+                            			if($row->roleid == 5){
+			                                $data = [
+                        			        'id_user' => $result->id,
+			                                'username' => $result->username,
+                        			        'id_role' => $row->roleid
+			                                ];
+                        			        $this->session->set_userdata($data);
+			                                redirect('hodhome'); 
+                        			}
+                            			if($row->roleid == 6){
+			                                $data = [
+                        			        'id_user' => $result->id,
+			                                'username' => $result->username,
+                        			        'id_role' => $row->roleid
+			                                ];
+                        			        $this->session->set_userdata($data);
+			                                redirect('coehome'); 
+                        			}
+                            			if($row->roleid == 7){
+			                                $data = [
+                        			        'id_user' => $result->id,
+			                                'username' => $result->username,
+                        			        'id_role' => $row->roleid
+			                                ];
+                        			        $this->session->set_userdata($data);
+			                                redirect('accoffhome'); 
+                        			}
                         		endforeach;   
                     		}else{
                         		foreach($roles as $row):
