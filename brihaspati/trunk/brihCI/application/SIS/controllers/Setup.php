@@ -2964,7 +2964,7 @@ public function salarygrademaster(){
             if($this->form_validation->run()==TRUE){
 
             $data = array(
-                'sgm_name'=>ucwords(strtolower($_POST['sgmname'])),
+                'sgm_name'=>strtoupper($_POST['sgmname']),
                 'sgm_max'=>strtoupper($_POST['sgmmax']),
                 'sgm_min'=>strtoupper($_POST['sgmmin']),
                 'sgm_gradepay'=>$_POST['sgmgradepay']
@@ -3071,7 +3071,7 @@ public function displaysalarygrademaster(){
         else
         {
 
-            $sgm_name = ucwords(strtolower($this->input->post('sgm_name', TRUE)));
+            $sgm_name = strtoupper($this->input->post('sgm_name', TRUE));
             $sgm_max = strtoupper($this->input->post('sgm_max', TRUE));
             $sgm_min = strtoupper($this->input->post('sgm_min', TRUE));
             $sgm_gradepay = $this->input->post('sgm_gradepay', TRUE);
