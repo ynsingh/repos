@@ -93,7 +93,7 @@ echo "<ul class=\"sf-menu\">";
 						echo anchor('map/viewauthuser', 'Map Authority and User', array('title' => 'Map Authority and User'));
 					echo "</li>";	
 					echo "<li>";
-						echo anchor('map/viewddouco', 'Map DDO with UCO', array('title' => 'Map DDO with UCO'));
+						echo anchor('map/viewddoucodeptsh', 'Map Campus,UO,DDO with Dept', array('title' => 'Map DDO with UCO'));
 					echo "</li>";
 					/*
 					echo "<li>";
