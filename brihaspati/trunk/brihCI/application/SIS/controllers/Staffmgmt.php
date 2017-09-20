@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
  * @name Staffmgmt.php
- * @author Manorama Pal (palseema30@gmail.com)
+ * @author Manorama Pal (palseema30@gmail.com) Staff Profile,  Staff transfer and posting
  * @author Om Prakash (omprakashkgp@gmail.com) Staff Position
  */
 
@@ -29,7 +29,7 @@ class Staffmgmt extends CI_Controller
     //$this->load->view('staffmgmt/staffprofile');    
     }
     
-    /* Display Category record */
+    /* Display Employee record */
 
     public function employeelist(){
 
@@ -273,7 +273,7 @@ class Staffmgmt extends CI_Controller
                     //if sucess send mail to user with login details 
                     $sub='User Registration in Staff information System' ;
                     $mess="Your registration is completed. The user id ".$_POST['emailid']." and password is ".$passwd ;
-                    // $this->mailstoperson =$this->mailmodel->mailstouser('kishore.shukla@gmail.com', $sub, $mess,'','Sis');
+                    // $this->mailstoperson =$this->mailmodel->mailsnd('$_POST['emailid']', $sub, $mess,'','Sis');
                     //  mail flag check 	
                     if($this->mailstoperson){
                         //echo "in if part mail";
@@ -507,19 +507,177 @@ class Staffmgmt extends CI_Controller
     }
     /****************************  END UPDATE DATA ****************************/
     
+    /****************************  START stafftransfer ****************************/
+    function stafftransfer(){ 
+   
+        $this->usrlist=$this->sismodel->get_list('employee_master');;
+        $this->uoc=$this->lgnmodel->get_list('authorities');
+        $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
+        if(isset($_POST['stafftransfer'])){
+            /* Form validation*/
+            $this->form_validation->set_rules('registrarname','RegistrarName','trim|required|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('designation','Designation','trim|required|xss_clean');
+            $this->form_validation->set_rules('usono','universitysancofficerno','trim|xss_clean');
+            $this->form_validation->set_rules('rcno','RcNo','trim|required|xss_clean');
+            $this->form_validation->set_rules('subject','Subject','trim|required|xss_clean');
+            $this->form_validation->set_rules('referenceno','ReferenceNo','trim|required|xss_clean');
+            $this->form_validation->set_rules('employeetype','EmployeeType','trim|required|xss_clean');
+            $this->form_validation->set_rules('empname','Employee Name','trim|required|xss_clean');
+            $this->form_validation->set_rules('uocfrom','uocFrom','trim|required|xss_clean');
+            $this->form_validation->set_rules('uocontrolto','uocontrolTo','trim|required|xss_clean');
+            $this->form_validation->set_rules('deptfrom','DepartmentFrom','trim|required|xss_clean');
+            $this->form_validation->set_rules('deptto','DepartmentTo','trim|required|xss_clean');
+            $this->form_validation->set_rules('desigfrom','DesignationFrom','trim|required|xss_clean');
+            $this->form_validation->set_rules('desigto','DesignationTo','trim|required|xss_clean');
+            $this->form_validation->set_rules('postfrom','PostFrom','trim|required|xss_clean');
+            $this->form_validation->set_rules('postto','PostTo','trim|required|xss_clean');
+            $this->form_validation->set_rules('ttadetail','TTADetail','trim|required|xss_clean');
+            $this->form_validation->set_rules('dateofrelief','Dateofrelief','trim|required|xss_clean');
+            $this->form_validation->set_rules('expdoj','expecteddoj','trim|required|xss_clean');
+            $this->form_validation->set_rules('postto','PostTo','trim|required|xss_clean');
+            $this->form_validation->set_rules('emailsentto','EmailSentto','trim|required|xss_clean');
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('staffmgmt/stafftransfer');
+            }
+            else{
+                $data = array(
+                    'uit_registrarname'                => $this->input->post('registrarname'),
+                    'uit_desig'                        => $this->input->post('designation'),
+                    'uit_uso_no'                       => $this->input->post('usono'),
+                    'uit_date'                         => date('y-m-d'),
+                    'uit_rc_no'                        => $this->input->post('rcno'),
+                    'uit_subject'                      => $this->input->post('subject'),
+                
+                    'uit_referenceno'                  => $this->input->post('referenceno'),
+                    'uit_ordercontent'                 => $this->input->post('ordercontent'),
+                    'uit_emptype'                      => $this->input->post('employeetype'),
+                    'uit_uoc_from'                     => $this->input->post('uocfrom'),
+                    'uit_workdept_from'                => $this->input->post('deptfrom'),
+                    'uit_desig_from'                   => $this->input->post('designation'),
+                
+                    'uit_staffname'                    => $this->input->post('empname'),
+                    'uit_workingpost_from'             => $this->input->post('postfrom'),
+                    'uit_uoc_to'                       => $this->input->post('uocontrolto'),
+                    'uit_dept_to'                      => $this->input->post('deptto'),
+                    'uit_desig_to'                      => $this->input->post('desigto'),
+                    'uit_post_to'                      => $this->input->post('postto'),
+                    'uit_tta_detail'                   => $this->input->post('ttadetail'),
+                
+                    'uit_dateofrelief'                 => $this->input->post('dateofrelief'),
+                    'uit_dateofjoining'                => $this->input->post('expdoj'),
+                    'uit_email_sentto'                 => $this->input->post('emailsentto')
+                
+                );  
+                $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $data);
+                /* write code for update staff_position table and staff_position_archive.*/
+                if(!$usrinputtfr_flag){
+                    $this->logger->write_logmessage("error","Error in Staff Transfer and Posting", "Error in Staff Transfer and Posting" );
+                    $this->logger->write_dblogmessage("error","Error in Staff Transfer and Posting", "Error in Staff Transfer and Posting");
+                    $this->session->set_flashdata('err_message','Error in Staff Transfer and Posting - ', 'error');
+                    $this->load->view('staffmgmt/stafftransfer', $data);
+                }
+                else{
+                    $emppfno=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id', $_POST['empname'])->emp_code;
+                    $empname=$this->sismodel->get_listspfic1('employee_master', 'emp_name', 'emp_id', $_POST['empname'])->emp_name;
+                    $deptto=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$_POST['deptto'])->dept_name; 
+                    $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',2)->org_name;
+                    $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_staffname',$id)->uit_registrarname;
+                    $this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_staffname',$id)->uit_desig;
+                    $mail_sent_to=$_POST['emailsentto'];
+                   // $mailarray=explode(',',$mail_sent_to);
+                    //if sucess send mail to user with transfer order copy 
+                    $sub='Employee Transfer And Posting - Letter  ' ;
+                    $mess='OFFICE ORDER<br/> Dear'.$empname.'This is to inform you that you will be transferred at'.$deptto.'with immediate effect.<br/>
+                    Please find the attachment of transfer order copy<br/> Wish you all the best<br/>'.$this->orgname.'<br/>
+                    '.$this->regname.'<br/>'.$this->uitdesig;
+                    $attachment=transferordercopy($_POST['empname']);
+                    // $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,'$attachment','Sis');
+                    if($this->mailstoperson){
+                        //echo "in if part mail";
+                        $mailmsg='Transfer and Promotion order ....Mail send successfully';
+                        $this->logger->write_logmessage("insert"," Transfer and Promotion order ",'mail send successfully  to '.$_POST['emailid'] );
+                        $this->logger->write_dblogmessage("insert"," Transfer and Promotion order",'mail send successfully  to '.$_POST['emailid'] );
+                    }
+                    else{
+                        //echo "in else part";
+                        $mailmsg='Mail does not sent';
+                        $this->logger->write_logmessage("insert"," Transfer and Promotion order", "Mail does not sent to ".$_POST['emailid']);
+                        $this->logger->write_dblogmessage("insert"," Transfer and Promotion order", "Mail does not sent to ".$_POST['emailid']);
+                    }
+                    $this->logger->write_logmessage("insert","Staff Transfer and Posting", " Employee transfer record insert successfully ");
+                    $this->logger->write_dblogmessage("update","Staff Transfer and Posting", "Employee transfer record insert successfully");
+                    $this->session->set_flashdata('success', 'Employee transfer record insert successfully ......'." "."["." "."Employee PF NO:"." ".$emppfno." and "."Employee Name:"." ".$empname." "."]");
+                    redirect('staffmgmt/stafftransfer');
+                }//elseof form validation
+            }//else    
+        }//ifpost
+        $this->load->view('staffmgmt/stafftransfer');
+       
+    }
+   
+   /****************************  END stafftransfer ****************************/
+
+    
+    
+    /* This function has been created for get employee detail on the basis of  selected employee name */
+    public function getempdetail(){
+        $emp= $this->input->post('employee');
+        $emp_data=$this->sismodel->get_listrow('employee_master','emp_id',$emp);
+        $empdetail = $emp_data->result();
+        if(count($empdetail)>0){
+            foreach($empdetail as $detail){
+                $uocname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->emp_uocid)->name;
+                $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
+                $designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->emp_desig_code)->desig_name;
+            //    $values='uocfrom='. $detail->emp_uocid.', deptfrom=' .$detail->emp_dept_code.',desigfrom='. $detail->emp_desig_code.',postfrom='.$detail->emp_post;
+                $values=$uocname.',' .$deptname.','. $designame.','.$detail->emp_post;
+                     
+            }
+            $scid=$this->sismodel->get_listspfic1('employee_master', 'emp_scid', 'emp_id',$emp)->emp_scid;
+            $deptcode=$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $scid)->sc_code;
+            $resultsc = $this->commodel->get_listrow('Department','dept_sccode', $deptcode);
+            $dept_data = $resultsc->result();
+            if(count($dept_data)>0){
+                $dept_select_box = '';
+                $dept_select_box.= '<option value="">-------Select Department --------';
+                foreach($dept_data as $dept){
+                        $dept_select_box.='<option value='.$dept->dept_id.'>'.$dept->dept_name;
+                }
+            }    
+            echo json_encode($values.",".$dept_select_box);
+                       
+        }            
+    
+    }
+    
+    /* Display Employee Tansfer record */
+
+    public function stafftransferlist(){
+
+	$data['records'] = $this->sismodel->get_list('user_input_transfer');
+        $this->logger->write_logmessage("view"," view staff tansfer and posting list" );
+        $this->logger->write_dblogmessage("view"," view staff tansfer and posting list");
+        $this->load->view('staffmgmt/stafftransferlist',$data);
+    }
     
     /**
-    * Get Download PDF File
+    * Get Download PDF File for transfer order copy
     * @return Response
-   */
-/*
-   function mypdf(){
-	$this->load->library('pdf');
-  	$this->pdf->load_view('staffmgmt/mypdf');
-  	$this->pdf->render();
-  	$this->pdf->stream("welcome.pdf");
-   }
-*/
+    */
+    public function transferordercopy($id){
+        $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',2)->org_name;
+        $this->orgaddres=$this->commodel->get_listspfic1('org_profile','org_address1','org_id',2)->org_address1;
+        $this->orgpincode=$this->commodel->get_listspfic1('org_profile','org_pincode','org_id',2)->org_pincode;
+        $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_staffname',$id)->uit_registrarname;
+        $this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_staffname',$id)->uit_desig;
+        $this->data=$this->sismodel->get_listrow('user_input_transfer','uit_staffname',$id);
+        $spec_data['detail'] = $this->data->row();
+        $this->load->library('pdf');
+        $this->pdf->load_view('staffmgmt/transferordercopy',$spec_data);
+        $this->pdf->render();
+        $this->pdf->stream("transferorder.pdf");
+        
+    }
 
 //====================Staff Position===================================
 
