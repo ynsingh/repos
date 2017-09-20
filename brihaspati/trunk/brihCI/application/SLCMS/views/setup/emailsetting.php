@@ -67,9 +67,9 @@
                             <td>
                                 <select name="emailprotocol" id="" class="my_dropdown" style="width:100%;">
                                     <option value="" disabled selected >------Select Email Protocol------</option>
-                                    <option value="SMTP" class="dropdown-item">SMTP</option>
-                                    <option value="IMAP" class="dropdown-item">IMAP</option>
-                                    <option value="POP" class="dropdown-item">POP</option>
+                                    <option value="smtp" class="dropdown-item">SMTP</option>
+                                    <option value="imap" class="dropdown-item">IMAP</option>
+                                    <option value="pop" class="dropdown-item">POP</option>
                                 </select>
 
                             </td>

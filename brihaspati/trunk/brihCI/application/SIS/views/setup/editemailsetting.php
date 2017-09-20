@@ -72,9 +72,9 @@
                    // echo form_input($emailprotocol);
                 echo "<select name='emailprotocol' style=\"width:62%;\">;
                 <option value=\"$emailprotocol[value]\">$emailprotocol[value]</option>;  
-                <option value=\"SMTP\">SMTP</option>;
-                <option value=\"IMAP\">IMAP</option>;
-                <option value=\"POP\">POP</option>;
+                <option value=\"smtp\">SMTP</option>;
+                <option value=\"imap\">IMAP</option>;
+                <option value=\"pop\">POP</option>;
                 </select>";
                 echo "</td>";
                 echo "<td>";

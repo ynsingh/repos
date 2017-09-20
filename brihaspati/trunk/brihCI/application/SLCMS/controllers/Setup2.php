@@ -1256,5 +1256,19 @@ class Setup2 extends CI_Controller
         }//else
         redirect('setup2/editauthority');
     }//Edit Authority function end
+
+    /** This function display the Authorities
+  * @param type
+  * @return type
+  */
+
+     public function examtype() {
+        $this->result = $this->commodel->get_list('examtype');
+        $this->logger->write_logmessage("view"," View Exam Type ", "Exam Type details...");
+        $this->logger->write_dblogmessage("view"," View Exam Type " , "Exam Type record display successfully..." );
+        $this->load->view('setup2/examtype',$this->result);
+     }
+
+
 }//end class
 
