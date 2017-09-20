@@ -10,6 +10,7 @@
  * @author Raju Kamal(kamalraju8@gmail.com)    add department
  * @author Vijay(vijay.pal428@gmail.com)       add program fees
  * @author Raju Kamal(kamalraju8@gmail.com)    category program 
+ * @author Neha Khullar(nehukhullar@gmail.com) add bankdetails
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -1999,16 +2000,16 @@ class Setup extends CI_Controller
      * @return type
      */
     public function viewsc() {
-        $this->result = $this->common_model->get_list('study_center');
-        $this->logger->write_logmessage("view"," View Study center list", "study center list display");
-        $this->logger->write_dblogmessage("view"," View Study center list", "study center list display");
+        $this->result = $this->common_model->get_list('Study Center');
+        $this->logger->write_logmessage("view"," View Study Center", "Study Center list display");
+        $this->logger->write_dblogmessage("view"," View Study Center", "study Center display");
 	$this->load->view('setup/viewsc',$this->result);
        }
- /* this function is used for delete study center record */
+ /* this function is used for delete study Center record */
 
-    public function deletesc($scid) {
+    public function delete ($sc_id) {
 
-        $scflag=$this->common_model->deleterow('study_center', 'sc_id', $scid) ;
+        $scflag=$this->common_model->deleterow('study Center', 'sc_id',  $sc_id) ;        
         if(!$scflag)
         {
             $this->logger->write_logmessage("delete", "Deleted Study center ", "Error in  Study center ". $sc_data->sc_name . " [sc_id:" . $scid . "] delete. " );
@@ -2704,8 +2705,8 @@ class Setup extends CI_Controller
                'sd_desc'  => $data_sdesc
             );
 
-	   $schflag=$this->SIS_model->updaterec('scheme_department', $update_data, 'sd_id', $data_sid);
-	   if(!$schflag)	
+	   $scflag=$this->SIS_model->updaterec('scheme_department', $update_data, 'sd_id', $data_sid);
+	   if(!scflag)	
             {
                 $this->logger->write_logmessage("error","Error in update Scheme ", "Error in Scheme record update. $logmessage . " );
                 $this->logger->write_dblogmessage("error","Error in update Scheme ", "Error in Scheme record update. $logmessage ." );
@@ -2721,6 +2722,345 @@ class Setup extends CI_Controller
         }//else
         redirect('setup/editscheme/');
     }
+
+/****************************************** bankdetails Module ********************************************/
+
+ public function addbank(){
+
+        if(isset($_POST['addbank'])) {
+            //$this->form_validation->set_rules('bank_name','Org Code','trim|xss_clean|required|alpha_numeric_spaces|callback_isBankdetailsExist');
+            $this->form_validation->set_rules('bank_name','Bank Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('bank_address','Bank Address','trim|xss_clean|required');
+            $this->form_validation->set_rules('branch_name','Branch Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('account_number','Account Number','trim|xss_clean|numeric|required');
+            $this->form_validation->set_rules('account_name','Account Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('account_type','Account Type','trim|xss_clean|alpha_numeric_spaces|required');
+            $this->form_validation->set_rules('ifsc_code','Ifsc Code','trim|xss_clean|alpha_numeric_spaces|required');
+            $this->form_validation->set_rules('pan_number','Pan Number','trim|xss_clean|alpha_numeric_spaces|required');
+            $this->form_validation->set_rules('tan_number','Tan Number','trim|xss_clean|alpha_numeric_spaces|required');
+            $this->form_validation->set_rules('gst_number','Gst Number','trim|xss_clean|alpha_numeric_spaces|required');
+            $this->form_validation->set_rules('aadhar_number','Aadhar Number','trim|xss_clean|numeric|required');
+            $this->form_validation->set_rules('org_id','Org Id','trim|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('remark','Remark','trim|xss_clean');
+
+            if($this->form_validation->run()==TRUE){
+
+            $data = array( 
+               // 'org_code'=>ucwords(strtolower($_POST['org_code'])),
+                'bank_name'=>strtoupper($_POST['bank_name']),
+                'bank_address'=>strtoupper($_POST['bank_address']),
+                'branch_name'=>strtoupper($_POST['branch_name']),
+                'account_number'=>strtoupper($_POST['account_number']),
+                'account_name'=>strtoupper($_POST['account_name']),
+                'account_type'=>strtoupper($_POST['account_type']),
+                'ifsc_code'=>strtoupper($_POST['ifsc_code']),
+                'pan_number'=>strtoupper($_POST['pan_number']),
+                'tan_number'=>strtoupper($_POST['tan_number']),
+                'gst_number'=>strtoupper($_POST['gst_number']),
+                'aadhar_number'=>strtoupper($_POST['aadhar_number']),
+                'org_id'=>strtoupper($_POST['org_id']),
+                'remark'=>$_POST['remark'] 
+
+
+           );
+		
+           $bpflag=$this->SIS_model->insertrec('bankprofile', $data) ;
+           if(!$bpflag)
+
+           {
+                $this->logger->write_logmessage("insert"," Error in adding bankdetails ", " BankDetails data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding bankdetails  ", " BankDetails data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding bankdetails - ' . $_POST['bnkname'] , 'error');
+                $this->load->view('setup/addbank');
+           }
+         else{
+                $this->logger->write_logmessage("insert"," add bankdetails ", "bankdetails record added successfully..."  );
+                $this->logger->write_dblogmessage("insert"," add bankdetails ", "bankdetails record added successfully..." );
+                $this->session->set_flashdata("success", "bankdetails added successfully...");
+                redirect("setup/displaybankdetails", "refresh");
+              }
+           }
+
+        }        
+      $this->load->view('setup/addbank');
+   }
+
+
+/** This function check for duplicate bankdetails
+     * @return type
+    */
+
+    public function isbankdetailsExist($bank_name) { 
+
+         
+        $is_exist = $this->SIS_model->isduplicate('bankdetails','bd_name',$bd_name);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isBankdetailsExist', 'Bankdetails is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    
+      }
+     
+
+  /* Display Bankdetails record */ 
+
+ public function displaybankdetails(){
+
+      	$this->result = $this->SIS_model->get_list('bankprofile');
+        $this->logger->write_logmessage("view"," View ", "Bankdetails record display successfully..." );
+        $this->logger->write_dblogmessage("view"," View Bankdetails", "Bankdetails record display successfully..." );
+        $this->load->view('setup/bankdetails',$this->result);
+    }
+
+ /**This function is used for update bankdetails details
+     * @param type $bank_id
+     * @return type
+    */ 
+    public function editbankdetails($id) {
+        $bank_data_q=$this->SIS_model->get_listrow('bankprofile','id', $id);
+        if ($bank_data_q->num_rows() < 1)
+        {
+        redirect('setup/editbankdetails');
+        }
+        $bankprofile_data = $bank_data_q->row();/*
+
+        /* Form fields */
+          
+        $data['bank_name'] = array(
+            'name' => 'bank_name',
+            'id' => 'bank_name',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $bankprofile_data->bank_name,
+            'readonly' => 'readonly'
+        );
+        $data['bank_address'] = array(
+           'name' => 'bank_address',
+           'id' => 'bank_address',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $bankprofile_data->bank_address,
+
+        );
+
+        $data['branch_name'] = array(
+           'name' => 'branch_name',
+           'id' => 'branch_name',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $bankprofile_data->branch_name,
+
+        );
+
+        $data['account_number'] = array(
+           'name' => 'account_number',
+           'id' => 'account_number',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $bankprofile_data->account_number,
+
+        );
+
+        $data['account_name'] = array(
+           'name' => 'account_name',
+           'id' => 'account_name',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $bankprofile_data->account_name,
+
+    
+        );
+
+        $data['account_type'] = array(
+           'name' => 'account_type',
+           'id' => 'account_type',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $bankprofile_data->account_type,
+
+
+        );
+
+        $data['ifsc_code'] = array(
+           'name' => 'ifsc_code',
+           'id' => 'ifsc_code',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $bankprofile_data->ifsc_code,
+
+
+        );
+
+        $data['pan_number'] = array(
+           'name' => 'pan_number',
+           'id' => 'pan_number',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $bankprofile_data->pan_number,
+
+        );
+
+        $data['tan_number'] = array(
+           'name' => 'tan_number',
+           'id' => 'tan_number',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $bankprofile_data->tan_number,
+
+        );
+		
+	  $data['gst_number'] = array(
+           'name' => 'gst_number',
+           'id' => 'gst_number',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $bankprofile_data->gst_number,
+
+
+         );
+
+          $data['aadhar_number'] = array(
+           'name' => 'aadhar_number',
+           'id' => 'aadhar_number',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $bankprofile_data->aadhar_number,
+
+      
+         );
+
+          $data['org_id'] = array(
+           'name' => 'org_id',
+           'id' => 'org_id',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $bankprofile_data->org_id,
+           'readonly' => 'readonly'
+
+
+          );
+
+          $data['remark'] = array(
+           'name' => 'remark',
+           'id' => 'remark',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $bankprofile_data->remark,
+           
+
+
+        );
+
+
+         echo $data['id'] = $id;
+
+        $this->form_validation->set_rules('bank_name','Bankdetails BankName ','trim|xss_clean|required');
+        $this->form_validation->set_rules('bank_address','Bankdetails BankAddress ','trim|xss_clean|required');
+        $this->form_validation->set_rules('branch_name','Bankdetails BankBranch ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('account_number','Bankdetails AccountNumber ','trim|xss_clean|numeric|required');
+        $this->form_validation->set_rules('account_name','Bankdetails AccountName ','trim|xss_clean');
+        $this->form_validation->set_rules('account_type','Bankdetails AccountType ','trim|xss_clean|alpha_numeric_spaces|required');
+        $this->form_validation->set_rules('ifsc_code','Bankdetails ifscCode ','trim|xss_clean|alpha_numeric_spaces|required');
+        $this->form_validation->set_rules('pan_number','Bankdetails PanNumber ','trim|xss_clean|alpha_numeric_spaces|required');
+        $this->form_validation->set_rules('tan_number','Bankdetails TanNumber ','trim|xss_clean|required|alpha_dash');
+        $this->form_validation->set_rules('gst_number','Bankdetails GstNumber ','trim|xss_clean|alpha_numeric_spaces|required');
+        $this->form_validation->set_rules('aadhar_number','Bankdetails AadharNumber ','trim|xss_clean|numeric|required');
+        $this->form_validation->set_rules('org_id','Bankdetails OrgId ','trim|xss_clean|alpha_numeric_spaces');
+        $this->form_validation->set_rules('remark','Bankdetails Remark ','trim|xss_clean');
+
+        if ($_POST)
+        {
+            $data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
+            $data['bank_address']['value'] = $this->input->post('bank_address', TRUE);
+            $data['branch_name']['value'] = $this->input->post('branch_name', TRUE);
+            $data['account_number']['value'] = $this->input->post('account_number', TRUE);
+            $data['account_name']['value'] = $this->input->post('account_name', TRUE);
+            $data['account_type']['value'] = $this->input->post('account_type', TRUE);
+            $data['ifsc_code']['value'] = $this->input->post('ifsc_code', TRUE);
+            $data['pan_number']['value'] = $this->input->post('pan_number', TRUE);
+            $data['tan_number']['value'] = $this->input->post('tan_number', TRUE);
+            $data['gst_number']['value'] = $this->input->post('gst_number', TRUE); 
+            $data['aadhar_number']['value'] = $this->input->post('aadhar_number', TRUE);
+            $data['org_id']['value'] = $this->input->post('org_id', TRUE);
+            $data['remark']['value'] = $this->input->post('remark', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editbankdetails', $data);
+            return;
+        }
+        else
+        {
+
+            $data_bankname = ucwords(strtolower($this->input->post('bank_name', TRUE)));
+            $data_bankaddress = strtoupper($this->input->post('bank_address', TRUE));
+            $data_bankbranch = strtoupper($this->input->post('bank_branch', TRUE));
+            $data_accountnumber = $this->input->post('account_number', TRUE);
+            $data_accountname = strtoupper($this->input->post('account_name', TRUE));
+            $data_accounttype = strtoupper($this->input->post('account_type', TRUE));
+            $data_ifsccode = strtoupper($this->input->post('ifsc_code', TRUE));
+            $data_pannumber = strtoupper($this->input->post('pan_number', TRUE));
+            $data_tannumber = strtoupper($this->input->post('tan_number', TRUE));
+            $data_bankid = $id;
+            $logmessage = "";
+            if($bankprofile_data->bank_name != $data_bankname)
+                $logmessage = "Add Bankdetails " .$bankprofile_data->bank_name. " changed by " .$data_bankname;
+            if($bankprofile_data->bank_address != $data_bankaddress)
+                $logmessage = "Add Bankdetails " .$bankprofile_data->bank_address. " changed by " .$data_bankaddress;
+            if($bankprofile_data->branch_name != $data_bankbranch)
+                $logmessage = "Add Bankdetails " .$bankprofile_data->branch_name. " changed by " .$data_bankbranch;
+            if($bankprofile_data->account_number != $data_accountnumber)
+                $logmessage = "Add Bankdetails " .$bankprofile_data->account_number. " changed by " .$data_accountnumber;
+            if($bankprofile_data->account_name != $data_accountname)
+                $logmessage = "Add Bankdetails " .$bankprofile_data->account_name. " changed by " .$data_accountname;
+            if($bankprofile_data->account_type != $data_accounttype)
+                $logmessage = "Add Bankdetails " .$bankprofile_data->account_type. " changed by " .$data_accounttype;
+            if($bankprofile_data->ifsc_code != $data_ifsccode)
+                $logmessage = "Add Bankdetails " .$bankprofile_data->ifsc_code. " changed by " .$data_ifsccode;
+            if($bankprofile_data->pan_number != $data_pannumber)
+                $logmessage = "Add Bankdetails " .$bankprofile_data->pan_number. " changed by " .$data_pannumber;
+            if($bankprofile_data->tan_number != $data_tannumber)
+                $logmessage = "Add Bankdetails " .$bankprofile_data->tan_number. " changed by " .$data_tanumber;
+    
+
+         $update_data = array(
+               'bank_name' =>($this->input->post('bank_name')),
+               'bank_address' =>$this->input->post('bank_address'),
+               'branch_name' =>strtoupper($this->input->post('branch_name')),
+               'account_number'  =>$this->input->post('account_number'),
+               'account_name'  =>$this->input->post('account_name'),
+               'account_type'  =>$this->input->post('account_type'), 
+               'ifsc_code'  =>strtoupper($this->input->post('ifsc_code')),
+               'pan_number'  =>strtoupper($this->input->post('pan_number')), 
+               'tan_number'  =>$this->input->post('tan_number'),
+               'gst_number'=>$this->input->post('gst_number'),
+               'aadhar_number'=>$this->input->post('aadhar_number'),
+               'org_id'=>$this->input->post('org_id'),
+               'remark'=>$this->input->post('remark')
+              );                
+
+           
+           $bpflag=$this->SIS_model->updaterec('bankprofile', $update_data, 'id', $id); 
+           if(!$bpflag) 
+            {
+                $this->logger->write_logmessage("error","Error in update bankdetails", "Error in BankDetails record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update bankdetails", "Error in BankDetails record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating bankdetails - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editbankdetails', $data);
+            }
+           else{
+                $this->logger->write_logmessage("insert","Edit bankdetails", "BankDetails record inserted successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("insert","Edit BankDetails", "BankDetails record inserted successfully... $logmessage ." );
+                $this->session->set_flashdata('success','BankDetails record updating successfully...');
+                redirect('setup/displaybankdetails/');
+                }
+        }//else
+        redirect('setup/editbankdetails/');
+   }
 
 /******************************************Tax Slab Master ********************************************/
 

@@ -63,6 +63,10 @@ echo "<ul class=\"sf-menu\">";
                                          echo "<li>";
                                                 echo anchor('setup/displayleavetype', 'Leave Type', array('title' => 'Leave Type'));
                                         echo "</li>";
+ 					echo "<li>";
+                                                echo anchor('setup/displaybankdetails', 'Bank Details', array('title' => 'Bank Details'));
+                                        echo "</li>";
+
 
 
 				/*	echo "<li>";
