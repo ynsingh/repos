@@ -14,7 +14,7 @@
     </head>
     <body>
 	<div style="border:2px solid black;">
-	<img src="uploads/logo/logo2.jpg" alt="logo" style="width:100%;height:70px;">
+	<img src="uploads/logo/logo1.png" alt="logo" style="width:100%;height:70px;">
 	<table style="width:100%;">
         <tr><th>
             <center style="font-size:7;">PROCEEDINGS OF THE REGISTRAR<br/>

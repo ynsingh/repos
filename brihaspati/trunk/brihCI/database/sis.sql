@@ -4,9 +4,9 @@
 --
 
 -- --------------------------------------------------------
--- DROP DATABASE IF EXISTS `payroll`;
--- CREATE DATABASE `payroll`;
--- USE `payroll`;
+ DROP DATABASE IF EXISTS `payroll`;
+ CREATE DATABASE `payroll`;
+ USE `payroll`;
 
 
 -- ---------------------------------------------------------

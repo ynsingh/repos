@@ -665,9 +665,9 @@ class Staffmgmt extends CI_Controller
     * @return Response
     */
     public function transferordercopy($id){
-        $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',2)->org_name;
-        $this->orgaddres=$this->commodel->get_listspfic1('org_profile','org_address1','org_id',2)->org_address1;
-        $this->orgpincode=$this->commodel->get_listspfic1('org_profile','org_pincode','org_id',2)->org_pincode;
+        $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
+        $this->orgaddres=$this->commodel->get_listspfic1('org_profile','org_address1','org_id',1)->org_address1;
+        $this->orgpincode=$this->commodel->get_listspfic1('org_profile','org_pincode','org_id',1)->org_pincode;
         $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_staffname',$id)->uit_registrarname;
         $this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_staffname',$id)->uit_desig;
         $this->data=$this->sismodel->get_listrow('user_input_transfer','uit_staffname',$id);
