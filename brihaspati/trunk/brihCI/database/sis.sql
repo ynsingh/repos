@@ -9,6 +9,55 @@
  USE `payroll`;
 
 
+-- --------------------------------------------------------
+--
+-- Table structure for table `bank_profile_details`
+--
+
+CREATE TABLE `bankprofile` ( 
+  `id` int(11) NOT NULL auto_increment,
+  `bank_name` varchar(250) NOT NULL,
+  `branch_name` varchar(255) NOT NULL,
+  `bank_address` varchar(500) NOT NULL,
+  `ifsc_code` varchar(500) default NULL,
+  `account_number` varchar(50) default NULL,
+  `account_type` varchar(40) NOT NULL,`
+  `account_name` varchar(255) NOT NULL,
+  `pan_number` varchar(20) default NULL,
+  `tan_number` varchar(10) NOT NULL,
+  `gst_number` varchar(100) NOT NULL,
+  `aadhar_number` varchar(100) NOT NULL,
+  `org_id` varchar(40) NOT NULL,
+  `remark` varchar(100) NOT NULL,
+   PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `bank_profile_details_archive`
+--
+
+CREATE TABLE `bankprofile_archive` ( 
+  `bpa_id` int(11) NOT NULL auto_increment,
+  `bpa_bpid` int(11) NOT NULL,
+  `bpa_bank_name` varchar(250) NOT NULL,
+  `bpa_branch_name` varchar(255) NOT NULL,
+  `bpa_bank_address` varchar(500) NOT NULL,
+  `bpa_ifsc_code` varchar(500) default NULL,
+  `bpa_account_number` varchar(50) default NULL,
+  `bpa_account_type` varchar(40) NOT NULL,`
+  `bpa_account_name` varchar(255) NOT NULL,
+  `bpa_pan_number` varchar(20) default NULL,
+  `bpa_tan_number` varchar(10) NOT NULL,
+  `bpa_gst_number` varchar(100) NOT NULL,
+  `bpa_aadhar_number` varchar(100) NOT NULL,
+  `bpa_org_id` varchar(40) NOT NULL,
+  `bpa_remark` varchar(100) NOT NULL,
+  `bpa_creatorid` int(11) NOT NULL,
+  `bpa_date` date NOT NULL,
+   PRIMARY KEY  (`bpa_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- ---------------------------------------------------------
 --
 -- Table structure for table `cudsdmap (Campus id, UO id, Dept id, Scheme id and DDO id)`
@@ -471,29 +520,6 @@ CREATE TABLE user_input_transfer (
         PRIMARY KEY (uit_id)
 )ENGINE = InnoDB;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `bank_profile_details`
---
-
-CREATE TABLE `bankprofile` ( 
-  `id` int(11) NOT NULL auto_increment,
-  `bank_name` varchar(250) NOT NULL,
-  `branch_name` varchar(255) NOT NULL,
-  `bank_address` varchar(500) NOT NULL,
-  `ifsc_code` varchar(500) default NULL,
-  `account_number` varchar(50) default NULL,
-  `account_type` varchar(40) NOT NULL,`
-  `account_name` varchar(255) NOT NULL,
-  `pan_number` varchar(20) default NULL,
-  `tan_number` varchar(10) NOT NULL,
-  `gst_number` varchar(100) NOT NULL,
-  `aadhar_number` varchar(100) NOT NULL,
-  `org_id` varchar(40) NOT NULL,
-  `remark` varchar(100) NOT NULL,
-   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ---------------------------------------------------------
 

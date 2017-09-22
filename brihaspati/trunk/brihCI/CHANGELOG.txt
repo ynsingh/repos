@@ -1,3 +1,75 @@
+SLCMS, HRM  Version 1.0 2017-09-20
+-----------------------------
+    * Add staff position archive table in payroll(sis), modification in email protocol name, dispaly mechinsm of exam type in slcms- NKS
+    * Generate transfer order online based on user input facility added - Seema
+    * Add bank details facility added - Neha Khullar
+
+SLCMS, HRM  Version 1.0 2017-09-18
+-----------------------------
+    * Create schema for student pre admission ( master, parent, education, entrance exam, employment) and create script file - NKS
+    * Add link for map and schema for map with ddo, uo, dept,campus, scheme - NKS
+    * Modification payband display and repopulation of statff position data - OP
+
+SLCMS, HRM  Version 1.0 2017-09-15
+-----------------------------
+    * Display admission merit listinformationand bug fix -Sumit 
+    * Upload staff list without photo facility added - OP
+    * Redirect welcome  page as per role- NKS
+
+SLCMS, HRM  Version 1.0 2017-09-13
+-----------------------------
+    * Role home page updated, Role based menu and home page created, modification authority schema and implementation in code -NKS
+
+SLCMS, HRM  Version 1.0 2017-09-12
+-----------------------------
+    * Add ddo in db of payroll and add multiple role in screen and darabase- NKS
+ 
+SLCMS, HRM  Version 1.0 2017-09-08
+-----------------------------
+    * Add facility for fees reconcillation to admin, account officer check -NKS
+    * Help doc for instructor and student - Deepika
+
+SLCMS, HRM  Version 1.0 2017-09-07
+-----------------------------
+    * Admission form download, exam form download and fees reconcillation functionality for admin added -Sumit, NKS
+    * Bug fix in adminssion step - NKS
+    * Management of Leave Type Master and Salary Grade Master functionality added - Rekha
+
+SLCMS, HRM  Version 1.0 2017-09-06
+-----------------------------
+    * Tax slab master functinility added for setup - Rekha
+    * Fix problem in subject teacher student and fees record - NKS
+
+SLCMS, HRM  Version 1.0 2017-09-02
+-----------------------------
+    * Facility for download lattest fees receipt and change in fees receipt format - NKS
+
+SLCMS, HRM  Version 1.0 2017-09-01
+-----------------------------
+    * Fees record dispaly and download in pdf facility added - NKS, Kishore
+
+SLCMS, HRM  Version 1.0 2017-08-31
+-----------------------------
+    * Add scheme functionality added - Rekha
+
+SLCMS, HRM  Version 1.0 2017-08-30
+-----------------------------
+    * Add database connectivity in all module for all module - NKS
+    * SLCMS, SIS, HRM  help document - Deepika
+    * Display student list - kriti, NKS
+
+SLCMS, HRM  Version 1.0 2017-08-29
+-----------------------------
+    * Remove the duplicate/depriciated method from common model and improvement in hrm ad -NKS
+
+SLCMS, HRM  Version 1.0 2017-08-28
+-----------------------------
+    * Staff position add/update/view functionality added - OP
+ 
+SLCMS, HRM  Version 1.0 2017-08-26
+-----------------------------
+    * Display fees as per program, semester, gender and category, modification in subject paper -NKS
+
 SLCMS, HRM  Version 1.0 2017-08-21
 -----------------------------
     * Student fees payment and exam regiistartion form added- NKS, Sumit
