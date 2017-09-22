@@ -1,4 +1,5 @@
-CREATE TABLE `admissionstudent_registartion` (
+
+CREATE TABLE `admissionstudent_registration` (
   `asreg_id` int(11) NOT NULL, 
   `asreg_emailid` varchar(255) NOT NULL,
   `asreg_mobile` varchar(255) NOT NULL,

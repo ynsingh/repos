@@ -8,7 +8,7 @@ CREATE TABLE `bankprofile_archive` (
   `bpa_bank_address` varchar(500) NOT NULL,
   `bpa_ifsc_code` varchar(500) default NULL,
   `bpa_account_number` varchar(50) default NULL,
-  `bpa_account_type` varchar(40) NOT NULL,`
+  `bpa_account_type` varchar(40) NOT NULL,
   `bpa_account_name` varchar(255) NOT NULL,
   `bpa_pan_number` varchar(20) default NULL,
   `bpa_tan_number` varchar(10) NOT NULL,
