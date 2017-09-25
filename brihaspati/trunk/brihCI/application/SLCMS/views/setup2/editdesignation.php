@@ -49,6 +49,19 @@
         <table style="padding: 8px 8px 8px 30px;">
         <?php
                 echo form_open('setup2/editdesignation/'. $desig_id);
+                
+                echo "<tr>";
+                echo "<td>";
+                echo form_label('Designation Code', 'desig_code');
+                echo "</td>";
+                echo "<td>";
+                echo form_input($desig_code);
+                echo "</td>";
+                echo "<td>";
+                echo "Example: 10, 8,6 etc ";
+                echo "</td>";
+                echo "</tr>";
+                
                 echo "<tr>";
                 echo "<td>";
                 echo form_label('Designation Name', 'desig_name');
@@ -61,17 +74,30 @@
                 echo "</td>";
                 echo "</tr>";
 
+
+                 
                 echo "<tr>";
                 echo "<td>";
-                echo form_label('Designation Code', 'desig_code');
+                echo form_label('Designation Group', 'desig_group');
                 echo "</td>";
-                echo "<td>";
-                echo form_input($desig_code);
+               echo "<td>";
+                $des=$desig_group['value'];
+                    echo "<select name=\"desig_group\"class=\"my_dropdown\" style=\"width:100%;\">";
+                    echo "<option value=$des class=\"dropdown-item\">$des</option>";
+                    echo "<option value=\"disabled selected\">------Select Group------</option>";
+                    echo "<option value=\"A\" class=\"dropdown-item\">A</option>";
+                    echo "<option value=\"B\" class=\"dropdown-item\">B</option>";
+                    echo "<option value=\"C\" class=\"dropdown-item\" >C</option>";
+                    echo "<option value=\"D\" class=\"dropdown-item\" >D</option>";
+                    echo "</select>";
                 echo "</td>";
-                echo "<td>";
-                echo "Example: 10, 8,6 etc ";
+                 echo"<td>";
+                  echo "Example: A, B, C, D etc ";
                 echo "</td>";
                 echo "</tr>";
+
+
+
 
                 echo "<tr>";
                 echo "<td>";

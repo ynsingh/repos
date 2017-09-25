@@ -48,15 +48,6 @@
     <form action="<?php echo site_url('setup2/adddesignation');?>" method="POST" class="form-inline">
             <table style="margin-left:2%;">
             <tr>
-               <td><label for="desig_name" class="control-label">Designation Name:</label></td>
-               <td>
-               <input type="text" name="desig_name"  class="form-control" size="33" /><br>
-               </td>
-               <td>
-                  <?php //echo form_error('dr_mincredit')?>
-               </td>
-            </tr>
-            <tr>
                 <td><label for="desig_code" class="control-label">Designation Code:</label></td>
                 <td>
                 <input type="text" name="desig_code" class="form-control" size="33" /><br>
@@ -65,6 +56,28 @@
                     <?php //echo form_error('dr_minsubcredit')?>
                 </td>
             </tr>
+            <tr>
+               <td><label for="desig_name" class="control-label">Designation Name:</label></td>
+               <td>
+               <input type="text" name="desig_name"  class="form-control" size="33" /><br>
+               </td>
+               <td>
+                  <?php //echo form_error('dr_mincredit')?>
+               </td>
+            </tr>
+             <tr>
+                       <td><label for="desig_name" class="control-label">Designation Group :</label></td>
+                        <td>
+                        <select name="desig_group" id="" class="my_dropdown" style="width:100%;">
+                        <option value="" disabled selected >------Select Group------</option>
+                        <option value="A" class="dropdown-item">A</option>
+                        <option value="B" class="dropdown-item">B</option>
+                        <option value="C" class="dropdown-item">C</option>
+                        <option value="D" class="dropdown-item">D</option>
+                        </select>
+                        </td></tr>
+            <tr>
+
               <tr>
                 <td><label for="desig_short" class="control-label">Designation short :</label></td>
                 <td>

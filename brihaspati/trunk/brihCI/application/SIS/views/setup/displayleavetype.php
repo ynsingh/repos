@@ -50,7 +50,14 @@
 <div align="left" style="margin-left:2%;">
 <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
 <tr align="center">
-<thead><th>Sr.No</th><th>Leave Name</th><th>Role Value</th><th>Action</th></tr></thead>
+<thead>
+
+                      <th>Sr.No</th>
+                     <th>Leave Name</th>
+                     <th>Leave Code</th>
+                     <th>Leave Short Name</th>
+                     <th>Leave Value</th>
+                      <th>Action</th></tr></thead>
 
    <?php
         $count =0;
@@ -61,7 +68,10 @@
              <tr align="center">
             <td> <?php echo ++$count; ?> </td> 
             <td> <?php echo $row->lt_name ?></td>
+            <td> <?php echo $row->lt_code ?></td>
+            <td> <?php echo $row->lt_short ?></td>
             <td> <?php echo $row->lt_value ?></td>
+            
 	    <td>
             <?php  
 		if ($row->lt_id > 3){

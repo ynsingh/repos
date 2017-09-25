@@ -56,6 +56,19 @@
                 </td>
 
             </tr>
+
+              <tr>
+                <td><label for="lt_code" class="control-label">Leave Code:</label></td>
+                <td>
+                <input type="text" name="lt_code"  class="form-control" size="30" /><br>
+                </td>
+
+              <tr>
+                <td><label for="lt_short" class="control-label">Leave Short Name:</label></td>
+                <td>
+                <input type="text" name="lt_short"  class="form-control" size="30" /><br>
+                </td>
+                 
             <tr>
                 <td>
                 <label for="lt_value" class="control-label">Leave Value:</label>
@@ -64,6 +77,7 @@
                     <input type="text" name="lt_value" size="30"  class="form-control" /> <br>
                 </td>
             </tr>
+             
             <tr>
                 <td></td><td>
                 <button name="leavetype" >Add Leave</button>

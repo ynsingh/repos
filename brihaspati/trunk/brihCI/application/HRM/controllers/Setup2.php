@@ -865,8 +865,9 @@ class Setup2 extends CI_Controller
     public function adddesignation()
     {
          if(isset($_POST['adddesignation'])) {
-                 $this->form_validation->set_rules('desig_name','Designation Name','trim|xss_clean|required|callback_isnameExist');
+                 $this->form_validation->set_rules('desig_name','Designation Name','trim|xss_clean|required|alpha_numeric_spaces|callback_isnameExist');
                  $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|required');
+                 $this->form_validation->set_rules('desig_group','Designation Group','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_short','Designation Short','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_desc','Designation Description','trim|xss_clean');
                  if($this->form_validation->run()==TRUE){
@@ -874,6 +875,7 @@ class Setup2 extends CI_Controller
                         $data = array(
                                 'desig_name'=>ucfirst(strtolower($_POST['desig_name'])),
                                 'desig_code'=>strtoupper($_POST['desig_code']),
+                                'desig_group'=>strtoupper($_POST['desig_group']),
                                 'desig_short'=>strtoupper($_POST['desig_short']),
                                 'desig_desc'=>$_POST['desig_desc'],
                            );
@@ -953,6 +955,15 @@ class Setup2 extends CI_Controller
         $editdesig_data = $desig_data_q->row();
 
         /* Form fields */
+        
+       $data['desig_code'] = array(
+                'name' => 'desig_code',
+                'id' => 'desig_code',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdesig_data->desig_code,
+                'readonly' => 'readonly' 
+                );
 
         $data['desig_name'] = array(
                 'name' => 'desig_name',
@@ -962,15 +973,16 @@ class Setup2 extends CI_Controller
                 'value' => $editdesig_data->desig_name,
         	'readonly' => 'readonly'
         );
-        $data['desig_code'] = array(
-                'name' => 'desig_code',
-                'id' => 'desig_code',
+       
+         $data['desig_group'] = array(
+                'name' => 'desig_group',
+                'id' => 'desig_group',
                 'maxlength' => '50',
                 'size' => '40',
-                'value' => $editdesig_data->desig_code,
-
+                'value' => $editdesig_data->desig_group,
                 );
-        $data['desig_short'] = array(
+
+         $data['desig_short'] = array(
                 'name' => 'desig_short',
                 'id' => 'desig_short',
                 'maxlength' => '50',
@@ -990,6 +1002,7 @@ class Setup2 extends CI_Controller
         $data['desig_id'] = $desig_id;
         /*Form Validation*/
         $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|required');
+        $this->form_validation->set_rules('desig_group','Designation Group','trim|xss_clean|required');
         $this->form_validation->set_rules('desig_short','Designation Short','trim|xss_clean');
         $this->form_validation->set_rules('desig_desc','Designation Description','trim|xss_clean');
 
@@ -997,6 +1010,7 @@ class Setup2 extends CI_Controller
         if ($_POST)
         {
             $data['desig_code']['value'] = $this->input->post('desig_code', TRUE);
+            $data['desig_group']['value'] = $this->input->post('desig_group', TRUE);
             $data['desig_short']['value'] = $this->input->post('desig_short', TRUE);
             $data['desig_desc']['value'] = $this->input->post('desig_desc', TRUE);
         }
@@ -1004,19 +1018,21 @@ class Setup2 extends CI_Controller
         if ($this->form_validation->run() == FALSE)
         {
             $this->load->view('setup2/editdesignation', $data);
-            echo"fdjfkkg";
             return;
         }
         else{
 
             $desig_code= strtoupper($this->input->post('desig_code', TRUE));
+            $desig_group = $this->input->post('desig_group', TRUE);
             $desig_short = $this->input->post('desig_short', TRUE);
             $desig_desc= $this->input->post('desig_desc', TRUE);
           //  $data_edesig_id = $desg_id;
             $logmessage = "";
 	    if($editdesig_data->desig_code != $desig_code)
                 $logmessage = "Edit Designation Code " .$editdesig_data->desig_code. " changed by " .$desig_code;
-            if($editdesig_data->desig_short !=  $desig_short)
+             if($editdesig_data->desig_group != $desig_group)
+                $logmessage = "Edit  Designation group " .$editdesig_data->desig_group. " changed by " .$desig_group;
+           if($editdesig_data->desig_short !=  $desig_short)
                 $logmessage = "Edit Designation short  " .$editdesig_data->desig_short. " changed by " . $desig_short;
             if($editdesig_data->desig_desc != $desig_desc)
                 $logmessage = "Edit  Designation desc " .$editdesig_data->desig_desc. " changed by " .$desig_desc;
@@ -1024,6 +1040,7 @@ class Setup2 extends CI_Controller
                //'desig_name' => $data_edesignationname,
             $update_data = array(
                'desig_code' => $desig_code,
+                'desig_group' => $desig_group,
                'desig_short' => $desig_short,
                'desig_desc' => $desig_desc,
             );

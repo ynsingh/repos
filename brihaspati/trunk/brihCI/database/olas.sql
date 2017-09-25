@@ -376,6 +376,7 @@ CREATE TABLE `designation` (
   `desig_name` varchar(255) NOT NULL,
   `desig_code` varchar(255) NOT NULL,
   `desig_short` varchar(255) NOT NULL,
+  `desig_group`varchar(5) NOT NULL,
   `desig_desc` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

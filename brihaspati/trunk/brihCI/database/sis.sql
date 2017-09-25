@@ -471,6 +471,8 @@ CREATE TABLE `tax_slab_master` (
 CREATE TABLE `leave_type_master` (
   `lt_id` int(11) NOT NULL auto_increment,
   `lt_name` varchar(50) NOT NULL,
+  `lt_code` varchar(100) NOT NULL,
+  `lt_short` varchar(100) NOT NULL,
   `lt_value` int(11) default '0',
   `lt_remarks` varchar(255) default NULL,
    PRIMARY KEY  (`lt_id`),

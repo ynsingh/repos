@@ -3454,19 +3454,24 @@ public function displaysalarygrademaster(){
         redirect('setup/editsalarygrademaster/');
     }
 
+
 /****************************************** Leave Type ********************************************/
 
 public function leavetype(){
 
         if(isset($_POST['leavetype'])) {
             $this->form_validation->set_rules('lt_name','Leave Type Master Name','trim|xss_clean|required|alpha_numeric_spaces|callback_isLeaveTypeExist');
+            $this->form_validation->set_rules('lt_code','Leave Type Master Code','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('lt_short','Leave Type Master Short','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('lt_value','Leave Type Master Value','trim|xss_clean|required|numeric');
 
             if($this->form_validation->run()==TRUE){
 
             $data = array(
                 'lt_name'=>ucwords(strtolower($_POST['lt_name'])),
-                'lt_value'=>strtoupper($_POST['lt_value']),
+                'lt_code'=>strtoupper($_POST['lt_code']),
+                'lt_short'=>$_POST['lt_short'],
+                'lt_value'=>$_POST['lt_value'],
 
             );
            $ltflag=$this->SIS_model->insertrec('leave_type_master', $data) ;
@@ -3508,7 +3513,7 @@ public function leavetype(){
     }
 
 
-/* Display Salary Grade Master record */
+/* Display Leave Type record */
 
 public function displayleavetype(){
 
@@ -3544,6 +3549,24 @@ public function displayleavetype(){
            'readonly' => 'readonly'
         );
 
+         $data['lt_code'] = array(
+            'name' => 'lt_code',
+            'id' => 'lt_code',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $LeaveType_data->lt_code,
+            'readonly' => 'readonly'
+        );
+
+         $data['lt_short'] = array(
+            'name' => 'lt_short',
+            'id' => 'lt_short',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $LeaveType_data->lt_short,
+        );
+
+
         $data['lt_value'] = array(
            'name' => 'lt_value',
            'id' => 'lt_value',
@@ -3556,13 +3579,18 @@ public function displayleavetype(){
     $data['lt_id'] = $lt_id;
 
         $this->form_validation->set_rules('lt_name','Leave Type name','trim|xss_clean|required|alpha_numeric_spaces');
-        $this->form_validation->set_rules('lt_value','Leave Type Value','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('lt_code','Leave Type Master Code','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('lt_short','Leave Type Master Short','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('lt_value','Leave Type Value','trim|xss_clean|required|numeric');
 
 
         if ($_POST)
         {
             $data['lt_name']['value'] = $this->input->post('lt_name', TRUE);
-            $data['lt_value']['value'] = $this->input->post('lt_value', TRUE);
+            $data['lt_code']['value'] = $this->input->post('lt_code', TRUE);
+            $data['lt_short']['value'] = $this->input->post('lt_short', TRUE);            
+	    $data['lt_value']['value'] = $this->input->post('lt_value', TRUE);
+            
         }
         if ($this->form_validation->run() == FALSE)
         {
@@ -3572,17 +3600,30 @@ public function displayleavetype(){
         else
         {
             $lt_name = ucwords(strtolower($this->input->post('lt_name', TRUE)));
+            $lt_code = strtoupper($this->input->post('lt_code', TRUE));
+            $lt_short = strtoupper($this->input->post('lt_short', TRUE));
             $lt_value = strtoupper($this->input->post('lt_value', TRUE));
             //$sgm_id = $sgm_id;
             $logmessage = "";
 
             if($LeaveType_data->lt_name != $lt_name)
                 $logmessage = "Add Leave Type " .$LeaveType_data->lt_name. " changed by " .$lt_name;
+
+
+            if($LeaveType_data->lt_code != $lt_code)
+                $logmessage = "Add Leave Type " .$LeaveType_data->lt_code. " changed by " .$lt_code;
+
+           if($LeaveType_data->lt_short != $lt_short)
+                $logmessage = "Add Leave Type " .$LeaveType_data->lt_short. " changed by " .$lt_short; 
+
+
             if($TaxSlabMaster_data->lt_value != $lt_value)
                 $logmessage = "Add Leave Type " .$TaxSlabMaster_data->lt_value. " changed by " .$lt_value;
 
             $update_data = array(
                'lt_name' =>$lt_name,
+               'lt_code' =>$lt_code,
+               'lt_short' =>$lt_short,
                'lt_value' => $lt_value,
 
             );
@@ -3604,6 +3645,8 @@ public function displayleavetype(){
         }//else
         redirect('setup/editleave/');
     }
+
+
 
 
 }

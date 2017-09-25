@@ -50,7 +50,14 @@
 <div align="left" style="margin-left:2%;">
 <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
 <tr align="center">
-<thead><th>Sr.No</th><th> Designation Name</th><th> Designation Code</th><th> Designation Short</th><th> Designation Description</th><th>Action</th></tr></thead>
+<thead>
+                <th>Sr.No</th>
+		<th> Designation Code</th>
+                <th> Designation Name</th>
+                <th> Designation Group </th>  
+                <th> Designation Short</th>
+                <th> Designation Description</th>
+                <th>Action</th></tr></thead>
  <?php
         $count =0;
         if( count($this->result) ):
@@ -59,8 +66,9 @@
          ?>
              <tr align="center">
             <td> <?php echo ++$count; ?> </td>
-            <td> <?php echo $row-> desig_name ?></td>
             <td> <?php echo $row->desig_code  ?></td>
+            <td> <?php echo $row-> desig_name ?></td>
+            <td> <?php echo $row-> desig_group ?></td>
             <td> <?php echo $row->desig_short  ?></td>
             <td> <?php echo $row->desig_desc ?></td>
             <td>

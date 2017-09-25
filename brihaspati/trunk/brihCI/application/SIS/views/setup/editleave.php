@@ -67,8 +67,26 @@
                 echo "</td>";
             echo "</tr>";
 
-            //echo "<p>";
-            echo "<tr>";
+
+             echo "<tr>";
+                echo "<td>";
+                    echo form_label('Leave Code', 'lt_code');
+                echo "</td>";
+                echo "<td>";
+                    echo form_input($lt_code);
+                echo "</td>";
+            echo "</tr>";
+
+          echo "<tr>";
+                echo "<td>";
+                    echo form_label('Leave Short Name', 'lt_short');
+                echo "</td>";
+                echo "<td>";
+                    echo form_input($lt_short);
+                echo "</td>";
+            echo "</tr>";
+
+                echo "<tr>";
                 echo "<td>";
                     echo form_label('Leave Value', 'lt_value');
                     //echo "<br />";
