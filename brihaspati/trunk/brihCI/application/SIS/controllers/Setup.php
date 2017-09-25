@@ -2000,7 +2000,7 @@ class Setup extends CI_Controller
      * @return type
      */
     public function viewsc() {
-        $this->result = $this->common_model->get_list('Study Center');
+        $this->result = $this->common_model->get_list('study_center');
         $this->logger->write_logmessage("view"," View Study Center", "Study Center list display");
         $this->logger->write_dblogmessage("view"," View Study Center", "study Center display");
 	$this->load->view('setup/viewsc',$this->result);
@@ -2009,7 +2009,7 @@ class Setup extends CI_Controller
 
     public function delete ($sc_id) {
 
-        $scflag=$this->common_model->deleterow('study Center', 'sc_id',  $sc_id) ;        
+        $scflag=$this->common_model->deleterow('study_center', 'sc_id',  $sc_id) ;        
         if(!$scflag)
         {
             $this->logger->write_logmessage("delete", "Deleted Study center ", "Error in  Study center ". $sc_data->sc_name . " [sc_id:" . $scid . "] delete. " );

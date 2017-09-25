@@ -21,7 +21,7 @@ CREATE TABLE `bankprofile` (
   `bank_address` varchar(500) NOT NULL,
   `ifsc_code` varchar(500) default NULL,
   `account_number` varchar(50) default NULL,
-  `account_type` varchar(40) NOT NULL,`
+  `account_type` varchar(40) NOT NULL,
   `account_name` varchar(255) NOT NULL,
   `pan_number` varchar(20) default NULL,
   `tan_number` varchar(10) NOT NULL,
