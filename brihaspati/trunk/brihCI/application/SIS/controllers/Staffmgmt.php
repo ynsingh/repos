@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @name Staffmgmt.php
  * @author Manorama Pal (palseema30@gmail.com) Staff Profile,  Staff transfer and posting
- * @author Om Prakash (omprakashkgp@gmail.com) Staff Position
+ * @author Om Prakash (omprakashkgp@gmail.com) Staff Position , Staff Position Archive
  */
 
 class Staffmgmt extends CI_Controller
@@ -684,6 +684,8 @@ class Staffmgmt extends CI_Controller
   /*this function has been created for display the record of staff position */
   public function staffposition(){
         $this->result = $this->sismodel->get_list('staff_position');
+        $this->logger->write_logmessage("view"," View staff position ", "Staff position details...");
+        $this->logger->write_dblogmessage("view"," View staff position ", "Staff position details...");
         $this->load->view('staffmgmt/staffposition');
   }
 
@@ -765,6 +767,7 @@ class Staffmgmt extends CI_Controller
                 $this->load->view('staffmgmt/newstaffposition');
 		return false; 
 		}
+
 
         $dataposition = array(
         'sp_tnt'=>$_POST['tnt'],
@@ -856,7 +859,7 @@ class Staffmgmt extends CI_Controller
 
         $data['ss'] = array('name' => 'ss', 'id' => 'ss', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_sancstrenght, );
 
-        $data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_position, );
+        $data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_position, 'readonly' => 'readonly' );
 
         $data['v'] = array('name' => 'v', 'id' => 'v', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vacant, );
 
@@ -868,9 +871,9 @@ class Staffmgmt extends CI_Controller
 
         $data['sstem'] = array('name' => 'sstem', 'id' => 'sstem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_sstemporary, );
 
-        $data['pper'] = array('name' => 'pper', 'id' => 'pper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_pospermanent, );
+        $data['pper'] = array('name' => 'pper', 'id' => 'pper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_pospermanent, 'readonly' => 'readonly' );
 
-        $data['ptem'] = array('name' => 'ptem', 'id' => 'ptem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_postemporary, );
+        $data['ptem'] = array('name' => 'ptem', 'id' => 'ptem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_postemporary, 'readonly' => 'readonly' );
 
         $data['vper'] = array('name' => 'vper', 'id' => 'vper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vpermanenet, );
 
@@ -960,6 +963,48 @@ class Staffmgmt extends CI_Controller
                 $this->load->view('staffmgmt/editstaffposition', $data);
 		return false; 
 		}
+
+        $instdataspa = array(
+	'spa_spid'=>$sp_id,
+        'spa_tnt'=> $editsp_data->sp_tnt,
+        'spa_type'=> $editsp_data->sp_type,
+        'spa_emppost'=> $editsp_data->sp_emppost,
+        'spa_grppost'=> $editsp_data->sp_grppost,
+        'spa_scale'=>$editsp_data->sp_scale,
+        'spa_methodRect'=>$editsp_data->sp_methodRect,
+        'spa_group'=>$editsp_data->sp_group,
+        'spa_uo'=>$editsp_data->sp_uo,
+        'spa_dept'=>$editsp_data->sp_dept,
+        'spa_address1'=>$editsp_data->sp_address1,
+        'spa_address2'=>'Null',
+        'spa_address3'=>'Null',
+        'spa_campusid'=>$editsp_data->sp_campusid,
+        'spa_per_temporary'=>'Null',
+        'spa_plan_nonplan'=>$editsp_data->sp_plan_nonplan,
+        'spa_schemecode'=>$editsp_data->sp_schemecode,
+        'spa_sancstrenght'=>$editsp_data->sp_sancstrenght,
+        'spa_position'=>$editsp_data->sp_position,
+        'spa_vacant'=>$editsp_data->sp_vacant,
+        'spa_remarks'=>$editsp_data->sp_remarks,
+        'spa_ssdetail'=>$editsp_data->sp_ssdetail,
+        'spa_sspermanent'=>$editsp_data->sp_sspermanent,
+        'spa_sstemporary'=>$editsp_data->sp_sstemporary,
+        'spa_pospermanent'=>$editsp_data->sp_pospermanent,
+        'spa_postemporary'=>$editsp_data->sp_postemporary,
+        'spa_vpermanenet'=>$editsp_data->sp_vpermanenet,
+        'spa_vtemporary'=>$editsp_data->sp_vtemporary,
+        'spa_org_id'=> '1',
+	'spa_archuserid'=>$this->session->userdata('id_user'),
+	'spa_archdate'=>date('y-m-d')
+        );
+
+        $spflag=$this->sismodel->insertrec('staff_position_archive', $instdataspa);
+        if(!$spflag)
+         {
+              $this->logger->write_dblogmessage("error","Error in insert staff position archive ", "Error in  staff position archive record insert" .$sp_id );
+         }else{
+              $this->logger->write_dblogmessage("insert","Insert staff position archive", "Record inserted in staff position archive successfully.." .$sp_id );
+         }
 
       $update_data = array(
                 'sp_tnt'=> $tnt,
