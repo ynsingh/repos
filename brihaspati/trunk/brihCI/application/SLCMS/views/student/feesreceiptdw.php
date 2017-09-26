@@ -73,7 +73,6 @@
                 $totalfees = '';
                 //$this->progresult = $this->Common_model->get_list('fees_master');
                 foreach($this->feesresult as $d2){
-                 
                 	echo "<tr>";
                 	echo "<td>". $d2->fm_head."</td>";
                 	echo "<td>". $d2->fm_amount."</td>";
@@ -87,7 +86,7 @@
 	if($this->ftype == "semfee"){
 		$due=$totalfees-$this->feeamount;
 		if($due == 0){
-			echo "<tr><td align=right> Balence Amount</td><td>". $due ."</td></tr>";
+			echo "<tr><td align=right> Balance Amount</td><td>". $due ."</td></tr>";
 		}
 		if($due > 0){
 			echo "<tr><td align=right> Dues Amount</td><td>". $due ."</td></tr>";

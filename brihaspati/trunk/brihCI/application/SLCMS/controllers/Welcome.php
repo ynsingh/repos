@@ -27,13 +27,25 @@ class Welcome extends CI_Controller {
         	$this->load->model("login_model", "login");
                 $this->load->model("User_model", "usrmodel");
                 $this->load->model("Common_model", "commodel");
+		$this->load->model("DateSem_model","datmodel");
         	//if(!empty($_SESSION['id_user'])){
                     
                 //}
             	//	redirect('home');
     	}
+	 public function ginstruction()
+	{
+       	 	$this->load->view('enterence/declaration');
+	}
 
 	public function index() {
+		$acadyear = $this->usrmodel->getcurrentAcadYear();
+		$cdate = date('Y-m-d H:i:s');
+		$field=array('prgcat_id','prgcat_name');
+		$this->prgcat = $this->commodel->get_listmore('programcategory',$field);
+		
+		//get certificate list in add_admission open
+		
             if($_POST) {
                 $result = $this->login->validate_user($_POST);
                 /*get role by using model class and set templates according to role*/
@@ -128,5 +140,6 @@ class Welcome extends CI_Controller {
             }    
             $this->load->view("welcome_message");
         }//close index function
-	
+
+
     }//close class

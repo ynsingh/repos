@@ -6,13 +6,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title>Welcome </title>
 	 <link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
-<!--	<style type="text/css">
-
-	::selection { background-color: #E13300; color: white; }
-	::-moz-selection { background-color: #E13300; color: white; }
-
+       <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/helpdoc.css">
+	<style>
+		table,th, td{
+   		 border: 0px solid black;
+	}
 	</style>
--->
 </head>
 <body>
 
@@ -24,7 +23,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php if(isset($_SESSION)) {
         	echo $this->session->flashdata('flash_data');
     	} ?>
+<br>
+	<?php $this->load->view('enterence/enterence_head');?>
  	<br><br>
+
+
 	<center>
     	<form action="<?= site_url('welcome') ?>" method="post">
         	<table>
@@ -48,10 +51,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</table>
     	</form>
 </center>
+
+
 	</div>
-	<?php $this->load->view('template/footer'); ?>
-	<!--<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>-->
+<div class="content" width="80" >
+        <div class="sideleft">
+        <div id="cssmenu" style="margin-top:30px;">
+                <ul>
+
+<li><a href="ADMISSION NOTIFICATION">ADMISSION NOTIFICATON</a></li>
+<?php 
+$cdate = date('Y-m-d H:i:s');
+foreach($this->prgcat as $pname){
+	$pid = $pname->prgcat_id;
+	$selectfield=array('admop_prgname_branch');
+	$data=array(
+      		'admop_prgcat' => $pid,
+      		'admop_lastdate>' => $cdate,
+       	);
+	$progid = $this->commodel-> get_listspficemore('admissionopen',$selectfield,$data);
+?>
+         <li class='has-sub'><a href="#Certification"><?php echo $pname->prgcat_name;?></a>
+                        <ul>
+			<?php foreach($progid as $row){
+					$id = $row->admop_prgname_branch;
+					$pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$id)->prg_name;?>
+                        		<li><a href="<?php echo site_url('Welcome/ginstruction');?> "><?php echo $pname;?></a></li>
+			<?php }?>
+                        </ul>
+<?php }?>
+                </div>
+        </div>
 </div>
 
+<br></br>
+<br></br>
+<br>
+<br></br>
+<br></br>
+<br></br>
+
+<?php $this->load->view('template/footer'); ?>
+	<!--<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>-->
 </body>
 </html>

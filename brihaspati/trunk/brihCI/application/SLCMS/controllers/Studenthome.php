@@ -6,6 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author Sharad Singh (sharad23nov@yahoo.com) Student dashboard,Student semester registration,Student subject registration 
  * @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author Manorama Pal (palseema30@gmail.com) Student List of selected program
+ * @author sumit saxena(sumitsesaxena@gmail.com) [attendence add ,search and view]
  */
 class Studenthome extends CI_Controller
 {
@@ -494,6 +495,7 @@ class Studenthome extends CI_Controller
         );
         $this->prgsublist=$this->commodel->get_listspficemore('program_subject_teacher',$selectfield,$data);
         $datarec['prgsublist']=$this->prgsublist;
+//	print_r($this->prgsublist);
         if(isset($_POST)){
             /* without search get all student list according to selected program*/
             
@@ -543,5 +545,264 @@ class Studenthome extends CI_Controller
         }//ifpost
         $this->load->view('student/studentlist',$datarec);
     }
+
+   //This function check for duplicate student attendence		   
+    public function stuexist($smuid) {
+        $is_exist = $this->commodel->isduplicate('student_attendance','satd_smid',$smuid);
+	//$stuname = $this->commodel->get_listspfic1('student_master','sm_fname','sm_id',$smuid)->sm_fname;
+	//print_r($is_exist);
+        if ($is_exist)
+        {
+		$this->form_validation->set_message('stuexist','That students' ." ".$smuid. " ".'attendence is already submited.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+
+	public function student_attendence(){
+		
+		$uid = $this->session->userdata('id_user');
+		$uname = $this->session->userdata('username');
+		//$this->uname = $this->session->userdata('username');
+		//get the value of current semester and academic year
+        	$acadyear = $this->usermodel->getcurrentAcadYear();
+        	$datarec['academicyear']=$acadyear;
+
+		//get program list of program,subject,paper and semester in program_subject_teacher
+       		$selectfield=array('pstp_prgid');
+		//$selectfield=array('pstp_prgid');
+        	$data=array(
+            		'pstp_teachid' => $uid,
+            		'pstp_acadyear' => $acadyear,
+        	);
+        	$prgsublist = $this->commodel->get_distinctrecord('program_subject_teacher',$selectfield,$data);
+		//print_r($this->prgsublist);
+        	$datarec['prgsublist']=$prgsublist;
+
+		if(isset($_POST)){
+			$this->sem = $this->input->post('semester',TRUE);
+			$this->prgid = $this->input->post('program_branch',TRUE);
+			$this->subjectid = $this->input->post('subjectname',TRUE);
+			$this->paperid = $this->input->post('papername',TRUE);
+			$date = $this->input->post('adate',TRUE);
+			$search = $this->input->post('search');
+
+           		 if (isset($search)) 
+            		 {
+				$selectdata=array('sp_smid');
+				$record=array(
+            				'sp_programid'  => $this->prgid,
+            				'sp_semester'   => $this->sem,
+					'sp_acadyear'   => $acadyear
+        				);
+        			$getdata = $this->commodel->get_listarry('student_program',$selectdata,$record);
+				$datarec['getdata']=$getdata;
+			 }//if isset search close
+
+			 $submit = $this->input->post('Submit');
+           		 if (isset($submit))
+			 {
+				$this->form_validation->set_rules('classtype','Select Class Type','trim|xss_clean|required');
+				if($this->form_validation->run() == TRUE){
+
+				$scenter = $this->input->post('studycenter',TRUE);
+				$department = $this->input->post('department',TRUE);
+				$countr = $this->input->post('count',TRUE);
+					for($i=0; $i<$countr ; $i++)
+					{
+						$smid = $_POST['stu_master_id'.$i];
+						$attendence = $_POST['attendence'.$i];
+						//$class = $_POST['cltype'.$i];
+						if(!empty($smid))
+						{
+
+						$pstdatacheck = array('satd_smid'=>$smid, 'satd_scid'=>$scenter, 'satd_deptid'=>$department, 'satd_acadyear'=>$acadyear, 'satd_prgid'=>$_POST['program_branch'], 'satd_sem'=>$_POST['semester'], 'satd_sem'=>$_POST['semester'],'satd_papid'=>$_POST['papername'],'satd_subid'=>$_POST['subjectname'],'satd_astatus'=>$attendence,'satd_adate'=>$date,'satd_creatorid'=>$uname,'satd_createdate'=>$date,'satd_classtype'=>$_POST['classtype'] );
+						
+							$pstdatadup = $this->commodel->isduplicatemore('student_attendance', $pstdatacheck);
+        						if($pstdatadup){
+								echo "<span style=' color: #D8000C;background-color: #FFBABA;'>";
+								$this->session->set_flashdata("err_message", "Student record is already exist .");
+								echo "</span>";
+                						redirect('studenthome/student_attendence');
+								return;
+							}
+        						else{
+							$attendence = array(
+								'satd_smid'   		=>	$smid,
+                						'satd_scid'  		=>	$scenter,
+                						'satd_deptid'   	=>	$department,
+                						'satd_acadyear'   	=>	$acadyear,
+								'satd_prgid'     	=>	$_POST['program_branch'],
+								'satd_sem'   	 	=>	$_POST['semester'],
+                						'satd_papid'  	 	=>	$_POST['papername'],
+								'satd_subid'  	 	=>	$_POST['subjectname'],
+								'satd_classtype' 	=>	$_POST['classtype'],
+								'satd_astatus'   	=>	$attendence,
+								'satd_adate'      	=>	$date,
+								'satd_creatorid'    	=>	$uname,
+								'satd_createdate'      	=>	$date
+                					);
+							
+								$insertatt = $this->commodel->insertrec('student_attendance',$attendence);
+								if(!$insertatt)
+								{
+                   				 	 		$this->logger->write_logmessage("insert", "Error in student attendence  " );
+                    					 		$this->logger->write_dblogmessage("insert", "Error in student attendence  " );
+                   	 				 		$this->session->set_flashdata("err_message",'Error in student attendence ' );
+                						}
+                						else{
+                    							$this->logger->write_logmessage("insert","Student attendence send successfully ");
+                    							$this->logger->write_dblogmessage("insert", "Student attendence send successfully ");
+                   							$this->session->set_flashdata("success", "Today Attendence is Submitted.");
+                				    		}
+							}//close else	
+						
+						}//if empty close
+						else {break;}
+				   	}//for close
+					
+				}
+				//$this->session->set_flashdata("success", "Today Attendence is Done.");
+				//redirect('studenthome/student_attendence');
+			  }//if isset submit close
+			
+
+		}//if isset post close
+		$this->load->view('student/student_attendence',$datarec);
+	}
+
+	public function student_attendence_view(){
+		$uname = $this->session->userdata('username');
+		//get student attendence record
+		$studatt = $this->commodel->get_listrow('student_attendance','satd_creatorid',$uname)->result();
+		
+		$datarec['studatt'] =$studatt;
+		$this->load->view('student/student_attendence_view',$datarec);
+	}
+
+	// get student record with search
+	/*public function student_record(){
+		$uid=$this->session->userdata('id_user');	
+		//get the value of current semester and academic year
+        	$acadyear = $this->usermodel->getcurrentAcadYear();
+        	$datarec['academicyear']=$acadyear;
+
+		//get program list of program,subject,paper and semester in program_subject_teacher
+       		//$selectfield=array('pstp_prgid','pstp_sem','pstp_subid','pstp_scid','pstp_papid');
+		$selectfield=array('pstp_prgid');
+        	$data=array(
+            		'pstp_teachid' => $uid,
+            		'pstp_acadyear' => $acadyear,
+        	);
+        	$this->prgsublist=$this->commodel->get_distinctrecord('program_subject_teacher',$selectfield,$data);
+		
+        	$datarec['prgsublist']=$this->prgsublist;
+
+	if(isset($_POST['search'])){
+		$sem = $this->input->post('semester',TRUE);
+		$prgid = $this->input->post('program_branch',TRUE);
+		$subject = $this->input->post('subjectname',TRUE);
+		$paper = $this->input->post('papername',TRUE);
+		$selectdata=array('sp_smid');
+        		$record=array(
+            			'sp_programid'  => $prgid,
+            			'sp_semester'   => $sem,
+				'sp_acadyear'   => $acadyear
+        		);
+        	$this->getdata = $this->commodel->get_listarry('student_program',$selectdata,$record);
+
+	}
+		$this->load->view('student/student_attendence',$datarec);	
+		
+	}*/
+
+/*********************************************************student attendence dependent dropdown start**************************************************/
+	//get semester record
+	public function semester_get(){
+
+		$prgid = $this->input->post('program_branch');
+
+		$uid=$this->session->userdata('id_user');
+		//get program list of program,subject,paper and semester in program_subject_teacher
+       		$selectfield=array('pstp_prgid','pstp_sem');
+        	$data=array(
+            		'pstp_teachid' => $uid,
+			'pstp_prgid'	=>$prgid
+        	);
+        	$sem = $this->commodel->get_distinctrecord('program_subject_teacher',$selectfield,$data);
+
+		//$sem  = $this->commodel->get_listspfic2('program_subject_teacher','','pstp_sem','pstp_prgid',$prgid,'pstp_sem');
+		echo "<select name='semester' id='semester'>";	
+			echo "<option selected='true' disabled>"."Semester"."</option>";
+		foreach($sem as $datas):   
+			 echo "<option  value='$datas->pstp_sem'>"."$datas->pstp_sem"."</option>";
+   		endforeach;
+		echo "</select>";
+			
+	}
+	//get all teacher subjects
+	public function subject_get(){
+
+		$sem = $this->input->post('semester');
+		$uid=$this->session->userdata('id_user');
+		//get program list of program,subject,paper and semester in program_subject_teacher
+       		$selectfield=array('pstp_sem','pstp_subid');
+        	$data=array(
+            		'pstp_teachid' => $uid,
+			'pstp_sem'	=>$sem
+        	);
+        	$subject = $this->commodel->get_distinctrecord('program_subject_teacher',$selectfield,$data);
+		foreach($subject as $data){
+			$subname = $this->commodel->get_listspfic1('subject','sub_name','sub_id',$data->pstp_subid)->sub_name;
+		}
+		echo "<select name='subjectname' class='subjectname'>";	
+			echo "<option selected='true' disabled>"."Subject Name"."</option>";
+		foreach($subject as $datas):   
+			 echo "<option id='subjectname' value='$datas->pstp_subid'>"."$subname"."</option>";
+   		endforeach;
+		echo "</select>";
+			
+	}
+
+	//get all teacher papers
+	public function paper_get(){
+		$sub = $this->input->post('subjectname');
+		$uid=$this->session->userdata('id_user');
+		$prgid = $this->commodel->get_listspfic1('program_subject_teacher','pstp_prgid','pstp_teachid',$uid)->pstp_prgid;
+
+		//$subid = $this->commodel->get_listspfic1('program_subject_teacher','pstp_subid','pstp_teachid',$uid)->pstp_subid;
+		//get program list of program,subject,paper and semester in program_subject_teacher
+       		$selectfield=array('pstp_subid','pstp_papid','pstp_prgid');
+        	$data=array(
+            		'pstp_teachid'  => $uid,
+			'pstp_subid'	=> $sub,
+			'pstp_prgid'	=> $prgid
+        	);
+        	$paper = $this->commodel->get_distinctrecord('program_subject_teacher',$selectfield,$data);
+		foreach($paper as $row){
+			//$papername = $this->commodel->get_listspfic1('subject_paper','subp_name','subp_id',$data->pstp_papid)->subp_name;
+			$selectfield=array('subp_name','subp_id');
+			$data=array(
+            			'subp_sub_id'   => $row->pstp_subid,
+				'subp_id'	=> $row->pstp_papid,
+				'subp_degree'	=> $row->pstp_prgid
+	        		);
+		$papername = $this->commodel->get_distinctrecord('subject_paper',$selectfield,$data);
+			
+		}
+		echo "<select name='papername'>";	
+			echo "<option selected='true' disabled>"."Paper Name"."</option>";
+		foreach($papername as $datas):   
+			 echo "<option id='papername' value='$datas->subp_id'>"."$datas->subp_name"."</option>";
+   		endforeach;
+		echo "</select>";
+			
+	}
+
+/*********************************************************student attendence dependent dropdown end**************************************************/
+
 		 
 }

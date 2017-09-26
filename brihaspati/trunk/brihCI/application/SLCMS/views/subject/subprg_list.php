@@ -38,11 +38,10 @@
                     <th>Semester</th>
                     <th>Subject</th>
                     <th>Paper</th>
-                          
                 </tr>
             </thead>
             <tbody>
-                <?php if( count($this->cdetail) ): 
+                <?php if(count($this->cdetail)): 
                 $count=$this->uri->segment(3, 0);   
                 foreach($this->cdetail as $row){ ?>
                 <tr align="center"> 
@@ -60,7 +59,7 @@
                         <td><?php echo $this->cmodel->get_listspfic1('subject','sub_name','sub_id',$row->pstp_subid)->sub_name;?></td>
                         <td><?php echo $this->cmodel->get_listspfic1('subject_paper','subp_name','subp_id',$row->pstp_papid)->subp_name;?></td>
                     </tr>
-                <?php }; ?>
+                <?php };?>
                 <?php else : ?>
                 <tr><td colspan= "7" align="center"> No Records found...!</td></tr>
                 <?php endif;?>

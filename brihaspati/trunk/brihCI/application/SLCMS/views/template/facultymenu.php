@@ -109,7 +109,7 @@
                 <li class="dropdown list-category"><a href="#">Student</a>
                     <ul class="dropdown-menu mega-dropdown-menu" style="background-color:#2a8fcf; color:red;">
                         <li><a href="<?php echo site_url();?>/Studenthome/studentlist">Student List</a></li>
-                        <li> <a href="#">Attendance</a></li>
+                        <li> <a href="<?php echo site_url();?>/Studenthome/student_attendence">Attendance</a></li>
                         <li> <a href="<?php echo site_url();?>/Faculty/studentmarks">Marks</a></li>
                         <li><a href="#">Notice</a></li>
                     </ul>   
