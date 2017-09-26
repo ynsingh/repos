@@ -25,6 +25,24 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `pre Admission Data`
 --
+CREATE TABLE `admissionopen` (
+  `admop_id` int(11) NOT NULL,
+  `admop_acadyear` varchar(100) DEFAULT NULL,
+  `admop_prgcat` varchar(255) DEFAULT NULL,
+  `admop_prgname_branch` varchar(255) DEFAULT NULL,
+  `admop_min_qual` blob,
+  `admop_entexam_patt` blob,
+  `admop_entexam_date` datetime DEFAULT NULL,
+  `admop_startdate` datetime DEFAULT NULL,
+  `admop_lastdate` datetime DEFAULT NULL,
+  `admop_app_received` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `admissionopen`
+  ADD PRIMARY KEY (`admop_id`);
+ALTER TABLE `admissionopen`
+  MODIFY `admop_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
 
 CREATE TABLE `admissionstudent_master` (
   `asm_id` int(11) NOT NULL,
@@ -844,7 +862,7 @@ CREATE TABLE `student_attendance` (
 
 ALTER TABLE `student_attendance`
   ADD PRIMARY KEY (`satd_id`),
-  ADD UNIQUE KEY `satd_smid` (`satd_smid`,`satd_scid`,`satd_prgid`,`satd_subid`,`satd_papid`,`satd_acadyear`,`satd_sem`,`satd_adate`);
+  ADD UNIQUE KEY `satd_smid` (`satd_smid`,`satd_scid`,`satd_prgid`,`satd_subid`,`satd_papid`,`satd_acadyear`,`satd_sem`,`satd_adate`,`satd_classtype`);
 
 ALTER TABLE `student_attendance`
   MODIFY `satd_id` int(11) NOT NULL AUTO_INCREMENT;
