@@ -1,6 +1,6 @@
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>                                                    
-<html>i
+<html>
 <title>View admission Open</title>
 
   <head>
@@ -61,7 +61,7 @@
 			echo ")";
 		?>
 	    </td>
-	    <td> <?php echo $row->admop_entexam_fee?></td>
+	    <td> <?php echo $row->admop_entexam_fees?></td>
             <td> <?php echo $row->admop_min_qual ?></td>
 	    <td> <?php echo $row->admop_entexam_patt ?></td>
 	    <td> <?php echo $row->admop_entexam_date ?></td>

@@ -66,7 +66,7 @@ class Enterence extends CI_Controller {
             'admop_acadyear'=>$_POST['academicyear'],
             'admop_prgcat'=>$_POST['programcategory'],
             'admop_prgname_branch'=>$_POST['programname'],
-	    'admop_entexam_fee'=>$_POST['enterenceexamfees'],
+	    'admop_entexam_fees'=>$_POST['enterenceexamfees'],
             'admop_min_qual'=>$_POST['minimumqualification'],
             'admop_entexam_patt'=>$_POST['entranceexampattern'],
             'admop_entexam_date'=> $_POST['entranceexamdate'],
@@ -131,8 +131,8 @@ class Enterence extends CI_Controller {
             //'readonly' => 'readonly'
           );
 
-            $data['admop_entexam_fee'] = array(
-             'name' => 'admop_entexam_fee',
+            $data['admop_entexam_fees'] = array(
+             'name' => 'admop_entexam_fees',
              'maxlength' => '50',
              'size' => '40',
              'value' => $admop_data->admop_entexam_fee,
@@ -209,7 +209,7 @@ class Enterence extends CI_Controller {
             $data['admop_acadyear']['value'] = $this->input->post('admop_acadyear', TRUE);
             $data['admop_prgcat']['value'] = $this->input->post('admop_prgcat', TRUE);
             $data['admop_prgname_branch']['value'] = $this->input->post('admop_prgname_branch', TRUE);
-            $data['admop_entexam_fee']['value'] = $this->input->post('admop_entexam_fee', TRUE);
+            $data['admop_entexam_fees']['value'] = $this->input->post('admop_entexam_fees', TRUE);
             $data['admop_min_qual']['value'] = $this->input->post('admop_min_qual', TRUE);
             $data['admop_entexam_patt']['value'] = $this->input->post('admop_entexam_patt', TRUE);
             $data['admop_entexam_date']['value'] = $this->input->post('admop_entexam_date', TRUE);
@@ -225,7 +225,7 @@ class Enterence extends CI_Controller {
         }
 	else{
             $acadyear = $this->input->post('admop_acadyear', TRUE);
-            $enterenceexamfees = strtoupper($this->input->post('admop_entexam_fee', TRUE));
+            $enterenceexamfees = strtoupper($this->input->post('admop_entexam_fees', TRUE));
             $minimumqualification = $this->input->post('admop_min_qual', TRUE);
             $entranceexampattern = ucwords(strtolower($this->input->post('admop_entexam_patt', TRUE)));
             $entranceexamdate= ucwords(strtolower($this->input->post('admop_entexam_date', TRUE)));
