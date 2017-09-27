@@ -34,9 +34,11 @@ class Welcome extends CI_Controller {
             	//	redirect('home');
     	}
 	 public function ginstruction()
-	{
-       	 	$this->load->view('enterence/declaration');
-	}
+	 {
+	    $prog_id=$this->uri->segment(2);
+		
+       	    $this->load->view('enterence/declaration',$prog_id);
+	 }
 
 	public function index() {
 		$acadyear = $this->usrmodel->getcurrentAcadYear();
