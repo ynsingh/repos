@@ -67,19 +67,22 @@ foreach($this->prgcat as $pname){
 	$selectfield=array('admop_prgname_branch');
 	$data=array(
       		'admop_prgcat' => $pid,
-      		'admop_lastdate>' => $cdate,
+      		'admop_lastdate >=' => $cdate,
        	);
 	$progid = $this->commodel-> get_listspficemore('admissionopen',$selectfield,$data);
+//	print_r($progid);
 ?>
-         <li class='has-sub'><a href="#Certification"><?php echo $pname->prgcat_name;?></a>
+         <li class='has-sub'><a href=""><?php echo $pname->prgcat_name;?></a>
                         <ul>
 			<?php foreach($progid as $row){
 					$id = $row->admop_prgname_branch;
 					$pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$id)->prg_name;?>
-                        		<li><a href="<?php echo site_url('Welcome/ginstruction');?> "><?php echo $pname;?></a></li>
+                        		<li><a href="<?php echo site_url('Welcome/ginstruction');?> "><?php echo $pname ."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$id)->prg_branch .")" ;?></a></li>
 			<?php }?>
                         </ul>
 <?php }?>
+	</li>
+</ul>
                 </div>
         </div>
 </div>
