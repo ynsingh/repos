@@ -1,3 +1,5 @@
+<!--@filename program.php ==>  @kumar.abhay.4187@gmail.com(repopluate) -->
+
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php $this->load->view('template/header.php');?>
  <h1>Welcome <?= $this->session->userdata('username') ?></h1>
@@ -109,51 +111,51 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     </tr>
     <tr><td>
         <label for="prgname">Program Name</label></td>
-        <td><input type="text" name="prgname" size="35"/>
+        <td><input type="text" name="prgname" size="35"  size="43" value="<?php echo isset($_POST["prgname"]) ? $_POST["prgname"] : ''; ?>" />
         </td><td><?php echo form_error('prgname')?>
 	</td><td>Example : Batchlor of Art, Master of Art etc  
     </td></tr>
     <tr><td>
         <label for="prgbranch">Program Branch</label></td>
-        <td><input type="text" name="prgbranch" size="35"/>
+        <td><input type="text" name="prgbranch" size="35"  size="43" value="<?php echo isset($_POST["prgbranch"]) ? $_POST["prgbranch"] : ''; ?>" />
         </td><td><?php echo form_error('prgbranch')?>
 	</td><td>Example :UG (Arts, Science, commerce etc), PG (Physics, Math  etc)
     </td></tr>
 
     <tr><td>
         <label for="prgcode">Program Code</label></td>
-        <td><input type="text" name="prgcode" size="35"/>
+        <td><input type="text" name="prgcode" size="35"  size="43" value="<?php echo isset($_POST["prgcode"]) ? $_POST["prgcode"] : ''; ?>" />
         </td><td><?php echo form_error('prgcode')?>
     </td></tr>
     <tr><td>
         <label for="prgshort">Program Short</label></td>
-        <td><input type="text" name="prgshort" size="35"/>
+        <td><input type="text" name="prgshort" size="35"  size="43" value="<?php echo isset($_POST["prgshort"]) ? $_POST["prgshort"] : ''; ?>" />
         </td><td><?php echo form_error('prgshort')?>
     </td></tr>
     <tr><td>
         <label for="prgdesc">Program Description</label></td>
-        <td><input type="text" name="prgdesc" size="35"/>
+        <td><input type="text" name="prgdesc" size="35"  size="43" value="<?php echo isset($_POST["prgdesc"]) ? $_POST["prgdesc"] : ''; ?>" />
         </td><td><?php echo form_error('prgdesc')?>
     </td></tr>
     <tr><td>
         <label for="prgcredit">Program Credit</label></td>
-        <td><input type="text" name="prgcredit" size="35"/>
+        <td><input type="text" name="prgcredit" size="35"  size="43" value="<?php echo isset($_POST["prgcredit"]) ? $_POST["prgcredit"] : ''; ?>" />
         </td><td><?php echo form_error('prgcredit')?>
     </td></tr>
     <tr><td>
         <label for="prgseat">Total Seat</label></td>
-        <td><input type="text" name="prgseat" size="35"/>
+        <td><input type="text" name="prgseat" size="35"  size="43" value="<?php echo isset($_POST["prgseat"]) ? $_POST["prgseat"] : ''; ?>" />
         </td><td><?php echo form_error('prgseat')?>
     </td></tr>
     <tr>
         <td><label for="prgmintime">Program Min Time</label></td>
-        <td><input type="text" name="prgmintime" size="35"/>
+        <td><input type="text" name="prgmintime" size="35"  size="43" value="<?php echo isset($_POST["prgmintime"]) ? $_POST["prgmintime"] : ''; ?>" />
         </td><td><?php echo form_error('prgmintime')?></td>
         <td>in Years</td>
     </tr>
     <tr>
         <td><label for="prgmaxtime">Program Max Time</label></td>
-        <td><input type="text" name="prgmaxtime" size="35"/>
+        <td><input type="text" name="prgmaxtime" size="35"  size="43" value="<?php echo isset($_POST["prgmaxtime"]) ? $_POST["prgmaxtime"] : ''; ?>" />
         </td><td><?php echo form_error('prgmaxtime')?></td>
          <td>in Years</td>
     </tr>

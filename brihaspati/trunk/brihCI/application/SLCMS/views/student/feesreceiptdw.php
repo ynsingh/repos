@@ -3,8 +3,16 @@
 <html>
     <head>
         <title>Welcome </title>
+
+	
+<style>
+      #watermark { position: fixed; bottom: 0px; top: 10%;left:25%;right: 0px; width: 300px; height: 300px; opacity: .3; }
+    </style>
     </head>
+
     <body>
+	<div id="watermark"><img src="assets/images/logogray.jpg" height="100%" width="100%"></div>
+
 	<div style="border:2px solid black;">
 	<img src="uploads/logo/logo2.jpg" alt="logo" style="width:100%;height:70px;">
 	<table style="width:100%;">
@@ -54,12 +62,12 @@
 	
 	<table border=1 style="width:100%;margin-top:10px;">
 	   <tr>
-               <th style="text-align:justify;background-color:#dbdbdb;color:black;font-size:18px;">Fees details</th>
+               <th style="text-align:justify;color:black;font-size:18px;">Fees details</th>
             </tr>
 
 	</table>
           <table  border=1 style="width:100%;">
-        <thead style="background-color:#dbdbdb;color:black;font-size:15px;">
+        <thead style="color:black;font-size:15px;">
                 <tr>
                 <td><b>Description<b></td>
                 <td><b>Amount</b></td>
@@ -110,5 +118,6 @@
 		<td style="color:"><i>This is computer generated receipt and no signature required.</i></td>
 	</tr>
 </table>
-    </body>  
+
+</body>  
 </html>    

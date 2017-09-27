@@ -77,10 +77,10 @@ foreach($this->prgcat as $pname){
 			<?php foreach($progid as $row){
 					$id = $row->admop_prgname_branch;
 					$pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$id)->prg_name;
-					$progid = $this->commodel->get_listspfic1('program','prg_id','prg_category',$pid)->prg_id;
+					//$progid = $this->commodel->get_listspfic1('program','prg_id','prg_category',$pid)->prg_id;
 				?>
-                        		<li><a href="<?php echo site_url('welcome/ginstruction/');echo $progid;?>" target='_blank'><?php echo $pname ."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$id)->prg_branch .")" ;?></a></li>
-					<input type="hidden" value="<?php echo $progid;?>" name="progid">
+                        		<li><a href="<?php echo site_url('welcome/ginstruction/');echo $id;?>"><?php echo $pname ."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$id)->prg_branch .")" ;?></a></li>
+					<input type="hidden" value="<?php echo $id;?>" name="prgid">
 			<?php }?>
                         </ul>
 <?php }?>
