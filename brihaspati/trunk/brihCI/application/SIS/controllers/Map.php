@@ -20,6 +20,7 @@ class Map extends CI_Controller
         $this->load->model('Map_model',"mapmodel");
         $this->load->model('Common_model',"commodel");
         $this->load->model('Login_model',"loginmodel"); 
+	$this->load->model('SIS_model'); 
         
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
@@ -1302,5 +1303,156 @@ class Map extends CI_Controller
       }  
                         
   }
+
+ /****************************************** Map scheme with department ********************************************/
+
+
+public function viewschemedept()
+     {
+        $this->result = $this->SIS_model->get_list('map_scheme_department');
+        $this->logger->write_logmessage("view"," View map scheme with department setting", "map scheme with department details...");
+        $this->logger->write_dblogmessage("view"," View map scheme with department setting", "map scheme with department setting details...");
+        $this->load->view('map/viewschemedept',$this->result);
+     }
+
+public function schemedept(){
+                  $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
+        $this->schresult = $this->SIS_model->get_listspfic2('scheme_department','sd_id', 'sd_name');
+   
+        if(isset($_POST['schemedept'])) {
+        $this->form_validation->set_rules('campus','Campus Name','trim|xss_clean|required');
+        $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean|required');
+        $this->form_validation->set_rules('scheme','Scheme List','trim|xss_clean|required');
+
+
+            if($this->form_validation->run()==TRUE){
+
+            $data = array(
+                'msd_scid'=>ucwords(strtolower($_POST['campus'])),
+                'msd_deptid'=>strtoupper($_POST['dept_name']),
+                'msd_schmid'=>$_POST['scheme']
+
+            );
+           $msdflag=$this->SIS_model->insertrec('map_scheme_department', $data) ;
+           if(!$msdflag)
+           {
+                $this->logger->write_logmessage("insert"," Error in adding map with scheme department ", " map with scheme department data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding map with scheme department ", " map with scheme department data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding map with scheme department - ' . $_POST['msdname'] , 'error');
+                $this->load->view('map/schemedept');
+           }
+          else{
+                $this->logger->write_logmessage("insert"," add map with scheme department ", "map with scheme department record added successfully..."  );
+                $this->logger->write_dblogmessage("insert"," add map with scheme department ", "map with scheme department record added successfully..." );
+                $this->session->set_flashdata("success", "Map with Scheme Department added successfully...");
+                redirect("map/viewschemedept", "refresh");
+              }
+           }
+
+        }
+      $this->load->view('map/schemedept');
+   }
+
+/**This function is used for update Map with Scheme Department records
+     * @param type $id
+     * @return type
+     */
+
+
+       public function editschemedept($msd_id) {
+	$this->schresult = $this->SIS_model->get_listspfic2('scheme_department','sd_id', 'sd_name');
+        $msd_data_q=$this->SIS_model->get_listrow('map_scheme_department','msd_id', $msd_id);
+         
+        if ($msd_data_q->num_rows() < 1)
+        {
+           redirect('setup/editschemedept');
+        }
+      $MapWithSchemeDepartment_data = $msd_data_q->row();
+        
+        /* Form fields */
+
+
+
+        $data['msd_scid'] = array(
+            'name' => 'msd_scid',
+            'id' => 'msd_scid',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$MapWithSchemeDepartment_data->msd_scid)->sc_name, 
+           'readonly' => 'readonly'
+        );
+
+
+        $data['msd_deptid'] = array(
+           'name' => 'msd_deptid',
+           'id' => 'msd_deptid',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$MapWithSchemeDepartment_data->msd_deptid)->dept_name,
+            'readonly' => 'readonly'
+        );
+
+
+       $data['msd_schmid'] = array(
+           'name' => 'msd_schmid',
+           'id' => 'msd_schmid',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $this->SIS_model->get_listspfic1('scheme_department','sd_name', 'sd_id',$MapWithSchemeDepartment_data->msd_schmid)->sd_name, 
+        );
+
+
+    $data['msd_id'] = $msd_id;
+
+        $this->form_validation->set_rules('scheme','Scheme List','trim');
+
+
+        if ($_POST)
+        {
+            $data['msd_schmid']['value'] = $this->input->post('msd_schmid', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('map/editschemedept', $data);
+            return;
+        }
+        else
+        {
+            $msd_schmid = strtoupper($this->input->post('msd_schmid', TRUE));
+            $logmessage = "";
+
+         
+            if($MapWithSchemeDepartment_data->msd_schmid != $msd_schmid)
+                $logmessage = "Map with Scheme Department " .$MapWithSchemeDepartment_data->msd_schmid. " changed by " .$msd_schmid;
+
+            $update_data = array(
+               'msd_schmid' =>$msd_schmid,
+
+            );
+
+           $msdflag=$this->SIS_model->updaterec('map_scheme_department', $update_data, 'msd_id', $msd_id);
+           if(!$msdflag)
+            {
+                $this->logger->write_logmessage("error","Error in update Map with Scheme Department ", "Error in Map with Scheme Department record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update Map with Scheme Department ", "Error in Map with Scheme Department record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating Map with Scheme Department - ' . $logmessage . '.', 'error');
+                $this->load->view('map/editschemedept', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Map with Scheme Department", "Map with Scheme Department record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Map with Scheme Department", "Map with Scheme Department record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Map with Scheme Department record updated successfully...');
+                redirect('map/viewschemedept/');
+                }
+        }//else
+        redirect('map/editschemedept/');
+    }
+
+
+
+
+
+
+
 }
     
