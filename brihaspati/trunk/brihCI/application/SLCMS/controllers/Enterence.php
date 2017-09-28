@@ -24,27 +24,21 @@ class Enterence extends CI_Controller {
 	function __construct() {
         	parent::__construct();
         	$this->load->model("login_model", "login");
-                $this->load->model("User_model", "usrmodel");
-                $this->load->model("Common_model", "commodel");
-		
-        	//if(!empty($_SESSION['id_user'])){
-                    
-                //}
-            	//	redirect('home');
-    	}
+            $this->load->model("User_model", "usrmodel");
+            $this->load->model("Common_model", "commodel");
+    }
 
  	public function viewadmissionopen() {
         	$this->result = $this->commodel->get_list('admissionopen');
         	$this->logger->write_logmessage("view"," View Admission List", "Admission List details...");
         	$this->logger->write_dblogmessage("view"," View Admission List" , "Admission List record display successfully..." );
        		$this->load->view('enterence/viewadmissionopen',$this->result);
-       	}
+    }
 
 	public function addadmissionopen() {
          $this->prgcatresult= $this->commodel->get_listspfic2('programcategory','prgcat_id', 'prgcat_name');
         $this->prgresult = $this->commodel->get_listspfic2('program','prg_id', 'prg_name');
         $this->result = $this->commodel->get_list('admissionopen');
-        //$this->load->view('admission/addadmission',$this->result);
 
         if(isset($_POST['addadmissionopen'])) {
             $this->form_validation->set_rules('academicyear','Academic Year','xss_clean|required');
@@ -66,7 +60,7 @@ class Enterence extends CI_Controller {
             'admop_acadyear'=>$_POST['academicyear'],
             'admop_prgcat'=>$_POST['programcategory'],
             'admop_prgname_branch'=>$_POST['programname'],
-	    'admop_entexam_fees'=>$_POST['enterenceexamfees'],
+	        'admop_entexam_fees'=>$_POST['enterenceexamfees'],
             'admop_min_qual'=>$_POST['minimumqualification'],
             'admop_entexam_patt'=>$_POST['entranceexampattern'],
             'admop_entexam_date'=> $_POST['entranceexamdate'],
@@ -281,27 +275,9 @@ class Enterence extends CI_Controller {
                 redirect('enterence/viewadmissionopen');
                 }
           }
-
-
-
-
-
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////
-
 
 	public function important_date(){
 		$this->load->view('enterence/imp_date');
@@ -397,6 +373,134 @@ class Enterence extends CI_Controller {
 
 		$this->load->view('enterence/enterence_step1');
 	}
+    
+    /*
+     *   Method is responsible to fill or verify email,mobile no,date of birth and selected program name 
+     *   for filling further information to complete registration process on the verification genetrated 
+     *   code.
+     */
+    public function step_zero() {
+        $data = array();
+        //get program name
+        $prg_name=$this->uri->segment(3);
+        $data['prg_name'] = $prg_name;
 
+        if(isset($_POST['login1']))
+        {
+            //echo "Test1";
+            $applicant_de = $this->input->get_post('prg_name',TRUE);
+            $prg_name = $applicant_de;
+            $data['prg_name'] = $prg_name;
+            $this->form_validation->set_rules('applicantemail','Email Id','trim|required|valid_email');
+            $this->form_validation->set_rules('applicantmobile','Mobile No','trim|required|xss_clean|numeric');
+            $this->form_validation->set_rules('dateofbirth','Date Of Birth','trim|required|xss_clean');
+            $this->form_validation->set_rules('applicantprogram','Program Name','trim|required|xss_clean');
+            $this->form_validation->set_rules('applicantvercode','Verification Code','trim|xss_clean|numeric');
+
+            if($this->form_validation->run() == FALSE){
+                $this->load->view('enterence/step_zero',$data);
+            }
+            else
+            {
+                //echo "True";echo "<br>";
+                $applicant_email = $this->input->get_post('applicantemail',TRUE);
+                $applicant_mobile = $this->input->get_post('applicantmobile',TRUE);
+                $applicant_dob = $this->input->get_post('dateofbirth',TRUE);
+                $applicant_program = $this->input->get_post('applicantprogram',TRUE);
+                $applicant_vercode = $this->input->get_post('applicantvercode',TRUE);
+                $applicant_prgid = $this->input->get_post('prg_name',TRUE);
+                $apply_date = date("Y-m-d h:i:sa");
+                $prg_name = $applicant_prgid;
+                //echo "<br>";
+                //$this->prg_name = $prg_name;
+                $data['prg_name'] = $prg_name;
+                $generate_code =    $this->commodel->randNum(8);
+                $applicant_field = array (
+                                'asreg_emailid' => $applicant_email,
+                                'asreg_mobile' => $applicant_mobile,
+                                'asreg_dob' => $applicant_dob,
+                                'asreg_program' => $prg_name);
+                print_r($applicant_field);
+                $applicant_where = array('asreg_emailid' => $applicant_email);
+                $selected_applicant = $this->commodel->isduplicatemore('admissionstudent_registration',$applicant_field);
+                //echo "selected_applicant-->" ;print_r($selected_applicant);echo "<br>";
+
+                if($selected_applicant == true)
+                {
+                    //echo "Test11";echo "<br>";
+                    if(!empty($applicant_vercode))
+                    {
+                        //echo "Test111";echo "<br>";
+                        $getvericodedata = $this->commodel->get_listspficemore('admissionstudent_registration','asreg_verificationcode',$applicant_field);
+                        foreach ($getvericodedata as $row)
+                        {
+                            $getvericode = $row->asreg_verificationcode;
+                        }
+                        if($getvericode == $applicant_vercode)
+                        {
+                            //echo "Test1111";echo "<br>";
+                            //got to next step
+                            $this->load->view('enterence/step_one',$applicant_field);
+                        }
+                        else
+                        {   //echo "Test1112";echo "<br>";
+                            $msg = "Please fill up correct code";
+                            $this->session->set_flashdata("message",$msg );
+                            $this->load->view('enterence/step_zero',$data);
+
+                        }
+                    }
+                    else
+                    {
+                        //echo "Test112";echo "<br>";
+                        $data['applicant_email'] = $applicant_email;
+                        $msg = "Emailid and Mobile no already registered,Please write the verification code sent to you over email for further step. ";
+                        $this->session->set_flashdata("message",$msg );
+                        $this->load->view('enterence/step_zero',$data);
+                    }
+                }
+                else
+                {
+                    //echo "Test12";
+                    $generate_code = $this->commodel->randNum(8);
+                    $currentdate = date("Y-m-d h:i:sa");
+                    $applicant_field = array (
+                                'asreg_emailid' => $applicant_email,
+                                'asreg_mobile' => $applicant_mobile,
+                                'asreg_dob' => $applicant_dob,
+                                'asreg_program' => $prg_name,
+                                'asreg_verificationcode' => $generate_code,
+                                'asreg_verificationdate' => $currentdate
+                    );
+                    $applicantdetail_insert = $this->commodel->insertrec('admissionstudent_registration',$applicant_field);
+                    if(!$applicantdetail_insert)
+                    {
+                        $notconfmes = "There might be some issue related to addmission system,Please contact to the examination controller over email and phone number";
+                        $this->session->set_flashdata('message',$notconfmes);
+                        $this->load->view('enterence/step_zero',$data);
+                        //write message
+                    }
+                    else
+                    {
+                        $confmes = "Your email and mobile no. registered successfully,Verification code has been sent to you over email.Please enter verification code to proceed for further step.";
+                        $this->session->set_flashdata('message',$confmes);
+                        $this->load->model("Mailsend_model","mailmodel");
+                        $subject = "Registered Successfully.";
+                        $message = "Your are registered successfully,Verification code for further step is ".$generate_code.".";
+                        $mails=$this->mailmodel->mailsnd($applicant_email,$subject,$message,'');
+                        $this->load->view('enterence/step_zero',$data);
+
+                    }
+                }
+
+            }
+        }
+        else
+        {
+            //echo "Test2";
+            $this->load->view('enterence/step_zero',$data);
+        }
+
+    }
 	
-    }//close class
+}//close class

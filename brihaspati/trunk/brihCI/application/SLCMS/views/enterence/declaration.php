@@ -2,6 +2,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
+<?php echo $prg_id; ?>
 <html lang="en">
 <html>
 <head>
@@ -90,11 +91,12 @@ Welcome to Indra Gandhi National Tribal University,Amarkatnak Madhya Pradesh-484
 </td></tr>
 <div>
 <center><table>
-        <form>
+        <!--<form action="<?php echo site_url('Enterence/step_zero'); ?>" method="POST" >-->
         <tr><td>
-        <a href="<?php echo site_url('enterence/step_zero');?>" style="text-decoration:none;">
-	 <input type="button" value="apply now" name="login" style="font-size:20px;margin-left:0px;">
+        <a href="<?php echo site_url('enterence/step_zero/'.$prg_id);?>" style="text-decoration:none;">
+	 <input type="button" value="Apply Now" name="login" style="font-size:20px;margin-left:0px;">
 	</a>
+        <input type="hidden" name="passprgname" value="<?php echo $prg_id;?>">
         <!-- <input type="button" value="close" style="font-size:20px;margin-left:0px;">--->
         </td></tr>
         </form>
