@@ -5,7 +5,7 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)  
  * @author Manorama Pal(palseema30@gmail.com)  add email setting
  * @author Sharad Singh(sharad23nov@yahoo.com) add program, add subject
- * @author Om Prakash(omprakashkgp@gmail.com)  add category
+ * @author Om Prakash(omprakashkgp@gmail.com)  add category, Add DDO
  * @author Kishore kr shukla(kishore.shukla@gmail.com) add role
  * @author Raju Kamal(kamalraju8@gmail.com)    add department
  * @author Vijay(vijay.pal428@gmail.com)       add program fees
@@ -1913,20 +1913,20 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric|required');
                 $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces|callback_isStudyCenterExist');
                 $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|alpha_numeric_spaces|required');
-                $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('countries','Country','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('states','State','ucwords|trim|xss_clean');
                 $this->form_validation->set_rules('cities','City','ucwords|trim|xss_clean|alpha_numeric_spaces');
-                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|required');
-                $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|required|numeric|max_length[6]');
-                $this->form_validation->set_rules('phone','Phone','trim|xss_clean|required|numeric|max_length[12]');
-                $this->form_validation->set_rules('fax','Fax','trim|xss_clean|required|numeric|max_length[12]');
-                $this->form_validation->set_rules('status','Status','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean');
+                $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|numeric|max_length[6]');
+                $this->form_validation->set_rules('phone','Phone','trim|xss_clean|numeric|max_length[12]');
+                $this->form_validation->set_rules('fax','Fax','trim|xss_clean|numeric|max_length[12]');
+                $this->form_validation->set_rules('status','Status','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('startdate','Startdate','trim|xss_clean');
                 $this->form_validation->set_rules('closedate','Closedate','trim|xss_clean');
-                $this->form_validation->set_rules('website','Website','trim|xss_clean|required|valid_url');
-                $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('mobile','Mobile','trim|numeric|required|max_length[12]');
+                $this->form_validation->set_rules('website','Website','trim|xss_clean|valid_url');
+                $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|alpha_numeric_spaces');
+                $this->form_validation->set_rules('mobile','Mobile','trim|numeric|max_length[12]');
 
              }
                    
@@ -2197,25 +2197,25 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric_spaces|required');
                 $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
                 $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('country','Country','ucwords|trim|xss_clean');
                 $this->form_validation->set_rules('state','State','ucwords|trim|xss_clean');
                 $this->form_validation->set_rules('city','City','ucwords|trim|xss_clean');
-                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|required|alpha');
-                $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|numeric|required|max_length[6]');
-                $this->form_validation->set_rules('phone','Phone','trim|xss_clean|required|numeric|max_length[12]');
-                $this->form_validation->set_rules('fax','Fax','trim|xss_clean|numeric|required|max_length[12]');
-                $this->form_validation->set_rules('status','Status','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('startdate','Startdate','trim|xss_clean|required');
-                $this->form_validation->set_rules('closedate','Closedate','trim|xss_clean|required');
-                $this->form_validation->set_rules('website','Website','trim|xss_clean|required|valid_url');
-                $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('mobile','Mobile','trim|numeric|required|max_length[12]');
+                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|alpha');
+                $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|numeric|max_length[6]');
+                $this->form_validation->set_rules('phone','Phone','trim|xss_clean|numeric|max_length[12]');
+                $this->form_validation->set_rules('fax','Fax','trim|xss_clean|numeric|max_length[12]');
+                $this->form_validation->set_rules('status','Status','ucwords|trim|xss_clean|alpha_numeric_spaces');
+                $this->form_validation->set_rules('startdate','Startdate','trim|xss_clean');
+                $this->form_validation->set_rules('closedate','Closedate','trim|xss_clean');
+                $this->form_validation->set_rules('website','Website','trim|xss_clean|valid_url');
+                $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|alpha_numeric_spaces');
+                $this->form_validation->set_rules('mobile','Mobile','trim|numeric|max_length[12]');
                
              /* Re-populating form */
 
-                if ($_POST)
-                       {
+           if ($_POST)
+                   {
                         $data['orgprofile']['value'] = $this->input->post('orgprofile', TRUE);
                         $data['institutecode']['value'] = $this->input->post('institutecode', TRUE);
 			$data['name']['value'] = $this->input->post('name', TRUE);
@@ -2234,41 +2234,38 @@ class Setup extends CI_Controller
 			$data['website']['value'] = $this->input->post('website', TRUE);
 			$data['incharge']['value'] = $this->input->post('incharge', TRUE);
 			$data['mobile']['value'] = $this->input->post('mobile', TRUE);
- 		       }
-                       if ($this->form_validation->run() == FALSE)
-                      {
+ 		   }
+                  if ($this->form_validation->run() == FALSE)
+                   {
                       $this->load->view('setup/editsc', $data);
-                      }
-                    else{
-                	    $data_orgprofile = $this->input->post('orgprofile', TRUE);
-		            $data_institutecode = $this->input->post('institutecode', TRUE);
-		            $data_name = $this->input->post('name', TRUE);
-		            $data_nickname = $this->input->post('nickname', TRUE);
-		            $data_address = $this->input->post('address', TRUE);
-		            $data_country = $this->input->post('country', TRUE);
-		            $data_state = $this->input->post('state', TRUE);
-		            $data_city = $this->input->post('city', TRUE);
-		            $data_district = $this->input->post('district', TRUE);
-		            $data_pincode = $this->input->post('pincode', TRUE);
-		            $data_phone = $this->input->post('phone', TRUE);
-		            $data_fax = $this->input->post('fax', TRUE);
-		            $data_status = $this->input->post('status', TRUE);
-		            $data_startdate = $this->input->post('startdate', TRUE);
-		            $data_closedate = $this->input->post('closedate', TRUE);
-		            $data_website = $this->input->post('website', TRUE);
-		            $data_incharge = $this->input->post('incharge', TRUE);
-		            $data_mobile = $this->input->post('mobile', TRUE);
-
-                            
-                           $data_scid = $id;  
-                           $logmessage = "";
+                   }
+                  else{
+                       $data_orgprofile = $this->input->post('orgprofile', TRUE);
+		       $data_institutecode = $this->input->post('institutecode', TRUE);
+		       $data_name = $this->input->post('name', TRUE);
+		       $data_nickname = $this->input->post('nickname', TRUE);
+		       $data_address = $this->input->post('address', TRUE);
+		       $data_country = $this->input->post('country', TRUE);
+		       $data_state = $this->input->post('state', TRUE);
+		       $data_city = $this->input->post('city', TRUE);
+		       $data_district = $this->input->post('district', TRUE);
+		       $data_pincode = $this->input->post('pincode', TRUE);
+		       $data_phone = $this->input->post('phone', TRUE);
+		       $data_fax = $this->input->post('fax', TRUE);
+		       $data_status = $this->input->post('status', TRUE);
+		       $data_startdate = $this->input->post('startdate', TRUE);
+		       $data_closedate = $this->input->post('closedate', TRUE);
+		       $data_website = $this->input->post('website', TRUE);
+		       $data_incharge = $this->input->post('incharge', TRUE);
+		       $data_mobile = $this->input->post('mobile', TRUE);
+                       $data_scid = $id;  
+                       $logmessage = "";
 				if($sc_data->org_code != $data_orgprofile)
 				$logmessage = $logmessage = "University Name " .$sc_data->orgprofile. " changed by " .$data_orgprofile;
  				if($sc_data->sc_code != $data_institutecode)
 				$logmessage = $logmessage ." Campus Code " .$sc_data->institutecode. " changed by " .$data_institutecode;
-        	                if($sc_data->sc_name != $data_name)
-                                $update_data = array(
-
+        	               // if($sc_data->sc_name != $data_name)
+                       $update_data = array(
 				   'org_code'=>$data_orgprofile,
                                    'sc_code'=>$data_institutecode,
                                    'sc_name'=>$data_name,
@@ -2286,8 +2283,7 @@ class Setup extends CI_Controller
                                    'sc_closedate'=>$data_closedate,
                                    'sc_website'=>$data_website,
                                    'sc_incharge'=>$data_incharge,
-                                   'sc_mobile'=>$data_mobile,
-
+                                   'sc_mobile'=>$data_mobile
                         );
 			$scflag=$this->common_model->updaterec('study_center', $update_data, 'sc_id', $id);
                         if(!$scflag)
@@ -3647,7 +3643,201 @@ public function displayleavetype(){
     }
 
 
+ // ########################## Add DDO Module ############################################################################ 
 
+ /* this function has been created for add new ddo record */
+  public function newddo(){
+        $this->scresult = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
 
+        if(isset($_POST['newddo'])) {
+            $this->form_validation->set_rules('campusname','Campus Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('deptname','Department Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('ddoname','DDO Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('remark','Remark','trim|xss_clean|alpha_numeric_spaces');
+
+            if($this->form_validation->run()==TRUE){
+
+            $data = array(
+                'ddo_scid'=>$_POST['campusname'],
+                'ddo_deptid'=>$_POST['deptname'],
+                'ddo_schid'=>$_POST['schemecode'],
+                'ddo_code'=>strtoupper($_POST['ddocode']),
+                'ddo_name'=>strtoupper($_POST['ddoname']),
+                'ddo_remark'=>$_POST['remark']
+            );
+	   $ddoflag=$this->SIS_model->insertrec('ddo', $data) ;
+	   if(!$ddoflag)
+	   {
+                $this->logger->write_logmessage("insert"," Error in adding DDO ", " DDO data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding DDO ", " DDO data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding DDO - ' . $_POST['cname'] , 'error');
+                $this->load->view('setup/newddo');
+	   }	
+	  else{		
+		$this->logger->write_logmessage("insert","DDO added successfully ", "DDO record added successfully..."  );
+		$this->logger->write_dblogmessage("insert","DDO added successfully ", "DDO record added successfully..." );
+            	$this->session->set_flashdata("success", "DDO added successfully...");
+            	redirect("setup/listddo", "refresh");
+	      }
+           }
+
+        }
+      $this->load->view('setup/newddo');
+   }
+
+ /* This function has been created for display DDO record */
+
+  public function listddo(){
+
+	$this->result = $this->SIS_model->get_list('ddo');
+        $this->logger->write_logmessage("view"," View ddo", "DDO record display successfully..." );
+        $this->logger->write_dblogmessage("view"," View ddo", "DDO record display successfully..." );
+        $this->load->view('setup/listddo',$this->result);
+    }
+
+ /**This function is used for update ddo details
+   * @param type $ddo_id
+   * @return type
+   */
+    public function updateddo($ddo_id) {
+	$ddo_data_q=$this->SIS_model->get_listrow('ddo','ddo_id', $ddo_id);
+        if ($ddo_data_q->num_rows() < 1)
+        {
+           redirect('setup/editcategory');
+        }
+        $ddo_data = $ddo_data_q->row();
+
+        /* Form fields */
+
+        $data['campusname'] = array(
+            'name' => 'campusname',
+            'id' => 'campusname',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $this->common_model->get_listspfic1('study_center', 'sc_name', 'sc_id', $ddo_data->ddo_scid)->sc_name,
+	    'readonly' => 'readonly'	
+        );
+        $data['deptname'] = array(
+           'name' => 'deptname',
+           'id' => 'deptname',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $this->common_model->get_listspfic1('Department', 'dept_name', 'dept_id', $ddo_data->ddo_deptid)->dept_name,
+	    'readonly' => 'readonly'	
+
+        );
+
+        $data['schemecode'] = array(
+           'name' => 'schemecode',
+           'id' => 'schemecode',
+           'maxlength' => '6',
+           'size' => '40',
+           'value' => $this->SIS_model->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $ddo_data->ddo_schid)->sd_name,
+	    'readonly' => 'readonly'	
+
+        );
+
+        $data['ddocode'] = array(
+           'name' => 'ddocode',
+           'id' => 'ddocode',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $ddo_data->ddo_code,
+
+        );
+
+        $data['ddoname'] = array(
+           'name' => 'ddoname',
+           'id' => 'ddoname',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $ddo_data->ddo_name,
+
+        );
+        $data['remark'] = array(
+           'name' => 'remark',
+           'id' => 'remark',
+           'maxlength' => '255',
+           'size' => '40',
+           'value' => $ddo_data->ddo_remark,
+
+        );
+        $data['ddo_id'] = $ddo_id;
+
+            $this->form_validation->set_rules('campusname','Campus Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('deptname','Department Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('schemecode','Scheme Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('ddocode','DDO Code','trim|xss_clean|required|alpha_dash');
+            $this->form_validation->set_rules('ddoname','DDO Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('remark','Remark','trim|xss_clean|alpha_numeric_spaces');
+
+        if ($_POST)
+        {
+            $data['campusname']['value'] = $this->input->post('campusname', TRUE);
+            $data['deptname']['value'] = $this->input->post('deptname', TRUE);
+            $data['schemecode']['value'] = $this->input->post('schemecode', TRUE);
+            $data['ddocode']['value'] = $this->input->post('ddocode', TRUE);
+            $data['ddoname']['value'] = $this->input->post('ddoname', TRUE);
+            $data['remark']['value'] = $this->input->post('remark', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/updateddo', $data);
+            return;
+        }
+	else
+        {
+
+            $data_scid = $this->input->post('campusname', TRUE);
+            $data_deptid = $this->input->post('deptname', TRUE);
+            $data_schid = $this->input->post('schemecode', TRUE);
+            $data_code = $this->input->post('ddocode', TRUE);
+            $data_name = $this->input->post('ddoname', TRUE);
+            $data_remark = $this->input->post('remark', TRUE);
+            $data_ddoid = $ddo_id;
+	    $logmessage = "";
+            if($ddo_data->ddo_scid != $data_scid)
+                $logmessage = "Add DDO " .$ddo_data->ddo_scid. " changed by " .$data_scid;
+            if($ddo_data->ddo_deptid != $data_deptid)
+                $logmessage = "Add DDO " .$ddo_data->ddo_deptid. " changed by " .$data_deptid;
+            if($ddo_data->ddo_schid != $data_schid)
+                $logmessage = "Add DDO " .$ddo_data->ddo_schid. " changed by " .$data_schid;
+            if($ddo_data->ddo_code != $data_code)
+                $logmessage = "Add DDO " .$ddo_data->ddo_code. " changed by " .$data_code;
+            if($ddo_data->ddo_name != $data_name)
+                $logmessage = "Add DDO " .$ddo_data->ddo_name. " changed by " .$data_name;
+            if($ddo_data->ddo_remark != $data_remark)
+                $logmessage = "Add DDO " .$ddo_data->ddo_remark. " changed by " .$data_remark;
+
+            $update_data = array(
+                'ddo_scid'=> $this->common_model->get_listspfic1('study_center', 'sc_id', 'sc_name', $data_scid)->sc_id,
+                'ddo_deptid'=> $this->common_model->get_listspfic1('Department', 'dept_id', 'dept_name', $data_deptid)->dept_id,
+                'ddo_schid'=> $this->SIS_model->get_listspfic1('scheme_department', 'sd_id', 'sd_name', $data_schid)->sd_id,
+                'ddo_code'=>strtoupper($data_code),
+                'ddo_name'=>strtoupper($data_name),
+                'ddo_remark'=>$data_remark
+            );
+
+	   $ddoflag=$this->SIS_model->updaterec('ddo', $update_data, 'ddo_id', $data_ddoid);
+	   if(!$ddoflag)	
+            {
+                $this->logger->write_logmessage("error","Error in update DDO ", "Error in DDO record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update DDO ", "Error in DDO record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating DDO - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/updateddo', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit DDO", "DDO record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit DDO", "DDO record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','DDO record updated successfully...');
+                redirect('setup/listddo/');
+                }
+        }//else
+        redirect('setup/updateddo/');
+    }
+
+ // ########################### End of DDO Module  ########################################################	
 }
 
