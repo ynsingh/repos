@@ -27,6 +27,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php $this->load->view('template/welcome_head'); ?>
 </br></br>
 	<center>
+<table>
+            <tr colspan="2">
+                <td>
+                    <div align="left" style="margin-left:30px;width:1189px;">
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                   <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                    <?php if(isset($_SESSION['success'])){?>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <?php
+                    };
+                    ?>
+                    <?php if(isset($_SESSION['err_message'])){?>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <?php
+                    };
+                ?>
+                </div>
+            </td>
+     </tr>
+</table>
     	<form action="<?= site_url('welcome') ?>" method="post">
         <table style="width:100%;" border=0>
 		<tr>
@@ -56,7 +76,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 		<input type="reset" value="reset" style="font-size:17px;width:49%;"></td></tr>
 		<tr><td></td>
-		<td><a href=""><input type="button" value="Forget Password" style="font-size:17px;width:100%;"></a></td>
+		<td><a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="text-decoration:none;" title="Forgot Password">
+		<input type="button" value="Forget Password" style="font-size:17px;width:100%;"></a></td>
 		</tr>
 	</table>
 	</td>

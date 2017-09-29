@@ -63,7 +63,7 @@ class Mailsend_model extends CI_Model
 //                      $this->email->attach($buffer, 'attachment', 'report.pdf', 'application/pdf');
                     }
                     // It returns boolean TRUE or FALSE based on success or failure
-                    if ($this->email->send()){
+		    if($this->email->send()){
 			return true;
                     }
                     else{

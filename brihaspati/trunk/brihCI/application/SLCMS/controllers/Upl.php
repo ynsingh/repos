@@ -400,7 +400,7 @@ class Upl extends CI_Controller
 					$userflagurt=$this->commodel->insertrec('user_role_type', $dataurt) ;
 					if($userflagurt){
                                             $sub='Teacher Registration' ;
-                                            $mess="You are registration is complete. The user id ".$email ." and password is ".$passwd ;
+                                            $mess="You are registered as a teacher.  Your user id ".$email ." and password is ".$passwd ;
                                             $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
 					    //  mail flag check 			
 					    if($mails){
@@ -584,7 +584,7 @@ class Upl extends CI_Controller
                                         $userflagurt=$this->commodel->insertrec('user_role_type', $dataurt) ;
                                         if($userflagurt){
                                             $sub='Staff  Registration' ;
-                                            $mess="You are registration is complete. The user id ".$email ." and password is ".$passwd ;
+                                            $mess="You are registered as a staff. Your user id ".$email ." and password is ".$passwd ;
                                             $mails = $this->mailmodel->mailsnd($email, $sub, $mess);
                                             //  mail flag check                         
                                             if($mails){
