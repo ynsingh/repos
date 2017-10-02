@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @name Enterence.php
  * @author Sumit Saxena(sumitsesaxena@gmail.com)
+ * @author Sharad Singh(Sharad23nov@gmail.com)
  */
 class Enterence extends CI_Controller {
 
@@ -26,6 +27,7 @@ class Enterence extends CI_Controller {
         	$this->load->model("login_model", "login");
             $this->load->model("User_model", "usrmodel");
             $this->load->model("Common_model", "commodel");
+            $this->load->model("Mailsend_model","mailmodel");
     }
 
  	public function viewadmissionopen() {
@@ -376,14 +378,16 @@ class Enterence extends CI_Controller {
     
     /*
      *   Method is responsible to fill or verify email,mobile no,date of birth and selected program name 
-     *   for filling further information to complete registration process on the verification genetrated 
-     *   code.
+     *   for filling further information to complete registration process on the basis of verification 
+     *   genetrated code.
      */
     public function step_zero() {
         $data = array();
         //get program name
         $prg_name=$this->uri->segment(3);
         $data['prg_name'] = $prg_name;
+        $msgflag = 0;
+        $data['msgflag'] = $msgflag;
 
         if(isset($_POST['login1']))
         {
@@ -409,6 +413,8 @@ class Enterence extends CI_Controller {
                 $applicant_program = $this->input->get_post('applicantprogram',TRUE);
                 $applicant_vercode = $this->input->get_post('applicantvercode',TRUE);
                 $applicant_prgid = $this->input->get_post('prg_name',TRUE);
+                $forget_verified = $this->input->get_post('accept',TRUE);
+                
                 $apply_date = date("Y-m-d h:i:sa");
                 $prg_name = $applicant_prgid;
                 //echo "<br>";
@@ -420,12 +426,13 @@ class Enterence extends CI_Controller {
                                 'asreg_mobile' => $applicant_mobile,
                                 'asreg_dob' => $applicant_dob,
                                 'asreg_program' => $prg_name);
-                print_r($applicant_field);
+                //print_r($applicant_field);
                 $applicant_where = array('asreg_emailid' => $applicant_email);
                 $selected_applicant = $this->commodel->isduplicatemore('admissionstudent_registration',$applicant_field);
                 //echo "selected_applicant-->" ;print_r($selected_applicant);echo "<br>";
 
-                if($selected_applicant == true)
+                //if(($selected_applicant == true) || ($forget_verified == "accept"))
+                if(($selected_applicant == true) || ($forget_verified == "accept"))
                 {
                     //echo "Test11";echo "<br>";
                     if(!empty($applicant_vercode))
@@ -436,18 +443,30 @@ class Enterence extends CI_Controller {
                         {
                             $getvericode = $row->asreg_verificationcode;
                         }
-                        if($getvericode == $applicant_vercode)
+                        if($forget_verified == "accept")
                         {
-                            //echo "Test1111";echo "<br>";
-                            //got to next step
-                            $this->load->view('enterence/step_one',$applicant_field);
-                        }
-                        else
-                        {   //echo "Test1112";echo "<br>";
-                            $msg = "Please fill up correct code";
+                            $msg = "You verification code has been resend to you over email.Please fill it to proceed further step.";
                             $this->session->set_flashdata("message",$msg );
                             $this->load->view('enterence/step_zero',$data);
+                        }
+                        else
+                        {
+                            
+                            if($getvericode == $applicant_vercode)
+                            {
+                            //echo "Test1111";echo "<br>";
+                            //got to next step
+                                $this->load->view('enterence/step_one',$applicant_field);
+                            }
+                            else
+                            {   
+                                $msg = "Please fill up correct code sent to your registered email.If forget click on <b>Forget Verification Code .</b> ";
+                                $msgflag = 1;
+                                $data['msgflag'] = $msgflag;
+                                $this->session->set_flashdata("message",$msg );
+                                $this->load->view('enterence/step_zero',$data);
 
+                            }
                         }
                     }
                     else

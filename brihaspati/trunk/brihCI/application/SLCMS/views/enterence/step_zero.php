@@ -53,7 +53,8 @@
 
 
 <?php
-    echo $prg_name;
+    $msgflag;
+    $prg_name;
     $programdata = $this->commodel->get_listrow('program','prg_id',$prg_name);
     $programname = $programdata->row()->prg_name;//."(".$programdata->row()->prg_branch.")";
     $programbranch = $programdata->row()->prg_branch;
@@ -136,9 +137,15 @@
         <tr><td>
         <label for="text">Verification Code :</label></td>
         </td><td>
-        <input type="text" name="applicantvercode" placeholder="Enter verification code" class="keyup-numeric" value="<?php echo isset($_POST["applicantvercode"]) ? $_POST["applicantvercode"] : ''; ?>"/> <br>
+        <input type="text" name="applicantvercode" placeholder="Enter verification code" class="keyup-numeric" value="<?php echo isset($_POST["applicantvercode"]) ? $_POST["applicantvercode"] : ''; ?>" maxlength="8"/> <br>
         </td></tr>
-
+        <?php
+            if($msgflag == 1){?>
+            <tr><td align="center" colspan="2"><b><i>Forget Verification code?.</i></b>
+            <input type="checkbox" name="accept" style="font-size:17px;" value="accept" id="termsChkbx">
+            </td></tr>
+        <?php }?>
+        
         <tr>
         <td></td>
         <td>
