@@ -47,12 +47,12 @@ CREATE TABLE `admissionstudent_enterencestep` (
   `ext1` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+ALTER TABLE `admissionstudent_enterencestep`
+  ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `admissionstudent_enterencestep`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `admissionstudent_enterencestep`
-  ADD PRIMARY KEY (`id`);
 
 alter table `enterence_exam_center`  add `eec_code` varchar(255) DEFAULT NULL after  `eec_id`;
 ALTER TABLE `admissionstudent_master` ADD `asm_coursename` VARCHAR(255) NULL AFTER `asm_testname`;
