@@ -282,6 +282,9 @@ class Enterence extends CI_Controller {
 ////////////////////////////////////////////////////////////////////////////////////
 
 	public function important_date(){
+		$this->result = $this->commodel->get_list('admissionopen');
+                $this->logger->write_logmessage("view"," View Admission List", "Admission List details...");
+                $this->logger->write_dblogmessage("view"," View Admission List" , "Admission List record display successfully..." );
 		$this->load->view('enterence/imp_date');
 	}
 

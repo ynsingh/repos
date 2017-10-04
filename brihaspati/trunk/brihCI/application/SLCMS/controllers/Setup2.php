@@ -3,6 +3,7 @@
 /* 
  * @name Setup2.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)  
+ * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -1277,18 +1278,134 @@ class Setup2 extends CI_Controller
         redirect('setup2/editauthority');
     }//Edit Authority function end
 
-    /** This function display the Authorities
-  * @param type
-  * @return type
+    /** This function display the Exam 
   */
-
      public function examtype() {
         $this->result = $this->commodel->get_list('examtype');
         $this->logger->write_logmessage("view"," View Exam Type ", "Exam Type details...");
         $this->logger->write_dblogmessage("view"," View Exam Type " , "Exam Type record display successfully..." );
         $this->load->view('setup2/examtype',$this->result);
      }
+/** This function for add Exam
+     */
+     public function addexamtype() {
+                 if(isset($_POST['addexamtype'])) {
+                 $this->form_validation->set_rules('exty_name','Exam Type','trim|xss_clean|required|alpha_numeric_spaces|callback_isExamExist');
+                 $this->form_validation->set_rules('exty_desc','Exam Description','trim|xss_clean|required|alpha_numeric_spaces');
+                 if($this->form_validation->run()==TRUE){
 
+                 $data = array(
+                'exty_name'=>ucwords(strtolower($_POST['exty_name'])),
+                'exty_desc'=>$_POST['exty_desc'],
+                 );
+                $extyflag=$this->commodel->insertrec('examtype', $data);
+                if (!$extyflag)
+                {
+                    $this->logger->write_logmessage("insert","Trying to add exam", "Exam is not added ".$exty_name);
+                    $this->logger->write_dblogmessage("insert","Trying to add exam", "Exam is not added ".$exty_name);
+                    $this->session->set_flashdata('err_message','Error in adding Exam setting - '  , 'error');
+                    redirect('setup2/addexamtype');
 
+                }
+                else{
+                    $this->logger->write_logmessage("insert","Add Exam Setting", "Exam".$_POST['exty_name']." added  successfully...");
+                    $this->logger->write_dblogmessage("insert","Add Exam Setting", "Exam".$_POST['exty_name']."added  successfully...");
+                    $this->session->set_flashdata("success", "Exam add successfully...");
+                    redirect("setup2/examtype");
+                }
+
+            }
+        }
+        $this->load->view('setup2/addexamtype');
+    }
+/** This function check for duplicate Exam
+    */
+
+    public function isExamExist($exty_name) {
+
+        $is_exist = $this->commodel->isduplicate('examtype','exty_name',$exty_name);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isExamExist', 'Exam is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+ /**This function is used for update Exam records
+     */
+    public function editexamtype($id) {
+	$examrow=$this->commodel->get_listrow('examtype','exty_id', $id);
+ 	if ($examrow->num_rows() < 1)
+        {
+            redirect('setup2/editexamtype');
+        }
+        $exam_data = $examrow->row();
+        /* Form fields */
+
+               $data['exty_name'] = array(
+               'name' => 'exty_name',
+               'id' => 'exty_name',
+               'maxlength' => '50',
+               'size' => '40',
+               'value' => $exam_data->exty_name,
+               );
+      	       $data['exty_desc'] = array(
+               'name' => 'exty_desc',
+               'id' => 'exty_desc',
+               'maxlength' => '50',
+               'size' => '40',
+               'value' => $exam_data->exty_desc,
+	       );
+               $data['id'] = $id;
+	/*Form Validation*/
+        $this->form_validation->set_rules('exty_name','Exam name','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('exty_desc','Exam Desc','trim|xss_clean|required|alpha_numeric_spaces');
+
+        /* Re-populating form */
+        if ($_POST)
+        {
+            $data['exty_name']['value'] = $this->input->post('exty_name', TRUE);
+            $data['exty_desc']['value'] = $this->input->post('exty_desc', TRUE);
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup2/editexamtype', $data);
+            return;
+        }
+	else{
+            $exty_name = ucwords(strtolower($this->input->post('exty_name', TRUE)));
+            $exty_desc = $this->input->post('exty_desc', TRUE);
+            $logmessage = "";
+
+            if($exam_data->role_name != $exty_name)
+                $logmessage = "Add Exam" .$exam_data->exty_name. " changed by " .$exty_name;
+            if($exam_data->role_desc != $exty_desc)
+                $logmessage = "Add Desc" .$exam_data->exty_desc. " changed by " .$exty_desc;
+
+            $update_data = array(
+               'exty_name' => $exty_name,
+               'exty_desc' => $exty_desc,
+            );
+
+	    $examdflag=$this->commodel->updaterec('examtype', $update_data,' exty_id', $id);
+            if(!$examdflag)
+            {
+                $this->logger->write_logmessage("error","Edit Exam Setting error", "Edit Exam Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit Exam Setting error", "Edit Exam Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating Exam - ' . $logmessage . '.', 'error');
+                $this->load->view('setup2/editeexamtype', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Exam Setting", "Edit Exam Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit Exam Setting", "Edit Exam Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Exam detail updated successfully..');
+                redirect('setup2/examtype/');
+                }
+        }//else
+   }//end edit exam function
 }//end class
 

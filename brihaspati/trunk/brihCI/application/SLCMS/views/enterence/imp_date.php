@@ -1,6 +1,7 @@
 <!-------------------------------------------------------
     -- @name imp_date.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
+       @author Deepika Chaudhary (chaudharydeepika88@gmail.com) 
 --------------------------------------------------------->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -15,7 +16,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
-
 </head>
 <body>
 
@@ -30,6 +30,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         	//echo $this->session->flashdata('flash_data');
     	//} ?>
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
+<head>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+</head>
 <?php
 echo "<center>";
 
@@ -59,6 +62,59 @@ echo "</center>";
 <br>
 
 	<div>
+<table>
+<tr>
+<div align="left" style="margin-left:2%;">
+<table cellpadding="16" style="margin-left:2%;font-size:17px;" class="TFtable" >
+<tr align="center">
+<thead><th>Sr.No</th><th>Academic Year</th><th>Program Category</th><th>Program Name </th><th>Entrance Exam Fees </th> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th><th>Entrance Exam Date</th><th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th></tr></thead>
+<?php
+        $count =0;
+        if( count($this->result) ):
+        foreach ($this->result as $row)
+        {
+         ?>
+             <tr align="center">
+            <td> <?php echo ++$count; ?> </td>
+            <td> <?php echo $row->admop_acadyear?></td>
+            <td> <?php
+                        echo $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->admop_prgcat)->prgcat_name ?>
+            </td>
+            <td> <?php
+                        echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->admop_prgname_branch)->prg_name ;
+                        echo "(";
+                        echo $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->admop_prgname_branch)->prg_branch ;
+                        echo ")";
+                ?>
+            </td>
+            <td> <?php echo $row->admop_entexam_fees?></td>
+            <td> <?php echo $row->admop_min_qual ?></td>
+            <td> <?php echo $row->admop_entexam_patt ?></td>
+            <td> <?php echo $row->admop_entexam_date ?></td>
+            <td> <?php echo $row->admop_startdate ?></td>
+            <td> <?php echo $row->admop_lastdate ?></td>
+            <td> <?php echo $row->admop_app_received ?></td>
+
+        <?php  // echo anchor('enterence/editadmissionopen/' . $row->admop_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) . " ";
+
+            echo "</td>";
+            echo "</tr>";
+}
+else :
+        echo "<tr>";
+            echo "<td colspan= \"11\" align=\"center\"> No Records found...!</td>";
+        echo "</tr>";
+        endif;
+
+        echo "</table>";
+        echo "</td>";
+        echo "</tr>";
+        echo "</table>";
+           ?>
+
+</div>
+</tr>
+</table>
 		<!--<table align=center border=1>
 		<tr>
 		<td> 
@@ -85,16 +141,14 @@ echo "</center>";
 		</table>-->
 
 	
-		<?php  echo "<table style='width:100%;margin-top:100px;' >";	
-			echo "<tr>"."<td>";
-				$this->load->view('template/work_under'); 	
-			echo "</td>"."</tr>";
-		echo "</table>";
+		<?php // echo "<table style='width:100%;margin-top:100px;' >";	
+		//	echo //"<tr>"."<td>";
+			//	$this->load->view('template/work_under'); 	
+		//	echo //"</td>"."</tr>";
+		//echo "</table>";
 		?>
-
 	</div>
-
-<div style="margin-top:140px;">
+<div>
 <?php $this->load->view('template/footer'); ?>
 </div>
 </body>
