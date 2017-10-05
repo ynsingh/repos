@@ -45,8 +45,8 @@
         });
     </script> 
 <?php
-    $this->load->view('template/header'); ?>
-
+    $this->load->view('template/header'); ?></br>
+<?php $this->load->view('enterence/admission_steps');?>
 <?php //echo $prg_name;
 //echo $msg;
 ?>
@@ -98,13 +98,13 @@
         <tr><td>
         <label for="text">Mobile No :</label></td>
         </td><td>
-        <input type="text" name="applicantmobile" placeholder="Enter your mobile no" class="keyup-numeric" value="<?php echo isset($_POST["applicantmobile"]) ? $_POST["applicantmobile"] : ''; ?>" required="true"/> <br>
+        <input type="text" name="applicantmobile" placeholder="Enter your mobile no" class="keyup-numeric" value="<?php echo isset($_POST["applicantmobile"]) ? $_POST["applicantmobile"] : ''; ?>" required="true" maxlength="12"/> <br>
         </td></tr>
 
         <tr><td>
         <label for="text">Date Of Birth :</label></td>
         <td>
-        <input type="text" name="dateofbirth" value="<?php echo isset($_POST["dateofbirth"]) ? $_POST["dateofbirth"] : ''; ?>" id="dob" required="true"/>
+        <input type="text" name="dateofbirth" placeholder="Select your dob" value="<?php echo isset($_POST["dateofbirth"]) ? $_POST["dateofbirth"] : ''; ?>" id="dob" required="true"/>
         
             <script>
                 $('#dob').datepicker({

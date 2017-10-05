@@ -35,9 +35,9 @@ class Welcome extends CI_Controller {
     	}
 	 public function ginstruction()
 	 {
-	   $prog_id=$this->uri->segment(3);
-		
-       	    $this->load->view('enterence/declaration',$prog_id);
+	   $prg_id=$this->uri->segment(3);
+	   $data['prg_id']=$prg_id;		
+       	   $this->load->view('enterence/declaration',$data);
 	 }
 
 	public function index() {
