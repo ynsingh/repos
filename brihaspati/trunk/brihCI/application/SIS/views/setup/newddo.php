@@ -73,7 +73,7 @@
                <select required name="campusname" id="campusname" class="my_dropdown" style="width:300px;" onchange="getdepartment(this.value)">
                <option value="" disabled selected >------Select ---------------</option>
 		<?php foreach($this->scresult as $dataspt): ?>
-	       <option value="<?php echo $dataspt->sc_id; ?>"<?php echo set_select('campusname', $dataspt->sc_id);?>><?php echo $dataspt->sc_name; ?></option>
+	       <option value="<?php echo $dataspt->sc_id; ?>"><?php echo $dataspt->sc_name; ?></option>
                 <?php endforeach; ?>
           </td>
           <td><?php echo form_error('campusname')?></td>

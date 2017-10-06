@@ -99,10 +99,10 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('map/viewauthuser', 'Map Authority and User', array('title' => 'Map Authority and User'));
 					echo "</li>";	
-					echo "<li>";
+				/*	echo "<li>";
 						echo anchor('map/viewddoucodeptsh', 'Map Campus,UO,DDO with Dept', array('title' => 'Map DDO with UCO'));
 					echo "</li>";
-					/*
+					
 					echo "<li>";
 						echo anchor('map/listsubjectteacher', 'Map Subject and Paper with Teacher', array('title' => 'Map Subject and Paper with Teacher'));
 					echo "</li>";
@@ -187,15 +187,18 @@ echo "<ul class=\"sf-menu\">";
 					echo "</li>";
 					echo "<li>";
 						echo anchor('archive/semrulea', 'Semester Rule Archive', array('title' => 'Semester Rule Archive'));
-					echo "</li>";*/
+					echo "</li>";
 					echo "<li>";
 						echo anchor('archive/ddoucoa', 'DDO with UCO Archive', array('title' => 'DDO with UCO Archive'));
-					echo "</li>"; 
+					echo "</li>";*/ 
 					echo "<li>";
 						echo anchor('archive/authoritya', 'Authority Archive', array('title' => 'Authority Archive'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('archive/staffpositiona', 'Staff Position Archive', array('title' => 'Staff Position Archive'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('archive/listddoa', 'DDO Archive', array('title' => 'Staff Position Archive'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('archive/bankdetaila', 'Bank Details Archive', array('title' => 'Bank Details Archive'));

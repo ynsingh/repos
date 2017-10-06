@@ -238,6 +238,7 @@ CREATE TABLE `salary_grade_master` (
 
 CREATE TABLE `scheme_department` (
   `sd_id` int(11) NOT NULL,
+  `sd_deptid` int(11)  NULL,
   `sd_code` varchar(255)  NULL,
   `sd_name` varchar(255) NOT NULL,
   `sd_short` varchar(255) default NULL,
@@ -246,7 +247,8 @@ CREATE TABLE `scheme_department` (
 
 ALTER TABLE `scheme_department`
   ADD PRIMARY KEY (`sd_id`),
-  ADD UNIQUE KEY `sd_name` (`sd_name`);
+  ADD UNIQUE KEY `sd_name` (`sd_name`,`sd_deptid`);
+
 
 ALTER TABLE `scheme_department`
   MODIFY `sd_id` int(11) NOT NULL AUTO_INCREMENT;
@@ -539,6 +541,25 @@ CREATE TABLE `ddo` (
      `ddo_name` varchar(255) NOT NULL,
      `ddo_remark` varchar(255) default NULL,
      PRIMARY KEY (ddo_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+----------------------------------------------------------
+--
+-- Table structure for ddo_archive`
+--
+
+CREATE TABLE `ddo_archive` (
+     `ddoa_id` int(11) NOT NULL auto_increment,
+     `ddoa_ddoid` int(11) NOT NULL,
+     `ddoa_scid` int(11) NOT NULL,
+     `ddoa_deptid` int(11) NOT NULL,
+     `ddoa_schid` int(11) NOT NULL,
+     `ddoa_code` varchar(255) NOT NULL,
+     `ddoa_name` varchar(255) NOT NULL,
+     `ddoa_remark` varchar(255) default NULL,
+     `ddoa_archuserid` int(11) NOT NULL,
+     `ddoa_archdate`  date NOT NULL,
+     PRIMARY KEY (ddoa_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ----------------------------------------------------------

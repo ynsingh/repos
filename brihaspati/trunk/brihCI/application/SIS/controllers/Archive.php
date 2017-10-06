@@ -3,7 +3,7 @@
 /* 
  * @name Archive.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
- * @author Om Prakash (omprakashkgp@gmail.com) Staff Position archive
+ * @author Om Prakash (omprakashkgp@gmail.com) Staff Position archive, DDO Archive
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -72,6 +72,12 @@ class Archive extends CI_Controller
         	$this->logger->write_dblogmessage("view"," View staff position archive", "Staff position archive details...");
         	$this->load->view('archive/staffpositiona');
   	}
-
+  	/*this function has been created for display the ddo archive records */
+  	public function listddoa(){
+        	$this->result = $this->sismodel->get_list('ddo_archive');
+	        $this->logger->write_logmessage("view"," View ddo archive ", "DDO archive details...");
+        	$this->logger->write_dblogmessage("view"," View ddo archive", "DDo archive details...");
+        	$this->load->view('archive/listddoa');
+  	}
 }
 

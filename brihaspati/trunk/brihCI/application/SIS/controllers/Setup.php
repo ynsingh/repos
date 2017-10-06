@@ -5,7 +5,7 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)  
  * @author Manorama Pal(palseema30@gmail.com)  add email setting
  * @author Sharad Singh(sharad23nov@yahoo.com) add program, add subject
- * @author Om Prakash(omprakashkgp@gmail.com)  add category, Add DDO
+ * @author Om Prakash(omprakashkgp@gmail.com)  add category, Add DDO, DDO Archive
  * @author Kishore kr shukla(kishore.shukla@gmail.com) add role
  * @author Raju Kamal(kamalraju8@gmail.com)    add department
  * @author Vijay(vijay.pal428@gmail.com)       add program fees
@@ -3810,6 +3810,25 @@ public function displayleavetype(){
                 $logmessage = "Add DDO " .$ddo_data->ddo_name. " changed by " .$data_name;
             if($ddo_data->ddo_remark != $data_remark)
                 $logmessage = "Add DDO " .$ddo_data->ddo_remark. " changed by " .$data_remark;
+
+            $updatea_data = array(
+		'ddoa_ddoid'=>$ddo_id,
+                'ddoa_scid'=> $ddo_data->ddo_scid,
+                'ddoa_deptid'=> $ddo_data->ddo_deptid,
+                'ddoa_schid'=>  $ddo_data->ddo_schid,
+                'ddoa_code'=>strtoupper($ddo_data->ddo_code),
+                'ddoa_name'=>strtoupper($ddo_data->ddo_name),
+                'ddoa_remark'=>$ddo_data->ddo_remark,
+                'ddoa_archuserid'=>$this->session->userdata('id_user'),
+                'ddoa_archdate'=>date('y-m-d')
+            );
+	 $ddoflag=$this->SIS_model->insertrec('ddo_archive', $updatea_data);
+         if(!$ddoflag)
+         {
+              $this->logger->write_dblogmessage("error","Error in insert ddo archive ", "Error in  ddo archive record insert" .$logmessage );
+         }else{
+              $this->logger->write_dblogmessage("insert","Insert ddo archive", "Record inserted in ddo archive successfully.." .$logmessage );
+         }
 
             $update_data = array(
                 'ddo_scid'=> $this->common_model->get_listspfic1('study_center', 'sc_id', 'sc_name', $data_scid)->sc_id,

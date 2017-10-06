@@ -20,7 +20,7 @@ class Map extends CI_Controller
         $this->load->model('Map_model',"mapmodel");
         $this->load->model('Common_model',"commodel");
         $this->load->model('Login_model',"loginmodel"); 
-	$this->load->model('SIS_model'); 
+	$this->load->model('SIS_model', "sismodel"); 
         
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
@@ -1013,6 +1013,12 @@ class Map extends CI_Controller
 	    	$this->depmodel->get_paperlist($subid);
         }
 
+ /* This function has been created for get list of schemes on the basis of  selected department */
+   public function getdeptschemelist(){
+        $deptid = $this->input->post('deptid');
+        $this->depmodel->get_deptschemelist($deptid);
+    }
+
  //==================  End of Map Subject and Paper with Teacher ==============================================================
   /**This function is used for view prerequite of subject  */
 
@@ -1309,7 +1315,7 @@ class Map extends CI_Controller
 
 public function viewschemedept()
      {
-        $this->result = $this->SIS_model->get_list('map_scheme_department');
+        $this->result = $this->sismodel->get_list('map_scheme_department');
         $this->logger->write_logmessage("view"," View map scheme with department setting", "map scheme with department details...");
         $this->logger->write_dblogmessage("view"," View map scheme with department setting", "map scheme with department setting details...");
         $this->load->view('map/viewschemedept',$this->result);
@@ -1317,7 +1323,7 @@ public function viewschemedept()
 
 public function schemedept(){
                   $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
-        $this->schresult = $this->SIS_model->get_listspfic2('scheme_department','sd_id', 'sd_name');
+        $this->schresult = $this->sismodel->get_listspfic2('scheme_department','sd_id', 'sd_name');
    
         if(isset($_POST['schemedept'])) {
         $this->form_validation->set_rules('campus','Campus Name','trim|xss_clean|required');
@@ -1333,7 +1339,7 @@ public function schemedept(){
                 'msd_schmid'=>$_POST['scheme']
 
             );
-           $msdflag=$this->SIS_model->insertrec('map_scheme_department', $data) ;
+           $msdflag=$this->sismodel->insertrec('map_scheme_department', $data) ;
            if(!$msdflag)
            {
                 $this->logger->write_logmessage("insert"," Error in adding map with scheme department ", " map with scheme department data insert error . "  );
@@ -1360,8 +1366,8 @@ public function schemedept(){
 
 
        public function editschemedept($msd_id) {
-	$this->schresult = $this->SIS_model->get_listspfic2('scheme_department','sd_id', 'sd_name');
-        $msd_data_q=$this->SIS_model->get_listrow('map_scheme_department','msd_id', $msd_id);
+	$this->schresult = $this->sismodel->get_listspfic2('scheme_department','sd_id', 'sd_name');
+        $msd_data_q=$this->sismodel->get_listrow('map_scheme_department','msd_id', $msd_id);
          
         if ($msd_data_q->num_rows() < 1)
         {
@@ -1398,7 +1404,7 @@ public function schemedept(){
            'id' => 'msd_schmid',
            'maxlength' => '50',
            'size' => '40',
-           'value' => $this->SIS_model->get_listspfic1('scheme_department','sd_name', 'sd_id',$MapWithSchemeDepartment_data->msd_schmid)->sd_name, 
+           'value' => $this->sismodel->get_listspfic1('scheme_department','sd_name', 'sd_id',$MapWithSchemeDepartment_data->msd_schmid)->sd_name, 
         );
 
 
@@ -1430,7 +1436,7 @@ public function schemedept(){
 
             );
 
-           $msdflag=$this->SIS_model->updaterec('map_scheme_department', $update_data, 'msd_id', $msd_id);
+           $msdflag=$this->sismodel->updaterec('map_scheme_department', $update_data, 'msd_id', $msd_id);
            if(!$msdflag)
             {
                 $this->logger->write_logmessage("error","Error in update Map with Scheme Department ", "Error in Map with Scheme Department record update. $logmessage . " );
@@ -1447,12 +1453,6 @@ public function schemedept(){
         }//else
         redirect('map/editschemedept/');
     }
-
-
-
-
-
-
 
 }
     

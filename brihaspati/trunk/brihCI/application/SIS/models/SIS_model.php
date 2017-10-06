@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @name: SIS_model
  * @author: Manorama pal (palseema30@gmail.com)
+ * @author: Om Prakash (omprakashkgp@gmail.com) check the record is already exist 
  */
 class SIS_model extends CI_Model
 {
@@ -90,6 +91,19 @@ class SIS_model extends CI_Model
          $this->db2->from($tbname);
 	 		$this->db2->where($fieldname, $fieldvalue);
          return $this->db2->get();
+    }
+
+// check the record is already exist with as many field you want
+    public function isduplicatemore($tbname,$data) {
+                $this->db2->flush_cache();
+                $this->db2->from($tbname);
+                $this->db2->where($data);
+        $query = $this->db2->get();
+        if ($query->num_rows() > 0) {
+                return true;
+        } else {
+                return false;
+        }
     }
     
     function __destruct() {
