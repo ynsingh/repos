@@ -214,6 +214,7 @@ CREATE TABLE `admissionstudent_enterenceexamcenter` (
   `eec_code` varchar(255) DEFAULT NULL,
   `eec_name` varchar(255) DEFAULT NULL,
   `eec_address` blob,
+  `eec_state` varchar(255) DEFAULT NULL,
   `eec_city` varchar(255) DEFAULT NULL,
   `eec_incharge` varchar(255) DEFAULT NULL,
   `eec_noofroom` int(11) DEFAULT NULL,
@@ -223,11 +224,36 @@ CREATE TABLE `admissionstudent_enterenceexamcenter` (
   `eec_contactemail` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-ALTER TABLE `enterence_exam_center`
+ALTER TABLE `admissionstudent_enterenceexamcenter`
   ADD PRIMARY KEY (`eec_id`);
 
-ALTER TABLE `enterence_exam_center`
+ALTER TABLE `admissionstudent_enterenceexamcenter`
   MODIFY `eec_id` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `admissionstudent_enterenceexamcentera` (
+  `eeca_id` int(11) NOT NULL,
+  `eeca_eecid` int(11) NOT NULL,
+  `eeca_code` varchar(255) DEFAULT NULL,
+  `eeca_name` varchar(255) DEFAULT NULL,
+  `eeca_address` blob,
+  `eeca_state` varchar(255) DEFAULT NULL,
+  `eeca_city` varchar(255) DEFAULT NULL,
+  `eeca_incharge` varchar(255) DEFAULT NULL,
+  `eeca_noofroom` int(11) DEFAULT NULL,
+  `eeca_capacityinroom` int(11) DEFAULT NULL,
+  `eeca_totalcapacity` int(11) DEFAULT NULL,
+  `eeca_contactno` varchar(255) DEFAULT NULL,
+  `eeca_contactemail` varchar(255) DEFAULT NULL,
+  `eeca_archivename` varchar(255) DEFAULT NULL,
+  `eeca_archivedate` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `admissionstudent_enterenceexamcentera`
+  ADD PRIMARY KEY (`eeca_id`);
+
+ALTER TABLE `admissionstudent_enterenceexamcentera`
+  MODIFY `eeca_id` int(11) NOT NULL AUTO_INCREMENT;
+
 
 CREATE TABLE `admissionstudent_uploaddata` (
   `asupd_id` int(11) NOT NULL,
@@ -275,12 +301,12 @@ CREATE TABLE `admissionstudent_enterencestep` (
   `ext1` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+ALTER TABLE `admissionstudent_enterencestep`
+  ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `admissionstudent_enterencestep`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `admissionstudent_enterencestep`
-  ADD PRIMARY KEY (`id`);
 
 CREATE TABLE `admissionstudent_fees` (
   `asfee_id` int(11) NOT NULL,
