@@ -209,7 +209,7 @@ ALTER TABLE `admissionstudent_registration`
 ALTER TABLE `admissionstudent_registration`
   MODIFY `asreg_id` int(11) NOT NULL AUTO_INCREMENT;
 
-CREATE TABLE `enterence_exam_center` (
+CREATE TABLE `admissionstudent_enterenceexamcenter` (
   `eec_id` int(11) NOT NULL,
   `eec_code` varchar(255) DEFAULT NULL,
   `eec_name` varchar(255) DEFAULT NULL,
@@ -231,7 +231,7 @@ ALTER TABLE `enterence_exam_center`
 
 CREATE TABLE `admissionstudent_uploaddata` (
   `asupd_id` int(11) NOT NULL,
-  `asupd_smid` int(11) NOT NULL,
+  `asupd_asmid` int(11) NOT NULL,
   `asupd_enclosure1` varchar(255) DEFAULT NULL,
   `asupd_enclosure2` varchar(255) DEFAULT NULL,
   `asupd_enclosure3` varchar(255) DEFAULT NULL,
@@ -260,7 +260,7 @@ ALTER TABLE `admissionstudent_uploaddata`
 
 CREATE TABLE `admissionstudent_enterencestep` (
   `id` int(11) NOT NULL,
-  `application_no` varchar(255) NOT NULL,
+  `registration_id` varchar(255) NOT NULL,
   `admission_masterid` varchar(255) NOT NULL,
   `step1_status` varchar(255) NOT NULL,
   `step1_date` datetime DEFAULT NULL,
@@ -281,6 +281,37 @@ ALTER TABLE `admissionstudent_enterencestep`
 
 ALTER TABLE `admissionstudent_enterencestep`
   ADD PRIMARY KEY (`id`);
+
+CREATE TABLE `admissionstudent_fees` (
+  `asfee_id` int(11) NOT NULL,
+  `asfee_amid` int(11) NOT NULL,
+  `asfee_aprgid` int(11) NOT NULL,
+  `asfee_feename` varchar(255) NOT NULL,
+  `asfee_feeamount` varchar(255) NOT NULL,
+  `asfee_installment` int(2) NOT NULL,
+  `asfee_installment_date` date DEFAULT NULL,
+  `asfee_duedate` datetime DEFAULT NULL,
+  `asfee_paymentmethod` varchar(255) NOT NULL,
+  `asfee_depositdate` datetime DEFAULT NULL,
+  `asfee_referenceno` varchar(255) NOT NULL,
+  `asfee_bankname` varchar(255) DEFAULT NULL,
+  `asfee_paymentgateway` varchar(255) NOT NULL,
+  `asfee_paymentstatus` varchar(255) NOT NULL,
+  `asfee_feespaidstatus` varchar(255) NOT NULL,
+  `asfee_reconcilestatus` varchar(10) NOT NULL DEFAULT 'N',
+  `asfee_whoreconcile` varchar(255) DEFAULT NULL,
+  `asfee_reconciledate` datetime DEFAULT NULL,
+  `asfee_reconcileremark` int(255) DEFAULT NULL,
+  `asfee_remarks` varchar(255) NOT NULL,
+  `asfee_ext1` varchar(255) NOT NULL,
+  `asfee_ext2` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `admissionstudent_fees`
+  ADD PRIMARY KEY (`asfee_id`);
+
+ALTER TABLE `admissionstudent_fees`
+  MODIFY `asfee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 -- --------------------------------------------------------
 
 --

@@ -14,8 +14,8 @@ CREATE TABLE `ddo_archive` (
      PRIMARY KEY (ddoa_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+ALTER TABLE  scheme_department ADD sd_deptid INT(11) NOT NULL AFTER sd_id;
 drop index sd_name on scheme_department;
 create index sd_name on scheme_department (sd_name,sd_deptid);
 
-ALTER TABLE  scheme_department ADD sd_deptid INT(11) NOT NULL AFTER sd_id;
 

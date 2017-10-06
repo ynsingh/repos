@@ -968,7 +968,7 @@ class Enterence extends CI_Controller {
 				$updatst2 = $this->commodel->updaterec('admissionstudent_enterencestep', $step2,'admission_masterid',$asmid);
 				$this->logger->write_logmessage("update", "Admisssion Step_two update.");
                     		$this->logger->write_dblogmessage("update", "Admission Step_two update.");				
-				if(!$employe)
+				if(!$updatst2)
 				{
                    			$this->logger->write_logmessage("insert", "Student admission education and employment record not add successfully." );
                     			$this->logger->write_dblogmessage("insert", "Student admission education and employment record not add successfully." );
@@ -1227,7 +1227,7 @@ class Enterence extends CI_Controller {
 					$this->logger->write_logmessage("update", "Admission Step_four update.");
                     			$this->logger->write_dblogmessage("update", "Admission Step_four update.");
 
-			if(!$update)
+				if(!$update)
 				{
                    			$this->logger->write_logmessage("update", "Student admission fees not add." );
                     			$this->logger->write_dblogmessage("update", "Student admission fees not add." );
