@@ -1924,20 +1924,20 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric|required');
                 $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces|callback_isStudyCenterExist');
                 $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|alpha_numeric_spaces|required');
-                $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('countries','Country','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('states','State','ucwords|trim|xss_clean');
                 $this->form_validation->set_rules('cities','City','ucwords|trim|xss_clean|alpha_numeric_spaces');
-                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|required');
-                $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|required|numeric|max_length[6]');
-                $this->form_validation->set_rules('phone','Phone','trim|xss_clean|required|numeric|max_length[12]');
-                $this->form_validation->set_rules('fax','Fax','trim|xss_clean|required|numeric|max_length[12]');
-                $this->form_validation->set_rules('status','Status','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean');
+                $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|numeric|max_length[6]');
+                $this->form_validation->set_rules('phone','Phone','trim|xss_clean|numeric|max_length[12]');
+                $this->form_validation->set_rules('fax','Fax','trim|xss_clean|numeric|max_length[12]');
+                $this->form_validation->set_rules('status','Status','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('startdate','Startdate','trim|xss_clean');
                 $this->form_validation->set_rules('closedate','Closedate','trim|xss_clean');
-                $this->form_validation->set_rules('website','Website','trim|xss_clean|required|valid_url');
-                $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('mobile','Mobile','trim|numeric|required|max_length[12]');
+                $this->form_validation->set_rules('website','Website','trim|xss_clean|valid_url');
+                $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|alpha_numeric_spaces');
+                $this->form_validation->set_rules('mobile','Mobile','trim|numeric|max_length[12]');
 
              }
                    
@@ -2208,20 +2208,20 @@ class Setup extends CI_Controller
                 $this->form_validation->set_rules('institutecode','Campus code','trim|xss_clean|alpha_numeric_spaces|required');
                 $this->form_validation->set_rules('name','Campus Name','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
                 $this->form_validation->set_rules('nickname','Campus Nickname','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
+                $this->form_validation->set_rules('address','Address','ucwords|trim|xss_clean|alpha_numeric_spaces');
                 $this->form_validation->set_rules('country','Country','ucwords|trim|xss_clean');
                 $this->form_validation->set_rules('state','State','ucwords|trim|xss_clean');
                 $this->form_validation->set_rules('city','City','ucwords|trim|xss_clean');
-                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|required|alpha');
-                $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|numeric|required|max_length[6]');
-                $this->form_validation->set_rules('phone','Phone','trim|xss_clean|required|numeric|max_length[12]');
-                $this->form_validation->set_rules('fax','Fax','trim|xss_clean|numeric|required|max_length[12]');
-                $this->form_validation->set_rules('status','Status','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('startdate','Startdate','trim|xss_clean|required');
-                $this->form_validation->set_rules('closedate','Closedate','trim|xss_clean|required');
-                $this->form_validation->set_rules('website','Website','trim|xss_clean|required|valid_url');
-                $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|required|alpha_numeric_spaces');
-                $this->form_validation->set_rules('mobile','Mobile','trim|numeric|required|max_length[12]');
+                $this->form_validation->set_rules('district','District','ucwords|trim|xss_clean|alpha');
+                $this->form_validation->set_rules('pincode','Pincode','trim|xss_clean|numeric|max_length[6]');
+                $this->form_validation->set_rules('phone','Phone','trim|xss_clean|numeric|max_length[12]');
+                $this->form_validation->set_rules('fax','Fax','trim|xss_clean|numeric|max_length[12]');
+                $this->form_validation->set_rules('status','Status','ucwords|trim|xss_clean|alpha_numeric_spaces');
+                $this->form_validation->set_rules('startdate','Startdate','trim|xss_clean');
+                $this->form_validation->set_rules('closedate','Closedate','trim|xss_clean');
+                $this->form_validation->set_rules('website','Website','trim|xss_clean|valid_url');
+                $this->form_validation->set_rules('incharge','Incharge','ucwords|trim|xss_clean|alpha_numeric_spaces');
+                $this->form_validation->set_rules('mobile','Mobile','trim|numeric|max_length[12]');
                
              /* Re-populating form */
 
