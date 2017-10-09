@@ -77,7 +77,7 @@
             		 <td> <?php echo $row->fm_amount ?></td>
          		 <td> <?php echo $row->fm_desc ?></td>
 
-                            <td> <?php  echo anchor("setup/delete_fees/{$row->fm_id}","Delete",array('title' => 'Delete' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
+                            <td> <?php // echo anchor("setup/delete_fees/{$row->fm_id}","Delete",array('title' => 'Delete' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
                             &nbsp;<?php  echo anchor("setup/editfees/{$row->fm_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?></td>
                         </tr>
                     <?php }; ?>

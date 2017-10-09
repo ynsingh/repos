@@ -71,7 +71,7 @@
 	    <td>
 	<?php  
 		//if($row->gm_id > 6){
-	    		echo anchor('setup2/deletesemrule/' . $row->semcr_id , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
+//	    		echo anchor('setup2/deletesemrule/' . $row->semcr_id , "Delete", array('title' => 'Delete Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
 	    		echo "&nbsp; ";
 			echo anchor('setup2/editsemrule/' . $row->semcr_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) . " ";
 	//	}

@@ -62,7 +62,7 @@
                     <td><?php echo $row->prgcat_code ?> </td>
                     <td><?php echo $row->prgcat_short ?></td>
                     <td><?php echo $row->prgcat_desc ?> </td>
-                    <td><?php echo anchor('setup/deleteprgcat/' . $row->prgcat_id , "Delete", array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this Program category record... ')")); ?> &nbsp;&nbsp; <?php echo anchor('setup/editprogramcat/' . $row->prgcat_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
+                    <td><?php //echo anchor('setup/deleteprgcat/' . $row->prgcat_id , "Delete", array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this Program category record... ')")); ?> &nbsp;&nbsp; <?php echo anchor('setup/editprogramcat/' . $row->prgcat_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
                </br>
                </tr>
           <?php } ?>

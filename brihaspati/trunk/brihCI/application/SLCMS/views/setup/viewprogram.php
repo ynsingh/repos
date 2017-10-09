@@ -105,7 +105,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
            <!-- <td><?php //echo $row->creatorid;?></td>
             <td><?php //echo $row->createdate;?></td>-->
             <td><?php echo anchor('setup/editprogram/' . $row->prg_id , "Edit", array('title' => 'Edit Program', 'class' => 'red-link'));?>
-             <?php echo anchor('setup/deleteprogram/' . $row->prg_id , "Delete", array('title' => 'Delete Program', 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')"));?>
+             <?php //echo anchor('setup/deleteprogram/' . $row->prg_id , "Delete", array('title' => 'Delete Program', 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')"));?>
             </td>
     <?php        
          }?>  

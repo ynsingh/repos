@@ -89,7 +89,7 @@
                             <td><?php echo $row->emailhost; ?></td>
                             <td><?php echo $row->emailport; ?></td>
                             <td><?php echo $row->username; ?></td>
-                            <td><?php echo $row->password; ?></td>
+                            <td><?php echo "xxxxxxxxx"; ?></td>
                          
                             <td><?php echo $row->sendername ; ?></td>
                             <td><?php echo $row->senderemail ; ?></td>
@@ -98,7 +98,7 @@
                             <td><//?php echo $row->createdate; ?></td>
                             <td><//?php echo $row->modifierid; ?></td>
                             <td><//?php echo $row->modifidate; ?></td> -->
-                            <td> <?php  echo anchor("setup/delete_eset/{$row->id}.{$row->emailprotocol}","Delete",array('title' => 'Delete' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
+                            <td> <?php // echo anchor("setup/delete_eset/{$row->id}.{$row->emailprotocol}","Delete",array('title' => 'Delete' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
                             &nbsp;<?php  echo anchor("setup/editemailsetting/{$row->id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?></td>
                         </tr>
                     <?php }; ?>
