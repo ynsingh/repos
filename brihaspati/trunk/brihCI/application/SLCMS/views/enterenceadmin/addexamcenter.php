@@ -39,7 +39,17 @@
            }
        }); 
     });
-</script>   
+</script>  
+<script>
+function calculate() {
+		var myBox1 = document.getElementById('box1').value;	
+		var myBox2 = document.getElementById('box2').value;
+		var result = document.getElementById('result');	
+		var myResult = myBox1 * myBox2;
+		result.value = myResult;
+	
+	}
+</script>
  <table width= "100%">
             <tr><td>
                 <div align="left" style="margin-left:1%">
@@ -109,19 +119,19 @@
 		<tr>
                 <td><label for="eec_noofroom" class="control-label">Enterance Exam Center Number of Room:</label></td>
                 <td>
-                <input type="text" name="eec_noofroom"  class="form-control" size="30" /><br>
+                <input id="box1" type="text" name="eec_noofroom"  class="form-control" size="30" oninput="calculate()" /><br>
                 </td>
             </tr>
 		<tr>
                 <td><label for="eec_capacityinroom" class="control-label">Enterance Exam Center Capacity in Room:</label></td>
                 <td>
-                <input type="text" name="eec_capacityinroom"  class="form-control" size="30" /><br>
+                <input id="box2" type="text" name="eec_capacityinroom"  class="form-control" size="30" oninput="calculate()"/><br>
                 </td>
             </tr>
 		<tr>
                 <td><label for="eec_totalcapacity" class="control-label">Enterance Exam Center Total Capacity:</label></td>
                 <td>
-                <input type="text" name="eec_totalcapacity"  class="form-control" size="30" /><br>
+                <input id="result" type="text" name="eec_totalcapacity"  class="form-control" size="30" readonly/><br>
                 </td>
             </tr>
 		<tr>

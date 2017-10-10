@@ -63,5 +63,13 @@ class Archive extends CI_Controller
         	$this->logger->write_dblogmessage("view"," View Authority archive", "Authority archive details...");
 	        $this->load->view('archive/authoritya');
 	}
+	 /** This function Display the Exam Center list archive records */
+        public function examcentera() {
+                $this->exresult = $this->common_model->get_list('admissionstudent_enterenceexamcentera');
+                $this->logger->write_logmessage("view"," View Authority archive ", "Authority archive details...");
+                $this->logger->write_dblogmessage("view"," View Authority archive", "Authority archive details...");
+                $this->load->view('archive/examcentera');
+        }
+
 }
 

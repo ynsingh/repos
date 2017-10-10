@@ -15,6 +15,16 @@
         window.history.back();
         }
     </script>
+<script>
+function calculate() {
+                var myBox1 = document.getElementById('box1').value;     
+                var myBox2 = document.getElementById('box2').value;
+                var result = document.getElementById('result'); 
+                var myResult = myBox1 * myBox2;
+                result.value = myResult;
+        
+        }
+</script>
  <table width="100%">
             <tr><td>
               <div align="left">
@@ -87,7 +97,8 @@
                 echo form_label('Enterance Exam Center Number of Room', 'eec_noofroom');
                 echo "</td>";
                 echo "<td>";
-                echo form_input($eec_noofroom);
+		$numroom=$eec_noofroom['value'];
+ 		echo "<input id=\"box1\" type=\"text\" name=\"eec_noofroom\" size=\"37\"  class=\"form-control\" oninput=\"calculate();\" value=$numroom />";
                 echo "</td>";
             	echo "</tr>";
 		echo "<tr>";
@@ -95,7 +106,8 @@
                 echo form_label('Enterance Exam Center Capacity in Room', 'eec_capacityinroom');
                 echo "</td>";
                 echo "<td>";
-                echo form_input($eec_capacityinroom);
+		$totalroom=$eec_capacityinroom['value'];
+		echo "<input id=\"box2\" type=\"text\" name=\"eec_capacityinroom\" size=\"37\"  class=\"form-control\" oninput=\"calculate();\" value=$totalroom />";
                 echo "</td>";
                 echo "</tr>";
 		echo "<tr>";
@@ -103,7 +115,8 @@
                 echo form_label('Enterance Exam Center Total Capacity', 'eec_totalcapacity');
                 echo "</td>";
                 echo "<td>";
-                echo form_input($eec_totalcapacity);
+		$totalcapacity=$eec_totalcapacity['value'];
+                echo "<input id=\"result\" type=\"text\" name=\"eec_totalcapacity\" size=\"37\"  class=\"form-control\" value=$totalcapacity readonly />";
                 echo "</td>";
                 echo "</tr>";
 		echo "<tr>";
