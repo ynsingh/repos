@@ -36,7 +36,7 @@ CREATE TABLE `admissionopen` (
   `admop_entexam_date` datetime DEFAULT NULL,
   `admop_startdate` datetime DEFAULT NULL,
   `admop_lastdate` datetime DEFAULT NULL,
-  `admop_app_received` varchar(255) DEFAULT NULL
+  `admop_app_received` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `admissionopen`
@@ -342,7 +342,7 @@ ALTER TABLE `admissionstudent_fees`
 CREATE TABLE `admissionstudent_centerallocation` (
   `ca_id` int(11) NOT NULL,
   `ca_asmid` int(11) DEFAULT NULL,
-  `ca_rollno` int(11) DEFAULT NULL,
+  `ca_rollno` varchar(50) DEFAULT NULL,
   `ca_centerlocation` varchar(255) DEFAULT NULL,
   `ca_centername` varchar(255) DEFAULT NULL,
   `ca_hallticketstatus` varchar(50) DEFAULT NULL,
@@ -352,8 +352,8 @@ CREATE TABLE `admissionstudent_centerallocation` (
 
 
 ALTER TABLE `admissionstudent_centerallocation`
-  ADD PRIMARY KEY (`ca_id`);
-
+  ADD PRIMARY KEY (`ca_id`),
+  ADD UNIQUE KEY `ca_asmid` (`ca_asmid`);
 
 ALTER TABLE `admissionstudent_centerallocation`
   MODIFY `ca_id` int(11) NOT NULL AUTO_INCREMENT;
@@ -526,6 +526,7 @@ CREATE TABLE `Department` (
   `dept_id` int(11) NOT NULL,
   `dept_name` varchar(255) NOT NULL,
   `dept_code` varchar(255) NOT NULL,
+  `dept_uoid` int(11) NOT NULL, 
   `dept_short` varchar(255) NOT NULL,
   `dept_description` varchar(255) NOT NULL,
   `dept_schoolname` varchar(255) DEFAULT NULL,

@@ -141,7 +141,7 @@ echo "<ul class=\"sf-menu\">";
                                       echo "</li>";
                                       echo "<li>";
                                       echo anchor('enterenceadmin/viewnumericalreport', 'Numerical Report ', array('title' => 'Numerical Report'));
-                                      echo "</li>";
+				      echo "</li>";
 				      echo "<li>";
                                       echo anchor('enterenceadmin/viewcenterallocationlist', 'Center Allocation ', array('title' => 'Center Allocation'));
                                       echo "</li>";
