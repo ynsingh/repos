@@ -77,44 +77,50 @@
 				<option value="<?php echo $datas->sc_code; ?>"><?php echo $datas->sc_name; ?></option>
 			<?php endforeach; ?>
 			</select>   
-			</td></tr>                       
+			</td></tr>                 
+
+                         <tr><td>
+                        Choose your Authorities Name: </td><td>
+                        <select name="authorities" width="80%">
+                        <option value=""disabled selected>-------------------Select authorities-----------------</option>
+                        <?php foreach($this->authresult as $datas): ?>
+                                <option value="<?php echo $datas->id; ?>"><?php echo $datas-> name; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                        </td></tr>
+
+                          
           		<tr>  
                                 <td><label>School/Faculty Code:</label></td>
                                 <td><input type="text"placeholder="School Code" name="dept_schoolcode"  size="43" value="<?php echo isset($_POST["dept_schoolcode"]) ? $_POST["dept_schoolcode"] : ''; ?>" /></td> 
-                                <td><?php echo form_error('dept_schoolcode')?></td>
                                  <td>Example: Sbs</td>
                             </tr>
                             <tr> 
                                 <td><label>School/Faculty Name:</label></td>
                                 <td><input type="text"placeholder="School Name"name="dept_schoolname"  size="43" value="<?php echo isset($_POST["dept_schoolname"]) ? $_POST["dept_schoolname"] : ''; ?>" /> </td>
-                                <td><?php echo form_error('dept_schoolname')?></td> 
                                <td>Example: School of basic science  </td>
                                             
                             </tr>
                             <tr>
                                 <td><label>Department Code:</label></td>
                                 <td><input type="text"placeholder="Department Code" size="43" name="dept_code" value="<?php echo isset($_POST["dept_code"]) ? $_POST["dept_code"] : ''; ?>" /> </td>
-                                <td><?php echo form_error('dept_code')?></td>
                                  <td>Example: Phy </td>          
                             </tr>
                             <tr>
                                 <td><label>Department Name:</label></td>
                                 <td><input type="text"placeholder="Department Name" name="dept_name"  size="43" value="<?php echo isset($_POST["dept_name"]) ? $_POST["dept_name"] : ''; ?>" /></td>
-                                <td><?php echo form_error('dept_name')?></td> 
                                <td>Example:Physics Department </td>                               
                 
                             </tr>
                             <tr>
                                 <td><label>Department Nick Name:</label></td>
                                 <td><input type="text"placeholder="Department Nick Name"name="dept_short" size="43" value="<?php echo isset($_POST["dept_short"]) ? $_POST["dept_short"] : ''; ?>"/> </td>
-                                <td><?php echo form_error('dept_short')?></td>
                                  <td>Example:Phy </td>
                                 
                             </tr>
                             <tr>
                                 <td><label>Department Description:</label></td>    
                                 <td><input type="text"placeholder="Dapartment Description"name="dept_descripation"size="43" value="<?php echo isset($_POST["dept_descripation"]) ? $_POST["dept_descripation"] : ''; ?>" /> </td>   
-                                 <td><?php echo form_error('dept_descripation')?></td>
                                  <td>Example:Department of Physics  </td>           
                             </tr>
 			                    

@@ -68,12 +68,8 @@
                     <td><?php echo $row->tsm_type?> </td>
                     <td><?php echo $row->tsm_gender ?> </td>
 		    <td><?php echo $row->tsm_percent ?> </td>
-		     <?php if($row->tsm_id >1){ ?>
              	    <td><?php echo anchor('setup/edittaxslab/' . $row->tsm_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
 	       </td>
-		<?php } else {
-			echo "<td> </td>";
-		}?>
                </tr>
  	  <?php } ?>  
 	</tbody>		            

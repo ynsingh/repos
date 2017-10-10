@@ -65,13 +65,9 @@
                     
                       <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name', 'sc_id',$row->msd_scid)->sc_name;?></td>
                       <td><?php echo $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$row->msd_deptid)->dept_name;?></td>
-                      <td><?php echo $this->SIS_model->get_listspfic1('scheme_department','sd_name', 'sd_id',$row->msd_schmid)->sd_name;?></td>
-                     <?php if($row->msd_id >1){ ?>
+                      <td><?php echo $this->sismodel->get_listspfic1('scheme_department','sd_name', 'sd_id',$row->msd_schmid)->sd_name;?></td>
                     <td><?php echo anchor('map/editschemedept/' . $row->msd_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
                </td>
-                <?php } else {
-                        echo "<td> </td>";
-                }?>
                </tr>
           <?php } ?>
         </tbody>

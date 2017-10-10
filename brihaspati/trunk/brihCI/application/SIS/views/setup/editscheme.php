@@ -45,6 +45,17 @@
        
             echo "<tr>";
                 echo "<td>";
+                    echo form_label('Department Name', 'sd_deptid');
+                echo "</td>";
+                echo "<td>";
+                    echo form_input($sd_deptid);
+                echo "</td>";
+                echo "<td>";
+                echo "</td>";
+            echo "</tr>";
+
+            echo "<tr>";
+                echo "<td>";
                     echo form_label('Scheme Name', 'sname');
                 echo "</td>";
                 echo "<td>";

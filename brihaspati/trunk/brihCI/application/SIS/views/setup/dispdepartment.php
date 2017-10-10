@@ -55,7 +55,7 @@
           <table cellpadding="16" style="margin-left:2%;" class="TFtable">
           <thead>
           <tr align="center">
-       <th>University Name</th><th>Campus Name</th><th>School/Faculty Code</th><th>School/Faculty Name</th><th>Deptt. Code</th><th>Deptt. Name</th><th>Deptt. Nick Name</th><th>Deptt Desc</th><th>Action</th><th></th></tr></thead>
+       <th>University Name</th><th>Campus Name</th><th>Authorities Name</th> <th>School/Faculty Code</th><th>School/Faculty Name</th><th>Deptt. Code</th><th>Deptt. Name</th><th>Deptt. Nick Name</th><th>Deptt Desc</th><th>Action</th><th></th></tr></thead>
                  <?php
                     foreach ($this->deptresult as $row)
                     {
@@ -63,6 +63,7 @@
                         echo "<tr align=\"center\">";
 			echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->dept_orgcode)->org_name. "</td>";
 	      	        echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->dept_sccode)->sc_name . "</td>";
+		        echo "<td>". $this->login_model->get_listspfic1('authorities','name','id',$row->dept_uoid)-> name . "</td>";
                         echo "<td>" . $row->dept_schoolcode. "</td>";
                         echo "<td>" . $row->dept_schoolname . "</td>";
                         echo "<td>" . $row->dept_code . "</td>";

@@ -20,6 +20,7 @@ class Setup extends CI_Controller
 {
     function __construct() {
         parent::__construct();
+        $this->load->model('login_model'); 
 	$this->load->model('common_model'); 
         $this->load->model('SIS_model');
         $this->load->model('dependrop_model','depmodel');
@@ -985,11 +986,12 @@ class Setup extends CI_Controller
 //*************************Start Department**************************************//
  	  public function dept(){
         	$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
-   	        $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
+                $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
+	        $this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
 
             
 	   if(isset($_POST['dept'])) { 
-               
+                $this->form_validation->set_rules('authorities','Authorities Name','trim|xss_clean|required');
                 $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
                 $this->form_validation->set_rules('studycenter','Campus','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric');
@@ -1003,6 +1005,7 @@ class Setup extends CI_Controller
 
                  if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){  
                  $data = array(
+                               'dept_uoid'=>strtoupper($_POST['authorities']),
                                 'dept_orgcode'=>strtoupper($_POST['orgprofile']),
                                 'dept_sccode'=>strtoupper($_POST['studycenter']),
                                 'dept_schoolcode'=>strtoupper($_POST['dept_schoolcode']),
@@ -1039,7 +1042,7 @@ class Setup extends CI_Controller
         $this->deptresult = $this->common_model->get_list('Department');
         $this->logger->write_logmessage("view"," View Department list", "department list display");
         $this->logger->write_dblogmessage("view"," View Department list", "department list display");
-        $this->load->view('setup/dispdepartment');
+       $this->load->view('setup/dispdepartment');
        }
     /* this function is used for delete department record */
     public function deletedept($deptid) {
@@ -1089,6 +1092,18 @@ class Setup extends CI_Controller
            'value' => $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$dept_data->dept_sccode)->sc_name,
 	    'readonly' => 'readonly'
         );
+
+
+         $data['authorities'] = array(
+            'name' => 'authorities',
+            'id' => 'authorities',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $this->login_model->get_listspfic1('authorities','name','id',$dept_data->dept_uoid)-> name,
+          'readonly' => 'readonly'
+        );
+
+
         $data['deptschoolcode'] = array(
             'name' => 'deptschoolcode',
             'id' => 'deptschoolcode',
@@ -2542,9 +2557,10 @@ class Setup extends CI_Controller
 /****************************************** Scheme Module ********************************************/
 
  public function scheme(){
-
+        $this->deptresult = $this->common_model->get_list('Department');
         if(isset($_POST['scheme'])) {
-            $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean|required|alpha_numeric_spaces|callback_isSchemeExist');
+            $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean|required');
+            $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash');
             $this->form_validation->set_rules('ssname','Scheme Short Name','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('sdesc','Scheme Description','trim|xss_clean|alpha_numeric_spaces');
@@ -2552,6 +2568,7 @@ class Setup extends CI_Controller
             if($this->form_validation->run()==TRUE){
 
             $data = array(
+                'sd_deptid'=>ucwords(strtolower($_POST['dept_name'])),
                 'sd_name'=>ucwords(strtolower($_POST['sname'])),
                 'sd_code'=>strtoupper($_POST['scode']),
                 'sd_short'=>strtoupper($_POST['ssname']),
@@ -2571,19 +2588,19 @@ class Setup extends CI_Controller
                 $this->logger->write_dblogmessage("insert"," add scheme ", "Scheme record added successfully..." );
                 $this->session->set_flashdata("success", "Scheme added successfully...");
                 redirect("setup/displayscheme", "refresh");
-              }
-           }
-
+          }
         }
-      $this->load->view('setup/scheme');
-   }
+
+    }
+    $this->load->view('setup/scheme');
+ }
 
 
 /** This function check for duplicate scheme
      * @return type
     */
 
-    public function isSchemeExist($sd_name) {
+    /*public function isSchemeExist($sd_name) {
 
         $is_exist = $this->SIS_model->isduplicate('scheme_department','sd_name',$sd_name);
         if ($is_exist)
@@ -2594,14 +2611,13 @@ class Setup extends CI_Controller
         else {
             return true;
         }
-    }
+    }*/
 
 
 
  /* Display Scheme record */
 
   public function displayscheme(){
-
         $this->result = $this->SIS_model->get_list('scheme_department');
         $this->logger->write_logmessage("view"," View ", "Scheme record display successfully..." );
         $this->logger->write_dblogmessage("view"," View Scheme", "Scheme record display successfully..." );
@@ -2622,6 +2638,15 @@ class Setup extends CI_Controller
 
         /* Form fields */
 
+       $data['sd_deptid'] = array(
+            'name' => 'sd_deptid',
+            'id' => 'sd_deptid',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $this->common_model->get_listspfic1('Department','dept_name', 'dept_id',$scheme_data->sd_deptid)->dept_name,
+            //'value' => $scheme_data->sd_name,
+            'readonly' => 'readonly'
+        );
         $data['sname'] = array(
             'name' => 'sname',
             'id' => 'sname',
@@ -2636,29 +2661,24 @@ class Setup extends CI_Controller
            'maxlength' => '50',
            'size' => '40',
            'value' => $scheme_data->sd_code,
-
         );
-
         $data['ssname'] = array(
            'name' => 'ssname',
            'id' => 'ssname',
            'maxlength' => '6',
            'size' => '40',
            'value' => $scheme_data->sd_short,
-
         );
-
         $data['sdesc'] = array(
            'name' => 'sdesc',
            'id' => 'sdesc',
            'maxlength' => '255',
            'size' => '40',
            'value' => $scheme_data->sd_desc,
-
         );
-
         $data['sd_id'] = $sd_id;
-
+          
+       // $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean'); 
         $this->form_validation->set_rules('sname','Scheme Name ','trim|xss_clean|required|alpha_numeric_spaces');
         $this->form_validation->set_rules('scode','Scheme Code ','trim|xss_clean|required|alpha_dash');
         $this->form_validation->set_rules('ssname','Scheme Short Name ','trim|xss_clean|required|alpha_numeric_spaces');
@@ -2666,6 +2686,7 @@ class Setup extends CI_Controller
 
         if ($_POST)
         {
+         //   $data['sd_deptid']['value'] = $this->input->post('sd_deptid', TRUE);
             $data['sname']['value'] = $this->input->post('sname', TRUE);
             $data['scode']['value'] = $this->input->post('scode', TRUE);
             $data['ssname']['value'] = $this->input->post('ssname', TRUE);
@@ -2678,13 +2699,15 @@ class Setup extends CI_Controller
         }
 	else
         {
-
+         //   $sd_deptid = ucwords(strtolower($this->input->post('sd_deptid', TRUE)));
             $data_sname = ucwords(strtolower($this->input->post('sname', TRUE)));
             $data_scode = strtoupper($this->input->post('scode', TRUE));
             $data_ssname = strtoupper($this->input->post('ssname', TRUE));
             $data_sdesc = $this->input->post('sdesc', TRUE);
             $data_sid = $sd_id;
 	    $logmessage = "";
+            //if($scheme_data->sd_deptid != $data_sd_deptid)
+              //  $logmessage = "Add Scheme " .$scheme_data->sd_name. " changed by " .$data_sd_deptid;
             if($scheme_data->sd_name != $data_sname)
                 $logmessage = "Add Scheme " .$scheme_data->sd_name. " changed by " .$data_sname;
             if($scheme_data->sd_code != $data_scode)
@@ -2695,6 +2718,7 @@ class Setup extends CI_Controller
                 $logmessage = "Add Scheme " .$scheme_data->sd_desc. " changed by " .$data_sdesc;
 
             $update_data = array(
+             //  'sd_deptid' =>$data_sd_deptid,
                'sd_name' => $data_sname,
                'sd_code' => $data_scode,
                'sd_short' => $data_ssname,

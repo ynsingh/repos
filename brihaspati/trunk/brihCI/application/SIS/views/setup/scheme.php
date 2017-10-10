@@ -43,6 +43,21 @@
     <div align="left" style="margin-left:1%">
         <form action="<?php echo site_url('setup/scheme');?>" method="POST" class="form-inline">
           <table style="margin-left:1%">
+
+           
+
+
+                 <tr>
+                        <td>Department Name:</td>
+                        <td>
+                        <select name="dept_name" id="deptid" class="my_dropdown" style="width:100%;">
+                        <option value="">-------------Select Department---------------</option>
+                        <?php foreach($this->deptresult as $datas): ?>
+                        <option value="<?php echo $datas->dept_id; ?>"><?php echo $datas->dept_name; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                        </td></tr>
+              
             <tr>  
                 <td><label for="sname" class="control-label"> Scheme Name :</label></td>
                 <td>

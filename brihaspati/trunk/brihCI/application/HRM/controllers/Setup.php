@@ -19,7 +19,8 @@ class Setup extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-	$this->load->model('common_model'); 
+	     $this->load->model('common_model'); 
+        $this->load->model('login_model');  
         $this->load->model('dependrop_model','depmodel');
         $this->load->model('university_model','unimodel');
         if(empty($this->session->userdata('id_user'))) {
@@ -982,12 +983,14 @@ class Setup extends CI_Controller
  //====================End of Add Category Module ============================================
 //*************************Start Department**************************************//
  	  public function dept(){
-        	$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
+            	$this->scresult = $this->common_model->get_listspfic2('study_center','sc_code', 'sc_name');
    	        $this->uresult = $this->common_model->get_listspfic2('org_profile','org_code','org_name');
+              $this->authresult = $this->login_model->get_listspfic2('authorities','id','name');
 
             
 	   if(isset($_POST['dept'])) { 
                
+                $this->form_validation->set_rules('authorities','Authorities Name','trim|xss_clean|required');
                 $this->form_validation->set_rules('orgprofile','University','trim|xss_clean|required');
                 $this->form_validation->set_rules('studycenter','Campus','trim|xss_clean|required');
                 $this->form_validation->set_rules('dept_schoolcode','School Code','trim|xss_clean|alpha_numeric');
@@ -1001,6 +1004,7 @@ class Setup extends CI_Controller
 
                  if (($_POST['orgprofile'] != '') || ($_POST['studycenter'] != '')){  
                  $data = array(
+                                'dept_uoid'=>strtoupper($_POST['authorities']),
                                 'dept_orgcode'=>strtoupper($_POST['orgprofile']),
                                 'dept_sccode'=>strtoupper($_POST['studycenter']),
                                 'dept_schoolcode'=>strtoupper($_POST['dept_schoolcode']),
@@ -1087,6 +1091,15 @@ class Setup extends CI_Controller
             'size' => '40',
            'value' => $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$dept_data->dept_sccode)->sc_name,
 	    'readonly' => 'readonly'
+        );
+
+       $data['authorities'] = array(
+            'name' => 'authorities',
+            'id' => 'authorities',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $this->login_model->get_listspfic1('authorities','name','id',$dept_data->dept_uoid)-> name,
+          'readonly' => 'readonly'
         );
         $data['deptschoolcode'] = array(
             'name' => 'deptschoolcode',

@@ -88,7 +88,20 @@
                  echo "<td>";
                  echo "</td>";
                  echo "</tr>";
-
+                
+               echo "</td>";
+            echo "</tr>";
+           echo "<tr>";
+                echo "<td>";
+                echo form_label('Authorities Name', 'authorities');
+                echo "</td>";
+                echo "<td>";
+                 echo form_input($authorities);
+                 echo "</td>";
+                 echo "<td>";
+                 echo "</td>";
+                 echo "</tr>";
+                
        
             echo "<tr>";
                 echo "<td>";

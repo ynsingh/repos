@@ -71,13 +71,8 @@
             <td> <?php echo $row->lt_code ?></td>
             <td> <?php echo $row->lt_short ?></td>
             <td> <?php echo $row->lt_value ?></td>
-            
-	    <td>
-            <?php  
-		if ($row->lt_id > 3){
-	    		          		echo anchor('setup/editleave/' . $row->lt_id , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
-		}
-            echo "</td>";
+           <td> <?php echo anchor('setup/editleave/' . $row->lt_id , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
+	           echo "</td>";
             echo "</tr>";
           
         }

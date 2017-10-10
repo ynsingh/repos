@@ -62,12 +62,8 @@
                     <td><?php echo $row->sgm_max ?> </td>
                     <td><?php echo $row->sgm_min ?></td>
 		    <td><?php echo $row->sgm_gradepay ?> </td>
-		     <?php if($row->sgm_id >1){ ?>
              	    <td><?php echo anchor('setup/editsalarygrademaster/' . $row->sgm_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
 	       </td>
-		<?php } else {
-			echo "<td> </td>";
-		}?>
                </tr>
  	  <?php } ?>  
 	</tbody>		            

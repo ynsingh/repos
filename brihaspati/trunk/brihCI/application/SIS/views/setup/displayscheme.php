@@ -44,6 +44,7 @@
         <thead >
         <tr align="center">
         <th>Sr.No</th>
+        <th>Department Name</th>
         <th> Scheme Name </th>
         <th> Scheme Code </th>
         <th>Scheme Short Name </th>
@@ -58,6 +59,7 @@
               ?>    
 		<tr align="center">
                     <td><?php echo ++$count; ?> </td>
+                    <td><?php echo $this->common_model->get_listspfic1('Department','dept_name', 'dept_id',$row->sd_deptid)->dept_name;?></td>
                     <td><?php echo $row->sd_name ?> </td>
                     <td><?php echo $row->sd_code ?> </td>
                     <td><?php echo $row->sd_short ?></td>

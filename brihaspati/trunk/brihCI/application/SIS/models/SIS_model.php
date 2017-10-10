@@ -63,6 +63,23 @@ class SIS_model extends CI_Model
 	}
         return $this->db2->get()->row();
     }
+
+//get the list of all records with  two specific fields for specific values
+    public function get_listspfic2($tbname,$selfield1,$selfield2,$fieldname='',$fieldvalue='',$grpby=''){
+                $this->db2->flush_cache();
+                $this->db2->from($tbname);
+                $this->db2->select($selfield1);
+                $this->db2->select($selfield2);
+                if($grpby != ''){
+                        $this->db2->group_by($grpby);
+                }
+                if (($fieldname != '') && ($fieldvalue !='')){
+                        $this->db2->where($fieldname, $fieldvalue);
+                }
+       // print_r($this->db->get()->result());
+        return $this->db2->get()->result();
+    }
+
     //    getting different field from table - $selectfield ('a,b,c');
     public function get_listspficemore($tbname,$selectfield,$data){
 	$this->db2->flush_cache();

@@ -116,6 +116,24 @@ class Login_model extends CI_Model
                   }
     }
 
+
+//get the list of all records with  two specific fields for specific values
+    public function get_listspfic2($tbname,$selfield1,$selfield2,$fieldname='',$fieldvalue='',$grpby=''){
+                $this->db1->flush_cache();
+                $this->db1->from($tbname);
+                $this->db1->select($selfield1);
+                $this->db1->select($selfield2);
+                if($grpby != ''){
+                        $this->db1->group_by($grpby);
+                }
+                if (($fieldname != '') && ($fieldvalue !='')){
+                        $this->db1->where($fieldname, $fieldvalue);
+                }
+       // print_r($this->db->get()->result());
+        return $this->db1->get()->result();
+    }
+
+
     function __destruct() {
         $this->db1->close();
     }

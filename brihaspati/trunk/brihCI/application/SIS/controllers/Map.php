@@ -1323,7 +1323,7 @@ public function viewschemedept()
 
 public function schemedept(){
                   $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
-        $this->schresult = $this->sismodel->get_listspfic2('scheme_department','sd_id', 'sd_name');
+        	  $this->schresult = $this->sismodel->get_list('scheme_department');
    
         if(isset($_POST['schemedept'])) {
         $this->form_validation->set_rules('campus','Campus Name','trim|xss_clean|required');
@@ -1366,7 +1366,7 @@ public function schemedept(){
 
 
        public function editschemedept($msd_id) {
-	$this->schresult = $this->sismodel->get_listspfic2('scheme_department','sd_id', 'sd_name');
+	$this->schresult = $this->sismodel->get_list('scheme_department');
         $msd_data_q=$this->sismodel->get_listrow('map_scheme_department','msd_id', $msd_id);
          
         if ($msd_data_q->num_rows() < 1)
