@@ -3,8 +3,8 @@ use olas;
 alter table Department modify column dept_schoolname varchar(255) default NULL;
 alter table Department modify column dept_schoolcode varchar(255) default NULL;
 
-alter table study_center modify column sc_startdate varchar(25) default NULL;
-alter table study_center modify column sc_closedate varchar(25) default NULL;
+alter table study_center modify column sc_startdate date default NULL;
+alter table study_center modify column sc_closedate date default NULL;
 alter table study_center modify column sc_mobile varchar(25) default NULL;
 alter table study_center modify column sc_status varchar(25) default NULL;
 alter table study_center modify column sc_address varchar(255) default NULL;
