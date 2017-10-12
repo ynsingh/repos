@@ -99,7 +99,7 @@ echo "</center>";
        	?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
-             <div class="" style='margin-left:30px;width:1680px;font-size:18px;'><div ><?php echo $_SESSION['err_message'];?></div></div>
+             <div class="isa_error" style='margin-left:30px;width:1680px;font-size:18px;'><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
 	?>  

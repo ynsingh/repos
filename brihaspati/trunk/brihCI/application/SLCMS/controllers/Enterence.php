@@ -578,6 +578,13 @@ class Enterence extends CI_Controller {
     }
 
 	public function step_one(){
+		  $data = array();
+        //get program name
+        $prg_name=$this->uri->segment(3);
+        $data['prg_name'] = $prg_name;
+        $msgflag = 0;
+        $data['msgflag'] = $msgflag;
+
 		$regisid = $this->session->userdata['asreg_id'];
 		$email = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_emailid','asreg_id',$regisid)->asreg_emailid;		
 		$data['email'] = $email;
@@ -590,8 +597,8 @@ class Enterence extends CI_Controller {
 		$data['age'] = $age;
 
 		$this->scresult = $this->commodel->get_list('study_center');
-		$this->prgname = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');		
-		$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_id');
+		$this->prgname  = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');		
+		$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
 
 		//send student enetrance data in table
 		if(isset($_POST['addstudent'])) {
@@ -1023,7 +1030,7 @@ class Enterence extends CI_Controller {
 					//check files extension 	
 					$file_ext1 = strtolower(end((explode('.',$_FILES['photo']['name']))));
 					$file_ext2 = strtolower(end((explode('.',$_FILES['sign']['name']))));
-      					$extensions= array("jpeg","jpg","png","pdf");
+      					$extensions= array("jpeg","jpg","png","gif","pdf");
       					if(in_array($file_ext1,$extensions) === false){
 						$filerrors[$j] = " Photo extension should be jpeg or jpg or png. ";
 						$extflag=true;
@@ -1052,7 +1059,7 @@ class Enterence extends CI_Controller {
 					if ((!$extflag) && (!$sizeflag)){
 
 						//move file to directory code for photo
-	                                   	$desired_dir = 'uploads/SLCMS/admission_student/'.$id;
+	                                   	$desired_dir = 'uploads/SLCMS/enterence/'.$id;
 						// Create directory if it does not exist
 						if(is_dir($desired_dir)==false){
                                                         mkdir("$desired_dir", 0700);    
@@ -1109,7 +1116,7 @@ class Enterence extends CI_Controller {
 						if ((!$extflag) && (!$sizeflag)){
 
 							//move file to directory code for photo
-	                                        	$desired_dir = 'uploads/SLCMS/admission_student/'.$id;
+	                                        	$desired_dir = 'uploads/SLCMS/enterence/'.$id;
 							// Create directory if it does not exist
 							if(is_dir($desired_dir)==false){
                                                        	 	mkdir("$desired_dir", 0700);    
@@ -1158,11 +1165,14 @@ class Enterence extends CI_Controller {
 		$this->load->view('enterence/step_three');
 	}
 
-	public function step_four(){
+	  public function step_four(){
 		if(empty($this->session->userdata('asm_id'))) {
 	       	$this->session->set_flashdata('flash_data', 'You don\'t have access!');
 			redirect('welcome');
         	}
+		$Sid = $this->session->userdata['asm_id'];
+		//get category name
+		$this->catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
 	$this->load->view('enterence/step_four');
 	}
 
@@ -1188,8 +1198,9 @@ class Enterence extends CI_Controller {
         	}	
 		$getmail = $this->commodel->get_elist('email_setting');
 		//print_r($getmail);
-		$Sid = $this->session->userdata['asm_id'];;
-		
+		$Sid = $this->session->userdata['asm_id'];
+		//get category name
+		$this->catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
 		//fees paid by offline
 					
 		if(isset($_POST['offline'])) {	
@@ -1210,6 +1221,8 @@ class Enterence extends CI_Controller {
 				$this->load->view('enterence/step_four');
 				return;
 			}else{	
+			$isdupl = $this->commodel->isduplicate('admissionstudent_centerallocation','ca_asmid',$Sid);
+                            	if(!$isdupl){
 					$step4 = array(
 						'asfee_referenceno'   	=>	$_POST['refno'],
                 				'asfee_bankname'  	=>	$_POST['bank'],
@@ -1219,9 +1232,52 @@ class Enterence extends CI_Controller {
                 				);
 					$update = $this->commodel->updaterec('admissionstudent_fees', $step4,'asfee_amid',$Sid);
 				
-				$this->logger->write_logmessage("update", "Step 4 admissionstudent_fees table update.");
-                    		$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." );
-				//update admissionstep step4 table
+					$this->logger->write_logmessage("update", "Step 4 admissionstudent_fees table update.");
+                    			$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." );
+					//insert into center allocation table(roll no and masterid)
+					
+					$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
+					if($prgid<=9){
+						$prgid = '0'.$prgid;
+					}				
+					$ydate = date('Y');
+					$rollno = '';
+					$datas = $ydate.$prgid;
+					//where("(`description` LIKE '%$match%'")
+					$max = $this->commodel->get_listspficemore('admissionstudent_centerallocation','MAX(ca_rollno) AS maxca_rollno',"ca_rollno LIKE '$datas%'");
+					//print_r($max);die;
+					foreach($max as $row){
+						$maxrollno = $row->maxca_rollno;
+					}
+					
+					if((!empty($maxrollno))||$maxrollno>0)
+					{
+						$rollno = $maxrollno+1;
+						
+					}
+					else{
+						$rollno = $ydate.$prgid.'0001';
+					}
+					//echo $rollno;die;
+					$center = array(
+		                		'ca_asmid'           =>	$Sid,
+						'ca_rollno'	     =>	$rollno,
+	           	     		);
+					
+    					$this->db->insert('admissionstudent_centerallocation',$center);
+					$this->logger->write_logmessage("update", "Admission Step 4 insert rollno and asmid admission master .");
+                    			$this->logger->write_dblogmessage("update", "Admission Step 4 insert rollno and asmid admission master." );
+				
+					//update studen master table(application_no)
+					$master = array(
+		                		'asm_applicationno'   =>	$rollno,
+	           	     		);
+					
+    					$this->commodel->updaterec('admissionstudent_master', $master,'asm_id',$Sid);
+					$this->logger->write_logmessage("update", "Admission Step 4 insert application no in master table.");
+                    			$this->logger->write_dblogmessage("update", "Admission Step 4 insert application no in master table." );
+
+					//update admissionstep step4 table
 					$cdate = date('Y-m-d H:i:s');
  					$step4 = array(
 						'step4_status'   	=>	1,
@@ -1241,200 +1297,20 @@ class Enterence extends CI_Controller {
                 		else{
                     			$this->logger->write_logmessage("update","Student admission fees add.");
                     			$this->logger->write_dblogmessage("update", "Student admission fees add.");
-                   			$this->session->set_flashdata("success", "Your offline fees submitted successfully.");
+                   			//$this->session->set_flashdata("success", "Your offline fees submitted successfully.".$maxrollno.' '.$rollno.' '.$ydate.''.$prgid);
+					$this->session->set_flashdata("success", "Your offline fees submitted successfully.");
 					redirect('enterence/step_five');
-                		}	
-				//get the email,fname and mobile from student master
-				//$email= $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$Sid)->asm_email;
-				//$mobile= $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$Sid)->asm_mobile;
-				//$name= $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$Sid)->asm_fname;	
-				
-					
-				//insert into edrpuser in login database
-				// check for duplicate
-                            /*	$isdupl= $this->logmodel->isduplicate('edrpuser','email',$email);
-			
-                            	if(!$isdupl){
-					$getvericode = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationcode','asreg_emailid',$email)->asreg_verificationcode;	
-					//get verification code in admission registration table	
-					//$password=md5($passwd);
-                                	//generate 10 digit random password
-				    	//$passwd=$this->commodel->randNum(10);	
-					// generate the hash of password
-				    	//$password=md5($passwd);
-					// insert data into edrp user db1
-					$dataeu = array(
-                                    		'username'=> $name,
-                                    		'password'=> $getvericode,
-				    		'email'=> $email,
-				    		'componentreg'=> '*',
-				    		'mobile'=>$mobile,
-				    		'status'=>1,
-                                   		'category_type'=>'Student',
-                                   		'is_verified'=>1
-            				);
-					
-					$this->logmodel->insertrec('edrpuser',$dataeu);
-					$this->logger->write_logmessage("insert", "Admission step 4 data insert in edrpuser table.");
-                    			$this->logger->write_dblogmessage("insert", "Admission step 4 data insert in edrpuser table." );
-					
-					//get the insert id of edrp user
-					echo $getid= $this->logmodel->get_listspfic1('edrpuser','id','username',$name);
-					$insid=$getid->id;
-					//print_r($insid);
-					// get user id from  edrp table  in login database
-					//insert into user profile and user last login status in login database
-		 			$dataup = array(
-				  		'userid'=> $insid,
-						'firstname'=> $name,
-						'lang'=> 'english',
-						'mobile'=>$mobile,
-						'status'=>1
-                                    	);
-					
-					$this->logmodel->insertrec('userprofile', $dataup);
-					$this->logger->write_logmessage("insert", "Admission step 4 data insert in userprofile table.");
-                    			$this->logger->write_dblogmessage("insert", "Admission step 4 data insert in userprofile table." );
-					//insert into userroletype group
-					$roleid = $this->commodel->get_listspfic1('role','role_id','role_name','Student')->role_id;
-					$sccode = $this->commodel->get_listspfic1('admissionstudent_master','asm_sccode','asm_id',$Sid)->asm_sccode;
-					$scid = $this->commodel->get_listspfic1('study_center','sc_id','sc_code',$sccode)->sc_id;
-					//$deptid = $this->commodel->get_listspfic1('student_program','sp_deptid','sp_smid',$Sid)->sp_deptid;
-					$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
-					$dataurt = array(
-				        	'userid'=> $insid,
-				           	'roleid'=> $roleid,
-				           	'deptid'=> $prgid,
-				           	'scid'  => $scid,
-				           	'usertype'=>"Student"
-        	    			);
-					//$this->db->insert('user_role_type',$dataurt);
-					$this->commodel->insertrec('user_role_type',$dataurt);
-					$this->logger->write_logmessage("insert", "Admission step 4 data insert in user_role_type table.");
-                    			$this->logger->write_dblogmessage("insert", "Admission step 4 data insert in user_role_type table." );
-
-					//update data in admissionmeritlist 
-					/*$sdate = date('Y-m-d H:i:s');
-					
-					$stuentmerit = array(
-		                		'admission_taken'           =>	$sdate,
-						'admission_date'	    =>	$sdate,
-	           	     		);
-		             		$this->db->where('application_no',$ano);
-    					$this->db->update('admissionmeritlist',$stuentmerit);*/
-
-
-					// update into student entry exit
-					/*$sdate = date('Y-m-d H:i:s');
-					$ydate = date('Y');
-					$$rollno = '';
-					//$maxrollno = $this->db->query('SELECT MAX(senex_rollno) AS `maxsenex_rollno` FROM `student_entry_exit`')->row()->maxsenex_rollno;
-					//print_r($maxrollno);
-					$maxrollno = '1'.$ydate;
-					if(!empty($maxrollno))
-					{
-						$rollno = $maxrollno+1;
-					}
-					else{$rollno = $ydate.'0001';}
-					$stuentpdate = array(
-		                		'senex_rollno'           =>	$rollno,
-						'senex_dateofadmission'	 =>	$sdate,
-						'modifierid'		 =>	$Sid  	
-	           	     		);
-					
-		             		$this->db->where('senex_smid',$Sid);
-    					$this->db->update('student_entry_exit',$stuentpdate);
-					$this->logger->write_logmessage("update", "Step 4 user id update in student_entry_exit table.");
-                    			$this->logger->write_dblogmessage("update", "Step 4 user id update in student_entry_exit table." );
-
-					// update into student master userid	
-					//$Ydate = date('Y');
-					//$enrollno = '';
-					//$maxeno = $this->db->query('SELECT MAX(asm_enrollmentno) AS `maxasm_enrollmentno` FROM `admissionstudent_master`')->row()->maxasm_enrollmentno;
-					//print_r($maxid);
-					//if(!empty($maxeno))
-					//{
-						//$enrollno=$maxeno+1;
-					//}
-					//else{$enrollno = $Ydate.'001';}
-					$Supdate = array(
-		                		'asm_userid'          	 =>		$insid,
-						//'asm_enrollmentno'	 =>		$enrollno
-	           	     		);
-					//print_r($Supdate);
-		             		$this->db->where('asm_id',$Sid);
-	    				$insertUserData = $this->db->update('admissionstudent_master',$Supdate);
-					$this->logger->write_logmessage("update", "Admission step 4 user id update in student_master table.");
-                    			$this->logger->write_dblogmessage("update", "Admission step 4 user id update in student_master table." );
-
-					//update admissionstep table
-					$cdate = date('Y-m-d H:i:s');
- 					$step4 = array(
-						'step4_status'	       =>		 1,
-						'step4_date'	       =>		 $cdate
-					);
-					$updast4 = $this->commodel->updaterec('admissionstudent_enterencestep', $step4,'admission_masterid',$Sid);
-					$this->logger->write_logmessage("update", "Admission step 4 update admissionstep table.");
-                    			$this->logger->write_dblogmessage("update", "Admission step 4 update admissionstep table.");
-
-					//make transaction complete
-					
-					$this->db->trans_complete();
-					//$this->load->view('student/offlinePayment');		
- 
-	 				//check if transaction status TRUE or FALSE
-        				if ($this->db->trans_status() === FALSE) {
-            					//if something went wrong, rollback everything
-            					$this->db->trans_rollback();
-						//else stay with step4
-						$msg = '<h3>You are already exist.</h3>';
-  						$this->session->set_flashdata('msg',$msg);	
-						$this->logger->write_logmessage("insert", "Admission Step 4 error update and insert");
-                    				$this->logger->write_dblogmessage("insert", "Admission Step 4 error update and insert" );
-						redirect('enterence/step_four');
-						
-           					//return FALSE;
-      		  			} else {*/
-						
-            					//if everything went right, commit the data to the database
-           					//$this->db->trans_commit();
-						/*$rowsno=$this->commodel->getnoofrows('email_setting');		
-						if($rowsno >0){
-							//if sucess send mail to user with login details 
-		 					$sub='Student Registration' ;
-                        				$mess="Your registration is complete. The user id ".$email." and password is ".$passwd ;
-                	       				$mails = $this->mailmodel->mailsnd($email, $sub, $mess);
-							 //  mail flag check 			
-							if($mails){
-                        					$error[] ="At row".$i."sufficient data and mail sent sucessfully";
-                        					$this->logger->write_logmessage("insert"," add student edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email);
-		      						$this->logger->write_dblogmessage("insert"," add student edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email);
-				    			}
-							else{
-        		       					$error[] ="At row".$i."sufficient data and mail does not sent";
-		                				$this->logger->write_logmessage("insert"," add student edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email ." and mail does sent");
-								$this->logger->write_dblogmessage("insert"," add student edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email." and mail does sent");
-			   				}
-						}//mail setting check end
-						else{
-							$error[] ="At row".$i."sufficient data and mail does not sent because mail setting does not exist";
-                                                        $this->logger->write_logmessage("insert"," add student edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email." and mail does not sent because mail setting does not exist" );
-                                                        $this->logger->write_dblogmessage("insert"," add student edrpuser,profile and user role type ", "record added successfully for.".$name ." ".$email." mail does not sent because  mail setting does not exist");
-						}
-						$message = '<h3>Your offline fees submitted successfully.</h3>';
-	  					$this->session->set_flashdata('msg',$message);			
-						
-						$this->logger->write_logmessage("insert", "Admission step 4 detail update and insert successfully.");
-                    				$this->logger->write_dblogmessage("insert", "Admission step 4 detail update and insert successfully." );
-						redirect('enterence/step_four');
-       					}// close else transcation failure and else is missing
-				}// close of if is duplication
-				else{
-					$message = '<h3 style="margin-top:5px;">Your registration is failure due to email id is already exist in system.Contact to authority</h3>';
-                                        $this->session->set_flashdata('msg',$message);
-				}*/
+                		}
+			}//if duplicate close
+			else{
+				$message = '<h3>Your fees submission has failed.</h3>';
+                                $this->session->set_flashdata('msg',$message);
+				redirect('welcome');	
+			}	
 			}/*close else validation*/
+			
 		}/*close post submit*/
+		
 		//set flag for each step, if any step fails revert all steps and return to same step
 		$this->load->view('enterence/step_four');
 	}	

@@ -84,6 +84,7 @@ echo "</center>";
         <div class="isa_error" style=""><span ><?php echo $_SESSION['err_message'];?></span></div>
         	<?php
         		};
+
 		?>  
       </div>
 <center>
@@ -126,12 +127,18 @@ if( $(this).val()==="online"){
 		<td><input type="text" style="width:32%;" name="bank" value="<?php echo isset($_POST["bank"]) ? $_POST["bank"] : ''; ?>"></td>
 		</tr><tr>
 		<td>Amount :</td>
-
-		<td><input type="text" style="width:32%;" name="amount" value="<?php echo isset($_POST["amount"]) ? $_POST["amount"] : ''; ?>"></td></tr>
+		<?php $this->catname;
+		if($this->catname == "General" || $this->catname == "OBC"){?>
+		<td><input type="text" style="width:32%;" name="amount" value="<?php echo 300; ?>" readonly></td>
+		<?php }?>
+		<?php if($this->catname == "SC" || $this->catname == "ST"){?>
+		<td><input type="text" style="width:32%;" name="amount" value="<?php echo 100; ?>" readonly></td>
+		<?php }?>
+		</tr>
 		<tr>
 		<td>Fee type : </td>
 		<td><!--<input type="text" name="ftype" value="<?php echo @$this->data['ftype']; ?>"> </td><td>Ex.1 semester.--->
-			<select name="ftype" style="width:32%;height:30px;">
+			<select name="ftype" style="width:33%;height:30px;">
 				<option selected="true" disabled="disabled">Select Fees Type</option>
 				<option value="semfee">Semester fees</option>
 				<option value="exmfee">Exam fees</option>

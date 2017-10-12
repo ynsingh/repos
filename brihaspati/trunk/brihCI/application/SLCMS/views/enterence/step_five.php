@@ -62,7 +62,7 @@ echo "</center>";*/
 		</header>
 		<div class="textname">Admission Form Detail</div>
 		  <div id="photo">
-			<img src="<?php echo base_url('uploads/SLCMS/admission_student/'.$id.'/'.$photo); ?>" >
+			<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$photo); ?>" >
 		  </div>
 		<table class="TFtable" id="personal">
 			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Personal Detail</th></thead>
@@ -306,7 +306,7 @@ echo "</center>";*/
 			<tr>
 			<td style="float:right;">
 				<label class="signlabel">Student Signature</label></br>
-				<img src="<?php echo base_url('uploads/SLCMS/admission_student/'.$id.'/'.$signature); ?>" ></td>
+				<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$signature); ?>" ></td>
 				
 			</tr>
 		</table>

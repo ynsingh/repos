@@ -64,9 +64,18 @@ echo "</center>";
 		//echo "</div>";
 	echo "</table>";
 	}
-	  if(isset($_SESSION['err_message'])){?>
-             <div class="" style='margin-left:30px;width:1680px;font-size:18px;'><div ><?php echo $_SESSION['err_message'];?></div></div>
-        <?php
+	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
+		//echo "<div id='error'>";
+		//echo '<div style="margin-left:40px;">'.$_SESSION['error'].'</div>';
+		//echo "</div>";
+	echo "<table id='error'>";			
+		echo "<tr>";
+			echo "<td style='font-size:18px;'>";
+				echo $_SESSION['error'];
+			echo "</td>";
+		echo "<tr>";
+		//echo "</div>";
+	echo "</table>";
 	}
 ?>   
 	<div align="left" style="margin-left:30px;width:1700px;font-size:18px;">
@@ -79,12 +88,10 @@ echo "</center>";
        	?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
-             <div class="" style='margin-left:30px;width:1680px;font-size:18px;'><div ><?php echo $_SESSION['err_message'];?></div></div>
+             <div class="isa_error" style='margin-left:30px;width:1680px;font-size:18px;'><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
 	?>  
-	
-
    </div>
 	</br> 
 	<?php //$this->load->view('student/stuStepshead');?>
