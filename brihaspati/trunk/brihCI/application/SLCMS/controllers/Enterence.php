@@ -11,6 +11,7 @@ class Enterence extends CI_Controller {
 	function __construct() {
         	parent::__construct();
             	$this->load->model("User_model", "usrmodel");
+		$this->load->model('Dependrop_model',"depmodel");
             	$this->load->model("Common_model", "commodel");
             	$this->load->model("Mailsend_model","mailmodel");
 		$this->load->model('Login_model',"logmodel");
@@ -23,6 +24,11 @@ class Enterence extends CI_Controller {
        		$this->load->view('enterence/viewadmissionopen',$this->result);
     	}
 
+/*This function has been created for display the list of branch on the basis of program*/
+	public function programlist(){
+		$pgid = $this->input->post('programcategory');	
+	    	$this->depmodel->get_programlist($pgid);
+	}	
 	public function addadmissionopen() {
          $this->prgcatresult= $this->commodel->get_listspfic2('programcategory','prgcat_id', 'prgcat_name');
         $this->prgresult = $this->commodel->get_listspfic2('program','prg_id', 'prg_name');
@@ -48,7 +54,7 @@ class Enterence extends CI_Controller {
             'admop_acadyear'=>$_POST['academicyear'],
             'admop_prgcat'=>$_POST['programcategory'],
             'admop_prgname_branch'=>$_POST['programname'],
-	        'admop_entexam_fees'=>$_POST['enterenceexamfees'],
+	    'admop_entexam_fees'=>$_POST['enterenceexamfees'],
             'admop_min_qual'=>$_POST['minimumqualification'],
             'admop_entexam_patt'=>$_POST['entranceexampattern'],
             'admop_entexam_date'=> $_POST['entranceexamdate'],
@@ -76,16 +82,16 @@ class Enterence extends CI_Controller {
                 $this->load->view('enterence/addadmissionopen');
        }
 	
-	public function editadmissionopen($admop_id) {
+	public function editadmissionopen($id) {
         //$this->prgcatresult= $this->commodel->get_listspfic2('programcategory','prgcat_id', 'prgcat_name');
         //$this->prgresult = $this->commodel->get_listspfic2('program','prg_id', 'prg_name');
-        $admoprow=$this->commodel->get_listrow('admissionopen','admop_id', $admop_id);
+        $admoprow=$this->commodel->get_listrow('admissionopen','admop_id', $id);
         if ($admoprow->num_rows() < 1)
         {
             redirect('enterence/viewadmissionopen');
         }
         $admop_data = $admoprow->row();
-
+//print_r($admoprow);
         /* Form fields */
 
           $data['admop_acadyear'] = array(
@@ -97,27 +103,24 @@ class Enterence extends CI_Controller {
             //'id' => 'prgcode',
             'maxlength' => '50',
             'size' => '40',
-           // 'value' => $this->commodel->get_listspfic2('programcategory','prgcat_id','prgcat_name',$admop_data->admop_prgcat,'prg_name')->prgcat_name,
-           $this->prgramcategory=$this->commodel->get_listmore('programcategory','prgcat_id,prgcat_name')
-
-            //'readonly' => 'readonly'
+            'value' => $admop_data->admop_prgcat,
+            'readonly' => 'readonly'
           );
 
            $data['admop_prgname_branch'] = array(
             'name' => 'admop_prgname_branch',
-            //'id' => 'prgcode',
             'maxlength' => '50',
             'size' => '40',
-            //'value' => $this->commodel->get_listspfic2('program','prg_name','prg_id',$admop_data->admop_prgname)->prg_name,
-        $this->programname= $this->commodel->get_listmore('program','prg_name,prg_id')
-            //'readonly' => 'readonly'
+            'value' => $this->commodel->get_listspfic1('program','prg_name','prg_id',$admop_data->admop_prgname_branch)->prg_name,
+        //$this->programname= $this->commodel->get_listmore('program','prg_name,prg_id')
+            'readonly' => 'readonly'
           );
 
             $data['admop_entexam_fees'] = array(
              'name' => 'admop_entexam_fees',
              'maxlength' => '50',
              'size' => '40',
-             'value' => $admop_data->admop_entexam_fee,
+             'value' => $admop_data->admop_entexam_fees,
              //'readonly' => 'readonly'
 
           );
@@ -125,7 +128,7 @@ class Enterence extends CI_Controller {
 
           $data['admop_min_qual'] = array(
              'name' => 'admop_min_qual',
-             //'id' => 'admop_min_qual',
+             'id' => 'admop_min_qual',
              'maxlength' => '50',
              'size' => '40',
              'value' => $admop_data->admop_min_qual,
@@ -135,7 +138,7 @@ class Enterence extends CI_Controller {
 
            $data['admop_entexam_patt'] = array(
              'name' => 'admop_entexam_patt',
-            // 'id' => 'admop_entexam_patt',
+             'id' => 'admop_entexam_patt',
              'maxlength' => '50',
              'size' => '40',
              'value' => $admop_data->admop_entexam_patt,
@@ -144,40 +147,40 @@ class Enterence extends CI_Controller {
 
          $data['admop_entexam_date'] = array(
                 'name' => 'admop_entexam_date',
-               // 'id' => 'ExamDate',
+                'id' => 'admop_entexam_date',
                 'maxlength' => '50',
                 'size' => '40',
-                'value' => $admop_data->admop_entexam_date ,
+                'value' => $admop_data->admop_entexam_date,
                 );
 
          $data['admop_startdate'] = array(
                 'name' => 'admop_startdate',
-               // 'id' => 'StartDate',
+                'id' => 'admop_startdate',
                 'maxlength' => '50',
                 'size' => '40',
-                'value' => $admop_data->admop_startdate ,
+                'value' => $admop_data->admop_startdate,
                 );
          $data['admop_lastdate'] = array(
                 'name' => 'admop_lastdate',
-                //'id' => 'LastDate',
+                'id' => 'admop_lastdate',
                 'maxlength' => '50',
                 'size' => '40',
-                'value' => $admop_data->admop_lastdate ,
+                'value' => $admop_data->admop_lastdate,
                 );
          $data['admop_app_received'] = array(
                 'name' => 'admop_app_received',
-               // 'id' => 'EndDate',
+                'id' => 'admop_app_received',
                 'maxlength' => '50',
                 'size' => '40',
-                'value' => $admop_data->admop_app_received ,
+                'value' => $admop_data->admop_app_received,
                 );
-        $data['admop_id'] = $admop_id;
+        $data['id'] = $id;
 	
 	 /*Form Validation*/
                 $this->form_validation->set_rules('admop_acadyear','Academic Year','trim|xss_clean|required');
                 $this->form_validation->set_rules('admop_prgcat','Progarm Category','trim|xss_clean|required');
                 $this->form_validation->set_rules('admop_prgname_branch','Program Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('admop_entexam_fee','Entrance Exam Fees','trim|xss_clean|required');
+                $this->form_validation->set_rules('admop_entexam_fees','Entrance Exam Fees','trim|xss_clean|required');
 	        $this->form_validation->set_rules('admop_min_qual','Minimum Qualification ','trim|xss_clean|required');
         	$this->form_validation->set_rules('admop_entexam_patt','Entrance Exam Pattern ','trim|xss_clean|required');
                 $this->form_validation->set_rules('admop_entexam_date','Entrance Exam Date','trim|xss_clean|required');
@@ -206,22 +209,22 @@ class Enterence extends CI_Controller {
                 $this->load->view('enterence/editadmissionopen', $data);
         }
 	else{
-            $acadyear = $this->input->post('admop_acadyear', TRUE);
-            $enterenceexamfees = strtoupper($this->input->post('admop_entexam_fees', TRUE));
-            $minimumqualification = $this->input->post('admop_min_qual', TRUE);
-            $entranceexampattern = ucwords(strtolower($this->input->post('admop_entexam_patt', TRUE)));
-            $entranceexamdate= ucwords(strtolower($this->input->post('admop_entexam_date', TRUE)));
-            $startdateofonlineapplication = $this->input->post('admop_startdate',TRUE);
-            $lastdateofonlineapplication = $this->input->post('admop_lastdate', TRUE);
-            $lastdateofapplicationreceived = $this->input->post('admop_app_received', TRUE);
+           $acadyear = $this->input->post('admop_acadyear', TRUE);
+           $enterenceexamfees = $this->input->post('admop_entexam_fees', TRUE);
+           $minimumqualification = $this->input->post('admop_min_qual', TRUE);
+           $entranceexampattern = ucwords(strtolower($this->input->post('admop_entexam_patt', TRUE)));
+           $entranceexamdate= $this->input->post('admop_entexam_date', TRUE);
+           $startdateofonlineapplication = $this->input->post('admop_startdate',TRUE);
+           $lastdateofonlineapplication = $this->input->post('admop_lastdate', TRUE);
+           $lastdateofapplicationreceived = $this->input->post('admop_app_received', TRUE);
 		
 	$logmessage = "";
           //  if($admop_data->fm_programid != $programname)
             //    $logmessage = $logmessage ." update program name " .$fm_data->fm_programid. " changed by " .$programname;
             if($admop_data->admop_acadyear != $acadyear)
                 $logmessage = $logmessage ." update academic year " .$admop_data->admop_acadyear. " changed by " .$acadyear;
-            if($admop_data->admop_entexam_fee != $enterenceexamfees)
-                $logmessage = $logmessage ." update enterenceexamfees " .$admop_data->admop_entexam_fee. " changed by " .$enterenceexamfees;
+            if($admop_data->admop_entexam_fees != $enterenceexamfees)
+                $logmessage = $logmessage ." update enterenceexamfees " .$admop_data->admop_entexam_fees. " changed by " .$enterenceexamfees;
             if($admop_data->admop_min_qual != $minimumqualification)
                 $logmessage = $logmessage ." update minimumqualification " .$admop_data->admop_min_qual. " changed by " .$minimumqualification;
             if($admop_data->admop_entexam_patt != $entranceexampattern)
@@ -233,33 +236,34 @@ class Enterence extends CI_Controller {
             if($admop_data->admop_lastdate != $lastdateofonlineapplication)
                 $logmessage = $logmessage ." update lastdateofonlineapplication " .$admop_data->admop_lastdate. " changed by " .$lastdateofonlineapplication;
             if($admop_data->admop_app_received != $lastdateofapplicationreceived)
-                $logmessage = $logmessage ." update lastdateofapplicationreceived " .$fm_data->admop_app_received. " changed by " .$lastdateofapplicationreceived;
+                $logmessage = $logmessage ." update lastdateofapplicationreceived " .$admop_data->admop_app_received. " changed by " .$lastdateofapplicationreceived;
 
 	    $update_data = array(
                'admop_acadyear' => $acadyear,
-             //  'admop_prgcat' => $,
-               //'admop_prgname_branch' => $semester,
-               'admop_entexam_fee'  => $enterenceexamfees,
+               'admop_entexam_fees'  => $enterenceexamfees,
                'admop_min_qual'  => $minimumqualification,
                'admop_entexam_patt' => $entranceexampattern,
                'admop_entexam_date' => $entranceexamdate,
                'admop_startdate' => $startdateofonlineapplication,
                'admop_lastdate' => $lastdateofonlineapplication,
-		'admop_app_received' => $lastdateofapplicationreceived,
+	       'admop_app_received' => $lastdateofapplicationreceived
              );
-           $admopflag=$this->common_model->updaterec('admissionopen', $update_data, 'admop_id', $admop_id);
+//		print_r($update_data);
+
+           $admopflag=$this->commodel->updaterec('admissionopen', $update_data, 'admop_id', $id);
 		//	'admissionopen','admop_id', $admop_id);
            if(!$admopflag)
               {
-                $this->logger->write_logmessage("error","Error in update Fees ", "Error in Fees record update". $logmessage );
-                $this->logger->write_dblogmessage("error","Error in update Fees ", "Error in Fees record update". $logmessage );
-                $this->session->set_flashdata('err_message','Error updating Fees - ' . $logmessage . '.', 'error');
+                $this->logger->write_logmessage("error","error in add admission", "Error in  add admission". $logmessage );
+                $this->logger->write_dblogmessage("error","Error in add admission ", "Error in add admission update". $logmessage );
+                $this->session->set_flashdata('err_message','Error add admission - ' . $logmessage . '.', 'error');
                 $this->load->view('enterence/editadmissionopen', $data);
               }
             else{
-                $this->logger->write_logmessage("update","Edit Fees", "Fees headwise record updated successfully..". $logmessage );
-                $this->logger->write_dblogmessage("update","Edit Fees", "Fees headwise record updated successfully..". $logmessage );
-                $this->session->set_flashdata('success', "Program fees record updated successfully..." );
+                $this->logger->write_logmessage("update","Edit Admission", "Add Admission record updated successfully..". $logmessage );
+                $this->logger->write_dblogmessage("update","Edit Admission", "Add Admission record updated successfully..". $logmessage );
+                $this->session->set_flashdata('success', "Admission record updated successfully...");
+                //$this->session->set_flashdata('success', "Admission record updated successfully...".$acadyear. $enterenceexamfees. $minimumqualification. $entranceexampattern. $entranceexamdate .$startdateofonlineapplication. $lastdateofonlineapplication. $lastdateofapplicationreceived. $id.",". print_r($update_data) );
                 redirect('enterence/viewadmissionopen');
                 }
           }

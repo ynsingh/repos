@@ -28,6 +28,20 @@ class Dependrop_model extends CI_Model
                 echo json_encode($pro_select_box);
         }
      }
+	 /*This function has been created for display the list of program on the basis of program category*/
+    public function get_programlist($pgid){
+        $prlist = $this->commodel->get_listrow('program','prg_category', $pgid);
+        $prg_data = $prlist->result();
+        if(count($prg_data)>0){
+                $pro_select_box = '';
+                $pro_select_box.= '<option value="" selected="true" disabled="disabled">-------Select Branch --------';
+                foreach($prg_data as $prg){
+                        $pro_select_box.='<option value='.$prg->prg_id.'>'.$prg->prg_name.'('.$prg->prg_branch.')';
+                }
+                echo json_encode($pro_select_box);
+        }
+     }
+		
 
 	public function get_statelist($cid){
         $datawh=array('country_id' => $cid);

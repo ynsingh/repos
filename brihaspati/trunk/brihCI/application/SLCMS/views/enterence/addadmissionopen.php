@@ -6,58 +6,25 @@
      <?php $this->load->view('template/header'); ?>
      <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
      <?php $this->load->view('template/menu');?>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script> 
-	
-<script>$(document).ready(function(){
-$("#ExamDate").datepicker({
-dateFormat: 'yy-mm-dd',
-numberOfMonths: 1,
-onSelect: function(selected) {
-$("#ExamDate").datepicker("option","minDate", selected)
-}
-});
-
-$("#StartDate").datepicker({
-dateFormat: 'yy-mm-dd',
-numberOfMonths: 1,
-onSelect: function(selected) {
-$("#EndDate").datepicker("option","minDate", selected)
-}
-});
-
-$("#EndDate").datepicker({ 
-dateFormat: 'yy-mm-dd',
-numberOfMonths: 1,
-onSelect: function(selected) {
-$("#StartDate").datepicker("option","maxDate", selected)
-}
-});
- $("#LastDate").datepicker({ 
-dateFormat: 'yy-mm-dd',
-numberOfMonths: 1,
-onSelect: function(selected) {
-$("#StartDate").datepicker("option","maxDate", selected)
-}
-}); 
- 
-});
-</script>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
 
 <script>
-	      function program(program){
-                var program = program;
+      function getprogramname(prg){
+                var prg = prg;
                 $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>slcmsindex.php/enterence/addadmissionopen",
-                data: {"programcategory" : program},
+                url: "<?php echo base_url();?>slcmsindex.php/enterence/programlist",
+                data: {"programcategory" : prg},
+	//	alert(data);
                 dataType:"html",
                 success: function(data){
                 $('#programname').html(data.replace(/^"|"$/g, ''));
                 }
             }); 
         }
+
 </script>
 
    <style>
@@ -68,9 +35,9 @@ $("#StartDate").datepicker("option","maxDate", selected)
             </style>
     </head>
     <body>
-        <table width="100%">
+        <table width="100%" >
 
-            <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
+          <?php //echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
             <tr><td>
                 <div style="margin-left:2%;">
                 <?php echo anchor('enterence/viewadmissionopen/', "Admission List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
@@ -99,12 +66,13 @@ $("#StartDate").datepicker("option","maxDate", selected)
 		</td></tr>
         </table>
         
-	<table style="margin-left:2%;">
+	<table style="margin-left:2%;" >
+
 
            <form action="<?php echo site_url('Enterence/addadmissionopen');?>" method="POST" >
-  		 <td>Academic Year :</td>
+		 <td><label for="academicyear" class="control-label">  Academic Year :</label></td>
                 <td>
-                    <select name="academicyear" class="my_dropdown" style="width:100%;">
+                    <select name="academicyear" class="my_dropdown" style="width:70%;">
                     <option value="" disabled selected >------Academic year------</option>
                     <?php
 
@@ -117,11 +85,11 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         ?>
                     </select>
 		</td>
-		 <tr><td> Program Category: </td><td>
-                        <select name="programcategory" id="programcategory" class="my_dropdown" style="width:100%;"onchange="getprogramname(this.value)">
+		 <tr><td><label for="programcategory" class="control-label">  Program Category: </label></td><td>
+                        <select name="programcategory" id="programcategory" class="my_dropdown" style="width:70%;"onchange="getprogramname(this.value)">
                           <option value=""disabled selected>----Program Category----</option>
                         <?php foreach($this->prgcatresult as $datas): ?>
-                        <option value="<?php echo $datas->prgcat_id;?>"><?php echo $datas->prgcat_name; ?></option>
+                        <option value="<?php echo $datas->prgcat_name;?>"><?php echo $datas->prgcat_name; ?></option>
                         <?php endforeach; ?>
                         </select>
                         </td>
@@ -129,12 +97,14 @@ $("#StartDate").datepicker("option","maxDate", selected)
 
 		</tr>
 
-			<tr><td> Program Name: </td><td>
-                        <select name="programname" id="programname" class="my_dropdown"  style="width:100%;" > 
+
+			<tr><td><label for="programname" class="control-label"> Program Name:</label> </td><td>
+                        <select name="programname" id="programname" class="my_dropdown"  style="width:70%;" > 
                         <option value=""disabled selected>---------Select program ---------</option>
-                        <?php foreach($this->prgresult as $datas): ?>
-                        <option value="<?php echo $datas->prg_id; ?>"><?php echo $datas->prg_name."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$datas->prg_id)->prg_branch.")";				 ?></option>
-			<?php endforeach; ?>
+		
+                        <?php //foreach($this->prgresult as $datas): ?>
+                      <!-- <option value="<?php //echo $datas->prg_id; ?>"><?php //echo $datas->prg_name."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$datas->prg_id)->prg_branch.")";				 ?></option> -->
+			<?php //endforeach; ?>
                         </select>
                         </td>
 				<td> Example : BBA, BCA, MCA, M.SC etc.  </td>
@@ -144,52 +114,97 @@ $("#StartDate").datepicker("option","maxDate", selected)
 			</tr>
                          <tr>
                             <td><label for="enterenceexamfees" class="control-label">Entrance Exam Fees:</label></td>
-                            <td><textarea rows= "" cols="70" name="enterenceexamfees" size="50" > </textarea></td> 
+                            <td><input type="text" name="enterenceexamfees" id="enterenceexamfees" class="form-control" style="width:70%" > </td> 
                             <td>Note:  Fess of Entrance Exam Fees  </td>
                         </tr>
 
 
 			 <tr>
                             <td><label for="minimumqualification" class="control-label">Minimum Qualification:</label></td>
-                            <td><textarea rows= "" cols="70" name="minimumqualification" size="50" > </textarea></td> 
+                            <td><textarea rows= "" cols="70" name="minimumqualification" style="width:70%" > </textarea></td> 
 			    <td>Note:  Minimum qualification of particular program.  </td>
 			</tr>
 			<tr>
                             <td><label for="entranceexampattern" class="control-label">Entrance Exam Pattern:</label></td>
-                            <td><textarea rows= "" cols="70" name="entranceexampattern" size="50" > </textarea> </td> 
+                            <td><textarea rows= "" cols="70" name="entranceexampattern" style="width:70%" > </textarea> </td> 
                             <td>Note: Pattern Of Entrance Exam.  </td>
 			</tr>
 
 			 <tr>
                             <td><label for="entranceexamdate" class="control-label">Entrance Exam Date/Time:</label></td>
-                            <td><input type="text" name="entranceexamdate" id="ExamDate" class="form-control" size="50" />
-			    <td>Date Format:yy-mm-dd</td>
-        	             <td><?php echo form_error('ExamDate')?></td>
-	                     </td>
-                        </tr>		
+                            <td><input type="text" name="entranceexamdate" id="ExamDate" class="form-control" style="width:70%"/>
+			     <td>Date Format:yy-mm-dd</td>
+			  <?php //echo form_error('entranceexamdate');?>
+			 <script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
+                      <script>
+                        $.datetimepicker.setLocale('en');
+                        $('#ExamDate').datetimepicker({
+                        dayOfWeekStart : 1,
+                        lang:'en',
+                        formatTime:'H:i',
+                        formatDate:'Y-m-d',
+                        });
+                        //step 5 for give minute duration
+                        $('#ExamDate').datetimepicker();
+                    </script>
+	
+				</tr>		
 
 		 <tr>
                      <td><label for="startdateofonlineapplication" class="control-label">Start Date Of Online Application:</label></td>
-                     <td><input type="text" name="startdateofonlineapplication" id="StartDate" class="form-control" size="50" />
-                     <td>Date Format:yy-mm-dd</td>
-		     <td><?php echo form_error('Startdate')?></td>
-                     </td>
+                     <td><input type="text" name="startdateofonlineapplication" id="StartDate" class="form-control" style="width:70%" />
+		     <td> Date Format:yy-mm-yy </td>
+		 <script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
+                      <script>
+                        $.datetimepicker.setLocale('en');
+                        $('#StartDate').datetimepicker({
+                        dayOfWeekStart : 1,
+                        lang:'en',
+                        formatTime:'H:i',
+                        formatDate:'Y-m-d',
+                        });
+                        //step 5 for give minute duration
+                        $('#StartDate').datetimepicker();
+                    </script>
+
                  </tr>
 
                       <tr>
                        <td><label for="lastdateofonlineapplication" class="control-label">Last Date Of Online Application:</label></td>
-                       <td><input type="text" name="lastdateofonlineapplication" id="LastDate" class="form-control" size="50" />
+                       <td><input type="text" name="lastdateofonlineapplication" id="LastDate" class="form-control" style="width:70%" />
 		        <td> Date Format:yy-mm-yy </td>
-                       <td><?php echo form_error('closedate')?></td>
-		       </td>
-                   </tr>
+		<script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
+		<script>
+			$.datetimepicker.setLocale('en');
+			$('#LastDate').datetimepicker({
+			dayOfWeekStart : 1,
+			lang:'en',
+			formatTime:'H:i',
+			formatDate:'Y-m-d',
+			});
+			//step 5 for give minute duration
+			$('#LastDate').datetimepicker();
+			</script>
+                  </tr>
 
                	<tr>
                        <td><label for="lastdateofapplicationreceived" class="control-label">Last Date Of Application Received :</label></td>
-                       <td><input type="text" name="lastdateofapplicationreceived" id="EndDate" class="form-control" size="50" />
-		        <td> Date Format:yy-mm-dd </td>
-                       <td><?php echo form_error('closedate')?></td>
-                       </td>
+                       <td><input type="text" name="lastdateofapplicationreceived" id="EndDate" class="form-control" style="width:70%" />
+	       	        <td> Date Format:yy-mm-dd </td>
+                        <script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
+                <script>
+                        $.datetimepicker.setLocale('en');
+                        $('#EndDate').datetimepicker({
+                        dayOfWeekStart : 1,
+                        lang:'en',
+                        formatTime:'H:i',
+                        formatDate:'Y-m-d',
+                        });
+                        //step 5 for give minute duration
+                        $('#EndDate').datetimepicker();
+                        </script>
+
+
                        </tr>
                    </tr>
 		        <tr>
