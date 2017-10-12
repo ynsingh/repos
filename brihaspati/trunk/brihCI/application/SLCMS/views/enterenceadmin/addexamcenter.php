@@ -84,19 +84,19 @@ function calculate() {
     <form action="<?php echo site_url('enterenceadmin/addexamcenter');?>" method="POST" class="form-inline">
             <table style="margin-left:2%;">
             <tr>
-                <td><label for="eec_code" class="control-label">Enterance Exam Center Code:</label></td>
+                <td><label for="eec_code" class="control-label">Entrance Exam Center Code:</label></td>
                 <td>
                 <input type="text" name="eec_code"  class="form-control" size="30" /><br>
                 </td>
             </tr>
  		<tr>
-                <td><label for="eec_name" class="control-label">Enterance Exam Center Name:</label></td>
+                <td><label for="eec_name" class="control-label">Entrance Exam Center Name:</label></td>
                 <td>
                 <input type="text" name="eec_name"  class="form-control" size="30" /><br>
                 </td>
             </tr>
  		 <tr>
-                 <td><label for="eec_address" class="control-label">Enterance Exam Center Address:</label></td>
+                 <td><label for="eec_address" class="control-label">Entrance Exam Center Address:</label></td>
                  <td><textarea rows= "" cols="44" name="eec_address" size="50" > </textarea></td>
                  </tr>
 		<tr><td>State: </td><td>
@@ -111,37 +111,37 @@ function calculate() {
                 <option value="">Select city</option>
                 </select>
 		<tr>
-                <td><label for="eec_incharge" class="control-label">Enterance Exam Center Incharge:</label></td>
+                <td><label for="eec_incharge" class="control-label">Entrance Exam Center Incharge:</label></td>
                 <td>
                 <input type="text" name="eec_incharge"  class="form-control" size="30" /><br>
                 </td>
             </tr>
 		<tr>
-                <td><label for="eec_noofroom" class="control-label">Enterance Exam Center Number of Room:</label></td>
+                <td><label for="eec_noofroom" class="control-label">Entrance Exam Center Number of Room:</label></td>
                 <td>
                 <input id="box1" type="text" name="eec_noofroom"  class="form-control" size="30" oninput="calculate()" /><br>
                 </td>
             </tr>
 		<tr>
-                <td><label for="eec_capacityinroom" class="control-label">Enterance Exam Center Capacity in Room:</label></td>
+                <td><label for="eec_capacityinroom" class="control-label">Entrance Exam Center Capacity in Room:</label></td>
                 <td>
                 <input id="box2" type="text" name="eec_capacityinroom"  class="form-control" size="30" oninput="calculate()"/><br>
                 </td>
             </tr>
 		<tr>
-                <td><label for="eec_totalcapacity" class="control-label">Enterance Exam Center Total Capacity:</label></td>
+                <td><label for="eec_totalcapacity" class="control-label">Entrance Exam Center Total Capacity:</label></td>
                 <td>
                 <input id="result" type="text" name="eec_totalcapacity"  class="form-control" size="30" readonly/><br>
                 </td>
             </tr>
 		<tr>
-                <td><label for="eec_contactno" class="control-label">Enterance Exam Center Contact No:</label></td>
+                <td><label for="eec_contactno" class="control-label">Entrance Exam Center Contact No:</label></td>
                 <td>
                 <input type="text" name="eec_contactno"  class="form-control" size="30" /><br>
                 </td>
             </tr>
 		<tr>
-                <td><label for="eec_contactemail" class="control-label">Enterance Exam Center Contact Email:</label></td>
+                <td><label for="eec_contactemail" class="control-label">Entrance Exam Center Contact Email:</label></td>
                 <td>
                 <input type="text" name="eec_contactemail"  class="form-control" size="30" /><br>
                 </td>

@@ -44,15 +44,15 @@ class Enterenceadmin extends CI_Controller
         	         if($this->form_validation->run()==TRUE){
                 	        $data = array(
                         	        'eec_code'=>strtoupper($_POST['eec_code']),
-                                	'eec_name'=>strtoupper($_POST['eec_name']),
-	                                'eec_address'=>$_POST['eec_address'],
+                                	'eec_name'=>$_POST['eec_name'],
+	                                'eec_address'=>ucwords(strtolower($_POST['eec_address'])),
 					'eec_state'=>$_POST['eec_state'],
                 	                'eec_city'=>$_POST['eec_city'],
 					'eec_incharge'=>$_POST['eec_incharge'],
-                                	'eec_noofroom'=>strtoupper($_POST['eec_noofroom']),
-	                                'eec_capacityinroom'=>strtoupper($_POST['eec_capacityinroom']),
+                                	'eec_noofroom'=>$_POST['eec_noofroom'],
+	                                'eec_capacityinroom'=>$_POST['eec_capacityinroom'],
         	                        'eec_totalcapacity'=>$_POST['eec_totalcapacity'],
-					'eec_contactno'=>strtoupper($_POST['eec_contactno']),
+					'eec_contactno'=>$_POST['eec_contactno'],
                         	        'eec_contactemail'=>$_POST['eec_contactemail'],
                            		);
 	                           $examcflag=$this->commodel->insertrec('admissionstudent_enterenceexamcenter', $data);
@@ -119,28 +119,24 @@ class Enterenceadmin extends CI_Controller
                $data['eec_code'] = array(
                'name' => 'eec_code',
                'id' => 'eec_code',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_code,
                );
 		$data['eec_name'] = array(
                'name' => 'eec_name',
                'id' => 'eec_name',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_name,
                );
 		$data['eec_address'] = array(
                'name' => 'eec_address',
                'id' => 'eec_address',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_address,
                );
 		$data['eec_state'] = array(
                'name' => 'eec_state',
                'id' => 'eec_state',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_state,
 	       'readonly' => 'readonly'
@@ -149,7 +145,6 @@ class Enterenceadmin extends CI_Controller
 		$data['eec_city'] = array(
                'name' => 'eec_city',
                'id' => 'eec_city',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_city,
 		'readonly' => 'readonly'
@@ -157,42 +152,36 @@ class Enterenceadmin extends CI_Controller
 		$data['eec_incharge'] = array(
                'name' => 'eec_incharge',
                'id' => 'eec_incharge',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_incharge,
                );
 	       $data['eec_noofroom'] = array(
                'name' => 'eec_noofroom',
                'id' => 'eec_noofroom',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_noofroom,
                );
 		$data['eec_capacityinroom'] = array(
                'name' => 'eec_capacityinroom',
                'id' => 'eec_capacityinroom',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_capacityinroom,
                );
 	       $data['eec_totalcapacity'] = array(
                'name' => 'eec_totalcapacity',
                'id' => 'eec_totalcapacity',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_totalcapacity,
                );
 	       $data['eec_contactno'] = array(
                'name' => 'eec_contactno',
                'id' => 'eec_contactno',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_contactno,
                );
 	      $data['eec_contactemail'] = array(
                'name' => 'eec_contactemail',
                'id' => 'eec_contactemail',
-               'maxlength' => '50',
                'size' => '40',
                'value' => $exam_data_q->eec_contactemail,
                );
@@ -229,8 +218,8 @@ class Enterenceadmin extends CI_Controller
                  }
 		else{
 	            	$eec_code = $this->input->post('eec_code', TRUE);
-        	    	$eec_name = ucwords(strtolower($this->input->post('eec_name', TRUE)));
-			$eec_address = $this->input->post('eec_address', TRUE);
+        	    	$eec_name = $this->input->post('eec_name', TRUE);
+			$eec_address = ucwords(strtolower($this->input->post('eec_address', TRUE)));
 			//$eec_city = ucwords(strtolower($this->input->post('eec_city', TRUE)));
 			$eec_incharge = ucwords(strtolower($this->input->post('eec_incharge', TRUE)));
 			$eec_noofroom = $this->input->post('eec_noofroom', TRUE);

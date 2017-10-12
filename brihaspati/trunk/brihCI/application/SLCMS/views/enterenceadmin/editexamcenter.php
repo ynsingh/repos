@@ -48,7 +48,7 @@ function calculate() {
 
             echo "<tr>";
                 echo "<td>";
-                echo form_label('Enterance Exam Center Code', 'eec_code');
+                echo form_label('Entrance Exam Center Code', 'eec_code');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($eec_code);
@@ -56,7 +56,7 @@ function calculate() {
             	echo "</tr>";
 		echo "<tr>";
                 echo "<td>";
-                echo form_label('Enterance Exam Center Name', 'eec_name');
+                echo form_label('Entrance Exam Center Name', 'eec_name');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($eec_name);
@@ -64,7 +64,7 @@ function calculate() {
             	echo "</tr>";
 		echo "<tr>";
                 echo "<td>";
-                echo form_label('Enterance Exam Center Address', 'eec_address');
+                echo form_label('Entrance Exam Center Address', 'eec_address');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($eec_address);
@@ -86,7 +86,7 @@ function calculate() {
                 </tr></td>
 		<?php
                 echo "<td>";
-                echo form_label('Enterance Exam Center Incharge', 'eec_incharge');
+                echo form_label('Entrance Exam Center Incharge', 'eec_incharge');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($eec_incharge);
@@ -94,7 +94,7 @@ function calculate() {
             	echo "</tr>";
 		echo "<tr>";
                 echo "<td>";
-                echo form_label('Enterance Exam Center Number of Room', 'eec_noofroom');
+                echo form_label('Entrance Exam Center Number of Room', 'eec_noofroom');
                 echo "</td>";
                 echo "<td>";
 		$numroom=$eec_noofroom['value'];
@@ -103,7 +103,7 @@ function calculate() {
             	echo "</tr>";
 		echo "<tr>";
                 echo "<td>";
-                echo form_label('Enterance Exam Center Capacity in Room', 'eec_capacityinroom');
+                echo form_label('Entrance Exam Center Capacity in Room', 'eec_capacityinroom');
                 echo "</td>";
                 echo "<td>";
 		$totalroom=$eec_capacityinroom['value'];
@@ -112,7 +112,7 @@ function calculate() {
                 echo "</tr>";
 		echo "<tr>";
                 echo "<td>";
-                echo form_label('Enterance Exam Center Total Capacity', 'eec_totalcapacity');
+                echo form_label('Entrance Exam Center Total Capacity', 'eec_totalcapacity');
                 echo "</td>";
                 echo "<td>";
 		$totalcapacity=$eec_totalcapacity['value'];
@@ -121,7 +121,7 @@ function calculate() {
                 echo "</tr>";
 		echo "<tr>";
                 echo "<td>";
-                echo form_label('Enterance Exam Center Contact No', 'eec_contactno');
+                echo form_label('Entrance Exam Center Contact No', 'eec_contactno');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($eec_contactno);
@@ -129,7 +129,7 @@ function calculate() {
                 echo "</tr>";
 		echo "<tr>";
                 echo "<td>";
-                echo form_label('Enterance Exam Center Contact Email', 'eec_contactemail');
+                echo form_label('Entrance Exam Center Contact Email', 'eec_contactemail');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($eec_contactemail);
