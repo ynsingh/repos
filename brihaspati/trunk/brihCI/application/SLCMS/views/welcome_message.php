@@ -20,13 +20,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
 	<nav> 	<h1>Welcome  </h1></nav>
-	<?php if(isset($_SESSION)) {
-        	echo $this->session->flashdata('flash_data');
-    	} ?>
+	
 <br>
 	<?php $this->load->view('enterence/enterence_head');?>
  	<br><br>
+<?php echo "<center>";
 
+	if($this->session->flashdata('msg')){
+echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;'>";
+	echo $this->session->flashdata('msg');
+echo "<div>";	
+}
+
+echo "</center>"; ?>
 	<center>
 <table>
             <tr colspan="2">
@@ -85,10 +91,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php 
 $cdate = date('Y-m-d H:i:s');
 foreach($this->prgcat as $pname){
-	$pid = $pname->prgcat_id;
+	$progname = $pname->prgcat_name;
 	$selectfield=array('admop_prgname_branch');
 	$data=array(
-      		'admop_prgcat' => $pid,
+      		'admop_prgcat' => $progname,
       		'admop_lastdate >=' => $cdate,
        	);
 	$progid = $this->commodel-> get_listspficemore('admissionopen',$selectfield,$data);

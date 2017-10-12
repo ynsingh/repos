@@ -34,12 +34,12 @@ class Enterenceadmin extends CI_Controller
                 	 $this->form_validation->set_rules('eec_address','Enterance Exam Center Address','trim|xss_clean|required');
         	         $this->form_validation->set_rules('eec_state','Enterance Exam Center State','trim|xss_clean|required');
 	                 $this->form_validation->set_rules('eec_city','Enterance Exam Center City','trim|xss_clean|required');
-        	         $this->form_validation->set_rules('eec_incharge','Enterance Exam Center Incharge','trim|xss_clean|required');
-                	 $this->form_validation->set_rules('eec_noofroom','Enterance Exam Center Number of Room','trim|xss_clean|required|integer');
-	                 $this->form_validation->set_rules('eec_capacityinroom','Enterance Exam Center Capacity in Room','trim|xss_clean|required|integer');
-        	         $this->form_validation->set_rules('eec_totalcapacity','Enterance Exam Center Total Capacity','trim|xss_clean|integer|required');
-                	 $this->form_validation->set_rules('eec_contactno','Enterance Exam Center Contact No','trim|xss_clean|required|integer');
-	                 $this->form_validation->set_rules('eec_contactemail','Enterance Exam Center Contact Email','trim|xss_clean|valid_email|required');
+        	         $this->form_validation->set_rules('eec_incharge','Enterance Exam Center Incharge','trim|xss_clean');
+                	 $this->form_validation->set_rules('eec_noofroom','Enterance Exam Center Number of Room','trim|xss_clean|integer');
+	                 $this->form_validation->set_rules('eec_capacityinroom','Enterance Exam Center Capacity in Room','trim|xss_clean|integer');
+        	         $this->form_validation->set_rules('eec_totalcapacity','Enterance Exam Center Total Capacity','trim|xss_clean');
+                	 $this->form_validation->set_rules('eec_contactno','Enterance Exam Center Contact No','trim|xss_clean|integer');
+	                 $this->form_validation->set_rules('eec_contactemail','Enterance Exam Center Contact Email','trim|xss_clean|valid_email');
 
         	         if($this->form_validation->run()==TRUE){
                 	        $data = array(
@@ -203,12 +203,12 @@ class Enterenceadmin extends CI_Controller
                  $this->form_validation->set_rules('eec_address','Enterance Exam Center Address','trim|xss_clean|required');
 		 //$this->form_validation->set_rules('eec_state','Enterance Exam Center State','trim|xss_clean');
                  //$this->form_validation->set_rules('eec_city','Enterance Exam Center City','trim|xss_clean');
-                 $this->form_validation->set_rules('eec_incharge','Enterance Exam Center Incharge','trim|xss_clean|required');
-                 $this->form_validation->set_rules('eec_noofroom','Enterance Exam Center Number of Room','trim|xss_clean|required|integer');
-                 $this->form_validation->set_rules('eec_capacityinroom','Enterance Exam Center Capacity in Room','trim|xss_clean|required|integer');
-                 $this->form_validation->set_rules('eec_totalcapacity','Enterance Exam Center Total Capacity','trim|xss_clean|integer|required');
-                 $this->form_validation->set_rules('eec_contactno','Enterance Exam Center Contact No','trim|xss_clean|required|integer');
-                 $this->form_validation->set_rules('eec_contactemail','Enterance Exam Center Contact Email','trim|xss_clean|valid_email|required');
+                 $this->form_validation->set_rules('eec_incharge','Enterance Exam Center Incharge','trim|xss_clean');
+                 $this->form_validation->set_rules('eec_noofroom','Enterance Exam Center Number of Room','trim|xss_clean|integer');
+                 $this->form_validation->set_rules('eec_capacityinroom','Enterance Exam Center Capacity in Room','trim|xss_clean|integer');
+                 $this->form_validation->set_rules('eec_totalcapacity','Enterance Exam Center Total Capacity','trim|xss_clean|integer');
+                 $this->form_validation->set_rules('eec_contactno','Enterance Exam Center Contact No','trim|xss_clean|integer');
+                 $this->form_validation->set_rules('eec_contactemail','Enterance Exam Center Contact Email','trim|xss_clean|valid_email');
 /* Re-populating form */
    	         if ($_POST){
             	 $data['eec_code']['value'] = $this->input->post('eec_code', TRUE);
@@ -311,7 +311,7 @@ class Enterenceadmin extends CI_Controller
                $statid = $this->input->post('sid');
                $this->depmodel->get_citylist($statid);
         }
-
+/*
 	public function viewstikerlist(){
 
         	$this->load->view('enterenceadmin/stickersheet');
@@ -324,26 +324,22 @@ class Enterenceadmin extends CI_Controller
         }
 
 
-        public function viewhallticket(){
-
-        	$this->stud_master = $this->commodel->get_list('admissionstudent_master');
-        	$data['stud_master'] = $this->stud_master;
-
-        	$this->load->view('enterenceadmin/hallticket',$data);
-        }
-
 	public function viewhallticket(){
 
         $this->stud_master = $this->commodel->get_list('admissionstudent_master');
         $data['stud_master'] = $this->stud_master;
-
+	
         $this->load->view('enterenceadmin/hallticket',$data);
         }
 
         public function generatehallticket(){
                 $data=array('ca_hallticketstatus' =>'Y');
                 $stud_master = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid,ca_rollno',$data);
+		//print_r($stud_master);
                 foreach($stud_master as $row){
+			$this->asmid=$row->ca_asmid;
+			$this->gender=$this->commodel->get_listspfic1('admissionstudent_master','asm_gender','asm_id',$row->ca_asmid)->asm_gender;
+			$this->caste=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$row->ca_asmid)->asm_caste;
                         $this->prgid = $prgname = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->ca_asmid)->asm_coursename;
                         $this->prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$this->prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$this->prgid)->prg_branch.')';
                         $this->rollno=$row->ca_rollno;
@@ -354,35 +350,31 @@ class Enterenceadmin extends CI_Controller
                         $this->pcity=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcity','aspar_asmid',$row->ca_asmid)->aspar_pcity;
                         $this->pstate=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$row->ca_asmid)->aspar_pstate;
                         $this->pcountry=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$row->ca_asmid)->aspar_pcountry;
-                }
-                //if(isset($_POST['generate'])){
-                        //$year = date('Y');
-                        //$data=array('ca_centerlocation' =>'Y');
-                        //$stud_master = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid,ca_rollno',$data);
-                        //print_r($stud_master);
+			$this->photo=$this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_photo','asupd_asmid',$row->ca_asmid)->asupd_photo;
+			$this->signature = $this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_signature','asupd_asmid',$row->ca_asmid)->asupd_signature;
+			$centerid=$this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$row->ca_asmid)->asm_enterenceexamcenter;
+			$this->venue=$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_address','eec_id',$centerid)->eec_address.','.$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$centerid)->eec_city;
+               
+			$year=date('Y');
                         //move file to directory code for photo
-                         //$desired_dir = 'uploads/SLCMS/enterence_student/'.$year.''.'Hall Ticket';
+                        $desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year.$row->ca_asmid;
                         // Create directory if it does not exist
-                        //if(is_dir($desired_dir)==false){
-                            //    mkdir("$desired_dir", 0700);
-                       // }
+                        if(is_dir($desired_dir)==false){
+                              mkdir("$desired_dir", 0700);
+                        }
                         $this->load->library('pdf');
                         $this->pdf->load_view('enterenceadmin/hallticketpdf');
                         $this->pdf->render();
                         $pdf = $this->pdf->output();
+			file_put_contents('uploads/SLCMS/enterenceadmin_student/'.$year.$this->asmid.'/hallticket.pdf', $pdf);
 
-                        file_put_contents("uploads/SLCMS/enterence_student/file.pdf", $pdf);
-                        //readfile("uploads/SLCMS/enterence_student/file.pdf", $pdf);
-                        //$this->pdf->stream("welcome.pdf", array("Attachment" => 0));
-                        //redirect('enterenceadmin/viewhallticket');
-                //}//isset post close
-                //$this->load->view('enterenceadmin/hallticketpdf');
+                        //file_put_contents("uploads/SLCMS/enterence_student/file.pdf", $pdf);
 
                 redirect('enterenceadmin/viewhallticket');
                 echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Hall Ticket Successfully Generated.</h3>';
 
         }
+ }
 
-
-
+*/
 }//end class
