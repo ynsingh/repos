@@ -63,7 +63,7 @@
                     <td><?php echo $row->cat_short ?></td>
 		    <td><?php echo $row->cat_desc ?> </td>
 		     <?php if($row->cat_id >1){ ?>
-             	    <td><?php echo anchor('setup/deletecategory/' . $row->cat_id , "Delete", array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this category record... ')")); ?> &nbsp;&nbsp; <?php echo anchor('setup/editcategory/' . $row->cat_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
+             	    <td><?php //echo anchor('setup/deletecategory/' . $row->cat_id , "Delete", array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this category record... ')")); ?> &nbsp;&nbsp; <?php echo anchor('setup/editcategory/' . $row->cat_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
 	       </td>
 		<?php } else {
 			echo "<td> </td>";

@@ -67,7 +67,7 @@
 	    <td>
 	<?php  
 		if($row->gm_id > 6){
-	    		echo anchor('setup2/deletegrade/' . $row->gm_id , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
+	    		//echo anchor('setup2/deletegrade/' . $row->gm_id , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
 	    		echo "&nbsp; ";
 			echo anchor('setup2/editgrade/' . $row->gm_id , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
 		}

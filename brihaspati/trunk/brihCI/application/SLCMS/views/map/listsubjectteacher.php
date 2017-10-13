@@ -73,7 +73,7 @@
 			    <td><?php echo $this->commodel->get_listspfic1('subject', 'sub_name', 'sub_id', $row->pstp_subid)->sub_name; ?> </td>
 			    <td><?php echo $this->commodel->get_listspfic1('subject_paper', 'subp_name', 'subp_id', $row->pstp_papid)->subp_name; ?> </td>
 			    <td><?php echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $row->pstp_teachid)->firstname; ?> <?php echo $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $row->pstp_teachid)->lastname; ?> </td>
-			    <td><?php echo anchor('map/deletepsteacher/' . $row->pstp_id , "Delete", array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this program subject teacher record... ')")) ?> &nbsp;&nbsp; <?php echo anchor('map/editsubjectteacher/' . $row->pstp_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) ." " ?> </td>	
+			    <td><?php //echo anchor('map/deletepsteacher/' . $row->pstp_id , "Delete", array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this program subject teacher record... ')")) ?> &nbsp;&nbsp; <?php echo anchor('map/editsubjectteacher/' . $row->pstp_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) ." " ?> </td>	
 			</tr>
 	<?php } 
 	}else{

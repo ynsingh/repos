@@ -112,7 +112,7 @@
 		    <td> <?php  
 //		    	echo anchor("map/deletesubsem/{$row->subsem_id}","Delete",array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); 
 		    	echo "&nbsp;&nbsp;";  
-//			echo anchor("map/editsubsem/{$row->subsem_id}","Edit",array('title' => 'Details' , 'class' => 'red-link')); 
+			echo anchor("map/editsubsem/{$row->subsem_id}","Edit",array('title' => 'Details' , 'class' => 'red-link')); 
 			echo "</td></tr>";
                  	}; //close for each loop
              	else : 

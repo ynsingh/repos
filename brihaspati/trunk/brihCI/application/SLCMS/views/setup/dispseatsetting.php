@@ -48,7 +48,7 @@
                     echo "<td>" . $row->percentage . "</td>";
                     echo "<td>" . $row->noofseat . "</td>";
 		    echo "<td>";
-                    echo  anchor('setup/delete_eseat/' . $row->id , "Delete", array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
+                    //echo  anchor('setup/delete_eseat/' . $row->id , "Delete", array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
 		    echo "&nbsp;";
 		    echo  anchor('setup/editseatsetting/' . $row->id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) . " ";
 		    echo "</td>";

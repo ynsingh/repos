@@ -66,7 +66,7 @@
             <td>
         <?php
               //  if($row->dr_id > 6){
-                        echo anchor('setup2/deleteauthority/' . $row-> id  , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
+                        //echo anchor('setup2/deleteauthority/' . $row-> id  , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
 
                         echo anchor('setup2/editauthority/' . $row-> id  , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
          //    }

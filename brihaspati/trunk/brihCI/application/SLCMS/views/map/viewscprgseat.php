@@ -100,7 +100,7 @@
 	    <td><//?php echo $record->spsc_createdate; ?></td>
 	    <td><//?php echo $record->spsc_modifierid; ?></td>
 	    <td><//?php echo $record->psc_modifydate; ?></td> -->
-	    <td> <?php  echo anchor("map/deletescprgseat/{$record->spsc_id}","Delete",array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
+	    <td> <?php  //echo anchor("map/deletescprgseat/{$record->spsc_id}","Delete",array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
 	    &nbsp;<?php  echo anchor("map/editscprgseat/{$record->spsc_id}","Edit",array('title' => 'Details' , 'class' => 'red-link')); ?></td>
 	     </tr>
 	<?php }; ?>

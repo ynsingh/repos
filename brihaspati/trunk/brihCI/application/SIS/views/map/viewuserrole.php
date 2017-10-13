@@ -73,7 +73,7 @@
                     <td> <?php  echo anchor(current_url().'/#', "Delete",array('title' => 'Details' , 'class' => 'tag_color')); ?>&nbsp;
                     &nbsp;<?php  echo anchor(current_url().'/#',"Edit",array('title' => 'Details' , 'class' => 'tag_color')); ?></td>
 		    <?php else : ?>	
-                    <td> <?php  echo anchor("map/deleteuserrole/{$record->id}", "Delete",array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
+                    <td> <?php  //echo anchor("map/deleteuserrole/{$record->id}", "Delete",array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
                     &nbsp;<?php  echo anchor("map/edituserrole/{$record->id}","Edit",array('title' => 'Details' , 'class' => 'red-link')); ?></td>
 			<?php endif ;?>
                      </tr>

@@ -98,7 +98,7 @@ foreach($paperrecords as $row)
     echo "<td>"; echo $row->subp_name; echo"</td>";
     echo "<td>"; echo $row->subp_code; echo"</td>";
     echo "<td>"; echo $row->subp_short; echo"</td>";
-    echo "<td>"; echo anchor('map/editprogramsubject/' .$row->subp_id  , "Edit", array('title' => 'Edit Subject Program', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; echo anchor('map/deleteprogramsubject/' .$row->subp_id ,"Delete", array('title' => 'Delete Subject', 'class' => 'red-link')); echo"</td>";
+    echo "<td>"; echo anchor('map/editprogramsubject/' .$row->subp_id  , "Edit", array('title' => 'Edit Subject Program', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; //echo anchor('map/deleteprogramsubject/' .$row->subp_id ,"Delete", array('title' => 'Delete Subject', 'class' => 'red-link')); echo"</td>";
     echo "</tr>";
 }
    else{ 
