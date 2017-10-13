@@ -12,41 +12,6 @@
 				
 
 <script>
-$(document).ready(function(){
-/*
-    $(".form_datetime").datetimepicker({
-        format: "dd MM yyyy - hh:ii",
-        autoclose: true,
-        todayBtn: true,
-        pickerPosition: "bottom-left"
-    });*/
-/*$("#StartDate").datepicker({
-dateFormat: 'yy-mm-dd',
-numberOfMonths: 1,
-onSelect: function(selected) {
-$("#EndDate").datepicker("option","minDate", selected)
-}
-});
-
-$("#EndDate").datepicker({ 
-dateFormat: 'yy-mm-dd',
-numberOfMonths: 1,
-onSelect: function(selected) {
-$("#StartDate").datepicker("option","maxDate", selected)
-}
-});
- $("#LastDate").datepicker({ 
-dateFormat: 'yy-mm-dd',
-numberOfMonths: 1,
-onSelect: function(selected) {
-$("#StartDate").datepicker("option","maxDate", selected)
-}
-}); 
- 
-});*/
-</script>
-
-<script>
               function program(program){
                 var program = program;
                 $.ajax({
@@ -75,7 +40,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
 <div align="left">
 <table style="margin-left:2%;">
 <tr><td>
-<?php echo anchor('enterence/viewadmissionopen/', "Admission List" ,array('title' => 'Admission List' , 'class' => 'top_parent'));?>
+<?php echo anchor('enterence/viewadmissionopen/', "Open Admission List" ,array('title' => 'Open Admission List' , 'class' => 'top_parent'));?>
 </td></tr>
 </table>
 </div>
@@ -173,9 +138,8 @@ $("#StartDate").datepicker("option","maxDate", selected)
 		
 	?>
 	<tr>
-                            <td><label for="admop_entexam_date" class="control-label">Entrance Exam Date:</label></td>
-                            <td><input type="text" name="admop_entexam_date" id="admop_entexam_date" class="form-control" style="width:100%"/><br>
-                            <td>Date Format:yy-mm-dd</td>		   
+                       <td><label for="admop_entexam_date" class="control-label">Entrance Exam Date:</label></td>
+                        <td><input type="text" name="admop_entexam_date" id="admop_entexam_date" value=<?php echo $admop_entexam_date['value'];?>  class="form-control" style="width:100%"/><br>
        			<?php echo form_error('admop_entexam_date');?>
 			 <script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
 		      <script>
@@ -186,15 +150,13 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         formatTime:'H:i',
                         formatDate:'Y-m-d',
                         });
-                        //step 5 for give minute duration
                         $('#admop_entexam_date').datetimepicker();
                     </script>
                 </tr>
 
                  <tr>
                      <td><label for="admop_startdate" class="control-label">Start Date Of Online Application:</label></td>
-                     <td><input type="text" name="admop_startdate" id="admop_startdate" class="form-control" style="width:100%"><br>
-                     <td>Date Format:yy-mm-dd</td>
+                     <td><input type="text" name="admop_startdate" id="admop_startdate" value=<?php echo $admop_startdate['value'];?> class="form-control" style="width:100%"><br>
                      <td><?php echo form_error('admop_startdate')?></td>
 		 <script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
 
@@ -206,7 +168,6 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         formatTime:'H:i',
                         formatDate:'Y-m-d',
                         });
-                        //step 5 for give minute duration
                         $('#admop_startdate').datetimepicker();
                     </script>
 			
@@ -215,10 +176,8 @@ $("#StartDate").datepicker("option","maxDate", selected)
 
                       <tr>
                        <td><label for="admop_lastdate" class="control-label">Last Date Of Online Application:</label></td>
-		       <td><input type="text" name="admop_lastdate" id="admop_lastdate" class="form-control" style="width:100%"/><br>
-		       <td> Date Format:yy-mm-yy </td>
+		       <td><input type="text" name="admop_lastdate" id="admop_lastdate"  value=<?php echo $admop_lastdate['value'];?> class="form-control" style="width:100%"/><br>
                        <td><?php echo form_error('admop_lastdate')?></td>
-
 			 <script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
              	   <script>
                         $.datetimepicker.setLocale('en');
@@ -228,17 +187,15 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         formatTime:'H:i',
                         formatDate:'Y-m-d',
                         });
-                        //step 5 for give minute duration
                         $('#admop_lastdate').datetimepicker();
                     </script>
                    </tr>
 
                 <tr>
                        <td><label for="admop_app_received" class="control-label">Last Date Of Application Received :</label></td>
-                       <td><input type="text" name="admop_app_received" id="admop_app_received" class="form-control" style="width:100%"/><br>
-                        <td> Date Format:yy-mm-dd </td>
+                       <td><input type="text" name="admop_app_received" id="admop_app_received" value=<?php echo $admop_app_received['value'];?> class="form-control" style="width:100%"/><br>
                        <td><?php echo form_error('admop_app_received')?></td>
-
+ 			<script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
                    <script>
                         $.datetimepicker.setLocale('en');
                         $('#admop_app_received').datetimepicker({
@@ -247,7 +204,6 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         formatTime:'H:i',
                         formatDate:'Y-m-d',
                         });
-                        //step 5 for give minute duration
                         $('#admop_app_received').datetimepicker();
                     </script>
 

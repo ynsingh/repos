@@ -40,7 +40,7 @@
           <?php //echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
             <tr><td>
                 <div style="margin-left:2%;">
-                <?php echo anchor('enterence/viewadmissionopen/', "Admission List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
+                <?php echo anchor('enterence/viewadmissionopen/', "Open Admission List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
                 $help_uri = site_url()."/help/helpdoc#";
                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
 		?>
@@ -83,57 +83,46 @@
 
                         }
                         ?>
+			</td>
                     </select>
-		</td>
+		
 		 <tr><td><label for="programcategory" class="control-label">  Program Category: </label></td><td>
                         <select name="programcategory" id="programcategory" class="my_dropdown" style="width:70%;"onchange="getprogramname(this.value)">
                           <option value=""disabled selected>----Program Category----</option>
                         <?php foreach($this->prgcatresult as $datas): ?>
                         <option value="<?php echo $datas->prgcat_name;?>"><?php echo $datas->prgcat_name; ?></option>
                         <?php endforeach; ?>
-                        </select>
-                        </td>
-			<td> Example : Under Graduate , Post Graduate , Diploma, etc.  </td>
-
-		</tr>
-
-
-			<tr><td><label for="programname" class="control-label"> Program Name:</label> </td><td>
-                        <select name="programname" id="programname" class="my_dropdown"  style="width:70%;" > 
-                        <option value=""disabled selected>---------Select program ---------</option>
+                        </select>              
 		
+		</tr>
+			<tr><td><label for="programname" class="control-label"> Program Name:</label> </td><td>
+                        <select name="programname" id="programname" class="my_dropdown"  style="width:70%;"> 
+                        <option value=""disabled selected>---------Select program ---------</option>
+			</td>	
                         <?php //foreach($this->prgresult as $datas): ?>
                       <!-- <option value="<?php //echo $datas->prg_id; ?>"><?php //echo $datas->prg_name."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$datas->prg_id)->prg_branch.")";				 ?></option> -->
 			<?php //endforeach; ?>
                         </select>
-                        </td>
-				<td> Example : BBA, BCA, MCA, M.SC etc.  </td>
-			</tr>
-
-
-			</tr>
+			
+		</tr>
                          <tr>
                             <td><label for="enterenceexamfees" class="control-label">Entrance Exam Fees:</label></td>
                             <td><input type="text" name="enterenceexamfees" id="enterenceexamfees" class="form-control" style="width:70%" > </td> 
-                            <td>Note:  Fess of Entrance Exam Fees  </td>
                         </tr>
 
 
 			 <tr>
                             <td><label for="minimumqualification" class="control-label">Minimum Qualification:</label></td>
                             <td><textarea rows= "" cols="70" name="minimumqualification" style="width:70%" > </textarea></td> 
-			    <td>Note:  Minimum qualification of particular program.  </td>
 			</tr>
 			<tr>
                             <td><label for="entranceexampattern" class="control-label">Entrance Exam Pattern:</label></td>
                             <td><textarea rows= "" cols="70" name="entranceexampattern" style="width:70%" > </textarea> </td> 
-                            <td>Note: Pattern Of Entrance Exam.  </td>
 			</tr>
 
 			 <tr>
                             <td><label for="entranceexamdate" class="control-label">Entrance Exam Date/Time:</label></td>
                             <td><input type="text" name="entranceexamdate" id="ExamDate" class="form-control" style="width:70%"/>
-			     <td>Date Format:yy-mm-dd</td>
 			  <?php //echo form_error('entranceexamdate');?>
 			 <script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
                       <script>
@@ -152,8 +141,7 @@
 
 		 <tr>
                      <td><label for="startdateofonlineapplication" class="control-label">Start Date Of Online Application:</label></td>
-                     <td><input type="text" name="startdateofonlineapplication" id="StartDate" class="form-control" style="width:70%" />
-		     <td> Date Format:yy-mm-yy </td>
+                     <td><input type="text" name="startdateofonlineapplication" id="StartDate" class="form-control" value="<?php echo isset($_POST["startdateofonlineapplication"]) ? $_POST["startdateofonlineapplication"] : ''; ?>"  style="width:70%" />
 		 <script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
                       <script>
                         $.datetimepicker.setLocale('en');
@@ -172,7 +160,6 @@
                       <tr>
                        <td><label for="lastdateofonlineapplication" class="control-label">Last Date Of Online Application:</label></td>
                        <td><input type="text" name="lastdateofonlineapplication" id="LastDate" class="form-control" style="width:70%" />
-		        <td> Date Format:yy-mm-yy </td>
 		<script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
 		<script>
 			$.datetimepicker.setLocale('en');
@@ -190,7 +177,6 @@
                	<tr>
                        <td><label for="lastdateofapplicationreceived" class="control-label">Last Date Of Application Received :</label></td>
                        <td><input type="text" name="lastdateofapplicationreceived" id="EndDate" class="form-control" style="width:70%" />
-	       	        <td> Date Format:yy-mm-dd </td>
                         <script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
                 <script>
                         $.datetimepicker.setLocale('en');
