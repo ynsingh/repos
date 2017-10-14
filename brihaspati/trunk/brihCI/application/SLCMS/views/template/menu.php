@@ -181,7 +181,7 @@ echo "<ul class=\"sf-menu\">";
                                       echo anchor('enterenceadmin/viewcenterallocationlist', 'Center Allocation ', array('title' => 'Center Allocation'));
                                       echo "</li>";
                                       echo "<li>";
-                                      echo anchor('enterenceadmin/viewhallticketlist', 'Generate Hall Ticket ', array('title' => 'Generate Hall Ticket'));
+                                      echo anchor('enterenceadmin/viewhallticket', 'Generate Hall Ticket ', array('title' => 'Generate Hall Ticket'));
                                       echo "</li>";
                                       echo "<li>";
                                       echo anchor('enterenceadmin/viewstikerlist', 'Generate Stiker ', array('title' => 'Generate Stiker'));

@@ -13,7 +13,7 @@ class Enterenceadmin extends CI_Controller
     {
     function __construct() {
         parent::__construct();
-
+		  $this->load->model("user_model","usermodel");
                 $this->load->model('Common_model',"commodel");
 		$this->load->model('dependrop_model','depmodel');
         if(empty($this->session->userdata('id_user'))) {
@@ -300,70 +300,316 @@ class Enterenceadmin extends CI_Controller
                $statid = $this->input->post('sid');
                $this->depmodel->get_citylist($statid);
         }
-/*
-	public function viewstikerlist(){
 
-        	$this->load->view('enterenceadmin/stickersheet');
+/*	public function viewstikerlist(){
+		$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
+        	
+		$exmceter = $this->input->post('stiexamcenter',TRUE);
+		if(isset($_POST['searchsticker'])){
+			$selectdata=array('ca_asmid','ca_rollno','ca_centername');
+			$record=array(
+				'ca_hallticketstatus' => 'Y',
+   				'ca_centername'  => $exmceter,
+      				);
+       			$this->getsticker = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$selectdata,$record);
+			//print_r($this->getsticker);
+		}//close post
+		$this->load->view('enterenceadmin/stickersheet');
         }
+
+	public function generatesticker(){
+               // $data=array('ca_hallticketstatus' => 'Y' , 'ca_centername !=' => NULL);
+               // $stud_master = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid,ca_rollno,ca_centername',$data);
+		//print_r($stud_master);
+		//die;
+		$exmceter = $this->input->post('stiexamcenter',TRUE);
+		if(isset($_POST['searchsticker'])){
+			$selectdata=array('ca_asmid','ca_rollno','ca_centername');
+			//'ca_hallticketstatus' => 'Y',
+			$record=array(
+				'ca_centername'  => $exmceter,
+      				);
+       			$getsticker = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$selectdata,$record);
+			//print_r($this->getsticker);
+		}//close post
+
+		  //echo $this->asmid;
+			$year=date('Y');
+			
+                       // move file to directory code for photo
+			$desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year;
+                        // Create directory if it does not exist
+                        if(is_dir($desired_dir)==false){
+                              mkdir("$desired_dir", 0700);
+                        }
+
+                        $desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year.'/sticker';
+                        // Create directory if it does not exist
+                        if(is_dir($desired_dir)==false){
+                              mkdir("$desired_dir", 0700);
+                        }
+
+               		$size = sizeof($getsticker);          		
+			//print_r($size);
+			//print_r($getsticker);
+			//die;
+			$acadyear = $this->usermodel->getcurrentAcadYear();
+			$temp = '
+        			<!DOCTYPE html>
+   				 <html>
+    				<head>
+       				 	<title>Template 1</title>
+       				 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    				</head>
+    				<body style="">
+				
+					<img src="uploads/logo/logo2.jpg" alt="logo" style="width:100%;height:70px;">
+					<center><h3>Sticker For All India Enterance Examination - '.$acadyear.'</h3></center>
+					
+      				  	<center>
+           				 	<table style="width:60%;margin-top:30px;" border=0>
+				<tr>
+					'.$i=0;
+					if(!empty($getsticker)){
+					    foreach($getsticker as $row){ .'
+					
+						<td style="border:1px solid black;">'.$row->ca_centername.'</br>
+						.'$prgid=$this->commodel->get_listspfic1("admissionstudent_master","asm_coursename","asm_id",$row->ca_asmid)->asm_coursename;
+                       				echo $progname = $this->commodel->get_listspfic1("program","prg_name","prg_id",$prgid)->prg_name.'('.$this->commodel->get_listspfic1("program","prg_branch","prg_id",$prgid)->prg_branch.')';.'
+						</br>				
+						'.$row->ca_rollno.'</td>	
+						'.$i++;
+						if($i%4 == 0){.'
+							</tr>
+							<tr>
+						 '.} 
+					  } 
+				     }.'
+			</tr>
+
+		</table>
+                			
+		</center>
+    		</body>
+		</html>
+    			';
+			//add pdf function and path
+			$pth='uploads/SLCMS/enterenceadmin_student/'.$year.'/sticker/sticker.pdf';
+			$this->genpdf($temp,$pth);
+			$master = array(
+		                		'ca_stickerstatus'   => 'Y',
+	           	     		);
+    			$this->commodel->updaterec('admissionstudent_centerallocation', $master,'ca_asmid',$asmid);
+			$this->logger->write_logmessage("update", "Hall ticket status update yes in admissionstudent_centerallocation");
+                    	$this->logger->write_dblogmessage("update", "Hall ticket status update yes in admissionstudent_centerallocation" );
+			
+       
+	 echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Hall Ticket Successfully Generated.</h3>';
+	 redirect('enterenceadmin/viewstikerlist');
+
+ }
+	
 
         public function viewattendancesheet(){
                 $stud_master = $this->commodel->get_list('admissionstudent_master');
                 $data['stud_master'] = $stud_master;
                 $this->load->view('enterenceadmin/attendencesheet',$data);
-        }
+        }*/
 
 
 	public function viewhallticket(){
 
-        $this->stud_master = $this->commodel->get_list('admissionstudent_master');
-        $data['stud_master'] = $this->stud_master;
-	
+	$data=array('ca_hallticketstatus' =>'Y');
+        $stud_master = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid,ca_rollno',$data);
+	$data['stud_master'] = $stud_master;
+			
         $this->load->view('enterenceadmin/hallticket',$data);
         }
 
         public function generatehallticket(){
-                $data=array('ca_hallticketstatus' =>'Y');
+
+                $data=array('ca_hallticketstatus' => NULL , 'ca_centername !=' => NULL);
                 $stud_master = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid,ca_rollno',$data);
 		//print_r($stud_master);
-                foreach($stud_master as $row){
-			$this->asmid=$row->ca_asmid;
-			$this->gender=$this->commodel->get_listspfic1('admissionstudent_master','asm_gender','asm_id',$row->ca_asmid)->asm_gender;
-			$this->caste=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$row->ca_asmid)->asm_caste;
-                        $this->prgid = $prgname = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->ca_asmid)->asm_coursename;
-                        $this->prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$this->prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$this->prgid)->prg_branch.')';
-                        $this->rollno=$row->ca_rollno;
-                        $this->prgid = $prgname = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->ca_asmid)->asm_fname;
-                        $this->faname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_fathername','aspar_asmid',$row->ca_asmid)->aspar_fathername;
-                        $this->moname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_mothername','aspar_asmid',$row->ca_asmid)->aspar_mothername;
-                        $this->padd=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_paddress','aspar_asmid',$row->ca_asmid)->aspar_paddress;
-                        $this->pcity=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcity','aspar_asmid',$row->ca_asmid)->aspar_pcity;
-                        $this->pstate=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$row->ca_asmid)->aspar_pstate;
-                        $this->pcountry=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$row->ca_asmid)->aspar_pcountry;
-			$this->photo=$this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_photo','asupd_asmid',$row->ca_asmid)->asupd_photo;
-			$this->signature = $this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_signature','asupd_asmid',$row->ca_asmid)->asupd_signature;
-			$centerid=$this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$row->ca_asmid)->asm_enterenceexamcenter;
-			$this->venue=$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_address','eec_id',$centerid)->eec_address.','.$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$centerid)->eec_city;
-               
-			$year=date('Y');
-                        //move file to directory code for photo
-                        $desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year.$row->ca_asmid;
+		//die;
+		$year=date('Y');
+			
+                       // move file to directory code for photo
+			$desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year;
                         // Create directory if it does not exist
                         if(is_dir($desired_dir)==false){
                               mkdir("$desired_dir", 0700);
                         }
-                        $this->load->library('pdf');
-                        $this->pdf->load_view('enterenceadmin/hallticketpdf');
-                        $this->pdf->render();
-                        $pdf = $this->pdf->output();
-			file_put_contents('uploads/SLCMS/enterenceadmin_student/'.$year.$this->asmid.'/hallticket.pdf', $pdf);
 
-                        //file_put_contents("uploads/SLCMS/enterence_student/file.pdf", $pdf);
+                        $desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket';
+                        // Create directory if it does not exist
+                        if(is_dir($desired_dir)==false){
+                              mkdir("$desired_dir", 0700);
+                        }
 
-                redirect('enterenceadmin/viewhallticket');
-                echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Hall Ticket Successfully Generated.</h3>';
+                foreach($stud_master as $row){
+			$asmid=$row->ca_asmid;
+			$gender=$this->commodel->get_listspfic1('admissionstudent_master','asm_gender','asm_id',$row->ca_asmid)->asm_gender;
+			$caste=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$row->ca_asmid)->asm_caste;
+                        $prgid  = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->ca_asmid)->asm_coursename;
+                        $progname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';
+                        $rollno=$row->ca_rollno;
+                        $sname = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->ca_asmid)->asm_fname;
+                        $faname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_fathername','aspar_asmid',$row->ca_asmid)->aspar_fathername;
+                        $moname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_mothername','aspar_asmid',$row->ca_asmid)->aspar_mothername;
+                        $padd=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_paddress','aspar_asmid',$row->ca_asmid)->aspar_paddress;
+                        $pcity=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcity','aspar_asmid',$row->ca_asmid)->aspar_pcity;
+                        $pstate=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$row->ca_asmid)->aspar_pstate;
+                        $pcountry=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$row->ca_asmid)->aspar_pcountry;
+			$photo=$this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_photo','asupd_asmid',$row->ca_asmid)->asupd_photo;
+			$signature = $this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_signature','asupd_asmid',$row->ca_asmid)->asupd_signature;
+			$centerid=$this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$row->ca_asmid)->asm_enterenceexamcenter;
+			$venue=$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_address','eec_id',$centerid)->eec_address.','.$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$centerid)->eec_city;
+			$exmdate = $this->commodel->get_listspfic1('admissionopen','admop_entexam_date','admop_prgname_branch',$prgid)->admop_entexam_date;
+              //echo $this->asmid;
+			$SID=$asmid;
+			
+			$acadyear = $this->usermodel->getcurrentAcadYear();
+                       // $this->load->library('pdf');
+                       // $this->pdf->load_view('enterenceadmin/hallticketpdf');
+			$temp = '
+        			<!DOCTYPE html>
+   				 <html>
+    				<head>
+       				 	<title>Template 1</title>
+       				 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    				</head>
+    				<body style="">
+				
+					<img src="uploads/logo/logo2.jpg" alt="logo" style="width:100%;height:70px;">
+					<center><h3>Hall Ticket For All India Enterance Examination - '.$acadyear.'</h3></center>
+					
+      				  	<center>
+           				 	<table border=0 style="width:98%;" align=center>
+                					<tr >
+                    						<td align=center style="border:1px solid black;">Program :'.$progname.'</td>
+								<td align=center style="border:1px solid black;">Program Code :'.$prgid.'</td>
+                					</tr>
 
+							<tr>
+								<td>
+									<table>
+										<tr><td>Candidate Name :'.$sname.'</td></tr>
+										<tr><td>Father Name :'. $faname.'</td></tr>
+			   							<tr><td> Mother Name : '.$moname.'</br></br></td></tr>
+			   							<tr><td> Address : ' .$padd.','.$pcity.','.$pstate.','.$pcountry.'</td></tr>	
+										
+									</table>
+								</td>
+							<td width=150>
+								<table style="" border=0 align=center>
+								<tr><td align=center style="border:1px solid black;">Hall Ticket Number :</br>'.$rollno.'</td></tr>
+			 					<tr><td align=center style="border:1px solid black;"><img src=uploads/SLCMS/enterence/'.$asmid.'/'.$photo.' style="height:150px;width:170px; "></td></tr>
+		 						<tr><td align=center style="border:1px solid black;"><img src=uploads/SLCMS/enterence/'.$asmid.'/'.$signature.' style="height:50px; width:170px; "></td></tr>
+								</table>
+									</td>
+									</tr>
+
+            					</table>
+							<table style="width:98%;" border=0  align=center>
+								<tr><td align=center style="border:1px solid black;">Exam Date & Time</td>
+								<td align=center style="border:1px solid black;">Venue</td></tr>
+								<tr>
+								<td align=center style="border:1px solid black;">'. $exmdate.'</td>
+								<td style="border:1px solid black;">'.$venue.'</td>	
+								</tr>
+							</table>
+
+						<table style="width:98%;" border=0  align=center>
+							<tr><td align=center style="border:1px solid black;">Category</td>
+								<td align=center style="border:1px solid black;">Gender</td></tr>
+							<tr>
+								<td align=center style="border:1px solid black;">'.$caste.'</td>
+								<td align=center style="border:1px solid black;">'.$gender.'</td>	
+							</tr>
+						</table>
+
+						<table style="width:98%;margin-top:30px;" border=0  align=center> 
+						<tr>
+							<td align=center>Signature of Candidate</br>(To be signed in the presence of the invigilator)</td>
+							<td align=right>Controller of Examination</td>
+						</tr>
+						</table>
+						
+       				 	</center>
+					</br>
+					
+					
+					<center>
+					<div  style="width:98%;margin-top:10px;" >
+					<span style=""><b>ATTENTION:</b></span>
+               				
+                   			 <p style="text-align:left;font-weight:normal;margin-top:-6px;">Note: Candidates who have applied online are hereby asked to bring the hard copy of the application form along with necessary certificates & Challan /DD and submit the same to the invigilator at the examination hall failing which they will not be allowed for the exam.</p>
+                   
+                   			 <span style="margin-top:-12px;"><b>IMPORTANT INSTRUCTIONS TO THE CANDIDATES</b></span>
+                   			 <ol style="text-align:justify;font-weight:normal;margin-top:-6px;" >
+                        			<li>
+                           				The candidates should reach the examination hall 30 minutes prior to commencement of the examination for submitting 								necessary enclosures along with the application form.
+                       				 </li>
+                        
+                        			<li>
+                           				No candidate will be allowed to enter the examination hall after 30 minutes of commencement of the examination.
+                        			</li>
+						 <li>
+                          				 No candidate will be allowed to leave the hall 30 minutes prior to completion of the exam.
+                        			</li>
+						<li>
+                           				The candidate shall carry into the examination hall only (i) Blue/Black BallPoint Pen (ii) Hall Ticket along with Valid Photo ID proof.
+                        			</li>
+                        			<li>
+       							Carrying of Calculators, Mathematical/Log Tables, Pagers, Cell Phones, any other Electronic Gadgets and loose sheets of papers into the examination hall is strictly prohibited. However, candidates appearing for MSc and PhD in Chemistry and Biology, Betony,Zoology Bio­technology, Environmental Sciences are allowed to use scientific calculators only.
+       
+                        			</li>
+                       				 <li>
+                          				 Adoption of any kind of unfair means and any act of impersonation at the time of test will render the applicant liable for invalidation of his/her OMR answer sheet. Further he/she will forfeit the claim of appearing for the test and will make him/her liable for criminal
+action.
+                        			</li>
+                       				 <li>
+                           				Issue of Hall Ticket and appearance at the test do not automatically entitle the candidate for admission to any program.
+                       				 </li>
+                        			<li>
+                            				Hall Ticket must be preserved till the time of admission.
+                        			</li>
+                               
+                   			 </ol>
+                			
+					</center>
+    				</body>
+
+   			 </html>
+    			';
+			//add pdf function and path
+			$pth='uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket/'.$row->ca_asmid.'hallticket.pdf';
+			$this->genpdf($temp,$pth);
+			$master = array(
+		                		'ca_hallticketstatus'   => 'Y',
+	           	     		);
+    			$this->commodel->updaterec('admissionstudent_centerallocation', $master,'ca_asmid',$asmid);
+			$this->logger->write_logmessage("update", "Hall ticket status update yes in admissionstudent_centerallocation");
+                    	$this->logger->write_dblogmessage("update", "Hall ticket status update yes in admissionstudent_centerallocation" );
+			
         }
+	 echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Hall Ticket Successfully Generated.</h3>';
+	 redirect('enterenceadmin/viewhallticket');
+
  }
 
-*/
+	public function genpdf($content,$path){
+		$this->load->library('pdf');
+		$this->pdf = new DOMPDF();	
+     		// pass html to dompdf object
+    		$this->pdf->load_html($content);
+		$this->pdf->set_paper("A4", "portrait");
+                $this->pdf->render();
+		//set paper size
+                $pdf = $this->pdf->output();
+		file_put_contents($path, $pdf); 
+
+	}
+
 }//end class

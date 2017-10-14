@@ -1199,8 +1199,9 @@ class Enterence extends CI_Controller {
 		$getmail = $this->commodel->get_elist('email_setting');
 		//print_r($getmail);
 		$Sid = $this->session->userdata['asm_id'];
-		//get category name
+		//get category name 	
 		$this->catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
+		
 		//fees paid by offline
 					
 		if(isset($_POST['offline'])) {	
@@ -1258,11 +1259,16 @@ class Enterence extends CI_Controller {
 					else{
 						$rollno = $ydate.$prgid.'0001';
 					}
+					$cid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$Sid)->asm_enterenceexamcenter;
+					$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
+					$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
 					//echo $rollno;die;
 					$center = array(
 		                		'ca_asmid'           =>	$Sid,
 						'ca_rollno'	     =>	$rollno,
-	           	     		);
+						'ca_centerlocation'  => $clocation,
+						'ca_centername'	     => $cname
+		           	     		);
 					
     					$this->db->insert('admissionstudent_centerallocation',$center);
 					$this->logger->write_logmessage("update", "Admission Step 4 insert rollno and asmid admission master .");
