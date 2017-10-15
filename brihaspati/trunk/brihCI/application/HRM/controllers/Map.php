@@ -1301,6 +1301,203 @@ class Map extends CI_Controller
 	}	
       }  
                         
-  }
+	}
+
+
+/****************************************** Map authority and user ********************************************/
+
+
+ public function viewauthuser() {
+        $this->authuser=$this->loginmodel->get_list('authority_map');
+        $this->logger->write_logmessage("view"," View map authority and user setting", "authority map setting details...");
+        $this->logger->write_dblogmessage("view"," View map authority and user setting", "User setting details...");
+        $this->load->view('map/viewauthuser',$this->authuser);
+     }
+
+
+  /** This function is for map authority and user */
+
+        public function authusertype()
+        {
+        $this->authuserresult = $this->loginmodel->get_list('authorities','id', 'name');
+        $this->result = $this->loginmodel->get_userlist('edrpuser','username', 'id');
+        //$this->authresult = $this->loginmodel->get_list('authority_map','id','authority_type');                  
+
+
+        if(isset($_POST['authusertype'])) {
+
+        /*Form Validation*/
+
+        $this->form_validation->set_rules('authorities',' Authority Name','trim|xss_clean|required');
+        $this->form_validation->set_rules('edrpuser','User Name','trim|xss_clean|required');
+        $this->form_validation->set_rules('map date','From Date','trim|xss_clean');
+        $this->form_validation->set_rules('till date','Till Date','trim|xss_clean');
+        $this->form_validation->set_rules('authority_type','Authority Type','trim|xss_clean|required');
+
+
+         if($this->form_validation->run() == TRUE){
+               //echo 'form-validated';
+                        $data = array(
+                                'authority_id'=>$_POST['authorities'],
+                                'user_id'=>$_POST['edrpuser'],
+                                'map_date'=>$_POST['map_date'],
+                                'till_date'=>$_POST['till_date'],
+                                'authority_type'=>$_POST['authority_type'],
+                                );
+
+
+                         $amapflag=$this->loginmodel->insertrec('authority_map', $data) ;
+
+
+    if(!$amapflag)
+           {
+                $this->logger->write_logmessage("insert"," Error in adding map and authority user ", " map and authority user data insert error . "  );
+                $this->logger->write_dblogmessage("insert"," Error in adding authority user ", " map and authority user data insert error . " );
+                $this->session->set_flashdata('err_message','Error in adding map and authority user - ' . $_POST['amapauthority'] , 'error');
+                $this->load->view('map/authusertype');
+           }
+          else{
+                $this->logger->write_logmessage("insert"," add map and authority user", "map and authority user record added successfully..."  );
+                $this->logger->write_dblogmessage("insert"," add map and authority user ", "map and authority record added successfully..." );
+                $this->session->set_flashdata("success", "Map and Authority User added successfully...");
+                redirect("map/viewauthuser");
+
+              }
+           }
+
+        }
+       $this->load->view('map/authusertype');
+
+    }
+
+/**This function is used for update Map and Authority User records
+     * @param type $id
+     * @return type
+     */
+
+
+       public function editauthuser($id) {
+       // $this->authresult = $this->loginmodel->get_list('authority_map','authority_id', 'user_id');
+        $id_data_q=$this->loginmodel->get_listrow('authority_map','id', $id);
+
+        if ($id_data_q->num_rows() < 1)
+        {
+           redirect('setup/editauthuser');
+        }
+      $editid_data = $id_data_q->row();
+
+        /* Form fields */
+
+
+
+        $data['authority_id'] = array(
+            'name' => 'authority_id',
+            'id' => 'authority_id',
+            'maxlength' => '50',
+            'size' => '40',
+            'value' => $this->loginmodel->get_listspfic1('authorities','name','id',$editid_data->authority_id)->name,
+            'readonly' => 'readonly'
+        );
+
+   $data['user_id'] = array(
+           'name' => 'user_id',
+           'id' => 'user_id',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $this->loginmodel->get_listspfic1('edrpuser','username','id',$editid_data->user_id)->username,
+           'readonly' => 'readonly'
+        );
+
+
+       $data['map_date'] = array(
+           'name' => 'map_date',
+           'id' => 'map_date',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editid_data->map_date,
+
+        );
+
+
+       $data['till_date'] = array(
+           'name' => 'till_date',
+           'id' => 'till_date',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editid_data->till_date,
+
+        );
+
+        $data['authority_type'] = array(
+           'name' => 'authority_type',
+           'id' => 'authority_type',
+           'maxlength' => '50',
+           'size' => '40',
+           'value' => $editid_data->authority_type,
+
+        );
+
+
+    $data['id'] = $id;
+
+
+        $this->form_validation->set_rules('map_date','From Date','trim|xss_clean');
+        $this->form_validation->set_rules('till_date','Till Date','trim|xss_clean');
+        $this->form_validation->set_rules('authority_map','Authority Type','trim|xss_clean');
+
+        //$this->form_validation->set_rules('Authorities','Authorities List','trim');
+if ($_POST)
+        {
+
+            $data['map_date']['value'] = $this->input->post('map_date', TRUE);
+            $data['till_date']['value'] = $this->input->post('till_date', TRUE);
+            $data['authority_type']['value'] = $this->input->post('authority_type', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('map/editauthuser', $data);
+            return;
+        }
+        else
+        {
+            $fromdate =$this->input->post('map_date', TRUE);
+            $tilldate =$this->input->post('till_date', TRUE);
+            $authority_type =$this->input->post('authority_type', TRUE);
+            $logmessage = "";
+
+            if($editid_data->map_date != $fromdate)
+                $logmessage = "Map Authority and User" .$editid_data->map_date. " changed by " .$fromdate;
+            if($editid_data->till_date != $tilldate)
+                $logmessage = "Map Authority and User" .$editid_data->till_date. " changed by " .$tilldate;
+            if($editid_data->authority_type != $authority_type)
+                $logmessage = "Map Authority and User" .$editid_data->authority_type. " changed by " .$authority_type;
+
+            $update_data = array(
+                        'map_date'=>$fromdate,
+                        'till_date'=>$tilldate,
+                        'authority_type' =>$authority_type,
+
+         );
+
+           $amapflag=$this->loginmodel->updaterec('authority_map', $update_data, 'id', $id);
+           if(!$amapflag)
+            {
+                $this->logger->write_logmessage("error","Error in update Map Authority and User ", "Error in Map Authority and User record update. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in update Map Authority and User ", "Error in Map Authority and User record update. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error updating Map Authority and User - ' . $logmessage . '.', 'error');
+                $this->load->view('map/editauthuser', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit Map Authority and User ", "Map Authority and User record updated successfully... $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit Map Authority and User", "Map Authority and User record updated successfully... $logmessage ." );
+                $this->session->set_flashdata('success','Map Authority and User record updated successfully...');
+                redirect('map/viewauthuser/');
+                }
+        }//else
+        redirect('map/editauthuser');
+    }
+
+
+
 }
     

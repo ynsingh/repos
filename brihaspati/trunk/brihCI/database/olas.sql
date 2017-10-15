@@ -367,15 +367,15 @@ ALTER TABLE `admissionstudent_centerallocation`
 
 
 -- -------------------------------------------------------------------
-
 --
 -- Table structure for table `announcement`
 --
 
 CREATE TABLE `announcement` (
   `anou_id` int(11) NOT NULL,
-  `anou_cname` int(11) NOT NULL,
-  `anou_name` int(2) NOT NULL,
+  `anou_cname` varchar(100) NOT NULL,
+  `anou_type` varchar(100) NOT NULL, 
+  `anou_title` varchar(255) NOT NULL,
   `anou_description` varchar(255) NOT NULL,
   `anou_attachment` varchar(255) NOT NULL,
   `anou_publishdate` date NOT NULL,
@@ -534,6 +534,35 @@ CREATE TABLE `Department` (
   `dept_sccode` varchar(255) NOT NULL,
   `dept_orgcode` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Table structure for table `Department_archive`
+--
+
+CREATE TABLE `Department_archive` (
+  `depta_id` int(11) NOT NULL,
+  `depta_deptid` int(11) NOT NULL,
+  `depta_name` varchar(255) NOT NULL,
+  `depta_code` varchar(255) NOT NULL,
+  `depta_uoid` int(11) NOT NULL,
+  `depta_short` varchar(255) NOT NULL,
+  `depta_description` varchar(255) NOT NULL,
+  `depta_schoolname` varchar(255) DEFAULT NULL,
+  `depta_schoolcode` varchar(255) DEFAULT NULL,
+  `depta_sccode` varchar(255) NOT NULL,
+  `depta_orgcode` varchar(255) NOT NULL,
+  `creatorid` varchar(255) NOT NULL,
+  `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE `Department_archive`
+  ADD PRIMARY KEY (`depta_id`);
+
+ALTER TABLE `Department_archive`
+  MODIFY `depta_id` int(11) NOT NULL AUTO_INCREMENT;
+
 
 -- --------------------------------------------------------
 

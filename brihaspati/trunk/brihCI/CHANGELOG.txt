@@ -1,3 +1,50 @@
+SLCMS, HRM  Version 1.0 2017-10-04
+-----------------------------
+    * Add and update of Exam type, display of admission information in different program - Deepika
+
+SLCMS, HRM  Version 1.0 2017-10-03
+-----------------------------
+    * Schema addd ( pre admission step and upload data) and menu updated regarding pre admission exam - NKS
+
+SLCMS, HRM  Version 1.0 2017-10-02
+-----------------------------
+    * Student admission system - verification process added. Sharad
+
+SLCMS, HRM  Version 1.0 2017-09-29
+-----------------------------
+    * Forgot password  for all component added - Deepika
+    * Adding DDO facility added -OP
+
+SLCMS, HRM  Version 1.0 2017-09-28
+-----------------------------
+    * Student registartion step zero functional - Sharad
+    * Maping facility with dept and scheme added - Rekha
+
+SLCMS, HRM  Version 1.0 2017-09-27
+-----------------------------
+    * Bug fix in admission open and enterance exam center schema added - NKS
+    * Repopulate data in SC, Dept, Program and add water mark in fees receipt download - Abhay, Kishore
+    * Add and view facility for admission open -Rahul
+    * Add program id  and modified declaration form - Sumit
+
+SLCMS, HRM  Version 1.0 2017-09-26
+-----------------------------
+    * Database modified, one table admissionopen added -nd bug fix - NKS
+    * Student attendance submission by teachers facility added, Student preadmission information display facility added. Sumit
+
+SLCMS, HRM  Version 1.0 2017-09-25
+-----------------------------
+    * Add group in designation and code is added in leave type - Rekha
+    * Staff position archive  view facility added - OP
+
+SLCMS, HRM  Version 1.0 2017-09-22
+-----------------------------
+    * Create schema for result announce and stop, band detail archive and provide link in menu of ( admin,coe,hod) for announcement. NKS
+
+SLCMS, HRM  Version 1.0 2017-09-21
+-----------------------------
+    * Add student marks on the basis od subject  facility added. Sharad
+
 SLCMS, HRM  Version 1.0 2017-09-20
 -----------------------------
     * Add staff position archive table in payroll(sis), modification in email protocol name, dispaly mechinsm of exam type in slcms- NKS
