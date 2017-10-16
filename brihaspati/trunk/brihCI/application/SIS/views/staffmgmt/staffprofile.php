@@ -1,46 +1,50 @@
-<!--@filename staffprofile.php  @author Manorama Pal(palseema30@gmail.com) -->
+<!--@filename staffprofile.php  @author Manorama Pal(palseema30@gmail.com)
+re-engineering in add profile according to tanuvas structure - 16 OCT 2017 
+-->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
     <head>
         <title>Welcome to TANUVAS</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
+       <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">-->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
-        
+               
         <script>$(document).ready(function(){
             $("#StartDate").datepicker({
                 dateFormat: 'yy/mm/dd',
                 numberOfMonths: 1,
-                autoclose: true
+                autoclose: true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-37:c+30'
                        
             });
             $("#Dateofphd").datepicker({
                 dateFormat: 'yy/mm/dd',
                 numberOfMonths: 1,
                 autoclose: true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-37:c+30'
                
             });
-           /* $("#Dateofretir").datepicker({
-                dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                autoclose: true,
-               
-            });*/
+           
             /*************************************************************calculate date of retirement******************/
             $("#Dateofbirth").on('change',function(){
                 var dob= $(this).val();
                 var birthDate = new Date(dob);
-               // alert(dob);
                 //alert(birthDate);
                 var retDate = new Date(birthDate.getFullYear() + 60, birthDate.getMonth(), birthDate.getDate()-1);
                 //alert(retDate);
-                var lastDayWithSlashes = retDate.getFullYear()+ '/' + (retDate.getMonth() + 1)+'/' +retDate.getDate();
+                // var lastDayWithSlashes = (retDate.getFullYear()+ '/' + (retDate.getMonth() + 1)+'/' +retDate.getDate());
+                var lastDayWithSlashes = new Date(retDate.getFullYear(), retDate.getMonth() + 1, 0);
+                var lastDay = (lastDayWithSlashes.getFullYear()+ '/' + (lastDayWithSlashes.getMonth() +1)+ '/' + lastDayWithSlashes.getDate());
                 //alert(lastDayWithSlashes);
-                return $('#Dateofretir').val(lastDayWithSlashes);
+                return $('#Dateofretir').val(lastDay);
                
             });
             /******************************close date of retirement********************************************************/
@@ -49,74 +53,89 @@
                 dateFormat: 'yy/mm/dd',
                 numberOfMonths: 1,
                 autoclose: true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-37:c+30'
                
             });
             $("#Dateofhgp").datepicker({
                 dateFormat: 'yy/mm/dd',
                 numberOfMonths: 1,
                 autoclose: true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-37:c+30'
                
             });
             $("#Dateofbirth").datepicker({
                 dateFormat: 'yy/mm/dd',
                 numberOfMonths: 1,
                 autoclose: true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-37:c+30'
                
             });
             
-            /*******department of selected campus*******************************/
+            /*******uoc on the basis of campus*******************************/
+            
+            /*
+            In future this code may be replace when either campusid added in the 
+            autority or authority added in campus.
             
             $('#camp').on('change',function(){
                 var sc_code = $(this).val();
-               // alert(sc_code);
+                //alert(sc_code);
                 if(sc_code == ''){
-                    $('#scid').prop('disabled',true);
+                    $('#uocid').prop('disabled',true);
+                   
                 }
                 else{
-             
-                    $('#scid').prop('disabled',false);
+                    $('#uocid').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdeptlist",
+                        url: "<//?php echo base_url();?>sisindex.php/staffmgmt/getuoclist",
                         type: "POST",
                         data: {"campusname" : sc_code},
                         dataType:"html",
                         success:function(data){
-                          //  alert(data);
-                        $('#scid').html(data.replace(/^"|"$/g, ''));
-                       
+                            $('#uocid').html(data.replace(/^"|"$/g, ''));
+                                                 
                         },
                         error:function(data){
+                            //alert("data in error==="+data);
                             alert("error occur..!!");
                  
                         }
                     });
                 }
             }); 
-            /*****end of department***************************/
-            /************************select schemes of selected department****/
-             $('#scid').on('change',function(){
-                var schm_id = $(this).val();
-               // alert("seema==="+schm_id);
-                if(schm_id == ''){
-                    $('#schmid').prop('disabled',true);
+            */
+            /*****end of uoc***************************/
+            /************************select department on basis of uoc and campus*******************/
+                       
+             $('#uocid').on('change',function(){
+                var sc_code = $('#camp').val();
+                var uoc_id = $('#uocid').val();
+                var combid = sc_code+","+uoc_id;
+                //alert("combid=="+combid);
+                if(uoc_id == ''){
+                    $('#scid').prop('disabled',true);
                 }
                 else{
              
-                    $('#schmid').prop('disabled',false);
+                    $('#scid').prop('disabled',false);
                     $.ajax({
-                       // alert("seema=====");
-                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdeptschemelist",
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getnewdeptlist",
                         type: "POST",
-                        data: {"deptid" : schm_id},
+                        data: {"campuoc" : combid},
                         dataType:"html",
                         success:function(data){
-                           // alert("ok===="); 
-                           //  alert("data==1="+data);
-                            $('#schmid').html(data.replace(/^"|"$/g, ''));
+                            //alert("data==1="+data);
+                            $('#scid').html(data.replace(/^"|"$/g, ''));
                        
                         },
                         error:function(data){
-                           // alert("data seema==="+data);
+                            //alert("data in error==="+data);
                             alert("error occur..!!");
                  
                         }
@@ -125,8 +144,196 @@
                 }
             }); 
             
-            /*********************close***select schemes of selected department****/
+            /*********************closer of department***************************************/
             
+            /************************select schemes on the basis of department*******************/
+                       
+             $('#scid').on('change',function(){
+                //var sc_code = $('#camp').val();
+                //var uoc_id = $('#uocid').val();
+                var dept_id = $('#scid').val();
+                //var campuocdept = sc_code+","+uoc_id+","+dept_id;
+                //alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"comb=="+campuocdept);
+                if(dept_id == ''){
+                    $('#schmid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#schmid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getnewdeptschemelist",
+                        type: "POST",
+                       // data: {"combthree" : campuocdept},
+                         data: {"combdept" : dept_id},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("ok===="); 
+                            //alert("data==1="+data);
+                            $('#schmid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            
+            /*********************closer of scheme**************************************************/
+            /************************select DDO on basis of campus department schemes*******************/
+            $('#schmid').on('change',function(){
+                var sc_code = $('#camp').val();
+               // var uoc_id = $('#uocid').val();
+                var dept_id = $('#scid').val();
+                var schm_id = $('#schmid').val();
+                //var campuocdeptschm = sc_code+","+uoc_id+","+dept_id+","+schm_id;
+                var campdeptschm = sc_code+","+dept_id+","+schm_id;
+                //alert("seema==="+sc_code+'uoc==='+uoc_id+"dept=="+dept_id+"schmid==="+schm_id+"comb=="+campuocdeptschm);
+                if(schm_id == ''){
+                    $('#ddoid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#ddoid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getddolist",
+                        type: "POST",
+                        //data: {"combfour" : campuocdeptschm},
+                        data: {"combthree" : campdeptschm},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("data==1="+data);
+                            $('#ddoid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /*********************closer of DDO********************************************/
+            /************************select Designation on basis of Group*******************/
+            $('#grpid').on('change',function(){
+                var grp_id = $(this).val();
+                if(grp_id == ''){
+                    $('#desigid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#desigid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdesiglist",
+                        type: "POST",
+                        data: {"group" : grp_id},
+                        dataType:"html",
+                        success:function(data){
+                            $('#desigid').html(data.replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /*********************closer of Designation****************************************************************/
+            
+            /*****************************************validation for date of appiontment**************************************/
+            $("#StartDate").on('change',function(){
+                var dob = $('#Dateofbirth').val();
+                var arr_dateText = dob.split("/");
+                //alert("dob==="+dob);
+                var day = arr_dateText[2];
+                var month = arr_dateText[1];
+                var year = arr_dateText[0];
+                //alert("day=="+day+"month=="+month+"year=="+year);
+                var mydate = new Date();
+                mydate.setFullYear(year, month-1, day);
+                //alert("mydate==2 time="+mydate);
+                var age = 18;
+                var doj = $('#StartDate').val()
+                //alert("doj=="+doj);
+                var joiningDate = new Date(doj);
+                joiningDate.setFullYear(joiningDate.getFullYear() - age);    
+                //alert("joiningDate=2====="+joiningDate);
+                if(joiningDate < mydate)
+                {
+                    alert('Sorry, you must be atleast 18 years of age to apply.');
+                    var dor = ' ';
+                    return $('#StartDate').val(dor);
+                }
+                else{
+                    //alert('in else part');
+                    var dor = $('#StartDate').val();
+                    return $('#StartDate').val(dor);
+                    
+                }
+                                               
+            });
+            /******************************validation for date of appiontment********************************************************/
+            
+            /************************select shown against the post value *****************************************************/
+            $('#desigid').on('change',function(){
+                var sc_code = $('#camp').val();
+                var uoc_id = $('#uocid').val();
+                var dept_id = $('#scid').val();
+                var schm_id = $('#schmid').val();
+                var desig_id = $('#desigid').val();
+                var wrktype_id = $('#worktypeid').val();
+                var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+desig_id+","+wrktype_id;
+                //alert("comin script===bsix===="+cudshmdesigwrktype);
+                //var grp_id = $(this).val();
+                if(desig_id == ''){
+                    $('#emppost').prop('disabled',true);
+                    $('#emptypeid').prop('disabled',true);
+                }
+                else{
+             
+                    $('#emppost').prop('disabled',false);
+                    $('#emptypeid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemppostposition",
+                        type: "POST",
+                        data: {"combsix" : cudshmdesigwrktype},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("seemas"+data);
+                            var empdata=data;
+                            var empinput=empdata.split(',');
+                            //alert("empinput=split===="+empinput[0]);
+                            var val1 = empinput[0].replace(/\"/g,"");
+                            $('#emppost').val(val1.replace(/^"|"$/g, ''));
+                            var val2=$('#emppost').val();
+                            if(val2.trim() === "No vacancy"){
+                                alert(" Sorry, No vacancy available for this post");
+                               $('#my_id').submit();
+                                   
+                            }   
+                            $('#emptypeid').html(empinput[1].replace(/^"|"$/g, ''));
+                       
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+             
+            /************************closer for shown against the post*****************************************/
+             
             /**Allows only letters, numbers and spaces. All other characters will return an error.**/
             $('.keyup-characters').keyup(function() {
             $('span.error-keyup-2').remove();
@@ -177,16 +384,27 @@
 
             });
            /*******************************************************close pan number method****************************************************************/
+          
+            
+           
          
         });
-               
+         /*********************************************image preview***************************************************************/
+        function preview_image(event) 
+        {
+            var reader = new FileReader();
+            reader.onload = function()
+            {
+                var output = document.getElementById('output_image');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+         /*************************************************************************************************************************/      
         </script>
-       
-        <style>
-           
-        </style>
+   
     </head>
-    <body>
+   <body>
         <div>
            
             <?php $this->load->view('template/header'); ?>
@@ -194,13 +412,13 @@
             <?php $this->load->view('template/menu');?>
         
         </div> 
-        <table style="margin-left:1%;width:97%;"><tr><td>
+        <table style="margin-left:4%;width:97%; "><tr><td>
         <?php echo anchor('staffmgmt/employeelist/', "View Employee List" ,array('title' => 'View Employee List ' , 'class' => 'top_parent'));
         $help_uri = site_url()."/help/helpdoc#StaffProfile";
         echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
 ?>
         </td></tr></table>
-        <div align="left" style="margin-left:2%;width:97%;">
+        <div align="left" style="margin-left:5%;width:90%;">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -211,216 +429,340 @@
                 };
                 ?>
                  <?php if(isset($_SESSION['err_message'])){?>
-                    <div  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
                 <?php
                 };
                 ?>    
                   
         </div>
-        <div>
-        <table style="margin-left:2%; margin-right:2%; width:97%; border:1px solid gray;" border=1 class="TFtable">
-        
-            <?php echo form_open_multipart('staffmgmt/staffprofile');?>
+      <!-- <div> -->
+        <!--<table style="margin-left:2%; margin-right:2%; width:97%; border:1px solid gray;" border=1 class="TFtable">-->
+        <table style="margin-left:5%;width:90%;border:1px solid gray;" class="TFtable">
+            
+            <?php echo form_open_multipart('staffmgmt/staffprofile','id="my_id"');?>
+            <tr><thead><th style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="4">&nbsp;&nbsp;Staff Profile Form</th></thead></tr>
+            <!--<tr style="height:10px;"></tr>-->
+           <!-- <tr><td>
+            <table align="center" style="margin-left:2%;width:96%; border:1px solid gray;" class="TFtable">
+            <tr style="margin-left:2%;"><td style="margin-left:2%;">    -->
+            <div style="margin-left:10%;">
             <tr>
-                <td>Upload Photo:</td><td colspan="7" ><input type='file' name='userfile' size='20' /></td>
-               
-            </tr>    
-           <tr>
-                
-                <td >Employee PF No:</td><td> <input type="text" name="empcode" class="keyup-characters" value="<?php echo isset($_POST["empcode"]) ? $_POST["empcode"] : ''; ?>" placeholder="employee PF No..." size="25"  required pattern="[a-zA-Z0-9 ]+" required="required"></td>
-                <td >Employee Name: </td><td><input type="text" name="empname"  class="keyup-characters" value="<?php echo isset($_POST["empname"]) ? $_POST["empname"] : ''; ?>" placeholder="employee name..." size="25" required="required"></td>
-                <td>Father Name:</td><td> <input type="text" name="fathername" class="keyup-characters" value="<?php echo isset($_POST["fathername"]) ? $_POST["fathername"] : ''; ?>" placeholder="Father Name..." size="25" ></td>
-                <td >Specialisation(Major Subject):</td><td>
-                    <select name="specialisation"> 
-                        <option value="0">--------Major Subject-----</option>
-                        <?php foreach($this->subject as $subdata): ?>	
-   				<option value="<?php echo $subdata->sub_id; ?>"><?php echo $subdata->sub_name; ?></option> 
- 			<?php endforeach; ?>
-                       
-                    </select>
-                </td>
-                 
-            </tr>
-            <tr style="height:10px;"></tr>
-            <tr>
-                <td>Campus Name: </td><td width="10%"><select id="camp" name="campus" style="width:100%;" required> 
+                <td><label for="campus" style="font-size:15px;">Campus Name <font color='Red'>*</font></label>
+                    <div> <select id="camp" name="campus" required> 
                         <option selected="selected" disabled selected>--------Campus Name-----</option>
                        <?php foreach($this->campus as $camdata): ?>	
    				<option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
  			<?php endforeach; ?>
                       
-                </select></td> 
-                <td>University Officer Control:</td><td>
-                    <select name="uocontrol" required> 
+                    </select></div>
+                </td> 
+                <!--In future this code may be replace when either campusid added in the 
+                authority or authority added in campus.-->
+                <td><label for="uocontrol" style="font-size:15px;">University Officer Control<font color='Red'>*</font></label>
+                    <div><select name="uocontrol" id="uocid" required> 
                         <option selected="selected" disabled selected>--------University Officer Control -----</option>
                        
                         <?php foreach($this->uoc as $ucodata): ?>	
-                            <option value="<?php echo $ucodata->id; ?>"><?php echo $ucodata->name; ?></option> 
+                            <option value="<?php echo $ucodata->user_id; ?>"><?php
+                                //echo $this->lgnmodel->get_listspfic1('','sc_name','sc_id',$record->emp_scid)->sc_name;
+                                $authiame=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$ucodata->authority_id)->name;
+                                $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$ucodata->user_id)->firstname;
+                                $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$ucodata->user_id)->lastname;
+                                echo $auofname." ".$auolname."( ".$authiame." )";
+                            ?>
+                            </option> 
  			<?php endforeach; ?>
-                    </select>
+                    </select></div>
                 </td>
-                <td>Department:</td><td>
-                    <select required name="department" id="scid"> 
-                        <option disabled selected >--------Department -----</option>
+                <td><label for="department" style="font-size:15px;">Department<font color='Red'>*</font></label>
+                    <div><select required name="department" id="scid"> 
+                        <option selected="selected" disabled selected >--------Select Department--------</option>
                        
-                    </select>
+                    </select></div>
                 </td>
-                <td>Scheme Name:</td><td>
-                    <select required name="schemecode" id="schmid"> 
-                        <option disabled selected>--------Scheme Name -----</option>
+                <td><label for="schemecode" style="font-size:15px;">Scheme Name<font color='Red'>*</font></label>
+                    <div><select required name="schemecode" id="schmid"> 
+                        <option selected="selected" disabled selected>-----------Scheme Name -----------</option>
                         
-                    </select>
+                    </select><div>
                 </td>
-                
             </tr>
-            <tr style="height:10px;"></tr>
+            <!--
+            <tr style="height:10px;"></tr>-->
             <tr>
-                <td>Designation:</td><td>
-                    <select name="designation" required > 
-                        <option selected="selected" disabled selected>--------Designation -----</option>
-                            <?php foreach($this->desig as $desigdata): ?>	
-                            <option value="<?php echo $desigdata->desig_id; ?>"><?php echo $desigdata->desig_name; ?></option> 
- 			<?php endforeach; ?>
-                    </select>
+            <td><label for="ddo" style="font-size:15px;">Drawing and Disbursing Officer<font color='Red'>*</font></label>
+                    <div><select name="ddo" id="ddoid" required> 
+                        <option selected="selected" disabled selected>--------- Drawing and Disbursing Officer-----</option>
+                    </select></div>
                 </td>
-                <!--<td >Employee Post:</td>-->
-                <td >Shown against the Post:</td>
-                <td> <input type="text" name="emppost" value="<?php echo isset($_POST["emppost"]) ? $_POST["emppost"] : ''; ?>" placeholder="Employee Post..." size="25"></td><br>
-                <td>Working Type:</td><td>
-                        <select name="workingtype"> 
-                        <option value="">--------Working Type -----</option>
+                <td><label for="workingtype" style="font-size:15px;">Working Type<font color='Red'>*</font></label>
+                        <div><select id="worktypeid" name="workingtype" required> 
+                        <option selected="selected" disabled selected>------------- Working Type -------------</option>
                         <option value="Teaching">Teaching</option>
                         <option value="NON-Teaching">NON Teaching</option>
-                    </select>
-                    </td> 
-                <td>Employee Type:</td><td>
-                    <select name="emptype"> 
-                        <option value="">--------Employee Type -----</option>
-                        <option value="Permanent">Permanent</option>
-                        <option value="Temporary">Temporary</option>
-                    </select>
+                    </select></div>
                 </td> 
-                
-            </tr> 
-            <tr style="height:10px;"></tr>
+                <td><label for="group" style="font-size:15px;">Group<font color='Red'>*</font></label>
+                       <div><select name="group" id="grpid" required> 
+                        <option selected="selected" disabled selected>------------ Select Group ---------</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select></div>
+                </td>
+                <td><label for="designation" style="font-size:15px;">Designation<font color='Red'>*</font></label>
+                    <div><select name="designation" id="desigid" required> 
+                        <option selected="selected" disabled selected>------- Select Designation ---------</option>
+                        <!--    <//?php foreach($this->desig as $desigdata): ?>	
+                            <option value="<//?php echo $desigdata->desig_id; ?>"><//?php echo $desigdata->desig_name; ?></option> 
+ 			<//?php endforeach; ?>-->
+                    </select></div>
+                </td>
+              
+            </tr>
+           <!--<tr style="height:10px;"></tr>-->
             <tr>
-                <td>Gender:</td><td><select name="gender"> 
-                        <option value="">--------Gender ---------</option>
+                <td><label for="emppost" style="font-size:15px;">Shown against the Post<font></font></label>
+                   <div><!--<input type="text" id="emppostid" name="emppost" value="<//?php echo isset($_POST["emppost"]) ? $_POST["emppost"] : ''; ?>" placeholder="Employee Post..." size="35">-->
+                    <input type="text" id="emppost" name="emppost"  readonly placeholder="Employee Post..." size="35">
+                    </div>
+                </td>
+                 <td><label for="pnp" style="font-size:15px;">Plan / Non Plan</label>
+                    <div><select name="pnp"> 
+                        <option value="">-------------- Plan/Non Plan ------------</option>
+                        <option value="Plan">Plan</option>
+                        <option value="Non-Paln">Non Plan</option>
+                        <option value="GOI">GOI</option>
+                        <option value="ICAR">ICAR</option>
+                    </select></div>
+                </td>
+                <td><label for="emptype" style="font-size:15px;">Employee Type<font color='Red'>*</font></label>
+                    <div><select id="emptypeid" name="emptype" required> 
+                        <option selected="selected" disabled selected>----------- Employee Type ---------</option>
+                        <!--<option value="Permanent">Permanent</option>
+                        <option value="Temporary">Temporary</option>-->
+                    </select><div>
+                </td> 
+                <td><label for="empcode" style="font-size:15px;">Employee PF No<font color='Red'>*</font></label>
+                    <div><input type="text" name="empcode" class="keyup-characters" value="<?php echo isset($_POST["empcode"]) ? $_POST["empcode"] : ''; ?>" placeholder="employee PF No..." size="27"  required pattern="[a-zA-Z0-9 ]+" required="required">
+                </div></td>
+              
+            </tr>
+            <!--<tr style="height:10px;"></tr>-->
+            <tr>
+                <td><label for="empname" style="font-size:15px;">Employee Name <font color='Red'>*</font></label>
+                    <div><input type="text" name="empname"  class="keyup-characters" value="<?php echo isset($_POST["empname"]) ? $_POST["empname"] : ''; ?>" placeholder="employee name..." size="35" required="required">
+                </div></td>
+                <td><label for="fathername" style="font-size:15px;">Fathers Name</label>
+                    <div><input type="text" name="fathername" class="keyup-characters" value="<?php echo isset($_POST["fathername"]) ? $_POST["fathername"] : ''; ?>" placeholder="Father Name..." size="30" >
+                </div></td>
+                <td><label for="orderno" style="font-size:15px;"> Application Order No<font color='Red'>*</font></label>
+                    <div><input type="text" name="orderno"  value="<?php echo isset($_POST["orderno"]) ? $_POST["orderno"] : ''; ?>" placeholder="order No..." size="27" required="required">
+                </div></td>
+                <td><label for="specialisation" style="font-size:15px;">Specialisation(Major Subject)</label>
+                    <div><select name="specialisation"> 
+                        <option value="0">----------- Major Subject -----------</option>
+                        <?php foreach($this->subject as $subdata): ?>	
+   				<option value="<?php echo $subdata->sub_id; ?>"><?php echo $subdata->sub_name; ?></option> 
+ 			<?php endforeach; ?>
+                       
+                    </select></div>
+                </td>
+               
+            </tr>
+            <!--<tr style="height:10px;"></tr>-->
+            <tr>
+                 <td><label for="gender" style="font-size:15px;">Gender</label>
+                    <div><select name="gender"> 
+                        <option value="">---------------- Select Gender ------------------</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Transgender">Transgender</option>
-                    </select></td> 
+                    </select></div>
+                </td> 
                     
-                <td>Community:</td><td><select name="community"> 
-                        <option value="">--------Community ---------</option>
+                <td><label for="community" style="font-size:15px;">Community</label>
+                    <div><select name="community"> 
+                        <option value="">----------- Select Community -----------</option>
                         <option value="General ">General</option>
                         <option value="Other Backward Class">Other Backward Class</option>
                         <option value="Scheduled Caste">Scheduled Caste</option>
                         <option value="Scheduled Tribe">Scheduled Tribe</option>
                         
-                    </select></td> 
-                <td>Religion:</td><td><select name="religion"> 
-                        <option value="">--------Religion ---------</option>
+                    </select></div>
+                </td> 
+                                    
+                 <td><label for="religion" style="font-size:15px;">Religion</label>
+                    <div><select name="religion"> 
+                        <option value="">---------- Select Religion -----------</option>
                         <option value="Hinduism">Hinduism</option>
                         <option value="Islam">Islam</option>
                         <option value="Sikhism">Sikhism</option>
                         <option value="Christianity">Christianity</option>
                         <option value=" Buddhism">Buddhism</option>
                         <option value="Jainism">Jainism</option>
-                    </select></td>
-                    <td>Caste:</td><td><input type="text" name="caste" value="<?php echo isset($_POST["caste"]) ? $_POST["caste"] : ''; ?>" placeholder="Caste..." size="25" ></td> 
+                    </select><div>
+                </td>
+                <td><label for="caste" style="font-size:15px;">Caste</label>
+                    <div><input type="text" name="caste" value="<?php echo isset($_POST["caste"]) ? $_POST["caste"] : ''; ?>" placeholder="Caste..." size="27" >
+                </div></td>
+                       
             </tr>
-            <tr style="height:10px;"></tr>
+            <!--<tr style="height:10px;"></tr>-->
             <tr>
-            
-                <td>Pay Band:</td><td>
-                    <select name="payband" required> 
-                        <option selected="selected" disabled selected>--------Pay Band -----</option>
+                <td><label for="payband" style="font-size:15px;">Pay Band<font color='Red'>*</font></label>
+                    <div><select name="payband" required> 
+                        <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
                         <?php foreach($this->salgrd as $salgrddata): ?>	
                             <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
                             </option> 
  			<?php endforeach; ?>
                        
-                    </select>
+                    </select></div>
                 </td>
-                <td>Basic Pay:</td><td><input type="text" name="basicpay"  class="keyup-numeric" value="<?php echo isset($_POST["basicpay"]) ? $_POST["basicpay"] : ''; ?>" placeholder="Basic pay..." size="25" ></td> 
-                <td>Emolution:</td><td><input type="text" name="emolution" class="keyup-numeric" value="<?php echo isset($_POST["emolution"]) ? $_POST["emolution"] : ''; ?>" placeholder="Emolution..." size="25" ></td> 
-                <td >NHIS ID No:</td><td> <input type="text" name="empnhisidno" class="keyup-characters" value="<?php echo isset($_POST["empnhisidno"]) ? $_POST["empnhisidno"] : ''; ?>" placeholder="NHIS ID NO..." size="25"></td>
-                 
+                <td><label for="basicpay" style="font-size:15px;">Basic Pay</label>
+                    <div><input type="text" name="basicpay"  class="keyup-numeric" value="<?php echo isset($_POST["basicpay"]) ? $_POST["basicpay"] : ''; ?>" placeholder="Basic pay..." size="30" >
+                </div></td> 
+                                       
+                <td><label for="emolution" style="font-size:15px;">Emolution</label>
+                    <div><input type="text" name="emolution" class="keyup-numeric" value="<?php echo isset($_POST["emolution"]) ? $_POST["emolution"] : ''; ?>" placeholder="Emolution..." size="27" >
+                </div></td> 
+                <td><label for="empnhisidno" style="font-size:15px;">NHIS ID No</label>
+                    <div><input type="text" name="empnhisidno" class="keyup-characters" value="<?php echo isset($_POST["empnhisidno"]) ? $_POST["empnhisidno"] : ''; ?>" placeholder="NHIS ID NO..." size="27">
+                </div></td>
+                
             </tr>
-            <tr style="height:10px;"></tr>
+            <!--<tr style="height:10px;"></tr>-->
             <tr>
-                <td>Date of Appointment:</td><td><input type="text" name="dateofjoining" value="<?php echo isset($_POST["dateofjoining"]) ? $_POST["dateofjoining"] : ''; ?>" id="StartDate"  size="25" required="required"></td>       
-                <td>Plan / Non Plan:</td><td>
-                    <select name="pnp"> 
-                        <option value="">--------Plan/Non Plan -----</option>
-                        <option value="Plan">Plan</option>
-                        <option value="Non-Paln">Non Plan</option>
-                    </select>
+                <td><label for="phstatus" style="font-size:15px;">Whether Physically handicapped<font color='Red'>*</font>  </label>
+                <div><input type="radio" name="phstatus" value="yes">Yes &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="phstatus" value="no">No
+                </div></td>
+                <td><label for="phdetail" style="font-size:15px;">Details of PH</label>
+                <div><input type="text" name="phdetail" class="keyup-characters" value="<?php echo isset($_POST["phdetail"]) ? $_POST["phdetail"] : ''; ?>" placeholder="Details of PH..." size="30">
+                </div></td>
+                <td><label for="Sabgroup" style="font-size:15px;">Blood Group</label>
+                   <div><select name="Sabgroup" class="form-control" id="register_name">
+				<option value="">------- Select Blood Group ---------</option>
+				<option value="A+">A+</option>
+				<option value="O+">O+</option>
+				<option value="B+">B+</option>
+				<option value="AB+">AB+</option>
+				<option value="A-">A-</option>
+				<option value="O-">O-</option>
+				<option value="B-">B-</option>
+				<option value="AB-">AB-</option>
+				
+	 		</select></div>		
                 </td>
-                <td>Phd Status:</td><td>
-                    <select name="phdstatus"> 
-                        <option value="">--------Phd Status -----</option>
+                <td><label for="DateofBirth" style="font-size:15px;">Date of Birth<font color='Red'>*</font></label>
+                    <div><input type="text" name="DateofBirth" value="<?php echo isset($_POST["DateofBirth"]) ? $_POST["DateofBirth"] : ''; ?>" id="Dateofbirth" size="27" required="required">
+                </div></td>     
+                         
+            </tr>
+            <!--<tr style="height:10px;"></tr>-->
+            <tr>
+                <td><label for="dateofjoining" style="font-size:15px;">Date of Appointment:<font color='Red'>*</font></label>
+                    <div><input type="text" name="dateofjoining" value="<?php echo isset($_POST["dateofjoining"]) ? $_POST["dateofjoining"] : ''; ?>" id="StartDate"  size="35" required="required">
+                </div></td>                 
+                <td><label for="dateofretirement" style="font-size:15px;">Date of Retirement</label>
+                    <div><input type="text" name="dateofretirement" value="<?php echo isset($_POST["dateofretirement"]) ? $_POST["dateofretirement"] : ''; ?>" id="Dateofretir" class="form-control" size="30" />
+                </div></td>
+                <td><label for="phdstatus" style="font-size:15px;">Phd Status</label>
+                    <div><select name="phdstatus"> 
+                        <option value="">-------------- Phd Status -------------</option>
                         <option value="Complete">Complete</option>
                         <option value="Not Complete">Not Complete</option>
-                    </select>
+                    </select></div>
                 </td>
-                <td>Date of Phd Finished:</label></td>
-                <td><input type="text" name="dateofphd" id="Dateofphd"  value="<?php echo isset($_POST["dateofphd"]) ? $_POST["dateofphd"] : ''; ?>" size="26" />
+                <td><label for="dateofphd" style="font-size:15px;">Date of Phd Completion</label>
+                    <div><input type="text" name="dateofphd" id="Dateofphd"  value="<?php echo isset($_POST["dateofphd"]) ? $_POST["dateofphd"] : ''; ?>" size="27" />
+                </div></td>    
             </tr>
-            <tr style="height:10px;"></tr>
+            <!--<tr style="height:10px;"></tr>-->
             <tr>
-            <td>ASSR Exam:</td><td>
-                    <select name="assrexam"> 
-                        <option value="">--------ASSR Exam-----</option>
+                <td><label for="assrexam" style="font-size:15px;">ASSR Exam</label>
+                    <div><select name="assrexam"> 
+                        <option value="">---------------- ASSR Exam Status -------------</option>
                         <option value="Passed">Passed</option>
                         <option value="Fail">Fail</option>
-                    </select>
+                    </select></div>
                 </td>
-                <td>Date of ASSR Exam:</td>
-                <td><input type="text" name="assrexamdate" id="Dateofassrexam" value="<?php echo isset($_POST["assrexamdate"]) ? $_POST["assrexamdate"] : ''; ?>"class="form-control" size="26" />
-                <td>Date of Birth: </td><td><input type="text" name="DateofBirth" value="<?php echo isset($_POST["DateofBirth"]) ? $_POST["DateofBirth"] : ''; ?>" id="Dateofbirth" size="25" required="required"></td>
-                <!--<td>Date of Retirement:</label></td>
-                <td><input type="text" name="dateofretirement" value="<?php echo isset($_POST["dateofretirement"]) ? $_POST["dateofretirement"] : ''; ?>" id="Dateofretir" class="form-control" size="26" /></td>-->
-                <td>Date of HGP:</label></td>
-                <td><input type="text" name="dateofhgp" id="Dateofhgp" value="<?php echo isset($_POST["dateofhgp"]) ? $_POST["dateofhgp"] : ''; ?>" class="form-control" size="26" /></td>
+                <td><label for="assrexamdate" style="font-size:15px;">Date of ASSR Exam</label>
+                    <div><input type="text" name="assrexamdate" id="Dateofassrexam" value="<?php echo isset($_POST["assrexamdate"]) ? $_POST["assrexamdate"] : ''; ?>"class="form-control" size="30" />
+                <div></td>    
+                
+                <td><label for="dateofhgp" style="font-size:15px;">Date of HGP</label>
+                    <div><input type="text" name="dateofhgp" id="Dateofhgp" value="<?php echo isset($_POST["dateofhgp"]) ? $_POST["dateofhgp"] : ''; ?>" class="form-control" size="28" />
+                </div></td>
+                
+                <td><label for="panno" style="font-size:15px;">Pan No</label>
+                    <div><input type="text" name="panno" id="txtPANNumber" MaxLength="10" value="<?php echo isset($_POST["panno"]) ? $_POST["panno"] : ''; ?>" placeholder="Pan No..." size="27" >
+                </div></td> 
+               
             </tr>
-            <tr style="height:10px;"></tr>
+            <!--<tr style="height:10px;"></tr>-->
             <tr>
-                <!--<td>Pan No:</td><td><input type="text" name="panno" MaxLength="10" value="<?php //echo isset($_POST["panno"]) ? $_POST["panno"] : ''; ?>" placeholder="Pan No..." size="25" onblur="ValidatePAN(this);"></td> -->
-                <td>Pan No:</td><td><input type="text" name="panno" id="txtPANNumber" MaxLength="10" value="<?php echo isset($_POST["panno"]) ? $_POST["panno"] : ''; ?>" placeholder="Pan No..." size="25" ></td> 
-                <td>Bank Name:</td><td><input type="text" name="bankname" class="keyup-characters" value="<?php echo isset($_POST["bankname"]) ? $_POST["bankname"] : ''; ?>" placeholder="Bank Name..." size="25" ></td>
-                <td>IFSC Code:</td><td><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo isset($_POST["ifsccode"]) ? $_POST["ifsccode"] : ''; ?>" placeholder="IFSC CODE..." size="25" ></td>
-                <td>Bank ACC No:</td><td><input type="text" name="bankacno" class="keyup-characters" value="<?php echo isset($_POST["bankacno"]) ? $_POST["bankacno"] : ''; ?>" placeholder="Bank Acc No..." size="25" required="required"></td>
+                <td><label for="bankname" style="font-size:15px;">Bank Name</label>
+                    <div><input type="text" name="bankname" class="keyup-characters" value="<?php echo isset($_POST["bankname"]) ? $_POST["bankname"] : ''; ?>" placeholder="Bank Name..." size="35" >
+                </div></td>
+                <td><label for="ifsccode" style="font-size:15px;">IFSC Code</label>
+                    <div><input type="text" name="ifsccode" class="keyup-characters" value="<?php echo isset($_POST["ifsccode"]) ? $_POST["ifsccode"] : ''; ?>" placeholder="IFSC CODE..." size="30" >
+                </div></td>
+                <td><label for="bankacno" style="font-size:15px;">Bank ACC No<font color='Red'>*</font></label>
+                   <div><input type="text" name="bankacno" class="keyup-characters" value="<?php echo isset($_POST["bankacno"]) ? $_POST["bankacno"] : ''; ?>" placeholder="Bank Acc No..." size="28" required="required">
+                </div></td>
+                <td><label for="Aadharrno" style="font-size:15px;">Aadhaar No<font color='Red'>*</font></label>
+                    <div><input type="text" name="Aadharrno" class="keyup-numeric" MaxLength="12" value="<?php echo isset($_POST["Aadharrno"]) ? $_POST["Aadharrno"] : ''; ?>" placeholder="Aadharr No..." size="27" required="required">
+                </div></td>
+                            
             </tr>
-            <tr style="height:10px;"></tr>
+            <!--<tr style="height:10px;"></tr>-->
             <tr>
                 
-                <td>Date of Retirement:</label></td>
-                <td><input type="text" name="dateofretirement" value="<?php echo isset($_POST["dateofretirement"]) ? $_POST["dateofretirement"] : ''; ?>" id="Dateofretir" class="form-control" size="26" /></td>
-                <!--<td><input type="text" name="dateofretirement" id="btnCalc" value="<?php //echo isset($_POST["dateofretirement"]) ? $_POST["dateofretirement"] : ''; ?>" id="Dateofretir" class="form-control" size="26" /></td>-->
-                <td>Aadhaar No:</td><td><input type="text" name="Aadharrno" class="keyup-numeric" MaxLength="12" value="<?php echo isset($_POST["Aadharrno"]) ? $_POST["Aadharrno"] : ''; ?>" placeholder="Aadharr No..." size="25" required="required"></td>
-                <td>E-Mail ID:</td><td><input type="text" name="emailid" class="keyup-email" value="<?php echo isset($_POST["emailid"]) ? $_POST["emailid"] : ''; ?>" placeholder="E-Mail ID..." size="25" required="required"></td>
-                <td>Phone/Mobile:</td><td><input type="text" name="phonemobileno" class="keyup-numeric" value="<?php echo isset($_POST["phonemobileno"]) ? $_POST["phonemobileno"] : ''; ?>" placeholder="Phone/Mobile No..." size="25" ></td>
-            </tr>
-            <tr style="height:10px;"></tr>
-            <tr>
-                <td>Mother Tongue:</td><td><input type="text" name="mothertongue"  class="keyup-characters" value="<?php echo isset($_POST["mothertongue"]) ? $_POST["mothertongue"] : ''; ?>" placeholder="Mother Tongue..." size="25" ></td> 
-                <td>Nativity:</td><td><input type="text" name="nativity" class="keyup-characters" value="<?php echo isset($_POST["nativity"]) ? $_POST["nativity"] : ''; ?>" placeholder="Nativity..." size="25" ></td>
-                
-                <td>Address:</td><td colspan="3"><input type="text" name="Address" class="keyup-characters" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>" placeholder="Address..." size="25" ></td>
-                
+                <td><label for="emailid" style="font-size:15px;">E-Mail ID<font color='Red'>*</font></label>
+                   <div><input type="text" name="emailid" class="keyup-email" value="<?php echo isset($_POST["emailid"]) ? $_POST["emailid"] : ''; ?>" placeholder="E-Mail ID..." size="35" required="required">
+                </div></td>
+                <td><label for="phonemobileno" style="font-size:15px;">Phone/Mobile</label>
+                    <div><input type="text" name="phonemobileno" class="keyup-numeric" value="<?php echo isset($_POST["phonemobileno"]) ? $_POST["phonemobileno"] : ''; ?>" placeholder="Phone/Mobile No..." size="30" >
+                </div></td>
+                <td><label for="mothertongue" style="font-size:15px;">Mother Tongue</label>
+                    <div><input type="text" name="mothertongue"  class="keyup-characters" value="<?php echo isset($_POST["mothertongue"]) ? $_POST["mothertongue"] : ''; ?>" placeholder="Mother Tongue..." size="28" >
+                </div></td> 
+                 <td><label for="nativity" style="font-size:15px;">Nativity</label>
+                    <div><input type="text" name="nativity" class="keyup-characters" value="<?php echo isset($_POST["nativity"]) ? $_POST["nativity"] : ''; ?>" placeholder="Nativity..." size="28" >
+                 </div></td>
             </tr>
             <tr>
+               
+                <td><label for="Address" style="font-size:15px;">Address</label>
+                    <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="5" cols="50" required pattern="[a-zA-Z0-9 ]+">Enter text here...</textarea>
+                </div></td><!--<td><input type="text" name="Address" class="keyup-characters" value="<//?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>" placeholder="Address..." size="25" >-->
+                <td colspan="3"><label for="userfile" style="font-size:15px;">Upload Photo</label>
+                   <div>
+                        <input type="file" name='userfile' accept="image/*" onchange="preview_image(event)">
+                        <!--<input type='file' name='userfile' size='20' class='upload-image' />-->
+                    <!--<img id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/>-->
+                    <img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.jpeg");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/></td>
+                </div>
+                </td>
+            </tr>
+            <tr style="background-color:#2a8fcf;text-align:left;">
             <td colspan="8">   
             <button name="staffprofile" >Submit</button>
             <input type="reset" name="Reset" value="Clear"/>
             </td>
            
             </tr>
-        </form>    
-        </table>   
-        </div>    
+            <!--</td></tr>-->
+            </div>
+            
+        <!-- </table>
+         </td></tr>   -->            
+        </form> 
+        </table> 
+        
         <div><?php $this->load->view('template/footer'); ?></div> 
-    </body>  
+    </body>
 </html>    

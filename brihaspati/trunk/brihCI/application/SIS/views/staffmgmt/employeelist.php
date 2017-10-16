@@ -1,4 +1,6 @@
-<!--@filename employeelist.php  @author Manorama Pal(palseema30@gmail.com) -->
+<!--@filename employeelist.php  @author Manorama Pal(palseema30@gmail.com) 
+    modification in gui - 16 OCT 2017 
+-->
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -40,7 +42,7 @@
                 ?>    
                   
         </div>
-         <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+        <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
             <thead>
                 <tr align="center">
                     <th>Sr.No</th>
@@ -68,12 +70,20 @@
                         <tr align="center">
                             <td><?php echo $serial_no++; ?></td>
                             <?php //$img=$record->emp_code;?>
-                            <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_code);?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
+                            <?php if(!empty($record->emp_photoname)):?>
+                            <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
+                            <?php else :?>
+                            <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.jpeg');?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
+                            <?php endif;?>
                             <td><?php echo $record->emp_name."<br/>" ."("."PF No:".$record->emp_code.")"; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name; ?></td>
                             <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->emp_uocid)->name; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->emp_dept_code)->dept_name; ?></td>
+                            <?php if(!empty($record->emp_schemeid)):?>
                             <td><?php echo $this->sismodel->get_listspfic1('scheme_department','sd_name','sd_id',$record->emp_schemeid)->sd_name; ?></td>
+                            <?php else : ?>
+                            <td></td>
+                            <?php endif;?>
                             <?php if(!empty($record->emp_specialisationid)) :?>
                             <td><?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$record->emp_specialisationid)->sub_name; ?></td>
                             <?php else : ?>

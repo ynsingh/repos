@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @name Staffmgmt.php
  * @author Manorama Pal (palseema30@gmail.com) Staff Profile,  Staff transfer and posting
+ * re-engineering in add profile and edit profile according to tanuvas structure - 16 OCT 2017  
  * @author Om Prakash (omprakashkgp@gmail.com) Staff Position , Staff Position Archive
  */
 
@@ -43,9 +44,20 @@ class Staffmgmt extends CI_Controller
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
-        $this->uoc=$this->lgnmodel->get_list('authorities');
+        //$this->uoc=$this->lgnmodel->get_list('authorities');
+        /*In future this code may be replace when either campusid added in the 
+         authority or authority added in campus.*/
+        $this->uoc=$this->lgnmodel->get_list('authority_map');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+        /**********************here we check that vacancy is available or not in staff position******************************************/
+        if(!empty($_POST['emppost'])){
+            $str = str_replace(" ", "",$_POST['emppost']);
+            if($str == 'Novacancy'){
+                $this->session->set_flashdata('err_message', 'No vacancy available for this post');
+                redirect('staffmgmt/staffprofile');
+            }
+        }
                     
         if(isset($_POST['staffprofile'])) {
       
@@ -95,6 +107,13 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('mothertongue','MotherTongue','trim|xss_clean');
             $this->form_validation->set_rules('nativity','Nativity','trim|xss_clean');
             $this->form_validation->set_rules('phonemobileno','Phone/Mobile','trim|xss_clean|numeric');
+            //some more  fields added on demand 
+            $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean|required');
+            $this->form_validation->set_rules('group','Group','trim|xss_clean|required');
+            $this->form_validation->set_rules('orderno','Order No','trim|xss_clean|required');
+            $this->form_validation->set_rules('phstatus','phstatus','trim|xss_clean');
+            $this->form_validation->set_rules('phdetail','phdetail','trim|xss_clean|alpha_numeric_spaces');
+            $this->form_validation->set_rules('Sabgroup','BloodGroup','trim|xss_clean');
             
             //Repopulate forms value
            /* if($_POST){
@@ -106,74 +125,95 @@ class Staffmgmt extends CI_Controller
 	
             */    
             if($this->form_validation->run() == FALSE){
-                $this->load->view('staffmgmt/staffprofile');
+                //$this->load->view('staffmgmt/staffprofile');
+                redirect('staffmgmt/staffprofile');
             }
             //if($this->form_validation->run()==TRUE){
             else{
                 $bank_ifsccode=$_POST['bankname'].",".$_POST['ifsccode'];
-            
+                $uocid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['uocontrol'])->authority_id;
+                //$ddoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['ddo'])->authority_id;
+                //-----------change employee photo name ----------------//
+                $newFileName = $_FILES['userfile']['name'];
+                $fileExt1 = explode('.', $newFileName);
+                $file_ext = end( $fileExt1);
+                $empcode=$_POST['empcode'];
+                $new_name = $empcode.".".$file_ext; 
+                //-------------------------------------------------------------
                 $data = array(
-                    'emp_code'                =>$_POST['empcode'],
+                    'emp_code'                  =>$_POST['empcode'],
                    // 'emp_pfno'                =>$_POST['emppfno'],
-                    'emp_name'                =>$_POST['empname'],
-                    'emp_specialisationid'    =>$_POST['specialisation'],
+                    'emp_name'                  =>$_POST['empname'],
+                    'emp_specialisationid'      =>$_POST['specialisation'],
                     
-                    'emp_scid'                =>$_POST['campus'],
-                    'emp_uocid'               =>$_POST['uocontrol'],
-                    'emp_dept_code'         =>$_POST['department'],
-                    'emp_schemeid'          =>$_POST['schemecode'],
-                    'emp_desig_code'        =>$_POST['designation'],
-                    'emp_post'              =>$_POST['emppost'],
+                    'emp_scid'                  =>$_POST['campus'],
+                    //'emp_uocid'               =>$_POST['uocontrol'],
+                    'emp_uocid'                 =>$uocid,
+                    'emp_dept_code'             =>$_POST['department'],
+                    'emp_schemeid'              =>$_POST['schemecode'],
+                    'emp_desig_code'            =>$_POST['designation'],
+                    'emp_post'                  =>$_POST['emppost'],
                     
-                    'emp_gender'            =>$_POST['gender'],
-                    'emp_community'         =>$_POST['community'],
-                    'emp_religion'          =>$_POST['religion'],
-                    'emp_caste'             =>$_POST['caste'],
+                    'emp_gender'                =>$_POST['gender'],
+                    'emp_community'             =>$_POST['community'],
+                    'emp_religion'              =>$_POST['religion'],
+                    'emp_caste'                 =>$_POST['caste'],
                   
                     
-                    'emp_type_code'         =>$_POST['emptype'],
-                    'emp_salary_grade'      =>$_POST['payband'],
-                    'emp_basic'             =>$_POST['basicpay'],
-                    'emp_emolution'         =>$_POST['emolution'],
-                    'emp_nhisidno'         =>$_POST['empnhisidno'],
-                    'emp_doj'               =>$_POST['dateofjoining'],
-                    'emp_pnp'               =>$_POST['pnp'],
-                    'emp_phd_status'        =>$_POST['phdstatus'],
+                    'emp_type_code'             =>$_POST['emptype'],
+                    'emp_salary_grade'          =>$_POST['payband'],
+                    'emp_basic'                 =>$_POST['basicpay'],
+                    'emp_emolution'             =>$_POST['emolution'],
+                    'emp_nhisidno'              =>$_POST['empnhisidno'],
+                    'emp_doj'                   =>$_POST['dateofjoining'],
+                    'emp_pnp'                   =>$_POST['pnp'],
+                    'emp_phd_status'            =>$_POST['phdstatus'],
                         
-                    'emp_dateofphd'         =>$_POST['dateofphd'],
-                    'emp_AssrExam_status'   =>$_POST['assrexam'],
-                    'emp_dateofAssrExam'    =>$_POST['assrexamdate'],
-                    'emp_dor'               =>$_POST['dateofretirement'],
-                    'emp_dateofHGP'           =>$_POST['dateofhgp'],
-                    'emp_pan_no'            =>$_POST['panno'],
+                    'emp_dateofphd'             =>$_POST['dateofphd'],
+                    'emp_AssrExam_status'       =>$_POST['assrexam'],
+                    'emp_dateofAssrExam'        =>$_POST['assrexamdate'],
+                    'emp_dor'                   =>$_POST['dateofretirement'],
+                    'emp_dateofHGP'             =>$_POST['dateofhgp'],
+                    'emp_pan_no'                =>$_POST['panno'],
                     
-                    'emp_aadhaar_no'        =>$_POST['Aadharrno'],
-                    'emp_bank_ifsc_code'    =>$bank_ifsccode,
-                    'emp_bank_accno'        =>$_POST['bankacno'],
-                    'emp_dob'               =>$_POST['DateofBirth'],
-                    'emp_father'            =>$_POST['fathername'],
-                    'emp_email'             =>$_POST['emailid'],
+                    'emp_aadhaar_no'            =>$_POST['Aadharrno'],
+                    'emp_bank_ifsc_code'        =>$bank_ifsccode,
+                    'emp_bank_accno'            =>$_POST['bankacno'],
+                    'emp_dob'                   =>$_POST['DateofBirth'],
+                    'emp_father'                =>$_POST['fathername'],
+                    'emp_email'                 =>$_POST['emailid'],
                     
-                   'emp_address'           =>$_POST['Address'],
-                    'emp_mothertongue'      =>$_POST['mothertongue'],
-                    'emp_citizen'           =>$_POST['nativity'],
-                    'emp_phone'             =>$_POST['phonemobileno']
-                                        
+                    'emp_address'               =>$_POST['Address'],
+                    'emp_mothertongue'          =>$_POST['mothertongue'],
+                    'emp_citizen'               =>$_POST['nativity'],
+                    'emp_phone'                 =>$_POST['phonemobileno'],
+                    //more field added
+                    'emp_worktype'              =>$_POST['workingtype'],
+                    'emp_uocuserid'             =>$_POST['uocontrol'],
+                    'emp_ddouserid'             =>$_POST['ddo'],
+                    'emp_ddoid'                 =>$_POST['ddo'],
+                    'emp_group'                 =>$_POST['group'],
+                    'emp_apporderno'            =>$_POST['orderno'],
+                    'emp_phstatus'              =>$_POST['phstatus'],
+                    'emp_phdetail'              =>$_POST['phdetail'],
+                    'emp_bloodgroup'            =>$_POST['Sabgroup'], 
+                    'emp_photoname'             =>$new_name  
+                        
                 );
+                
                 //generate 10 digit random password
                 $passwd=$this->commodel->randNum(10);
                 $isdupl= $this->lgnmodel->isduplicate('edrpuser','username',$_POST['emailid']);
                 if(!$isdupl){
-                    
                     /* generate the hash of password */
                     $password=md5($passwd);
                     $dataedrpusr = array(
                         'username'=> $_POST['emailid'],
                         'password'=> $password,
-			'email'=> $_POST['emailid'],
-			'componentreg'=> '*',
-			'mobile'=>$_POST['phonemobileno'],
-			'status'=>1,
+                        'email'=> $_POST['emailid'],
+                        'componentreg'=> '*',
+                        'mobile'=>$_POST['phonemobileno'],
+                        'status'=>1,
                         'category_type'=>'Employee',
                         'is_verified'=>1
                     );
@@ -183,14 +223,14 @@ class Staffmgmt extends CI_Controller
                     $this->logger->write_dblogmessage("insert", "data insert in edrpuser table." );
                     
                     /*get user id from login (edrpuser table)*/
-		    $getid= $this->lgnmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid']);
+                    $getid= $this->lgnmodel->get_listspfic1('edrpuser','id','username',$_POST['emailid']);
                     $usrid=$getid->id;
                     $datausrpf = array(
-			'userid'=> $usrid,
-			'firstname'=>$_POST['empname'],
-			'lang'=> 'english',
-			'mobile'=>$_POST['phonemobileno'],
-			'status'=>1
+                        'userid'=> $usrid,
+                        'firstname'=>$_POST['empname'],
+                        'lang'=> 'english',
+                        'mobile'=>$_POST['phonemobileno'],
+                        'status'=>1
                     );
                     /* insert record in userprofile table */
                     $this->lgnmodel->insertrec('userprofile', $datausrpf);
@@ -207,10 +247,9 @@ class Staffmgmt extends CI_Controller
                     $this->logger->write_dblogmessage("insert", "data insert in employee_master table." );
                     
                     $dataems = array(
-                        'ems_code'              =>$_POST['empcode'],
-                        'ems_working_type'      =>$_POST['workingtype']
-			
-                    );
+                       'ems_code'              =>$_POST['empcode'],
+                       'ems_working_type'      =>$_POST['workingtype']
+		    );
                     /* insert record in  employe_emaster_support */
                     $this->sismodel->insertrec('employee_master_support', $dataems);
                     $this->logger->write_logmessage("insert", "data insert in employee_master_support table.");
@@ -221,29 +260,30 @@ class Staffmgmt extends CI_Controller
                     $dataurt = array(
                         'userid'=> $usrid,
                         'roleid'=> 4,
-			'scid'  => $_POST['campus'],
+                        'scid'  => $_POST['campus'],
                         'deptid'=> $_POST['department'],
-			'usertype'=>"Employee"
-        	    );
+                        'usertype'=>"Employee"
+                    );
                     /* insert record in user_role_type */
                     $this->sismodel->insertrec('user_role_type',$dataurt);
                     $this->logger->write_logmessage("insert", "data insert in user_role_type table.");
                     $this->logger->write_dblogmessage("insert", "data insert in user_role_type table." );
-                    
+                    /*************************************updating the staff position table*****************/
+                   
+                    $this->updatestaffposition($_POST['campus'], $uocid, $_POST['department'],$_POST['schemecode'],$_POST['designation'],$_POST['workingtype'],$_POST['emptype']) ;
+                   
+                    /*************************************close updating the staff position table*****************/
                     /* upload photo*/
                     $msg='';
                     if(!empty($_FILES['userfile']['name'])){
                         $empcode=$_POST['empcode'];
-                        //$newFileName = $_FILES['userfile']['name'];
-                       // $fileExt1 = explode('.', $newFileName);
-                        //$file_ext = end( $fileExt1);
                         $new_name = $empcode; 
                                                 
                         $config = array(
                             'upload_path' =>  "./uploads/SIS/empphoto",
                             'allowed_types' => "gif|jpg|png|jpeg",
                             'overwrite' => TRUE,
-                            'max_size' => "10000", // Can be set to particular file size 
+                            'max_size' => "100000", // Can be set to particular file size 
                             'max_height' => "768",
                             'max_width' => "1024",
                             //'encrypt_name' => TRUE,
@@ -254,9 +294,9 @@ class Staffmgmt extends CI_Controller
                             $ferror='';
                             $error = array('error' => $this->upload->display_errors()); 
                             foreach ($error as $item => $value):
-                                $ferror = $ferror ."</br>". $item .":". $value;
+                               $ferror = $ferror ."</br>". $item .":". $value;
                             endforeach;
-                           // $ferror=str_replace("\r\n","",$ferror);
+                            // $ferror=str_replace("\r\n","",$ferror);
                             $simsg = "The permitted size of Photo is 100kb";
                             $ferror = $simsg.$ferror;
                             $this->logger->write_logmessage("uploadphoto","photo upload in sis error", $ferror);
@@ -296,8 +336,9 @@ class Staffmgmt extends CI_Controller
                 else{
                     $this->session->set_flashdata('err_message', 'User profile is already exist.');
                     redirect('staffmgmt/staffprofile');
-                    
+                  
                 }
+                   
             }//else valid true form
             
         }//post
@@ -340,7 +381,9 @@ class Staffmgmt extends CI_Controller
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
-        $this->uoc=$this->lgnmodel->get_list('authorities');
+        //$this->uoc=$this->lgnmodel->get_list('authorities');
+        $this->uoc=$this->lgnmodel->get_list('authority_map');
+        $this->ddo=$this->sismodel->get_list('ddo');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
         $empmaster_data=$this->sismodel->get_listrow('employee_master','emp_id', $id);
@@ -400,13 +443,38 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('nativity','Nativity','trim|xss_clean');
             $this->form_validation->set_rules('phonemobileno','Phone/Mobile','trim|xss_clean|numeric');
             
+            //some extra field 
+            $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean|required');
+            $this->form_validation->set_rules('group','Group','trim|xss_clean|required');
+            $this->form_validation->set_rules('orderno','Order No','trim|xss_clean|required');
+            $this->form_validation->set_rules('phstatus','phstatus','trim|xss_clean');
+            $this->form_validation->set_rules('phdetail','phdetail','trim|xss_clean|alpha_numeric');
+            $this->form_validation->set_rules('Sabgroup','BloodGroup','trim|xss_clean');
+            
             $bankname=$this->input->post('bankname');
-            $ifsccode= $this->input->post('ifsccode');       
-            $data = array(
+            $ifsccode= $this->input->post('ifsccode');
+            $uocuid= $this->input->post('uocontrol');  
+            $uocid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$uocuid)->authority_id;
+            //$ddoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['ddo'])->authority_id;
+            $empcode= $this->input->post('empcode');
+            if(!empty($_FILES['userfile']['name'])){
+            $newFileName = $_FILES['userfile']['name'];
+            $fileExt1 = explode('.', $newFileName);
+            $file_ext = end( $fileExt1);
+           // $empcode=$_POST['empcode'];
+            $new_name = $empcode.".".$file_ext; 
+            }
+            else{
+                $new_name=$this->sismodel->get_listspfic1('employee_master','emp_photoname','emp_id',$id)->emp_photoname;
+            }
                 /*'emp_name'                       => $this->input->post('empname'),*/
+               // 'emp_bank_ifsc_code'             => $this->input->post('bankname'),
+                /*----extra field added---------------------------------------------*/
+            $data = array(
                 'emp_specialisationid'           => $this->input->post('specialisation'),
                 'emp_scid'                       => $this->input->post('campus'),
-                'emp_uocid'                      => $this->input->post('uocontrol'),
+                'emp_uocuserid'                  => $this->input->post('uocontrol'),
+                'emp_uocid'                      => $uocid,
                 'emp_dept_code'                  => $this->input->post('department'),
                 'emp_schemeid'                   => $this->input->post('schemecode'),
                 'emp_desig_code'                 => $this->input->post('designation'),
@@ -437,7 +505,6 @@ class Staffmgmt extends CI_Controller
                 'emp_pan_no'                     => $this->input->post('panno'),
                 
                 'emp_aadhaar_no'                 => $this->input->post('Aadharrno'),
-               // 'emp_bank_ifsc_code'             => $this->input->post('bankname'),
                 'emp_bank_ifsc_code'             => $bankname.','.$ifsccode,
                 'emp_dob'                        => $this->input->post('DateofBirth'),
                 'emp_father'                     => $this->input->post('fathername'),
@@ -446,10 +513,18 @@ class Staffmgmt extends CI_Controller
                 'emp_mothertongue'               => $this->input->post('mothertongue'),
                 'emp_citizen'                    => $this->input->post('nativity'),
                 'emp_phone'                      => $this->input->post('phonemobileno'),
-                'emp_name'                        => $this->input->post('empname'),
-                              
-                               
+                'emp_name'                       => $this->input->post('empname'),
+                
+                'emp_ddouserid'                  => $this->input->post('ddo'),
+                'emp_ddoid'                      => $this->input->post('ddo'),
+                'emp_group'                      => $this->input->post('group'),
+                'emp_apporderno'                 => $this->input->post('orderno'),
+                'emp_phstatus'                   => $this->input->post('phstatus'),
+                'emp_phdetail'                   => $this->input->post('phdetail'),
+                'emp_bloodgroup'                 => $this->input->post('Sabgroup'),
+                'emp_photoname'                  => $new_name  
             );
+//print_r($data);
             /* upload photo*/
             $msg='';
             if(!empty($_FILES['userfile']['name'])){
@@ -463,7 +538,7 @@ class Staffmgmt extends CI_Controller
                     'upload_path' =>  "./uploads/SIS/empphoto",
                     'allowed_types' => "gif|jpg|png|jpeg",
                     'overwrite' => TRUE,
-                    'max_size' => "10000", // Can be set to particular file size 
+                    'max_size' => "100000", // Can be set to particular file size 
                     'max_height' => "768",
                     'max_width' => "1024",
                             //'encrypt_name' => TRUE,
@@ -490,6 +565,7 @@ class Staffmgmt extends CI_Controller
                     $msgphoto=" and photo" ;
                 } 
             }//check for empphoto
+           
             $upempdata_flag=$this->sismodel->updaterec('employee_master', $data,'emp_id',$id);
             if(!upempdata_flag){
                 $this->logger->write_logmessage("error","Error in update staff profile ", "Error in staff profile record update" );
@@ -1055,5 +1131,217 @@ class Staffmgmt extends CI_Controller
         $this->load->view('staffmgmt/editstaffposition', $data);
    }
   //===================End of Staff Position ============================
-
+   
+   /* This function has been created for get list of uco on the basis of campus */
+    /*In future this code may be replace when either campusid added in the 
+                authority or authority added in campus.*/
+    /*
+    public function getuoclist(){
+        $scid = $this->input->post('campusname');
+        $auco_data = $this->sismodel->get_listrow('cudsdmap','cudsd_scid',$scid);
+        $aucolist = $auco_data->result();
+        $uco_select_box ='';
+        $uco_select_box.='<option value="">-------University Officer Control--------';
+        foreach($aucolist as $aucoid){
+            //echo json_encode("auolist=2====".$aucoid->cudsd_auoid);
+            $auouserid=$this->lgnmodel->get_listspfic1('authority_map', 'user_id', 'authority_id',$aucoid->cudsd_auoid)->user_id;
+            //echo json_encode("userid====".$auouserid);
+            $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$auouserid)->firstname;
+            $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$auouserid)->lastname;
+            $auoflname=$auofname." ".$auolname;
+            $uco_select_box.='<option value='.$aucoid->cudsd_auoid.'>'.$auoflname.' ';
+        } 
+        echo json_encode($uco_select_box);
+    }
+    */
+   
+    /* This function has been created for get list of schemes on the basis of  selected campus and uco */
+     
+    public function getnewdeptlist(){
+        $combid = $this->input->post('campuoc');
+        echo json_encode("combination===".$combid);
+        $parts = explode(',',$combid); 
+        echo json_encode("this is test===".$parts[0].",".$parts[1]);
+        $sccode=$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id',$parts[0])->sc_code;
+        //$datawh=array('cudsd_scid' => $parts[0],'cudsd_auoid' => $parts[1]);
+        $datawh=array('dept_uoid' => $parts[1],'dept_sccode' => $sccode);
+        //$comb_data = $this->sismodel->get_listspficemore('cudsdmap','cudsd_deptid',$datawh);
+        $comb_data = $this->commodel->get_listspficemore('Department','dept_id,dept_name',$datawh);
+        //$comblist = $comb_data->result();
+        $dept_select_box ='';
+        $dept_select_box.='<option value="">-------Select Department--------';
+        foreach($comb_data as $combdataid){
+           // $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$combdataid->cudsd_deptid)->dept_name;
+            //$dept_select_box.='<option value='.$combdataid->cudsd_deptid.'>'.$deptname.' ';
+            $dept_select_box.='<option value='.$combdataid->dept_id.'>'.$combdataid->dept_name.' ';
+            
+        }
+        echo json_encode($dept_select_box);
+         
+    }
+     /* This function has been created for get list of schemes on the basis of  selected campus, uco and department */
+    public function getnewdeptschemelist(){
+        //$campuocdept = $this->input->post('combdept');
+        //$parts = explode(',',$campuocdept);
+        $campdept = $this->input->post('combdept');
+        //$datawh=array('cudsd_scid' => $parts[0],'cudsd_auoid' => $parts[1],'cudsd_deptid' => $parts[2]);
+        $datawh=array('sd_deptid' => $campdept);
+        $comb_data = $this->sismodel->get_listspficemore('scheme_department','sd_id,sd_name',$datawh);
+        $schm_select_box ='';
+        $schm_select_box.='<option value="">-------Select Scheme Name--------';
+        foreach($comb_data as $combdataid){
+            //$schmname=$this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id',$aucoid->cudsd_schid)->sd_name;
+            $schm_select_box.='<option value='.$combdataid->sd_id.'>'.$combdataid->sd_name.' ';
+            
+        }
+        echo json_encode($schm_select_box);
+       // $this->depmodel->get_sschemelist($deptid);
+    }
+    /* This function has been created for get list of DDO on the basis of  selected campus, uco,department,schemes */
+    public function getddolist(){
+        //$campuocdeptschm = $this->input->post('combfour');
+        $campdeptschm = $this->input->post('combthree');
+       //$parts = explode(',',$campuocdeptschm);
+        $parts = explode(',',$campdeptschm);
+        //$datawh=array('cudsd_scid' => $parts[0],'cudsd_auoid' => $parts[1],'cudsd_deptid' => $parts[2],'cudsd_schid' => $parts[3]);
+        $datawh=array('ddo_scid' => $parts[0],'ddo_deptid' => $parts[1],'ddo_schid' => $parts[2]);
+        $comb_data = $this->sismodel->get_listspficemore('ddo','ddo_id,ddo_name,ddo_code',$datawh);
+        $ddo_select_box ='';
+        $ddo_select_box.='<option value="">-------Drawing and Disbursing Officer--------';
+        foreach($comb_data as $combdataid){
+            //$ddouserid=$this->lgnmodel->get_listspfic1('authority_map', 'user_id', 'authority_id',$combdataid->cudsd_ddoid)->user_id;
+            //$ddofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$ddouserid)->firstname;
+            //$ddolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$ddouserid)->lastname;
+            //$ddoflname=$ddofname." ".$ddolname;
+            //$ddo_select_box.='<option value='.$combdataid->cudsd_ddoid.'>'.$ddoflname.' ';
+            $ddo_select_box.='<option value='.$combdataid->ddo_id.'>'.$combdataid->ddo_name. '(' .$combdataid->ddo_code. ')'.' ';
+            
+        }
+        echo json_encode($ddo_select_box);
+    }
+    /* This function has been created for get list of Designation on the basis of  selected Group */
+    public function getdesiglist(){
+        $groups = $this->input->post('group');
+        //echo json_encode("group=incontroller=".$groups);
+        $datawh=array('desig_group' => $groups);
+        $grp_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+        //echo json_encode("grouplist==".$grp_data);
+        $desig_select_box ='';
+        $desig_select_box.='<option value="">----------Select Designation-----------';
+        foreach($grp_data as $grprecord){
+           // echo json_encode("grouplist==".$grprecord->desig_name);
+            $desig_select_box.='<option value='.$grprecord->desig_id.'>'.$grprecord->desig_name.'('. $grprecord->desig_code .')'.' ';
+            
+        }
+        echo json_encode($desig_select_box);
+    }
+    /* This function has been created for get the vacant shown against position */
+    public function getemppostposition(){
+        $combval = $this->input->post('combsix');
+        $parts = explode(',',$combval);
+        $uoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$parts[1])->authority_id;
+        $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $uoid, 'sp_dept' => $parts[2],
+                        'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_tnt' => $parts[5]);
+        
+        $emppost_data = $this->sismodel->get_listspficemore('staff_position', 'sp_emppost,sp_type',$datawh);
+        $emptype_select_box ='';
+        $emptype_select_box.='<option value="">----------Select Employee Type-----------';
+        if(!empty($emppost_data)){ 
+                      
+            foreach($emppost_data as $empdata){
+                $emppost_name=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$empdata->sp_emppost)->desig_name;
+                if($empdata->sp_type == 'Permanent'){
+                    $pvacancy=$this->sismodel->get_listspfic1('staff_position', 'sp_vpermanenet', 'sp_type',$empdata->sp_type)->sp_vpermanenet;
+                    if($pvacancy>0){                                               
+                        //$emptype_select_box.='<option value='.'Permanent'.'>'.'Permanent'.' ';
+                        $emptype_select_box.='<option value='.$empdata->sp_type.'>'.$empdata->sp_type.' ';
+                    }
+                }    
+                if($empdata->sp_type == 'Temporary'){
+                    $tempvacancy=$this->sismodel->get_listspfic1('staff_position', 'sp_vtemporary', 'sp_type',$empdata->sp_type)->sp_vtemporary;
+                    if($tempvacancy>0){
+                        //$emptype_select_box.='<option value='.'Temporary'.'>'.'Temporary'.' ';
+                        $emptype_select_box.='<option value='.$empdata->sp_type.'>'.$empdata->sp_type.' ';
+                       
+                
+                    }
+                /* if($emppost_data->sp_vtemporary >0 && $emppost_data->sp_vpermanenet >0)
+                {
+                    $emptype_select_box.='<option value='.'Permanent'.'>'.'Permanent'.' '; 
+                    $emptype_select_box.='<option value='.'Temporary'.'>'.'Temporary'.' ';
+                }  */  
+                }    
+              
+            }
+            //echo json_encode($emppost_name.",".$emptype_select_box);
+        }    
+        else{
+            
+            $emppost_name='No vacancy';
+            
+        }
+        echo json_encode($emppost_name.",".$emptype_select_box);
+                        
+    }
+    
+    /*************************************updating the staff position table*****************/
+    public function updatestaffposition($campus,$uocid,$deptid,$schmid,$emppost,$worktype,$emptype){
+        $datawh=array('sp_campusid' => $campus,'sp_uo' => $uocid, 'sp_dept' => $deptid,
+            'sp_schemecode'=> $schmid,'sp_emppost' => $emppost, 'sp_tnt' => $worktype,'sp_type' =>$emptype);
+        $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_id,sp_type,sp_position,sp_vacant,sp_pospermanent,sp_postemporary,sp_vpermanenet,sp_vtemporary',$datawh);
+        if(!empty($emppost_data)){
+            $update_data = array();
+            $upempdata_flag;
+            foreach($emppost_data as $empdata){
+                
+                if($empdata->sp_type == 'Permanent'){
+                    
+                    $position = $empdata->sp_position+1;
+                    $vacant   = $empdata->sp_vacant-1;
+                    $pospermanent=$empdata->sp_pospermanent+1;
+                    $vpermanenet =$empdata->sp_vpermanenet-1;
+                    $update_data = array(
+                        'sp_position'=>$position,
+                        'sp_vacant'=>$vacant,
+                        'sp_pospermanent'=>$pospermanent,
+                        'sp_vpermanenet'=>$vpermanenet,
+                        'sp_org_id'=> '1'
+                    );
+                    //echo "vacacny=per==".$position.$vacant.$pospermanent.$vpermanenet;
+                    $upempdata_flag=$this->sismodel->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
+                }
+                if($empdata->sp_type == 'Temporary'){
+                    
+                    $position = $empdata->sp_position+1;
+                    $vacant   = $empdata->sp_vacant-1;
+                    $postemporary =$empdata->sp_postemporary+1;
+                    $vtemporary = $empdata->sp_vtemporary-1;
+                    $update_data = array(
+                       'sp_position'=>$position,
+                       'sp_vacant'=>$vacant,
+                       'sp_postemporary'=>$postemporary,
+                       'sp_vtemporary'=>$vtemporary,
+                       'sp_org_id'=> '1'
+                    );
+                   // echo "vacacny tempo===".$position.$vacant.$postemporary.$vtemporary;
+                    $upempdata_flag=$this->sismodel->updaterec('staff_position', $update_data,'sp_id',$empdata->sp_id);
+                }
+               
+            } //foreach   
+            if(!upempdata_flag){
+                $this->logger->write_logmessage("error","Error in update staff position ", "Error in staff position record update" );
+                $this->logger->write_dblogmessage("error","Error in update staff position", "Error in staff position record update");
+            
+            }
+            else{
+                $this->logger->write_logmessage("update","update staff position ", "staff position record updated successfully ");
+                $this->logger->write_dblogmessage("update","staff position", "staff position record updated successfully");
+            
+            }
+           
+        }  //ifempty  
+        
+    }//function close
+    /***********************************close of staff position*********************************************/         
+       
 }    
