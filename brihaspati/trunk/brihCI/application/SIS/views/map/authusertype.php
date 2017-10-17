@@ -120,8 +120,16 @@ $("#StartDate").datepicker("option","maxDate", selected)
                         <td> User Name: </td><td>
                         <select name="edrpuser" class="my_dropdown" style="width:100%;">
                         <option value=""disabled selected>---------Select Name ---------</option>                        
-                        <?php foreach($this->result as $datas): ?>
-                        <option value="<?php echo $datas->id; ?>"><?php echo $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $datas->id)->firstname .' '. $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $datas->id)->lastname; ?></option>
+                        <?php foreach($this->result as $datas): 
+				$fnme=$this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $datas->id)->firstname ;
+				$lmne=$this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $datas->id)->lastname;
+				$nme=$fnme." " .$lmne;
+				if(empty($nme)){
+				$nme =$datas->username;
+				}
+				
+			?>
+                        <option value="<?php echo $datas->id; ?>"><?php echo $nme; ?></option>
                         <?php endforeach; ?>
                         </select>
                         </td></tr>

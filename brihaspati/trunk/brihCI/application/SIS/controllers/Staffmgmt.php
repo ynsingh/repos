@@ -44,10 +44,10 @@ class Staffmgmt extends CI_Controller
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
-        //$this->uoc=$this->lgnmodel->get_list('authorities');
+        $this->uoc=$this->lgnmodel->get_list('authorities');
         /*In future this code may be replace when either campusid added in the 
          authority or authority added in campus.*/
-        $this->uoc=$this->lgnmodel->get_list('authority_map');
+        //$this->uoc=$this->lgnmodel->get_list('authority_map');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
         /**********************here we check that vacancy is available or not in staff position******************************************/
@@ -1239,8 +1239,8 @@ class Staffmgmt extends CI_Controller
     public function getemppostposition(){
         $combval = $this->input->post('combsix');
         $parts = explode(',',$combval);
-        $uoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$parts[1])->authority_id;
-        $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $uoid, 'sp_dept' => $parts[2],
+      //  $uoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$parts[1])->authority_id;
+        $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
                         'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_tnt' => $parts[5]);
         
         $emppost_data = $this->sismodel->get_listspficemore('staff_position', 'sp_emppost,sp_type',$datawh);

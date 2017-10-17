@@ -463,12 +463,13 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <option selected="selected" disabled selected>--------University Officer Control -----</option>
                        
                         <?php foreach($this->uoc as $ucodata): ?>	
-                            <option value="<?php echo $ucodata->user_id; ?>"><?php
+                            <option value="<?php echo $ucodata->id; ?>"><?php
                                 //echo $this->lgnmodel->get_listspfic1('','sc_name','sc_id',$record->emp_scid)->sc_name;
-                                $authiame=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$ucodata->authority_id)->name;
-                                $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$ucodata->user_id)->firstname;
-                                $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$ucodata->user_id)->lastname;
-                                echo $auofname." ".$auolname."( ".$authiame." )";
+                //                $authiame=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$ucodata->authority_id)->name;
+                  //              $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$ucodata->user_id)->firstname;
+                    //            $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$ucodata->user_id)->lastname;
+                      //          echo $auofname." ".$auolname."( ".$authiame." )";
+				echo $ucodata->name;
                             ?>
                             </option> 
  			<?php endforeach; ?>
