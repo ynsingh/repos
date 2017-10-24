@@ -1182,7 +1182,7 @@ class Setup2 extends CI_Controller
         /* Form fields */
 
 	$data['code'] = array(
-                 'code' => 'code',
+                 'name' => 'code',
                  'id' => 'code',
                  'maxlength' => '50',
                  'size' => '40',
