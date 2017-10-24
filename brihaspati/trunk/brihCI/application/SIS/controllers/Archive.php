@@ -3,7 +3,7 @@
 /* 
  * @name Archive.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
- * @author Om Prakash (omprakashkgp@gmail.com) Staff Position archive, DDO Archive
+ * @author Om Prakash (omprakashkgp@gmail.com) Staff Position archive, DDO Archive, map sc with uo archive
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -78,6 +78,13 @@ class Archive extends CI_Controller
 	        $this->logger->write_logmessage("view"," View ddo archive ", "DDO archive details...");
         	$this->logger->write_dblogmessage("view"," View ddo archive", "DDo archive details...");
         	$this->load->view('archive/listddoa');
+  	}
+  	/*this function has been created for display the map sc with uo archive records */
+  	public function viewscuoa(){
+        	$this->result = $this->sismodel->get_list('map_sc_uo_archive');
+	        $this->logger->write_logmessage("view"," View map sc with uo archive ", "Mapping sc with uo archive details...");
+        	$this->logger->write_dblogmessage("view"," View map sc with uo archive", "Mapping sc with uo archive details...");
+        	$this->load->view('archive/viewscuoa');
   	}
 }
 

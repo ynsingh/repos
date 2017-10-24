@@ -4,7 +4,7 @@
  * @name Map.php
  * @author Nagendra Kumar Singh(Nksinghiitk@gmail.com)
  * @author Manorama Pal(palseema30@gmail.com)
- * @author Om Prakash (omprakashkgp@gmail.com) Map Subject and Paper with Teacher,  Map authority and user  
+ * @author Om Prakash (omprakashkgp@gmail.com) Map Subject and Paper with Teacher,  Map authority and user, Map SC with UO  
  * @author Kishore kr Shukla (kishore.shukla@gmail.com) Map user with Role.
  * @author Neha Khullar (nehukhullar@gmail.com) Map authority and user 
  */
@@ -1650,7 +1650,174 @@ public function schemedept(){
         redirect('map/editauthuser');
     }
 
+//################################################ Map Study Center and UO ####################################
 
+  /*
+   * this function has been created for display the list of  record.
+   */
+   public function viewscuo(){
+        $this->result = $this->sismodel->get_list('map_sc_uo');
+        $this->logger->write_logmessage("view"," View Study Center and UO ", "Map Study Center and UO record display successfully." );
+        $this->logger->write_dblogmessage("view"," View Study Center and UO ", "Map Study Center and UO record display successfully." );
+        $this->load->view('map/viewscuo');
+   }
+
+ /*
+  * this function has been created for add mapping of study center with UO record.
+  */
+   public function studycenteruo(){
+        $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
+        $this->authresult = $this->loginmodel->get_listspfic2('authorities','id', 'name');
+	
+       if(isset($_POST['studycenteruo'])) {
+            $this->form_validation->set_rules('campusname','Campus Name','xss_clean|required');
+            $this->form_validation->set_rules('authority','Authority Name','xss_clean|required');
+
+        if($this->form_validation->run()==TRUE){
+
+           $campusid = $this->input->post("campusname");
+           $uoid = $this->input->post("authority");
+           $campusname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$campusid)->sc_name;
+           $uoname = $this->loginmodel->get_listspfic1('authorities', 'name', 'id', $uoid)->name;
+	  
+        $datascuo = array(
+        'scuo_scid'=>$_POST['campusname'],
+        'scuo_uoid'=>$_POST['authority']
+        );
+
+     	$scuodatadup = $this->sismodel->isduplicatemore('map_sc_uo', $datascuo);
+	
+        if($scuodatadup == 1 ){
+
+		$this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Campus Name' = $campusname  , 'UO Name' = $uoname .");
+                redirect('map/studycenteruo');
+		return;
+	}
+        else{	
+      
+        $scuoflag = $this->sismodel->insertrec('map_sc_uo', $datascuo) ;
+        if(!$scuoflag)
+          {
+        	$this->logger->write_logmessage("insert"," Error in adding Study Center and UO ", " Study Center and UO data insert error .'Campus Name' = $campusname  , 'UO Name' = $uoname ");
+                $this->logger->write_dblogmessage("insert"," Error in adding subject paper teacher ", " Study Center and UO data insert error .'Campus Name' = $campusname  , 'UO Name' = $uoname ");
+                $this->session->set_flashdata('err_message','Error in adding subject paper teacher - ' . $uoname . '.', 'error');
+                $this->load->view('map/studycenteruo');
+	  }
+          else{
+                $this->logger->write_logmessage("insert"," map Study Center and UO ", "map Study Center and UO record added successfully. 'Campus Name' = $campusname  , 'UO Name' = $uoname " );
+                $this->logger->write_dblogmessage("insert"," map Study Center and UO ", "map Study Center and UO record added successfully. 'Campus Name' = $campusname  , 'UO Name' = $uoname " );
+		$this->session->set_flashdata("success", "Record added successfully...'Campus Name' = $campusname  , 'UO Name' = $uoname ");
+                redirect('map/viewscuo');
+
+	    }   	
+          }
+	 }
+	}
+	$this->load->view('map/studycenteruo');
+   }
+ /*Edit record  */
+ public function updatescuo($scuo_id){
+        $this->authorty = $this->loginmodel->get_list('authorities', 'id', 'name');
+        $scuo_data_q=$this->sismodel->get_listrow('map_sc_uo','scuo_id', $scuo_id);
+        if ($scuo_data_q->num_rows() < 1)
+        {
+           redirect('map/updatescuo');
+        }
+        $editscuo_data = $scuo_data_q->row();
+
+        /* Form fields */
+
+        $data['campusname']= array(
+            'name' => 'campusname',
+            'id' => 'campusname',
+            'maxlength' => '26',
+            'size' => '26',
+            'value' => $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editscuo_data->scuo_scid)->sc_name,
+	    'readonly' => 'readonly',	
+        );
+
+        $data['authority']= array(
+            'name' => 'authority',
+            'id' => 'authority',
+            'maxlength' => '26',
+            'size' => '26',
+            'value' => $this->loginmodel->get_listspfic1('authorities', 'name', 'id', $editscuo_data->scuo_uoid)->name,
+        );
+
+        $data['scuo_id'] = $scuo_id;
+
+            $this->form_validation->set_rules('campusname','Campus Name','xss_clean|required');
+            $this->form_validation->set_rules('authority','Authority Name','xss_clean|required');
+
+        if ($_POST)
+        {   
+            $data['campusname']['value'] = $this->input->post('campusname', TRUE);
+            $data['authority']['value'] = $this->input->post('authority', TRUE);
+        }
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('map/updatescuo', $data);
+            return;
+        }
+      else
+        {
+            $data_campusname = $this->input->post('campusname', TRUE);
+            $data_uoid = $this->input->post('authority', TRUE);
+	    $data_uoname = $this->loginmodel->get_listspfic1('authorities', 'name', 'id', $data_uoid)->name;
+            $data_scuoid = $scuo_id;
+            $logmessage = "";
+            if($editscuo_data->scuo_scid != $data_campusname)
+                $logmessage = "Campus Name " .$this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editscuo_data->scuo_scid)->sc_name. " changed by " .$data_campusname ;
+            if($editscuo_data->scuo_uoid != $data_uoname)
+                $logmessage = "UO Name " .$this->loginmodel->get_listspfic1('authorities', 'name', 'id', $editscuo_data->scuo_uoid)->name. " changed by " .$data_uoname ;
+
+           $updatea_data = array(
+                'scuoa_scuoid'=>$scuo_id,
+                'scuoa_scid'=> $editscuo_data->scuo_scid,
+                'scuoa_uoid'=> $editscuo_data->scuo_uoid,
+                'scuoa_archuserid'=>$this->session->userdata('id_user'),
+                'scuoa_archdate'=>date('y-m-d')
+            );
+         $scuoflag=$this->sismodel->insertrec('map_sc_uo_archive', $updatea_data);
+         if(!$scuoflag)
+         {
+              $this->logger->write_dblogmessage("error","Error in insert map sc with uo archive ", "Error in  map sc with uo archive record insert" .$logmessage );
+         }else{
+              $this->logger->write_dblogmessage("insert","Insert map sc with uo archive", "Record inserted in archive successfully.." .$logmessage );
+         }
+
+           $update_data = array(
+               'scuo_scid' => $this->commodel->get_listspfic1('study_center', 'sc_id', 'sc_name', $data_campusname)->sc_id,
+               'scuo_uoid' => $data_uoid
+            );
+
+        $scuodatadup = $this->sismodel->isduplicatemore('map_sc_uo', $update_data);
+        if($scuodatadup == 1 ){
+                $this->session->set_flashdata("err_message", "Record is already exist with this combination. Campus Name = '$data_campusname' , UO Name =' $data_uoname' ");
+                redirect('map/viewscuo/');
+                return;
+            }
+        else{
+
+           $scuoflag=$this->sismodel->updaterec('map_sc_uo', $update_data, 'scuo_id', $scuo_id);
+           if(!$scuoflag)
+            {
+                $this->logger->write_logmessage("error","Error in updating ", "Error in Map SC with UO record updating. $logmessage . " );
+                $this->logger->write_dblogmessage("error","Error in updating ", "Error in Map SC, with UO record updating. $logmessage ." );
+                $this->session->set_flashdata('err_message','Error in updating  ' . $logmessage . '.', 'error');
+                $this->load->view('map/updatescuo', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit mapping Study Center with UO", "mapping Study Center with UO record updated successfully. $logmessage . " );
+                $this->logger->write_dblogmessage("update","Edit mapping SC with UO", "mapping SC with UO record updated successfully. $logmessage ." );
+                $this->session->set_flashdata('success',"Record updated successfully. The  $logmessage ." );
+                redirect('map/viewscuo/');
+                }
+         }//else
+ 	$this->load->view('map/updatescuo');
+    }
+  }
+//############################################# End of Map Study Center and UO #################################
 
 }
     
