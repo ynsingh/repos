@@ -20,7 +20,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 autoclose: true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-37:c+30'
+                yearRange: 'c-70:c+30'
                        
             });
             $("#Dateofphd").datepicker({
@@ -29,7 +29,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 autoclose: true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-37:c+30'
+                yearRange: 'c-70:c+30'
                
             });
            
@@ -55,7 +55,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 autoclose: true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-37:c+30'
+                yearRange: 'c-70:c+30'
                
             });
             $("#Dateofhgp").datepicker({
@@ -64,7 +64,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 autoclose: true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-37:c+30'
+                yearRange: 'c-70:c+30'
                
             });
             $("#Dateofbirth").datepicker({
@@ -73,7 +73,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 autoclose: true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-37:c+30'
+                yearRange: 'c-70:c+30'
                
             });
             
@@ -81,7 +81,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             
             /*
             In future this code may be replace when either campusid added in the 
-            autority or authority added in campus.
+            autority or authority added in campus.*/
             
             $('#camp').on('change',function(){
                 var sc_code = $(this).val();
@@ -93,11 +93,12 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 else{
                     $('#uocid').prop('disabled',false);
                     $.ajax({
-                        url: "<//?php echo base_url();?>sisindex.php/staffmgmt/getuoclist",
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getuoclist",
                         type: "POST",
                         data: {"campusname" : sc_code},
                         dataType:"html",
                         success:function(data){
+                            //alert("data==1="+data);
                             $('#uocid').html(data.replace(/^"|"$/g, ''));
                                                  
                         },
@@ -109,8 +110,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     });
                 }
             }); 
-            */
-            /*****end of uoc***************************/
+            
+            /*****end of uoc***************************************************************************/
             /************************select department on basis of uoc and campus*******************/
                        
              $('#uocid').on('change',function(){
@@ -130,7 +131,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         data: {"campuoc" : combid},
                         dataType:"html",
                         success:function(data){
-                            //alert("data==1="+data);
+                            
                             $('#scid').html(data.replace(/^"|"$/g, ''));
                        
                         },
@@ -289,38 +290,37 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 var dept_id = $('#scid').val();
                 var schm_id = $('#schmid').val();
                 var desig_id = $('#desigid').val();
+                var grp_id =  $('#grpid').val();
                 var wrktype_id = $('#worktypeid').val();
-                var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+desig_id+","+wrktype_id;
+                var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+desig_id+","+grp_id+","+wrktype_id;
                 //alert("comin script===bsix===="+cudshmdesigwrktype);
                 //var grp_id = $(this).val();
                 if(desig_id == ''){
-                    $('#emppost').prop('disabled',true);
-                    $('#emptypeid').prop('disabled',true);
+                    $('#emppostid').prop('disabled',true);
+                   // $('#emptypeid').prop('disabled',true);
                 }
                 else{
              
-                    $('#emppost').prop('disabled',false);
-                    $('#emptypeid').prop('disabled',false);
+                    $('#emppostid').prop('disabled',false);
+                   // $('#emptypeid').prop('disabled',false);
                     $.ajax({
                         url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemppostposition",
                         type: "POST",
                         data: {"combsix" : cudshmdesigwrktype},
                         dataType:"html",
                         success:function(data){
-                            //alert("seemas"+data);
+                           // alert("data===in script="+data);
                             var empdata=data;
-                            var empinput=empdata.split(',');
-                            //alert("empinput=split===="+empinput[0]);
-                            var val1 = empinput[0].replace(/\"/g,"");
-                            $('#emppost').val(val1.replace(/^"|"$/g, ''));
-                            var val2=$('#emppost').val();
-                            if(val2.trim() === "No vacancy"){
-                                alert(" Sorry, No vacancy available for this post");
+                            var val1 = empdata.replace(/\"/g,"");
+                            $('#emppostid').html(data.replace(/^"|"$/g, ''));
+                            if(val1.trim() === "No vacancy"){
+                               // var strmess = new String("Sorry, No vacancy available for this post");
+                                alert('Sorry, No vacancy available for this post');
+                               // alert(strmess.fontcolor( "red" ));
                                $('#my_id').submit();
                                    
                             }   
-                            $('#emptypeid').html(empinput[1].replace(/^"|"$/g, ''));
-                       
+                                               
                         },
                         error:function(data){
                             //alert("data in error part==="+data);
@@ -333,7 +333,47 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             }); 
              
             /************************closer for shown against the post*****************************************/
+            
+            /************************Employee type******************************************************************/
+            
+             $('#emppostid').on('change',function(){
+                var sc_code = $('#camp').val();
+                var uoc_id = $('#uocid').val();
+                var dept_id = $('#scid').val();
+                var schm_id = $('#schmid').val();
+                var empost_id = $('#emppostid').val();
+                var wrktype_id = $('#worktypeid').val();
+                var cudshmpostwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+empost_id+","+wrktype_id;
+               // alert("comin script===bsix===="+cudshmpostwrktype);
+                //var grp_id = $(this).val();
+                if(empost_id == ''){
+                   $('#emptypeid').prop('disabled',true);
+                }
+                else{
              
+                    $('#emptypeid').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemptypeposition",
+                        type: "POST",
+                        data: {"combfive" : cudshmpostwrktype},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("seema455==="+data);
+                            
+                            $('#emptypeid').html(data.replace(/^"|"$/g, ''));
+                            
+                        },
+                        error:function(data){
+                            //alert("data in error part==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                                            
+                    });
+                }
+            }); 
+            /************************ closer Employee type******************************************************************/
+            
             /**Allows only letters, numbers and spaces. All other characters will return an error.**/
             $('.keyup-characters').keyup(function() {
             $('span.error-keyup-2').remove();
@@ -462,9 +502,10 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><select name="uocontrol" id="uocid" required> 
                         <option selected="selected" disabled selected>--------University Officer Control -----</option>
                        
-                        <?php foreach($this->uoc as $ucodata): ?>	
-                            <option value="<?php echo $ucodata->id; ?>"><?php
-                                //echo $this->lgnmodel->get_listspfic1('','sc_name','sc_id',$record->emp_scid)->sc_name;
+                       <!-- <//?php foreach($this->uoc as $ucodata): ?>	-->
+                            <!--option value="<//?php echo $ucodata->user_id; ?>"-->
+                            <!--<option value="<//?php echo $ucodata->id; ?>"><//?php-
+                            //echo $this->lgnmodel->get_listspfic1('','sc_name','sc_id',$record->emp_scid)->sc_name;
                 //                $authiame=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$ucodata->authority_id)->name;
                   //              $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$ucodata->user_id)->firstname;
                     //            $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$ucodata->user_id)->lastname;
@@ -472,7 +513,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 				echo $ucodata->name;
                             ?>
                             </option> 
- 			<?php endforeach; ?>
+ 			<!--<//?php endforeach; ?>-->
                     </select></div>
                 </td>
                 <td><label for="department" style="font-size:15px;">Department<font color='Red'>*</font></label>
@@ -525,9 +566,10 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
            <!--<tr style="height:10px;"></tr>-->
             <tr>
                 <td><label for="emppost" style="font-size:15px;">Shown against the Post<font></font></label>
-                   <div><!--<input type="text" id="emppostid" name="emppost" value="<//?php echo isset($_POST["emppost"]) ? $_POST["emppost"] : ''; ?>" placeholder="Employee Post..." size="35">-->
-                    <input type="text" id="emppost" name="emppost"  readonly placeholder="Employee Post..." size="35">
-                    </div>
+                   <div><select name="emppost" id="emppostid" required> <!--<input type="text" id="emppostid" name="emppost" value="<//?php echo isset($_POST["emppost"]) ? $_POST["emppost"] : ''; ?>" placeholder="Employee Post..." size="35">-->
+                    <!--<input type="text" id="emppost" name="emppost"  readonly placeholder="Employee Post..." size="35">-->
+                    <option selected="selected" disabled selected>------------------ Select Post ------------------</option>
+                    </select></div>
                 </td>
                  <td><label for="pnp" style="font-size:15px;">Plan / Non Plan</label>
                     <div><select name="pnp"> 
@@ -540,7 +582,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 </td>
                 <td><label for="emptype" style="font-size:15px;">Employee Type<font color='Red'>*</font></label>
                     <div><select id="emptypeid" name="emptype" required> 
-                        <option selected="selected" disabled selected>----------- Employee Type ---------</option>
+                        <option selected="selected" disabled selected>-------- Select Employee Type ------</option>
                         <!--<option value="Permanent">Permanent</option>
                         <option value="Temporary">Temporary</option>-->
                     </select><div>

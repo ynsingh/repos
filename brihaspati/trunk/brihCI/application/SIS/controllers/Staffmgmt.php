@@ -42,22 +42,24 @@ class Staffmgmt extends CI_Controller
 
     public function staffprofile(){
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
-        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',2)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
-        $this->uoc=$this->lgnmodel->get_list('authorities');
+       // $this->uoc=$this->lgnmodel->get_list('authorities');
         /*In future this code may be replace when either campusid added in the 
          authority or authority added in campus.*/
         //$this->uoc=$this->lgnmodel->get_list('authority_map');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
         /**********************here we check that vacancy is available or not in staff position******************************************/
-        if(!empty($_POST['emppost'])){
+        /*if(!empty($_POST['emppost'])){
             $str = str_replace(" ", "",$_POST['emppost']);
+            echo ("this is testing==2===".$str);
             if($str == 'Novacancy'){
                 $this->session->set_flashdata('err_message', 'No vacancy available for this post');
                 redirect('staffmgmt/staffprofile');
             }
-        }
+        }*/
+        
                     
         if(isset($_POST['staffprofile'])) {
       
@@ -131,14 +133,17 @@ class Staffmgmt extends CI_Controller
             //if($this->form_validation->run()==TRUE){
             else{
                 $bank_ifsccode=$_POST['bankname'].",".$_POST['ifsccode'];
-                $uocid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['uocontrol'])->authority_id;
+                $emppostname = $this->commodel->get_listspfic1('designation','desig_name','desig_id',$_POST['emppost'])->desig_name; 
+               // $uocid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['uocontrol'])->authority_id;
                 //$ddoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['ddo'])->authority_id;
                 //-----------change employee photo name ----------------//
+                if(!empty($_FILES['userfile']['name'])){
                 $newFileName = $_FILES['userfile']['name'];
                 $fileExt1 = explode('.', $newFileName);
                 $file_ext = end( $fileExt1);
                 $empcode=$_POST['empcode'];
                 $new_name = $empcode.".".$file_ext; 
+                }
                 //-------------------------------------------------------------
                 $data = array(
                     'emp_code'                  =>$_POST['empcode'],
@@ -147,12 +152,13 @@ class Staffmgmt extends CI_Controller
                     'emp_specialisationid'      =>$_POST['specialisation'],
                     
                     'emp_scid'                  =>$_POST['campus'],
-                    //'emp_uocid'               =>$_POST['uocontrol'],
-                    'emp_uocid'                 =>$uocid,
+                    'emp_uocid'                 =>$_POST['uocontrol'],
+                   // 'emp_uocid'                 =>$uocid,
                     'emp_dept_code'             =>$_POST['department'],
                     'emp_schemeid'              =>$_POST['schemecode'],
                     'emp_desig_code'            =>$_POST['designation'],
-                    'emp_post'                  =>$_POST['emppost'],
+                    //'emp_post'                  =>$_POST['emppost'],
+                    'emp_post'                  =>$emppostname,
                     
                     'emp_gender'                =>$_POST['gender'],
                     'emp_community'             =>$_POST['community'],
@@ -270,7 +276,7 @@ class Staffmgmt extends CI_Controller
                     $this->logger->write_dblogmessage("insert", "data insert in user_role_type table." );
                     /*************************************updating the staff position table*****************/
                    
-                    $this->updatestaffposition($_POST['campus'], $uocid, $_POST['department'],$_POST['schemecode'],$_POST['designation'],$_POST['workingtype'],$_POST['emptype']) ;
+                    $this->updatestaffposition($_POST['campus'],$_POST['uocontrol'], $_POST['department'],$_POST['schemecode'],$_POST['designation'],$_POST['workingtype'],$_POST['emptype']) ;
                    
                     /*************************************close updating the staff position table*****************/
                     /* upload photo*/
@@ -453,8 +459,10 @@ class Staffmgmt extends CI_Controller
             
             $bankname=$this->input->post('bankname');
             $ifsccode= $this->input->post('ifsccode');
-            $uocuid= $this->input->post('uocontrol');  
-            $uocid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$uocuid)->authority_id;
+            //$emp_post= $this->input->post('emppost');
+            //$emppostid= $this->commodel->get_listspfic1('designation','desig_id','desig_namedesig_id',$emp_post)->desig_id;     
+           // $uocuid= $this->input->post('uocontrol');  
+            //$uocid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$uocuid)->authority_id;
             //$ddoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$_POST['ddo'])->authority_id;
             $empcode= $this->input->post('empcode');
             if(!empty($_FILES['userfile']['name'])){
@@ -472,21 +480,22 @@ class Staffmgmt extends CI_Controller
                 /*----extra field added---------------------------------------------*/
             $data = array(
                 'emp_specialisationid'           => $this->input->post('specialisation'),
-                'emp_scid'                       => $this->input->post('campus'),
-                'emp_uocuserid'                  => $this->input->post('uocontrol'),
-                'emp_uocid'                      => $uocid,
-                'emp_dept_code'                  => $this->input->post('department'),
-                'emp_schemeid'                   => $this->input->post('schemecode'),
-                'emp_desig_code'                 => $this->input->post('designation'),
+               // 'emp_scid'                       => $this->input->post('campus'),
+                //'emp_uocuserid'                  => $this->input->post('uocontrol'),
+                //'emp_uocid'                      => $this->input->post('uocontrol'),
+                //'emp_uocid'                      => $uocid,
+               // 'emp_dept_code'                  => $this->input->post('department'),
+                //'emp_schemeid'                   => $this->input->post('schemecode'),
+                //'emp_desig_code'                 => $this->input->post('designation'),
                 
-                'emp_post'                       => $this->input->post('emppost'),
+                //'emp_post'                       => $this->input->post('emppost'),
                 'emp_gender'                     => $this->input->post('gender'),
                 'emp_community'                  => $this->input->post('community'),
                 'emp_religion'                   => $this->input->post('religion'),
                 
                 'emp_caste'                      => $this->input->post('caste'),
-                'emp_worktype'                   => $this->input->post('workingtype'),
-                'emp_type_code'                  => $this->input->post('emptype'),
+                //'emp_worktype'                   => $this->input->post('workingtype'),
+               // 'emp_type_code'                  => $this->input->post('emptype'),
                 'emp_salary_grade'               => $this->input->post('payband'),
                 
                 'emp_basic'                      => $this->input->post('basicpay'),
@@ -515,9 +524,9 @@ class Staffmgmt extends CI_Controller
                 'emp_phone'                      => $this->input->post('phonemobileno'),
                 'emp_name'                       => $this->input->post('empname'),
                 
-                'emp_ddouserid'                  => $this->input->post('ddo'),
-                'emp_ddoid'                      => $this->input->post('ddo'),
-                'emp_group'                      => $this->input->post('group'),
+               // 'emp_ddouserid'                  => $this->input->post('ddo'),
+                //'emp_ddoid'                      => $this->input->post('ddo'),
+               // 'emp_group'                      => $this->input->post('group'),
                 'emp_apporderno'                 => $this->input->post('orderno'),
                 'emp_phstatus'                   => $this->input->post('phstatus'),
                 'emp_phdetail'                   => $this->input->post('phdetail'),
@@ -1134,34 +1143,36 @@ class Staffmgmt extends CI_Controller
    
    /* This function has been created for get list of uco on the basis of campus */
     /*In future this code may be replace when either campusid added in the 
-                authority or authority added in campus.*/
-    /*
+     authority or authority added in campus.*/
+    
     public function getuoclist(){
         $scid = $this->input->post('campusname');
-        $auco_data = $this->sismodel->get_listrow('cudsdmap','cudsd_scid',$scid);
+        $auco_data = $this->sismodel->get_listrow('map_sc_uo','scuo_scid',$scid);
         $aucolist = $auco_data->result();
         $uco_select_box ='';
         $uco_select_box.='<option value="">-------University Officer Control--------';
         foreach($aucolist as $aucoid){
-            //echo json_encode("auolist=2====".$aucoid->cudsd_auoid);
-            $auouserid=$this->lgnmodel->get_listspfic1('authority_map', 'user_id', 'authority_id',$aucoid->cudsd_auoid)->user_id;
-            //echo json_encode("userid====".$auouserid);
+            $auoname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$aucoid->scuo_uoid)->name;
+            $auocode=$this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$aucoid->scuo_uoid)->code;
+            /*$auouserid=$this->lgnmodel->get_listspfic1('authority_map', 'user_id', 'authority_id',$aucoid->cudsd_auoid)->user_id;
             $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$auouserid)->firstname;
             $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$auouserid)->lastname;
             $auoflname=$auofname." ".$auolname;
-            $uco_select_box.='<option value='.$aucoid->cudsd_auoid.'>'.$auoflname.' ';
+            $uco_select_box.='<option value='.$aucoid->cudsd_auoid.'>'.$auoflname.' ';*/
+         json_encode("in controller====".$aucoid->scuo_uoid);
+            $uco_select_box.='<option value='.$aucoid->scuo_uoid.'>'.$auoname." (".$auocode.") ".' ';
         } 
         echo json_encode($uco_select_box);
     }
-    */
+    
    
     /* This function has been created for get list of schemes on the basis of  selected campus and uco */
      
     public function getnewdeptlist(){
         $combid = $this->input->post('campuoc');
-        echo json_encode("combination===".$combid);
+        //echo json_encode("combination===".$combid);
         $parts = explode(',',$combid); 
-        echo json_encode("this is test===".$parts[0].",".$parts[1]);
+       // echo json_encode("this is test===".$parts[0].",".$parts[1]);
         $sccode=$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id',$parts[0])->sc_code;
         //$datawh=array('cudsd_scid' => $parts[0],'cudsd_auoid' => $parts[1]);
         $datawh=array('dept_uoid' => $parts[1],'dept_sccode' => $sccode);
@@ -1239,48 +1250,32 @@ class Staffmgmt extends CI_Controller
     public function getemppostposition(){
         $combval = $this->input->post('combsix');
         $parts = explode(',',$combval);
-      //  $uoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$parts[1])->authority_id;
         $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
-                        'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_tnt' => $parts[5]);
-        
-        $emppost_data = $this->sismodel->get_listspficemore('staff_position', 'sp_emppost,sp_type',$datawh);
-        $emptype_select_box ='';
-        $emptype_select_box.='<option value="">----------Select Employee Type-----------';
+                       'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_group' => $parts[5],'sp_tnt' => $parts[6]);
+        $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_vacant',$datawh);
+        //echo json_encode("post====".$emppost_data);
+        $emppost_select_box ='';
+        $emppost_select_box.='<option value="">-------------- Select Post -----------------';
         if(!empty($emppost_data)){ 
-                      
-            foreach($emppost_data as $empdata){
-                $emppost_name=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$empdata->sp_emppost)->desig_name;
-                if($empdata->sp_type == 'Permanent'){
-                    $pvacancy=$this->sismodel->get_listspfic1('staff_position', 'sp_vpermanenet', 'sp_type',$empdata->sp_type)->sp_vpermanenet;
-                    if($pvacancy>0){                                               
-                        //$emptype_select_box.='<option value='.'Permanent'.'>'.'Permanent'.' ';
-                        $emptype_select_box.='<option value='.$empdata->sp_type.'>'.$empdata->sp_type.' ';
-                    }
-                }    
-                if($empdata->sp_type == 'Temporary'){
-                    $tempvacancy=$this->sismodel->get_listspfic1('staff_position', 'sp_vtemporary', 'sp_type',$empdata->sp_type)->sp_vtemporary;
-                    if($tempvacancy>0){
-                        //$emptype_select_box.='<option value='.'Temporary'.'>'.'Temporary'.' ';
-                        $emptype_select_box.='<option value='.$empdata->sp_type.'>'.$empdata->sp_type.' ';
-                       
-                
-                    }
-                /* if($emppost_data->sp_vtemporary >0 && $emppost_data->sp_vpermanenet >0)
-                {
-                    $emptype_select_box.='<option value='.'Permanent'.'>'.'Permanent'.' '; 
-                    $emptype_select_box.='<option value='.'Temporary'.'>'.'Temporary'.' ';
-                }  */  
-                }    
-              
-            }
-            //echo json_encode($emppost_name.",".$emptype_select_box);
-        }    
+            foreach($emppost_data as $records){ 
+                if($records->sp_vacant > 0){ 
+                    $datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
+                        'sp_schemecode'=> $parts[3],'sp_group' => $parts[5],'sp_tnt' => $parts[6]);  
+                    $emppost_finaldata = $this->sismodel->get_listspficemore('staff_position', 'sp_emppost,sp_vacant',$datawh2);
+                    foreach($emppost_finaldata as $empdata){
+                        $emppost_name=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$empdata->sp_emppost)->desig_name;
+                        if($empdata->sp_vacant > 0){    
+                            $emppost_select_box.='<option value='.$empdata->sp_emppost.'>'.$emppost_name.' ';
+                        }  
+                    }//foreach    
+                }//if
+            }//foreach    
+        } //if close   
         else{
-            
-            $emppost_name='No vacancy';
-            
+            $emppost_select_box='No vacancy';
         }
-        echo json_encode($emppost_name.",".$emptype_select_box);
+        //echo json_encode("post=22===".$emppost_select_box);
+        echo json_encode($emppost_select_box);
                         
     }
     
@@ -1342,6 +1337,41 @@ class Staffmgmt extends CI_Controller
         }  //ifempty  
         
     }//function close
-    /***********************************close of staff position*********************************************/         
+    /***********************************close of staff position*********************************************/   
+    
+    /***********************************Employee type from staff position*********************************************/   
+     /* This function has been created for get the employee type vacant shown against position */
+    public function getemptypeposition(){
+        $combval = $this->input->post('combfive');
+        $parts = explode(',',$combval);
+      //  $uoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$parts[1])->authority_id;
+       // $emppost_id=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_name',$parts[4])->desig_id;
+       //  echo json_encode("seema=27===".$emppost_id);
+        $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
+                        'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_tnt' => $parts[5]);
+        
+        $emptype_data = $this->sismodel->get_listspficemore('staff_position', 'sp_type',$datawh);
+        // echo json_encode("seema=77===".$emptype_data);
+        $emptype_select_box ='';
+        $emptype_select_box.='<option value="">------ Select Employee Type -----------';
+        if(!empty($emptype_data)){ 
+                      
+            foreach($emptype_data as $empdata){
+                // echo json_encode("seema=999===".$empdata);
+              
+                $emptype_select_box.='<option value='.$empdata->sp_type.'>'.$empdata->sp_type.' ';
+              
+            }//foreach
+            
+        } //if close   
+        else{
+            
+            $emptype_select_box='No vacancy';
+            
+        }
+        echo json_encode($emptype_select_box);
+                        
+    }
+    /*********************************** closer Employee type from staff position*********************************************/   
        
 }    

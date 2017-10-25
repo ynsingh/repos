@@ -21,7 +21,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 autoclose: true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-37:c+30'
+                yearRange: 'c-70:c+30'
                        
             });
             $("#Dateofphd").datepicker({
@@ -30,7 +30,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 autoclose: true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-37:c+30'
+                yearRange: 'c-70:c+30'
                
             });
            
@@ -61,7 +61,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 autoclose: true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-37:c+30'
+                yearRange: 'c-70:c+30'
                
             });
             $("#Dateofbirth").datepicker({
@@ -70,7 +70,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 autoclose: true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-37:c+30'
+                yearRange: 'c-70:c+30'
                
             });
             
@@ -434,10 +434,12 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><select name="uocontrol" id="uocid" required readonly>
                         <option value="<?php echo $editdata->emp_uocuserid;?>">
                             <?php
-                                $authiame=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$editdata->emp_uocid)->name;
-                                $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$editdata->emp_uocuserid)->firstname;
-                                $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$editdata->emp_uocuserid)->lastname;
-                                echo $auofname." ".$auolname."( ".$authiame." )";?>
+                                $authname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$editdata->emp_uocid)->name;
+                                $authcode=$this->lgnmodel->get_listspfic1('authorities', 'code', 'id',$editdata->emp_uocid)->code;
+                               // $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$editdata->emp_uocuserid)->firstname;
+                                //$auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$editdata->emp_uocuserid)->lastname;
+                                //echo $auofname." ".$auolname."( ".$authiame." )";
+                                echo $authname."(".$authcode.")";?>
                             <!--echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$editdata->emp_dept_code)->dept_name;-->
                             </option>
                         <!--<option selected="selected" disabled selected>--------University Officer Control -----</option>-->
@@ -448,10 +450,11 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <!--<//?php foreach($this->uoc as $ucodata): ?>	
                             <option value="<//?php echo $ucodata->user_id; ?>"><?php
                                 //echo $this->lgnmodel->get_listspfic1('','sc_name','sc_id',$record->emp_scid)->sc_name;
-                                $authiame=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$ucodata->authority_id)->name;
+                               /* $authiame=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$ucodata->authority_id)->name;
                                 $auofname=$this->lgnmodel->get_listspfic1('userprofile', 'firstname', 'userid',$ucodata->user_id)->firstname;
                                 $auolname=$this->lgnmodel->get_listspfic1('userprofile', 'lastname', 'userid',$ucodata->user_id)->lastname;
-                                echo $auofname." ".$auolname."( ".$authiame." )";
+                                echo $auofname." ".$auolname."( ".$authiame." )";*/
+                                echo $authname."(".$authcode.")";
                             ?>
                             </option> 
  			<//?php endforeach; ?>-->
