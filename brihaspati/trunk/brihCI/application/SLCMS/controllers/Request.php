@@ -38,20 +38,20 @@ class Request extends CI_Controller {
 	 */
 	
 	
-	/*************************************************************************************************************/
+/******************************************Student semester registration start*******************************************************************/
 	public function semesterregi(){
 		$suid=$this->session->userdata('id_user');
 		$Stuid=$this->commodel->get_listspfic1("student_master","sm_id","sm_userid",$suid)->sm_id;
 		$this->appno = $this->commodel->get_listspfic1('student_entry_exit','senex_entexamapplicationno','senex_smid',$Stuid)->senex_entexamapplicationno;
 		$stud_prg_rec = $this->commodel->get_listrow('student_program','sp_smid',$Stuid);
-        $degree_id = $stud_prg_rec->row()->sp_programid;
-        $noofsemester = sizeof($stud_prg_rec->result());
+        	$degree_id = $stud_prg_rec->row()->sp_programid;
+        	$noofsemester = sizeof($stud_prg_rec->result());
 
 		
 		$cacadyer = $this->usermodel->getcurrentAcadYear();
-        $semestertype = $this->usermodel->getcurrentSemester();
-        $semesterrec = $this->stumodel->get_semester_no($Stuid,$cacadyer);
-//        $semsize = sizeof($semesterrec);
+        	$semestertype = $this->usermodel->getcurrentSemester();
+        	$semesterrec = $this->stumodel->get_semester_no($Stuid,$cacadyer);
+//        	$semsize = sizeof($semesterrec);
 //		$this->curresem = $semsize;
 
 
@@ -481,6 +481,10 @@ class Request extends CI_Controller {
             return true;
         }
 }
+/******************************************Student semester registration end****************************************************************
+
+
+/*********************************************************Student Exam Registration Start************************************************************************/
 	public function exam_regi(){
 		$suid=$this->session->userdata('id_user');
 		//print_r($suid);
@@ -605,15 +609,6 @@ class Request extends CI_Controller {
         $wheredata = array('semcr_prgid' => $spprgid,'semcr_semester' => $this->cusem );
         $selectfield = 'semcr_mincredit,semcr_maxcredit,semcr_semcpi';
         $semrule = $this->commodel->get_listspficemore('semester_rule',$selectfield,$wheredata);
-        /*foreach($semrule as $row)
-        {
-            $semmincredit = $row->semcr_mincredit;
-            $semmaxcredit = $row->semcr_maxcredit;
-            $semcpi = $row->semcr_semcpi;
-        }
-       $data['semmincredit'] = $semmincredit;
-        $data['semmaxcredit'] = $semmaxcredit;
-        $data['semcpi'] = $semcpi;*/
 
         //get subject/papers in a semester of a program from subject_semester
         $wheredata1 = array('subsem_prgid' => $spprgid,'subsem_semester' => $this->cusem);
@@ -778,6 +773,8 @@ class Request extends CI_Controller {
 
 		$this->load->view('request/stu_admit_card');
 	}
+/*********************************************************Student Exam Registration End************************************************************************/
+
 
 /**********************************************************Student Fees Deposit Start*****************************************************************/
 
@@ -964,110 +961,6 @@ class Request extends CI_Controller {
 
 		$this->load->view('request/sem_fee_offline',$data);
 	}
-/*
-	public function fees_deposit_payment_offline(){
-		$suid=$this->session->userdata('id_user');
-		
-				
-		if(isset($_POST['sem_payment'])){
-			$this->form_validation->set_rules('refNo','Reference number','trim|xss_clean|numeric|required');
-            		$this->form_validation->set_rules('bank','Bank detail','trim|xss_clean|required');
-            		$this->form_validation->set_rules('amount','Amount','trim|xss_clean|required');
-            		$this->form_validation->set_rules('ftype','fees type','trim|xss_clean|required');
-
-			if($_POST){
-				$this->data['refNo'] = $this->input->get_post('refNo');
-				$this->data['bank']  = $this->input->get_post('bank');
-				$this->data['amount']= $this->input->get_post('amount');
-				$this->data['ftype']=$this->input->get_post('ftype');
-			}
-
-			if($this->form_validation->run() == FALSE){			
-				redirect('request/fees_deposit_payment');
-				//$this->load->view('request/sem_fee_offline');
-				return;
-			}else{	
-				//start the transaction
-       	 			$this->db->trans_begin();		
-				//update student fees table
-				if(($_POST['amount']) == ($_POST['payblefees']))	
-				{	
-					foreach($spid as $stuspid){
-					$offline = array(
-						'sfee_smid'		=>	$Stuid,
-						'sfee_spid'		=>	$stuspid,
-						'sfee_referenceno'   	=>	$_POST['refNo'],
-                				'sfee_bankname'  	=>	$_POST['bank'],
-                				'sfee_feeamount'  	=>	$_POST['amount'],
-                				'sfee_feename'   	=>	$_POST['ftype'],
-						'sfee_paymentmethod'    =>	'Offline'
-                				);
-						$fee = $this->commodel->insertrec('student_fees', $offline);
-					}
-				}
-				else {				
-					$message = '<h3>The payble fees and fees deposit in bank should be equal.</h3>';
-	  				$this->session->set_flashdata('msg',$message);
-					$this->logger->write_logmessage("update", "Offline payment  fees match error.");
-	                    		$this->logger->write_dblogmessage("update", "Offline payment fees match error." );
-					//$this->load->view('request/sem_fee_offline');
-					redirect('request/fees_deposit_payment');					
-					return;
-				     }
-				
-				$this->logger->write_logmessage("update", "semester registration fees update in fees_master table.");
-                    		$this->logger->write_dblogmessage("update", "semester registration fees update in fees_master table." );
-				
-				//make transaction complete
-        			$this->db->trans_complete();
-			
-	 			//check if transaction status TRUE or FALSE
-        			if ($this->db->trans_status() === FALSE) {
-				
-            			//if something went wrong, rollback everything
-            				$this->db->trans_rollback();
-					$this->logger->write_logmessage("update", "Student registration not update record in student_master table.");
-                    			$this->logger->write_dblogmessage("update", "Student registration not update record in student_master table.");
-					//$this->load->view('request/sem_fee_offline');
-					redirect('request/fees_deposit_payment');
-					//redirect('request/stufeesdetail');
-           				//return FALSE;
-      				 } else {	
-            				//if everything went right, commit the data to the database
-           				$this->db->trans_commit();
-
-					//if sucess send mail to user with login details 
-		 					$sub='Student Semester Registration' ;
-                        				$mess="Your registration is complete. Student email is ".$email." and name is ".$name ;
-                	       				$mails = $this->mailmodel->mailsnd($email, $sub, $mess);
-							 //  mail flag check 			
-							if($mails){
-                        					$error[] ="At row".$i."sufficient data and mail sent sucessfully";
-                        					$this->logger->write_logmessage("insert","semester registration fees submitted", "record added successfully for.".$name ." ".$email);
-		      						$this->logger->write_dblogmessage("insert","semester registration fees submitted", "record added successfully for.".$name ." ".$email);
-				    			}
-							else{
-        		       					$error[] ="At row".$i."sufficient data and mail does not sent";
-		                				$this->logger->write_logmessage("insert"," semester registration fees not submitted", "record not added successfully for.".$name ." ".$email ." and mail does sent");
-								$this->logger->write_dblogmessage("insert"," semester registration fees not submitted ", "record not added successfully for.".$name ." ".$email." and mail does sent");
-			   				}
-
-			 		$message = '<h3>Your offline payment successfull done.</h3>';
-	  				$this->session->set_flashdata('msg',$message);			
-					$this->logger->write_logmessage("update", "Student registration successfull update record in student_master table");
-                    			$this->logger->write_dblogmessage("update", "Student registration successfull update record in student_master table" );
-				 	redirect('studenthome'); 
-           		 		//return TRUE;
-       			 		}
-	
-			}//first else close
-
-		}//post if close
-
-		//$this->load->view('request/sem_fee_offline');
-	}
-
-*/
 
 /**********************************************************Student Fees Deposit End*****************************************************************/
 

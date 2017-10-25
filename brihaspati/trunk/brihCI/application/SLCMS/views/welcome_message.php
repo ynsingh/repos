@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title>Welcome </title>
 	 <link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
-       <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/helpdoc.css">
+         <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/helpdoc.css">
 	<style>
 		table,th, td{
    		 border: 0px solid black;
@@ -48,21 +48,17 @@ echo "</center>"; ?>
             </td>
      </tr>
 </table>
+<center>
+<nav style="width:68.7%;margin-top:-1%;border:0px solid black;"><h1 style="padding: 5px 25px;">Welcome</h1></nav>
 
-<table style="width:70%;margin-top:-1%;border:0px solid black;" align=center> 
-	<tr><td colspan=3>
-		<nav> 	<h1>Welcome  </h1></nav>
-	</td></tr>
-	<tr><td  colspan=3>
-		<?php $this->load->view('enterence/enterence_head');?>
-	</td></tr>
-	
+<?php $this->load->view('enterence/enterence_head');?>
+</center>
+</br></br>
+<table style="width:70%;border:0px solid black;" align=center > 
 	
 	<tr>
-		<td style="width:30%;">
-			<div class="" width="" >
-       				<div class="">
-        				<div id="cssmenu" style="margin-top:2%;">
+		<td style="width:30%;" align=left>
+			<div id="cssmenu" style="">
                 				<ul>
 							<li><a href="ADMISSION NOTIFICATION">ADMISSION NOTIFICATON</a></li>
 								<?php 
@@ -92,50 +88,46 @@ echo "</center>"; ?>
 						</ul>
                			 </div>
        			 </div>
-		</div>
+        		
+		</td>
 
-	</td>
+		<td align=center style="width:45%;">
+			<table style="width:100%;">
+				<tr style="background-color:#38B0DE;color:white;font-size:18px;font-family: Times New Roman, Times, serif;"><td>Announcement</td></tr></thead>
+					<tr height=190>
+						<td></td>
+					</tr>
+			</table>
 
-		
 
-		<td>
-			<form action="<?= site_url('welcome') ?>" method="post">
-        		<table align=center style="margin-top:-8%;border:0px solid black;" >
-			<tr><td>
-			</td>
+	      </td>
+	
+		<td align=right style="width:30%;">
+		<form action="<?= site_url('welcome') ?>" method="post">
+        		<table>
+			<tr>
 			<td align=left>	
 				<label for="username">Username</label></br>	
         			<input type="text" name="username" size="25%" />
 			</td>
 			</tr>
-				<tr><td>
-        			</td>
+				<tr>
 				<td align=left><label for="password">Password</label></br>
         			<input type="password" name="password" size="25%" /></td></tr>
-				<tr><td></td>
+				<tr>
 				<td>
         			<button type="submit" style="font-size:17px;width:40%;">Login</button>
 		
 				<a href="<?php echo site_url('Student/student_step0');?>" style="text-decoration:none;" title="Click to open student detail form">
 				<input type="button" value="New Student" style="font-size:17px;width:58%;"></a></td></tr>
-			<tr><td></td>
+			<tr>
                			 <td><a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="text-decoration:none;" title="Forgot Password">
                 		<input type="button" value="Forgot Password" style="font-size:17px;width:100%;"></a></td>
+			</tr>
+			<td height=55></td>	
 			</table>
     			</form>	
-
-
-	     </td>
-	<td align=center>
-		<table align=right style="margin-top:-35%;width:100%;" >
-			<thead  style="background-color:#38B0DE;color:white;font-size:18px;"><tr><td colspan="4">Announcement</td></tr></thead>
-			<tbody>
-				<tr>
-					<td>News</td>
-				</tr>
-			</tbody>
-		</table>
-	</td>
+		</td>
 	</tr>
 	
 </table>

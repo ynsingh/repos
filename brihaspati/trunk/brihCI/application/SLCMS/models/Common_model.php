@@ -255,6 +255,7 @@ class Common_model extends CI_Model
 	    $this->db->from($tbname);
         $this->db->select($selectfield);
         $this->db->where($data);
+	
         return $this->db->get()->result();
     }
 //    getting different field from table - $selectfield ('a,b,c');
@@ -292,6 +293,23 @@ class Common_model extends CI_Model
             $this->db->where($whdata);
             return $this->db->get()->result();
     }
+
+   function array_multi_subsort($array, $subkey)
+   {
+   	$b = array(); $c = array();
+	foreach ($array as $k => $v)
+	{
+        				$b[$k] = strtolower($v->$subkey);
+   				 }
+
+    				asort($b);
+    				foreach ($b as $key => $val)
+    				{
+        				$c[] = $array[$key];
+   				 }
+
+    				return $c;
+			}   	
 
     function __destruct() {
         $this->db->close();

@@ -5,6 +5,7 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  * @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
+ * @author Sumit Saxena (sumitsesaxena@gmail.com)
  * @author Sumit Saxena(sumitsesaxena@gmail.com)[View Admission merit list]	
  */
 
@@ -52,6 +53,142 @@ class Report  extends CI_Controller
       //  $datawh = array('roleid' => '3');
         $this->admission=$this->commodel->get_list('admissionmeritlist');
         $this->load->view('report/admission_meritlist');
+   } 
+
+    // view admission application student
+    public function list_application() {
+	$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
+	$this->prgname  = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');
+	
+		//get all record search
+		$progid = $this->input->post('appstubranch',TRUE);
+		$exmceter = $this->input->post('appstuexamcenter',TRUE);
+		$name = $this->input->post('appstuname',TRUE);
+		$mobile = $this->input->post('appstumobile',TRUE);
+		$email = $this->input->post('appstuemail',TRUE);
+		$gender = $this->input->post('appstugender',TRUE);
+		$religion = $this->input->post('appstureligion',TRUE);
+		$appno = $this->input->post('appstuapplino',TRUE);
+		$regdate = $this->input->post('appsturegistration',TRUE);
+		$payment = $this->input->post('appstupaytype',TRUE);
+
+       		if(isset($_POST['search'])) 
+      		 {
+			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
+			$record=array(
+   				'asm_enterenceexamcenter'  => $exmceter,
+				'asm_coursename'  	=> $progid,
+				'asm_fname'		=> $name,
+				'asm_email'		=> $email,
+				'asm_mobile'		=> $mobile,
+				'asm_gender'		=> $gender,
+				'asm_religion'		=> $religion,
+				'asm_applicationno'	=> $appno
+      				);
+       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+
+			$regselect = array('admission_masterid','step4_date');
+			$regdata = array('step4_date' =>$regdate);
+			$this->regdate = $this->commodel->get_listspficemore('admissionstudent_enterencestep',$regselect,$regdata);
+			
+			$regselect = array('asfee_amid','asfee_referenceno');
+			$paydata = array('asfee_paymentmethod' => $payment);
+			$this->pay = $this->commodel->get_listspficemore('admissionstudent_fees',$regselect,$paydata);
+		
+			
+		 }//if isset search close
+		//prgoram and branch search
+		if($progid == TRUE){
+			$progid = $this->input->post('appstubranch',TRUE);
+			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
+			$record=array(
+				'asm_coursename'  	=> $progid,
+      				);
+       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+		}
+		//exam center search
+		elseif($exmceter == TRUE){
+			$exmceter = $this->input->post('appstuexamcenter',TRUE);
+			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
+			$record=array(
+				'asm_enterenceexamcenter'  => $exmceter,
+      				);
+       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+		}
+		//name search	
+		elseif($name == TRUE){
+			$name = $this->input->post('appstuname',TRUE);
+			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
+			$record=array(
+				'asm_fname'  => $name,
+      				);
+       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+		}
+		//mobile number search
+		elseif($mobile == TRUE){
+			$mobile = $this->input->post('appstumobile',TRUE);
+			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
+			$record=array(
+				'asm_mobile'  => $mobile,
+      				);
+       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+		}
+		//email search
+		elseif($email == TRUE){
+			$email = $this->input->post('appstuemail',TRUE);
+			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
+			$record=array(
+				'asm_email'  => $email,
+      				);
+       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+		}
+		//gender search
+		elseif($gender == TRUE){
+			$gender = $this->input->post('appstugender',TRUE);
+			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
+			$record=array(
+				'asm_gender'  => $gender,
+      				);
+       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+		}
+		//search through religion
+		elseif($religion == TRUE){
+			$religion = $this->input->post('appstureligion',TRUE);
+			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
+			$record=array(
+				'asm_religion'  => $religion,
+      				);
+       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+		}
+		//search through application no(Roll no.)
+		elseif($appno == TRUE){
+			$appno = $this->input->post('appstuapplino',TRUE);
+			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
+			$record=array(
+				'asm_applicationno'  => $appno,
+      				);
+       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+		}
+		
+		//search through registration date
+		
+		elseif($regdate == TRUE){
+				$regdate = $this->input->post('appsturegistration',TRUE);
+				$regselect = array('admission_masterid','step4_date');
+				$regdata = array('step4_date' =>$regdate);
+				$this->regdate = $this->commodel->get_listspficemore('admissionstudent_enterencestep',$regselect,$regdata);
+			}
+
+		elseif($payment == TRUE){
+			$payment = $this->input->post('appstupaytype',TRUE);
+				$regselect = array('asfee_amid','asfee_referenceno');
+				$paydata = array('asfee_paymentmethod' => $payment);
+				$this->pay = $this->commodel->get_listspficemore('admissionstudent_fees',$regselect,$paydata);
+		}	
+		
+		
+
+        $this->load->view('report/listapplicationstu');
    } 
 
 }

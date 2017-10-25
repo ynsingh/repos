@@ -1262,12 +1262,14 @@ class Enterence extends CI_Controller {
 					$cid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$Sid)->asm_enterenceexamcenter;
 					$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
 					$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
+					$pegid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
 					//echo $rollno;die;
 					$center = array(
 		                		'ca_asmid'           =>	$Sid,
 						'ca_rollno'	     =>	$rollno,
 						'ca_centerlocation'  => $clocation,
-						'ca_centername'	     => $cname
+						'ca_centername'	     => $cname,
+						'ca_prgid'	     => $pegid
 		           	     		);
 					
     					$this->db->insert('admissionstudent_centerallocation',$center);
@@ -1577,6 +1579,11 @@ class Enterence extends CI_Controller {
 		}
 		$this->load->view('enterence/admission_form');
 	}
+
+	/*public function stu_hallticketdw(){
+
+		$this->load->view('enterence/stu_hallticketdw');
+	}*/
 
 	public function home() {
 		$id = $this->session->userdata['asm_id'];
