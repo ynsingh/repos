@@ -53,7 +53,7 @@ echo "</center>"; ?>
 
 <?php $this->load->view('enterence/enterence_head');?>
 </center>
-</br></br>
+</br>
 <table style="width:70%;border:0px solid black;" align=center > 
 	
 	<tr>

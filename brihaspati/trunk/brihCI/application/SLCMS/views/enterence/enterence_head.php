@@ -20,20 +20,19 @@ ul {
     margin: 0;
     padding: 0;
     /*overflow: hidden;*/
-    
 }
 
 #menu li {
     float: left;
- border-left: 1px solid white;
-height:40px;
+    border-left: 0px solid white;
+    height:40px;
 }
 
 #menu li a {
     display: block;
     color: white;
     text-align: center;
-    padding: 8px 25px;
+    padding: 8px 20px;
     font-family: "Times New Roman", Times, serif;	
     font-size:18px;	
     text-decoration: none;
