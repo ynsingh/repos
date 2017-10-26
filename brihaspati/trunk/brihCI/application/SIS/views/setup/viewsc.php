@@ -45,8 +45,8 @@
             <thead>
                 <tr align="center">
         
-                        <th>IGNTU</th>
-                        <th> Campus Name</th>
+                        <th>University Name</th>
+                        <th>Campus Name</th>
 			<th>Address</th>
 			<th>Phone</th>
 			<th>Fax</th>

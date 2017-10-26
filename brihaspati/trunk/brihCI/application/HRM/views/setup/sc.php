@@ -284,7 +284,7 @@ $('#stname').on('change',function(){
                                     <tr>
                                     <td colspan="2" style="margin-left:30px;">
 					 <button name="sc" style="margin-left:175px;" name="submit" >Submit</button>
-					 <button name="clear" >Clear</button>
+					 <input type="reset" name="Reset" value="Clear"/>
 					 </td>
                                       </tr>
 				</body>

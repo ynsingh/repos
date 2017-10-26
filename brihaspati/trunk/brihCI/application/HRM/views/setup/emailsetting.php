@@ -90,7 +90,7 @@
                             <td>Example : 25</td>
                         </tr>
                         <tr>
-                            <td><label for="username" class="control-label">Username:</label></td>
+                            <td><label for="username" class="control-label">User Name:</label></td>
                             <td><input type="text" name="username"  size="50"  /> <br></td>
                             <td><?php echo form_error('username')?></td>
                             <td>Example : palseema30     or    palseema30@gmail.com</td>
@@ -102,19 +102,19 @@
                             <td> Example : ****** </td>
                         </tr>
                         <tr>
-                            <td><label for="sendername" class="control-label">Sendername:</label></td>    
+                            <td><label for="sendername" class="control-label">Sender Name:</label></td>    
                             <td><input type="text" name="sendername" size="50"  /> <br></td>
                             <td><?php echo form_error('sendername')?></td>
                             <td> Example : Seema Pal    or    palseema30@gmail.com </td>
                         </tr>
                         <tr>
-                            <td><label for="senderemail" class="control-label">Senderemail:</label></td>    
+                            <td><label for="senderemail" class="control-label">Sender Email:</label></td>    
                             <td><input type="text" name="senderemail" size="50"  /> <br></td>
                             <td><?php echo form_error('senderemail')?></td>
                             <td> Example : Finance Officer    or    fo@igntu.ac.in </td>
                         </tr>
                         <tr>
-                            <td><label for="modulename" class="control-label">Modulename:</label></td>  
+                            <td><label for="modulename" class="control-label">Module Name:</label></td>  
                             <td>
                                 <select name="modulename" id="" class="my_dropdown" style="width:100%;">
                                     <option value="" disabled selected >------Select Email Protocol------</option>

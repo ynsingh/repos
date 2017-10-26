@@ -2560,7 +2560,7 @@ class Setup extends CI_Controller
         $this->deptresult = $this->common_model->get_list('Department');
         if(isset($_POST['scheme'])) {
             $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean|required');
-            $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean|required|alpha_numeric_spaces');
+            $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean|required|alpha_dash');
             $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash');
             $this->form_validation->set_rules('ssname','Scheme Short Name','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('sdesc','Scheme Description','trim|xss_clean|alpha_numeric_spaces');
@@ -2679,7 +2679,7 @@ class Setup extends CI_Controller
         $data['sd_id'] = $sd_id;
           
        // $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean'); 
-        $this->form_validation->set_rules('sname','Scheme Name ','trim|xss_clean|required|alpha_numeric_spaces');
+        $this->form_validation->set_rules('sname','Scheme Name ','trim|xss_clean|required|alpha_dash');
         $this->form_validation->set_rules('scode','Scheme Code ','trim|xss_clean|required|alpha_dash');
         $this->form_validation->set_rules('ssname','Scheme Short Name ','trim|xss_clean|required|alpha_numeric_spaces');
         $this->form_validation->set_rules('sdesc','Scheme Description ','trim|xss_clean|alpha_numeric_spaces');
