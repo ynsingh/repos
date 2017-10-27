@@ -42,7 +42,7 @@ class Staffmgmt extends CI_Controller
 
     public function staffprofile(){
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
-        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',2)->org_code;
+        $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
         $this->campus=$this->commodel->get_listspfic2('study_center','sc_id','sc_name','org_code',$this->orgcode);
        // $this->uoc=$this->lgnmodel->get_list('authorities');
         /*In future this code may be replace when either campusid added in the 
@@ -665,7 +665,7 @@ class Staffmgmt extends CI_Controller
                     $emppfno=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id', $_POST['empname'])->emp_code;
                     $empname=$this->sismodel->get_listspfic1('employee_master', 'emp_name', 'emp_id', $_POST['empname'])->emp_name;
                     $deptto=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$_POST['deptto'])->dept_name; 
-                    $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',2)->org_name;
+                    $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
                     $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_staffname',$id)->uit_registrarname;
                     $this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_staffname',$id)->uit_desig;
                     $mail_sent_to=$_POST['emailsentto'];
