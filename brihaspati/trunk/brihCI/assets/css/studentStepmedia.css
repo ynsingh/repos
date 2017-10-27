@@ -9,6 +9,14 @@
 	size: auto;
  	 margin: 0mm;
        }
+.TFtable tr td{
+       border:1px solid black;
+    }
+.TFtable tr th{
+       border:1px solid black;
+    }
+.TFtable{width:100%;margin-left:-30px;}
+.panel{width:80%;}
 
 #foohide{display:none;}
 #b1{display:none;}
@@ -41,5 +49,10 @@
 .terms tr td{font-size:18px;}
 ol li{font-weight:normal;text-align: justify;}
 
+
+/**************************************applicant_Step5 print page code start********************************************/
+#header img{width:100%;height:100px;}
+#sign2 img{width:200px;height:60px;}
+#photo2 img{margin-top:-20px;}
 
 /**************************************Step 5 print page code end********************************************/

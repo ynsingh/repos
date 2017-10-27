@@ -11,6 +11,7 @@
  * @author Vijay(vijay.pal428@gmail.com)       add program fees
  * @author Raju Kamal(kamalraju8@gmail.com)    category program 
  * @author Neha Khullar(nehukhullar@gmail.com) add bankdetails
+ * @author Abhay Throne(kumar.abhay.4187@gmail.com)[bank detail archive]
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -2976,7 +2977,7 @@ class Setup extends CI_Controller
         );
 
 
-         echo $data['id'] = $id;
+        $data['id'] = $id;
 
         $this->form_validation->set_rules('bank_name','Bankdetails BankName ','trim|xss_clean|required');
         $this->form_validation->set_rules('bank_address','Bankdetails BankAddress ','trim|xss_clean|required');
@@ -3045,7 +3046,29 @@ class Setup extends CI_Controller
                 $logmessage = "Add Bankdetails " .$bankprofile_data->pan_number. " changed by " .$data_pannumber;
             if($bankprofile_data->tan_number != $data_tannumber)
                 $logmessage = "Add Bankdetails " .$bankprofile_data->tan_number. " changed by " .$data_tanumber;
-    
+		
+		$update_baarchive = array(
+				'bpa_bpid'=>$id,
+               'bpa_bank_name' =>$bankprofile_data->bank_name,
+			   'bpa_branch_name' =>$bankprofile_data->branch_name,
+               'bpa_bank_address'=>$bankprofile_data->bank_address,
+			   //'bpa_branch_name '=>$bankprofile_data->bank_branch,
+			   'bpa_account_number'  =>$bankprofile_data->account_number,
+               'bpa_account_name'=>$bankprofile_data->account_name,
+			   'bpa_account_type'=>$bankprofile_data->account_type,
+               'bpa_ifsc_code'=>$bankprofile_data->ifsc_code,
+               'bpa_pan_number'  =>$bankprofile_data->pan_number, 
+               'bpa_tan_number'  =>$bankprofile_data->tan_number,
+			   'bpa_gst_number' =>$bankprofile_data->gst_number,
+			 
+            );
+	 $baflag=$this->SIS_model->insertrec('bankprofile_archive', $update_baarchive);
+         if(!$baflag)
+         {
+              $this->logger->write_dblogmessage("error","Error in insert bank profile archive ", "Error in  bank profile archive record insert" .$logmessage );
+         }else{
+              $this->logger->write_dblogmessage("insert","Insert bank profile archive", "Record inserted in bank profile archive successfully.." .$logmessage );
+         }	
 
          $update_data = array(
                'bank_name' =>($this->input->post('bank_name')),
@@ -3079,6 +3102,8 @@ class Setup extends CI_Controller
                 redirect('setup/displaybankdetails/');
                 }
         }//else
+		
+	
         redirect('setup/editbankdetails/');
    }
 

@@ -700,7 +700,7 @@ class Enterence extends CI_Controller {
                		 	);
 	 		
 				$record = $this->commodel->insertrec('admissionstudent_parent', $addetail);
-				$cdate = date('Y-m-d H:i:s');
+				$cdate = date('Y-m-d H:i');
 				$step1 = array(
 					//'registration_id'	=>	$regisid,
 					'admission_masterid'	=>	$insertid,
@@ -752,7 +752,7 @@ class Enterence extends CI_Controller {
 
 	public function step_two(){
 		if(empty($this->session->userdata('asm_id'))) {
-	        	$this->session->set_flashdata('flash_data', 'You don\'t have access!');
+	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
 			redirect('welcome');
         	}
 		$asmid = $this->session->userdata['asm_id'];
@@ -971,7 +971,7 @@ class Enterence extends CI_Controller {
 					else{break;}
 				
 				}//for close
-				$cdate = date('Y-m-d H:i:s');
+				$cdate = date('Y-m-d H:i');
 				$step2 = array(
 					'step2_status'   	=>	1,
                 			'step2_date'  		=>	$cdate
@@ -1001,7 +1001,7 @@ class Enterence extends CI_Controller {
 
 	public function step_three(){
 		if(empty($this->session->userdata('asm_id'))) {
-	        	$this->session->set_flashdata('flash_data', 'You don\'t have access!');
+	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
 			redirect('welcome');
         	}	
 		$id = $this->session->userdata['asm_id'];
@@ -1135,7 +1135,7 @@ class Enterence extends CI_Controller {
 		    	 }//foreach close
 					
 				//update admissionstep step3 table
-					$cdate = date('Y-m-d H:i:s');
+					$cdate = date('Y-m-d H:i');
  					$step3 = array(
 						'step3_status'   	=>	1,
                 				'step3_date'  		=>	$cdate
@@ -1193,7 +1193,7 @@ class Enterence extends CI_Controller {
 
 	public function offlinePayment(){
 		if(empty($this->session->userdata('asm_id'))) {
-	        	$this->session->set_flashdata('flash_data', 'You don\'t have access!');
+	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
 			redirect('welcome');
         	}	
 		$getmail = $this->commodel->get_elist('email_setting');
@@ -1286,7 +1286,7 @@ class Enterence extends CI_Controller {
                     			$this->logger->write_dblogmessage("update", "Admission Step 4 insert application no in master table." );
 
 					//update admissionstep step4 table
-					$cdate = date('Y-m-d H:i:s');
+					$cdate = date('Y-m-d H:i');
  					$step4 = array(
 						'step4_status'   	=>	1,
                 				'step4_date'  		=>	$cdate
@@ -1328,7 +1328,7 @@ class Enterence extends CI_Controller {
 
 	public function step_five(){
 		if(empty($this->session->userdata('asm_id'))) {
-	        	$this->session->set_flashdata('flash_data', 'You don\'t have access!');
+	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
 			redirect('welcome');
         	}
 		//$regisid = $this->session->userdata['asreg_id'];
@@ -1415,7 +1415,7 @@ class Enterence extends CI_Controller {
 		$admission_fees = $this->commodel->get_listrow('admissionstudent_fees','asfee_amid',$id)->result();
 		$data['admission_fees'] = $admission_fees;
 		
-		$cdate = date('Y-m-d H:i:s');
+		$cdate = date('Y-m-d H:i');
 				$step5 = array(
 					'step5_status'   	=>	1,
                 			'step5_date'  		=>	$cdate
@@ -1430,7 +1430,7 @@ class Enterence extends CI_Controller {
 
 	public function step_fivedw(){
 		if(empty($this->session->userdata('asm_id'))) {
-	        	$this->session->set_flashdata('flash_data', 'You don\'t have access!');
+			$this->session->set_flashdata('err_message', 'You don\'t have access!');
 			redirect('welcome');
         	}	
 		$id = $this->session->userdata['asm_id'];
@@ -1522,13 +1522,7 @@ class Enterence extends CI_Controller {
 	}
 
 	public function prtadmission_form(){
-		//$id = $this->session->userdata['asm_id'];
-		/*$name = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$id)->asm_fname;
-		$cname = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$id)->asm_coursename;
-		$email = $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$id)->asm_email;
-		$dob = $this->commodel->get_listspfic1('admissionstudent_master','asm_dob','asm_id',$id)->asm_dob;
-		$mobile = $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$id)->asm_mobile;*/
-
+		
 		$this->prgname = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');
 		if(isset($_POST['submit'])){
 			$this->form_validation->set_rules('applicantemail','Email Id','trim|required|valid_email');
@@ -1541,53 +1535,234 @@ class Enterence extends CI_Controller {
 			//echo "invalid value";
                	 		$this->load->view('enterence/admission_form');
 				return;
-           	 	}else{	
-			
-											
-						$data = array(
-							'asreg_emailid' => $this->input->post('applicantemail'),
-							'asreg_mobile'    => $this->input->post('applicantmobile'),
-							'asreg_dob'     => $this->input->post('dateofbirth'),
-							'asreg_program'  => $this->input->post('applicantprogram'),
-							'asreg_verificationcode'  => $this->input->post('applicantvercode')				
-						);
+           	 	}else{									
+				$data = array(
+					'asreg_emailid' => $this->input->post('applicantemail'),
+					'asreg_mobile'    => $this->input->post('applicantmobile'),
+					'asreg_dob'     => $this->input->post('dateofbirth'),
+					'asreg_program'  => $this->input->post('applicantprogram'),
+					'asreg_verificationcode'  => $this->input->post('applicantvercode')				
+				);
 						
-						//verify the data existance filled by user 
-						$result = $this->commodel->isduplicatemore("admissionstudent_registration",$data);
-						//print_r($result);
-						//$result = $this->stumodel->login($data);
-						if ($result == true){
-							$asid = $this->commodel->get_listarry("admissionstudent_registration","asreg_id",$data);
+				//verify the data existance filled by user 
+				$result = $this->commodel->isduplicatemore("admissionstudent_registration",$data);
+				if ($result == true){
+					$asid = $this->commodel->get_listarry("admissionstudent_registration","asreg_id",$data);
 							
-							foreach($asid as $asregid){
-								$asegid= $asregid->asreg_id;
-							}
+					foreach($asid as $asregid){
+						$asegid= $asregid->asreg_id;
+					}
 						
-						//echo $id= $this->commodel->get_listspfic1("admissionstudent_master","asm_id","asm_userid",$asegid)->asm_id;
-						    //$number = $this->input->post('');
-						    //call studentstep function and that function will decide in which page you are landing after putting the correct crediential
-							//echo "invalid value";
-							$this->admission_studentstep($asegid);
-						}	
-						 else {
-							$message= '<h4>Your some detail is invalid.</h4>';
-							$this->session->set_flashdata('err_message',$message);
-							redirect('enterence/prtadmission_form');
-							}
+					$this->admission_studentstep($asegid);
+				}	
+				 else {
+					$message= '<h4>Your some detail is invalid.</h4>';
+					$this->session->set_flashdata('err_message',$message);
+					redirect('enterence/prtadmission_form');
+				}
 			}
 					
 		}
 		$this->load->view('enterence/admission_form');
 	}
 
-	/*public function stu_hallticketdw(){
+	public function stu_hallticket(){
+		$this->prgname = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');
+		if(isset($_POST['download'])){
+			$this->form_validation->set_rules('dwapplicantemail','Email Id','trim|required|valid_email');
+            		$this->form_validation->set_rules('dwapplicantmobile','Mobile No','trim|required|xss_clean|numeric');
+            		$this->form_validation->set_rules('dwdateofbirth','Date Of Birth','trim|required|xss_clean');
+            		$this->form_validation->set_rules('dwapplicantprogram','Program Name','trim|required|xss_clean');
+            		$this->form_validation->set_rules('dwapplicantvercode','Verification Code','trim|required|xss_clean|numeric');
 
-		$this->load->view('enterence/stu_hallticketdw');
-	}*/
+            		if($this->form_validation->run() == FALSE){
+               	 		$this->load->view('enterence/stu_hallticket');
+				return;
+           	 	}else{	
+				$data = array(
+					'asreg_emailid' 	 => $this->input->post('dwapplicantemail'),
+					'asreg_mobile'    	 => $this->input->post('dwapplicantmobile'),
+					'asreg_dob'     	 => $this->input->post('dwdateofbirth'),
+					'asreg_program'  	 => $this->input->post('dwapplicantprogram'),
+					'asreg_verificationcode' => $this->input->post('dwapplicantvercode')				
+				);
+						
+				//verify the data existance filled by user 
+				$result = $this->commodel->isduplicatemore("admissionstudent_registration",$data);
+				//print_r($result);
+				if ($result == true){
+					$asid = $this->commodel->get_listarry("admissionstudent_registration","asreg_id",$data);
+						foreach($asid as $asregid){
+							$asegid= $asregid->asreg_id;
+						}
+					$this->hallticket_step($asegid);
+					
+					//redirect("enterence/stu_hallticketdw",$asegid);
+				}	
+				 else {
+					$message= '<h4>Your some detail is invalid.</h4>';
+					$this->session->set_flashdata('err_message',$message);
+					redirect('enterence/stu_hallticket');
+				}
+			}
+		}
+		$this->load->view('enterence/stu_hallticket');
+	}
+	
+	public function hallticket_step($applicationno){
+		
+		$this->resstep=$this->commodel->get_listrow('admissionstudent_enterencestep','registration_id',$applicationno)->result();
+		if(!empty($this->resstep)) {
+			// if exist then check which step is completed and redirect to incmplete step with appropriate data
+			foreach($this->resstep as $rslt){
+				$stp5= $rslt->step5_status;
+			}
+	
+			if($stp5 == 0 || $stp5 == NULL){
+				$asmid = $this->commodel->get_listspfic1('admissionstudent_master','asm_id','asm_userid',$applicationno)->asm_id;
+				$data = [
+					'asm_id' => $asmid,
+					'asreg_id' => $applicationno
+		               ];
+                          	$this->session->set_userdata($data);
+				// redirect to step5 for completion
+				redirect('enterence/step_five');
+			}
+			else{
+				$asmid = $this->commodel->get_listspfic1('admissionstudent_master','asm_id','asm_userid',$applicationno)->asm_id;
+				$data = [
+					'asm_id' => $asmid,
+					'asreg_id' => $applicationno
+		               ];
+                        	$this->session->set_userdata($data);
+				// redirect to step5 for completion
+				redirect('enterence/stu_hallticketdw');
+			}
+		}
+
+	}
+
+	public function stu_hallticketdw(){
+		if(empty($this->session->userdata('asm_id'))) {
+			//$message= '<h4>Please login again to download hall ticket.</h4>';
+			//$this->session->set_flashdata('err_message',$message);
+	        	$this->session->set_flashdata('err_message', 'Login again for download hall ticket');
+			redirect('welcome');
+        	}
+		 $uid = $this->session->userdata['asm_id'];
+		 $data['uid'] = $uid;	
+		 $selectdata = array('asm_gender','asm_caste','asm_coursename','asm_fname','asm_id','asm_applicationno');	
+		 $wdata=array('asm_id' => $uid);
+                 $stud_master = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$wdata);
+		 $data['stud_master'] = $stud_master;
+		 $acadyear = $this->usrmodel->getcurrentAcadYear();
+		 $data['acadyear'] = $acadyear;
+		 foreach($stud_master as $row){
+			$asmid=$row->asm_id;
+			$data['asmid'] = $asmid;
+			$gender=$this->commodel->get_listspfic1('admissionstudent_master','asm_gender','asm_id',$asmid)->asm_gender;
+			$data['gender'] = $gender;
+			$caste=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$asmid)->asm_caste;
+        		$data['caste'] = $caste;               
+			$prgid  = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
+			$data['prgid'] = $prgid;                        
+			$progname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';
+			$data['progname'] = $progname;
+                        $rollno=$row->asm_applicationno;
+			$data['rollno'] = $rollno;
+                        $sname = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$asmid)->asm_fname;
+			$data['sname'] = $sname;
+                        $faname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_fathername','aspar_asmid',$asmid)->aspar_fathername;
+			$data['faname'] = $faname;
+                        $moname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_mothername','aspar_asmid',$asmid)->aspar_mothername;
+			$data['moname'] = $moname;
+                        $padd=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_paddress','aspar_asmid',$asmid)->aspar_paddress;
+			$data['padd'] = $padd;
+                        $pcity=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcity','aspar_asmid',$asmid)->aspar_pcity;
+			$data['pcity'] = $pcity;
+                        $pstate=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$asmid)->aspar_pstate;
+			$data['pstate'] = $pstate;
+                        $pcountry=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$asmid)->aspar_pcountry;
+			$data['pcountry'] = $pcountry;
+			$photo=$this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_photo','asupd_asmid',$asmid)->asupd_photo;
+			$data['photo'] = $photo;
+			$signature = $this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_signature','asupd_asmid',$asmid)->asupd_signature;
+			$data['signature'] = $signature;
+			$centerid=$this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$asmid)->asm_enterenceexamcenter;
+			$venue=$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name.','.$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_address','eec_id',$centerid)->eec_address.','.$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$centerid)->eec_city;
+			$data['venue'] = $venue;
+			$exmdate = $this->commodel->get_listspfic1('admissionopen','admop_entexam_date','admop_prgname_branch',$prgid)->admop_entexam_date;
+			$data['exmdate'] = $exmdate;
+			
+			
+        	}	
+		 $this->load->view('enterence/stu_hallticketdw',$data);
+	}
+
+
+	public function stu_hallticketdwpdf(){
+		if(empty($this->session->userdata('asm_id'))) {
+	        	$this->session->set_flashdata('err_message', 'Login again for download hall ticket');
+			redirect('welcome');
+        	}
+		 $uid = $this->session->userdata['asm_id'];
+		 $data['uid'] = $uid;	
+		 $selectdata = array('asm_gender','asm_caste','asm_coursename','asm_fname','asm_id','asm_applicationno');	
+		 $wdata=array('asm_id' => $uid);
+                 $stud_master = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$wdata);
+		 $data['stud_master'] = $stud_master;
+		 $acadyear = $this->usrmodel->getcurrentAcadYear();
+		 $data['acadyear'] = $acadyear;
+		 foreach($stud_master as $row){
+			$asmid=$row->asm_id;
+			$data['asmid'] = $asmid;
+			$gender=$this->commodel->get_listspfic1('admissionstudent_master','asm_gender','asm_id',$asmid)->asm_gender;
+			$data['gender'] = $gender;
+			$caste=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$asmid)->asm_caste;
+        		$data['caste'] = $caste;               
+			$prgid  = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
+			$data['prgid'] = $prgid;                        
+			$progname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';
+			$data['progname'] = $progname;
+                        $rollno=$row->asm_applicationno;
+			$data['rollno'] = $rollno;
+                        $sname = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$asmid)->asm_fname;
+			$data['sname'] = $sname;
+                        $faname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_fathername','aspar_asmid',$asmid)->aspar_fathername;
+			$data['faname'] = $faname;
+                        $moname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_mothername','aspar_asmid',$asmid)->aspar_mothername;
+			$data['moname'] = $moname;
+                        $padd=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_paddress','aspar_asmid',$asmid)->aspar_paddress;
+			$data['padd'] = $padd;
+                        $pcity=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcity','aspar_asmid',$asmid)->aspar_pcity;
+			$data['pcity'] = $pcity;
+                        $pstate=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$asmid)->aspar_pstate;
+			$data['pstate'] = $pstate;
+                        $pcountry=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$asmid)->aspar_pcountry;
+			$data['pcountry'] = $pcountry;
+			$photo=$this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_photo','asupd_asmid',$asmid)->asupd_photo;
+			$data['photo'] = $photo;
+			$signature = $this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_signature','asupd_asmid',$asmid)->asupd_signature;
+			$data['signature'] = $signature;
+			$centerid=$this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$asmid)->asm_enterenceexamcenter;
+			$venue=$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name.','.$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_address','eec_id',$centerid)->eec_address.','.$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$centerid)->eec_city;
+			$data['venue'] = $venue;
+			$exmdate = $this->commodel->get_listspfic1('admissionopen','admop_entexam_date','admop_prgname_branch',$prgid)->admop_entexam_date;
+			$data['exmdate'] = $exmdate;
+			
+			$this->load->library('pdf');
+       			$this->pdf->load_view('enterence/stu_hallticketpdfdw',$data);
+        		$this->pdf->render();
+        		$this->pdf->stream("Hallticket.pdf");
+			
+       		 }	
+		// $this->load->view('enterence/stu_hallticketdw',$data);
+	}
 
 	public function home() {
 		$id = $this->session->userdata['asm_id'];
-        	$data = ['asm_id', 'asm_id'];
+		//$uid = $this->session->userdata['asm_id'];
+        	$data = ['asm_id'];
       		$this->session->unset_userdata($data);
        		redirect('welcome');
     	}

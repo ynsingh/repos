@@ -28,19 +28,20 @@ echo "<div>";
 }
 
 echo "</center>"; ?>
-<table>
+<center>
+<table style="width:70%">
             <tr colspan="2">
                 <td>
-                    <div align="left" style="margin-left:30px;width:1189px;">
+                    <div align="left" style="">
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
                     <?php if(isset($_SESSION['success'])){?>
-                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div class="isa_success" style="font-size:18px;"><?php echo $_SESSION['success'];?></div>
                     <?php
                     };
                     ?>
                     <?php if(isset($_SESSION['err_message'])){?>
-                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div class="isa_error" style="font-size:18px;"><?php echo $_SESSION['err_message'];?></div>
                     <?php
                     };
                 ?>
@@ -48,16 +49,16 @@ echo "</center>"; ?>
             </td>
      </tr>
 </table>
-<center>
+
 <nav style="width:68.7%;margin-top:-1%;border:0px solid black;"><h1 style="padding: 5px 25px;">Welcome</h1></nav>
 
 <?php $this->load->view('enterence/enterence_head');?>
 </center>
 </br>
-<table style="width:70%;border:0px solid black;" align=center > 
+<table style="width:70%;border:0px solid black;" align=center border=0> 
 	
 	<tr>
-		<td style="width:30%;" align=left>
+		<td style="width:30%;" valign="top">
 			<div id="cssmenu" style="">
                 				<ul>
 							<li><a href="ADMISSION NOTIFICATION">ADMISSION NOTIFICATON</a></li>
@@ -91,10 +92,11 @@ echo "</center>"; ?>
         		
 		</td>
 
-		<td align=center style="width:45%;">
+		<td align=center style="width:45%;" valign="top">
 			<table style="width:100%;">
-				<tr style="background-color:#38B0DE;color:white;font-size:18px;font-family: Times New Roman, Times, serif;"><td>Announcement</td></tr></thead>
-					<tr height=190>
+				<tr style="background-color:#38B0DE;color:white;font-size:21px;font-family: Times New Roman, Times, serif;">
+				<td style="border:2px solid white;" align=center>Announcement</td></tr>
+					<tr>
 						<td></td>
 					</tr>
 			</table>
@@ -102,7 +104,7 @@ echo "</center>"; ?>
 
 	      </td>
 	
-		<td align=right style="width:30%;">
+		<td align=right style="width:30%;" valign="top">
 		<form action="<?= site_url('welcome') ?>" method="post">
         		<table>
 			<tr>
@@ -124,7 +126,7 @@ echo "</center>"; ?>
                			 <td><a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="text-decoration:none;" title="Forgot Password">
                 		<input type="button" value="Forgot Password" style="font-size:17px;width:100%;"></a></td>
 			</tr>
-			<td height=55></td>	
+				
 			</table>
     			</form>	
 		</td>

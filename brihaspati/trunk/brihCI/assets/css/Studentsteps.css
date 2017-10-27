@@ -2,7 +2,7 @@
 * @name Studentsteps.css(student steps css)	      *
 * @author Sumit Saxena(sumitsesaxena@gmail.com)       *
 *******************************************************/
-
+.panel{width:45%;}
 #styleTable th{background-color:#38B0DE;color:white;font-size:22px;height:10px;}
 #gap{margin:20px 0px 20px 0px; font-size:18px;}
 #formbody{border:2px solid black;width:90%;}
@@ -27,4 +27,8 @@ body tr td{font-size:16px;font-weight:bold;}
 ol li{text-align: justify;}
 #formbody2{width:98%;}
 .signlabel{text-decoration: underline;font-size:20px;}
+
+#sign2 img{width:300px;height:80px;}
+#photo2 img{width:140px;height:130px;}
+#photo2{float:right;margin:10px 40px 10px 0px;}
 

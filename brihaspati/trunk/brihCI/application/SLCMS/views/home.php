@@ -119,15 +119,16 @@
         echo "<table style=\"padding: 8px 8px 8px 20px;\">";
         echo "<tbody align=\"left\">";
 	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> <b>Program Name</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Semester</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Category</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b>Gender</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b> Fees</b></td></tr>";
-
-	foreach($frecord as $ta){
-		echo "<tr>";
-		foreach($ta as $ta1){
-			echo "<td style=\"padding: 8px 8px 8px 20px;\">";
-			echo $ta1;
-			echo "</td>";
- 		}
-		echo "</tr>";
+	if(!empty($frecord)){
+		foreach($frecord as $ta){
+			echo "<tr>";
+			foreach($ta as $ta1){
+				echo "<td style=\"padding: 8px 8px 8px 20px;\">";
+				echo $ta1;
+				echo "</td>";
+ 			}
+			echo "</tr>";
+		}
 	}
         echo "</tbody>";
         echo "</table>";

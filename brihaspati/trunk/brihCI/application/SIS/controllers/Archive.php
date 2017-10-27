@@ -4,6 +4,7 @@
  * @name Archive.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Om Prakash (omprakashkgp@gmail.com) Staff Position archive, DDO Archive, map sc with uo archive
+ * @author Abhay Throne(kumar.abhay.4187@gmail.com)[bank detail archive]
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -86,5 +87,12 @@ class Archive extends CI_Controller
         	$this->logger->write_dblogmessage("view"," View map sc with uo archive", "Mapping sc with uo archive details...");
         	$this->load->view('archive/viewscuoa');
   	}
+	/*this function has been created for display the bank deails archive records */
+	public function bankdetaila() {
+			$this->result = $this->sismodel->get_list('bankprofile_archive');
+			$this->logger->write_logmessage("view"," View bankdetaila archive ", "bankdetail archive details...");
+        	$this->logger->write_dblogmessage("view"," View bankdetaila archive", "bankdetail archive details...");
+			$this->load->view('archive/bankdetaila');
+	}
 }
 

@@ -5,7 +5,6 @@
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  * @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
- * @author Sumit Saxena (sumitsesaxena@gmail.com)
  * @author Sumit Saxena(sumitsesaxena@gmail.com)[View Admission merit list]	
  */
 
@@ -59,7 +58,8 @@ class Report  extends CI_Controller
     public function list_application() {
 	$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
 	$this->prgname  = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');
-	
+	$this->prgcatname  = $this->commodel->get_listmore('programcategory','prgcat_name,prgcat_id');
+
 		//get all record search
 		$progid = $this->input->post('appstubranch',TRUE);
 		$exmceter = $this->input->post('appstuexamcenter',TRUE);
@@ -71,7 +71,7 @@ class Report  extends CI_Controller
 		$appno = $this->input->post('appstuapplino',TRUE);
 		$regdate = $this->input->post('appsturegistration',TRUE);
 		$payment = $this->input->post('appstupaytype',TRUE);
-
+		$prgcat = $this->input->post('progcat',TRUE);
        		if(isset($_POST['search'])) 
       		 {
 			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
@@ -95,6 +95,12 @@ class Report  extends CI_Controller
 			$paydata = array('asfee_paymentmethod' => $payment);
 			$this->pay = $this->commodel->get_listspficemore('admissionstudent_fees',$regselect,$paydata);
 		
+			//when select prgoram category then data get
+			$selectdata=array('prg_id');
+			$record=array(
+   					'prg_category'  => $prgcat,
+				);
+       			$this->getprgid = $this->commodel->get_distinctrecord('program',$selectdata,$record);
 			
 		 }//if isset search close
 		//prgoram and branch search
@@ -184,7 +190,17 @@ class Report  extends CI_Controller
 				$regselect = array('asfee_amid','asfee_referenceno');
 				$paydata = array('asfee_paymentmethod' => $payment);
 				$this->pay = $this->commodel->get_listspficemore('admissionstudent_fees',$regselect,$paydata);
+			
 		}	
+		//search through program category
+		elseif($prgcat == TRUE){
+			$prgcat = $this->input->post('progcat',TRUE);
+			$selectdata=array('prg_id');
+				$record=array(
+   					'prg_category'  => $prgcat,
+				);
+       			$this->getprgid = $this->commodel->get_listspficemore('program',$selectdata,$record);	
+		}
 		
 		
 

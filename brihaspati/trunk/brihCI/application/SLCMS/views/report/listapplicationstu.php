@@ -16,7 +16,8 @@
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/style.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/menu.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url();?>assets/css/message.css">
-
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
 
 <style type="text/css">
 label{font-size:18px;}
@@ -54,18 +55,19 @@ function myFunction() {
   	<center>
 	<h1>Filter Student Record</h1>
 	<form action="<?php echo site_url('report/list_application');?>" method="POST">
-	<table style="width:80%;" border=0>
+	<table style="width:70%;" border=0>
 		<tr><td>
 		<table style="width:100%;" border=0 id="foohide">
 		<tr>
-			<!---<td>
-				<label>Paid</label></br>
-				<select name="appstuany" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
- 					<option value="" disabled selected>- Any -</option>
-					<option value="paid">Paid</option>
-					<option value="un-paid">Un-paid</option>			
+			<td>
+				<label>Programme</label></br>
+				<select name="progcat" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+ 					<option disabled selected>Select Program</option>
+					<?php foreach($this->prgcatname as $row){?>
+						<option value="<?php echo $row->prgcat_name;?>"><?php echo $row->prgcat_name;?></option>
+					<?php }?>
 				</select>  
-			</td>--->
+			</td>
 			<td>	
 				<label for="nnumber">Applicant name</label></br>	
 				<input type="text" name="appstuname" placeholder="Enter Your Name" />
@@ -96,32 +98,25 @@ function myFunction() {
   			  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
 
 			<label>Registration Date</label></br>
-			<input id="rdate" type="text" name="appsturegistration" placeholder="Registration Date" >
-
+			<input type="text" value="" name="appsturegistration" id="datetimepicker" placeholder="Add Time and Date"/><br>
+			<script src="<?php echo base_url();?>assets/js/jquery.datetimepicker.full.js"></script>
 			<script>
-				$('#rdate').datepicker({
- 				onSelect: function(value, ui) {
- 			        console.log(ui.selectedYear)
-       				var today = new Date(), 
-         			dob = new Date(value), 
-          			age = 2017-ui.selectedYear;
 
-   				$("#age").text(age);
-   				},
-  	 			//(set for show current month or current date)maxDate: '+0d',
-				
-    				changeMonth: true,
-    				changeYear: true,
-    				dateFormat: 'yy-mm-dd',
-     				defaultDate: '1yr',
-    				yearRange: 'c-47:c+50',
+				$.datetimepicker.setLocale('en');
+				$('#datetimepicker').datetimepicker({
+				dayOfWeekStart : 1,
+				lang:'en',
+				formatTime:'H:i',
+				formatDate:'yy-mm-dd',
 				});
-			</script>	
+				//step 5 for give minute duration
+				$('#datetimepicker').datetimepicker({step:1});
+			</script>
 		</td>
 		</tr>
 		<tr>
 
-		<td>	<label for="nnumber">Enterence Exam Center</label></br>
+		<td>	<label for="nnumber">Exam Center</label></br>
 			<select name="appstuexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Select exam center</option>
@@ -172,7 +167,11 @@ function myFunction() {
 		</table>
 		</td>
 		<td>	
-		<table>
+		
+		</td></tr>
+		
+	</table>
+	<table>
 		<tr>
 		<td align=center >
 			<label for="nnumber" style="visibility:hidden;">Branch Applied</label></br>
@@ -181,14 +180,11 @@ function myFunction() {
 
 		</tr>
 		</table>
-		</td></tr>
-		
-	</table>
 
-	<table style="margin-left:30px;margin-top:50px;text-align:center;" class="TFtable" border=0>
+	<table style="margin-left:30px;margin-top:50px;text-align:center;width:71%;" class="TFtable" border=0>
 	<tr>
 		<th>Sr. No.</th>
-		<!--<th>Applied Prgoram</th>-->
+		<th>Applied Prgoram</th>
 		<th>Registration Date</th>
 		<th>Applicant Name</th>
 		<th>Email</th>
@@ -206,7 +202,9 @@ function myFunction() {
 	<tr>
 		<td><?php echo $count++;?></td>
 		<!--<td><?php ?></td>-->
-		<td><?php echo $this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationdate','asreg_id',$asuserid)->asreg_verificationdate;?></td>
+		<?php $prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_userid',$asuserid)->asm_coursename;?>
+		<td><?php echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;?></td>	
+		<td><?php echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;?></td>
 		<td><?php echo $row->asm_fname;?></td>
 		<td><?php echo $row->asm_email;?></td>
 		<td><?php echo $row->asm_mobile;?></td>
@@ -221,13 +219,18 @@ function myFunction() {
 
 
 <?php if(!empty($this->pay)){
-	$count=1;
+	//$count=1;
 	foreach($this->pay as $row){
 				$userid = $this->commodel->get_listspfic1('admissionstudent_master','asm_userid','asm_id',$row->asfee_amid)->asm_userid;
 				echo "<tr>";
 				echo "<td>".$count++."</td>";
+				echo "<td>";
+				$prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->asfee_amid)->asm_coursename;
+				echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;
+				echo "</td>";
 				echo "<td>";	
-				echo $veri=$this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationdate','asreg_id',$userid)->asreg_verificationdate;	
+				//echo $veri=$this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationdate','asreg_id',$userid)->asreg_verificationdate;	
+				echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$row->asfee_amid)->step4_date;
 				echo "</td>";
 				echo "<td>";
 				echo $name=$this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->asfee_amid)->asm_fname;
@@ -252,13 +255,18 @@ function myFunction() {
 
 
  if(!empty($this->regdate)){
-	$count=1;
+	//$count=1;
 	foreach($this->regdate as $row){
 				$userid = $this->commodel->get_listspfic1('admissionstudent_master','asm_userid','asm_id',$row->admission_masterid)->asm_userid;
 				echo "<tr>";
 				echo "<td>".$count++."</td>";
+				echo "<td>";
+				$prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->admission_masterid)->asm_coursename;
+				echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;
+				echo "</td>";
 				echo "<td>";	
-				echo $this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationdate','asreg_id',$userid)->asreg_verificationdate;	
+				//echo $this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationdate','asreg_id',$userid)->asreg_verificationdate;	
+				echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$row->admission_masterid)->step4_date;
 				echo "</td>";
 				echo "<td>";
 				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->admission_masterid)->asm_fname;
@@ -279,19 +287,53 @@ function myFunction() {
 				echo "</tr>";
 			}
 	}
+
+
+
+/* program category through filter student record*/
+	 if(!empty($this->getprgid)){
+		//$count=1;
+		foreach($this->getprgid as $row){
+				@$asmid = $this->commodel->get_listspfic1('admissionstudent_master','asm_id','asm_coursename',$row->prg_id)->asm_id;
+				
+				//$userid = $this->commodel->get_listspfic1('admissionstudent_master','asm_userid','asm_id',$row->admission_masterid)->asm_userid;
+				echo "<tr>";
+				echo "<td>".$count++."</td>";
+				echo "<td>";
+				$prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
+				echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;
+				echo "</td>";
+				echo "<td>";	
+				//echo $this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationdate','asreg_id',$asmid)->asreg_verificationdate;	
+				echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;
+				
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$asmid)->asm_fname;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$asmid)->asm_email;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$asmid)->asm_mobile;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_fees','asfee_referenceno','asfee_amid',$asmid)->asfee_referenceno;
+				echo "</td>";
+				echo "<td>";
+				$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
+				echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name."&nbsp;"."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.")";
+				echo "</td>";
+				echo "</tr>";
+			}
+	}
 ?>
 
-<tr><td colspan=7>
+<tr id="b1"><td colspan=8>
  <input type="submit" value="Print" onclick="myFunction()" title="Click for print" style="font-size:18px;width:5%;" id="b1">
 </td>
 </tr>
 	</table>
-
-	
-
-
-	
-	
 	</center>
 	</form>
 

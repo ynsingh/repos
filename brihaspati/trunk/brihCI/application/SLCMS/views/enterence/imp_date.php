@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
 </head>
 <body>
-
+<center>
 
 <div>
 	<div id="body">
@@ -65,7 +65,7 @@ echo "</center>";
 <table>
 <tr>
 <div align="left" style="margin-left:2%;">
-<table cellpadding="16" style="margin-left:2%;font-size:17px;" class="TFtable" >
+<table cellpadding="16" style="font-size:17px;width:70%;" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Academic Year</th><th>Program Category</th><th>Program Name </th><th>Entrance Exam Fees </th> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th><th>Entrance Exam Date</th><th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th></tr></thead>
 <?php
@@ -77,14 +77,12 @@ echo "</center>";
              <tr align="center">
             <td> <?php echo ++$count; ?> </td>
             <td> <?php echo $row->admop_acadyear?></td>
-            <td> <?php
-                        echo $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_id',$row->admop_prgcat)->prgcat_name ?>
+            <td> <?php echo $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_name',$row->admop_prgcat)->prgcat_name; ?>
             </td>
-            <td> <?php
-                        echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->admop_prgname_branch)->prg_name ;
-                        echo "(";
-                        echo $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->admop_prgname_branch)->prg_branch ;
-                        echo ")";
+            <td> <?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->admop_prgname_branch)->prg_name ;
+                       echo "(";
+                       echo $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->admop_prgname_branch)->prg_branch ;
+                       echo ")";
                 ?>
             </td>
             <td> <?php echo $row->admop_entexam_fees?></td>
@@ -151,5 +149,6 @@ else :
 <div>
 <?php $this->load->view('template/footer'); ?>
 </div>
+</center>
 </body>
 </html>
