@@ -31,10 +31,11 @@ function myFunction() {
 </br>
 <center>
 
-</br></br></br>
+
 	<form action="<?php echo site_url('enterenceadmin/generatesticker'); ?>" method="POST">
-	<table style="width:70%;" border=0>
+	<table style="width:50%;" border=0>
 		<tr>
+			<td style="height:35px;font-size:18px;"> Generate Sticker Sheet</td>
 			<td align=right>
 			<label for="nnumber"></label></br>
 			<select name="stiexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
@@ -46,7 +47,7 @@ function myFunction() {
 			</select>
 			</td>
 			<td align=left><label for="nnumber" style="visibility:hidden;">Enterence Exam Center</label></br>
-			<input type="submit" name="searchsticker" value="Submit" style="width:25%;height:35px;font-size:18px;"></td>
+			<input type="submit" name="searchsticker" value="Submit" style="height:35px;font-size:18px;"></td>
 		</tr>
 		
 	</table>
