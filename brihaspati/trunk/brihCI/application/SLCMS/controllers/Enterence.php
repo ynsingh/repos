@@ -592,6 +592,9 @@ class Enterence extends CI_Controller {
 		$data['mobile'] = $mobile;
 		$dob = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_dob','asreg_id',$regisid)->asreg_dob;		
 		$data['dob'] = $dob;
+		$prgid = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_program','asreg_id',$regisid)->asreg_program;	
+		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';	
+		$data['prgname'] = $prgname;
 		$cdate = date('Y-m-d');
 		$age = $cdate-$dob;
 		$data['age'] = $age;
@@ -624,11 +627,11 @@ class Enterence extends CI_Controller {
 	   		$this->form_validation->set_rules('entpcode','Parmanant address postal code','trim|xss_clean|required|numeric');
 			$this->form_validation->set_rules('entpcountry','Parmanant address country','trim|xss_clean|required');
           		
-			$this->form_validation->set_rules('entcostreet','Correspondence address street','trim|xss_clean|required');
-			$this->form_validation->set_rules('entcocity','Correspondence address city','trim|xss_clean|required');
-			$this->form_validation->set_rules('entcostate','Correspondence address state','trim|xss_clean|required');
-	   		$this->form_validation->set_rules('entcocode','Correspondence address postal code','trim|xss_clean|required|numeric');
-			$this->form_validation->set_rules('entcocountry','Correspondence address country','trim|xss_clean|required');
+			$this->form_validation->set_rules('entcostreet','Correspondence address street','trim|xss_clean');
+			$this->form_validation->set_rules('entcocity','Correspondence address city','trim|xss_clean');
+			$this->form_validation->set_rules('entcostate','Correspondence address state','trim|xss_clean');
+	   		$this->form_validation->set_rules('entcocode','Correspondence address postal code','trim|xss_clean|numeric');
+			$this->form_validation->set_rules('entcocountry','Correspondence address country','trim|xss_clean');
 
 			//family detail validation code	
 			$this->form_validation->set_rules('entfathername','Father name','trim|xss_clean|required');
@@ -642,7 +645,7 @@ class Enterence extends CI_Controller {
 			{
 				//add personnel detail in admissionstudent_master
 		 		$pdetail = array(
-					'asm_coursename'		=>      $_POST['entcouname'],
+					'asm_coursename'		=>      $prgid,
 					'asm_userid'			=>	$regisid,	
                 			'asm_sccode'  		    	=>	$_POST['entcenter'],
                 			'asm_enterenceexamcenter'  	=>	$_POST['entexamcenter'],
@@ -667,13 +670,37 @@ class Enterence extends CI_Controller {
 					);
 				$this->session->set_userdata($session_data);
 			
-				//insert into student fees
+				//insert asmid into student fees
 				$stufees = array(
 					'asfee_amid'		=>	$insertid,
 					'asfee_aprgid'		=>	$_POST['entcouname']
                 		);	
 				$this->db->insert('admissionstudent_fees',$stufees);
+
+				//insert asmid into student upload data
+				$stuupload = array(
+					'asupd_asmid'		=>	$insertid,
+                		);	
+				$this->db->insert('admissionstudent_uploaddata',$stuupload);
+
+				//insert asmid into student student education
+				/*$stuedu = array(
+					'asedu_asmid'		=>	$insertid,
+                		);	
+				$this->db->insert('admissionstudent_education',$stuedu);
 		
+				//insert asmid into student student enterence exam
+				$stuentex = array(
+					'aseex_asmid'		=>	$insertid,
+                		);	
+				$this->db->insert('admissionstudent_entrance_exam',$stuentex);
+				
+				//insert asmid into student student student employement
+				$stuemp = array(
+					'asemp_asmid'		=>	$insertid,
+                		);	
+				$this->db->insert('admissionstudent_employment',$stuemp);*/
+			
 		
 				//add address detail in admissionstudent_master
 		 		$addetail = array(
@@ -845,8 +872,8 @@ class Enterence extends CI_Controller {
 					//'asedu_percentage'   	=>	$_POST['eduugc_net']
                 		);	
 				//print_r($Hedu);
-				$this->commodel->insertrec('admissionstudent_education', $Hedu);
-		
+				//$this->commodel->insertrec('admissionstudent_education', $Hedu);
+				
 				$intn =$_POST['Icname'];
 				$Iedu = array(
 					'asedu_asmid'		=>	$asmid,
@@ -1067,13 +1094,14 @@ class Enterence extends CI_Controller {
 						move_uploaded_file($file_tmp_photo,"$desired_dir/".$id."Photo");
 						move_uploaded_file($file_tmp_sign,"$desired_dir/".$id."Signature");
                                                 $insertPhoto = array(
-                                                            'asupd_asmid'                     => $id,
-                                                            'asupd_photo'                    => $id."Photo",      
-                                                            'asupd_signature'                => $id."Signature",  
+                                                            'asupd_asmid'           => $id,
+                                                            'asupd_photo'           => $id."Photo",      
+                                                            'asupd_signature'       => $id."Signature"  
                                                  );
-                                                $query = $this->db->insert('admissionstudent_uploaddata',$insertPhoto);
-                                                $this->logger->write_logmessage("insert", "Admission step 3 photo insert in admissionstudent_uploaddata table.");
-                                                $this->logger->write_dblogmessage("insert", "Admissiom step 3 photo insert in admissionstudent_uploaddata table." );
+                                                //$query = $this->db->insert('admissionstudent_uploaddata',$insertPhoto);
+						$this->commodel->updaterec('admissionstudent_uploaddata',$insertPhoto,'asupd_asmid',$id);
+                                                $this->logger->write_logmessage("update", "Admission step 3 photo insert in admissionstudent_uploaddata table.");
+                                                $this->logger->write_dblogmessage("update", "Admissiom step 3 photo insert in admissionstudent_uploaddata table." );
 
 					}else{
 						//set the error
@@ -1101,13 +1129,13 @@ class Enterence extends CI_Controller {
 					$file_ext = strtolower(end((explode('.',$file_name))));
       					$extensions= array("jpeg","jpg","png","pdf");
       					if(in_array($file_ext,$extensions) === false){
-						$filerrors[$j] = " Enclosures number ".$i." extension should be jpeg or jpg or png. ";
+						$filerrors[$j] = " Enclosures file ".$file_name." extension should be jpeg or jpg or png. ";
 						$extflag=true;
 						$j++;
 					}
 					//check enclosure upload size	
        				 	if($file_size >512000){
-						$filerrors[$j] = " Enclosure number ". $i ." size should be less than 500kb. ";
+						$filerrors[$j] = " Enclosure file ". $file_name." size should be less than 500kb. ";
 						$sizeflag = true;
 						$j++;
        					 }

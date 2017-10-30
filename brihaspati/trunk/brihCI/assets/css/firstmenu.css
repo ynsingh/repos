@@ -1,0 +1,16 @@
+/*
+ * @author Sumit Saxena(sumitsesaxena@gmail.com)
+*/
+
+    @media (min-width: 768px) {
+        .navbar .navbar-nav {
+            display: inline-block;
+            float: none;
+        }
+        
+        .navbar .navbar-collapse {
+            text-align: center;
+        }
+    }
+#menu1 {background-color:#067eb7;color:white;height:auto;}
+#menu1 li a{color:white;font-size:20px;font-family: Times New Roman, Times, serif;}

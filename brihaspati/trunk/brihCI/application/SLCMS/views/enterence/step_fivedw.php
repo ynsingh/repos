@@ -18,7 +18,7 @@
 </th></tr></table>
 	<table style="width:100%;">
 		<tr><td>
-		<img src="<?php echo base_url('uploads/SLCMS/admission_student/'.$id.'/'.$photo); ?>" style="width:90px;height:80px;margin-left:80%;">
+		<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$photo); ?>" style="width:90px;height:80px;margin-left:80%;">
 		</td></tr>
 	</table>
 
@@ -240,7 +240,7 @@
 			<tr>
 			<td style="float:right;">
 				<label style="margin-left:75%;font-weight:bold;">Student Signature</label></br>
-				<img src="<?php echo base_url('uploads/SLCMS/admission_student/'.$id.'/'.$signature); ?>" style="width:150px;height:50px;margin-left:75%;"></td>
+				<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$signature); ?>" style="width:150px;height:50px;margin-left:75%;"></td>
 				
 			</tr>
 		</table>

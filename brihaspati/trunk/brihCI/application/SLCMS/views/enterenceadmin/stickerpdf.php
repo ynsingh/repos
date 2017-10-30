@@ -12,6 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 
 <body>
+<?php $this->load->view('template/watermark.php');?>
+
 <img src="uploads/logo/logo2.jpg" alt="logo" style="width:100%;height:70px;">
 </br>
 <center>

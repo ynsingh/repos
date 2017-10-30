@@ -1,12 +1,35 @@
+label{font-weight:normal;}
+	#button{font-size:18px;width:40%;}
+	input[type=button]{font-weight:bold;text-decoration:none;color:black;}
+	#body{font-family: Times New Roman, Times, serif;background:none repeat scroll 0 0 #DDDDDD;}
+
 body {
 	background:none repeat scroll 0 0 #DDDDDD;
-	color:#333333;
+	color:#333333;font-family: Times New Roman, Times, serif;
 	font:12px "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-serif;
 	margin:0;
 	min-width:950px;
 	padding:0;
 	text-align:center;
 }
+
+/*enterence registration steps css start*/
+
+.currentpage {
+        font-weight:bold;
+	color:white;background-color:#38B0DE;
+  	 }
+
+.steps{background-color:#cacaca;width:50%;height:50px;}
+.stepalign td{text-align:center;font-size:20px;}
+.active {
+    font-weight: bold;color:white;background-color:#38B0DE;
+}
+
+.active1 {
+    font-weight: bold;color:white;background-color:black;
+}
+/*enterence steps css end*/
 
 #head {background-color:#067eb7;color:white;width:100%;font-size:16px;font-weight:bold;height:40px;}
 

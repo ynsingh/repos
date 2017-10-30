@@ -43,11 +43,9 @@ echo "<center>";
 	
 	}
 
-echo "</center>";
-
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"margin-left:30px;width:1700px;font-size:18px;height:10px;border:1px solid white;\" class=\"isa_success\">";			
+	echo "<table style=\"width:70%;font-size:18px;height:10px;border:1px solid white;\" class=\"isa_success\">";			
 		echo "<tr>";
 			echo "<td style='font-size:18px;float:left;'>";
 				echo $_SESSION['success'];
@@ -69,10 +67,12 @@ echo "</center>";
 		//echo "</div>";
 	echo "</table>";
 	}
+echo "</center>";
 ?>
 
       </div>
-<div align="left" style="margin-left:30px;width:1700px;font-size:18px;">
+<center>
+	<div align="left" style="width:70%;font-size:18px;">
        	 	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
         	<?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
        		<?php if(isset($_SESSION[''])){?>
@@ -87,7 +87,7 @@ echo "</center>";
 
 		?>  
       </div>
-<center>
+
 <h1>Payment</h1>
 	<table style="width:54%;" >
 		<tr>

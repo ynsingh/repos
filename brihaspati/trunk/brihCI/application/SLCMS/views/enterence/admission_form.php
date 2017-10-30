@@ -18,39 +18,13 @@
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 
-    <script>
-        /*$(document).ready(function(){
-    
-            $('.keyup-email').keyup(function() {
-                $('span.error-keyup-7').remove();
-                var inputVal = $(this).val();
-                var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-                if(!emailReg.test(inputVal)) {
-                    $(this).after('<span class="error error-keyup-7"><font color="red">Invalid email format.</font></span>');
-                }
-            });
-        
-            $('.keyup-numeric').keyup(function() {
-                $('span.error-keyup-1').hide();
-                var inputVal = $(this).val();
-                //var numericReg = /^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/;
-                var numericReg = /^\d*[0-9](|\d*[0-9]|,\d*[0-9])?$/;
-                if(!numericReg.test(inputVal)) {
-                    $(this).after('<span class="error error-keyup-1"><font color="red">Numeric integer only.</font></span>');
-                }
-            });
-
-
-        });*/
-    </script> 
+</head>
+<body>
 <?php
     $this->load->view('template/header'); ?></br>
 <?php $this->load->view('enterence/enterence_head'); ?>
-
-</head>
-<body>
 <center>
-       <div align="left" style="margin-left:30px;width:1700px;font-size:20px;">
+       <div align="left" style="margin-left:30px;70%;font-size:20px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;" class="">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -68,7 +42,8 @@
 
 <center>
     <form action="<?php echo site_url('Enterence/prtadmission_form'); ?>" method="POST" >
-    <table style="border:0px solid black; margin-top:50px;width:25%;">
+	<h2>Re-print admission form</h2>
+    <table style="border:0px solid black; margin-top:0px;width:30%;">
 
         <tr><td>
         <label for="text">Email Id :</label></td>
@@ -117,7 +92,7 @@
 				<option value="<?php echo $data->prg_id;?>"><?php echo $data->prg_name.'('.$data->prg_branch.')'; ?></option>
 				<?php }?>
 	  		</select>
-	<br>
+	
         </td></tr>
         <tr><td align="center" colspan="2"><b><i></i></b></td></tr> 
         <tr><td>
@@ -129,7 +104,7 @@
         <tr>
         <td></td>
         <td>
-        <button name="submit" >Submit</button>
+        <button name="submit" style="height:30px;font-size:20px;">Submit</button>
      
         </td></tr>
     

@@ -18,10 +18,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <style type="text/css">
 label{font-size:18px;}
-input[type='text']{font-size:17px;height:30px;background-color:white;width:97%;}
+input[type='text']{font-size:17px;height:30px;background-color:white;width:100%;}
 input[type='email']{font-size:17px;height:30px;background-color:white;}
 
-
+#filltoo{font-size:20px;}
 tr td{font-size:15px;}
 thead tr th{background-color:#38B0DE;color:white;font-weight:bold;font-size:15px;}
 select{width:100%;font-size:17px;height:30px;font-weight:bold;}
@@ -29,18 +29,37 @@ select{width:100%;font-size:17px;height:30px;font-weight:bold;}
 </style>
 
 <script type="text/javascript">
-/*
-function change_getcat(){
-
-	var xmlhttp = new XMLHttpRequest();
-
-	xmlhttp.open("GET","<?php //echo site_url('student/getcatbr'); ?>?catbranch="+document.getElementById("register_name").value,false);
-
-	xmlhttp.send(null);
-	
-	document.getElementById("Actlocation").innerHTML = xmlhttp.responseText; 
-	}
-*/
+function filladd()
+{
+	 if(filltoo.checked == true) 
+     	{
+             var street11 =document.getElementById("street").value;
+	     var city11 =document.getElementById("city").value;
+	     var state11 =document.getElementById("state").value;
+             var pcode11 =document.getElementById("pcode").value;
+	     var country11 =document.getElementById("country").value; 
+           
+            var copystreet =street11;
+            var copycity =city11;
+            var copystate =state11;
+	    var copypcode =pcode11;
+            var copycount =country11;	
+            
+            document.getElementById("street1").value = copystreet;
+            document.getElementById("city1").value = copycity;
+            document.getElementById("state1").value = copystate;
+	    document.getElementById("pcode1").value = copypcode;
+            document.getElementById("country1").value = copycount;	
+	 }
+	 else if(filltoo.checked == false)
+	 {
+		 document.getElementById("street1").value='';
+		 document.getElementById("city1").value='';
+		 document.getElementById("state1").value='';
+		 document.getElementById("pcode1").value='';
+		 document.getElementById("country1").value='';
+	 }
+}
 </script>
 </head>
 <body>
@@ -63,10 +82,10 @@ echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;widt
 echo "<div>";	
 }
 
-echo "</center>";
+
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"margin-left:30px;width:1700px;font-size:18px;height:10px;border:1px solid white;\" class=\"isa_success\">";			
+	echo "<table style=\"70%;font-size:18px;height:10px;border:1px solid white;\" class=\"isa_success\">";			
 		echo "<tr>";
 			echo "<td style='font-size:18px;float:left;'>";
 				echo $_SESSION['success'];
@@ -88,8 +107,10 @@ echo "</center>";
 		//echo "</div>";
 	echo "</table>";
 	}
+echo "</center>";
 ?>
-	<div align="left" style="margin-left:30px;width:1700px;font-size:18px;">
+<center>
+	<div align="left" style="width:70%;font-size:18px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;" class="">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -111,22 +132,24 @@ echo "</center>";
 	<?php //$this->load->view('student/stuStepshead');?>
 	</br> 
 
-<center>
+
 
 <form action="<?php echo site_url('enterence/step_one'); ?>"  method="POST">
 
-	<table style="width:65%;margin-left:5%;">
+	<table style="width:70%;">
 		<thead><tr><th align=left colspan="8" style="font-size:22px;">Personal</th></tr></thead>
 		<tr height=10></tr>
 	    <tr>	
 		<td>	
 			<label for="nnumber">Course Applied for</label></br>
-			<select name="entcouname" class="form-control" id="register_name" style="height:37px;font-size:18px;font-weight:bold;">
+			<!---<select name="entcouname" class="form-control" id="register_name" style="height:37px;font-size:18px;font-weight:bold;">
 			<option  disabled selected>Courses</option>
 				<?php foreach($this->prgname as $data){?>
 				<option value="<?php echo $data->prg_id;?>"><?php echo $data->prg_name.'('.$data->prg_branch.')'; ?></option>
 				<?php }?>
-	  		</select>
+	  		</select>--->
+			
+			<input type="text" name="entcouname" placeholder="Enter Your Email" value="<?php echo $prgname;?>" readonly/>
 		<td/>
 				
 		<td>	<!---<span style="color:red;"><?php echo form_error('Scenters');?></span>--->
@@ -278,71 +301,78 @@ echo "</center>";
 	</tr>
 	</table>
 
-<table>
-	
+<table style="width:70%;">
+	<thead><tr><th align=left style="font-size:22px;" colspan=2>Parmanent and Correspondence Address</th></tr></thead>
+	<thead><tr><th align=right colspan=2  style="font-size:18px;">
+		<input type="checkbox" value="" name="filltoo" id="filltoo" onclick="filladd()"/>Correspondence Address same as Parmanent Address<br/>
+		</th></tr></thead>
 	<tr>
-		<td></td>	
+		<td>
+		<table style="width:100%;">
+				<tr><td style="background-color:black;color:white;font-size:20px;text-align:center;">Parmanent Address</td></tr>
+		<tr height=10></tr>
+			<tr><td>
+			<label for="nnumber">Street</label></br>
+			<input type="text" name="entpstreet" placeholder="Enter Your Street" id="street" value="<?php echo isset($_POST["entpstreet"]) ? $_POST["entpstreet"] : ''; ?>">
+				   </td>
+			</tr><tr>		
+			<td><label for="nnumber">City</label></br>
+			<input type="text" name="entpcity" placeholder="Enter Your City" id="city" value="<?php echo isset($_POST["entpcity"]) ? $_POST["entpcity"] : ''; ?>"></td>
+			</tr><tr>
+		
+			<td><label for="nnumber">State</label></br>
+			<input type="text" name="entpstate" placeholder="Enter Your State" id="state" value="<?php echo isset($_POST["entpstate"]) ? $_POST["entpstate"] : ''; ?>"></td></tr><tr>
+			<td><label for="nnumber">Postal Code</label></br>
+			<input type="text" name="entpcode" placeholder="Enter Your Postal Code" id="pcode" value="<?php echo isset($_POST["entpcode"]) ? $_POST["entpcode"] : ''; ?>"></td></tr>
+			
+	
+			<tr>
+				<td><label for="nnumber">Country</label></br>
+			<input type="text" name="entpcountry" placeholder="Enter Your Country" id="country" value="<?php echo isset($_POST["entpcountry"]) ? $_POST["entpcountry"] : ''; ?>"></td>
+			
+			
+			
+</table>
+		</td>
+
+		<td>
+
+		<table style="width:100%;">
+		
+
+				<tr><td style="background-color:black;color:white;font-size:20px;text-align:center;" >Correspondence Address</td></tr>
+		<tr height=10></tr>
+				<tr><td>
+					<label for="nnumber">Street</label></br>
+					<input type="text" name="entcostreet" placeholder="Enter Your Street" id="street1" value="<?php echo isset($_POST["entcostreet"]) ? $_POST["entcostreet"] : ''; ?>">
+				   </td>
+			</tr><tr>		
+			<td><label for="nnumber">City</label></br>
+			<input type="text" name="entcocity" placeholder="Enter Your City" id="city1" value="<?php echo isset($_POST["entcocity"]) ? $_POST["entcocity"] : ''; ?>"></td>
+			</tr><tr>
+		
+			<td><label for="nnumber">State</label></br>
+			<input type="text" name="entcostate" placeholder="Enter Your State" id="state1" value="<?php echo isset($_POST["entcostate"]) ? $_POST["entcostate"] : ''; ?>"></td></tr><tr>
+			<td><label for="nnumber">Postal Code</label></br>
+			<input type="text" name="entpcode" placeholder="Enter Your Postal Code" id="pcode1" value="<?php echo isset($_POST["entpcode"]) ? $_POST["entpcode"] : ''; ?>"></td></tr>
+			
+	
+			<tr>
+				<td><label for="nnumber">Country</label></br>
+			<input type="text" name="entcocountry" placeholder="Enter Your Country" id="country1" value="<?php echo isset($_POST["entcocountry"]) ? $_POST["entcocountry"] : ''; ?>"></td>
+			
+			
+			
+</table>
+		</td>		
 	</tr>
 </table>
 	
-	<table style="width:65%;margin-left:5%;">
-		<thead><tr><th align=left colspan="8" style="font-size:22px;">Permanant and Correspondence Address</th></tr></thead>
-
-		<tr>
-			<td align=center>
-				<tr><td style="background-color:black;color:white;font-size:18px;text-align:center;" colspan="8">Permanant Address</td></tr>
-		<tr height=10></tr>
-				<tr><td>
-					<label for="nnumber">Street</label></br>
-					<input type="text" name="entpstreet" placeholder="Enter Your Street" value="<?php echo isset($_POST["entpstreet"]) ? $_POST["entpstreet"] : ''; ?>">
-				   </td>		
-			<td><label for="nnumber">City</label></br>
-			<input type="text" name="entpcity" placeholder="Enter Your City" value="<?php echo isset($_POST["entpcity"]) ? $_POST["entpcity"] : ''; ?>"></td>
-			
-
-			<td><label for="nnumber">State</label></br>
-			<input type="text" name="entpstate" placeholder="Enter Your State" value="<?php echo isset($_POST["entpstate"]) ? $_POST["entpstate"] : ''; ?>"></td>
-			<td><label for="nnumber">Postal Code</label></br>
-			<input type="text" name="entpcode" placeholder="Enter Your Postal Code" value="<?php echo isset($_POST["entpcode"]) ? $_POST["entpcode"] : ''; ?>"></td>
-			</tr>	
-<tr height=10></tr>
-			<tr>
-				<td><label for="nnumber">Country</label></br>
-			<input type="text" name="entpcountry" placeholder="Enter Your Country" value="<?php echo isset($_POST["entpcountry"]) ? $_POST["entpcountry"] : ''; ?>"></td>
-			</tr>
-			
-			</td>
+	
 
 
-<tr height=10></tr>
-			<td align=center>
-				<tr><td  style="background-color:black;color:white;font-size:18px;text-align:center;" colspan="8">Correspondence Address</td></tr>
-				<tr height=10></tr>
-				<tr><td>
-					<label for="nnumber">Street</label></br>
-					<input type="text" name="entcostreet" placeholder="Enter Your Street" value="<?php echo isset($_POST["entcostreet"]) ? $_POST["entcostreet"] : ''; ?>">
-				   </td>		
-			<td><label for="nnumber">City</label></br>
-			<input type="text" name="entcocity" placeholder="Enter Your City" value="<?php echo isset($_POST["entcocity"]) ? $_POST["entcocity"] : ''; ?>"></td>
-			
-
-			<td><label for="nnumber">State</label></br>
-			<input type="text" name="entcostate" placeholder="Enter Your State" value="<?php echo isset($_POST["entcostate"]) ? $_POST["entcostate"] : ''; ?>"></td>
-			<td><label for="nnumber">Postal Code</label></br>
-			<input type="text" name="entcocode" placeholder="Enter Your Postal Code" value="<?php echo isset($_POST["entcocode"]) ? $_POST["entcocode"] : ''; ?>"></td>
-			</tr>	
-		<tr height=10></tr>
-			<tr>
-				<td><label for="nnumber">Country</label></br>
-			<input type="text" name="entcocountry" placeholder="Enter Your Country" value="<?php echo isset($_POST["entcocountry"]) ? $_POST["entcocountry"] : ''; ?>"></td>
-			</tr>
-			
-			</td>
-		</tr>
-		
-	</table>
 </br></br>
-	<table style="width:65%;margin-left:5%;">
+	<table style="width:70%;">
 		<thead><tr><th align=left colspan="8" style="font-size:22px;">Family Detail</th></tr></thead>
 		<tr height=10></tr>
 		<tr>

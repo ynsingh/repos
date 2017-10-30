@@ -7,13 +7,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<title>Welcome </title>
 	 <link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
          <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/helpdoc.css">
+	
 	<style>
 		table,th, td{
    		 border: 0px solid black;
 	}
+		
 	</style>
 </head>
-<body>
+<body id="body">
 
 
 <div>
@@ -50,7 +52,7 @@ echo "</center>"; ?>
      </tr>
 </table>
 
-<nav style="width:68.7%;margin-top:-1%;border:0px solid black;"><h1 style="padding: 5px 25px;">Welcome</h1></nav>
+<nav style="width:70.2%;margin-top:-1%;border:0px solid black;"><h2 style="padding: 5px 25px;text-align:center;">Welcome</h2></nav>
 
 <?php $this->load->view('enterence/enterence_head');?>
 </center>
@@ -94,7 +96,7 @@ echo "</center>"; ?>
 
 		<td align=center style="width:45%;" valign="top">
 			<table style="width:100%;">
-				<tr style="background-color:#38B0DE;color:white;font-size:21px;font-family: Times New Roman, Times, serif;">
+				<tr style="background-color:#38B0DE;color:white;font-size:21px;">
 				<td style="border:2px solid white;" align=center>Announcement</td></tr>
 					<tr>
 						<td></td>
@@ -109,21 +111,21 @@ echo "</center>"; ?>
         		<table>
 			<tr>
 			<td align=left>	
-				<label for="username">Username</label></br>	
-        			<input type="text" name="username" size="25%" />
+				<label>Username</label></br>	
+        			<input type="text" name="username" size="33%" style="height:33px;"/>
 			</td>
 			</tr>
 				<tr>
-				<td align=left><label for="password">Password</label></br>
-        			<input type="password" name="password" size="25%" /></td></tr>
+				<td align=left><label>Password</label></br>
+        			<input type="password" name="password" size="33%" style="height:33px;" placeholder="********"/></td></tr>
 				<tr>
 				<td>
-        			<button type="submit" style="font-size:17px;width:40%;">Login</button>
+        			<button type="submit" style="" id="button">Login</button>
 		
-				<a href="<?php echo site_url('Student/student_step0');?>" style="text-decoration:none;" title="Click to open student detail form">
+				<a href="<?php echo site_url('Student/student_step0');?>" style="" title="Click to open student detail form">
 				<input type="button" value="New Student" style="font-size:17px;width:58%;"></a></td></tr>
 			<tr>
-               			 <td><a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="text-decoration:none;" title="Forgot Password">
+               			 <td><a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="" title="Forgot Password">
                 		<input type="button" value="Forgot Password" style="font-size:17px;width:100%;"></a></td>
 			</tr>
 				

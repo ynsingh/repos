@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body style="">
-				
+<?php $this->load->view('template/watermark.php');?>				
 <img src="uploads/logo/logo2.jpg" alt="logo" style="width:100%;height:70px;">
 <center><h3>Hall Ticket For All India Enterance Examination - <?php echo $acadyear;?></h3></center>
 					

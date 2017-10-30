@@ -47,15 +47,14 @@ select{width:100%;font-size:17px;height:30px;font-weight:bold;}
 echo "<center>";
 
 	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;'>";
+echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:70%;height:30px;color:green;'>";
 	echo $this->session->flashdata('msg');
 echo "<div>";	
 }
 
-echo "</center>";
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"margin-left:30px;width:1700px;font-size:18px;height:10px;border:1px solid white;\" class=\"isa_success\">";			
+	echo "<table style=\"margin-left:30px;width:70%;font-size:18px;height:10px;border:1px solid white;\" class=\"isa_success\">";			
 		echo "<tr>";
 			echo "<td style='font-size:18px;float:left;'>";
 				echo $_SESSION['success'];
@@ -77,8 +76,10 @@ echo "</center>";
 		//echo "</div>";
 	echo "</table>";
 	}
+echo "</center>";
 ?>   
-	<div align="left" style="margin-left:30px;width:1700px;font-size:18px;">
+<center>
+	<div align="left" style="width:70%;font-size:18px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;" class="">','</div>');?>
         <?php if(isset($_SESSION[''])){?>
@@ -93,18 +94,14 @@ echo "</center>";
         };
 	?>  
    </div>
-	</br> 
-	<?php //$this->load->view('student/stuStepshead');?>
+</center>
 	</br> 
 <center>
 	  <table  style="background-color:#f1f1f1;" align="">
 
-<center>
+
 <form action="<?php echo site_url('enterence/step_two'); ?>"  method="POST">
-
-	
-	<table style="margin-top:20px;width:80%;border:2px solid black;">
-
+	<table style="margin-top:20px;width:70%;border:2px solid black;">
 		<thead>
 			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Education Details</th>
 		</thead>
@@ -204,7 +201,7 @@ echo "</center>";
 	<!---------------------------------Enterance exam file add--------------------------------------->
 		<?php $this->load->view('enterence/entrance_exam');?>	
 		
-	<table style="margin-top:50px;width:80%;border:2px solid black;">
+	<table style="margin-top:50px;width:85%;border:2px solid black;">
 		<thead>
 			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Details if any employment</th>
 		</thead>

@@ -4,24 +4,9 @@
 --------------------------------------------------------->
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/studentNavbar.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
 <style>
 
-.currentpage {
-        font-weight:bold;
-	/*color:#333333; background-color:#38B0DE;background-color:grey;*/  
-	color:white;background-color:#38B0DE;
-  	 }
-
-.steps{background-color:#cacaca;width:50%;height:50px;}
-.stepalign td{text-align:center;font-size:20px;}
-.active {
-    font-weight: bold;color:white;background-color:#38B0DE;
-}
-
-.active1 {
-    font-weight: bold;color:white;background-color:black;
-}
 
 </style>
 </head>

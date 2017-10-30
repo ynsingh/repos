@@ -20,13 +20,12 @@
 
 </head>
 <body>
+
 <center>
 <?php
     $this->load->view('template/header'); ?></br>
 
    <?php $this->load->view('enterence/enterence_head');?>
-	
-</br>
 	
        <div align="left" style="width:72%;font-size:20px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -48,7 +47,7 @@
 
     <form action="<?php echo site_url('enterence/stu_hallticket'); ?>" method="POST" >
     <table style="border:0px solid black; margin-top:0px;width:30%;">
-	<h1>Download Hall Ticket</h1>
+	<h2>Download Hall Ticket</h2>
 
         <tr><td>
         <label for="text">Email Id :</label></td>
@@ -97,9 +96,9 @@
 				<option value="<?php echo $data->prg_id;?>"><?php echo $data->prg_name.'('.$data->prg_branch.')'; ?></option>
 				<?php }?>
 	  		</select>
-	<br>
+	
         </td></tr>
-        <tr><td align="center" colspan="2"><b><i></i></b></td></tr> 
+        	
         <tr><td>
         <label for="text">Verification Code :</label></td>
         </td><td>
