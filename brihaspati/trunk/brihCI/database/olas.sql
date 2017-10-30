@@ -448,6 +448,16 @@ CREATE TABLE `admissionstep` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `barchart`
+--
+CREATE TABLE `barchart` (
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `pdate` varchar(255) NOT NULL,
+  `pval` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `category`
 --
 
@@ -1852,6 +1862,7 @@ ALTER TABLE `subject`
 --
 ALTER TABLE `subject_paper`
   MODIFY `subp_id` int(11) NOT NULL AUTO_INCREMENT;
+
 
 
 INSERT INTO `countries` (`id`, `sortname`, `name`, `phonecode`) VALUES
@@ -54562,6 +54573,7 @@ INSERT INTO `cities` (`id`, `name`, `state_id`) VALUES
 (48312, 'Lewisburg', 3976),
 (48313, 'Ravenswood', 3976),
 (48314, 'Summersville', 3976);
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

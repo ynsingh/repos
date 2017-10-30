@@ -550,5 +550,55 @@ class Enterenceadmin extends CI_Controller
                 $pdf = $this->pdf->output();
 		file_put_contents($path, $pdf); 
 	}
+                    /** Graphical Reports **/
+
+    /* bar chart b/w form submission vs time */
+
+    public function viewgraphicalreport(){
+        $this->load->model('chart_model', 'chart1');
+        //$this->load->model('chart_modelnew', 'chart1');
+        $this->chart1->truncatetable('barchart');
+
+        $currdate = date("Y-m-d");
+        str_replace("-","",$currdate);
+
+        // get application start and end date of current academic year
+
+        $acadyear = $this->usermodel->getcurrentAcadYear();
+        $startdate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_startdate;
+        $enddate = $this->commodel->get_listrow('admissionopen','admop_acadyear',$acadyear)->row()->admop_lastdate;
+        $enddate = date("Y-m-d",strtotime($enddate));
+
+        if ($enddate < $currdate)
+            $performancedate = $enddate;
+        else
+            $performancedate = $currdate;
+
+        $noofrec = array();
+        $daterec = array();
+        $start_date = date('Y-m-d', strtotime($performancedate .' -10 day'));
+
+        for($i = 0; $i < 10 ; $i++)
+        {
+            $results = $this->chart1->get_chart_data($start_date);
+            $istart_date = date("Ymd", strtotime($start_date));
+            $insdata = array('pdate'=>$istart_date,'pval'=>$results);
+            $this->commodel->insertrec('barchart', $insdata);
+
+            $next_date = date('Y-m-d', strtotime($start_date .' +1 day'));
+            $start_date =  $next_date;
+        }
+            $insdata = array('pdate'=>'20171025','pval'=>15);
+            $this->commodel->insertrec('barchart', $insdata);
+        
+
+        $results1 = $this->chart1->get_chart_data1();
+        $data['chart_data1'] = $results1['chart_data1'];
+        $data['min_date'] = $results1['min_date'];
+        $data['max_date'] = $results1['max_date'];
+
+        $this->load->view('enterenceadmin/graphicalreports',$data);
+   }
+
 
 }//end class
