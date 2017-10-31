@@ -11,6 +11,7 @@
  * @author Vijay(vijay.pal428@gmail.com)       add program fees
  * @author Raju Kamal(kamalraju8@gmail.com)    category program 
  * @author Neha Khullar(nehukhullar@gmail.com) add bankdetails
+ * @author Neha Khullar(nehukhullar@gmail.com) department Archive
  * @author Abhay Throne(kumar.abhay.4187@gmail.com)[bank detail archive]
  */
  
@@ -1202,6 +1203,28 @@ class Setup extends CI_Controller
                 $logmessage = $logmessage ." update dept short " .$dept_data->dept_short. " changed by " .$departmentshort;
             if($dept_data->dept_description != $departmentdescription)
                 $logmessage = $logmessage ." update dept description " .$dept_data->dept_description. " changed by " .$departmentdescription;
+       // insert data into department archive table
+        $insertdata= array(
+                 'depta_deptid'=>$dept_data->dept_id,
+                 'depta_name'=>$dept_data->dept_name,
+                 'depta_code'=>$dept_data->dept_code,
+                 'depta_uoid'=>$dept_data->dept_uoid,
+                 'depta_short'=>$dept_data->dept_short,
+                 'depta_description'=>$dept_data->dept_description,
+                 'depta_schoolname'=>ucwords(strtolower($dept_data->dept_schoolname)),
+                 'depta_schoolcode'=>$dept_data->dept_schoolcode,
+                 'depta_sccode'=>$dept_data->dept_sccode,
+                 'depta_orgcode'=>$dept_data->dept_orgcode,
+                 'creatorid'=>'SIS - '. $this->session->userdata('username'),
+                 'createdate'=>date('y-m-d'),
+        );
+            $deptaflag=$this->common_model->insertrec('Department_archive', $insertdata);
+            if(!$deptalag)
+            {
+                      $this->logger->write_dblogmessage("error","Error in insert in Department archive ", "Error in Department archive record insert". $logmessage );
+            }else{
+                     $this->logger->write_dblogmessage("insert","Insert Department archive", "Department headwise record inserted in department archive successfully..". $logmessage );
+            }
 
             $update_data = array(
                'dept_schoolcode' => $schoolcode,
@@ -2549,7 +2572,7 @@ class Setup extends CI_Controller
                		redirect('setup/dispseatsetting/');
 	                }
 
-		}//check for 100 percent
+		}//check for 100 percent*/
         }//else
     	redirect('setup/editseatsetting/');
     }//function end

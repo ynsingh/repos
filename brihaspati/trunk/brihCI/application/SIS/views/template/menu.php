@@ -209,6 +209,11 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('archive/bankdetaila', 'Bank Details Archive', array('title' => 'Bank Details Archive'));
 					echo "</li>";
+
+                                        echo "<li>";
+                                                echo anchor('archive/departmenta', 'Department Archive', array('title' => 'Department Archive'));
+                                        echo "</li>";
+
 				echo "</ul>";
 			echo "</li>";
 			echo "<li>";

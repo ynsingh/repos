@@ -1482,8 +1482,8 @@ public function schemedept(){
 
         $this->form_validation->set_rules('authorities',' Authority Name','trim|xss_clean|required');
         $this->form_validation->set_rules('edrpuser','User Name','trim|xss_clean|required');
-        $this->form_validation->set_rules('map date','From Date','trim|xss_clean');
-        $this->form_validation->set_rules('till date','Till Date','trim|xss_clean');
+        $this->form_validation->set_rules('map_date','From Date','trim|xss_clean|required');
+        $this->form_validation->set_rules('till_date','Till Date','trim|xss_clean|required');
         $this->form_validation->set_rules('authority_type','Authority Type','trim|xss_clean|required');
         
 

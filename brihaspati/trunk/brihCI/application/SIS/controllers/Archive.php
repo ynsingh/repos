@@ -89,10 +89,18 @@ class Archive extends CI_Controller
   	}
 	/*this function has been created for display the bank deails archive records */
 	public function bankdetaila() {
-			$this->result = $this->sismodel->get_list('bankprofile_archive');
-			$this->logger->write_logmessage("view"," View bankdetaila archive ", "bankdetail archive details...");
+		$this->result = $this->sismodel->get_list('bankprofile_archive');
+		$this->logger->write_logmessage("view"," View bankdetaila archive ", "bankdetail archive details...");
         	$this->logger->write_dblogmessage("view"," View bankdetaila archive", "bankdetail archive details...");
-			$this->load->view('archive/bankdetaila');
+		$this->load->view('archive/bankdetaila');
 	}
+	/*this function has been created for display the Department archive records */
+        public function departmenta(){
+                $this->deptaresult = $this->common_model->get_list('Department_archive');
+                $this->logger->write_logmessage("view"," View Department archive ", "Department archive details...");
+                $this->logger->write_dblogmessage("view"," View Department archive", "Department archive details...");
+                $this->load->view('archive/departmenta');
+        }
+
 }
 

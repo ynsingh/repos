@@ -222,6 +222,9 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
                                                 echo anchor('archive/examcentera', 'Exam Center Archive', array('title' => 'Exam Center Archive'));
                                         echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('archive/departmenta', 'Department Archive', array('title' => 'Department Archive'));
+                                        echo "</li>";
 
 				echo "</ul>";
 			echo "</li>";

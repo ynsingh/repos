@@ -63,5 +63,13 @@ class Archive extends CI_Controller
         	$this->logger->write_dblogmessage("view"," View Authority archive", "Authority archive details...");
 	        $this->load->view('archive/authoritya');
 	}
+        /*this function has been created for display the Department archive records */
+        public function departmenta(){
+                $this->deptaresult = $this->common_model->get_list('Department_archive');
+                $this->logger->write_logmessage("view"," View Department archive ", "Department archive details...");
+                $this->logger->write_dblogmessage("view"," View Department archive", "Department archive details...");
+                $this->load->view('archive/departmenta');
+        }
+
 }
 

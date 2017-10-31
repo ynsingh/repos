@@ -167,6 +167,10 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('archive/authoritya', 'Authority Archive', array('title' => 'Authority Archive'));
 					echo "</li>";
+                                        echo "<li>";
+                                                echo anchor('archive/departmenta', 'Department Archive', array('title' => 'Department Archive'));
+                                        echo "</li>";
+
 				echo "</ul>";
 			echo "</li>";
 			echo "<li>";
