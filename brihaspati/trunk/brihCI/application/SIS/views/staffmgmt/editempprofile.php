@@ -390,12 +390,12 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             <?php $this->load->view('template/menu');?>
         
         </div>
-        <table style="margin-left:1%;width:97%;"><tr><td>
+        <table style="margin-left:4%;width:97%;"><tr><td>
         <?php echo anchor('staffmgmt/employeelist/', "View Employee List" ,array('title' => 'Employeen List ' , 'class' => 'top_parent'));?>
         </td>
         </tr>
         </table>
-        <div align="left" style="margin-left:2%;width:95%;">
+        <div align="left" style="margin-left:5%;width:90%;">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -414,7 +414,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
         </div>
         <div>
         <?php //echo "testing ====>".$editdata->emp_type_code.$editdata->emp_gender.$editdata->emp_worktype;?>
-        <table style="margin-left:2%; margin-right:2%; width:97%; border:1px solid gray;" border=1 class="TFtable">
+        <table style="margin-left:5%;width:90%; border:1px solid gray;" class="TFtable">
         <?php //foreach ($editemp_data as $data):  ?>
             
             <?php echo form_open_multipart('staffmgmt/update_profile/' .$editdata->emp_id);?>

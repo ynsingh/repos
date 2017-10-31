@@ -654,6 +654,7 @@ class Staffmgmt extends CI_Controller
                 
                 );  
                 $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $data);
+               
                 /* write code for update staff_position table and staff_position_archive.*/
                 if(!$usrinputtfr_flag){
                     $this->logger->write_logmessage("error","Error in Staff Transfer and Posting", "Error in Staff Transfer and Posting" );
@@ -666,8 +667,10 @@ class Staffmgmt extends CI_Controller
                     $empname=$this->sismodel->get_listspfic1('employee_master', 'emp_name', 'emp_id', $_POST['empname'])->emp_name;
                     $deptto=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$_POST['deptto'])->dept_name; 
                     $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
-                    $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_staffname',$id)->uit_registrarname;
-                    $this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_staffname',$id)->uit_desig;
+                   // $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_staffname',$id)->uit_registrarname;
+                    //$this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_staffname',$id)->uit_desig;
+                    $this->regname=$this->input->post('registrarname');
+                    $this->uitdesig=$this->input->post('designation');
                     $mail_sent_to=$_POST['emailsentto'];
                    // $mailarray=explode(',',$mail_sent_to);
                     //if sucess send mail to user with transfer order copy 
@@ -675,8 +678,9 @@ class Staffmgmt extends CI_Controller
                     $mess='OFFICE ORDER<br/> Dear'.$empname.'This is to inform you that you will be transferred at'.$deptto.'with immediate effect.<br/>
                     Please find the attachment of transfer order copy<br/> Wish you all the best<br/>'.$this->orgname.'<br/>
                     '.$this->regname.'<br/>'.$this->uitdesig;
-                    $attachment=transferordercopy($_POST['empname']);
-                    // $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,'$attachment','Sis');
+                    $attachment=$this->gentransferordertpdf($_POST['empname']);
+                   // $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,$attachment,'All');
+                   // $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,'','Sis');
                     if($this->mailstoperson){
                         //echo "in if part mail";
                         $mailmsg='Transfer and Promotion order ....Mail send successfully';
@@ -692,7 +696,7 @@ class Staffmgmt extends CI_Controller
                     $this->logger->write_logmessage("insert","Staff Transfer and Posting", " Employee transfer record insert successfully ");
                     $this->logger->write_dblogmessage("update","Staff Transfer and Posting", "Employee transfer record insert successfully");
                     $this->session->set_flashdata('success', 'Employee transfer record insert successfully ......'." "."["." "."Employee PF NO:"." ".$emppfno." and "."Employee Name:"." ".$empname." "."]");
-                    redirect('staffmgmt/stafftransfer');
+                    redirect('staffmgmt/stafftransferlist');
                 }//elseof form validation
             }//else    
         }//ifpost
@@ -724,7 +728,7 @@ class Staffmgmt extends CI_Controller
             $dept_data = $resultsc->result();
             if(count($dept_data)>0){
                 $dept_select_box = '';
-                $dept_select_box.= '<option value="">-------Select Department --------';
+                $dept_select_box.= '<option value="">---------------------- Select Department -------------------';
                 foreach($dept_data as $dept){
                         $dept_select_box.='<option value='.$dept->dept_id.'>'.$dept->dept_name;
                 }
@@ -758,6 +762,7 @@ class Staffmgmt extends CI_Controller
         $this->data=$this->sismodel->get_listrow('user_input_transfer','uit_staffname',$id);
         $spec_data['detail'] = $this->data->row();
         $this->load->library('pdf');
+        $this->pdf->set_paper("A4", "portrait");
         $this->pdf->load_view('staffmgmt/transferordercopy',$spec_data);
         $this->pdf->render();
         $this->pdf->stream("transferorder.pdf");
@@ -1373,5 +1378,44 @@ class Staffmgmt extends CI_Controller
                         
     }
     /*********************************** closer Employee type from staff position*********************************************/   
-       
+    
+    /*************************************Start transfer order pdf *****************************************************************************/
+    
+    public function gentransferordertpdf($empid){
+        
+        $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
+        $this->orgaddres=$this->commodel->get_listspfic1('org_profile','org_address1','org_id',1)->org_address1;
+        $this->orgpincode=$this->commodel->get_listspfic1('org_profile','org_pincode','org_id',1)->org_pincode;
+        $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_staffname',$empid)->uit_registrarname;
+        $this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_staffname',$empid)->uit_desig;
+        $this->data=$this->sismodel->get_listrow('user_input_transfer','uit_staffname',$empid);
+        $spec_data['detail'] = $this->data->row();
+        $year=date('Y');
+        // move file to directory code for photo
+	$desired_dir = 'uploads/SIS/transferorder/'.$year;
+        // Create directory if it does not exist
+        if(is_dir($desired_dir)==false){
+            mkdir("$desired_dir", 0700);
+        }
+        $emp_pf=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id',$empid)->emp_code;
+       	//add pdf code to store and view pdf file
+	$temp = $this->load->view('staffmgmt/transferordercopy', $spec_data, TRUE);
+	$pth='uploads/SIS/transferorder/'.$year.'/'.$emp_pf.'.pdf';
+	$this->genpdf($temp,$pth);
+    }
+    public function genpdf($content,$path){
+	$this->load->library('pdf');
+	$this->pdf = new DOMPDF();	
+     	// pass html to dompdf object
+    	$this->pdf->load_html($content);
+	$this->pdf->set_paper("A4", "portrait");
+        $this->pdf->render();
+	//set paper size
+        $pdf = $this->pdf->output();
+	file_put_contents($path, $pdf); 
+    }
+    
+    
+
+    /************************************* closer transfer order pdf *****************************************************************************/
 }    
