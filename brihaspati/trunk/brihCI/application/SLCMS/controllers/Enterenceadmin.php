@@ -588,9 +588,9 @@ class Enterenceadmin extends CI_Controller
             $next_date = date('Y-m-d', strtotime($start_date .' +1 day'));
             $start_date =  $next_date;
         }
-            $insdata = array('pdate'=>'20171025','pval'=>15);
+/*            $insdata = array('pdate'=>'20171025','pval'=>15);
             $this->commodel->insertrec('barchart', $insdata);
-        
+  */      
 
         $results1 = $this->chart1->get_chart_data1();
         $data['chart_data1'] = $results1['chart_data1'];

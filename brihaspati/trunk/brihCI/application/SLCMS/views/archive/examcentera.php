@@ -47,7 +47,7 @@
         <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
             <thead>
                 <tr align="center">
-<thead><th>Sr.No</th><th>Enterance Exam Center ID</th><th>Enterance Exam Center Code</th><th>Enterance Exam Center Name</th><th>Enterance Exam Center Address</th><th>Enterance Exam Center State</th><th>Enterance Exam Center City</th><th>Enterance Exam Center Incharge</th><th>Enterance Exam Center Number of Room</th><th>Enterance Exam Center Capacity in Room</th><th>Enterance Exam Center Total Capacity</th><th>Enterance Exam Center Contact No</th><th>Enterance Exam Center Contact Email</th><th>Enterance Exam Center Archive Name</th><th>Enterance Exam Center Archive Date</th></tr></thead><tbody>
+<thead><th>Sr.No</th><th>Entrance Exam Center ID</th><th>Entrance Exam Center Code</th><th>Entrance Exam Center Name</th><th>Entrance Exam Center Address</th><th>Entrance Exam Center State</th><th>Entrance Exam Center City</th><th>Entrance Exam Center Incharge</th><th>Entrance Exam Center Number of Room</th><th>Entrance Exam Center Capacity in Room</th><th>Entrance Exam Center Total Capacity</th><th>Entrance Exam Center Contact No</th><th>Entrance Exam Center Contact Email</th><th>Entrance Exam Center Archive Name</th><th>Entrance Exam Center Archive Date</th></tr></thead><tbody>
 <?php
         $count =0;
         if( count($this->exresult) ):

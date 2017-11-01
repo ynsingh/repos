@@ -33,7 +33,7 @@ tr td{font-size:20px;}
 			<label for="nnumber"></label></br>
 			<select name="attexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
-			<option selected="true" disabled="disabled" style="font-size:18px;">Select Enterence Exam Center</option>
+			<option selected="true" disabled="disabled" style="font-size:18px;">Select Entrance Exam Center</option>
 				<?php foreach($this->examcenter as $row): ?>	
 					<option value="<?php echo $row->eec_name;?>"><?php echo $row->eec_name; ?></option>
 				<?php endforeach; ?>
@@ -61,7 +61,7 @@ tr td{font-size:20px;}
 		?>
 					<td style="border:1px solid black;">
 						<a href="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/attendence/'.$centerid.'.pdf');?>" target=_blank style="font-size:20px;">
-		<?php echo $cname;?>  Attendence Sheet</br>
+		<?php echo $cname;?>  Attendance Sheet</br>
 							<embed src="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/attendence/'.$centerid.'.pdf');?>" type="application/pdf"   height="350px" width="100%">
 						</a>	
 					</td>	

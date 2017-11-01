@@ -40,7 +40,7 @@ function myFunction() {
 			<label for="nnumber"></label></br>
 			<select name="stiexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
-			<option selected="true" disabled="disabled" style="font-size:18px;">Select Enterence Exam Center</option>
+			<option selected="true" disabled="disabled" style="font-size:18px;">Select Entrance Exam Center</option>
 					<?php foreach($this->examcenter as $row): ?>	
 					<option value="<?php echo $row->eec_name;?>"><?php echo $row->eec_name; ?></option>
 					<?php endforeach; ?>
