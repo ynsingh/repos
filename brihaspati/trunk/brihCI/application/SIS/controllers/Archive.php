@@ -101,6 +101,20 @@ class Archive extends CI_Controller
                 $this->logger->write_dblogmessage("view"," View Department archive", "Department archive details...");
                 $this->load->view('archive/departmenta');
         }
+	/*this function has been created for display the user role type archive records */
+        public function mapuserrolea(){
+                $this->result = $this->sismodel->get_list('user_role_type_archive');
+                $this->logger->write_logmessage("view"," View user role type archive ", "User Role Type archive details...");
+                $this->logger->write_dblogmessage("view"," View user role type archive", "User Role Type archive details...");
+                $this->load->view('archive/mapuserrolea');
+        }
+      /*this function has been created for display the map scheme department archive records */
+        public function mapschemedepta(){
+                $this->result = $this->sismodel->get_list('map_scheme_department_archive');
+                $this->logger->write_logmessage("view"," View map scheme department archive ", " Map Scheme Department archive details...");
+                $this->logger->write_dblogmessage("view"," View  map scheme department archive", "Map Scheme Department archive details...");
+                $this->load->view('archive/mapschemedepta');
+        }
 
 }
 

@@ -567,8 +567,8 @@ class Map extends CI_Controller
         }
         if($this->form_validation->run() == TRUE)
 	{
-		$currdate = date("y-m-d");
-		$subpaper_id = $row->subp_id;
+	    $currdate = date("y-m-d");
+	    $subpaper_id = $row->subp_id;
             $subject_id = $row->subp_sub_id;
             $subject_type = $row->subp_subtype;
             $subpaper_no = $row->subp_paperno;
@@ -1208,7 +1208,6 @@ class Map extends CI_Controller
         $this->db->from('user_role_type')->where('id', $id);
         $eset_data_q = $this->db->get();
         $editeset_data = $eset_data_q->row();
-   
         /* Form fields */
         $data['scid']= array(
             //'value' =>$editeset_data->scid,
@@ -1262,12 +1261,27 @@ class Map extends CI_Controller
             $this->load->view('map/edituserrole',$data);
         }
         else
-        {    
+        {   
+            $data_userid = $this->input->post('userid', TRUE);
             $data_roleid = $this->input->post('roleid', TRUE);
+            $data_scid   = $this->input->post('scid', TRUE);
+            $data_deptid = $this->input->post('deptid', TRUE);
             $data_usertype = $this->input->post('usertype', TRUE);
-             
-            $data_eid = $id;
-           
+                      
+            /* insert data into map user role archive table */
+               $urta_data= array(
+                 'urta_urtid'=>$id,
+                 'urta_userid'=>$editeset_data->userid,
+                 'urta_roleida'=>$editeset_data->roleid,
+                 'urta_scida'=>$editeset_data->scid,
+                 'urta_deptida'=>$editeset_data->deptid,
+                 'urta_usertypea'=>$editeset_data->usertype,
+                 'creatorid'=>'SIS - '.$this->session->userdata('username'),
+                 'creatordate'=>date('y-m-d'),
+               );
+                  /* insert data into map user role archive table */
+            $userroletypeflaga=$this->sismodel->insertrec('user_role_type_archive', $urta_data);
+
             $update_data = array(
             'roleid'=>$data_roleid,
             'usertype'=>$data_usertype,
@@ -1431,6 +1445,18 @@ public function schemedept(){
          
             if($MapWithSchemeDepartment_data->msd_schmid != $msd_schmid)
                 $logmessage = "Map with Scheme Department " .$MapWithSchemeDepartment_data->msd_schmid. " changed by " .$msd_schmid;
+
+
+            $msda_data = array(
+               'msda_msdid'=>$msd_id,
+               'msda_schmid'=>$MapWithSchemeDepartment_data->msd_schmid,
+               'msda_deptid'=>$MapWithSchemeDepartment_data->msd_deptid,
+               'msda_scid'=>$MapWithSchemeDepartment_data->msd_scid,
+               'msda_org_id'=>$MapWithSchemeDepartment_data->msd_org_id,
+               'msda_archuserid'=>'SIS - '.$this->session->userdata('username'),
+               'msda_archdate'=> date('y-m-d')
+               );
+              $msdaflaga=$this->sismodel->insertrec('map_scheme_department_archive', $msda_data);
 
             $update_data = array(
                'msd_schmid' =>$msd_schmid,

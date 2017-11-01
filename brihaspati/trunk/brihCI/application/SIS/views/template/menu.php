@@ -209,11 +209,15 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
 						echo anchor('archive/bankdetaila', 'Bank Details Archive', array('title' => 'Bank Details Archive'));
 					echo "</li>";
-
+                                        echo "<li>";
+                                                echo anchor('archive/mapuserrolea', 'Map User With Roll Archive', array('title' => 'Map User With Roll Details Archive'));
+                                        echo "</li>"; 
+                                        echo "<li>";
+                                                echo anchor('archive/mapschemedepta', 'Map Scheme With Department Archive', array('title' => 'Map Scheme With Department Details Archive'));
+                                        echo "</li>";
                                         echo "<li>";
                                                 echo anchor('archive/departmenta', 'Department Archive', array('title' => 'Department Archive'));
                                         echo "</li>";
-
 				echo "</ul>";
 			echo "</li>";
 			echo "<li>";

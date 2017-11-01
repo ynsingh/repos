@@ -223,6 +223,29 @@ ALTER TABLE `map_scheme_department`
 ALTER TABLE `map_scheme_department`
   MODIFY `msd_id` int(11) NOT NULL AUTO_INCREMENT;
 
+
+-- -------------------------------------------------------------------
+--
+-- Table structure for table `map_scheme_department_archive`
+--
+
+CREATE TABLE `map_scheme_department_archive` (
+  `msda_id` int(11) NOT NULL,
+  `msda_msdid` int(11) NOT NULL,
+  `msda_schmid` varchar(255) NOT NULL,   
+  `msda_deptid` varchar(255)  NOT NULL,   
+  `msda_scid` int(11) NOT NULL,
+  `msda_org_id` varchar(255)  NOT NULL,
+  `msda_archuserid` varchar(255) NOT NULL,
+  `msda_archdate` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `map_scheme_department_archive`
+  ADD PRIMARY KEY (`msda_id`);
+
+ALTER TABLE `map_scheme_department_archive`
+  MODIFY `msda_id` int(11) NOT NULL AUTO_INCREMENT;
+
 -- ----------------------------------------------------------
 
 --
@@ -506,6 +529,36 @@ CREATE TABLE `user_role_type` (
 
 insert into user_role_type values (1,1,1,1,1,'Administrator','');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_role_type_archive`
+--
+
+CREATE TABLE `user_role_type_archive` (
+  `urta_id` INT(11) NOT NULL,
+  `urta_urtid` INT(11) NOT NULL,
+  `urta_userid` int(11) NOT NULL,
+  `urta_roleida` int(11) NOT NULL,
+  `urta_scida` int(10) NOT NULL,
+  `urta_deptida` int(10) DEFAULT NULL,
+  `urta_usertypea` varchar(255) NOT NULL,
+  `creatorid` varchar(255) NOT NULL,
+  `creatordate` date NOT NULL,
+  `ext1` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `user_role_type_archive`
+  ADD PRIMARY KEY (`urta_id`);
+
+ALTER TABLE `user_role_type_archive`
+  MODIFY `urta_id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_input_transfer`
+--
 CREATE TABLE user_input_transfer (
         uit_id INT(11) NOT NULL AUTO_INCREMENT ,
         uit_registrarname  varchar(255) NOT NULL ,
@@ -532,10 +585,7 @@ CREATE TABLE user_input_transfer (
         PRIMARY KEY (uit_id)
 )ENGINE = InnoDB;
 
-
 -- ---------------------------------------------------------
-
-
 --
 -- Table structure for ddo`
 --
@@ -551,7 +601,7 @@ CREATE TABLE `ddo` (
      PRIMARY KEY (ddo_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-----------------------------------------------------------
+-- --------------------------------------------------------
 --
 -- Table structure for ddo_archive`
 --
@@ -570,7 +620,7 @@ CREATE TABLE `ddo_archive` (
      PRIMARY KEY (ddoa_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-----------------------------------------------------------
+-- --------------------------------------------------------
 --
 --Table structure for map_sc_uo 
 --
@@ -595,4 +645,5 @@ CREATE TABLE `map_sc_uo_archive` (
      `scuoa_archdate`  date NOT NULL,
       PRIMARY KEY (scuoa_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
--------------------------------------------------------
+
+
