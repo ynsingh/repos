@@ -132,30 +132,26 @@ if( $(this).val()==="online"){
                         <input type="hidden" name="key" value="<?= $mkey ?>" />
                         <input type="hidden" name="hash" value="<?= $hash ?>"/>
                         <input type="hidden" name="txnid" value="<?= $tid ?>" />
+
                         <div class="form-group">
                             <label class="control-label">Total Payable Amount</label>
-			    <?php if($this->catname == "General" || $this->catname == "OBC"){?> 	
-                           	 <input class="form-control" name="amount" value="<?php echo 300; ?>"  readonly/>
-			    <?php }?>	
-			    <?php if($this->catname == "SC" || $this->catname == "ST"){?>
-				<input class="form-control" type="text" name="amount" value="<?php echo 100; ?>" readonly>
-			    <?php }?>
-                        </div>
+				<input class="form-control" name="amount" id="amount" value="<?= $amount; ?>" readonly/>
+			</div>
                         <div class="form-group">
                             <label class="control-label">Your Name</label>
-                            <input class="form-control" name="firstname" id="name" value="<?= $this->name; ?>" readonly/>
+                            <input class="form-control" name="firstname" id="name" value="<?= $name; ?>" readonly/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Email</label>
-                            <input class="form-control" name="email" id="mailid" value="<?= $this->mailid; ?>" readonly/>
+                            <input class="form-control" name="email" id="mailid" value="<?= $mailid; ?>" readonly/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Phone</label>
-                            <input class="form-control" name="phone" value="<?= $this->phoneno; ?>" readonly />
+                            <input class="form-control" name="phone" value="<?= $phoneno; ?>" readonly />
                         </div>
                         <div class="form-group">
                             <label class="control-label"> Program (Branch)</label>
-                            <textarea class="form-control" name="productinfo" readonly><?= $this->pinfo; ?></textarea>
+                            <textarea class="form-control" name="productinfo" readonly><?= $productinfo; ?></textarea>
                         </div>
                         <div class="form-group">
                             <label class="control-label"> Fees Type</label>
@@ -170,8 +166,8 @@ if( $(this).val()==="online"){
 -->
                         </div>
                         <div class="form-group">
-                            <input name="surl" value="<?//= $sucess ?>" size="64" type="hidden" />
-                            <input name="furl" value="<?//= $failure ?>" size="64" type="hidden" />                             
+                            <input name="surl" value="<? = $surl ?>" size="64" type="hidden" />
+                            <input name="furl" value="<? = $furl ?>" size="64" type="hidden" />                             
                             <input type="hidden" name="service_provider" value="" size="64" /> 
                             <input name="curl" value="<?//= $cancel ?> " type="hidden" />
                         </div>

@@ -1240,19 +1240,27 @@ class Enterence extends CI_Controller {
         	}
 		$Sid = $this->session->userdata['asm_id'];
 		//online payment student enterence record get
+		
 		//get category name
-		$this->catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
-		$this->name = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$Sid)->asm_fname;
+		$catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
+		$this->catname = $catname;
+		if($this->catname == "General" || $this->catname == "OBC"){
+			$amount='300';
+		}
+		if($this->catname == "SC" || $this->catname == "ST"){
+			$amount='100';
+		}
+		$name = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$Sid)->asm_fname;
 		//$data['name']=$name;
-		$this->mailid = $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$Sid)->asm_email;
+		$mailid = $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$Sid)->asm_email;
 		//$data['mailid']=$mailid;
-		$this->phoneno = $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$Sid)->asm_mobile;
+		$phoneno = $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$Sid)->asm_mobile;
 		//$data['phoneno']=$phoneno;
 		//$rollno = $this->commodel->get_listspfic1('admissionstudent_master','asm_applicationno','asm_id',$Sid)->asm_applicationno;
 		$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
 		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
 		$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
-		$this->pinfo = $prgname.'('.$prgbranch.')';//.'('.$rollno.')';
+		$pinfo = $prgname.'('.$prgbranch.')';//.'('.$rollno.')';
 		//$data['pinfo']=$pinfo;
 		$add = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_paddress','aspar_asmid',$Sid)->aspar_paddress;
 		$post = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_ppostoffice','aspar_asmid',$Sid)->aspar_ppostoffice;
@@ -1265,17 +1273,17 @@ class Enterence extends CI_Controller {
 	
 		//online payment gateway code
 		// all values are required
-    		$amount =  $this->input->post('amount');  // here amount
-   		$product_info = $this->input->post('productinfo');  //fees type
-    		$customer_name = $this->input->post('firstname'); //name of student
-    		$customer_emial = $this->input->post('email'); //email of student
-    		$customer_mobile = $this->input->post('phone'); // mobile number of student
-    		$customer_address = $this->input->post('address1');// roll number and program code with branch
+    		//$amount =  $this->input->post('amount');  // here amount
+   		//$product_info = $this->input->post('productinfo');  //fees type
+    		//$customer_name = $this->input->post('firstname'); //name of student
+    		//$customer_emial = $this->input->post('email'); //email of student
+    		//$customer_mobile = $this->input->post('phone'); // mobile number of student
+    		//$customer_address = $this->input->post('address1');// roll number and program code with branch
 		
 		//$MERCHANT_KEY = "SYMBk2HQ"; //change  merchant with yours 
-		$MERCHANT_KEY = "rjQUPktU";
+		$MERCHANT_KEY = "gtKFFx";
        		// $SALT = "dxmk9SZZ9y";  //change salt with yours 
-		$SALT = "e5iIg1jwi8";	
+		$SALT = "eCwWELxi";	
 		$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 		
        		//optional udf values 
@@ -1284,8 +1292,19 @@ class Enterence extends CI_Controller {
         	$udf3 = '';
         	$udf4 = '';
         	$udf5 = '';
+
+		$hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
+		/*$hashVarsSeq = explode('|', $hashSequence);
+	    	$hash_string = '';	
+		foreach($hashVarsSeq as $hash_var) {
+	      		$hash_string .= isset($posted[$hash_var]) ? $posted[$hash_var] : '';
+	     		$hash_string .= '|';
+		}
+		$hash_string .= $SALT;
+	    	$hash = strtolower(hash('sha512', $hash_string));
+		*/
  		//$hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $product_info . '|' . $customer_name . '|' . $customer_emial . '||||||' . $SALT;
-		$hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $product_info . '|' . $customer_name . '|' . $customer_emial . '|' . $udf1 . '|' . $udf2 . '|' . $udf3 . '|' . $udf4 . '|' . $udf5 . '||||||' . $SALT;
+		echo $hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $pinfo . '|' . $name . '|' . $mailid . '|' . $udf1 . '|' . $udf2 . '|' . $udf3 . '|' . $udf4 . '|' . $udf5 . '|'.''.'|'.''.'|'.''.'|'.''.'|'.''.'|' . $SALT;
          	$hash = strtolower(hash('sha512', $hashstring));
 
 		//print_r($hash);
@@ -1302,28 +1321,28 @@ class Enterence extends CI_Controller {
             		'tid' => $txnid,
             		'hash' => $hash,
             		'amount' => $amount,  
-			'productinfo' => $product_info,         
-            		'name' => $customer_name,
-            		'mailid' => $customer_emial,
-           		'phoneno' => $customer_mobile,
-           		'address' => $customer_address,
+			'productinfo' => $pinfo,         
+            		'name' => $name,
+            		'mailid' => $mailid,
+           		'phoneno' => $phoneno,
+           		//'address' => $customer_address,
 			'action' => "https://test.payu.in", //for live change action  https://secure.payu.in
-           		'sucess' => $success,
-           		'failure' => $fail,
-            		'cancel' => $cancel             
+           		'surl' => $success,
+           		'furl' => $fail,
+            		   
         	);
-		
+		//'cancel' => $cancel          
 	
 		$this->load->view('enterence/step_four',$data);
 	}
-	public function payumoneytest(){
-		$this->load->view('payumoney/PayUMoney_form');
-		
-	}
-	public function fail(){$this->load->view('payumoney/failure');
-		}
-	public function success(){$this->load->view('payumoney/success');
-		}	
+	//public function payumoneytest(){
+	//	$this->load->view('payumoney/PayUMoney_form');
+	//	
+	//}
+	//public function fail(){$this->load->view('payumoney/failure');
+	//	}
+	//public function success(){$this->load->view('payumoney/success');
+	//	}	
 
 
 	/******************************************Offline payment code start**********************************************************/
