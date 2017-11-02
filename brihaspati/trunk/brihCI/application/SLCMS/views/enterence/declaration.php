@@ -21,7 +21,7 @@ ul li{text-align:justify;}
 <?php $this->load->view('enterence/enterence_head'); ?>
 <br></br>
 <center>
-<div  style="width:60%;">
+<div  style="width:68%;">
 <h2 style="text-align:left;font-size:22px;"><b>Indira Gandhi National Tribal University, Amarkantak, Madhya Pradesh – 484887</b></h2>
                 <div class="row">
                     <p style="font-weight:bold;text-align:left;font-size:17px;"><u>A. Note:</u></p>

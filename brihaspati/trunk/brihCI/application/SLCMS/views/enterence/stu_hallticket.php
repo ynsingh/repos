@@ -10,10 +10,9 @@
 <html>
 <head>
 <title>IGNTU - Download Hall Ticket</title>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
@@ -65,25 +64,29 @@
         <tr><td>
         <label for="text">Date Of Birth :</label></td>
         <td>
-        <input type="text" name="dwdateofbirth" placeholder="Select your dob"value="<?php echo isset($_POST["dwdateofbirth"]) ? $_POST["dwdateofbirth"] : ''; ?>" id="dob"  style="width:100%;height:35px;"/>
-        
-            <script>
-                $('#dob').datepicker({
-                onSelect: function(value, ui) {
-                    console.log(ui.selectedYear)
-                    var today = new Date(), 
-                    dob = new Date(value), 
-                    age = 2017-ui.selectedYear;
+       	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
+  	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
+	<input type="text" name="dwdateofbirth" placeholder="Select your dob"value="<?php echo isset($_POST["dwdateofbirth"]) ? $_POST["dwdateofbirth"] : ''; ?>" id="dob"  style="width:100%;height:35px;"/>
 
-//                $("#age").text(age);
-                },
-                    changeMonth: true,
-                    changeYear: true,
-                    dateFormat: 'yy-mm-dd',
-                    defaultDate: '1yr',
-                    yearRange: 'c-37:c+30',
-                });
-            </script>
+			<script>
+				$('#dob').datepicker({
+ 				onSelect: function(value, ui) {
+ 			        console.log(ui.selectedYear)
+       				var today = new Date(), 
+         			dob = new Date(value), 
+          			age = 2017-ui.selectedYear;
+
+   				$("#age").text(age);
+   				},
+  	 			//(set for show current month or current date)maxDate: '+0d',
+				
+    				changeMonth: true,
+    				changeYear: true,
+    				dateFormat: 'yy-mm-dd',
+     				defaultDate: '1yr',
+    				yearRange: 'c-37:c+30',
+				});
+			</script>		
         </td>
         </tr>
         

@@ -50,7 +50,7 @@ updateList = function() {
 echo "<center>";
 
 	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color: #FFBABA;width:50%;height:30px;color:green;'>";
+echo "<div style='font-size:20px;text-align:center;background-color: #FFBABA;width:50%;height:30px;color:red;'>";
 	echo $this->session->flashdata('msg');
 echo "<div>";	
 }
@@ -86,18 +86,18 @@ echo "</center>";
 		<table style="border:0px solid black;width:50%;">
 			<tr>
 				<td>
-				<label><b>Recent photograph (Photo size should be 100kb and photo extension jpeg , jpg or png)</b></label></br>				
+				<label><span id="star">*</span><b>Recent photograph (Photo size should be 100kb and photo extension jpeg , jpg or png)</b></label></br>				
 				<input type='file' name='photo' ></td></tr>
 		<tr height=20></tr>
 				<tr>				
 				<td>
-				<label><b>Signature(Signature size should be 100kb and signature extension jpeg , jpg or png)</b></label></br>				
+				<label><span id="star">*</span><b>Signature(Signature size should be 100kb and signature extension jpeg , jpg or png)</b></label></br>				
 				<input type='file' name='sign' /></td>
 		
 			</tr>
 <tr height=20></tr>
 			<tr><td>
-				<label><b>Professional work experience/portfolio/academic/thesis<br>(Select multiple files size should be 500kb and photo extension jpeg , jpg or png)</b></label></br>				
+				<label><span id="star">*</span><b>NOC/Declaration/Professional work experience/portfolio/academic/thesis<br>(Select multiple files size should be 500kb and photo extension jpeg , jpg , png or pdf)</b></label></br>				
 				<input type="file" name="files[]" multiple="multiple" id="files" onchange="javascript:updateList()"/>
 				<br><span style="font-size:15px;"><b>Selected Files :</b></span><div id="fileList"></div></td></tr>
 <tr height=20></tr>

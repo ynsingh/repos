@@ -1035,7 +1035,8 @@ class Enterence extends CI_Controller {
 		
 		if(isset($_POST['fileSubmit'])){
 			$filerrors = array();
-				$j=0;
+			$filesuccess = array();
+				$j=0;$k=0;
 				$extflag=false;
 				$sizeflag=false;
 				// put code for photo, sign, noc, decla
@@ -1048,7 +1049,7 @@ class Enterence extends CI_Controller {
 					$file_tmp_photo = $_FILES['photo']['tmp_name'];
 					$file_type_photo =$_FILES['photo']['type'];
 
-					// get the files for sign
+					//get the files for sign
 					$file_sign = $_FILES['sign']['name'];
 					$file_size_sign =$_FILES['sign']['size'];
 					$file_tmp_sign =$_FILES['sign']['tmp_name'];
@@ -1059,26 +1060,26 @@ class Enterence extends CI_Controller {
 					$file_ext2 = strtolower(end((explode('.',$_FILES['sign']['name']))));
       					$extensions= array("jpeg","jpg","png","gif","pdf");
       					if(in_array($file_ext1,$extensions) === false){
-						$filerrors[$j] = " Photo extension should be jpeg or jpg or png. ";
+						$filerrors[$j] = " Photo is required and extension should be jpeg or jpg or png. ";
 						$extflag=true;
 						$j++;
 					}
 
 					if(in_array($file_ext2,$extensions) === false){
-						$filerrors[$j] = " Signature extension should be jpeg or jpg or png. ";
+						$filerrors[$j] = " Signature required and extension should be jpeg or jpg or png. ";
 						$extflag=true;
 						$j++;
 					}
 
 					//check file sizes
 					if($file_size_photo > 102400){
-						$filerrors[$j] = " Photo size should be less than 100kb. ";//.$file_size_photo;
+						$filerrors[$j] = "Photo is required and size should be less than 100kb. ";//.$file_size_photo;
 						$sizeflag = true;
 						$j++;
 					}
 
 					if($file_size_sign > 102400){
-						$filerrors[$j] = " Signature size should be less than 100kb. ";
+						$filerrors[$j] = "Signature required and size should be less than 100kb. ";
 						$sizeflag = true;
 						$j++;
 					}
@@ -1100,10 +1101,17 @@ class Enterence extends CI_Controller {
                                                  );
                                                 //$query = $this->db->insert('admissionstudent_uploaddata',$insertPhoto);
 						$this->commodel->updaterec('admissionstudent_uploaddata',$insertPhoto,'asupd_asmid',$id);
+						$filesuccess[$k] = " Photo has been upload successfully. ";
+						$k++;
+						$filesuccess[$k] = " Signature has been uploaded successfully. ";
+						$k++;
                                                 $this->logger->write_logmessage("update", "Admission step 3 photo insert in admissionstudent_uploaddata table.");
                                                 $this->logger->write_dblogmessage("update", "Admissiom step 3 photo insert in admissionstudent_uploaddata table." );
 
-					}else{
+					}
+					else{
+
+						// for failure case
 						//set the error
 						$ferror="";
 						foreach($filerrors as $error){
@@ -1111,33 +1119,53 @@ class Enterence extends CI_Controller {
 							
 						}
 
-                        		//display error of array
-                        		//put ferror in log file.
-                        		$this->session->set_flashdata('error', $ferror);
+                        			//display error of array
+                        			//put ferror in log file.
+                        			$this->session->set_flashdata('error', $ferror);
 						//redirect the upload page
 						redirect('enterence/step_three');
 					}
-			$i = 0;
-			foreach($_FILES['files']['tmp_name'] as $key => $tmp_name){
+				$i = 0;$l=0;
+				foreach($_FILES['files']['tmp_name'] as $key => $tmp_name){
 				//if(isset($_FILES['files'])){
 					$file_name = $_FILES['files']['name'][$key];
 					$file_size =$_FILES['files']['size'][$key];
 					$file_tmp =$_FILES['files']['tmp_name'][$key];
 					$file_type=$_FILES['files']['type'][$key];
-
+					//$ferror="";
+					if((empty($file_name) )&& ($l<1)){
+						$filerrors[$j] = " At least one enclosures file is required. ";
+						$l++; $j++;
+					}
 					//check enclosure extension	
 					$file_ext = strtolower(end((explode('.',$file_name))));
       					$extensions= array("jpeg","jpg","png","pdf");
       					if(in_array($file_ext,$extensions) === false){
-						$filerrors[$j] = " Enclosures file ".$file_name." extension should be jpeg or jpg or png. ";
+						$filerrors[$j] = " Enclosures file ".$file_name." extension should be jpeg or jpg or png or pdf. ";
 						$extflag=true;
 						$j++;
+						//foreach($filerrors as $error){
+						//	$ferror = $ferror ."</br>". $error;
+						//}
+                        			//$this->session->set_flashdata('error', $ferror);
+						//redirect('enterence/step_three');*/
+						//$this->session->set_flashdata('error', " Enclosures file ".$file_name." extension should be jpeg or jpg or png. ");
+						//redirect('enterence/step_three');
+						//$this->load->view('enterence/step_three');
 					}
 					//check enclosure upload size	
        				 	if($file_size >512000){
-						$filerrors[$j] = " Enclosure file ". $file_name." size should be less than 500kb. ";
+						$filerrors[$j] = " Enclosure file ". $file_name." size should be less than 500kb.";
 						$sizeflag = true;
 						$j++;
+						//foreach($filerrors as $error){
+						//	$ferror = $ferror ."</br>". $error;
+						//}
+                        			//$this->session->set_flashdata('error', $ferror);
+						//redirect('enterence/step_three');*/
+						//$this->session->set_flashdata('error', " Enclosure file ". $file_name." size should be less than 500kb.");
+						//redirect('enterence/step_three');
+						//$this->load->view('enterence/step_three');
        					 }
 					
 					$ii = $i + 1;
@@ -1155,13 +1183,28 @@ class Enterence extends CI_Controller {
 	           	     					);
 							
 								$this->commodel->updaterec('admissionstudent_uploaddata',$update,'asupd_asmid',$id);
+								$filesuccess[$k] = " Enclosure file ". $file_name." has been uploaded successfully.";
+								$k++;
 								$this->logger->write_logmessage("update", "Admission step 3 data update in admissionstudent_uploaddata table.");
                     						$this->logger->write_dblogmessage("update", "Admission step 3 data update in admissionstudent_uploaddata table.");
-						 }
+						 }else{
+							// for failure case
+						}
 							
 					$i++;
-		    	 }//foreach close
-					
+		    		 }//foreach close
+				//set the error
+					$ferror='';
+					if(!empty($filerrors)){
+						$filerrors[$j] = " Kindly upload correct files again.";
+						$j++;
+						$ferror = $ferror . "<br> The error in following files.";
+						foreach($filerrors as $error){
+							$ferror = $ferror ."</br>". $error;	
+						}
+						$this->session->set_flashdata('error', $ferror);
+						redirect('enterence/step_three');
+					}	
 				//update admissionstep step3 table
 					$cdate = date('Y-m-d H:i');
  					$step3 = array(
@@ -1172,19 +1215,16 @@ class Enterence extends CI_Controller {
 					$this->logger->write_logmessage("update", "Admisssion Step_three update.");
                     			$this->logger->write_dblogmessage("update", "Admission Step_three update.");
 					
-					//set the error
-						$ferror='';
-						if(!empty($filerrors)){
-							$ferror = $ferror . "<br> The error in following files.";
-							foreach($filerrors as $error){
-								$ferror = $ferror ."</br>". $error;	
-							}
-						//display error of array
-                        			$this->session->set_flashdata('error', $ferror);
-						redirect('enterence/step_three');
+					$fsuccess ='';
+					if(!empty($filesuccess)){
+						$fsuccess = $fsuccess . "<br> The uploaded files are.";
+						foreach($filesuccess as $success){
+							$fsuccess = $fsuccess ."</br>". $success;	
 						}
-					
-				$this->session->set_flashdata('success', 'Your files are successfully uploaded.');
+						$this->session->set_flashdata('success', $fsuccess);
+					}
+				
+				
 				redirect('enterence/step_four');
 					
 			}//if isset file close
@@ -1199,10 +1239,92 @@ class Enterence extends CI_Controller {
 			redirect('welcome');
         	}
 		$Sid = $this->session->userdata['asm_id'];
+		//online payment student enterence record get
 		//get category name
 		$this->catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
-	$this->load->view('enterence/step_four');
+		$this->name = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$Sid)->asm_fname;
+		//$data['name']=$name;
+		$this->mailid = $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$Sid)->asm_email;
+		//$data['mailid']=$mailid;
+		$this->phoneno = $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$Sid)->asm_mobile;
+		//$data['phoneno']=$phoneno;
+		//$rollno = $this->commodel->get_listspfic1('admissionstudent_master','asm_applicationno','asm_id',$Sid)->asm_applicationno;
+		$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
+		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
+		$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
+		$this->pinfo = $prgname.'('.$prgbranch.')';//.'('.$rollno.')';
+		//$data['pinfo']=$pinfo;
+		$add = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_paddress','aspar_asmid',$Sid)->aspar_paddress;
+		$post = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_ppostoffice','aspar_asmid',$Sid)->aspar_ppostoffice;
+		$city = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcity','aspar_asmid',$Sid)->aspar_pcity;
+		$state = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$Sid)->aspar_pstate;
+		$country = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$Sid)->aspar_pcountry;
+		$pin =  $this->commodel->get_listspfic1('admissionstudent_parent','aspar_ppincode','aspar_asmid',$Sid)->aspar_ppincode;
+		$address = $add.','.$post.','.$city.','.$state.','.$country.'('.$pin.')';
+		//$data['address']=$address;	
+	
+		//online payment gateway code
+		// all values are required
+    		$amount =  $this->input->post('amount');  // here amount
+   		$product_info = $this->input->post('productinfo');  //fees type
+    		$customer_name = $this->input->post('firstname'); //name of student
+    		$customer_emial = $this->input->post('email'); //email of student
+    		$customer_mobile = $this->input->post('phone'); // mobile number of student
+    		$customer_address = $this->input->post('address1');// roll number and program code with branch
+		
+		//$MERCHANT_KEY = "SYMBk2HQ"; //change  merchant with yours 
+		$MERCHANT_KEY = "rjQUPktU";
+       		// $SALT = "dxmk9SZZ9y";  //change salt with yours 
+		$SALT = "e5iIg1jwi8";	
+		$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
+		
+       		//optional udf values 
+        	$udf1 = '';
+        	$udf2 = '';
+        	$udf3 = '';
+        	$udf4 = '';
+        	$udf5 = '';
+ 		//$hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $product_info . '|' . $customer_name . '|' . $customer_emial . '||||||' . $SALT;
+		$hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $product_info . '|' . $customer_name . '|' . $customer_emial . '|' . $udf1 . '|' . $udf2 . '|' . $udf3 . '|' . $udf4 . '|' . $udf5 . '||||||' . $SALT;
+         	$hash = strtolower(hash('sha512', $hashstring));
+
+		//print_r($hash);
+		//die;	
+		//$hash =sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT);
+		
+		$success = base_url() . 'payumoney/payustatus'; //return to payustatus function   
+        	$fail    = base_url() . 'payumoney/payustatus'; //return to payustatus function
+       	 	$cancel  = base_url() . 'payumoney/payustatus';//return to payustatus function
+		//for live change action  https://secure.payu.in)
+				
+		$data = array(
+            		'mkey' => $MERCHANT_KEY,
+            		'tid' => $txnid,
+            		'hash' => $hash,
+            		'amount' => $amount,  
+			'productinfo' => $product_info,         
+            		'name' => $customer_name,
+            		'mailid' => $customer_emial,
+           		'phoneno' => $customer_mobile,
+           		'address' => $customer_address,
+			'action' => "https://test.payu.in", //for live change action  https://secure.payu.in
+           		'sucess' => $success,
+           		'failure' => $fail,
+            		'cancel' => $cancel             
+        	);
+		
+	
+		$this->load->view('enterence/step_four',$data);
 	}
+	public function payumoneytest(){
+		$this->load->view('payumoney/PayUMoney_form');
+		
+	}
+	public function fail(){$this->load->view('payumoney/failure');
+		}
+	public function success(){$this->load->view('payumoney/success');
+		}	
+
 
 	/******************************************Offline payment code start**********************************************************/
 //This function check for duplicate reference number 		   
@@ -1227,6 +1349,7 @@ class Enterence extends CI_Controller {
 		$getmail = $this->commodel->get_elist('email_setting');
 		//print_r($getmail);
 		$Sid = $this->session->userdata['asm_id'];
+		$data['Sid'] = $Sid;
 		//get category name 	
 		$this->catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
 		
@@ -1348,8 +1471,95 @@ class Enterence extends CI_Controller {
 		}/*close post submit*/
 		
 		//set flag for each step, if any step fails revert all steps and return to same step
-		$this->load->view('enterence/step_four');
+		$this->load->view('enterence/step_four',$data);
 	}	
+
+
+	public function onlinePayment(){
+		if(empty($this->session->userdata('asm_id'))) {
+	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
+			redirect('welcome');
+        	}
+		$Sid = $this->session->userdata['asm_id'];
+		$data['Sid'] = $Sid;
+		//get category name 	
+		$this->catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
+			
+		
+		/*$name = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$Sid)->asm_fname;
+		$data['name'] = $name;
+		$mailid = $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$Sid)->asm_email;
+		$data['mailid'] = $mailid;
+		$phoneno = $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$Sid)->asm_mobile;
+		$data['phoneno'] = $phoneno;
+		//$rollno = $this->commodel->get_listspfic1('admissionstudent_master','asm_applicationno','asm_id',$Sid)->asm_applicationno;
+		$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
+		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
+		$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
+		$pinfo = $prgname.'('.$prgbranch.')';//.'('.$rollno.')';
+		$data['pinfo'] = $pinfo;
+		$add = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_paddress','aspar_asmid',$Sid)->aspar_paddress;
+		$post = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_ppostoffice','aspar_asmid',$Sid)->aspar_ppostoffice;
+		$city = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcity','aspar_asmid',$Sid)->aspar_pcity;
+		$state = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$Sid)->aspar_pstate;
+		$country = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$Sid)->aspar_pcountry;
+		$pin =  $this->commodel->get_listspfic1('admissionstudent_parent','aspar_ppincode','aspar_asmid',$Sid)->aspar_ppincode;
+		$address = $add.','.$post.','.$city.','.$state.','.$country.'('.$pin.')';
+		$data['address'] = $address;*/
+
+
+		 /*$amount =  $this->input->post('amount');  // here amount
+    		 $fees  = $this->input->post('ftype');  //fees type
+    		 $customer_name = $this->input->post('firstname'); //name of student
+    		 $customer_emial = $this->input->post('email'); //email of student
+   		 $customer_mobile = $this->input->post('phone'); // mobile number of student
+    		 $prgname = $this->input->post('prgbranch');// roll number and program code with branch	
+
+		 $MERCHANT_KEY = "SYMBk2HQ"; //change  merchant with yours 
+        	 $SALT = "dxmk9SZZ9y";  //change salt with yours 
+
+        	$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
+        	//optional udf values 
+       	 	$udf1 = '';
+        	$udf2 = '';
+        	$udf3 = '';
+        	$udf4 = '';
+        	$udf5 = '';*/
+        
+        	 /*$hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $product_info . '|' . $customer_name . '|' . $customer_emial . '|' . $udf1 . '|' . $udf2 . '|' . $udf3 . '|' . $udf4 . '|' . $udf5 . '||||||' . $SALT;*/
+		$hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $fees . '|' . $customer_name . '|' . $customer_emial . '|' . $udf1 . '|' . $udf2 . '|' . $udf3 . '|' . $udf4 . '|' . $udf5 . '||||||' . $SALT;
+         $hash = strtolower(hash('sha512', $hashstring));
+         
+       		/*$success = base_url() . 'Status'; //return to payustatus function   
+        	$fail = base_url() . 'Status'; //return to payustatus function
+        	$cancel = base_url() . 'Status';//return to payustatus function
+        
+        	$data = array('action' => "https://test.payu.in",'name'=>$customer_name,'mailid' =>$mailid,'phoneno'=>$customer_mobile,
+				'mkey' => $MERCHANT_KEY,
+            			'tid' => $txnid,
+            			'hash' => $hash,
+				'amount' => $amount,
+				); */
+         	/*$data = array(
+            		'mkey' => $MERCHANT_KEY,
+            		'tid' => $txnid,
+            		'hash' => $hash,
+           	 	'amount' => $amount,           
+            		'name' => $customer_name,
+            		'fees' => $fees,
+            		'mailid' => $customer_emial,
+            		'phoneno' => $customer_mobile,
+            		'address' => $customer_address,
+            		'action' => "https://test.payu.in", //for live change action  https://secure.payu.in
+            		'sucess' => $success,
+            		'failure' => $fail,
+            		'cancel' => $cancel            
+        );*/
+
+		//redirect('payumoney/pay',$data);
+		$this->load->view('payumoney/confirmation',$data);
+		//$this->load->view('enterence/step_four');
+	}
 
 /*************************************offline payment end***************************************************************/
 
@@ -1787,6 +1997,7 @@ class Enterence extends CI_Controller {
 		// $this->load->view('enterence/stu_hallticketdw',$data);
 	}
 
+	
 	public function home() {
 		$id = $this->session->userdata['asm_id'];
 		//$uid = $this->session->userdata['asm_id'];
