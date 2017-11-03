@@ -120,7 +120,7 @@
        ?>
  
         </table>   
-    </body>
+</body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>
 

@@ -59,11 +59,11 @@
 
             <tr>       
                 <td><label for="name" class="control-label">Bank Name :</label></td>
+                <td>                                                                                                                                   
+                <input type="text" name="bank_name" class="form-control" size="40" value= "<?php echo isset($_POST["bank_name"]) ? $_POST["bank_name"] : ''; ?>" /><br>
+                </td>              
                 <td>
-                <input type="text" name="bank_name" class="form-control" size="40" /><br>
-                </td>
-                <td>
-                 <!--  <?php echo form_error('name')?></td>-->
+                 <!-- <?php echo form_error('name')?></td>-->
                 </td>
                <td>
                    Example : State Bank of India
@@ -74,7 +74,8 @@
             <tr>
                 <td><label for="branch" class="control-label">Branch Name :</label></td>
                 <td>
-                <input type="text" name="branch_name" class="form-control" size="40" /><br>
+                <input type="text" name="branch_name" class="form-control" size="40" value= "<?php echo isset($_POST["branch_name"]) ? $_POST["branch_name"] : ''; ?>" /><br>
+ 
                 </td>
                 <td>
                   <!-- <?php echo form_error('branch')?></td>-->
@@ -88,7 +89,8 @@
             <tr>
                 <td><label for="address" class="control-label">Bank Address :</label></td>
                 <td>
-                <input type="text" name="bank_address" class="form-control" size="40" /><br>
+                <input type="text" name="bank_address" class="form-control" size="40" value= "<?php echo isset($_POST["bank_address"]) ? $_POST["bank_address"] : ''; ?>" /><br>
+
                 </td>
                 <td>
                   <!-- <?php echo form_error('address')?></td>-->
@@ -103,7 +105,8 @@
             <tr>
                 <td><label for="ifsc code" class="control-label">IFSC Code :</label></td>
                 <td>
-                <input type="text" MaxLength="11" name="ifsc_code" class="form-control"  size="40" /><br>
+                <input type="text" MaxLength="11" name="ifsc_code" class="form-control"  size="40" value= "<?php echo isset($_POST["ifsc_code"]) ? $_POST["ifsc_code"] : ''; ?>" /><br>
+
                 </td>
                 <td>
                   <!-- <?php echo form_error('ifsc code')?></td>-->
@@ -118,7 +121,8 @@
             <tr>
                 <td><label for="account number" class="control-label">Account Number :</label></td>
                 <td>
-                <input type="text" MaxLength="11" name="account_number" class="form-control" size="40" /><br>
+                <input type="text" MaxLength="11" name="account_number" class="form-control" size="40" value= "<?php echo isset($_POST["account_number"]) ? $_POST["account_number"] : ''; ?>" /><br>
+
                 </td>
                 <td>
                   <!-- <?php echo form_error('account number')?></td>-->
@@ -133,7 +137,8 @@
             <tr>
                 <td><label for="account type" class="control-label">Account Type :</label></td>
                 <td>
-                <input type="text" name="account_type" class="form-control"  size="40" /><br>
+                <input type="text" name="account_type" class="form-control"  size="40" value= "<?php echo isset($_POST["account_type"]) ? $_POST["account_type"] : ''; ?>" /><br>
+
                 </td>
                 <td>
                   <!-- <?php echo form_error('account type')?></td>-->
@@ -148,7 +153,8 @@
             <tr>
                 <td><label for="account name" class="control-label">Account Name :</label></td>
                 <td>
-                <input type="text" name="account_name" class="form-control"  size="40" /><br>
+                <input type="text" name="account_name" class="form-control"  size="40" value= "<?php echo isset($_POST["account_name"]) ? $_POST["account_name"] : ''; ?>" /><br>
+
                 </td>
                 <td>
                    <!--<?php echo form_error('account name')?></td>-->
@@ -163,7 +169,8 @@
             <tr>
                 <td><label for="pan number" class="control-label">PAN Number :</label></td>
                 <td>
-                <input type="text" MaxLength="10" name="pan_number" class="form-control"  size="40" /><br>
+                <input type="text" MaxLength="10" name="pan_number" class="form-control"  size="40" value= "<?php echo isset($_POST["pan_number"]) ? $_POST["pan_number"] : ''; ?>" /><br>
+
                 </td>
                 <td>
                    <!--<?php echo form_error('pan number')?></td>-->

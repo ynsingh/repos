@@ -90,14 +90,14 @@ $("#StartDate").datepicker("option","maxDate", selected)
                
 
  <tr>
-   <td><label for="map_date" class="control-label">Map Date</label></td>
-   <td><input type="text" name="map_date" id="StartDate" value=<?php echo $map_date['value'];?> class="form-control" size="40" /><br>
+   <td><label for="map_date" class="control-label">Map Date<font color='Red'>*</font></label></td>
+   <td><input type="text" name="map_date" id="StartDate" value=<?php echo $map_date['value'];?> class="form-control" size="40" required="required" /><br>
    <td><?php echo form_error('map_date')?></td>
    </td>
    </tr>
    <tr>
-   <td><label for="till_date" class="control-label">Till Date</label></td>
-   <td><input type="text" name="till_date" id="EndDate"  value=<?php echo $till_date['value'];?> class="form-control" size="40" /><br>
+   <td><label for="till_date" class="control-label">Till Date<font color='Red'>*</font></label></td>
+   <td><input type="text" name="till_date" id="EndDate"  value=<?php echo $till_date['value'];?> class="form-control" size="40" required="required" /><br>
    <td><?php echo form_error('till_date')?></td>
    </td>
    </tr>

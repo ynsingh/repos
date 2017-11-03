@@ -52,8 +52,8 @@ yearRange: 'c-47:c+50',
 });
 });
 </script>
-<script>
-/*$(document).ready(function(){
+<!--script>
+$(document).ready(function(){
 $("#StartDate").datepicker({
 dateFormat: 'yy/mm/dd',
 numberOfMonths: 1,
@@ -70,7 +70,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
 }
 }); 
 });
-</script>
+</script-->
 
   <div id="body">
         <?php $this->load->view('template/header'); ?>
@@ -146,7 +146,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
                          <tr>
                         
                         <td><label>From Date:<font color='Red'>*</font></label></td>
-                        <td><input type="text"placeholder="From Date" name="map date" id="StartDate"  size="27" value="<?php echo isset($_POST["map_date"]) ? $_POST["map_date"] : ''; ?>"required="required"/><br> </td>
+                        <td><input type="text"placeholder="From Date" name="map date" id="StartDate"  size="27" value="<?php echo isset($_POST["map_date"]) ? $_POST["map_date"] : ''; ?>" required="required"/><br> </td>
                         </tr>
                         <tr>
 

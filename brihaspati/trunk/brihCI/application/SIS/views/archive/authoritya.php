@@ -53,8 +53,8 @@
 		<th>User Name</th>
 		<th>From Date</th>
 		<th>Till Date</th>
-		<!--<th>Archiver Name</th>
-		<th>Archive date</th> -->
+		<th>Archiver Name</th>
+		<th>Archive date</th> 
                 </tr>
             </thead>
 	    <tbody>
@@ -64,8 +64,8 @@
                     <?php foreach($this->authresult as $row){ ?>
                          <tr align="center">
 			 <td> <?php echo ++$count; ?> </td>
-<?php  echo "<td>" . $this->logmodel->get_listspfic1('authorities','name','id',$row->authority_id)->name;
-			echo " ( ". $row->id ." ) ";
+			<?php  echo "<td>" . $this->logmodel->get_listspfic1('authorities','name','id',$row->authority_id)->name;
+			echo " ( ". $row->authority_id ." ) ";
 			echo "</td>";?>
 			 <td> <?php echo $row->authority_type ?></td>
 			<?php  echo "<td>";
@@ -75,7 +75,8 @@
 			 echo "</td>";?>
             		 <td> <?php echo $row->map_date ?></td>
            		 <td> <?php echo $row->till_date ?></td>
-
+                         <td> <?php echo $row->creatorid ?></td>
+                         <td> <?php echo $row->createdate ?></td>
                         </tr>
                     <?php }; ?>
                 <?php else : ?>

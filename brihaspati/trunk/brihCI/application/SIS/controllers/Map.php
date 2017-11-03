@@ -6,7 +6,7 @@
  * @author Manorama Pal(palseema30@gmail.com)
  * @author Om Prakash (omprakashkgp@gmail.com) Map Subject and Paper with Teacher,  Map authority and user, Map SC with UO  
  * @author Kishore kr Shukla (kishore.shukla@gmail.com) Map user with Role.
- * @author Neha Khullar (nehukhullar@gmail.com) Map authority and user 
+ * @author Neha Khullar (nehukhullar@gmail.com) Map authority and user, Archive Map authority and user
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -1650,6 +1650,28 @@ public function schemedept(){
                 $logmessage = "Map Authority and User" .$editid_data->till_date. " changed by " .$tilldate;
             if($editid_data->authority_type != $authority_type)
                 $logmessage = "Map Authority and User" .$editid_data->authority_type. " changed by " .$authority_type;
+             if($editid_data->authority_id != $authority_id)
+                $logmessage = "Map Authority and User" .$editid_data->authority_id. " changed by " .$authority_id;
+             if($editid_data->user_id != $user_id)
+                $logmessage = "Map Authority and User" .$editid_data->user_id. " changed by " .$user_id;   
+
+           $insert_data = array(  
+                'authority_id'=> $editid_data->authority_id,
+                'user_id'=> $editid_data->user_id,                
+                'map_date'=> $editid_data->map_date,
+                'till_date'=>$editid_data->till_date,
+                'authority_type'=>$editid_data->authority_type,
+                'creatorid'=>$this->session->userdata('id_user'),
+                'createdate'=>date('y-m-d')
+
+             );
+         $amapflag=$this->loginmodel->insertrec('authority_archive', $insert_data);
+         if(!$amapflag)
+         {
+              $this->logger->write_dblogmessage("error","Error in insert map authority and user archive ", "Error in map authority and user archive record insert" .$logmessage );
+         }else{
+              $this->logger->write_dblogmessage("insert","Insert map authority and user archive", "Record inserted in archive successfully.." .$logmessage );
+         }
 
             $update_data = array(
                         'map_date'=>$fromdate,

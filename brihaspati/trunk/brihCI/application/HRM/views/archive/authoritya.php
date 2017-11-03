@@ -53,8 +53,8 @@
 		<th>User Name</th>
 		<th>From Date</th>
 		<th>Till Date</th>
-		<!--<th>Archiver Name</th>
-		<th>Archive date</th> -->
+	        <th>Archiver Name</th>
+		<th>Archive date</th> 
                 </tr>
             </thead>
 	    <tbody>
@@ -75,6 +75,9 @@
 			 echo "</td>";?>
             		 <td> <?php echo $row->map_date ?></td>
            		 <td> <?php echo $row->till_date ?></td>
+                         <td> <?php echo $row->creatorid ?></td>
+                         <td> <?php echo $row->createdate ?></td>
+
 
                         </tr>
                     <?php }; ?>

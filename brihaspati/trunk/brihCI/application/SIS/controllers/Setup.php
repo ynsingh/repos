@@ -3071,19 +3071,20 @@ class Setup extends CI_Controller
                 $logmessage = "Add Bankdetails " .$bankprofile_data->tan_number. " changed by " .$data_tanumber;
 		
 		$update_baarchive = array(
-				'bpa_bpid'=>$id,
-               'bpa_bank_name' =>$bankprofile_data->bank_name,
-			   'bpa_branch_name' =>$bankprofile_data->branch_name,
-               'bpa_bank_address'=>$bankprofile_data->bank_address,
+			'bpa_bpid'=>$id,
+               		'bpa_bank_name' =>$bankprofile_data->bank_name,
+			'bpa_branch_name' =>$bankprofile_data->branch_name,
+               		'bpa_bank_address'=>$bankprofile_data->bank_address,
 			   //'bpa_branch_name '=>$bankprofile_data->bank_branch,
-			   'bpa_account_number'  =>$bankprofile_data->account_number,
-               'bpa_account_name'=>$bankprofile_data->account_name,
-			   'bpa_account_type'=>$bankprofile_data->account_type,
-               'bpa_ifsc_code'=>$bankprofile_data->ifsc_code,
-               'bpa_pan_number'  =>$bankprofile_data->pan_number, 
-               'bpa_tan_number'  =>$bankprofile_data->tan_number,
-			   'bpa_gst_number' =>$bankprofile_data->gst_number,
-			 
+			'bpa_account_number'  =>$bankprofile_data->account_number,
+               		'bpa_account_name'=>$bankprofile_data->account_name,
+			'bpa_account_type'=>$bankprofile_data->account_type,
+               		'bpa_ifsc_code'=>$bankprofile_data->ifsc_code,
+               		'bpa_pan_number'  =>$bankprofile_data->pan_number, 
+               		'bpa_tan_number'  =>$bankprofile_data->tan_number,
+			'bpa_gst_number' =>$bankprofile_data->gst_number,
+			'bpa_creatorid' = $this->session->userdata('id_user'),
+            		'bpa_date' = date('y-m-d')
             );
 	 $baflag=$this->SIS_model->insertrec('bankprofile_archive', $update_baarchive);
          if(!$baflag)

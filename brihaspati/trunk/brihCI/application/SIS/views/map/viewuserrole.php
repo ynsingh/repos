@@ -63,8 +63,8 @@
                 <?php $serial_no = 1;?>
                 <?php foreach($this->result as $record){ ?>
                     <tr align="center">
-                    <td><?php echo $serial_no++; ?></td>   
-                    <td><?php echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$record->userid)->username; ?></td>
+                    <td><?php echo $serial_no++; ?></td>                     
+                    <td><?php echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$record->userid)->username; ?></td> 
                     <td><?php echo $record->usertype; ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('role','role_name', 'role_id', $record->roleid)->role_name; ?></td>
                     <td><?php echo $this->commodel->get_listspfic1('Department','dept_name', 'dept_id',$record->deptid)->dept_name;?></td>

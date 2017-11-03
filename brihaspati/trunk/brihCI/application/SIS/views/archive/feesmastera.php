@@ -47,13 +47,13 @@
 		<th>Amount</th>
 		<th>From Date</th>
 		<th>To Date</th>
-		<th>Description</th>
+                <th>Description</th>
 		<th>Archiver Name</th>
 		<th>Archive date</th>
                 </tr>
             </thead>
             <tbody>
-                    <?php $count =0?>
+                    <php $count =0?>
               	    <?php if( count($this->fmaresult) ): ?>
                     <?php foreach($this->fmaresult as $row){ ?>
                          <tr align="center">

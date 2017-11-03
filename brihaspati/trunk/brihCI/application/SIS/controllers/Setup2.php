@@ -1255,8 +1255,9 @@ class Setup2 extends CI_Controller
                );
                //'modifierid'=>$this->session->userdata('username'),
                //'modifydate'=>date('y-m-d')
+            
 
-        $gradedflag=$this->logmodel->updaterec('authorities', $update_data,'id', $id);
+       $gradedflag=$this->logmodel->updaterec('authorities', $update_data,'id', $id);
         if(!$gradedflag)
             {
                 $this->logger->write_logmessage("error","Edit authorities Setting error", "Edit authorities Setting details. $logmessage ");
