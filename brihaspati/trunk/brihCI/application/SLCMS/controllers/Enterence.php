@@ -673,7 +673,7 @@ class Enterence extends CI_Controller {
 				//insert asmid into student fees
 				$stufees = array(
 					'asfee_amid'		=>	$insertid,
-					'asfee_aprgid'		=>	$_POST['entcouname']
+					'asfee_aprgid'		=>	$prgid
                 		);	
 				$this->db->insert('admissionstudent_fees',$stufees);
 
@@ -682,7 +682,11 @@ class Enterence extends CI_Controller {
 					'asupd_asmid'		=>	$insertid,
                 		);	
 				$this->db->insert('admissionstudent_uploaddata',$stuupload);
-
+				
+				$centerasmid = array(
+					'ca_asmid'		=>	$insertid,
+                		);	
+				$this->db->insert('admissionstudent_centerallocation',$centerasmid);
 				//insert asmid into student student education
 				/*$stuedu = array(
 					'asedu_asmid'		=>	$insertid,
@@ -1270,16 +1274,10 @@ class Enterence extends CI_Controller {
 		$pin =  $this->commodel->get_listspfic1('admissionstudent_parent','aspar_ppincode','aspar_asmid',$Sid)->aspar_ppincode;
 		$address = $add.','.$post.','.$city.','.$state.','.$country.'('.$pin.')';
 		//$data['address']=$address;	
-	
+		$ftype = 'Entrance Exam fees';
 		//online payment gateway code
 		// all values are required
-    		//$amount =  $this->input->post('amount');  // here amount
-   		//$product_info = $this->input->post('productinfo');  //fees type
-    		//$customer_name = $this->input->post('firstname'); //name of student
-    		//$customer_emial = $this->input->post('email'); //email of student
-    		//$customer_mobile = $this->input->post('phone'); // mobile number of student
-    		//$customer_address = $this->input->post('address1');// roll number and program code with branch
-		
+    		
 		//$MERCHANT_KEY = "SYMBk2HQ"; //change  merchant with yours 
 		$MERCHANT_KEY = "gtKFFx";
        		// $SALT = "dxmk9SZZ9y";  //change salt with yours 
@@ -1304,7 +1302,7 @@ class Enterence extends CI_Controller {
 	    	$hash = strtolower(hash('sha512', $hash_string));
 		*/
  		//$hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $product_info . '|' . $customer_name . '|' . $customer_emial . '||||||' . $SALT;
-		echo $hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $pinfo . '|' . $name . '|' . $mailid . '|' . $udf1 . '|' . $udf2 . '|' . $udf3 . '|' . $udf4 . '|' . $udf5 . '|'.''.'|'.''.'|'.''.'|'.''.'|'.''.'|' . $SALT;
+		$hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $pinfo . '|' . $name . '|' . $mailid . '|' . $udf1 . '|' . $udf2 . '|' . $udf3 . '|' . $udf4 . '|' . $udf5 . '|'.''.'|'.''.'|'.''.'|'.''.'|'.''.'|' . $SALT;
          	$hash = strtolower(hash('sha512', $hashstring));
 
 		//print_r($hash);
@@ -1325,24 +1323,32 @@ class Enterence extends CI_Controller {
             		'name' => $name,
             		'mailid' => $mailid,
            		'phoneno' => $phoneno,
-           		//'address' => $customer_address,
+           		'address' => $ftype,
 			'action' => "https://test.payu.in", //for live change action  https://secure.payu.in
            		'surl' => $success,
            		'furl' => $fail,
             		   
         	);
-		//'cancel' => $cancel          
+		//insert record in pg table
+		$pgdata = array(
+			'aspg_asmid' 	=> $Sid,	
+			'aspg_txnid' 	=> $txnid,	
+			'aspg_pinfo' 	=> $pinfo,	
+			'aspg_amount' 	=> $amount,	
+			'aspg_ftype'	=> $ftype,	
+			//'aspg_date' 	=> ,	
+			//'aspg_gw'	=> ,	
+			//'aspg_status'	=> ,	
+			//'aspg_txncode' 	=> ,
+			//'aspg_reason' 	=>	
+		);
+		$pginsert = $this->db->insert('admissionstudent_pg', $pgdata);
+		$this->logger->write_logmessage("insert", "Online data insert in admissionstudent_pg table.");
+                $this->logger->write_dblogmessage("insert", "Online data insert in admissionstudent_pg table" );
 	
 		$this->load->view('enterence/step_four',$data);
 	}
-	//public function payumoneytest(){
-	//	$this->load->view('payumoney/PayUMoney_form');
-	//	
-	//}
-	//public function fail(){$this->load->view('payumoney/failure');
-	//	}
-	//public function success(){$this->load->view('payumoney/success');
-	//	}	
+		
 
 
 	/******************************************Offline payment code start**********************************************************/
@@ -1392,99 +1398,15 @@ class Enterence extends CI_Controller {
 				$this->load->view('enterence/step_four');
 				return;
 			}else{	
-			$isdupl = $this->commodel->isduplicate('admissionstudent_centerallocation','ca_asmid',$Sid);
-                            	if(!$isdupl){
-					$step4 = array(
-						'asfee_referenceno'   	=>	$_POST['refno'],
-                				'asfee_bankname'  	=>	$_POST['bank'],
-                				'asfee_feeamount'  	=>	$_POST['amount'],
-                				'asfee_feename'   	=>	$_POST['ftype'],
-						'asfee_paymentmethod'    =>	'Offline'
-                				);
-					$update = $this->commodel->updaterec('admissionstudent_fees', $step4,'asfee_amid',$Sid);
-				
-					$this->logger->write_logmessage("update", "Step 4 admissionstudent_fees table update.");
-                    			$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." );
-					//insert into center allocation table(roll no and masterid)
-					
-					$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
-					if($prgid<=9){
-						$prgid = '0'.$prgid;
-					}				
-					$ydate = date('Y');
-					$rollno = '';
-					$datas = $ydate.$prgid;
-					//where("(`description` LIKE '%$match%'")
-					$max = $this->commodel->get_listspficemore('admissionstudent_centerallocation','MAX(ca_rollno) AS maxca_rollno',"ca_rollno LIKE '$datas%'");
-					//print_r($max);die;
-					foreach($max as $row){
-						$maxrollno = $row->maxca_rollno;
-					}
-					
-					if((!empty($maxrollno))||$maxrollno>0)
-					{
-						$rollno = $maxrollno+1;
-						
-					}
-					else{
-						$rollno = $ydate.$prgid.'0001';
-					}
-					$cid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$Sid)->asm_enterenceexamcenter;
-					$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
-					$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
-					$pegid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
-					//echo $rollno;die;
-					$center = array(
-		                		'ca_asmid'           =>	$Sid,
-						'ca_rollno'	     =>	$rollno,
-						'ca_centerlocation'  => $clocation,
-						'ca_centername'	     => $cname,
-						'ca_prgid'	     => $pegid
-		           	     		);
-					
-    					$this->db->insert('admissionstudent_centerallocation',$center);
-					$this->logger->write_logmessage("update", "Admission Step 4 insert rollno and asmid admission master .");
-                    			$this->logger->write_dblogmessage("update", "Admission Step 4 insert rollno and asmid admission master." );
-				
-					//update studen master table(application_no)
-					$master = array(
-		                		'asm_applicationno'   =>	$rollno,
-	           	     		);
-					
-    					$this->commodel->updaterec('admissionstudent_master', $master,'asm_id',$Sid);
-					$this->logger->write_logmessage("update", "Admission Step 4 insert application no in master table.");
-                    			$this->logger->write_dblogmessage("update", "Admission Step 4 insert application no in master table." );
 
-					//update admissionstep step4 table
-					$cdate = date('Y-m-d H:i');
- 					$step4 = array(
-						'step4_status'   	=>	1,
-                				'step4_date'  		=>	$cdate
-					);
-					$updst4 = $this->commodel->updaterec('admissionstudent_enterencestep', $step4,'admission_masterid',$Sid);
-					$this->logger->write_logmessage("update", "Admission Step_four update.");
-                    			$this->logger->write_dblogmessage("update", "Admission Step_four update.");
+				$refno = $_POST['refno'];
+				$bank =  $_POST['bank'];
+				$feeamount = $_POST['amount'];
+				$feetype = $_POST['ftype'];
+				$pmathod = 'Offline';
 
-				if(!$update)
-				{
-                   			$this->logger->write_logmessage("update", "Student admission fees not add." );
-                    			$this->logger->write_dblogmessage("update", "Student admission fees not add." );
-                   	 		$this->session->set_flashdata("err_message",'Error to update admission fees');
-					redirect('enterence/step_four');
-                		}
-                		else{
-                    			$this->logger->write_logmessage("update","Student admission fees add.");
-                    			$this->logger->write_dblogmessage("update", "Student admission fees add.");
-                   			//$this->session->set_flashdata("success", "Your offline fees submitted successfully.".$maxrollno.' '.$rollno.' '.$ydate.''.$prgid);
-					$this->session->set_flashdata("success", "Your offline fees submitted successfully.");
-					redirect('enterence/step_five');
-                		}
-			}//if duplicate close
-			else{
-				$message = '<h3>Your fees submission has failed.</h3>';
-                                $this->session->set_flashdata('msg',$message);
-				redirect('welcome');	
-			}	
+				$this->payment($refno,$bank,$feeamount,$feetype,$pmathod);
+
 			}/*close else validation*/
 			
 		}/*close post submit*/
@@ -1493,6 +1415,104 @@ class Enterence extends CI_Controller {
 		$this->load->view('enterence/step_four',$data);
 	}	
 
+	public function payment($post1,$post2,$post3,$post4,$post5){
+//		print_r($post1.$post2.$post3.$post4.$post5);die;
+		$Sid = $this->session->userdata['asm_id'];
+		$isdupl = $this->commodel->isduplicate('admissionstudent_centerallocation','ca_asmid',$Sid);
+		//print_r($post1.$post2.$post3.$post4.$post5.' '.$isdupl);die;
+                if(!$isdupl){
+			
+			$step4 = array(
+		 		'asfee_referenceno'   	=>	$post1,
+                		'asfee_bankname'  	=>	$post2,
+                		'asfee_feeamount'  	=>	$post3,
+                		'asfee_feename'   	=>	$post4,
+				'asfee_paymentmethod'   =>	$post5
+                	);
+			$update = $this->commodel->updaterec('admissionstudent_fees', $step4,'asfee_amid',$Sid);
+				
+			$this->logger->write_logmessage("update", "Step 4 admissionstudent_fees table update.");
+                    	$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." );
+			//insert into center allocation table(roll no and masterid)
+					
+			$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
+			if($prgid<=9){
+				$prgid = '0'.$prgid;
+			}				
+			$ydate = date('Y');
+			$rollno = '';
+			$datas = $ydate.$prgid;
+			
+			$max = $this->commodel->get_listspficemore('admissionstudent_centerallocation','MAX(ca_rollno) AS maxca_rollno',"ca_rollno LIKE '$datas%'");
+			
+			foreach($max as $row){
+				$maxrollno = $row->maxca_rollno;
+			}
+			if((!empty($maxrollno))||$maxrollno>0)
+			{
+				$rollno = $maxrollno+1;
+			}
+			else{
+				$rollno = $ydate.$prgid.'0001';
+			}
+			$cid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$Sid)->asm_enterenceexamcenter;
+			$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
+			$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
+			$pegid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
+			
+			$center = array(
+		        	//'ca_asmid'           =>	$Sid,
+				'ca_rollno'	     =>	$rollno,
+				'ca_centerlocation'  => $clocation,
+				'ca_centername'	     => $cname,
+				'ca_prgid'	     => $pegid
+		        );
+					
+    			//$this->db->insert('admissionstudent_centerallocation',$center);
+			$this->commodel->updaterec('admissionstudent_centerallocation',$center,'ca_asmid',$Sid);
+			$this->logger->write_logmessage("update", "Admission Step 4 update detail in centerallocation table.");
+                    	$this->logger->write_dblogmessage("update", "Admission Step 4 update  detail in centerallocation table." );
+				
+			//update student master table(application_no)
+			$master = array(
+		        	'asm_applicationno'   =>	$rollno,
+	           	);
+					
+    			$this->commodel->updaterec('admissionstudent_master', $master,'asm_id',$Sid);
+			$this->logger->write_logmessage("update", "Admission Step 4 update application no in master table.");
+                    	$this->logger->write_dblogmessage("update", "Admission Step 4 update application no in master table." );
+			//update admissionstep step4 table
+			$cdate = date('Y-m-d H:i');
+			$step4 = array(
+				'step4_status'   	=>	1,
+       				'step4_date'  		=>	$cdate
+			);
+			$updst4 = $this->commodel->updaterec('admissionstudent_enterencestep', $step4,'admission_masterid',$Sid);
+			$this->logger->write_logmessage("update", "Admission Step_four update.");
+      			$this->logger->write_dblogmessage("update", "Admission Step_four update.");
+
+			if(!$update)
+			{
+               			$this->logger->write_logmessage("update", "Student admission fees not add." );
+               			$this->logger->write_dblogmessage("update", "Student admission fees not add." );
+               	 		$this->session->set_flashdata("err_message",'Error to update admission fees');
+				redirect('enterence/step_four');
+               		}
+               		else{
+            			$this->logger->write_logmessage("update","Student admission fees add.");
+               			$this->logger->write_dblogmessage("update", "Student admission fees add.");
+				$this->session->set_flashdata("success", "Your offline fees submitted successfully.");
+				redirect('enterence/step_five');
+               		}
+		}//if duplicate close
+		else{
+			$message = '<h3>Your fees submission has been failed.</h3>';
+                        $this->session->set_flashdata('msg',$message);
+			redirect('welcome');	
+		}	
+	$this->load->view('enterence/step_four',$data);
+
+	}
 
 	public function onlinePayment(){
 		if(empty($this->session->userdata('asm_id'))) {
