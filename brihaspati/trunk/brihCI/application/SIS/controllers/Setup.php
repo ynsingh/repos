@@ -3083,8 +3083,8 @@ class Setup extends CI_Controller
                		'bpa_pan_number'  =>$bankprofile_data->pan_number, 
                		'bpa_tan_number'  =>$bankprofile_data->tan_number,
 			'bpa_gst_number' =>$bankprofile_data->gst_number,
-			'bpa_creatorid' = $this->session->userdata('id_user'),
-            		'bpa_date' = date('y-m-d')
+			'bpa_creatorid' => $this->session->userdata('id_user'),
+            		'bpa_date' => date('y-m-d')
             );
 	 $baflag=$this->SIS_model->insertrec('bankprofile_archive', $update_baarchive);
          if(!$baflag)
