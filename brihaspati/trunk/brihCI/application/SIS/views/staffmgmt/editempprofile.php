@@ -8,30 +8,25 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
     <head>
         <title>Welcome to TANUVAS</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
         <script>
             $(document).ready(function(){
-            $("#StartDate").datepicker({
+            var today = new Date(); 
+                  
+            $('#StartDate,#Dateofassrexam,#Dateofhgp,#Dateofphd,#Dateofbirth').datepicker({
                 dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                autoclose: true,
+                autoclose:true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-70:c+30'
-                       
-            });
-            $("#Dateofphd").datepicker({
-                dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                autoclose: true,
-                changeMonth: true,
-                changeYear: true,
-                yearRange: 'c-70:c+30'
-               
+                yearRange: 'c-70:c',
+                endDate: "today",
+                maxDate: today
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
             });
            
             /*************************************************************calculate date of retirement******************/
@@ -48,33 +43,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                
             });
             /******************************close date of retirement********************************************************/
-            
-            $("#Dateofassrexam").datepicker({
-                dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                //autoclose: true,
-               
-            });
-            $("#Dateofhgp").datepicker({
-                dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                autoclose: true,
-                changeMonth: true,
-                changeYear: true,
-                yearRange: 'c-70:c+30'
-               
-            });
-            $("#Dateofbirth").datepicker({
-                dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                autoclose: true,
-                changeMonth: true,
-                changeYear: true,
-                yearRange: 'c-70:c+30'
-               
-            });
-            
-            /*******uoc on the basis of campus  *************************************************************/
+                        
+            /*******uoc on the basis of campus  ****************************************************************************/
             
            /* $('#camp').on('change',function(){
                 var sc_code = $(this).val();
@@ -375,10 +345,9 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
            /*******************************************************close pan number method****************************************************************/
          
         });
-        
-        function myFunction() {
+        /*function myFunction() {
             window.print();
-        }
+        }*/
 
         </script>   
     </head>
@@ -491,7 +460,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <option value="">-----------Select Working Type--------</option>
                         <?php endif;?>
                        <!-- <option value="Teaching">Teaching</option>
-                        <option value="NON-Teaching">NON Teaching</option>-->
+                        <option value="Non Teaching">Non Teaching</option>-->
                         </select></div>
                 </td>
                 <td><label for="group" style="font-size:15px;">Group<font color='Red'>*</font></label>
@@ -569,8 +538,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="fathername" class="keyup-characters" value="<?php echo $editdata->emp_father; ?>" placeholder="Fathers Name..." size="30" >
                     </div>    
                 </td>
-                <td><label for="orderno" style="font-size:15px;"> Application Order No<font color='Red'>*</font></label>
-                    <div><input type="text" name="orderno"  value="<?php echo $editdata->emp_apporderno ?>" placeholder="order No..." size="27" required="required">
+                <td><label for="orderno" style="font-size:15px;"> Application Order No</label>
+                    <div><input type="text" name="orderno"  value="<?php echo $editdata->emp_apporderno ?>" placeholder="order No..." size="27">
                 </div></td>
                 <td><label for="specialisation" style="font-size:15px;">Specialisation(Major Subject)</label>
                     <div><select name="specialisation" style="width:75%;"> 
@@ -606,18 +575,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
  			<?php endforeach; ?>
                     </select>
                 </td>
-                
-                
-                
-            </tr>
-            <tr style="height:10px;"></tr>
-            <tr>
-                
-                
-                
-                
-                
-                
+            
             </tr>
             <tr style="height:10px;"></tr>-->
             <tr>
@@ -641,11 +599,9 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                         <?php else:?>
                         <option value="">----------- Select Community ----------</option>
                         <?php endif?>
-                        <option value="General">General</option>
-                        <option value="Other Backward Class">Other Backward Class</option>
-                        <option value="Scheduled Caste">Scheduled Caste</option>
-                        <option value="Scheduled Tribe">Scheduled Tribe</option>
-                        
+                        <?php foreach($this->community as $communitydata): ?>	
+   				<option value="<?php echo $communitydata->cat_name; ?>"><?php echo $communitydata->cat_name; ?></option> 
+ 			<?php endforeach; ?>
                     </select></div>
                 </td> 
                 <td><label for="religion" style="font-size:15px;">Religion</label>

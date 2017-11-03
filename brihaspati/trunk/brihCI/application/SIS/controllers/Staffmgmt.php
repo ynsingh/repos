@@ -50,6 +50,8 @@ class Staffmgmt extends CI_Controller
         //$this->uoc=$this->lgnmodel->get_list('authority_map');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+        /*********************select category/community list*****************************************/
+        $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
         /**********************here we check that vacancy is available or not in staff position******************************************/
         /*if(!empty($_POST['emppost'])){
             $str = str_replace(" ", "",$_POST['emppost']);
@@ -112,20 +114,14 @@ class Staffmgmt extends CI_Controller
             //some more  fields added on demand 
             $this->form_validation->set_rules('ddo','Drawing and Disbursing Officer','trim|xss_clean|required');
             $this->form_validation->set_rules('group','Group','trim|xss_clean|required');
-            $this->form_validation->set_rules('orderno','Order No','trim|xss_clean|required');
+            $this->form_validation->set_rules('orderno','Order No','trim|xss_clean');
             $this->form_validation->set_rules('phstatus','phstatus','trim|xss_clean');
             $this->form_validation->set_rules('phdetail','phdetail','trim|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('Sabgroup','BloodGroup','trim|xss_clean');
-            
             //Repopulate forms value
-           /* if($_POST){
+            /* if($_POST){
 		$this->data['empcode']['value']=$this->input->get_post('empcode',TRUE);
-		$this->data['empname']=$this->input->get_post('empname');
-		$this->data['specialisation']=$this->input->get_post('specialisation');
-		$this->data['campus']=$this->input->get_post('campus');
-                
-	
-            */    
+	    */    
             if($this->form_validation->run() == FALSE){
                 //$this->load->view('staffmgmt/staffprofile');
                 redirect('staffmgmt/staffprofile');
@@ -276,7 +272,7 @@ class Staffmgmt extends CI_Controller
                     $this->logger->write_dblogmessage("insert", "data insert in user_role_type table." );
                     /*************************************updating the staff position table*****************/
                    
-                    $this->updatestaffposition($_POST['campus'],$_POST['uocontrol'], $_POST['department'],$_POST['schemecode'],$_POST['designation'],$_POST['workingtype'],$_POST['emptype']) ;
+                    $this->updatestaffposition($_POST['campus'],$_POST['uocontrol'], $_POST['department'],$_POST['emppost'],$_POST['workingtype'],$_POST['emptype']) ;
                    
                     /*************************************close updating the staff position table*****************/
                     /* upload photo*/
@@ -392,6 +388,9 @@ class Staffmgmt extends CI_Controller
         $this->ddo=$this->sismodel->get_list('ddo');
         $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
         $this->salgrd=$this->sismodel->get_list('salary_grade_master');
+        /*********************select category/community list*****************************************/
+        $this->community=$this->commodel->get_listspfic2('category','cat_id','cat_name');
+        
         $empmaster_data=$this->sismodel->get_listrow('employee_master','emp_id', $id);
         $editemp_data['editdata'] = $empmaster_data->row();
         $this->load->view('staffmgmt/editempprofile',$editemp_data);     
@@ -1255,8 +1254,11 @@ class Staffmgmt extends CI_Controller
     public function getemppostposition(){
         $combval = $this->input->post('combsix');
         $parts = explode(',',$combval);
+        /******************Query for filteraion the post************************************/
+        /*$datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
+                       'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_group' => $parts[5],'sp_tnt' => $parts[6]);*/
         $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
-                       'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_group' => $parts[5],'sp_tnt' => $parts[6]);
+                       'sp_emppost' => $parts[3], 'sp_tnt' => $parts[4]);
         $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_vacant',$datawh);
         //echo json_encode("post====".$emppost_data);
         $emppost_select_box ='';
@@ -1264,8 +1266,9 @@ class Staffmgmt extends CI_Controller
         if(!empty($emppost_data)){ 
             foreach($emppost_data as $records){ 
                 if($records->sp_vacant > 0){ 
-                    $datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
-                        'sp_schemecode'=> $parts[3],'sp_group' => $parts[5],'sp_tnt' => $parts[6]);  
+                    /*$datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
+                        'sp_schemecode'=> $parts[3],'sp_group' => $parts[5],'sp_tnt' => $parts[6]); */ 
+                    $datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],'sp_tnt' => $parts[4]); 
                     $emppost_finaldata = $this->sismodel->get_listspficemore('staff_position', 'sp_emppost,sp_vacant',$datawh2);
                     foreach($emppost_finaldata as $empdata){
                         $emppost_name=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$empdata->sp_emppost)->desig_name;
@@ -1285,9 +1288,12 @@ class Staffmgmt extends CI_Controller
     }
     
     /*************************************updating the staff position table*****************/
-    public function updatestaffposition($campus,$uocid,$deptid,$schmid,$emppost,$worktype,$emptype){
+    public function updatestaffposition($campus,$uocid,$deptid,$emppost,$worktype,$emptype){
+    // public function updatestaffposition($campus,$uocid,$deptid,$schmid,$emppost,$worktype,$emptype){
+        /*$datawh=array('sp_campusid' => $campus,'sp_uo' => $uocid, 'sp_dept' => $deptid,
+            'sp_schemecode'=> $schmid,'sp_emppost' => $emppost, 'sp_tnt' => $worktype,'sp_type' =>$emptype);*/
         $datawh=array('sp_campusid' => $campus,'sp_uo' => $uocid, 'sp_dept' => $deptid,
-            'sp_schemecode'=> $schmid,'sp_emppost' => $emppost, 'sp_tnt' => $worktype,'sp_type' =>$emptype);
+            'sp_emppost' => $emppost, 'sp_tnt' => $worktype,'sp_type' =>$emptype);
         $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_id,sp_type,sp_position,sp_vacant,sp_pospermanent,sp_postemporary,sp_vpermanenet,sp_vtemporary',$datawh);
         if(!empty($emppost_data)){
             $update_data = array();
@@ -1352,8 +1358,10 @@ class Staffmgmt extends CI_Controller
       //  $uoid=$this->lgnmodel->get_listspfic1('authority_map', 'authority_id', 'user_id',$parts[1])->authority_id;
        // $emppost_id=$this->commodel->get_listspfic1('designation', 'desig_id', 'desig_name',$parts[4])->desig_id;
        //  echo json_encode("seema=27===".$emppost_id);
+        /*$datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
+                        'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_tnt' => $parts[5]);*/
         $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
-                        'sp_schemecode'=> $parts[3],'sp_emppost' => $parts[4], 'sp_tnt' => $parts[5]);
+                        'sp_emppost' => $parts[3], 'sp_tnt' => $parts[4]);
         
         $emptype_data = $this->sismodel->get_listspficemore('staff_position', 'sp_type',$datawh);
         // echo json_encode("seema=77===".$emptype_data);

@@ -6,33 +6,34 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 <html>
     <head>
         <title>Welcome to TANUVAS</title>
-       <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">-->
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
-        <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
+        <script type="text/javascript" src="<//?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
-               
-        <script>$(document).ready(function(){
-            $("#StartDate").datepicker({
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
+        <script>
+            $(document).ready(function(){
+            var today = new Date();
+            
+            $('#StartDate,#Dateofassrexam,#Dateofhgp1,#Dateofphd,#Dateofbirth').datepicker({
                 dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                autoclose: true,
+                autoclose:true,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: 'c-70:c+30'
-                       
+                yearRange: 'c-70:c',
+                endDate: "today",
+                maxDate: today
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
             });
-            $("#Dateofphd").datepicker({
-                dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                autoclose: true,
-                changeMonth: true,
-                changeYear: true,
-                yearRange: 'c-70:c+30'
-               
-            });
-           
+		
+
+           /*$("#Dateofassrexam").keyup(function () {
+                if (this.value.match(/[^0-9]/g)) {
+                    this.value = this.value.replace(/[^0-9^-]/g, '');
+                }
+            });*/
+            
             /*************************************************************calculate date of retirement******************/
             $("#Dateofbirth").on('change',function(){
                 var dob= $(this).val();
@@ -49,35 +50,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             });
             /******************************close date of retirement********************************************************/
             
-            $("#Dateofassrexam").datepicker({
-                dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                autoclose: true,
-                changeMonth: true,
-                changeYear: true,
-                yearRange: 'c-70:c+30'
-               
-            });
-            $("#Dateofhgp").datepicker({
-                dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                autoclose: true,
-                changeMonth: true,
-                changeYear: true,
-                yearRange: 'c-70:c+30'
-               
-            });
-            $("#Dateofbirth").datepicker({
-                dateFormat: 'yy/mm/dd',
-                numberOfMonths: 1,
-                autoclose: true,
-                changeMonth: true,
-                changeYear: true,
-                yearRange: 'c-70:c+30'
-               
-            });
-            
-            /*******uoc on the basis of campus*******************************/
+            /*******uoc on the basis of campus*****************************************************************************/
             
             /*
             In future this code may be replace when either campusid added in the 
@@ -288,21 +261,18 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 var sc_code = $('#camp').val();
                 var uoc_id = $('#uocid').val();
                 var dept_id = $('#scid').val();
-                var schm_id = $('#schmid').val();
+                //var schm_id = $('#schmid').val();
                 var desig_id = $('#desigid').val();
-                var grp_id =  $('#grpid').val();
+               // var grp_id =  $('#grpid').val();
                 var wrktype_id = $('#worktypeid').val();
-                var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+desig_id+","+grp_id+","+wrktype_id;
+                //var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+desig_id+","+grp_id+","+wrktype_id;
+                var cudshmdesigwrktype = sc_code+","+uoc_id+","+dept_id+","+desig_id+","+wrktype_id;
                 //alert("comin script===bsix===="+cudshmdesigwrktype);
-                //var grp_id = $(this).val();
                 if(desig_id == ''){
                     $('#emppostid').prop('disabled',true);
-                   // $('#emptypeid').prop('disabled',true);
                 }
                 else{
-             
                     $('#emppostid').prop('disabled',false);
-                   // $('#emptypeid').prop('disabled',false);
                     $.ajax({
                         url: "<?php echo base_url();?>sisindex.php/staffmgmt/getemppostposition",
                         type: "POST",
@@ -336,14 +306,15 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             
             /************************Employee type******************************************************************/
             
-             $('#emppostid').on('change',function(){
+            $('#emppostid').on('change',function(){
                 var sc_code = $('#camp').val();
                 var uoc_id = $('#uocid').val();
                 var dept_id = $('#scid').val();
-                var schm_id = $('#schmid').val();
+                //var schm_id = $('#schmid').val();
                 var empost_id = $('#emppostid').val();
                 var wrktype_id = $('#worktypeid').val();
-                var cudshmpostwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+empost_id+","+wrktype_id;
+                //var cudshmpostwrktype = sc_code+","+uoc_id+","+dept_id+","+schm_id+","+empost_id+","+wrktype_id;
+                var cudshmpostwrktype = sc_code+","+uoc_id+","+dept_id+","+empost_id+","+wrktype_id;
                // alert("comin script===bsix===="+cudshmpostwrktype);
                 //var grp_id = $(this).val();
                 if(empost_id == ''){
@@ -481,10 +452,6 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             
             <?php echo form_open_multipart('staffmgmt/staffprofile','id="my_id"');?>
             <tr><thead><th style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="4">&nbsp;&nbsp;Staff Profile Form</th></thead></tr>
-            <!--<tr style="height:10px;"></tr>-->
-           <!-- <tr><td>
-            <table align="center" style="margin-left:2%;width:96%; border:1px solid gray;" class="TFtable">
-            <tr style="margin-left:2%;"><td style="margin-left:2%;">    -->
             <div style="margin-left:10%;">
             <tr>
                 <td><label for="campus" style="font-size:15px;">Campus Name <font color='Red'>*</font></label>
@@ -541,7 +508,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <div><select id="worktypeid" name="workingtype" required> 
                         <option selected="selected" disabled selected>------------- Working Type -------------</option>
                         <option value="Teaching">Teaching</option>
-                        <option value="NON-Teaching">NON Teaching</option>
+                        <option value="Non Teaching">Non Teaching</option>
                     </select></div>
                 </td> 
                 <td><label for="group" style="font-size:15px;">Group<font color='Red'>*</font></label>
@@ -600,8 +567,8 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="fathername" style="font-size:15px;">Fathers Name</label>
                     <div><input type="text" name="fathername" class="keyup-characters" value="<?php echo isset($_POST["fathername"]) ? $_POST["fathername"] : ''; ?>" placeholder="Father Name..." size="30" >
                 </div></td>
-                <td><label for="orderno" style="font-size:15px;"> Application Order No<font color='Red'>*</font></label>
-                    <div><input type="text" name="orderno"  value="<?php echo isset($_POST["orderno"]) ? $_POST["orderno"] : ''; ?>" placeholder="order No..." size="27" required="required">
+                <td><label for="orderno" style="font-size:15px;"> Application Order No</label>
+                    <div><input type="text" name="orderno"  value="<?php echo isset($_POST["orderno"]) ? $_POST["orderno"] : ''; ?>" placeholder=" application order No..." size="27">
                 </div></td>
                 <td><label for="specialisation" style="font-size:15px;">Specialisation(Major Subject)</label>
                     <div><select name="specialisation"> 
@@ -628,11 +595,9 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <td><label for="community" style="font-size:15px;">Community</label>
                     <div><select name="community"> 
                         <option value="">----------- Select Community -----------</option>
-                        <option value="General ">General</option>
-                        <option value="Other Backward Class">Other Backward Class</option>
-                        <option value="Scheduled Caste">Scheduled Caste</option>
-                        <option value="Scheduled Tribe">Scheduled Tribe</option>
-                        
+                         <?php foreach($this->community as $communitydata): ?>	
+   				<option value="<?php echo $communitydata->cat_name; ?>"><?php echo $communitydata->cat_name; ?></option> 
+ 			<?php endforeach; ?>
                     </select></div>
                 </td> 
                                     
@@ -700,7 +665,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
 	 		</select></div>		
                 </td>
                 <td><label for="DateofBirth" style="font-size:15px;">Date of Birth<font color='Red'>*</font></label>
-                    <div><input type="text" name="DateofBirth" value="<?php echo isset($_POST["DateofBirth"]) ? $_POST["DateofBirth"] : ''; ?>" id="Dateofbirth" size="27" required="required">
+                    <div><input type="text" name="DateofBirth" id="Dateofbirth" value="<?php echo isset($_POST["DateofBirth"]) ? $_POST["DateofBirth"] : ''; ?>"  size="27" required="required">
                 </div></td>     
                          
             </tr>
@@ -737,7 +702,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <div></td>    
                 
                 <td><label for="dateofhgp" style="font-size:15px;">Date of HGP</label>
-                    <div><input type="text" name="dateofhgp" id="Dateofhgp" value="<?php echo isset($_POST["dateofhgp"]) ? $_POST["dateofhgp"] : ''; ?>" class="form-control" size="28" />
+                    <div><input type="text" name="dateofhgp" id="Dateofhgp1" value="<?php echo isset($_POST["dateofhgp"]) ? $_POST["dateofhgp"] : ''; ?>" class="form-control" size="28" />
                 </div></td>
                 
                 <td><label for="panno" style="font-size:15px;">Pan No</label>
@@ -780,7 +745,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             <tr>
                
                 <td><label for="Address" style="font-size:15px;">Address</label>
-                    <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="5" cols="50" required pattern="[a-zA-Z0-9 ]+">Enter text here...</textarea>
+                    <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="5" cols="50" required pattern="[a-zA-Z0-9 ]+" placeholder="Address..."></textarea>
                 </div></td><!--<td><input type="text" name="Address" class="keyup-characters" value="<//?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>" placeholder="Address..." size="25" >-->
                 <td colspan="3"><label for="userfile" style="font-size:15px;">Upload Photo</label>
                    <div>
