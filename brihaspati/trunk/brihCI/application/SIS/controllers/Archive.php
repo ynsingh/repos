@@ -115,6 +115,13 @@ class Archive extends CI_Controller
                 $this->logger->write_dblogmessage("view"," View  map scheme department archive", "Map Scheme Department archive details...");
                 $this->load->view('archive/mapschemedepta');
         }
+     /** This function Display the Announcement list archive records */
+        public function announcementa() {
+                $this->annoresult = $this->common_model->get_list('announcement_archive');
+                $this->logger->write_logmessage("view"," View Announcement archive", "Announcement archive details...");
+                $this->logger->write_dblogmessage("view"," View Announcement archive", "Announcement archive details...");
+                $this->load->view('archive/announcementa');
+        }
 
 }
 

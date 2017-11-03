@@ -168,13 +168,7 @@ echo "<ul class=\"sf-menu\">";
 				echo "<a href=" . ">Announcement</a>";
 				echo "<ul>";
 					echo "<li>";
-						echo anchor('announcement/admission', 'Admission Announcement', array('title' => 'Admission Announcement'));
-					echo "</li>";
-					echo "<li>";
-						echo anchor('announcement/result', 'Result Announcement', array('title' => 'Result Announcement'));
-					echo "</li>";
-					echo "<li>";
-						echo anchor('announcement/general', 'General Announcement', array('title' => 'General Announcement'));
+						echo anchor('announcement/viewannouncement', 'Announcement', array('title' => 'Announcement'));
 					echo "</li>";
 				echo "</ul>";
 			echo "</li>";
@@ -222,9 +216,13 @@ echo "<ul class=\"sf-menu\">";
 					echo "<li>";
                                                 echo anchor('archive/examcentera', 'Exam Center Archive', array('title' => 'Exam Center Archive'));
                                         echo "</li>";
+					echo "<li>";
+                                                echo anchor('archive/announcementa', 'Announcement Archive', array('title' => 'Announcement Archive'));
+                                        echo "</li>";
                                         echo "<li>";
                                                 echo anchor('archive/departmenta', 'Department Archive', array('title' => 'Department Archive'));
                                         echo "</li>";
+
 
 				echo "</ul>";
 			echo "</li>";

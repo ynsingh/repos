@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<title>Welcome </title>
 	 <link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
          <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/helpdoc.css">
-	
+	 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">	
 	<style>
 		table,th, td{
    		 border: 0px solid black;
@@ -94,17 +94,36 @@ echo "</center>"; ?>
         		
 		</td>
 
-		<td align=center style="width:45%;" valign="top">
-			<table style="width:100%;">
+		<td align=center style="width:30%;" valign="top">
+		<div style="overflow:auto;height:300px;">
+			<table style="width:100%" class="TFtable" >
 				<tr style="background-color:#38B0DE;color:white;font-size:21px;">
-				<td style="border:2px solid white;" align=center>Announcement</td></tr>
-					<tr>
-						<td></td>
-					</tr>
-			</table>
-
-
+				<td style="border:2px solid white;" align=center colspan=5>Announcement</td></tr>
+				<?php
+				$count =0;
+				foreach($this->annoresult as $aname){
+                                echo "<tr style=\"font-size:15px;\">";
+				echo "<td>";
+                                echo  "<b>".++$count."</b>" ; 
+                                echo ".";
+                                echo "&nbsp;&nbsp;";
+                                echo"</td>";
+                                echo "<td>";
+                                echo  "<b>" .$aname->anou_title."</b>";
+				echo "&nbsp;&nbsp;";                                
+				echo"</td>";
+				echo "<td>";
+                                echo  $aname->anou_description;
+				echo"</td>";
+				//echo "<td>";
+                                //echo  $aname->anou_attachment;
+                               // echo"</td>";
+				echo "</tr>";
+				}
+				?>
+</div>
 	      </td>
+</table>
 	
 		<td align=right style="width:30%;" valign="top">
 		<form action="<?= site_url('welcome') ?>" method="post">
@@ -120,7 +139,7 @@ echo "</center>"; ?>
         			<input type="password" name="password" size="33%" style="height:33px;" placeholder="********"/></td></tr>
 				<tr>
 				<td>
-        			<button type="submit" style="" id="button">Login</button>
+        			<button type="submit" style="" id="button"><b>Login</b></button>
 		
 				<a href="<?php echo site_url('Student/student_step0');?>" style="" title="Click to open student detail form">
 				<input type="button" value="New Student" style="font-size:17px;width:58%;"></a></td></tr>

@@ -45,7 +45,9 @@ class Welcome extends CI_Controller {
 		$cdate = date('Y-m-d H:i:s');
 		$field=array('prgcat_id','prgcat_name');
 		$this->prgcat = $this->commodel->get_listmore('programcategory',$field);
-		
+		$cdate = date('Y-m-d');
+        	$wharray = array('anou_cname=' => 'SLCMS', 'anou_publishdate<=' => $cdate,'anou_expdate>=' => $cdate);
+        	$this->annoresult = $this->commodel->get_listarry('announcement','*',$wharray);
 		//get certificate list in add_admission open
 		
             if($_POST) {

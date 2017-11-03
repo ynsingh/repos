@@ -377,11 +377,11 @@ CREATE TABLE `announcement` (
   `anou_cname` varchar(100) NOT NULL,
   `anou_type` varchar(100) NOT NULL, 
   `anou_title` varchar(255) NOT NULL,
-  `anou_description` varchar(255) NOT NULL,
+  `anou_description` blob NOT NULL,
   `anou_attachment` varchar(255) NOT NULL,
   `anou_publishdate` date NOT NULL,
   `anou_expdate` date NOT NULL,
-  `anou_remark` varchar(255) NOT NULL,
+  `anou_remark` blob NOT NULL,
   `anou_creatordate` date NOT NULL,
   `anou_creatorid` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -391,6 +391,32 @@ ALTER TABLE `announcement`
 
 ALTER TABLE `announcement`
   MODIFY `anou_id` int(11) NOT NULL AUTO_INCREMENT;
+-- --------------------------------------------------------
+--
+-- Table structure for table `announcementa`
+--
+CREATE TABLE `announcement_archive` (
+  `anoua_id` int(11) NOT NULL,
+  `annoa_anoid` int(11) NOT NULL,
+  `anoua_cname` varchar(100) NOT NULL,
+  `anoua_type` varchar(100) NOT NULL,
+  `anoua_title` varchar(255) NOT NULL,
+  `anoua_description` blob NOT NULL,
+  `anoua_publishdate` date NOT NULL,
+  `anoua_expdate` date NOT NULL,
+  `anoua_remark` blob NOT NULL,
+  `anoua_creatordate` date NOT NULL,
+  `anoua_creatorid` varchar(255) NOT NULL,
+  `annua_archivename`  varchar(255) DEFAULT NULL, 
+  `anoua_archivedate` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE `announcement_archive`
+  ADD PRIMARY KEY (`anoua_id`);
+
+ALTER TABLE `announcement_archive`
+  MODIFY `anoua_id` int(11) NOT NULL AUTO_INCREMENT;
 
 
 -- --------------------------------------------------------
