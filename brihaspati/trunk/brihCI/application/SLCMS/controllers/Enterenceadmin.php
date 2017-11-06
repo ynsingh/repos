@@ -600,5 +600,82 @@ class Enterenceadmin extends CI_Controller
         $this->load->view('enterenceadmin/graphicalreports',$data);
    }
 
+/****************************************Fees Reconcile start******************************************/
+	//It gives all fees
+	public function viewentfeereconcile_complete(){
+		$whdata= array('asfee_feeamount >' => 0);
+        	$this->stu_feedata = $this->commodel->get_listarry('admissionstudent_fees','*',$whdata);
+		$this->message ="Entrance All Fees Detail";
+		$this->load->view('enterenceadmin/ent_feesreconcile_complete');
+		$this->logger->write_logmessage("view", "Reconcile all fees view.");
+                $this->logger->write_dblogmessage("view", "Reconcile all fees view." );
+	}
+
+ 	//It return all conciled fees
+	public function viewentfeereconcile(){
+		$userid = $this->session->userdata('id_user');
+        	$whdata= array('asfee_feeamount >' => 0,'asfee_reconcilestatus' =>'Y');
+		$this->message ="Entrance Reconcile Fees Detail";
+        	$this->stu_feedata = $this->commodel->get_listarry('admissionstudent_fees','*',$whdata);
+		$this->load->view('enterenceadmin/ent_feesreconcile_complete');
+		$this->logger->write_logmessage("view", "Reconcile fees view.");
+                $this->logger->write_dblogmessage("view", "Reconcile fees view." );
+	}
+
+	//It return to show all record of non-conciled fees
+	public function fees_nonreconcile(){
+		$who_reconame = $this->session->userdata('username');
+        	$whdata= array('asfee_feeamount >' => 0,'asfee_reconcilestatus' =>'N');
+        	$this->stu_feedata = $this->commodel->get_listarry('admissionstudent_fees','*',$whdata);
+		$sfee_id=$this->uri->segment(3);
+
+		$this->load->view('enterenceadmin/ent_feesnonreconcile');
+		$this->logger->write_logmessage("view","Non reconcile fee page show.");
+                $this->logger->write_dblogmessage("view","Reconcile is update." );
+	}
+
+	//It conciled one by one  fees
+	public function nonreconcile_fee(){
+		$whdata= array('asfee_feeamount >' => 0,'asfee_reconcilestatus' =>'N');
+        	$this->stu_feedata = $this->commodel->get_listarry('admissionstudent_fees','*',$whdata);
+		$who_reconame = $this->session->userdata('username');
+        	$sfee_id=$this->uri->segment(3);
+		
+		$cdate = date('Y-m-d H:i:s');
+			$fee = array(
+				'asfee_reconcilestatus'  =>	'Y',
+                		'asfee_whoreconcile'  	=>	$who_reconame,
+                		'asfee_reconciledate'  	=>	$cdate
+                		);
+								
+			$this->commodel->updaterec('admissionstudent_fees', $fee,'asfee_amid',$sfee_id);
+			$this->logger->write_logmessage("update", "Reconcile fee is done.");
+	               	$this->logger->write_dblogmessage("update", "Reconcile fee is done.");
+
+			$flag = true;
+			if($flag){
+				$message = '<h3>Enterance Admission fees reconcile successfully done !</h3>';
+				$this->session->set_flashdata('msg',$message);
+				redirect('enterenceadmin/viewentfeereconcile');
+			}
+			else{
+				$message = '<h3>Enterance Admission fees reconcile not updated !</h3>';
+				$this->session->set_flashdata('error',$message);
+				$this->load->view('enterenceadmin/ent_feesnonreconcile');
+				}
+
+		$this->load->view('enterenceadmin/ent_feesnonreconcile');
+		$this->logger->write_logmessage("view","Non reconcile fee page show.");
+                $this->logger->write_dblogmessage("view","Non reconcile fee page show." );
+	}//function close
+
+/*****************************************************Roll number genration start***********************************************/
+	public function viewcentrollno(){
+
+		$this->load->view('enterenceadmin/gen_rollnumber');
+	}	
+
+
+
 
 }//end class
