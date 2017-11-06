@@ -1027,7 +1027,7 @@ class Setup extends CI_Controller
                         }
                         else{
                                 $this->logger->write_logmessage("insert"," add Department ", "Department record added successfully.".$dept_name  );
-                                $this->logger->write_dblogmessage("insert"," add Deaprtment ", "Department record added successfully.".$dept_name );
+                                $this->logger->write_dblogmessage("insert"," add Department ", "Department record added successfully.".$dept_name );
                                 $this->session->set_flashdata("success", "Department added successfully...");
                                 redirect('setup/dispdepartment');
                         }

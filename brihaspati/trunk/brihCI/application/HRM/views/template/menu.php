@@ -174,7 +174,7 @@ echo "<ul class=\"sf-menu\">";
 				echo "<a href=" . ">Audit Trails</a>";
 				echo "<ul>";
 					echo "<li>";
-						echo anchor('audittr/logdetail', 'Log Deatails', array('title' => 'Log Details'));
+						echo anchor('audittr/logdetail', 'Log Details', array('title' => 'Log Details'));
 					echo "</li>";
 				echo "</ul>";
 			echo "</li>";
