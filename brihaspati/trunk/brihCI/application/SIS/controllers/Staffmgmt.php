@@ -621,7 +621,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('postto','PostTo','trim|required|xss_clean');
             $this->form_validation->set_rules('emailsentto','EmailSentto','trim|required|xss_clean');
             if($this->form_validation->run() == FALSE){
-                $this->load->view('staffmgmt/stafftransfer');
+                redirect('staffmgmt/stafftransfer');
             }
             else{
                 $data = array(
@@ -798,18 +798,18 @@ class Staffmgmt extends CI_Controller
                 $this->form_validation->set_rules('grouppost','Group Post','xss_clean|required');
                 $this->form_validation->set_rules('scale','Grade Pay','xss_clean|required');
                 $this->form_validation->set_rules('methodrect','Method of Recruitment','xss_clean|required');
-                $this->form_validation->set_rules('ss','Position Sanction Strength','xss_clean|required|numeric');
-                $this->form_validation->set_rules('p','Position Present','xss_clean|required|numeric');
-                $this->form_validation->set_rules('v','Position Vacant','xss_clean|required|numeric');
-                $this->form_validation->set_rules('ssper','Sanction Strength Permanent','xss_clean|required|numeric');
-                $this->form_validation->set_rules('pper','Position Permanent','xss_clean|required|numeric');
-                $this->form_validation->set_rules('vper','Vacancy Permanent','xss_clean|required|numeric');
-                $this->form_validation->set_rules('sstem','Sanction Strength Temporary','xss_clean|required|numeric');
-                $this->form_validation->set_rules('ptem','Position Temporary ','xss_clean|required|numeric');
-                $this->form_validation->set_rules('vtem','Vacancy Temporary','xss_clean|required|numeric');
-                $this->form_validation->set_rules('address1','Address','xss_clean|required');
-                $this->form_validation->set_rules('ssdetail','Sanction Strength Detail','xss_clean|required');
-                $this->form_validation->set_rules('remarks','Remarks','xss_clean|required');
+                $this->form_validation->set_rules('ss','Position Sanction Strength','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('p','Position Present','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('v','Position Vacant','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('ssper','Sanction Strength Permanent','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('pper','Position Permanent','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('vper','Vacancy Permanent','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('sstem','Sanction Strength Temporary','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('ptem','Position Temporary ','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('vtem','Vacancy Temporary','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('address1','Address','xss_clean');
+                $this->form_validation->set_rules('ssdetail','Sanction Strength Detail','xss_clean');
+                $this->form_validation->set_rules('remarks','Remarks','xss_clean');
 
        if($this->form_validation->run()==TRUE){
 
@@ -824,6 +824,12 @@ class Staffmgmt extends CI_Controller
         $spsstem = $this->input->post("sstem");
         $spptem = $this->input->post("ptem");
         $spvtem = $this->input->post("vtem");
+
+	if($spss == 0 ) {
+                $this->session->set_flashdata('err_message','The value of Position Sanction Strength should be greater than zero .');
+                $this->load->view('staffmgmt/newstaffposition');
+		return false; 
+		}
 
 	if($spss != $spp+$spv) {
                 $this->session->set_flashdata('err_message','The value of Position Sanction Strength is not equals to sum of Position Present and Position Vacant .');
@@ -858,6 +864,9 @@ class Staffmgmt extends CI_Controller
 		}
 
 
+        $datadupposition = array('sp_tnt'=>$_POST['tnt'], 'sp_type'=>$_POST['type'], 'sp_emppost'=>$_POST['emppost'], 'sp_grppost'=>$_POST['grouppost'], 'sp_scale'=>$_POST['scale'], 'sp_methodRect'=>$_POST['methodrect'], 'sp_group'=>$_POST['group'], 'sp_uo'=>$_POST['uo'], 'sp_dept'=>$_POST['dept'], 'sp_campusid'=>$_POST['campus'], 'sp_plan_nonplan'=>$_POST['pnp'], 'sp_schemecode'=>$_POST['schemecode'],
+        'sp_org_id'=> '1' );
+
         $dataposition = array(
         'sp_tnt'=>$_POST['tnt'],
         'sp_type'=>$_POST['type'],
@@ -889,6 +898,14 @@ class Staffmgmt extends CI_Controller
         'sp_org_id'=> '1'
         );
 
+	$duppositionflag = $this->sismodel->isduplicatemore('staff_position', $datadupposition) ;
+	if($duppositionflag == 1)
+	{
+                $this->session->set_flashdata("err_message", "Record is already exist with this combination......... ");
+                redirect('staffmgmt/newstaffposition');
+                return;
+	}
+    else{
 	$positionflag = $this->sismodel->insertrec('staff_position', $dataposition) ;
         if(!$positionflag)
         {
@@ -904,6 +921,7 @@ class Staffmgmt extends CI_Controller
                 redirect('staffmgmt/staffposition');
         }
       }
+    }
    }
    $this->load->view('staffmgmt/newstaffposition');
    }
@@ -934,7 +952,7 @@ class Staffmgmt extends CI_Controller
 
         $data['group'] = array('name' => 'group', 'id' => 'group', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_group, 'readonly' => 'readonly' );
 
-        $data['uo'] = array('name' => 'uo', 'id' => 'uo', 'maxlength' => '40', 'size' => '26', 'value' => $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $editsp_data->sp_uo)->name, );
+        $data['uo'] = array('name' => 'uo', 'id' => 'uo', 'maxlength' => '40', 'size' => '26', 'value' => $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $editsp_data->sp_uo)->name, 'readonly' => 'readonly' );
 
         $data['dept'] = array('name' => 'dept', 'id' => 'teachername', 'maxlength' => '40', 'size' => '26', 'value' => $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $editsp_data->sp_dept)->dept_name, 'readonly' => 'readonly');
 
@@ -950,23 +968,23 @@ class Staffmgmt extends CI_Controller
 
         $data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_position, 'readonly' => 'readonly' );
 
-        $data['v'] = array('name' => 'v', 'id' => 'v', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vacant, );
+        $data['v'] = array('name' => 'v', 'id' => 'v', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vacant, 'readonly' => 'readonly' );
 
         $data['remarks'] = array('name' => 'remarks', 'id' => 'remarks', 'maxlength' => '26', 'size' => '26', 'value' => $editsp_data->sp_remarks, );
 
         $data['ssdetail'] = array('name' => 'ssdetail', 'id' => 'ssdetail', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_ssdetail, );
 
-        $data['ssper'] = array('name' => 'ssper', 'id' => 'ssper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_sspermanent, );
+        $data['ssper'] = array('name' => 'ssper', 'id' => 'ssper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_sspermanent, 'readonly' => 'readonly' );
 
-        $data['sstem'] = array('name' => 'sstem', 'id' => 'sstem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_sstemporary, );
+        $data['sstem'] = array('name' => 'sstem', 'id' => 'sstem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_sstemporary, 'readonly' => 'readonly' );
 
         $data['pper'] = array('name' => 'pper', 'id' => 'pper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_pospermanent, 'readonly' => 'readonly' );
 
         $data['ptem'] = array('name' => 'ptem', 'id' => 'ptem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_postemporary, 'readonly' => 'readonly' );
 
-        $data['vper'] = array('name' => 'vper', 'id' => 'vper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vpermanenet, );
+        $data['vper'] = array('name' => 'vper', 'id' => 'vper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vpermanenet, 'readonly' => 'readonly' );
 
-        $data['vtem'] = array('name' => 'vtem', 'id' => 'vtem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vtemporary, );
+        $data['vtem'] = array('name' => 'vtem', 'id' => 'vtem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vtemporary, 'readonly' => 'readonly' );
 
         $data['sp_id'] = $sp_id;
 
@@ -982,18 +1000,18 @@ class Staffmgmt extends CI_Controller
                 $this->form_validation->set_rules('grouppost','Group Post','xss_clean|required');
                 $this->form_validation->set_rules('scale','Grade Pay','xss_clean|required');
                 $this->form_validation->set_rules('methodrect','Method of Recruitment','xss_clean|required');
-                $this->form_validation->set_rules('ss','Position Sanction Strength','xss_clean|required|numeric');
-                $this->form_validation->set_rules('p','Position Present','xss_clean|required|numeric');
-                $this->form_validation->set_rules('v','Position Vacant','xss_clean|required|numeric');
-                $this->form_validation->set_rules('ssper','Sanction Strength Permanent','xss_clean|required|numeric');
-                $this->form_validation->set_rules('pper','Position Permanent','xss_clean|required|numeric');
-                $this->form_validation->set_rules('vper','Vacancy Permanent','xss_clean|required|numeric');
-                $this->form_validation->set_rules('sstem','Sanction Strength Temporary','xss_clean|required|numeric');
-                $this->form_validation->set_rules('ptem','Position Temporary ','xss_clean|required|numeric');
-                $this->form_validation->set_rules('vtem','Vacancy Temporary','xss_clean|required|numeric');
-                $this->form_validation->set_rules('address1','Address','xss_clean|required');
-                $this->form_validation->set_rules('ssdetail','Sanction Strength Detail','xss_clean|required');
-                $this->form_validation->set_rules('remarks','Remarks','xss_clean|required');
+                $this->form_validation->set_rules('ss','Position Sanction Strength','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('p','Position Present','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('v','Position Vacant','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('ssper','Sanction Strength Permanent','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('pper','Position Permanent','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('vper','Vacancy Permanent','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('sstem','Sanction Strength Temporary','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('ptem','Position Temporary ','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('vtem','Vacancy Temporary','trim|xss_clean|required|numeric');
+                $this->form_validation->set_rules('address1','Address','xss_clean');
+                $this->form_validation->set_rules('ssdetail','Sanction Strength Detail','xss_clean');
+                $this->form_validation->set_rules('remarks','Remarks','xss_clean');
         if ($this->form_validation->run() == TRUE)
 	{
                 $tnt = $this->input->post('tnt', TRUE);
@@ -1103,7 +1121,7 @@ class Staffmgmt extends CI_Controller
                 'sp_scale'=> $scale,
                 'sp_methodRect'=> $methodRect,
                 'sp_group'=>$group,
-                'sp_uo'=> $uo,
+                'sp_uo'=> $this->lgnmodel->get_listspfic1('authorities', 'id', 'name', $uo)->id,
                 'sp_dept'=> $this->commodel->get_listspfic1('Department', 'dept_id', 'dept_name', $dept)->dept_id, 
                 'sp_address1'=>$address,
                 'sp_address2'=>'Null',
@@ -1142,8 +1160,120 @@ class Staffmgmt extends CI_Controller
           } 
 	}
         $this->load->view('staffmgmt/editstaffposition', $data);
-   }
-  //===================End of Staff Position ============================
+    }
+
+ /* This function has been created for get list of schemes on the basis of  selected department */
+    public function getdeptscheme(){
+        $deptid = $this->input->post('deptid');
+       // echo json_encode("this is testing----".$dept);
+        $this->depmodel->get_deptschemelist($deptid);
+    }
+
+ /* This function has been created for get list of group post on the basis of  selected working type */
+    public function getworkingtype(){
+        $wtype = $this->input->post('groupp');
+       // echo json_encode("this is testing----".$wtype);
+	if ($wtype=='Teaching'){
+            $uco_select_box ='';
+            $uco_select_box.='<option value=>-------select Group Post--------';
+            $uco_select_box.='<option value=UO> UO';
+            $uco_select_box.='<option value=Professor> Professor';
+            $uco_select_box.='<option value=AssociateProfessor> Associate Professor';
+            $uco_select_box.='<option value=AssistantProfessor> Assistant Professor';
+            $uco_select_box.='<option value=Librarians> Librarians';
+            $uco_select_box.='<option value=PhysicalDirector> Physical Director';
+        }
+	else{
+            $uco_select_box ='';
+            $uco_select_box.='<option value= >-------select Group Post--------';
+            $uco_select_box.='<option value=MultitaskingStaff> Multitasking staff';
+            $uco_select_box.='<option value=TechnicalStaf> Technical staff';
+            $uco_select_box.='<option value=MinisterialStaff> Ministerial staff';
+            $uco_select_box.='<option value=AdministrativStaff> Administrativ staff';
+            $uco_select_box.='<option value=Officer> Officer';
+            $uco_select_box.='<option value=TechnicalOfficer> Technical Officer';
+            $uco_select_box.='<option value=SupportingStaff> Supporting Staff';
+            
+	}
+       echo json_encode($uco_select_box);
+    }
+
+ /* This function has been created for get position of Employee Type */
+    public function getemptypevalue(){
+       $emptype = $this->input->post('emptype');
+       //echo "get emp type vale====1==>".$emptype;
+       $parts = explode(',',$emptype);
+       $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2], 'sp_schemecode'=> $parts[3],
+			'sp_group' => $parts[4], 'sp_tnt' => $parts[5], 'sp_emppost' =>$parts[6], 'sp_type' =>$parts[7]);
+       $emptype_data = $this->sismodel->get_listspficemore('staff_position', 'sp_position', $datawh);
+       if(!empty($emptype_data)){
+       foreach($emptype_data as $empdata){ 
+//	echo "get emp type vale====2==>".$empdata->sp_position;
+	 	$p = $empdata->sp_position;
+		$ss= 0;
+		$v='';	
+        	$p1='';
+        	$p2='';
+        	$p3='';
+        	$p4='';
+        	$p5='';
+        	$p6='';
+	   }
+         }
+	else{
+		$p=0;
+		$ss=0;
+		$v='';	
+        	$p1='';
+        	$p2='';
+        	$p3='';
+        	$p4='';
+        	$p5='';
+        	$p6='';
+       }
+	 echo json_encode($p.','.$ss.','.$v.','.$p1.','.$p2.','.$p3.','.$p4.','.$p5.','.$p6);
+	
+    }
+ 
+ /* This function has been created for calculate position of Employee Type */
+    public function getsstype(){
+       $emptype = $this->input->post('sstype');
+       $parts = explode(',',$emptype);
+       if($parts[1]=='Permanent'){
+	 	$p=$parts[0];
+		$v=$parts[2]-$parts[0];	
+        	$p1=$parts[2];
+        	$p2=$parts[0];
+        	$p3=$parts[2]-$parts[0];
+        	$p4=0;
+        	$p5=0;
+        	$p6=0;
+	    }
+         elseif($parts[1]=='Temporary'){
+	 	$p=$parts[0];
+		$v=$parts[2]-$parts[0];	
+        	$p1=0;
+        	$p2=0;
+        	$p3=0;
+        	$p4=$parts[2];
+        	$p5=$parts[0];
+        	$p6=$parts[2]-$parts[0];
+	    }
+        else{	
+	 	$p=0;
+		$v='';	
+        	$p1='';
+        	$p2='';
+        	$p3='';
+        	$p4='';
+        	$p5='';
+        	$p6='';
+	   }
+	  echo json_encode($p.','.$v.','.$p1.','.$p2.','.$p3.','.$p4.','.$p5.','.$p6);
+    }
+
+ //===================End of Staff Position ============================
+
    
    /* This function has been created for get list of uco on the basis of campus */
     /*In future this code may be replace when either campusid added in the 
@@ -1253,6 +1383,7 @@ class Staffmgmt extends CI_Controller
     /* This function has been created for get the vacant shown against position */
     public function getemppostposition(){
         $combval = $this->input->post('combsix');
+        	echo json_encode("post=vaccancy==3=".$combval);
         $parts = explode(',',$combval);
         /******************Query for filteraion the post************************************/
         /*$datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
@@ -1260,10 +1391,11 @@ class Staffmgmt extends CI_Controller
         $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
                        'sp_emppost' => $parts[3], 'sp_tnt' => $parts[4]);
         $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_vacant',$datawh);
-        //echo json_encode("post====".$emppost_data);
+        echo json_encode("post====".$emppost_data);
         $emppost_select_box ='';
         $emppost_select_box.='<option value="">-------------- Select Post -----------------';
         if(!empty($emppost_data)){ 
+        	echo json_encode("post=vaccancy==1=".$emppost_data->sp_vacant);
             foreach($emppost_data as $records){ 
                 if($records->sp_vacant > 0){ 
                     /*$datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
@@ -1426,4 +1558,6 @@ class Staffmgmt extends CI_Controller
     
 
     /************************************* closer transfer order pdf *****************************************************************************/
+   
+
 }    

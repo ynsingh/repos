@@ -15,6 +15,34 @@
            function goBack() {
         	window.history.back();
         }
+
+        function getsstypevalue(val){
+                var p = $('#p').val();
+                var type = $('#type').val();
+                var ss=val;
+                var combid = p+","+type+","+ss;
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>sisindex.php/staffmgmt/getsstype",
+                data: {"sstype" : combid},
+                dataType:"html",
+                success: function(data){
+        //      alert(data);
+                var ssdata=data;
+                var positiondata=ssdata.split(',');
+                        $('#p').val(positiondata[0].replace(/\"|"/g,''));
+                        $('#v').val(positiondata[1].replace(/^"|"$/g, ''));
+                        $('#ssper').val(positiondata[2].replace(/^"|"$/g, ''));
+                        $('#pper').val(positiondata[3].replace(/^"|"$/g, ''));
+                        $('#vper').val(positiondata[4].replace(/^"|"$/g, ''));
+                        $('#sstem').val(positiondata[5].replace(/^"|"$/g, ''));
+                        $('#ptem').val(positiondata[6].replace(/^"|"$/g, ''));
+                        $('#vtem').val(positiondata[7].replace(/^"|"$/g, ''));
+                }
+             });
+           }
+
+
 	</script>
    </script>
    <table style="padding: 8px 8px 8px 20px;">
@@ -45,12 +73,13 @@
              <td>&nbsp;</td>
              <td> University Officers Control </td>
              <td>
-                <select name="uo" id="uo" class="my_dropdown" style="width:300px;">
+                <?php echo form_input($uo); ?>
+	<!--    <select name="uo" id="uo" class="my_dropdown" style="width:300px;">
                 <option value="<?php echo $this->lgnmodel->get_listspfic1('authorities', 'id', 'name', $uo["value"])->id; ?>"><?php echo $uo["value"]; ?></option>
                 <?php foreach($this->authorty as $uo): ?>
                     <option value="<?php echo $uo->id; ?>"><?php echo $uo->name; ?></option>
                 <?php endforeach; ?></td>
-		</select>
+		</select>-->
              </td>
 	     <td>&nbsp;</td>
              <td> Department Name</td>
@@ -64,25 +93,9 @@
                  <?php echo form_input($schemecode); ?>
              </td>
 	     <td>&nbsp;</td>
-             <td> Plan / Non Plan </td>
-             <td>
-                 <?php echo form_input($pnp); ?>
-             </td>
-	     <td>&nbsp;</td>
              <td> Group </td>
              <td>
                  <?php echo form_input($group); ?>
-             </td>
-        </tr>
-        <tr>
-             <td> Working Type </td>
-             <td>
-                 <?php echo form_input($tnt); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Employee Type </td>
-             <td>
-                 <?php echo form_input($type); ?>
              </td>
 	     <td>&nbsp;</td>
              <td>Employee post </td>
@@ -91,9 +104,25 @@
              </td>
         </tr>
         <tr>
+             <td> Working Type </td>
+             <td>
+                 <?php echo form_input($tnt); ?>
+             </td>
+	     <td>&nbsp;</td>
              <td> Group Post </td>
              <td>
                  <?php echo form_input($grouppost); ?>
+             </td>
+	     <td>&nbsp;</td>
+             <td> Employee Type </td>
+             <td>
+                 <?php echo form_input($type); ?>
+             </td>
+        </tr>
+        <tr>
+             <td> Plan / Non Plan </td>
+             <td>
+                 <?php echo form_input($pnp); ?>
              </td>
 	     <td>&nbsp;</td>
              <td> Pay Band </td>
@@ -109,7 +138,8 @@
 	<tr>	
              <td> Position Sanction Strength </td>
              <td>
-                 <?php echo form_input($ss); ?>
+                <!-- <?php echo form_input($ss); ?>-->
+		<input type="text" name="ss" id="ss" class="keyup-numeric" size="26" value="<?php echo $ss['value']; ?>" placeholder="Position Sanction Strength..." required="required" oninput="getsstypevalue(this.value)" /><br>
              </td>
 	     <td>&nbsp;</td>
              <td> Position Present </td>
