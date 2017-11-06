@@ -1309,9 +1309,11 @@ class Enterence extends CI_Controller {
 		//die;	
 		//$hash =sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT);
 		
-		$success = base_url() . 'payumoney/payustatus'; //return to payustatus function   
-        	$fail    = base_url() . 'payumoney/payustatus'; //return to payustatus function
-       	 	$cancel  = base_url() . 'payumoney/payustatus';//return to payustatus function
+		$success = site_url() .'/enterence/payustatus'; //return to payustatus function   
+		//print_r($success);
+		//die;
+        	$fail    = site_url() . '/enterence/payustatus'; //return to payustatus function
+       	 	//$cancel  = base_url() . 'payumoney/payustatus';//return to payustatus function
 		//for live change action  https://secure.payu.in)
 				
 		$data = array(
@@ -1345,11 +1347,90 @@ class Enterence extends CI_Controller {
 		$pginsert = $this->db->insert('admissionstudent_pg', $pgdata);
 		$this->logger->write_logmessage("insert", "Online data insert in admissionstudent_pg table.");
                 $this->logger->write_dblogmessage("insert", "Online data insert in admissionstudent_pg table" );
-	
+		
 		$this->load->view('enterence/step_four',$data);
 	}
 		
+	public function payustatus() {
+	$Sid = $this->session->userdata['asm_id'];
+       $status = $this->input->post('status');
+      if (empty($status)) {
+            redirect('Payumoney');
+        }
+       
+        $firstname = $this->input->post('firstname');
+        $amount = $this->input->post('amount');
+        $txnid = $this->input->post('txnid');
+        $posted_hash = $this->input->post('hash');
+        $key = $this->input->post('key');
+        $productinfo = $this->input->post('productinfo');
+        $email = $this->input->post('email');
+	$ftype = $this->input->post('address1');
+	$cdate = date('Y-m-d');	
+        $SALT = "eCwWELxi";	 //  Your salt
+        $add = $this->input->post('additionalCharges');
+        if(isset($add)) {
+            $additionalCharges = $this->input->post('additionalCharges');
+            $retHashSeq = $additionalCharges . '|' . $SALT . '|' . $status . '|||||||||||' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
+        } else {
 
+            $retHashSeq = $SALT . '|' . $status . '|||||||||||' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
+        }
+          $data['hash'] = hash("sha512", $retHashSeq);
+          $data['amount'] = $amount;
+          $data['txnid'] = $txnid;
+          $data['posted_hash'] = $posted_hash;
+          $data['status'] = $status;
+          if($status == 'success'){
+	 	// update pg table
+		$pgdata = array(
+			'aspg_asmid' 	=> $Sid,	
+			'aspg_txnid' 	=> $txnid,	
+			'aspg_pinfo' 	=> $productinfo,	
+			'aspg_amount' 	=> $amount,	
+			'aspg_ftype'	=> $ftype,	
+			'aspg_date' 	=> $cdate,	
+			//'aspg_gw'	=> ,	
+			'aspg_status'	=> $status,	
+			//'aspg_txncode' 	=> ,
+			//'aspg_reason' 	=>	
+		);
+		$pgupdate=$this->commodel->updaterec('admissionstudent_pg', $pgdata,'aspg_asmid',$Sid);
+		$this->logger->write_logmessage("update", "Update in admissionstudent_pg table.");
+                $this->logger->write_dblogmessage("update", "Update in admissionstudent_pg table." );
+	 		//call payment function for update record
+		 $pmathod = 'Online';
+		 $bank='PayuMoney';
+		 		
+		 $this->payment($txnid,$bank,$amount,$ftype,$pmathod);
+			//set the proper message
+		$message = '<h3>Online fees submit successfully.</h3>';
+                $this->session->set_flashdata('msg',$message);
+                $this->load->view('enterence/step_five', $data);   //this should go to step five for printing application page  with suitable message
+         }
+         else{
+		// update pg table
+		$pgdata = array(
+			'aspg_asmid' 	=> $Sid,	
+			'aspg_txnid' 	=> $txnid,	
+			'aspg_pinfo' 	=> $productinfo,	
+			'aspg_amount' 	=> $amount,	
+			'aspg_ftype'	=> $ftype,	
+			'aspg_date' 	=> $cdate,	
+			//'aspg_gw'	=> ,	
+			'aspg_status'	=> $status,	
+			//'aspg_txncode' 	=> ,
+			//'aspg_reason' 	=>	
+		);
+		$pgupdate=$this->commodel->updaterec('admissionstudent_pg', $pgdata,'ca_asmid',$Sid);
+		$this->logger->write_logmessage("update", "not update in admissionstudent_pg table.");
+                $this->logger->write_dblogmessage("update", "not update in admissionstudent_pg table.");
+
+		// set the status message
+                $this->load->view('enterence/step_four', $data); //this should go to confirmation page for retry to make payment with suitable message
+         }
+     
+    }
 
 	/******************************************Offline payment code start**********************************************************/
 //This function check for duplicate reference number 		   
@@ -1416,7 +1497,7 @@ class Enterence extends CI_Controller {
 	}	
 
 	public function payment($post1,$post2,$post3,$post4,$post5){
-//		print_r($post1.$post2.$post3.$post4.$post5);die;
+		//print_r($post1.$post2.$post3.$post4.$post5);die;
 		$Sid = $this->session->userdata['asm_id'];
 		$isdupl = $this->commodel->isduplicate('admissionstudent_centerallocation','ca_asmid',$Sid);
 		//print_r($post1.$post2.$post3.$post4.$post5.' '.$isdupl);die;
@@ -1499,9 +1580,9 @@ class Enterence extends CI_Controller {
 				redirect('enterence/step_four');
                		}
                		else{
-            			$this->logger->write_logmessage("update","Student admission fees add.");
-               			$this->logger->write_dblogmessage("update", "Student admission fees add.");
-				$this->session->set_flashdata("success", "Your offline fees submitted successfully.");
+            			$this->logger->write_logmessage("update","Student enterance admission fees add.");
+               			$this->logger->write_dblogmessage("update", "Student enterance admission fees add.");
+				$this->session->set_flashdata("success", "Your". $post5 ."enterance fees submitted successfully.");
 				redirect('enterence/step_five');
                		}
 		}//if duplicate close

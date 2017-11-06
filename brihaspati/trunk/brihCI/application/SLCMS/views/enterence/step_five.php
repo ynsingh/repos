@@ -35,14 +35,14 @@ function myFunction() {
 
 <div>
 <?php
-/*
+
 echo "<center>";
 	if($this->session->flashdata('msg')){
 	echo" <div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;'>";
 		echo $this->session->flashdata('msg');
 	echo "<div>";
 }
-echo "</center>";*/
+echo "</center>";
 ?>
 </div>
 
@@ -272,7 +272,7 @@ echo "</center>";*/
 			<th><span style="float:left;">Fees Type</span></th>
 			<th><span style="float:left;">Amount</span></th>
 			<th><span style="float:left;">Payment Method</span></th>
-			<th><span style="float:left;">Refference Number</span></th>
+			<th><span style="float:left;">Reference Number</span></th>
 			<th><span style="float:left;">Fees Id</span></th>
 			<th><span style="float:left;">Bank Name</span></th>
 			</tr></thead>

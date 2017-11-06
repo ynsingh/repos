@@ -72,7 +72,7 @@
          <li><a href="<?php echo site_url('Enterence/email_address');?>">Mailing Address</a></li>
  	 <li><a href="<?php echo site_url('Enterence/contactus');?>">Contact Us</a></li>
   	<li><a href="<?php echo site_url('Enterence/faqs');?>">FAQ</a></li>
-  	<li><a href="<?php echo site_url('Enterence/prtadmission_form');?>">Print Admission Application</a></li>
+  	<li><a href="<?php echo site_url('Enterence/prtadmission_form');?>">Complete/Print Enterance Form</a></li>
   	<li><a href="<?php echo site_url('Enterence/stu_hallticket');?>">Download Hall Ticket</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->

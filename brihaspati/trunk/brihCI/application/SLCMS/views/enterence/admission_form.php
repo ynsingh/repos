@@ -44,7 +44,7 @@
 
 <center>
     <form action="<?php echo site_url('Enterence/prtadmission_form'); ?>" method="POST" >
-	<h2>Re-print admission form</h2>
+	<h2>Complete / Print admission application </h2>
     <table style="border:0px solid black; margin-top:0px;width:30%;">
 
         <tr><td>
