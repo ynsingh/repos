@@ -166,8 +166,8 @@ if( $(this).val()==="online"){
 -->
                         </div>
                         <div class="form-group">
-                            <input name="surl" value="<? = $surl ?>" size="64" type="hidden" />
-                            <input name="furl" value="<? = $furl ?>" size="64" type="hidden" />                             
+                            <input name="surl" value="<?=$surl ?>" size="64" type="hidden" />
+                            <input name="furl" value="<?=$furl ?>" size="64" type="hidden" />                             
                             <input type="hidden" name="service_provider" value="" size="64" /> 
                             <input name="curl" value="<?//= $cancel ?> " type="hidden" />
                         </div>
