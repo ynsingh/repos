@@ -1514,54 +1514,7 @@ class Enterence extends CI_Controller {
 				
 			$this->logger->write_logmessage("update", "Step 4 admissionstudent_fees table update.");
                     	$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." );
-			//insert into center allocation table(roll no and masterid)
-					
-			$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
-			if($prgid<=9){
-				$prgid = '0'.$prgid;
-			}				
-			$ydate = date('Y');
-			$rollno = '';
-			$datas = $ydate.$prgid;
 			
-			$max = $this->commodel->get_listspficemore('admissionstudent_centerallocation','MAX(ca_rollno) AS maxca_rollno',"ca_rollno LIKE '$datas%'");
-			
-			foreach($max as $row){
-				$maxrollno = $row->maxca_rollno;
-			}
-			if((!empty($maxrollno))||$maxrollno>0)
-			{
-				$rollno = $maxrollno+1;
-			}
-			else{
-				$rollno = $ydate.$prgid.'0001';
-			}
-			$cid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$Sid)->asm_enterenceexamcenter;
-			$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
-			$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
-			$pegid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
-			
-			$center = array(
-		        	//'ca_asmid'           =>	$Sid,
-				'ca_rollno'	     =>	$rollno,
-				'ca_centerlocation'  => $clocation,
-				'ca_centername'	     => $cname,
-				'ca_prgid'	     => $pegid
-		        );
-					
-    			//$this->db->insert('admissionstudent_centerallocation',$center);
-			$this->commodel->updaterec('admissionstudent_centerallocation',$center,'ca_asmid',$Sid);
-			$this->logger->write_logmessage("update", "Admission Step 4 update detail in centerallocation table.");
-                    	$this->logger->write_dblogmessage("update", "Admission Step 4 update  detail in centerallocation table." );
-				
-			//update student master table(application_no)
-			$master = array(
-		        	'asm_applicationno'   =>	$rollno,
-	           	);
-					
-    			$this->commodel->updaterec('admissionstudent_master', $master,'asm_id',$Sid);
-			$this->logger->write_logmessage("update", "Admission Step 4 update application no in master table.");
-                    	$this->logger->write_dblogmessage("update", "Admission Step 4 update application no in master table." );
 			//update admissionstep step4 table
 			$cdate = date('Y-m-d H:i');
 			$step4 = array(
@@ -1594,6 +1547,7 @@ class Enterence extends CI_Controller {
 	$this->load->view('enterence/step_four',$data);
 
 	}
+
 
 	public function onlinePayment(){
 		if(empty($this->session->userdata('asm_id'))) {
@@ -2118,6 +2072,7 @@ class Enterence extends CI_Controller {
 	}
 
 	
+
 	public function home() {
 		$id = $this->session->userdata['asm_id'];
 		//$uid = $this->session->userdata['asm_id'];

@@ -19,7 +19,6 @@
 	 <link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/firstmenu.css" />
 <style>
 
-
 /*ul {
     list-style-type: none;
     margin: 0;
@@ -49,11 +48,23 @@
 
 
 </style>
+<div class="container" style="width:70.3%;height:65px;" >
+	<div class="row">
+		<ul class="breadcrumb ">
+    		<li><a href="<?php echo site_url('');?>" style="padding: 15px 0 10px 45px;">Home</a></li>
+		<li><a href="<?php echo site_url('Enterence/important_date');?>" style="padding: 15px 0 10px 45px;">Important Date</a></li>
+		<li><a href="<?php echo site_url('Enterence/email_address');?>" style="padding: 15px 0 10px 45px;">Mailing Address</a></li>
+		<li><a href="<?php echo site_url('Enterence/contactus');?>" style="padding: 15px 0 10px 45px;">Contact Us</a></li>
+		<li><a href="<?php echo site_url('Enterence/faqs');?>" style="padding: 15px 0 10px 45px;">FAQ</a></li>
+		<li><a href="<?php echo site_url('Enterence/prtadmission_form');?>">Complete/Print Enterance Form</a></li>
+		<li><a href="<?php echo site_url('Enterence/stu_hallticket');?>">Download Hall Ticket</a></li>
+		</ul>
+	</div>
+</div>
 
-
-<div class="container" style="width:72%;">
-    <nav class="navbar navbar-default" role="navigation" id="menu1">
-      <!-- Brand and toggle get grouped for better mobile display -->
+<!-- <div class="container" style="width:72%;">
+    <nav class="navbar navbar-default btn-group btn-breadcrumb" role="navigation" id="menu1">
+      <!-- Brand and toggle get grouped for better mobile display --
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
           <span class="sr-only">Toggle navigation</span>
@@ -63,8 +74,8 @@
         </button>
       </div>
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse navbar-ex1-collapse" style="">
+      <!-- Collect the nav links, forms, and other content for toggling --
+     <div class="collapse navbar-collapse navbar-ex1-collapse" style="">
         <ul class="nav navbar-nav">
           <li><a class="" href="<?php echo site_url('');?>">Home</a></li>
           <li><a href="<?php echo site_url('Enterence/important_date');?>">Important Date</a></li>
@@ -75,11 +86,11 @@
   	<li><a href="<?php echo site_url('Enterence/prtadmission_form');?>">Complete/Print Enterance Form</a></li>
   	<li><a href="<?php echo site_url('Enterence/stu_hallticket');?>">Download Hall Ticket</a></li>
         </ul>
-      </div><!-- /.navbar-collapse -->
+      </div><!-- /.navbar-collapse --
     </nav>
 
 
- </div>
+ </div>--->
 
 
 <!---<table style="width:70%;border:0px solid black;">
@@ -94,8 +105,8 @@
   <li><a href="<?php echo site_url('Enterence/prtadmission_form');?>">Print Admission Application</a></li>
   <li><a href="<?php echo site_url('Enterence/stu_hallticket');?>">Download Hall Ticket</a></li>		
 </ul>
-</td></tr>
+</td></tr>--->
 
-</table>--->
+</table>
 
 

@@ -64,7 +64,7 @@ echo "</center>";
 		  <div id="photo">
 			<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$photo); ?>" >
 		  </div>
-		<table class="TFtable" id="personal">
+		<table class="TFtable" id="personal" style="width:100%;">
 			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Personal Detail</th></thead>
 			
 			<tr>
@@ -118,7 +118,7 @@ echo "</center>";
 			</tr>--->
 		</table>
 
-		<table class="TFtable" id="padd">
+		<table class="TFtable" id="padd" style="width:100%;">
 			<thead>
 			<tr>
 				<th><span style="float:left;">Address</span></th>
@@ -169,7 +169,7 @@ echo "</center>";
 		<b>Note:GOI format of caste certificate should be submitted at the time of physical verification documents.</b>
 		</div>-->	
 </br>
-		<table class="TFtable" id="academic">	
+		<table class="TFtable" id="academic" style="width:100%;">	
 			<thead id="styleTable"><th colspan=7 style="text-align:justify;">
 			Academic Detail
 			</th></thead>
@@ -199,7 +199,7 @@ echo "</center>";
 			</tbody>
 		</table>
 	</br>
-		<table class="TFtable" id="academic">	
+		<table class="TFtable" id="academic" style="width:100%;">	
 			<thead id="styleTable"><th colspan=7 style="text-align:justify;">
 			Enterance Exam Detail
 			</th></thead>
@@ -231,7 +231,7 @@ echo "</center>";
 			</tbody>
 		</table>
 
-		<table class="TFtable" id="academic">	
+		<table class="TFtable" id="academic" style="width:100%;">	
 			<thead id="styleTable"><th colspan=7 style="text-align:justify;">
 			Employement Detail
 			</th></thead>
@@ -265,7 +265,7 @@ echo "</center>";
 		</table>
 
 		</br>
-		<table class="TFtable" id="feegap">
+		<table class="TFtable" id="feegap" style="width:100%;">
 			<thead id="styleTable"><th colspan=6  style="text-align:justify;">
 			<span>Fees Detail</span></th></thead>
 			<thead id="acadhead2"><tr>

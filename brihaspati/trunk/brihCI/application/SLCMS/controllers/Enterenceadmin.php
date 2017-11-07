@@ -4,7 +4,7 @@
  * @name Enterenceadmin.php
  * @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
- * @author Sumit saxena(sumitsesaxena@gmail.com)
+ * @author Sumit saxena(sumitsesaxena@gmail.com)[reconcile fees/roll number genrate/hallticket/sticker/attendence]
  */
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -485,7 +485,7 @@ class Enterenceadmin extends CI_Controller
 			$this->genattpdf($getatt);
 		}else{
 			//collect the distinct list of center
-			$clist=$this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername','');
+			$clist = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername','');
 			foreach($clist as $row1){
 				$attexmceter1 = $row1->ca_centername;
 				if(!empty($attexmceter1)){
@@ -671,10 +671,142 @@ class Enterenceadmin extends CI_Controller
 
 /*****************************************************Roll number genration start***********************************************/
 	public function viewcentrollno(){
+		$centerlist = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername','');
+		if(!empty($centerlist)){
+			foreach($centerlist as $row){
+				$center = $row->ca_centername;
+				if(!empty($center)){
+					$whdata = array('ca_centername' => $center);
+					$prglist = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_prgid',$whdata);
+					if(!empty($prglist)){
+						foreach($prglist as $row1){
+							$prgid = $row1->ca_prgid;
+							if(!empty($prgid)){
+								$whdata1 = array('ca_centername' => $center,'ca_prgid' => $prgid,'ca_rollno' => NULL,'ca_rollno' => ''); 
+								$asmidlist = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid',$whdata1);
+								if(!empty($asmidlist)){
+									foreach($asmidlist as $row2){
+										$Sid = $row2->ca_asmid;		
+										if(!empty($Sid)){
+											$this->generat_rollnumber($prgid,$Sid);
+										}//sid empty check
+									}//asm id foreach
+								}//asm id list check empty
+							}//prg id check empty 					
+						}//program name foreach
+					}//check program list empty
+				}//check center name empty
+			}//exm center foreach 
+		}//exm centerlist empty check
+		$prgname = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_prgid','');
+		$data['prgname'] = $prgname;
+		$data['examcenter'] = $centerlist;
 
-		$this->load->view('enterenceadmin/gen_rollnumber');
-	}	
+		$this->load->view('enterenceadmin/gen_rollnumber',$data);
+    	}	
 
+	public function generat_rollnumber($prgid,$Sid){
+		if($prgid<=9){
+			$prgid = '0'.$prgid;
+		}				
+		$ydate = date('Y');
+		$rollno = '';
+		$datas = $ydate.$prgid;
+			
+		$max = $this->commodel->get_listspficemore('admissionstudent_centerallocation','MAX(ca_rollno) AS maxca_rollno',"ca_rollno LIKE '$datas%'");
+			
+		foreach($max as $row){
+			$maxrollno = $row->maxca_rollno;
+		}
+		if((!empty($maxrollno))||$maxrollno>0)
+		{
+			$rollno = $maxrollno+1;
+		}
+		else{
+			$rollno = $ydate.$prgid.'0001';
+		}
+		$cid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$Sid)->asm_enterenceexamcenter;
+		$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
+		$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
+		$pegid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
+
+		$is_rollno = $this->commodel->isduplicate('admissionstudent_centerallocation','ca_rollno',$rollno);
+		if(!($is_rollno)){
+			$center = array(
+		  		'ca_rollno'	     =>	$rollno,
+				'ca_centerlocation'  => $clocation,
+				'ca_centername'	     => $cname,
+				'ca_prgid'	     => $pegid
+		      	 );
+		
+		$this->commodel->updaterec('admissionstudent_centerallocation',$center,'ca_asmid',$Sid);
+		$this->logger->write_logmessage("update", "Admission Step 4 update detail in centerallocation table.");
+                $this->logger->write_dblogmessage("update", "Admission Step 4 update  detail in centerallocation table." );
+				
+		//update student master table(application_no)
+		$master = array(
+		       	'asm_applicationno'   =>	$rollno,
+	         );
+					
+    		$this->commodel->updaterec('admissionstudent_master', $master,'asm_id',$Sid);
+		$this->logger->write_logmessage("update", "Admission Step 4 update application no in master table.");
+                $this->logger->write_dblogmessage("update", "Admission Step 4 update application no in master table." );
+		}//ducplicate if close
+	}
+
+	public function search_rollnumber(){
+		$centerlist = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername','');
+		$prgname = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_prgid','');
+		$data['prgname'] = $prgname;
+		$data['examcenter'] = $centerlist;
+
+		$rollexmceter = $this->input->post('ronoexamcenter');
+		$rollprgid    = $this->input->post('ronoprg');
+		
+		if(!empty($rollexmceter.$rollprgid)){
+			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
+			$attrecord=array(
+				'ca_centername'  => $rollexmceter,
+				'ca_prgid'       => $rollprgid
+				
+			);
+       			$this->getatt = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
+		}
+		else{
+			//collect the distinct list of center
+			$clist = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername,ca_prgid','');
+			foreach($clist as $row1){
+				$rollexmceter1 = $row1->ca_centername;
+				$rollprgid1 = $row1->ca_prgid;
+				if(!empty($attexmceter1)){
+					$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
+					$attrecord=array('ca_centername'  => $attexmceter1,
+							  'ca_prgid'   => $rollprgid1
+						);
+       					$getatt1 = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
+					$this->logger->write_logmessage("update", "Attendence sheet data foe each enter".$getatt1);
+				}
+			}
+		 }
+		if($rollexmceter == TRUE){
+			$rollexmceter = $this->input->post('ronoexamcenter');
+			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
+			$attrecord=array(
+				'ca_centername'  => $rollexmceter,
+			);
+       			$this->getatt = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
+		}
+		elseif($rollprgid == TRUE){
+			$rollprgid    = $this->input->post('ronoprg');
+			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
+			$attrecord=array(
+				'ca_prgid'       => $rollprgid,
+			);
+       			$this->getatt = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
+		}	
+
+		$this->load->view('enterenceadmin/gen_rollnumber',$data);
+	}
 
 
 

@@ -41,26 +41,26 @@
         //                $stp5= $this->resstep->step5_status;
 
 	if (stripos($_SERVER['REQUEST_URI'],'Step0') !== false) {
-		echo "<td>Step 0</td><td>Step 1</td><td>Step 2</td><td>Step 3</td> <td>Step 4</td><td>Step 5</td>";
+		echo "<td>Registration</td><td>Personnel / Education Detail</td><td>Instructions</td><td>Upload File</td> <td>Payment</td><td>Print Form</td>";
   	}  
 	//if (stripos($_SERVER['REQUEST_URI'],'student_step0')  !== false) {
-		//echo "<td >Step 0</td> <td>Step 1</td><td>Step 2</td><td>Step 3</td> <td>Step 4</td><td>Step 5</td> ";
+		//echo "<td >Step 0</td> <td>Step 1</td><td>Instructions</td><td>Upload File</td> <td>Payment</td><td>Print Form</td> ";
  	//} 
 	if (stripos($_SERVER['REQUEST_URI'],'student_step1') !== false) {
-		echo "<td class=\"active\" >Step 0</td> <td>Step 1</td><td>Step 2</td><td>Step 3</td> <td>Step 4</td><td>Step 5</td>";
+		echo "<td class=\"active\" >Registration</td> <td>Personnel / Education Detail</td><td>Instructions</td><td>Upload File</td> <td>Payment</td><td>Print Form</td>";
  	} 
 	if (stripos($_SERVER['REQUEST_URI'],'student_step2') !== false) {
-		echo "<td class=\"active\" >Step 0</td> <td class=\"active\">Step 1</td><td>Step 2</td><td>Step 3</td><td>Step 4</td><td>Step 5</td>";
+		echo "<td class=\"active\" >Registration</td> <td class=\"active\">Personnel / Education Detail</td><td>Instructions</td><td>Upload File</td><td>Payment</td><td>Print Form</td>";
  	} 
 	if (stripos($_SERVER['REQUEST_URI'],'student_step3') !== false) {
-		echo "<td class=\"active\" >Step 0</td> <td class=\"active\">Step 1</td><td class=\"active\">Step 2</td><td>Step 3</td><td>Step 4</td><td>Step 5</td>";
+		echo "<td class=\"active\" >Registration</td> <td class=\"active\">Personnel / Education Detail</td><td class=\"active\">Instructions</td><td>Upload File</td><td>Payment</td><td>Print Form</td>";
  	} 
 	if (stripos($_SERVER['REQUEST_URI'],'Payment') !== false) {
-		echo "<td class=\"active\" >Step 0</td> <td class=\"active\">Step 1</td><td class=\"active\">Step 2</td><td class=\"active\">Step 3</td><td>Step 4</td><td>Step 5</td>";
+		echo "<td class=\"active\" >Registration</td> <td class=\"active\">Personnel / Education Detail</td><td class=\"active\">Instructions</td><td class=\"active\">Upload File</td><td>Payment</td><td>Print Form</td>";
  	} 
 
 	if (stripos($_SERVER['REQUEST_URI'],'student_step4') !== false) {
-		echo "<td class=\"active\" >Step 0</td> <td class=\"active\">Step 1</td><td class=\"active\">Step 2</td><td class=\"active\">Step 3</td><td>Step 4</td><td>Step 5</td>";
+		echo "<td class=\"active\" >Registration</td> <td class=\"active\">Personnel / Education Detail</td><td class=\"active\">Instructions</td><td class=\"active\">Upload File</td><td>Payment</td><td>Print Form</td>";
  	} 
 ?> 
 
