@@ -61,17 +61,17 @@
 					#if($mode!="reply")
                                         <td><b><font color=red>*</font>$Notice_Subject:</b></td>
                                         <td><input type="text"  size="30" name="subject"  value=""/></td>
-                                </tr>
-				<input type="hidden" name="Repid" value="$Repid">
-				#else
+					<input type="hidden" name="Repid" value="$Repid">
+					#else
                                        	<td><b><font color=red>*</font>$Notice_Subject:</b></td>
                                        	<td>$subject</td>
-				#end
+					<input type="hidden" name="subject" value="$subject">
+					<input type="hidden" name="Repid" value="$subjectId">
+					#end
+                                </tr>
                                 <tr>
                                        	<td><b>$brih_msg2:</b></td>
 					<td><textarea name="message" rows=7 cols=80 value=""></textarea></td>
-					<input type="hidden" name="subject" value="$subject">
-					<input type="hidden" name="Repid" value="$subjectId">
 					<input type="hidden" name="count" value="$tdcolor">
                                 </tr>
                         </table>

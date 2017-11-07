@@ -770,7 +770,7 @@ public class QuizMetaDataXmlWriter
 		try{
 			User user=data.getUser();
 			String uname=user.getName();
-            		String uid=Integer.toString(UserUtil.getUID(uname));
+			String uid=Integer.toString(UserUtil.getUID(uname));
             		String courseid=(String)user.getTemp("course_id");
 			String quizID=data.getParameters().getString("quizID","");
 			String remainTime = data.getParameters().getString("timerValue","");
@@ -781,7 +781,7 @@ public class QuizMetaDataXmlWriter
 			int awardedMarks = 0;
             //ErrorDumpUtil.ErrorLog("-----QuizMetaDataXmlWriter-----xmlwriteFinalAnswer()-----filename-->"+filename);
 			String answerFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
-			ErrorDumpUtil.ErrorLog("answerfilepath in superman"+answerFilePath);
+			//ErrorDumpUtil.ErrorLog("answerfilepath in superman"+answerFilePath);
             		String answerPath=uid+".xml";
             		File answerFile=new File(answerFilePath+"/"+answerPath);
             		File scoreFile=new File(filePath+"/"+quizXmlPath);
@@ -1129,16 +1129,17 @@ public class QuizMetaDataXmlWriter
 		@author Anand Gupta
 		Add starttime and endtime in xml file.
 	 */
-	public static void writeSecurityString(XmlWriter xmlWriter,String studentID,String SecurityID,String IPAddress,String Start_time,String End_time){
+	//public static void writeSecurityString(XmlWriter xmlWriter,String studentID,String SecurityID,String IPAddress,String Start_time,String End_time){
+	public static void writeSecurityString(XmlWriter xmlWriter,String studentID,String SecurityID){
 		try{
 			//String Start_time="";
 			//String End_time="";
 			AttributesImpl ats=new AttributesImpl();
 			ats.addAttribute("","StudentID","","",studentID);
 			ats.addAttribute("","SecurityID","","",SecurityID);
-			ats.addAttribute("","IPAddress","","",IPAddress);
-			ats.addAttribute("","Start_time","","",Start_time);
-			ats.addAttribute("","End_time","","",End_time);
+			//ats.addAttribute("","IPAddress","","",IPAddress);
+			//ats.addAttribute("","Start_time","","",Start_time);
+			//ats.addAttribute("","End_time","","",End_time);
 			xmlWriter.appendElement("Quiz",null,ats);
 			xmlWriter.writeXmlFile();
 		}catch(Exception e){
@@ -1151,15 +1152,15 @@ public class QuizMetaDataXmlWriter
 		@author Anand Gupta
 			Add startTime and endTime in the xml file.
 	 */
-	//public static void updateSecurity(XmlWriter xmlWriter,String studentID,String SecurityID,String IPAddress,int seq){
-	public static void updateSecurity(XmlWriter xmlWriter,String studentID,String SecurityID,String IPAddress,int seq,String filePath,String xmlfile,String Start_time,String End_time){
+	public static void updateSecurity(XmlWriter xmlWriter,String studentID,String SecurityID,int seq,String filePath,String xmlfile){
+//	public static void updateSecurity(XmlWriter xmlWriter,String studentID,String SecurityID,String IPAddress,int seq,String filePath,String xmlfile,String Start_time,String End_time){
 		try{
 			AttributesImpl ats=new AttributesImpl();
 			ats.addAttribute("","StudentID","","",studentID);
 			ats.addAttribute("","SecurityID","","",SecurityID);
-			ats.addAttribute("","IPAddress","","",IPAddress);
-			ats.addAttribute("","Start_time","","",Start_time);
-			ats.addAttribute("","End_time","","",End_time);
+		//	ats.addAttribute("","IPAddress","","",IPAddress);
+		//	ats.addAttribute("","Start_time","","",Start_time);
+		//	ats.addAttribute("","End_time","","",End_time);
 			xmlWriter.changeAttributes("Quiz",ats,seq);
 			xmlWriter.writeXmlFile();
 		}
@@ -1378,12 +1379,13 @@ public class QuizMetaDataXmlWriter
 				/**Get the value from vector for using in method writeSecurityString*/
                       		for(int i=0;i<v.size();i++)
                       		{
-					            String studtid=((QuizFileEntry)v.get(i)).getStudentID();
+				String studtid=((QuizFileEntry)v.get(i)).getStudentID();
                                	String securityid = ((QuizFileEntry)v.get(i)).getSecurityID();
-                               	String ipadd = ((QuizFileEntry)v.get(i)).getIP();
-											String a=	((QuizFileEntry)v.get(i)).getStartTime();
-											String b=	((QuizFileEntry)v.get(i)).getEndTime();
-					            writeSecurityString(xmlWriter,studtid,securityid,ipadd,a,b);
+                               	//String ipadd = ((QuizFileEntry)v.get(i)).getIP();
+				//String a=	((QuizFileEntry)v.get(i)).getStartTime();
+				//String b=	((QuizFileEntry)v.get(i)).getEndTime();
+				//	writeSecurityString(xmlWriter,studtid,securityid,ipadd,a,b);
+					writeSecurityString(xmlWriter,studtid,securityid);
 				            }
 			}
 		}

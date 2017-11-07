@@ -189,7 +189,6 @@ public class OLES_AttemptQuiz extends SecureAction{
 			else{
 				quizID = data.getParameters().getString("quizID","");
 			}
-            //ErrorDumpUtil.ErrorLog(" ------OLES_AttemptQuiz----- attemptQuiz()----quizID--->"+quizID);
 
 			String courseid=(String)user.getTemp("course_id");
 			Vector<QuizFileEntry> questionVector = (Vector)user.getTemp("questionvector");
@@ -226,6 +225,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			}
 			else{
 				context.put("quizQuestionList",questionVector);
+			//	ErrorDumpUtil.ErrorLog("quizQuestionList------------------"+quizQuestionList);
 			}
 
 			//----------------To Store the IP Address in Xml File----------------------
@@ -236,18 +236,24 @@ public class OLES_AttemptQuiz extends SecureAction{
 			 *@see QuizMetaDataXmlWriter in Util
 				@ Anand Gupta
 			 */
-			String securityPath=quizID+"_Security.xml";
+
+			/* String securityPath=quizID+"_Security.xml";
 			File securityFile=new File(quizFilePath+"/"+securityPath);
 			String securityip=quizFilePath+"/"+securityPath;
 			if(securityFile.exists()){
 				QuizMetaDataXmlReader reader=new QuizMetaDataXmlReader(quizFilePath+"/"+securityPath);
 				QuizMetaDataXmlWriter writer=new QuizMetaDataXmlWriter();
 				XmlWriter xmlwriter=new XmlWriter(quizFilePath+"/"+securityPath);
+
 				String security="";
 				String student="";
+				*/
+
 				String b="";
+				//ErrorDumpUtil.ErrorLog("test2"+b);
+
 				int seq=-1;
-				Vector col=reader.getSecurityDetail();
+			/*	Vector col=reader.getSecurityDetail();
 				if(col!=null && col.size()!=0){
 					for(int i=0;i<col.size();i++){
 						student=((QuizFileEntry) col.elementAt(i)).getStudentID();
@@ -258,10 +264,16 @@ public class OLES_AttemptQuiz extends SecureAction{
 							break;
 						}
 					}
-						xmlwriter=writer.WriteinSecurityxml(quizFilePath,securityPath);
+						xmlwriter=writer.WriteinSecurityxml(quizFilePath,securityPath);*/
+					
+
 						OLES_AttemptQuiz cur=new OLES_AttemptQuiz();
 						// get the current time of the server.
 						String a=cur.CurTime();
+					//	ErrorDumpUtil.ErrorLog("Student Curent Time 1------"+a);
+
+						
+
 				/*
 				  @Anand Gupta
 					1. When the user Enter the security string and the enter in the attempt quiz mode the security file updated.
@@ -271,17 +283,23 @@ public class OLES_AttemptQuiz extends SecureAction{
 						NOTE: End time is calculated in the AttemptQuiz.java in screens 
 				*/
 						//String a=new SimpleDateFormat("HH:ss:mm").format(Calendar.getInstance().getTime());
-						writer.updateSecurity(xmlwriter,student,security,ip,seq,quizFilePath,securityPath,a,b);
+						// comment by nks
+				//		writer.updateSecurity(xmlwriter,student,security,seq,quizFilePath,securityPath);
 				//	xmlwriter=writer.WriteinSecurityxml(quizFilePath,securityPath);
 					//writer.updateSecurity(xmlwriter,student,security,ip,seq);
 				//	writer.updateSecurity(xmlwriter,student,security,ip,seq,quizFilePath,securityPath);
 					//writer.updateSecurity(xmlwriter,student,security,ip,seq,quizFilePath,securityPath);
-				}
-			}
+			//	}
+			//}
+
 			/*else{
 
 			}*/
 			//----------------------------------END-------------------------------
+			//get qt=quiz time, ctqt=add quiz time in current time, qet=get the quiz end time,
+			//compare  qet and ctqt, b=get the lesser time
+			//String a="";
+			//String b=""; 
 			//PRAJWAL gaurav sah
 			String curdate=ExpiryUtil.getCurrentDate("-");
 			Criteria cr=new Criteria();
@@ -290,8 +308,10 @@ public class OLES_AttemptQuiz extends SecureAction{
 			cr.add(QuizIpaddressPeer.QUIZ_ID,quizID);
 			cr.add(QuizIpaddressPeer.IP_ADDRESS,ip);
 			cr.add(QuizIpaddressPeer.QUIZ_DATE,curdate);
+			cr.add(QuizIpaddressPeer.QUIZ_STIME,a);
+			cr.add(QuizIpaddressPeer.QUIZ_ETIME,b);
 			QuizIpaddressPeer.doInsert(cr);
-			ErrorDumpUtil.ErrorLog("criteria is "+cr);
+		//	ErrorDumpUtil.ErrorLog("criteria is "+cr);
 			//log.info("quiz ip added successfully with name  By "+data.getUser().getName()+" | IP Address : "+data.getRemoteAddr());
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:attemptQuiz !! "+e);
@@ -322,13 +342,13 @@ public class OLES_AttemptQuiz extends SecureAction{
 			String type = data.getParameters().getString("type","");
 			/**get path where the Exam directory,and quizAnswer file stored */
 			String answerFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
-			//ErrorDumpUtil.ErrorLog("answerfilepath is previous"+answerFilePath);
+			ErrorDumpUtil.ErrorLog("answerfilepath is previous"+answerFilePath);
 
 			String answerPath=uid+".xml";
 			String uidName=answerFilePath+answerPath;
 			File quizAnswerFile=new File(answerFilePath+"/"+answerPath);
 			/**responsible for writing student'a answer in userid.xml file*/
-            //ErrorDumpUtil.ErrorLog("----------OLES_Quiz method:saveAnswerQuiz ----------quizID-->"+quizID+"---quesID-->"+quesID+"--fileName-->"+fileName+"--answer-->"+answer+"--quesType-->"+quesType+"--courseid-->"+courseid+"--markPerQues-->"+markPerQues+"--type-->"+type+"--answerFilePath-->"+answerFilePath+"--answerPath-->"+answerPath+"--quizAnswerFile-->"+quizAnswerFile);
+           // ErrorDumpUtil.ErrorLog("----------OLES_Quiz method:saveAnswerQuiz ----------quizID-->"+quizID+"---quesID-->"+quesID+"--fileName-->"+fileName+"--answer-->"+answer+"--quesType-->"+quesType+"--courseid-->"+courseid+"--markPerQues-->"+markPerQues+"--type-->"+type+"--answerFilePath-->"+answerFilePath+"--answerPath-->"+answerPath+"--quizAnswerFile-->"+quizAnswerFile);
 			if(type.equalsIgnoreCase("practice")){
 				QuizMetaDataXmlWriter.xmlwriteFinalAnswerPractice(answerFilePath,answerPath,data);
 			}
@@ -393,7 +413,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 			ParameterParser pp=data.getParameters();
 		try{
 			/**get LangFile for multingual changes*/
-			LangFile=(String)data.getUser().getTemp("LangFile");
+	
+		LangFile=(String)data.getUser().getTemp("LangFile");
 			User user=data.getUser();
 			/**Get parameters from template through Parameter Parser
 			 * and update the timer value
@@ -1490,10 +1511,10 @@ public class OLES_AttemptQuiz extends SecureAction{
 				XmlWriter xmlwrite=new XmlWriter(examFilePath+"/"+securityFile);
 				collectSecurity=readSecurity.getSecurityDetail();
 				for(int i=0;i<userList.size();i++){
-					String IPAddress="";
+				//	String IPAddress="";
 					String securityID="";
-					String a="";
-					String b="";
+				//	String a="";
+				//	String b="";
 					String student=((CourseUserDetail) userList.elementAt(i)).getLoginName();
 					int uids=UserUtil.getUID(student);
 					if(collectSecurity.size()==0){
@@ -1503,7 +1524,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 						/**writing Student ID,Secrity Strings and IP Addrss in xml file.
 						 *@see QuizMetaDataXmlWriter in Util
 						 */
-						createXmlfile.writeSecurityString(xmlwrite,student,securityID,IPAddress,a,b);
+					//	createXmlfile.writeSecurityString(xmlwrite,student,securityID,IPAddress,a,b);
+						createXmlfile.writeSecurityString(xmlwrite,student,securityID);
 						data.setMessage(MultilingualUtil.ConvertedString("brih_securitySuccess",LangFile));
 						//flag=true;
 					}
@@ -1632,7 +1654,7 @@ public class OLES_AttemptQuiz extends SecureAction{
                         int seq=-1;
 			/**get path where the Exam directory,score.xml file stored */
                         //String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
-												String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/"+quizID);
+			String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/"+quizID);
                         String scorePath="score.xml";
                         String usedTime="";
                         String quizid="";
@@ -1758,6 +1780,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 
                         /**get path where the Exam directory,quizID_Security.xml file stored */
 			String securityFile=quizID+"_Security.xml";
+			//ErrorDumpUtil.ErrorLog("Secuityfile ---------"+securityFile);
                         String examFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseID+"/Exam/"+"/"+quizID);
                         File securityFile1=new File(examFilePath+"/"+securityFile);
                         QuizMetaDataXmlWriter createXmlfile=new QuizMetaDataXmlWriter();
@@ -1767,9 +1790,9 @@ public class OLES_AttemptQuiz extends SecureAction{
                         *@see xmlReader QuizMetaDataXmlReader in Util
                         */
                         String securityID="";
-                        String IPAddress="";
-			String StartTime="";
-			String endTime="";
+                        //String IPAddress="";
+			//String StartTime="";
+			//String endTime="";
                         int seq=-1;
                         if(securityFile1.exists()){
                                 QuizMetaDataXmlReader readSecurity=new QuizMetaDataXmlReader(examFilePath+"/"+securityFile+"/");
@@ -1782,22 +1805,27 @@ public class OLES_AttemptQuiz extends SecureAction{
                                                 if(studentId.equals(stutid)){
                                                         seq=i;
                                                         securityID=generateSecurityString();
-							StartTime=((QuizFileEntry) collectSecurity.elementAt(i)).getStartTime();
-							endTime=((QuizFileEntry) collectSecurity.elementAt(i)).getEndTime();
+							//ErrorDumpUtil.ErrorLog("updatr securty Id"+securityID);
+						//	StartTime=((QuizFileEntry) collectSecurity.elementAt(i)).getStartTime();
+						//	endTime=((QuizFileEntry) collectSecurity.elementAt(i)).getEndTime();
                                                         break;
                                                 }
                                         }//for
                                 }//ofcollect
                                 QuizMetaDataXmlWriter writer=new QuizMetaDataXmlWriter();
                                 xmlwrite=createXmlfile.WriteinSecurityxml(examFilePath,securityFile);
-                                createXmlfile.updateSecurity( xmlwrite,studentId,securityID,IPAddress,seq,examFilePath,securityFile,StartTime,endTime);
+				createXmlfile.updateSecurity( xmlwrite,studentId,securityID,seq,examFilePath,securityFile);
+                                //createXmlfile.updateSecurity( xmlwrite,studentId,securityID,IPAddress,seq,examFilePath,securityFile,StartTime,endTime);
+				//ErrorDumpUtil.ErrorLog("update securty string"+createXmlfile);
                                 int seqno = -1;
                                 QuizMetaDataXmlReader scoreData = null;
                                 XmlWriter xmlWriter1=null;
-                                String answerFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseID+"/Exam/");
+                                String answerFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseID+"/Exam/"+"/"+quizID);
                                 String answerPath="score.xml";
+				//ErrorDumpUtil.ErrorLog("update answerPath----------->"+answerPath);
                                 xmlWriter1=new XmlWriter(answerFilePath+"/"+answerPath);
                                 String uid=Integer.toString(UserUtil.getUID(studentId));
+				//ErrorDumpUtil.ErrorLog("update uid---------------->"+uid);
                                 scoreData=new QuizMetaDataXmlReader(answerFilePath+"/"+answerPath);
                                 seqno = scoreData.getSeqOfAlreadyInsertedScore(answerFilePath,answerPath,quizID,uid);
                                 if(seqno!=-1){
@@ -1811,9 +1839,11 @@ public class OLES_AttemptQuiz extends SecureAction{
                                 */
                                 String subject="", msgDear="",msgRegard="",message="";
                                 String srvrPort=TurbineServlet.getServerPort();
+				//ErrorDumpUtil.ErrorLog("update serverport---------------->"+srvrPort);
                                 int uid1=(UserUtil.getUID(studentId));
                                 String email=UserUtil.getEmail(uid1);
                                 String Crsname=CourseUtil.getCourseName(courseID);
+				//ErrorDumpUtil.ErrorLog("update Crsname---------------->"+Crsname);
                                 Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
                                 if(srvrPort.equals("8080")){
                                         subject = MailNotification.subjectFormate("studentsecuritystring",quizName, pr );
@@ -1830,6 +1860,7 @@ public class OLES_AttemptQuiz extends SecureAction{
                                 msgRegard = MailNotification.replaceServerPort(msgRegard);
                                 msgDear = MailNotification.getMessage_new(msgDear, "","", "",studentId);
                                 String Mail_msg =MailNotificationThread.getController().set_Message(message,msgDear,msgRegard,"",email,subject,"",LangFile);
+				//ErrorDumpUtil.ErrorLog("update mail msg---------------->"+ Mail_msg);
                                 if(Mail_msg.equals("Success")){
                                         Mail_msg=" "+MultilingualUtil.ConvertedString("mail_msg",LangFile);
                                         data.addMessage(Mail_msg);

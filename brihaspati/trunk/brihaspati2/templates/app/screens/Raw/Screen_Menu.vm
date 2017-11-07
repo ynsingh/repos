@@ -30,38 +30,43 @@
 ####################################
 
  #if($data.getUser().getTemp("role") == "instructor")
+		<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
                 <tr bgcolor="$ui.tableColor">
                         <td class="dt">
 				<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursemanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_course $brih_mgmt</a>
                          </td>
                 </tr>
-                <tr bgcolor="$ui.menuColor">
+                <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+		<tr bgcolor="$ui.tableColor">
                         <td class="dt">
 			 <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","studentmanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_student $brih_mgmt</a>
 			</td> ##today28july
                 </tr>
+                <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
                 <tr bgcolor="$ui.tableColor">
                         <td class="dt">
 			 <a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_marks $brih_upload </a>
                         </td>
                 </tr>
-                <tr bgcolor="$ui.menuColor">
+	        <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+		<tr bgcolor="$ui.tableColor">
                         <td class="dt">
                         <a href=$link.setPage("call,Backups,BackupIns.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup</a>
                         </td>
         	        </tr>
+                <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
 		<tr bgcolor="$ui.tableColor">
                         <td class="dt">
 			 <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$online_online $brih_examat $brih_system</a>	 
 			</td>
 		</tr>
-
-		<tr bgcolor="$ui.menuColor">
+                <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+		<tr bgcolor="$ui.tableColor">
                         <td class="dt">
 			  <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete").addPathInfo("cname",$groupName).addPathInfo("mname","instructormanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_ins $brih_mgmt</a>
                         </td>
                 </tr>
-	
+		<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>	
 		<tr bgcolor="$ui.tableColor">
 		<td class="dt"><a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count","1") style=text-decoration:none>$bri_ta $brih_mgmt</a><br></td>	
 		</tr>
@@ -69,7 +74,8 @@
  #end
 
  #if($data.getUser().getTemp("role") == "student")
-                <tr bgcolor="$ui.menuColor">
+ 		<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+                <tr bgcolor="$ui.tableColor">
                         <td class="dt">
 			#if($data.getUser().getUserName() != "guest")
 			<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursecontent").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end </a>
@@ -79,6 +85,7 @@
 			</td> ##today28july
                 </tr>
 		#if($data.getUser().getUserName() != "guest") ##guest is not login
+		<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
                 <tr bgcolor="$ui.tableColor">
                         <td class="dt">
 			 <a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","viewmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_view $brih_marks</a>
@@ -86,7 +93,8 @@
                 </tr>
 		#end
         #end
-                <tr bgcolor="$ui.menuColor">
+        	<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+                <tr bgcolor="$ui.tableColor">
                         <td class="dt">
 
 #if(($data.getUser().getUserName() != "guest")&&($data.getUser().getTemp("role") != "teacher_assistant")) ##guest is not login
@@ -98,22 +106,26 @@
                         </td>
                 </tr>
 	#if(($data.getUser().getUserName() != "guest")&&($data.getUser().getTemp("role") != "teacher_assistant")) ##guest is not login
+		<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
                 <tr bgcolor="$ui.tableColor">
                         <td class="dt">
 			 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("cname",$groupName).addPathInfo("mname","calendar").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_courseCal</a>
                         </td>
                 </tr>
-                <tr bgcolor="$ui.menuColor">
+		<tr style="height: 10px;" bgcolor="$ui.menuColor"><td></td></tr>
+                <tr bgcolor="$ui.tableColor">
 			 <td class="dt">
                         <a href=$link.setPage("call,Wiki,Wiki_Home.vm").addPathInfo("count","1") style=text-decoration:none>$brih_Wiki</a>
                         </td>
                 </tr>
+		<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
 		<tr bgcolor="$ui.tableColor">
                          <td class="dt">
                           <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","groupmanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_grp $brih_mgmt</a>
                         </td>
                 </tr>
-                <tr bgcolor="$ui.menuColor">
+		<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+                <tr bgcolor="$ui.tableColor">
                          <td class="dt">
 			#if($data.getUser().getTemp("role") == "instructor")
 			<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignment").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_assignment</a>
@@ -122,10 +134,17 @@
                         <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","1") style=text-decoration:none>$brih_assignment</a>
         	        #end
 
-
+		
                         </td>
                 </tr>
+
+		#if($data.getUser().getTemp("role") == "student")
+		 <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+		 <tr bgcolor="$ui.tableColor"><td class="dt"<font face="$ui.sansSerifFonts"><a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_exam </a><br></td></tr>
+		#end    
+		
 		 #if($data.getUser().getTemp("role") == "instructor")
+		 <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
 		 <tr bgcolor="$ui.tableColor">
 			<td class="dt">
 			<a href=$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>$Repo_browser $brih_statistics</a>
@@ -134,10 +153,12 @@
 		 </tr>
 		 #end
 		 #if($data.getUser().getTemp("role") == "instructor")
-                 <tr bgcolor="$ui.menuColor">
+                  <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+                 <tr bgcolor="$ui.tableColor">
         <td class="dt"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td>
                 </tr>
 		#else
+		<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
                  <tr>
         <td class="dt"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","All") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td>
                 </tr>
@@ -146,7 +167,8 @@
 
 #######################TA Management##############
  #if($data.getUser().getTemp("role") == "teacher_assistant")
-	##if($data.getUser().getTemp("modulename1") == "1")	
+	##if($data.getUser().getTemp("modulename1") == "1")
+	<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
 	<tr bgcolor="$ui.tableColor">
 		<td class="dt"><a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignment").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_assignment</a></td>
 	</tr>
@@ -156,9 +178,9 @@
                 <td class="dt"><font color="#B2B2B2"> $brih_assignment </font></td>
         </tr>
 	#end*#
-
+	<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
 	#if($data.getUser().getTemp("modulename2") == "2")	
-	<tr bgcolor="$ui.menuColor">
+	<tr bgcolor="$ui.tableColor">
                         <td class="dt">
                         <a href=$link.setPage("call,Backups,BackupIns.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup</a>
                         </td>
@@ -171,6 +193,7 @@
 	#end
 
 	##if($data.getUser().getTemp("modulename3") == "3")
+	<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
  	<tr bgcolor="$ui.tableColor">
                         
 		<td class="dt"><a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","communication").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_communication</a></td>
@@ -184,7 +207,8 @@
 	#end*#
 	
 	##if($data.getUser().getTemp("modulename4") == "4")
-	<tr bgcolor="$ui.menuColor">
+	<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+	<tr bgcolor="$ui.tableColor">
                         
 		<td class="dt"><a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("cname",$groupName).addPathInfo("mname","calendar").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_courseCal</a></td>
 	</tr>
@@ -196,6 +220,7 @@
         #end*#
 
 	#if($data.getUser().getTemp("modulename5") == "5")
+	<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
 	<tr bgcolor="$ui.tableColor">
                         
 		<td class="dt"><a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursemanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_course $brih_mgmt</a></td>
@@ -208,7 +233,8 @@
 
         #end
 	##if($data.getUser().getTemp("modulename6") == "6")
-	<tr bgcolor="$ui.menuColor">
+	 <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+	<tr bgcolor="$ui.tableColor">
                          
 		<td class="dt"><a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","groupmanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_grp $brih_mgmt</a></td>
 	</tr>
@@ -220,6 +246,7 @@
 	#end*#
 
 	#if($data.getUser().getTemp("modulename7") == "7")
+	<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
 	<tr bgcolor="$ui.tableColor">
                         
 		<td class="dt"><a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$online_online $brih_examat $brih_system</a></td>
@@ -232,7 +259,8 @@
         #end
 
 	#if($data.getUser().getTemp("modulename8") == "8")
-	<tr bgcolor="$ui.menuColor">
+	<tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+	<tr bgcolor="$ui.tableColor">
                         
 		<td class="dt"><a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete").addPathInfo("cname",$groupName).addPathInfo("mname","instructormanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_ins $brih_mgmt</a></td>
 	</tr>
@@ -244,6 +272,7 @@
         #end
 
 	#if($data.getUser().getTemp("modulename9") == "9")
+	 <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
 	<tr bgcolor="$ui.tableColor">
                         <td class="dt">
                          <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","studentmanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_student $brih_mgmt</a>
@@ -258,7 +287,8 @@
         #end
 
 	#if($data.getUser().getTemp("modulename10") == "10")
-	<tr bgcolor="$ui.menuColor">
+	 <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+	<tr bgcolor="$ui.tableColor">
                         
 		<td class="dt"><a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_marks $brih_upload </a></td>
 	</tr>
@@ -270,6 +300,7 @@
 	#end
 
 	##if($data.getUser().getTemp("modulename11") == "11")
+	 <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
 	<tr bgcolor="$ui.tableColor">
                          
 		<td class="dt"><a href=$link.setPage("call,Wiki,Wiki_Home.vm").addPathInfo("count","1") style=text-decoration:none>$brih_Wiki</a>
@@ -284,7 +315,8 @@
         #end*#
 
 	#if($data.getUser().getTemp("modulename12") == "12")
-	 <tr bgcolor="$ui.menuColor">
+	 <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+	 <tr bgcolor="$ui.tableColor">
 		<td class="dt"><a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
 		</td>
 	</tr>
@@ -299,8 +331,9 @@
         <tr>
         <td class="dt"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td>
                 </tr>
-        #else
-        <tr bgcolor="$ui.menuColor">
+        #else	
+         <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+        <tr bgcolor="$ui.tableColor">
                 <td class="dt"><font color="#B2B2B2">$brih_attend $brih_mgmt</font></td>
         </tr>
         #end

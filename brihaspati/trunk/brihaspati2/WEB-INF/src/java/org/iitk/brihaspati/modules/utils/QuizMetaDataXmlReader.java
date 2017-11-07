@@ -1543,7 +1543,7 @@ public class QuizMetaDataXmlReader{
                     			fileEntry.setExpiryDate(expiryDate);
                     			fileEntry.setEndTime(endTime);
                     			fileEntry.setAllowPractice(allowPractice);
-                    		//	if((userName.trim()).equalsIgnoreCase(uname.trim())){
+                    			if((userName.trim()).equalsIgnoreCase(uname.trim())){
 						if(examDate==null){
 							if(quizStatus.equalsIgnoreCase("act")){
 	                        				vt.add(fileEntry);
@@ -1575,7 +1575,7 @@ public class QuizMetaDataXmlReader{
 								}
 							}//end status if
 						}//end else
-                    			//}//end if username
+                    			}//end if username
 				}//end for
 				//============code to eliminate all the quizzes which are attempted by student
 				String quizIDAll;
@@ -1747,21 +1747,22 @@ public class QuizMetaDataXmlReader{
 			XmlData files[]=xr.getElements("Quiz");
 			if(files!=null){
 				Attributes ats;
-				String studentid,securityid,IP,startTime,endTime;
+				//String studentid,securityid,IP,startTime,endTime;
+				String studentid,securityid;
 				int uid;
 				for(int i=0;i<files.length;i++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[i].getAttributes();
 					studentid=ats.getValue("StudentID");
 					securityid=ats.getValue("SecurityID");
-					IP=ats.getValue("IPAddress");
-					startTime=ats.getValue("Start_time");
-					endTime=ats.getValue("End_time");
-					fileEntry.setStartTime(startTime);
-					fileEntry.setEndTime(endTime);
+					//IP=ats.getValue("IPAddress");
+					//startTime=ats.getValue("Start_time");
+					//endTime=ats.getValue("End_time");
+					//fileEntry.setStartTime(startTime);
+					//fileEntry.setEndTime(endTime);
 					fileEntry.setStudentID(studentid);
 					fileEntry.setSecurityID(securityid);
-					fileEntry.setIP(IP);
+					//fileEntry.setIP(IP);
 					collect.add(fileEntry);
 				}
 

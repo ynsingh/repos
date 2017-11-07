@@ -74,6 +74,10 @@ import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.Quiz;
 import javax.servlet.http.*;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
+
+import org.iitk.brihaspati.om.QuizIpaddress;
+import org.iitk.brihaspati.om.QuizIpaddressPeer;
+
 /**
  *   This class contains code for quiz attempt part from student login
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -162,8 +166,22 @@ public class Student_Quiz extends SecureScreen
 									for(int j=0;j<collect.size();j++){
 										String student=((QuizFileEntry) collect.elementAt(j)).getStudentID();
 										if(student.equals(loginname)){
-											String securityString=((QuizFileEntry) collect.elementAt(j)).getSecurityID();
-											String ip=((QuizFileEntry) collect.elementAt(j)).getIP();
+										String securityString=((QuizFileEntry) collect.elementAt(j)).getSecurityID();
+										Criteria crt=new Criteria();
+					                                	crt.add(QuizIpaddressPeer.USER_ID,user_id);
+                                						crt.add(QuizIpaddressPeer.QUIZ_ID,quizid);
+					                                	List iplist=QuizIpaddressPeer.doSelect(crt);
+										//ErrorDumpUtil.ErrorLog(" ip list 4----------------"+iplist);
+										String ip="";
+                                						if(iplist.size()!=0)
+                                						{			
+						                                        QuizIpaddress element=(QuizIpaddress)iplist.get(0);
+                                        						ip=element.getIpAddress();
+											//ErrorDumpUtil.ErrorLog(" ip add 5----------- "+IPAddr);
+                                						}
+										
+
+											//String ip=((QuizFileEntry) collect.elementAt(j)).getIP();
 											String temp=securityString+":"+ip;
 											securityData.put(quizid, temp);
 										}
@@ -172,23 +190,31 @@ public class Student_Quiz extends SecureScreen
 							}
 						}
 					}
+
 					context.put("securityData",securityData);
 
 					//----------------------------------------------------END------------------------------------------------------------------
 
 
 					futureQuizList = quizmetadata.listFutureQuiz();
+					//ErrorDumpUtil.ErrorLog("futureQuizList 6--------------------"+futureQuizList.toArray());
 					context.put("futureQuizList",futureQuizList);
 					//File scoreFile=new File(filePath+"/"+scorePath);
 					String quizID=pp.getString("quizID","");
+					// get the quiz id form quizlist
+					for(int kk=0;kk<quizList.size();kk++){
+						quizID =(((QuizFileEntry) quizList.elementAt(kk)).getQuizID()); 
+					}
 					File scoreFile=new File(filePath+"/"+quizID+"/"+scorePath);
-					//ErrorDumpUtil.ErrorLog("filepath in student_quiz_security"+scoreFile+" "+quizID);
+					//ErrorDumpUtil.ErrorLog("7----------"+scoreFile);
 					if(quizList==null || quizList.size()==0){
 						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
 						return;
 					}
+				
 					if(!scoreFile.exists()){
 						context.put("quizList",quizList);
+						//ErrorDumpUtil.ErrorLog("quiz list 8------------ "+quizList.toArray());
 					}
 					else{
 						//quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+scorePath);
@@ -202,30 +228,37 @@ public class Student_Quiz extends SecureScreen
 								for(int j=0;j<attemptedQuizList.size();j++){
 									quizid = (((QuizFileEntry) quizList.elementAt(i)).getQuizID());
 									quizid1 = (((QuizFileEntry) attemptedQuizList.elementAt(j)).getQuizID());
-//									userid = (((QuizFileEntry) attemptedQuizList.elementAt(j)).getUserID());
+									userid = (((QuizFileEntry) attemptedQuizList.elementAt(j)).getUserID());//enable for test
 									if(quizid.equalsIgnoreCase(quizid1)){
-//										if(userid.equalsIgnoreCase(user_id)){
+										if(userid.equalsIgnoreCase(user_id)){ //enable for test
 											found = true;
+											//ErrorDumpUtil.ErrorLog("both quiz name equal and user id equal 12-1 ------>  "+quizid1 +" " + quizid+" user id "+ userid);
 											break;
-//										}
-//										else{
-//											found = false;
-//											break;
-//										}
+										}//enable for test
+										else{//enable for test
+											found = false;//enable for test
+											break;//enable for test
+										}//enable for test
 									}
-									else
+									else{
 										found = false;
+									}
 								}//end for
 								if(!found){
 									QuizFileEntry q = (QuizFileEntry)quizList.get(i);
 									finalQuizList.add(q);
+
 								}
 							}//end outer for
 							if(finalQuizList!=null && finalQuizList.size()!=0){
 								context.put("quizList",finalQuizList);
+
 							}
-							else
+							else{
+								//context.put("quizList",zeroList);
 								data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
+                                                               //ErrorDumpUtil.ErrorLog("final Quiz list14.1 ------>"+zeroList.size());
+							}
 						}
 						else{
 							//data.setMessage(MultilingualUtil.ConvertedString("brih_noquizannounced",LangFile));
@@ -234,9 +267,11 @@ public class Student_Quiz extends SecureScreen
 					}
 					else
 						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizannounced",LangFile));
-				}
+
+				}// else part of existance of score file
 				}
 			}
+
 			/**
                          *Time calculaion for how long user use this page.
                          */
@@ -272,5 +307,6 @@ public class Student_Quiz extends SecureScreen
 		ip = request.getRemoteAddr();
 		}
 		return ip;
-		}
+	}
 }
+

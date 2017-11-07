@@ -1,0 +1,3 @@
+use brihaspati;
+alter table QUIZ_IPADDRESS add QUIZ_STIME VARCHAR (20) NOT NULL;
+alter table QUIZ_IPADDRESS add QUIZ_ETIME VARCHAR (20) NOT NULL;

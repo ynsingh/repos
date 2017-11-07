@@ -36,12 +36,23 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
  *
  */
 
-import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
+import org.apache.torque.util.Criteria;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
+import java.io.*;
+import java.util.Calendar;
+import java.lang.*;
+import java.util.Base64;
+import java.util.Base64.Decoder;
+import java.util.Base64.Encoder;
+import java.io.UnsupportedEncodingException;
+import javax.imageio.ImageIO;
+
+import java.io.IOException;
 import java.io.File;
 import java.util.List;
 import java.util.Date;
@@ -56,6 +67,8 @@ import java.text.SimpleDateFormat;
 
 import org.iitk.brihaspati.om.Quiz;
 import org.iitk.brihaspati.om.QuizPeer;
+import org.iitk.brihaspati.om.QuizIpaddress;
+import org.iitk.brihaspati.om.QuizIpaddressPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.QuizUtil;
 import org.iitk.brihaspati.modules.utils.DbDetail;
@@ -63,6 +76,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
+import org.iitk.brihaspati.modules.utils.CurrentTime;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.ListManagement;
@@ -73,7 +87,6 @@ import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlWriter;
-import org.iitk.brihaspati.modules.utils.CurrentTime;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.actions.OLES_AttemptQuiz;
 //import org.iitk.brihaspati.modules.screens.call.SecureScreen;
@@ -84,19 +97,9 @@ import org.iitk.brihaspati.modules.actions.OLES_AttemptQuiz;
 /**
  *   This class contains code for attempt quiz part of student
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
- *		@author  <a href="fictionalvicky@gmail.com">PRAJWAL GAURAV SAH</a>
+ *   @author  <a href="fictionalvicky@gmail.com">PRAJWAL GAURAV SAH</a>
  */
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.lang.*;
-import java.util.Base64;
-import java.util.Base64.Decoder;
-import java.util.Base64.Encoder;
-import java.io.UnsupportedEncodingException;
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
-import java.io.*;
+
 public class Attempt_Quiz extends SecureScreen
 {
 	static int msg = 0;
@@ -195,25 +198,25 @@ public class Attempt_Quiz extends SecureScreen
 show the remaining time !@uthor PRAJWAL GAURAV SAH*/
 			String quizFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
 			String quizPath="Quiz.xml";
+
 			File newfile=new File(quizFilePath+"/"+quizPath);
+
 			Vector vec=new Vector();
 			if(newfile.exists()){
 				QuizMetaDataXmlReader quiznewMetadata=new QuizMetaDataXmlReader(quizFilePath+"/"+quizPath);
+
 				vec=quiznewMetadata.getQuiz_Detail(quizID);
 				String startTime,endTime="";
+				
 				for(int i=0;i<vec.size();i++)
 				{
 					maxi_time =((QuizFileEntry) vec.elementAt(i)).getMaxTime();
 					startTime=((QuizFileEntry) vec.elementAt(i)).getStartTime();
-          endTime=((QuizFileEntry) vec.elementAt(i)).getEndTime();
+          				endTime=((QuizFileEntry) vec.elementAt(i)).getEndTime();
 
-			//ErrorDumpUtil.ErrorLog("Max Time--------->"+maxtime);
-			//ErrorDumpUtil.ErrorLog("Start Time--------->"+startTime);
-			//ErrorDumpUtil.ErrorLog("End Timr--------->"+endTime);
-		}
+				}
 //breakpoint
 			/*
-				@Author Anand Gupta
 					This part is used to read the secuirty file and get the start time, end time of the user.
 					1. If the user has enter the attempt_quiz for the first time then the stdqendtime will be null and it fetch the startTime of the user.
 					2. The condition check for the student endTime if null then calculate the end time for the user.
@@ -225,17 +228,19 @@ show the remaining time !@uthor PRAJWAL GAURAV SAH*/
 								server end time is used.
 						2.if the user remaining time of the user is 0 or less then the quiz is ended.  
 			*/
-//for timer
+//for time
 				String student="";
 				String Stdendtime="";
 				String Stdstarttime="";
 				String ip="";
 				int seq=-1;
-				String securityPath=quizID+"_Security.xml";
+				// read from database in place of xml
+				// start here
+			/*	String securityPath=quizID+"_Security.xml";
 				Vector col1= new Vector();
 				QuizMetaDataXmlReader reader1=new QuizMetaDataXmlReader(answerFilePath+"/"+securityPath);
 				col1=reader1.getSecurityDetail();
-				//ErrorDumpUtil.ErrorLog("security file size:  "+col1.size());
+				ErrorDumpUtil.ErrorLog("security file size:  "+col1.size());
 				if(col1!=null && col1.size()!=0){
 						for(int i=0;i<col1.size();i++){
 							student=((QuizFileEntry) col1.elementAt(i)).getStudentID();
@@ -243,7 +248,8 @@ show the remaining time !@uthor PRAJWAL GAURAV SAH*/
 							Stdendtime=((QuizFileEntry) col1.elementAt(i)).getEndTime();
 							Stdstarttime=((QuizFileEntry) col1.elementAt(i)).getStartTime();
 							ip=((QuizFileEntry) col1.elementAt(i)).getIP();
-							//ErrorDumpUtil.ErrorLog("under attemptQuiz "+Stdstarttime);
+                                                        ErrorDumpUtil.ErrorLog("under attemptQuiz end time"+Stdendtime);
+							ErrorDumpUtil.ErrorLog("under attemptQuiz Strat time"+Stdstarttime);
 								if(student.equals(loginname))
 								{
 								seq=i;
@@ -252,14 +258,33 @@ show the remaining time !@uthor PRAJWAL GAURAV SAH*/
 					}
 					
 				}
+			*/		
+				//close here
+				//get the userid from loginname
+				int usid=UserUtil.getUID(loginname);
+				//get details of student attempted quiz from quiz ipaddress on the basis of userid and quizid
+				Criteria crit=new Criteria();
+        	                crit.add(QuizIpaddressPeer.USER_ID,uid);
+				crit.add(QuizIpaddressPeer.QUIZ_ID,quizID);
+	                        List qulist=QuizIpaddressPeer.doSelect(crit);
+				//ErrorDumpUtil.ErrorLog("test 3 --IP----"+qulist.toString());
+				//get the  starttime and end time
+				if(qulist.size()!=0)
+                                {
+					QuizIpaddress element=(QuizIpaddress)qulist.get(0);
+			                Stdstarttime=element.getQuizStime();
+					Stdendtime=element.getQuizEtime();
+                        	}
+					
+
 					String stdqendtime="";
   					if(Stdendtime.equals(""))
 						{
-							ErrorDumpUtil.ErrorLog("Under the calculation of end time");
 							SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
 							Date d1 = null;
 							Date d2 = null;
 							d1 = format.parse(Stdstarttime);
+							//ErrorDumpUtil.ErrorLog("Student Start time in d1"+d1);
 							String d="00:"+maxi_time;
 							int z,hrs,min,sec;
 					/*if(d.indexOf(":")==-1){
@@ -274,19 +299,15 @@ show the remaining time !@uthor PRAJWAL GAURAV SAH*/
 						hrs=Integer.parseInt(maxtimeArray[0]);
 						min=Integer.parseInt(maxtimeArray[1]);
 						sec=Integer.parseInt(maxtimeArray[2]);
-						//ErrorDumpUtil.ErrorLog("value of hrs and min and sec  "+hrs+" ,  "+min+" ,  "+sec);
 						String maxi_timeArray[]=maxi_time.split(":");
 						float duration_maxtime=Float.parseFloat(maxi_timeArray[0]);
 						
-						//ErrorDumpUtil.ErrorLog("duration_maxtime  "+duration_maxtime);
 						float duration1=duration_maxtime/60;
-						//ErrorDumpUtil.ErrorLog("duration1  "+duration1);
 						String duration_string=Float.toString(duration1);
-						//ErrorDumpUtil.ErrorLog("duration1  "+duration_string);
 						String duration1_timeArray[]=duration_string.split("\\.");
 						int duration_hr=Integer.parseInt(duration1_timeArray[0]);
 						float duration_min=Float.parseFloat("."+duration1_timeArray[1]);
-						//ErrorDumpUtil.ErrorLog("value of duration hrs and min  "+duration_hr+"  "+duration_min);
+					//	ErrorDumpUtil.ErrorLog("value of duration hrs and min  "+duration_hr+"  "+duration_min);
 						
 						int End_min=(int)(duration_min*60)+min;
 						int final_min,final_hr;
@@ -308,15 +329,28 @@ show the remaining time !@uthor PRAJWAL GAURAV SAH*/
 								String str_final_min=Integer.toString(final_min);
 								String str_final_hr=Integer.toString(final_hr);
 								Final_end_time=str_final_hr+":"+str_final_min+":"+maxtimeArray[2];
-								//ErrorDumpUtil.ErrorLog("value of final end time in else   "+Final_end_time);
+								//ErrorDumpUtil.ErrorLog("value of final end time in else 1   "+Final_end_time);
 								
 							}
-						QuizMetaDataXmlWriter writer=new QuizMetaDataXmlWriter();
+						// update in database in place of xml
+						// start here
+				/*		QuizMetaDataXmlWriter writer=new QuizMetaDataXmlWriter();
 						XmlWriter xmlwriter=new XmlWriter(answerFilePath+"/"+securityPath);
 						xmlwriter=writer.WriteinSecurityxml(answerFilePath,securityPath);
 						String security="";
 						writer.updateSecurity(xmlwriter,student,security,ip,seq,answerFilePath,securityPath,Stdstarttime,Final_end_time);
+						ErrorDumpUtil.ErrorLog("Update Securty String   "+writer);
+
+				*/
 						
+						// set security=null and end time= final end time on the basis of useid and quizid
+						// start here	
+						List v=null;
+						String queryString="Update QUIZ_IPADDRESS set QUIZ_ETIME='"+Final_end_time+"' where USER_ID='"+uid+"' and  QUIZ_ID='"+quizID+"'" ;
+						//ErrorDumpUtil.ErrorLog("update time and ipafter query------> "+queryString);
+						QuizIpaddressPeer.executeStatement(queryString);
+						
+
 					//long c=d1.getTime();
 					//ErrorDumpUtil.ErrorLog("value of d1 and c and d  "+d1+" ,  "+c+" "+" ,  "+d);
 					/*long duration =(long)z*60*1000;
@@ -331,7 +365,6 @@ show the remaining time !@uthor PRAJWAL GAURAV SAH*/
 				new_max_time=hour+":"+minute+":"+second;*/
 				//ErrorDumpUtil.ErrorLog("new_max_time isawdawd--------->"+new_max_time);
 					stdqendtime=Final_end_time;
-					//ErrorDumpUtil.ErrorLog("Final_end_time After if conditions "+stdqendtime);
 					}
 				else
 					stdqendtime=Stdendtime;
@@ -570,7 +603,9 @@ show the remaining time !@uthor PRAJWAL GAURAV SAH*/
                         parts=fileName.split("_", 2);
                         String qbname=parts[0];
                         context.put("qbname",qbname);
+			if(!(fileName.equals(""))){
                         String qbfilePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+qzowner+"/"+cid);
+			//ErrorDumpUtil.ErrorLog("qbfilePath : "+qbfilePath);
                         TopicMetaDataXmlReader tmdxr=null;
 			tmdxr =new TopicMetaDataXmlReader(qbfilePath+"/"+fileName);
                         Vector Read=new Vector();
@@ -584,7 +619,6 @@ show the remaining time !@uthor PRAJWAL GAURAV SAH*/
                                         {
                                                 String Quesimage=((FileEntry)Read.elementAt(i)).getUrl();
 						String new_newfilepath=qbfilePath+"/"+qbname+"/"+Quesimage;
-						//ErrorDumpUtil.ErrorLog("Image path is : "+new_newfilepath);
 						if(!Quesimage.equals(""))
 						{
 						 File file1=new File(new_newfilepath);
@@ -599,7 +633,7 @@ show the remaining time !@uthor PRAJWAL GAURAV SAH*/
                                         }
                                 }
                         }
-
+			}//check for empty
 
 			/**
                          *Time calculaion for how long user use this page.
