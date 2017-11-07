@@ -100,7 +100,7 @@
         
         </div>
          <table style="margin-left:6.5%;width:85%;"><tr><td>
-        <?php echo anchor('staffmgmt/stafftransferlist/', "View Staff Tranfer List" ,array('title' => 'Staff Transfer List ' , 'class' => 'top_parent'));?>
+        <?php echo anchor('staffmgmt/stafftransferlist/', "View Staff Transfer List" ,array('title' => 'Staff Transfer List ' , 'class' => 'top_parent'));?>
         </td>
         <td>
         <!--<a href="<?php //echo site_url(); ?>/staffmgmt/mypdf">pdf</a>-->

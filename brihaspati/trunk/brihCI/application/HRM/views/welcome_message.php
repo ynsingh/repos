@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     	<form action="<?= site_url('welcome') ?>" method="post">
         <table style="width:100%;" border=0>
 		<tr>
-		   <td width="770" align="center"><h2 style="color:#ff0000;"><span style="color:black;">Note : </span>Fees paid will not refunded or readjusted in any circumstances.</h2></td>
+		   <td width="770" align="center"><h2 style="color:#ff0000;"><span style="color:black;">Note : </span>Fees paid will not refunded or re-adjusted in any circumstances.</h2></td>
  		   <td align="center"><a href="">View Advertisement</a></br>
 			</br><span style="font-size:15px;color:black;font-weight:bold;">New Applicant</span>
 			</br><a href="<?php echo site_url('carrier/applicant_step1')?>" style="color:blue;">(Click Here)</a>
@@ -77,7 +77,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<input type="reset" value="reset" style="font-size:17px;width:49%;"></td></tr>
 		<tr><td></td>
 		<td><a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="text-decoration:none;" title="Forgot Password">
-		<input type="button" value="Forget Password" style="font-size:17px;width:100%;"></a></td>
+		<input type="button" value="Forgot Password" style="font-size:17px;width:100%;"></a></td>
 		</tr>
 	</table>
 	</td>

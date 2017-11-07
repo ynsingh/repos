@@ -121,38 +121,38 @@ echo "</center>";
 		<td/>
 
 		<td>	
-			<label for="nnumber">Post code</label></br>
+			<label for="nnumber">Post Code</label></br>
 			<input type="text" name="Jpcode" placeholder="Enter post code." value="<?php echo @$this->data['Jpcode'];?>">	
 		<td/>
 		<td>	
-			<label for="nnumber">Name of post</label></br>
+			<label for="nnumber">Name of Post</label></br>
 			<input type="text" name="Jname" placeholder="Enter post name" value="<?php echo @$this->data['Jname'];?>">	
 		<td/>
 		<td>
-			<label for="nnumber">Name of department</label></br>
+			<label for="nnumber">Name of Department</label></br>
 			<input type="text" name="Jdept" placeholder="Enter post department" value="<?php echo @$this->data['Jdept'];?>">	
 		<td/>
 	</tr>
 	<tr height="10"></tr>
 	<tr>	
 		<td>	
-			<label for="nnumber">Vacancy for sc(In number)</label></br>
+			<label for="nnumber">Vacancy for SC(In number)</label></br>
 			<input type="text" name="Jvacsc" placeholder="Enter vacancy for sc" value="<?php echo @$this->data['Jvacsc'];?>">	
 		<td/>
 		<td>	
-			<label for="nnumber">Vacancy for st(In number)</label></br>
+			<label for="nnumber">Vacancy for ST(In number)</label></br>
 			<input type="text" name="Jvacst" placeholder="Enter vacancy for st" value="<?php echo @$this->data['Jvacst'];?>">	
 		<td/>	
 		<td>	
-			<label for="nnumber">Vacancy for obc(In number)</label></br>
+			<label for="nnumber">Vacancy for OBC(In number)</label></br>
 			<input type="text" name="Jvacobc" placeholder="Enter vacancy for obc" value="<?php echo @$this->data['Jvacobc'];?>">	
 		<td/>	
 		<td>	
-			<label for="nnumber">Vacancy for ur(In number)</label></br>
+			<label for="nnumber">Vacancy for UR(In number)</label></br>
 			<input type="text" name="Jvacur" placeholder="Enter vacancy for ur" value="<?php echo @$this->data['Jvacur'];?>">	
 		<td/>
 		<td>	
-			<label for="nnumber">Vacancy for pwd(In number)</label></br>
+			<label for="nnumber">Vacancy for PWD(In number)</label></br>
 			<input type="text" name="Jvacpwd" placeholder="Enter vacancy for pwd" value="<?php echo @$this->data['Jvacpwd'];?>">	
 		<td/>
 

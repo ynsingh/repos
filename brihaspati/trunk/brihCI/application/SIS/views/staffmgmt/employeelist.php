@@ -50,7 +50,7 @@
                     <th>Employee Name</th>
                     <th>Campus Name</th>
                     <th>University Officer Control</th>
-                    <th>Depatment Name</th>
+                    <th>Department Name</th>
                     <th>Scheme Name</th>
                     <th>Specialisation(Major subject)</th>
                     <th>Designation</th>

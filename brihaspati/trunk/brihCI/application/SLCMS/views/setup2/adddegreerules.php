@@ -85,7 +85,7 @@
             </td>
             </tr>
               <tr>
-               <td><label for="dr_mincredit" class="control-label">Degree minimum Credit:</label></td>
+               <td><label for="dr_mincredit" class="control-label">Degree Minimum Credit:</label></td>
                <td>
                <input type="text" name="dr_mincredit"  class="form-control" size="33" /><br>
                </td>

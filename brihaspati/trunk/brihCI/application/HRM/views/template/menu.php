@@ -93,7 +93,7 @@ echo "<ul class=\"sf-menu\">";
 					echo "<a href=" . ">HRManagement</a>";
                                 echo "<ul>";
                                         echo "<li>";
-                                                echo anchor('hrmgmt/view_advertisement', 'List of Advirtisement', array('title' => 'List of Advirtisement'));
+                                                echo anchor('hrmgmt/view_advertisement', 'List of Advertisement', array('title' => 'List of Advertisement'));
                                         echo "</li>";   
                                         echo "<li>";
                                                 echo anchor('hrmgmt/viewappcode', 'Application Short Code', array('title' => 'List of short code'));
@@ -196,7 +196,7 @@ echo "<ul class=\"sf-menu\">";
                                 echo "<a href=" . ">Help</a>";
                         echo "<ul>";
                                         echo "<li>";
-                                                echo anchor('help/helpdoc', 'User Manuual', array('title' => 'User Manuual'));
+                                                echo anchor('help/helpdoc', 'User Manual', array('title' => 'User Manual'));
                                         echo "</li>";
                                         echo "</ul>";
 

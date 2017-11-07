@@ -71,7 +71,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         
     </tr>
     <tr>
-        <td><label for="prgdepartment">Select Depatment</label></td>
+        <td><label for="prgdepartment">Select Department</label></td>
          <td>
             <select name="prgdepartment">
         	<option value=""disabled selected>--------------Select Department----------</option>

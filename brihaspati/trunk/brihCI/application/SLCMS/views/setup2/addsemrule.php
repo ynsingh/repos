@@ -136,7 +136,7 @@
                     <?php //echo form_error('semcr_semcpi ')?>
                 </td>
                 <td>
-			Example: any desimal value
+			Example: any decimal value
                 </td>
             </tr>
 

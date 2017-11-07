@@ -75,7 +75,7 @@
 
                 echo "<tr>";
                 echo "<td>";
-                echo form_label('minimum credit', 'dr_mincredit');
+                echo form_label('Minimum Credit', 'dr_mincredit');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($dr_mincredit);
@@ -87,7 +87,7 @@
 
                 echo "<tr>";
                 echo "<td>";
-                echo form_label('minimum subject credit','dr_minsubcredit');
+                echo form_label('Minimum Subject Credit','dr_minsubcredit');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($dr_minsubcredit);
@@ -99,7 +99,7 @@
 
                 echo "<tr>";
                 echo "<td>";
-                echo form_label('minimum thesis credit','dr_minthesiscredit');
+                echo form_label('Minimum Thesis Credit','dr_minthesiscredit');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($dr_minthesiscredit);
@@ -111,7 +111,7 @@
 
                 echo "<tr>";
                 echo "<td>";
-                echo form_label('minimum subject', 'dr_minsub');
+                echo form_label('Minimum Subject', 'dr_minsub');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($dr_minsub);
@@ -123,7 +123,7 @@
 
                 echo "<tr>";
                 echo "<td>";
-                echo form_label('minimum semester','dr_minsemester');
+                echo form_label('Minimum Semester','dr_minsemester');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($dr_minsemester);
@@ -135,7 +135,7 @@
 
                 echo "<tr>";
                 echo "<td>";
-                echo form_label('minimum cpi','dr_mincpi');
+                echo form_label('Minimum CPI','dr_mincpi');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($dr_mincpi);
@@ -147,7 +147,7 @@
 
                 echo "<tr>";
                 echo "<td>";
-                echo form_label('maximum credit', 'dr_maxcredit');
+                echo form_label('Maximum Credit', 'dr_maxcredit');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($dr_maxcredit);
@@ -159,7 +159,7 @@
 
                 echo "<tr>";
                 echo "<td>";
-                echo form_label('maximum semeter', 'dr_maxsemeter');
+                echo form_label('Maximum Semesters', 'dr_maxsemester');
                 echo "</td>";
                 echo "<td>";
                 echo form_input($dr_maxsemeter);

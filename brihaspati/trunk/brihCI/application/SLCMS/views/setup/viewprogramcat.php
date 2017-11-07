@@ -46,7 +46,7 @@
         <th>Sr.No</th>
         <th> Program Category Name </th>
         <th> Program Category Code </th>
-        <th> program Category Short Name </th>
+        <th> Program Category Short Name </th>
         <th> Program Category Description </th>
         <th> Action </th>
         </thead>

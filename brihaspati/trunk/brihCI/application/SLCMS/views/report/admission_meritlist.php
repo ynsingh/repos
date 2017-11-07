@@ -30,8 +30,8 @@
                 <tr align="center"> 
                 	<th>Sr No.</th>
                	 	<th>Application Number</th>
-                	<th>Enterance Exam Name</th>
-                	<th>Enterance Exam Roll No.</th>
+                	<th>Entrance Exam Name</th>
+                	<th>Entrance Exam Roll No.</th>
                 	<th>Course Name</th>
                 	<th>Branch Name</th>
 			<th>Student Name</th>

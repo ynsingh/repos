@@ -108,7 +108,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
     echo "<p>";
     echo "<tr><td>";
-    echo form_label('Subject points', 'subext1');
+    echo form_label('Subject Points', 'subext1');
     echo"</td><td>";
     echo form_input($subext1);
     echo "</td><td>";echo form_error('subext1');echo"</td></tr>";

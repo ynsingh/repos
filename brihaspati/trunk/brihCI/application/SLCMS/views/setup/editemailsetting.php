@@ -111,7 +111,7 @@
             
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('UserName', 'username');
+                    echo form_label('User Name', 'username');
                 echo "</td>";
                 echo "<td>";
                     //echo "<br />";
@@ -141,7 +141,7 @@
             //echo "<p>";
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Sendername', 'sendername');
+                    echo form_label('Sender Name', 'sendername');
                 echo "</td>";
                 echo "<td>";
                 // echo "<br />";
@@ -154,7 +154,7 @@
         
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Senderemail', 'senderemail');
+                    echo form_label('Sender Email', 'senderemail');
                 echo "</td>";
                 echo "<td>";
                 // echo "<br />";
@@ -166,7 +166,7 @@
             echo "</tr>";
             echo "<tr>";
                 echo "<td>";
-                    echo form_label('Modulename', 'modulename');
+                    echo form_label('Module Name', 'modulename');
                 echo "</td>";
                 echo "<td>";
                 // echo "<br />";

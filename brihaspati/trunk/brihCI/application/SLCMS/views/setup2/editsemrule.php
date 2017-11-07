@@ -117,7 +117,7 @@
                 echo form_input($semcr_semcpi);
                 echo "</td>";
 		echo "<td>";
-		 echo "Example: any desimal number";
+		echo "Example: any decimal number";
                 echo "</td>";
 		echo "</tr>";
 		

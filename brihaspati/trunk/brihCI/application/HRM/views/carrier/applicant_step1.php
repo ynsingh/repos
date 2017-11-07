@@ -184,7 +184,7 @@ echo "</center>";
 		</td>
 	
 		<td colspan=6>	</br>
-			<label for="nnumber">Cutoff date for submission of complete application form is :</label>
+			<label for="nnumber">Cut-off date for submission of complete application form is :</label>
 			<!---<input type="text" name="actoffdate" id="cutoffdate" placeholder="Enter cut off date" style="margin-left:40px;width:31%;">-->
 			<select name="actoffdate"  id="actoffdate" style="width:30%;margin-left:50px;" >
 		   	</select>	
@@ -262,7 +262,7 @@ echo "</center>";
 			<textarea name="acadd" placeholder="Enter correspondence address" style="height:30px;width:95%;" value="<?php echo @$this->data['acadd'];?>"></textarea>		
 		<td/>
 		<td>	
-			<label for="nnumber">Permanant address</label></br>
+			<label for="nnumber">Permanent address</label></br>
 			<textarea name="apadd" placeholder="Enter permanant address" style="height:30px;width:95%;" value="<?php echo @$this->data['apadd'];?>" ></textarea>		
 		<td/>
 		<td>	

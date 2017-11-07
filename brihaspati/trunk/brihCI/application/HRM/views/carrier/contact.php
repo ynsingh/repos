@@ -64,7 +64,7 @@ echo "</center>";
                 </td>
                 </tr>
                 <tr>
-<td><br>In Case of any diffculty to access the Online Recruitment Portal and filling the online application form.<br><br>Please Contact us at Email : recruitment@igntu.ac.in or Tel.No. given below:<br><br>  
+<td><br>In Case of any difficulty to access the Online Recruitment Portal and filling the online application form.<br><br>Please Contact us at Email : recruitment@igntu.ac.in or Tel.No. given below:<br><br>  
 </td>
                 </tr>
                 </table

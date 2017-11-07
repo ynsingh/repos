@@ -45,7 +45,7 @@
                     <th>Date of Relief</th>
                     <th>Expected Date of joining</th>
                     <th>University Officer Control</th>
-                    <th>Depatment Name</th>
+                    <th>Department Name</th>
                     <th>Designation</th>
                     <th>Post</th>
                     <th>Tranfer order copy</th>
