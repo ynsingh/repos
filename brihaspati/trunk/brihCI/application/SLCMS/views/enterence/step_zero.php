@@ -10,12 +10,13 @@
 ?>
 <html>
 <head>
-
+<title>IGNTU - Enterance Exam Registraion</title>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
-    <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+ 
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 
@@ -44,6 +45,12 @@
 
         });
     </script> 
+<style>
+input[type=text] {
+width:100%;height:35px;
+}
+button{height:35px;font-size:20px;}
+</style>
 <?php
     $this->load->view('template/header'); ?></br>
 <?php $this->load->view('enterence/admission_steps');?>
@@ -66,7 +73,7 @@
 
 </head>
 <body>
-        <div align="center" style="margin-left:25%;width:50%;">
+        <div align="center" style="margin-left:25%;width:52%;">
 
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -86,9 +93,12 @@
 
 <center>
     <form action="<?php echo site_url('Enterence/step_zero'); ?>" method="POST" >
-    <table style="border:1px solid black; margin-top:50px;">
-
+    <table style="border:2px solid #c6c6c6; margin-top:50px;width:25%;">
+    <tr style="background-color:#38B0DE;color:white;font-size:20px;">
+<td style="border:2px solid white;" align=center colspan=5>Enterance Exam Registration</td></tr>
+<tr height=20></tr>	
         <tr><td>
+	
         <label for="text">Email Id :</label></td>
         </td><td>
 <!--        <input type="text" name="applicantemail" placeholder="Enter your email id" class="keyup-email" value="<?php //echo isset($_POST["applicantemail"]) ? $_POST["applicantemail"] : ''; ?>" required="true" autofocus/> <br>-->
@@ -104,6 +114,8 @@
         <tr><td>
         <label for="text">Date Of Birth :</label></td>
         <td>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
+  	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
         <input type="text" name="dateofbirth" placeholder="Select your dob" value="<?php echo isset($_POST["dateofbirth"]) ? $_POST["dateofbirth"] : ''; ?>" id="dob" required="true"/>
         
             <script>
@@ -116,7 +128,6 @@
 
 //                $("#age").text(age);
                 },
-                //(set for show current month or current date)maxDate: '+0d',
                 
                     changeMonth: true,
                     changeYear: true,
@@ -131,7 +142,7 @@
         <tr><td>
         <label for="text">Program Name :</label></td>
         </td><td>
-        <input type="text" name="applicantprogram" placeholder="Enter your program" value="<?php echo isset($_POST["applicantprogram"]) ? $_POST["applicantprogram"] : $programname; ?>" required="true" readonly/> <br>
+        <input type="text" name="applicantprogram" placeholder="Enter your program" value="<?php echo $programname;?>" required="true" readonly/> <br>
         </td></tr>
         <tr><td align="center" colspan="2"><b><i>If you have already registered, Please fillup the code.</i></b></td></tr> 
         <tr><td>
@@ -161,6 +172,7 @@
      $this->load->view('template/footer'); ?>
 
 </body>
+
 </html>
 
 

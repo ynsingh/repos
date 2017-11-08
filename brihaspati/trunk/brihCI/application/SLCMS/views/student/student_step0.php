@@ -47,7 +47,7 @@ input[type='button']{font-size:16px;}
 </head>
 <body>
 
-
+<center>
 <div>
 	<div id="body">
 	<?php 
@@ -60,14 +60,9 @@ input[type='button']{font-size:16px;}
  	<br><br>
 		<?php $this->load->view('student/stuStepshead');?>
 
-	<div align="left" style="margin-left:30px;width:1700px;">
+	<div align="left" style="width:70%;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
-        <?php if(isset($_SESSION['success'])){?>
-        <div class="alert alert-success"><?php echo $_SESSION['success'];?></div>
-        <?php
-    	 };
-       	?>
+        
         <?php if(isset($_SESSION['err_message'])){?>
              <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
         <?php
@@ -76,7 +71,7 @@ input[type='button']{font-size:16px;}
       </div>
 
 		<?php $this->load->view('student/studentCrieteria');?>
-	<center>
+	
 <?php
 echo "<center style='color:#B21f35;text-align:center;font-size:20px;'>";
 	 
@@ -103,7 +98,7 @@ echo "</center>";
 		<tr ><td>
         	<label for="text">Program/Courses</label>
 		</td><td>
-			<select name="Sprogramname" id="programname" class="form-control" id="register_name" onchange="getbranchname(this.value)" style="width:122%;height:40px;font-size:18px;font-weight:bold;">
+			<select name="Sprogramname" id="programname" id="register_name" onchange="getbranchname(this.value)" style="width:120%;height:30px;font-size:18px;font-weight:bold;">
 			<option selected="true" disabled="disabled" style="font-size:18px;">programme/courses</option>
 				<?php 
 				$result=$this->stumodel->showCourse(); 
@@ -130,7 +125,7 @@ echo "</center>";
 					<option selected="true" disabled="disabled">Select branch</option>
 				</select>--->
 			
-			<select name="Sbranchname" id="branchname"  style="width:122%;height:40px;font-size:18px;font-weight:bold;">
+			<select name="Sbranchname" id="branchname"  style="width:120%;height:30px;font-size:18px;font-weight:bold;">
               		  <option value="" selected="true" disabled="disabled" >Select Branch</option>
 			</select>
 	

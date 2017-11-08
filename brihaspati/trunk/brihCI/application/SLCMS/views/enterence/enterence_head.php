@@ -17,6 +17,7 @@
     	 <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 	 <link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/style.css" />
 	 <link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/firstmenu.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <style>
 
 /*ul {
@@ -57,7 +58,7 @@
 		<li><a href="<?php echo site_url('Enterence/contactus');?>" style="padding: 15px 0 10px 45px;">Contact Us</a></li>
 		<li><a href="<?php echo site_url('Enterence/faqs');?>" style="padding: 15px 0 10px 45px;">FAQ</a></li>
 		<li><a href="<?php echo site_url('Enterence/prtadmission_form');?>">Complete/Print Enterance Form</a></li>
-		<li><a href="<?php echo site_url('Enterence/stu_hallticket');?>">Download Hall Ticket</a></li>
+		<li><a href="<?php echo site_url('Enterence/stu_hallticket');?>" style="padding: 5px 30px 10px 40px;">Download Hall Ticket</a></li>
 		</ul>
 	</div>
 </div>

@@ -687,8 +687,8 @@ class Enterence extends CI_Controller {
 					'ca_asmid'		=>	$insertid,
                 		);	
 				$this->db->insert('admissionstudent_centerallocation',$centerasmid);
-				//insert asmid into student student education
-				/*$stuedu = array(
+				/*//insert asmid into student student education
+				$stuedu = array(
 					'asedu_asmid'		=>	$insertid,
                 		);	
 				$this->db->insert('admissionstudent_education',$stuedu);
@@ -797,7 +797,7 @@ class Enterence extends CI_Controller {
 	   		$this->form_validation->set_rules('Hpassed','High school passed/appeared','trim|xss_clean|required');
 			$this->form_validation->set_rules('Hmobtain','High school obtained marks','trim|xss_clean|required');
            		$this->form_validation->set_rules('Hmmarks','High school  maximum marks','trim|xss_clean|required|numeric');
-           		$this->form_validation->set_rules('Hpercentage','High school percentage','trim|xss_clean|numeric|required|numeric');
+           		$this->form_validation->set_rules('Hpercentage','High school percentage','trim|xss_clean|required');
 	   		$this->form_validation->set_rules('Hinstitute','High school institute/university','trim|xss_clean|required');
 
 	    		$this->form_validation->set_rules('Icname','Intermediate school name','trim|xss_clean|required');
@@ -807,7 +807,7 @@ class Enterence extends CI_Controller {
 	   		$this->form_validation->set_rules('Ipassed','Intermediate school passed/appeared','trim|xss_clean|required');
 			$this->form_validation->set_rules('Imobtain','Intermediate school obtained marks','trim|xss_clean|required|numeric');
            		$this->form_validation->set_rules('Immarks','Intermediate school  maximum marks','trim|xss_clean|required|numeric');
-           		$this->form_validation->set_rules('Ipercentage','Intermediate school percentage','trim|xss_clean|numeric|required');
+           		$this->form_validation->set_rules('Ipercentage','Intermediate school percentage','trim|xss_clean|required');
 	   		$this->form_validation->set_rules('Iinstitute','Intermediate school institute/university','trim|xss_clean|required');
 
 	    		$this->form_validation->set_rules('Gcname','Graduation college name','trim|xss_clean');
@@ -817,7 +817,7 @@ class Enterence extends CI_Controller {
 	   		$this->form_validation->set_rules('Gpassed','Graduation passed/appeared','trim|xss_clean');
 			$this->form_validation->set_rules('Gmobtain','Graduation obtained marks','trim|xss_clean|numeric');
            		$this->form_validation->set_rules('Gmmarks','Graduation  maximum marks','trim|xss_clean|numeric');
-           		$this->form_validation->set_rules('Gpercentage','Graduation percentage','trim|xss_clean|numeric');
+           		$this->form_validation->set_rules('Gpercentage','Graduation percentage','trim|xss_clean');
 	   		$this->form_validation->set_rules('Ginstitute','Graduation institute/university','trim|xss_clean');
 
 
@@ -828,7 +828,7 @@ class Enterence extends CI_Controller {
 	   		$this->form_validation->set_rules('Ppassed','Post graduation passed/appeared','trim|xss_clean');
 			$this->form_validation->set_rules('Pmobtain','Post graduation obtained marks','trim|xss_clean|numeric');
            		$this->form_validation->set_rules('Pmmarks','Post graduation  maximum marks','trim|xss_clean|numeric');
-           		$this->form_validation->set_rules('Ppercentage','Post graduation percentage','trim|xss_clean|numeric');
+           		$this->form_validation->set_rules('Ppercentage','Post graduation percentage','trim|xss_clean');
 	   		$this->form_validation->set_rules('Pinstitute','Post graduation institute/university','trim|xss_clean');
 
 	   		$this->form_validation->set_rules('Acname','Any other qualificatin name','trim|xss_clean');
@@ -836,10 +836,10 @@ class Enterence extends CI_Controller {
            		$this->form_validation->set_rules('Aboard','Any other qualificatin board','trim|xss_clean');
            		$this->form_validation->set_rules('Ayear','Any other qualificatin year','trim|xss_clean|numeric');
 	   		$this->form_validation->set_rules('Apassed','Any other qualificatin passed/appeared','trim|xss_clean');
-			$this->form_validation->set_rules('Amobtain','Any other obtained marks','trim|xss_clean|numeric');
-           		$this->form_validation->set_rules('Ammarks','Any other  maximum marks','trim|xss_clean|numeric');
-           		$this->form_validation->set_rules('Apercentage','Any other percentage','trim|xss_clean|numeric');
-	   		$this->form_validation->set_rules('Ainstitute','Any other institute/university','trim|xss_clean');
+			$this->form_validation->set_rules('Amobtain','Any other qualificatin obtained marks','trim|xss_clean|numeric');
+           		$this->form_validation->set_rules('Ammarks','Any other qualificatin  maximum marks','trim|xss_clean|numeric');
+           		$this->form_validation->set_rules('Apercentage','Any other qualificatin percentage','trim|xss_clean');
+	   		$this->form_validation->set_rules('Ainstitute','Any other qualificatin institute/university','trim|xss_clean');
 
 			/*for($j=1; $j<=9; $j++){
 				$this->form_validation->set_rules('eduexname'.$j,'Enterance exam name','trim|xss_clean');
@@ -1352,85 +1352,85 @@ class Enterence extends CI_Controller {
 	}
 		
 	public function payustatus() {
-	$Sid = $this->session->userdata['asm_id'];
-       $status = $this->input->post('status');
-      if (empty($status)) {
-            redirect('Payumoney');
-        }
+		$Sid = $this->session->userdata['asm_id'];
+       		$status = $this->input->post('status');
+      		if (empty($status)) {
+            		redirect('enterence/step_four');
+        	}
        
-        $firstname = $this->input->post('firstname');
-        $amount = $this->input->post('amount');
-        $txnid = $this->input->post('txnid');
-        $posted_hash = $this->input->post('hash');
-        $key = $this->input->post('key');
-        $productinfo = $this->input->post('productinfo');
-        $email = $this->input->post('email');
-	$ftype = $this->input->post('address1');
-	$cdate = date('Y-m-d');	
-        $SALT = "eCwWELxi";	 //  Your salt
-        $add = $this->input->post('additionalCharges');
-        if(isset($add)) {
-            $additionalCharges = $this->input->post('additionalCharges');
-            $retHashSeq = $additionalCharges . '|' . $SALT . '|' . $status . '|||||||||||' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
-        } else {
+        	$firstname = $this->input->post('firstname');
+        	$amount = $this->input->post('amount');
+        	$txnid = $this->input->post('txnid');
+        	$posted_hash = $this->input->post('hash');
+        	$key = $this->input->post('key');
+        	$productinfo = $this->input->post('productinfo');
+       		$email = $this->input->post('email');
+		$ftype = $this->input->post('address1');
+		$cdate = date('Y-m-d');	
+        	$SALT = "eCwWELxi";	 //  Your salt
+        	$add = $this->input->post('additionalCharges');
+        	if(isset($add)) {
+            		$additionalCharges = $this->input->post('additionalCharges');
+            		$retHashSeq = $additionalCharges . '|' . $SALT . '|' . $status . '|||||||||||' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
+        	} else {
 
-            $retHashSeq = $SALT . '|' . $status . '|||||||||||' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
-        }
-          $data['hash'] = hash("sha512", $retHashSeq);
-          $data['amount'] = $amount;
-          $data['txnid'] = $txnid;
-          $data['posted_hash'] = $posted_hash;
-          $data['status'] = $status;
-          if($status == 'success'){
-	 	// update pg table
-		$pgdata = array(
-			'aspg_asmid' 	=> $Sid,	
-			'aspg_txnid' 	=> $txnid,	
-			'aspg_pinfo' 	=> $productinfo,	
-			'aspg_amount' 	=> $amount,	
-			'aspg_ftype'	=> $ftype,	
-			'aspg_date' 	=> $cdate,	
-			//'aspg_gw'	=> ,	
-			'aspg_status'	=> $status,	
-			//'aspg_txncode' 	=> ,
-			//'aspg_reason' 	=>	
-		);
-		$pgupdate=$this->commodel->updaterec('admissionstudent_pg', $pgdata,'aspg_asmid',$Sid);
-		$this->logger->write_logmessage("update", "Update in admissionstudent_pg table.");
-                $this->logger->write_dblogmessage("update", "Update in admissionstudent_pg table." );
+            		$retHashSeq = $SALT . '|' . $status . '|||||||||||' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
+        	}
+          	$data['hash'] = hash("sha512", $retHashSeq);
+          	$data['amount'] = $amount;
+          	$data['txnid'] = $txnid;
+          	$data['posted_hash'] = $posted_hash;
+          	$data['status'] = $status;
+          	if($status == 'success'){
+	 		// update pg table
+			$pgdata = array(
+				'aspg_asmid' 	=> $Sid,	
+				'aspg_txnid' 	=> $txnid,	
+				'aspg_pinfo' 	=> $productinfo,	
+				'aspg_amount' 	=> $amount,	
+				'aspg_ftype'	=> $ftype,	
+				'aspg_date' 	=> $cdate,	
+				//'aspg_gw'	=> ,	
+				'aspg_status'	=> $status,	
+				//'aspg_txncode' 	=> ,
+				//'aspg_reason' 	=>	
+			);
+			$pgupdate=$this->commodel->insertrec('admissionstudent_pg', $pgdata,'aspg_asmid',$Sid);
+			$this->logger->write_logmessage("update", "Update in admissionstudent_pg table.");
+                	$this->logger->write_dblogmessage("update", "Update in admissionstudent_pg table." );
 	 		//call payment function for update record
-		 $pmathod = 'Online';
-		 $bank='PayuMoney';
+		 	$pmathod = 'Online';
+		 	$bank='PayuMoney';
 		 		
-		 $this->payment($txnid,$bank,$amount,$ftype,$pmathod);
+		 	$this->payment($txnid,$bank,$amount,$ftype,$pmathod);
 			//set the proper message
-		$message = '<h3>Online fees submit successfully.</h3>';
-                $this->session->set_flashdata('msg',$message);
-                $this->load->view('enterence/step_five', $data);   //this should go to step five for printing application page  with suitable message
-         }
-         else{
-		// update pg table
-		$pgdata = array(
-			'aspg_asmid' 	=> $Sid,	
-			'aspg_txnid' 	=> $txnid,	
-			'aspg_pinfo' 	=> $productinfo,	
-			'aspg_amount' 	=> $amount,	
-			'aspg_ftype'	=> $ftype,	
-			'aspg_date' 	=> $cdate,	
-			//'aspg_gw'	=> ,	
-			'aspg_status'	=> $status,	
-			//'aspg_txncode' 	=> ,
-			//'aspg_reason' 	=>	
-		);
-		$pgupdate=$this->commodel->updaterec('admissionstudent_pg', $pgdata,'ca_asmid',$Sid);
-		$this->logger->write_logmessage("update", "not update in admissionstudent_pg table.");
-                $this->logger->write_dblogmessage("update", "not update in admissionstudent_pg table.");
+			//$message = '<h3>Online fees submit successfully.</h3>';
+                	//$this->session->set_flashdata('msg',$message);
+                	//$this->load->view('enterence/step_five', $data);   //this should go to step five for printing application page  with suitable message
+         	}
+         	else{
+			// update pg table
+			$pgdata = array(
+				'aspg_asmid' 	=> $Sid,	
+				'aspg_txnid' 	=> $txnid,	
+				'aspg_pinfo' 	=> $productinfo,	
+				'aspg_amount' 	=> $amount,	
+				'aspg_ftype'	=> $ftype,	
+				'aspg_date' 	=> $cdate,	
+				//'aspg_gw'	=> ,	
+				'aspg_status'	=> $status,	
+				//'aspg_txncode' 	=> ,
+				//'aspg_reason' 	=>	
+			);
+			$pgupdate=$this->commodel->insertrec('admissionstudent_pg', $pgdata);
+			$this->logger->write_logmessage("insert", "failed record insert in admissionstudent_pg table.");
+                	$this->logger->write_dblogmessage("insert", "failed record insert in admissionstudent_pg table.");
 
-		// set the status message
-                $this->load->view('enterence/step_four', $data); //this should go to confirmation page for retry to make payment with suitable message
-         }
+			// set the status message
+                	$this->load->view('enterence/step_four', $data); //this should go to confirmation page for retry to make payment with suitable message
+         	}
      
-    }
+   	 }
 
 	/******************************************Offline payment code start**********************************************************/
 //This function check for duplicate reference number 		   
@@ -1499,9 +1499,9 @@ class Enterence extends CI_Controller {
 	public function payment($post1,$post2,$post3,$post4,$post5){
 		//print_r($post1.$post2.$post3.$post4.$post5);die;
 		$Sid = $this->session->userdata['asm_id'];
-		$isdupl = $this->commodel->isduplicate('admissionstudent_centerallocation','ca_asmid',$Sid);
+		//$isdupl = $this->commodel->isduplicate('admissionstudent_centerallocation','ca_asmid',$Sid);
 		//print_r($post1.$post2.$post3.$post4.$post5.' '.$isdupl);die;
-                if(!$isdupl){
+               // if(!$isdupl){
 			
 			$step4 = array(
 		 		'asfee_referenceno'   	=>	$post1,
@@ -1512,8 +1512,8 @@ class Enterence extends CI_Controller {
                 	);
 			$update = $this->commodel->updaterec('admissionstudent_fees', $step4,'asfee_amid',$Sid);
 				
-			$this->logger->write_logmessage("update", "Step 4 admissionstudent_fees table update.");
-                    	$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." );
+			$this->logger->write_logmessage("update", "Step 4 admissionstudent_fees table update.".$Sid);
+                    	$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." .$Sid);
 			
 			//update admissionstep step4 table
 			$cdate = date('Y-m-d H:i');
@@ -1522,118 +1522,34 @@ class Enterence extends CI_Controller {
        				'step4_date'  		=>	$cdate
 			);
 			$updst4 = $this->commodel->updaterec('admissionstudent_enterencestep', $step4,'admission_masterid',$Sid);
-			$this->logger->write_logmessage("update", "Admission Step_four update.");
-      			$this->logger->write_dblogmessage("update", "Admission Step_four update.");
+			$this->logger->write_logmessage("update", "Admission Step_four update.".$Sid);
+      			$this->logger->write_dblogmessage("update", "Admission Step_four update.".$Sid);
 
 			if(!$update)
 			{
-               			$this->logger->write_logmessage("update", "Student admission fees not add." );
-               			$this->logger->write_dblogmessage("update", "Student admission fees not add." );
-               	 		$this->session->set_flashdata("err_message",'Error to update admission fees');
-				redirect('enterence/step_four');
+               			$this->logger->write_logmessage("update", "Fees Paid but Error to update admission fees status".$Sid );
+               			$this->logger->write_dblogmessage("update", "Fees Paid but Error to update admission fees status".$Sid );
+               	 		$this->session->set_flashdata("err_message",'Fees Paid but Error to update admission fees status');
+				redirect('enterence/step_five');
                		}
                		else{
-            			$this->logger->write_logmessage("update","Student enterance admission fees add.");
-               			$this->logger->write_dblogmessage("update", "Student enterance admission fees add.");
+            			$this->logger->write_logmessage("update","Student enterance admission fees add.".$Sid);
+               			$this->logger->write_dblogmessage("update", "Student enterance admission fees add.".$Sid);
 				$this->session->set_flashdata("success", "Your". $post5 ."enterance fees submitted successfully.");
 				redirect('enterence/step_five');
                		}
-		}//if duplicate close
-		else{
-			$message = '<h3>Your fees submission has been failed.</h3>';
-                        $this->session->set_flashdata('msg',$message);
-			redirect('welcome');	
-		}	
+		//}//if duplicate close
+		//else{
+			//$message = '<h3>Your fees submission has been failed.</h3>';
+                     //   $this->session->set_flashdata('msg',$message);
+			//redirect('welcome');	
+			//redirect('enterence/step_four');
+		//}	
 	$this->load->view('enterence/step_four',$data);
 
 	}
 
 
-	public function onlinePayment(){
-		if(empty($this->session->userdata('asm_id'))) {
-	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
-			redirect('welcome');
-        	}
-		$Sid = $this->session->userdata['asm_id'];
-		$data['Sid'] = $Sid;
-		//get category name 	
-		$this->catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
-			
-		
-		/*$name = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$Sid)->asm_fname;
-		$data['name'] = $name;
-		$mailid = $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$Sid)->asm_email;
-		$data['mailid'] = $mailid;
-		$phoneno = $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$Sid)->asm_mobile;
-		$data['phoneno'] = $phoneno;
-		//$rollno = $this->commodel->get_listspfic1('admissionstudent_master','asm_applicationno','asm_id',$Sid)->asm_applicationno;
-		$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
-		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
-		$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
-		$pinfo = $prgname.'('.$prgbranch.')';//.'('.$rollno.')';
-		$data['pinfo'] = $pinfo;
-		$add = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_paddress','aspar_asmid',$Sid)->aspar_paddress;
-		$post = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_ppostoffice','aspar_asmid',$Sid)->aspar_ppostoffice;
-		$city = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcity','aspar_asmid',$Sid)->aspar_pcity;
-		$state = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$Sid)->aspar_pstate;
-		$country = $this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$Sid)->aspar_pcountry;
-		$pin =  $this->commodel->get_listspfic1('admissionstudent_parent','aspar_ppincode','aspar_asmid',$Sid)->aspar_ppincode;
-		$address = $add.','.$post.','.$city.','.$state.','.$country.'('.$pin.')';
-		$data['address'] = $address;*/
-
-
-		 /*$amount =  $this->input->post('amount');  // here amount
-    		 $fees  = $this->input->post('ftype');  //fees type
-    		 $customer_name = $this->input->post('firstname'); //name of student
-    		 $customer_emial = $this->input->post('email'); //email of student
-   		 $customer_mobile = $this->input->post('phone'); // mobile number of student
-    		 $prgname = $this->input->post('prgbranch');// roll number and program code with branch	
-
-		 $MERCHANT_KEY = "SYMBk2HQ"; //change  merchant with yours 
-        	 $SALT = "dxmk9SZZ9y";  //change salt with yours 
-
-        	$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
-        	//optional udf values 
-       	 	$udf1 = '';
-        	$udf2 = '';
-        	$udf3 = '';
-        	$udf4 = '';
-        	$udf5 = '';*/
-        
-        	 /*$hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $product_info . '|' . $customer_name . '|' . $customer_emial . '|' . $udf1 . '|' . $udf2 . '|' . $udf3 . '|' . $udf4 . '|' . $udf5 . '||||||' . $SALT;*/
-		$hashstring = $MERCHANT_KEY . '|' . $txnid . '|' . $amount . '|' . $fees . '|' . $customer_name . '|' . $customer_emial . '|' . $udf1 . '|' . $udf2 . '|' . $udf3 . '|' . $udf4 . '|' . $udf5 . '||||||' . $SALT;
-         $hash = strtolower(hash('sha512', $hashstring));
-         
-       		/*$success = base_url() . 'Status'; //return to payustatus function   
-        	$fail = base_url() . 'Status'; //return to payustatus function
-        	$cancel = base_url() . 'Status';//return to payustatus function
-        
-        	$data = array('action' => "https://test.payu.in",'name'=>$customer_name,'mailid' =>$mailid,'phoneno'=>$customer_mobile,
-				'mkey' => $MERCHANT_KEY,
-            			'tid' => $txnid,
-            			'hash' => $hash,
-				'amount' => $amount,
-				); */
-         	/*$data = array(
-            		'mkey' => $MERCHANT_KEY,
-            		'tid' => $txnid,
-            		'hash' => $hash,
-           	 	'amount' => $amount,           
-            		'name' => $customer_name,
-            		'fees' => $fees,
-            		'mailid' => $customer_emial,
-            		'phoneno' => $customer_mobile,
-            		'address' => $customer_address,
-            		'action' => "https://test.payu.in", //for live change action  https://secure.payu.in
-            		'sucess' => $success,
-            		'failure' => $fail,
-            		'cancel' => $cancel            
-        );*/
-
-		//redirect('payumoney/pay',$data);
-		$this->load->view('payumoney/confirmation',$data);
-		//$this->load->view('enterence/step_four');
-	}
 
 /*************************************offline payment end***************************************************************/
 

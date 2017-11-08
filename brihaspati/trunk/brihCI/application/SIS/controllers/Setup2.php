@@ -318,7 +318,7 @@ class Setup2 extends CI_Controller
 				}
                                 else{
                                         $this->session->set_flashdata("success", "Semester rule for this program already exist.");
-                                        $this->load->view('setup2/addsemrule');
+                                       redirect('setup2/addsemrule');
                                 }
 
                 	}//close if vallidation

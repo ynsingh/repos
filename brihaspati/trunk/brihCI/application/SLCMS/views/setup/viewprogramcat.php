@@ -12,16 +12,17 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 </head>
  <body>
-<table width="100%">
+<center>
+<table width="70%">
      <tr><td>
-      <div align=left" style="margin-left:2%;">
+      <div>
          <?php
             echo anchor('setup/programcat/', 'Add Program Category', array('class' => 'top_parent'));
             $help_uri = site_url()."/help/helpdoc#ViewProgramCategory";
-             echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+             echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
          ?>
 
-        </div>
+        
        </div>
        <div style="margin-left:2%;">
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -39,8 +40,8 @@
                 ?>
         </div>
     </td></tr>
-  </table>
-  <table cellpadding="16" style="margin-left:2%;" class="TFtable">
+  </table></center>
+  <table cellpadding="16" class="TFtable">
         <thead >
         <tr align="center">
         <th>Sr.No</th>

@@ -112,7 +112,7 @@ echo "</center>";
 		</table>
 		<table style="width:50%;">
 			<tr>
-				<td><h2>Note: Photo ,Signature file size is only 100 kb or Enclosure size must be 500kb and extension jpeg , jpg or png.</h2></td>
+				<td><h4><b>Note: Photo ,Signature file size is only 100 kb or Enclosure size must be 500kb and extension jpeg , jpg or png.</b></h4></td>
 			</tr>
 		</table>
 	

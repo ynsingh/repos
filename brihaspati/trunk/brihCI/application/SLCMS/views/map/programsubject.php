@@ -44,11 +44,11 @@ echo "<body>";
 ?>
 <br>
 <div align="left">
-<table style="margin-left:2%;width:100%">
+<center><table style="width:70%">
 <tr><td>
 <?php echo anchor('map/addprogramsubject/', " Add Subject Paper" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#ViewSubjectPaperList";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
 ?>
 </td></tr>
 </table>
@@ -71,6 +71,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     }
     echo "</td></tr>";
     echo "</table>";
+echo "</center>";
     echo "<div align=\"center\";>";
     //echo "<div style=\"margin-left:10px;\">";
 

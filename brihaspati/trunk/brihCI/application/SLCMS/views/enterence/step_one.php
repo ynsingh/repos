@@ -18,13 +18,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <style type="text/css">
 label{font-size:18px;}
-input[type='text']{font-size:17px;height:30px;background-color:white;width:100%;}
-input[type='email']{font-size:17px;height:30px;background-color:white;}
+input[type='text']{font-size:17px;height:35px;background-color:white;width:98%;font-weight:bold;}
+input[type='email']{font-size:17px;height:35px;background-color:white;width:98%;font-weight:bold;}
 
 #filltoo{font-size:20px;}
 tr td{font-size:15px;}
 thead tr th{background-color:#38B0DE;color:white;font-weight:bold;font-size:15px;}
-select{width:100%;font-size:17px;height:30px;font-weight:bold;}
+select{width:98%;font-size:17px;height:35px;font-weight:bold;}
 
 </style>
 
@@ -77,7 +77,7 @@ function filladd()
 echo "<center>";
 
 	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;'>";
+echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:40px;color:green;'>";
 	echo $this->session->flashdata('msg');
 echo "<div>";	
 }
@@ -85,7 +85,7 @@ echo "<div>";
 
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"70%;font-size:18px;height:10px;border:1px solid white;\" class=\"isa_success\">";			
+	echo "<table style=\"70%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
 		echo "<tr>";
 			echo "<td style='font-size:18px;float:left;'>";
 				echo $_SESSION['success'];
@@ -110,7 +110,7 @@ echo "<div>";
 echo "</center>";
 ?>
 <center>
-	<div align="left" style="width:70%;font-size:18px;">
+	<div align="left" style="width:70%;font-size:18px;height:30px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;" class="">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -142,20 +142,14 @@ echo "</center>";
 	    <tr>	
 		<td>	
 			<label for="nnumber">Course Applied for</label></br>
-			<!---<select name="entcouname" class="form-control" id="register_name" style="height:37px;font-size:18px;font-weight:bold;">
-			<option  disabled selected>Courses</option>
-				<?php foreach($this->prgname as $data){?>
-				<option value="<?php echo $data->prg_id;?>"><?php echo $data->prg_name.'('.$data->prg_branch.')'; ?></option>
-				<?php }?>
-	  		</select>--->
-			
+					
 			<input type="text" name="entcouname" placeholder="Enter Your Email" value="<?php echo $prgname;?>" readonly/>
 		<td/>
 				
 		<td>	<!---<span style="color:red;"><?php echo form_error('Scenters');?></span>--->
 			<label for="ennumber">Study Centers</label></br>
 			
-			<select name="entcenter" class="form-control"  style="height:37px;font-size:18px;font-weight:bold;" >
+			<select name="entcenter" style="height:37px;font-size:18px;font-weight:bold;" >
  			<option  disabled selected>Study Centers</option>
 			<?php 
 			foreach($this->scresult as $datas1): ?>	
@@ -166,7 +160,7 @@ echo "</center>";
 
 		<td>	<!---<span style="color:red;"><?php echo form_error('Stypeprogramme');?></span>--->
 			<label for="nnumber">Enterence Exam Center</label></br>
-			<select name="entexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+			<select name="entexamcenter" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Type of programme/courses</option>
 					<?php foreach($this->examcenter as $row): ?>	
@@ -196,7 +190,7 @@ echo "</center>";
 		
 		<td>	<!---<span style="color:red;"><?php echo form_error('Sgender');?></span>--->
 			<label>Gender</label></br>
-			<select name="entgender" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+			<select name="entgender" style="height:37px;font-size:18px;font-weight:bold;">
  			<option value=""disabled selected>Select Gender</option>
 				<option value="Male">Male</option>
 				<option value="Female">Female</option>			
@@ -206,7 +200,7 @@ echo "</center>";
 
 		<td>	<!---<span style="color:red;"><?php echo form_error('Sgender');?></span>--->
 			<label>Maritial Status</label></br>
-			<select name="entmaritial" class="form-control" style="height:37px;font-size:18px;font-weight:bold;width:100%;">
+			<select name="entmaritial" style="height:37px;font-size:18px;font-weight:bold;width:100%;">
  			<option value=""disabled selected>Select Maritial Status</option>
 				<option value="Married">Married</option>
 				<option value="Un-Married">Un-Married</option>			
@@ -282,7 +276,7 @@ echo "</center>";
 	
 		<td>
 			<label>Select religion</label></br></br>
-			<select name="entreligion" class="form-control"  style="height:37px;font-size:18px;font-weight:bold;">
+			<select name="entreligion" style="height:37px;font-size:18px;font-weight:bold;">
 				<option selected="true" disabled="disabled" style="font-size:18px;">Select Religion</option>
 				<option value="HINDUISM">HINDUISM</option>
 				<option value="ISLAM">ISLAM</option>
@@ -301,13 +295,17 @@ echo "</center>";
 	</tr>
 	</table>
 
-<table style="width:70%;">
-	<thead><tr><th align=left style="font-size:22px;" colspan=2>Parmanent and Correspondence Address</th></tr></thead>
-	<thead><tr><th align=right colspan=2  style="font-size:18px;">
-		<input type="checkbox" value="" name="filltoo" id="filltoo" onclick="filladd()"/>Correspondence Address same as Parmanent Address<br/>
-		</th></tr></thead>
+<table style="width:70%;" border=2>
+	<thead><tr><th align=left style="font-size:22px;" colspan=2>Parmanent and Correspondence Address</th>
+		<th align=right colspan=2  style="font-size:18px;">
+		<input type="checkbox" value="" name="filltoo" id="filltoo" onclick="filladd()"/>Correspondence Address same as Parmanent Address
+	</th>
+	</tr>
+	
+	</thead>
+	<thead></thead>
 	<tr>
-		<td>
+		<td colspan=2>
 		<table style="width:100%;">
 				<tr><td style="background-color:black;color:white;font-size:20px;text-align:center;">Parmanent Address</td></tr>
 		<tr height=10></tr>
@@ -338,8 +336,6 @@ echo "</center>";
 		<td>
 
 		<table style="width:100%;">
-		
-
 				<tr><td style="background-color:black;color:white;font-size:20px;text-align:center;" >Correspondence Address</td></tr>
 		<tr height=10></tr>
 				<tr><td>
@@ -375,41 +371,41 @@ echo "</center>";
 	<table style="width:70%;">
 		<thead><tr><th align=left colspan="8" style="font-size:22px;">Family Detail</th></tr></thead>
 		<tr height=10></tr>
-		<tr>
-		
-			<td>	
-			<label for="nnumber">Father's Name<label></br>
-			<input type="text" name="entfathername" placeholder="Enter Father Name" value="<?php echo isset($_POST["entfathername"]) ? $_POST["entfathername"] : ''; ?>">	
+		<tr>	
+		<td>	
+			<label for="nnumber">Father's Name</label></br>
+			<input type="text" name="entfathername" placeholder="Enter Father Name" value="<?php echo isset($_POST["entfathername"]) ? $_POST["entfathername"] : ''; ?>"/>
 		<td/>
+				
 		<td>	
 			<label for="nnumber">Mother name</label></br>
-			<input type="text" name="entmothername" placeholder="Enter Mother Name" value="<?php echo isset($_POST["entmothername"]) ? $_POST["entmothername"] : ''; ?>">	
+			<input type="text" name="entmothername" placeholder="Enter Mother Name" value="<?php echo isset($_POST["entmothername"]) ? $_POST["entmothername"] : ''; ?>"/>
 		<td/>
 
 		<td>	
-			<label for="nnumber">Father's Mobile No.<label></br>
-			<input type="text" name="entfathermono" placeholder="Enter father mo. no." MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo isset($_POST["entfathermono"]) ? $_POST["entfathermono"] : ''; ?>">	
+			<label for="nnumber">Father's Mobile No.</label></br>
+			<input type="text" name="entfathermono" placeholder="Enter father mo. no." MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo isset($_POST["entfathermono"]) ? $_POST["entfathermono"] : ''; ?>"/>		
 		<td/>
 		<td>	
 			<label for="nnumber">Mother Mobile No.</label></br>
-			<input type="text" name="entmothermono" placeholder="Enter mother mo. no." MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo isset($_POST["entmothermono"]) ? $_POST["entmothermono"] : ''; ?>">	
+			<input type="text" name="entmothermono" placeholder="Enter mother mo. no." MaxLength="10" pattern="/^+91(7\d|8\d|9\d)\d{9}$/" value="<?php echo isset($_POST["entmothermono"]) ? $_POST["entmothermono"] : ''; ?>"/>	
 		<td/>
-		
-		</tr>
+	</tr>
 
-<tr height=10></tr>
-		<tr>
+
+	<tr>	
 		<td>	
-			<label for="nnumber">Father's Occupation<label></br>
-			<input type="text" name="entfatheroccu" placeholder="Enter father occupation" value="<?php echo isset($_POST["entfatheroccu"]) ? $_POST["entfatheroccu"] : ''; ?>">	
+			<label for="nnumber">Father's Occupation</label></br>
+			<input type="text" name="entfatheroccu" placeholder="Enter father occupation" value="<?php echo isset($_POST["entfatheroccu"]) ? $_POST["entfatheroccu"] : ''; ?>"/>
 		<td/>
+				
 		<td>	
 			<label for="nnumber">Mother Occupation</label></br>
-			<input type="text" name="entmotheroccu" placeholder="Enter mother occupation" value="<?php echo isset($_POST["entmotheroccu"]) ? $_POST["entmotheroccu"] : ''; ?>">	
+			<input type="text" <input type="text" name="entmotheroccu" placeholder="Enter mother occupation" value="<?php echo isset($_POST["entmotheroccu"]) ? $_POST["entmotheroccu"] : ''; ?>"/>
 		<td/>
-		<tr>
 
-		</tr>
+	</tr>
+		 
 	</table>
 
 </br></br>

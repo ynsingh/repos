@@ -8,16 +8,17 @@
 	<?php $this->load->view('template/menu');?>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">    
 </head>    
-<body>     
-<table width="100%" style="margin-left:2%;">
+<body>  
+<center>   
+<table width="70%">
             <tr><td>
-                <div align="left">
+                <div>
                 <?php  echo anchor('setup/seatsetting/', "Add seat Setting", array('title' => 'Add Seat Setting Detail','class' =>'top_parent'));
                 ?>
                  <?php
                  $help_uri = site_url()."/help/helpdoc#ViewSeatSetting";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
-                 ?>
+                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+                 ?></div>
                 <div  style="width:90%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -32,10 +33,10 @@
                ?>
               </div>
              </td></tr>
-       </table>
+       </table></center>
 
 		<?php
-		echo"<div style=\"margin-left:2%;\">";
+		echo"<div>";
                 echo "<table border=0 cellpadding=16  class=\"TFtable\">";
                 echo "<thead><tr><th>Sr. No.</th><th>University</th><th>Category</th><th>Pecentage(%)</th><th>Number of Seat</th><th>Action</th></tr></thead>";
 		$count=0;

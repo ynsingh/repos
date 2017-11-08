@@ -9,7 +9,7 @@
 		<tbody>
 			<tr>
 				<td>
-					<select name="eduexname1" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+					<select name="eduexname1" style="height:37px;font-size:18px;font-weight:bold;">
  						<option value=""disabled selected>Select Exam</option>
 						<option value="JEE main">JEE Main</option>
 						<option value="MAT">MAT</option>
@@ -23,23 +23,23 @@
 					</select>  
 				</td>
 				<td>
-				<input type="text" placeholder="Roll No" name="edurollno11" style="width:98%;" value="<?php echo isset($_POST["edurollno11"]) ? $_POST["edurollno11"] : ''; ?>">
+				<input type="text" placeholder="Roll No" name="edurollno11" value="<?php echo isset($_POST["edurollno11"]) ? $_POST["edurollno11"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Rank" name="edurank12" style="width:98%;" value="<?php echo isset($_POST["edurank12"]) ? $_POST["edurank12"] : ''; ?>">
+				<input type="text" placeholder="Rank" name="edurank12" value="<?php echo isset($_POST["edurank12"]) ? $_POST["edurank12"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Score" name="eduscore13" style="width:98%;" value="<?php echo isset($_POST["eduscore13"]) ? $_POST["eduscore13"] : ''; ?>">
+				<input type="text" placeholder="Score" name="eduscore13" value="<?php echo isset($_POST["eduscore13"]) ? $_POST["eduscore13"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="State" name="edustate14" style="width:98%;" value="<?php echo isset($_POST["edustate14"]) ? $_POST["edustate14"] : ''; ?>">
+				<input type="text" placeholder="State" name="edustate14" value="<?php echo isset($_POST["edustate14"]) ? $_POST["edustate14"] : ''; ?>">
 				</td>
 		
 			</tr>
 
 			<tr>
 				<td>
-					<select name="eduexname2" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+					<select name="eduexname2" style="height:37px;font-size:18px;font-weight:bold;">
  						<option value=""disabled selected>Select Exam</option>
 						<option value="JEE main">JEE Main</option>
 						<option value="MAT">MAT</option>
@@ -53,23 +53,23 @@
 					</select>  
 				</td>
 				<td>
-				<input type="text" placeholder="Roll No" name="edurollno21" style="width:98%;" value="<?php echo isset($_POST["edurollno21"]) ? $_POST["edurollno21"] : ''; ?>">
+				<input type="text" placeholder="Roll No" value="<?php echo isset($_POST["edurollno21"]) ? $_POST["edurollno21"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Rank" name="edurank22" style="width:98%;" value="<?php echo isset($_POST["edurank22"]) ? $_POST["edurank22"] : ''; ?>">
+				<input type="text" placeholder="Rank" name="edurank22" value="<?php echo isset($_POST["edurank22"]) ? $_POST["edurank22"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Score" name="eduscore23" style="width:98%;" value="<?php echo isset($_POST["eduscore23"]) ? $_POST["eduscore23"] : ''; ?>">
+				<input type="text" placeholder="Score" name="eduscore23" value="<?php echo isset($_POST["eduscore23"]) ? $_POST["eduscore23"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="State" name="edustate24" style="width:98%;" value="<?php echo isset($_POST["edustate24"]) ? $_POST["edustate24"] : ''; ?>">
+				<input type="text" placeholder="State" name="edustate24" value="<?php echo isset($_POST["edustate24"]) ? $_POST["edustate24"] : ''; ?>">
 				</td>
 		
 			</tr>
 
 			<tr>
 				<td>
-					<select name="eduexname3" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+					<select name="eduexname3" style="height:37px;font-size:18px;font-weight:bold;">
  						<option value=""disabled selected>Select Exam</option>
 						<option value="JEE main">JEE Main</option>
 						<option value="MAT">MAT</option>
@@ -83,23 +83,23 @@
 					</select>  
 				</td>
 				<td>
-				<input type="text" placeholder="Roll No" name="edurollno31" style="width:98%;" value="<?php echo isset($_POST["edurollno31"]) ? $_POST["edurollno31"] : ''; ?>">
+				<input type="text" placeholder="Roll No" name="edurollno31" value="<?php echo isset($_POST["edurollno31"]) ? $_POST["edurollno31"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Rank" name="edurank32" style="width:98%;" value="<?php echo isset($_POST["edurank32"]) ? $_POST["edurank32"] : ''; ?>">
+				<input type="text" placeholder="Rank" name="edurank32" value="<?php echo isset($_POST["edurank32"]) ? $_POST["edurank32"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Score" name="eduscore33" style="width:98%;" value="<?php echo isset($_POST["eduscore33"]) ? $_POST["eduscore33"] : ''; ?>">
+				<input type="text" placeholder="Score" name="eduscore33" value="<?php echo isset($_POST["eduscore33"]) ? $_POST["eduscore33"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="State" name="edustate34" style="width:98%;" value="<?php echo isset($_POST["edustate34"]) ? $_POST["edustate34"] : ''; ?>">
+				<input type="text" placeholder="State" name="edustate34" value="<?php echo isset($_POST["edustate34"]) ? $_POST["edustate34"] : ''; ?>">
 				</td>
 		
 			</tr>
 
 			<tr>
 				<td>
-					<select name="eduexname4" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+					<select name="eduexname4" style="height:37px;font-size:18px;font-weight:bold;">
  						<option value=""disabled selected>Select Exam</option>
 						<option value="JEE main">JEE Main</option>
 						<option value="MAT">MAT</option>
@@ -113,23 +113,23 @@
 					</select>  
 				</td>
 				<td>
-				<input type="text" placeholder="Roll No" name="edurollno41" style="width:98%;" value="<?php echo isset($_POST["edurollno41"]) ? $_POST["edurollno41"] : ''; ?>">
+				<input type="text" placeholder="Roll No" name="edurollno41" value="<?php echo isset($_POST["edurollno41"]) ? $_POST["edurollno41"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Rank" name="edurank42" style="width:98%;" value="<?php echo isset($_POST["edurank42"]) ? $_POST["edurank42"] : ''; ?>">
+				<input type="text" placeholder="Rank" name="edurank42" value="<?php echo isset($_POST["edurank42"]) ? $_POST["edurank42"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Score" name="eduscore43" style="width:98%;" value="<?php echo isset($_POST["eduscore43"]) ? $_POST["eduscore43"] : ''; ?>">
+				<input type="text" placeholder="Score" name="eduscore43" value="<?php echo isset($_POST["eduscore43"]) ? $_POST["eduscore43"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="State" name="edustate44" style="width:98%;" value="<?php echo isset($_POST["edustate44"]) ? $_POST["edustate44"] : ''; ?>">
+				<input type="text" placeholder="State" name="edustate44" value="<?php echo isset($_POST["edustate44"]) ? $_POST["edustate44"] : ''; ?>">
 				</td>
 		
 			</tr>
 
 			<tr>
 				<td>
-					<select name="eduexname5" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+					<select name="eduexname5" style="height:37px;font-size:18px;font-weight:bold;">
  						<option value=""disabled selected>Select Exam</option>
 						<option value="JEE main">JEE Main</option>
 						<option value="MAT">MAT</option>
@@ -143,77 +143,16 @@
 					</select>  
 				</td>
 				<td>
-				<input type="text" placeholder="Roll No" name="edurollno51" style="width:98%;" value="<?php echo isset($_POST["edurollno51"]) ? $_POST["edurollno51"] : ''; ?>">
+				<input type="text" placeholder="Roll No" name="edurollno51" value="<?php echo isset($_POST["edurollno51"]) ? $_POST["edurollno51"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Rank" name="edurank52" style="width:98%;" value="<?php echo isset($_POST["edurank52"]) ? $_POST["edurank52"] : ''; ?>">
+				<input type="text" placeholder="Rank" name="edurank52" value="<?php echo isset($_POST["edurank52"]) ? $_POST["edurank52"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Score" name="eduscore53" style="width:98%;" value="<?php echo isset($_POST["eduscore53"]) ? $_POST["eduscore53"] : ''; ?>">
+				<input type="text" placeholder="Score" name="eduscore53" value="<?php echo isset($_POST["eduscore53"]) ? $_POST["eduscore53"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="State" name="edustate54" style="width:98%;" value="<?php echo isset($_POST["edustate54"]) ? $_POST["edustate54"] : ''; ?>">
-				</td>
-		
-			</tr>
-
-
-			<tr>
-				<td>
-					<select name="eduexname6" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
- 						<option value=""disabled selected>Select Exam</option>
-						<option value="JEE main">JEE Main</option>
-						<option value="MAT">MAT</option>
-						<option value="CMAT">CMAT</option>
-						<option value="M.Phill">M.Phill</option>
-						<option value="NET">NET</option>
-						<option value="SLET">SLET</option>
-						<option value="GATE">GATE</option>
-						<option value="SET">SET</option>
-						<option value="JRF">JRF</option>
-					</select>  
-				</td>
-				<td>
-				<input type="text" placeholder="Roll No" name="edurollno61" style="width:98%;" value="<?php echo isset($_POST["edurollno61"]) ? $_POST["edurollno61"] : ''; ?>">
-				</td>
-				<td>
-				<input type="text" placeholder="Rank" name="edurank62" style="width:98%;" value="<?php echo isset($_POST["edurank62"]) ? $_POST["edurank62"] : ''; ?>">
-				</td>
-				<td>
-				<input type="text" placeholder="Score" name="eduscore63" style="width:98%;" value="<?php echo isset($_POST["eduscore63"]) ? $_POST["eduscore63"] : ''; ?>">
-				</td>
-				<td>
-				<input type="text" placeholder="State" name="edustate64" style="width:98%;" value="<?php echo isset($_POST["edustate64"]) ? $_POST["edustate64"] : ''; ?>">
-				</td>
-		
-			</tr>
-
-			<tr>
-				<td>
-					<select name="eduexname7" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
- 						<option value=""disabled selected>Select Exam</option>
-						<option value="JEE main">JEE Main</option>
-						<option value="MAT">MAT</option>
-						<option value="CMAT">CMAT</option>
-						<option value="M.Phill">M.Phill</option>
-						<option value="NET">NET</option>
-						<option value="SLET">SLET</option>
-						<option value="GATE">GATE</option>
-						<option value="SET">SET</option>
-						<option value="JRF">JRF</option>
-					</select>  
-				</td>
-				<td>
-				<input type="text" placeholder="Roll No" name="edurollno71" style="width:98%;" value="<?php echo isset($_POST["edurollno71"]) ? $_POST["edurollno71"] : ''; ?>">
-				</td>
-				<td>
-				<input type="text" placeholder="Rank" name="edurank72" style="width:98%;" value="<?php echo isset($_POST["edurank72"]) ? $_POST["edurank72"] : ''; ?>">
-				</td>
-				<td>
-				<input type="text" placeholder="Score" name="eduscore73" style="width:98%;" value="<?php echo isset($_POST["eduscore73"]) ? $_POST["eduscore73"] : ''; ?>">
-				</td>
-				<td>
-				<input type="text" placeholder="State" name="edustate74" style="width:98%;" value="<?php echo isset($_POST["edustate74"]) ? $_POST["edustate74"] : ''; ?>">
+				<input type="text" placeholder="State" name="edustate54" value="<?php echo isset($_POST["edustate54"]) ? $_POST["edustate54"] : ''; ?>">
 				</td>
 		
 			</tr>
@@ -221,7 +160,7 @@
 
 			<tr>
 				<td>
-					<select name="eduexname8" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+					<select name="eduexname6" style="height:37px;font-size:18px;font-weight:bold;">
  						<option value=""disabled selected>Select Exam</option>
 						<option value="JEE main">JEE Main</option>
 						<option value="MAT">MAT</option>
@@ -235,16 +174,77 @@
 					</select>  
 				</td>
 				<td>
-				<input type="text" placeholder="Roll No" name="edurollno81" style="width:98%;" value="<?php echo isset($_POST["edurollno81"]) ? $_POST["edurollno81"] : ''; ?>">
+				<input type="text" placeholder="Roll No" name="edurollno61" value="<?php echo isset($_POST["edurollno61"]) ? $_POST["edurollno61"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Rank" name="edurank82" style="width:98%;" value="<?php echo isset($_POST["edurank82"]) ? $_POST["edurank82"] : ''; ?>">
+				<input type="text" placeholder="Rank" name="edurank62"  value="<?php echo isset($_POST["edurank62"]) ? $_POST["edurank62"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Score" name="eduscore83" style="width:98%;" value="<?php echo isset($_POST["eduscore83"]) ? $_POST["eduscore83"] : ''; ?>">
+				<input type="text" placeholder="Score" name="eduscore63"  value="<?php echo isset($_POST["eduscore63"]) ? $_POST["eduscore63"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="State" name="edustate84" style="width:98%;" value="<?php echo isset($_POST["edustate84"]) ? $_POST["edustate84"] : ''; ?>">
+				<input type="text" placeholder="State" name="edustate64"  value="<?php echo isset($_POST["edustate64"]) ? $_POST["edustate64"] : ''; ?>">
+				</td>
+		
+			</tr>
+
+			<tr>
+				<td>
+					<select name="eduexname7" style="height:37px;font-size:18px;font-weight:bold;">
+ 						<option value=""disabled selected>Select Exam</option>
+						<option value="JEE main">JEE Main</option>
+						<option value="MAT">MAT</option>
+						<option value="CMAT">CMAT</option>
+						<option value="M.Phill">M.Phill</option>
+						<option value="NET">NET</option>
+						<option value="SLET">SLET</option>
+						<option value="GATE">GATE</option>
+						<option value="SET">SET</option>
+						<option value="JRF">JRF</option>
+					</select>  
+				</td>
+				<td>
+				<input type="text" placeholder="Roll No" name="edurollno71"  value="<?php echo isset($_POST["edurollno71"]) ? $_POST["edurollno71"] : ''; ?>">
+				</td>
+				<td>
+				<input type="text" placeholder="Rank" name="edurank72"  value="<?php echo isset($_POST["edurank72"]) ? $_POST["edurank72"] : ''; ?>">
+				</td>
+				<td>
+				<input type="text" placeholder="Score" name="eduscore73"  value="<?php echo isset($_POST["eduscore73"]) ? $_POST["eduscore73"] : ''; ?>">
+				</td>
+				<td>
+				<input type="text" placeholder="State" name="edustate74"  value="<?php echo isset($_POST["edustate74"]) ? $_POST["edustate74"] : ''; ?>">
+				</td>
+		
+			</tr>
+
+
+			<tr>
+				<td>
+					<select name="eduexname8" style="height:37px;font-size:18px;font-weight:bold;">
+ 						<option value=""disabled selected>Select Exam</option>
+						<option value="JEE main">JEE Main</option>
+						<option value="MAT">MAT</option>
+						<option value="CMAT">CMAT</option>
+						<option value="M.Phill">M.Phill</option>
+						<option value="NET">NET</option>
+						<option value="SLET">SLET</option>
+						<option value="GATE">GATE</option>
+						<option value="SET">SET</option>
+						<option value="JRF">JRF</option>
+					</select>  
+				</td>
+				<td>
+				<input type="text" placeholder="Roll No" name="edurollno81"  value="<?php echo isset($_POST["edurollno81"]) ? $_POST["edurollno81"] : ''; ?>">
+				</td>
+				<td>
+				<input type="text" placeholder="Rank" name="edurank82"  value="<?php echo isset($_POST["edurank82"]) ? $_POST["edurank82"] : ''; ?>">
+				</td>
+				<td>
+				<input type="text" placeholder="Score" name="eduscore83"  value="<?php echo isset($_POST["eduscore83"]) ? $_POST["eduscore83"] : ''; ?>">
+				</td>
+				<td>
+				<input type="text" placeholder="State" name="edustate84"  value="<?php echo isset($_POST["edustate84"]) ? $_POST["edustate84"] : ''; ?>">
 				</td>
 		
 			</tr>
@@ -252,7 +252,7 @@
 		
 			<tr>
 				<td>
-					<select name="eduexname9" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
+					<select name="eduexname9" style="height:37px;font-size:18px;font-weight:bold;">
  						<option value=""disabled selected>Select Exam</option>
 						<option value="JEE main">JEE Main</option>
 						<option value="MAT">MAT</option>
@@ -266,16 +266,16 @@
 					</select>  
 				</td>
 				<td>
-				<input type="text" placeholder="Roll No" name="edurollno91" style="width:98%;" value="<?php echo isset($_POST["edurollno91"]) ? $_POST["edurollno91"] : ''; ?>">
+				<input type="text" placeholder="Roll No" name="edurollno91" value="<?php echo isset($_POST["edurollno91"]) ? $_POST["edurollno91"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Rank" name="edurank92" style="width:98%;" value="<?php echo isset($_POST["edurank92"]) ? $_POST["edurank92"] : ''; ?>">
+				<input type="text" placeholder="Rank" name="edurank92"  value="<?php echo isset($_POST["edurank92"]) ? $_POST["edurank92"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="Score" name="eduscore93" style="width:98%;" value="<?php echo isset($_POST["eduscore93"]) ? $_POST["eduscore93"] : ''; ?>">
+				<input type="text" placeholder="Score" name="eduscore93"  value="<?php echo isset($_POST["eduscore93"]) ? $_POST["eduscore93"] : ''; ?>">
 				</td>
 				<td>
-				<input type="text" placeholder="State" name="edustate94" style="width:98%;" value="<?php echo isset($_POST["edustate94"]) ? $_POST["edustate94"] : ''; ?>">
+				<input type="text" placeholder="State" name="edustate94"  value="<?php echo isset($_POST["edustate94"]) ? $_POST["edustate94"] : ''; ?>">
 				</td>
 		
 			</tr>
