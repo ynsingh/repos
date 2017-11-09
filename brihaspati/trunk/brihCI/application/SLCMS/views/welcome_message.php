@@ -138,14 +138,15 @@ echo "</center>"; ?>
 				<td align=left><label>Password</label></br>
         			<input type="password" name="password" size="33%" style="height:33px;" placeholder="********"/></td></tr>
 				<tr>
-				<td>
-        			<button type="submit" style="" id="button"><b>Login</b></button>
+				<td >
+        			<button type="submit" style="width:30%" id="button"><b>Login</b></button>
 		
-				<a href="<?php echo site_url('Student/student_step0');?>" style="" title="Click to open student detail form">
+		<!--		<a href="<?php echo site_url('Student/student_step0');?>" style="" title="Click to open student detail form">
 				<input type="button" value="New Student" style="font-size:17px;width:58%;"></a></td></tr>
 			<tr>
-               			 <td><a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="" title="Forgot Password">
-                		<input type="button" value="Forgot Password" style="font-size:17px;width:100%;"></a></td>
+               			 <td> -->
+				<a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="" title="Forgot Password">
+                		<input type="button" value="Forgot Password" style="font-size:17px;width:60%"></a></td>
 			</tr>
 				
 			</table>

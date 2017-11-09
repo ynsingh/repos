@@ -149,7 +149,7 @@ ul li{text-align:justify;}
                  <!--<form action="<?php echo site_url('Enterence/step_zero'); ?>" method="POST" >-->
        		 
        		 <a href="<?php echo site_url('enterence/step_zero/'.$prg_id);?>" style="text-decoration:none;">
-			 <input type="button" value="Apply Now" name="login" style="font-size:20px;margin-left:0px;">
+			 <input type="button" value="Registration" name="login" style="font-size:20px;margin-left:0px;">
 			</a>
        		 <input type="hidden" name="passprgname" value="<?php echo $prg_id;?>">
         <!-- <input type="button" value="close" style="font-size:20px;margin-left:0px;">--->
