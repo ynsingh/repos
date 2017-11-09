@@ -20,15 +20,15 @@
         echo "</tr>";
         echo "</table>";
         ?>--!>
-
-      <table width= "100%" style="margin-left:2%;">
+      <center>
+      <table width= "70%">
             <tr><td>
                 <div align="left">
                 <?php  echo anchor('setup2/adddegreerules/', "Add Degree Rules", array('title' => 'Add Degree Rule Detail','class' =>'top_parent'));
                 ?>
                    <?php
                    $help_uri = site_url()."/help/helpdoc#ViewDegreeRule";
-                   echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+                   echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                  ?>
                   </div>
                 <div  style="width:90%;margin-left:2%">
@@ -45,12 +45,12 @@
                 ?>
               </div>
              </td></tr>
-       </table>
+       </table></center>
 
 <table>
 <tr>
 <div align="left" style="margin-left:2%;">
-<table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+<table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Programme</th><th>Branch</th><th>Min Credit</th><th>Min Subject Credit</th><th>Min thesis Credit</th><th>Min Subjects</th><th>Minimum Semester</th><th>Min CPI</th><th>Max Credit</th><th>Maximum semesters</th><th>Action</th></tr></thead>
 

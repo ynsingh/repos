@@ -26,7 +26,7 @@
                     echo "</table>";
                     ?>
 
-	    <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
+	    <table cellpadding="16" class="TFtable" >
             <thead>
                 <tr align="center">
                 <th>Faculty Name</th>

@@ -20,15 +20,15 @@
         echo "</tr>";
         echo "</table>";
         ?>--!>
-
-      <table width="100%"  style="margin-left:2%;">
+      <center>
+      <table width="70%">
             <tr><td>
                 <div align="left">
 		<?php  echo anchor('setup2/addsemrule/', "Add Semester Rule", array('title' => 'Add Semseter Rule','class' =>'top_parent'));
 		?>
                  <?php
                  $help_uri = site_url()."/help/helpdoc#ViewSemesterRule";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73.5%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                  ?>
                 <div  style="width:90%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -45,12 +45,12 @@
               </div>
           </div>   
              </td></tr>
-       </table>
+       </table></center>
 
 <table>
 <tr>
 <div align="left" style="margin-left:2%;">
-<table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+<table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Program Name</th><th>Branch</th><th>Semester</th><th>Minimum Credit</th><th>Maximum Credit</th><th>Semester CPI</th><th>Action</th></tr></thead>
 

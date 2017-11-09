@@ -10,15 +10,15 @@
    	 <?php $this->load->view('template/menu');?>
 </head>
 <body>
-
-	<table width="100%"  style="margin-left:2%;">
+<center>
+	<table width="70%">
             <tr><td>
                 <div align="left">
                 <?php  echo anchor('enterence/addadmissionopen/', "Add Admission Open", array('title' => 'Add Admission Open','class' =>'top_parent'));
                 ?>
                  <?php
                  $help_uri = site_url()."/help/helpdoc#viewadmissionopen";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73.5%\">Click for Help</b></a>";
+                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                  ?>
                 <div  style="width:90%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -35,11 +35,11 @@
               </div>
           </div>
              </td></tr>
-       </table>
+       </table></center>
 <table>
 <tr>
 <div align="left" style="margin-left:2%;">
-<table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+<table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Academic Year</th><th>Program Category</th><th>Program Name </th><th>Entrance Exam Fees </th> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th><th>Entrance Exam Date</th><th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th><th>Action</th></tr></thead>
 <?php

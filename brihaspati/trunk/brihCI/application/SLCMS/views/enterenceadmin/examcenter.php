@@ -11,12 +11,13 @@
     <?php $this->load->view('template/menu');?>
   </head>
  <body>
-<table width= "90%" style="margin-left:1%;">
+<center>
+<table width= "70%">
             <tr><td>
-                <div align="left">
+                <div>
                 <?php  echo anchor('enterenceadmin/addexamcenter/', "Add  Exam Center", array('title' => 'Add   Exam Center  Detail','class' =>'top_parent'));
                  //$help_uri = site_url()."/help/helpdoc#ViewExamtype";
-                 //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
+                 //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                 ?>
                   </div>
                 <div  style="width:90%;margin-left:2%">
@@ -33,12 +34,12 @@
                 ?>
               </div>
              </td></tr>
-       </table>
+       </table></center>
 
 <table>
 <tr>
 <div align="left" style="margin-left:2%;">
-<table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+<table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Entrance Exam Center Code</th><th>Entrance Exam Center Name</th><th>Entrance Exam Center Address</th><th>Entrance Exam Center State</th><th>Entrance Exam Center City</th><th>Entrance Exam Center Incharge</th><th>Entrance Exam Center Number of Room</th><th>Entrance Exam Center Capacity in Room</th><th>Entrance Exam Center Total Capacity</th><th>Entrance Exam Center Contact No</th><th>Entrance Exam Center Contact Email</th><th>Action</th></tr></thead>
  <?php

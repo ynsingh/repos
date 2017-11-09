@@ -32,12 +32,13 @@
             echo "</table>";
         ?>-->
         <!-- </br>   --> 
-        <table style="margin-left:2%;width:100%;"> 
+        <center>
+        <table width=70%;"> 
            
             <tr><td> 
                  <?php echo anchor('map/mapsubpre/', "Map Subject with Prerequisite", array('title' => 'Add Detail' , 'class' => 'top_parent'));
 		 $help_uri = site_url()."/help/helpdoc#ViewMapSubjectandPaperwithPrerequisite";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:50%\">Click for Help</b></a>";
 		 ?>
                 <div  style="margin-left:2%;width:90%;">
   
@@ -58,10 +59,10 @@
     
             </div>
         </td></tr>  
-        </table>  
+        </table></center>  
         <br/>
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" style="margin-left:2%;" class="TFtable">
+            <table cellpadding="16" class="TFtable">
             <thead >
             <tr align="center">
                 <th>Sr.No</th>

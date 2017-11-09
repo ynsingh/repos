@@ -11,13 +11,14 @@
       <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
     </head>
     <body>
-   <table style="padding: 8px 8px 8px 20px;width:100%;">
+    <center>
+   <table width="70%;">
      <tr><td>
       <div align="left">
          <?php
             echo anchor('map/subjectteacher/', 'Map Subject and Paper With Teacher', array('class' => 'top_parent'));
 	    $help_uri = site_url()."/help/helpdoc#ViewMapSubjectandPaperwithTeacher";
-            echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
+            echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:46%\">Click for Help</b></a>";
             ?>
         </div>
        </div>
@@ -38,10 +39,10 @@
 	?>
 </div>
 </td></tr>
-</table>
+</table></center>
 
 <div align="left">
-	<table cellpadding="11" style="margin-left:2%;" class="TFtable">
+	<table cellpadding="11"  class="TFtable">
 	<thead >
 		<tr align="center">
 		<th>Sr.No</th>

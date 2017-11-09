@@ -20,15 +20,15 @@
         echo "</tr>";
         echo "</table>";
         ?>--!>
-
-      <table width="100%" style="margin-left:2%;">
+      <center>
+      <table width="70%">
             <tr><td>
                 <div align="left">
 		<?php  echo anchor('setup2/addgrade/', "Add Grade", array('title' => 'Add Grade Detail','class' =>'top_parent'));
 		?>
                  <?php
                  $help_uri = site_url()."/help/helpdoc#ViewGrade";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                  ?>
                 <div  style="width:90%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -44,12 +44,12 @@
                ?>
               </div>
              </td></tr>
-       </table>
+       </table></center>
 
 <table>
 <tr>
 <div align="left" style="margin-left:2%;">
-<table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+<table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Grade Name</th><th>Grade Point</th><th>Grade Short</th><th>Grade Description</th><th>Action</th></tr></thead>
 

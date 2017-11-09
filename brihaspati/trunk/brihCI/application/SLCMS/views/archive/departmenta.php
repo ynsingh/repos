@@ -11,6 +11,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
+    <center>  
         <table style="padding: 8px 8px 8px 20px;width:100%;">
            <tr><td>
             <div  style="margin-left:2%;width:90%;">
@@ -30,9 +31,9 @@
 
  </div>
  </td></tr>
- </table>
+ </table></center>
  <div align="left">
-        <table cellpadding="11" style="margin-left:2%;" class="TFtable" >
+        <table cellpadding="11" class="TFtable" >
             <thead>
                 <tr align="center">
                 <th>University Name</th>

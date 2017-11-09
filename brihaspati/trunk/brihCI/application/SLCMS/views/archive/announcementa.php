@@ -11,7 +11,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-
+    </center>
                    <!--?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
@@ -43,8 +43,8 @@
                 ?>
  </div>
  </td></tr>
-        </table>
-        <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
+        </table></center>
+        <table cellpadding="16" class="TFtable" >
             <thead>
                 <tr align="center">
 <thead><th>Sr.No</th><th>Announcement ID</th><th>Announcement Component Name</th><th>Announcement Type</th><th>Announcement Title</th><th>Announcement Description</th><th>Announcement Publish Date</th><th>Announcement Expiry Date</th><th>Announcement Remark</th><th>Announcement Archive Name</th><th>Announcement Archive Date</th></tr></thead>

@@ -11,7 +11,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-
+    <center>
                    <!--?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
@@ -43,8 +43,8 @@
                 ?>
  </div>
             </td></tr>
-        </table>
-        <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
+        </table></center>
+        <table cellpadding="16" class="TFtable" >
             <thead>
                 <tr align="center">
 <thead><th>Sr.No</th><th>Entrance Exam Center ID</th><th>Entrance Exam Center Code</th><th>Entrance Exam Center Name</th><th>Entrance Exam Center Address</th><th>Entrance Exam Center State</th><th>Entrance Exam Center City</th><th>Entrance Exam Center Incharge</th><th>Entrance Exam Center Number of Room</th><th>Entrance Exam Center Capacity in Room</th><th>Entrance Exam Center Total Capacity</th><th>Entrance Exam Center Contact No</th><th>Entrance Exam Center Contact Email</th><th>Entrance Exam Center Archive Name</th><th>Entrance Exam Center Archive Date</th></tr></thead><tbody>

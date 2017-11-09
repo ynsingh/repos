@@ -20,13 +20,13 @@
         echo "</tr>";
         echo "</table>";
         ?>--!>
-
-      <table width= "90%" style="margin-left:1%;">
+      <center>
+      <table width= "70%">
             <tr><td>
                 <div align="left">
                 <?php  echo anchor('setup2/addexamtype/', "Add  Exam Type", array('title' => 'Add   Exam Type  Detail','class' =>'top_parent'));
 		 $help_uri = site_url()."/help/helpdoc#ViewExamtype";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
+                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                 ?>
                   </div>
                 <div  style="width:90%;margin-left:2%">
@@ -43,12 +43,12 @@
                 ?>
               </div>
              </td></tr>
-       </table>
+       </table></center>
 
 <table>
 <tr>
 <div align="left" style="margin-left:2%;">
-<table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+<table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Exam Type </th><th>Description</th><th>Action</th></tr></thead>
  <?php

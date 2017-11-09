@@ -35,13 +35,14 @@
             echo "</tr>";
             echo "</table>";
         ?>-->
-        <!-- </br>   --> 
-        <table style="margin-left:2%;width:100%;"> 
+        <!-- </br>   -->
+        <center> 
+        <table width="70%;"> 
            
             <tr><td> 
                  <?php echo anchor('map/mapsubsem/', "Map Subject Semester Program Department ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
 		 $help_uri = site_url()."/help/helpdoc#ViewMapSubjectandSemester";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:60%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:44%\">Click for Help</b></a>";
 		 ?>
                 <div>
   
@@ -62,10 +63,10 @@
     
             </div>
         </td></tr>  
-        </table>  
+        </table></center>  
         <br/>
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" style="margin-left:2%;" class="TFtable">
+            <table cellpadding="16" class="TFtable">
             <thead >
             <tr align="center">
                 <th>Sr.No</th>

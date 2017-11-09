@@ -10,13 +10,13 @@
     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
     <?php $this->load->view('template/menu');?>
   </head>
- <body>
-<table width= "90%" style="margin-left:1%;">
+ <body><center>
+<table width= "70%">
             <tr><td>
                 <div align="left">
                 <?php  echo anchor('announcement/addannouncement/', "Add Announcement", array('title' => 'Add Announcement Detail','class' =>'top_parent'));
                  //$help_uri = site_url()."/help/helpdoc#ViewExamtype";
-                 //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
+                 //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                 ?>
                   </div>
                 <div  style="width:90%;margin-left:2%">
@@ -33,11 +33,11 @@
                 ?>
               </div>
              </td></tr>
-       </table>
+       </table></center>
 <table>
 <tr>
 <div align="left" style="margin-left:2%;">
-<table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+<table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Announcement Component Name</th><th>Announcement Type</th><th>Announcement Title</th><th>Announcement Description</th><th>Announcement Publish Date</th><th>Announcement Expiry Date</th><th>Announcement Remark</th><th>Action</th></tr></thead>
 <?php

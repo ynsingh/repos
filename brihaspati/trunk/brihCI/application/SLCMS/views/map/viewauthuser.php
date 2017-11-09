@@ -20,12 +20,13 @@
        </style>
     </head>
     <body>
-         <table style="margin-left:1%;width:100%">
+    <center>
+         <table width=70%">
           <tr><td>
                 <?php  echo anchor('map/authusertype/', "Map Add Authority ", array('title' => 'Add Detail', 'class' =>'top_parent'));?>
                 <?php
                  $help_uri = site_url()."/help/helpdoc#Authority";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                  ?>
     
                 <div  style="margin-left:2%; width:90%;" >
@@ -42,9 +43,9 @@
                 ?>
                 </div>
            </td></tr>
-        </table>
+        </table></center>
         <br/>
-            <table cellpadding="16" style="margin-left:2%;" class="TFtable">
+            <table cellpadding="16" class="TFtable">
             <thead >
             <tr align="center">
                 <th>Sr.No</th>
