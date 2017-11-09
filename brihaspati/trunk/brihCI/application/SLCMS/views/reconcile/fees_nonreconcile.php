@@ -28,19 +28,21 @@ echo "<div>";
 echo "</center>";
 ?>
 </br></br>
-<table width="27%;" style="float:left;">
-	<tr><td style=""><a href="<?php echo site_url('reconcile/fees_reconcile');?>" style="font-weight:bold; margin-left:50px;">Reconcile Fees</td>
-	    <td style=""><a href="<?php echo site_url('reconcile/fees_reconcile_complete');?>" style="font-weight:bold; margin-left:50px;">All Fees</td>
-	<td style=""><a href="<?php echo site_url('reconcile/fees_nonreconcile');?>" style="font-weight:bold; margin-left:50px;" > Non Reconcile Fees</td>
-	</tr>
+<center>
+<table width="70%;" style="" >
+	<tr><td style=""><a href="<?php echo site_url('reconcile/fees_nonreconcile');?>" style="font-weight:bold; margin-left:0px;"> Non Reconcile Fees
+		<a href="<?php echo site_url('reconcile/fees_reconcile_complete');?>" style="font-weight:bold; margin-left:4%;" id="allf">All Fees
+		<a href="<?php echo site_url('reconcile/fees_reconcile');?>" style="font-weight:bold; margin-left:5%;" id="reconcile">Reconcile Fees
+	</td>
+       	</tr>
 </table>
 
-<center>   
-</br></br></br></br>
-<table style="width:96.3%;">
+   
+</br>
+<table style="width:70%;border:2px solid #a8a8a8;">
 <thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;"><tr><th>Non Reconcile Fees Detail</th></tr></thead>
 </table>
-   <table class="TFtable">
+   <table class="TFtable" style="background-color:#38B0DE;border:2px solid #a8a8a8;">
 	<thead >
 	<tr>
 <th>Sr. No.</th>

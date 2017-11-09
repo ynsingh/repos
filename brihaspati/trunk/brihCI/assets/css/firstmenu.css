@@ -46,8 +46,8 @@
     width: calc( 100% - 10px );
 
     font-size:140%;font-family: Times New Roman, Times, serif;
-   /* background-color: hsla(0, 0%, 83%, 1);*/
-     background-color:#067eb7;
+   /* background-color: hsla(0, 0%, 83%, 1);
+     background-color:#067eb7;*/
     text-align: left;
    font-weight:bold;height:50px;
 }
@@ -70,11 +70,14 @@
 
 .breadcrumb li:first-child a {
     padding-left: 15px;
+    border-top-left-radius: 0.3em;
+    border-bottom-left-radius: 0.3em;	
 }
 
 .breadcrumb li:last-of-type a {
     width: calc( 100% - 8px );
 }
+
 
 .breadcrumb li a:before {
     content: " ";
@@ -116,7 +119,6 @@
    		position: relative;
     		display: inline-block;
     		width: calc( 100% - 10px );
-
     		font-size:130%;font-family: Times New Roman, Times, serif;
    		/* background-color: hsla(0, 0%, 83%, 1);*/
 		background-color:#067eb7;

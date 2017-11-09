@@ -30,14 +30,18 @@ echo "<div>";
 
 echo "</center>";
 ?>
+</br></br>
 <center>   
-<h1>Search Center Wise / Program Wise Roll Number </h1>
+<table style="width:50%;">
+	<tr><td></td></tr>
+</table>
 	<form action="<?php echo site_url('enterenceadmin/search_rollnumber'); ?>" method="POST">
-		<table style="width:50%;" border=0>
+		<table style="width:70%;" border=0>
 		<tr>
+			<td><h2>Search Center Wise / Program Wise Roll Number </h2></td>
 			<td style="height:35px;font-size:18px;"></td>
 			<td align=right>
-			<label for="nnumber"></label></br>
+			
 			<select name="ronoexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Select Entrance Exam Center</option>
@@ -50,7 +54,7 @@ echo "</center>";
 			</select>
 			</td>
 			<td align=left>
-			<label for="nnumber"></label></br>
+			
 			<select name="ronoprg" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Select Program</option>
@@ -59,7 +63,7 @@ echo "</center>";
 				<?php endforeach; ?>
 			</select>
 			</td>
-			<td align=left><label for="nnumber" style="visibility:hidden;">Enterence Exam Center</label></br>
+			<td align=left>
 			<input type="submit" name="searchsticker" value="Submit" style="height:35px;font-size:18px;"></td>
 		</tr>
 		

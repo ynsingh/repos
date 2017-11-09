@@ -396,7 +396,7 @@ class Enterenceadmin extends CI_Controller
 
         public function generatehallticket(){
 
-                $data=array('ca_hallticketstatus' => NULL , 'ca_centername !=' => NULL);
+                $data=array('ca_hallticketstatus' => NULL , 'ca_centername !=' => NULL,'ca_rollno !=' => NULL);
                 $stud_master = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid,ca_rollno',$data);
 		$year=date('Y');
 			
@@ -412,7 +412,7 @@ class Enterenceadmin extends CI_Controller
                         if(is_dir($desired_dir)==false){
                               mkdir("$desired_dir", 0700);
                         }
-
+		if(!empty($centerlist)){
                 foreach($stud_master as $row){
 			$asmid=$row->ca_asmid;
 			$data['asmid'] = $asmid;
@@ -464,8 +464,13 @@ class Enterenceadmin extends CI_Controller
                     	$this->logger->write_dblogmessage("update", "Hall ticket status update yes in admissionstudent_centerallocation" );
 			
         }
-	 echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Hall Ticket Successfully Generated.</h3>';
-	 redirect('enterenceadmin/viewhallticket');
+	
+	 	echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Hall Ticket Successfully Generated for whom roll no. generated.</h3>';
+	 	redirect('enterenceadmin/viewhallticket');
+	}else{
+		echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Hall Ticket is not Generated because roll no is not generated.So first click on the roll no generation.</h3>';
+	 	redirect('enterenceadmin/viewhallticket');
+	}
 
  }
 

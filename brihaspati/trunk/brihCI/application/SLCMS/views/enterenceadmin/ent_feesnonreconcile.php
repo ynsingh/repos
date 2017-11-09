@@ -32,9 +32,9 @@ echo "</center>";
 
 <center>  
 <table width="70%;" style="margin-left:-5%;font-size:18px;">
-	<tr><td style=""><a href="<?php echo site_url('enterenceadmin/viewentfeereconcile');?>" style="; margin-left:50px;">Entrance Admission Reconcile Fees
-		<a href="<?php echo site_url('enterenceadmin/viewentfeereconcile_complete');?>" style=" margin-left:50px;">All Entrance Admission Reconcile Fees
-		<a href="<?php echo site_url('enterenceadmin/fees_nonreconcile');?>" style=" margin-left:50px;" > Entrance Admission Non Reconcile Non
+	<tr><td style=""><a href="<?php echo site_url('enterenceadmin/viewentfeereconcile');?>" style="; margin-left:5%;">Entrance Admission Reconcile Fees
+		<a href="<?php echo site_url('enterenceadmin/viewentfeereconcile_complete');?>" style=" margin-left:5%;">All Entrance Admission Reconcile Fees
+		<a href="<?php echo site_url('enterenceadmin/fees_nonreconcile');?>" style=" margin-left:5%;" > Entrance Admission Non Reconcile Non
 	</td>
 	<td style=""></td>
 	<td style=""></td>
