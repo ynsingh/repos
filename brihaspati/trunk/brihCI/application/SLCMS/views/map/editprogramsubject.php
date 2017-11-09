@@ -205,13 +205,13 @@ echo "<body>";
     echo "<tr><td>";
     echo"<td>";
     echo form_submit('submit', 'Update');
+    echo form_close();
     echo "<button onclick=\"goBack()\" >Back</button>";
     //echo form_reset('reset','Clear');
    // echo form_button('submit', 'Submit');
     echo"</td></tr>";
     echo "</p>";
     echo"</td>";
-    echo form_close();
     echo "</table>";
 /* Form */
     echo"</body>";

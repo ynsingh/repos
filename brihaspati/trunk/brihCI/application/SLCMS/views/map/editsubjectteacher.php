@@ -102,11 +102,11 @@
 	  <tr><td></td>
 	   <td>
 		<button name "submit" >Update</button>
+		<?php echo form_hidden( 'pstp_id', $pstp_id );?>
+	</form>
 		<?php echo "<button onclick=\"goBack()\" >Back</button>";?>
 	   </td>	
 	  </tr>
-		<?php echo form_hidden( 'pstp_id', $pstp_id );?>
-	</form>
 	
      </table>
    </body>

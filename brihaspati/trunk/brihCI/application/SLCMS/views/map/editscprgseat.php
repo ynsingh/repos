@@ -129,13 +129,13 @@
                <td></td>
                 <td colspan="2">   
                 <button name="editscprgseat" >Update</button>
+            <?php echo form_hidden('id', $id);?>
+        </form>
        		<?php echo "<button onclick=\"goBack()\" >Back</button>";?>
                 <//?php echo anchor('map/viewscprgseat', 'Back', 'Back to ViewPage');?>
                 </td>
                
             </tr>
-            <?php echo form_hidden('id', $id);?>
-        </form>
       </table>
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>

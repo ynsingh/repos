@@ -1092,12 +1092,18 @@ class Setup extends CI_Controller
            'value' => $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$dept_data->dept_sccode)->sc_name,
 	    'readonly' => 'readonly'
         );
+		if(!empty($dept_data->dept_uoid)){
+			$auth =$this->login_model->get_listspfic1('authorities','name','id',$dept_data->dept_uoid)-> name;
+		}
+		else{
+			$auth = "";
+		}
          $data['authorities'] = array(
             'name' => 'authorities',
             'id' => 'authorities',
             'maxlength' => '50',
             'size' => '40',
-            'value' => $this->login_model->get_listspfic1('authorities','name','id',$dept_data->dept_uoid)-> name,
+            'value' => $auth,
           'readonly' => 'readonly'
         );
         $data['deptschoolcode'] = array(

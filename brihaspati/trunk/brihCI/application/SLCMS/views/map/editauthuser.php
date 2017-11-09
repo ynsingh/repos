@@ -120,11 +120,11 @@ $("#StartDate").datepicker("option","maxDate", selected)
                <td></td>
                 <td colspan="2">
                 <button name="editauthuser" >Update</button>
+            <?php echo form_hidden('id', $id);?>
+        </form>
                  <?php echo "<button onclick=\"goBack()\" >Back</button>";?>
                 </td>
             </tr>
-            <?php echo form_hidden('id', $id);?>
-        </form>
         </table>
     </body>
     <div align="center"><?php $this->load->view('template/footer');?></div>

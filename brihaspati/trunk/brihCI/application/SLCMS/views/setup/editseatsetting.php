@@ -117,10 +117,10 @@
 		echo "<input id=\"totseat\" type =\"hidden\" value=$this->totalseat >";
                 echo form_hidden('id', $id);
                 echo form_submit('submit', 'Update');
+		echo form_close();
 		echo "<button onclick =\"goBack()\">Back</button>";
 		echo "</td>";
 		echo "</tr>";
-		echo form_close();
         ?>
         </table>   
     </body>
