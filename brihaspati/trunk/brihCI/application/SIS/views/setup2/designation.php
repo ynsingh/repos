@@ -53,6 +53,9 @@
 <thead>
                 <th>Sr.No</th>
 		<th> Designation Code</th>
+                <th> Designation Type</th>
+		<th> Designation Sub Type</th>
+		<th> Designation Payscale</th>
                 <th> Designation Name</th>
                 <th> Designation Group </th>  
                 <th> Designation Short</th>
@@ -67,11 +70,15 @@
              <tr align="center">
             <td> <?php echo ++$count; ?> </td>
             <td> <?php echo $row->desig_code  ?></td>
-            <td> <?php echo $row-> desig_name ?></td>
-            <td> <?php echo $row-> desig_group ?></td>
+            <td> <?php echo $row->desig_type  ?></td>
+            <td> <?php echo $row->desig_subtype  ?></td>
+            <td> <?php echo $row->desig_payscale ?></td>
+            <td> <?php echo $row->desig_name ?></td>
+            <td> <?php echo $row->desig_group ?></td>
             <td> <?php echo $row->desig_short  ?></td>
             <td> <?php echo $row->desig_desc ?></td>
             <td>
+            
         <?php
               //  if($row->dr_id > 6){
 //                        echo anchor('setup2/deletedesignation/' . $row-> desig_id  , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";

@@ -15,6 +15,7 @@ class Setup2 extends CI_Controller
 	$this->load->model('common_model','commodel'); 
 	$this->load->model('dependrop_model','depmodel'); 
         $this->load->model('login_model','logmodel');
+	$this->load->model('SIS_model',"sismodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');

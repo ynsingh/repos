@@ -8,6 +8,41 @@
         <?php $this->load->view('template/header'); ?>
             <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
+            <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+
+<script>
+         $(document).ready(function(){
+         $('#tnt').on('change',function(){
+                var worktype = $(this).val();
+                //alert(worktype);
+                if(worktype == ''){
+                    $('#grouppost').prop('disabled',true);
+                   
+                }
+                else{
+                    $('#grouppost').prop('disabled',false);
+                    $.ajax({
+                        url: "<?php echo base_url();?>slcmsindex.php/setup2/getworkingtype",
+                        type: "POST",
+                        data: {"groupp" : worktype},
+                        dataType:"html",
+                        success:function(data){
+                            //alert("data==1="+data);
+                            $('#grouppost').html(data.replace(/^"|"$/g, ''));
+                                                 
+                        },
+                        error:function(data){
+                            alert("data in error==="+data);
+                            alert("error occur..!!");
+                 
+                        }
+                    });
+                }
+            }); 
+        });
+</script>
+
     </head>
     <body>
  <script>
@@ -61,7 +96,57 @@
                 echo "Example: 10, 8,6 etc ";
                 echo "</td>";
                 echo "</tr>";
-                
+
+                echo "<tr>";
+                echo "<td>";
+                echo form_label('Designation Type', '$desig_type');
+                echo "</td>";
+               echo "<td>";
+                    echo "<select name=\"tnt\"id=\"tnt\" class=\"my_dropdown\" style=\"width:100%;\">";
+                    echo "<option value=\"$desig_type[value]\" >$desig_type[value]</option>";
+                    echo "<option value=\"disabled selected\">------Select Type------</option>";
+                    echo "<option value=\"Teaching\" class=\"dropdown-item\">Teaching</option>";
+                    echo "<option value=\"Non Teaching\" class=\"dropdown-item\">Non Teaching</option>";
+                    echo "</select>";
+                echo "</td>";
+                 echo"<td>";
+                  echo "Example: ";
+                echo "</td>";
+                echo "</tr>";
+
+                echo "<tr>";
+                echo "<td>";
+                echo form_label('Designation Sub Type', '$desig_subtype');
+                echo "</td>";
+                echo "<td>";
+                $desigsubtype=$desig_subtype['value'];
+                    echo "<select name=\"grouppost\"id=\"grouppost\" class=\"my_dropdown\" style=\"width:100%;\">";
+                    echo "<option value=$desigsubtype class=\"dropdown-item\">$desigsubtype</option>";
+                    echo "<option value=\"disabled selected\">------Select Sub Type------</option>";
+                    echo "</select>";
+                    echo "</td>";
+                    echo"<td>";
+                    echo "Example: ";
+                    echo "</td>";
+                    echo "</tr>";
+               ?>
+               <?php
+
+	        echo "<tr>";
+                echo "<td>Designation Payscale</td>";
+                echo "<td><select name=\"desig_payscale\" class=\"my_dropdown\" style=\"width:100%;\">";
+ ?>
+                <?php foreach($this->payresult as $datas): ?>
+              
+                   <option value="<?php echo $desig_payscale['value']; $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>"<?php echo set_select('desig_payscale', $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay);?>><?php echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>
+                          </option>
+                  <?php endforeach; ?>
+                </select></td>
+                <td><?php echo form_error('desig_payscale')?></td>
+               </td>
+               </tr>
+        
+              <?php                
                 echo "<tr>";
                 echo "<td>";
                 echo form_label('Designation Name', 'desig_name');
@@ -73,15 +158,13 @@
                 echo "Example: Faculty, Administrator, etc ";
                 echo "</td>";
                 echo "</tr>";
-
-
-                 
+              
                 echo "<tr>";
                 echo "<td>";
                 echo form_label('Designation Group', 'desig_group');
                 echo "</td>";
                echo "<td>";
-                $des=$desig_group['value'];
+               $des=$desig_group['value'];
                     echo "<select name=\"desig_group\"class=\"my_dropdown\" style=\"width:100%;\">";
                     echo "<option value=$des class=\"dropdown-item\">$des</option>";
                     echo "<option value=\"disabled selected\">------Select Group------</option>";
@@ -95,9 +178,6 @@
                   echo "Example: A, B, C, D etc ";
                 echo "</td>";
                 echo "</tr>";
-
-
-
 
                 echo "<tr>";
                 echo "<td>";

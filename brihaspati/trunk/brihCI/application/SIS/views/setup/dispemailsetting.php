@@ -89,8 +89,7 @@
                             <td><?php echo $row->emailhost; ?></td>
                             <td><?php echo $row->emailport; ?></td>
                             <td><?php echo $row->username; ?></td>
-                            <td><?php echo $row->password; ?></td>
-                         
+			    <td><?php echo "xxxxxxxxx"; ?></td>
                             <td><?php echo $row->sendername ; ?></td>
                             <td><?php echo $row->senderemail ; ?></td>
                             <td><?php echo $row->modulename ; ?></td>
