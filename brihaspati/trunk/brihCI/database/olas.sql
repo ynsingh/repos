@@ -632,9 +632,12 @@ ALTER TABLE `Department_archive`
 
 CREATE TABLE `designation` (
   `desig_id` int(11) NOT NULL,
+  `desig_type` varchar(255)  NULL,
+  `desig_subtype` varchar(255)  NULL,
   `desig_name` varchar(255) NOT NULL,
   `desig_code` varchar(255) NOT NULL,
   `desig_short` varchar(255) NOT NULL,
+  `desig_payscale` varchar(255)  NULL,
   `desig_group`varchar(5) NOT NULL,
   `desig_desc` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

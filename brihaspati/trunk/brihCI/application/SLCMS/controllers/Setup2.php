@@ -16,6 +16,8 @@ class Setup2 extends CI_Controller
 	$this->load->model('common_model','commodel'); 
 	$this->load->model('dependrop_model','depmodel'); 
         $this->load->model('login_model','logmodel');
+	$this->load->model('login_model','logmodel');
+	$this->load->model('SIS_model',"sismodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -863,21 +865,28 @@ class Setup2 extends CI_Controller
      * @return type
      */                 
 
-    public function adddesignation()
-    {
+    public function adddesignation(){
+	$this->payresult=$this->sismodel->get_list('salary_grade_master');
+    
          if(isset($_POST['adddesignation'])) {
-                 $this->form_validation->set_rules('desig_name','Designation Name','trim|xss_clean|required|alpha_numeric_spaces|callback_isnameExist');
-                 $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|required');
+                 $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|callback_isCodeExist');
+		 $this->form_validation->set_rules('tnt','Designation Type','trim|xss_clean|required');
+                 $this->form_validation->set_rules('grouppost','Designation Subtype','trim|xss_clean|required');
+                 $this->form_validation->set_rules('desig_payscale','Designation Payscale','trim|xss_clean|required');
+                 $this->form_validation->set_rules('desig_name','Designation Name','trim|xss_clean|required|alpha_numeric_spaces');
                  $this->form_validation->set_rules('desig_group','Designation Group','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_short','Designation Short','trim|xss_clean|required');
                  $this->form_validation->set_rules('desig_desc','Designation Description','trim|xss_clean');
                  if($this->form_validation->run()==TRUE){
                  //echo 'form-validated';
                         $data = array(
+                                'desig_code'=>$_POST['desig_code'],
+				'desig_type'=>$_POST['tnt'],
+				'desig_subtype'=>$_POST['grouppost'],
+				'desig_payscale'=>$_POST['desig_payscale'],
                                 'desig_name'=>ucfirst(strtolower($_POST['desig_name'])),
-                                'desig_code'=>strtoupper($_POST['desig_code']),
-                                'desig_group'=>strtoupper($_POST['desig_group']),
-                                'desig_short'=>strtoupper($_POST['desig_short']),
+                                'desig_group'=>$_POST['desig_group'],
+                                'desig_short'=>$_POST['desig_short'],
                                 'desig_desc'=>$_POST['desig_desc'],
                            );
                            $rflag=$this->commodel->insertrec('designation', $data);
@@ -900,21 +909,24 @@ class Setup2 extends CI_Controller
         $this->load->view('setup2/adddesignation');
     }
 
-   /** This function check for duplicate designation
+/** This function check for duplicate designation
      * @return type
-     */
-    public function isnameExist($desig_name) {
-        $is_exist = $this->commodel->isduplicate('designation','desig_name',$desig_name);
+    */
+
+    public function isCodeExist($desig_code) {
+
+        $is_exist = $this->commodel->isduplicate('designation','desig_code',$desig_code);
         if ($is_exist)
         {
-            $this->form_validation->set_message('isnameExist', 'Designation is already exist.');
+            $this->form_validation->set_message('isCodeExist', 'Code is already exist.');
             return false;
         }
         else {
             return true;
         }
     }
-    /**This function Delete the designation records
+
+   /**This function Delete the designation records
      * @param type $id
      * @return type
      */
@@ -948,6 +960,7 @@ class Setup2 extends CI_Controller
      * @return type
      */
     public function editdesignation($desig_id) {
+         $this->payresult=$this->sismodel->get_list('salary_grade_master'); 
         $desig_data_q=$this->commodel->get_listrow('designation','desig_id', $desig_id);
         if ($desig_data_q->num_rows() < 1)
         {
@@ -966,14 +979,36 @@ class Setup2 extends CI_Controller
                 'readonly' => 'readonly'
 
                 );
+         $data['desig_type'] = array(
+                'name' => 'desig_type',
+                'id' => 'desig_type',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdesig_data->desig_type,
 
+                );
+        $data['desig_subtype'] = array(
+                'name' => 'desig_subtype',
+                'id' => 'desig_subtype',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdesig_data->desig_subtype,
+
+                );
+        $data['desig_payscale'] = array(
+                'name' => 'desig_payscale',
+                'id' => 'desig_payscale',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editdesig_data->desig_payscale,
+                );
+ 
         $data['desig_name'] = array(
                 'name' => 'desig_name',
                 'id' => 'desig_name',
                 'maxlength' => '50',
                 'size' => '40',
                 'value' => $editdesig_data->desig_name,
-        	'readonly' => 'readonly'
         );
 
            $data['desig_group'] = array(
@@ -1003,7 +1038,12 @@ class Setup2 extends CI_Controller
                 );
         $data['desig_id'] = $desig_id;
         /*Form Validation*/
+        
         $this->form_validation->set_rules('desig_code','Designation Code','trim|xss_clean|required');
+        $this->form_validation->set_rules('tnt','Designation Type','trim|xss_clean|required');
+        $this->form_validation->set_rules('grouppost','Designation Subtype','trim|xss_clean|required');
+        $this->form_validation->set_rules('desig_payscale','Designation payscale','trim|xss_clean|required');
+        $this->form_validation->set_rules('desig_name','Designation Name','trim|xss_clean|required');
         $this->form_validation->set_rules('desig_group','Designation Group','trim|xss_clean|required');
         $this->form_validation->set_rules('desig_short','Designation Short','trim|xss_clean');
         $this->form_validation->set_rules('desig_desc','Designation Description','trim|xss_clean');
@@ -1012,7 +1052,11 @@ class Setup2 extends CI_Controller
         if ($_POST)
         {
             $data['desig_code']['value'] = $this->input->post('desig_code', TRUE);
-           $data['desig_group']['value'] = $this->input->post('desig_group', TRUE);
+            $data['desig_type']['value'] = $this->input->post('tnt', TRUE);
+            $data['desig_subtype']['value'] = $this->input->post('grouppost', TRUE);
+            $data['desig_payscale']['value'] = $this->input->post('desig_payscale', TRUE);
+            $data['desig_name']['value'] = $this->input->post('desig_name', TRUE);
+            $data['desig_group']['value'] = $this->input->post('desig_group', TRUE);
             $data['desig_short']['value'] = $this->input->post('desig_short', TRUE);
             $data['desig_desc']['value'] = $this->input->post('desig_desc', TRUE);
         }
@@ -1025,14 +1069,25 @@ class Setup2 extends CI_Controller
         else{
 
             $desig_code= strtoupper($this->input->post('desig_code', TRUE));
+            $desig_type = $this->input->post('tnt', TRUE);
+            $desig_subtype= $this->input->post('grouppost', TRUE);
+            $desig_payscale= $this->input->post('desig_payscale', TRUE);
+            $desig_name = $this->input->post('desig_name', TRUE);
             $desig_group = $this->input->post('desig_group', TRUE);
             $desig_short = $this->input->post('desig_short', TRUE);
             $desig_desc= $this->input->post('desig_desc', TRUE);
           //  $data_edesig_id = $desg_id;
+           echo $desig_type;
             $logmessage = "";
 	    if($editdesig_data->desig_code != $desig_code)
                 $logmessage = "Edit Designation Code " .$editdesig_data->desig_code. " changed by " .$desig_code;
-            if($editdesig_data->desig_group != $desig_group)
+            if($editdesig_data->desig_type != $desig_type)
+                $logmessage = "Edit Designation Type " .$editdesig_data->desig_type. " changed by " .$desig_type;
+            if($editdesig_data->desig_subtype != $desig_subtype)
+                $logmessage = "Edit Designation Subtype " .$editdesig_data->desig_subtype. " changed by " .$desig_subtype;
+           if($editdesig_data->desig_payscale != $desig_payscale)
+               $logmessage = "Edit Designation Payscale " .$editdesig_data->desig_payscale. " changed by " .$desig_payscale;
+           if($editdesig_data->desig_group != $desig_group)
                 $logmessage = "Edit  Designation group " .$editdesig_data->desig_group. " changed by " .$desig_group;
             if($editdesig_data->desig_short !=  $desig_short)
                 $logmessage = "Edit Designation short  " .$editdesig_data->desig_short. " changed by " . $desig_short;
@@ -1043,14 +1098,20 @@ class Setup2 extends CI_Controller
 
                //'desig_name' => $data_edesignationname,
             $update_data = array(
-               'desig_code' => $desig_code,
-                'desig_group' => $desig_group,
-               'desig_short' => $desig_short,
-               'desig_desc' => $desig_desc,
+               
+              'desig_code' => $desig_code,
+              'desig_type' => $desig_type,
+              'desig_subtype'=> $desig_subtype,
+              'desig_payscale'=> $desig_payscale,
+              'desig_name'  => $desig_name,
+              'desig_group' => $desig_group,
+              'desig_short' => $desig_short,
+              'desig_desc' => $desig_desc,
             );
                //'modifierid'=>$this->session->userdata('username'),
                //'modifydate'=>date('y-m-d')
 
+		
         $gradedflag=$this->commodel->updaterec('designation', $update_data,'desig_id', $desig_id);
         if(!$gradedflag)
             {
@@ -1407,5 +1468,37 @@ class Setup2 extends CI_Controller
                 }
         }//else
    }//end edit exam function
+
+
+
+/* This function has been created for get list of group post on the basis of  selected working type */
+    public function getworkingtype(){
+        $wtype = $this->input->post('groupp');
+        echo json_encode("this is testing----".$wtype);
+	if ($wtype=='Teaching'){
+            $uco_select_box ='';
+            $uco_select_box.='<option value=>-------select Group Post--------';
+            $uco_select_box.='<option value=UO> UO';
+            $uco_select_box.='<option value=Professor> Professor';
+            $uco_select_box.='<option value=AssociateProfessor> Associate Professor';
+            $uco_select_box.='<option value=AssistantProfessor> Assistant Professor';
+            $uco_select_box.='<option value=Librarians> Librarians';
+            $uco_select_box.='<option value=PhysicalDirector> Physical Director';
+        }
+	else{
+            $uco_select_box ='';
+            $uco_select_box.='<option value= >-------select Group Post--------';
+            $uco_select_box.='<option value=MultitaskingStaff> Multitasking staff';
+            $uco_select_box.='<option value=TechnicalStaf> Technical staff';
+            $uco_select_box.='<option value=MinisterialStaff> Ministerial staff';
+            $uco_select_box.='<option value=AdministrativStaff> Administrativ staff';
+            $uco_select_box.='<option value=Officer> Officer';
+            $uco_select_box.='<option value=TechnicalOfficer> Technical Officer';
+            $uco_select_box.='<option value=SupportingStaff> Supporting Staff';
+            
+	}
+       echo json_encode($uco_select_box);
+    }
+
 }//end class
 
