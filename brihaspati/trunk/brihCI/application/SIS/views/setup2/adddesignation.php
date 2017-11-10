@@ -27,7 +27,7 @@
                 <?php echo anchor('setup2/designation/', "View Designation list", array('title' => 'View Designation list' ,'class' =>'top_parent'));
 		$help_uri = site_url()."/help/helpdoc#Designation";
                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
-		?>
+ 		?>
                 <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -65,8 +65,9 @@
                   <?php //echo form_error('dr_mincredit')?>
                </td>
             </tr>
-             <tr>
-                       <td><label for="desig_name" class="control-label">Designation Group :</label></td>
+              
+               <tr>
+                       <td><label for="desig_name" class="control-label">Designation Group :</label></td> 
                         <td>
                         <select name="desig_group" id="" class="my_dropdown" style="width:100%;">
                         <option value="" disabled selected >------Select Group------</option>
@@ -78,6 +79,7 @@
                         </td></tr>
             <tr>
 
+                      
               <tr>
                 <td><label for="desig_short" class="control-label">Designation short :</label></td>
                 <td>

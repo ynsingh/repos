@@ -49,7 +49,7 @@
         <table style="padding: 8px 8px 8px 30px;">
         <?php
                 echo form_open('setup2/editdesignation/'. $desig_id);
-               
+                
                 echo "<tr>";
                 echo "<td>";
                 echo form_label('Designation Code', 'desig_code');
@@ -61,7 +61,7 @@
                 echo "Example: 10, 8,6 etc ";
                 echo "</td>";
                 echo "</tr>";
-               
+                
                 echo "<tr>";
                 echo "<td>";
                 echo form_label('Designation Name', 'desig_name');
@@ -74,7 +74,9 @@
                 echo "</td>";
                 echo "</tr>";
 
-		echo "<tr>";
+
+                 
+                echo "<tr>";
                 echo "<td>";
                 echo form_label('Designation Group', 'desig_group');
                 echo "</td>";
@@ -93,6 +95,8 @@
                   echo "Example: A, B, C, D etc ";
                 echo "</td>";
                 echo "</tr>";
+
+
 
 
                 echo "<tr>";

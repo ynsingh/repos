@@ -11,7 +11,6 @@
     <?php $this->load->view('template/menu');?>
   </head>
  <body>
- <center>
     <!--<//?php
         echo "<table border=\"0\" align=\"left\" style=\"color: black;  border-collapse:collapse; border:1px;\">";
         echo "<tr style=\"text-align:left; \">";
@@ -21,15 +20,15 @@
         echo "</tr>";
         echo "</table>";
         ?>--!>
-      
+      <center>
       <table width= "70%">
             <tr><td>
-                <div "left">
+                <div align="left">
                 <?php  echo anchor('setup2/adddesignation/', "Add Designation", array('title' => 'Add  Designation  Detail','class' =>'top_parent'));
 		$help_uri = site_url()."/help/helpdoc#ViewDesignation";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+           	echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                 ?>
-                  </div>
+                </div>
                 <div  style="width:90%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
               <?php if(isset($_SESSION['success'])){?>
@@ -52,13 +51,13 @@
 <table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead>
-               <th>Sr.No</th>
-               <th> Designation Code</th>
-               <th> Designation Name</th>
-               <th> Designation Group </th>
-               <th> Designation Short</th>
-               <th> Designation Description</th>
-               <th>Action</th></tr></thead>
+                <th>Sr.No</th>
+		<th> Designation Code</th>
+                <th> Designation Name</th>
+                <th> Designation Group </th>  
+                <th> Designation Short</th>
+                <th> Designation Description</th>
+                <th>Action</th></tr></thead>
  <?php
         $count =0;
         if( count($this->result) ):
@@ -75,7 +74,7 @@
             <td>
         <?php
               //  if($row->dr_id > 6){
-                        //echo anchor('setup2/deletedesignation/' . $row-> desig_id  , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
+//                        echo anchor('setup2/deletedesignation/' . $row-> desig_id  , "Delete", array('title' => 'Edit Details' , 'class' => 'red-link','onclick' => "return confirm('Are you sure you want to delete this record')")) . " ";
 
                         echo anchor('setup2/editdesignation/' . $row-> desig_id  , "Edit", array('title' => 'Details' , 'class' => 'red-link')) . " ";
          //    }
