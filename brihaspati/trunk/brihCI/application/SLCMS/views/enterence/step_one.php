@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <style type="text/css">
 label{font-size:18px;}
-input[type='text']{font-size:17px;height:35px;background-color:white;width:98%;font-weight:bold;}
+input[type='text']{font-size:17px;height:35px;background-color:white;width:99%;font-weight:bold;}
 input[type='email']{font-size:17px;height:35px;background-color:white;width:98%;font-weight:bold;}
 
 #filltoo{font-size:20px;}
@@ -109,12 +109,47 @@ echo "<div>";
 	}
 echo "</center>";
 ?>
+<?php
+echo "<center>";
+
+	if($this->session->flashdata('msg')){
+echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:70%;height:30px;color:green;'>";
+	echo $this->session->flashdata('msg');
+echo "<div>";	
+}
+
+	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
+		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
+	echo "<table style=\"margin-left:30px;width:70%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
+		echo "<tr>";
+			echo "<td style='font-size:18px;float:left;'>";
+				echo $_SESSION['success'];
+			echo "</td>";
+		echo "<tr>";
+		//echo "</div>";
+	echo "</table>";
+	}
+	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
+		//echo "<div id='error'>";
+		//echo '<div style="margin-left:40px;">'.$_SESSION['error'].'</div>';
+		//echo "</div>";
+	echo "<table id='error'>";			
+		echo "<tr>";
+			echo "<td style='font-size:18px;'>";
+				echo $_SESSION['error'];
+			echo "</td>";
+		echo "<tr>";
+		//echo "</div>";
+	echo "</table>";
+	}
+echo "</center>";
+?>   
 <center>
-	<div align="left" style="width:70%;font-size:18px;height:30px;">
+	<div align="left" style="width:70%;font-size:18px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:30px;" class="">','</div>');?>
-        <?php if(isset($_SESSION['success'])){?>
-        <div class="alert alert-success"><?php echo $_SESSION['success'];?></div>
+        <?php echo form_error('<div style="margin-left:30px;height:30px;" class="">','</div>');?>
+        <?php if(isset($_SESSION[''])){?>
+        <div class="alert alert-success"><?php echo $_SESSION[''];?></div>
         <?php
     	 };
        	?>
@@ -124,16 +159,10 @@ echo "</center>";
         <?php
         };
 	?>  
-	
-
-
-      </div>
+   </div>
+</center>
 	</br> 
-	<?php //$this->load->view('student/stuStepshead');?>
-	</br> 
-
-
-
+<center>
 <form action="<?php echo site_url('enterence/step_one'); ?>"  method="POST">
 
 	<table style="width:70%;">

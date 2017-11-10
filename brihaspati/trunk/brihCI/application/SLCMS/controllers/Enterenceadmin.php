@@ -302,9 +302,105 @@ class Enterenceadmin extends CI_Controller
                $this->depmodel->get_citylist($statid);
         }
 
+	public function viewhallticket(){
+
+	$data=array('ca_hallticketstatus' =>'Y');
+        $stud_master = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid,ca_rollno',$data);
+	$data['stud_master'] = $stud_master;
+			
+        $this->load->view('enterenceadmin/hallticket',$data);
+        }
+
+        public function generatehallticket(){
+
+                $data=array('ca_hallticketstatus' => NULL , 'ca_rollno !=' => NULL);
+                $stud_master = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid,ca_rollno',$data);
+		$year=date('Y');
+			
+                       // move file to directory code for photo
+			$desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year;
+                        // Create directory if it does not exist
+                        if(is_dir($desired_dir)==false){
+                              mkdir("$desired_dir", 0700);
+                        }
+
+                        $desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket';
+                        // Create directory if it does not exist
+                        if(is_dir($desired_dir)==false){
+                              mkdir("$desired_dir", 0700);
+                        }
+		//if(!empty($centerlist)){
+		if(!empty($stud_master)){
+                foreach($stud_master as $row){
+			$asmid=$row->ca_asmid;
+			$data['asmid'] = $asmid;
+			$gender=$this->commodel->get_listspfic1('admissionstudent_master','asm_gender','asm_id',$row->ca_asmid)->asm_gender;
+			$data['gender'] = $gender;
+			$caste=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$row->ca_asmid)->asm_caste;
+        		$data['caste'] = $caste;               
+			$prgid  = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->ca_asmid)->asm_coursename;
+			$data['prgid'] = $prgid;                        
+			$progname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';
+			$data['progname'] = $progname;
+                        $rollno=$row->ca_rollno;
+			$data['rollno'] = $rollno;
+                        $sname = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->ca_asmid)->asm_fname;
+			$data['sname'] = $sname;
+                        $faname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_fathername','aspar_asmid',$row->ca_asmid)->aspar_fathername;
+			$data['faname'] = $faname;
+                        $moname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_mothername','aspar_asmid',$row->ca_asmid)->aspar_mothername;
+			$data['moname'] = $moname;
+                        $padd=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_paddress','aspar_asmid',$row->ca_asmid)->aspar_paddress;
+			$data['padd'] = $padd;
+                        $pcity=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcity','aspar_asmid',$row->ca_asmid)->aspar_pcity;
+			$data['pcity'] = $pcity;
+                        $pstate=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$row->ca_asmid)->aspar_pstate;
+			$data['pstate'] = $pstate;
+                        $pcountry=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$row->ca_asmid)->aspar_pcountry;
+			$data['pcountry'] = $pcountry;
+			$photo=$this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_photo','asupd_asmid',$row->ca_asmid)->asupd_photo;
+			$data['photo'] = $photo;
+			$signature = $this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_signature','asupd_asmid',$row->ca_asmid)->asupd_signature;
+			$data['signature'] = $signature;
+			$centerid=$this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$row->ca_asmid)->asm_enterenceexamcenter;
+
+			$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
+			$cadd = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_address','eec_id',$centerid)->eec_address;
+			$ccity = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$centerid)->eec_city;
+			$venue= $cname.','.$cadd.','.$ccity;
+			$data['venue'] = $venue;
+			$exmdate = $this->commodel->get_listspfic1('admissionopen','admop_entexam_date','admop_prgname_branch',$prgid)->admop_entexam_date;
+			$data['exmdate'] = $exmdate;
+			
+			$acadyear = $this->usermodel->getcurrentAcadYear();
+			$data['acadyear'] = $acadyear;
+                      	//add pdf code to store and view pdf file			   	
+			$temp = $this->load->view('enterenceadmin/hallticketpdf', $data, TRUE);
+    			$pth='uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket/'.$row->ca_asmid.'hallticket.pdf';
+			$this->genpdf($temp,$pth);
+			$master = array(
+		                		'ca_hallticketstatus'   => 'Y',
+	           	     		);
+    			$updhallstatus = $this->commodel->updaterec('admissionstudent_centerallocation', $master,'ca_asmid',$asmid);
+			$this->logger->write_logmessage("update", "Hall ticket status update yes in admissionstudent_centerallocation");
+                    	$this->logger->write_dblogmessage("update", "Hall ticket status update yes in admissionstudent_centerallocation" );
+			
+        }
+		$message = 'Hall Ticket Successfully Generated for whom roll no. generated.';
+		$this->session->set_flashdata('success',$message);
+	 	redirect('enterenceadmin/viewhallticket');
+	}
+	else{
+		$message = 'Hall Ticket is not Generated because roll no is not generated.So first click on the roll no generation.';
+		$this->session->set_flashdata('err_message',$message);
+	 	redirect('enterenceadmin/viewhallticket');
+	}
+	redirect('enterenceadmin/viewhallticket');
+ }
+
 	public function viewstikerlist(){
-		$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
-        	
+		//$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
+        	$this->centerlist = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername','');
 		$exmceter = $this->input->post('stiexamcenter',TRUE);
 		if(isset($_POST['searchsticker'])){
 			$selectdata=array('ca_asmid','ca_rollno','ca_centername');
@@ -323,18 +419,20 @@ class Enterenceadmin extends CI_Controller
 		if(!empty($exmceter)){
 			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
 			$attrecord=array(
-				'ca_centername'  => $exmceter,
+				'ca_centername'  => $exmceter, 'ca_rollno !=' => NULL
 			);
        			$getsticker = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
 			$this->genstickerpdf($getsticker);
-		}else{
+		}
+		
+		else{
 		//collect the distinct list of center
 			$clist=$this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername','');
 			foreach($clist as $row1){
 				$exmceter1 = $row1->ca_centername;
 				if(!empty($exmceter1)){
 					$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
-					$attrecord=array('ca_centername'  => $exmceter1);
+					$attrecord=array('ca_centername'  => $exmceter1,'ca_rollno !=' => NULL);
        					$getsticker1 = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
 					$this->logger->write_logmessage("update", "Attendence sheet data foe each enter".$getsticker1);
 					//print_r($getatt1);
@@ -342,8 +440,20 @@ class Enterenceadmin extends CI_Controller
 				}
 			}
 		}	
-			
-	 	echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Centerwise attendance sheet generated Successfully .</h3>';
+		//$message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Centerwise attendance sheet generated Successfully .</h3>';
+		//$this->session->set_flashdata('success',$message);
+		$flag = true;
+			if($getsticker){
+				$message = '<h3>Centerwise sticker sheet generated Successfully .</h3>';
+				$this->session->set_flashdata('success',$message);
+				redirect('enterenceadmin/viewattendancesheet');
+			}
+			else{
+				$message = '<h3>Centerwise sticker sheet not generated.</h3>';
+				$this->session->set_flashdata('err_message',$message);
+				redirect('enterenceadmin/viewattendancesheet');
+				}
+	 	
 	 	redirect('enterenceadmin/viewstikerlist',$data, TRUE);
 
 	 }
@@ -385,97 +495,10 @@ class Enterenceadmin extends CI_Controller
        
 	}
 	
-	public function viewhallticket(){
-
-	$data=array('ca_hallticketstatus' =>'Y');
-        $stud_master = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid,ca_rollno',$data);
-	$data['stud_master'] = $stud_master;
-			
-        $this->load->view('enterenceadmin/hallticket',$data);
-        }
-
-        public function generatehallticket(){
-
-                $data=array('ca_hallticketstatus' => NULL , 'ca_centername !=' => NULL,'ca_rollno !=' => NULL);
-                $stud_master = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid,ca_rollno',$data);
-		$year=date('Y');
-			
-                       // move file to directory code for photo
-			$desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year;
-                        // Create directory if it does not exist
-                        if(is_dir($desired_dir)==false){
-                              mkdir("$desired_dir", 0700);
-                        }
-
-                        $desired_dir = 'uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket';
-                        // Create directory if it does not exist
-                        if(is_dir($desired_dir)==false){
-                              mkdir("$desired_dir", 0700);
-                        }
-		if(!empty($centerlist)){
-                foreach($stud_master as $row){
-			$asmid=$row->ca_asmid;
-			$data['asmid'] = $asmid;
-			$gender=$this->commodel->get_listspfic1('admissionstudent_master','asm_gender','asm_id',$row->ca_asmid)->asm_gender;
-			$data['gender'] = $gender;
-			$caste=$this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$row->ca_asmid)->asm_caste;
-        		$data['caste'] = $caste;               
-			$prgid  = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->ca_asmid)->asm_coursename;
-			$data['prgid'] = $prgid;                        
-			$progname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';
-			$data['progname'] = $progname;
-                        $rollno=$row->ca_rollno;
-			$data['rollno'] = $rollno;
-                        $sname = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->ca_asmid)->asm_fname;
-			$data['sname'] = $sname;
-                        $faname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_fathername','aspar_asmid',$row->ca_asmid)->aspar_fathername;
-			$data['faname'] = $faname;
-                        $moname=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_mothername','aspar_asmid',$row->ca_asmid)->aspar_mothername;
-			$data['moname'] = $moname;
-                        $padd=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_paddress','aspar_asmid',$row->ca_asmid)->aspar_paddress;
-			$data['padd'] = $padd;
-                        $pcity=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcity','aspar_asmid',$row->ca_asmid)->aspar_pcity;
-			$data['pcity'] = $pcity;
-                        $pstate=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pstate','aspar_asmid',$row->ca_asmid)->aspar_pstate;
-			$data['pstate'] = $pstate;
-                        $pcountry=$this->commodel->get_listspfic1('admissionstudent_parent','aspar_pcountry','aspar_asmid',$row->ca_asmid)->aspar_pcountry;
-			$data['pcountry'] = $pcountry;
-			$photo=$this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_photo','asupd_asmid',$row->ca_asmid)->asupd_photo;
-			$data['photo'] = $photo;
-			$signature = $this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_signature','asupd_asmid',$row->ca_asmid)->asupd_signature;
-			$data['signature'] = $signature;
-			$centerid=$this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$row->ca_asmid)->asm_enterenceexamcenter;
-			$venue=$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_address','eec_id',$centerid)->eec_address.','.$this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$centerid)->eec_city;
-			$data['venue'] = $venue;
-			$exmdate = $this->commodel->get_listspfic1('admissionopen','admop_entexam_date','admop_prgname_branch',$prgid)->admop_entexam_date;
-			$data['exmdate'] = $exmdate;
-			
-			$acadyear = $this->usermodel->getcurrentAcadYear();
-			$data['acadyear'] = $acadyear;
-                      	//add pdf code to store and view pdf file			   	
-			$temp = $this->load->view('enterenceadmin/hallticketpdf', $data, TRUE);
-    			$pth='uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket/'.$row->ca_asmid.'hallticket.pdf';
-			$this->genpdf($temp,$pth);
-			$master = array(
-		                		'ca_hallticketstatus'   => 'Y',
-	           	     		);
-    			$this->commodel->updaterec('admissionstudent_centerallocation', $master,'ca_asmid',$asmid);
-			$this->logger->write_logmessage("update", "Hall ticket status update yes in admissionstudent_centerallocation");
-                    	$this->logger->write_dblogmessage("update", "Hall ticket status update yes in admissionstudent_centerallocation" );
-			
-        }
-	
-	 	echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Hall Ticket Successfully Generated for whom roll no. generated.</h3>';
-	 	redirect('enterenceadmin/viewhallticket');
-	}else{
-		echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Hall Ticket is not Generated because roll no is not generated.So first click on the roll no generation.</h3>';
-	 	redirect('enterenceadmin/viewhallticket');
-	}
-
- }
-
 	public function viewattendancesheet(){
-		$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
+		//$this->examcenter = $this->commodel->get_listmore('admissionstudent_enterenceexamcenter','eec_name,eec_city,eec_id');
+		$this->centerlist = $this->commodel->get_distinctrecord('admissionstudent_centerallocation','ca_centername','');
+		
    		$this->load->view('enterenceadmin/attendencesheet');
         }
 
@@ -484,7 +507,7 @@ class Enterenceadmin extends CI_Controller
 		if(!empty($attexmceter)){
 			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
 			$attrecord=array(
-				'ca_centername'  => $attexmceter,
+				'ca_centername'  => $attexmceter,'ca_rollno !=' => NULL
 			);
        			$getatt = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
 			$this->genattpdf($getatt);
@@ -495,7 +518,7 @@ class Enterenceadmin extends CI_Controller
 				$attexmceter1 = $row1->ca_centername;
 				if(!empty($attexmceter1)){
 					$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
-					$attrecord=array('ca_centername'  => $attexmceter1);
+					$attrecord=array('ca_centername'  => $attexmceter1,'ca_rollno !=' => NULL);
        					$getatt1 = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
 					$this->logger->write_logmessage("update", "Attendence sheet data foe each enter".$getatt1);
 					//print_r($getatt1);
@@ -503,7 +526,20 @@ class Enterenceadmin extends CI_Controller
 				}
 			}
 		}
-		echo $message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Centerwise attendance sheet generated Successfully .</h3>';
+		//$message = '<h3 style="font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:30px;color:green;">Centerwise attendance sheet generated Successfully .</h3>';
+		//$this->session->set_flashdata('success',$message);
+		$flag = true;
+			if($getatt){
+				$message = '<h3>Centerwise attendance sheet generated Successfully .</h3>';
+				$this->session->set_flashdata('success',$message);
+				redirect('enterenceadmin/viewattendancesheet');
+			}
+			else{
+				$message = '<h3>Centerwise attendance sheet not generated.</h3>';
+				$this->session->set_flashdata('err_message',$message);
+				redirect('enterenceadmin/viewattendancesheet');
+				}
+	
 	 	redirect('enterenceadmin/viewattendancesheet');
  	}
 	
@@ -687,7 +723,7 @@ class Enterenceadmin extends CI_Controller
 						foreach($prglist as $row1){
 							$prgid = $row1->ca_prgid;
 							if(!empty($prgid)){
-								$whdata1 = array('ca_centername' => $center,'ca_prgid' => $prgid,'ca_rollno' => NULL,'ca_rollno' => ''); 
+								$whdata1 = array('ca_centername' => $center,'ca_prgid' => $prgid,'ca_rollno' => NULL); 
 								$asmidlist = $this->commodel->get_listspficemore('admissionstudent_centerallocation','ca_asmid',$whdata1);
 								if(!empty($asmidlist)){
 									foreach($asmidlist as $row2){
@@ -730,23 +766,23 @@ class Enterenceadmin extends CI_Controller
 		else{
 			$rollno = $ydate.$prgid.'0001';
 		}
-		$cid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$Sid)->asm_enterenceexamcenter;
-		$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
-		$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
-		$pegid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
+		//$cid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$Sid)->asm_enterenceexamcenter;
+		//$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
+		//$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
+		//$pegid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
 
 		$is_rollno = $this->commodel->isduplicate('admissionstudent_centerallocation','ca_rollno',$rollno);
 		if(!($is_rollno)){
 			$center = array(
 		  		'ca_rollno'	     =>	$rollno,
-				'ca_centerlocation'  => $clocation,
-				'ca_centername'	     => $cname,
-				'ca_prgid'	     => $pegid
+				//'ca_centerlocation'  => $clocation,
+				//'ca_centername'	     => $cname,
+				//'ca_prgid'	     => $pegid
 		      	 );
 		
 		$this->commodel->updaterec('admissionstudent_centerallocation',$center,'ca_asmid',$Sid);
-		$this->logger->write_logmessage("update", "Admission Step 4 update detail in centerallocation table.");
-                $this->logger->write_dblogmessage("update", "Admission Step 4 update  detail in centerallocation table." );
+		$this->logger->write_logmessage("update", "Admission Step 4 update roll no in centerallocation table.");
+                $this->logger->write_dblogmessage("update", "Admission Step 4 update roll no in centerallocation table." );
 				
 		//update student master table(application_no)
 		$master = array(

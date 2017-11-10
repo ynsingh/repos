@@ -876,7 +876,7 @@ class Enterence extends CI_Controller {
 					//'asedu_percentage'   	=>	$_POST['eduugc_net']
                 		);	
 				//print_r($Hedu);
-				//$this->commodel->insertrec('admissionstudent_education', $Hedu);
+				$this->commodel->insertrec('admissionstudent_education', $Hedu);
 				
 				$intn =$_POST['Icname'];
 				$Iedu = array(
@@ -1511,10 +1511,25 @@ class Enterence extends CI_Controller {
 				'asfee_paymentmethod'   =>	$post5
                 	);
 			$update = $this->commodel->updaterec('admissionstudent_fees', $step4,'asfee_amid',$Sid);
-				
 			$this->logger->write_logmessage("update", "Step 4 admissionstudent_fees table update.".$Sid);
                     	$this->logger->write_dblogmessage("update", "Step 4 admissionstudent_fees table update." .$Sid);
 			
+			$cid = $this->commodel->get_listspfic1('admissionstudent_master','asm_enterenceexamcenter','asm_id',$Sid)->asm_enterenceexamcenter;
+			$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$cid)->eec_name;
+			$clocation = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_id',$cid)->eec_city;
+			$pegid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$Sid)->asm_coursename;
+
+			
+			$center = array(
+		  		'ca_centerlocation'  => $clocation,
+				'ca_centername'	     => $cname,
+				'ca_prgid'	     => $pegid
+		      	 );
+		
+			$this->commodel->updaterec('admissionstudent_centerallocation',$center,'ca_asmid',$Sid);
+			$this->logger->write_logmessage("update", "Admission Step 4 update detail in centerallocation table.");
+               		$this->logger->write_dblogmessage("update", "Admission Step 4 update  detail in centerallocation table." );
+
 			//update admissionstep step4 table
 			$cdate = date('Y-m-d H:i');
 			$step4 = array(
@@ -1535,7 +1550,7 @@ class Enterence extends CI_Controller {
                		else{
             			$this->logger->write_logmessage("update","Student enterance admission fees add.".$Sid);
                			$this->logger->write_dblogmessage("update", "Student enterance admission fees add.".$Sid);
-				$this->session->set_flashdata("success", "Your". $post5 ."enterance fees submitted successfully.");
+				$this->session->set_flashdata("success", "Your".' ' .$post5 .' '."enterance fees submitted successfully.");
 				redirect('enterence/step_five');
                		}
 		//}//if duplicate close

@@ -2,10 +2,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
  
-
-echo "<div>";
-echo "<nav>";
-echo "<ul class=\"sf-menu\">";
+echo "<center>";
+echo "<div id='adminmenu' >";
+//echo "<nav>";
+echo "<ul class=\"sf-menu\" >";
 
 			echo "<li class=\"current\">";
 //				echo "<a href=" . base_url() . ">Dashboard</a>";
@@ -267,6 +267,7 @@ echo "<ul class=\"sf-menu\">";
 			echo anchor('home/logout', 'Logout', array('title' => 'Logout'));
 			echo "</li>";
 echo "</ul>";
-echo "</nav>";
+//echo "</nav>";
 echo "</div>";
+echo "<center>";
 

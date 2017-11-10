@@ -58,8 +58,10 @@
 <table>
       <tr>
            <td>   
-                 <div class="profile-main"><b>Welcome, User</b></div>
                  <div class="container2">
+                 <div class="heading1">
+                 <p><b>Welcome, User</b></p>
+                 </div>
                  <div class="heading1">
                  <p>Login Information</p>
                  </div>

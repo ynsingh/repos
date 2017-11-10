@@ -17,29 +17,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 tr td{font-size:20px;}
 </style>
 </head>
-
-<body>
 <?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
 	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
-	
+<body>
+
+<table align=center style="width:70%;">
+<tr class="isa_success">
+        <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div style="" class="isa_success">','</div>');?>
+        <?php if(isset($_SESSION['success'])){?>
+        <td><?php echo $_SESSION['success'];?></td>
+        <?php
+    	 };
+       	?>
+</tr>	<tr class="isa_error">
+        <?php if(isset($_SESSION['err_message'])){?>
+             <td style=''><?php echo $_SESSION['err_message'];?></td>
+        <?php
+        };
+	?>  
+</tr>
+   </table>		
 <center>
 <form action="<?php echo site_url('enterenceadmin/generateattendence'); ?>" method="POST">
 	<table style="width:50%;" border=0>
 		<tr>
-			<td style="height:35px;font-size:18px;"> Generate Attendance Sheet</td>
-			<td align=right>
+			<td style="height:35px;font-size:18px;"  align=center><h2>Generate Attendance Sheet</h2></td>
+			<td align=left valign="top">
 			<label for="nnumber"></label></br>
 			<select name="attexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
 			<option selected="true" disabled="disabled" style="font-size:18px;">Select Entrance Exam Center</option>
-				<?php foreach($this->examcenter as $row): ?>	
-					<option value="<?php echo $row->eec_name;?>"><?php echo $row->eec_name; ?></option>
-				<?php endforeach; ?>
+				<?php foreach($this->centerlist as $row): 
+					 if(!empty($row->ca_centername)){?>	
+					<option value="<?php echo $row->ca_centername;?>"><?php echo $row->ca_centername; ?></option>
+				<?php    }
+					 endforeach; ?>
 			</select>
 			</td>
-			<td align=left><label for="nnumber" style="visibility:hidden;">Enterence Exam Center</label></br>
+			<td align=left valign="top"><label for="nnumber" style="visibility:hidden;">Enterence Exam Center</label></br>
 			<input type="submit" name="searchattendence" value="Submit" style="height:35px;font-size:18px;"></td>
 		</tr>
 		
@@ -48,25 +66,33 @@ tr td{font-size:20px;}
 
 
 
-<table style="width:80%;margin-top:30px;" border=0>
+<table style="width:70%;margin-top:30px;" border=0>
 	
 	<tr>
 		<?php 
 			$year=date('Y');
 			$i=0;
-			if(!empty($this->examcenter)){
-				foreach($this->examcenter as $row){
-					$centerid = $row->eec_id;
-					$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
+			if(!empty($this->centerlist)){
+				foreach($this->centerlist as $row){
+				
+					//$centerid = $row->eec_id;
+					$cname = $row->ca_centername;
+					$centerid = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_id','eec_name',$cname)->eec_id;
+				
+					//$cname = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$centerid)->eec_name;
+			
 		?>
 					<td style="border:1px solid black;">
+				<?php if(!empty($cname)){?>
 						<a href="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/attendence/'.$centerid.'.pdf');?>" target=_blank style="font-size:20px;">
 		<?php echo $cname;?>  Attendance Sheet</br>
 							<embed src="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/attendence/'.$centerid.'.pdf');?>" type="application/pdf"   height="350px" width="100%">
 						</a>	
+					<?php } ?>
 					</td>	
 			
 				<?php 
+					
 					$i++;
 					if($i%6 == 0){?>
 						</tr>

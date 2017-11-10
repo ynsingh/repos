@@ -7,13 +7,19 @@
 }
 
 /*** ESSENTIAL STYLES ***/
+#adminmenu {
+	background:none repeat scroll 0 0 #0099CC;
+	height:40px;width:70%;margin:0 auto;
+	padding:0 0 0 18px;
+	color:#FFFFFF;
+}
 .sf-menu, .sf-menu * {
 	margin:0;
 	padding:0;
 	list-style:none;
 }
 .sf-menu {
-	line-height:1.0;
+	line-height:1.3;
 }
 .sf-menu ul {
 	position:absolute;
@@ -149,7 +155,7 @@ li.sfHover > a > .sf-sub-indicator {
 
 nav {
 	background:none repeat scroll 0 0 #0099CC;
-	height:35px;
+	height:35px;width:70%;margin:0 auto;
 	padding:0 0 0 18px;
 	color:#FFFFFF;
 }

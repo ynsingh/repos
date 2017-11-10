@@ -30,6 +30,23 @@ echo "<div>";
 
 echo "</center>";
 ?>
+<table align=center style="width:70%;">
+<tr class="isa_success">
+        <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div style="" class="isa_success">','</div>');?>
+        <?php if(isset($_SESSION['success'])){?>
+        <td><?php echo $_SESSION['success'];?></td>
+        <?php
+    	 };
+       	?>
+</tr>	<tr class="isa_error">
+        <?php if(isset($_SESSION['err_message'])){?>
+             <td style=''><?php echo $_SESSION['err_message'];?></td>
+        <?php
+        };
+	?>  
+</tr>
+   </table>	
 </br></br>
 <center>   
 <table style="width:50%;">
@@ -38,9 +55,9 @@ echo "</center>";
 	<form action="<?php echo site_url('enterenceadmin/search_rollnumber'); ?>" method="POST">
 		<table style="width:70%;" border=0>
 		<tr>
-			<td><h2>Search Center Wise / Program Wise Roll Number </h2></td>
-			<td style="height:35px;font-size:18px;"></td>
-			<td align=right>
+			<td align=center><h2>Search Center Wise / Program Wise Roll Number </h2></td>
+			
+			<td align=right  valign="top">
 			
 			<select name="ronoexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
@@ -53,7 +70,7 @@ echo "</center>";
 				<?php } endforeach; ?>
 			</select>
 			</td>
-			<td align=left>
+			<td align=left valign="top">
 			
 			<select name="ronoprg" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
@@ -63,7 +80,7 @@ echo "</center>";
 				<?php endforeach; ?>
 			</select>
 			</td>
-			<td align=left>
+			<td align=left valign="top">
 			<input type="submit" name="searchsticker" value="Submit" style="height:35px;font-size:18px;"></td>
 		</tr>
 		

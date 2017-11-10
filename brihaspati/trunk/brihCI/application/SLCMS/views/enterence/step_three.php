@@ -58,7 +58,7 @@ echo "<div>";
 
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"width:70%;font-size:18px;height:10px;border:1px solid white;\" class=\"isa_success\">";			
+	echo "<table style=\"width:70%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
 		echo "<tr>";
 			echo "<td style='font-size:18px;float:left;'>";
 				echo $_SESSION['success'];

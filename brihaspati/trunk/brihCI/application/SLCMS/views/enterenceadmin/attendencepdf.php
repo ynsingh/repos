@@ -28,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$location = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_city','eec_name',$centername)->eec_city;
 			?>			
 			<tr>
-			<td align=center colspan=8 height=30 style="vertical-align: bottom;">Name of Exam Center - <?php  echo	$location;?></td>
+			<td align=center colspan=8 height=30 style="vertical-align: bottom;">Name of Exam Center - <?php  echo	$centername.'('.$location.')';?></td>
 			</tr>	
 			<?php 
 			$getatt = $this->commodel->array_multi_subsort($getatt, 'ca_prgid');

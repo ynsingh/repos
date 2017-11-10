@@ -24,7 +24,35 @@ thead th{font-size:18px;}
 		$this->load->view('template/header'); ?>
 	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
-	
+
+<?php
+echo "<center>";
+
+	if($this->session->flashdata('msg')){
+echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:40px;color:green;'>";
+	echo $this->session->flashdata('msg');
+echo "<div>";	
+}
+
+echo "</center>";
+?>
+<table align=center style="width:70%;">
+<tr>
+        <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div style="" class="isa_success">','</div>');?>
+        <?php if(isset($_SESSION['success'])){?>
+        <td class="isa_success"><?php echo $_SESSION['success'];?></td>
+        <?php
+    	 };
+       	?>
+</tr>	<tr class="isa_error">
+        <?php if(isset($_SESSION['err_message'])){?>
+             <td style=''><?php echo $_SESSION['err_message'];?></td>
+        <?php
+        };
+	?>  
+</tr>
+   </table>	
 <center style="width:100%;">
 	
 	</br>
@@ -35,19 +63,22 @@ thead th{font-size:18px;}
 
 </table>
 
-<table style="width:90%;margin-top:30px;" border=0>
+<table style="width:70%;margin-top:30px;" border=0>
 <tr>
 <?php 
 $year=date('Y');
 $i=0;
+if(!empty($stud_master)){
 foreach($stud_master as $row){
 
 ?>
 <td>
+<?php if(!empty($row->ca_rollno)){?>
 <a href="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket/'.$row->ca_asmid.'hallticket.pdf');?>" target=_blank>
-See PDF
+See PDF</br>
 <embed src="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket/'.$row->ca_asmid.'hallticket.pdf');?>" type="application/pdf"   height="400px" width="400">
 </a>	
+<?php }?>
 </td>
 <?php //}
 $i++;
@@ -55,6 +86,7 @@ if($i%4 == 0){?>
 </tr>
 <tr>
 <?php } 
+}
 }?>
 </tr>
 </table>
