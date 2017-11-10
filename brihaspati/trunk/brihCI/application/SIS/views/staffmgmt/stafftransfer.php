@@ -193,7 +193,7 @@
                                 <?php endforeach; ?>
                             </select></div>
                         </td>
-                        <td><label for="dateofrelief" style="font-size:15px;">Date of Relief<font color='Red'>*</font></label>
+                        <td><label for="dateofrelief" style="font-size:15px;">Date of Relieve<font color='Red'>*</font></label>
                             <div><input type="text" name="dateofrelief" id="Dateofrelief"  value="<?php echo isset($_POST["dateofrelief"]) ? $_POST["dateofrelief"] : ''; ?>" size="40" /></div>
                         </td>
                     </tr>

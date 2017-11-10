@@ -42,7 +42,7 @@
                 <tr align="center">
                     <th>Sr.No</th>
                     <th>Employee Name</th>
-                    <th>Date of Relief</th>
+                    <th>Date of Relieve</th>
                     <th>Expected Date of joining</th>
                     <th>University Officer Control</th>
                     <th>Department Name</th>

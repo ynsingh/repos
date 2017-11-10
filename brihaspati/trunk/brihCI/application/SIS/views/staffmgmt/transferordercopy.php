@@ -63,7 +63,7 @@
             </table><br/><br/>
             <table class="TFtable" style="width:100%;" >
                 <tr><td style="font-size:9;">TTA Detail: <?php echo $detail->uit_tta_detail;?></td>
-                    <td style="font-size:9;" >Date of relief : <?php echo $detail->uit_dateofrelief;?></td>
+                    <td style="font-size:9;" >Date of relieve : <?php echo $detail->uit_dateofrelief;?></td>
                     <td style="font-size:9;">Expected Date of joining : <?php echo $detail->uit_dateofjoining;?></td>
                 </tr>
             </table>
