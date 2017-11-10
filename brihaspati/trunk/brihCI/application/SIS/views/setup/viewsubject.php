@@ -37,17 +37,16 @@ echo "<body>";
     echo"</br>";
 */
 ?>
-
+<center>
 <br>
-<div align="left">
-<table style="margin-left:2%;">
+<table width=70%;">
 <tr><td>
 <?php echo anchor('setup/subject/', "Add Subject " ,array('title' => 'Add Subject' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#ViewSubjectDetail";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73%\">Click for Help</b></a>";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
 ?>
 </td></tr>
-</table>
+</table></center>
 </div>
 
     <table>
@@ -67,12 +66,12 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "</div>";
     echo "</td></tr>";
     echo "</table>";
-    echo "<div style=\"margin-left:2%;\">";
+    echo "<div >";
 
 /* form data */
 
          echo "<table border=0 cellpadding=10 style=\"padding: 8px 8px 8px 25px;\" class=\"TFtable\">";
-         echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th><th></th></tr></thead>";
+         echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th></tr></thead>";
 
     $srno = 0;
     foreach($subjectlists as $subjectlist)

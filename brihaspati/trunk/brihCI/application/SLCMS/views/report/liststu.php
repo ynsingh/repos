@@ -12,7 +12,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-	<table style="width:93%;">
+	<table style="width:70%;">
 	<tr><td>
 		<?php
                  $help_uri = site_url()."/help/helpdoc#ViewStudentlistwithHead";
@@ -22,7 +22,7 @@
 	</table>
 	</br>
         
-                <table cellpadding="16" style="margin-left:30px;" class="TFtable" >
+                <table cellpadding="16" class="TFtable" >
             <thead>
                 <tr align="left">
                 <th>Student Name</th>

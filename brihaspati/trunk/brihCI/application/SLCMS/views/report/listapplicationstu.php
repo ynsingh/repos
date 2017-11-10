@@ -181,7 +181,7 @@ function myFunction() {
 		</tr>
 		</table>
 
-	<table style="margin-left:30px;margin-top:50px;text-align:center;width:71%;" class="TFtable" border=0>
+	<table class="TFtable" border=0>
 	<tr>
 		<th>Sr. No.</th>
 		<th>Applied Prgoram</th>
@@ -329,9 +329,9 @@ function myFunction() {
 	}
 ?>
 
-<tr id="b1"><td colspan=8>
+<tr id="b1"><td colspan=8><center>
  <input type="submit" value="Print" onclick="myFunction()" title="Click for print" style="font-size:18px;width:5%;" id="b1">
-</td>
+</center></td>
 </tr>
 	</table>
 	</center>

@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">    
     </head>    
     <body>
-
+    
         <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -29,16 +29,16 @@
             echo "</tr>";
             echo "</table>";
         ?-->
-   
-        </br>    
-        <table style="margin-left:2%;"> 
+        <center>    
+        <table width="70%">
+ 
      
             <tr colspan="2"><td>  
             <?php
            
                     echo anchor('setup/emailsetting/', "Add Email Setting" ,array('title' => ' Add Email Configuration Detail ' , 'class' => 'top_parent'));
                     $help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:56%\">Click for Help</b></a>";
           
             ?>
         
@@ -61,8 +61,8 @@
   
             </div>
             </td></tr> 
-        </table>   
-        <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+        </table></center>   
+        <table cellpadding="16"  class="TFtable" >
             <thead>
                 <tr align="center">
                     <th>Email Protocol</th>

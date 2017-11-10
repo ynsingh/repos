@@ -37,22 +37,21 @@ echo "<body>";
     echo"</br>";
 */
 ?>
-
-<br>
-<div align="left">
-<table style="margin-left:2%;">
+<center>
+<div>
+<table width= "70%">
 <tr><td>
 <?php echo anchor('setup/subject/', "Add Subject " ,array('title' => 'Add Subject' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#ViewSubjectDetail";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73%\">Click for Help</b></a>";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
 ?>
 </td></tr>
 </table>
 </div>
-
+    <center>
     <table width="100%">
     <tr><td>
-    <div  style="margin-left:2%;width:90%;">
+    <div>
 
     <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
     <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
@@ -66,8 +65,8 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     }
     echo "</div>";
     echo "</td></tr>";
-    echo "</table>";
-    echo "<div style=\"margin-left:2%;\">";
+    echo "</table>";echo "</center>";
+    echo "<div >";
 
 /* form data */
 

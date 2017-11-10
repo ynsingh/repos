@@ -29,19 +29,17 @@
     echo "</table>";
 */
 ?>
-<br>
-<div align="left">
-<table style="margin-left:2%;">
-<tr><td>
-<?php echo anchor('setup/program/', "Add Program", array('title' => 'Add Program' , 'class' => 'top_parent'));
-$help_uri = site_url()."/help/helpdoc#ViewProgramandseatDetail";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
-?>
+<center>
+<table width="70%">
+	<tr><td>
+		<?php echo anchor('setup/program/', "Add Program", array('title' => 'Add Program' , 'class' => 'top_parent'));
+		$help_uri = site_url()."/help/helpdoc#ViewProgramandseatDetail";
+		echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+		?>
 </td></tr>
 </table>
-</div>
 
-        <table> 
+        <table width="70%"> 
             <tr><td>    
                 <div>
                 <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
@@ -52,8 +50,8 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
                 ?>
             </div>
         </td></tr>   
-        </table>   
-    <div align="left" style="margin-left:2%;">
+        </table></center>   
+    <div align="left" >
     <table  cellpadding="16" class="TFtable">
     <!--<table border=0 cellpadding=16 style="padding: 8px 8px 8px 25px;margin-left:30px;" class="TFtable">
     <table>-->

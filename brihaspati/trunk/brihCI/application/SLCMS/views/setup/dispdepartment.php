@@ -31,12 +31,13 @@
             echo "</tr>";
             echo "</table>";
         ?>-->
-	   <table style="margin-left:2%;" width="100%">
+           <center>
+	   <table  width="70%">
 	    <tr><td>
   	   <div>
 	   <?php echo anchor('setup/dept','Add Department',array( 'class' => 'top_parent' ,'title'=>'Add Detail')); 
 	   $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
-           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
            ?>
             <tr><td>    
                 <div  style="margin-left:2%;width:70%;">
@@ -50,12 +51,12 @@
                 ?>
             	</div>
         </td></tr>   
-        <tr>
+        <tr>          
            <div align="left" style="margin-left:2%;">
-          <table cellpadding="16" style="margin-left:2%;" class="TFtable">
+          <table cellpadding="16" class="TFtable">
           <thead>
           <tr align="center">
-       <th>University Name</th><th>Campus Name</th><th>Authorities Name</th><th>School/Faculty Code</th><th>School/Faculty Name</th><th>Deptt. Code</th><th>Deptt. Name</th><th>Deptt. Nick Name</th><th>Deptt Desc</th><th>Action</th><th></th></tr></thead>
+       <th>University Name</th><th>Campus Name</th><th>Authorities Name</th><th>School/Faculty Code</th><th>School/Faculty Name</th><th>Deptt. Code</th><th>Deptt. Name</th><th>Deptt. Nick Name</th><th>Deptt Desc</th><th>Action</th></tr></thead>
                  <?php
                     foreach ($this->deptresult as $row)
                     {
@@ -84,7 +85,7 @@
                 ?>
             </div>
         </tr>
-    </table>    
+    </table></center>    
     </body>   
   <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

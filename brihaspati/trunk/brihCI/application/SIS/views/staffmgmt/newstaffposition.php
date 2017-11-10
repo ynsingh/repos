@@ -224,7 +224,7 @@
           	<td><select required name="schemecode" id="schemecode" class="my_dropdown" style="width:300px;">
                 <option disabled selected >------Select----------------</option></td>
 		<td>&nbsp; </td>
-		<td>GROUP<font color='Red'> *</font> </td>
+		<td>Group<font color='Red'> *</font> </td>
 		<td><select name="group" id="group" class="my_dropdown" style="width:300px;" onchange="getdesignation(this.value)" >
                 <option value="" disabled selected >------Select----------------</option>
                 <option value="A" <?php echo set_select('group', 'A'); ?>class="dropdown-item"> A </option>
@@ -261,7 +261,7 @@
                 <option value="physical director" <?php echo set_select('grouppost','physical director'); ?> class="dropdown-item"> Physical Director </option></td>
 		-->
 		<td>&nbsp; </td>
-		<td>Employee TYPE<font color='Red'> *</font> </td>
+		<td>Employee Type<font color='Red'> *</font> </td>
           	<td><select name="type" id="type" class="my_dropdown" style="width:300px;" onchange="getemptype(this.value)" >
                 <option value="" disabled selected >------Select----------------</option>
                 <option value="Permanent"<?php echo set_select('type', 'Permanent'); ?> class="dropdown-item"> Permanent </option>

@@ -12,7 +12,8 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-        <table style="margin-left:10px;">
+    <center>
+        <table style="width:70%;">
             <tr colspan="2"><td>
             <div  style="margin-left:-06px;width:1793px;">
 
@@ -33,9 +34,9 @@
 
             </div>
             </td></tr>
-        </table>
+        </table></center>
            <div align="left">
-   <table cellpadding="11" style="margin-left:2%;" class="TFtable">
+   <table cellpadding="11" class="TFtable">
      <thead >
         <tr align="center">
              <th>Sr.No</th>

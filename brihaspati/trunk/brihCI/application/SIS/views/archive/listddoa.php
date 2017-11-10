@@ -11,7 +11,8 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
     </head>
     <body>
-    <table style="padding: 8px 8px 8px 20px;width:100%;">
+    <center>
+    <table style="width:70%;">
      <tr><td>
       <div style="margin-left:2%;width:90%;">
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -28,9 +29,9 @@
 	?>
    </div>
    </td></tr>
-   </table>
+   </table></center>
    <div align="left">
-   <table cellpadding="11" style="margin-left:2%;" class="TFtable">
+   <table cellpadding="11" class="TFtable">
      <thead >
 	<tr align="center">
 		<th>Sr.No</th>

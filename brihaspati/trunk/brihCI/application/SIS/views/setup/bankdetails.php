@@ -34,17 +34,16 @@ echo "<body>";
     echo"</br>";
 */
 ?>
+<center>
 <br>
-<div align="left">
-<table style="margin-left:10px;">
+<table width="70%">
 <tr><td>
 <?php echo anchor('setup/addbank', "Add Bank" ,array('title' => 'Add bankdetails' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#Viewbank_profile";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:77%\">Click for Help</b></a>";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
 ?>
 </td></tr>
 </table>
-</div>
 
     <table>
     <tr colspan=2><td>
@@ -63,10 +62,10 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 echo "</div>";
 echo "</td></tr>";
 echo "</table>";
-echo "<div style=\"margin-left:0px;\">";
+echo "<div>";
 
 /* form data */
-echo "<table  cellpadding=13 style=\"margin-left:2%;\" class=\"TFtable\">";
+echo "<table  cellpadding=13  class=\"TFtable\">";
 echo "<thead><tr align=\"center\"><th>Sr. No</th><th>Bank Name</th><th>Bank Address</th><th>Bank Branch</th><th>Account No</th><th>Account Name</th><th>Account Type</th><th>IFSC Code</th><th>PAN No</th><th>TAN No</th><th>GST No</th><th>Action</th></thead>";
 
 $srno = 0;
@@ -104,7 +103,7 @@ echo "</table>";
   ?>
 </div>
 </tr>
-</table>
+</table></center>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

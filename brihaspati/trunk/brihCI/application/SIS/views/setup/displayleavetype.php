@@ -11,6 +11,7 @@
     <?php $this->load->view('template/menu');?>
   </head>
  <body>
+ <center>
     <!--<//?php
         echo "<table border=\"0\" align=\"left\" style=\"color: black;  border-collapse:collapse; border:1px;\">";
         echo "<tr style=\"text-align:left; \">";
@@ -21,13 +22,13 @@
         echo "</table>";
         ?>--!>
 
-      <table width="100%">
+      <table width="70%">
             <tr><td>
                 <div align="left" style="margin-left:2%;">
                 <?php echo anchor('setup/leavetype/', "Add Leave Type", array('title' => 'Add Detail','class' =>'top_parent'));?>
                  <?php
                  $help_uri = site_url()."/help/helpdoc#ViewRoleDetail";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:78%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                  ?>
                 <div  style="width:70%;margin-left:2%">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -43,12 +44,12 @@
                ?>
               </div>
              </td></tr>
-       </table>
+       </table></center>
 
 <table width="100%">
 <tr>
 <div align="left" style="margin-left:2%;">
-<table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+<table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead>
 

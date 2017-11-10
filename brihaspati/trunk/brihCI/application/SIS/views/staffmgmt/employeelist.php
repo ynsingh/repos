@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
     </head>
     <body>
+    <center>
         <div>
            
             <?php $this->load->view('template/header'); ?>
@@ -16,16 +17,16 @@
             <?php $this->load->view('template/menu');?>
         
         </div>
-        <table style="margin-left:1%;width:97%;"><tr><td>
+        <table style="width:70%;"><tr><td>
         <?php echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));
 	$help_uri = site_url()."/help/helpdoc#ViewEmployeeList";
-        echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:75%\">Click for Help</b></a>";
+        echo "<a target=\"_blanik\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
         ?>
         </td>
         
         </tr>
-        </table>
-        <div align="left" style="margin-left:2%;width:95%;">
+        </table></center>
+        <div "style=width:70%;">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -42,7 +43,7 @@
                 ?>    
                   
         </div>
-        <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+        <table cellpadding="16" class="TFtable" >
             <thead>
                 <tr align="center">
                     <th>Sr.No</th>
@@ -52,7 +53,7 @@
                     <th>University Officer Control</th>
                     <th>Department Name</th>
                     <th>Scheme Name</th>
-                    <th>Specialisation(Major subject)</th>
+                    <th>Specialisation(Major Subject)</th>
                     <th>Designation</th>
                     <!--<th>Employee Post</th>-->
                    <!-- <th>Pay Band</th>-->

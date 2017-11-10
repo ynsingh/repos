@@ -11,8 +11,8 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-
- <table style="margin-left:10px;">
+    <center>
+ <table style="width:70%;">
    <tr colspan="2"><td>
             <div  style="margin-left:2%;width:90%;">
              <?php echo validation_errors('<div class="isa_warning>','</div>');?>
@@ -31,8 +31,8 @@
 
  		</div>
  </td></tr>
- </table>
-        <table cellpadding="11" style="margin-left:2%;" class="TFtable" >
+ </table></center>
+        <table cellpadding="11" class="TFtable" >
             <thead>
                 <tr align="center">
                 <th>University Name</th>

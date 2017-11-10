@@ -98,7 +98,7 @@
                  <?php echo form_input($group); ?>
              </td>
 	     <td>&nbsp;</td>
-             <td>Employee post </td>
+             <td>Employee Post </td>
              <td>
 		<?php echo form_input($emppost); ?>
              </td>

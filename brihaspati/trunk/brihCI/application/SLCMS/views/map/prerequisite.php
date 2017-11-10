@@ -38,7 +38,7 @@
             <tr><td> 
                  <?php echo anchor('map/mapsubpre/', "Map Subject with Prerequisite", array('title' => 'Add Detail' , 'class' => 'top_parent'));
 		 $help_uri = site_url()."/help/helpdoc#ViewMapSubjectandPaperwithPrerequisite";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:50%\">Click for Help</b></a>";
+		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
 		 ?>
                 <div  style="margin-left:2%;width:90%;">
   

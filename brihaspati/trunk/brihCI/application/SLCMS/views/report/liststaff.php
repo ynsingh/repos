@@ -16,12 +16,13 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
+    <center>
   <?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#StaffList";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:39%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:54%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
@@ -32,10 +33,10 @@
              <!--?php
                  echo anchor('setup/faclist/', "Add Faculty list ",array('title' => 'faculty list Detail ' , 'class' => 'top_parent'));
                  $help_uri = site_url()."/help/helpdoc#ViewFacultylistwithHead";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:71%\">Click for Help</b></a>";
+                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                 ?>
              </table-->
-      
+              </center>
                 <table cellpadding="16" class="TFtable" >
             <thead>
                 <tr align="center"> 

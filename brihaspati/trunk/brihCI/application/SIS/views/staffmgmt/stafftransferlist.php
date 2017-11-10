@@ -13,14 +13,14 @@
             <h3>Welcome <?= $this->session->userdata('username') ?></h3>
             <?php $this->load->view('template/menu');?>
         
-        </div>
-        <table style="margin-left:1%;width:97%;"><tr><td>
+        </div><center>
+        <table style="width:70%;"><tr><td>
         <?php echo anchor('staffmgmt/stafftransfer/', "Staff Tansfer and Posting" ,array('title' => 'staff transfer nad posting ' , 'class' => 'top_parent'));
 	;?>
         </td>
         </tr>
         </table>
-         <div align="left" style="margin-left:2%;width:95%;">
+         <div align="left" style="width:70%;">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -37,7 +37,8 @@
                 ?>    
                   
         </div>
-        <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+</center>
+        <table cellpadding="16"  class="TFtable" >
             <thead>
                 <tr align="center">
                     <th>Sr.No</th>
@@ -48,7 +49,7 @@
                     <th>Department Name</th>
                     <th>Designation</th>
                     <th>Post</th>
-                    <th>Tranfer order copy</th>
+                    <th>Tranfer Order Copy</th>
                     <!--<th>Action</th>-->
                     
                 </tr>

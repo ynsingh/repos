@@ -97,6 +97,7 @@ foreach ($chart_data1 as $data1) {
         </head>
 
         <body>
+        
             <div>
                 <?php $this->load->view('template/header'); ?>
                 <h3>Welcome <?= $this->session->userdata('username') ?></h3>
@@ -109,8 +110,8 @@ foreach ($chart_data1 as $data1) {
     echo '[' . $data->pdate . ',' . $data->pval .  '],';
 }
 */
-?>
-            <table>
+?>         <center>
+           <table>
             <tr>
                     <td>
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
@@ -123,7 +124,7 @@ foreach ($chart_data1 as $data1) {
                     </td>
 
                 </tr>
-            </table>
+            </table></center>
 
             </div><?php $this->load->view('template/footer'); ?></div>
         </body>
