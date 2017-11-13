@@ -83,3 +83,20 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+/*
+|--------------------------------------------------------------------------
+| PayUMoney Configurations
+|--------------------------------------------------------------------------
+|
+| These are used to make online payment via PayUMoney
+|
+*/
+define('MERCHANT_KEY', 'gtKFFx');
+define('SALT', 'eCwWELxi');
+define('PAYU_BASE_URL', 'https://test.payu.in');    //Testing url
+//define('PAYU_BASE_URL', 'https://secure.payu.in');  //actual URL
+/*
+define('SUCCESS_URL', 'http://localhost/gst/transaction/order_success');  //have complete url
+define('FAIL_URL', 'http://localhost/gst/transaction/order_fail');    //add complete url 
+ */
