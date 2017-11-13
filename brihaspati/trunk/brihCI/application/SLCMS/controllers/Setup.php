@@ -1486,7 +1486,7 @@ class Setup extends CI_Controller
                 		else{
                     			$this->logger->write_logmessage("insert","Add fees with head ", "Fees".$_POST['head']." added  successfully...");
                     			$this->logger->write_dblogmessage("insert","Add fees with head ", "Fees ".$_POST['head']."added  successfully...");
-	                    		$this->session->set_flashdata("success", " Program fees add successfully... head is ".$_POST['head']);
+	                    		$this->session->set_flashdata("success", " Program fees added successfully under head - ".$_POST['head']);
         	            		redirect("setup/displayfees");
                 		}
 			}

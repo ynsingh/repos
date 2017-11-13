@@ -98,6 +98,7 @@
                 <td>
                     <select name="gender"class="my_dropdown" style="width:100%;">
                     <option value="" disabled selected>------Select Gender------</option>  
+                    <option value="All" class="dropdown-item">All</option>
                     <option value="Male" class="dropdown-item">Male</option>
                     <option value="Female" class="dropdown-item">Female</option>
                     <option value="Transgender" class="dropdown-item" >Transgender</option>
@@ -130,8 +131,20 @@
                     <option value="" disabled selected >------Select Semester------</option>    
                     <option value="ODD" class="dropdown-item">ODD</option>
                     <option value="EVEN" class="dropdown-item">EVEN</option>
-                    </select>
-                    
+		    </select>
+<!--
+                        <select name="semester" id="" class="my_dropdown" style="width:100%;">
+                        <option value="" disabled selected >------Select Semester------</option>
+                        <option value="1" class="dropdown-item">1</option>
+                        <option value="2" class="dropdown-item">2</option>
+                        <option value="3" class="dropdown-item">3</option>
+                        <option value="4" class="dropdown-item">4</option>
+                        <option value="5" class="dropdown-item">5</option>
+                        <option value="6" class="dropdown-item">6</option>
+                        <option value="7" class="dropdown-item">7</option>
+                        <option value="8" class="dropdown-item">8</option>
+                        </select>
+    -->
                 </td>
             </tr>
             <tr>

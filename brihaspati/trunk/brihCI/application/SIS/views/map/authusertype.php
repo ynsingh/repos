@@ -146,14 +146,14 @@ $("#StartDate").datepicker("option","maxDate", selected)
                          <tr>
                         
                         <td><label>From Date:<font color='Red'>*</font></label></td>
-                        <td><input type="text"placeholder="From Date" name="map date" id="StartDate"  size="27" value="<?php echo isset($_POST["map_date"]) ? $_POST["map_date"] : ''; ?>" required="required"/><br> </td>
+                        <td><input type="text"placeholder="From Date" name="map_date" id="StartDate"  size="27" value="<?php echo isset($_POST["map_date"]) ? $_POST["map_date"] : ''; ?>" required="required"/><br> </td>
                         </tr>
                         <tr>
 
                         
                         
                         <td><label>Till Date:<font color='Red'>*</font></label></td>
-                        <td><input type="text"placeholder="Till Date" name="till date" id="EndDate"  size="27" value="<?php echo isset($_POST["map_date"]) ? $_POST["till_date"] : ''; ?>" required="required"/><br> </td>
+                        <td><input type="text"placeholder="Till Date" name="till_date" id="EndDate"  size="27" value="<?php echo isset($_POST["map_date"]) ? $_POST["till_date"] : ''; ?>" required="required"/><br> </td>
                         </tr>
                         <tr>
 

@@ -627,7 +627,8 @@ class Map extends CI_Controller
     public function mapsubsem(){
 	    $data['dept'] = $this->commodel->get_listmore('Department','dept_id,dept_name');
 	    $data['subres'] = $this->commodel->get_listmore('subject','sub_id,sub_name');
-	    $data['prgresult'] = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
+	   // $data['prgresult'] = $this->commodel->get_listspfic2('program','*', '','','','prg_name');
+	    $data['prgresult'] = $this->commodel->get_listmore('program','prg_id,prg_name,prg_branch');
         if(isset($_POST['mapsubsem'])) {
             /*Form Validation*/
             $this->form_validation->set_rules('subsem_deptid','Department','trim|required');
@@ -996,14 +997,14 @@ class Map extends CI_Controller
 
 /*This function has been created for display the list of branch on the basis of program*/
 	public function branchlist(){
-	$pgid = $this->input->post('programname');	
+		$pgid = $this->input->post('programname');	
 	    	$this->depmodel->get_branchlist($pgid);
         }
 
 /*This function has been created for display subject on the basis of program and branch*/
 	public function subjectlist(){
-	$branchid = $this->input->post("branchname");
-	    	$this->depmodel->get_subjectlist($branchid);
+		$branchid = $this->input->post("branchname");
+	 	$this->depmodel->get_subjectlist($branchid);
 	}
 
 /*This function has been created for display paper name on the basis of subject */
@@ -1026,7 +1027,8 @@ class Map extends CI_Controller
     public function mapsubpre(){
 	    $data['subpres'] = $this->commodel->get_listmore('subject_paper','subp_id,subp_name');
 	    $data['subres'] = $this->commodel->get_listmore('subject','sub_id,sub_name');
-	    $data['prgresult'] = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
+//	    $data['prgresult'] = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
+	    $data['prgresult'] = $this->commodel->get_listmore('program','prg_id,prg_name,prg_branch');
         if(isset($_POST['mapsubpre'])) {
             /*Form Validation*/
             $this->form_validation->set_rules('spreq_prgid','Program','trim|required');
@@ -1329,8 +1331,8 @@ class Map extends CI_Controller
 
         $this->form_validation->set_rules('authorities',' Authority Name','trim|xss_clean|required');
         $this->form_validation->set_rules('edrpuser','User Name','trim|xss_clean|required');
-        $this->form_validation->set_rules('map date','From Date','trim|xss_clean|required');
-        $this->form_validation->set_rules('till date','Till Date','trim|xss_clean|required');
+        $this->form_validation->set_rules('map_date','From Date','trim|xss_clean|required');
+        $this->form_validation->set_rules('till_date','Till Date','trim|xss_clean|required');
         $this->form_validation->set_rules('authority_type','Authority Type','trim|xss_clean|required');
 
 

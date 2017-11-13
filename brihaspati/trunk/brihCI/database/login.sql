@@ -69,9 +69,10 @@ CREATE TABLE `authority_archive` (
   `user_id` int(11) NOT NULL,
   `map_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `till_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `authority_type` varchar(10) NOT NULL
+  `authority_type` varchar(10) NOT NULL,
+  `creatorid` int(11) NOT NULL,
+  `createdate` DATETIME  NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 --
 -- Table structure for table `authority_map`
