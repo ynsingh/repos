@@ -423,6 +423,7 @@ class Enterence extends CI_Controller {
      *   genetrated code.
      */
     public function step_zero() {
+	
         $data = array();
         //get program name
         $prg_name=$this->uri->segment(3);
@@ -1249,10 +1250,10 @@ class Enterence extends CI_Controller {
 		$catname = $this->commodel->get_listspfic1('admissionstudent_master','asm_caste','asm_id',$Sid)->asm_caste;
 		$this->catname = $catname;
 		if($this->catname == "General" || $this->catname == "OBC"){
-			$amount='300';
+			$amount='300.00';
 		}
 		if($this->catname == "SC" || $this->catname == "ST"){
-			$amount='100';
+			$amount='100.00';
 		}
 		$name = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$Sid)->asm_fname;
 		//$data['name']=$name;
@@ -1279,9 +1280,12 @@ class Enterence extends CI_Controller {
 		// all values are required
     		
 		//$MERCHANT_KEY = "SYMBk2HQ"; //change  merchant with yours 
-		$MERCHANT_KEY = "gtKFFx";
+		//$MERCHANT_KEY = "gtKFFx";
+		$MERCHANT_KEY	= MERCHANT_KEY;
+		//print_r()
        		// $SALT = "dxmk9SZZ9y";  //change salt with yours 
-		$SALT = "eCwWELxi";	
+		//$SALT = "eCwWELxi";
+		$SALT =	SALT;
 		$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 		
        		//optional udf values 
@@ -1326,7 +1330,8 @@ class Enterence extends CI_Controller {
             		'mailid' => $mailid,
            		'phoneno' => $phoneno,
            		'address' => $ftype,
-			'action' => "https://test.payu.in", //for live change action  https://secure.payu.in
+			//'action' => "https://test.payu.in", //for live change action  https://secure.payu.in
+			'action' => PAYU_BASE_URL,
            		'surl' => $success,
            		'furl' => $fail,
             		   
@@ -1367,7 +1372,8 @@ class Enterence extends CI_Controller {
        		$email = $this->input->post('email');
 		$ftype = $this->input->post('address1');
 		$cdate = date('Y-m-d');	
-        	$SALT = "eCwWELxi";	 //  Your salt
+        	//$SALT = "eCwWELxi";	 //  Your salt
+		$SALT =	SALT;
         	$add = $this->input->post('additionalCharges');
         	if(isset($add)) {
             		$additionalCharges = $this->input->post('additionalCharges');

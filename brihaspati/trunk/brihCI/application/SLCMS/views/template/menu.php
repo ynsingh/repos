@@ -2,7 +2,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
  
-echo "<center>";
+
 echo "<div id='adminmenu' >";
 //echo "<nav>";
 echo "<ul class=\"sf-menu\" >";
@@ -272,5 +272,5 @@ echo "<ul class=\"sf-menu\" >";
 echo "</ul>";
 //echo "</nav>";
 echo "</div>";
-echo "<center>";
+
 

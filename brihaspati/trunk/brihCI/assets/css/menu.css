@@ -9,7 +9,8 @@
 /*** ESSENTIAL STYLES ***/
 #adminmenu {
 	background:none repeat scroll 0 0 #0099CC;
-	height:40px;width:70%;margin:0 auto;
+	height:40px;
+	width:70%;margin:0 auto;
 	padding:0 0 0 18px;
 	color:#FFFFFF;
 }
@@ -19,6 +20,7 @@
 	list-style:none;
 }
 .sf-menu {
+	margin-left:6.2%;
 	line-height:1.3;
 }
 .sf-menu ul {
@@ -52,7 +54,7 @@ ul.sf-menu li.sfHover li ul {
 }
 ul.sf-menu li li:hover ul,
 ul.sf-menu li li.sfHover ul {
-	left:10em; /* match ul width */
+	left:0em; /* match ul width */
 	top:0;
 }
 ul.sf-menu li li:hover li ul,
@@ -61,13 +63,13 @@ ul.sf-menu li li.sfHover li ul {
 }
 ul.sf-menu li li li:hover ul,
 ul.sf-menu li li li.sfHover ul {
-	left:10em; /* match ul width */
+	left:0em; /* match ul width */
 	top:0;
 }
 
 /*** DEMO SKIN ***/
 .sf-menu {
-	float:left;
+	
 	margin-bottom:1em;
 }
 .sf-menu a {

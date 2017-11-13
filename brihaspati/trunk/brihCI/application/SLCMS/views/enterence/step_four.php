@@ -200,10 +200,10 @@ if( $(this).val()==="online"){
 		<td>Amount :</td>
 		<?php $this->catname;
 		if($this->catname == "General" || $this->catname == "OBC"){?>
-		<td><input type="text" style="width:32%;" name="amount" value="<?php echo 300; ?>" readonly></td>
+		<td><input type="text" style="width:32%;" name="amount" value="<?php echo 300.00; ?>" readonly></td>
 		<?php }?>
 		<?php if($this->catname == "SC" || $this->catname == "ST"){?>
-		<td><input type="text" style="width:32%;" name="amount" value="<?php echo 100; ?>" readonly></td>
+		<td><input type="text" style="width:32%;" name="amount" value="<?php echo 100.00; ?>" readonly></td>
 		<?php }?>
 		</tr>
 		<tr>

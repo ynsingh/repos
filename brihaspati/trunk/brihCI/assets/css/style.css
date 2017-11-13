@@ -13,6 +13,13 @@ body {
 	text-align:center;
 }
 
+.welcome{width:70.2%;margin-top:-1%;border-radius:0.4em;
+	background:none repeat scroll 0 0 #0099CC;
+	height:35px;
+	padding:0 0 0 18px;
+	color:#FFFFFF;}
+.welcome h2{padding: 5px 25px;text-align:center;}
+
 #star{color:red;}
 
 /*enterence registration steps css start*/
@@ -106,24 +113,47 @@ label{font-size:18px;}
 	padding:10px 0 10px 0;
 	font-size:14px;
 }
+/* Footer */
 
-#footer {
-	color:#555555;
+/*footer{
+    background:none repeat scroll 0 0 #0c6f9e;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;font-size: 20px;
+    height: 35px;
+    text-align: center;
+    color:black; text-decoration:none;
+}
+footer a{color:white;}
+
+footer p {
+    padding: 10.5px;
+    margin: 0px;font-size: 20px;
+    line-height: 100%;
+}
+
+footer a:hover{color:white;}*/
+
+.footer {
+	background:none repeat scroll 0 0 #067eb7;
+	color:black;
 	font-size:13px;
 	margin:9px 20px 18px 20px;
 	text-align:center;
 }
 
 
-#footer a {
-	color:#555555;
-	font-size:13px;
+.footer a {
+	font-size: 18px;
+	color:white;
 	text-align:center;
 }
 
 p.footer {
+		
 		text-align: center;
-		font-size: 11px;
+		font-size: 18px;font-weight:bold;
 		border-top: 1px solid #D0D0D0;
 		line-height: 32px;
 		padding: 0 10px 0 10px;

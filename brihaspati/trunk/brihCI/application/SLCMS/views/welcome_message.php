@@ -7,12 +7,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<title>Welcome </title>
 	 <link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
          <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/helpdoc.css">
+	 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/style.css">
 	 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">	
 	<style>
 		table,th, td{
-   		 border: 0px solid black;
-	}
-		
+   		 border: 0px solid black;}
 	</style>
 </head>
 <body id="body">
@@ -52,7 +51,7 @@ echo "</center>"; ?>
      </tr>
 </table>
 
-<nav style="width:70.2%;margin-top:-1%;border:0px solid black;"><h2 style="padding: 5px 25px;text-align:center;">Welcome</h2></nav>
+<div class="welcome" style=""><h2 style="">Welcome</h2></div>
 
 <?php $this->load->view('enterence/enterence_head');?>
 </center>
