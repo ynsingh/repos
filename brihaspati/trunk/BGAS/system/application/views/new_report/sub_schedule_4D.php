@@ -106,7 +106,7 @@
         echo "<br>";
         echo "<table border=0 class=\"simple-table balance-sheet-table\" width=\"98%\">";
         $object = new Reportlist1();
-	$object->Fixed_OtherB(149,'4D');
+	$object->Fixed_OtherB();
 
 	//$object->Nonplan_Fixed_Sub_ScheduleB(149,'4D');
 

@@ -185,17 +185,18 @@ class Report2 extends Controller {
 			'size' => '40',
 			'value' => '',
 		);
-		if ($_POST)
-		{
-			$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
-			$data['text']['value'] = $this->input->post('text', TRUE);
-		}
-		/* Form validation */
 
+		/* Form validation */
 		$this->form_validation->set_rules('search_by', 'Search By', 'trim|required');
 		$this->form_validation->set_rules('text', 'Text', 'trim|required');
-		/* Validating form */
 
+		if ($_POST)
+                {
+                        $data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+                        $data['text']['value'] = $this->input->post('text', TRUE);
+                }
+
+		/* Validating form */
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->messages->add(validation_errors(), 'error');
@@ -207,10 +208,15 @@ class Report2 extends Controller {
 			$data_search_by = $this->input->post('search_by', TRUE);
 			$data_text = $this->input->post('text', TRUE);
 		}
-		if(gmp_sign($data_text) == -1) {
+
+		if($data_search_by == "Select")
+                {
+                        $this->messages->add('Please select search type from drop down list.', 'error');
+                }
+		/*if(gmp_sign($data_text) == -1) {
 			$this->messages->add('Text should be a positive value.', 'error');
 			redirect('report2/fundlist');
-		}
+		} */
 		if($data_search_by == "code")
 		{
 			$text = '';
@@ -492,6 +498,8 @@ class Report2 extends Controller {
 
 	function pdf($statement, $id = NULL)
         {
+		$date1 = $this->session->userdata('date1');
+                $date2 = $this->session->userdata('date2');
                 $this->load->helper('pdf_helper');
                 $this->load->library('session');
 		if($statement == "tag")
@@ -522,27 +530,54 @@ class Report2 extends Controller {
                         $data['print_preview'] = TRUE;
                         $data['entry_date1'] = $date1;
                         $data['entry_date2'] = $date2;
-                        $this->load->view('report/pdfreport', $data);
+			$this->load->library('pdf');
+                        $this->pdf->load_view('report/pdfreport',$data);
+                        $this->pdf->render();
+                        $this->pdf->stream("tag.pdf");
                         return;
                 }
-	//negative_trans_report
 
-//		if($statement == "negative_trans_report")
-//                {
-//                 $this->load->helper('text');
-//                        $data['width'] = "100%";
-  //                      $page_count = 0;
+		//negative_trans_report
+		if($statement == "negative_trans_report")
+                {
+                 $this->load->helper('text');
+                        $data['width'] = "100%";
+                        $page_count = 0;
                         /* Pagination setup */
-    //                    $this->load->library('pagination');
-      //                  $data['page_count'] = $page_count;
-        //                $data['report'] = "report2/negative_trans_report";
-          //              $data['statement'] = "Negative Transaction Statement ";
-            //            $data['print_preview'] = TRUE;
-              //          $data['entry_date1'] = $date1;
-                //        $data['entry_date2'] = $date2;
-                  //      $this->load->view('report/pdfreport', $data);
-                    //    return;
-              //  }
+                        $this->load->library('pagination');
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report2/negative_trans_report";
+                        $data['statement'] = "Negative Transaction Statement ";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+			$this->load->library('pdf');
+                        $this->pdf->load_view('report/pdfreport',$data);
+                        $this->pdf->render();
+                        $this->pdf->stream("negative_trans_report.pdf");
+                        return;
+              }
+
+		 //profitandloss_mhrdnew
+                if($statement == "profitandloss_mhrdnew")
+                {
+                 $this->load->helper('text');
+                        $data['width'] = "100%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report2/profitandloss_mhrdnew";
+                        $data['statement'] = "Income And Expenditure Statement";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+                        $this->load->library('pdf');
+                        $this->pdf->load_view('report/pdfreport',$data);
+                        $this->pdf->render();
+                        $this->pdf->stream("profitandloss_mhrdnew.pdf");
+                        return;
+              }
 	
 		if($statement == "sec_report")
                 {
@@ -558,7 +593,10 @@ class Report2 extends Controller {
                         $data['print_preview'] = TRUE;
                         $data['entry_date1'] = $date1;
                         $data['entry_date2'] = $date2;
-                        $this->load->view('report/pdfreport', $data);
+			$this->load->library('pdf');
+                        $this->pdf->load_view('report/pdfreport',$data);
+                        $this->pdf->render();
+                        $this->pdf->stream("sec_report.pdf");
                         return;
                 }
 		
@@ -582,7 +620,10 @@ class Report2 extends Controller {
                         $data['print_preview'] = TRUE;
                         $data['entry_date1'] = $date1;
                         $data['entry_date2'] = $date2;
-                        $this->load->view('report/pdfreport', $data);
+			$this->load->library('pdf');
+                        $this->pdf->load_view('report/pdfreport',$data);
+                        $this->pdf->render();
+                        $this->pdf->stream("profitandloss_mhrd.pdf");
                         return;
 	
 
@@ -804,7 +845,7 @@ class Report2 extends Controller {
 					$fund_ledgerst[$counter][1] = $row->number;
 					/* Opposite entry name */
 					$ledger_name = $this->Secunit_model->get_sec_unit_report($row->id, $row->entry_type, $sec_uni_id );
-					 if($ledger_name != "(Invalid)"){
+					if($ledger_name != "(Invalid)"){
 
 					$fund_ledgerst[$counter][2] = $ledger_name;
 					$fund_ledgerst[$counter][3] =  $current_entry_type['name'];
@@ -819,10 +860,11 @@ class Report2 extends Controller {
 			}
 		
 		
-		}else{
+		}
+		else{
                         redirect('report2/tag');
                         return;
-		}
+		} 
 		return;
 	}
 	
@@ -944,8 +986,8 @@ class Report2 extends Controller {
 		$this->load->library('pagination');
 
 		$this->template->set('page_title', 'Negative Transaction Statement');
-		//$this->template->set('nav_links', array('report2/download/negative_trans_report/'  => 'Download CSV', 'report2/printpreview/negative_trans_report/' => 'Print Preview', 'report2/pdf/negative_trans_report/' => 'Download PDF'));
-		$this->template->set('nav_links', array('report2/printpreview/negative_trans_report/' => 'Print Preview'));
+		$this->template->set('nav_links', array('report2/download/negative_trans_report/'  => 'Download CSV', 'report2/printpreview/negative_trans_report/' => 'Print Preview', 'report2/pdf/negative_trans_report/' => 'Download PDF'));
+		//$this->template->set('nav_links', array('report2/printpreview/negative_trans_report/' => 'Print Preview'));
 		$data['width'] = "70%";
 
 		$data['print_preview'] = FALSE;
@@ -1319,9 +1361,9 @@ class Report2 extends Controller {
                 }
 		//$aggtype;
 		if($aggtype == 'agg')
-	                $this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview', 'aggregation/aggregateincexp' => 'ViewAggregate','report2/printall_schedules/1' => 'Print All Schedules'));
+	                $this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview', 'aggregation/aggregateincexp' => 'ViewAggregate','report2/printall_schedules/1' => 'Print All Schedules' ,'report2/pdf/profitandloss_mhrdnew' => 'Download PDF'));
 		else
-			$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview','report2/printall_schedules/1' => 'Print All Schedules'));
+			$this->template->set('nav_links', array('report2/printpreview/profitandloss_mhrdnew' => 'PrintPreview','report2/printall_schedules/1' => 'Print All Schedules', 'report2/pdf/profitandloss_mhrdnew' => 'Download PDF'));
 
 		$data['left_width'] = "300";
                 $data['right_width'] = "125";

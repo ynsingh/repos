@@ -156,7 +156,7 @@
                 echo "<td> 31.03.".$fy_start[0]."</td>";
         echo "</tr>";
 		$object = new Reportlist1();
-	        $object->Plan_Fixed_Sub_ScheduleC(152);
+	        $object->Plan_Fixed_Sub_ScheduleC();
 		$op_balance3 = $object->opening_bal3;
         	$dr_total3 = $object->dr_plan_total3;
         	$cr_total3 = $object->cr_plan_total3;

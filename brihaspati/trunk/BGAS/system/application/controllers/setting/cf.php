@@ -27,6 +27,7 @@ class Cf extends Controller{
 
 	function index()
 	{
+		$flag = FALSE;
 		ini_set('max_execution_time', 300);
 		$this->template->set('page_title', 'Carry forward account');
 		/* Check access */
@@ -221,6 +222,7 @@ class Cf extends Controller{
                         $data_ledger_name = $account_data->ledger_name;
                         $data_liability_ledger_name = $account_data->liability_ledger_name;
                         $data_chart_account = $account_data->chart_account;
+				
                         $data_account_flag = $account_data->account_flag;
                         $data_account_manage_inventory = $account_data->manage_inventory;
                         $data_account_account_locked = $account_data->account_locked;
@@ -256,7 +258,7 @@ class Cf extends Controller{
 
 
 			/* CF Income Schedules Balance using xml      */
-                        $this->db->select('code')->from('groups')->where('parent_id','3');
+                 /*       $this->db->select('code')->from('groups')->where('parent_id','3');
                         $groups = $this->db->get();
                         $count = 11;
                         foreach($groups->result() as $row)
@@ -265,10 +267,10 @@ class Cf extends Controller{
                         	$schedule = new Reportlist();
                         	$schedule->get_IE_schedule($code,"CF",$current_active_account.$Pre_year.$last_year,$count);
                         	$count++;
-                        }
+                        } */
 
 			/* CF Expenditure schedules Balance using xml*/
-			$this->db->select('code')->from('groups')->where('parent_id','4');
+		/*	$this->db->select('code')->from('groups')->where('parent_id','4');
                        	$groups = $this->db->get();
                        	$count = 17;
                        	foreach($groups->result() as $row)
@@ -277,24 +279,47 @@ class Cf extends Controller{
                                	$schedule = new Reportlist();
                                	$schedule->get_IE_schedule($code,"CF",$current_active_account.$Pre_year.$last_year,$count);
                                	$count++;
-                       	}
+                       	} */
+
+			if($data_chart_account == "minimal" || $data_chart_account == "standard"){
+                        $flag = "TRUE";
+
                        	$income = new Reportlist();
                        	$income->income_exp_mhrd(3,"CF",$current_active_account.$Pre_year.$last_year);
                        	$expense = new Reportlist();
-                       	$expense->income_exp_mhrd(4,"CF" ,$current_active_account.$Pre_year.$last_year);
+                       	$expense->income_exp_mhrd(4,"CF" ,$current_active_account.$Pre_year.$last_year); 
+			
+			/*CF Payment Receipt  */
+			$payment = new Paymentreceipt();
+                        $payment->payment_receipt('Payment', "CF",$current_active_account.$Pre_year.$last_year);
+                        $receipt = new Paymentreceipt();
+                        $receipt->payment_receipt('Receipt',"CF",$current_active_account.$Pre_year.$last_year);
+			
+			/*CF MHRD balancesheet*/
+			$liability = new Reportlist();
+                        $liability->new_balance_sheet(0,2,"CF",$current_active_account.$Pre_year.$last_year,0);
+                        $asset = new Reportlist();
+                        $asset->new_balance_sheet(6,1,"CF",$current_active_account.$Pre_year.$last_year,9);
+			}
+
+
+			if($data_chart_account == "mhrd2015"){
+			$flag = "TRUE";
 			$income_expense = new Reportlist1();
 			$income_expense->income_exp_mhrdnew(3,"CF" ,$current_active_account.$Pre_year.$last_year);
 			$income_expense->income_exp_mhrdnew(4,"CF" ,$current_active_account.$Pre_year.$last_year);
+			
+			/*CF Payment Receipt  */
                        	$payment = new Paymentreceipt();
                        	$payment->payment_receipt('Payment', "CF",$current_active_account.$Pre_year.$last_year);
                        	$receipt = new Paymentreceipt();
-                       	$receipt->payment_receipt('Receipt',"CF",$current_active_account.$Pre_year.$last_year);
+                       	$receipt->payment_receipt('Receipt',"CF",$current_active_account.$Pre_year.$last_year);  
 
 			/*CF MHRD balancesheet*/
 			$mhrd_liability = new Reportlist1();
 			$mhrd_liability->new_mhrd(2, "CF", $current_active_account.$Pre_year.$last_year);
 			$mhrd_asset = new Reportlist1();
-        		$mhrd_asset->new_mhrd(1, "CF", $current_active_account.$Pre_year.$last_year);
+        		$mhrd_asset->new_mhrd(1, "CF", $current_active_account.$Pre_year.$last_year); 
 
 			/*cf balncesheet schedule for
 			*****MHRD FORMAT 2015*******/
@@ -315,7 +340,7 @@ class Cf extends Controller{
 			//Schedule4
                         $mhrd_schedule->FixedAsset_A('2001','4','CF',$current_active_account.$Pre_year.$last_year);
                         $mhrd_schedule->FixedAsset_B('2001','4','CF',$current_active_account.$Pre_year.$last_year);
-			$mhrd_schedule->FixedAsset_C(2001, 4,'CF',$current_active_account.$Pre_year.$last_year);
+			$mhrd_schedule->FixedAsset_C(2001, 4,'CF',$current_active_account.$Pre_year.$last_year); 
 
 			//Schedule5
                         $mhrd_schedule->get_Assetschedule('2002',5,'CF',$current_active_account.$Pre_year.$last_year);
@@ -355,18 +380,19 @@ class Cf extends Controller{
 			$mhrd_schedule->get_exp_schedules('4007','CF',$current_active_account.$Pre_year.$last_year,23);
 			$mhrd_schedule->get_exp_schedules('4008','CF',$current_active_account.$Pre_year.$last_year,21);
 			$mhrd_schedule->get_exp_schedules('4009','CF',$current_active_account.$Pre_year.$last_year,22);
-			/*CF corporate format balancesheet 
-                        $corp_liability = new Reportlist();
+			}
+			/*CF corporate format balancesheet */
+                    /*    $corp_liability = new Reportlist();
 			$corp_liability->init(1);
                         $corp_liability->bal_corp_format_asset(0, $current_active_account.$Pre_year.$last_year);
                         $corp_asset = new Reportlist();
 			$corp_asset->init(2);
-                        $corp_asset->bal_corp_format_liability(0, $current_active_account.$Pre_year.$last_year);
+                        $corp_asset->bal_corp_format_liability(0, $current_active_account.$Pre_year.$last_year); */
 
 			
 			/* CF Asset Liability MHRD Balance using xml */
 	
-                        $liability = new Reportlist();
+                     /*   $liability = new Reportlist();
                         $liability->new_balance_sheet(0,2,"CF",$current_active_account.$Pre_year.$last_year,0);
                         $asset = new Reportlist();
                         $asset->new_balance_sheet(6,1,"CF",$current_active_account.$Pre_year.$last_year,9);
@@ -378,12 +404,11 @@ class Cf extends Controller{
                         $asset->Investments(22,'Earmarked Funds',8,'200202',$current_active_account.$Pre_year.$last_year,"CF",12);
                         $asset->Investments(22,'others',8,'200202',$current_active_account.$Pre_year.$last_year,"CF",18);
                         $asset->fixed_assets(14,7,'2001',"CF",$current_active_account.$Pre_year.$last_year);
-
                         $liability = new Balancesheet();
                         $liability->schedule_five('12',5,'100301',"CF",$current_active_account.$Pre_year.$last_year);
                         $liability->schedule_five('13',5,'100302',"CF",$current_active_account.$Pre_year.$last_year);
                         $liability->current_liabilities(8,6,'1004',"CF",$current_active_account.$Pre_year.$last_year);
-                        $liability->provisions(157,6,'1005',"CF",$current_active_account.$Pre_year.$last_year);
+                        $liability->provisions(157,6,'1005',"CF",$current_active_account.$Pre_year.$last_year); */
 	
 			$income = new Reportlist();
                         $diff = $income->income_expense_diff();

@@ -77,17 +77,18 @@ class Log extends Controller {
                         'size' => '40',
                         'value' => '',
                 );
-                if ($_POST)
+
+                /* Form validation */
+                $this->form_validation->set_rules('search_by', 'Search By', 'trim|required');
+                $this->form_validation->set_rules('text', 'Text', 'trim|required');
+
+		if ($_POST)
                 {
                         $data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
                         $data['text']['value'] = $this->input->post('text', TRUE);
                 }
-                /* Form validation */
 
-                $this->form_validation->set_rules('search_by', 'Search By', 'trim|required');
-                $this->form_validation->set_rules('text', 'Text', 'trim|required');
                 /* Validating form */
-
                 if ($this->form_validation->run() == FALSE)
                 {
                         $this->messages->add(validation_errors(), 'error');
@@ -117,11 +118,11 @@ class Log extends Controller {
 			}
 
                 }//end
-	        if(gmp_sign($data_text) == -1) {
+	        /*if(gmp_sign($data_text) == -1) {
         		$this->messages->add('Text should be a positive value.', 'error');
                 	redirect('log/LogReport/'.$name);
 			return;
-                }
+                } */
 		//if searching date....	
 		if($data_search_by == "date")
 		{

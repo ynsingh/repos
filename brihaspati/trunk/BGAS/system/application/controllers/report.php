@@ -23,7 +23,8 @@ class Report extends Controller {
 		$this->load->model('Depreciation_model');
 		$this->load->model('Payment_model');
 		$this->load->model('Tag_model');
-	        $this->load->helper('pdf_helper');
+	        //$this->load->helper('pdf_helper');
+		$this->load->library('pdf');
 		$this->load->library('session');
 		$this->load->helper('url');
 
@@ -48,7 +49,7 @@ class Report extends Controller {
 	function balancesheet($period = NULL )
 	{
 		$this->template->set('page_title', 'Balance Sheet');
-		$this->template->set('nav_links', array('report/download/balancesheet' => 'Download CSV', 'report/printpreview/balancesheet' => 'Print Preview', 'report/pdf/balancesheet' => 'Download PDF'));
+		$this->template->set('nav_links', array('report/download/balancesheet' => 'Download CSV', 'report/printpreview/balancesheet' => 'Print Preview'));
 		$data['left_width'] = "300";
 		$data['right_width'] = "125";
                 $data['print_preview'] =FALSE;
@@ -142,7 +143,7 @@ class Report extends Controller {
 		return;
 	}
 
-	function pdf($statement, $id = NULL)
+/*	function pdf($statement, $id = NULL)
 	{
 		$data['search']='';
                 $date1 = $this->session->userdata('date1');
@@ -233,7 +234,7 @@ class Report extends Controller {
                         $data['width'] = "100%";
                         $page_count = 0;
                         /* Pagination setup */
-                        $this->load->library('pagination');
+  /*                      $this->load->library('pagination');
                         $data['page_count'] = $page_count;
                         $data['report'] = "report/dayst";
                         $data['statement'] = "Ledger Statement for the day :".$date1;
@@ -250,7 +251,7 @@ class Report extends Controller {
                         $data['width'] = "100%";
                         $page_count = 0;
                         /* Pagination setup */
-                        $this->load->library('pagination');
+    /*                    $this->load->library('pagination');
                         $data['page_count'] = $page_count;
                         $data['report'] = "report/cashst";
                         $data['print_preview'] = TRUE;
@@ -268,11 +269,11 @@ class Report extends Controller {
 			$data['width'] = "100%";
                         $page_count = 0;
                         /* Pagination setup */
-                        $this->load->library('pagination');
+      /*                  $this->load->library('pagination');
                         $data['ledger_id'] = $this->uri->segment(4);
                         $data['page_count'] = $page_count;
                         /* Checking for valid ledger id */
-                        if ($data['ledger_id'] < 1)
+        /*                if ($data['ledger_id'] < 1)
                         {
                                 $this->messages->add('Invalid Ledger account.', 'error');
                                 redirect('report/ledgerst');
@@ -305,7 +306,7 @@ class Report extends Controller {
                         $data['ledger_id'] = $this->uri->segment(4);
 
                         /* Check if path is 'all' or 'pending' */
-                        if ($this->uri->segment(5) == 'all')
+          /*              if ($this->uri->segment(5) == 'all')
                         {
                                 $data['reconciliation_type'] = 'all';
                                 $data['show_all'] = TRUE;
@@ -319,7 +320,7 @@ class Report extends Controller {
                         }
 
                         /* Checking for valid ledger id and reconciliation status */
-			if ($data['ledger_id'] > 0)
+	/*		if ($data['ledger_id'] > 0)
                         {
                                 $this->db->from('ledgers')->where('id', $data['ledger_id'])->where('reconciliation', 1)->limit(1);
                                 if ($this->db->get()->num_rows() < 1)
@@ -343,7 +344,7 @@ class Report extends Controller {
 
 	
 		return;
-	}
+	} */  
 	 
 	function depreciation($period = NULL)
         {
@@ -529,14 +530,14 @@ class Report extends Controller {
                         'text'=>$data_text,
 			'asset_type_value'=>$data_asset_type
                         );
+			//print_r($newrange);
                 $this->session->set_userdata($newrange);	
 		$data['search'] = $data_search_by;
 		$data['asset_type_value'] = $data_asset_type;
-		
+			print_r($data);
 		/* add  data by @kanchan*/	
-		$this->Depreciation_model->get_asset_data($data_search_by,$data_text,$data_asset_type);
-		$this->Depreciation_model->get_deprecvalue($data_search_by,$data_text,$data_asset_type);
-
+		//$this->Depreciation_model->get_asset_data($data_search_by,$data_text,$data_asset_type,'');
+		//	print_r($data);
 		$this->template->load('template', 'report/depreciation', $data);
                 return;
         }
@@ -1028,7 +1029,7 @@ class Report extends Controller {
 
 		$this->template->set('page_title', 'Balance Sheet MHRD Format');
                 //$this->template->set('nav_links', array('report/download/new_balancesheet' => 'Download CSV', 'report/printpreview/new_balancesheet' => 'Print Preview'));
-                $this->template->set('nav_links', array('report/printpreview/new_balancesheet' => 'Print Preview', 'report/printPreview_schedules/1' => 'Print All Schedules', 'report/pdf/new_balancesheet' => 'Download PDF'));
+                $this->template->set('nav_links', array('report/printpreview/new_balancesheet' => 'Print Preview', 'report/printPreview_schedules/1' => 'Print All Schedules', 'report/pdfpreview/new_balancesheet' => 'Download PDF'));
 		$default_end_date;
 
 		/* Form fields */ 
@@ -1126,7 +1127,7 @@ class Report extends Controller {
 	{
                 $this->template->set('page_title', 'Balance Sheet MHRD Format-2015');
 		//$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdf/new_mhrd' => 'Download PDF'));
-		$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdf/new_mhrd' => 'Download PDF','aggregation/aggregatebalancesheet' => 'View Aggregate Balacesheet'));
+		$this->template->set('nav_links', array('report/printpreview/new_mhrd' => 'Print Preview', 'report/printall_schedules/1' => 'Print All Schedules', 'report/pdfpreview/new_mhrd' => 'Download PDF','aggregation/aggregatebalancesheet' => 'View Aggregate Balacesheet'));
 
 		$data['left_width'] = "300";
                 $data['right_width'] = "125";
@@ -1718,7 +1719,7 @@ class Report extends Controller {
 	function profitandloss($period = NULL)
 	{
 		$this->template->set('page_title', 'Income And Expenditure Statement');
-		$this->template->set('nav_links', array('report/download/profitandloss' => 'Download CSV', 'report/printpreview/profitandloss' => 'Print Preview', 'report/pdf/profitandloss' => 'Download PDF'));
+		$this->template->set('nav_links', array('report/download/profitandloss' => 'Download CSV', 'report/printpreview/profitandloss' => 'Print Preview'));
 		$data['left_width'] = "300";
 		$data['right_width'] = "125";
 		$default_end_date;
@@ -1821,9 +1822,9 @@ class Report extends Controller {
         $db1->select('username')->from('aggregateaccounts')->where('username =', $username);
         $getuser = $db1->get();
         if ($getuser->num_rows() > 0)
-            $this->template->set('nav_links', array('report/download/paymentreceipt' => 'Download CSV', 'report/printpreview/paymentreceipt' => 'Print Preview', 'report/pdf/paymentreceipt' => 'Download PDF','aggregation/aggregatepayrec' => 'View Aggregate '));
+            $this->template->set('nav_links', array('report/download/paymentreceipt' => 'Download CSV', 'report/printpreview/paymentreceipt' => 'Print Preview', 'report/pdfpreview/paymentreceipt' => 'Download PDF','aggregation/aggregatepayrec' => 'View Aggregate '));
         else
-            $this->template->set('nav_links', array('report/download/paymentreceipt' => 'Download CSV', 'report/printpreview/paymentreceipt' => 'Print Preview', 'report/pdf/paymentreceipt' => 'Download PDF'));
+            $this->template->set('nav_links', array('report/download/paymentreceipt' => 'Download CSV', 'report/printpreview/paymentreceipt' => 'Print Preview', 'report/pdfpreview/paymentreceipt' => 'Download PDF'));
 
 		$data['left_width'] = "300";
 		$data['right_width'] = "125";
@@ -1923,7 +1924,7 @@ class Report extends Controller {
 	{
 		$this->template->set('page_title', 'Trial Balance');
 		//$this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdf/trialbalance' => 'Download PDF'));
-        $this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdf/trialbalance' => 'Download PDF','aggregation/aggregatetrialbalance' => 'View Aggregate '));
+        $this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview', 'report/pdfpreview/trialbalance' => 'Download PDF','aggregation/aggregatetrialbalance' => 'View Aggregate '));
 		
 		$data['width'] = "70%";
 		$default_end_date;
@@ -2022,6 +2023,254 @@ class Report extends Controller {
 		return;
 	}
 
+	function pdfpreview($statement,$id = NULL)
+        {
+		$date1 = $this->session->userdata('date1');
+                $date2 = $this->session->userdata('date2');
+		$search = $this->session->userdata('search');
+                $text = $this->session->userdata('text');
+		$count = $id;
+
+		if($statement == "balancesheet")
+                {
+                	$data['report'] = "report/balancesheet";
+                	$data['statement'] = "Balance Sheet";
+                	$data['left_width'] = "100";
+                	$data['right_width'] = "75";
+                	$data['print_preview'] = TRUE;
+                	$data['entry_date1'] = $date1;
+                	$data['entry_date2'] = $date2;
+
+			$this->load->library('pdf');
+                	$this->pdf->load_view('report/pdfreport',$data);
+                	$this->pdf->render();
+                	$this->pdf->stream("balancesheet.pdf");
+                	return;
+                }
+
+		if ($statement == "new_balancesheet")
+                {
+                        $data['report'] = "report/new_balancesheet";
+                        $data['statement'] = "Balance Sheet MHRD Format";
+                        $data['left_width'] = "100";
+                        $data['right_width'] = "75";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+
+			$this->load->library('pdf');
+                	$this->pdf->load_view('report/pdfreport',$data);
+                	$this->pdf->render();
+                	$this->pdf->stream("new_balancesheet.pdf");
+                        return;
+                }
+                
+                if($statement == "new_mhrd")
+                {
+                	$data['report'] = "report/new_mhrd";
+                	$data['statement'] = "Balance Sheet MHRD Format-2015";
+                	$data['left_width'] = "100";
+                	$data['right_width'] = "75";
+                	$data['print_preview'] = TRUE;
+                	$data['entry_date1'] = $date1;
+                	$data['entry_date2'] = $date2;
+
+			$this->load->library('pdf');
+                	$this->pdf->load_view('report/pdfreport',$data);
+                	$this->pdf->render();
+                	$this->pdf->stream("new_mhrd.pdf");
+                	return;
+                }
+                
+                if ($statement == "profitandloss")
+                {
+                        $data['report'] = "report/profitandloss";
+                        $data['statement'] = "Income And Expenditure Statement";
+                        $data['left_width'] = "100";
+                        $data['right_width'] = "75";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+
+			$this->load->library('pdf');
+                	$this->pdf->load_view('report/pdfreport',$data);
+               	 	$this->pdf->render();
+                	$this->pdf->stream("profitandloss.pdf");
+                        return;
+                }
+
+		if ($statement == "paymentreceipt")
+                {
+                        $data['report'] = "report/paymentreceipt";
+                        $data['statement'] = "Payment & Receipt";
+                        $data['left_width'] = "50";
+                        $data['right_width'] = "50";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+
+			$this->load->library('pdf');
+                        $this->pdf->load_view('report/pdfreport',$data);
+                        $this->pdf->render();
+                        $this->pdf->stream("paymentreceipt.pdf");
+                        return;
+                }
+
+
+		if($statement == "trialbalance")
+		{
+			$data['report'] = "report/trialbalance";
+			$data['width'] = "100%";
+                        $data['print_preview'] = TRUE;
+			$data['entry_date1'] = $date1;
+			$data['entry_date2'] = $date2;
+                        $data['statement'] = "Trial Balance";
+
+			$this->load->library('pdf');
+                	$this->pdf->load_view('report/pdfreport',$data);
+                	$this->pdf->render();
+                	$this->pdf->stream("trialbalance.pdf");
+			return;
+		}			
+
+		if($statement == "dayst")
+		{
+	 	$this->load->helper('text');
+                $data['width'] = "100%";
+                $page_count = 0;
+                /* Pagination setup */
+      	        $this->load->library('pagination');
+                $data['page_count'] = $page_count;
+                $data['report'] = "report/dayst";
+                $data['statement'] = "Ledger Statement for the day :".$date1;
+                $data['print_preview'] = TRUE;
+                $data['entry_date1'] = $date1;	
+		$this->session->unset_userdata('date1');
+
+        	$this->load->library('pdf');
+        	$this->pdf->load_view('report/pdfreport',$data);
+        	$this->pdf->render();
+        	$this->pdf->stream("dayst.pdf");
+		return;
+		}
+
+		if($statement == "cashst")
+                {
+		
+                        $this->load->helper('text');
+                        $data['width'] = "100%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                        $data['page_count'] = $page_count;
+                        $data['report'] = "report/cashst";
+                        $data['print_preview'] = TRUE;
+                        $data['statement'] = "Cash Statement";
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+			$data['search'] = $search;
+		
+
+			$this->load->library('pdf');
+                	$this->pdf->load_view('report/pdfreport',$data);
+                	$this->pdf->render();
+                	$this->pdf->stream("cashst.pdf");
+                        return;
+
+
+                }
+
+		if($statement == "ledgerst")
+                {
+                 	$this->load->helper('text');
+                        $data['width'] = "100%";
+                        $page_count = 0;
+                        /* Pagination setup */
+                        $this->load->library('pagination');
+                        $data['ledger_id'] = $this->uri->segment(4);
+                        $data['page_count'] = $page_count;
+                        /* Checking for valid ledger id */
+                        if ($data['ledger_id'] < 1)
+                        {
+                                $this->messages->add('Invalid Ledger account.', 'error');
+                                redirect('report/ledgerst');
+                                return;
+                        }
+                        $this->db->from('ledgers')->where('id', $data['ledger_id'])->limit(1);
+                        if ($this->db->get()->num_rows() < 1)
+                        {
+                                $this->messages->add('Invalid Ledger account.', 'error');
+                                redirect('report/ledgerst');
+                                return;
+                        }
+                        $data['report'] = "report/ledgerst";
+                        $data['statement'] = "Ledger Statement for '" . $this->Ledger_model->get_name($data['ledger_id']) . "'";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+
+			$this->load->library('pdf');
+                        $this->pdf->load_view('report/pdfreport',$data);
+                        $this->pdf->render();
+                        $this->pdf->stream("ledgerst.pdf");
+                        $this->session->unset_userdata('date1');
+                        $this->session->unset_userdata('date2');
+                        return;
+                }
+
+		if ($statement == "reconciliation")
+                {
+                        $this->load->helper('text');
+
+                        $data['show_all'] = FALSE;
+                        $data['ledger_id'] = $this->uri->segment(4);
+
+                        /* Check if path is 'all' or 'pending' */
+                        if ($this->uri->segment(5) == 'all')
+                        {
+                                $data['reconciliation_type'] = 'all';
+                                $data['show_all'] = TRUE;
+                        } else if ($this->uri->segment(5) == 'pending') {
+                                $data['reconciliation_type'] = 'pending';
+                                $data['show_all'] = FALSE;
+                        } else {
+                                $this->messages->add('Invalid path.', 'error');
+                                redirect('report/reconciliation/pending');
+                                return;
+                        }
+
+                        /* Checking for valid ledger id and reconciliation status */
+                      if ($data['ledger_id'] > 0)
+                        {
+                                $this->db->from('ledgers')->where('id', $data['ledger_id'])->where('reconciliation', 1)->limit(1);
+                                if ($this->db->get()->num_rows() < 1)
+                                {
+                                        $this->messages->add('Invalid Ledger account or Reconciliation is not enabled for the Ledger account.', 'error');
+                                        redirect('report/reconciliation/' . $reconciliation_type);
+                                        return;
+                                }
+                        } else if ($data['ledger_id'] < 0) {
+                                $this->messages->add('Invalid Ledger account.', 'error');
+                                redirect('report/reconciliation/' . $reconciliation_type);
+                                return;
+                        }
+
+                        $data['report'] = "report/reconciliation";
+                        $data['statement'] = "Reconciliation Statement for '" . $this->Ledger_model->get_name($data['ledger_id']) . "'";
+                        $data['print_preview'] = TRUE;
+			$this->load->library('pdf');
+                        $this->pdf->load_view('report/pdfreport',$data);
+                        $this->pdf->render();
+                        $this->pdf->stream("reconciliation.pdf");
+                        return;
+                }
+
+
+
+
+
+        }  
+
 	function dayst(){
 		$entry_date1=0;
 		$this->load->library('session');
@@ -2029,10 +2278,8 @@ class Report extends Controller {
                 /* Pagination setup */
                 $this->load->library('pagination');
         	$date1 = $this->session->userdata('date1');
-		echo "date1==========";
-		print_r($date1);
                 $this->template->set('page_title', 'Day Statement');
-                $this->template->set('nav_links', array('report/printpreview/dayst/' => 'Print Preview','report/pdf/dayst/'=> 'Download PDF'));
+                $this->template->set('nav_links', array('report/printpreview/dayst/' => 'Print Preview','report/ pdfpreview/dayst/'=> 'Download PDF'));
                 //$this->template->set('nav_links', array('report/download/dayst/'  => 'Download CSV', 'report/printpreview/dayst/' => 'Print Preview', 'report/pdf/dayst/' => 'Download PDF'));
                 $data['width'] = "70%";
 		$data['print_preview'] = FALSE;
@@ -2081,6 +2328,7 @@ class Report extends Controller {
                         $this->session->set_userdata($newdata);
                         redirect('report/dayst/');
                 }
+
                 $this->template->load('template', 'report/dayst', $data);
 	return;
 	}
@@ -2091,7 +2339,7 @@ class Report extends Controller {
 		$this->load->library('pagination');
 
 		$this->template->set('page_title', 'Ledger Statement');
-		$this->template->set('nav_links', array('report/download/ledgerst/' . $ledger_id  => 'Download CSV', 'report/printpreview/ledgerst/' . $ledger_id => 'Print Preview', 'report/pdf/ledgerst/' . $ledger_id => 'Download PDF'));
+		$this->template->set('nav_links', array('report/download/ledgerst/' . $ledger_id  => 'Download CSV', 'report/printpreview/ledgerst/' . $ledger_id => 'Print Preview', 'report/pdfpreview/ledgerst/' . $ledger_id => 'Download PDF'));
 		$data['width'] = "70%";
 
 		if ($_POST)
@@ -2282,12 +2530,12 @@ class Report extends Controller {
 			$data['reconciliation_type'] = 'all';
 			$data['show_all'] = TRUE;
 			if ($ledger_id > 0)
-				$this->template->set('nav_links', array('report/download/reconciliation/' . $ledger_id . '/all'  => 'Download CSV', 'report/printpreview/reconciliation/' . $ledger_id . '/all' => 'Print Preview','report/pdf/reconciliation/'. $ledger_id . '/all' => 'Download PDF'));
+				$this->template->set('nav_links', array('report/download/reconciliation/' . $ledger_id . '/all'  => 'Download CSV', 'report/printpreview/reconciliation/' . $ledger_id . '/all' => 'Print Preview','report/pdfpreview/reconciliation/'. $ledger_id . '/all' => 'Download PDF'));
 		} else if ($reconciliation_type == 'pending') {
 			$data['reconciliation_type'] = 'pending';
 			$data['show_all'] = FALSE;
 			if ($ledger_id > 0)
-				$this->template->set('nav_links', array('report/download/reconciliation/' . $ledger_id . '/pending'  => 'Download CSV', 'report/printpreview/reconciliation/' . $ledger_id . '/pending'  => 'Print Preview','report/pdf/reconciliation/'. $ledger_id . '/pending' => 'Download PDF'));
+				$this->template->set('nav_links', array('report/download/reconciliation/' . $ledger_id . '/pending'  => 'Download CSV', 'report/printpreview/reconciliation/' . $ledger_id . '/pending'  => 'Print Preview','report/pdfpreview/reconciliation/'. $ledger_id . '/pending' => 'Download PDF'));
 		} else {
 			$this->messages->add('Invalid path.', 'error');
 			redirect('report/reconciliation/pending');
@@ -3652,7 +3900,7 @@ class Report extends Controller {
 		/* Pagination setup */
                 $this->load->library('pagination');
 		$this->template->set('page_title', 'Cash Reports');
-		$this->template->set('nav_links', array('report/printpreview/cashst/' => 'Print Preview','report/pdf/cashst/'=> 'Download PDF'));
+		$this->template->set('nav_links', array('report/printpreview/cashst/' => 'Print Preview','report/pdfpreview/cashst/'=> 'Download PDF'));
 
 		$data['width'] = "70%";
 		$default_end_date;
@@ -4193,7 +4441,8 @@ class Report extends Controller {
 				$led_code = $val_A->code;
 
                         } 
-			
+			//echo "led code ====";
+			//print_r($led_code);	
 			$this->db->from('old_asset_register')->where('asset_name', $asset_led_name);
                         $query_r = $this->db->get();
                         foreach($query_r->result() as $val_B)

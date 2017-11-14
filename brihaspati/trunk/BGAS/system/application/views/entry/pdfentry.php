@@ -1,5 +1,10 @@
 <?php
-	tcpdf();
+
+	require_once(APPPATH.'libraries/dompdf/dompdf_config.inc.php');
+        $dom_pdf = new DOMPDF();
+
+
+	/*tcpdf();
 	$obj_pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 	$obj_pdf->SetCreator(PDF_CREATOR);
 	$title = "PDF Report";
@@ -16,7 +21,7 @@
 	$obj_pdf->SetFont('helvetica', '', 9);
 	$obj_pdf->setFontSubsetting(false);
 	$obj_pdf->AddPage();
-	ob_start();
+	ob_start(); */
 ?>
 <?php
 ?>
@@ -151,7 +156,7 @@
                     	echo"<td>".$row['type']."</td>";
                     	echo "</tr>";
                 }
-                echo "<tr class=\"tr-total\"><td></td><td class=\"total-name\" align=\"left\"> Total</td><td class=\"total-dr\" align=\"center\"> " . $currency . " " .  $entry_dr_total . "</td><td class=\"total-cr\" align=\"center\"> " . $currency . " " . $entry_cr_total . "</td></tr>";
+                echo "<tr class=\"tr-total\"><td></td><td class=\"total-name\" align=\"left\"> Total</td><td class=\"total-dr\" align=\"center\"> " . $currency . " " .  $entry_dr_total . "</td><td class=\"total-cr\" align=\"center\"> " . $currency . " " . $entry_cr_total . "</td><td></td><td></td><td></td><td></td></tr>";
 	?>
 </tbody>
 </table>
@@ -290,9 +295,9 @@
 </html>
 
 <?php
-	$content = ob_get_contents();
+	/*$content = ob_get_contents();
 	ob_end_clean();
 	$obj_pdf->writeHTML($content, true, false, true, false, '');
-	$obj_pdf->Output( $current_entry_type['name'].' entry_'.$entry_number.'.pdf', 'I');
+	$obj_pdf->Output( $current_entry_type['name'].' entry_'.$entry_number.'.pdf', 'I'); */
 
 ?>

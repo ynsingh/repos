@@ -8,6 +8,7 @@ class Reportlist1
                 $CI->load->model('Ledger_model');
 		$CI->load->model('ledger_model');
                 $CI->load->model('payment_model');
+		$CI->load->model('depreciation_model');
                 $CI->load->model('investment_model');
                 $CI->load->model('newschedules_model');
 		return;
@@ -826,8 +827,12 @@ d Investments')
 		$dep_opening_balance='';
 		$current_depreciation_amount='';
                 $current_year_value = 0.00;
+		$total_depreciation  = "";
+		//$total_deprecaition = "";
 		$prev_total=0;
                 $CI = & get_instance();
+		//$CI->depreciation_model->calculate_totaldep();
+
 		//Get current label.
                 $current_active_account = $CI->session->userdata('active_account');
                 $prev_year=$this->get_fy_year();
@@ -842,12 +847,19 @@ d Investments')
                 foreach($group_detail->result() as $row)
                 {
                         $g_id =$row->id;
+			$g_name = $row->name;
+			$g_code = $row->code;
+			//$CI->depreciation_model->calculate_total_dep($g_name,$g_code,$g_id);
+
                         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$g_id);
                         $child_detail = $CI->db->get();
                         foreach($child_detail->result() as $row1)
                         {
                         	$group_id =$row1->id;
-                        	$group_name = $row1->name;
+				$group_name = $row1->name;
+				$group_code = $row1->code;
+				//$CI->depreciation_model->calculate_total_dep($group_name,$group_code,$group_id);
+
                         	$value = $CI->newschedules_model->fixed_asset($group_id);
                         	$opening_bal = $value[0];
 				$opening_bal_dc = $value[1];
@@ -860,6 +872,9 @@ d Investments')
                		        $closing_bal = $value[4];
                         	$sum3 = $sum3 + $closing_bal;
 				$cr_amountdep = -$value[5];
+
+				//$CI->depreciation_model->calculate_totaldep();
+				
 
          	                $result1 = $CI->newschedules_model->get_old_asset_depvalue($group_id);
                         	$dep_op_balance = $result1[0];
@@ -1053,7 +1068,7 @@ d Investments')
                 $this->curr_amount = $current_amount; 
 		$this->prev_total=$prev_total;
         }
-
+//}
 	function FixedAsset_B($code,$count,$type,$database)
 	{
 		$sum = 0;
@@ -1077,11 +1092,14 @@ d Investments')
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
 
-                $CI->db->select('name,code,id')->from('groups')->where('id',149);
+		$id = $CI->Group_model->get_id('Capital Work-In-Progress');
+                $CI->db->select('name,code,id')->from('groups')->where('id',$id);
                 $group_detail = $CI->db->get();
-                $group_result = $group_detail->row();
-                $group_id =$group_result->id;
-                $group_name = $group_result->name;
+		foreach($group_detail->result() as $res)
+                {
+                //$group_result = $group_detail->row();
+                $group_id =$res->id;
+                $group_name = $res->name;
 
                 $value = $CI->newschedules_model->fixed_asset($group_id);
 		$opening_bal = $value[0];
@@ -1166,6 +1184,7 @@ d Investments')
 			}else{
                                   $data = $CI->payment_model->xml_creation('schedule_'.$count,$group_id,$database,$group_name,$curr_year,$current_year_value);
                         }
+		}//foreach
                 echo "</tr>";
                 $this->opening_balance = $sum;
                 $this->debit_total = $sum1;
@@ -1199,12 +1218,17 @@ d Investments')
                 $file_name="schedule_".$count."-".$current_active_account."-".$prev_year.".xml";
                 $tt=$acctpath."/".$file_name;
 
-                $CI->db->select('name,code,id')->from('ledgers')->where('group_id',152);
+
+		$group_id = $CI->Group_model->get_id('Intangible Assets');
+		$group_code = $CI->Group_model->get_group_code($group_id);
+                $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id);
                 $ledger_detail = $CI->db->get();
                 foreach($ledger_detail->result() as $row)
                 {
                 	$ledg_id =$row->id;
                 	$ledg_name = $row->name;
+			//$dynamic_deprec = $CI->depreciation_model->calculate_total_dep('Intangible Assets',$group_code,$group_id);
+			//	print_r("------------".$dynamic_deprec);	
                 	$result = $CI->newschedules_model->fixed_assetledg($ledg_id);
 			$opening_bal = $result[0];
 			$opening_bal_dc = $result[1];
@@ -1226,6 +1250,7 @@ d Investments')
 
 			//Adding opening balance for the ledger head.
                 	$current_depreciation = ($old_dep_amount + $new_dep_amount);
+		//	$current_depreciation = 
 			$sum5 = $sum5 + $current_depreciation;
 			$total_depreciation = $dep_op_balance + $current_depreciation;
 			$sum6 = $sum6 + $total_depreciation;
@@ -1526,12 +1551,19 @@ d Investments')
                 foreach($group_detail->result() as $row)
                 {
                         $g_id =$row->id;
+			$g_name = $row->name;
+                        $g_code = $row->code;
+			$CI->depreciation_model->calculate_total_dep($g_name,$g_code,$g_id);
+
                         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$g_id);
                         $child_detail = $CI->db->get();
                         foreach($child_detail->result() as $row1)
                         {
                         $group_id =$row1->id;
                         $group_name = $row1->name;
+                        $group_code = $row1->code;
+                       	$CI->depreciation_model->calculate_total_dep($group_name,$group_code,$group_id);
+
 		
 			if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
                         {
@@ -1719,7 +1751,7 @@ d Investments')
 		$this->curr_amount2 = $sum5;
 	}
 
-	function Plan_Fixed_Sub_ScheduleC($id)
+	function Plan_Fixed_Sub_ScheduleC()
         {
                 $counter = 18;
 		$sum1 = 0;
@@ -1730,14 +1762,18 @@ d Investments')
 		$dr_plan_total = 0;
 		$cr_plan_total = 0;
 		$dep_opening_value = 0;
+
                 $CI =& get_instance();
-                $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+		$group_id = $CI->Group_model->get_id('Intangible Assets');
+		$group_code = $CI->Group_model->get_group_code($group_id);
+                $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id);
                 $ledger_detail = $CI->db->get();
                 $ledger_result = $ledger_detail->result();
                 foreach($ledger_result as $row)
                 {
                 	$ledg_id =$row->id;
                 	$ledg_name = $row->name;
+			$CI->depreciation_model->calculate_total_dep('Intangible Assets',$group_code,$group_id);
                 	echo "<tr class=\"tr-group\" colspan=\"2\">";
                	 	//echo "<td class=\"td-group\">";
 			echo "<td class=\"td-group\" width=\"4%\">";
@@ -1836,12 +1872,18 @@ d Investments')
                 foreach($group_detail->result() as $row)
                 {
                         $g_id =$row->id;
+			$g_name = $row->name;
+			$g_code = $row->code;
+			$CI->depreciation_model->calculate_total_dep($g_name,$g_code,$g_id);
+
                         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$g_id);
                         $child_detail = $CI->db->get();
                         foreach($child_detail->result() as $row1)
                         {
                         $group_id =$row1->id;
                         $group_name = $row1->name;
+			$group_code = $row1->code;
+			$CI->depreciation_model->calculate_total_dep($group_name,$group_code,$group_id);
 
 			if(($group_id!= 148) && ($group_id!= 149) && ($group_id!= 151))
                         {
@@ -1928,7 +1970,7 @@ d Investments')
 
 	}
 
-	function Nonplan_Fixed_Sub_ScheduleB($id)
+	function Nonplan_Fixed_Sub_ScheduleB()
 	{
 		$counter = 17;
 		$cr_nonplan_total = 0;
@@ -1946,6 +1988,7 @@ d Investments')
 		$dep_opening_value = 0;
 
 		$CI =& get_instance();
+		$id = $CI->Group_model->get_id('Capital Work-In-Progress');		
                 $CI->db->select('name,code,id')->from('groups')->where('id',$id);
                 $group_detail = $CI->db->get();
                 $group_result = $group_detail->row();
@@ -2029,7 +2072,7 @@ d Investments')
 		$this->curr_amount2 = $sum5;
 	}
 
-	function Nonplan_Fixed_Sub_ScheduleC($id)
+	function Nonplan_Fixed_Sub_ScheduleC()
         {
                 $counter = 18;
 		$sum1 = 0;
@@ -2043,13 +2086,17 @@ d Investments')
 		$cr_nonplan_total = 0;
 		$dep_opening_value = 0;
                 $CI =& get_instance();
-                $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$id);
+		$group_id = $CI->Group_model->get_id('Intangible Assets');
+		$group_code = $CI->Group_model->get_group_code($group_id);
+                $CI->db->select('name,code,id')->from('ledgers')->where('group_id',$group_id);
                 $ledger_detail = $CI->db->get();
                 $ledger_result = $ledger_detail->result();
                 foreach($ledger_result as $row)
                 {
                 	$ledg_id =$row->id;
                 	$ledg_name = $row->name;
+			$CI->depreciation_model->calculate_total_dep('Intangible Assets',$group_code,$group_id);
+
                 	echo "<tr class=\"tr-group\" colspan=\"2\">";
 			echo "<td class=\"td-group\" width=\"4%\">";
                	 	//echo "<td class=\"td-group\">";
@@ -2149,12 +2196,19 @@ d Investments')
                 foreach($group_detail->result() as $row)
                 {
                         $g_id =$row->id;
+			$g_name = $row->name;
+			$g_code = $row->code;
+			$CI->depreciation_model->calculate_total_dep($g_name,$g_code,$g_id);
+
                         $CI->db->select('name,code,id')->from('groups')->where('parent_id',$g_id);
                         $child_detail = $CI->db->get();
                         foreach($child_detail->result() as $row1)
                         {
                         $group_id =$row1->id;
                         $group_name = $row1->name;
+			$group_code = $row1->code;
+			$CI->depreciation_model->calculate_total_dep($group_name,$group_code,$group_id);
+
 	                $result4a = $CI->newschedules_model->plan_sub_schedule4($group_id);
 			$opening_balance = $result4a[0];
 			$sum1 = $sum1 + $opening_balance;
@@ -2236,7 +2290,7 @@ d Investments')
 		$this->curr_amount = $sum5;
 	}
 
-	function Fixed_OtherB($id)
+	function Fixed_OtherB()
         {
                 $counter = 17;
                 $cr_other_total = 0;
@@ -2254,6 +2308,7 @@ d Investments')
                 $dep_opening_value = 0;
 
                 $CI =& get_instance();
+		$id = $CI->Group_model->get_id('Capital Work-In-Progress');
                 $CI->db->select('name,code,id')->from('groups')->where('id',$id);
                 $group_detail = $CI->db->get();
                 $group_result = $group_detail->row();
@@ -2486,7 +2541,7 @@ d Investments')
                         $liability_total = $liability->total;
           //              $liability_total = $CI->ledger_model->get_balancesheet_ledger_balance($groupledg_id);
                         $sum = $sum + $liability_total;
-		}
+		//}
 				if($type == 'view'){
 				echo "<tr class=\"tr-ledger\">";
 	                	echo "<td class=\"td-ledger\">";
@@ -2502,9 +2557,10 @@ d Investments')
 				echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($liability_total) . "</td>";
                         	echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($previous_val) . "</td>";
 				 }else{
-                        $data = $CI->payment_model->xml_creation('schedule_'.$count,$ledg_id,$database,'Direct Ledger(Current Liability)',$curr_year,$liability_total);
-                        }
-
+                       		 //$data = $CI->payment_model->xml_creation('schedule_'.$count,$ledg_id,$database,'Direct Ledger(Current Liability)',$curr_year,$liability_total);
+				$data = $CI->payment_model->xml_creation('schedule_'.$count,$$groupledg_id,$database,'Direct Ledger(Current Liability)',$curr_year,$liability_total);
+                        	}
+		}//foreach
 
 	 // for ledger comes under direct group
 	// for 1004 ledgers	
@@ -2522,12 +2578,12 @@ d Investments')
                         $liability->init_led($rowl->id);
                         $liability_total = $liability->total;
           //              $liability_total = $CI->ledger_model->get_balancesheet_ledger_balance($groupledg_id);
-                        $total = $total + $liability_total;
+                        //$total = $total + $liability_total;
 			$sum = $sum + $liability_total;
 //			print_r("the group-direct is =".$i."- ".$groupledg_name." = ".$liability_total."sum = ".$sum);
 //			print_r("<br>");
 //				$i++;
-		}
+		//}
 		if($type == 'view'){
 			echo "<tr class=\"tr-ledger\">";
 	               	echo "<td class=\"td-ledger\">";
@@ -2543,8 +2599,10 @@ d Investments')
 				echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($total) . "</td>";
                         	echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($previous_val) . "</td>";
 			}else{
-                        	$data = $CI->payment_model->xml_creation('schedule_'.$count,$ledg_id,$database,'Direct Ledger (Current Liability and Provision)',$curr_year,$total);
+                        	//$data = $CI->payment_model->xml_creation('schedule_'.$count,$ledg_id,$database,'Direct Ledger (Current Liability and Provision)',$curr_year,$total);
+				$data = $CI->payment_model->xml_creation('schedule_'.$count,$groupledg_id,$database,'Direct Ledger (Current Liability and Provision)',$curr_year,$liability_total);
                         }
+		}//foreach
 
 				$this->liability_total = $sum;
 				$this->prev_total=$prev_total;
@@ -2599,11 +2657,11 @@ d Investments')
                 $main_q = $main_result->result();
                 foreach($main_q as $row)
                 {
+		$ledger_id = $row->id;
                 $liability1 = new Reportlist1();
                 $liability1->init_led($row->id);
                 $liability_total1 = $liability1->total;
                 $sum = $sum + $liability_total1;
-                }
 
 		$previous_val=$CI->payment_model->xml_read($tt,'Direct ledger(Provision)');
                 $prev_total=$prev_total+$previous_val;
@@ -2617,8 +2675,9 @@ d Investments')
                 echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($liability_total1) . "</td>";
                 echo "<td align=\"right\" colspan=\"2\">" . convert_amount_dc($previous_val) . "</td>";
 		}else{
-		$data = $CI->payment_model->xml_creation('schedule_'.$count,$group_id,$database,'Direct ledger(Provision)',$curr_year,$liability_total1);
+		$data = $CI->payment_model->xml_creation('schedule_'.$count,$ledger_id,$database,'Direct ledger(Provision)',$curr_year,$liability_total1);
 		}
+		}//foreach
                 $this->prev_total=$prev_total;
                 $this->liability_total = $sum;
         }
@@ -4783,7 +4842,7 @@ d Investments')
             $q_result = $query->result();
             $ledger_id = array();
             $x = 0;
-		$groupplan=0;$groupnonplan=0;$groupspecific=0; $group1plan=0;$group1nonplan=0;$group1specific;$group2plan=0; $group2nonplan=0;$group2specific;$group3plan=0;$group3nonplan=0;$group3specific=0;
+		$groupplan=0;$groupnonplan=0;$groupspecific=0; $group1plan=0;$group1nonplan=0;$group1specific=0;$group2plan=0; $group2nonplan=0;$group2specific=0;$group3plan=0;$group3nonplan=0;$group3specific=0;
 // ugc[0], govt [1], state [2], other[3]
             foreach($q_result as $row){
                 $ledg_id = $row->id;

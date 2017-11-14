@@ -89,7 +89,7 @@
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
 		echo "<thead><tr><th width=\"$left_width\">Receipt (Net)</th><th width=\"$right_width\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"$right_width\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
-		echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Opening Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($tot_op_bal) . "</td></tr>";
+		echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Opening Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($tot_op_bal) . "</td><td></td></tr>";
 			$receipt = new Paymentreceipt();
                 	$receipt->payment_receipt('Receipt', "view","NULL");
 			$net_receipt_total = float_ops($net_receipt_total, $receipt->total, '+');
@@ -105,7 +105,7 @@
                         $payment->payment_receipt('Payment', "view","NULL");
                         $net_payment_total = float_ops($net_payment_total, $payment->total, '+');
 			$net_prev_payment_total = float_ops($net_prev_payment_total, $payment->prev_total, '+');
-			echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Closing Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($total_cl_bal) . "</td></tr>";  
+			echo "<tr class=\"tr-balance\"><td class=\"bold\" cellpadding=5>Bank Or Cash Closing Balance</td><td align=\"right\" class=\"bold\">" . convert_amount_dc($total_cl_bal) . "</td><td></td></tr>";  
 			echo "</table>";
 			echo "</td>";//end of payment side....
 			echo "</tr>";

@@ -148,6 +148,7 @@
                                                 echo "<td align=\"center\">"."<b>". convert_dc($optype) ." " .money_format('%!i', convert_cur($opbalance))."</td>";
 
 						}
+					echo "<td></td>";
 					echo"</tr></thead>";
 				}else{
 					 echo "<thead><tr><th width=\"10%\"><b>Date</th><th width=\"20%\"><b>Ledger Name</th><th width=\"10%\"><b>Voucher No.</th><th width=\"10%\"><b>Cheque No.</th><th width=\"20%\"><b>Head Of A/C</th>";
@@ -266,7 +267,7 @@
                                           }
 
 				//Total Balance ........................
-        			echo "<tr class=\"tr-total\"><td>TOTAL </td><td></td></td><td></td><td></td>";
+        			echo "<tr class=\"tr-total\"><td>TOTAL </td><td></td></td><td></td><td><td></td></td>";
         			if($search == NULL || $search == "--Select--"){
 					$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
                                         $led_name = $this->db->get();
@@ -405,7 +406,7 @@
 				}
 
 	////Total Of Dr amount........
-       echo "<tr  class=\"tr-total\"><td>TOTAL </td><td></td><td></td><td></td>";
+       echo "<tr  class=\"tr-total\"><td>TOTAL </td><td></td><td></td><td></td><td></td>";
        if($search == NULL || $search == "--Select--"){
 	$this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
         $led_name = $this->db->get();
@@ -429,7 +430,7 @@
        echo"</tr>";
 
 	//Closing balance .............................
-	echo "<tr class=\"tr-balance\"><td><b>Closing Balance</td><td></td><td></td><td></td>";
+	echo "<tr class=\"tr-balance\"><td><b>Closing Balance</td><td></td><td></td><td></td><td></td>";
 	if($search == NULL ||  $search == "--Select--"){
 		  $this->db->from('ledgers')->where('name'. '  ' . 'LIKE', '%' . 'Cash' . '%')->where('type', '1');
         	$led_name = $this->db->get();

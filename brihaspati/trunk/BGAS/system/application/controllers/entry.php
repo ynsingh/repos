@@ -4640,6 +4640,7 @@ $width="100%";
                 //$data['fund_list_active'] = 0;
 
 		$data['check'] = $check;
+			print_r($check);
 
 		$data['sanc_letter_no'] = array(
                         'name' => 'sanc_letter_no',
@@ -4805,6 +4806,8 @@ $width="100%";
                         $purchase_order_no = $this->input->post('purchase_order_no', TRUE);
                         $data_sanc_letter_date = $this->input->post('sanc_letter_date', TRUE);
 
+
+////////////////////////////////////////////////////////
                         $dr_total = 0;
                         $cr_total = 0;
 			$det='';
@@ -4863,6 +4866,8 @@ $width="100%";
                                 return;
                         }
                         $det=$this->Ledger_model->get_other_ledger_name($ledidarray, $entry_type, $leddcarray, $dr_total);
+			echo "det ========";
+			print_r($det);
 			if($det && $check == 0){
 				$data['check'] = 1;
                         	$this->messages->add('The entry with same parameter exist, if you want to submit, click Create or Cancel', 'error');
@@ -4954,7 +4959,8 @@ $width="100%";
 
 	function pdf($entry_type, $entry_id = 0)
 	{
-		$this->load->helper('pdf_helper');
+		$this->load->library('pdf');
+		//$this->load->helper('pdf_helper');
 		$this->load->model('Setting_model');
 		$this->load->model('Ledger_model');
 
@@ -5098,8 +5104,10 @@ $width="100%";
 			}
 		}
 		$data['ledger_q'] = $ledger_q;
-
-		$this->load->view('entry/pdfentry', $data);
+                $this->pdf->load_view('entry/pdfentry',$data);
+                $this->pdf->render();
+                $this->pdf->stream("entry.pdf");
+		//$this->load->view('entry/pdfentry', $data);
 		return;
 	}
 

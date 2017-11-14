@@ -121,7 +121,7 @@ class Create extends Controller {
 		}else{
 */
 		$data['chart_account_options'] = array(
-			'mhrd' => 'MHRD Format',
+			//'mhrd' => 'MHRD Format',
 			'mhrd2015' => 'MHRD Format 2015',
 			'minimal' => 'Minimal',
 			'standard' => 'Corporate Format',
@@ -432,9 +432,9 @@ class Create extends Controller {
 				if (($data_chart_account == 'minimal') || ($data_chart_account == '')){
 					$setup_initial_data = read_file('system/application/controllers/admin/minimal.sql');
 				}
-				elseif ( $data_chart_account == 'mhrd'){
+				/*elseif ( $data_chart_account == 'mhrd'){
 					$setup_initial_data = read_file('system/application/controllers/admin/mhrdedu.sql');
-				}
+				}  */
 				elseif ( $data_chart_account == 'mhrd2015'){
 					$setup_initial_data = read_file('system/application/controllers/admin/mhrdFormat2015.sql');
 				}
