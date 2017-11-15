@@ -89,7 +89,7 @@ foreach($paperrecords as $row)
     $srno = $srno + 1;
     echo "<tr align=\"center\">";
     echo "<td>"; echo $srno; echo"</td>";
-    echo "<td>"; echo $row->subp_subtype; echo"</td>";
+    echo "<td>"; echo $row->subp_prgcat; echo"</td>";
     echo "<td>"; echo $program_name; echo"</td>";
     echo "<td>"; echo $this->commodel->get_listspfic1('program','prg_branch ','prg_id',$row->subp_degree)->prg_branch ; echo"</td>";
     echo "<td>"; echo $row->subp_acadyear; echo"</td>";

@@ -181,7 +181,7 @@ class Map_model extends CI_Model
         $this->db->distinct();
         $this->db->from($tbname);
         $this->db->where("subp_sub_id", $subjectname);
-        $this->db->where("subp_subtype", $subjecttype);
+        $this->db->where("subp_prgcat", $subjecttype);
         $this->db->where("subp_paperno",$subjectno);
         $this->db->where("subp_acadyear", $acadyear);
         $this->db->where("subp_degree", $degree);

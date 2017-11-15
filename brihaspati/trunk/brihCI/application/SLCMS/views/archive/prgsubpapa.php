@@ -51,8 +51,8 @@
 		<th>Sr.No</th>
 		<th>Subject Paper Id</th>
 		<th>Program Category</th>
+		<th>Department</th>
 		<th>Program Name</th>
-		<th>Program Branch</th>
 		<th>Academic Year</th>
 		<th>Subject Name</th>
 		<th>Paper Number</th>
@@ -71,9 +71,9 @@
                          <tr align="center">
 			 <td> <?php echo ++$count; ?> </td>
 			 <td> <?php echo $row->subpa_subpid ?></td>
-			 <td> <?php echo $row->subpa_subtype ?></td>
-                         <?php  echo "<td>" . $this->common_model->get_listspfic1('program','prg_name','prg_id',$row->subpa_degree)->prg_name . "</td>";?>
-            		 <td> <?php echo $row->subpa_branch ?></td>
+			 <td> <?php echo $row->subpa_prgcat ?></td>
+            		 <td> <?php echo $this->common_model->get_listspfic1('Department','dept_name ','dept_id',$row->subpa_dept)->dept_name; ?></td>
+                         <?php  echo "<td>" . $this->common_model->get_listspfic1('program','prg_name','prg_id',$row->subpa_degree)->prg_name ." ( ".$this->common_model->get_listspfic1('program','prg_branch','prg_id',$row->subpa_degree)->prg_branch ." )</td>";?>
            		 <td> <?php echo $row->subpa_acadyear ?></td>
 			 <?php  echo "<td>" . $this->common_model->get_listspfic1('subject','sub_name','sub_id',$row->subpa_sub_id)->sub_name. "</td>";?>
             		 <td> <?php echo $row->subpa_paperno ?></td>

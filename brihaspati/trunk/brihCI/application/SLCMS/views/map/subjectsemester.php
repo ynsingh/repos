@@ -40,9 +40,9 @@
         <table width="70%;"> 
            
             <tr><td> 
-                 <?php echo anchor('map/mapsubsem/', "Map Subject Semester Program Department ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
-		 $help_uri = site_url()."/help/helpdoc#ViewMapSubjectandSemester";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:44%\">Click for Help</b></a>";
+                 <?php //echo anchor('map/mapsubsem/', "Map Subject Semester Program Department ", array('title' => 'Add Detail' , 'class' => 'top_parent'));
+		 //$help_uri = site_url()."/help/helpdoc#ViewMapSubjectandSemester";
+		 //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:44%\">Click for Help</b></a>";
 		 ?>
                 <div>
   
@@ -80,8 +80,8 @@
                 <!--<th>Creator Name</th>
                 <th>Creation Date</th>
                 <th>Modifier Name</th>
-                <th>Modify Date</th>-->
-                <th>Action</th>
+                <th>Modify Date</th>
+                <th>Action</th>-->
                <!-- <th></th>-->
             </tr>
            <!-- <tr></tr>-->
@@ -92,22 +92,24 @@
                 <?php foreach($subsemrec as $row){ ?>
                     <tr align="center">
                     <td><?php echo $serial_no++; ?></td>   
-                    <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->subsem_ext1)->dept_name ?></td>
-                    <td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->subsem_prgid)->prg_name ?></td>
-                    <td><?php echo $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->subsem_prgid)->prg_branch ?></td>
-                    <td><?php echo $this->commodel->get_listspfic1('program','prg_pattern','prg_id',$row->subsem_prgid)->prg_pattern ?></td>
-                    <td><?php echo $row->subsem_semester; ?></td>
-                    <td><?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->subsem_subid)->sub_name ?></td>
-                    <td><?php echo $row->subsem_subtype; ?></td>
+                    <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$row->subp_dept)->dept_name ?></td>
+                    <td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->subp_degree)->prg_name ?></td>
+                    <td><?php echo $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->subp_degree)->prg_branch ?></td>
+                    <td><?php echo $this->commodel->get_listspfic1('program','prg_pattern','prg_id',$row->subp_degree)->prg_pattern ?></td>
+                    <td><?php echo $row->subp_sem; ?></td>
+                    <td><?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id',$row->subp_sub_id)->sub_name ?></td>
+                    <td><?php echo $row->subp_subtype; ?></td>
                     <!-- <td><//?php echo $record->spsc_creatorid; ?></td>
                     <td><//?php echo $record->spsc_createdate; ?></td>
                     <td><//?php echo $record->spsc_modifierid; ?></td>
                     <td><//?php echo $record->psc_modifydate; ?></td> -->
-		    <td> <?php  
+		     <?php  
+		     //echo "<td>";
 //		    	echo anchor("map/deletesubsem/{$row->subsem_id}","Delete",array('title' => 'Details' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); 
-		    	echo "&nbsp;&nbsp;";  
-			echo anchor("map/editsubsem/{$row->subsem_id}","Edit",array('title' => 'Details' , 'class' => 'red-link')); 
-			echo "</td></tr>";
+		    //	echo "&nbsp;&nbsp;";  
+			//echo anchor("map/editsubsem/{$row->subsem_id}","Edit",array('title' => 'Details' , 'class' => 'red-link')); 
+//			echo "</td>";
+			echo "</tr>";
                  	}; //close for each loop
              	else : 
                     echo "<td colspan= \"10\" align=\"center\"> No Records found...!</td>";

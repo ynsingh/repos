@@ -1511,23 +1511,24 @@ CREATE TABLE `subject` (
 CREATE TABLE `subject_paper` (
   `subp_id` int(11) NOT NULL,
   `subp_sub_id` int(11) NOT NULL,
-  `subp_subtype` VARCHAR(255) NOT NULL,
+  `subp_prgcat` VARCHAR(255) NOT NULL,
   `subp_paperno` VARCHAR(50) NOT NULL,
   `subp_name` varchar(255) NOT NULL,
   `subp_code` varchar(100) NOT NULL,
   `subp_short` varchar(255) NOT NULL,
   `subp_desp` varchar(255) NOT NULL,
   `subp_degree` VARCHAR(255) NOT NULL,
-  `subp_branch` VARCHAR(255) DEFAULT NULL,
+  `subp_dept` VARCHAR(255) DEFAULT NULL,
   `subp_acadyear` VARCHAR(20) NOT NULL,
-  `subp_ext1` varchar(255) NOT NULL,
-  `subp_ext2` varchar(255) NOT NULL,
+  `subp_sem` varchar(255) NOT NULL,
+  `subp_subtype` varchar(255) NOT NULL,
   `creatorid` VARCHAR(255) NOT NULL,
   `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `modifierid` VARCHAR(255) NOT NULL,
   `modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-UNIQUE (`subp_degree`, `subp_acadyear`, `subp_sub_id`,`subp_subtype`,`subp_paperno`)
+UNIQUE (`subp_degree`, `subp_acadyear`, `subp_sub_id`,`subp_prgcat`,`subp_paperno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -1539,22 +1540,22 @@ CREATE TABLE `subject_paper_archive` (
   `subpa_id` int(11) NOT NULL,
   `subpa_subpid` int(11) NOT NULL,
   `subpa_sub_id` int(11) NOT NULL,
-  `subpa_subtype` VARCHAR(255) NOT NULL,
+  `subpa_prgcat` VARCHAR(255) NOT NULL,
   `subpa_paperno` VARCHAR(50) NOT NULL,
   `subpa_name` varchar(255) NOT NULL,
   `subpa_code` varchar(100) NOT NULL,
   `subpa_short` varchar(255) NOT NULL,
   `subpa_desp` varchar(255) NOT NULL,
   `subpa_degree` VARCHAR(255) NOT NULL,
-  `subpa_branch` VARCHAR(255) DEFAULT NULL,
+  `subpa_dept` VARCHAR(255) DEFAULT NULL,
   `subpa_acadyear` VARCHAR(20) NOT NULL,
-  `subpa_ext1` varchar(255) NOT NULL,
-  `subpa_ext2` varchar(255) NOT NULL,
+  `subpa_sem` varchar(255) NOT NULL,
+  `subpa_subtype` varchar(255) NOT NULL,
   `creatorid` VARCHAR(255) NOT NULL,
   `createdate` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `modifierid` VARCHAR(255) NOT NULL,
   `modifydate` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-UNIQUE (`subpa_degree`, `subpa_acadyear`, `subpa_sub_id`,`subpa_subtype`,`subpa_paperno`)
+UNIQUE (`subpa_degree`, `subpa_acadyear`, `subpa_sub_id`,`subpa_prgcat`,`subpa_paperno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `subject_paper_archive`

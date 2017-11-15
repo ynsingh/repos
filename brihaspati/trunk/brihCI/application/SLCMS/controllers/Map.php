@@ -355,6 +355,7 @@ class Map extends CI_Controller
     {
         //get subject record from subject table
         $username = $this->session->userdata('username');
+        $data['dept'] = $this->commodel->get_listmore('Department','dept_id,dept_name');
         $data['subject'] = $this->mapmodel->getsubject();
         $data['program'] = $this->mapmodel->getprogram();
 //        $data['prgbranch'] = array('name' => 'prgbranch','id' => 'prgbranch','maxlength' => '100','size' => '30','value' => '',);
@@ -377,7 +378,7 @@ class Map extends CI_Controller
         if($_POST)
         {
             $subject_name = $this->input->post('subjectname',TRUE);
-            $subject_type = $this->input->post('subjecttype',TRUE);
+            $subject_cat = $this->input->post('subjecttype',TRUE);
             $paper_name = $this->input->post('papername',TRUE);
             $subject_no = $this->input->post('subjectno',TRUE);
     //        $prgbranch = $this->input->post('prgbranch',TRUE);
@@ -386,6 +387,9 @@ class Map extends CI_Controller
             $subject_desc = $this->input->post('subjectdesc',TRUE);
             $acadyear = $this->input->post('acadyear',TRUE);
             $degree = $this->input->post('degree',TRUE);
+            $subdept = $this->input->post('subsem_deptid',TRUE);
+	$subsem = $this->input->post('subsem_semester',TRUE);
+	$subtype = $this->input->post('subsem_subtype',TRUE);
         }
         
         if($this->form_validation->run() == TRUE)
@@ -395,7 +399,7 @@ class Map extends CI_Controller
             $data_sub = explode('#',$subject_name);
             $data_prg = explode('#',$degree);
             //check for combination of record exist.      
-            $is_existst = $this->mapmodel->ispaper('subject_paper',$data_sub[1], $subject_type,$subject_no,$acadyear,$data_prg[1]);
+            $is_existst = $this->mapmodel->ispaper('subject_paper',$data_sub[1], $subject_cat,$subject_no,$acadyear,$data_prg[1]);
             if($is_existst > 0) 
             {
                 $this->session->set_flashdata('error', 'Paper no-<b>'.$subject_no.'</b> of Subject<b> '.$data_sub[0].  ' </b> for degree '.$data_prg[0] .' for academic year '.$acadyear.' is already exist.');
@@ -404,22 +408,22 @@ class Map extends CI_Controller
             }
             else
             {
-                $insertdata_paper = array('subp_sub_id' => $data_sub[1],'subp_subtype' => $subject_type,'subp_paperno' => $subject_no,'subp_name' => ucwords(strtolower($paper_name)),'subp_code' => strtoupper($subject_code),'subp_short' => ucwords(strtolower($subject_shrname)),'subp_desp' => $subject_desc, 'subp_degree' => $data_prg[1],'subp_acadyear' => $acadyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
+                $insertdata_paper = array('subp_sub_id' => $data_sub[1],'subp_prgcat' => $subject_cat,'subp_dept' =>  $subdept,'subp_sem' => $subsem, 'subp_subtype'=> $subtype,'subp_paperno' => $subject_no,'subp_name' => ucwords(strtolower($paper_name)),'subp_code' => strtoupper($subject_code),'subp_short' => ucwords(strtolower($subject_shrname)),'subp_desp' => $subject_desc, 'subp_degree' => $data_prg[1],'subp_acadyear' => $acadyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
 
                 $res=$this->commodel->insertrec('subject_paper', $insertdata_paper);                 
                 if ($res != 1)
                 {
-                    $this->session->set_flashdata("error","Error  in Adding Paper - ", $data_sub[0]);
-                    $this->logger->write_logmessage("error","Error  in Adding Paper", $data_sub[0]." by ". $username);
-                    $this->logger->write_dblogmessage("error","Error  in Adding Paper", $data_sub[0]." by ". $username);
+                    $this->session->set_flashdata("error","Error  in Adding Program, subject and Paper - ", $data_sub[0]);
+                    $this->logger->write_logmessage("error","Error  in Adding Program, subject and Paper", $data_sub[0]." by ". $username);
+                    $this->logger->write_dblogmessage("error","Error  in Adding Program, subject and Paper", $data_sub[0]." by ". $username);
                     redirect("map/addprogramsubject");
                 }
                 else
                 {
-                    $this->logger->write_logmessage("insert","Paper added successfully", $data_sub[0]." by ". $username);
-                    $this->logger->write_dblogmessage("insert","Paper added successfully", $data_sub[0]." by ". $username);
+                    $this->logger->write_logmessage("insert","Program, subject and Paper added successfully", $data_sub[0]." by ". $username);
+                    $this->logger->write_dblogmessage("insert","Program, subject and Paper added successfully", $data_sub[0]." by ". $username);
                     //$this->session->set_flashdata("success", "Paper added successfully - ", $data_sub[0]);
-                    $this->session->set_flashdata("success", "Paper added successfully  ",'' );
+                    $this->session->set_flashdata("success", "Program, subject and paper added successfully  ",'' );
                     redirect("map/programsubject");
                 }
             }
@@ -465,7 +469,7 @@ class Map extends CI_Controller
         {
             $subpaper_id = $row->subp_id;
             $subject_id = $row->subp_sub_id;
-            $subject_type = $row->subp_subtype;
+            $subject_type = $row->subp_prgcat;
             $subpaper_no = $row->subp_paperno;
             $subpaper_code = $row->subp_code;
             $paper_name = $row->subp_name;    
@@ -507,15 +511,18 @@ class Map extends CI_Controller
         {
             $subpaper_id = $row->subp_id;
             $subject_id = $row->subp_sub_id;
-            $subject_type = $row->subp_subtype;
+            $subject_type = $row->subp_prgcat;
             $subpaper_no = $row->subp_paperno;
             $paper_name = $row->subp_name;
             $subpaper_code = $row->subp_code;
             $subshort = $row->subp_short;  
             $subdesc = $row->subp_desp;
             $subdegree = $row->subp_degree;
-//            $prgbranch = $row->subp_branch;
+//          $prgbranch = $row->subp_branch;
             $degyear = $row->subp_acadyear;
+            $subdept = $row->subp_dept;
+	$subsem = $row->subp_sem;
+	$subtype = $row->subp_subtype;
             $moddate = date("y-m-d");
         }
 
@@ -531,11 +538,14 @@ class Map extends CI_Controller
 
         $subdata = $this->commodel->get_listrow('subject','sub_id',$subject_id);
         $sub_data = $subdata->row();
-        
+        $subprgdept=$this->commodel->get_listspfic1('Department','dept_name ','dept_id',$subdept)->dept_name;
         $data['degree'] = array('name' => 'degree','id' => 'degree','maxlength' => '100','size' => '30','readonly'=>'true','value' => $prg_data->prg_name." ( ".$prg_data->prg_branch." ) " ,);
         $data['acadyear'] = array('name' => 'acadyear','id' => 'acadyear','maxlength' => '100','size' => '30','value' => $degyear,'readonly'=>'true',);
         $data['subjectname'] = array('name' => 'subjectname','id' => 'subjectname','maxlength' => '100','size' => '30','value' =>$sub_data->sub_name ,'readonly'=>'true',);
         $data['papercat'] = array('name' => 'papercat','id' => 'papercat','maxlength' => '100','size' => '30','value' => $subject_type ,'readonly'=>'true',);
+        $data['paperdept'] = array('name' => 'paperdept','id' => 'paperdept','maxlength' => '100','size' => '30','value' => $subprgdept ,'readonly'=>'true',);
+        $data['papersem'] = array('name' => 'papersem','id' => 'papersem','maxlength' => '100','size' => '30','value' => $subsem ,'readonly'=>'true',);
+        $data['papertype'] = array('name' => 'papertype','id' => 'papertype','maxlength' => '100','size' => '30','value' => $subtype ,'readonly'=>'true',);
   //      $data['prgbranch'] = array('name' => 'prgbranch','id' => 'prgbranch','maxlength' => '100','size' => '30','value' =>$prgbranch ,'readonly'=>'true',);
         $data['subjectno'] = array('name' => 'subjectno','id' => 'subjectno','maxlength' => '100','size' => '30','value' =>$subpaper_no ,'readonly'=>'true',);
         $data['papername'] = array('name' => 'papername','id' => 'papername','maxlength' => '100','size' => '30','value' => $paper_name,);
@@ -566,9 +576,9 @@ class Map extends CI_Controller
         if($this->form_validation->run() == TRUE)
 	{
 		$currdate = date("y-m-d");
-		$subpaper_id = $row->subp_id;
+	/*	$subpaper_id = $row->subp_id;
             $subject_id = $row->subp_sub_id;
-            $subject_type = $row->subp_subtype;
+            $subject_type = $row->subp_prgcat;
             $subpaper_no = $row->subp_paperno;
             $paper_name = $row->subp_name;
             $subpaper_code = $row->subp_code;
@@ -577,9 +587,12 @@ class Map extends CI_Controller
             $subdegree = $row->subp_degree;
       //      $prgbranch = $row->subp_branch;
             $degyear = $row->subp_acadyear;
-
+            $subdept = $row->subp_dept;
+				$subsem = $row->subp_sem;
+				$subtype = $row->subp_subtype;
+*/
 		// insert data into subject paper archive table  
-		$insertdata_paper = array('subpa_subpid' => $paperid,'subpa_sub_id' => $subject_id ,'subpa_subtype' => $subject_type,'subpa_paperno' => $subpaper_no,'subpa_name' => ucwords(strtolower($paper_name)),'subpa_code' => strtoupper($subpaper_code),'subpa_short' => ucwords(strtolower($subshort)),'subpa_desp' => $subdesc, 'subpa_degree' => $subdegree,'subpa_acadyear' => $degyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
+		$insertdata_paper = array('subpa_subpid' => $paperid,'subpa_sub_id' => $subject_id ,'subpa_prgcat' => $subject_type,'subpa_dept' => $subdept, 'subpa_sem' => $subsem, 'subpa_subtype' => $subtype,'subpa_paperno' => $subpaper_no,'subpa_name' => ucwords(strtolower($paper_name)),'subpa_code' => strtoupper($subpaper_code),'subpa_short' => ucwords(strtolower($subshort)),'subpa_desp' => $subdesc, 'subpa_degree' => $subdegree,'subpa_acadyear' => $degyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
 
                 $res=$this->commodel->insertrec('subject_paper_archive', $insertdata_paper);
                 if ($res != 1)
@@ -617,7 +630,8 @@ class Map extends CI_Controller
     /**This function is used for view details of subject semseter program and dept seats */
 
     public function subjectsemester(){
-        $data['subsemrec']= $this->commodel->get_list('subject_semester');
+        //$data['subsemrec']= $this->commodel->get_list('subject_semester');
+        $data['subsemrec']= $this->commodel->get_list('subject_paper');
         $this->logger->write_logmessage("view","Map subject semseter program with dept", "view details...");
         $this->logger->write_dblogmessage("view"," Map subject semester program with dept", "view details...");
         $this->load->view('map/subjectsemester',$data);

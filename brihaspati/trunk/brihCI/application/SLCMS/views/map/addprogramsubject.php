@@ -89,7 +89,18 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
     echo "<table style= \"margin-left:2%;\">";
     echo form_open('map/addprogramsubject');
-
+?>
+	<tr>
+                <td><?php echo form_label('Department Name','department'); ?> </td>
+                <td>
+                <select name="subsem_deptid" id="subsem_deptid" class="my_dropdown" style="width:100%;" >
+                <option value="" disabled selected >------Select Department Name--------------</option>
+                <?php foreach($dept as $dataspt): ?>
+                <option value="<?php echo $dataspt->dept_id ?>"><?php echo $dataspt->dept_name; ?></option>
+                <?php endforeach; ?>
+           	</td>
+		</tr>
+<?php
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Program Category','subjecttype');
@@ -108,7 +119,25 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     //echo"</td><td>"; echo "Optional";
     echo "</td></tr>";
     echo "</p>";
-
+    ?>
+    <tr>
+                <td>
+                <?php echo form_label('Semester/Year','semester'); ?> </td>
+                <td>
+                <select name="subsem_semester" id="subsem_semester" class="my_dropdown" style="width:100%;">
+                <option value="" disabled selected >------Select Semester------</option>
+                <option value="1" class="dropdown-item">1</option>
+                <option value="2" class="dropdown-item">2</option>
+                <option value="3" class="dropdown-item">3</option>
+                <option value="4" class="dropdown-item">4</option>
+                <option value="5" class="dropdown-item">5</option>
+                <option value="6" class="dropdown-item">6</option>
+                <option value="7" class="dropdown-item">7</option>
+                <option value="8" class="dropdown-item">8</option>
+                </select>
+		</td>
+		</tr>
+<?php
 /*
     echo "<p>";
     echo "<tr><td>";
@@ -128,7 +157,18 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo form_dropdown('subjectname', $subject,'','class="abc"');
     echo "</td></tr>";
     echo "</p>";
-   
+   ?>
+   <tr>
+                <td>  <?php echo form_label('Subject Type','subtype'); ?></td>
+                <td>
+                <select name="subsem_subtype"class="my_dropdown" style="width:100%;">
+                <option value="" disabled selected>------Select Subject Type------</option>  
+                <option value="Compulsory" class="dropdown-item">Compulsory</option>
+                <option value="Elective" class="dropdown-item">Elective</option>
+                </select>
+                </td> 
+		</tr>
+   <?php
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Academic Year','acadyear');
