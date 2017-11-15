@@ -24,14 +24,13 @@
     margin-top: 2px;
     margin-bottom: 20px;
     border-radius: 4px;
-    	
 }
 
 .breadcrumb>li {
     display: table-cell;
     vertical-align: top;
-    width: 2%;
-}
+    width:1%;
+   }
 
 .breadcrumb>li+li:before {
     padding: 0;
@@ -44,11 +43,10 @@
     position: relative;
     display: inline-block;
     width: calc( 100% - 10px );
-
     font-size:140%;font-family: Times New Roman, Times, serif;
    /* background-color: hsla(0, 0%, 83%, 1);
      background-color:#067eb7;*/
-    text-align: left;
+   
    font-weight:bold;height:50px;
 }
 

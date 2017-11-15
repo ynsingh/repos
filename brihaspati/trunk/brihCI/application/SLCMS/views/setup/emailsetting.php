@@ -5,11 +5,16 @@
 <title>Add Email Setting</title>
 
     <head>    
-        <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-<?php $this->load->view('template/menu');?>
+       
 </head>    
 <body>
+ <?php $this->load->view('template/header'); ?>
+         
+	<?php $this->load->view('template/menu');?>
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
         <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -28,36 +33,37 @@
             echo "</table>";
         
         ?-->
-        <table width="100%">
-            <div align="left" style="margin-left:2%;">
-             <tr><td>
-                <?php echo anchor('setup/dispemailsetting/', "View Email Setting" ,array('title' => 'Email Configuration Detail ' , 'class' => 'top_parent'));?>
-                 <?php
-		 $help_uri = site_url()."/help/helpdoc#EmailSetting";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
-                 ?>
-                <div align="left" style=width:90%;">
-       
-                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div class="isa_error">','</div>');?>
+        <table width="100%"> 
+     
+            <tr colspan="2"><td>  
+            <?php
+           
+                    echo anchor('setup/emailsetting/', "Add Email Setting" ,array('title' => ' Add Email Configuration Detail ' , 'class' => 'top_parent'));
+                    $help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+          
+            ?>
+        
+            <div  style="margin-left:2%;">
+  
+                <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
-                    <?php if(isset($_SESSION['success'])){?>
-                        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
-                    <?php
-                    };
-                    ?>
-                        <?php if(isset($_SESSION['err_message'])){?>
-                        <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                <?php if(isset($_SESSION['success'])){?>
+                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
 
-                    <?php
-                    };
-                    ?>
+                <?php
+                };
+                ?>
+                <?php if(isset($_SESSION['err_message'])){?>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 
-               
-                </div>
+                <?php
+                };
+                ?>
+  
+            </div>
             </td></tr> 
-        </table><br/>
-        <tr>  
+        </table></br>
             <div>
                 <form action="<?php echo site_url('setup/emailsetting');?>" method="POST" class="form-inline"></div>
                     <table style="margin-left:2%;">

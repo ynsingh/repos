@@ -13,17 +13,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
 		<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/Studentsteps.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 <style>
 tr td{font-size:20px;}
 </style>
 </head>
 <?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
 <body>
-
-<table align=center style="width:70%;">
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+<table align=center style="width:100%;">
 <tr class="isa_success">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="" class="isa_success">','</div>');?>
@@ -42,10 +45,10 @@ tr td{font-size:20px;}
    </table>		
 <center>
 <form action="<?php echo site_url('enterenceadmin/generateattendence'); ?>" method="POST">
-	<table style="width:50%;" border=0>
+	<table style="width:70%;" border=0>
 		<tr>
 			<td style="height:35px;font-size:18px;"  align=center><h2>Generate Attendance Sheet</h2></td>
-			<td align=left valign="top">
+			<td align=right valign="top">
 			<label for="nnumber"></label></br>
 			<select name="attexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
@@ -65,8 +68,8 @@ tr td{font-size:20px;}
 	</form>
 
 
-
-<table style="width:70%;margin-top:30px;" border=0>
+<div class="scroller_sub_page">
+<table style="width:100%;" border=0>
 	
 	<tr>
 		<?php 
@@ -102,7 +105,7 @@ tr td{font-size:20px;}
 				?>
 	</tr>
 	</table>
-
+</div><!------scroller div------>
 
 </center>
 

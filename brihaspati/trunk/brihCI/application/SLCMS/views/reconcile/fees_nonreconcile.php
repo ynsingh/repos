@@ -7,14 +7,18 @@
 <html>
 <title>Fees Reconcile</title>
  <head>    
-	<?php $this->load->view('template/header'); ?>
-	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-	<?php $this->load->view('template/menu');?>
-	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 
  </head>    
    <body>
+<?php $this->load->view('template/header');
+ $this->load->view('template/menu'); ?>
+
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+<div>
 
 <?php
 echo "<center>";
@@ -27,19 +31,21 @@ echo "<div>";
 
 echo "</center>";
 ?>
-</br></br>
+
 <center>
-<table width="70%;" style="" >
+
+
+<table width="100%;" style="" >
 	<tr><td style=""><a href="<?php echo site_url('reconcile/fees_nonreconcile');?>" style="font-weight:bold; margin-left:0px;"> Non Reconcile Fees
 		<a href="<?php echo site_url('reconcile/fees_reconcile_complete');?>" style="font-weight:bold; margin-left:4%;" id="allf">All Fees
 		<a href="<?php echo site_url('reconcile/fees_reconcile');?>" style="font-weight:bold; margin-left:5%;" id="reconcile">Reconcile Fees
 	</td>
        	</tr>
 </table>
-
    
 </br>
-<table style="width:70%;border:2px solid #a8a8a8;">
+<div class="scroller_sub_page">
+<table style="width:100%;border:2px solid #a8a8a8;">
 <thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;"><tr><th>Non Reconcile Fees Detail</th></tr></thead>
 </table>
    <table class="TFtable" style="background-color:#38B0DE;border:2px solid #a8a8a8;">
@@ -83,7 +89,8 @@ echo "</center>";
 		</form>
 	</tbody>
 
-   </table>				
+   </table>
+</div>		<!------scroller div------>		
 </center>     
 
   </body>

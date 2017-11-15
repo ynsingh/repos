@@ -7,19 +7,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<title>Welcome </title>
 	 <link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
          <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/helpdoc.css">
-	 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/style.css">
-	 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/style.css">
+	 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/tablestyle.css">	
 	<style>
 		table,th, td{
    		 border: 0px solid black;}
 	</style>
 </head>
-<body id="body">
+<body style="border:0px solid black;">
 
 
 <div>
-	<div id="body">
-	<?php $this->load->view('template/header'); ?>
+	<div>
+<?php $this->load->view('template/header'); ?>
 <?php echo "<center>";
 
 	if($this->session->flashdata('msg')){
@@ -29,8 +29,8 @@ echo "<div>";
 }
 
 echo "</center>"; ?>
-<center>
-<table style="width:70%">
+
+<table style="width:70%;" >
             <tr colspan="2">
                 <td>
                     <div align="left" style="">
@@ -51,12 +51,12 @@ echo "</center>"; ?>
      </tr>
 </table>
 
-<div class="welcome" style=""><h2 style="">Welcome</h2></div>
+<div class="welcome"><h2>Welcome</h2></div>
 
 <?php $this->load->view('enterence/enterence_head');?>
-</center>
+
 </br>
-<table style="width:70%;border:0px solid black;" align=center border=0> 
+<table style="width:100%;border:0px solid black;" align=center border=0> 
 	
 	<tr>
 		<td style="width:30%;" valign="top">
@@ -73,13 +73,14 @@ echo "</center>"; ?>
       											'admop_lastdate >=' => $cdate,
        										);
 										$progid = $this->commodel-> get_listspficemore('admissionopen',$selectfield,$data);
-
+										
 								?>
         						 <li class='has-sub'><a href=""><?php echo $pname->prgcat_name;?></a>
                       	  				<ul>
 								<?php foreach($progid as $row){
 									$id = $row->admop_prgname_branch;
 									$pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$id)->prg_name;
+									
 							?>
                         						<li><a href="<?php echo site_url('welcome/ginstruction/');echo $id;?>"><?php echo $pname ."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$id)->prg_branch .")" ;?></a></li>
 									<input type="hidden" value="<?php echo $id;?>" name="prgid">
@@ -156,15 +157,8 @@ echo "</center>"; ?>
 </table>
 
 
-
-<br></br>
-<br></br>
-<br>
-<br></br>
-<br></br>
-<br></br>
-
+<div>
 <?php $this->load->view('template/footer'); ?>
-	<!--<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>-->
+</div>
 </body>
 </html>

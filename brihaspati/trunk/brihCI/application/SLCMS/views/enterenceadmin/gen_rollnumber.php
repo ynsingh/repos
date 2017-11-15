@@ -15,10 +15,13 @@
 </script>
  </head>    
    <body>
+
 	<?php $this->load->view('template/header'); ?>
-	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
 	<?php $this->load->view('template/menu');?>
-	
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>	
 <?php
 echo "<center>";
 
@@ -30,7 +33,7 @@ echo "<div>";
 
 echo "</center>";
 ?>
-<table align=center style="width:70%;">
+<table align=center style="width:100%;">
 <tr class="isa_success">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="" class="isa_success">','</div>');?>
@@ -52,8 +55,9 @@ echo "</center>";
 <table style="width:50%;">
 	<tr><td></td></tr>
 </table>
+
 	<form action="<?php echo site_url('enterenceadmin/search_rollnumber'); ?>" method="POST">
-		<table style="width:70%;" border=0>
+		<table style="width:100%;" border=0>
 		<tr>
 			<td align=center><h2>Search Center Wise / Program Wise Roll Number </h2></td>
 			
@@ -86,13 +90,15 @@ echo "</center>";
 		
 		</table>
 	</form>  
-
+<div class="scroller_sub_page">
 	<table class="TFtable" style="border:2px solid #a8a8a8;opacity:5.9;">
 		<thead><tr><th>Sr. No.</th><th>Student Name</th><th>Roll Number</th><th>Program</th><th>Center Name</th></tr></thead>
 		<tbody align=center>
 			<?php $count=1;
-			if(!empty($this->getatt)){
-			foreach($this->getatt as $row){
+			if(!empty($this->exmgetatt)){
+			//if($this->exmgetatt == TRUE ){
+			if(!($this->combigetatt) || ($this->combigetatt === FALSE)){
+			foreach($this->exmgetatt as $row){
 				$asmid = $row->ca_asmid;
 				$rollno=$row->ca_rollno;
 			if(!empty($rollno)){
@@ -105,10 +111,49 @@ echo "</center>";
 				<td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';?></td>
 				<td><?php echo $row->ca_centername;?></td>
 			</tr>
-			<?php }}}?>
+			<?php }}}}//}?>
+
+			<?php $count=1;
+			if(!empty($this->prggetatt)){
+			if(!($this->combigetatt) || ($this->combigetatt === FALSE)){
+				foreach($this->prggetatt as $row){
+				$asmid = $row->ca_asmid;
+				$rollno=$row->ca_rollno;
+				if(!empty($rollno)){
+			?>
+			<tr>
+				<td><?php echo $count++;?></td>
+				<td><?php echo $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$asmid)->asm_fname;?></td>
+				<td><?php echo $rollno;?></td>
+				<?php $prgid = $row->ca_prgid;?>
+				<td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';?></td>
+				<td><?php echo $row->ca_centername;?></td>
+			</tr>
+			<?php }}}}?>
+
+
+			<?php $count=1;
+			if(!empty($this->combigetatt)){
+			
+			foreach($this->combigetatt as $row){
+				$asmid = $row->ca_asmid;
+				$rollno=$row->ca_rollno;
+			if(!empty($rollno)){
+			?>
+			<tr>
+				<td><?php echo $count++;?></td>
+				<td><?php echo $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$asmid)->asm_fname;?></td>
+				<td><?php echo $rollno;?></td>
+				<?php $prgid = $row->ca_prgid;?>
+				<td><?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';?></td>
+				<td><?php echo $row->ca_centername;?></td>
+			</tr>
+			<?php }}} ?>
+
+			
 		</tbody>
-	</table> 			
-</center>     
+	</table> 		
+	</div>	<!------scroller div------>	
 
   </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>

@@ -8,24 +8,27 @@
 <title>View Admission merit list</title>
     <head>    
          <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-        <?php $this->load->view('template/menu');?>
+	  <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-
     </head>
-    <body>
-   		<?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
-                    echo "<tr valign=\"top\">";
-                    echo "<td>";
-                    $help_uri = site_url()."/help/helpdoc#FacultyList";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:39%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+    <body> 
+	<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+   		<?php $help_uri = site_url()."/help/helpdoc#FacultyList";
+                    echo "<table style=\" \" align=right>";
+                    echo "<tr>";
+                    echo "<td align=right>";
+                    
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
                     ?>
         </table>
-           <table cellpadding="16" class="TFtable">
+
+           <table class="TFtable" >
             <thead>
                 <tr align="center"> 
                 	<th>Sr No.</th>
@@ -106,7 +109,7 @@
 		
             </tbody>
         </table>
-
+</br></br></br></br>
  </div><?php $this->load->view('template/footer'); ?></div>
     </body>
 </html>

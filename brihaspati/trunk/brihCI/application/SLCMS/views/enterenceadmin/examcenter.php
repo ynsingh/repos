@@ -7,12 +7,16 @@
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
-    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+
     <?php $this->load->view('template/menu');?>
   </head>
  <body>
-<center>
-<table width= "70%">
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+
+<table width= "100%">
             <tr><td>
                 <div>
                 <?php  echo anchor('enterenceadmin/addexamcenter/', "Add  Exam Center", array('title' => 'Add   Exam Center  Detail','class' =>'top_parent'));
@@ -20,7 +24,7 @@
                  //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                 ?>
                   </div>
-                <div  style="width:90%;margin-left:2%">
+                <div  style="width:90%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
               <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -34,11 +38,12 @@
                 ?>
               </div>
              </td></tr>
-       </table></center>
-
+       </table>
+<div class="scroller_sub_page">
 <table>
 <tr>
-<div align="left" style="margin-left:2%;">
+<div>
+
 <table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Entrance Exam Center Code</th><th>Entrance Exam Center Name</th><th>Entrance Exam Center Address</th><th>Entrance Exam Center State</th><th>Entrance Exam Center City</th><th>Entrance Exam Center Incharge</th><th>Entrance Exam Center Number of Room</th><th>Entrance Exam Center Capacity in Room</th><th>Entrance Exam Center Total Capacity</th><th>Entrance Exam Center Contact No</th><th>Entrance Exam Center Contact Email</th><th>Action</th></tr></thead>
@@ -82,6 +87,7 @@
 </div>
 </tr>
 </table>
+</div><!------scroller div------>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

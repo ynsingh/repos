@@ -13,6 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/Studentsteps.css" />
 <script>
 function myFunction() {
@@ -26,9 +27,12 @@ function myFunction() {
 <body>
 <?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
-</br>
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+
 <?php
 echo "<center>";
 
@@ -42,7 +46,7 @@ echo "<div>";
 
 echo "</center>";
 ?>
-<table align=center style="width:70%;">
+<table align=center style="width:100%;">
 <tr class="isa_success">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="" class="isa_success">','</div>');?>
@@ -59,14 +63,11 @@ echo "</center>";
 	?>  
 </tr>
    </table>	
-<center>
-
-
 	<form action="<?php echo site_url('enterenceadmin/generatesticker'); ?>" method="POST">
-	<table style="width:40%;" border=0>
+	<table style="width:70%;" border=0>
 		<tr>
-			<td style="height:35px;font-size:18px;" valign="" align=center><h2>Generate Sticker Sheet</h2></td>
-			<td align=left valign="">
+			<td style="height:35px;font-size:18px;" align="right" align=center><h2>Generate Sticker Sheet</h2></td>
+			<td align=right valign="">
 			
 			<select name="stiexamcenter" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
 
@@ -84,7 +85,8 @@ echo "</center>";
 		
 	</table>
 	</form>
-	<table style="width:70%;margin-top:30px;" border=0>
+<div class="scroller_sub_page">
+	<table style="width:100%;margin-top:0px;" border=0>
 	
 	<tr>
 		<?php 
@@ -108,7 +110,7 @@ echo "</center>";
 			<?php 
 			//}
 			$i++;
-			if($i%6 == 0){?>
+			if($i%3 == 0){?>
 			</tr>
 			<tr>
 			<?php } 
@@ -116,9 +118,7 @@ echo "</center>";
 ?>
 	</tr>
 	</table>
-	
-</center>
-
+</div><!------scroller div------>
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </body>
 </html>

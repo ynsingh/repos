@@ -8,13 +8,17 @@
 <title>Fees Reconcile</title>
  <head>    
 	<?php $this->load->view('template/header'); ?>
-	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+	
 	<?php $this->load->view('template/menu');?>
 	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 
  </head>    
    <body>
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
 
 <?php
 echo "<center>";
@@ -27,23 +31,21 @@ echo "<div>";
 
 echo "</center>";
 ?>
-
-</br></br>
-
-<center>  
-<table width="70%;" style="margin-left:-5%;font-size:18px;">
-	<tr><td style=""><a href="<?php echo site_url('enterenceadmin/viewentfeereconcile');?>" style="; margin-left:5%;">Entrance Admission Reconcile Fees
+  
+<table width="100%;" style="font-size:18px;">
+	<tr><td style=""><a href="<?php echo site_url('enterenceadmin/viewentfeereconcile');?>" style="">Entrance Admission Reconcile Fees
 		<a href="<?php echo site_url('enterenceadmin/viewentfeereconcile_complete');?>" style=" margin-left:5%;">All Entrance Admission Reconcile Fees
 		<a href="<?php echo site_url('enterenceadmin/fees_nonreconcile');?>" style=" margin-left:5%;" > Entrance Admission Non Reconcile Non
 	</td>
-	<td style=""></td>
-	<td style=""></td>
+	
 	</tr>
-</table> 
-</br></br>
-<table style="width:70%;border:2px solid #a8a8a8;">
+</table>
+</br>
+<table style="width:100%;border:2px solid #a8a8a8;">
 <thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;"><tr><th align="left">Entrance Non-Reconcile Fees Detail</th></tr></thead>
 </table>
+
+<div style="overflow:auto;height:620px;">
    <table class="TFtable" style="border:2px solid #a8a8a8;">
 	<thead >
 	<tr>
@@ -80,8 +82,9 @@ echo "</center>";
 		</form>
 	</tbody>
 
-   </table>				
-</center>     
+   </table>	
+</div><!------scroller div------>			
+   
 
   </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>

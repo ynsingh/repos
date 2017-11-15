@@ -4,13 +4,14 @@
 
  <head>
      <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
      <?php $this->load->view('template/menu');?>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
 
 <script>
+
+
       function getprogramname(prg){
                 var prg = prg;
                 $.ajax({
@@ -35,19 +36,23 @@
             </style>
     </head>
     <body>
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
         <table width="100%" >
 
           <?php //echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
             <tr><td>
-                <div style="margin-left:2%;">
+                <div style="width:100%;">
                 <?php echo anchor('enterence/viewadmissionopen/', "Open Admission List ", array('title' => 'View Detail' , 'class' => 'top_parent'));
                 $help_uri = site_url()."/help/helpdoc#";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
+                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
 		?>
 		 </div>
-                <div align="left" style="margin-left:2%;width:90%">
+                <div align="left" style="width:90%">
 
-                <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
+                <?php echo validation_errors('<div style="" class="isa_warning">','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
                     <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -57,7 +62,7 @@
                 ?>
                  <?php if(isset($_SESSION['err_message'])){?>
 
-                    <div style="margin-left:2%;"  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div style=""  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
 
                 <?php
                 };
@@ -66,7 +71,7 @@
 		</td></tr>
         </table>
         
-	<table style="margin-left:2%;" >
+	<table style="" >
 
 
            <form action="<?php echo site_url('Enterence/addadmissionopen');?>" method="POST" >

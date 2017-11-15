@@ -5,12 +5,15 @@
  <title>View Email Setting</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+          
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">    
     </head>    
     <body>
-
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
         <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -29,8 +32,8 @@
             echo "</tr>";
             echo "</table>";
         ?-->
-        <center>            
-        <table width="70%"> 
+                  
+        <table width="100%"> 
      
             <tr colspan="2"><td>  
             <?php
@@ -60,7 +63,8 @@
   
             </div>
             </td></tr> 
-        </table></center>   
+        </table></br>
+	<div class="scroller_sub_page">
         <table cellpadding="16" class="TFtable" >
             <thead>
                 <tr align="center">
@@ -107,6 +111,7 @@
 
             </tbody>
         </table>
+	</div><!------scroller div------>
     </body>   
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

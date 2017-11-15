@@ -6,12 +6,16 @@
   <head>
 	 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    	<?php $this->load->view('template/header'); ?>
-    	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
    	 <?php $this->load->view('template/menu');?>
 </head>
 <body>
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+
 <center>
-	<table width="70%">
+	<table width="100%">
             <tr><td>
                 <div align="left">
                 <?php  echo anchor('enterence/addadmissionopen/', "Add Admission Open", array('title' => 'Add Admission Open','class' =>'top_parent'));
@@ -36,9 +40,11 @@
           </div>
              </td></tr>
        </table></center>
+<div class="scroller_sub_page">
 <table>
 <tr>
-<div align="left" style="margin-left:2%;">
+<div>
+
 <table cellpadding="16" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Academic Year</th><th>Program Category</th><th>Program Name </th><th>Entrance Exam Fees </th> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th><th>Entrance Exam Date</th><th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th><th>Action</th></tr></thead>
@@ -91,6 +97,7 @@
 </div>
 </tr>
 </table>
+</div><!------scroller div------>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

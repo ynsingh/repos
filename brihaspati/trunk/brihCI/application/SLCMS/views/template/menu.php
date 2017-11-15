@@ -3,9 +3,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 
-echo "<div id='adminmenu' >";
+echo "<div>";
 //echo "<nav>";
-echo "<ul class=\"sf-menu\" >";
+echo "<ul class=\"sf-menu\">";
 
 			echo "<li class=\"current\">";
 //				echo "<a href=" . base_url() . ">Dashboard</a>";
@@ -267,9 +267,7 @@ echo "<ul class=\"sf-menu\" >";
 			echo "<li>";
 			echo anchor('home/logout', 'Logout', array('title' => 'Logout'));
 			echo "</li>";
-			echo "<li>";
-			echo "<a href=" .   ">&nbsp;</a>";
-			echo "</li>";
+			
 echo "</ul>";
 //echo "</nav>";
 echo "</div>";

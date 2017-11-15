@@ -14,9 +14,13 @@
 
  </head>    
    <body>
-	<?php $this->load->view('template/header'); ?>
-	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-	<?php $this->load->view('template/menu');?>
+<?php $this->load->view('template/header'); ?>
+          
+        <?php $this->load->view('template/menu');?>
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
 	
 <?php
 echo "<center>";
@@ -29,10 +33,10 @@ echo "<div>";
 
 echo "</center>";
 ?>
-<center>   
-</br></br>
-<table width="70%;" style="margin-left:-5%;font-size:18px;">
-	<tr><td style=""><a href="<?php echo site_url('enterenceadmin/viewentfeereconcile');?>" style="margin-left:50px;">Entrance Admission Reconcile  Fees
+
+
+<table width="100%;" style="font-size:18px;">
+	<tr><td style=""><a href="<?php echo site_url('enterenceadmin/viewentfeereconcile');?>" style="">Entrance Admission Reconcile  Fees
 		<a href="<?php echo site_url('enterenceadmin/viewentfeereconcile_complete');?>" style=" margin-left:50px;">All Entrance Admission Reconcile Fees
 		<a href="<?php echo site_url('enterenceadmin/fees_nonreconcile');?>" style=" margin-left:50px;" > Entrance Admission Non Reconcile Non
 	</td>
@@ -40,14 +44,14 @@ echo "</center>";
 	<td style=""></td>
 	</tr>
 </table>
-</br></br>
-<table style="width:70%;border:2px solid #a8a8a8;">
+</br>
+<table style="width:100%;border:2px solid #a8a8a8;">
 <thead style="background-color:#38B0DE;color:white;height:30px;font-size:22px;"><tr align="left"><th>
 	<?php echo $this->message;?>
 </th></tr></thead>
 </table>
-
-   <table class="TFtable" style="border:2px solid #a8a8a8;">
+<div style="overflow:auto;height:620px;">
+   <table class="TFtable" style="">
 	
 	<thead>
 	<tr>
@@ -79,8 +83,9 @@ echo "</center>";
 		</form>
 	</tbody>
 
-   </table>				
-</center>     
+   </table>
+</div>	<!------scroller div------>			
+    
 
   </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>

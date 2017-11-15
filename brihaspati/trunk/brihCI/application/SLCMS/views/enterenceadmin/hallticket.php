@@ -20,11 +20,15 @@ thead th{font-size:18px;}
 </head>
 
 <body>
+
 <?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+	
         <?php $this->load->view('template/menu');?>
-
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
 <?php
 echo "<center>";
 
@@ -36,7 +40,7 @@ echo "<div>";
 
 echo "</center>";
 ?>
-<table align=center style="width:70%;">
+<table align=center style="width:100%;">
 <tr>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="" class="isa_success">','</div>');?>
@@ -53,17 +57,14 @@ echo "</center>";
 	?>  
 </tr>
    </table>	
-<center style="width:100%;">
-	
-	</br>
 
 <table>
 
 	<a href="<?php echo site_url('enterenceadmin/generatehallticket'); ?>" style="font-size:22px;font-weight:bold;">Generate Hall Ticket</a>
 
 </table>
-
-<table style="width:70%;margin-top:30px;" border=0>
+<div class="scroller_sub_page">
+<table style="width:100%;margin-top:30px;" border=0>
 <tr>
 <?php 
 $year=date('Y');
@@ -82,7 +83,7 @@ See PDF</br>
 </td>
 <?php //}
 $i++;
-if($i%4 == 0){?>
+if($i%3 == 0){?>
 </tr>
 <tr>
 <?php } 
@@ -90,10 +91,8 @@ if($i%4 == 0){?>
 }?>
 </tr>
 </table>
+</div><!------scroller div------>
 
-
-</center>
-
-<div align="center">  <?php $this->load->view('template/footer');?></div>
+<div>  <?php $this->load->view('template/footer');?></div>
 </body>
 </html>

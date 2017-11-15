@@ -2,34 +2,36 @@
     Created on : May 19, 2017, 4:12:18 PM
     Author     : Manorama Pal (palseema30@gmail.com)
 */
+body{width:70%;margin:0 auto;}
 
 .TFtable th{
-        height:50px;
+        height:50px;border:black 0px solid;
         text-align: center;
         background-color: #9d9d9d;
     }
     .TFtable{
-	width:70%; 
-	border-collapse:collapse; 
-	 margin: 0 auto;
+	 width:100%; 
+	border-collapse:collapse;
+	border:2px solid #a8a8a8;
+	/*margin: 0 auto;*/
     }
     .TFtable td{ 
-        //padding:7px; border:#4e95f4 1px solid;
-        padding:7px; border:#4e95f4 0px solid;
+        /*padding:7px; border:#4e95f4 1px solid;*/
+        border:black 0px solid;padding:10px 4px 10px 4px;
     }
     /* provide some minimal visual accomodation for IE8 and below */
     .TFtable tr{
-        //background: #b8d1f3;
+       /* //background: #b8d1f3;*/
         background:#999;
     }
     /*  Define the background color for all the ODD background rows  */
     .TFtable tr:nth-child(odd){ 
-	//background: #b8d1f3;
+	/*//background: #b8d1f3;*/
         background: lightgray;
     }
     /*  Define the background color for all the EVEN background rows  */
     .TFtable tr:nth-child(even){
-	//background: #dae5f4;
+	/*//background: #dae5f4;*/
         background: whitesmoke;
     }
 

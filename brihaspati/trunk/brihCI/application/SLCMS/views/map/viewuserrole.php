@@ -5,7 +5,7 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+       
         <?php $this->load->view('template/menu');?>
          <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
         <style>
@@ -20,8 +20,12 @@
        </style>
     </head>    
     <body>
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
 	<center>
-         <table style="width:70%"> 
+         <table style="width:100%"> 
           <tr><td> 
                <?php echo anchor('map/userroletype/', "Map with User Role List ", array('title' => 'Add Detail' , 'class' => 'top_parent'));?>
                <?php
@@ -46,6 +50,7 @@
         </table>  </center>
         <br/>
       <!-- <div class="panel panel-primary"> -->
+	<div class="scroller_sub_page">
             <table cellpadding="16" class="TFtable">
             <thead >
             <tr align="center">
@@ -61,6 +66,7 @@
             <tr></tr>
         </thead>
         <tbody>
+		
                 <?php $serial_no = 1;?>
                 <?php foreach($this->result as $record){ ?>
                     <tr align="center">
@@ -81,6 +87,7 @@
                 <?php }; ?>
          </tbody>
         </table> 
+</div><!------scroller div------>
   <!-- </div>  -->     
     </body>  
    <div align="center">  <?php $this->load->view('template/footer');?></div>
