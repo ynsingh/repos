@@ -2584,7 +2584,7 @@ class Setup extends CI_Controller
         $this->deptresult = $this->common_model->get_list('Department');
         if(isset($_POST['scheme'])) {
             $this->form_validation->set_rules('dept_name','Departname','trim|xss_clean|required');
-            $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('sname','Scheme Name','trim|xss_clean|callback_isSchemeExist');
             $this->form_validation->set_rules('scode','Scheme Code','trim|xss_clean|required|alpha_dash');
             $this->form_validation->set_rules('ssname','Scheme Short Name','trim|xss_clean|required|alpha_numeric_spaces');
             $this->form_validation->set_rules('sdesc','Scheme Description','trim|xss_clean');
@@ -2624,7 +2624,7 @@ class Setup extends CI_Controller
      * @return type
     */
 
-    /*public function isSchemeExist($sd_name) {
+    public function isSchemeExist($sd_name) {
 
         $is_exist = $this->SIS_model->isduplicate('scheme_department','sd_name',$sd_name);
         if ($is_exist)
@@ -2635,7 +2635,7 @@ class Setup extends CI_Controller
         else {
             return true;
         }
-    }*/
+    }
 
 
 

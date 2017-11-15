@@ -1931,17 +1931,8 @@ class Setup extends CI_Controller
 /****************************************** Add Study Center Module ********************************************/
 
     	public function sc(){
-            	//$this->uresult = $this->common_model->get_listspfic('org_profile','org_code','org_name');
             	$this->uresult = $this->common_model->get_listmore('org_profile','org_code,org_name');
-                //$this->cresult = $this->common_model->get_listspfic('countries','id','name');
                 $this->cresult = $this->common_model->get_listmore('countries','id,name');
-
-                $prefs =array(
-                       'start_date' => 'monday',
-                        'show_next_prev' => true,
-                        'next_prev_url' => base_url()
-                        );
-                $this->load->library('calendar',$prefs  );  
 
            if(isset($_POST['sc']))
                 {
@@ -1997,7 +1988,6 @@ class Setup extends CI_Controller
                                 $this->logger->write_logmessage("insert"," Error in adding Study center ", " Study center data insert error . ".$data['sc_name']  );
                                 $this->logger->write_dblogmessage("insert"," Error in adding Study center ", " Study center data insert error . ".$data['sc_name'] );
                                 $this->session->set_flashdata('err_message','Error in adding Study center - ' . $data['sc_name'] . '.', 'error');
-                                //redirect('setup/sc');
 				 $this->load->view('setup/sc');
                         }
                         else{
@@ -2005,7 +1995,6 @@ class Setup extends CI_Controller
                                 $this->logger->write_dblogmessage("insert"," add Study center ", "Study center record added successfully.".$data['sc_name'] );
                                 $this->session->set_flashdata("success", "Study center added successfully...");
                                 redirect('setup/viewsc');
-			//	 $this->load->view('setup/sc');
     
 				}
                         }
@@ -2302,7 +2291,6 @@ class Setup extends CI_Controller
 				$logmessage = $logmessage = "University Name " .$sc_data->orgprofile. " changed by " .$data_orgprofile;
  				if($sc_data->sc_code != $data_institutecode)
 				$logmessage = $logmessage ." Campus Code " .$sc_data->institutecode. " changed by " .$data_institutecode;
-        	                if($sc_data->sc_name != $data_name)
                                 $update_data = array(
 
 				   'org_code'=>$data_orgprofile,

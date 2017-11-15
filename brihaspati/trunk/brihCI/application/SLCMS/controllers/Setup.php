@@ -1947,17 +1947,8 @@ class Setup extends CI_Controller
 /****************************************** Add Study Center Module ********************************************/
 
     	public function sc(){
-            	//$this->uresult = $this->common_model->get_listspfic('org_profile','org_code','org_name');
             	$this->uresult = $this->common_model->get_listmore('org_profile','org_code,org_name');
-                //$this->cresult = $this->common_model->get_listspfic('countries','id','name');
 		$this->cresult = $this->common_model->get_listmore('countries','id,name');
-
-                $prefs =array(
-                       'start_date' => 'monday',
-                        'show_next_prev' => true,
-                        'next_prev_url' => base_url()
-                        );
-                $this->load->library('calendar',$prefs  );  
 
            if(isset($_POST['sc']))
                 {
@@ -2121,7 +2112,6 @@ class Setup extends CI_Controller
                 'value' => $sc_data->sc_name,
                 );
 
-
                 $data['nickname'] = array(
                 'name' => 'nickname',
                 'id' => 'nickname',
@@ -2145,7 +2135,6 @@ class Setup extends CI_Controller
                 'size' => '40',
               	'value' => $sc_data->sc_country, 
                 );
-		//echo "this is seema".$data['country']['value'];
                $data['state'] = array(
                 'name' => 'state',
                 'id' => 'state',
@@ -2318,7 +2307,6 @@ class Setup extends CI_Controller
 				$logmessage = $logmessage = "University Name " .$sc_data->orgprofile. " changed by " .$data_orgprofile;
  				if($sc_data->sc_code != $data_institutecode)
 				$logmessage = $logmessage ." Campus Code " .$sc_data->institutecode. " changed by " .$data_institutecode;
-        	                if($sc_data->sc_name != $data_name)
                                 $update_data = array(
 
 				   'org_code'=>$data_orgprofile,

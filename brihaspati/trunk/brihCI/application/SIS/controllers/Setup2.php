@@ -912,18 +912,6 @@ class Setup2 extends CI_Controller
    /** This function check for duplicate designation
      * @return type
      */
-    public function isnameExist($desig_name) {
-        $is_exist = $this->commodel->isduplicate('designation','desig_name',$desig_name);
-        if ($is_exist)
-        {
-            $this->form_validation->set_message('isnameExist', 'Designation is already exist.');
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-
     public function isCodeExist($desig_code) {
 
         $is_exist = $this->commodel->isduplicate('designation','desig_code',$desig_code);

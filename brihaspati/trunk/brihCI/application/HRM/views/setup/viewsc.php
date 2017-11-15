@@ -10,14 +10,14 @@
     </head>
     <body>
 
-        </br>
-        <table style="margin-left:2%;">
+        <center>
+        <table width="70%">
 
             <tr colspan="2"><td>
             <?php
                     echo anchor('setup/sc/', "Add Study Center " ,array('title' => ' Add study center Configuration Detail ' , 'class' => 'top_parent'));
-                    $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
-           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+                    $help_uri = site_url()."/help/helpdoc#ViewStudyCenter";
+           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
 
             ?>
 
@@ -40,11 +40,11 @@
 
             </div>
             </td></tr>
-        </table>
-        <table cellpadding="16" style="margin-left:2%;" class="TFtable" >
+        </table></center>
+        <table cellpadding="16" class="TFtable" >
             <thead>
-                <tr align="center">
-        
+                <tr align="center">       
+ 
                         <th>University Name</th>
                         <th>Campus Name</th>
 			<th>Address</th>
@@ -65,14 +65,14 @@
                         $this->uresult = $this->common_model-> get_listspfic1('org_profile','org_name','org_code',$row->org_code);
                         
                         echo $this->uresult->org_name;?></td>
-                        <td><?php echo $row->sc_name .",&nbsp;"."&nbsp;(". $row->sc_code .",&nbsp; ". $row->sc_nickname .")&nbsp;"?></td>
-                        <td><?php echo $row->sc_address . ",&nbsp;".$this->common_model->get_listspfic1('cities','name','id',$row->sc_city)->name.","
-                         . $row->sc_district .",&nbsp;".$this->common_model->get_listspfic1('states','name','id',$row->sc_state)->name. ",&nbsp;". $this->common_model->get_listspfic1('countries','name','id',$row->sc_country)->name;?>
+                        <td><?php echo $row->sc_name .", &nbsp;" . "&nbsp;(". $row->sc_code .",&nbsp; ". $row->sc_nickname .")"?></td>
+                        <td><?php echo $row->sc_address . ", &nbsp;".$this->common_model->get_listspfic1('cities','name','id',$row->sc_city)->name.","
+                         . $row->sc_district .", &nbsp;".$this->common_model->get_listspfic1('states','name','id',$row->sc_state)->name. ", &nbsp;". $this->common_model->get_listspfic1('countries','name','id',$row->sc_country)->name;?>
                       	<?php echo ",&nbsp;". $row->sc_pincode?></td>
                         <td><?php echo $row->sc_phone?></td>
                         <td><?php echo $row->sc_fax?></td>
                         <td><?php echo $row->sc_status?></td>
-                        <td><?php echo $row->sc_startdate . "-&nbsp;". $row->sc_closedate?></td>
+                        <td><?php echo $row->sc_startdate . "&nbsp;" . "&nbsp;".  $row->sc_closedate?></td>
                         <td><?php echo $row->sc_website?></td>
                         <td><?php echo $row->sc_incharge ." &nbsp;(M&nbsp;-&nbsp;". $row->sc_mobile.")"?></td>
 

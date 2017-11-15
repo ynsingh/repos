@@ -9,6 +9,10 @@
    <?php $this->load->view('template/header'); ?>
     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
     <?php $this->load->view('template/menu');?>
+     <center>
+        <table width="70%">
+            <tr colspan="2"><td>
+
   </head>
  <body>
     <!--<//?php
@@ -26,7 +30,7 @@
                 <div align="left">
                 <?php  echo anchor('setup2/adddesignation/', "Add Designation", array('title' => 'Add  Designation  Detail','class' =>'top_parent'));
 		$help_uri = site_url()."/help/helpdoc#ViewDesignation";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:74%\">Click for Help</b></a>";
+                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:45%\">Click for Help</b></a>";
                 ?>
                   </div>
                 <div  style="width:90%;margin-left:2%">
@@ -53,6 +57,9 @@
 <thead>
                   <th>Sr.No</th>
                   <th> Designation Code</th>
+                  <th> Designation Type</th>
+                  <th> Designation Sub Type</th>
+                  <th> Designation Payscale</th>
                   <th> Designation Name</th>
                   <th> Designation Group </th>
                   <th> Designation Short</th>
@@ -67,6 +74,9 @@
              <tr align="center">
             <td> <?php echo ++$count; ?> </td>
             <td> <?php echo $row->desig_code  ?></td>
+            <td> <?php echo $row->desig_type  ?></td>
+            <td> <?php echo $row->desig_subtype  ?></td>
+            <td> <?php echo $row->desig_payscale ?></td>
             <td> <?php echo $row-> desig_name ?></td>
             <td> <?php echo $row-> desig_group ?></td>
             <td> <?php echo $row->desig_short  ?></td>

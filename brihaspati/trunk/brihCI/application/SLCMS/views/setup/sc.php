@@ -13,90 +13,59 @@
       				  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
           	                  <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 
-<script>$(document).ready(function(){
+<script>
+$(document).ready(function(){
 $("#StartDate").datepicker({
-dateFormat: 'yy/mm/dd',
-numberOfMonths: 1,
-onSelect: function(selected) {
-$("#EndDate").datepicker("option","minDate", selected)
-}
+onSelect: function(value, ui) {
+  console.log(ui.selectedYear)
+  var today = new Date(), 
+  dob = new Date(value), 
+  age = 2017-ui.selectedYear;
+  //$("#age").text(age);
+                                },
+                                //(set for show current month or current date)maxDate: '+0d',
+                                
+  changeMonth: true,
+  changeYear: true,
+  dateFormat: 'yy-mm-dd',
+ // defaultDate: '1yr',
+  yearRange: 'c-47:c+50',
 });
 
 $("#EndDate").datepicker({ 
-dateFormat: 'yy/mm/dd',
-numberOfMonths: 1,
-onSelect: function(selected) {
-$("#StartDate").datepicker("option","maxDate", selected)
-}
-}); 
+onSelect: function(value, ui) {
+ console.log(ui.selectedYear)
+var today = new Date(), 
+dob = new Date(value), 
+age = 2017-ui.selectedYear;
+
+//$("#age").text(age);
+},
+                                //(set for show current month or current date)maxDate: '+0d',
+changeMonth: true,
+changeYear: true,
+dateFormat: 'yy-mm-dd',
+//defaultDate: '1yr',
+yearRange: 'c-47:c+50',
+});
 });
 </script>
-<script>
-    $(document).ready(function(){
-       $('#country_id').on('change',function(){
-           var cid = $(this).val();
-           if(cid == ''){
-               $('#stname').prop('disabled',true);
-               
-           }
-           else{
-              	 $('#stname').prop('disabled',false); 
-               $.ajax({
-                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_state",
-                   type: "POST",
-                   data: {"cid" : cid},
-                   dataType:"html",
-                   success:function(data){
-                      $('#stname').html(data.replace(/^"|"$/g, ''));
-                       
-                   },
-                   error:function(data){
-                       
-                   }
-               });
-           }
-       }); 
 
-
-$('#stname').on('change',function(){
-           var sid = $(this).val();
-           if(sid == ''){
-               $('#citname').prop('disabled',true);
-               
-           }
-           else{
-                 $('#citname').prop('disabled',false); 
-               $.ajax({
-                   url: "<?php echo base_url();?>slcmsindex.php/setup/get_city",
-                   type: "POST",
-                   data: {"sid" : sid},
-                   dataType:"html",
-                   success:function(data){
-                      $('#citname').html(data.replace(/^"|"$/g, ''));
-                       
-                   },
-                   error:function(data){
-                       
-                   }
-               });
-           }
-       }); 
-    });
-</script>   
 </head> 
  <body>
+ <center>
  <div id="body">
         <?php $this->load->view('template/header'); ?>
         <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu'); ?>
 </div>
 
-     <table width="100%">
+     <table width="70%">
             <tr><td>
                 <div align="left" style="margin-left:2%;">
                 <?php echo anchor('setup/viewsc/', "View Study Center Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
                 $help_uri = site_url()."/help/helpdoc#StudyCenter";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:60%\">Click for Help</b></a>";?>
+                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:45%\">Click for Help</b></a>";?>
                 <div  style="width:90%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -111,17 +80,18 @@ $('#stname').on('change',function(){
                ?>
               </div>
              </td></tr>
-        </table>
+        </table></center>
 
             <tr>
                 <div style="margin-left:3%;">
                 <br/>
-                    
+                <center>    
                 <form action="<?php echo site_url('setup/sc');?>" method="POST" class="form-inline">
-                <table style="margin-left:0.2%;">
-                          <tr><td>
-                        Choose your University:</td><td>
-                        <select name="orgprofile" style="width:100%">
+                   <table style="width:70%;">
+                       <tr>
+                       <td><label class="control-label">Choose your University:</label></td>                   
+                       <td>
+                        <select name="orgprofile" style="width:63%">
                         <option value=""disabled selected>---------Select university---------</option>
                         <?php foreach($this->uresult as $datas): ?>
                        <option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option>
@@ -165,7 +135,7 @@ $('#stname').on('change',function(){
                                 <td><input type="text" name="address"  class="form-control" size="26" value="<?php echo isset($_POST["address"]) ? $_POST["address"] : ''; ?>" /><br></td>
                                 <td><?php echo form_error('address')?></td>
                                 </tr>
-                                <tr><td>Country: </td><td>
+			        <tr><td><label class="control-label">Country:</label></td> <td>
 					<select name="country"  id="country_id">
 					<option value="">Select Country</option>
 					<?php foreach($this->cresult as $datas): ?>
@@ -174,13 +144,17 @@ $('#stname').on('change',function(){
 				</select>
                                  
 		
-                                <tr><td>State: </td><td>                        
+                                <tr>
+                                <td><label class="control-label">State:</label></td> 
+                                <td>                        
 				<select style="height:35px;" name="state" id="stname" disabled="">
 					<option value="">Select state</option>
 				</select>
                                 </tr></td>
                                  
-                                <tr><td>City: </td><td>
+                                <tr>
+                                <td><label class="control-label">City:</label></td>                              
+                                <td>
 				<select style="height:35px;" name="city" id="citname" disabled="">
                                     <option value="">Select city</option>
                                 </select>
@@ -263,13 +237,13 @@ $('#stname').on('change',function(){
                                 
                                     <tr>
                                     <td colspan="2" style="margin-left:30px;">
-					 <button name="sc" style="margin-left:175px;" name="submit" >Submit</button>
+					 <button name="sc" style="margin-left:310px;" name="submit" >Submit</button>
 					 <input type="reset" name="Reset" value="Clear"/>
 					 </td>
                                       </tr>
 				</body>
 			</html>
-		</table>
+		</table></center>
 <div>
 <?php $this->load->view('template/footer'); ?>
 </div>
