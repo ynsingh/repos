@@ -62,10 +62,12 @@ echo "</center>";
 <br>
 
 	<div>
+<div class="scroller_sub_page">
 <table>
 <tr>
 <div align="left" style="margin-left:2%;">
-<table cellpadding="16" style="font-size:17px;width:70%;" class="TFtable" >
+
+<table cellpadding="16" style="font-size:17px;width:100%;" class="TFtable" >
 <tr align="center">
 <thead><th>Sr.No</th><th>Academic Year</th><th>Program Category</th><th>Program Name </th><th>Entrance Exam Fees </th> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th><th>Entrance Exam Date</th><th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th></tr></thead>
 <?php
@@ -113,6 +115,7 @@ else :
 </div>
 </tr>
 </table>
+</div>
 		<!--<table align=center border=1>
 		<tr>
 		<td> 

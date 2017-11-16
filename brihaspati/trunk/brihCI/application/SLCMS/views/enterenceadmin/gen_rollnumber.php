@@ -50,11 +50,8 @@ echo "</center>";
 	?>  
 </tr>
    </table>	
-</br></br>
+
 <center>   
-<table style="width:50%;">
-	<tr><td></td></tr>
-</table>
 
 	<form action="<?php echo site_url('enterenceadmin/search_rollnumber'); ?>" method="POST">
 		<table style="width:100%;" border=0>

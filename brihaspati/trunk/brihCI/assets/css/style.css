@@ -14,7 +14,7 @@ body {
 }
 
 .scroller{overflow:auto;height:700px;}
-.scroller_sub_page{overflow:auto;height:630px;}
+.scroller_sub_page{overflow:auto;height:665px;}
 
 #uname{font-size:22px;width:100%;margin:0 auto;background-color: #0099CC;color:white;font-weight:bold;}
 

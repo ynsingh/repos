@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
-		<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/Studentsteps.css" />
+	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
 <style>
 tr td{font-size:20px;}
@@ -45,7 +45,7 @@ tr td{font-size:20px;}
    </table>		
 <center>
 <form action="<?php echo site_url('enterenceadmin/generateattendence'); ?>" method="POST">
-	<table style="width:70%;" border=0>
+	<table style="width:70%;margin-top:-1%;" border=0>
 		<tr>
 			<td style="height:35px;font-size:18px;"  align=center><h2>Generate Attendance Sheet</h2></td>
 			<td align=right valign="top">

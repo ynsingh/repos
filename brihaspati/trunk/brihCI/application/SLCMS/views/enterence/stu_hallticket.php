@@ -12,7 +12,7 @@
 <title>IGNTU - Download Hall Ticket</title>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
+   
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
@@ -45,7 +45,7 @@
 <center>
 
     <form action="<?php echo site_url('enterence/stu_hallticket'); ?>" method="POST" >
-    <table style="border:0px solid black; margin-top:0px;width:30%;">
+    <table style="border:0px solid black; margin-top:0px;width:40%;">
 	<h2>Download Hall Ticket</h2>
 
         <tr><td>
@@ -117,10 +117,8 @@
     
     </table>
     </form>
-
+<?php $this->load->view('template/footer'); ?>
 </center>
-<?php
-     $this->load->view('template/footer'); ?>
 
 </body>
 </html>

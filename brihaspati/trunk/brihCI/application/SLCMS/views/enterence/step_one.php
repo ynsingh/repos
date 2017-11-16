@@ -77,7 +77,7 @@ function filladd()
 echo "<center>";
 
 	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:40px;color:green;'>";
+echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:100%;height:40px;color:green;'>";
 	echo $this->session->flashdata('msg');
 echo "<div>";	
 }
@@ -85,7 +85,7 @@ echo "<div>";
 
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"70%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
+	echo "<table style=\"100%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
 		echo "<tr>";
 			echo "<td style='font-size:18px;float:left;'>";
 				echo $_SESSION['success'];
@@ -113,14 +113,14 @@ echo "</center>";
 echo "<center>";
 
 	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:70%;height:30px;color:green;'>";
+echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:100%;height:30px;color:green;'>";
 	echo $this->session->flashdata('msg');
 echo "<div>";	
 }
 
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"margin-left:30px;width:70%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
+	echo "<table style=\"margin-left:30px;width:100%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
 		echo "<tr>";
 			echo "<td style='font-size:18px;float:left;'>";
 				echo $_SESSION['success'];
@@ -145,7 +145,7 @@ echo "<div>";
 echo "</center>";
 ?>   
 <center>
-	<div align="left" style="width:70%;font-size:18px;">
+	<div align="left" style="width:100%;font-size:18px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;height:30px;" class="">','</div>');?>
         <?php if(isset($_SESSION[''])){?>
@@ -165,7 +165,7 @@ echo "</center>";
 <center>
 <form action="<?php echo site_url('enterence/step_one'); ?>"  method="POST">
 
-	<table style="width:70%;">
+	<table style="width:100%;">
 		<thead><tr><th align=left colspan="8" style="font-size:22px;">Personal</th></tr></thead>
 		<tr height=10></tr>
 	    <tr>	
@@ -324,7 +324,7 @@ echo "</center>";
 	</tr>
 	</table>
 
-<table style="width:70%;" border=2>
+<table style="width:100%;" border=2>
 	<thead><tr><th align=left style="font-size:22px;" colspan=2>Parmanent and Correspondence Address</th>
 		<th align=right colspan=2  style="font-size:18px;">
 		<input type="checkbox" value="" name="filltoo" id="filltoo" onclick="filladd()"/>Correspondence Address same as Parmanent Address
@@ -397,7 +397,7 @@ echo "</center>";
 
 
 </br></br>
-	<table style="width:70%;">
+	<table style="width:100%;">
 		<thead><tr><th align=left colspan="8" style="font-size:22px;">Family Detail</th></tr></thead>
 		<tr height=10></tr>
 		<tr>	
@@ -450,7 +450,7 @@ echo "</center>";
 </form>
 
 </center>
-
+</br></br></br></br></br>
 
 <?php //$thisPage2="studentaddDetail";
 	$this->load->view('template/footer'); ?>

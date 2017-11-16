@@ -11,23 +11,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title>IGNTU:Faq</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
-	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
+	 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/tablestyle.css">
 </head>
 <body>
 
-
-<div>
-	<div id="body">
-	<?php  // $thisPage2="studentaddDetail"; 
-		$this->load->view('template/header'); ?>
+<div id="body">
+	<?php $this->load->view('template/header'); ?>
 </br>
 	<?php $this->load->view('enterence/enterence_head'); ?>
-	<?php //if(isset($_SESSION)) {
-        	//echo $this->session->flashdata('flash_data');
-    	//} ?>
+	
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
 <?php
 echo "<center>";
@@ -40,7 +33,7 @@ echo "<div>";
 
 echo "</center>";
 ?>
-	<div align="left" style="margin-left:30px;width:1700px;font-size:18px;">
+	<div align="left" style="margin-left:30px;width:100%;font-size:18px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -55,17 +48,14 @@ echo "</center>";
         };
 	?>  
       </div>
+	<table style="width:100%;margin-top:50px;">
+		<tr>
+			<td><?php $this->load->view('template/work_under');?></td>
+		<tr>
+	</table>
+</div>
 
-<?php  echo "<table style='width:100%;margin-top:100px;' >";	
-			echo "<tr>"."<td>";
-				$this->load->view('template/work_under'); 	
-			echo "</td>"."</tr>";
-		echo "</table>";
-		?>
-
-	</div>
-
-<div style="margin-top:140px;">
+<div style="margin-top:0px;">
 <?php $this->load->view('template/footer'); ?>
 </div>
 </body>

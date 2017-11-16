@@ -45,7 +45,7 @@ echo "<div>";
 
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"70%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
+	echo "<table style=\"100%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
 		echo "<tr>";
 			echo "<td style='font-size:18px;float:left;'>";
 				echo $_SESSION['success'];
@@ -70,7 +70,7 @@ echo "<div>";
 echo "</center>";
 ?>
 <center>
-	<div align="left" style="width:70%;font-size:18px;height:30px;">
+	<div align="left" style="width:100%;font-size:18px;height:30px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;" class="">','</div>');?>
         <?php if(isset($_SESSION[''])){?>
@@ -375,6 +375,7 @@ echo "</center>";
 </center>
 </div>
 </page>
+</br></br></br></br></br>
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 <div id="foohide">
 <?php $this->load->view('template/footer'); ?>

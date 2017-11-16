@@ -43,7 +43,7 @@
 
 <center>
 
-<div class="container" style="width:60.3%;height:65px;font-size:13px;" >
+<div class="container" style="width:100%;height:65px;font-size:13px;" align=left>
 	<div class="row">
 		<?php if (stripos($_SERVER['REQUEST_URI'],'step_zero') !== false) {?>
 			<ul class="breadcrumb ">

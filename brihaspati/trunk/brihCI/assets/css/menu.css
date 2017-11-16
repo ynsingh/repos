@@ -27,7 +27,7 @@
 .sf-menu ul {
 	position:absolute;
 	top:-999em;
-	width:15em; /* left offset of submenus need to match (see below) */
+	width:17em; /* left offset of submenus need to match (see below) */
 }
 .sf-menu ul li {
 	width:100%;
@@ -46,7 +46,7 @@
 .sf-menu li:hover ul,
 .sf-menu li.sfHover ul {
 	left:0;
-	top:2.8em; /* match top ul list item height */
+	top:3.7em; /* match top ul list item height */
 	z-index:99;
 }
 ul.sf-menu li:hover li ul,
@@ -158,7 +158,7 @@ li.sfHover > a > .sf-sub-indicator {
 
 nav {
 	background:none repeat scroll 0 0 #0099CC;
-	height:35px;width:70%;margin:0 auto;
+	height:35px;width:100%;margin:0 auto;
 	padding:0 0 0 18px;
 	color:#FFFFFF;
 }

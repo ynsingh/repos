@@ -81,7 +81,7 @@ echo "<div>";
 echo "</center>";
 ?>   
 <center>
-	<div align="left" style="width:70%;font-size:18px;">
+	<div align="left" style="width:100%;font-size:18px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;height:30px;" class="">','</div>');?>
         <?php if(isset($_SESSION[''])){?>
@@ -103,7 +103,7 @@ echo "</center>";
 
 
 <form action="<?php echo site_url('enterence/step_two'); ?>"  method="POST">
-	<table style="margin-top:20px;width:85%;border:2px solid black;">
+	<table style="margin-top:20px;width:100%;border:2px solid black;">
 		<thead>
 			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Education Details</th>
 		</thead>
@@ -280,7 +280,7 @@ $('input[type=number]').on('keyup', ShowPercentage);
 	<!---------------------------------Enterance exam file add--------------------------------------->
 		<?php $this->load->view('enterence/entrance_exam');?>	
 		
-	<table style="margin-top:50px;width:85%;border:2px solid black;">
+	<table style="margin-top:50px;width:100%;border:2px solid black;">
 		<thead>
 			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Details if any employment</th>
 		</thead>
@@ -374,7 +374,7 @@ $('input[type=number]').on('keyup', ShowPercentage);
 </form>
 
 </center>
-
+</br></br></br></br>
 
 <?php //$thisPage2="studentaddDetail";
 	$this->load->view('template/footer'); ?>

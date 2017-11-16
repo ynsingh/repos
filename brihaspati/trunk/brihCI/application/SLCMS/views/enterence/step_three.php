@@ -20,6 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <style>
 #error{width:70%;text-align:left;font-size:18px;height:40px;color: #D8000C; padding:1px 1px 18px 1px;background-color: #FFBABA;border:1px ridge white;}
 #fileList{list-style-type:none;font-size:14px;font-weight:bold;}
+input[type='file']{font-size:15px;}
 </style>
 <script>
 updateList = function() {
@@ -58,7 +59,7 @@ echo "<div>";
 
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"width:70%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
+	echo "<table style=\"width:100%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
 		echo "<tr>";
 			echo "<td style='font-size:18px;float:left;'>";
 				echo $_SESSION['success'];
@@ -83,7 +84,7 @@ echo "</center>";
 </br></br>
 	<form action="<?php echo site_url('enterence/step_three'); ?>" method="POST" enctype="multipart/form-data">
 <center>		
-		<table style="border:0px solid black;width:50%;">
+		<table style="border:0px solid black;width:60%;" align=center>
 			<tr>
 				<td>
 				<label><span id="star">*</span><b>Recent photograph (Photo size should be 100kb and photo extension jpeg , jpg or png)</b></label></br>				

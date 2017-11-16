@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/Studentsteps.css" />
+	
 <script>
 function myFunction() {
     window.print();
@@ -42,8 +42,6 @@ echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;widt
 echo "<div>";	
 }
 
-
-
 echo "</center>";
 ?>
 <table align=center style="width:100%;">
@@ -64,7 +62,7 @@ echo "</center>";
 </tr>
    </table>	
 	<form action="<?php echo site_url('enterenceadmin/generatesticker'); ?>" method="POST">
-	<table style="width:70%;" border=0>
+	<table style="width:70%;margin-top:-1%;" border=0>
 		<tr>
 			<td style="height:35px;font-size:18px;" align="right" align=center><h2>Generate Sticker Sheet</h2></td>
 			<td align=right valign="">

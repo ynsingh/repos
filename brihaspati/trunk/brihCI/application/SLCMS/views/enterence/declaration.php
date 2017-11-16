@@ -19,12 +19,13 @@ ul li{text-align:justify;}
         <?php $this->load->view('template/header'); ?><br>
        <!--- <nav>   <h1>Welcome to IGNTU  </h1></nav>-->
 <?php $this->load->view('enterence/enterence_head'); ?>
-<br></br>
+
 <center>
-<div  style="width:68%;">
+<div  style="overflow:auto;height:720px;">
+<div  style="width:90%;" align=left>
 <h2 style="text-align:left;font-size:22px;"><b>Indira Gandhi National Tribal University, Amarkantak, Madhya Pradesh – 484887</b></h2>
                 <div class="row">
-                    <p style="font-weight:bold;text-align:left;font-size:17px;"><u>A. Note:</u></p>
+                    <p style="font-weight:bold;font-size:17px;"><u>A. Note:</u></p>
                     <ol type="i" style="text-align:justify;font-size:15px;">
                       <li>Applicants who had registered last year can use the same User ID and password. Click on forgot password if you do not remember the password.</li>
                         <li>Candidates have to apply for Hons, PG, PhD Programmes either at IGNTU, Amarkantak or Regional Campus, Manipur. As separate selection lists will be prepared for IGNTU & RCM, candidates are advised not to apply for both.</li>
@@ -145,6 +146,7 @@ ul li{text-align:justify;}
                         </li>
                     </ol>
                 </div>
+</div>
                 <div class="row text-center">
                  <!--<form action="<?php echo site_url('Enterence/step_zero'); ?>" method="POST" >-->
        		 

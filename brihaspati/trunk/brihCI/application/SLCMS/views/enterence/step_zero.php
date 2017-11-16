@@ -15,8 +15,6 @@
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
- 
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 
@@ -73,7 +71,7 @@ button{height:35px;font-size:20px;}
 
 </head>
 <body>
-        <div align="center" style="margin-left:25%;width:52%;">
+        <div align="center" style="margin-left:25%;width:100%;">
 
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -93,7 +91,7 @@ button{height:35px;font-size:20px;}
 
 <center>
     <form action="<?php echo site_url('Enterence/step_zero'); ?>" method="POST" >
-    <table style="border:2px solid #c6c6c6; margin-top:50px;width:25%;">
+    <table style="border:2px solid #c6c6c6; margin-top:50px;width:35%;">
     <tr style="background-color:#38B0DE;color:white;font-size:20px;">
 <td style="border:2px solid white;" align=center colspan=5>Enterance Exam Registration</td></tr>
 <tr height=20></tr>	
