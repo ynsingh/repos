@@ -39,33 +39,33 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
         echo "<tbody align=\"left\">";
 
 
-      	echo "<tr><td style=\"padding: 0px 8px 8px 0px;\">University Code</td><td>";
+      	echo "<tr><td style=\"padding: 0px 8px 8px 0px;\"><b>University Code</b></td><td>";
 	echo $this->result->org_code;
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 0px 8px 8px 0px;\">University Name</td><td>";
+        echo "<tr><td style=\"padding: 0px 8px 8px 0px;\"><b>University Name</b></td><td>";
 	echo $this->result->org_name;
 	echo "</td></tr>";
-     	echo "<tr><td style=\"padding: 0px 8px 8px 0px;\">University Type</td><td>";
+     	echo "<tr><td style=\"padding: 0px 8px 8px 0px;\"><b>University Type</b></td><td>";
 	echo $this->result->org_type;
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 0px 8px 8px 0px;\">University Address</td><td>";
+        echo "<tr><td style=\"padding: 0px 8px 8px 0px;\"><b>University Address</b></td><td>";
 	echo $this->result->org_address1;
 	echo "\t";
 	echo $this->result->org_address2;echo ",";echo $this->result->org_city;echo "";echo $this->result->org_state;echo ","; echo $this->contryname->name; echo ","; echo $this->result->org_pincode;
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">University Email</td><td>";
+        echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>University Email</b></td><td>";
 	echo $this->result->org_email;
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">University Fax</td><td>";
+        echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>University Fax</b></td><td>";
 	echo $this->result->org_fax;
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">University Phone</td><td>";
+        echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>University Phone</b></td><td>";
 	echo $this->result->org_phone;
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">University Affilation</td><td>";
+        echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>University Affilation</b></td><td>";
 	echo $this->result->org_affiliation;
 	echo "</td></tr>";
-        echo "<tr><td style=\"padding: 8px 8px 8px 0px;\">University Administrator</td><td>";
+        echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"><b>University Administrator</b></td><td>";
 	echo $this->result->org_adminfn;echo "\t";echo $this->result->org_adminln;echo ",";echo "\t";echo $this->result->org_admindesig;
 	echo "</td></tr>";
      	echo "</tbody>";
@@ -87,7 +87,7 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
         echo "<table style=\"padding: 8px 8px 8px 20px;text-align:center;\">";
         echo "<tbody align=\"left\">";
-	echo "<tr><td style=\"padding: 8px 8px 8px 20px;\"> <b>Campus Name</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Program Category</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Program Name</b></td><td style=\"padding: 8px 8px 8px 20px;\"><b>Program Branch</b></td> <td style=\"padding: 8px 8px 8px 20px;\"><b>Seat</b></td></tr>";
+	echo "<tr><td> <b>Campus Name</b></td><td><b>Program Category</b></td><td><b>Program Name</b></td><td><b>Program Branch</b></td> <td><b>Seat</b></td></tr>";
 	foreach($this->prgseat as $row){
 		$scname=$this->commodel->get_listspfic1('study_center','sc_name','sc_id',$row->prg_scid)->sc_name;
 		echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"> $scname </td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_category</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_name</td> <td style=\"padding: 8px 8px 8px 0px;\">$row->prg_branch</td><td style=\"padding: 8px 8px 8px 0px;\">$row->prg_seat</td></tr>";
@@ -116,7 +116,7 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 		foreach($frecord as $ta){
 			echo "<tr>";
 			foreach($ta as $ta1){
-				echo "<td style=\"padding: 8px 8px 0px 0px;text-align:center;\">";
+				echo "<td style=\"padding: 8px 8px 0px 0px;\">";
 				echo $ta1;
 				echo "</td>";
  			}
