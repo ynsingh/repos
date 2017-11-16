@@ -80,7 +80,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('gender','Gender','trim|xss_clean');
             $this->form_validation->set_rules('community','Community','trim|xss_clean');
             $this->form_validation->set_rules('religion','Religion','trim|xss_clean');
-            $this->form_validation->set_rules('caste','Caste','trim|xss_clean|alpha');
+            $this->form_validation->set_rules('caste','Caste','trim|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');
             
             $this->form_validation->set_rules('emptype','Employee Type','trim|xss_clean');
@@ -416,7 +416,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('gender','Gender','trim|xss_clean');
             $this->form_validation->set_rules('community','Community','trim|xss_clean');
             $this->form_validation->set_rules('religion','Religion','trim|xss_clean');
-            $this->form_validation->set_rules('caste','Caste','trim|xss_clean|alpha');
+            $this->form_validation->set_rules('caste','Caste','trim|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('workingtype','Workingtype','trim|xss_clean');
             
             $this->form_validation->set_rules('emptype','Employee Type','trim|xss_clean');
@@ -522,7 +522,7 @@ class Staffmgmt extends CI_Controller
                 'emp_citizen'                    => $this->input->post('nativity'),
                 'emp_phone'                      => $this->input->post('phonemobileno'),
                 'emp_name'                       => $this->input->post('empname'),
-                
+                'emp_bank_accno'		 => $this->input->post('bankacno'),
                // 'emp_ddouserid'                  => $this->input->post('ddo'),
                 //'emp_ddoid'                      => $this->input->post('ddo'),
                // 'emp_group'                      => $this->input->post('group'),

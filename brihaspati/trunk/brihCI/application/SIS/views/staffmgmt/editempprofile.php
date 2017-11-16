@@ -772,7 +772,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </div>
                 </td>
                 <td><label for="phonemobileno" style="font-size:15px;">Phone/Mobile</label>
-                    <div><input type="text" name="phonemobileno" class="keyup-numeric" MaxLength="10" value="<?php echo $editdata->emp_phone; ?>" placeholder="Phone/Mobile No..." size="30" >
+                    <div><input type="text" name="phonemobileno" class="keyup-numeric"  value="<?php echo $editdata->emp_phone; ?>" placeholder="Phone/Mobile No..." size="30" >
                     </div>    
                 </td>
                 <td><label for="mothertongue" style="font-size:15px;">Mother Tongue</label>
