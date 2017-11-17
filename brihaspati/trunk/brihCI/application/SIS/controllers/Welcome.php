@@ -34,6 +34,10 @@ class Welcome extends CI_Controller {
     	}
 
 	public function index() {
+		$cdate = date('Y-m-d');
+                $wharray = array('anou_cname=' => 'SIS', 'anou_publishdate<=' => $cdate,'anou_expdate>=' => $cdate);
+                $this->annoresult = $this->commodel->get_listarry('announcement','*',$wharray);
+
             if($_POST) {
                 $result = $this->login->validate_user($_POST);
                 /*get role by using model class and set templates according to role*/

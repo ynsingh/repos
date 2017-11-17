@@ -5,11 +5,12 @@
 <html>
 <title>Edit Exam Center</title>
     <head>
-      <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
-      <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
-      <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
-      <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
-      <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
+        <script type="text/javascript" src="<//?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
+
         <?php $this->load->view('template/header'); ?>
         <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
@@ -21,45 +22,17 @@
         }
     </script>
 <script>
-$(document).ready(function(){
-$("#StartDate").datepicker({
-onSelect: function(value, ui) {
-  console.log(ui.selectedYear)
-  var today = new Date(), 
-  dob = new Date(value), 
-  age = 2017-ui.selectedYear;
-  //$("#age").text(age);
-                                },
-                                //(set for show current month or current date)maxDate: '+0d',
-                                
-  changeMonth: true,
-  changeYear: true,
-  dateFormat: 'yy-mm-dd',
-  defaultDate: '1yr',
-  yearRange: 'c-47:c+50',
-});
-
-$("#EndDate").datepicker({ 
-onSelect: function(value, ui) {
- console.log(ui.selectedYear)
-var today = new Date(), 
-dob = new Date(value), 
-age = 2017-ui.selectedYear;
-
-//$("#age").text(age);
-},
-                                //(set for show current month or current date)maxDate: '+0d',
-changeMonth: true,
-changeYear: true,
-dateFormat: 'yy-mm-dd',
-defaultDate: '1yr',
-yearRange: 'c-47:c+50',
-});
-});
+$( function() {
+           $( "#StartDate,#EndDate" ).datepicker({
+                dateFormat: 'yy-mm-dd',
+                minDate: 0
+                });
+                });
 </script>
- <table style="margin-left:2%;width:100%;">
-           <tr><td>
-                <div style="margin-left:2%;">
+<table width="100%">
+            <tr><td>
+<?php echo anchor('announcement/viewannouncement/', "View Announcement" ,array('title' => 'View Announcement' , 'class' => 'top_parent'));?>
+		<div style="margin-left:2%;width:70%;">
                     <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
                     <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
 
@@ -78,8 +51,7 @@ yearRange: 'c-47:c+50',
                 </div>
             </td></tr>
         </table>
-
-        <table style="padding: 8px 8px 8px 50px;">
+<table style="margin-left:2%;">
 <?php
            echo form_open ('announcement/editannouncement/' . $id);
  		echo "<tr>";
@@ -173,7 +145,6 @@ echo "<tr>";
         ?>
 
         </table>
-
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

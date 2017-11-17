@@ -115,10 +115,10 @@ echo "</center>"; ?>
 				echo "<td>";
                                 echo  $aname->anou_description;
 				echo"</td>";
-				//echo "<td>";
-                                //echo  $aname->anou_attachment;
-                               // echo"</td>";
-				echo "</tr>";
+				?>
+				<td><a href ="<?php echo base_url('uploads/announcement/'.$aname->anou_attachment);?>"target=_blank><?php echo $aname->anou_attachment;?></a></td>
+                                <?php
+ 				echo "</tr>";
 				}
 				?>
 </div>

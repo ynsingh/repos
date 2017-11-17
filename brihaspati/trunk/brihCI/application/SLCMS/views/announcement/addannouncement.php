@@ -6,63 +6,37 @@
 <title>Add Announcement</title>
 
  <head>
-      <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
-      <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
-      <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
-      <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
-      <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/datepicker/jquery-ui.css">
+        <script type="text/javascript" src="<//?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-1.12.4.js" ></script>
+        <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
 
      <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
      <?php $this->load->view('template/menu');?>
  </head>
  <body>
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
 <script>
-$(document).ready(function(){
-$("#StartDate").datepicker({
-onSelect: function(value, ui) {
-  console.log(ui.selectedYear)
-  var today = new Date(), 
-  dob = new Date(value), 
-  age = 2017-ui.selectedYear;
-  //$("#age").text(age);
-                                },
-                                //(set for show current month or current date)maxDate: '+0d',
-                                
-  changeMonth: true,
-  changeYear: true,
-  dateFormat: 'yy-mm-dd',
-  defaultDate: '1yr',
-  yearRange: 'c-47:c+50',
-});
-
-$("#EndDate").datepicker({ 
-onSelect: function(value, ui) {
- console.log(ui.selectedYear)
-var today = new Date(), 
-dob = new Date(value), 
-age = 2017-ui.selectedYear;
-
-//$("#age").text(age);
-},
-                                //(set for show current month or current date)maxDate: '+0d',
-changeMonth: true,
-changeYear: true,
-dateFormat: 'yy-mm-dd',
-defaultDate: '1yr',
-yearRange: 'c-47:c+50',
-});
-});
+$( function() {
+	   $( "#StartDate,#EndDate" ).datepicker({
+		dateFormat: 'yy-mm-dd',
+	   	minDate: 0
+	   	});
+	  	});
 </script>
-
-     <table width="100%">
-            <tr><td>
+	<table width="100%">
+ <tr colspan="2"><td>
+		 <div  style="margin-left:2%;">
                 <?php echo anchor('announcement/viewannouncement', "View Announcement", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
                 <!--?php
                  $help_uri = site_url()."/help/helpdoc#Role";
                  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73%\">Click for Help</b></a>";
                  ?-->
-                <div  style="width:100%;">
+		<div  style="margin-left:2%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -81,7 +55,7 @@ yearRange: 'c-47:c+50',
 <tr>
     <div>
     <form action="<?php echo site_url ('announcement/addannouncement');?>" method="POST" enctype="multipart/form-data">
-            <table style="margin-left:1%;">
+ <table style="margin-left:4%;">
             <tr>
                 <td><label for="anou_cname" class="control-label">Announcement Component Name:</label></td>
                 <td>
@@ -131,6 +105,7 @@ yearRange: 'c-47:c+50',
                 <td><input type="text" name="anou_expdate" id="EndDate" class="form-control" size="31"  value="<?php echo isset($_POST["anou_expdate"]) ? $_POST["anou_expdate"] : ''; ?>" required="required"/><br>
                 </td>
                 </tr>
+
 		 <tr>
                 <td><label for="anou_remark" class="control-label">Announcement Remark:</label></td>
                 <td><textarea rows= "" cols="44" name="anou_remark" size="50" > </textarea></td>
