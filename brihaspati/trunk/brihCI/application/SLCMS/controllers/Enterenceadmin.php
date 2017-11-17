@@ -5,6 +5,7 @@
  * @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
  * @author Sumit saxena(sumitsesaxena@gmail.com)[reconcile fees/roll number genrate/hallticket/sticker/attendence]
+ * @author Sharad Singh(sharad23nov@gmail.com) All Graphical reports generation
  */
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -595,9 +596,11 @@ class Enterenceadmin extends CI_Controller
 
     /* bar chart b/w form submission vs time */
 
-    public function viewgraphicalreport(){
+   public function viewgraphicalreport(){
         $this->load->model('chart_model', 'chart1');
-        //$this->load->model('chart_modelnew', 'chart1');
+        
+        /* Form submit vs date*/
+
         $this->chart1->truncatetable('barchart');
 
         $currdate = date("Y-m-d");
@@ -629,15 +632,28 @@ class Enterenceadmin extends CI_Controller
             $next_date = date('Y-m-d', strtotime($start_date .' +1 day'));
             $start_date =  $next_date;
         }
-/*            $insdata = array('pdate'=>'20171025','pval'=>15);
-            $this->commodel->insertrec('barchart', $insdata);
-  */      
 
         $results1 = $this->chart1->get_chart_data1();
+
+        /* Fees submit vs time */
+        
+        // get fee reconcile status
+        $feepaid = $this->chart1->feesdata('admissionstudent_fees');
+        //get total no of form submitted
+        $totalsubmitted = $this->commodel->getnoofrows('admissionstudent_registration',''); 
+        $feenotpaid = $totalsubmitted - $feepaid;
+        
         $data['chart_data1'] = $results1['chart_data1'];
         $data['min_date'] = $results1['min_date'];
         $data['max_date'] = $results1['max_date'];
-
+        //$data['feepaid'] = $results1['feepaid'];
+        $data['feepaid'] = $feepaid;
+        //$data['feenotpaid'] = $results1['feenotpaid'];
+        $whdata = array('step3_status' => 1);
+        $totalregistered =  $this->commodel->getnoofrows('admissionstudent_enterencestep',$whdata);
+        $data['feenotpaid'] = $feenotpaid;
+        $data['totalsubmitted'] = $totalsubmitted;
+        $data['totalregistered'] = $totalregistered;
         $this->load->view('enterenceadmin/graphicalreports',$data);
    }
 
