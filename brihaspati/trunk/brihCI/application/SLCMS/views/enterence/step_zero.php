@@ -71,7 +71,7 @@ button{height:35px;font-size:20px;}
 
 </head>
 <body>
-        <div align="center" style="margin-left:25%;width:100%;">
+        <div>
 
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -130,8 +130,8 @@ button{height:35px;font-size:20px;}
                     changeMonth: true,
                     changeYear: true,
                     dateFormat: 'yy-mm-dd',
-                    defaultDate: '1yr',
-                    yearRange: 'c-37:c+30',
+                   // defaultDate: '1yr',
+                    yearRange: 'c-77:c+10',
                 });
             </script>
         </td>

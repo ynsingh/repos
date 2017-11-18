@@ -73,96 +73,21 @@ function filladd()
 	<?php $this->load->view('enterence/admission_steps');?>
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
 
-<?php
-echo "<center>";
-
-	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:100%;height:40px;color:green;'>";
-	echo $this->session->flashdata('msg');
-echo "<div>";	
-}
-
-
-	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
-		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"100%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
-		echo "<tr>";
-			echo "<td style='font-size:18px;float:left;'>";
-				echo $_SESSION['success'];
-			echo "</td>";
-		echo "<tr>";
-		//echo "</div>";
-	echo "</table>";
-	}
-	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
-		//echo "<div id='error'>";
-		//echo '<div style="margin-left:40px;">'.$_SESSION['error'].'</div>';
-		//echo "</div>";
-	echo "<table id='error'>";			
-		echo "<tr>";
-			echo "<td style='font-size:18px;'>";
-				echo $_SESSION['error'];
-			echo "</td>";
-		echo "<tr>";
-		//echo "</div>";
-	echo "</table>";
-	}
-echo "</center>";
-?>
-<?php
-echo "<center>";
-
-	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:100%;height:30px;color:green;'>";
-	echo $this->session->flashdata('msg');
-echo "<div>";	
-}
-
-	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
-		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"margin-left:30px;width:100%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
-		echo "<tr>";
-			echo "<td style='font-size:18px;float:left;'>";
-				echo $_SESSION['success'];
-			echo "</td>";
-		echo "<tr>";
-		//echo "</div>";
-	echo "</table>";
-	}
-	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
-		//echo "<div id='error'>";
-		//echo '<div style="margin-left:40px;">'.$_SESSION['error'].'</div>';
-		//echo "</div>";
-	echo "<table id='error'>";			
-		echo "<tr>";
-			echo "<td style='font-size:18px;'>";
-				echo $_SESSION['error'];
-			echo "</td>";
-		echo "<tr>";
-		//echo "</div>";
-	echo "</table>";
-	}
-echo "</center>";
-?>   
-<center>
-	<div align="left" style="width:100%;font-size:18px;">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:30px;height:30px;" class="">','</div>');?>
-        <?php if(isset($_SESSION[''])){?>
-        <div class="alert alert-success"><?php echo $_SESSION[''];?></div>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php if(isset($_SESSION['success'])){?>
+        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
         <?php
     	 };
        	?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
-             <div class="isa_error" style='margin-left:30px;width:1680px;font-size:18px;'><div ><?php echo $_SESSION['err_message'];?></div></div>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
 	?>  
-   </div>
-</center>
 	</br> 
-<center>
+<center><?php //echo $scname;?>
 <form action="<?php echo site_url('enterence/step_one'); ?>"  method="POST">
 
 	<table style="width:100%;">
@@ -176,14 +101,21 @@ echo "</center>";
 		<td/>
 				
 		<td>	<!---<span style="color:red;"><?php echo form_error('Scenters');?></span>--->
+			<?php ?>
 			<label for="ennumber">Study Centers</label></br>
-			
 			<select name="entcenter" style="height:37px;font-size:18px;font-weight:bold;" >
  			<option  disabled selected>Study Centers</option>
 			<?php 
-			foreach($this->scresult as $datas1): ?>	
-				<option value="<?php echo $datas1->sc_code; ?>"><?php echo $datas1->sc_name; ?></option>
-			<?php endforeach; ?>
+			
+			if(($prgcat == 'Diploma') || ($prgcat == 'Under Graduate')|| ($prgcat == 'Certificate')){
+			?>	
+			<option value="<?php echo '1'; ?>"><?php echo 'IGNTU, HQ, Amarkantak'; ?></option>
+			<?php }  ?>
+			<?php 
+			if(($prgcat == 'Post Graduate') || ($prgcat == 'Research')){
+			foreach($this->scresult as $datas1): ?>
+			<option value="<?php echo $datas1->sc_code; ?>"><?php echo $datas1->sc_name; ?></option>
+			<?php endforeach; }?>
 			</select>   
 		<td/>
 
@@ -191,7 +123,7 @@ echo "</center>";
 			<label for="nnumber">Enterence Exam Center</label></br>
 			<select name="entexamcenter" style="height:37px;font-size:18px;font-weight:bold;">
 
-			<option selected="true" disabled="disabled" style="font-size:18px;">Type of programme/courses</option>
+			<option selected="true" disabled="disabled" style="font-size:18px;">Center</option>
 					<?php foreach($this->examcenter as $row): ?>	
 					<option value="<?php echo $row->eec_id;?>"><?php echo $row->eec_name; ?></option>
 					<?php endforeach; ?>
@@ -430,7 +362,7 @@ echo "</center>";
 				
 		<td>	
 			<label for="nnumber">Mother Occupation</label></br>
-			<input type="text" <input type="text" name="entmotheroccu" placeholder="Enter mother occupation" value="<?php echo isset($_POST["entmotheroccu"]) ? $_POST["entmotheroccu"] : ''; ?>"/>
+			<input type="text" name="entmotheroccu" placeholder="Enter mother occupation" value="<?php echo isset($_POST["entmotheroccu"]) ? $_POST["entmotheroccu"] : ''; ?>"/>
 		<td/>
 
 	</tr>

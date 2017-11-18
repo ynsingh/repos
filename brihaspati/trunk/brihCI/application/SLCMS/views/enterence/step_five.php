@@ -107,15 +107,73 @@ echo "</center>";
 		  <div id="photo">
 			<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$photo); ?>" >
 		  </div>
+
+		<table class="TFtable" id="personal" style="width:100%;">
+			<tr>
+				<td>Roll No. :</td>
+				<td><?php echo $rollno;?></td>
+				<td>Course Applied For :</td>
+			        <td><?php echo $prgname.'('.$prgbranch.')';?></td></tr>
+			<tr>
+			<tr>
+				<td>Study Center</td>
+				<td><?php echo $scname;?></td>
+				<td>Enterence Exam Center</td>
+				<td><?php echo $exname;?></td>
+			</tr>
+		</table>
 		<table class="TFtable" id="personal" style="width:100%;">
 			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Personal Detail</th></thead>
 			
-			<tr>
+			
+			<tr>	
 				<td>Name of the candidate :</td>
 				<td><?php echo $name;?></td>
-				<td>Name of the Course :</td>
-			        <td><?php echo $prgname.'('.$prgbranch.')';?></td></tr>
+				<td>E-mail</td>
+				<td><?php echo $email;?></td>
+			</tr>
+			<tr>
+				<td>Mobile/Phone Number</td>
+				<td><?php echo $mobile;?></td>
+				<td >Gender :</td>
+				<td><?php echo $gender;?></td>
+				
+			</tr>
+			<tr>
+				<td>Date of birth :</td>
+				<td><?php echo $dob;?></td>
+				<td>Age</td>
+				<td><?php echo $age.'Years';?></td>
+				
+			</tr>
+			<tr>
+				<td>Maritial Status</td>
+				<td><?php echo $mastatus;?></td>
+				<td>Category</td>
+				<td><?php echo $category;?></td>
+
+			</tr>
+			<tr>
+				<td>Nationality</td>
+				<td><?php echo $nationality;?></td>
+				<td>Are You Physically Handicapped ?</td>
+				<td><?php echo $phyhandi;?></td>
+			</tr>
+			<tr>
+				<td>Religion :</td>
+				<td><?php echo $religion;?></td>
+				
+			</tr>	
 			
+			
+			<!---<tr>
+				<td>Blood Group :</td>
+				<td colspan=4><?php echo $this->bgroup;?></td>
+			</tr>--->
+		</table>
+	
+		<table class="TFtable" id="personal" style="width:100%;">
+			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Parents Info</th></thead>
 			<tr>
 				<td>Mother Name :</td>
 				<td><?php echo $mname;?></td>
@@ -134,34 +192,11 @@ echo "</center>";
 				<td>Father Occupation :</td>
 				<td><?php echo $foccupation;?></td>
 			</tr>
-
-			<tr>
-				<td >Gender :</td>
-				<td><?php echo $gender;?></td>
-				<td>Date of birth :</td>
-				<td><?php echo $dob;?></td>
-			</tr>
-
-			<tr>
-				<td>Mobile/Phone Number</td><td><?php echo $mobile;?></td>
-				<td>E-mail</td><td><?php echo $email;?></td>
-			</tr>
-			<tr >
-				<td>Category</td>
-				<td >
-					<?php echo $category;?>
-				</td>
-				<!--<td >Aadhar Number :</td>
-				<td><?php echo $this->uid;?></td>-->
-				
-			</tr>
-			<!---<tr>
-				<td>Blood Group :</td>
-				<td colspan=4><?php echo $this->bgroup;?></td>
-			</tr>--->
+			
 		</table>
 
 		<table class="TFtable" id="padd" style="width:100%;">
+			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Address Detail</th></thead>
 			<thead>
 			<tr>
 				<th><span style="float:left;">Address</span></th>

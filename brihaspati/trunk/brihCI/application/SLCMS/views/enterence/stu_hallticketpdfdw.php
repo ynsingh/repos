@@ -39,8 +39,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<td width=150>
 		<table style="" border=0 align=center>
 			<tr><td align=center style="border:1px solid black;">Hall Ticket Number :</br><?php echo $rollno;?></td></tr>
-			 <tr><td align=center style="border:1px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$photo); ?> style="height:150px;width:170px; "></td></tr>
-		 	<tr><td align=center style="border:1px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$signature); ?> style="height:50px; width:170px; "></td></tr>
+			 <tr><td align=center style="border:0px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$photo); ?> style="height:150px;width:100%; ">
+</br>
+<img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$signature); ?> style="height:50px; width:100%; ">
+</td></tr>
 		</table>
 	</td>
 	</tr>

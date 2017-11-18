@@ -31,71 +31,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php $this->load->view('template/header'); ?>
 	<nav> 	<h1>Welcome to IGNTU  </h1></nav></br>
 	<?php $this->load->view('enterence/admission_steps');?>
+
+	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php if(isset($_SESSION['success'])){?>
+        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+        <?php
+    	 };
+       	?>
 	
-<!--------------------------------------------------------------------------------------------------------------------------------------------------->
-<?php
-echo "<center>";
+        <?php if(isset($_SESSION['err_message'])){?>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
+        <?php
+        };
+	?>  
 
-echo "<center>";
-
-	if($this->session->flashdata('msg')){
-		echo "<div style='font-size:18px;text-align:center;background-color: #FFBABA;width:100%;color: #D8000C;'>";
-		echo $this->session->flashdata('msg');
-		echo "<div>";
-	
-	}
-
-	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
-		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"width:100%;font-size:18px;border:1px solid white;\" class=\"isa_success\">";			
-		echo "<tr>";
-			echo "<td style='font-size:18px;float:left;padding:13px 10px;'>";
-				echo $_SESSION['success'];
-			echo "</td>";
-		echo "<tr>";
-		//echo "</div>";
-	echo "</table>";
-	}
-	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
-		//echo "<div id='error'>";
-		//echo '<div style="margin-left:40px;">'.$_SESSION['error'].'</div>';
-		//echo "</div>";
-	echo "<table id='error'>";			
-		echo "<tr>";
-			echo "<td style='font-size:18px;'>";
-				echo $_SESSION['error'];
-			echo "</td>";
-		echo "<tr>";
-		//echo "</div>";
-	echo "</table>";
-	}
-echo "</center>";
-?>
-
-      </div>
 <center>
-	<div align="left" style="width:100%;font-size:18px;">
-       	 	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        	<?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
-       		<?php if(isset($_SESSION[''])){?>
-        	<div class="alert alert-success"><?php echo $_SESSION[''];?></div>
-       	 	<?php
-    		 	};
-       		?>
-        	<?php if(isset($_SESSION['err_message'])){?>
-        <div class="isa_error" style=""><span ><?php echo $_SESSION['err_message'];?></span></div>
-        	<?php
-        		};
-
-		?>  
-      </div>
-</center>
-<center>
-<h1>Payment</h1>
+<!--<h1>Payment</h1>
 	<table style="width:100%;" >
 		<tr>
 		<td> </br>
-			<select name="paytype" style="width:25%;height:30px;"  id="dbType">
+			<select name="paytype" style="width:20%;height:30px;"  id="dbType">
 				<option selected="true" disabled="disabled">Select Payment Mode</option>
 				<option value="offline">Offline payment</option>
 				<option value="online">Online payment</option>
@@ -103,8 +59,9 @@ echo "</center>";
 		</td>
 		</tr>
 
-	</table>
+	</table>-->
 </center>
+<!--------------------------------------------------------------------------------------------------------------------------------------------------->
 <script>
 $('#dbType').on('change',function(){
     if( $(this).val()==="offline"){
@@ -121,7 +78,7 @@ if( $(this).val()==="online"){
 });	
 </script>
 <!---------------------------------------------------online payment----------------------------------------------------------->
-<div id="otherType1" style="display:none;">
+<!--<div id="otherType1" style="display:none;">-->
 <h3>Online Payment</h3>
  <div class="container" style="text-align:left;">
             <div class="row">
@@ -180,7 +137,7 @@ if( $(this).val()==="online"){
             </div>
         </div>    
 
-</div>
+<!--</div>-->
 
 <!---------------------------------------------------offline payment----------------------------------------------------------->
 <center>

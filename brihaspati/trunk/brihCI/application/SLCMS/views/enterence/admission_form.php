@@ -12,7 +12,7 @@
 <title>IGNTU - Print Form</title>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.datetimepicker.css"/>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-  
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/message.css">
 
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
@@ -24,8 +24,8 @@
 <?php
     $this->load->view('template/header'); ?></br>
 <?php $this->load->view('enterence/enterence_head'); ?>
-<center>
-       <div align="left" style="margin-left:30px;70%;font-size:20px;">
+
+       <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div style="margin-left:30px;" class="">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -35,11 +35,11 @@
        	?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
-             <div class="" style='margin-left:30px;font-size:20px;background-color:#FFBABA;color:#D8000C;text-align:center;'><div ><?php echo $_SESSION['err_message'];?></div></div>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
 	?>  
-</center>
+
 
 <center>
     <form action="<?php echo site_url('Enterence/prtadmission_form'); ?>" method="POST" >
@@ -82,8 +82,8 @@
     				changeMonth: true,
     				changeYear: true,
     				dateFormat: 'yy-mm-dd',
-     				defaultDate: '1yr',
-    				yearRange: 'c-37:c+30',
+     				//defaultDate: '-1yr',
+    				 yearRange: 'c-77:c+10',
 				});
 			</script>	
        

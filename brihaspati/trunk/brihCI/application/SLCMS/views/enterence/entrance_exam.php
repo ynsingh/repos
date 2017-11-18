@@ -53,7 +53,7 @@
 					</select>  
 				</td>
 				<td>
-				<input type="text" placeholder="Roll No" value="<?php echo isset($_POST["edurollno21"]) ? $_POST["edurollno21"] : ''; ?>">
+				<input type="text" placeholder="Roll No" name="edurollno21" value="<?php echo isset($_POST["edurollno21"]) ? $_POST["edurollno21"] : ''; ?>">
 				</td>
 				<td>
 				<input type="text" placeholder="Rank" name="edurank22" value="<?php echo isset($_POST["edurank22"]) ? $_POST["edurank22"] : ''; ?>">

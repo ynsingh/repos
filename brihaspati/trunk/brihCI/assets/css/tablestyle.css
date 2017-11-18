@@ -6,7 +6,7 @@ body{width:70%;margin:0 auto;}
 
 .TFtable th{
         height:50px;border:black 0px solid;
-        text-align: center;
+        /*text-align: center;*/
         background-color: #9d9d9d;
     }
     .TFtable{
@@ -16,6 +16,7 @@ body{width:70%;margin:0 auto;}
 	/*margin: 0 auto;*/
     }
     .TFtable td{ 
+	text-align:left;
         /*padding:7px; border:#4e95f4 1px solid;*/
         border:black 0px solid;padding:10px 4px 10px 4px;
     }

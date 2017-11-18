@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  <link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/style.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style>
-tr td{font-size:22px;font-family: Times New Roman, Times, serif;}
+tr td{font-size:22px;font-family: Times New Roman, Times, serif;padding:10px 10px 10px 10px;}
 
 </style>
 <script>
@@ -33,17 +33,13 @@ function myFunction() {
 		</div> 				
 <?php
     //$this->load->view('template/header'); ?></br>
-</br>
-<center><h2></h2></center>
+
 		
 <center>
-	<div class="panel panel-primary">
+	<div class="panel panel-primary" style="width:70%;">
       		<div class="panel-heading"><h4>Hall Ticket For All India Enterance Examination - <?php echo $acadyear;?></h4></div>
       		<div class="panel-body">
-			<table border=0 style="width:100%;" align=center>
-	<?php //foreach($stud_master as $row){
-		 //$asmid = $row->asm_id;
-		  ?>
+	<table border=0 style="width:100%;"  align=center>
 		
 	<tr>
                 <td align=center style="border:1px solid black;">Program : <?php echo $progname;?></td>
@@ -51,21 +47,22 @@ function myFunction() {
          </tr>
 
 	<tr>
-	<td>
+	<td valign=top>
 		<table border=0>
 			
 			<tr><td>Candidate Name : <?php echo $sname; ?></td></tr>
 			<tr><td>Father Name :<?php echo $faname; ?></td></tr>
-			<tr><td> Mother Name : <?php echo $moname; ?></br></br></td></tr>
+			<tr><td> Mother Name : <?php echo $moname; ?></td></tr>
 			<tr><td> Address : <?php echo $padd.','.$pcity.','.$pstate.','.$pcountry; ?></td></tr>	
-			<tr height=150><td></td></tr>							
+									
 		</table>
 	</td>
-	<td width=150>
+	<td width=150 valign=top>
 		<table style="width:100%;" border=0 align=center>
 			<tr><td align=center style="border:1px solid black;">Hall Ticket Number :</br><?php echo $rollno;?></td></tr>
-			 <tr><td align=center style="border:1px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$photo); ?> style="height:150px;width:170px; "></td></tr>
-		 	<tr><td align=center style="border:1px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$signature); ?> style="height:50px; width:170px; "></td></tr>
+			 <tr><td align=center style="border:0px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$photo); ?> style="height:150px;width:100%; "></br>
+<img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$signature); ?> style="height:50px; width:170px; ">
+</td></tr>
 		</table>
 	</td>
 	</tr>

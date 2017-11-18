@@ -214,10 +214,12 @@ class Common_model extends CI_Model
 	//$sarray='name,age';	
 	//$wharray = array('name' => $name, 'title' => $title, 'status' => $status);
     public function get_listarry($tbname,$sarray,$wharray){
-		//$this->db->flush_cache();
+		$this->db->flush_cache();
 		$this->db->from($tbname);
 		$this->db->select($sarray);
-		$this->db->where($wharray);
+		if($wharray != ''){
+			$this->db->where($wharray);
+		}
 	return $this->db->get()->result();
     }
 
@@ -253,8 +255,11 @@ class Common_model extends CI_Model
     public function get_listspficemore($tbname,$selectfield,$data){
 	    $this->db->flush_cache();
 	    $this->db->from($tbname);
-        $this->db->select($selectfield);
-        $this->db->where($data);
+		$this->db->select($selectfield);
+		if($data != ''){
+        	$this->db->where($data);
+		}
+       
 	
         return $this->db->get()->result();
     }

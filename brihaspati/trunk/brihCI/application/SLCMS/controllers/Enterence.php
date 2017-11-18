@@ -272,7 +272,11 @@ class Enterence extends CI_Controller {
 ////////////////////////////////////////////////////////////////////////////////////
 
 	public function important_date(){
-		$this->result = $this->commodel->get_list('admissionopen');
+		$cdate = date('Y-m-d H:i:s');
+		$whdata = array('admop_lastdate >=' => $cdate);
+		//print_r($whdata);
+		//$this->result = $this->commodel->get_listarry('admissionopen','admop_prgcat,admop_entexam_date','');
+		$this->result = $this->commodel->get_listarry('admissionopen','admop_prgcat,admop_entexam_date',$whdata);
                 $this->logger->write_logmessage("view"," View Admission List", "Admission List details...");
                 $this->logger->write_dblogmessage("view"," View Admission List" , "Admission List record display successfully..." );
 		$this->load->view('enterence/imp_date');
@@ -587,6 +591,14 @@ class Enterence extends CI_Controller {
         $data['msgflag'] = $msgflag;
 
 		$regisid = $this->session->userdata['asreg_id'];
+		
+		$rsdata1 = array('step1_status' => '1', 'registration_id' => $regisid);
+		$recheckstep_exist1 = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata1);
+		if($recheckstep_exist1){
+			//$this->session->set_flashdata('err_message', 'You are not following proper process.');
+			redirect('enterence/step_two');
+		}
+
 		$email = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_emailid','asreg_id',$regisid)->asreg_emailid;		
 		$data['email'] = $email;
 		$mobile = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_mobile','asreg_id',$regisid)->asreg_mobile;		
@@ -596,6 +608,11 @@ class Enterence extends CI_Controller {
 		$prgid = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_program','asreg_id',$regisid)->asreg_program;	
 		$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';	
 		$data['prgname'] = $prgname;
+		$prgcat = $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgid)->prg_category;
+		$data['prgcat'] = $prgcat;
+		$sccode = $this->commodel->get_listspfic1('program','prg_scid','prg_id',$prgid)->prg_scid;
+		$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
+		$data['scname'] = $scname;
 		$cdate = date('Y-m-d');
 		$age = $cdate-$dob;
 		$data['age'] = $age;
@@ -652,6 +669,7 @@ class Enterence extends CI_Controller {
                 			'asm_enterenceexamcenter'  	=>	$_POST['entexamcenter'],
                 			'asm_fname'   			=>	$_POST['entappliname'],
 					'asm_dob'   			=>	$_POST['entdob'],
+					'asm_age'			=>	$_POST['entage'],
                 			'asm_mobile'   			=>	$_POST['entmobile'],
                 			'asm_email'  			=>	$_POST['entemail'],
                 			'asm_gender'   			=>	$_POST['entgender'],
@@ -780,15 +798,28 @@ class Enterence extends CI_Controller {
         }
     }
 
-
-
 	public function step_two(){
 		if(empty($this->session->userdata('asm_id'))) {
 	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
 			redirect('welcome');
         	}
 		$asmid = $this->session->userdata['asm_id'];
-		
+
+		$regisid = $this->session->userdata['asreg_id'];
+		$rsdata = array('step1_status' => '1', 'registration_id' => $regisid);
+		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata);
+		if(!$recheckstep_exist){
+			$this->session->set_flashdata('err_message', 'You are not following proper process.');
+			redirect('welcome');	
+		}
+
+		$rsdata1 = array('step2_status' => '1', 'registration_id' => $regisid);
+		$recheckstep_exist1 = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata1);
+		if($recheckstep_exist1){
+			//$this->session->set_flashdata('err_message', 'You are not following proper process.');
+			redirect('enterence/step_three');
+		}
+
 		if(isset($_POST['addeducation'])){
 
 			$this->form_validation->set_rules('Hcname','High school name','trim|xss_clean|required');
@@ -842,6 +873,7 @@ class Enterence extends CI_Controller {
            		$this->form_validation->set_rules('Apercentage','Any other qualificatin percentage','trim|xss_clean');
 	   		$this->form_validation->set_rules('Ainstitute','Any other qualificatin institute/university','trim|xss_clean');
 
+			//$this->form_validation->set_rules('eduexname1','Enterance Exam Detail Not Selected','trim|xss_clean|required');
 			/*for($j=1; $j<=9; $j++){
 				$this->form_validation->set_rules('eduexname'.$j,'Enterance exam name','trim|xss_clean');
            			$this->form_validation->set_rules('edurollno'.$j.'1','Enterance exam roll no','trim|xss_clean|numeric');
@@ -1037,7 +1069,22 @@ class Enterence extends CI_Controller {
 			redirect('welcome');
         	}	
 		$id = $this->session->userdata['asm_id'];
-		
+
+		$regisid = $this->session->userdata['asreg_id'];
+		$rsdata = array('step2_status' => '1', 'registration_id' => $regisid);
+		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata);
+		if(!$recheckstep_exist){
+			$this->session->set_flashdata('err_message', 'You are not following proper process');
+			redirect('welcome');	
+		}
+
+		$rsdata1 = array('step3_status' => '1', 'registration_id' => $regisid);
+		$recheckstep_exist1 = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata1);
+		if($recheckstep_exist1){
+			//$this->session->set_flashdata('err_message', 'You are not following proper process.');
+			redirect('enterence/step_four');
+		}
+
 		if(isset($_POST['fileSubmit'])){
 			$filerrors = array();
 			$filesuccess = array();
@@ -1126,7 +1173,7 @@ class Enterence extends CI_Controller {
 
                         			//display error of array
                         			//put ferror in log file.
-                        			$this->session->set_flashdata('error', $ferror);
+                        			$this->session->set_flashdata('err_message', $ferror);
 						//redirect the upload page
 						redirect('enterence/step_three');
 					}
@@ -1207,7 +1254,7 @@ class Enterence extends CI_Controller {
 						foreach($filerrors as $error){
 							$ferror = $ferror ."</br>". $error;	
 						}
-						$this->session->set_flashdata('error', $ferror);
+						$this->session->set_flashdata('err_message', $ferror);
 						redirect('enterence/step_three');
 					}	
 				//update admissionstep step3 table
@@ -1244,6 +1291,22 @@ class Enterence extends CI_Controller {
 			redirect('welcome');
         	}
 		$Sid = $this->session->userdata['asm_id'];
+
+		$regisid = $this->session->userdata['asreg_id'];
+		$rsdata = array('step3_status' => '1', 'registration_id' => $regisid);
+		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata);
+		if(!$recheckstep_exist){
+			$this->session->set_flashdata('err_message', 'You are not following proper process');
+			redirect('welcome');	
+		}
+		
+		$rsdata1 = array('step4_status' => '1', 'registration_id' => $regisid);
+		$recheckstep_exist1 = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata1);
+		if($recheckstep_exist1){
+			//$this->session->set_flashdata('err_message', 'You are not following proper process.');
+			redirect('enterence/step_five');
+		}
+
 		//online payment student enterence record get
 		
 		//get category name
@@ -1583,6 +1646,16 @@ class Enterence extends CI_Controller {
 		//$regisid = $this->session->userdata['asreg_id'];
 		//$id = $this->commodel->get_listspfic1("admissionstudent_master","asm_id","asm_userid",$regisid)->asm_id;		
 		$id = $this->session->userdata['asm_id'];
+
+		$regisid = $this->session->userdata['asreg_id'];
+		$rsdata = array('step4_status' => '1', 'registration_id' => $regisid);
+		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata);
+		if(!$recheckstep_exist){
+			$this->session->set_flashdata('err_message', 'You are not following proper process.');
+			redirect('welcome');	
+		}
+		
+	
 		$data['id']=$id;
 		$stud_admission = $this->commodel->get_listrow('admissionstudent_master','asm_id',$id)->row();
 		if(!empty($stud_admission)) {
@@ -1603,6 +1676,24 @@ class Enterence extends CI_Controller {
 			$data['email'] = $email;
 			$category = $stud_admission->asm_caste;
 			$data['category'] = $category;
+			$rollno = $stud_admission->asm_applicationno;
+			$data['rollno'] = $rollno;
+			$sccode = $stud_admission->asm_sccode;
+			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_code',$sccode)->sc_name;
+			$data['scname'] = $scname;
+			$excode = $stud_admission->asm_enterenceexamcenter;
+			$exname =  $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	
+			$data['exname'] = $exname;
+			$age = $stud_admission->asm_age;
+			$data['age'] = $age;
+			$mastatus = $stud_admission->asm_mstatus;
+			$data['mastatus'] = $mastatus;
+			$nationality = $stud_admission->asm_nationality;
+			$data['nationality'] = $nationality;
+			$phyhandi = $stud_admission->asm_phyhandicaped;
+			$data['phyhandi'] = $phyhandi;
+			$religion = $stud_admission->asm_religion;
+			$data['religion'] = $religion;
 
 		}
 
@@ -1678,10 +1769,7 @@ class Enterence extends CI_Controller {
 	}
 
 	public function step_fivedw(){
-		if(empty($this->session->userdata('asm_id'))) {
-			$this->session->set_flashdata('err_message', 'You don\'t have access!');
-			redirect('welcome');
-        	}	
+			
 		$id = $this->session->userdata['asm_id'];
 		$data['id']=$id;
 		$stud_admission = $this->commodel->get_listrow('admissionstudent_master','asm_id',$id)->row();
@@ -1703,6 +1791,24 @@ class Enterence extends CI_Controller {
 			$data['email'] = $email;
 			$category = $stud_admission->asm_caste;
 			$data['category'] = $category;
+			$rollno = $stud_admission->asm_applicationno;
+			$data['rollno'] = $rollno;
+			$sccode = $stud_admission->asm_sccode;
+			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_code',$sccode)->sc_name;
+			$data['scname'] = $scname;
+			$excode = $stud_admission->asm_enterenceexamcenter;
+			$exname =  $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	
+			$data['exname'] = $exname;
+			$age = $stud_admission->asm_age;
+			$data['age'] = $age;
+			$mastatus = $stud_admission->asm_mstatus;
+			$data['mastatus'] = $mastatus;
+			$nationality = $stud_admission->asm_nationality;
+			$data['nationality'] = $nationality;
+			$phyhandi = $stud_admission->asm_phyhandicaped;
+			$data['phyhandi'] = $phyhandi;
+			$religion = $stud_admission->asm_religion;
+			$data['religion'] = $religion;
 
 		}
 
@@ -1816,6 +1922,9 @@ class Enterence extends CI_Controller {
 	}
 
 	public function stu_hallticket(){
+		//$regisid = $this->session->userdata['asreg_id'];
+		//$id = $this->commodel->get_listspfic1('admissionstudent_master','asm_id','asm_userid',$regisid)->asm_id;
+		//$hstatus = $this->commodel->get_listspfic1('admissionstudent_centerallocation','ca_hallticketstatus','ca_asmid',$id)->ca_hallticketstatus;
 		$this->prgname = $this->commodel->get_listmore('program','prg_name,prg_id,prg_branch');
 		if(isset($_POST['download'])){
 			$this->form_validation->set_rules('dwapplicantemail','Email Id','trim|required|valid_email');
@@ -1875,6 +1984,7 @@ class Enterence extends CI_Controller {
 		               ];
                           	$this->session->set_userdata($data);
 				// redirect to step5 for completion
+				
 				redirect('enterence/step_five');
 			}
 			else{

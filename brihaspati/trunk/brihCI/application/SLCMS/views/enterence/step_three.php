@@ -47,39 +47,19 @@ updateList = function() {
 	<?php $this->load->view('enterence/admission_steps');?>
 	
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
-<?php
-echo "<center>";
-
-	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color: #FFBABA;width:50%;height:30px;color:red;'>";
-	echo $this->session->flashdata('msg');
-echo "<div>";	
-}
-
-
-	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
-		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"width:100%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
-		echo "<tr>";
-			echo "<td style='font-size:18px;float:left;'>";
-				echo $_SESSION['success'];
-			echo "</td>";
-		echo "<tr>";
-		//echo "</div>";
-	echo "</table>";
-	}
-	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
-	echo "<table id='error'>";			
-		echo "<tr>";
-			echo "<td style='font-size:18px;'>";
-				echo $_SESSION['error'];
-			echo "</td>";
-		echo "<tr>";
-		//echo "</div>";
-	echo "</table>";
-	}
-echo "</center>";
-?>
+	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php if(isset($_SESSION['success'])){?>
+        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+        <?php
+    	 };
+       	?>
+	
+        <?php if(isset($_SESSION['err_message'])){?>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
+        <?php
+        };
+	?>
 
 </br></br>
 	<form action="<?php echo site_url('enterence/step_three'); ?>" method="POST" enctype="multipart/form-data">

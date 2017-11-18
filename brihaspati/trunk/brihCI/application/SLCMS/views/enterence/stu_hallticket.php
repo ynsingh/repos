@@ -26,9 +26,10 @@
 
    <?php $this->load->view('enterence/enterence_head');?>
 	
-       <div align="left" style="width:72%;font-size:20px;">
+     
+	<div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:30px;" class="">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
         <div class="alert alert-success"><?php echo $_SESSION['success'];?></div>
         <?php
@@ -36,10 +37,11 @@
        	?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
-             <div class="" style='margin-left:30px;font-size:20px;background-color:#FFBABA;color:#D8000C;text-align:center;'><div ><?php echo $_SESSION['err_message'];?></div></div>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
 	?>  
+
 </center>
 
 <center>
@@ -83,8 +85,8 @@
     				changeMonth: true,
     				changeYear: true,
     				dateFormat: 'yy-mm-dd',
-     				defaultDate: '1yr',
-    				yearRange: 'c-37:c+30',
+     				//defaultDate: '1yr',
+    				 yearRange: 'c-77:c+10',
 				});
 			</script>		
         </td>
@@ -99,9 +101,7 @@
 				<option value="<?php echo $data->prg_id;?>"><?php echo $data->prg_name.'('.$data->prg_branch.')'; ?></option>
 				<?php }?>
 	  		</select>
-	
         </td></tr>
-        	
         <tr><td>
         <label for="text">Verification Code :</label></td>
         </td><td>

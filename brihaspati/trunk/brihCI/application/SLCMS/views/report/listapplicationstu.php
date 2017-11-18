@@ -9,9 +9,9 @@
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css"> 
+
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
-	<link rel="stylesheet" type="text/css" media="print" href="<?php echo base_url(); ?>assets/css/studentStepmedia.css" />	
+		
 
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/style.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/menu.css" />
@@ -40,22 +40,24 @@ function myFunction() {
 
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
-    <body>
+    <body style="border:1px solid black;">
 <div id="header">
-	<img src="<?php echo base_url(); ?>uploads/logo/logo2.jpg" alt="logo" style="height:100px;">
+	<img src="<?php echo base_url(); ?>uploads/logo/logo2.jpg" alt="logo" style="height:100px;width:100%;">
 </div> 
 
 	<?php //$this->load->view('template/header'); ?>
-        <h1 id='foohide'>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php echo "<span id='foohide'>";
 		$this->load->view('template/menu');
 	      echo "</span>";	
 	?>
-
+<div style="margin-top:50px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
   	<center>
 	<h1>Filter Student Record</h1>
 	<form action="<?php echo site_url('report/list_application');?>" method="POST">
-	<table style="width:70%;" border=0>
+	<table style="width:100%;" border=0>
 		<tr><td>
 		<table style="width:100%;" border=0 id="foohide">
 		<tr>
@@ -180,7 +182,7 @@ function myFunction() {
 
 		</tr>
 		</table>
-
+<div style="scroll:auto;height:400px;">
 	<table class="TFtable" border=0>
 	<tr>
 		<th>Sr. No.</th>
@@ -334,10 +336,11 @@ function myFunction() {
 </center></td>
 </tr>
 	</table>
+</div>
 	</center>
 	</form>
 
- </div><?php $this->load->view('template/footer'); ?></div>
+ <div style="margin-top:80px;"><?php $this->load->view('template/footer'); ?></div>
     </body>
 </html>
 

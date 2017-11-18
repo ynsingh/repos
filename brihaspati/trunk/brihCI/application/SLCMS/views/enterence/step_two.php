@@ -31,11 +31,17 @@ tr th{background:#38B0DE;color:white;font-weight:bold;border:2px solid black;}
 select{width:100%;font-size:17px;height:35px;font-weight:bold;width:99%;}
 
 </style>
-
-
+<script>
+//function perc1() {
+// a = document.getElementById('hm').value;
+// b = document.getElementById('ma').value;
+// c = a/b;
+// d = c*100;
+// document.getElementById('pe').value = d
+// }
+</script>
 </head>
 <body>
-
 
 <div>
 	<div id="body">
@@ -45,58 +51,19 @@ select{width:100%;font-size:17px;height:35px;font-weight:bold;width:99%;}
 	<?php $this->load->view('enterence/admission_steps');?>
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
 
-<?php
-echo "<center>";
-
-	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:70%;height:30px;color:green;'>";
-	echo $this->session->flashdata('msg');
-echo "<div>";	
-}
-
-	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
-		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
-	echo "<table style=\"margin-left:30px;width:70%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
-		echo "<tr>";
-			echo "<td style='font-size:18px;float:left;'>";
-				echo $_SESSION['success'];
-			echo "</td>";
-		echo "<tr>";
-		//echo "</div>";
-	echo "</table>";
-	}
-	if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
-		//echo "<div id='error'>";
-		//echo '<div style="margin-left:40px;">'.$_SESSION['error'].'</div>';
-		//echo "</div>";
-	echo "<table id='error'>";			
-		echo "<tr>";
-			echo "<td style='font-size:18px;'>";
-				echo $_SESSION['error'];
-			echo "</td>";
-		echo "<tr>";
-		//echo "</div>";
-	echo "</table>";
-	}
-echo "</center>";
-?>   
-<center>
-	<div align="left" style="width:100%;font-size:18px;">
-        <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:30px;height:30px;" class="">','</div>');?>
-        <?php if(isset($_SESSION[''])){?>
-        <div class="alert alert-success"><?php echo $_SESSION[''];?></div>
+	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
+        <?php echo form_error('<div class="">','</div>');?>
+        <?php if(isset($_SESSION['success'])){?>
+        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
         <?php
     	 };
        	?>
 	
         <?php if(isset($_SESSION['err_message'])){?>
-             <div class="isa_error" style='margin-left:30px;width:1680px;font-size:18px;'><div ><?php echo $_SESSION['err_message'];?></div></div>
+             <div class="isa_error"><div ><?php echo $_SESSION['err_message'];?></div></div>
         <?php
         };
 	?>  
-   </div>
-</center>
 	</br> 
 <center>
  <table  style="background-color:#f1f1f1;" align="">
@@ -144,7 +111,8 @@ echo "</center>";
 function ShowPercentage() {
     var FirstNumVal = 0 + Number($("#myfirstnumber").val());
     var SecondNumVal = 0 + Number($("#mysecondnumber").val());
-    $("#mypercenttextbox").val(Math.round(FirstNumVal/(SecondNumVal) * 100) / 100 + '%');
+  // $("#mypercenttextbox").val(Math.round(FirstNumVal/(SecondNumVal) * 100) / 100 + '%');
+	$("#mypercenttextbox").val(Math.round(FirstNumVal/(SecondNumVal) * 100) + '%');
 }
 
 ShowPercentage();
@@ -177,7 +145,8 @@ $('input[type=number]').on('keyup', ShowPercentage);
 function ShowPercentage() {
     var FirstNumVal = 0 + Number($("#myfirstnumber1").val());
     var SecondNumVal = 0 + Number($("#mysecondnumber1").val());
-    $("#mypercenttextbox1").val(Math.round(FirstNumVal/(SecondNumVal) * 100) / 100 + '%');
+   // $("#mypercenttextbox1").val(Math.round(FirstNumVal/(SecondNumVal) * 100) / 100 + '%');
+	$("#mypercenttextbox1").val(Math.round(FirstNumVal/(SecondNumVal) * 100) + '%');
 }
 
 ShowPercentage();
@@ -207,7 +176,8 @@ $('input[type=number]').on('keyup', ShowPercentage);
 function ShowPercentage() {
     var FirstNumVal = 0 + Number($("#myfirstnumber2").val());
     var SecondNumVal = 0 + Number($("#mysecondnumber2").val());
-    $("#mypercenttextbox2").val(Math.round(FirstNumVal/(SecondNumVal) * 100) / 100 + '%');
+   // $("#mypercenttextbox2").val(Math.round(FirstNumVal/(SecondNumVal) * 100) / 100 + '%');
+	$("#mypercenttextbox2").val(Math.round(FirstNumVal/(SecondNumVal) * 100) + '%');
 }
 
 ShowPercentage();
@@ -237,7 +207,8 @@ $('input[type=number]').on('keyup', ShowPercentage);
 function ShowPercentage() {
     var FirstNumVal = 0 + Number($("#myfirstnumber3").val());
     var SecondNumVal = 0 + Number($("#mysecondnumber3").val());
-    $("#mypercenttextbox3").val(Math.round(FirstNumVal/(SecondNumVal) * 100) / 100 + '%');
+   // $("#mypercenttextbox3").val(Math.round(FirstNumVal/(SecondNumVal) * 100) / 100 + '%');
+ $("#mypercenttextbox3").val(Math.round(FirstNumVal/(SecondNumVal) * 100) + '%');
 }
 
 ShowPercentage();
@@ -267,7 +238,8 @@ $('input[type=number]').on('keyup', ShowPercentage);
 function ShowPercentage() {
     var FirstNumVal = 0 + Number($("#myfirstnumber4").val());
     var SecondNumVal = 0 + Number($("#mysecondnumber4").val());
-    $("#mypercenttextbox4").val(Math.round(FirstNumVal/(SecondNumVal) * 100) / 100 + '%');
+   // $("#mypercenttextbox4").val(Math.round(FirstNumVal/(SecondNumVal) * 100) / 100 + '%');
+$("#mypercenttextbox4").val(Math.round(FirstNumVal/(SecondNumVal) * 100)  + '%');
 }
 
 ShowPercentage();
@@ -354,8 +326,8 @@ $('input[type=number]').on('keyup', ShowPercentage);
 				});
 			</script>
 </td>
-			<td><input type="text" placeholder="Remarks" name="eduremark26" style="<?php echo isset($_POST["eduremark26"]) ? $_POST["eduremark26"] : ''; ?>" value=""></td>
-			<td><input type="text" placeholder="Previous experience" name="eduexpie27" style="<?php echo isset($_POST["eduexpie27"]) ? $_POST["eduexpie27"] : ''; ?>" value=""></td>
+			<td><input type="text" placeholder="Remarks" name="eduremark26" value="<?php echo isset($_POST["eduremark26"]) ? $_POST["eduremark26"] : ''; ?>"></td>
+			<td><input type="text" placeholder="Previous experience" name="eduexpie27" value="<?php echo isset($_POST["eduexpie27"]) ? $_POST["eduexpie27"] : ''; ?>"></td>
 		</tr>
 
 	</tbody>

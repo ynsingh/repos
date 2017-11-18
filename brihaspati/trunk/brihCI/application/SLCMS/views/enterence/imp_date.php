@@ -65,11 +65,11 @@ echo "</center>";
 <div class="scroller_sub_page">
 <table>
 <tr>
-<div align="left" style="margin-left:2%;">
+<div align="left" style="">
 
 <table cellpadding="16" style="font-size:17px;width:100%;" class="TFtable" >
 <tr align="center">
-<thead><th>Sr.No</th><th>Academic Year</th><th>Program Category</th><th>Program Name </th><th>Entrance Exam Fees </th> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th><th>Entrance Exam Date</th><th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th></tr></thead>
+<thead><th>Sr.No</th><!--<th>Academic Year</th>--><th>Program Name</th><!---<th>Program Name </th><th>Entrance Exam Fees </th> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th>---><th>Entrance Exam Date </th><th>Entrance Exam Time</th><!--<th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th>---></tr></thead>
 <?php
         $count =0;
         if( count($this->result) ):
@@ -78,22 +78,28 @@ echo "</center>";
          ?>
              <tr align="center">
             <td> <?php echo ++$count; ?> </td>
-            <td> <?php echo $row->admop_acadyear?></td>
+            <!--<td> <?php echo $row->admop_acadyear?></td>--->
             <td> <?php echo $this->commodel->get_listspfic1('programcategory','prgcat_name','prgcat_name',$row->admop_prgcat)->prgcat_name; ?>
             </td>
-            <td> <?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->admop_prgname_branch)->prg_name ;
+            <!--- <td> <?php echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$row->admop_prgname_branch)->prg_name ;
                        echo "(";
                        echo $this->commodel->get_listspfic1('program','prg_branch','prg_id',$row->admop_prgname_branch)->prg_branch ;
                        echo ")";
                 ?>
             </td>
-            <td> <?php echo $row->admop_entexam_fees?></td>
+           <td> <?php echo $row->admop_entexam_fees?></td>
             <td> <?php echo $row->admop_min_qual ?></td>
-            <td> <?php echo $row->admop_entexam_patt ?></td>
-            <td> <?php echo $row->admop_entexam_date ?></td>
-            <td> <?php echo $row->admop_startdate ?></td>
+            <td> <?php echo $row->admop_entexam_patt ?></td>-->
+		<?php 
+			$entdatetime=$row->admop_entexam_date ;
+			$pieces = explode(" ", $entdatetime);
+
+		?>
+            <td> <?php echo $pieces[0] ?></td>
+	  <td> <?php echo $pieces[1] ?></td>
+           <!-- <td> <?php echo $row->admop_startdate ?></td>
             <td> <?php echo $row->admop_lastdate ?></td>
-            <td> <?php echo $row->admop_app_received ?></td>
+            <td> <?php echo $row->admop_app_received ?></td>-->
 
         <?php  // echo anchor('enterence/editadmissionopen/' . $row->admop_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) . " ";
 
