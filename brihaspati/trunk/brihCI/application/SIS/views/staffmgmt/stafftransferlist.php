@@ -10,11 +10,13 @@
         <div>
            
             <?php $this->load->view('template/header'); ?>
-            <h3>Welcome <?= $this->session->userdata('username') ?></h3>
             <?php $this->load->view('template/menu');?>
-        
-        </div><center>
-        <table style="width:70%;"><tr><td>
+    <!--        <h3>Welcome <?= $this->session->userdata('username') ?></h3>-->
+       <p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p> 
+        </div>
+        <table ><tr><td>
         <?php echo anchor('staffmgmt/stafftransfer/', "Staff Tansfer and Posting" ,array('title' => 'staff transfer nad posting ' , 'class' => 'top_parent'));
 	;?>
         </td>
@@ -38,7 +40,7 @@
                   
         </div>
 </center>
-        <table cellpadding="16"  class="TFtable" >
+        <table class="TFtable" >
             <thead>
                 <tr align="center">
                     <th>Sr.No</th>

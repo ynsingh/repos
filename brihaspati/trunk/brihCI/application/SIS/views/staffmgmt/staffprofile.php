@@ -416,20 +416,23 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
    
     </head>
    <body>
-        <div>
+        <!--<div>-->
            
             <?php $this->load->view('template/header'); ?>
-            <h3>Welcome <?= $this->session->userdata('username') ?></h3>
             <?php $this->load->view('template/menu');?>
-        
-        </div> 
-        <table style="margin-left:4%;width:97%; "><tr><td>
+<!--            <h3>Welcome <?= $this->session->userdata('username') ?></h3>-->
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+ 
+<!--        </div> -->
+        <table style="margin-left:0%; "><tr><td>
         <?php echo anchor('staffmgmt/employeelist/', "View Employee List" ,array('title' => 'View Employee List ' , 'class' => 'top_parent'));
         $help_uri = site_url()."/help/helpdoc#StaffProfile";
-        echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+        echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
 ?>
         </td></tr></table>
-        <div align="left" style="margin-left:5%;width:90%;">
+        <div align="left" style="margin-left:2%;">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -448,14 +451,14 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
         </div>
       <!-- <div> -->
         <!--<table style="margin-left:2%; margin-right:2%; width:97%; border:1px solid gray;" border=1 class="TFtable">-->
-        <table style="margin-left:5%;width:90%;border:1px solid gray;" class="TFtable">
+        <table style="margin-left:0%;border:1px solid gray;" class="TFtable">
             
             <?php echo form_open_multipart('staffmgmt/staffprofile','id="my_id"');?>
             <tr><thead><th style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="4">&nbsp;&nbsp;Staff Profile Form</th></thead></tr>
             <div style="margin-left:10%;">
             <tr>
                 <td><label for="campus" style="font-size:15px;">Campus Name <font color='Red'>*</font></label>
-                    <div> <select id="camp" name="campus" required> 
+                    <div> <select id="camp" style="width:350px;" name="campus" required> 
                         <option selected="selected" disabled selected>--------Campus Name-----</option>
                        <?php foreach($this->campus as $camdata): ?>	
    				<option class="test" value="<?php echo $camdata->sc_id; ?>"><?php echo $camdata->sc_name; ?></option> 
@@ -466,7 +469,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <!--In future this code may be replace when either campusid added in the 
                 authority or authority added in campus.-->
                 <td><label for="uocontrol" style="font-size:15px;">University Officer Control<font color='Red'>*</font></label>
-                    <div><select name="uocontrol" id="uocid" required> 
+                    <div><select name="uocontrol" style="width:300px;"id="uocid" required> 
                         <option selected="selected" disabled selected>--------University Officer Control -----</option>
                        
                        <!-- <//?php foreach($this->uoc as $ucodata): ?>	-->
@@ -484,13 +487,13 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                 <td><label for="department" style="font-size:15px;">Department<font color='Red'>*</font></label>
-                    <div><select required name="department" id="scid"> 
+                    <div><select required name="department"  style="width:300px;" id="scid"> 
                         <option selected="selected" disabled selected >--------Select Department--------</option>
                        
                     </select></div>
                 </td>
                 <td><label for="schemecode" style="font-size:15px;">Scheme Name<font color='Red'>*</font></label>
-                    <div><select required name="schemecode" id="schmid"> 
+                    <div><select required name="schemecode" id="schmid" style="width:300px;"> 
                         <option selected="selected" disabled selected>-----------Scheme Name -----------</option>
                         
                     </select><div>
@@ -500,19 +503,19 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             <tr style="height:10px;"></tr>-->
             <tr>
             <td><label for="ddo" style="font-size:15px;">Drawing and Disbursing Officer<font color='Red'>*</font></label>
-                    <div><select name="ddo" id="ddoid" required> 
+                    <div><select name="ddo" id="ddoid" required style="width:350px;"> 
                         <option selected="selected" disabled selected>--------- Drawing and Disbursing Officer-----</option>
                     </select></div>
                 </td>
                 <td><label for="workingtype" style="font-size:15px;">Working Type<font color='Red'>*</font></label>
-                        <div><select id="worktypeid" name="workingtype" required> 
+                        <div><select id="worktypeid" name="workingtype" required style="width:300px;"> 
                         <option selected="selected" disabled selected>------------- Working Type -------------</option>
                         <option value="Teaching">Teaching</option>
                         <option value="Non Teaching">Non Teaching</option>
                     </select></div>
                 </td> 
                 <td><label for="group" style="font-size:15px;">Group<font color='Red'>*</font></label>
-                       <div><select name="group" id="grpid" required> 
+                       <div><select name="group" id="grpid" required style="width:300px;"> 
                         <option selected="selected" disabled selected>------------ Select Group ---------</option>
                         <option value="A">A</option>
                         <option value="B">B</option>
@@ -521,7 +524,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                 <td><label for="designation" style="font-size:15px;">Designation<font color='Red'>*</font></label>
-                    <div><select name="designation" id="desigid" required> 
+                    <div><select name="designation" id="desigid" required style="width:300px;"> 
                         <option selected="selected" disabled selected>------- Select Designation ---------</option>
                         <!--    <//?php foreach($this->desig as $desigdata): ?>	
                             <option value="<//?php echo $desigdata->desig_id; ?>"><//?php echo $desigdata->desig_name; ?></option> 
@@ -533,13 +536,13 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
            <!--<tr style="height:10px;"></tr>-->
             <tr>
                 <td><label for="emppost" style="font-size:15px;">Shown Against The Post<font></font></label>
-                   <div><select name="emppost" id="emppostid" required> <!--<input type="text" id="emppostid" name="emppost" value="<//?php echo isset($_POST["emppost"]) ? $_POST["emppost"] : ''; ?>" placeholder="Employee Post..." size="35">-->
+                   <div><select name="emppost" id="emppostid" required style="width:300px;"> <!--<input type="text" id="emppostid" name="emppost" value="<//?php echo isset($_POST["emppost"]) ? $_POST["emppost"] : ''; ?>" placeholder="Employee Post..." size="35">-->
                     <!--<input type="text" id="emppost" name="emppost"  readonly placeholder="Employee Post..." size="35">-->
                     <option selected="selected" disabled selected>------------------ Select Post ------------------</option>
                     </select></div>
                 </td>
                  <td><label for="pnp" style="font-size:15px;">Plan / Non Plan</label>
-                    <div><select name="pnp"> 
+                    <div><select name="pnp" style="width:300px;"> 
                         <option value="">-------------- Plan/Non Plan ------------</option>
                         <option value="Plan">Plan</option>
                         <option value="Non-Paln">Non Plan</option>
@@ -548,7 +551,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     </select></div>
                 </td>
                 <td><label for="emptype" style="font-size:15px;">Employee Type<font color='Red'>*</font></label>
-                    <div><select id="emptypeid" name="emptype" required> 
+                    <div><select id="emptypeid" name="emptype" required style="width:300px;"> 
                         <option selected="selected" disabled selected>-------- Select Employee Type ------</option>
                         <!--<option value="Permanent">Permanent</option>
                         <option value="Temporary">Temporary</option>-->
@@ -571,7 +574,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="orderno"  value="<?php echo isset($_POST["orderno"]) ? $_POST["orderno"] : ''; ?>" placeholder=" application order No..." size="27">
                 </div></td>
                 <td><label for="specialisation" style="font-size:15px;">Specialisation(Major Subject)</label>
-                    <div><select name="specialisation"> 
+                    <div><select name="specialisation" style="width:300px;"> 
                         <option value="0">----------- Major Subject -----------</option>
                         <?php foreach($this->subject as $subdata): ?>	
    				<option value="<?php echo $subdata->sub_id; ?>"><?php echo $subdata->sub_name; ?></option> 
@@ -584,7 +587,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             <!--<tr style="height:10px;"></tr>-->
             <tr>
                  <td><label for="gender" style="font-size:15px;">Gender</label>
-                    <div><select name="gender"> 
+                    <div><select name="gender" style="width:350px;"> 
                         <option value="">---------------- Select Gender ------------------</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -593,7 +596,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 </td> 
                     
                 <td><label for="community" style="font-size:15px;">Community</label>
-                    <div><select name="community"> 
+                    <div><select name="community" style="width:300px;"> 
                         <option value="">----------- Select Community -----------</option>
                          <?php foreach($this->community as $communitydata): ?>	
    				<option value="<?php echo $communitydata->cat_name; ?>"><?php echo $communitydata->cat_name; ?></option> 
@@ -602,7 +605,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 </td> 
                                     
                  <td><label for="religion" style="font-size:15px;">Religion</label>
-                    <div><select name="religion"> 
+                    <div><select name="religion" style="width:300px;"> 
                         <option value="">---------- Select Religion -----------</option>
                         <option value="Hinduism">Hinduism</option>
                         <option value="Islam">Islam</option>
@@ -620,7 +623,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             <!--<tr style="height:10px;"></tr>-->
             <tr>
                 <td><label for="payband" style="font-size:15px;">Pay Band<font color='Red'>*</font></label>
-                    <div><select name="payband" required> 
+                    <div><select name="payband" required style="width:300px;"> 
                         <option selected="selected" disabled selected>------------------ Select Pay Band -------------</option>
                         <?php foreach($this->salgrd as $salgrddata): ?>	
                             <option value="<?php echo $salgrddata->sgm_id; ?>"><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
@@ -651,7 +654,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                 <div><input type="text" name="phdetail" class="keyup-characters" value="<?php echo isset($_POST["phdetail"]) ? $_POST["phdetail"] : ''; ?>" placeholder="Details of PH..." size="30">
                 </div></td>
                 <td><label for="Sabgroup" style="font-size:15px;">Blood Group</label>
-                   <div><select name="Sabgroup" class="form-control" id="register_name">
+                   <div><select name="Sabgroup" class="form-control" id="register_name" style="width:300px;">
 				<option value="">------- Select Blood Group ---------</option>
 				<option value="A+">A+</option>
 				<option value="O+">O+</option>
@@ -678,7 +681,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                     <div><input type="text" name="dateofretirement" value="<?php echo isset($_POST["dateofretirement"]) ? $_POST["dateofretirement"] : ''; ?>" id="Dateofretir" class="form-control" size="30" />
                 </div></td>
                 <td><label for="phdstatus" style="font-size:15px;">Phd Status</label>
-                    <div><select name="phdstatus"> 
+                    <div><select name="phdstatus" style="width:300px;"> 
                         <option value="">-------------- Phd Status -------------</option>
                         <option value="Complete">Complete</option>
                         <option value="Not Complete">Not Complete</option>
@@ -691,7 +694,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             <!--<tr style="height:10px;"></tr>-->
             <tr>
                 <td><label for="assrexam" style="font-size:15px;">ASSR Exam</label>
-                    <div><select name="assrexam"> 
+                    <div><select name="assrexam" style="width:350px;"> 
                         <option value="">---------------- ASSR Exam Status -------------</option>
                         <option value="Passed">Passed</option>
                         <option value="Fail">Fail</option>
@@ -770,7 +773,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
          </td></tr>   -->            
         </form> 
         </table> 
-        
+	<p> &nbsp; </p>
         <div><?php $this->load->view('template/footer'); ?></div> 
     </body>
 </html>    

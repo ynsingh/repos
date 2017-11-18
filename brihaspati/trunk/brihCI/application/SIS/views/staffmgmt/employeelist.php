@@ -9,15 +9,13 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
     </head>
     <body>
-    <center>
-        <div>
-           
             <?php $this->load->view('template/header'); ?>
-            <h3>Welcome <?= $this->session->userdata('username') ?></h3>
             <?php $this->load->view('template/menu');?>
-        
-        </div>
-        <table style="width:70%;"><tr><td>
+            <!--<h3>Welcome <?= $this->session->userdata('username') ?></h3>-->
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>        
+        <table ><tr><td>
         <?php echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));
 	$help_uri = site_url()."/help/helpdoc#ViewEmployeeList";
         echo "<a target=\"_blanik\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
@@ -25,7 +23,7 @@
         </td>
         
         </tr>
-        </table></center>
+        </table>
         <div "style=width:70%;">
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -43,7 +41,8 @@
                 ?>    
                   
         </div>
-        <table cellpadding="16" class="TFtable" >
+        <!--<table cellpadding="16" class="TFtable" >-->
+        <table  class="TFtable" >
             <thead>
                 <tr align="center">
                     <th>Sr.No</th>

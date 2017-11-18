@@ -104,19 +104,23 @@ $('#stname').on('change',function(){
     });
 </script>   
 </head> 
- <body><center>
+ <body>
  <div id="body">
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu'); ?>
-</div>
-         <table width="70%">
+<!--        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>-->
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+
+	</div>
+         <table >
 
                 <tr><td>
-                <div align="left" style="margin-left:2%;">
+                <div align="left" >
                 <?php echo anchor('setup/viewsc/', "View Study Center Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
                 $help_uri = site_url()."/help/helpdoc#StudyCenter";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:40%\">Click for Help</b></a>";?>
+                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";?>
                 <div  style="width:90%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -131,12 +135,10 @@ $('#stname').on('change',function(){
                ?>
               </div>
              </td></tr>
-        </table></center>
+        </table>
 
             <tr>
-                <div style="margin-left:3%;">
-                <br/>
-                <center>    
+                <div>
                 <form action="<?php echo site_url('setup/sc');?>" method="POST" class="form-inline">
                 <table style="margin-left:0.2%;">
                           <tr><td><label class="control-label">Choose your University:</label></td><td>
@@ -290,7 +292,8 @@ $('#stname').on('change',function(){
                                       </tr>
 				</body>
 			</html>
-		</table></center>
+		</table>
+	<p>&nbsp;</p>
 <div>
 <?php $this->load->view('template/footer'); ?>
 </div>

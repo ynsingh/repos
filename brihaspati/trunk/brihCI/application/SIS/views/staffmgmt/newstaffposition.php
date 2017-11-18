@@ -5,8 +5,11 @@
  <html>
    <head>
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
+    <!--        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>-->
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
   
@@ -173,14 +176,14 @@
       });	
 
    </script>	
-   <table style="padding: 8px 8px 8px 20px;">
-     <tr colspan="2"><td>
+   <table >
+     <tr ><td>
       <div align=left">
         <font color=blue size=4pt>
          <?php
             echo anchor('staffmgmt/staffposition', 'View Staff Position', array('class' => 'top_parent'));
 	    $help_uri = site_url()."/help/helpdoc#StaffPosition";
-            echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+            echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
          ?>
       </div>
       <div style="margin-left:10px;width:1700px;">
@@ -201,7 +204,7 @@
    </table>
    <div> 
    <form id="myform" action="<?php echo site_url('staffmgmt/newstaffposition');?>" method="POST" class="form-inline">
-   <table style="margin-left:30px;">
+   <table >
 	<tr>
 		<td>Campus Name<font color='Red'> *</font> </td>
           	<td><select required name="campus" id="campus" class="my_dropdown" style="width:300px;" onchange="getuoc(this.value)" >

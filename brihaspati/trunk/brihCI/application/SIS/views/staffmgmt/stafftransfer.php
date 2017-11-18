@@ -95,11 +95,14 @@
         <div>
            
             <?php $this->load->view('template/header'); ?>
-            <h3>Welcome <?= $this->session->userdata('username') ?></h3>
             <?php $this->load->view('template/menu');?>
-        
+    <!--        <h3>Welcome <?= $this->session->userdata('username') ?></h3>-->
+
+       <p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p> 
         </div>
-         <table style="margin-left:6.5%;width:85%;"><tr><td>
+         <table ><tr><td>
         <?php echo anchor('staffmgmt/stafftransferlist/', "View Staff Transfer List" ,array('title' => 'Staff Transfer List ' , 'class' => 'top_parent'));?>
         </td>
         <td>
@@ -126,7 +129,7 @@
                   
         </div>
         <div>
-            <table style="width:85%; border:3px solid gray;" align="center" class="TFtable">
+            <table style="border:3px solid gray;" align="center" class="TFtable">
                 <tr><thead><th  style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="3">&nbsp;&nbsp;Staff Transfer and Posting Form</th></thead></tr>    
                 
                 <?php echo form_open_multipart('staffmgmt/stafftransfer');?>    
@@ -256,6 +259,7 @@
                 </form>   
             </table>
         </div> 
+	<p>&nbsp;</p>
         <div><?php $this->load->view('template/footer'); ?></div> 
     </body>    
 </html>    
