@@ -160,9 +160,10 @@ echo "</center>";
 				<td><?php echo $phyhandi;?></td>
 			</tr>
 			<tr>
-				<td>Religion :</td>
-				<td><?php echo $religion;?></td>
-				
+				<td valign=top>Religion :</td>
+				<td valign=top><?php echo $religion;?></td>
+				<td style="width:20%;" valign=top>Reservation :</td>
+				<td style="width:30%;"><?php echo $reservation;?></td>
 			</tr>	
 			
 			

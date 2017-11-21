@@ -637,6 +637,7 @@ class Enterence extends CI_Controller {
 			$this->form_validation->set_rules('entnationality','Nationality','trim|xss_clean|required');
           		$this->form_validation->set_rules('entdisability','Disability','trim|xss_clean|required');
            		$this->form_validation->set_rules('entreligion','Religion','trim|xss_clean|required');
+			$this->form_validation->set_rules('basic[]','Reservation type','trim|required');
 
 			//address detail validation code
            		$this->form_validation->set_rules('entpstreet','Parmanant address street','trim|xss_clean|required');
@@ -661,6 +662,12 @@ class Enterence extends CI_Controller {
 
 			if($this->form_validation->run() == TRUE)
 			{
+				$stu_reserve = '';
+				//$reserve = $_POST['basic'];
+				foreach($_POST['basic'] as $row){
+					$stu_reserve .= $row . ', ';
+				}
+				//$stu_reserve = substr($stu_reserve, 0, -2);
 				//add personnel detail in admissionstudent_master
 		 		$pdetail = array(
 					'asm_coursename'		=>      $prgid,
@@ -677,9 +684,10 @@ class Enterence extends CI_Controller {
 					'asm_caste'			=>	$_POST['entcate'],
 					'asm_nationality'		=>	$_POST['entnationality'],
 					'asm_phyhandicaped'		=>	$_POST['entdisability'],
+					'asm_reservationtype'		=>	$stu_reserve,
 					'asm_religion'			=>	$_POST['entreligion']
                		 	);
-	 		
+	 			
 				$detail=$this->db->insert('admissionstudent_master', $pdetail);	
 				$insertid = $this->db->insert_id();
 				$this->logger->write_dblogmessage("insert", "Student admission personnel record add successfully.");
@@ -1679,7 +1687,7 @@ class Enterence extends CI_Controller {
 			$rollno = $stud_admission->asm_applicationno;
 			$data['rollno'] = $rollno;
 			$sccode = $stud_admission->asm_sccode;
-			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_code',$sccode)->sc_name;
+			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
 			$data['scname'] = $scname;
 			$excode = $stud_admission->asm_enterenceexamcenter;
 			$exname =  $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	
@@ -1694,6 +1702,8 @@ class Enterence extends CI_Controller {
 			$data['phyhandi'] = $phyhandi;
 			$religion = $stud_admission->asm_religion;
 			$data['religion'] = $religion;
+			$reservation = $stud_admission->asm_reservationtype;
+			$data['reservation'] = $reservation;
 
 		}
 
@@ -1794,7 +1804,7 @@ class Enterence extends CI_Controller {
 			$rollno = $stud_admission->asm_applicationno;
 			$data['rollno'] = $rollno;
 			$sccode = $stud_admission->asm_sccode;
-			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_code',$sccode)->sc_name;
+			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
 			$data['scname'] = $scname;
 			$excode = $stud_admission->asm_enterenceexamcenter;
 			$exname =  $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	
@@ -1809,6 +1819,8 @@ class Enterence extends CI_Controller {
 			$data['phyhandi'] = $phyhandi;
 			$religion = $stud_admission->asm_religion;
 			$data['religion'] = $religion;
+			$reservation = $stud_admission->asm_reservationtype;
+			$data['reservation'] = $reservation;
 
 		}
 

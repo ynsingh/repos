@@ -12,8 +12,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title>IGNTU:Student Detail</title>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/images'); ?>/index.jpg">
-	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-2.1.3.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/message.css">
+
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css'); ?>/studentNavbar.css">
 
 <style type="text/css">
@@ -25,6 +26,7 @@ input[type='email']{font-size:17px;height:35px;background-color:white;width:98%;
 tr td{font-size:15px;}
 thead tr th{background-color:#38B0DE;color:white;font-weight:bold;font-size:15px;}
 select{width:98%;font-size:17px;height:35px;font-weight:bold;}
+
 
 </style>
 
@@ -61,12 +63,13 @@ function filladd()
 	 }
 }
 </script>
+
 </head>
-<body>
+<body >
 
 
 <div>
-	<div id="body">
+ 	<div id="body">
 	<?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
 	<nav> 	<h1>Welcome to IGNTU  </h1></nav></br>
@@ -249,10 +252,42 @@ function filladd()
 				<option value="judaism">JUDAISM</option>
 	 		</select>
 		</td>
+		<td></td>
+		<td>
+			<label>Reservation Type</label></br></br>
+			<?php $this->load->view('enterence/multi_drop');?>
+			<select name="basic[]" multiple="multiple" class="3col active" style="width:20%;height:80px;" required>
+        			<option value="Diffrently Abled">Differently Abled</option>
+        			<option value="Supernumerary Seats">Supernumerary Seats</option>
+       				<option value="N.C.C. Cadets">N.C.C. Cadets</option>
+				<option value="N.S.S. Volunteers">N.S.S. Volunteers</option>
+        			<option value="Sports">Sports</option>
+       				<option value="Wards / Dependants of Defence Personnel">Wards / Dependants of Defence Personnel</option>
+				<option value="Kasmiri Migrants">Kashmiri Migrants</option>
+        
+   			</select>
+
+    <script>
+    $(function () {
+        $('select[multiple].active.3col').multiselect({
+            columns: 1,
+            placeholder: 'Select Reservation',
+            //search: true,
+           // searchOptions: {
+                //'default': 'Search States'
+            //},
+           // selectAll: true
+        });
+
+    });
+</script>
+		</td>
+
 	</tr>
 		
 	<tr height=10></tr>
 	<tr>
+		
 	</tr>
 	</table>
 
