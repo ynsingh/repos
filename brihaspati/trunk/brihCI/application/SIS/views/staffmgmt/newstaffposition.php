@@ -46,7 +46,7 @@
              });
            }
 	
-	function getdesignation(val){
+/*	function getdesignation(val){
 		var val=val;
 	   	$.ajax({
 		type: "POST",
@@ -55,6 +55,23 @@
 		dataType:"html",
 		success: function(data){
 		$('#emppost').html(data.replace(/^"|"$/g, ''));
+		}
+	     });
+	   }
+*/
+	function getdesignpayband(val){
+		var val=val;
+	   	$.ajax({
+		type: "POST",
+		url: "<?php echo base_url();?>sisindex.php/staffmgmt/getdesigpaybandlist",
+		data: {"group" : val},
+		dataType:"html",
+		success: function(data){
+	//	alert(data);
+		var pdata=data;
+		var paydata=pdata.split(',');
+			$('#emppost').html(paydata[0].replace(/\"|"/g,''));
+			$('#scale').html(paydata[1].replace(/^"|"$/g, ''));
 		}
 	     });
 	   }
@@ -176,8 +193,9 @@
       });	
 
    </script>	
-   <table >
-     <tr ><td>
+    <table style="margin-left:0%;width:91%; ">
+   <!-- <table style="padding: 8px 8px 8px 20px;">-->
+     <tr colspan="2"><td>
       <div align=left">
         <font color=blue size=4pt>
          <?php
@@ -186,7 +204,7 @@
             echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
          ?>
       </div>
-      <div style="margin-left:10px;width:1700px;">
+      <div style="margin-left:1.3%;width:90%;">
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
@@ -200,55 +218,71 @@
              };
           ?>
         </div>
-     </td></tr>
+    </td></tr>
    </table>
    <div> 
    <form id="myform" action="<?php echo site_url('staffmgmt/newstaffposition');?>" method="POST" class="form-inline">
-   <table >
+   <table style="width:100%; border:1px solid gray;" align="center" class="TFtable">
+		<tr><thead><th  style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="3">&nbsp;&nbsp;Staff Position Form</th></thead></tr>
+   <!--<table style="margin-left:30px;"> -->
 	<tr>
-		<td>Campus Name<font color='Red'> *</font> </td>
-          	<td><select required name="campus" id="campus" class="my_dropdown" style="width:300px;" onchange="getuoc(this.value)" >
-                <option value="" disabled selected >------Select----------------</option>
-		<?php foreach($this->scresult as $datasp): ?>
-                    <option value="<?php echo $datasp->sc_id; ?>"<?php echo set_select('campus', $datasp->sc_id); ?>><?php echo $datasp->sc_name; ?></option>
-                <?php endforeach; ?> </td>
-		<td>&nbsp; </td>
-		<td>University Officer Control<font color='Red'> *</font> </td>
-          	<td><select required name="uo" id="uo" class="my_dropdown" style="width:300px;">
-                <option value="" disabled selected >------Select----------------</option>
-		<td>&nbsp; </td>
-		<td>Department Name<font color='Red'> *</font> </td>
-          	<td><select required name="dept" id="dept" style="width:300px;" onchange="getschemename(this.value)" >
-                <option disabled selected >------Select----------------</option>
+		<td><label for="campus" style="font-size:15px;">Campus Name<font color='Red'>*</font></label> 
+          		<div><select required name="campus" id="campus" class="my_dropdown" style="width:338px;" onchange="getuoc(this.value)" >
+                	<option value="" disabled selected >------Select----------------</option>
+			<?php foreach($this->scresult as $datasp): ?>
+                    	<option value="<?php echo $datasp->sc_id; ?>"<?php echo set_select('campus', $datasp->sc_id); ?>><?php echo $datasp->sc_name; ?></option>
+                	<?php endforeach; ?>
+			</div>
+		</td>
+		<td><label for="uo" style="font-size:15px;">University Officer Control<font color='Red'> *</font></label>
+          		<div><select required name="uo" id="uo" class="my_dropdown" style="width:338px;" >
+                	<option value="" disabled selected >------Select----------------</option>
+			</div>
+		</td>
+		<td><label for="dept" style="font-size:15px;">Department Name<font color='Red'> *</font></label>
+          		<div><select required name="dept" id="dept" style="width:338px;" onchange="getschemename(this.value)" >
+                	<option disabled selected >------Select----------------</option>
+			</div>
+		</td>
+	</tr>
+	
+	<tr>
+		<td><label for="schemecode" style="font-size:15px;"> Scheme Name <font color='Red'> *</font> </label>
+          	     <div><select required name="schemecode" id="schemecode" class="my_dropdown" style="width:338px;">
+                	<option disabled selected >------Select----------------</option>
+		     </div>
+		</td>
+		
+		<td><label for="group" style="font-size:15px;"> Group<font color='Red'> *</font> </label>
+		    <div><select name="group" id="group" class="my_dropdown" style="width:338px;" onchange="getdesignpayband(this.value)" >
+                         <option value="" disabled selected >------Select----------------</option>
+                         <option value="A" <?php echo set_select('group', 'A'); ?>class="dropdown-item"> A </option>
+                         <option value="B" <?php echo set_select('group', 'B'); ?>class="dropdown-item"> B </option>
+                         <option value="C" <?php echo set_select('group', 'C'); ?>class="dropdown-item"> C </option>
+                         <option value="D" <?php echo set_select('group', 'D'); ?>class="dropdown-item"> D </option> 
+		    </div>
+		</td>
+		
+		<td><label for="emppost" style="font-size:15px;">Employee Post <font color='Red'> *</font> </label>
+          	    <div><select name="emppost" id="emppost" class="my_dropdown" style="width:338px;">
+                         <option value="" disabled selected >------Select----------------</option>
+		    <div>
 		</td>
 	</tr>	
 	<tr>
-		<td>Scheme Name <font color='Red'> *</font> </td>
-          	<td><select required name="schemecode" id="schemecode" class="my_dropdown" style="width:300px;">
-                <option disabled selected >------Select----------------</option></td>
-		<td>&nbsp; </td>
-		<td>Group<font color='Red'> *</font> </td>
-		<td><select name="group" id="group" class="my_dropdown" style="width:300px;" onchange="getdesignation(this.value)" >
-                <option value="" disabled selected >------Select----------------</option>
-                <option value="A" <?php echo set_select('group', 'A'); ?>class="dropdown-item"> A </option>
-                <option value="B" <?php echo set_select('group', 'B'); ?>class="dropdown-item"> B </option>
-                <option value="C" <?php echo set_select('group', 'C'); ?>class="dropdown-item"> C </option>
-                <option value="D" <?php echo set_select('group', 'D'); ?>class="dropdown-item"> D </option> <br></td>
-		<td>&nbsp; </td>
-		<td>Employee Post <font color='Red'> *</font> </td>
-          	<td><select name="emppost" id="emppost" class="my_dropdown" style="width:300px;">
-                <option value="" disabled selected >------Select----------------</option>
-	</tr>	
-	<tr>
-		<td>Working Type <font color='Red'> *</font> </td>
-          	<td><select name="tnt" id="tnt" class="my_dropdown" style="width:300px;" onchange="workingtype(this.value)">
-                <option value="" disabled selected >------Select----------------</option>
-                <option value="Teaching"<?php echo set_select('tnt', 'Teaching'); ?> class="dropdown-item"> Teaching </option>
-                <option value="Non Teaching"<?php echo set_select('tnt','Non Teaching'); ?> class="dropdown-item"> Non Teaching </option></td>
-		<td>&nbsp; </td>
-		<td>Group Post <font color='Red'> *</font> </td>
-		<td><select name="grouppost" id="grouppost" class="my_dropdown" style="width:300px;">
-                <option value="" disabled selected >------Select-----------------</option>
+		<td><label for="tnt" style="font-size:15px;"> Working Type <font color='Red'> *</font> </label>
+          	   <div><select name="tnt" id="tnt" class="my_dropdown" style="width:338px;" onchange="workingtype(this.value)">
+               		<option value="" disabled selected >------Select----------------</option>
+                	<option value="Teaching"<?php echo set_select('tnt', 'Teaching'); ?> class="dropdown-item"> Teaching </option>
+                	<option value="Non Teaching"<?php echo set_select('tnt','Non Teaching'); ?> class="dropdown-item"> Non Teaching </option>
+	           </div>
+		</td>
+			
+		<td><label for="grouppost" style="font-size:15px;"> Group Post <font color='Red'> *</font> </label>
+			<div><select name="grouppost" id="grouppost" class="my_dropdown" style="width:338px;">
+               		 <option value="" disabled selected >------Select-----------------</option>
+		    </div>
+                </td>
 	<!--    <option value="multitasking staff" <?php echo set_select('grouppost','multitasking staff'); ?> class="dropdown-item"> Multitasking staff </option>
                 <option value="technical staff" <?php echo set_select('grouppost','technical staff'); ?> class="dropdown-item"> Technical staff </option>
                 <option value="ministerial staff" <?php echo set_select('grouppost','ministerial staff'); ?> class="dropdown-item"> Ministerial staff </option>
@@ -263,89 +297,114 @@
                 <option value="librarians " <?php echo set_select('grouppost','librarians'); ?> class="dropdown-item"> Librarians </option>
                 <option value="physical director" <?php echo set_select('grouppost','physical director'); ?> class="dropdown-item"> Physical Director </option></td>
 		-->
-		<td>&nbsp; </td>
-		<td>Employee Type<font color='Red'> *</font> </td>
-          	<td><select name="type" id="type" class="my_dropdown" style="width:300px;" onchange="getemptype(this.value)" >
-                <option value="" disabled selected >------Select----------------</option>
-                <option value="Permanent"<?php echo set_select('type', 'Permanent'); ?> class="dropdown-item"> Permanent </option>
-                <option value="Temporary"<?php echo set_select('type', 'Temporary'); ?> class="dropdown-item"> Temporary </option></td>
+		
+		<td><label for="type" style="font-size:15px;"> Employee TYPE<font color='Red'> *</font> </label>
+          	    <div><select name="type" id="type" class="my_dropdown" style="width:338px;" onchange="getemptype(this.value)" >
+               		 <option value="" disabled selected >------Select----------------</option>
+               		 <option value="Permanent"<?php echo set_select('type', 'Permanent'); ?> class="dropdown-item"> Permanent </option>
+               		 <option value="Temporary"<?php echo set_select('type', 'Temporary'); ?> class="dropdown-item"> Temporary </option>
+                    </div>
+               </td>
 	</tr>	
 	<tr>
-		<td>Plan / Non Plan<font color='Red'> *</font> </td>
-		<td><select name="pnp" id="" class="my_dropdown" style="width:300px;">
-                <option value="" disabled selected >------Select-----------------</option>
-                <option value="Plan" <?php echo set_select('pnp', 'Plan'); ?>class="dropdown-item"> Plan </option>
-                <option value="Non Plan"<?php echo set_select('pnp', 'Non Plan'); ?> class="dropdown-item"> Non Plan </option> 
-                <option value="GOI"<?php echo set_select('pnp', 'GOI'); ?> class="dropdown-item"> GOI </option> 
-                <option value="ICAR"<?php echo set_select('pnp', 'ICAR'); ?> class="dropdown-item"> ICAR </option> <br></td>
-		<td>&nbsp; </td>
-		<td>Pay Band <font color='Red'> *</font> </td>
-		<td><select name="scale" id="" class="my_dropdown" style="width:300px;">
+		<td><label for="pnp" style="font-size:15px;"> Plan / Non Plan<font color='Red'> *</font> </label>
+		    <div><select name="pnp" id="" class="my_dropdown" style="width:338px;">
+                        <option value="" disabled selected >------Select-----------------</option>
+                        <option value="Plan" <?php echo set_select('pnp', 'Plan'); ?>class="dropdown-item"> Plan </option>
+                        <option value="Non Plan"<?php echo set_select('pnp', 'Non Plan'); ?> class="dropdown-item"> Non Plan </option> 
+                        <option value="GOI"<?php echo set_select('pnp', 'GOI'); ?> class="dropdown-item"> GOI </option> 
+                        <option value="ICAR"<?php echo set_select('pnp', 'ICAR'); ?> class="dropdown-item"> ICAR </option> 
+		     </div>	
+		  </td>
+		<td><label for="scale" style="font-size:15px;"> Pay Band <font color='Red'> *</font> </label>
+		<div><select name="scale" id="scale" class="my_dropdown" style="width:338px;">
                   <option selected="selected" disabled selected>--------Select-------------</option>
-                    <?php foreach($this->salgrd as $salgrddata): ?>
+                 <!--   <?php foreach($this->salgrd as $salgrddata): ?>
                          <option value="<?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>"<?php echo set_select('scale', $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay);?>><?php echo $salgrddata->sgm_name."(". $salgrddata->sgm_min."-".$salgrddata->sgm_max.")".$salgrddata->sgm_gradepay; ?>
                           </option>
-                  <?php endforeach; ?>
-		</select></td>
-		<td>&nbsp; </td>
-		<td>Method of Recruitment<font color='Red'> *</font> </td>
-		<td><select name="methodrect" id="" class="my_dropdown" style="width:300px;">
-                <option value="" disabled selected >------Select-----------------</option>
-                <option value="direct"<?php echo set_select('methodrect', 'direct'); ?> class="dropdown-item"> Direct </option> 
-                <option value="Promotion"<?php echo set_select('methodrect', 'Promotion'); ?> class="dropdown-item"> Promotion </option><br>
-                <option value="Deputation"<?php echo set_select('methodrect', 'Deputation'); ?> class="dropdown-item"> Deputation </option> <br></td>
+                  <?php endforeach; ?> -->
+		</select> 
+                    </div>
+                 </td>
+		<td> <label for="methodrect" style="font-size:15px;"> Method of Recruitment<font color='Red'> *</font> </label>
+		   <div><select name="methodrect" id="" class="my_dropdown" style="width:338px;">
+                	<option value="" disabled selected >------Select-----------------</option>
+                	<option value="direct"<?php echo set_select('methodrect', 'direct'); ?> class="dropdown-item"> Direct </option> 
+                	<option value="Promotion"<?php echo set_select('methodrect', 'Promotion'); ?> class="dropdown-item"> Promotion </option>
+                	<option value="Deputation"<?php echo set_select('methodrect', 'Deputation'); ?> class="dropdown-item"> Deputation </option> 
+		     </div>	
+		</td>
 	</tr>	
 	<tr>
-		<td>Position Sanction Strength <font color='Red'>*</font> </td>
-		<td><input type="text" name="ss" id="ss" class="keyup-numeric" size="26" value="<?php echo isset($_POST["ss"]) ? $_POST["ss"] : ''; ?>" placeholder="Position Sanction Strength..." required="required" oninput="getsstypevalue(this.value)" /><br></td>
-		<td>&nbsp; </td>
-		<td>Position Present<font color='Red'> *</font> </td>
-		<td><input type="text" name="p" id="p" readonly size="26" value="<?php echo isset($_POST["p"]) ? $_POST["p"] : ''; ?>" placeholder="Position Present..." required="required" /><br></td>
-		<td>&nbsp; </td>
-		<td>Position Vacant<font color='Red'> * </font></td>
-		<td><input type="text" name="v" id="v" readonly size="26" value="<?php echo isset($_POST["v"]) ? $_POST["v"] : ''; ?>" placeholder="Position Vacant..." required="required" /><br></td>
+		<td><label for="ss" style="font-size:15px;">Position Sanction Strength <font color='Red'>*</font> </label>
+		<div><input type="text" name="ss" id="ss" class="keyup-numeric" size="30" value="<?php echo isset($_POST["ss"]) ? $_POST["ss"] : ''; ?>" placeholder="Position Sanction Strength..." required="required" oninput="getsstypevalue(this.value)" />
+		   </div>
+		</td>
+		
+		<td><label for="p" style="font-size:15px;">Position Present<font color='Red'> *</font> </label>
+		   <div><input type="text" name="p" id="p" readonly size="30" value="<?php echo isset($_POST["p"]) ? $_POST["p"] : ''; ?>" placeholder="Position Present..." required="required" />
+	           </div>	
+		 </td>
+		<td><label for="v" style="font-size:15px;">Position Vacant<font color='Red'> * </font></label>
+		  <div><input type="text" name="v" id="v" readonly size="30" value="<?php echo isset($_POST["v"]) ? $_POST["v"] : ''; ?>" placeholder="Position Vacant..." required="required" />
+		  </div>
+		</td>
 	</tr>
            
          <tr>
-		<td>Sanction Strength Permanent <font color='Red'>*</font> </td>
-		<td><input type="text" name="ssper" id="ssper" readonly size="26" value="<?php echo isset($_POST["ssper"]) ? $_POST["ssper"] : ''; ?>" placeholder="Sanction Strength Permanent..." required="required" /><br></td>
-		<td>&nbsp; </td>
-		<td>Position Permanent <font color='Red'>*</font> </td>
-		<td><input type="text" name="pper" id="pper" readonly size="26" value="<?php echo isset($_POST["pper"]) ? $_POST["pper"] : ''; ?>" placeholder="Position Permanent..." required="required" /><br></td>
-		<td>&nbsp; </td>
-		<td>Vacancy Permanent <font color='Red'>* </font></td>
-		<td><input type="text" name="vper" id="vper" readonly size="26" value="<?php echo isset($_POST["vper"]) ? $_POST["vper"] : ''; ?>" placeholder="Vacancy Permanent..." required="required" /><br></td>
+		<td><label for="ssper" style="font-size:15px;">Sanction Strength Permanent <font color='Red'>*</font> </label>
+		<div><input type="text" name="ssper" id="ssper" readonly size="30" value="<?php echo isset($_POST["ssper"]) ? $_POST["ssper"] : ''; ?>" placeholder="Sanction Strength Permanent..." required="required" /><br>
+		</div></td>
+		
+		<td><label for="pper" style="font-size:15px;"> Position Permanent <font color='Red'>*</font> </label>
+		<div><input type="text" name="pper" id="pper" readonly size="30" value="<?php echo isset($_POST["pper"]) ? $_POST["pper"] : ''; ?>" placeholder="Position Permanent..." required="required" />
+		</div>
+		</td>
+		
+		<td><label for="vper" style="font-size:15px;"> Vacancy Permanent <font color='Red'>* </font></label>
+		<div><input type="text" name="vper" id="vper" readonly size="30" value="<?php echo isset($_POST["vper"]) ? $_POST["vper"] : ''; ?>" placeholder="Vacancy Permanent..." required="required" />
+		</div>
+		</td>
 	</tr>
            
 
 <tr>
-		<td>Sanction Strength Temporary <font color='Red'>*</font> </td>
-		<td><input type="text" name="sstem" id="sstem" readonly size="26" value="<?php echo isset($_POST["sstem"]) ? $_POST["sstem"] : ''; ?>" placeholder="Sanction Strength Temporary..." required="required" /><br></td>
-		<td>&nbsp; </td>
-		<td>Position Temporary<font color='Red'> *</font> </td>
-		<td><input type="text" name="ptem" id="ptem" readonly size="26" value="<?php echo isset($_POST["ptem"]) ? $_POST["ptem"] : ''; ?>" placeholder="Position Temporary..." required="required" /><br></td>
-		<td>&nbsp; </td>
-		<td>Vacancy Temporary<font color='Red'> *</font> </td>
-		<td><input type="text" name="vtem" id="vtem" readonly size="26" value="<?php echo isset($_POST["vtem"]) ? $_POST["vtem"] : ''; ?>" placeholder="Vacancy Temporary..." required="required" /><br></td>
+		<td><label for="sstem" style="font-size:15px;"> Sanction Strength Temporary <font color='Red'>*</font> </label>
+		<div><input type="text" name="sstem" id="sstem" readonly size="30" value="<?php echo isset($_POST["sstem"]) ? $_POST["sstem"] : ''; ?>" placeholder="Sanction Strength Temporary..." required="required" />
+		</div>
+		</td>
+		
+		<td><label for="ptem" style="font-size:15px;"> Position Temporary<font color='Red'> *</font> </label>
+		<div><input type="text" name="ptem" id="ptem" readonly size="30" value="<?php echo isset($_POST["ptem"]) ? $_POST["ptem"] : ''; ?>" placeholder="Position Temporary..." required="required" />
+		</div>
+		</td>
+		
+		<td><label for="vtem" style="font-size:15px;"> Vacancy Temporary<font color='Red'> *</font> </label>
+		<div><input type="text" name="vtem" id="vtem" readonly size="30" value="<?php echo isset($_POST["vtem"]) ? $_POST["vtem"] : ''; ?>" placeholder="Vacancy Temporary..." required="required" />
+		</div>
+		</td>
 	</tr> 
 
       <tr>
-		<td>Address </td>
-		<td><input type="text" name="address1" class="form-control" size="26" value="<?php echo isset($_POST["address1"]) ? $_POST["address1"] : ''; ?>" placeholder="Address..." /><br></td>
-		<td>&nbsp; </td>
-		<td>Sanction Strength Detail </td>
-		<td><input type="text" name="ssdetail" class="form-control" size="26" value="<?php echo isset($_POST["ssdetail"]) ? $_POST["ssdetail"] : ''; ?>" placeholder="Sanction Strength Detail..." /><br></td>
-		<td>&nbsp; </td>
-		<td>Remarks  </td>
-		<td><input type="text" name="remarks" class="form-control" size="26" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>" placeholder="Remarks..." /><br></td>
+		<td><label for="address1" style="font-size:15px;"> Address </label>
+		<div><input type="text" name="address1" class="form-control" size="30" value="<?php echo isset($_POST["address1"]) ? $_POST["address1"] : ''; ?>" placeholder="Address..." />
+		</div>
+		</td>
+		<td><label for="ssdetail" style="font-size:15px;"> Sanction Strength Detail </label>
+		<div><input type="text" name="ssdetail" class="form-control" size="30" value="<?php echo isset($_POST["ssdetail"]) ? $_POST["ssdetail"] : ''; ?>" placeholder="Sanction Strength Detail..." />
+		</div>
+		</td>
+		
+		<td><label for="remarks" style="font-size:15px;">Remarks  </label>
+		<div><input type="text" name="remarks" class="form-control" size="30" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>" placeholder="Remarks..." />
+		</div>
+		</td>
 	</tr>	
-        <tr>
-	 	<td></td>
-            <td>
+        <tr style="background-color:#2a8fcf;text-align:left;height:40px;">
+	            <td colspan="3">
                 <button name="newstaffposition" >Submit</button>
                 <button name="clear" >Clear</button>
             </td>
-	    <td></td>
           </tr>
         </table>
       </form>

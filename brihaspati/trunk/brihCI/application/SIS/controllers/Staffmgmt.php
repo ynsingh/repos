@@ -814,7 +814,8 @@ class Staffmgmt extends CI_Controller
        if($this->form_validation->run()==TRUE){
 
         $sptnt= $this->input->post("tnt");
-        $spemppost = $this->input->post("emppost");
+        $spemppostid = $this->input->post("emppost");
+        $spemppost = $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $spemppostid)->desig_name ;
         $spss = $this->input->post("ss");
         $spp = $this->input->post("p");
         $spv = $this->input->post("v");
@@ -938,53 +939,53 @@ class Staffmgmt extends CI_Controller
 
         /* Form fields */
 
-        $data['tnt']= array('name' => 'tnt', 'id' => 'tnt', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_tnt, 'readonly' => 'readonly' );
+        $data['tnt']= array('name' => 'tnt', 'id' => 'tnt', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_tnt, 'readonly' => 'readonly' );
 
-        $data['type']= array('name' => 'type', 'id' => 'type', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_type, 'readonly' => 'readonly' );
+        $data['type']= array('name' => 'type', 'id' => 'type', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_type, 'readonly' => 'readonly' );
 
-        $data['emppost'] = array('name' => 'emppost', 'id' => 'emppost', 'maxlength' => '40', 'size' => '26', 'value' => $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $editsp_data->sp_emppost)->desig_name, 'readonly' => 'readonly' );
+        $data['emppost'] = array('name' => 'emppost', 'id' => 'emppost', 'maxlength' => '40', 'size' => '30', 'value' => $this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id', $editsp_data->sp_emppost)->desig_name, 'readonly' => 'readonly' );
 
-        $data['grouppost'] = array('name' => 'grouppost', 'id' => 'grouppost', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_grppost, 'readonly' => 'readonly' );
+        $data['grouppost'] = array('name' => 'grouppost', 'id' => 'grouppost', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_grppost, 'readonly' => 'readonly' );
 
-        $data['scale'] = array('name' => 'scale', 'id' => 'scale', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_scale, 'readonly' => 'readonly' );
+        $data['scale'] = array('name' => 'scale', 'id' => 'scale', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_scale, 'readonly' => 'readonly' );
 
-        $data['methodrect'] = array('name' => 'methodrect', 'id' => 'methodrect', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_methodRect, 'readonly' => 'readonly' );
+        $data['methodrect'] = array('name' => 'methodrect', 'id' => 'methodrect', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_methodRect, 'readonly' => 'readonly' );
 
-        $data['group'] = array('name' => 'group', 'id' => 'group', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_group, 'readonly' => 'readonly' );
+        $data['group'] = array('name' => 'group', 'id' => 'group', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_group, 'readonly' => 'readonly' );
 
-        $data['uo'] = array('name' => 'uo', 'id' => 'uo', 'maxlength' => '40', 'size' => '26', 'value' => $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $editsp_data->sp_uo)->name, 'readonly' => 'readonly' );
+        $data['uo'] = array('name' => 'uo', 'id' => 'uo', 'maxlength' => '40', 'size' => '30', 'value' => $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $editsp_data->sp_uo)->name, 'readonly' => 'readonly' );
 
-        $data['dept'] = array('name' => 'dept', 'id' => 'teachername', 'maxlength' => '40', 'size' => '26', 'value' => $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $editsp_data->sp_dept)->dept_name, 'readonly' => 'readonly');
+        $data['dept'] = array('name' => 'dept', 'id' => 'teachername', 'maxlength' => '40', 'size' => '30', 'value' => $this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id', $editsp_data->sp_dept)->dept_name, 'readonly' => 'readonly');
 
-        $data['address1'] = array('name' => 'address1', 'id' => 'address1', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_address1, );
+        $data['address1'] = array('name' => 'address1', 'id' => 'address1', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_address1, );
 
-        $data['campus'] = array('name' => 'campus', 'id' => 'campus', 'maxlength' => '40', 'size' => '26', 'value' => $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editsp_data->sp_campusid)->sc_name, 'readonly' => 'readonly' );
+        $data['campus'] = array('name' => 'campus', 'id' => 'campus', 'maxlength' => '40', 'size' => '30', 'value' => $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $editsp_data->sp_campusid)->sc_name, 'readonly' => 'readonly' );
 
-        $data['pnp'] = array('name' => 'pnp', 'id' => 'pnp', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_plan_nonplan, 'readonly' => 'readonly' );
+        $data['pnp'] = array('name' => 'pnp', 'id' => 'pnp', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_plan_nonplan, 'readonly' => 'readonly' );
 
-        $data['schemecode'] = array('name' => 'schemecode', 'id' => 'schemecode', 'maxlength' => '40', 'size' => '26', 'value' => $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $editsp_data->sp_schemecode)->sd_name, 'readonly' => 'readonly' );
+        $data['schemecode'] = array('name' => 'schemecode', 'id' => 'schemecode', 'maxlength' => '40', 'size' => '30', 'value' => $this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id', $editsp_data->sp_schemecode)->sd_name, 'readonly' => 'readonly' );
 
-        $data['ss'] = array('name' => 'ss', 'id' => 'ss', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_sancstrenght, );
+        $data['ss'] = array('name' => 'ss', 'id' => 'ss', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_sancstrenght, );
 
-        $data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_position, 'readonly' => 'readonly' );
+        $data['p'] = array('name' => 'p', 'id' => 'p', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_position, 'readonly' => 'readonly' );
 
-        $data['v'] = array('name' => 'v', 'id' => 'v', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vacant, 'readonly' => 'readonly' );
+        $data['v'] = array('name' => 'v', 'id' => 'v', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_vacant, 'readonly' => 'readonly' );
 
-        $data['remarks'] = array('name' => 'remarks', 'id' => 'remarks', 'maxlength' => '26', 'size' => '26', 'value' => $editsp_data->sp_remarks, );
+        $data['remarks'] = array('name' => 'remarks', 'id' => 'remarks', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_remarks, );
 
-        $data['ssdetail'] = array('name' => 'ssdetail', 'id' => 'ssdetail', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_ssdetail, );
+        $data['ssdetail'] = array('name' => 'ssdetail', 'id' => 'ssdetail', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_ssdetail, );
 
-        $data['ssper'] = array('name' => 'ssper', 'id' => 'ssper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_sspermanent, 'readonly' => 'readonly' );
+        $data['ssper'] = array('name' => 'ssper', 'id' => 'ssper', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_sspermanent, 'readonly' => 'readonly' );
 
-        $data['sstem'] = array('name' => 'sstem', 'id' => 'sstem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_sstemporary, 'readonly' => 'readonly' );
+        $data['sstem'] = array('name' => 'sstem', 'id' => 'sstem', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_sstemporary, 'readonly' => 'readonly' );
 
-        $data['pper'] = array('name' => 'pper', 'id' => 'pper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_pospermanent, 'readonly' => 'readonly' );
+        $data['pper'] = array('name' => 'pper', 'id' => 'pper', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_pospermanent, 'readonly' => 'readonly' );
 
-        $data['ptem'] = array('name' => 'ptem', 'id' => 'ptem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_postemporary, 'readonly' => 'readonly' );
+        $data['ptem'] = array('name' => 'ptem', 'id' => 'ptem', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_postemporary, 'readonly' => 'readonly' );
 
-        $data['vper'] = array('name' => 'vper', 'id' => 'vper', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vpermanenet, 'readonly' => 'readonly' );
+        $data['vper'] = array('name' => 'vper', 'id' => 'vper', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_vpermanenet, 'readonly' => 'readonly' );
 
-        $data['vtem'] = array('name' => 'vtem', 'id' => 'vtem', 'maxlength' => '40', 'size' => '26', 'value' => $editsp_data->sp_vtemporary, 'readonly' => 'readonly' );
+        $data['vtem'] = array('name' => 'vtem', 'id' => 'vtem', 'maxlength' => '40', 'size' => '30', 'value' => $editsp_data->sp_vtemporary, 'readonly' => 'readonly' );
 
         $data['sp_id'] = $sp_id;
 
@@ -1271,6 +1272,27 @@ class Staffmgmt extends CI_Controller
 	   }
 	  echo json_encode($p.','.$v.','.$p1.','.$p2.','.$p3.','.$p4.','.$p5.','.$p6);
     }
+
+  /*This function has been created for display Designation and PayBand on the Basis of Group */
+  public function getdesigpaybandlist(){
+	$group = $this->input->post('group');
+	//echo "Om Prakash======>".$group;
+        $datawh=array('desig_group' => $group);
+        $desig = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_payscale,desig_code',$datawh);
+        $desig_select_box ='';
+        $desig_select_box.='<option value="">----------Select Designation-----------';
+        foreach($desig as $drecord){
+        // echo "Om Prakash====2====>".$drecord->desig_id;   
+            $desig_select_box.='<option value='.$drecord->desig_id.'>'.$drecord->desig_name.'('. $drecord->desig_code .')'.' ';
+        }
+        $payb_select_box ='';
+        $payb_select_box.='<option value="">----------Select Payband-----------';
+        foreach($desig as $drecord){
+        echo "Om Prakash====3====>".$drecord->desig_payscale;   
+            $payb_select_box.='<option value='.$drecord->desig_payscale.'>'.$drecord->desig_payscale ;
+        }
+        echo json_encode($desig_select_box.','.$payb_select_box);
+  }
 
  //===================End of Staff Position ============================
 

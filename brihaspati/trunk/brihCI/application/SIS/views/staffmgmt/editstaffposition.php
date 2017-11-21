@@ -15,7 +15,8 @@
            function goBack() {
         	window.history.back();
         }
-
+	</script>
+	<script>
         function getsstypevalue(val){
                 var p = $('#p').val();
                 var type = $('#type').val();
@@ -41,12 +42,16 @@
                 }
              });
            }
-
-
-	</script>
    </script>
-   <table style="padding: 8px 8px 8px 20px;">
+   <table style="margin-left:0%;width:91%; ">
+   <!--<table style="padding: 8px 8px 8px 20px;">-->
      <tr colspan="2"><td>
+     <div align=left">
+        <font color=blue size=4pt>
+         <?php
+            echo anchor('staffmgmt/staffposition', 'View Staff Position', array('class' => 'top_parent'));
+         ?>
+      </div>
        <div style="margin-left:10px;width:1700px;">
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
              <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -63,16 +68,18 @@
               </div></br>
            </td></tr>
        </table>
-       <table style="margin-left:30px;">
-       <form action="<?php echo site_url('staffmgmt/editstaffposition/' . $sp_id);?>" method="POST" class="form-inline">
-       <tr>
-             <td> Campus Name </td>
-             <td>
+      <!-- <table style="margin-left:30px;">-->
+      <table style="width:100%; border:1px solid gray;" align="center" class="TFtable">
+      <form action="<?php echo site_url('staffmgmt/editstaffposition/' . $sp_id);?>" method="POST" class="form-inline">
+              <tr><thead><th  style="background-color:#2a8fcf;text-align:left;height:40px;" colspan="3">&nbsp;&nbsp;Staff Position Form</th></thead></tr>   
+      <tr>
+             <td><label for="campus" style="font-size:15px;"> Campus Name </label>
+             <div>
                  <?php echo form_input($campus); ?>
+             </div>
              </td>
-             <td>&nbsp;</td>
-             <td> University Officers Control </td>
-             <td>
+             <td><label for="uo" style="font-size:15px;"> University Officers Control </label>
+             <div>
                 <?php echo form_input($uo); ?>
 	<!--    <select name="uo" id="uo" class="my_dropdown" style="width:300px;">
                 <option value="<?php echo $this->lgnmodel->get_listspfic1('authorities', 'id', 'name', $uo["value"])->id; ?>"><?php echo $uo["value"]; ?></option>
@@ -80,128 +87,136 @@
                     <option value="<?php echo $uo->id; ?>"><?php echo $uo->name; ?></option>
                 <?php endforeach; ?></td>
 		</select>-->
-             </td>
-	     <td>&nbsp;</td>
-             <td> Department Name</td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="dept" style="font-size:15px;"> Department Name</label>
+             <div>
                  <?php echo form_input($dept); ?>
-             </td>
+             </div>
+	     </td>	
         </tr>
         <tr>
-             <td> Scheme Name </td>
-             <td>
+             <td><label for="schemecode" style="font-size:15px;"> Scheme Name </label>
+             <div>
                  <?php echo form_input($schemecode); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Group </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="group" style="font-size:15px;"> Group </label>
+             <div>
                  <?php echo form_input($group); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td>Employee Post </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="emppost" style="font-size:15px;"> Employee Post </label>
+             <div>
 		<?php echo form_input($emppost); ?>
-             </td>
+             </div>
+	    </td>
         </tr>
         <tr>
-             <td> Working Type </td>
-             <td>
+             <td><label for="tnt" style="font-size:15px;"> Working Type </label>
+             <div>
                  <?php echo form_input($tnt); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Group Post </td>
-             <td>
+             </div>
+	    </td> 
+             <td><label for="ss" style="font-size:15px;"> Group Post </label>
+             <div>
                  <?php echo form_input($grouppost); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Employee Type </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="ss" style="font-size:15px;"> Employee Type </label>
+             <div>
                  <?php echo form_input($type); ?>
-             </td>
+             </div>
+	    </td>	
         </tr>
         <tr>
-             <td> Plan / Non Plan </td>
-             <td>
+             <td><label for="ss" style="font-size:15px;"> Plan / Non Plan </label>
+             <div>
                  <?php echo form_input($pnp); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Pay Band </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="ss" style="font-size:15px;"> Pay Band </label>
+             <div>
                  <?php echo form_input($scale); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Method of Recruitment </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="ss" style="font-size:15px;"> Method of Recruitment </label>
+             <div>
                  <?php echo form_input($methodrect); ?>
-             </td>
+            </div>
+	   </td>
         </tr>
 	<tr>	
-             <td> Position Sanction Strength </td>
-             <td>
+          <td><label for="ss" style="font-size:15px;"> Position Sanction Strength </label>
+             <div>
                 <!-- <?php echo form_input($ss); ?>-->
-		<input type="text" name="ss" id="ss" class="keyup-numeric" size="26" value="<?php echo $ss['value']; ?>" placeholder="Position Sanction Strength..." required="required" oninput="getsstypevalue(this.value)" /><br>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Position Present </td>
-             <td>
+		<input type="text" name="ss" id="ss" class="keyup-numeric" size="30" value="<?php echo $ss['value']; ?>" placeholder="Position Sanction Strength..." required="required" oninput="getsstypevalue(this.value)" /><br>
+             </div>
+	     </td>
+             <td><label for="p" style="font-size:15px;"> Position Present </label>
+             <div>
                  <?php echo form_input($p); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Position Vacant </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="v" style="font-size:15px;"> Position Vacant </label>
+             <div>
                  <?php echo form_input($v); ?>
-             </td>
+             </div>
+	    </td>
 	</tr>
 	<tr>
-             <td> Sanction Strength Permanent </td>
-             <td>
+             <td><label for="ssper" style="font-size:15px;"> Sanction Strength Permanent </label>
+             <div>
                 <?php echo form_input($ssper); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Position Permanent </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="pper" style="font-size:15px;"> Position Permanent </label>
+             <div>
                  <?php echo form_input($pper); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Vacancy Permanent </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="vper" style="font-size:15px;"> Vacancy Permanent </label>
+             <div>
                  <?php echo form_input($vper); ?>
-             </td>
+             </div>
+	    </td>	
 	</tr>
 	<tr>
-             <td> Sanction Strength Temporary </td>
-             <td>
+             <td><label for="sstem" style="font-size:15px;"> Sanction Strength Temporary </label>
+             <div>
                  <?php echo form_input($sstem); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Position Temporary </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="ptem" style="font-size:15px;"> Position Temporary </label>
+             <div>
                   <?php echo form_input($ptem); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Vacancy Temporary </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="vtem" style="font-size:15px;"> Vacancy Temporary </label>
+             <div>
                  <?php echo form_input($vtem); ?>
-             </td>
+             </div>
+	    </td>
         </tr>
         <tr>
-             <td>Address </td>
-             <td>
+             <td><label for="address1" style="font-size:15px;"> Address </label>
+             <div>
                  <?php echo form_input($address1); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Sanction Strength Detail </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="ssdetail" style="font-size:15px;"> Sanction Strength Detail </label>
+             <div>
                  <?php echo form_input($ssdetail); ?>
-             </td>
-	     <td>&nbsp;</td>
-             <td> Remarks </td>
-             <td>
+             </div>
+	     </td>
+             <td><label for="remarks" style="font-size:15px;"> Remarks </label>
+             <div>
                 <?php echo form_input($remarks); ?>
-             </td>
+             </div>
+	     </td>		
 	</tr>
-	<tr><td></td>
-	<td>
+	<tr style="background-color:#2a8fcf;text-align:left;height:40px;">
+	<td colspan="3">
 	     <button name "submit" >Update</button>
 	</form>
 	     <?php echo "<button onclick=\"goBack()\" >Back</button>";?>
