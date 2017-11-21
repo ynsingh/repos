@@ -677,7 +677,7 @@ class Staffmgmt extends CI_Controller
                     $mess='OFFICE ORDER<br/> Dear'.$empname.'This is to inform you that you will be transferred at'.$deptto.'with immediate effect.<br/>
                     Please find the attachment of transfer order copy<br/> Wish you all the best<br/>'.$this->orgname.'<br/>
                     '.$this->regname.'<br/>'.$this->uitdesig;
-                    $attachment=$this->gentransferordertpdf($_POST['empname']);
+                    $attachment=$this->sismodel->gentransferordertpdf($_POST['empname']);
                    // $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,$attachment,'All');
                    // $this->mailstoperson =$this->mailmodel->mailsnd('$mail_sent_to', $sub, $mess,'','Sis');
                     if($this->mailstoperson){
@@ -1333,14 +1333,14 @@ class Staffmgmt extends CI_Controller
         //$datawh=array('cudsd_scid' => $parts[0],'cudsd_auoid' => $parts[1]);
         $datawh=array('dept_uoid' => $parts[1],'dept_sccode' => $sccode);
         //$comb_data = $this->sismodel->get_listspficemore('cudsdmap','cudsd_deptid',$datawh);
-        $comb_data = $this->commodel->get_listspficemore('Department','dept_id,dept_name',$datawh);
+        $comb_data = $this->commodel->get_listspficemore('Department','dept_id,dept_name,dept_code',$datawh);
         //$comblist = $comb_data->result();
         $dept_select_box ='';
         $dept_select_box.='<option value="">-------Select Department--------';
         foreach($comb_data as $combdataid){
            // $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$combdataid->cudsd_deptid)->dept_name;
             //$dept_select_box.='<option value='.$combdataid->cudsd_deptid.'>'.$deptname.' ';
-            $dept_select_box.='<option value='.$combdataid->dept_id.'>'.$combdataid->dept_name.' ';
+            $dept_select_box.='<option value='.$combdataid->dept_id.'>'.$combdataid->dept_name.'('.$combdataid->dept_code.')'.' ';
             
         }
         echo json_encode($dept_select_box);
@@ -1353,12 +1353,12 @@ class Staffmgmt extends CI_Controller
         $campdept = $this->input->post('combdept');
         //$datawh=array('cudsd_scid' => $parts[0],'cudsd_auoid' => $parts[1],'cudsd_deptid' => $parts[2]);
         $datawh=array('sd_deptid' => $campdept);
-        $comb_data = $this->sismodel->get_listspficemore('scheme_department','sd_id,sd_name',$datawh);
+        $comb_data = $this->sismodel->get_listspficemore('scheme_department','sd_id,sd_name,sd_code',$datawh);
         $schm_select_box ='';
         $schm_select_box.='<option value="">-------Select Scheme Name--------';
         foreach($comb_data as $combdataid){
             //$schmname=$this->sismodel->get_listspfic1('scheme_department', 'sd_name', 'sd_id',$aucoid->cudsd_schid)->sd_name;
-            $schm_select_box.='<option value='.$combdataid->sd_id.'>'.$combdataid->sd_name.' ';
+            $schm_select_box.='<option value='.$combdataid->sd_id.'>'.$combdataid->sd_name.'('.$combdataid->sd_code.')'.' ';
             
         }
         echo json_encode($schm_select_box);
@@ -1413,11 +1413,11 @@ class Staffmgmt extends CI_Controller
         $datawh=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
                        'sp_emppost' => $parts[3], 'sp_tnt' => $parts[4]);
         $emppost_data = $this->sismodel->get_listspficemore('staff_position','sp_vacant',$datawh);
-        echo json_encode("post====".$emppost_data);
+        //echo json_encode("post====".$emppost_data);
         $emppost_select_box ='';
         $emppost_select_box.='<option value="">-------------- Select Post -----------------';
         if(!empty($emppost_data)){ 
-        	echo json_encode("post=vaccancy==1=".$emppost_data->sp_vacant);
+        	//echo json_encode("post=vaccancy==1=".$emppost_data->sp_vacant);
             foreach($emppost_data as $records){ 
                 if($records->sp_vacant > 0){ 
                     /*$datawh2=array('sp_campusid' => $parts[0],'sp_uo' => $parts[1], 'sp_dept' => $parts[2],
@@ -1540,46 +1540,5 @@ class Staffmgmt extends CI_Controller
                         
     }
     /*********************************** closer Employee type from staff position*********************************************/   
-    
-    /*************************************Start transfer order pdf *****************************************************************************/
-    
-    public function gentransferordertpdf($empid){
-        
-        $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
-        $this->orgaddres=$this->commodel->get_listspfic1('org_profile','org_address1','org_id',1)->org_address1;
-        $this->orgpincode=$this->commodel->get_listspfic1('org_profile','org_pincode','org_id',1)->org_pincode;
-        $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_staffname',$empid)->uit_registrarname;
-        $this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_staffname',$empid)->uit_desig;
-        $this->data=$this->sismodel->get_listrow('user_input_transfer','uit_staffname',$empid);
-        $spec_data['detail'] = $this->data->row();
-        $year=date('Y');
-        // move file to directory code for photo
-	$desired_dir = 'uploads/SIS/transferorder/'.$year;
-        // Create directory if it does not exist
-        if(is_dir($desired_dir)==false){
-            mkdir("$desired_dir", 0700);
-        }
-        $emp_pf=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id',$empid)->emp_code;
-       	//add pdf code to store and view pdf file
-	$temp = $this->load->view('staffmgmt/transferordercopy', $spec_data, TRUE);
-	$pth='uploads/SIS/transferorder/'.$year.'/'.$emp_pf.'.pdf';
-	$this->genpdf($temp,$pth);
-    }
-    public function genpdf($content,$path){
-	$this->load->library('pdf');
-	$this->pdf = new DOMPDF();	
-     	// pass html to dompdf object
-    	$this->pdf->load_html($content);
-	$this->pdf->set_paper("A4", "portrait");
-        $this->pdf->render();
-	//set paper size
-        $pdf = $this->pdf->output();
-	file_put_contents($path, $pdf); 
-    }
-    
-    
-
-    /************************************* closer transfer order pdf *****************************************************************************/
-   
-
+  
 }    

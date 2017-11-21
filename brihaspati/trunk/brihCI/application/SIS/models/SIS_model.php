@@ -123,6 +123,49 @@ class SIS_model extends CI_Model
         }
     }
     
+    
+    
+    /*************************************Start transfer order pdf *****************************************************************************/
+    
+    public function gentransferordertpdf($empid){
+        
+        $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
+        $this->orgaddres=$this->commodel->get_listspfic1('org_profile','org_address1','org_id',1)->org_address1;
+        $this->orgpincode=$this->commodel->get_listspfic1('org_profile','org_pincode','org_id',1)->org_pincode;
+        $this->regname=$this->sismodel->get_listspfic1('user_input_transfer','uit_registrarname','uit_staffname',$empid)->uit_registrarname;
+        $this->uitdesig=$this->sismodel->get_listspfic1('user_input_transfer','uit_desig','uit_staffname',$empid)->uit_desig;
+        $this->data=$this->sismodel->get_listrow('user_input_transfer','uit_staffname',$empid);
+        $spec_data['detail'] = $this->data->row();
+        $year=date('Y');
+        // move file to directory code for photo
+	$desired_dir = 'uploads/SIS/transferorder/'.$year;
+        // Create directory if it does not exist
+        if(is_dir($desired_dir)==false){
+            mkdir("$desired_dir", 0700);
+        }
+        $emp_pf=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id',$empid)->emp_code;
+       	//add pdf code to store and view pdf file
+	$temp = $this->load->view('staffmgmt/transferordercopy', $spec_data, TRUE);
+	$pth='uploads/SIS/transferorder/'.$year.'/'.$emp_pf.'.pdf';
+	$this->genpdf($temp,$pth);
+    }
+    public function genpdf($content,$path){
+	$this->load->library('pdf');
+	$this->pdf = new DOMPDF();	
+     	// pass html to dompdf object
+    	$this->pdf->load_html($content);
+	$this->pdf->set_paper("A4", "portrait");
+        $this->pdf->render();
+	//set paper size
+        $pdf = $this->pdf->output();
+	file_put_contents($path, $pdf); 
+    }
+    
+    
+
+    /************************************* closer transfer order pdf *****************************************************************************/
+   
+    
     function __destruct() {
         $this->db2->close();
     }

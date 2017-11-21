@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 /* 
  * @name Upl.php
@@ -18,7 +18,7 @@ class Upl extends CI_Controller
 		$this->load->model('Login_model',"lgnmodel"); 
 		$this->load->model("Mailsend_model","mailmodel");
 	        $this->load->model('SIS_model',"sismodel");
-
+                
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
@@ -80,7 +80,7 @@ class Upl extends CI_Controller
             $ferror='';
             if ( isset($_FILES["userfile"]))
             {
-                $errors= array();
+                $errors= array();                
                 $file_name = $_FILES['userfile']['name'];
                 $file_ext=strtolower(end((explode('.',$file_name))));
 
@@ -286,7 +286,7 @@ class Upl extends CI_Controller
                             $this->logger->write_dblogmessage("insert"," Error in adding staff edrpuser ", "At row".$i."insufficient data" );
                             //  $this->session->set_flashdata('error', ' insufficient data');
                             $i++;
-                        }
+                        }                     
                     }
                     if($flag){
                         $this->session->set_flashdata('error', ' File without data');
@@ -308,4 +308,161 @@ class Upl extends CI_Controller
        }// check for pressing correct button
       $this->load->view('upl/uploadstafflist');
    }
+   
+   //This function has been created for generating multiple transfer order using csv file format
+    public function uploadtransferorder(){
+        $array_items = array('success' => '', 'error' => '', 'warning' =>'');
+       	$this->session->set_flashdata($array_items);
+	$error =array();
+        if(isset($_POST['importdata']))
+        {
+            $ferror='';
+            $filename=$_FILES['userfile']['tmp_name'];
+            $filesize=$_FILES['userfile']['size'];
+         //   if($_FILES['userfile']['size'] > 0)
+           // {
+                $flag=true;
+                $file = fopen($filename, "r");
+                fgetcsv($file);
+                $i=1;
+                //while (($getData = fgetcsv($file, 10000, ",")) !== FALSE)
+                while (false !== ($line = fgets($file)))
+                {
+                    $getData = explode(",", $line);
+                    $flag=false;
+                   // $colcount = count($getData);
+                    //if($colcount >= 21){
+                    if(count($getData) >= 21){
+                        $empid=$this->sismodel->get_listspfic1('employee_master', 'emp_id', 'emp_name', $getData[0])->emp_id;
+                        $datuit = array(
+                            //'uit_staffname'         => $getData[0], //get id
+                            'uit_staffname'         => $empid, 
+                            'uit_registrarname'     => $getData[1],
+                            'uit_desig'             => $getData[2],
+                            'uit_uso_no'            => $getData[3],
+                            'uit_date'              => date('y-m-d'), 
+                            'uit_rc_no'             => $getData[4],
+                            'uit_subject'           => $getData[5], 
+                            'uit_referenceno'       => $getData[6],
+                            'uit_ordercontent'      => $getData[7],
+                            'uit_emptype'           => $getData[8],
+                            'uit_uoc_from'          => $getData[9],
+                            'uit_uoc_to'            => $getData[10], //getid
+                            'uit_workdept_from'     => $getData[11],
+                            'uit_dept_to'           => $getData[12], //getid
+                            'uit_desig_from'        => $getData[13],
+                            'uit_desig_to'          => $getData[14], ///getid
+                            'uit_workingpost_from'  => $getData[15],
+                            'uit_post_to'           => $getData[16],
+                            'uit_tta_detail'        => $getData[17],
+                            'uit_dateofrelief'      => $getData[18],
+                            'uit_dateofjoining'     => $getData[19],
+                            'uit_email_sentto '     => $getData[20],
+                            
+                        );
+                        $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $datuit);
+                        if($usrinputtfr_flag){
+                            $emppfno=$this->sismodel->get_listspfic1('employee_master', 'emp_code', 'emp_id', $empid)->emp_code;
+                            $empname=$getData[0];
+                            $deptto=$this->commodel->get_listspfic1('Department','dept_name','dept_id',$getData[12])->dept_name; 
+                            $this->orgname=$this->commodel->get_listspfic1('org_profile','org_name','org_id',1)->org_name;
+                            //$this->regname=$this->input->post('registrarname');
+                            //$this->uitdesig=$this->input->post('designation');
+                            //$mail_sent_to=$_POST['emailsentto'];
+                            $sub='Employee Transfer And Posting - Letter  ' ;
+                            $mess='OFFICE ORDER<br/> Dear'.$empname.'This is to inform you that you will be transferred at'.$deptto.'with immediate effect.<br/>
+                            Please find the attachment of transfer order copy<br/> Wish you all the best<br/>'.$this->orgname.'<br/>
+                            '.$getData[1].'<br/>'.$getData[2];
+                           // $this->load->library('../controllers/staffmgmt');
+                            $attachment=$this->sismodel->gentransferordertpdf($empid);
+                            // $this->mailstoperson =$this->mailmodel->mailsnd('$getData[20]', $sub, $mess,$attachment,'All');
+                            $this->mailstoperson='';
+                            if($this->mailstoperson){
+                                //echo "in if part mail";
+                                $error[] ="At row".$i."sufficient data and mail sent sucessfully";
+                                $mailmsg='Transfer and Promotion order ....Mail send successfully';
+                                $this->logger->write_logmessage("insert"," Transfer and Promotion order ",'mail send successfully  to '.$getData[20] );
+                                $this->logger->write_dblogmessage("insert"," Transfer and Promotion order",'mail send successfully  to '.$getData[20]);
+                            }
+                            else{
+                                //echo "in else part";
+                                $mailmsg='Mail does not sent';
+                                $this->logger->write_logmessage("insert"," Transfer and Promotion order", "Mail does not sent to ".$getData[20]);
+                                $this->logger->write_dblogmessage("insert"," Transfer and Promotion order", "Mail does not sent to ".$getData[20]);
+                            }//else close   
+                            
+                            $this->logger->write_logmessage("insert","Staff Transfer and Posting", " Employee transfer record insert successfully ");
+                            $this->logger->write_dblogmessage("update","Staff Transfer and Posting", "Employee transfer record insert successfully");
+                            $this->session->set_flashdata('success', 'Employee transfer record insert successfully ......');
+                        }//ifclose $usrinputtfr_flag
+                        else{
+                            $this->logger->write_logmessage("error","Error in Staff Transfer and Posting", "Error in Staff Transfer and Posting ".$empname );
+                            $this->logger->write_dblogmessage("error","Error in Staff Transfer and Posting", "Error in Staff Transfer and Posting".$empname);
+                        }
+                       $i++; 
+                    }//if count
+                    else{
+                        //	insufficient data
+                            $error[] ="At row".$i."insufficient data";
+                            $this->logger->write_logmessage("insert"," Error in adding user input transfer in payroll ", "At row".$i."insufficient data"  );
+                            $this->logger->write_dblogmessage("insert"," Error in adding user input transfer in payroll ", "At row".$i."insufficient data" );
+                           // $this->session->set_flashdata('error', "At row".$i."insufficient data");
+			    $i++;
+                    }
+                                      
+                }//while close
+                if($flag){
+                    $this->session->set_flashdata('error', ' File without data');
+                    $this->load->view('upl/uploadtransferorder');
+                    return;
+                }else{
+                    foreach ($error as $item => $value):
+                        $ferror = $ferror ."</br>". $item .":". $value;
+                    endforeach;
+                    //display error of array
+                    //put ferror in log file.
+                    $this->session->set_flashdata('error', $ferror);
+                    redirect('staffmgmt/stafftransferlist');
+                  
+                }
+                
+		fclose($file);	
+	    //}//if
+            /*else{
+                foreach ($error as $item => $value):
+        	    $ferror = $ferror ."</br>".$item .":". $value;
+                endforeach;
+                $this->session->set_flashdata('error', $ferror);
+                $this->load->view('upl/uploadtransferorder');
+                return;
+            }*/
+            
+        }//$post close    
+        $this->load->view('upl/uploadtransferorder');
+        
+    }//clode function
+    //This function has been created for export transfer orders  using csv file format
+    public function exporttransferorder(){
+        if(isset($_POST["exportdata"])){
+		 
+            header('Content-Type: text/csv; charset=utf-8');  
+            header('Content-Disposition: attachment; filename=data.csv');  
+            $output = fopen("php://output", "w");  
+            fputcsv($output, array('uit_id','uit_registrarname', 'uit_desig', 'uit_uso_no','uit_date','uit_rc_no', 'uit_subject','uit_referenceno',
+                'uit_ordercontent','uit_emptype','uit_uoc_from','uit_workdept_from','uit_desig_from','uit_staffname','uit_workingpost_from',
+                'uit_uoc_to','uit_dept_to','uit_desig_to','uit_post_to','uit_tta_detail','uit_dateofrelief','uit_dateofjoining','uit_email_sentto')); 
+           // this need to change  in  according to sis model
+            $link = mysqli_connect("localhost", "root", "123456", "payroll");
+            $query = "SELECT * from user_input_transfer ORDER BY uit_id DESC";  
+            $result = mysqli_query($link, $query);  
+           // echo "this is testing ".$result;
+            //die;
+            while($row = mysqli_fetch_assoc($result))  
+            {  
+                fputcsv($output, $row);  
+            }  
+           // $link->close();
+            fclose($output);  
+        }//if close  
+    }//close function
 }

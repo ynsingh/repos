@@ -75,8 +75,16 @@
                 <?php else : ?>
                     <td colspan= "12" align="center"> No Records found...!</td>
                 <?php endif;?>
-
+                 <?php if( count($records) ):  ?>   
+                <td colspan="12">
+                <?php echo form_open_multipart('upl/exporttransferorder');?>
+                <div><input type='submit' name='exportdata' id="btnUpload"  value='export to excel'/></div> 
+                </form>
+                <?php endif;?>
+                
+            </td>
             </tbody>
+            
         </table>
         <div align="center">  <?php $this->load->view('template/footer');?></div>
     </body>    
