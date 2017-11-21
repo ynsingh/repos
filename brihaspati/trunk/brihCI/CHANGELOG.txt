@@ -1,3 +1,152 @@
+SLCMS, HRM  Version 1.0 2017-11-18
+-----------------------------
+    * GUI enhancement,  db update ( student admission master) file - NKS
+    * Bug fixes in GUI and correction provided by IGNTU - Sumit
+
+SLCMS, HRM  Version 1.0 2017-11-17
+-----------------------------
+    * Bar chart fees paid unpaid added - Sharad
+    * Modification in GUI in anouncement - Deepika
+
+SLCMS, HRM  Version 1.0 2017-11-16
+-----------------------------
+    * GUI enhancement - NKS,Sumit
+    * Bug fix in staff profile - Manorama Pal
+
+SLCMS, HRM  Version 1.0 2017-11-15
+-----------------------------
+    * GUI enhancement - Sumit
+    * Modification in subject paper schema and some structurl change in subject program paper - NKS
+    * Updae calendar in study center and designation added in HRM - Rekha pal
+
+SLCMS, HRM  Version 1.0 2017-11-13
+-----------------------------
+    * GUI enhancement - Sumit
+    * Bug fix, payment gateway parameter - NKS
+
+SLCMS, HRM  Version 1.0 2017-11-10
+-----------------------------
+    * GUI enhancement and bug fixing - Sumit
+    * Designation update in SIS - NKS
+    * Designation update in SLCMS - Rekha Pal
+    * Modify the view part in SIS, SLCMS - Neha Khullar
+
+SLCMS, HRM  Version 1.0 2017-11-09
+-----------------------------
+    * Gui enhancement in fees reconcile - Sumit
+    * Change in GUI centralise - Neha Khullar
+    * Back button bug fix- NKS
+
+SLCMS, HRM  Version 1.0 2017-11-08
+-----------------------------
+    * Gui enhancement in enterance and logic modification, setup and map also - Sumit
+
+SLCMS, HRM  Version 1.0 2017-11-07
+-----------------------------
+    * Roll no generation as per center and program, search and display list on the basis of center and program, first menu updated - NKS, Sumit
+    * Spelling mistake correction - Neha Khullar
+
+SLCMS, HRM  Version 1.0 2017-11-06
+-----------------------------
+    * Reconcile of Enterance admission fees facility added - Sumit
+    * Staff position auto calculation updated - OP
+    * Payment gateway return URL  bug fix -NKS, Sumit
+    * PDF libraries added - Manorama Pal
+
+SLCMS, HRM  Version 1.0 2017-11-03
+-----------------------------
+    * Modification in staff profile add and edit - manorama Pal
+    * Modification in online payment  via payumoney, add schema for pg - NKS, Sumit
+    * Modification in auth user type and authority map - Neha Khullar
+    * Announcement module added in SIS, SLCMS, HRM with archive system - Deepika
+
+SLCMS, HRM  Version 1.0 2017-11-02
+-----------------------------
+    * Payment gateway integration, modification in step three, calendar and admission step - NKS Sumit
+
+SLCMS, HRM  Version 1.0 2017-11-01
+-----------------------------
+    * Archival system for user_role_type and scheme with department added -Rekha Pal
+
+SLCMS, HRM  Version 1.0 2017-10-31
+-----------------------------
+    * Department archive facility added in SIS, SLCMS and HRM - Neha Khullar
+    * Modification staff transfer and posting - manorama Pal
+
+SLCMS, HRM  Version 1.0 2017-10-30
+-----------------------------
+    * Generate bar chart dispaly for last 10 days form submission - Sharad
+    * Bug fixes, water mark added in pdf download, first page GUI design update - Sumit
+
+SLCMS, HRM  Version 1.0 2017-10-27
+-----------------------------
+    * Program category added search student data, hall ticket download by student, Abhay: bank profile archive facility added - Sumit
+    * GUI bug fix - NKS
+
+SLCMS, HRM  Version 1.0 2017-10-26
+-----------------------------
+    * Bug fix in SIS - Rekha Pal
+
+SLCMS, HRM  Version 1.0 2017-10-25
+-----------------------------
+    * Menu list updated for admin and CEO -NKS
+    * Modofication in staff profile and edit profile - Manorama Pal
+    * Generation of hall ticket, stiker and attendance sheet (  Centerwise and all), filteration of applicant student data  facility added- NKS, Sumit
+
+SLCMS, HRM  Version 1.0 2017-10-24
+-----------------------------
+    * Map study center with UO(Authority) with archive system facility added -OP
+    * Bug fix in authority edit section - Rekha Pal
+
+SLCMS, HRM  Version 1.0 2017-10-17
+-----------------------------
+    * Bug fix in map authority user, staff profile -NKS
+
+SLCMS, HRM  Version 1.0 2017-10-16
+-----------------------------
+    * Re-engineering of the staff profile - Seema Pal
+
+SLCMS, HRM  Version 1.0 2017-10-15
+-----------------------------
+    * Create schema for department archive, add, update  and view authority user map in SLCMS and HRM, add hall ticket generation in coe menu, modify table announcement add title and type - NKS
+
+SLCMS, HRM  Version 1.0 2017-10-14
+-----------------------------
+    * Hall ticket generation and admin view, display of welcome page- Sumit
+
+SLCMS, HRM  Version 1.0 2017-10-13
+-----------------------------
+    * Date time bug fix -Rahul Pal
+    * Map with user authority  in SIS - Neha Khullar
+    * Hide the link of delete to user in SIS, HRM, SLCMS under Map and setup Menu - Rekha Pal
+
+SLCMS, HRM  Version 1.0 2017-10-12
+-----------------------------
+    * Bug fix in exam center - NKS
+    * Roll no modification, term and condition modification, state list modification and enterance fees added- Sumit
+    * Edit facility of admission open added and datatime  calendear added in admission open module. - Rahul Pal
+
+SLCMS, HRM  Version 1.0 2017-10-10
+-----------------------------
+    * Add exam center archive facility and computation of center capicity- Deepika
+    * Schema modification in dept, admission student related table and bug fix in sql script - NKS
+    * Add dept in scheme and authority in  dept - Rekha
+
+SLCMS, HRM  Version 1.0 2017-10-09
+-----------------------------
+    * Removal of delete link in SLCMS and add schema for student  exam center allocation - NKS
+    * Modification in db - field for not required - OP
+
+SLCMS, HRM  Version 1.0 2017-10-06
+-----------------------------
+    * View, add, edit and archive of enterance exam center facility with schema of archive added, updated menu od admin, coe - Deepika, NKS
+    * Add upload dir, Create Schema for upload data (student admission form) and bug fix - NKS
+    * Bug fix adding ddo and archive facility added - OP
+
+SLCMS, HRM  Version 1.0 2017-10-05
+-----------------------------
+    * Admission form step one to five ( Personal information, education, employment, ent exam, upload doc with photo sign etc, offline fees payment, form view and download facility added - Sumit
+
 SLCMS, HRM  Version 1.0 2017-10-04
 -----------------------------
     * Add and update of Exam type, display of admission information in different program - Deepika

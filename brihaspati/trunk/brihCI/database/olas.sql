@@ -61,6 +61,7 @@ CREATE TABLE `admissionstudent_master` (
   `asm_lname` varchar(255) DEFAULT NULL,
   `asm_nameinhindi` varchar(255) DEFAULT NULL,
   `asm_dob` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `asm_age` INT(11) NULL,
   `asm_pob` varchar(255) DEFAULT NULL,
   `asm_email` varchar(255) DEFAULT NULL,
   `asm_secemail` varchar(255) DEFAULT NULL,
