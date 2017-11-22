@@ -610,7 +610,8 @@ class Setup extends CI_Controller
 
     public function subject()
     {
-        
+	$this->prgresult = $this->common_model->get_listspfic2('program','prg_id', 'prg_name');
+
         $data['subname'] = array('name' => 'subname','id' => 'subname','maxlength' => '100','size' => '40','value' => '',);
         $data['subcode'] = array('name' => 'subcode','id' => 'subcode','maxlength' => '100','size' => '40','value' => '',);
         $data['subshort'] = array('name' => 'subshort','id' => 'subshort','maxlength' => '100','size' => '40','value' => '',);
@@ -624,17 +625,44 @@ class Setup extends CI_Controller
         $this->form_validation->set_rules('subdesc','Subject Description','trim|xss_clean');
         $this->form_validation->set_rules('subext1','Subject Ext1','trim|xss_clean');
         $this->form_validation->set_rules('subext2','Subject Ext2','trim|xss_clean');
+        $this->form_validation->set_rules('program','Program Name','trim|xss_clean');
+        $this->form_validation->set_rules('sub_semester','Semester/Year','trim|xss_clean');
+        $this->form_validation->set_rules('sub_subtype','Subject Type','trim|xss_clean');
 
         if($this->form_validation->run() == TRUE)
         {
-        
-            $this->load->helper('form');
-            $this->load->helper('html');
-            $this->load->model('setup_model','setupmod');
-            if( $this->input->post('submit')) 
-            {
-                $this->setupmod->addsubjectrecords();
-            }
+        $subname = $this->input->post('subname',TRUE);
+        $subcode = $this->input->post('subcode');
+        $subshort = $this->input->post('subshort');
+        $subdesc = $this->input->post('subdesc');
+        $subext1 =  $this->input->post('subext1');
+        $subext2 = $this->input->post('subext2');
+        $program = $this->input->post('program');
+        $sub_semester = $this->input->post('sub_semester');
+        $sub_subtype = $this->input->post('sub_subtype');
+	/* check for duplicate record*/
+        $result = $this->common_model->isduplicate('subject','sub_name',$subname);
+        if($result == 1)
+        {
+            $this->session->set_flashdata('error', $subname . ' already exist' );
+            redirect('setup/subject');
+	}
+	$data_sub = array('sub_name'=>$subname,'sub_code'=>$subcode,'sub_short'=>$subshort,'sub_desc'=>$subdesc,'sub_ext1'=>$subext1,'sub_ext2'=>$subext2,'sub_program'=>$program,'sub_semester'=> $sub_semester, 'sub_subtype'=>$sub_subtype);
+	$subflag=$this->common_model->insertrec('subject', $data_sub) ;
+           if(!$subflag)
+	   {
+	   $this->session->set_flashdata('Error in adding Program - ' . $subname . '.', 'error');
+            $this->logger->write_dblogmessage("insert","Subject records added successfully with - ".$subname, ' by '.$username);
+            $this->logger->write_logmessage("insert","Subject records added successfully with - ".$subname, ' by '.$username);
+            redirect('setup/subject');
+           }
+           else
+           {
+            $this->logger->write_logmessage("insert","Subject records added successfully with - ".$subname, ' by '.$username);
+            $this->logger->write_dblogmessage("insert","Subject records added successfully with - ".$subname, ' by '.$username);
+            $this->session->set_flashdata("success", $subname." - Subject added successfully");
+            redirect('setup/viewsubject');
+           }
         }
     $this->load->view('setup/subject',$data);
     return;
@@ -660,6 +688,9 @@ class Setup extends CI_Controller
             $subresult = $this->setupmod->getsubject_byid($subid);
         foreach ($subresult as $value) 
         {
+            $subprg = $value->sub_program;
+            $subsem = $value->sub_semester;
+            $subtype = $value->sub_subtype;
             $subname = $value->sub_name;
             $subcode = $value->sub_code;
             $subshort = $value->sub_short;
@@ -670,6 +701,9 @@ class Setup extends CI_Controller
 
         /* Form Field */
                  
+        $data['subprg'] = array('name' => 'subprg','id' => 'subprg','maxlength' => '100','size' => '40','value' => $subprg,);
+        $data['subsem'] = array('name' => 'subsem','id' => 'subsem','maxlength' => '100','size' => '40','value' => $subsem,'readonly' => 'readonly');
+        $data['subtype'] = array('name' => 'subtype','id' => 'subtype','maxlength' => '100','size' => '40','value' => $subtype,'readonly' => 'readonly');
         $data['subname'] = array('name' => 'subname','id' => 'subname','maxlength' => '100','size' => '40','value' => $subname,);
         $data['subcode'] = array('name' => 'subcode','id' => 'subcode','maxlength' => '100','size' => '40','value' => $subcode,);
         $data['subshort'] = array('name' => 'subshort','id' => 'subshort','maxlength' => '100','size' => '40','value' => $subshort,);
@@ -686,10 +720,17 @@ class Setup extends CI_Controller
         $this->form_validation->set_rules('subshort','Subject Short','trim|xss_clean|required');
         $this->form_validation->set_rules('subdesc','Subject Description','trim|xss_clean');
         $this->form_validation->set_rules('subext1','Subject Ext1','trim|xss_clean');
-        $this->form_validation->set_rules('subext2','Subject Ext2','trim|xss_clean');
+	$this->form_validation->set_rules('subext2','Subject Ext2','trim|xss_clean');
+	$this->form_validation->set_rules('subprg','Program Name','trim|xss_clean');
+        $this->form_validation->set_rules('subsem','Semester/Year','trim|xss_clean');
+        $this->form_validation->set_rules('subtype','Subject Type','trim|xss_clean');
+
 
         if($_POST)
         {
+            $data['program'] = $this->input->post('program', TRUE);
+            $data['sub_semester'] = $this->input->post('sub_semester', TRUE);
+            $data['sub_subtype'] = $this->input->post('sub_subtype', TRUE);
             $data['subname'] = $this->input->post('subname', TRUE);
             $data['subcode'] = $this->input->post('subcode', TRUE);
             $data['subshort'] = $this->input->post('subshort', TRUE);

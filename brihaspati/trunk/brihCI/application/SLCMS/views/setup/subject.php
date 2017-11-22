@@ -72,6 +72,56 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
     echo "<table>";
     echo form_open('setup/subject');
+    
+    echo "<p>";
+    echo "<tr><td>"; 
+    echo form_label('Program Name', 'prgname');
+?>
+</td><td>
+     <select name="program" style="width:100%;">
+                        <option value=""disabled selected>---------Select program ---------</option>
+                        <?php foreach($this->prgresult as $datas): ?>
+                        <option value="<?php echo $datas->prg_id; ?>"><?php echo $datas->prg_name."(".$this->common_model->get_listspfic1('program','prg_branch','prg_id',$datas->prg_id)->prg_branch.")"; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                        </td></tr>
+<?php
+    echo "</p>";
+
+    echo "<p>";
+    echo "<tr><td>";
+    echo form_label('Semester/Year', 'semester');
+?>
+                        </td><td>
+                        <select name="sub_semester" id="" class="my_dropdown" style="width:100%;">
+                        <option value="" disabled selected >------Select Semester------</option>
+                        <option value="1" class="dropdown-item">1</option>
+                        <option value="2" class="dropdown-item">2</option>
+                        <option value="3" class="dropdown-item">3</option>
+                        <option value="4" class="dropdown-item">4</option>
+                        <option value="5" class="dropdown-item">5</option>
+                        <option value="6" class="dropdown-item">6</option>
+                        <option value="7" class="dropdown-item">7</option>
+                        <option value="8" class="dropdown-item">8</option>
+                        </select>
+                        </td></tr>
+<?php
+    echo "</p>";
+
+    echo "<p>";
+    echo "<tr><td>";
+    echo form_label('Subject Type','subtype'); ?>
+	</td><td>
+                <select name="sub_subtype"class="my_dropdown" style="width:100%;">
+                <option value="" disabled selected>------Select Subject Type------</option>
+                <option value="Compulsory" class="dropdown-item">Compulsory</option>
+                <option value="Elective" class="dropdown-item">Elective</option>
+                </select>
+                </td>
+                </tr>
+<?php
+    echo "</p>";
+
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Subject Name', 'subname');

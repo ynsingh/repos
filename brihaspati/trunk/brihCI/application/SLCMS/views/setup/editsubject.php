@@ -76,6 +76,35 @@ echo "<body>";
 
     echo "<table>";
     echo form_open('setup/editsubject/'.$subid);
+
+    echo "<p>";
+    echo "<tr><td>";
+    echo form_label('Program Name', 'subprg');
+    echo"</td><td>";
+    $prgid = $subprg['value'];
+    $prgname = $this->common_model->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name;
+    $prgbranch = $this->common_model->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch;
+    echo  $prgname ." ( ".$prgbranch ." )";
+   // echo form_input($degree);
+    echo "</td><td>";echo form_error('subprg');echo"</td></tr>";
+    echo "</p>";
+
+    echo "<p>";
+    echo "<tr><td>";
+    echo form_label('Semester/Year', 'subsem');
+    echo"</td><td>";
+    echo form_input($subsem);
+    echo "</td><td>";echo form_error('subsem');echo"</td></tr>";
+    echo "</p>";
+
+    echo "<p>";
+    echo "<tr><td>";
+    echo form_label('Subject Type', 'subtype');
+    echo"</td><td>";
+    echo form_input($subtype);
+    echo "</td><td>";echo form_error('subtype');echo"</td></tr>";
+    echo "</p>";
+
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Subject Name', 'subname');

@@ -1495,6 +1495,9 @@ CREATE TABLE `study_center` (
 
 CREATE TABLE `subject` (
   `sub_id` int(11) NOT NULL,
+  `sub_program` varchar(255) null,
+  `sub_semester` int(2) null,
+  `sub_subtype` varchar(50) null,
   `sub_name` varchar(255) NOT NULL,
   `sub_code` varchar(255) NOT NULL,
   `sub_short` varchar(255) NOT NULL,

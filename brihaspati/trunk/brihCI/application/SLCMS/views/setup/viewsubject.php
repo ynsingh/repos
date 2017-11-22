@@ -70,8 +70,8 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
 /* form data */
 
-         echo "<table border=0 cellpadding=10 style=\"padding: 8px 8px 8px 4px;\" class=\"TFtable\">";
-         echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th></tr></thead>";
+         echo "<table border=0 cellpadding=10  class=\"TFtable\">";
+         echo "<thead><tr><th>Sr. No </th><th>Program Name</th><th>Semester/Year</th><th>Subject Type</th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th></tr></thead>";
 
 	 $srno = 0;
 	 if( count($subjectlists) ):
@@ -80,6 +80,15 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         $srno = $srno + 1;
         echo "<tr align=\"center\">";
         echo "<td>"; echo $srno; echo"</td>";
+	echo "<td>"; 
+	if(!empty($subjectlist->sub_program)){
+	echo $this->common_model->get_listspfic1('program','prg_name','prg_id',$subjectlist->sub_program)->prg_name;
+	echo " ( " .$this->common_model->get_listspfic1('program','prg_branch','prg_id',$subjectlist->sub_program)->prg_branch;
+	echo " ) ";
+	}
+	echo "</td>";
+        echo "<td>"; echo $subjectlist->sub_semester; echo"</td>";
+        echo "<td>"; echo $subjectlist->sub_subtype; echo"</td>";
         echo "<td>"; echo $subjectlist->sub_name; echo"</td>";
         echo "<td>"; echo $subjectlist->sub_code; echo"</td>";
         echo "<td>"; echo $subjectlist->sub_short; echo"</td>";
