@@ -5,12 +5,11 @@
  <title>View Email Setting</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">    
     </head>    
     <body>
-    
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
         <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -29,25 +28,22 @@
             echo "</tr>";
             echo "</table>";
         ?-->
-        <center>    
-        <table width="70%">
- 
-     
-            <tr colspan="2"><td>  
+        <table width="100%">
+            <tr><td>  
             <?php
            
                     echo anchor('setup/emailsetting/', "Add Email Setting" ,array('title' => ' Add Email Configuration Detail ' , 'class' => 'top_parent'));
                     $help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:56%\">Click for Help</b></a>";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%;\">Click for Help</b></a>";
           
             ?>
         
-            <div  style="margin-left:2%;">
+            <div>
   
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };
@@ -61,10 +57,11 @@
   
             </div>
             </td></tr> 
-        </table></center>   
-        <table cellpadding="16"  class="TFtable" >
+        </table>
+<div class="scroller_sub_page">
+        <table class="TFtable" >
             <thead>
-                <tr align="center">
+                <tr>   
                     <th>Email Protocol</th>
                     <th>Email Host</th>
                     <th>Email Port</th>
@@ -84,7 +81,7 @@
             <tbody>
               <?php if( count($this->result) ): ?>
                     <?php foreach($this->result as $row){ ?>
-                        <tr align="center">
+                        <tr>
                             <td><?php echo $row->emailprotocol; ?></td>
                             <td><?php echo $row->emailhost; ?></td>
                             <td><?php echo $row->emailport; ?></td>
@@ -107,6 +104,7 @@
 
             </tbody>
         </table>
+	</div><!------scroller div------>
     </body>   
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

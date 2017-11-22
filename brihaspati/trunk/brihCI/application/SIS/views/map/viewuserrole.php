@@ -5,7 +5,6 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
          <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
         <style>
@@ -20,19 +19,18 @@
        </style>
     </head>    
     <body>
-    <center>
-         <table style="width:70%"> 
-          <tr><td> 
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width="100%">
+            <tr colspan="2"><td>
                <?php echo anchor('map/userroletype/', "Map with User Role List ", array('title' => 'Add Detail' , 'class' => 'top_parent'));?>
                <?php
                  $help_uri = site_url()."/help/helpdoc#EmailSetting";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:52%\">Click for Help</b></a>";
                  ?>
-
-               <div  style="margin-left:2%; width:90%;" >
+               <div  style="margin-left:2%;" >
                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
-                   <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+                   <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                 ?>
@@ -43,12 +41,15 @@
                 ?>        
         	</div>
         </td></tr>  
-        </table>  </center>
-        <br/>
+        </table> 
+        <div class="scroller_sub_page">
+        <table  class="TFtable" >
+            <thead>
+                <tr> 
       <!-- <div class="panel panel-primary"> -->
-            <table cellpadding="16" class="TFtable">
+            <table  class="TFtable">
             <thead >
-            <tr align="center">
+            <tr>
                 <th>Sr.No</th>
                 <th>User Name</th>
                 <th>User Type</th>
@@ -63,7 +64,7 @@
         <tbody>
                 <?php $serial_no = 1;?>
                 <?php foreach($this->result as $record){ ?>
-                    <tr align="center">
+                    <tr>
                     <td><?php echo $serial_no++; ?></td>                     
                     <td><?php echo $this->loginmodel->get_listspfic1('edrpuser','username','id',$record->userid)->username; ?></td> 
                     <td><?php echo $record->usertype; ?></td>
@@ -79,8 +80,9 @@
 			<?php endif ;?>
                      </tr>
                 <?php }; ?>
-         </tbody>
-        </table> 
+ </tbody>
+        </table>
+        </div><!------scroller div------>
   <!-- </div>  -->     
     </body>  
    <div align="center">  <?php $this->load->view('template/footer');?></div>

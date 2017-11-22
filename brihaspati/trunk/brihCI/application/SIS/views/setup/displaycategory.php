@@ -8,25 +8,21 @@
 <title>View Category</title>
 <head>    
     <?php $this->load->view('template/header'); ?>
-    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
     <?php $this->load->view('template/menu');?>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 	
 </head>    
  <body>
-<center>
-<table width='70%'>
-     <tr><td>
-      <div align=left">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width='100%'>
+     <tr colspan="2"><td>
          <?php
             echo anchor('setup/category/', 'Add Category', array('class' => 'top_parent'));
 	    $help_uri = site_url()."/help/helpdoc#ViewCategaryDetail";
 	     echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
          ?>
 
-	</div>
-        <div style="margin-left:2%;">
+        <div>
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-          <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
               <div class="isa_success"><?php echo $_SESSION['success'];?></div>
               <?php
@@ -40,10 +36,11 @@
                 ?>    
         </div> 
     </td></tr>
-  </table></center>
-  <table cellpadding="16" class="TFtable">
-        <thead >
-        <tr align="center">
+  </table>
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
+        <thead>
+        <tr>
         <th>Sr.No</th>
         <th> Category Name </th>
         <th> Category Code </th>
@@ -57,7 +54,7 @@
 	        foreach ($this->result as $row)
                 {
               ?>    
-		<tr align="center">
+		<tr>
                     <td><?php echo ++$count; ?> </td>
                     <td><?php echo $row->cat_name ?> </td>
                     <td><?php echo $row->cat_code ?> </td>
@@ -73,6 +70,7 @@
  	  <?php } ?>  
 	</tbody>		            
     </table>
+   </div><!------scroller div------>
   </body>
  <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>

@@ -6,31 +6,29 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-    <center>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
     		    <?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                    echo "<table>";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#AuthorityArchive";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:54%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:56%;position:absolute;\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
                     ?>
 
-        <table style="width:70p%;">
+<table width="100%">
             <tr colspan="2"><td>
-            <div  style="margin-left:-06px;width:1793px;">
-
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };
@@ -41,13 +39,14 @@
                 <?php
                 };
                 ?>
-
-            </div>
+</div>
             </td></tr>
-        </table></center>
-        <table cellpadding="16" class="TFtable" >
+        </table>
+        <br>
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
             <thead>
-                <tr align="center">
+                <tr>
 		<th>Sr.No</th>
 		<th>Authority Name(Authority Id)</th>
 		<th>Authority Type</th>
@@ -63,7 +62,7 @@
                     <?php $count =0?>
               	    <?php if( count($this->authresult) ): ?>
                     <?php foreach($this->authresult as $row){ ?>
-                         <tr align="center">
+                         <tr>
 			 <td> <?php echo ++$count; ?> </td>
 			<?php  echo "<td>" . $this->logmodel->get_listspfic1('authorities','name','id',$row->authority_id)->name;
 			echo " ( ". $row->authority_id ." ) ";
@@ -85,6 +84,7 @@
                 <?php endif;?>
 
             </tbody>
+        </div><!------scroller div------>
         </table>
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>

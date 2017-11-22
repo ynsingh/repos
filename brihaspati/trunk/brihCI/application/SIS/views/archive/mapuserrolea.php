@@ -7,16 +7,14 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-    <center>
-        <table style="width:70%;">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width="100%">
             <tr colspan="2"><td>
-            <div  style="margin-left:-06px;width:1793px;">
-
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
@@ -31,14 +29,13 @@
                 <?php
                 };
                 ?>
-
-            </div>
+</div>
             </td></tr>
-        </table></center>
-           <div align="left">
-   <table cellpadding="11" class="TFtable">
-     <thead >
-        <tr align="center">
+        </table></br>
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
+            <thead>
+             <tr>
              <th>Sr.No</th>
                 <th>User Name</th>
                 <th>User Type</th>
@@ -55,7 +52,7 @@
               foreach ($this->result as $row)
               {
          ?>
-           <tr align="center">
+           <tr>
                 <td><?php echo ++$count; ?> </td>
 
                     <td><?php echo $this->logmodel->get_listspfic1('edrpuser','username','id',$row->urta_userid)->username; ?></td>
@@ -73,7 +70,7 @@
            <?php }?>
      </tbody>
     </table>
-   </div>
+   </div><!------scroller div------>
    </body>
    <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

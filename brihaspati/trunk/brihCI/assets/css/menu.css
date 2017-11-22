@@ -22,7 +22,8 @@
 }
 .sf-menu {
 	/*margin-left:6.2%;*/
-	line-height:1.3;font-size:100%;font-weight:bold;
+	line-height:1.3;
+        font-weight: bold
 }
 .sf-menu ul {
 	position:absolute;
@@ -46,7 +47,7 @@
 .sf-menu li:hover ul,
 .sf-menu li.sfHover ul {
 	left:0;
-	top:3.7em; /* match top ul list item height */
+	top:2.8em; /* match top ul list item height */
 	z-index:99;
 }
 ul.sf-menu li:hover li ul,
@@ -55,7 +56,7 @@ ul.sf-menu li.sfHover li ul {
 }
 ul.sf-menu li li:hover ul,
 ul.sf-menu li li.sfHover ul {
-	left:0em; /* match ul width */
+	left:10em; /* match ul width */
 	top:0;
 }
 ul.sf-menu li li:hover li ul,
@@ -64,20 +65,21 @@ ul.sf-menu li li.sfHover li ul {
 }
 ul.sf-menu li li li:hover ul,
 ul.sf-menu li li li.sfHover ul {
-	left:0em; /* match ul width */
+	left:10em; /* match ul width */
 	top:0;
 }
 
 /*** DEMO SKIN ***/
 .sf-menu {
-	
-	margin-bottom:0.3em;
+	float:left;
+	margin-bottom:1em;
 }
 .sf-menu a {
-	
-	padding:10px 21px 16px 17.1px;
+	border-left:1px solid #fff;
+	padding:.75em 1em;
 	text-decoration:none;
 	font-size:120%;
+	
 }
 .sf-menu a.last {
 	border-right:1px solid #fff;
@@ -157,9 +159,10 @@ li.sfHover > a > .sf-sub-indicator {
 }
 
 nav {
+	margin-top:0.2%;
 	background:none repeat scroll 0 0 #0099CC;
-	height:35px;width:100%;margin:0 auto;
-	padding:0 0 0 18px;
+	height:40px;width:100%;
+	padding:0;
 	color:#FFFFFF;
 }
 

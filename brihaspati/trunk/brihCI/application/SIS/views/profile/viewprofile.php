@@ -8,9 +8,8 @@
  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/profile.css">
 </head>
 <body>
-            <div>
                 <?php $this->load->view('template/header'); ?>
-		<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+		<!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
                 <?php 
 			if($this->session->userdata('id_role') == 1){
 				$this->load->view('template/menu');
@@ -23,21 +22,19 @@
 			}
 
 		?>
-            </div><br> 		    
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
                     <?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#ViewProfile";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:17px;margin-left:73%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:17px;margin-left:54%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
                     ?>
- <table>
-            <tr colspan="2">
-                <td>
-                    <div align="left" style="margin-left:30px;width:1700px;">
+ <table width="100%">
+            <tr colspan="2"><td>
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
                     <?php if(isset($_SESSION['success'])){?>

@@ -4,14 +4,12 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-    <center>
-        </br>
-        <table width="70%;">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+        <table width="100%;">
 
             <tr colspan="2"><td>
             <?php
@@ -21,12 +19,11 @@
 
             ?>
 
-            <div  style="width:100%;">
-
+<div>
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };
@@ -40,11 +37,11 @@
 
             </div>
             </td></tr>
-        </table></center>
-        <table cellpadding="16" class="TFtable" >
+        </table>
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
             <thead>
-                <tr align="center">
-        
+                <tr> 
                         <th>University Name</th>
                         <th>Campus Name</th>
 			<th>Address</th>
@@ -60,7 +57,7 @@
             <tbody>
               <?php if( count($this->result) ): ?>
                     <?php foreach($this->result as $row){ ?>
-                        <tr align="center">
+                        <tr>
                          <td><?php
                         $this->uresult = $this->common_model-> get_listspfic1('org_profile','org_name','org_code',$row->org_code);
                         
@@ -87,6 +84,7 @@
 
             </tbody>
         </table>
+        </div><!------scroller div------>
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

@@ -8,23 +8,20 @@
 <title>displaysalarygrademaster</title>
 <head>    
     <?php $this->load->view('template/header'); ?>
-    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
     <?php $this->load->view('template/menu');?>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 	
 </head>    
  <body>
-<center>
-<table width='70%'>
-     <tr><td>
-      <div align=left">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width='100%'>
+	<tr colspan="2"><td>
          <?php
             echo anchor('setup/salarygrademaster/', 'Add Salary Grade', array('class' => 'top_parent'));
 	    $help_uri = site_url()."/help/helpdoc#ViewSchemeDetail";
 	     echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
          ?>
 
-	</div>
-        <div style="margin-left:2%;">
+        <div>
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
@@ -40,24 +37,25 @@
                 ?>    
         </div> 
     </td></tr>
-  </table></center>
-  <table cellpadding="16" class="TFtable">
-        <thead >
-        <tr align="center">
+  </table>
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
+            <thead>
+                <tr>
         <th>Sr.No</th>
         <th>Salary Grade Name </th>
         <th>Salary Grade Max </th>
         <th>Salary Grade Min</th>
         <th>Salary Grade Pay Band </th>
         <th> Action </th>
-        </thead>
+        </thead></tr>
 	<tbody>
 	     <?php
 		$count = 0;
 	        foreach ($this->result as $row)
                 {
               ?>    
-		<tr align="center">
+		<tr>
                     <td><?php echo ++$count; ?> </td>
                     <td><?php echo $row->sgm_name?> </td>
                     <td><?php echo $row->sgm_max ?> </td>
@@ -66,9 +64,10 @@
              	    <td><?php echo anchor('setup/editsalarygrademaster/' . $row->sgm_id , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')); ?>
 	       </td>
                </tr>
- 	  <?php } ?>  
-	</tbody>		            
-    </table>
+ 	  <?php } ?> 
+	</tbody>
+        </table>
+        </div><!------scroller div------> 
   </body>
  <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>

@@ -7,24 +7,18 @@
         <?php $this->load->view('template/header'); ?>
         <?php $this->load->view('template/menu');?>
         <!--    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>-->
-<p>
-<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
       <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
     </head>
     <body>
-   <table >
-     <tr><td>
- 	<div>
-        <font color=blue size=4pt>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width="100%">
+            <tr colspan="2"><td>
          <?php
             echo anchor('staffmgmt/newstaffposition/', ' Staff Position ', array('class' => 'top_parent'));
 	    $help_uri = site_url()."/help/helpdoc#ViewStaffPosition";
             echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
          ?>
-        </div>
-       </div>
-       <div style="width:70%;">
+       <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
          <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
@@ -41,10 +35,10 @@
  </div>
  </td></tr>
  </table>
- <div>
-	<table class="TFtable">
-	<thead>
-		<tr align="center">
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
+            <thead>
+                <tr>
 		<th> Sr.No </th>
 		<th> Campus Name </th>
 		<th> U O Control </th>
@@ -65,7 +59,7 @@
 		foreach ($this->result as $row)
 		{
 		?>    
-			<tr align="center">
+			<tr>
 			 <td><?php echo ++$count; ?> </td>
                          <td><?php echo $this->commodel->get_listspfic1('study_center', 'sc_name', 'sc_id', $row->sp_campusid)->sc_name; ?> </td>
 			 <td><?php echo $this->lgnmodel->get_listspfic1('authorities', 'name', 'id', $row->sp_uo)->name ?> </td>
@@ -83,11 +77,11 @@
 	<?php  } 
 	}else{
   	?>  
-        <tr><td colspan= "12" align="center"> No Records found...!</td></tr>
-       <?php }?> 
-       </tbody>
-      </table>
-     </div>
+        <tr><td colspan= "13" align="center"> No Records found...!</td></tr>
+       <?php }?>
+	</tbody>
+        </table>
+        </div><!------scroller div------> 
    </body>
    <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

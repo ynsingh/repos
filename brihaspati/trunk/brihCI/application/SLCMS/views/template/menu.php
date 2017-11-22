@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 
 echo "<div>";
-//echo "<nav>";
+echo "<nav>";
 echo "<ul class=\"sf-menu\">";
 
 			echo "<li class=\"current\">";
@@ -269,7 +269,7 @@ echo "<ul class=\"sf-menu\">";
 			echo "</li>";
 			
 echo "</ul>";
-//echo "</nav>";
+echo "</nav>";
 echo "</div>";
 
 

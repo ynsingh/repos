@@ -6,13 +6,12 @@
 <html>
     <head>
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-    <center> 
-		    <?php
+		    <!--?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
@@ -21,12 +20,11 @@
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
-                    ?>
+                    ?-->
 
-        <table style="width:70%;">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width="100%">
             <tr colspan="2"><td>
-            <div  style="margin-left:-06px;width:1793px;">
-
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
@@ -41,18 +39,14 @@
                 <?php
                 };
                 ?>
-
-            </div>
+       </div>
             </td></tr>
-        </table></center>															
-        <table cellpadding="16" class="TFtable" >
+        </table></br>
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
             <thead>
-                <tr align="center">
-				 <table cellpadding="16"  class="TFtable" >
-            <thead>
-                <tr align="center">
+                <tr>
 		<th>Sr.No</th>
-		
 		<th>Bank Name</th>
 		<th>Bank Address</th>
 		<th>Bank Branch</th>
@@ -63,18 +57,15 @@
 		<th>PAN No</th>
 		<th>TAN No</th>
 		<th>GST No</th>
-		
                 </tr>
-            </thead>
-	    <tbody>        
-                   
-					 <tbody>
+            </thead>           
+	<tbody>
 	<?php $count = 0;
 	if( count($this->result) ) {
 	      foreach ($this->result as $row)
 	      {
 	 ?>    
-	   <tr align="center">
+	   <tr>
 	        	<td><?php echo ++$count; ?> </td>
 	        	<td><?php echo $row->bpa_bank_name ; ?> </td>
 			<td><?php echo $row->bpa_bank_address ;?> </td>
@@ -95,8 +86,7 @@
            <tr><td colspan= "12" align="center"> No Records found...!</td></tr>
            <?php }?> 
      </tbody>
-		
-            </tbody>
+	</div><!------scroller div------>	
         </table>
     </body>	
     <div align="center">  <?php $this->load->view('template/footer');?></div>

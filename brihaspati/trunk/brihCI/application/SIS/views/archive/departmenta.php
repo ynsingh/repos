@@ -6,19 +6,19 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-    <center>
- <table style="width:70%;">
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width="100%">
    <tr colspan="2"><td>
-            <div  style="margin-left:2%;width:90%;">
+            <div>
              <?php echo validation_errors('<div class="isa_warning>','</div>');?>
               <?php echo form_error('<div class="isa_error">','</div>');?>
                <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
                 <?php
                 };
                 ?>
@@ -28,13 +28,14 @@
                 <?php
                 };
                 ?>
-
  		</div>
  </td></tr>
- </table></center>
-        <table cellpadding="11" class="TFtable" >
+ </table>
+</br>
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
             <thead>
-                <tr align="center">
+                <tr>
                 <th>University Name</th>
                 <th>Campus Name</th>
                 <th>Authorities Name</th>
@@ -52,7 +53,7 @@
                     <?php $count =0?>
                     <?php foreach($this->deptaresult as $row) 
 			{ 
-		        echo "<tr align=\"center\">";
+		        echo "<tr>";
                         echo "<td>" . $this->common_model->get_listspfic1('org_profile','org_name','org_code',$row->depta_orgcode)->org_name. "</td>";
                         echo "<td>" . $this->common_model->get_listspfic1('study_center','sc_name','sc_code',$row->depta_sccode)->sc_name . "</td>";
                         echo "<td>". $this->logmodel->get_listspfic1('authorities','name','id',$row->depta_uoid)->name . "</td>";
@@ -72,6 +73,7 @@
 		//	echo "</table>";
 			?>	
             </tbody>
+		</div>
           </table>
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>

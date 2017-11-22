@@ -6,13 +6,12 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
     <body>
-    </center>
-
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
                    <!--?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
@@ -23,15 +22,14 @@
                     echo "</tr>";
                     echo "</table>";
                     ?-->
-
-        <table style="width:70%;">
+	<table width="100%">
             <tr colspan="2"><td>
-            <div  style="margin-left:-06px;width:1600px;">
+            <div>
 
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
-                    <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                 <?php
                 };
@@ -44,19 +42,21 @@
                 ?>
  </div>
  </td></tr>
-        </table></center>
-        <table cellpadding="16" class="TFtable" >
+        </table>
+	</br>
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
             <thead>
-                <tr align="center">
+                <tr>
 <thead><th>Sr.No</th><th>Announcement ID</th><th>Announcement Component Name</th><th>Announcement Type</th><th>Announcement Title</th><th>Announcement Description</th><th>Announcement Publish Date</th><th>Announcement Expiry Date</th><th>Announcement Remark</th><th>Announcement Archive Name</th><th>Announcement Archive Date</th></tr></thead>
-
+<tbody>
 <?php
         $count =0;
         if( count($this->annoresult) ):
         foreach ($this->annoresult as $row)
         {
          ?>
-             <tr align="center">
+             <tr>
 <td> <?php echo ++$count; ?> </td>
 	    <td> <?php echo $row-> annoa_anoid ?></td>
             <td> <?php echo $row-> anoua_cname ?></td>
@@ -74,6 +74,7 @@
                 <?php endif;?>
 
             </tbody>
+              </div>
         </table>
     </body>
     <div align="center">  <?php $this->load->view('template/footer');?></div>

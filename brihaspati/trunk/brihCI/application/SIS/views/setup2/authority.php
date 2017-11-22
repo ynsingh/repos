@@ -7,11 +7,10 @@
   <head>
    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
    <?php $this->load->view('template/header'); ?>
-    <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
     <?php $this->load->view('template/menu');?>
   </head>
  <body>
- <center>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
     <!--<//?php
         echo "<table border=\"0\" align=\"left\" style=\"color: black;  border-collapse:collapse; border:1px;\">";
         echo "<tr style=\"text-align:left; \">";
@@ -22,15 +21,14 @@
         echo "</table>";
         ?>--!>
 
-      <table width= "70%">
-            <tr><td>
-                <div align="left">
+      <table width= "100%">
+	<tr colspan="2"><td>
                 <?php  echo anchor('setup2/addauthority/', "Add  Authority", array('title' => 'Add   Authority  Detail','class' =>'top_parent'));
 		 $help_uri = site_url()."/help/helpdoc#ViewAuthority";
                  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                 ?>
                   </div>
-                <div  style="width:90%;margin-left:2%">
+                <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
               <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -44,21 +42,19 @@
                 ?>
               </div>
              </td></tr>
-       </table></center>
-
-<table>
-<tr>
-<div align="left" style="margin-left:2%;">
-<table cellpadding="16" class="TFtable" >
-<tr align="center">
+       </table>
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
+                <tr>
 <thead><th>Sr.No</th><th>Authority Code</th><th>Authority Name</th><th>Authority Nickname</th><th>Authority  Email</th><th>Action</th></tr></thead>
+<tbody>
  <?php
         $count =0;
         if( count($this->result) ):
         foreach ($this->result as $row)
         {
          ?>
-             <tr align="center">
+             <tr>
             <td> <?php echo ++$count; ?> </td>
             <td> <?php echo $row-> code ?></td>
             <td> <?php echo $row-> name ?></td>
@@ -80,16 +76,10 @@
             echo "<td colspan= \"12\" align=\"center\"> No Records found...!</td>";
         echo "</tr>";
         endif;
-
-        echo "</table>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
            ?>
-
-</div>
-</tr>
-</table>
+	 </tbody>
+       </table>
+     </div><!------scroller div------>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

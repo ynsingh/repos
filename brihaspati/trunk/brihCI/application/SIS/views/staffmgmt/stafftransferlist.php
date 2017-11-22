@@ -12,17 +12,12 @@
             <?php $this->load->view('template/header'); ?>
             <?php $this->load->view('template/menu');?>
     <!--        <h3>Welcome <?= $this->session->userdata('username') ?></h3>-->
-       <p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p> 
-        </div>
-        <table ><tr><td>
+<table width="100%">
+            <tr colspan="2"><td> 
         <?php echo anchor('staffmgmt/stafftransfer/', "Staff Tansfer and Posting" ,array('title' => 'staff transfer nad posting ' , 'class' => 'top_parent'));
 	;?>
-        </td>
-        </tr>
-        </table>
-         <div align="left" style="width:70%;">
+         <div>
             
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -36,13 +31,14 @@
                     <div  class="isa_error"><?php echo $_SESSION['err_message'];?></div>
                 <?php
                 };
-                ?>    
-                  
-        </div>
-</center>
-        <table class="TFtable" >
+                ?>  
+</div>
+            </td></tr>
+        </table>
+        <div class="scroller_sub_page">
+        <table cellpadding="16" class="TFtable" >
             <thead>
-                <tr align="center">
+                <tr>  
                     <th>Sr.No</th>
                     <th>Employee Name</th>
                     <th>Date of Relieve</th>
@@ -60,7 +56,7 @@
                 <?php $serial_no = 1;?>
               <?php if( count($records) ):  ?>
                     <?php foreach($records as $record){ ?>
-                        <tr align="center">
+                        <tr>
                             <td><?php echo $serial_no++; ?></td>
                             <td><?php echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$record->uit_staffname)->emp_name;; ?></td>
                             <td><?php echo $record->uit_dateofrelief;?></td>
@@ -85,6 +81,8 @@
             </td>
             </tbody>
             
+        </table>
+        </div><!------scroller div------>
         </table>
         <div align="center">  <?php $this->load->view('template/footer');?></div>
     </body>    

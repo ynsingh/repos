@@ -5,7 +5,6 @@
 <html>
    <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
         <?php $this->load->view('template/menu');?>
          <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
         <style>
@@ -20,16 +19,16 @@
        </style>
     </head>
     <body>
-    <center>
-         <table style="width:70%">
-          <tr><td>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+<table width="100%">
+            <tr colspan="2"><td>
                 <?php  echo anchor('map/authusertype/', "Map Add Authority ", array('title' => 'Add Detail', 'class' =>'top_parent'));?>
                 <?php
                  $help_uri = site_url()."/help/helpdoc#Authority";
                  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                  ?>
     
-                <div  style="margin-left:2%; width:90%;" >
+                <div  style="margin-left:2%;" >
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                  <?php if(isset($_SESSION['success'])){?>
                     <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -43,11 +42,11 @@
                 ?>
                 </div>
            </td></tr>
-        </table></center>
-        <br/>
-            <table cellpadding="16" class="TFtable">
-            <thead >
-            <tr align="center">
+        </table>
+        <div class="scroller_sub_page">
+        <table class="TFtable" >
+            <thead>
+                <tr>
                 <th>Sr.No</th>
                 <th>Authority Name</th>
                 <th>User Name</th>
@@ -62,7 +61,7 @@
                      $count =0;
                      if( count($this->authuser) ):
                      foreach($this->authuser as $row){ ?>
-                     <tr align="center">
+                     <tr>
                      <td> <?php echo ++$count; ?> </td>
                        <!-- <//?php
                        //echo "<td>";-->
@@ -82,8 +81,8 @@
                 <?php else : ?>
 <td colspan= "10" align="center"> No Records found...!</td>
                 <?php endif;?>
-</tbody>
-</table>
-    </body>
+ </tbody>
+        </table>
+        </div><!------scroller div------>
    <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>    

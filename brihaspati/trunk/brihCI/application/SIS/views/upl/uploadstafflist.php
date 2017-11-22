@@ -2,29 +2,22 @@
 <!--@name liststaff.php 
   @author Nagendra Kumar Singh(nksinghiitk@gmail.com)
   @author Deepika Chaudhary (chaudharydeepika88@gmail.com)
-  @author Malvika Upadhyay (chaudharydeepika88@gmail.com)
+  @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
  -->
 <html>
     <head>
         <title>Upload Staff List</title>
-        
+	<?php $this->load->view('template/header'); ?>
+        <?php $this->load->view('template/menu'); ?>        
     </head>
     <body>
-
-<div >
-<div id="body">
-        <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-
-        <?php $this->load->view('template/menu'); ?>
-
-        </div>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
                    <?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#UploadStaffList";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:17px;margin-left:38%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:17px;margin-left:54%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
@@ -54,12 +47,12 @@
                 echo $this->session->flashdata('flash_data');
         }
         if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
-                echo "<div style=\"margin-left:30px;width:1700px;align:left;\" class=\"isa_success\">";
+                echo "<div  class=\"isa_success\">";
                 echo $_SESSION['success'];
                 echo "</div>";
         }
         if((isset($_SESSION['error'])) && (($_SESSION['error'])!='')){
-                echo "<div style=\"margin-left:30px;width:1700px;align:left;\" class=\"isa_error\">";
+                echo "<div  class=\"isa_error\">";
                 echo $_SESSION['error'];
                 echo "</div>";
         }
