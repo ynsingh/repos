@@ -1,0 +1,9 @@
+.fixed
+{
+  table-layout:fixed;
+  width:50px;
+  overflow:hidden;
+  word-wrap:break-word;
+}
+
+

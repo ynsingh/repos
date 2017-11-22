@@ -45,7 +45,8 @@
          <td class="dt">$brih_reg</td>
     </tr>
 #else
-    <tr bgcolor="$ui.menuColor">
+    <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+    <tr bgcolor="$ui.tableColor">
          <td class="dt">
            <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg</a>
          </td>
@@ -56,6 +57,7 @@
       <td class="dt">$brih_usr $brih_mgmt</td>
    </tr>
 #else
+   <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
     <tr>
       <td class="dt">
          <a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a>
@@ -67,7 +69,8 @@
       <td class="dt">$brih_list $brih_mgmt</td>
    </tr>
 #else
-   <tr bgcolor="$ui.menuColor">
+  <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+   <tr bgcolor="$ui.tableColor">
       <td class="dt"><a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
       </td>
    </tr>
@@ -77,6 +80,7 @@
       <td class="dt">$personal $brih_calendar</td>
    </tr>
 #else
+   <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
    <tr>
       <td class="dt"><a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none>$personal $brih_calendar</a></td>
    </tr>
@@ -86,7 +90,8 @@
       <td class="dt">$brih_communication</td>
    </tr>
 #else
-   <tr bgcolor="$ui.menuColor">
+   <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+   <tr bgcolor="$ui.tableColor">
       <td class="dt"><a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a></td>
    </tr>
 #end
@@ -95,6 +100,7 @@
       <td class="dt"> #if($lang == "hindi") $brih_ad $brih_Of1 $brih_backup #else $brih_ad $brih_backup #end </td>
    </tr>
 #else
+   <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
    <tr>
       <td class="dt"><a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_ad $brih_Of1 $brih_backup #else $brih_ad $brih_backup #end</a>
       </td>
@@ -105,7 +111,8 @@
       <td class="dt">$brih_restoration</td>
     </tr>
 #else
-    <tr bgcolor="$ui.menuColor">
+    <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+    <tr bgcolor="$ui.tableColor">
       <td class="dt">
          <a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("count","1") style=text-decoration:none>$brih_restoration</a>
       </td>
@@ -116,6 +123,7 @@
       <td class="dt">$brih_Ev $brih_mgmt</td>
     </tr>
 #else
+   <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
     <tr>
        <td class="dt"><a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_Ev $brih_mgmt</a></td>
     </tr>
@@ -125,7 +133,8 @@
       <td class="dt">$brih_role $Repo_Perm $brih_mgmt</td>
     </tr>
 #else
-    <tr bgcolor="$ui.menuColor">
+    <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+    <tr bgcolor="$ui.tableColor">
 	<td class="dt"><a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none>$brih_role $Repo_Perm $brih_mgmt</a></td>
     </tr>
 #end
@@ -134,12 +143,13 @@
       <td class="dt">$brih_changePassword</td>
     </tr>
 #else
+   <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
     <tr>
       <td class="dt"><a href=$link.setPage("call,AdminProfile,ChangePasswd.vm").addPathInfo("count","1") style=text-decoration:none>$brih_changePassword</a></td>
     </tr>
 #end
-
-    <tr bgcolor="$ui.menuColor">
+    <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+    <tr bgcolor="$ui.tableColor">
       <td class="dt"><a href=$link.setPage("call,AdminProfile,AdminParam.vm").addPathInfo("count","1") style=text-decoration:none>$Profile_user</a></td>
     </tr>
 
@@ -160,6 +170,7 @@
       <td class="dt"> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports </td>
     </tr>
 #else
+    <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
     <tr>
       <td class="dt">
         <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a>
@@ -171,7 +182,8 @@
       <td class="dt">$brih_FAQ</td>
     </tr>
 #else
-    <tr bgcolor="$ui.menuColor">
+   <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+    <tr bgcolor="$ui.tableColor">
       <td class="dt">
          <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1") style=text-decoration:none>$brih_FAQ</a>
       </td>
@@ -182,6 +194,7 @@
       <td class="dt">$RemoteInstitute $brih_quota $brih_mgmt</td>
     </tr>
 #else
+   <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
     <tr>
       <td class="dt">
          <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","instlistquota").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_quota $brih_mgmt</a>
@@ -193,7 +206,8 @@
       <td class="dt">$brih_directory</td>
    </tr>
 #else
-   <tr bgcolor="$ui.menuColor">
+  <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+   <tr bgcolor="$ui.tableColor">
       <td class="dt">
 	<a href=$link.setPage("call,Directory.vm").addPathInfo("mode","psnl") style=text-decoration:none>$brih_directory</a>
       </td>
@@ -205,6 +219,7 @@
    </tr>
 #else
    <tr>
+     <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
       <td class="dt">
          <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("mode","lstdept").addPathInfo("count","1") style=text-decoration:none>$brih_dept/$brih_sch</a>
       </td>
@@ -215,7 +230,8 @@
       <td class="dt">$brih_quotation $brih_mgmt</td>
    </tr>
 #else
-   <tr bgcolor="$ui.menuColor">
+  <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
+   <tr bgcolor="$ui.tableColor">
       <td class="dt">
          <a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("mode","quote") style=text-decoration:none>$brih_quotation $brih_mgmt</a>
       </td>
@@ -226,6 +242,7 @@
       <td class="dt">$brih_Application $brih_mgmt</td>
    </tr>
 #else
+  <tr bgcolor="$ui.menuColor"><td style="height: 8px;"></td></tr>
    <tr>
      <td class="dt">
         <a href=$link.setPage("call,Root_Admin,AppMgmt.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none>$brih_Application $brih_mgmt</a>

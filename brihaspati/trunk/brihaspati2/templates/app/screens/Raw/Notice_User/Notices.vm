@@ -217,7 +217,7 @@ $!data.getMessage()
 	#if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
 		<td colspan="2">$Notice_NoticeSend_msg2</td>
 	#else
-		<td>$Notice_NoticeSend_msg2</td>
+		<td width=20%>$Notice_NoticeSend_msg2</td>
 		<td>$brih_courseName</td>
 	#end
 	</tr>
@@ -313,7 +313,7 @@ $!data.getMessage()
 #end
 ##<tr bgcolor="$ui.tableColor">
 <td>$brih_msg2 </td>
-<td width="3"><textarea id="ta" name="message" rows=10 cols=80> #if($nflag=="fh") $!msg #else $!fNoti $!sNoti $!msg #end </textarea></td>
+<td width="3"><textarea id="ta" name="message" rows=10 cols=100> #if($nflag=="fh") $!msg #else $!fNoti $!sNoti $!msg #end </textarea></td>
 </tr>
        #if($nflag == "fh")
 		#set ($ext=10)
@@ -350,6 +350,7 @@ $!data.getMessage()
 	        <input type="hidden" name="countTemp" value="1">
 		<input type="hidden" name="actionName">
 	        #if($nflag == "fh")
+		  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
         	  <input type="button" class="button-ftextstyle" name="eventSubmit_doWrite" value="$Notice_Send" onClick="checkField1(document.frm,this);"/>
 		  <input type="hidden" name="nflag" value="$nflag" >
 		  <input type="hidden" name="shtime">
@@ -357,9 +358,12 @@ $!data.getMessage()
                   <input type="hidden" name="eventSubmit_doChange">
 		  <input type="hidden" name="page" value="flash">
 	        #else
+		  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
         	  <input type="button" class="button-ftextstyle"  name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/>
+		   &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 
                   <input type="reset" class="button-ftextstyle" name="brih_clear" value="Clear" onClick="window.location.reload(true);"/>
 		  <input type="hidden" name="page" value="notices">
+		   &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
 	        #end
 		  <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.frm,this);"/>
 
