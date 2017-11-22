@@ -3,6 +3,7 @@
 /* 
  * @name Setup2.php
  * @author Nagendra Kumar Singh(nksinghiitk@gmail.com)  
+ * @author Om Prakash(omprakashkgp@gmail.com) Designation  
  */
  
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -879,18 +880,34 @@ class Setup2 extends CI_Controller
                  $this->form_validation->set_rules('desig_desc','Designation Description','trim|xss_clean');
                  if($this->form_validation->run()==TRUE){
                  //echo 'form-validated';
-                        $data = array(
-                                'desig_code'=>$_POST['desig_code'],
-                                'desig_type'=>$_POST['tnt'],
-                                'desig_subtype'=>$_POST['grouppost'],
-                                'desig_payscale'=>$_POST['desig_payscale'],
-                                'desig_name'=>ucfirst(strtolower($_POST['desig_name'])),
-                                'desig_group'=>$_POST['desig_group'],
-                                'desig_short'=>$_POST['desig_short'],
-                                'desig_desc'=>$_POST['desig_desc'],
-                           );
-                           $rflag=$this->commodel->insertrec('designation', $data);
-                           if (!$rflag)
+
+		$subtype = $this->input->post("grouppost");
+		$payband = $this->input->post("desig_payscale");
+		$designame = $this->input->post("desig_name");
+
+		$datacheck = array('desig_subtype'=>$_POST['grouppost'], 'desig_payscale'=>$_POST['desig_payscale'], 'desig_name'=>ucfirst(strtolower($_POST['desig_name'])) );
+
+                $data = array(
+                	'desig_code'=>$_POST['desig_code'],
+                        'desig_type'=>$_POST['tnt'],
+                        'desig_subtype'=>$_POST['grouppost'],
+                        'desig_payscale'=>$_POST['desig_payscale'],
+                        'desig_name'=>ucfirst(strtolower($_POST['desig_name'])),
+                        'desig_group'=>$_POST['desig_group'],
+                        'desig_short'=>$_POST['desig_short'],
+                        'desig_desc'=>$_POST['desig_desc'],
+                   );
+		$desigdatadup = $this->commodel->isduplicatemore('designation', $datacheck);
+
+                if($desigdatadup == 1 ){
+
+                                  $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Designation Sub Type' = $subtype  , 'Pay Band' = $payband , 'Designation Name' = $designame  .");
+                                  redirect('setup2/adddesignation');
+                                  return;
+                       }
+                   else{
+                         $rflag=$this->commodel->insertrec('designation', $data);
+                   if (!$rflag)
                         {
                                 $this->logger->write_logmessage("insert","Trying to designation", "designation is not added ".$_POST['desig_name']);
                                 $this->logger->write_dblogmessage("insert","Trying to designation", "designation is not added ".$_POST['desig_name']);
@@ -904,9 +921,10 @@ class Setup2 extends CI_Controller
                                 redirect("setup2/designation");
                         }
                 }//close if vallidation
+              }
         }//
 
-        $this->load->view('setup2/adddesignation');
+       $this->load->view('setup2/adddesignation');
     }
 
    /** This function check for duplicate designation
@@ -1249,14 +1267,14 @@ class Setup2 extends CI_Controller
                 'id' => 'code',
                 'maxlength' => '50',
                 'size' => '40',
-                'value' => $edit_data-> code,
+                'value' => $edit_data->code,
                 );
         $data['name'] = array(
                 'name' => 'name',
                 'id' => 'name',
                 'maxlength' => '50',
                 'size' => '40',
-                'value' => $edit_data-> name,
+                'value' => $edit_data->name,
                 );
         $data['nickname'] = array(
                 'name' => 'nickname',
@@ -1300,19 +1318,19 @@ class Setup2 extends CI_Controller
 	    $code = strtoupper($this->input->post('code', TRUE));
             $name = ucfirst(strtolower($this->input->post('name', TRUE)));
             $nickname = ($this->input->post('nickname', TRUE));
-            
+          echo"this is testing code".$code;  
             $logmessage = "";
-            if($edit_data-> code != $code)
-                     $logmessage = "Edit Authorities Code " .$edit_data-> code. " changed by " .$code;
-            if($edit_data-> name != $name)
-                     $logmessage = "Edit Authorities Name " .$edit_data-> name. " changed by " .$name;
+            if($edit_data->code != $code)
+                     $logmessage = "Edit Authorities Code " .$edit_data->code. " changed by " .$code;
+            if($edit_data->name != $name)
+                     $logmessage = "Edit Authorities Name " .$edit_data->name. " changed by " .$name;
             if($edit_data->nickname != $nickname)
                 $logmessage = "Edit Authorities Nickname   " .$edit_data->nickname. " changed by " .$nickname;
             //'desig_name' => $data_edesignationname,
             $update_data = array(
                'code' => $code,
                'name' => $name,
-               'nickname' => $nickname,
+               'nickname' => $nickname
                );
                //'modifierid'=>$this->session->userdata('username'),
                //'modifydate'=>date('y-m-d')

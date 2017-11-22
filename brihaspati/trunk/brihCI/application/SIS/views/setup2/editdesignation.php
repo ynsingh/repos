@@ -1,5 +1,6 @@
 <!---@name editdesignation.php                                                                                                                                                               
     @author Nagendra Kumar Singh (nksinghiitk@gmail.com)
+    @author Om Prakash(omprakashkgp@gmail.com)  payscale drop down bug fix 
  -->
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <html>
@@ -23,8 +24,9 @@
                 else{
                     $('#grouppost').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>slcmsindex.php/setup2/getworkingtype",
-                        type: "POST",
+                     // url: "<?php echo base_url();?>slcmsindex.php/setup2/getworkingtype",
+                        url: "<?php echo base_url();?>sisindex.php/staffmgmt/getworkingtype", 
+			type: "POST",
                         data: {"groupp" : worktype},
                         dataType:"html",
                         success:function(data){
@@ -135,10 +137,10 @@
 	        echo "<tr>";
                 echo "<td>Designation Payscale</td>";
                 echo "<td><select name=\"desig_payscale\" class=\"my_dropdown\" style=\"width:100%;\">";
- ?>
-                <?php foreach($this->payresult as $datas): ?>
-              
-                   <option value="<?php echo $desig_payscale['value']; $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>"<?php echo set_select('desig_payscale', $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay);?>><?php echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>
+          
+                echo "<option value=\"$desig_payscale[value]\">$desig_payscale[value]</option>"; ?>
+		<?php foreach($this->payresult as $datas): ?>
+		<option><?php echo set_select('desig_payscale', $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay);?><?php echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>
                           </option>
                   <?php endforeach; ?>
                 </select></td>
