@@ -40,6 +40,17 @@ class Staffmgmt extends CI_Controller
         $this->load->view('staffmgmt/employeelist',$data);
     }
 
+ public function deptemployeelist(){
+            $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post";
+            $whorder = "emp_uocid asc, emp_dept_code  asc";
+        $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,'',$whorder);
+//      $data['records'] = $this->sismodel->get_list('employee_master');
+        $this->logger->write_logmessage("view"," view departmentt employee list" );
+        $this->logger->write_dblogmessage("view"," view department employee list");
+        $this->load->view('staffmgmt/deptemployeelist',$data);
+   }
+
+
     public function staffprofile(){
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;

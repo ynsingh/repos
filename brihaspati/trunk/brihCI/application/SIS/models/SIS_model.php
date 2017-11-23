@@ -88,6 +88,22 @@ class SIS_model extends CI_Model
         $this->db2->where($data);
         return $this->db2->get()->result();
     }
+	//    getting different field from table - $selectfield ('a,b,c');
+    //    $whdata = array('name' => $name, 'title' => $title, 'status' => $status);
+    //    $whorder = ("column1 asc,column2 desc");
+    public function get_orderlistspficemore($tbname,$selectfield,$whdata,$whorder){
+        $this->db2->flush_cache();
+        $this->db2->from($tbname);
+        $this->db2->select($selectfield);
+        if($whdata != ''){
+                $this->db2->where($whdata);
+        }
+        if($whorder != ''){
+                $this->db2->order_by($whorder);
+        }
+        return $this->db2->get()->result();
+    }
+
      public function get_schemeslist($deptid){
         $this->db2->select('map_scheme_department.msd_schmid','scheme_department.sd_name');
        $this->db2->from('map_scheme_department')->where('msd_deptid',$deptid);
