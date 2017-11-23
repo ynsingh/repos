@@ -5,7 +5,7 @@
 <html>
 <title>IGNTU Admission Dashboard</title>
         <head>
-          
+         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css"> 
             <style>
                 .panel-primary{
                    // margin-left:20px;
@@ -59,7 +59,7 @@
 
     function drawFormChart() {
         var data = google.visualization.arrayToDataTable([
-                ["Dateline", "Submit", { role: "style" } ],
+                ['Dateline', 'Submit', { role: "style" } ],
 <?php
                 foreach ($chart_data1 as $data1) {
                     echo '["' . $data1->pdate . '",' . $data1->pval . ',"" ],';
@@ -76,9 +76,12 @@
 
       var options = {
         title:'Applicant Registration: <?php echo $min_date . '-' . $max_date; ?> ',
+        vAxis: {title: 'No of Applicants'},
+        hAxis: {title: 'Timeline',slantedText: true,slantedTextAngle: 45},
+
         //title: "Datewise Form Submission ",
-        width: 430,
-        height: 365,
+        width: 800,
+        height: 400,
         bar: {groupWidth: "35%"},
         legend: { position: "none" },
       };
@@ -103,10 +106,10 @@
                        2]);
         
       var options = {
-        title:'<center>   Fee paid Vs unpaid </center>',
+        title:'   Fee paid Vs unpaid ',
         //title: "Datewise Form Submission ",
-        width: 330,
-        height: 365,
+        width: 430,
+        height: 400,
         bar: {groupWidth: "25%"},
         legend: { position: "none" },
       };
@@ -118,15 +121,8 @@ function drawStatChart() {
       var data = google.visualization.arrayToDataTable([
         ["Element", "", { role: "style" } ],
 <?php
-            //echo '["UnPaid",' .$feenotpaid.', "#b87333"], ["Paid",' .$feepaid.', "#b87333"],["Total Submitted",'.$totalsubmitted.',"silver"],["Total Registered",150,"gold"],';
             echo '["UnPaid",' .$feenotpaid.', "#b87333"], ["Paid",' .$feepaid.', "#b87333"],["Total Submitted",'.$totalsubmitted.',"silver"],["Total Registered",'.$totalregistered.',"gold"],';
 ?>
-
-    /*    ["Copper", 8.94, "#b87333"],
-        ["Silver", 10.49, "silver"],
-        ["Gold", 19.30, "gold"],
-        ["Platinum", 21.45, "color: #e5e4e2"]
-    */
       ]);
 
       var view = new google.visualization.DataView(data);
@@ -138,7 +134,7 @@ function drawStatChart() {
                        2]);
 
       var options = {
-        title: "Various Statistics",
+        title: "STATS",
         width: 430,
         height: 365,
         bar: {groupWidth: "35%"},
@@ -163,34 +159,80 @@ function drawStatChart() {
 
             </div></br></br></br><br>
          <center>
-           <table style="margin-top:50px;">
+           <table style="margin-top:5px;">
             <tr>
                     <td>
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
-                            <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px ">Form Submit Report (last 10 days report) </div>
+                            <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Form Submit Report</b>  </div>
                             <div class="panel-body">
-                            <div id="columnchart_material" style="width: 430px; height: 400px;"></div>
+                            <div id="columnchart_material" style="width: 800px; height: 400px;"></div>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
-                            <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px ">Fees Submission </div>
+                            <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Fees Submission</b> </div>
                             <div class="panel-body">
-                            <div id="columnchart_material1" style="width: 330px; height: 400px;"></div>
+                            <div id="columnchart_material1" style="width: 430px; height: 400px;"></div>
                             </div>
                         </div>
                     </td>
-                    <td>
+            </tr>
+            <tr>
+                    <td valign=top>
                         <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
-                            <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px ">Application Stats </div>
+                            <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Recent Applications</b> </div>
                             <div class="panel-body">
-                            <div id="columnchart_material2" style="width: 430px; height: 400px;"></div>
+                            <?php //print_r($registeredapplicant);?>
+                                <table class="TFtable">
+                                    <thead >
+                                    <tr align="left" valign=top>
+                                        <th><b>Applicant Name</b></th>
+                                        <th><b>Type</b></th>
+                                        <th><b>Status</b></th>
+                                        <th><b>Time</b></th>
+                                    </tr>
+                                    </thead>
+                                <?php $i=0;  foreach($registeredapplicant as $row){ ?>
+                                <tr align="left">
+<?php //echo $this->cmodel->get_listspfic1('program','prg_category ','prg_id',$row->pstp_prgid)->prg_category;?>
+                                <?php $fname = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->admission_masterid)->asm_fname; 
+                                      $mname = $this->commodel->get_listspfic1('admissionstudent_master','asm_mname','asm_id',$row->admission_masterid)->asm_mname; 
+                                      $lname = $this->commodel->get_listspfic1('admissionstudent_master','asm_lname','asm_id',$row->admission_masterid)->asm_lname;
+                                if(empty($mname))
+                                    $fullname = $fname." ".$lname;
+                                else
+                                    $fullname = $fname." ".$mname." ".$lname;
+                                ?>
+                                <td><?php echo $fullname;?></td>
+                                <td>Application-2017</td>
+                                <?php $row->step5_status;
+                                    if($row->step5_status == 1):
+                                ?>
+                                        <td>Paid</td>
+                                    <?php else: ?>
+                                        <td>Unpaid</td>
+                                     <?php endif;?>
+                                <td><?php echo $row->step1_date;?></td>
+                                </tr>
+                                <?php } ?>
+
+                                </table>
                             </div>
                         </div>
                     </td>
 
+                    <td>
+                        <div class="panel panel-primary" style="margin-left:20px;background-color: #D0D0D0; ">
+                            <div class="panel-heading" style="padding:8px; background-color:#0099cc;height:20px "><b>Application Stats</b> </div>
+                            <div class="panel-body">
+                            <div id="columnchart_material2" style="width: 430px; height: 400px;"></div>
+                            </div>
+                        </div>
+                    </td>   
+
             </tr>
+
             </table></center>
 
             </div><?php $this->load->view('template/footer'); ?></div>

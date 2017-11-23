@@ -654,6 +654,16 @@ class Enterenceadmin extends CI_Controller
         $data['feenotpaid'] = $feenotpaid;
         $data['totalsubmitted'] = $totalsubmitted;
         $data['totalregistered'] = $totalregistered;
+        
+        //get list of registered application
+        $registeredapplicant = $this->commodel->get_listspficarry('admissionstudent_enterencestep','','','');
+        //print_r($registeredapplicant);
+        $registeredapplicant = array_reverse($registeredapplicant);
+        $data['registeredapplicant'] = $registeredapplicant;
+        
+        //echo sizeof($registeredapplicant);
+
+
         $this->load->view('enterenceadmin/graphicalreports',$data);
    }
 
