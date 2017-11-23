@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 /**
  * @name: SIS_model
+ * @author: Nagendra Kumar Singh (nksinghiitk@gmail.com)
  * @author: Manorama pal (palseema30@gmail.com)
  * @author: Om Prakash (omprakashkgp@gmail.com) check the record is already exist 
  */
@@ -177,11 +178,14 @@ class SIS_model extends CI_Model
 	file_put_contents($path, $pdf); 
     }
     
-    
-
     /************************************* closer transfer order pdf *****************************************************************************/
-   
-    
+   public function searchemp_profile($tbname,$worktype,$keyword)
+    {
+      
+       $this->db2->select('emp_id,emp_code,emp_name,emp_scid,emp_uocid,emp_dept_code,emp_desig_code,emp_email,emp_phone,emp_aadhaar_no')->from('employee_master')->where("emp_name LIKE '$keyword%'")->where("emp_worktype", $worktype);
+        return $this->db2->get()->result();
+    }
+
     function __destruct() {
         $this->db2->close();
     }
