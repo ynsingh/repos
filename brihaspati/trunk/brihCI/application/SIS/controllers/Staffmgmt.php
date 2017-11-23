@@ -40,16 +40,24 @@ class Staffmgmt extends CI_Controller
         $this->load->view('staffmgmt/employeelist',$data);
     }
 
- public function deptemployeelist(){
-            $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post";
-            $whorder = "emp_uocid asc, emp_dept_code  asc";
+    public function deptemployeelist(){
+        $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post";
+        $whorder = "emp_uocid asc, emp_dept_code  asc";
         $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,'',$whorder);
-//      $data['records'] = $this->sismodel->get_list('employee_master');
         $this->logger->write_logmessage("view"," view departmentt employee list" );
         $this->logger->write_dblogmessage("view"," view department employee list");
         $this->load->view('staffmgmt/deptemployeelist',$data);
-   }
+    }
 
+    public function staffstrengthlist(){
+	$selectfield ="sp_uo, sp_dept,sp_grppost, sp_sancstrenght , sp_position , sp_vacant";
+        $whorder = "sp_uo asc, sp_dept  asc";
+        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,'',$whorder);
+        $this->logger->write_logmessage("view"," view staff strength list" );
+        $this->logger->write_dblogmessage("view"," view staff strength list");
+        $this->load->view('staffmgmt/staffstrengthlist',$data);
+
+    }
 
     public function staffprofile(){
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
