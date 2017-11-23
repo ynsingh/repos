@@ -153,10 +153,12 @@ function drawStatChart() {
         
             <div>
                 <?php $this->load->view('template/header'); ?>
-                <h3>Welcome <?= $this->session->userdata('username') ?></h3>
+               
                  <?php $this->load->view('template/menu');?>
 
-
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>	
             </div></br></br></br><br>
          <center>
            <table style="margin-top:5px;">

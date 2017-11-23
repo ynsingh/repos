@@ -4,7 +4,7 @@
   <head>    
     <title>Edit Admission Open</title>
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+      
         <?php $this->load->view('template/menu');?>
 		 <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
        		 <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.js" ></script>
@@ -28,6 +28,10 @@
 </head>
 
   <body>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+
 <script>
         function goBack() {
         window.history.back();
@@ -36,15 +40,15 @@
   <table>
    <font color=blue size=4pt>
    <div style="margin-left:2%; width:100%;">
-      <br>
-<div align="left">
-<table style="margin-left:2%;">
+ 
+<div >
+<table>
 <tr><td>
 <?php echo anchor('enterence/viewadmissionopen/', "Open Admission List" ,array('title' => 'Open Admission List' , 'class' => 'top_parent'));?>
 </td></tr>
 </table>
 </div>
-     <style="margin-left:2%;">
+   
             <tr><td>
                 <div style="margin-left:2%;width:90%;">
 	    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">

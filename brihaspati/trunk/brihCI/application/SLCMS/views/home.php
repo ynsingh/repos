@@ -14,7 +14,7 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
 <?php $this->load->view('template/header');
  $this->load->view('template/menu'); ?>
 
-<div style="margin-top:50px;"></div>
+
 <p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 </p>
