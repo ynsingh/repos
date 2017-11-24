@@ -7,6 +7,7 @@
  * @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
  * @author Manorama Pal (palseema30@gmail.com)
  * @author Sumit Saxena(sumitsesaxena@gmail.com)[view employee profile]
+ * @author Om Prakas (omprakashkgp@gmail.com) Discipline Wise List 
  */
 
 class Report  extends CI_Controller
@@ -140,6 +141,19 @@ class Report  extends CI_Controller
 
       	  $this->load->view('report/viewfull_profile',$data);
   }
+
+############################## Discipline Wise List ##########################################
+
+public function disciplinewiselist(){
+        $selectfield ="emp_dept_code, emp_name, emp_desig_code,emp_specialisationid";
+        $whorder = "emp_specialisationid";
+        $this->result = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,'',$whorder);
+//      $this->result = $this->sismodel->get_list('employee_master');
+        $this->logger->write_logmessage("view"," view  Discipline Wise Report " );
+        $this->logger->write_dblogmessage("view"," view  Discipline Wise Report ");
+        $this->load->view('staffmgmt/disciplinewiselist');
+}
+
 
 // view students list 
 /*
