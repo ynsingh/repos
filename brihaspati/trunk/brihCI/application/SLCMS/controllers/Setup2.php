@@ -1474,7 +1474,7 @@ class Setup2 extends CI_Controller
 /* This function has been created for get list of group post on the basis of  selected working type */
     public function getworkingtype(){
         $wtype = $this->input->post('groupp');
-        echo json_encode("this is testing----".$wtype);
+//        echo json_encode("this is testing----".$wtype);
 	if ($wtype=='Teaching'){
             $uco_select_box ='';
             $uco_select_box.='<option value=>-------select Group Post--------';

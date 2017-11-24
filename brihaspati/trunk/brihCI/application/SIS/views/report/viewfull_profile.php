@@ -25,7 +25,7 @@
 			<?php if(!empty($photo)):?>
                             <td><img src="<?php echo base_url('uploads/SIS/empphoto/'.$photo);?>"  alt="" v:shapes="_x0000_i1025" style="width:100%;height:170px;"></td>
                          <?php else :?>
-                            <td><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.jpg');?>"  alt="" v:shapes="_x0000_i1025" style="width:100%;height:170px;"></td>
+                            <td><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.png');?>"  alt="" v:shapes="_x0000_i1025" style="width:100%;height:170px;"></td>
 			 <?php endif;?>
 			
 			
@@ -90,7 +90,9 @@
 				<td>Specialization :</td>
 				<?php
 				$specialid = $specialize;
-				$specialize = $this->commodel->get_listspfic1('subject','sub_name','sub_id',$specialid)->sub_name;	
+				if(!empty($specialid)){
+					$specialize = $this->commodel->get_listspfic1('subject','sub_name','sub_id',$specialid)->sub_name;	
+				}
 				?>
 				<td><?php echo $specialize;?></td>
 			</tr>

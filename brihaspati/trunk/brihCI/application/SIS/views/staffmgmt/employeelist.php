@@ -68,7 +68,7 @@
                             <?php if(!empty($record->emp_photoname)):?>
                             <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/'.$record->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
                             <?php else :?>
-                            <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.jpeg');?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
+                            <td><p><img src="<?php echo base_url('uploads/SIS/empphoto/empdemopic.png');?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></p></td>
                             <?php endif;?>
                             <td><?php echo $record->emp_name."<br/>" ."("."PF No:".$record->emp_code.")"; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$record->emp_scid)->sc_name; ?></td>

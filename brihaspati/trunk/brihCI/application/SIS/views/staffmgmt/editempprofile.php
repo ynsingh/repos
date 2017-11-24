@@ -817,7 +817,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                 <?php if(!empty($editdata->emp_photoname)):;?>
                     <td colspan="2"><img src="<?php echo base_url('uploads/SIS/empphoto/'.$editdata->emp_photoname);?>"  alt="" v:shapes="_x0000_i1025" width="78" height="94"></td>
                 <?php else:?>
-                    <td colspan="2"><img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.jpeg");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/></td>
+                    <td colspan="2"><img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.png");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/></td>
                 <?php endif?>   
             
             </tr>    

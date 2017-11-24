@@ -1318,7 +1318,7 @@ class Setup2 extends CI_Controller
 	    $code = strtoupper($this->input->post('code', TRUE));
             $name = ucfirst(strtolower($this->input->post('name', TRUE)));
             $nickname = ($this->input->post('nickname', TRUE));
-          echo"this is testing code".$code;  
+//          echo"this is testing code".$code;  
             $logmessage = "";
             if($edit_data->code != $code)
                      $logmessage = "Edit Authorities Code " .$edit_data->code. " changed by " .$code;

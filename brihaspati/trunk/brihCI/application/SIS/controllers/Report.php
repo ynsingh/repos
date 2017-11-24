@@ -14,10 +14,9 @@ class Report  extends CI_Controller
 
    function __construct() {
         parent::__construct();
-         $this->load->model('Common_model',"commodel");
+        $this->load->model('Common_model',"commodel");
         $this->load->model('Login_model',"lgnmodel"); 
         $this->load->model('SIS_model',"sismodel");
-	$this->load->model('SIS_model',"sismodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
             redirect('welcome');
@@ -39,6 +38,34 @@ class Report  extends CI_Controller
         $this->load->view('report/liststaff');
         return;
 	}
+
+    public function deptemployeelist(){
+        $selectfield ="emp_uocid, emp_dept_code,emp_name, emp_post";
+        $whorder = "emp_uocid asc, emp_dept_code  asc";
+        $data['records'] = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,'',$whorder);
+        $this->logger->write_logmessage("view"," view departmentt employee list" );
+        $this->logger->write_dblogmessage("view"," view department employee list");
+        $this->load->view('report/deptemployeelist',$data);
+    }
+
+    public function staffstrengthlist(){
+        $selectfield ="sp_uo, sp_dept,sp_grppost, sp_sancstrenght , sp_position , sp_vacant";
+        $whorder = "sp_uo asc, sp_dept  asc";
+        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,'',$whorder);
+        $this->logger->write_logmessage("view"," view staff strength list" );
+        $this->logger->write_dblogmessage("view"," view staff strength list");
+        $this->load->view('report/staffstrengthlist',$data);
+    }
+
+    public function staffvacposition(){
+        $selectfield ="sp_uo, sp_dept,sp_grppost,sp_schemecode, sp_emppost,sp_sancstrenght , sp_position , sp_vacant, sp_remarks";
+        $whorder = "sp_grppost asc, sp_uo  asc";
+        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield,'',$whorder);
+        $this->logger->write_logmessage("view"," view staff vacancy position list" );
+        $this->logger->write_dblogmessage("view"," view staff vacancy position list");
+        $this->load->view('report/staffvacposition',$data);
+    }
+
         /***************************************View Employee List******************************************************/
     public function viewprofile($id=0) {
         $worktype=$this->input->post('workingtype',TRUE);

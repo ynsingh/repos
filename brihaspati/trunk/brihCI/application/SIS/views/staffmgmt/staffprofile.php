@@ -755,7 +755,7 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                         <input type="file" name='userfile' accept="image/*" onchange="preview_image(event)">
                         <!--<input type='file' name='userfile' size='20' class='upload-image' />-->
                     <!--<img id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/>-->
-                    <img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.jpeg");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/></td>
+                    <img src="<?php echo base_url('uploads/SIS/empphoto/'."empdemopic.png");?>"  id="output_image" v:shapes="_x0000_i1025" width="78" height="94"/></td>
                 </div>
                 </td>
             </tr>
