@@ -47,10 +47,12 @@
 		   if($sbid!=$row->emp_specialisationid){
 	             ?>
                      <tr>
-			<td colspan=4 style=\"text-align:center;\"><b>Major subject :
-			<?php echo $this->commodel->get_listspfic1('subject','sub_name','sub_id' ,$row->emp_specialisationid)->sub_name; ?>  </td>
-			</tr>
-		<?php	$sbid = $row->emp_specialisationid; 
+			<?php echo "<td colspan=4><b>Major subject :";
+			echo $this->commodel->get_listspfic1('subject','sub_name','sub_id' ,$row->emp_specialisationid)->sub_name; 
+			echo "</td>";
+			echo "</tr>";
+			$sbid = $row->emp_specialisationid; 
+			$count = 0;
 		       } ?>
 		     <tr>
 			 <td><?php echo ++$count; ?> </td>

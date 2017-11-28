@@ -146,12 +146,13 @@ class Report  extends CI_Controller
 
 public function disciplinewiselist(){
         $selectfield ="emp_dept_code, emp_name, emp_desig_code,emp_specialisationid";
+	$whdata = array ('emp_specialisationid >' => 0);
         $whorder = "emp_specialisationid";
-        $this->result = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,'',$whorder);
+        $this->result = $this->sismodel->get_orderlistspficemore('employee_master',$selectfield,$whdata,$whorder);
 //      $this->result = $this->sismodel->get_list('employee_master');
         $this->logger->write_logmessage("view"," view  Discipline Wise Report " );
         $this->logger->write_dblogmessage("view"," view  Discipline Wise Report ");
-        $this->load->view('staffmgmt/disciplinewiselist');
+        $this->load->view('report/disciplinewiselist');
 }
 
 
