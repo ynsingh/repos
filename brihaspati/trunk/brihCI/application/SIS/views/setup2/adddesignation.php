@@ -12,7 +12,7 @@
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
 
-<script>
+ <script>
 	 $(document).ready(function(){
 	 $('#tnt').on('change',function(){
                 var worktype = $(this).val();
@@ -24,7 +24,8 @@
                 else{
                     $('#grouppost').prop('disabled',false);
                     $.ajax({
-                        url: "<?php echo base_url();?>slcmsindex.php/setup2/getworkingtype",
+                       // url: "<?php echo base_url();?>slcmsindex.php/setup2/getworkingtype",
+			url: "<?php echo base_url();?>sisindex.php/staffmgmt/getworkingtype",
                         type: "POST",
                         data: {"groupp" : worktype},
                         dataType:"html",
@@ -108,7 +109,7 @@
                 <td><select name="desig_payscale" id="desigid" class="my_dropdown" style="width:300px;">
                 <option selected="selected" disabled selected>--------Select-------------</option>
                 <?php foreach($this->payresult as $datas): ?>
-                         <option value="<?php echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>"<?php echo set_select('desig_payscale', $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay);?>><?php echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>
+                         <option value="<?php echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>"<?php echo set_select('desig_payscale', $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay);?>><?php echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>
                           </option>
                   <?php endforeach; ?>
                 </select></td>

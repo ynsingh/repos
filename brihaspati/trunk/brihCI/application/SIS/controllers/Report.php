@@ -7,7 +7,7 @@
  * @author Malvika Upadhyay (malvikaupadhyay644@gmail.com)
  * @author Manorama Pal (palseema30@gmail.com)
  * @author Sumit Saxena(sumitsesaxena@gmail.com)[view employee profile]
- * @author Om Prakas (omprakashkgp@gmail.com) Discipline Wise List 
+ * @author Om Prakas (omprakashkgp@gmail.com) Discipline Wise List, List Staff Position 
  */
 
 class Report  extends CI_Controller
@@ -154,6 +154,17 @@ public function disciplinewiselist(){
         $this->logger->write_dblogmessage("view"," view  Discipline Wise Report ");
         $this->load->view('report/disciplinewiselist');
 }
+
+    public function listofstaffposition(){
+        $selectfield ="sp_uo, sp_dept,sp_grppost, sp_emppost, sp_sancstrenght , sp_position , sp_vacant";
+	$whdata = array('sp_position >'=>0);
+        $whorder = "sp_uo, sp_dept, sp_emppost";
+        $data['records'] = $this->sismodel->get_orderlistspficemore('staff_position',$selectfield, $whdata, $whorder);
+        $this->logger->write_logmessage("view"," view list staff position list" );
+        $this->logger->write_dblogmessage("view"," view list staff position list");
+        $this->load->view('report/listofstaffposition',$data);
+    }
+
 
 
 // view students list 

@@ -140,7 +140,7 @@
           
                 echo "<option value=\"$desig_payscale[value]\">$desig_payscale[value]</option>"; ?>
 		<?php foreach($this->payresult as $datas): ?>
-		<option><?php echo set_select('desig_payscale', $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay);?><?php echo $datas->sgm_name."(". $datas->sgm_min."-".$datas->sgm_max.")".$datas->sgm_gradepay; ?>
+		<option><?php echo set_select('desig_payscale', $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay);?><?php echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>
                           </option>
                   <?php endforeach; ?>
                 </select></td>

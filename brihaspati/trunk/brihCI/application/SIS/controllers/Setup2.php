@@ -892,9 +892,9 @@ class Setup2 extends CI_Controller
                         'desig_type'=>$_POST['tnt'],
                         'desig_subtype'=>$_POST['grouppost'],
                         'desig_payscale'=>$_POST['desig_payscale'],
-                        'desig_name'=>ucfirst(strtolower($_POST['desig_name'])),
+                        'desig_name'=>ucwords(strtolower($_POST['desig_name'])),
                         'desig_group'=>$_POST['desig_group'],
-                        'desig_short'=>$_POST['desig_short'],
+                        'desig_short'=>strtoupper($_POST['desig_short']),
                         'desig_desc'=>$_POST['desig_desc'],
                    );
 		$desigdatadup = $this->commodel->isduplicatemore('designation', $datacheck);
@@ -1027,7 +1027,7 @@ class Setup2 extends CI_Controller
                 'maxlength' => '50',
                 'size' => '40',
                 'value' => $editdesig_data->desig_name,
-        	'readonly' => 'readonly'
+        	
         );
 
          $data['desig_group'] = array(
@@ -1114,34 +1114,47 @@ class Setup2 extends CI_Controller
                 $logmessage = "Edit  Designation desc " .$editdesig_data->desig_desc. " changed by " .$desig_desc;
 
 	    //'desig_name' => $data_edesignationname,
+	    $datacheck = array('desig_subtype'=>$desig_subtype, 'desig_payscale'=>$desig_payscale, 'desig_name'=>ucwords(strtolower($desig_name)) );
+
 	    $update_data = array(
 
               'desig_code' => $desig_code,
               'desig_type' => $desig_type,
               'desig_subtype'=> $desig_subtype,
               'desig_payscale'=> $desig_payscale,
-              'desig_name'  => $desig_name,
+              'desig_name'  => ucwords(strtolower($desig_name)),
               'desig_group' => $desig_group,
-              'desig_short' => $desig_short,
+              'desig_short' => strtoupper($desig_short),
               'desig_desc' => $desig_desc,
             );
                //'modifierid'=>$this->session->userdata('username'),
                //'modifydate'=>date('y-m-d')
+    	
+	    $desigdatadup = $this->commodel->isduplicatemore('designation', $datacheck);
 
-        $gradedflag=$this->commodel->updaterec('designation', $update_data,'desig_id', $desig_id);
-        if(!$gradedflag)
-            {
+            if($desigdatadup == 1 ){
+
+                      $this->session->set_flashdata("err_message", "Record is already exist with this combination. 'Designation Sub Type' = $desig_subtype  , 'Pay Band' = $desig_payscale , 'Designation Name' = $desig_name  .");
+                          
+                      redirect('setup2/designation/');
+                      return;
+                }
+       else{
+          $gradedflag=$this->commodel->updaterec('designation', $update_data,'desig_id', $desig_id);
+          if(!$gradedflag)
+              {
                 $this->logger->write_logmessage("error","Edit designation Setting error", "Edit designation Setting details. $logmessage ");
                 $this->logger->write_dblogmessage("error","Edit designation Setting error", "Edit designation Setting details. $logmessage ");
                 $this->session->set_flashdata('err_message','Error updating designation - ' . $logmessage . '.', 'error');
                 $this->load->view('setup2/editdesignation', $data);
-           }
+              }
             else{
                 $this->logger->write_logmessage("update","Edit designation Setting by".$this->session->userdata('username') , "Edit designation Setting details. $logmessage ");
                 $this->logger->write_dblogmessage("update","Edit designation Setting by".$this->session->userdata('username') , "Edit designation Setting details. $logmessage ");
                 $this->session->set_flashdata('success','Designation  detail updated successfully..');
                 redirect('setup2/designation');
                 }
+	 }   
         }//else
         redirect('setup2/editdesignation');
     }//Edit Designation function end
