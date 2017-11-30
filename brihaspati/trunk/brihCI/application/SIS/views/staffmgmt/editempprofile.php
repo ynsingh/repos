@@ -28,6 +28,17 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });
+            $('#Dateofprob,#Dateofregular').datepicker({
+                dateFormat: 'yy/mm/dd',
+                autoclose:true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-70:c+20',
+                //endDate: "today",
+                //maxDate: today
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });	
            
             /*************************************************************calculate date of retirement******************/
             $("#Dateofbirth").on('change',function(){
@@ -383,7 +394,8 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
         </div>
         <div>
         <?php //echo "testing ====>".$editdata->emp_type_code.$editdata->emp_gender.$editdata->emp_worktype;?>
-        <table style="margin-left:5%;width:90%; border:1px solid gray;" class="TFtable">
+        <!--<table style="margin-left:5%;width:90%; border:1px solid gray;" class="TFtable">-->
+        <table style="margin-left:0%;border:1px solid gray;" class="TFtable">
         <?php //foreach ($editemp_data as $data):  ?>
             
             <?php echo form_open_multipart('staffmgmt/update_profile/' .$editdata->emp_id);?>
@@ -784,7 +796,21 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
                     </div>    
                 </td>
             </tr>
-            <tr>    
+            <tr>
+                <td><label for="dateofprob" style="font-size:15px;">Date of Probation</label>
+                    <div><input type="text" name="dateofprob" id="Dateofprob" value="<?php echo $editdata->emp_doprobation;?>" size="30" />
+                <div></td>
+                 <td><label for="dateofregular" style="font-size:15px;">Date of Regularisation</label>
+                    <div><input type="text" name="dateofregular" id="Dateofregular" value="<?php echo $editdata->emp_doregular;?>"   size="30" />
+                <div></td> 
+                <td><label for="Qualification" style="font-size:15px;">Qualification</label>
+                    <div><input type="text" name="qual" class="keyup-characters" value="<?php echo $editdata->emp_qual;?>" placeholder="Qualification........" size="28" >
+                </div></td>
+                <td><label for="remarks" style="font-size:15px;">Remarks</label>
+                    <div><textarea name="remarks" rows="3" cols="40" required pattern="[a-zA-Z0-9 ]+" ><?php echo $editdata->emp_remarks;?></textarea>
+                </div></td>
+            </tr>
+            <tr>
                 <td><label for="Address" style="font-size:15px;">Address</label>
                     <div><textarea name="Address"  class="keyup-characters" rows="5" cols="50" pattern="[a-zA-Z0-9 ]+"><?php echo $editdata->emp_address;?></textarea>
                     </div>
@@ -835,6 +861,7 @@ re-engineering in edit profile according to tanuvas structure - 16 OCT 2017
            <?php //endforeach; ?>
           
         </table> 
+         <p> &nbsp; </p>   
         </div>    
         <div align="center">  <?php $this->load->view('template/footer');?></div>
     </body>

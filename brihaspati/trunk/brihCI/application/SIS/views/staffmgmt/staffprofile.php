@@ -26,7 +26,17 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
             }).on('changeDate', function (ev) {
                 $(this).datepicker('hide');
             });
-		
+	    $('#Dateofprob,#Dateofregular').datepicker({
+                dateFormat: 'yy/mm/dd',
+                autoclose:true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-70:c+20',
+                //endDate: "today",
+                //maxDate: today
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            });	
 
            /*$("#Dateofassrexam").keyup(function () {
                 if (this.value.match(/[^0-9]/g)) {
@@ -746,11 +756,26 @@ re-engineering in add profile according to tanuvas structure - 16 OCT 2017
                  </div></td>
             </tr>
             <tr>
+                <td><label for="dateofprob" style="font-size:15px;">Date of Probation</label>
+                    <div><input type="text" name="dateofprob" id="Dateofprob" value="<?php echo isset($_POST["dateofprob"]) ? $_POST["dateofprob"] : ''; ?>"class="form-control" size="30" />
+                <div></td>
+                 <td><label for="dateofregular" style="font-size:15px;">Date of Regularisation</label>
+                    <div><input type="text" name="dateofregular" id="Dateofregular" value="<?php echo isset($_POST["dateofregular"]) ? $_POST["dateofregular"] : ''; ?>"class="form-control" size="30" />
+                <div></td> 
+                <td><label for="Qualification" style="font-size:15px;">Qualification</label>
+                    <div><input type="text" name="qual" class="keyup-characters" value="<?php echo isset($_POST["qual"]) ? $_POST["qual"] : ''; ?>" placeholder="Qualification........" size="28" >
+                </div></td>
+                <td><label for="remarks" style="font-size:15px;">Remarks</label>
+                    <div><textarea name="remarks" value="<?php echo isset($_POST["remarks"]) ? $_POST["remarks"] : ''; ?>"   rows="3" cols="40" required pattern="[a-zA-Z0-9 ]+" placeholder="Remarks......"></textarea>
+                </div></td>
+            </tr>
+            <tr>
+                
                
                 <td><label for="Address" style="font-size:15px;">Address</label>
                     <div><textarea name="Address" value="<?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>"   rows="5" cols="50" required pattern="[a-zA-Z0-9 ]+" placeholder="Address..."></textarea>
-                </div></td><!--<td><input type="text" name="Address" class="keyup-characters" value="<//?php echo isset($_POST["Address"]) ? $_POST["Address"] : ''; ?>" placeholder="Address..." size="25" >-->
-                <td colspan="3"><label for="userfile" style="font-size:15px;">Upload Photo</label>
+                </div></td>
+                <td colspan="2"><label for="userfile" style="font-size:15px;">Upload Photo</label>
                    <div>
                         <input type="file" name='userfile' accept="image/*" onchange="preview_image(event)">
                         <!--<input type='file' name='userfile' size='20' class='upload-image' />-->

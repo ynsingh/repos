@@ -64,7 +64,7 @@
                             <td><?php echo $this->lgnmodel->get_listspfic1('authorities','name','id' ,$record->uit_uoc_to)->name; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('Department','dept_name','dept_id',$record->uit_dept_to)->dept_name; ?></td>
                             <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->uit_desig_to)->desig_name; ?></td>
-                            <td><?php echo $record->uit_post_to; ?></td>
+                            <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$record->uit_post_to)->desig_name; ?></td>
                             <td> <?php echo anchor("staffmgmt/transferordercopy/{$record->uit_staffname}","View Transfer order copy",array('title' => 'View Transfer order' , 'class' => 'red-link')); ?></td>
                         </tr>
                     <?php }; ?>

@@ -118,6 +118,10 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('phstatus','phstatus','trim|xss_clean');
             $this->form_validation->set_rules('phdetail','phdetail','trim|xss_clean|alpha_numeric_spaces');
             $this->form_validation->set_rules('Sabgroup','BloodGroup','trim|xss_clean');
+            $this->form_validation->set_rules('dateofprob','Date of Probation','trim|xss_clean');
+            $this->form_validation->set_rules('dateofregular','Date of Regularisation','trim|xss_clean');
+            $this->form_validation->set_rules('qual','Qualification','trim|xss_clean');
+            $this->form_validation->set_rules('remarks','Remarks','trim|xss_clean');
             //Repopulate forms value
             /* if($_POST){
 		$this->data['empcode']['value']=$this->input->get_post('empcode',TRUE);
@@ -199,6 +203,10 @@ class Staffmgmt extends CI_Controller
                     'emp_phstatus'              =>$_POST['phstatus'],
                     'emp_phdetail'              =>$_POST['phdetail'],
                     'emp_bloodgroup'            =>$_POST['Sabgroup'], 
+                    'emp_doprobation'           =>$_POST['dateofprob'], 
+                    'emp_doregular'             =>$_POST['dateofregular'], 
+                    'emp_qual'                  =>$_POST['qual'], 
+                    'emp_remarks'               =>$_POST['remarks'], 
                     'emp_photoname'             =>$new_name  
                         
                 );
@@ -379,6 +387,7 @@ class Staffmgmt extends CI_Controller
     }
     /****************************  START OPEN EDIT FORM WITH DATA *************/
     function editempprofile($id){
+        
         /*get detail of selected emplyee by passing id for edit*/
         $this->subject= $this->commodel->get_listspfic2('subject','sub_id','sub_name');
         $this->orgcode=$this->commodel->get_listspfic1('org_profile','org_code','org_id',1)->org_code;
@@ -401,6 +410,7 @@ class Staffmgmt extends CI_Controller
     /****************************  START UPDATE DATA *************************/
     public function update_profile($id)
     {
+        
         if(isset($_POST['updateprofile'])) {
             /*Form Validation*/
             $this->form_validation->set_rules('empcode','EmployeeCode','trim|required|xss_clean|alpha_numeric|callback_isEmpPFNoExist');
@@ -455,6 +465,10 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('phstatus','phstatus','trim|xss_clean');
             $this->form_validation->set_rules('phdetail','phdetail','trim|xss_clean|alpha_numeric');
             $this->form_validation->set_rules('Sabgroup','BloodGroup','trim|xss_clean');
+            $this->form_validation->set_rules('dateofprob','Date of Probation','trim|xss_clean');
+            $this->form_validation->set_rules('dateofregular','Date of Regularisation','trim|xss_clean');
+            $this->form_validation->set_rules('qual','Qualification','trim|xss_clean');
+            $this->form_validation->set_rules('remarks','Remarks','trim|xss_clean');
             
             $bankname=$this->input->post('bankname');
             $ifsccode= $this->input->post('ifsccode');
@@ -530,6 +544,10 @@ class Staffmgmt extends CI_Controller
                 'emp_phstatus'                   => $this->input->post('phstatus'),
                 'emp_phdetail'                   => $this->input->post('phdetail'),
                 'emp_bloodgroup'                 => $this->input->post('Sabgroup'),
+                'emp_doprobation'                => $this->input->post('dateofprob'), 
+                'emp_doregular'                  => $this->input->post('dateofregular'), 
+                'emp_qual'                       => $this->input->post('qual'), 
+                'emp_remarks'                    => $this->input->post('remarks'), 
                 'emp_photoname'                  => $new_name  
             );
 //print_r($data);
@@ -593,10 +611,10 @@ class Staffmgmt extends CI_Controller
     
     /****************************  START stafftransfer ****************************/
     function stafftransfer(){ 
-   
-        $this->usrlist=$this->sismodel->get_list('employee_master');;
+    
+        //$this->usrlist=$this->sismodel->get_list('employee_master');;
         $this->uoc=$this->lgnmodel->get_list('authorities');
-        $this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
+        //$this->desig= $this->commodel->get_listspfic2('designation','desig_id','desig_name');
         if(isset($_POST['stafftransfer'])){
             /* Form validation*/
             $this->form_validation->set_rules('registrarname','RegistrarName','trim|required|xss_clean|alpha_numeric_spaces');
@@ -604,7 +622,7 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('usono','universitysancofficerno','trim|xss_clean');
             $this->form_validation->set_rules('rcno','RcNo','trim|required|xss_clean');
             $this->form_validation->set_rules('subject','Subject','trim|required|xss_clean');
-            $this->form_validation->set_rules('referenceno','ReferenceNo','trim|required|xss_clean');
+            $this->form_validation->set_rules('referenceno','ReferenceNo','trim|xss_clean');
             $this->form_validation->set_rules('employeetype','EmployeeType','trim|required|xss_clean');
             $this->form_validation->set_rules('empname','Employee Name','trim|required|xss_clean');
             $this->form_validation->set_rules('uocfrom','uocFrom','trim|required|xss_clean');
@@ -615,11 +633,15 @@ class Staffmgmt extends CI_Controller
             $this->form_validation->set_rules('desigto','DesignationTo','trim|required|xss_clean');
             $this->form_validation->set_rules('postfrom','PostFrom','trim|required|xss_clean');
             $this->form_validation->set_rules('postto','PostTo','trim|required|xss_clean');
-            $this->form_validation->set_rules('ttadetail','TTADetail','trim|required|xss_clean');
-            $this->form_validation->set_rules('dateofrelief','Dateofrelief','trim|required|xss_clean');
-            $this->form_validation->set_rules('expdoj','expecteddoj','trim|required|xss_clean');
-            $this->form_validation->set_rules('postto','PostTo','trim|required|xss_clean');
+            $this->form_validation->set_rules('ttadetail','TTADetail','trim|xss_clean');
+            $this->form_validation->set_rules('dateofrelief','Dateofrelief','trim|xss_clean');
+            $this->form_validation->set_rules('expdoj','expecteddoj','trim|xss_clean');
+            //$this->form_validation->set_rules('postto','PostTo','trim|required|xss_clean');
             $this->form_validation->set_rules('emailsentto','EmailSentto','trim|required|xss_clean');
+            $this->form_validation->set_rules('schemfrom','Scheme Name From','trim|xss_clean');
+            $this->form_validation->set_rules('schemto','Scheme Name To','trim|xss_clean');
+            $this->form_validation->set_rules('emptypeto','Employee Type To','trim|xss_clean');
+           
             if($this->form_validation->run() == FALSE){
                 redirect('staffmgmt/stafftransfer');
             }
@@ -649,10 +671,14 @@ class Staffmgmt extends CI_Controller
                 
                     'uit_dateofrelief'                 => $this->input->post('dateofrelief'),
                     'uit_dateofjoining'                => $this->input->post('expdoj'),
-                    'uit_email_sentto'                 => $this->input->post('emailsentto')
+                    'uit_email_sentto'                 => $this->input->post('emailsentto'),
+                    'uit_emptypeto'                    => $this->input->post('emptypeto'),
+                    'uit_schm_from'                    => $this->input->post('schemfrom'),
+                    'uit_schm_to'                      => $this->input->post('schemto')
                 
                 );  
-                $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $data);
+                
+                 $usrinputtfr_flag=$this->sismodel->insertrec('user_input_transfer', $data);
                
                 /* write code for update staff_position table and staff_position_archive.*/
                 if(!$usrinputtfr_flag){
@@ -714,14 +740,15 @@ class Staffmgmt extends CI_Controller
         $empdetail = $emp_data->result();
         if(count($empdetail)>0){
             foreach($empdetail as $detail){
-                $uocname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->emp_uocid)->name;
-                $deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
-                $designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->emp_desig_code)->desig_name;
+                //$uocname=$this->lgnmodel->get_listspfic1('authorities', 'name', 'id',$detail->emp_uocid)->name;
+                //$deptname=$this->commodel->get_listspfic1('Department', 'dept_name', 'dept_id',$detail->emp_dept_code)->dept_name;
+                //$designame=$this->commodel->get_listspfic1('designation', 'desig_name', 'desig_id',$detail->emp_desig_code)->desig_name;
             //    $values='uocfrom='. $detail->emp_uocid.', deptfrom=' .$detail->emp_dept_code.',desigfrom='. $detail->emp_desig_code.',postfrom='.$detail->emp_post;
-                $values=$uocname.',' .$deptname.','. $designame.','.$detail->emp_post;
+                //$values=$uocname.',' .$deptname.','. $designame.','.$detail->emp_post;
+                $values=$detail->emp_post;
                      
             }
-            $scid=$this->sismodel->get_listspfic1('employee_master', 'emp_scid', 'emp_id',$emp)->emp_scid;
+            /*$scid=$this->sismodel->get_listspfic1('employee_master', 'emp_scid', 'emp_id',$emp)->emp_scid;
             $deptcode=$this->commodel->get_listspfic1('study_center', 'sc_code', 'sc_id', $scid)->sc_code;
             $resultsc = $this->commodel->get_listrow('Department','dept_sccode', $deptcode);
             $dept_data = $resultsc->result();
@@ -731,8 +758,9 @@ class Staffmgmt extends CI_Controller
                 foreach($dept_data as $dept){
                         $dept_select_box.='<option value='.$dept->dept_id.'>'.$dept->dept_name;
                 }
-            }    
-            echo json_encode($values.",".$dept_select_box);
+            }  */  
+            //echo json_encode($values.",".$dept_select_box);
+            echo json_encode($values);
                        
         }            
     
@@ -1541,4 +1569,52 @@ class Staffmgmt extends CI_Controller
     }
     /*********************************** closer Employee type from staff position*********************************************/   
   
+    
+    /* This function has been created for get list of department on the basis of  selected uco */
+     
+    public function getuocdeptlist(){
+        $combid = $this->input->post('campuoc');
+        $datawh=array('dept_uoid' => $combid);
+        $comb_data = $this->commodel->get_listspficemore('Department','dept_id,dept_name,dept_code',$datawh);
+        $dept_select_box ='';
+        $dept_select_box.='<option value="">------- Select Department ----------------------';
+        foreach($comb_data as $combdataid){
+            $dept_select_box.='<option value='.$combdataid->dept_id.'>'.$combdataid->dept_name.'('.$combdataid->dept_code.')'.' ';
+            
+        }
+        echo json_encode($dept_select_box);
+         
+    }
+    /************************** close of department uco ************************************************************************************/
+    /* This function has been created for get list of designation on the basis of  selected employee type */
+    public function gettypedesiglist(){
+        $etpye = $this->input->post('emptypeid');
+        $datawh=array('desig_type' => $etpye);
+        $comb_data = $this->commodel->get_listspficemore('designation','desig_id,desig_name,desig_code',$datawh);
+        $desig_select_box ='';
+        $desig_select_box.='<option value="">------------- Select Designation -----------------';
+        foreach($comb_data as $combdataid){
+            $desig_select_box.='<option value='.$combdataid->desig_id.'>'.$combdataid->desig_name.'('.$combdataid->desig_code.')'.' ';
+            
+        }
+        echo json_encode($desig_select_box);
+         
+    }
+    /************************** close of designation on the basis of  uco and department **********************************************/
+     public function getempnamelist(){
+        $combfour = $this->input->post('uddempt');
+        $parts = explode(',',$combfour);
+            
+        $datawh=array('emp_uocid' => $parts[0],'emp_dept_code' => $parts[1], 'emp_worktype' => $parts[2], 'emp_desig_code' => $parts[3]);
+        $comb_data = $this->sismodel->get_listspficemore('employee_master','emp_id,emp_code,emp_name',$datawh);
+        $emplst_select_box ='';
+        $emplst_select_box.='<option value="">------------- Select Employee Name -----------------';
+        foreach($comb_data as $combdataid){
+            $emplst_select_box.='<option value='.$combdataid->emp_id.'>'.$combdataid->emp_name.'('.$combdataid->emp_code.')'.' ';
+            
+        }
+        echo json_encode($emplst_select_box);
+         
+    }
 }    
+

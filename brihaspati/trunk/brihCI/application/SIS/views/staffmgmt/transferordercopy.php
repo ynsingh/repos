@@ -57,7 +57,7 @@
                         <td><?php echo 1; ?></td>
                         <td><?php echo $this->sismodel->get_listspfic1('employee_master','emp_name','emp_id',$detail->uit_staffname)->emp_name;?>
                             &nbsp;<?php echo " , ". $this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_desig_to)->desig_name;?></td>
-                        <td><?php echo $detail->uit_post_to.", ".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_dept_to)->dept_name;?></td>
+                        <td><?php echo $this->commodel->get_listspfic1('designation','desig_name','desig_id',$detail->uit_post_to)->desig_name.", ".$this->commodel->get_listspfic1('Department','dept_name','dept_id',$detail->uit_dept_to)->dept_name;?></td>
                     </tr>    
                <!-- </tbody> -->   
             </table><br/><br/>

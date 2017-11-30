@@ -120,6 +120,8 @@ CREATE TABLE `employee_master` (
   `emp_dateofAssrExam` Date default NULL,
   `emp_dateofHGP` date default NULL,
   `emp_yop` int(11) default NULL,
+  `emp_doprobation` date default NULL,
+  `emp_doregular` date default NULL,
   `emp_prev_emp` varchar(200) default NULL,
   `emp_address` varchar(200) default NULL,
   `emp_active` tinyint(4) default '1',
@@ -144,6 +146,7 @@ CREATE TABLE `employee_master` (
   `emp_photoname` varchar(255) default NULL,
   `emp_scid` int(11) NOT NULL,
   `emp_org_code` int(11) NOT NULL,
+  `emp_remarks` blob default NULL,
    PRIMARY KEY  (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -570,6 +573,7 @@ CREATE TABLE user_input_transfer (
         uit_referenceno varchar(255) NOT NULL,
         uit_ordercontent blob default NULL,
         uit_emptype varchar(255) NOT NULL,
+        uit_emptypeto varchar(255) NOT NULL,
         uit_uoc_from varchar(255) NOT NULL,
         uit_workdept_from varchar(255) NOT NULL,
         uit_desig_from varchar(255) NOT NULL,
@@ -578,6 +582,8 @@ CREATE TABLE user_input_transfer (
         uit_uoc_to varchar(255) NOT NULL,
         uit_dept_to varchar(255) NOT NULL,
         uit_post_to varchar(255) NOT NULL,
+        uit_schm_from INT(11) default NULL,
+        uit_schm_to INT(11) default NULL,
         uit_tta_detail blob NOT NULL,
         uit_dateofrelief datetime NOT NULL,
         uit_dateofjoining datetime NOT NULL,

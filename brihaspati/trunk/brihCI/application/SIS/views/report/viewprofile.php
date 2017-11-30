@@ -110,6 +110,7 @@
               </table>
             <div class="scroller_sub_page">
         <table class="TFtable" >
+            <?php if(!empty($wtype)):;?>  
             <thead>
                 <tr>
                     <th>Sr.No</th>
@@ -141,9 +142,12 @@
                         </tr>
                     <?php }; ?>
                 <?php else : ?>
+                    
                     <td colspan= "13" align="center"> No Records found...!</td>
+                    
                 <?php endif;?>
 		</tbody>
+                <?php endif;?>
         </table>
             </div>    
     </body>    
