@@ -134,6 +134,7 @@ $!data.getMessage()
 #end
 <br>
 #if(($type=="spreadsheet")|| ($status=="edit"))
+<div class="scroll">
 <div id="dataTableDiv" style="width:600; height:300; border:1px solid black;"></div>
 ## table 3 created for viewing spreadsheet
         <table>
@@ -146,6 +147,7 @@ $!data.getMessage()
 #else
 <tr><td>
         <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_update" onClick="exportDataToTextarea(document.show,this);">
+</div>
 </td><tr>
 #end
 	<input type="hidden" name="fieldValue" value="">
@@ -172,7 +174,6 @@ $!data.getMessage()
         </div>
 ##<div align="right"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("type","spreadsheet")">$brih_create $brih_sheet</a></div>
 </div>
-
 <input class="button-ftextstyle" type="button" name="eventSubmit_doUpload" value="$brih_upload" id="upload"/>
 <input class="button-ftextstyle" type='button' value='$brih_add $brih_marks $brih_file' id='addFile'> 
 <input class="button-ftextstyle" type='button' value='$brih_remove $brih_file' id='removeFile'>
@@ -189,7 +190,7 @@ $!data.getMessage()
 <SCRIPT language="JavaScript">
         function popupWin(urlName,popupName)
         {
-                window.open(urlName,popupName,"resizable,height=500,width=800,menubar=yes,toolbar=yes,scrollbars=yes");
+                window.open(urlName,popupName,"resizable,height=500,width=800,menubar=yes,toolbar=yes,scroll=yes");
         }
         function checkFile(upload,field)
         {

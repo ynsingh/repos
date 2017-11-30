@@ -13,7 +13,7 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("View Marks")
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
-
+<div class="scroll">
 <table bgcolor="$ui.tableColor" width=100%>
 <tr>
 <td>
@@ -89,4 +89,5 @@ $!data.getMessage()
 	#end
       	</tr>	
     	</table>
+	</div>
 </form>
