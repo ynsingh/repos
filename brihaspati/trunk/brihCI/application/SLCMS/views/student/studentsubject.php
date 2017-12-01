@@ -210,6 +210,7 @@ echo $semester;
     echo "</table>";
     /* Form */
 echo"</body>";
+echo "<p><br><br><br></p>";
 echo "<div align=\"center\">";  
     $this->load->view('template/footer');
 echo "</div>";

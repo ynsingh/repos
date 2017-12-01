@@ -72,140 +72,178 @@ class Report  extends CI_Controller
 		$regdate = $this->input->post('appsturegistration',TRUE);
 		$payment = $this->input->post('appstupaytype',TRUE);
 		$prgcat = $this->input->post('progcat',TRUE);
+
        		if(isset($_POST['search'])) 
       		 {
-			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
-			$record=array(
-   				'asm_enterenceexamcenter'  => $exmceter,
-				'asm_coursename'  	=> $progid,
-				'asm_fname'		=> $name,
-				'asm_email'		=> $email,
-				'asm_mobile'		=> $mobile,
-				'asm_gender'		=> $gender,
-				'asm_religion'		=> $religion,
-				'asm_applicationno'	=> $appno
-      				);
-       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+		//search through program category
+		if(!empty($prgcat)){
+			$selectdata = array('prg_id');
+			$record=array('prg_category'  => $prgcat);
+       			$this->getprgid = $this->commodel->get_listspficemore('program',$selectdata,$record);
+		}
 
-			$regselect = array('admission_masterid','step4_date');
-			$regdata = array('step4_date' =>$regdate);
-			$this->regdate = $this->commodel->get_listspficemore('admissionstudent_enterencestep',$regselect,$regdata);
-			
-			$regselect = array('asfee_amid','asfee_referenceno');
-			$paydata = array('asfee_paymentmethod' => $payment);
-			$this->pay = $this->commodel->get_listspficemore('admissionstudent_fees',$regselect,$paydata);
-		
-			//when select prgoram category then data get
-			$selectdata=array('prg_id');
-			$record=array(
-   					'prg_category'  => $prgcat,
-				);
-       			$this->getprgid = $this->commodel->get_distinctrecord('program',$selectdata,$record);
-			
-		 }//if isset search close
-		//prgoram and branch search
-		if($progid == TRUE){
-			$progid = $this->input->post('appstubranch',TRUE);
-			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
-			$record=array(
-				'asm_coursename'  	=> $progid,
-      				);
-       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
-		}
-		//exam center search
-		elseif($exmceter == TRUE){
-			$exmceter = $this->input->post('appstuexamcenter',TRUE);
-			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
-			$record=array(
-				'asm_enterenceexamcenter'  => $exmceter,
-      				);
-       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
-		}
-		//name search	
-		elseif($name == TRUE){
-			$name = $this->input->post('appstuname',TRUE);
-			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
-			$record=array(
-				'asm_fname'  => $name,
-      				);
-       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
-		}
-		//mobile number search
-		elseif($mobile == TRUE){
-			$mobile = $this->input->post('appstumobile',TRUE);
-			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
-			$record=array(
-				'asm_mobile'  => $mobile,
-      				);
-       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
-		}
-		//email search
-		elseif($email == TRUE){
-			$email = $this->input->post('appstuemail',TRUE);
-			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
-			$record=array(
-				'asm_email'  => $email,
-      				);
-       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
-		}
-		//gender search
-		elseif($gender == TRUE){
-			$gender = $this->input->post('appstugender',TRUE);
-			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
-			$record=array(
-				'asm_gender'  => $gender,
-      				);
-       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
-		}
-		//search through religion
-		elseif($religion == TRUE){
-			$religion = $this->input->post('appstureligion',TRUE);
-			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
-			$record=array(
-				'asm_religion'  => $religion,
-      				);
-       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
-		}
-		//search through application no(Roll no.)
-		elseif($appno == TRUE){
-			$appno = $this->input->post('appstuapplino',TRUE);
-			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');
-			$record=array(
-				'asm_applicationno'  => $appno,
-      				);
-       			$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
-		}
-		
 		//search through registration date
-		
-		elseif($regdate == TRUE){
-				$regdate = $this->input->post('appsturegistration',TRUE);
+		/*if(!empty($regdate)){
 				$regselect = array('admission_masterid','step4_date');
-				$regdata = array('step4_date' =>$regdate);
+				$regdata = array('step4_date' => $regdate);
 				$this->regdate = $this->commodel->get_listspficemore('admissionstudent_enterencestep',$regselect,$regdata);
 			}
-
-		elseif($payment == TRUE){
-			$payment = $this->input->post('appstupaytype',TRUE);
+		//search through payment method
+		if(!empty($payment)){
 				$regselect = array('asfee_amid','asfee_referenceno');
 				$paydata = array('asfee_paymentmethod' => $payment);
 				$this->pay = $this->commodel->get_listspficemore('admissionstudent_fees',$regselect,$paydata);
+		}*/	
+			$record=array( );	     				
+			if(!empty($exmceter)){
+				$record ['asm_enterenceexamcenter'] =   $exmceter;}
 			
-		}	
-		//search through program category
-		elseif($prgcat == TRUE){
-			$prgcat = $this->input->post('progcat',TRUE);
-			$selectdata=array('prg_id');
-				$record=array(
-   					'prg_category'  => $prgcat,
-				);
-       			$this->getprgid = $this->commodel->get_listspficemore('program',$selectdata,$record);	
-		}
+			if(!empty($progid)){
+				$record ['asm_coursename' ] = $progid;}
+			
+			if(!empty($name)){
+				$record ['asm_fname like '] =	'%'.$name.'%';}
+			
+			if(!empty($email)){	
+				$record ['asm_email like '] =	'%'.$email.'%';}
+			
+			if(!empty($mobile)){
+				$record ['asm_mobile like '] = '%'.$mobile.'%';}
+			
+			if(!empty($gender)){	
+				$record ['asm_gender'] = $gender;}
+			
+			if(!empty($religion)){
+				$record ['asm_religion'] = $religion;}
+			
+			if(!empty($appno)){
+				$record ['asm_applicationno like '] = '%'.$appno.'%';}
+			
+
+
+			$selectdata=array('asm_id','asm_userid','asm_fname','asm_email','asm_mobile','asm_coursename');	
+			if(!empty($record)){		
+       				$this->getstudata = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+			}
+		 }//if isset search close
+		
 		
 		
 
         $this->load->view('report/listapplicationstu');
    } 
+
+/************************************************** student filter record download *****************************************************/
+
+	public function filter_datadw(){
+			
+		$id = $this->uri->segment(3);	
+		$data['id']=$id;
+		$stud_admission = $this->commodel->get_listrow('admissionstudent_master','asm_id',$id)->row();
+		if(!empty($stud_admission)) {
+			$name = $stud_admission->asm_fname;
+			$data['name']=$name;
+			$dob = $stud_admission->asm_dob;
+			$data['dob'] = $dob;
+			$pid = $stud_admission->asm_coursename;
+			$prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$pid)->prg_name;
+			$prgbranch = $this->commodel->get_listspfic1('program','prg_branch','prg_id',$pid)->prg_branch;
+			$data['prgname'] = $prgname;
+			$data['prgbranch'] = $prgbranch;
+			$gender = $stud_admission->asm_gender;
+			$data['gender'] = $gender;
+			$mobile = $stud_admission->asm_mobile;
+			$data['mobile'] = $mobile;
+			$email = $stud_admission->asm_email;
+			$data['email'] = $email;
+			$category = $stud_admission->asm_caste;
+			$data['category'] = $category;
+			$rollno = $stud_admission->asm_applicationno;
+			$data['rollno'] = $rollno;
+			$sccode = $stud_admission->asm_sccode;
+			$scname = $this->commodel->get_listspfic1('study_center','sc_name','sc_id',$sccode)->sc_name;
+			$data['scname'] = $scname;
+			$excode = $stud_admission->asm_enterenceexamcenter;
+			$exname =  $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	
+			$data['exname'] = $exname;
+			$age = $stud_admission->asm_age;
+			$data['age'] = $age;
+			$mastatus = $stud_admission->asm_mstatus;
+			$data['mastatus'] = $mastatus;
+			$nationality = $stud_admission->asm_nationality;
+			$data['nationality'] = $nationality;
+			$phyhandi = $stud_admission->asm_phyhandicaped;
+			$data['phyhandi'] = $phyhandi;
+			$religion = $stud_admission->asm_religion;
+			$data['religion'] = $religion;
+			$reservation = $stud_admission->asm_reservationtype;
+			$data['reservation'] = $reservation;
+
+		}
+
+		$studparent_admission = $this->commodel->get_listrow('admissionstudent_parent','aspar_asmid',$id)->row();
+		
+		if(!empty($studparent_admission)){
+			$mname = $studparent_admission->aspar_mothername;
+			$data['mname'] = $mname;
+			$fname =  $studparent_admission->aspar_fathername;
+			$data['fname'] = $fname;
+			$mmo = $studparent_admission->aspar_fatherphoneno;
+			$data['mmo'] = $mmo;
+			$fmo = $studparent_admission->aspar_motherphoneno;	
+			$data['fmo'] = $fmo;
+			$foccupation = $studparent_admission->aspar_fatheroccupation;
+			$data['foccupation'] = $foccupation;
+			$moccupation = $studparent_admission->aspar_motheroccupation;
+			$data['moccupation'] = $moccupation;
+			//get permanant address detail
+			$paddress = $studparent_admission->aspar_paddress;
+			$data['paddress'] = $paddress;
+			$pcity=$studparent_admission->aspar_pcity;
+			$data['pcity']=$pcity;
+			$pstate = $studparent_admission->aspar_pstate;
+			$data['pstate'] = $pstate;
+			$pcountry = $studparent_admission->aspar_pcountry;
+			$data['pcountry'] = $pcountry;
+			$ppincode = $studparent_admission->aspar_ppincode;	
+			$data['ppincode'] = $ppincode;
+			//get correspondence address detail
+			$caddress = $studparent_admission->aspar_caddress;
+			$data['caddress'] = $caddress;
+			$ccity=$studparent_admission->aspar_ccity;
+			$data['ccity']=$ccity;
+			$cstate = $studparent_admission->aspar_cstate;
+			$data['cstate'] = $cstate;
+			$ccountry = $studparent_admission->aspar_ccountry;
+			$data['ccountry'] = $ccountry;
+			$cpincode = $studparent_admission->aspar_cpincode;	
+			$data['cpincode'] = $cpincode;
+		}
+		
+		//get student photo and signature
+		$photo = $this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_photo','asupd_asmid',$id)->asupd_photo;
+		$data['photo']=$photo;		
+		$signature = $this->commodel->get_listspfic1('admissionstudent_uploaddata','asupd_signature','asupd_asmid',$id)->asupd_signature;
+		$data['signature']=$signature;
+
+		//get academic detail
+		$admission_academic = $this->commodel->get_listrow('admissionstudent_education','asedu_asmid',$id)->result();
+		$data['admission_academic'] = $admission_academic;
+		//get enterance exam detail
+		$admission_entexm = $this->commodel->get_listrow('admissionstudent_entrance_exam','aseex_asmid',$id)->result();
+		$data['admission_entexm'] = $admission_entexm;
+		//get student employment detail
+		$admission_employment = $this->commodel->get_listrow('admissionstudent_employment','asemp_asmid',$id)->result();
+		$data['admission_employment'] = $admission_employment;
+		//get student fees detail
+		$admission_fees = $this->commodel->get_listrow('admissionstudent_fees','asfee_amid',$id)->result();
+		$data['admission_fees'] = $admission_fees;
+		
+		$this->load->library('pdf');
+       		$this->pdf->load_view('report/filter_recordpdfdw',$data);
+        	$this->pdf->render();
+        	$this->pdf->stream("Student Record.pdf");
+	}
 
 }
 

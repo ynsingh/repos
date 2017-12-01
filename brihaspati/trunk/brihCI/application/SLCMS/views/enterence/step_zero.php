@@ -131,7 +131,7 @@ button{height:35px;font-size:20px;}
                     changeYear: true,
                     dateFormat: 'yy-mm-dd',
                    // defaultDate: '1yr',
-                    yearRange: 'c-77:c+10',
+                    yearRange: 'c-36:c+10',
                 });
             </script>
         </td>
@@ -142,7 +142,7 @@ button{height:35px;font-size:20px;}
         </td><td>
         <input type="text" name="applicantprogram" placeholder="Enter your program" value="<?php echo $programname;?>" required="true" readonly/> <br>
         </td></tr>
-        <tr><td align="center" colspan="2"><b><i>If you have already registered, Please fillup the code.</i></b></td></tr> 
+        <tr><td align="center" colspan="2"><b><i><font color="red">If you have already registered, Please fillup the code.</font></i></b></td></tr> 
         <tr><td>
         <label for="text">Verification Code :</label></td>
         </td><td>

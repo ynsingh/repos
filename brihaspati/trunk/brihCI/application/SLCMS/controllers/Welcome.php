@@ -40,14 +40,49 @@ class Welcome extends CI_Controller {
        	   $this->load->view('enterence/declaration',$data);
 	 }
 
-	public function index() {
+	public function welcome_login(){
+		$cdate = date('Y-m-d');
+        	$wharray = array('anou_cname=' => 'SLCMS', 'anou_publishdate<=' => $cdate,'anou_expdate>=' => $cdate);
+        	$annoresult = $this->commodel->get_listarry('announcement','*',$wharray);
+		$data['annoresult'] = $annoresult;
+		$scrlist = $this->commodel->get_listmore('study_center','sc_id');
+		$data['scrlist'] = $scrlist;
+		//print_r($scrlist);
+		//$field=array('prg_category');
+		//foreach($scrlist as $row){
+		//	$scid = $row->sc_id;
+		//	$wharray = array('prg_scid'  =>  $scid);
+		//	$prgcat = $this->commodel->get_distinctrecord('program','prg_category',$wharray);
+			//print_r($prgcat);
+			//$data['prgcat'] = $prgcat;
+		//}
+		$this->load->view('welcome_message',$data);	
+	}
+
+	public function welcome_form(){
+		$this->scresult = $this->commodel->get_list('study_center');
 		$acadyear = $this->usrmodel->getcurrentAcadYear();
 		$cdate = date('Y-m-d H:i:s');
 		$field=array('prgcat_id','prgcat_name');
 		$this->prgcat = $this->commodel->get_listmore('programcategory',$field);
+		$wharray = array('anou_cname=' => 'SLCMS', 'anou_publishdate<=' => $cdate,'anou_expdate>=' => $cdate);
+        	$annoresult = $this->commodel->get_listarry('announcement','*',$wharray);
+		$data['annoresult'] = $annoresult;
+
+		$this->load->view('welcome_form',$data);
+	}
+
+	public function index() {
+
+		$acadyear = $this->usrmodel->getcurrentAcadYear();
+		$cdate = date('Y-m-d H:i:s');
+		$field=array('prgcat_id','prgcat_name');
+		$prgcat = $this->commodel->get_listmore('programcategory',$field);
+		$data['prgcat'] = $prgcat;
 		$cdate = date('Y-m-d');
         	$wharray = array('anou_cname=' => 'SLCMS', 'anou_publishdate<=' => $cdate,'anou_expdate>=' => $cdate);
-        	$this->annoresult = $this->commodel->get_listarry('announcement','*',$wharray);
+        	$annoresult = $this->commodel->get_listarry('announcement','*',$wharray);
+		$data['annoresult'] = $annoresult;
 		//get certificate list in add_admission open
 		
             if($_POST) {
@@ -142,7 +177,7 @@ class Welcome extends CI_Controller {
                     redirect('welcome');
                 }
             }    
-            $this->load->view("welcome_message");
+            $this->load->view("welcome_login",$data);
         }//close index function
 
 

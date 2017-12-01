@@ -20,13 +20,13 @@ class Map extends CI_Controller
         $this->load->model('Map_model',"mapmodel");
         $this->load->model('Common_model',"commodel");
         $this->load->model('Login_model',"loginmodel"); 
-        
+        $this->load->model("Student_model","stumodel");
         if(empty($this->session->userdata('id_user'))) {
             $this->session->set_flashdata('flash_data', 'You don\'t have access!');
 		redirect('welcome');
         }
     }
-
+	
     public function index() {
         
     // $this->load->view('map/viewscprgseat');
@@ -348,11 +348,33 @@ class Map extends CI_Controller
         return $availsno;
     }
 
+//This function has been created for display the list of degree on the basis of program category
+	public function subList(){
+			$combid = $this->input->post('sem_degree');
+			//$degree = $this->input->post('degree');
+			$parts = explode(',',$combid);
+			$sarray='sub_id,sub_name';
+			$wharray = array('sub_semester' => $parts[0],'sub_program' => $parts[1] );
+			$subject = $this->commodel->get_listarry('subject',$sarray,$wharray);
+		foreach($subject as $datas): 
+				echo "<option  id='subid' value='$datas->sub_id'>"."$datas->sub_name"."</option>";
+  		endforeach;
+	 }
 
+//This function has been created for display the list of degree on the basis of program category
+	public function degreelist(){
+			$pgcatname = $this->input->post('subjecttype');
+			$list = $this->commodel->get_listspfic2('program','','prg_name,prg_id,prg_branch','prg_category',$pgcatname,'prg_name,prg_branch');
+		foreach($list as $datas): 
+      		  	echo "<option  id='degree' value='$datas->prg_id'> " ."$datas->prg_name".'('.$datas->prg_branch.')'."</option>";
+  		endforeach;
+	 }
     /* add subject paper with program */
 
     public function addprogramsubject()
     {
+	$pcategory = $this->commodel->get_list('programcategory','prgcat_name');
+	$data['pcategory'] = $pcategory;
         //get subject record from subject table
         $username = $this->session->userdata('username');
         $data['dept'] = $this->commodel->get_listmore('Department','dept_id,dept_name');
@@ -368,7 +390,7 @@ class Map extends CI_Controller
         $this->form_validation->set_rules('subjecttype','Paper Category','trim|required');
   //      $this->form_validation->set_rules('prgbranch','Branch','trim|xss_clean');
         $this->form_validation->set_rules('subjectno','Paper No','trim|required|numeric');
-        $this->form_validation->set_rules('papername','Paper Name','trim|required');
+      //  $this->form_validation->set_rules('papername','Paper Name','trim|required');
         $this->form_validation->set_rules('subjectcode','Paper Code','trim|required');
         $this->form_validation->set_rules('subjectshrname','Paper Short Name','trim');
         $this->form_validation->set_rules('subjectdesc','Paper Description','trim');
@@ -399,29 +421,31 @@ class Map extends CI_Controller
             $data_sub = explode('#',$subject_name);
             $data_prg = explode('#',$degree);
             //check for combination of record exist.      
-            $is_existst = $this->mapmodel->ispaper('subject_paper',$data_sub[1], $subject_cat,$subject_no,$acadyear,$data_prg[1]);
+           // $is_existst = $this->mapmodel->ispaper('subject_paper',$data_sub[1], $subject_cat,$subject_no,$acadyear,$data_prg[1]);
+		$is_existst = $this->mapmodel->ispaper('subject_paper',$subject_name, $subject_cat,$subject_no,$acadyear,$degree);
             if($is_existst > 0) 
             {
-                $this->session->set_flashdata('error', 'Paper no-<b>'.$subject_no.'</b> of Subject<b> '.$data_sub[0].  ' </b> for degree '.$data_prg[0] .' for academic year '.$acadyear.' is already exist.');
+                //$this->session->set_flashdata('error', 'Paper no-<b>'.$subject_no.'</b> of Subject<b> '.$data_sub[0].  ' </b> for degree '.$data_prg[0] .' for academic year '.$acadyear.' is already exist.');
+	$this->session->set_flashdata('error', 'Paper no-<b>'.$subject_no.'</b> of Subject<b> '.$subject_name.  ' </b> for degree '.$subject_name.' for academic year '.$acadyear.' is already exist.');
                 $this->load->view("map/addprogramsubject",$data);
                 return;
             }
             else
             {
-                $insertdata_paper = array('subp_sub_id' => $data_sub[1],'subp_prgcat' => $subject_cat,'subp_dept' =>  $subdept,'subp_sem' => $subsem, 'subp_subtype'=> $subtype,'subp_paperno' => $subject_no,'subp_name' => ucwords(strtolower($paper_name)),'subp_code' => strtoupper($subject_code),'subp_short' => ucwords(strtolower($subject_shrname)),'subp_desp' => $subject_desc, 'subp_degree' => $data_prg[1],'subp_acadyear' => $acadyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
+                $insertdata_paper = array('subp_sub_id' => $subject_name,'subp_prgcat' => $subject_cat,'subp_dept' =>  $subdept,'subp_sem' => $subsem, 'subp_subtype'=> $subtype,'subp_paperno' => $subject_no,'subp_name' => ucwords(strtolower($paper_name)),'subp_code' => strtoupper($subject_code),'subp_short' => ucwords(strtolower($subject_shrname)),'subp_desp' => $subject_desc, 'subp_degree' => $degree,'subp_acadyear' => $acadyear,'creatorid' => $username,'createdate' => $currdate,'modifierid' => $username,'modifydate' => $currdate);
 
                 $res=$this->commodel->insertrec('subject_paper', $insertdata_paper);                 
                 if ($res != 1)
                 {
-                    $this->session->set_flashdata("error","Error  in Adding Program, subject and Paper - ", $data_sub[0]);
-                    $this->logger->write_logmessage("error","Error  in Adding Program, subject and Paper", $data_sub[0]." by ". $username);
-                    $this->logger->write_dblogmessage("error","Error  in Adding Program, subject and Paper", $data_sub[0]." by ". $username);
+                    $this->session->set_flashdata("error","Error  in Adding Program, subject and Paper - ", $subject_name);
+                    $this->logger->write_logmessage("error","Error  in Adding Program, subject and Paper", $subject_name." by ". $username);
+                    $this->logger->write_dblogmessage("error","Error  in Adding Program, subject and Paper", $subject_name." by ". $username);
                     redirect("map/addprogramsubject");
                 }
                 else
                 {
-                    $this->logger->write_logmessage("insert","Program, subject and Paper added successfully", $data_sub[0]." by ". $username);
-                    $this->logger->write_dblogmessage("insert","Program, subject and Paper added successfully", $data_sub[0]." by ". $username);
+                    $this->logger->write_logmessage("insert","Program, subject and Paper added successfully", $subject_name." by ". $username);
+                    $this->logger->write_dblogmessage("insert","Program, subject and Paper added successfully", $subject_name." by ". $username);
                     //$this->session->set_flashdata("success", "Paper added successfully - ", $data_sub[0]);
                     $this->session->set_flashdata("success", "Program, subject and paper added successfully  ",'' );
                     redirect("map/programsubject");
@@ -713,22 +737,33 @@ class Map extends CI_Controller
         $this->load->view('map/listsubjectteacher',$this->result);
    }
 
+//This function has been created for display the list of paper on the basis of program subject and semester
+	public function Listofpapers(){
+			$idcomb = $this->input->post('sem_degree_sub');
+			
+			$parts = explode(',',$idcomb);
+			$sarray='subp_id,subp_name';
+			$wharray = array('subp_sem' => $parts[0],'subp_degree' => $parts[1],'subp_sub_id' => $parts[2] );
+			$subject = $this->commodel->get_listarry('subject_paper',$sarray,$wharray);
+		foreach($subject as $datas): 
+				echo "<option  id='papername' value='$datas->subp_id'>"."$datas->subp_name"."</option>";
+  		endforeach;
+	 }
  /*
   * this function has been created for add the new program subject and teacher record.
   */
    public function subjectteacher(){
         $this->scresult = $this->commodel->get_listspfic2('study_center','sc_id', 'sc_name');
-        $this->pnresult = $this->commodel->get_listspfic2('program','prg_name', '','','','prg_name');
+        $this->pnresult = $this->commodel->get_listspfic2('program','prg_id,prg_name,prg_branch', '','','','prg_id,prg_name,prg_branch');
 	
        if(isset($_POST['subjectteacher'])) {
             $this->form_validation->set_rules('campusname','Campus Name','xss_clean|required');
             $this->form_validation->set_rules('deptname','Department Name','xss_clean|required');
             $this->form_validation->set_rules('academicyear','Academic Year','trim|xss_clean|required');
             $this->form_validation->set_rules('programname','Program Name','trim|xss_clean|required');
-            $this->form_validation->set_rules('branchname','Branch Name','trim|xss_clean|required');
             $this->form_validation->set_rules('semester','Semester ','trim|xss_clean|required');
             $this->form_validation->set_rules('subjectname','Subject Name','trim|xss_clean|required');
-            $this->form_validation->set_rules('papername','Paper Name','trim|xss_clean|required');
+         //   $this->form_validation->set_rules('papername','Paper Name','trim|xss_clean|required');
             $this->form_validation->set_rules('teachername','Teacher Name','trim|xss_clean|required');
 
         if($this->form_validation->run()==TRUE){
@@ -740,11 +775,11 @@ class Map extends CI_Controller
            $papername = $this->commodel->get_listspfic1('subject_paper', 'subp_name', 'subp_id', $paperid)->subp_name;
            $teacher = $this->loginmodel->get_listspfic1('userprofile', 'firstname', 'userid', $teachid)->firstname . $this->loginmodel->get_listspfic1('userprofile', 'lastname', 'userid', $teachid)->lastname;
 
-	$pstdatacheck = array('pstp_scid'=>$_POST['campusname'], 'pstp_prgid'=>$_POST['branchname'], 'pstp_subid'=>$_POST['subjectname'], 'pstp_papid'=>$_POST['papername'], 'pstp_teachid'=>$_POST['teachername'], 'pstp_acadyear'=>$_POST['academicyear'], 'pstp_sem'=>$_POST['semester'] );
+	$pstdatacheck = array('pstp_scid'=>$_POST['campusname'], 'pstp_prgid'=>$_POST['programname'], 'pstp_subid'=>$_POST['subjectname'], 'pstp_papid'=>$_POST['papername'], 'pstp_teachid'=>$_POST['teachername'], 'pstp_acadyear'=>$_POST['academicyear'], 'pstp_sem'=>$_POST['semester'] );
 
         $datapst = array(
         'pstp_scid'=>$_POST['campusname'],
-        'pstp_prgid'=>$_POST['branchname'],
+        'pstp_prgid'=>$_POST['programname'],
         'pstp_subid'=>$_POST['subjectname'],
         'pstp_papid'=>$_POST['papername'],
         'pstp_teachid'=>$_POST['teachername'],
@@ -1017,14 +1052,23 @@ class Map extends CI_Controller
 
 /*This function has been created for display subject on the basis of program and branch*/
 	public function subjectlist(){
-		$branchid = $this->input->post("branchname");
+		$branchid = $this->input->post("degree");
 	 	$this->depmodel->get_subjectlist($branchid);
 	}
 
 /*This function has been created for display paper name on the basis of subject */
 	public function paperlist(){
-		$subid = $this->input->post("subjectname");
-	    	$this->depmodel->get_paperlist($subid);
+		$sub_progid = $this->input->post("sub_prog");
+			
+		$subpart = explode(',',$sub_progid);
+		$sarray='subp_id,subp_name';
+		$wharray = array('subp_sub_id' => $subpart[0],'subp_degree' => $subpart[1] );
+		$subid = $this->commodel->get_listarry('subject_paper',$sarray,$wharray);
+		foreach($subid as $datas): 
+				echo "<option  id='spreq_subpid' value='$datas->subp_id'>"."$datas->subp_name"."</option>";
+  		endforeach;
+
+	    	//$this->depmodel->get_paperlist($subid);
         }
 
  //==================  End of Map Subject and Paper with Teacher ==============================================================
@@ -1036,7 +1080,29 @@ class Map extends CI_Controller
         $this->logger->write_dblogmessage("view"," Map subject prerequisite program with dept", "view details...");
         $this->load->view('map/prerequisite',$data);
     }
+/*This function has been created for display paper name on the basis of subject prerequisite */
+	public function paperprelist(){
+		$subpreid = $this->input->post("spreq_subdepid");
+		$sarray='subp_id,subp_name';
+		$wharray = array('subp_sub_id' => $subpreid);	
+		$sub_pre = $this->commodel->get_listarry('subject_paper',$sarray,$wharray);
+		foreach($sub_pre as $datas): 
+				echo "<option  id='spreq_subpdepid' value='$datas->subp_id'>"."$datas->subp_name"."</option>";
+  		endforeach;
 
+	    	//$this->depmodel->get_paperlist($subid);
+        }
+
+//This function has been created for display the list subject on the basis of program
+	public function subjlist(){
+			$sub = $this->input->post('programname');
+			$sarray='sub_id,sub_name';
+			$wharray = array('sub_program' => $sub);
+			$subject = $this->commodel->get_listarry('subject',$sarray,$wharray);
+		foreach($subject as $datas): 
+				echo "<option  id='spreq_subid' value='$datas->sub_id'>"."$datas->sub_name"."</option>";
+  		endforeach;
+	 }
     /** This function is used for map subject prerequisite program and department */
     public function mapsubpre(){
 	    $data['subpres'] = $this->commodel->get_listmore('subject_paper','subp_id,subp_name');
@@ -1045,15 +1111,15 @@ class Map extends CI_Controller
 	    $data['prgresult'] = $this->commodel->get_listmore('program','prg_id,prg_name,prg_branch');
         if(isset($_POST['mapsubpre'])) {
             /*Form Validation*/
-            $this->form_validation->set_rules('spreq_prgid','Program','trim|required');
+            $this->form_validation->set_rules('programname','Program','trim|required');
             $this->form_validation->set_rules('spreq_subid','Subject','trim|required');
             if($this->form_validation->run() == TRUE)
             {  
                 //echo "this is prgid============";
-                $prgid = $this->input->post('spreq_prgid', TRUE);
+                $prgid = $this->input->post('programname', TRUE);
 		$subid = $this->input->post('spreq_subid', TRUE);
 		$subdepid = $this->input->post('spreq_subdepid', TRUE);
-		$subpid = $this->input->post('spreq_subpid', TRUE);
+	//	$subpid = $this->input->post('spreq_subpid', TRUE);
 		$subpdepid = $this->input->post('spreq_subpdepid', TRUE);
 
 		$datawh=array('spreq_subid' => $subid, 'spreq_prgid' => $prgid,'spreq_depsubid' =>$subdepid);

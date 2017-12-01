@@ -47,7 +47,7 @@
 	<div class="row">
 		<?php if (stripos($_SERVER['REQUEST_URI'],'step_zero') !== false) {?>
 			<ul class="breadcrumb ">
-    				<li><a style="padding: 15px 0px 10px 30px;">Registration</a></li>
+    				<li class="new"><a style="padding: 15px 0px 10px 30px;">Registration</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Personnel</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Education</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Upload Enclosure</a></li>
@@ -58,7 +58,7 @@
 		<?php if (stripos($_SERVER['REQUEST_URI'],'step_one') !== false) {?>
 			<ul class="breadcrumb ">
     				<li class="active"><a style="padding: 15px 0px 10px 30px;">Registration</a></li>
-				<li><a style="padding: 15px 0 10px 45px;">Personnel</a></li>
+				<li class="new"><a style="padding: 15px 0 10px 45px;">Personnel</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Education</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Upload Enclosure</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Payment</a></li>
@@ -69,7 +69,7 @@
 			<ul class="breadcrumb ">
     				<li class="active"><a style="padding: 15px 0px 10px 30px;">Registration</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Personnel</a></li>
-				<li><a style="padding: 15px 0 10px 45px;">Education</a></li>
+				<li class="new"><a style="padding: 15px 0 10px 45px;">Education</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Upload Enclosure</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Payment</a></li>
 				<li><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
@@ -80,7 +80,7 @@
     				<li class="active"><a style="padding: 15px 0px 10px 30px;">Registration</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Personnel</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Education</a></li>
-				<li><a style="padding: 15px 0 10px 45px;">Upload Enclosure</a></li>
+				<li class="new"><a style="padding: 15px 0 10px 45px;">Upload Enclosure</a></li>
 				<li><a style="padding: 15px 0 10px 45px;">Payment</a></li>
 				<li><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
 			</ul>
@@ -101,7 +101,7 @@
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Personnel</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Education</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Upload Enclosure</a></li>
-				<li><a style="padding: 15px 0 10px 45px;">Payment</a></li>
+				<li class="new"><a style="padding: 15px 0 10px 45px;">Payment</a></li>
 				<li><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
 			</ul>
 		<?php }?>
@@ -112,7 +112,7 @@
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Education</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Upload Enclosure</a></li>
 				<li class="active"><a style="padding: 15px 0 10px 45px;">Payment</a></li>
-				<li><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
+				<li class="new"><a style="padding: 15px 20px 10px 45px;">Print Form</a></li>
 			</ul>
 		<?php }?>
 	

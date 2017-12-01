@@ -6,23 +6,61 @@
 
 echo "<html>";
 echo "<head>";
-
+echo "<title>".'IGNTU - Program Subject Add List'."</title>";
     $this->load->view('template/header');
-    echo "<h1>"; 
-    echo "Welcome "; echo$this->session->userdata('username'); 
-    echo"</h1>";
+  
     $this->load->view('template/menu');
 ?>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
 <!--<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/message.css">-->
     <style>
     .abc{
         width:265px;
     }
+select{width:100%;height:30px;font-size:18px;}
+.text{width:100%;}
     </style>
+<script>
+ function getdegreename(branch){
+		var branch = branch;
+		//alert (branch);
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>slcmsindex.php/map/degreelist",
+		
+                data: {"subjecttype" : branch},
+                dataType:"html",
+                success: function(data){
+                $('#degree').html(data.replace(/^"|"$/g, ''));
+                }
+            }); 
+        }
+function getsubj(combid){
+           // var sem = sem;
+	        var sem = $('#subsem_semester').val();
+                var degree = $('#degree').val();
+                var combid = sem+","+degree;
+		//alert(combid);
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>slcmsindex.php/map/subList",
+                data: {"sem_degree" : combid},
+                dataType:"html",
+                success: function(data){
+                $('#subid').html(data.replace(/^"|"$/g, ''));
+                }
+             });
+        }
+
+</script>
 
 <?php
 echo "</head>";
-echo "<body>";
+echo "<body>";?>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+<?php
 /*
     echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
     echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -42,22 +80,22 @@ echo "<body>";
     echo"</br>";
 */
 ?>
-<br>
-<div align="left">
-<table style="margin-left:2%;width:100%">
+
+<div>
+<table style="width:100%">
 <tr><td>
 <?php echo anchor('map/programsubject/', " Subject Paper List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#MapProgramwithSubjectandPaper";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
+echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
 ?>
 </td></tr>
 </table>
 </div>
 <table width="100%">
     <tr><td>
-    <div align="left" style="margin-left:2%;width:90%">
+    <div align="left">
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-        <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
+        <?php echo form_error('<div class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
         <?php
@@ -96,12 +134,38 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
                 <select name="subsem_deptid" id="subsem_deptid" class="my_dropdown" style="width:100%;" >
                 <option value="" disabled selected >------Select Department Name--------------</option>
                 <?php foreach($dept as $dataspt): ?>
-                <option value="<?php echo $dataspt->dept_id ?>"><?php echo $dataspt->dept_name; ?></option>
+                <option value="<?php echo $dataspt->dept_id;?>"><?php echo $dataspt->dept_name; ?></option>
                 <?php endforeach; ?>
            	</td>
 		</tr>
-<?php
-    echo "<p>";
+	
+		<tr ><td>
+        	<label for="text">Program Category</label>
+		</td><td>
+			<select name="subjecttype" id="pcategory"  onchange="getdegreename(this.value)">
+			<option selected="true" disabled="disabled" style="font-size:18px;">------Program Category------</option>
+				<?php 
+				    foreach($pcategory as $row){
+			        ?>
+					<option value="<?php echo $row->prgcat_name;?>"><?php echo $row->prgcat_name;?>
+				<?php  }?>
+	  </select>
+		
+		</td>
+		</tr>
+
+
+		<tr ><td>
+        	<label for="text">Degree</label>
+		</td><td>
+			<select name="degree" id="degree">
+			<option selected="true" disabled="disabled" style="font-size:18px;">------Degree------</option>
+	  		</select>
+		
+		</td>
+		</tr>
+
+<?php /*echo "<p>";
     echo "<tr><td>";
     echo form_label('Program Category','subjecttype');
     echo "</td><td>";
@@ -118,13 +182,13 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     //echo form_error('subjectcode');
     //echo"</td><td>"; echo "Optional";
     echo "</td></tr>";
-    echo "</p>";
+    echo "</p>";*/
     ?>
     <tr>
                 <td>
                 <?php echo form_label('Semester/Year','semester'); ?> </td>
                 <td>
-                <select name="subsem_semester" id="subsem_semester" class="my_dropdown" style="width:100%;">
+                <select name="subsem_semester" id="subsem_semester" style="width:100%;"  onchange="getsubj(this.value)">
                 <option value="" disabled selected >------Select Semester------</option>
                 <option value="1" class="dropdown-item">1</option>
                 <option value="2" class="dropdown-item">2</option>
@@ -134,6 +198,17 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
                 <option value="6" class="dropdown-item">6</option>
                 <option value="7" class="dropdown-item">7</option>
                 <option value="8" class="dropdown-item">8</option>
+                </select>
+		</td>
+		</tr>
+
+ <tr>
+                <td>
+                <?php echo form_label('Subject','subject'); ?> </td>
+                <td>
+                <select name="subjectname" id="subid" style="width:100%;">
+                <option value="" disabled selected >------Select Subject------</option>
+                	<option value="" class="dropdown-item"></option>
                 </select>
 		</td>
 		</tr>
@@ -149,34 +224,37 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "Example : Physics, Computer Science & Engineering  ";
     echo "</td></tr>";
     echo "</p>";
- */
+
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Subject Name', 'subjectname');
     echo "</td><td>";
     echo form_dropdown('subjectname', $subject,'','class="abc"');
     echo "</td></tr>";
-    echo "</p>";
+    echo "</p>"; */
    ?>
+  
+
    <tr>
-                <td>  <?php echo form_label('Subject Type','subtype'); ?></td>
-                <td>
-                <select name="subsem_subtype"class="my_dropdown" style="width:100%;">
-                <option value="" disabled selected>------Select Subject Type------</option>  
-                <option value="Compulsory" class="dropdown-item">Compulsory</option>
-                <option value="Elective" class="dropdown-item">Elective</option>
-                </select>
-                </td> 
-		</tr>
+       <td>  <?php echo form_label('Subject Type','subtype'); ?></td>
+       <td>
+           <select name="subsem_subtype" class="my_dropdown" style="width:100%;">
+           <option value="" disabled selected>------Select Subject Type------</option>  
+           <option value="Compulsory" class="dropdown-item">Compulsory</option>
+           <option value="Elective" class="dropdown-item">Elective</option>
+           </select>
+      </td> 
+   </tr>
+
    <?php
     echo "<p>";
     echo "<tr><td>";
     echo form_label('Academic Year','acadyear');
     echo "</td><td>";
     echo form_dropdown('acadyear',$acadyear,'','class="abc"');
-    echo "</td>";
-    //echo form_error('subjectcode');
-    //echo"</td><td>"; echo "Optional";
+   echo "</td>";
+    echo form_error('subjectcode');
+    echo"</td><td>"; //echo "Optional";
     echo "</tr>";
     echo "</p>";
         
@@ -184,7 +262,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "<tr><td>";
     echo form_label('Paper No','subjectno');
     echo "</td><td>";
-    echo form_input($subjectno);    
+    echo form_input($subjectno,'class="text"');    
     echo "</td><td>";
     //echo form_error('subjectno');
     echo"</td><td>"; echo "Example : 1, Numeric values only ";
@@ -195,7 +273,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "<tr><td>";
     echo form_label('Paper Name','papername');
     echo "</td><td>";
-    echo form_input($papername);        
+    echo form_input($papername,'class="text"');        
     echo "</td><td>";
     //echo form_error('papername');
     echo"</td><td>"; echo "Example : Physics";
@@ -206,7 +284,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "<tr><td>";
     echo form_label('Paper Code','subjectcode');
     echo "</td><td>";
-    echo form_input($subjectcode);
+    echo form_input($subjectcode,'class="text"');
     echo "</td><td>";
     //echo form_error('subjectcode');
     echo"</td><td>"; echo "Example : Phy01";
@@ -217,7 +295,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "<tr><td>";
     echo form_label('Paper Short Name','subjectshrname');
     echo "</td><td>";
-    echo form_input($subjectshrname);
+    echo form_input($subjectshrname,'class="text"');
     //echo "</td><td>";
     //echo form_error('subjectcode');
     //echo"</td><td>"; echo "Optional";
@@ -228,7 +306,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "<tr><td>";
     echo form_label('Paper Description','subjectdesc');
     echo "</td><td>";
-    echo form_input($subjectdesc);
+    echo form_input($subjectdesc,'class="text"');
     //echo "</td><td>";
     //echo form_error('subjectcode');
     //echo"</td><td>"; echo "Optional";

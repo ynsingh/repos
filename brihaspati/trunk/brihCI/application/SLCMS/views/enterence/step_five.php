@@ -167,10 +167,10 @@ echo "</center>";
 			</tr>	
 			
 			
-			<!---<tr>
-				<td>Blood Group :</td>
-				<td colspan=4><?php echo $this->bgroup;?></td>
-			</tr>--->
+			<tr>
+				<td>Aadhar Number :</td>
+				<td colspan=4><?php echo $aadhar;?></td>
+			</tr>
 		</table>
 	
 		<table class="TFtable" id="personal" style="width:100%;">
@@ -278,6 +278,7 @@ echo "</center>";
 			</tbody>
 		</table>
 	</br>
+	<?php if(!empty($admission_entexm)){ ?>
 		<table class="TFtable" id="academic" style="width:100%;">	
 			<thead id="styleTable"><th colspan=7 style="text-align:justify;">
 			Enterance Exam Detail
@@ -309,7 +310,9 @@ echo "</center>";
 								
 			</tbody>
 		</table>
+	<?php }?>
 
+	<?php if(!empty($admission_employment)){ ?>
 		<table class="TFtable" id="academic" style="width:100%;">	
 			<thead id="styleTable"><th colspan=7 style="text-align:justify;">
 			Employement Detail
@@ -342,7 +345,7 @@ echo "</center>";
 								
 			</tbody>
 		</table>
-
+<?php }?>
 		</br>
 		<table class="TFtable" id="feegap" style="width:100%;">
 			<thead id="styleTable"><th colspan=6  style="text-align:justify;">

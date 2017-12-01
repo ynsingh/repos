@@ -40,7 +40,7 @@ function myFunction() {
 
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">
     </head>
-    <body style="border:1px solid black;">
+    <body>
 <div id="header">
 	<img src="<?php echo base_url(); ?>uploads/logo/logo2.jpg" alt="logo" style="height:100px;width:100%;">
 </div> 
@@ -50,10 +50,7 @@ function myFunction() {
 		$this->load->view('template/menu');
 	      echo "</span>";	
 	?>
-<div style="margin-top:50px;"></div>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
   	<center>
 	<h1>Filter Student Record</h1>
 	<form action="<?php echo site_url('report/list_application');?>" method="POST">
@@ -62,7 +59,7 @@ function myFunction() {
 		<table style="width:100%;" border=0 id="foohide">
 		<tr>
 			<td>
-				<label>Programme</label></br>
+				<label>Programme Category</label></br>
 				<select name="progcat" class="form-control" style="height:37px;font-size:18px;font-weight:bold;">
  					<option disabled selected>Select Program</option>
 					<?php foreach($this->prgcatname as $row){?>
@@ -91,10 +88,11 @@ function myFunction() {
  					<option value=""disabled selected>Select Gender</option>
 					<option value="Male">Male</option>
 					<option value="Female">Female</option>			
+					<option value="Transgender">Transgender</option>			
 				</select>  
 					
 			</td>
-
+<!---
 			<td>	
 			 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
   			  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
@@ -114,7 +112,7 @@ function myFunction() {
 				//step 5 for give minute duration
 				$('#datetimepicker').datetimepicker({step:1});
 			</script>
-		</td>
+		</td>-->
 		</tr>
 		<tr>
 
@@ -139,25 +137,25 @@ function myFunction() {
 				<option value="BUDDHISM">BUDDHISM</option>
 				<option value="JAINISM">JAINISM</option>
 				<option value="ZOROASTRIANISM">ZOROASTRIANISM</option>
-				<option value="judaism">JUDAISM</option>
+				<option value="JUDAISM">JUDAISM</option>
 	 		</select>
 		</td>
 
-		<td>	
+		<!--<td>	
 			<label>Payment Type</label></br>
 			<select name="appstupaytype" style="height:37px;font-size:18px;font-weight:bold;"  id="dbType">
 				<option selected="true" disabled="disabled">Select Fees Type</option>
 				<option value="Offline">Offline payment</option>
 				<option value="online">Online payment</option>
 			</select>
-		</td>
+		</td>-->
 		<td>	
 			<label for="nnumber">Application no.</label></br>	
 			<input type="text" name="appstuapplino" placeholder="Enter Application no"/>
 		</td>
 
 		<td>	
-			<label for="nnumber">Branch Applied</label></br>	
+			<label for="nnumber">Program (Branch) Applied</label></br>	
 			<select name="appstubranch" class="form-control" id="register_name" style="height:37px;font-size:18px;font-weight:bold;">
 			<option  disabled selected>Select Branch Applied</option>
 				<?php foreach($this->prgname as $data){?>
@@ -182,133 +180,50 @@ function myFunction() {
 
 		</tr>
 		</table>
+
 <div style="scroll:auto;height:400px;">
 	<table class="TFtable" border=0>
 	<tr>
 		<th>Sr. No.</th>
-		<th>Applied Prgoram</th>
-		<th>Registration Date</th>
+		<th>Prgoram Category</th>
+		<th>Program (Branch) </th>
+		<th>Hall Ticket Number</th>
 		<th>Applicant Name</th>
 		<th>Email</th>
 		<th>Mobile</th>
-		<!--<th>Paid</th>-->
+		<th>Registration Date</th>
 		<th>Reference No.</th>
-		<th>Branch Applied</th>
+		<th>Download</th>
 	</tr>
 	<?php $count=1;
-	if(!empty($this->getstudata)){
-	foreach($this->getstudata as $row){
-	$asmid = $row->asm_id;
-	$asuserid = $row->asm_userid;
-	?>
-	<tr>
-		<td><?php echo $count++;?></td>
-		<!--<td><?php ?></td>-->
-		<?php $prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_userid',$asuserid)->asm_coursename;?>
-		<td><?php echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;?></td>	
-		<td><?php echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;?></td>
-		<td><?php echo $row->asm_fname;?></td>
-		<td><?php echo $row->asm_email;?></td>
-		<td><?php echo $row->asm_mobile;?></td>
-		<!--<td><?php echo 'y';?></td>-->
-		<td><?php echo $this->commodel->get_listspfic1('admissionstudent_fees','asfee_referenceno','asfee_amid',$asmid)->asfee_referenceno;?></td>
-		<?php $progid=$row->asm_coursename;?>
-		<td><?php 
-			echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$progid)->prg_name."&nbsp;"."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$progid)->prg_branch.")" ;
-			?></td>
-	</tr>
-	 <?php } }?>	
-
-
-<?php if(!empty($this->pay)){
-	//$count=1;
-	foreach($this->pay as $row){
-				$userid = $this->commodel->get_listspfic1('admissionstudent_master','asm_userid','asm_id',$row->asfee_amid)->asm_userid;
-				echo "<tr>";
-				echo "<td>".$count++."</td>";
-				echo "<td>";
-				$prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->asfee_amid)->asm_coursename;
-				echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;
-				echo "</td>";
-				echo "<td>";	
-				//echo $veri=$this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationdate','asreg_id',$userid)->asreg_verificationdate;	
-				echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$row->asfee_amid)->step4_date;
-				echo "</td>";
-				echo "<td>";
-				echo $name=$this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->asfee_amid)->asm_fname;
-				echo "</td>";
-				echo "<td>";
-				echo $email=$this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$row->asfee_amid)->asm_email;
-				echo "</td>";
-				echo "<td>";
-				echo $mobile=$this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$row->asfee_amid)->asm_mobile;
-				echo "</td>";
-				echo "<td>";
-				echo $refno = $row->asfee_referenceno;
-				echo "</td>";
-				echo "<td>";
-				$prgid=$this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->asfee_amid)->asm_coursename;
-				echo $prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name."&nbsp;"."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.")";
-				echo "</td>";
-				echo "</tr>";
-			}
-	}
-	
-
-
- if(!empty($this->regdate)){
-	//$count=1;
-	foreach($this->regdate as $row){
-				$userid = $this->commodel->get_listspfic1('admissionstudent_master','asm_userid','asm_id',$row->admission_masterid)->asm_userid;
-				echo "<tr>";
-				echo "<td>".$count++."</td>";
-				echo "<td>";
-				$prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->admission_masterid)->asm_coursename;
-				echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;
-				echo "</td>";
-				echo "<td>";	
-				//echo $this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationdate','asreg_id',$userid)->asreg_verificationdate;	
-				echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$row->admission_masterid)->step4_date;
-				echo "</td>";
-				echo "<td>";
-				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->admission_masterid)->asm_fname;
-				echo "</td>";
-				echo "<td>";
-				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$row->admission_masterid)->asm_email;
-				echo "</td>";
-				echo "<td>";
-				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$row->admission_masterid)->asm_mobile;
-				echo "</td>";
-				echo "<td>";
-				echo $this->commodel->get_listspfic1('admissionstudent_fees','asfee_referenceno','asfee_amid',$row->admission_masterid)->asfee_referenceno;;
-				echo "</td>";
-				echo "<td>";
-				$prgid=$this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->admission_masterid)->asm_coursename;
-				echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name."&nbsp;"."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.")";
-				echo "</td>";
-				echo "</tr>";
-			}
-	}
-
-
-
-/* program category through filter student record*/
-	 if(!empty($this->getprgid)){
-		//$count=1;
+ 	if((!empty($this->getprgid)) && (!empty($this->getstudata))){		
 		foreach($this->getprgid as $row){
-				@$asmid = $this->commodel->get_listspfic1('admissionstudent_master','asm_id','asm_coursename',$row->prg_id)->asm_id;
-				
-				//$userid = $this->commodel->get_listspfic1('admissionstudent_master','asm_userid','asm_id',$row->admission_masterid)->asm_userid;
+				$prgid = $row->prg_id;
+				//echo $asmid = $this->commodel->get_listspfic1('admissionstudent_master','asm_id','asm_coursename',$prgid)->asm_id;
+				$selectdata=array('asm_id');
+				$record=array(
+   					'asm_coursename'  => $prgid,
+				);
+       				$amsaterid = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+				//print_r($amsaterid);
+				if(!empty($amsaterid)){
+				foreach($amsaterid as $row){
+				$asmid = $row->asm_id;
+				foreach($this->getstudata as $row1){
+				$asmid1 = $row1->asm_id; 
+				if($asmid == $asmid1){	
 				echo "<tr>";
 				echo "<td>".$count++."</td>";
 				echo "<td>";
 				$prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
 				echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;
 				echo "</td>";
-				echo "<td>";	
-				//echo $this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationdate','asreg_id',$asmid)->asreg_verificationdate;	
-				echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;
-				
+				echo "<td>";
+				$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
+				echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name."&nbsp;"."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.")";
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_applicationno','asm_id',$asmid)->asm_applicationno;
 				echo "</td>";
 				echo "<td>";
 				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$asmid)->asm_fname;
@@ -319,20 +234,186 @@ function myFunction() {
 				echo "<td>";
 				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$asmid)->asm_mobile;
 				echo "</td>";
+				echo "<td>";	
+				echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;
+				echo "</td>";
 				echo "<td>";
 				echo $this->commodel->get_listspfic1('admissionstudent_fees','asfee_referenceno','asfee_amid',$asmid)->asfee_referenceno;
+				echo "</td>";
+				echo "<td>"; ?>	
+				<a href="<?php echo site_url('report/filter_datadw/');echo $asmid;?>">Download</a>
+				<?php echo "</td>";
+				
+				echo "</tr>";
+	}}}}	}}
+
+	if((!empty($this->getstudata)) && (empty($this->getprgid))){
+	foreach($this->getstudata as $row){
+
+	$asmid = $row->asm_id;
+	?>
+	<tr>
+		<td><?php echo $count++;?></td>
+		<?php $progid=$this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;?>
+		<td><?php echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$progid)->prg_category;?></td>	
+		<td><?php 
+			echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$progid)->prg_name."&nbsp;"."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$progid)->prg_branch.")" ;
+			?></td>
+		
+		<td><?php echo $this->commodel->get_listspfic1('admissionstudent_master','asm_applicationno','asm_id',$asmid)->asm_applicationno;?></td>
+		<td><?php echo $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$asmid)->asm_fname;?></td>
+		<?php $prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;?>
+		
+		
+		<td><?php echo $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$asmid)->asm_email;?></td>
+		<td><?php echo $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$asmid)->asm_mobile;?></td>
+		<td><?php echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;?></td>
+		<td><?php echo $this->commodel->get_listspfic1('admissionstudent_fees','asfee_referenceno','asfee_amid',$asmid)->asfee_referenceno;?></td>
+		<td><a href="<?php echo site_url('report/filter_datadw/');echo $asmid;?>">Download</a></td>
+	</tr>
+	 <?php } } //}}}}//else{ ?><!--<td colspan=10><center><b>No Record Found !!!!</b></center></td>--><?php //}?>	
+
+
+<?php 
+	/*if(!empty($this->pay)){
+	foreach($this->pay as $row){
+				$asmid = $this->commodel->get_listspfic1('admissionstudent_master','asm_id','asm_id',$row->asfee_amid)->asm_id;
+				
+				echo "<tr>";
+				echo "<td>".$count++."</td>";
+				echo "<td>";	
+				$prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
+				echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;
+				echo "</td>";
+				echo "<td>";
+				$prgid=$this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
+				echo $prgname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name."&nbsp;"."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.")";
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_applicationno','asm_id',$asmid)->asm_applicationno;
+				echo "</td>";	
+				echo "<td>";
+				echo $name=$this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$asmid)->asm_fname;
+				echo "</td>";
+				
+				echo "<td>";
+				echo $email=$this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$asmid)->asm_email;
+				echo "</td>";
+				echo "<td>";
+				echo $mobile=$this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$asmid)->asm_mobile;
+				echo "</td>";
+				echo "<td>";	
+				echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;
+				echo "</td>";
+				echo "<td>";
+				echo $refno = $row->asfee_referenceno;
+				echo "</td>";
+				echo "<td>"; ?>	
+				<a href="">Download</a>
+				<?php echo "</td>";
+				
+				echo "</tr>";
+			}
+	}
+
+
+
+ if(!empty($this->regdate)){
+
+	foreach($this->regdate as $row){
+				$asmid = $this->commodel->get_listspfic1('admissionstudent_master','asm_id','asm_id',$row->admission_masterid)->asm_id;
+				echo "<tr>";
+				echo "<td>".$count++."</td>";
+				echo "<td>";
+				$prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
+				echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;
+				echo "</td>";
+				echo "<td>";
+				$prgid=$this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
+				echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name."&nbsp;"."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.")";
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_applicationno','asm_id',$asmid)->asm_applicationno;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$asmid)->asm_fname;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$asmid)->asm_email;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$asmid)->asm_mobile;
+				echo "</td>";
+				echo "<td>";	
+				echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_fees','asfee_referenceno','asfee_amid',$asmid)->asfee_referenceno;;
+				echo "</td>";
+				echo "<td>"; ?>	
+				<a href="">Download</a>
+				<?php echo "</td>";
+				echo "</tr>";
+			}
+	}
+
+*/
+
+/* program category through filter student record*/
+	 if((!empty($this->getprgid)) && (empty($this->getstudata))){
+		//$count=1;
+		foreach($this->getprgid as $row){
+				$prgid = $row->prg_id;
+				//echo $asmid = $this->commodel->get_listspfic1('admissionstudent_master','asm_id','asm_coursename',$prgid)->asm_id;
+				$selectdata=array('asm_id');
+				$record=array(
+   					'asm_coursename'  => $prgid,
+				);
+       				$amsaterid = $this->commodel->get_listspficemore('admissionstudent_master',$selectdata,$record);
+				//print_r($amsaterid);
+				if(!empty($amsaterid)){
+				foreach($amsaterid as $row){
+				$asmid = $row->asm_id;
+				//$userid = $this->commodel->get_listspfic1('admissionstudent_master','asm_userid','asm_id',$row->admission_masterid)->asm_userid;
+				echo "<tr>";
+				echo "<td>".$count++."</td>";
+				echo "<td>";
+				$prgcat = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
+				echo $this->commodel->get_listspfic1('program','prg_category','prg_id',$prgcat)->prg_category;
 				echo "</td>";
 				echo "<td>";
 				$prgid = $this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$asmid)->asm_coursename;
 				echo $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name."&nbsp;"."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.")";
 				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_applicationno','asm_id',$asmid)->asm_applicationno;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$asmid)->asm_fname;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_email','asm_id',$asmid)->asm_email;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_master','asm_mobile','asm_id',$asmid)->asm_mobile;
+				echo "</td>";
+				echo "<td>";	
+				echo $this->commodel->get_listspfic1('admissionstudent_enterencestep','step4_date','admission_masterid',$asmid)->step4_date;
+				echo "</td>";
+				echo "<td>";
+				echo $this->commodel->get_listspfic1('admissionstudent_fees','asfee_referenceno','asfee_amid',$asmid)->asfee_referenceno;
+				echo "</td>";
+				echo "<td>"; ?>	
+				<a href="<?php echo site_url('report/filter_datadw/');echo $asmid;?>">Download</a>
+				<?php echo "</td>";
+				
 				echo "</tr>";
-			}
+			}}}
 	}
 ?>
 
-<tr id="b1"><td colspan=8><center>
- <input type="submit" value="Print" onclick="myFunction()" title="Click for print" style="font-size:18px;width:5%;" id="b1">
+<tr id="b1"><td colspan=10><center>
+ <input type="submit" value="Print" onclick="myFunction()" title="Click for print" style="font-size:18px;" id="b1">
 </center></td>
 </tr>
 	</table>

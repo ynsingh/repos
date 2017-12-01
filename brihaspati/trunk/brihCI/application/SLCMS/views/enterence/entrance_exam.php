@@ -1,6 +1,6 @@
 <table style="margin-top:50px;width:100%;border:2px solid black;">
 		<thead>
-			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Entrance exam details</th>
+			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Other Entrance exam details (Optional)</th>
 		</thead>
 		<thead style="font-size:20px;">
 			<tr><th>Exam name</th><th>Roll no</th><th>Rank</th><th>Score</th><th>State</th>

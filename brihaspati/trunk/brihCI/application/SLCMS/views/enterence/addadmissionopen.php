@@ -110,11 +110,11 @@
                         </select>
 			
 		</tr>
-                         <tr>
+<!--                         <tr>
                             <td><label for="enterenceexamfees" class="control-label">Entrance Exam Fees:</label></td>
                             <td><input type="text" name="enterenceexamfees" id="enterenceexamfees" class="form-control" style="width:70%" > </td> 
                         </tr>
-
+-->
 
 			 <tr>
                             <td><label for="minimumqualification" class="control-label">Minimum Qualification:</label></td>

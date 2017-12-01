@@ -7,7 +7,7 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+       
         <?php $this->load->view('template/menu');?>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
@@ -15,6 +15,7 @@
     </script>    
     </head>
     <body>
+ <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
     <script>
 	function getdepartment(val){
 		var val=val;
@@ -42,7 +43,7 @@
              });
         }
      
-	function getsubject(subj){
+	  /*function getsubject(subj){
             var subj = subj;
 	   	$.ajax({
 	    	type: "POST",
@@ -68,7 +69,7 @@
 	    });	
         }
 
-      function getbranchname(branch){
+    function getbranchname(branch){
                 var branch = branch;
                 $.ajax({
                 type: "POST",
@@ -79,22 +80,64 @@
                 $('#branchname').html(data.replace(/^"|"$/g, ''));
                 }
             }); 
+        }*/
+
+ function getdegreename(branch){
+		var branch = branch;
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>slcmsindex.php/map/degreelist",
+                data: {"subjecttype" : branch},
+                dataType:"html",
+                success: function(data){
+                $('#degree').html(data.replace(/^"|"$/g, ''));
+                }
+            }); 
         }
 
+function getsubj(combid){
+	        var sem = $('#subsem_semester').val();
+                var degree = $('#programname').val();
+                var combid = sem+","+degree;
+                $.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>slcmsindex.php/map/subList",
+                data: {"sem_degree" : combid},
+                dataType:"html",
+                success: function(data){
+                $('#subid').html(data.replace(/^"|"$/g, ''));
+                }
+             });
+        }
 
+function getpaperName(idcomb){
+	        var sem = $('#subsem_semester').val();
+                var degree = $('#programname').val();
+		var sub = $('#subid').val();
+                var idcomb = sem+","+degree+","+sub;
+		$.ajax({
+                type: "POST",
+                url: "<?php echo base_url();?>slcmsindex.php/map/Listofpapers",
+                data: {"sem_degree_sub" : idcomb},
+                dataType:"html",
+                success: function(data){
+                $('#papername').html(data.replace(/^"|"$/g, ''));
+                }
+             });
+        }
    </script>	
 
-   <table style="padding: 8px 8px 8px 20px;">
+   <table style="width:100%;">
      <tr colspan="2"><td>
-      <div align=left">
+      <div>
         <font color=blue size=4pt>
          <?php
-            echo anchor('map/listsubjectteacher/', 'List of Subject and Paper With Teacher', array('class' => 'top_parent'));
+            echo anchor('map/listsubjectteacher/', 'List of Subject and Paper With Teacher', array());
 	    $help_uri = site_url()."/help/helpdoc#MapSubjectandPaperwithTeacher";
-            echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:60%\">Click for Help</b></a>";
+            echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
          ?>
       </div>
-      <div style="margin-left:10px;width:1700px;">
+      <div>
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
@@ -112,14 +155,14 @@
    </table>
    <div> 
    <form id="myform" action="<?php echo site_url('map/subjectteacher');?>" method="POST" class="form-inline">
-   <table style="margin-left:30px;">
+   <table style="margin-left:0px;">
  	<tr>
             <td>Campus Name :</td>
             <td>
             	<select name="campusname" id="campusname" class="my_dropdown" style="width:300px;" onchange="getdepartment(this.value)">
                 <option value="" disabled selected >------Select Campus Name---------------</option>
 		<?php foreach($this->scresult as $dataspt): ?>
-		<option value="<?php echo $dataspt->sc_id; ?>"><?php echo $dataspt->sc_name; ?></option>
+		<option value="<?php echo $dataspt->sc_id; ?>" ><?php echo $dataspt->sc_name; ?></option>
                 <?php endforeach; ?>
            </td>
       </tr>
@@ -150,21 +193,21 @@
            	<select name="programname" id="programname" class="my_dropdown" style="width:300px;" onchange="getbranchname(this.value)" >
                 <option value="" disabled selected >------Select Program Name--------------</option>
                 <?php foreach($this->pnresult as $dataspt): ?>
-                <option value="<?php echo $dataspt->prg_name; ?>"><?php echo $dataspt->prg_name; ?></option>
+                <option value="<?php echo $dataspt->prg_id; ?>"><?php echo $dataspt->prg_name.'('.$dataspt->prg_branch.')';; ?></option>
 		<?php endforeach; ?>
 	   </td>
        </tr>
-        <tr>
+       <!--- <tr>
            <td>Branch Name :</td>
            <td>
                 <select name="branchname" id="branchname" class="my_dropdown" style="width:300px;" onchange="getsubject(this.value)">
                 <option value="" disabled selected >------Select Subject Name--------------</option>
            </td>
-        </tr>
+        </tr>--->
        <tr>
            <td>Semester :</td>
            <td>
-          	<select name="semester" id="" class="my_dropdown" style="width:300px;">
+          	<select name="semester" id="subsem_semester" class="my_dropdown" style="width:300px;" onchange="getsubj(this.value)">
                 <option value="" disabled selected >------Select Semester----------------</option>
                 <option value="1" class="dropdown-item"> 1 </option>
                 <option value="2" class="dropdown-item"> 2 </option>
@@ -180,7 +223,7 @@
         <tr>
 	   <td>Subject Name :</td>
            <td>
-        	<select name="subjectname" id="subjectname" class="my_dropdown" style="width:300px;" onchange="getpapername(this.value)">
+        	<select name="subjectname" id="subid" class="my_dropdown" style="width:300px;" onchange="getpaperName(this.value)">
                 <option value="" disabled selected >------Select Subject Name--------------</option>
            </td>
         </tr>

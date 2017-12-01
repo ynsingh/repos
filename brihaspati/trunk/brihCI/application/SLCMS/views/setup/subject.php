@@ -132,6 +132,14 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
     echo "<p>";
     echo "<tr><td>";
+    echo form_label('Subject Credits', 'subext1');
+    echo"</td><td>";
+    echo form_input($subext1);
+    echo "</td><td>";echo form_error('subext1');echo"</td></tr>";
+    echo "</p>";
+
+    echo "<p>";
+    echo "<tr><td>";
     echo form_label('Subject Code', 'subcode');
     echo"</td><td>";
     echo form_input($subcode);
@@ -156,13 +164,6 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
     echo "</td><td>";echo form_error('subdesc');echo"</td></tr>";
     echo "</p>";
 
-    echo "<p>";
-    echo "<tr><td>";
-    echo form_label('Subject Points', 'subext1');
-    echo"</td><td>";
-    echo form_input($subext1);
-    echo "</td><td>";echo form_error('subext1');echo"</td></tr>";
-    echo "</p>";
 
     echo "<p>";
     echo "<tr><td>";

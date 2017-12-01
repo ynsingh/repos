@@ -47,7 +47,7 @@
 
 <table cellpadding="16" class="TFtable" >
 <tr align="center">
-<thead><th>Sr.No</th><th>Academic Year</th><th>Program Category</th><th>Program Name </th><th>Entrance Exam Fees </th> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th><th>Entrance Exam Date</th><th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th><th>Action</th></tr></thead>
+<thead><th>Sr.No</th><th>Academic Year</th><th>Program Category</th><th>Program Name </th><!--<th>Entrance Exam Fees </th>--> <th>Minimum Qualification </th><th>Entrance Exam Pattern</th><th>Entrance Exam Date</th><th>Start Date Of Online Application </th><th>Last Date Of Online Application</th><th>Last Late Of Application Received</th><th>Action</th></tr></thead>
 <?php
         $count =0;
         if( count($this->result) ):
@@ -67,7 +67,7 @@
 			echo ")";
 		?>
 	    </td>
-	    <td> <?php echo $row->admop_entexam_fees?></td>
+<!--	    <td> <?php //echo $row->admop_entexam_fees?></td>-->
             <td> <?php echo $row->admop_min_qual ?></td>
 	    <td> <?php echo $row->admop_entexam_patt ?></td>
 	    <td> <?php echo $row->admop_entexam_date ?></td>

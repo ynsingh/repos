@@ -38,7 +38,7 @@ class Enterence extends CI_Controller {
             $this->form_validation->set_rules('academicyear','Academic Year','xss_clean|required');
             $this->form_validation->set_rules('programcategory','Program Category','xss_clean|required');
             $this->form_validation->set_rules('programname','Program Name','trim|xss_clean|required');
-	    $this->form_validation->set_rules('enterenceexamfees','Entrance Exam Fees','trim|xss_clean|required');
+//	    $this->form_validation->set_rules('enterenceexamfees','Entrance Exam Fees','trim|xss_clean|required');
 
             $this->form_validation->set_rules('minimumqualification','Minimum Qualification ','trim|xss_clean|required');
             $this->form_validation->set_rules('entranceexampattern','Entrance Exam Pattern ','trim|xss_clean|required');
@@ -54,7 +54,7 @@ class Enterence extends CI_Controller {
             'admop_acadyear'=>$_POST['academicyear'],
             'admop_prgcat'=>$_POST['programcategory'],
             'admop_prgname_branch'=>$_POST['programname'],
-	    'admop_entexam_fees'=>$_POST['enterenceexamfees'],
+//	    'admop_entexam_fees'=>$_POST['enterenceexamfees'],
             'admop_min_qual'=>$_POST['minimumqualification'],
             'admop_entexam_patt'=>$_POST['entranceexampattern'],
             'admop_entexam_date'=> $_POST['entranceexamdate'],
@@ -116,14 +116,14 @@ class Enterence extends CI_Controller {
             'readonly' => 'readonly'
           );
 
-            $data['admop_entexam_fees'] = array(
-             'name' => 'admop_entexam_fees',
-             'maxlength' => '50',
-             'size' => '40',
-             'value' => $admop_data->admop_entexam_fees,
+  //          $data['admop_entexam_fees'] = array(
+    //         'name' => 'admop_entexam_fees',
+      //       'maxlength' => '50',
+        //     'size' => '40',
+          //   'value' => $admop_data->admop_entexam_fees,
              //'readonly' => 'readonly'
 
-          );
+         // );
 
 
           $data['admop_min_qual'] = array(
@@ -180,7 +180,7 @@ class Enterence extends CI_Controller {
                 $this->form_validation->set_rules('admop_acadyear','Academic Year','trim|xss_clean|required');
                 $this->form_validation->set_rules('admop_prgcat','Progarm Category','trim|xss_clean|required');
                 $this->form_validation->set_rules('admop_prgname_branch','Program Name','trim|xss_clean|required');
-                $this->form_validation->set_rules('admop_entexam_fees','Entrance Exam Fees','trim|xss_clean|required');
+           //     $this->form_validation->set_rules('admop_entexam_fees','Entrance Exam Fees','trim|xss_clean|required');
 	        $this->form_validation->set_rules('admop_min_qual','Minimum Qualification ','trim|xss_clean|required');
         	$this->form_validation->set_rules('admop_entexam_patt','Entrance Exam Pattern ','trim|xss_clean|required');
                 $this->form_validation->set_rules('admop_entexam_date','Entrance Exam Date','trim|xss_clean|required');
@@ -194,7 +194,7 @@ class Enterence extends CI_Controller {
             $data['admop_acadyear']['value'] = $this->input->post('admop_acadyear', TRUE);
             $data['admop_prgcat']['value'] = $this->input->post('admop_prgcat', TRUE);
             $data['admop_prgname_branch']['value'] = $this->input->post('admop_prgname_branch', TRUE);
-            $data['admop_entexam_fees']['value'] = $this->input->post('admop_entexam_fees', TRUE);
+          //  $data['admop_entexam_fees']['value'] = $this->input->post('admop_entexam_fees', TRUE);
             $data['admop_min_qual']['value'] = $this->input->post('admop_min_qual', TRUE);
             $data['admop_entexam_patt']['value'] = $this->input->post('admop_entexam_patt', TRUE);
             $data['admop_entexam_date']['value'] = $this->input->post('admop_entexam_date', TRUE);
@@ -210,7 +210,7 @@ class Enterence extends CI_Controller {
         }
 	else{
            $acadyear = $this->input->post('admop_acadyear', TRUE);
-           $enterenceexamfees = $this->input->post('admop_entexam_fees', TRUE);
+         //  $enterenceexamfees = $this->input->post('admop_entexam_fees', TRUE);
            $minimumqualification = $this->input->post('admop_min_qual', TRUE);
            $entranceexampattern = ucwords(strtolower($this->input->post('admop_entexam_patt', TRUE)));
            $entranceexamdate= $this->input->post('admop_entexam_date', TRUE);
@@ -240,7 +240,7 @@ class Enterence extends CI_Controller {
 
 	    $update_data = array(
                'admop_acadyear' => $acadyear,
-               'admop_entexam_fees'  => $enterenceexamfees,
+           //    'admop_entexam_fees'  => $enterenceexamfees,
                'admop_min_qual'  => $minimumqualification,
                'admop_entexam_patt' => $entranceexampattern,
                'admop_entexam_date' => $entranceexamdate,
@@ -305,12 +305,13 @@ class Enterence extends CI_Controller {
 	
 	//check for completed admission step
 	public function admission_studentstep($applicationno){
+
 		//check the existence of entry in admissionstep table 
 		//$this->resstep=$this->commodel->get_listrow('admissionstep','sm_application',$applicationno)->result();
 		$this->resstep=$this->commodel->get_listrow('admissionstudent_enterencestep','registration_id',$applicationno)->result();
 		//print_r($this->resstep);
 		if(!empty($this->resstep)) {
-
+		
 		// if exist then check which step is completed and redirect to incmplete step with appropriate data
 			foreach($this->resstep as $rslt){
 				$stp1= $rslt->step1_status;
@@ -318,6 +319,7 @@ class Enterence extends CI_Controller {
 				$stp3= $rslt->step3_status;
 				$stp4= $rslt->step4_status;
 				$stp5= $rslt->step5_status;
+				
 			}
 
 			if($stp1 == 0 || $stp1 == NULL){
@@ -565,11 +567,13 @@ class Enterence extends CI_Controller {
                         $this->session->set_flashdata('message',$confmes);
                         $this->load->model("Mailsend_model","mailmodel");
                         $subject = "Registered Successfully.";
-                        $message = "Your are registered successfully,Verification code for further step is ".$generate_code.".";
+			$prgname =  $this->commodel->get_listspfic1('program','prg_category','prg_id',$prg_name)->prg_category.'('.$this->commodel->get_listspfic1('program','prg_name','prg_id',$prg_name)->prg_name.'-'. $this->commodel->get_listspfic1('program','prg_branch','prg_id',$prg_name)->prg_branch.')';
+                        $message = "Your are registered successfully, Your details are given below - \n Email -". $applicant_email ." \nMobile Number- ". $applicant_mobile  ." \nDate of Birth -". $applicant_dob . "\nProgram Name -". $prgname ." \nVerification code for further step is ".$generate_code.".";
                         $mails=$this->mailmodel->mailsnd($applicant_email,$subject,$message,'');
                         $this->load->view('enterence/step_zero',$data);
 
                     }
+
                 }
 
             }
@@ -685,7 +689,8 @@ class Enterence extends CI_Controller {
 					'asm_nationality'		=>	$_POST['entnationality'],
 					'asm_phyhandicaped'		=>	$_POST['entdisability'],
 					'asm_reservationtype'		=>	$stu_reserve,
-					'asm_religion'			=>	$_POST['entreligion']
+					'asm_religion'			=>	$_POST['entreligion'],
+					'asm_aadharno'			=>	$_POST['entaadhar']
                		 	);
 	 			
 				$detail=$this->db->insert('admissionstudent_master', $pdetail);	
@@ -765,9 +770,7 @@ class Enterence extends CI_Controller {
 					'step1_status'   	=>	1,
                 			'step1_date'  		=>	$cdate
                			 );
-				//$this->db->insert('admissionstudent_enterencestep',$step1);
-				//$this->logger->write_logmessage("update", "Admisssion Step_one update.");
-                    		//$this->logger->write_dblogmessage("update", "Admission Step_one update.");
+				
 				$updatst1 = $this->commodel->updaterec('admissionstudent_enterencestep', $step1,'registration_id',$regisid);
 				$this->logger->write_logmessage("update", "Admisssion Step_one update.");
                     		$this->logger->write_dblogmessage("update", "Admission Step_one update.");				
@@ -809,16 +812,18 @@ class Enterence extends CI_Controller {
 	public function step_two(){
 		if(empty($this->session->userdata('asm_id'))) {
 	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
-			redirect('welcome');
+			redirect('welcomeform');
         	}
 		$asmid = $this->session->userdata['asm_id'];
 
 		$regisid = $this->session->userdata['asreg_id'];
+		$email = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_emailid','asreg_id',$regisid)->asreg_emailid;		
+		$data['email'] = $email;
 		$rsdata = array('step1_status' => '1', 'registration_id' => $regisid);
 		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata);
 		if(!$recheckstep_exist){
 			$this->session->set_flashdata('err_message', 'You are not following proper process.');
-			redirect('welcome');	
+			redirect('welcomeform');	
 		}
 
 		$rsdata1 = array('step2_status' => '1', 'registration_id' => $regisid);
@@ -1068,22 +1073,24 @@ class Enterence extends CI_Controller {
 					
 		}//if post close
 
-	$this->load->view('enterence/step_two');
+	$this->load->view('enterence/step_two',$data);
 	}
 
 	public function step_three(){
 		if(empty($this->session->userdata('asm_id'))) {
 	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
-			redirect('welcome');
+			redirect('welcomeform');
         	}	
 		$id = $this->session->userdata['asm_id'];
 
 		$regisid = $this->session->userdata['asreg_id'];
+		$email = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_emailid','asreg_id',$regisid)->asreg_emailid;		
+		$data['email'] = $email;
 		$rsdata = array('step2_status' => '1', 'registration_id' => $regisid);
 		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata);
 		if(!$recheckstep_exist){
 			$this->session->set_flashdata('err_message', 'You are not following proper process');
-			redirect('welcome');	
+			redirect('welcomeform');	
 		}
 
 		$rsdata1 = array('step3_status' => '1', 'registration_id' => $regisid);
@@ -1100,7 +1107,7 @@ class Enterence extends CI_Controller {
 				$extflag=false;
 				$sizeflag=false;
 				// put code for photo, sign, noc, decla
-				if((isset($_FILES['photo'])) && (isset($_FILES['sign'])) && (isset($_FILES['files'])))	
+				if((isset($_FILES['photo'])) && (isset($_FILES['sign'])))	
 				{
 
 					// get the files for photo
@@ -1186,7 +1193,7 @@ class Enterence extends CI_Controller {
 						redirect('enterence/step_three');
 					}
 				$i = 0;$l=0;
-				foreach($_FILES['files']['tmp_name'] as $key => $tmp_name){
+				/*foreach($_FILES['files']['tmp_name'] as $key => $tmp_name){
 				//if(isset($_FILES['files'])){
 					$file_name = $_FILES['files']['name'][$key];
 					$file_size =$_FILES['files']['size'][$key];
@@ -1208,7 +1215,7 @@ class Enterence extends CI_Controller {
 						//	$ferror = $ferror ."</br>". $error;
 						//}
                         			//$this->session->set_flashdata('error', $ferror);
-						//redirect('enterence/step_three');*/
+						//redirect('enterence/step_three');
 						//$this->session->set_flashdata('error', " Enclosures file ".$file_name." extension should be jpeg or jpg or png. ");
 						//redirect('enterence/step_three');
 						//$this->load->view('enterence/step_three');
@@ -1222,7 +1229,7 @@ class Enterence extends CI_Controller {
 						//	$ferror = $ferror ."</br>". $error;
 						//}
                         			//$this->session->set_flashdata('error', $ferror);
-						//redirect('enterence/step_three');*/
+						//redirect('enterence/step_three');
 						//$this->session->set_flashdata('error', " Enclosure file ". $file_name." size should be less than 500kb.");
 						//redirect('enterence/step_three');
 						//$this->load->view('enterence/step_three');
@@ -1252,9 +1259,9 @@ class Enterence extends CI_Controller {
 						}
 							
 					$i++;
-		    		 }//foreach close
+		    		 }*///foreach close
 				//set the error
-					$ferror='';
+					/*$ferror='';
 					if(!empty($filerrors)){
 						$filerrors[$j] = " Kindly upload correct files again.";
 						$j++;
@@ -1264,7 +1271,7 @@ class Enterence extends CI_Controller {
 						}
 						$this->session->set_flashdata('err_message', $ferror);
 						redirect('enterence/step_three');
-					}	
+					}*/	
 				//update admissionstep step3 table
 					$cdate = date('Y-m-d H:i');
  					$step3 = array(
@@ -1290,22 +1297,24 @@ class Enterence extends CI_Controller {
 			}//if isset file close
 			
 		}
-		$this->load->view('enterence/step_three');
+		$this->load->view('enterence/step_three',$data);
 	}
 
 	  public function step_four(){
 		if(empty($this->session->userdata('asm_id'))) {
 	       	$this->session->set_flashdata('flash_data', 'You don\'t have access!');
-			redirect('welcome');
+			redirect('welcomeform');
         	}
 		$Sid = $this->session->userdata['asm_id'];
 
 		$regisid = $this->session->userdata['asreg_id'];
+		$this->email = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_emailid','asreg_id',$regisid)->asreg_emailid;		
+		
 		$rsdata = array('step3_status' => '1', 'registration_id' => $regisid);
 		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata);
 		if(!$recheckstep_exist){
 			$this->session->set_flashdata('err_message', 'You are not following proper process');
-			redirect('welcome');	
+			redirect('welcomeform');	
 		}
 		
 		$rsdata1 = array('step4_status' => '1', 'registration_id' => $regisid);
@@ -1527,7 +1536,7 @@ class Enterence extends CI_Controller {
 	public function offlinePayment(){
 		if(empty($this->session->userdata('asm_id'))) {
 	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
-			redirect('welcome');
+			redirect('welcomeform');
         	}	
 		$getmail = $this->commodel->get_elist('email_setting');
 		//print_r($getmail);
@@ -1649,7 +1658,7 @@ class Enterence extends CI_Controller {
 	public function step_five(){
 		if(empty($this->session->userdata('asm_id'))) {
 	        	$this->session->set_flashdata('err_message', 'You don\'t have access!');
-			redirect('welcome');
+			redirect('welcomeform');
         	}
 		//$regisid = $this->session->userdata['asreg_id'];
 		//$id = $this->commodel->get_listspfic1("admissionstudent_master","asm_id","asm_userid",$regisid)->asm_id;		
@@ -1660,7 +1669,7 @@ class Enterence extends CI_Controller {
 		$recheckstep_exist = $this->commodel->isduplicatemore('admissionstudent_enterencestep',$rsdata);
 		if(!$recheckstep_exist){
 			$this->session->set_flashdata('err_message', 'You are not following proper process.');
-			redirect('welcome');	
+			redirect('welcomeform');	
 		}
 		
 	
@@ -1704,7 +1713,8 @@ class Enterence extends CI_Controller {
 			$data['religion'] = $religion;
 			$reservation = $stud_admission->asm_reservationtype;
 			$data['reservation'] = $reservation;
-
+			$aadhar = $stud_admission->asm_aadharno;
+			$data['aadhar'] = $aadhar;
 		}
 
 		$studparent_admission = $this->commodel->get_listrow('admissionstudent_parent','aspar_asmid',$id)->row();
@@ -1821,6 +1831,8 @@ class Enterence extends CI_Controller {
 			$data['religion'] = $religion;
 			$reservation = $stud_admission->asm_reservationtype;
 			$data['reservation'] = $reservation;
+			$aadhar = $stud_admission->asm_aadharno;
+			$data['aadhar'] = $aadhar;
 
 		}
 
@@ -1919,7 +1931,7 @@ class Enterence extends CI_Controller {
 					foreach($asid as $asregid){
 						$asegid= $asregid->asreg_id;
 					}
-						
+							
 					$this->admission_studentstep($asegid);
 				}	
 				 else {
@@ -2018,7 +2030,7 @@ class Enterence extends CI_Controller {
 			//$message= '<h4>Please login again to download hall ticket.</h4>';
 			//$this->session->set_flashdata('err_message',$message);
 	        	$this->session->set_flashdata('err_message', 'Login again for download hall ticket');
-			redirect('welcome');
+			redirect('welcomeform');
         	}
 		 $uid = $this->session->userdata['asm_id'];
 		 $data['uid'] = $uid;	
@@ -2074,7 +2086,7 @@ class Enterence extends CI_Controller {
 	public function stu_hallticketdwpdf(){
 		if(empty($this->session->userdata('asm_id'))) {
 	        	$this->session->set_flashdata('err_message', 'Login again for download hall ticket');
-			redirect('welcome');
+			redirect('welcomeform');
         	}
 		 $uid = $this->session->userdata['asm_id'];
 		 $data['uid'] = $uid;	
@@ -2130,14 +2142,39 @@ class Enterence extends CI_Controller {
 		// $this->load->view('enterence/stu_hallticketdw',$data);
 	}
 
-	
+	public function email_notification(){
+		$regisid = $this->session->userdata['asreg_id'];
+		$applicant_email = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_email','asreg_id',$regisid)->asreg_email;
+		$applicant_dob = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_dob','asreg_id',$regisid)->asreg_dob;
+		$applicant_mobile = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_mobile','asregm_id',$regisid)->asreg_mobile;
+		$generate_code = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationcode','asregm_id',$regisid)->asreg_verificationcode;
+		$veri_date = $this->commodel->get_listspfic1('admissionstudent_registration','asreg_verificationdate','asreg_id',$regisid)->asreg_verificationdate;
+		$notidate = explode('-',$veri_date);
+		$notiyear = $notidate[0];
+		$notimonth = $notidate[1];
+		$notiday = $notidate[2];
+		$cdate = date('Y-m-d');
+		//$notidate = $veri_date
+		$nmonth = $notimonth;
+		//for($notidate=0; $notidate <= $nmonth; $nmonth++){
+		 if($nmonth){
+			$this->load->model("Mailsend_model","mailmodel");
+               		$subject = "IGNTU - Enterance Exam Registration Notfication";
+		      	$message = "Your are registered successfully, Your details are given below - \n Email -". $applicant_email ." \nMobile Number- ". $applicant_mobile  ." \nDate of Birth -". $applicant_dob ." \nVerification code for further step is ".$generate_code.".";
+                 	$mails=$this->mailmodel->mailsnd($applicant_email,$subject,$message,'');
+                 }
+		//}
+
+	}
 
 	public function home() {
 		$id = $this->session->userdata['asm_id'];
 		//$uid = $this->session->userdata['asm_id'];
         	$data = ['asm_id'];
       		$this->session->unset_userdata($data);
-       		redirect('welcome');
+       		redirect('welcomeform');
     	}
+
+
 	
 }//close class

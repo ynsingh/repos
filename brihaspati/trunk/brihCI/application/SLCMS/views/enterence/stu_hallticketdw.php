@@ -36,7 +36,7 @@ function myFunction() {
 
 		
 <center>
-	<div class="panel panel-primary" style="width:70%;">
+	<div class="panel panel-primary" style="width:80%;">
       		<div class="panel-heading"><h4>Hall Ticket For All India Enterance Examination - <?php echo $acadyear;?></h4></div>
       		<div class="panel-body">
 	<table border=0 style="width:100%;"  align=center>
@@ -48,27 +48,44 @@ function myFunction() {
 
 	<tr>
 	<td valign=top>
-		<table border=0>
-			
-			<tr><td>Candidate Name : <?php echo $sname; ?></td></tr>
-			<tr><td>Father Name :<?php echo $faname; ?></td></tr>
-			<tr><td> Mother Name : <?php echo $moname; ?></td></tr>
-			<tr><td> Address : <?php echo $padd.','.$pcity.','.$pstate.','.$pcountry; ?></td></tr>	
-									
+		<table border=0 style="width:100%;">
+			<tr><td width=170 style="border:1px solid black;"><b>Candidate Name : </b></td><td style="border:1px solid black;"><?php echo $sname; ?></td></tr>
+			<tr><td style="border:1px solid black;"><b>Father Name :</b></td><td style="border:1px solid black;"><?php echo $faname; ?></td></tr>
+			<tr><td style="border:1px solid black;"><b> Mother Name : </b></td><td style="border:1px solid black;"><?php echo $moname; ?></br></br></td></tr>
+			<tr><td style="border:1px solid black;"><b> Address : </b></td><td style="border:1px solid black;"><?php echo $padd.','.$pcity.','.$pstate.','.$pcountry; ?></td></tr>	
+										
+		</table>
+		<table border=0  style="width:100%;">
+			<tr><td width=170 style="border:1px solid black;"><b>Exam Date & Time :</b></td>
+			<td style="border:1px solid black;" valign=top><?php echo $exmdate;?></td>
+			</tr>
+			<tr>
+				<td style="border:1px solid black;"><b>Venue :</b></td>
+				<td style="border:1px solid black;"><?php echo $venue;?></td>	
+			</tr>
+		</table>
+
+		<table border=0  style="width:100%;">
+			<tr><td width=170 style="border:1px solid black;"><b>Category :</b></td>
+			<td style="border:1px solid black;"><?php  echo $caste;?></td>
+			</tr>
+			<tr>
+				<td style="border:1px solid black;"><b>Gender :</b></td>
+				<td style="border:1px solid black;"><?php echo $gender; ?></td>	
+			</tr>
 		</table>
 	</td>
 	<td width=150 valign=top>
-		<table style="width:100%;" border=0 align=center>
-			<tr><td align=center style="border:1px solid black;">Hall Ticket Number :</br><?php echo $rollno;?></td></tr>
-			 <tr><td align=center style="border:0px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$photo); ?> style="height:150px;width:100%; "></br>
-<img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$signature); ?> style="height:50px; width:170px; ">
-</td></tr>
+		<table style="" border=0 align=center>
+			<tr><td align=center style="border:1px solid black;"><b>Hall Ticket Number :</b></br><?php echo $rollno;?></td></tr>
+			 <tr><td align=center style="border:1px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$photo); ?> style="height:175px;width:170px; "></td></tr>
+		 	<tr><td align=center style="border:1px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$signature); ?> style="height:50px; width:170px; "></td></tr>
 		</table>
 	</td>
 	</tr>
 
         </table>
-		<table style="width:100%;" border=0  align=center>
+		<!---<table style="width:100%;" border=0  align=center>
 			<tr><td align=center style="border:1px solid black;">Exam Date & Time</td>
 			<td align=center style="border:1px solid black;">Venue</td></tr>
 			<tr>
@@ -84,12 +101,14 @@ function myFunction() {
 				<td align=center style="border:1px solid black;"><?php  echo $caste;?></td>
 				<td align=center style="border:1px solid black;"><?php echo $gender; ?></td>	
 			</tr>
-		</table>
+		</table>-->
 
-		<table style="width:100%;margin-top:8%;" border=0  align=center> 
+		<table style="width:98%;" border=0  align=center> 
 			<tr>
-				<td align=left>Signature of Candidate</br>(To be signed in the presence of the invigilator)</td>
-				<td align=right>Controller of Examination</td>
+				<td align=center><br><br><br>
+				Signature of Candidate</br>(To be signed in the presence of the invigilator)</td>
+				<td align=right><img src="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/coesign.png');?>" style="height:50px; width:170px; ">
+<br>Controller of Examinations</td>
 			</tr>
 		</table>
 		<?php //} ?>

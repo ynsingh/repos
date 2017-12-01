@@ -87,11 +87,14 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
         <td>
             <select name="prgcat">
                 <option value=""disabled selected>-----------------Select Category------------</option>
-                <option value="Under Graduate" class="dropdown-item">Under Graduate</option>
+                <!---<option value="Under Graduate" class="dropdown-item">Under Graduate</option>
                 <option value="Post Graduate" class="dropdown-item">Post Graduate</option>
                 <option value="Research" class="dropdown-item">Research</option>
-                <option value="Diploma Course" class="dropdown-item">Diploma Course</option>
-                <option value="Certificate Course" class="dropdown-item">Certificate Course</option>
+                <option value="Diploma" class="dropdown-item">Diploma Course</option>
+                <option value="Certificate" class="dropdown-item">Certificate Course</option>-->
+		<?php foreach($this->prgcat as $datas): ?>	
+                    <option value="<?php echo $datas->prgcat_name; ?>"><?php echo $datas->prgcat_name; ?></option>
+		<?php endforeach; ?>
             </select>    
         </td>
            <!-- <input type="text" name="prgcat" size="35"/>-->

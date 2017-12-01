@@ -65,7 +65,15 @@
 .breadcrumb li.active a:after {
     border-left: 30px solid #38B0DE;
 }
+/************current page active css****************/
+.breadcrumb li.new a {
+   /* background: #ffc107;*/ font-weight: bold;color:white;background-color:green;
+}
 
+.breadcrumb li.new a:after {
+    border-left: 30px solid green;
+}
+/************current page active css****************/
 .breadcrumb li:first-child a {
     padding-left: 15px;
     border-top-left-radius: 0.3em;

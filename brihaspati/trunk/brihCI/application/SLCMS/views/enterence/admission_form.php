@@ -83,7 +83,7 @@
     				changeYear: true,
     				dateFormat: 'yy-mm-dd',
      				//defaultDate: '-1yr',
-    				 yearRange: 'c-77:c+10',
+    				 yearRange: 'c-36:c+10',
 				});
 			</script>	
        

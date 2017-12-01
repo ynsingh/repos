@@ -258,6 +258,7 @@
 ?>
 
 	</div>
+<p> &nbsp;<br><br></p>
 	<?php $this->load->view('template/footer'); ?>
 	
 </div>

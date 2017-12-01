@@ -391,11 +391,11 @@ class Enterenceadmin extends CI_Controller
 		$this->session->set_flashdata('success',$message);
 	 	redirect('enterenceadmin/viewhallticket');
 	}
-	else{
-		$message = 'Hall Ticket is not Generated because roll no is not generated.So first click on the roll no generation.';
-		$this->session->set_flashdata('err_message',$message);
-	 	redirect('enterenceadmin/viewhallticket');
-	}
+	//else{
+		//$message = 'Hall Ticket is not Generated because roll no is not generated.So first click on the roll no generation.';
+		//$this->session->set_flashdata('err_message',$message);
+	 	//redirect('enterenceadmin/viewhallticket');
+	//}
 	redirect('enterenceadmin/viewhallticket');
  }
 
@@ -420,7 +420,7 @@ class Enterenceadmin extends CI_Controller
 		if(!empty($exmceter)){
 			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
 			$attrecord=array(
-				'ca_centername'  => $exmceter, 'ca_rollno !=' => NULL
+				'ca_hallticketstatus' => 'Y','ca_centername'  => $exmceter, 'ca_rollno !=' => NULL
 			);
        			$getsticker = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
 			$this->genstickerpdf($getsticker);
@@ -432,7 +432,7 @@ class Enterenceadmin extends CI_Controller
 			foreach($clist as $row1){
 				$exmceter1 = $row1->ca_centername;
 				if(!empty($exmceter1)){
-					$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
+					$attselectdata=array('ca_hallticketstatus' => 'Y','ca_asmid','ca_rollno','ca_centername','ca_prgid');
 					$attrecord=array('ca_centername'  => $exmceter1,'ca_rollno !=' => NULL);
        					$getsticker1 = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
 					$this->logger->write_logmessage("update", "Attendence sheet data foe each enter".$getsticker1);
@@ -447,12 +447,12 @@ class Enterenceadmin extends CI_Controller
 			if($getsticker){
 				$message = '<h3>Centerwise sticker sheet generated Successfully .</h3>';
 				$this->session->set_flashdata('success',$message);
-				redirect('enterenceadmin/viewattendancesheet');
+				redirect('enterenceadmin/viewstikerlist');
 			}
 			else{
-				$message = '<h3>Centerwise sticker sheet not generated.</h3>';
+				$message = '<h3>Centerwise sticker sheet not generated.So first click on hall ticket generation.</h3>';
 				$this->session->set_flashdata('err_message',$message);
-				redirect('enterenceadmin/viewattendancesheet');
+				redirect('enterenceadmin/viewstikerlist');
 				}
 	 	
 	 	redirect('enterenceadmin/viewstikerlist',$data, TRUE);
@@ -508,7 +508,7 @@ class Enterenceadmin extends CI_Controller
 		if(!empty($attexmceter)){
 			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
 			$attrecord=array(
-				'ca_centername'  => $attexmceter,'ca_rollno !=' => NULL
+				'ca_hallticketstatus' => 'Y','ca_centername'  => $attexmceter,'ca_rollno !=' => NULL
 			);
        			$getatt = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
 			$this->genattpdf($getatt);
@@ -519,7 +519,7 @@ class Enterenceadmin extends CI_Controller
 				$attexmceter1 = $row1->ca_centername;
 				if(!empty($attexmceter1)){
 					$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
-					$attrecord=array('ca_centername'  => $attexmceter1,'ca_rollno !=' => NULL);
+					$attrecord=array('ca_hallticketstatus' => 'Y','ca_centername'  => $attexmceter1,'ca_rollno !=' => NULL);
        					$getatt1 = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
 					$this->logger->write_logmessage("update", "Attendence sheet data foe each enter".$getatt1);
 					//print_r($getatt1);
@@ -536,7 +536,7 @@ class Enterenceadmin extends CI_Controller
 				redirect('enterenceadmin/viewattendancesheet');
 			}
 			else{
-				$message = '<h3>Centerwise attendance sheet not generated.</h3>';
+				$message = '<h3>Centerwise attendance sheet not generated.So First Click on the sticker generation.</h3>';
 				$this->session->set_flashdata('err_message',$message);
 				redirect('enterenceadmin/viewattendancesheet');
 				}
@@ -827,10 +827,9 @@ class Enterenceadmin extends CI_Controller
 		$data['prgname'] = $prgname;
 		$data['examcenter'] = $centerlist;
 
-		$rollexmceter = $this->input->post('ronoexamcenter');
-		$rollprgid    = $this->input->post('ronoprg');
 		
-		if(!empty($rollexmceter.$rollprgid)){
+		
+		/*if(!empty($rollexmceter.$rollprgid)){
 			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
 			$attrecord=array(
 				'ca_centername'  => $rollexmceter,
@@ -854,23 +853,44 @@ class Enterenceadmin extends CI_Controller
 					$this->logger->write_logmessage("update", "Attendence sheet data foe each enter".$getatt1);
 				}
 			}
-		 }
-		if($rollexmceter == TRUE){
-			$rollexmceter = $this->input->post('ronoexamcenter');
+		 }*/
+		//$rollexmcenter = $this->input->post('ronoexamcenter');
+		//$rollprogid    = $this->input->post('ronoprg');
+
+		$examceter = $this->input->post('ronoexamcenter');
+		$progid    = $this->input->post('ronoprg');
+		if(isset($_POST['searchsticker'])){
+			
 			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
 			$attrecord=array(
-				'ca_centername'  => $rollexmceter,
+				'ca_centername'  => $examceter,
+				'ca_prgid'       => $progid
+				
 			);
-       			$this->getatt = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
+       			$this->combigetatt = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
+			//print_r($this->combigetatt);die;
 		}
-		elseif($rollprgid == TRUE){
-			$rollprgid    = $this->input->post('ronoprg');
+
+		if($examceter == TRUE){
+			$rollexmcenter = $this->input->post('ronoexamcenter');
 			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
 			$attrecord=array(
-				'ca_prgid'       => $rollprgid,
+				'ca_centername'  => $rollexmcenter,
 			);
-       			$this->getatt = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
-		}	
+       			$this->exmgetatt = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
+			//print_r($this->exmgetatt);die;
+		}
+
+		elseif($progid == TRUE){
+			$rollprogid    = $this->input->post('ronoprg');
+			$attselectdata=array('ca_asmid','ca_rollno','ca_centername','ca_prgid');
+			$attrecord=array(
+				'ca_prgid' => $rollprogid,
+			);
+       			$this->prggetatt = $this->commodel->get_listspficemore('admissionstudent_centerallocation',$attselectdata,$attrecord);
+			//print_r($this->prggetatt);die;
+		}
+			
 
 		$this->load->view('enterenceadmin/gen_rollnumber',$data);
 	}

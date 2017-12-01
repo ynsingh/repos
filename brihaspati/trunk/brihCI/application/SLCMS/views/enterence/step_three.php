@@ -42,7 +42,7 @@ updateList = function() {
 	<div id="body">
 	<?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-		<nav> 	<h1>Welcome to IGNTU  </h1></nav>
+		<nav><h2><?php echo $email;?></h2></nav>
 </br>
 	<?php $this->load->view('enterence/admission_steps');?>
 	
@@ -77,11 +77,11 @@ updateList = function() {
 		
 			</tr>
 <tr height=20></tr>
-			<tr><td>
+			<!----<tr><td>
 				<label><span id="star">*</span><b>NOC/Declaration/Professional work experience/portfolio/academic/thesis<br>(Select multiple files size should be 500kb and photo extension jpeg , jpg , png or pdf)</b></label></br>				
 				<input type="file" name="files[]" multiple="multiple" id="files" onchange="javascript:updateList()"/>
 				<br><span style="font-size:15px;"><b>Selected Files :</b></span><div id="fileList"></div></td></tr>
-<tr height=20></tr>
+<tr height=20></tr>--->
 
 		</table>
 		<table style="width:10%;">
@@ -93,7 +93,7 @@ updateList = function() {
 		</table>
 		<table style="width:50%;">
 			<tr>
-				<td><h4><b>Note: Photo ,Signature file size is only 100 kb or Enclosure size must be 500kb and extension jpeg , jpg or png.</b></h4></td>
+				<td><h4><b>Note: Photo ,Signature file size is only 100 kb and extension jpeg , jpg or png.</b></h4></td>
 			</tr>
 		</table>
 	

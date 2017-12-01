@@ -73,10 +73,10 @@ if(!empty($stud_master)){
 foreach($stud_master as $row){
 
 ?>
-<td>
+<td align=left>
 <?php if(!empty($row->ca_rollno)){?>
 <a href="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket/'.$row->ca_asmid.'hallticket.pdf');?>" target=_blank>
-See PDF</br>
+View PDF</br>
 <embed src="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/'.$year.'/hallticket/'.$row->ca_asmid.'hallticket.pdf');?>" type="application/pdf"   height="400px" width="400">
 </a>	
 <?php }?>

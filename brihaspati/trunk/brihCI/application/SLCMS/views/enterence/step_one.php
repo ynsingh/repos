@@ -72,7 +72,7 @@ function filladd()
  	<div id="body">
 	<?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-	<nav> 	<h1>Welcome to IGNTU  </h1></nav></br>
+	<nav> 	<h2><?php echo $email;?></h2></nav></br>
 	<?php $this->load->view('enterence/admission_steps');?>
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
 
@@ -113,12 +113,13 @@ function filladd()
 			if(($prgcat == 'Diploma') || ($prgcat == 'Under Graduate')|| ($prgcat == 'Certificate')){
 			?>	
 			<option value="<?php echo '1'; ?>"><?php echo 'IGNTU, HQ, Amarkantak'; ?></option>
+			<option value="2"><?php echo 'Regional campus,manipur'; ?></option>
 			<?php }  ?>
 			<?php 
 			if(($prgcat == 'Post Graduate') || ($prgcat == 'Research')){
-			foreach($this->scresult as $datas1): ?>
-			<option value="<?php echo $datas1->sc_code; ?>"><?php echo $datas1->sc_name; ?></option>
-			<?php endforeach; }?>
+			?>
+			<option value="2"><?php echo 'Regional campus,manipur'; ?></option>
+			<?php } ?>
 			</select>   
 		<td/>
 
@@ -157,7 +158,8 @@ function filladd()
 			<select name="entgender" style="height:37px;font-size:18px;font-weight:bold;">
  			<option value=""disabled selected>Select Gender</option>
 				<option value="Male">Male</option>
-				<option value="Female">Female</option>			
+				<option value="Female">Female</option>
+				<option value="Transgender">Transgender</option>			
 			</select>  
 			<!--<input type="text" name="Sgender" placeholder="Enter Gender" >--->		
 		<td/>
@@ -230,7 +232,7 @@ function filladd()
 		<tr height=10></tr>
 	<tr>
 		<td>	
-			<label>Are you physically</br> handicapped ?</label></br>
+			<label>Are you physically handicapped ?</label></br>
 			<select name="entdisability" style="height:37px;font-size:18px;font-weight:bold;">
 				<option selected="true" disabled>Select disability</option>
 				<option value="Yes">Yes</option>	
@@ -239,7 +241,7 @@ function filladd()
 		<td/>
 	
 		<td>
-			<label>Select religion</label></br></br>
+			<label>Select religion</label></br>
 			<select name="entreligion" style="height:37px;font-size:18px;font-weight:bold;">
 				<option selected="true" disabled="disabled" style="font-size:18px;">Select Religion</option>
 				<option value="HINDUISM">HINDUISM</option>
@@ -251,12 +253,12 @@ function filladd()
 				<option value="ZOROASTRIANISM">ZOROASTRIANISM</option>
 				<option value="judaism">JUDAISM</option>
 	 		</select>
-		</td>
-		<td></td>
+		<td/>
+		
 		<td>
-			<label>Reservation Type</label></br></br>
+			<label>Reservation Type</label></br>
 			<?php $this->load->view('enterence/multi_drop');?>
-			<select name="basic[]" multiple="multiple" class="3col active" style="width:20%;height:80px;" required>
+			<select name="basic[]" multiple="multiple" class="3col active" style="" required>
         			<option value="Diffrently Abled">Differently Abled</option>
         			<option value="Supernumerary Seats">Supernumerary Seats</option>
        				<option value="N.C.C. Cadets">N.C.C. Cadets</option>
@@ -281,7 +283,12 @@ function filladd()
 
     });
 </script>
-		</td>
+		<td/>
+
+		<td>	
+			<label>Aadhar no.</label></br>
+			<input type="text" name="entaadhar" placeholder="Enter Aadhar Number" MaxLength="13" value="<?php echo $mobile; ?>" >				
+		<td/>
 
 	</tr>
 		

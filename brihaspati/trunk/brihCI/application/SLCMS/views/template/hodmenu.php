@@ -178,6 +178,16 @@ echo "<ul class=\"sf-menu\">";
 					echo "</li>";
 				echo "</ul>";
 			echo "</li>";
+
+			 echo "<li>";
+                                echo "<a href=" . ">Downloads</a>";
+                                echo "<ul>";
+                                        echo "<li>";
+                                                echo anchor('download/', 'Admission Applicant Details', array('title' => 'Admission Applicant Details'));
+                                        echo "</li>";
+                                echo "</ul>";
+                        echo "</li>";
+
 			echo "<li>";
 				echo "<a href=" . ">Profile</a>";
 				 echo "<ul>";

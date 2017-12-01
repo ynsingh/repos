@@ -64,30 +64,35 @@ echo "</center>"; ?>
                 				<ul>
 							<li><a href="ADMISSION NOTIFICATION">ADMISSION NOTIFICATON</a></li>
 								<?php 
-									$cdate = date('Y-m-d H:i:s');
-									foreach($this->prgcat as $pname){
-										$progname = $pname->prgcat_name;
+								$cdate = date('Y-m-d H:i:s');
+								foreach($scrlist as $row){
+									$scid = $row->sc_id;
+									$wharray = array('prg_scid'  =>  $scid);
+									$prgcat = $this->commodel->get_distinctrecord('program','prg_category',$wharray);
+									foreach($prgcat as $row){	
+										$prgcatname = $row->prg_category;
 										$selectfield=array('admop_prgname_branch');
 										$data=array(
-      											'admop_prgcat' => $progname,
+      											'admop_prgcat' => $prgcatname,
       											'admop_lastdate >=' => $cdate,
        										);
-										$progid = $this->commodel-> get_listspficemore('admissionopen',$selectfield,$data);
-										
-								?>
-        						 <li class='has-sub'><a href=""><?php echo $pname->prgcat_name;?></a>
-                      	  				<ul>
-								<?php foreach($progid as $row){
-									$id = $row->admop_prgname_branch;
-									$pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$id)->prg_name;
+										$progid = $this->commodel->get_distinctrecord('admissionopen',$selectfield,$data);
+									?>
+        						 		<li class='has-sub'><a href=""><?php echo $prgcatname;?></a>
+                      	  						    	<ul>
+											<?php foreach($progid as $row){
+												$id = $row->admop_prgname_branch;
+												$pname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$id)->prg_name;
 									
-							?>
-                        						<li><a href="<?php echo site_url('welcome/ginstruction/');echo $id;?>"><?php echo $pname ."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$id)->prg_branch .")" ;?></a></li>
-									<input type="hidden" value="<?php echo $id;?>" name="prgid">
-								<?php }?>
-                        				</ul>
-								<?php }?>
-							</li>
+												?>
+                        									<li><a href="<?php echo site_url('welcome/ginstruction/');echo $id;?>"><?php echo $pname ."(".$this->commodel->get_listspfic1('program','prg_branch','prg_id',$id)->prg_branch .")" ;?></a></li>
+											<input type="hidden" value="<?php echo $id;?>" name="prgid">
+										<?php }?>
+                        							</ul>
+										
+									</li>
+							<?php }
+									}?>
 						</ul>
                			 </div>
        			 </div>
@@ -101,7 +106,7 @@ echo "</center>"; ?>
 				<td style="border:2px solid white;" align=center colspan=5>Announcement</td></tr>
 				<?php
 				$count =0;
-				foreach($this->annoresult as $aname){
+				foreach($annoresult as $aname){
                                 echo "<tr style=\"font-size:15px;\">";
 				echo "<td>";
                                 echo  "<b>".++$count."</b>" ; 
@@ -141,10 +146,10 @@ echo "</center>"; ?>
 				<td >
         			<button type="submit" style="width:30%" id="button"><b>Login</b></button>
 		
-		<!--		<a href="<?php echo site_url('Student/student_step0');?>" style="" title="Click to open student detail form">
+				<a href="<?php echo site_url('Student/student_step0');?>" style="" title="Click to open student detail form">
 				<input type="button" value="New Student" style="font-size:17px;width:58%;"></a></td></tr>
 			<tr>
-               			 <td> -->
+               			 <td> 
 				<a href="<?php echo site_url('forgotpassword/forgotpass');?>" style="" title="Forgot Password">
                 		<input type="button" value="Forgot Password" style="font-size:17px;width:60%"></a></td>
 			</tr>

@@ -45,6 +45,26 @@ ALTER TABLE `admissionopen`
   MODIFY `admop_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 
+CREATE TABLE `admissionstudent_contactus` (
+  `ascu_id` int(11) NOT NULL,
+  `ascu_name` varchar(255) NOT NULL,
+  `ascu_emailid` varchar(255) DEFAULT NULL,
+  `ascu_phoneno` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `admissionstudent_contactus`  ADD PRIMARY KEY (`ascu_id`);
+ALTER TABLE `admissionstudent_contactus`  MODIFY `ascu_id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+CREATE TABLE `admissionstudent_entranceexamfeeconf` ( 
+	`aseefc_id` INT NOT NULL AUTO_INCREMENT , 
+	`aseefc_feename` VARCHAR(255) NOT NULL , 
+	`aseefc_category` VARCHAR(255) NOT NULL DEFAULT 'All' , 
+	`aseefc_gender` VARCHAR(255) NOT NULL DEFAULT 'All' , 
+	`aseefc_amount` INT NOT NULL , 
+	PRIMARY KEY (`aseefc_id`)
+) ENGINE = InnoDB;
+
+
 CREATE TABLE `admissionstudent_master` (
   `asm_id` int(11) NOT NULL,
   `asm_userid` int(11) NOT NULL,
@@ -72,6 +92,7 @@ CREATE TABLE `admissionstudent_master` (
   `asm_mstatus` varchar(255) DEFAULT NULL,
   `asm_bloodgroup` varchar(255) DEFAULT NULL,
   `asm_nationality` varchar(255) DEFAULT NULL,
+  `asm_aadharno` INT(15) NULL,
   `asm_minority` varchar(255) DEFAULT NULL,
   `asm_reservationtype` varchar(255) DEFAULT NULL,
   `asm_phyhandicaped` varchar(255) DEFAULT NULL,
@@ -466,6 +487,8 @@ CREATE TABLE `admissionmeritlist` (
         `lastdate_admission` DATE DEFAULT NULL ,
         `admission_taken` VARCHAR(255) NOT NULL ,
         `admission_date` DATE DEFAULT NULL ,
+	`admission_status` VARCHAR(255) NULL DEFAULT 'Provisional',
+	`admission_confirmdate` DATE NULL,
         `ext1` VARCHAR(255) NULL ,
         PRIMARY KEY (`id`),
         UNIQUE (`application_no`, `course_name`, `student_email`)

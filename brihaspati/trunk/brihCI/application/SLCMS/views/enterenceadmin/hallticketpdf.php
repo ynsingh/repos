@@ -12,30 +12,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body style="">
-<?php $this->load->view('template/watermark.php');?>				
+<?php //$this->load->view('template/watermark.php');?>				
 <img src="uploads/logo/logo2.jpg" alt="logo" style="width:100%;height:70px;">
 <center><h3>Hall Ticket For All India Enterance Examination - <?php echo $acadyear;?></h3></center>
 					
 <center>
 	<table border=0 style="width:98%;" align=center>
-	<tr >
-                  <td align=center style="border:1px solid black;">Program : <?php echo $progname;?></td>
-		<td align=center style="border:1px solid black;">Program Code :<?php echo $prgid; ?></td>
+	 <tr>
+                  <td align=center style="border:1px solid black;"><b>Program : </b><?php echo $progname;?></td>
+		<td align=center style="border:1px solid black;"><b>Program Code :</b><?php echo $prgid; ?></td>
          </tr>
 
 	<tr>
-	<td>
-		<table>
-			<tr><td>Candidate Name : <?php echo $sname; ?></td></tr>
-			<tr><td>Father Name :<?php echo $faname; ?></td></tr>
-			<tr><td> Mother Name : <?php echo $moname; ?></br></br></td></tr>
-			<tr><td> Address : <?php echo $padd.','.$pcity.','.$pstate.','.$pcountry; ?></td></tr>	
+	<td valign=top>
+		<table border=0 style="width:100%;">
+			<tr><td width=140 style="border:1px solid black;"><b>Candidate Name : </b></td><td style="border:1px solid black;"><?php echo $sname; ?></td></tr>
+			<tr><td style="border:1px solid black;"><b>Father Name :</b></td><td style="border:1px solid black;"><?php echo $faname; ?></td></tr>
+			<tr><td style="border:1px solid black;"><b> Mother Name : </b></td><td style="border:1px solid black;"><?php echo $moname; ?></br></br></td></tr>
+			<tr><td style="border:1px solid black;"><b> Address : </b></td><td style="border:1px solid black;"><?php echo $padd.','.$pcity.','.$pstate.','.$pcountry; ?></td></tr>	
 										
+		</table>
+		<table border=0  style="width:100%;">
+			<tr><td width=140 style="border:1px solid black;"><b>Exam Date & Time :</b></td>
+			<td style="border:1px solid black;" valign=top><?php echo $exmdate;?></td>
+			</tr>
+			<tr>
+				<td style="border:1px solid black;"><b>Venue :</b></td>
+				<td style="border:1px solid black;"><?php echo $venue;?></td>	
+			</tr>
+		</table>
+
+		<table border=0  style="width:100%;">
+			<tr><td width=140 style="border:1px solid black;"><b>Category :</b></td>
+			<td style="border:1px solid black;"><?php  echo $caste;?></td>
+			</tr>
+			<tr>
+				<td style="border:1px solid black;"><b>Gender :</b></td>
+				<td style="border:1px solid black;"><?php echo $gender; ?></td>	
+			</tr>
 		</table>
 	</td>
 	<td width=150>
 		<table style="" border=0 align=center>
-			<tr><td align=center style="border:1px solid black;">Hall Ticket Number :</br><?php echo $rollno;?></td></tr>
+			<tr><td align=center style="border:1px solid black;"><b>Hall Ticket Number :</b></br><?php echo $rollno;?></td></tr>
 			 <tr><td align=center style="border:1px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$photo); ?> style="height:150px;width:170px; "></td></tr>
 		 	<tr><td align=center style="border:1px solid black;"><img src=<?php echo base_url('uploads/SLCMS/enterence/'.$asmid.'/'.$signature); ?> style="height:50px; width:170px; "></td></tr>
 		</table>
@@ -43,7 +62,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</tr>
 
         </table>
-		<table style="width:98%;" border=0  align=center>
+		<!---<table style="width:98%;" border=0  align=center>
 			<tr><td align=center style="border:1px solid black;">Exam Date & Time</td>
 			<td align=center style="border:1px solid black;">Venue</td></tr>
 			<tr>
@@ -59,12 +78,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td align=center style="border:1px solid black;"><?php  echo $caste;?></td>
 				<td align=center style="border:1px solid black;"><?php echo $gender; ?></td>	
 			</tr>
-		</table>
+		</table>--->
 
-		<table style="width:98%;margin-top:30px;" border=0  align=center> 
+		<table style="width:98%;" border=0  align=center> 
 			<tr>
-				<td align=center>Signature of Candidate</br>(To be signed in the presence of the invigilator)</td>
-				<td align=right>Controller of Examination</td>
+				<td align=center><br><br><br>
+				Signature of Candidate</br>(To be signed in the presence of the invigilator)</td>
+				<td align=right><img src="<?php echo base_url('uploads/SLCMS/enterenceadmin_student/coesign.png');?>" style="height:50px; width:170px; ">
+<br>Controller of Examinations</td>
 			</tr>
 		</table>
 						

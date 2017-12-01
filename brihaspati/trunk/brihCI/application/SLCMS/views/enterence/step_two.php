@@ -44,10 +44,16 @@ select{width:100%;font-size:17px;height:35px;font-weight:bold;width:99%;}
 <body>
 
 <div>
+<?php  //$cdate = date('Y-m-d');
+//$date = explode('-', $cdate);
+//echo $gdate = $date[0];
+//echo $gdate1 = $date[1]+2;
+//echo $gdate2 = $date[2];
+?>
 	<div id="body">
 	<?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-	<nav> 	<h1>Welcome to IGNTU  </h1></nav></br>
+	<nav> 	<h2><?php echo $email;?></h2></nav></br>
 	<?php $this->load->view('enterence/admission_steps');?>
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
 
@@ -92,7 +98,7 @@ select{width:100%;font-size:17px;height:35px;font-weight:bold;width:99%;}
 			<td><input type="text" placeholder="Year" name="Hyear" style=" width:98%;" value="<?php echo isset($_POST["Hyear"]) ? $_POST["Hyear"] : ''; ?>"></td>
 
 			<td>
-			<input type="number" placeholder="Marks obtained" class="1" id="myfirstnumber" name="Hmobtain" value="<?php echo isset($_POST["Hmobtain"]) ? $_POST["Hmobtain"] : '';?>"/>
+			<input type="number" placeholder="Marks obtained" class="1" id="myfirstnumber"  name="Hmobtain" value="<?php echo isset($_POST["Hmobtain"]) ? $_POST["Hmobtain"] : '';?>"/>
 <!--<input type="text" placeholder="Marks obtained" name="Hmobtain" style="width:98%;" value="<?php echo isset($_POST["Hmobtain"]) ? $_POST["Hmobtain"] : ''; ?>">-->
 
 			</td>
@@ -107,7 +113,7 @@ select{width:100%;font-size:17px;height:35px;font-weight:bold;width:99%;}
 
 			</td>
 			<td><input type="text" placeholder="Passed/Appeared" name="Hpassed" style="" value="<?php echo isset($_POST["Hpassed"]) ? $_POST["Hpassed"] : ''; ?>"></td>
-		<script>
+<script>
 function ShowPercentage() {
     var FirstNumVal = 0 + Number($("#myfirstnumber").val());
     var SecondNumVal = 0 + Number($("#mysecondnumber").val());
@@ -117,7 +123,41 @@ function ShowPercentage() {
 
 ShowPercentage();
 $('input[type=number]').on('keyup', ShowPercentage);
+
+
 </script>	
+
+<script>
+$( "#mysecondnumber" ).on('change',function(){ 
+	if(parseInt($("#myfirstnumber").val()) > parseInt($("#mysecondnumber").val())) 
+        { 
+
+            alert("Obtained Marks Cannot Greater Than Max Marks.");
+            $("#myfirstnumber").val('');
+	 //   $("#mysecondnumber").val('');
+	    $("#mypercenttextbox").val('');	
+           // $("#myfirstnumber").focus();
+            return false;
+        }else{
+            return true;    
+        }
+});
+/*function Show() {
+    //var marksscored = $(this).val();
+    var marksscored = document.getElementById("myfirstnumber").value;
+    var firstnumber = document.getElementById("mysecondnumber").value;
+    if (parseInt(firstnumber)  < parseInt(marksscored) )
+    {
+        alert("Obtained Marks Cannot Greater Than Max Marks.");
+        //$(this).val("");
+	$("#myfirstnumber").val('');
+	$("#mysecondnumber").val('');
+	$("#mypercenttextbox").val('');			
+    } else {
+        // do something
+    }
+}*/
+</script>
 			
 		</tr>
 		<tr>	
@@ -151,6 +191,21 @@ function ShowPercentage() {
 
 ShowPercentage();
 $('input[type=number]').on('keyup', ShowPercentage);
+</script>
+<script>
+$( "#mysecondnumber1" ).on('change',function(){ 
+	if(parseInt($("#myfirstnumber1").val()) > parseInt($("#mysecondnumber1").val())) 
+        { 
+            alert("Obtained Marks Cannot Greater Than Max Marks.");
+            $("#myfirstnumber1").val('');
+	   // $("#mysecondnumber1").val('');
+	    $("#mypercenttextbox1").val('');	
+            //$("#myfirstnumber1").focus();
+            return false;
+        }else{
+            return true;    
+        }
+});
 </script>	
 		</tr>
 		<tr>	
@@ -182,6 +237,23 @@ function ShowPercentage() {
 
 ShowPercentage();
 $('input[type=number]').on('keyup', ShowPercentage);
+
+
+</script>
+<script>
+$( "#mysecondnumber2" ).on('change',function(){ 
+	if(parseInt($("#myfirstnumber2").val()) > parseInt($("#mysecondnumber2").val())) 
+        { 
+            alert("Obtained Marks Cannot Greater Than Max Marks.");
+            $("#myfirstnumber2").val('');
+	   // $("#mysecondnumber2").val('');
+	    $("#mypercenttextbox2").val('');	
+           // $("#myfirstnumber2").focus();
+            return false;
+        }else{
+            return true;    
+        }
+});
 </script>
 		</tr>
 		<tr>	
@@ -214,6 +286,21 @@ function ShowPercentage() {
 ShowPercentage();
 $('input[type=number]').on('keyup', ShowPercentage);
 </script>
+<script>
+$( "#mysecondnumber3" ).on('change',function(){ 
+	if(parseInt($("#myfirstnumber3").val()) > parseInt($("#mysecondnumber3").val())) 
+        { 
+            alert("Obtained Marks Cannot Greater Than Max Marks.");
+            $("#myfirstnumber3").val('');
+	   // $("#mysecondnumber3").val('');
+	    $("#mypercenttextbox3").val('');	
+          //  $("#myfirstnumber3").focus();
+            return false;
+        }else{
+            return true;    
+        }
+});
+</script>
 		</tr>
 		<tr>	
 			<td style="margin-left:120px;background-color:#7e7e7e;color:white;font-weight:bold;">5</td>
@@ -245,6 +332,21 @@ $("#mypercenttextbox4").val(Math.round(FirstNumVal/(SecondNumVal) * 100)  + '%')
 ShowPercentage();
 $('input[type=number]').on('keyup', ShowPercentage);
 </script>
+<script>
+$( "#mysecondnumber4" ).on('change',function(){ 
+	if(parseInt($("#myfirstnumber4").val()) > parseInt($("#mysecondnumber4").val())) 
+        { 
+            alert("Obtained Marks Cannot Greater Than Max Marks.");
+            $("#myfirstnumber4").val('');
+	  //  $("#mysecondnumber4").val('');
+	    $("#mypercenttextbox4").val('');	
+           // $("#myfirstnumber4").focus();
+            return false;
+        }else{
+            return true;    
+        }
+});
+</script>
 		</tr>
 		
 		</tbody>
@@ -254,7 +356,7 @@ $('input[type=number]').on('keyup', ShowPercentage);
 		
 	<table style="margin-top:50px;width:100%;border:2px solid black;">
 		<thead>
-			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Details if any employment</th>
+			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Details if any employment (Optional)</th>
 		</thead>
 		<thead style="font-size:20px;">
 			<tr><th>Name of the university/institute</th><th>Name of post</th><th>Present pay & grade</th><th>Nature of appointment</th>

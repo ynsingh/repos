@@ -87,13 +87,13 @@ echo "</center>";
     	<form action="<?php echo site_url('student/student_step0'); ?>" method="POST" >
 	   <table>
 		<tr><td>
-        	<label for="username">Application Number</label></td>
+        	<label for="username">Hall Ticket Number</label></td>
 		</td><td>
 		<?php //echo "<span style='color:red;font-size:18px;float:left;'>";echo form_error('Sanumber'); echo "</span>";?>
 		<?php //if(isset($msg)){ 
 			//echo $msg;
 			//} ?>
-        	<input type="text" name="Sanumber" placeholder="Enter Your Application No." autofocus/> <br>
+        	<input type="text" name="Sanumber" placeholder="Enter Your Hall Ticket Number" autofocus/> <br>
 		</td></tr>	
 		<tr ><td>
         	<label for="text">Program/Courses</label>
@@ -149,6 +149,7 @@ echo "</center>";
     	</form>
 	<center>
 	</div>
+<p> &nbsp; </p>
 	<?php 
 	 //$thisPage="studentForm";
 	 $this->load->view('template/footer'); ?>

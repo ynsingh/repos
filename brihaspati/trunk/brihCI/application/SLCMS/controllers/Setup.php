@@ -302,7 +302,8 @@ class Setup extends CI_Controller
 
     public function program() 
     {
-        $this->scresult = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
+	$this->prgcat = $this->common_model->get_list('programcategory');
+	$this->scresult = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
         $this->deptresult = $this->common_model->get_listspfic2('Department','dept_id', 'dept_name');
         $data['title'] = 'Add program';
         if(isset($_POST['program'])) 

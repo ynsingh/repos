@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 
 <body>
-<?php $this->load->view('template/watermark.php');?>
+<?php //$this->load->view('template/watermark.php');?>
 
 <img src="uploads/logo/logo2.jpg" alt="logo" style="width:100%;height:70px;">
 </br>
@@ -30,7 +30,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php $prgid=$this->commodel->get_listspfic1('admissionstudent_master','asm_coursename','asm_id',$row->ca_asmid)->asm_coursename;
                        		echo $progname = $this->commodel->get_listspfic1('program','prg_name','prg_id',$prgid)->prg_name.'('.$this->commodel->get_listspfic1('program','prg_branch','prg_id',$prgid)->prg_branch.')';?>
 				<br>				
-				<?php echo $row->ca_rollno;?></td>
+				<?php echo $row->ca_rollno;?><br>
+				<?php $fullname = $this->commodel->get_listspfic1('admissionstudent_master','asm_fname','asm_id',$row->ca_asmid)->asm_fname ." " .$this->commodel->get_listspfic1('admissionstudent_master','asm_mname','asm_id',$row->ca_asmid)->asm_mname ." " .$this->commodel->get_listspfic1('admissionstudent_master','asm_lname','asm_id',$row->ca_asmid)->asm_lname;
+				 echo $fullname ;?><br>
+				<?php 
+				$fathernme= " S/O ".$this->commodel->get_listspfic1('admissionstudent_parent','aspar_fathername','aspar_asmid',$row->ca_asmid)->aspar_fathername;
+				echo $fathernme;?></td>
 				<td width=2%>&nbsp;</td>	
 			<?php $i++;
 			if($i%5 == 0){?>

@@ -8,10 +8,7 @@ echo "<html>";
 echo "<head>";
 
     $this->load->view('template/header');
-    echo "<h1>"; 
-    echo "Welcome "; echo$this->session->userdata('username'); 
-    echo"</h1>";
-    $this->load->view('template/menu');
+     $this->load->view('template/menu');
 ?>
 <!--<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/message.css">-->
     <style>
@@ -22,7 +19,11 @@ echo "<head>";
 
 <?php
 echo "</head>";
-echo "<body>";
+echo "<body>";?>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+<?php
 	echo "<script>";
         function goBack() {
          window.history.back();
@@ -47,13 +48,13 @@ echo "<body>";
     echo"</br>";
 */
 ?>
-<br>
-<div align="left">
-<table style="margin-left:2%;width:100%;">
+
+<div >
+<table style="width:100%;">
 <tr><td>
 <?php echo anchor('map/programsubject/', " Subject Paper List" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
            $help_uri = site_url()."/help/helpdoc#ViewStudyCenterandProgramwithSeat";
-           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:65%\">Click for Help</b></a>";
+           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;\">Click for Help</b></a>";
 ?>
 </td></tr>
 </table>

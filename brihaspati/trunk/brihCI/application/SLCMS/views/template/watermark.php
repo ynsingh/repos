@@ -5,6 +5,6 @@
 	</style>
     </head>
     <body>
-<div id="watermark"><img src="assets/images/logogray.jpg" height="100%" width="100%"></div>
+<div id="watermark"><img src="assets/images/logogray.png" height="100%" width="100%"></div>
 </body>
 </html>

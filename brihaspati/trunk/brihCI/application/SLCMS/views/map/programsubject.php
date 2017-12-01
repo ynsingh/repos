@@ -6,11 +6,9 @@
 
 echo "<html>";
 echo "<head>";
-
+echo "<title>".'IGNTU - Program Subject List'."</title>";
     $this->load->view('template/header');
-    echo "<h1>"; 
-    echo "Welcome "; echo$this->session->userdata('username'); 
-    echo"</h1>";
+   
     $this->load->view('template/menu');
 ?>
    <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/css/message.css">-->
@@ -24,6 +22,13 @@ echo "<head>";
 <?php
 echo "</head>";
 echo "<body>";
+?>
+<div style="margin-top:0px;"></div>
+<p>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
+</p>
+
+<?php
 /*
     echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
     echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -42,9 +47,9 @@ echo "<body>";
     echo"</br>";
 */
 ?>
-<br>
+
 <div align="left">
-<center><table style="width:70%">
+<center><table style="width:100%">
 <tr><td>
 <?php echo anchor('map/addprogramsubject/', " Add Subject Paper" ,array('title' => 'Subject List' , 'class' => 'top_parent'));
 $help_uri = site_url()."/help/helpdoc#ViewSubjectPaperList";
@@ -56,7 +61,7 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
 
     <table width="100%">
     <tr><td>
-    <div  style="margin-left:2%;width:90%;">
+    <div  style="">
 
     <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning>','</div>');?>
     <!--?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?-->
@@ -76,11 +81,15 @@ echo "</center>";
     //echo "<div style=\"margin-left:10px;\">";
 
 /* Form */
-    echo "<table border=0 cellpadding=13 style=\"padding: 8px 8px 8px 20px;\" class=\"TFTable\">";
-    echo "<thead><tr align=\"center\"><th>Sr. No </th><th>Paper Category</th><th>Degree</th><th>Branch </th><th>Academic Year </th><th>Subject Name</th><th>Paper No</th><th>Paper Name</th><th>Paper Code</th><th>Paper Short Name</th><th>Available Action</th></tr></thead>";
+?>
+<div class="scroller_sub_page">
+<?php
+    echo "<table border=0  style=\"padding: 8px 8px 8px 20px;\" class=\"TFTable\">";
+    echo "<thead><tr align=\"left\"><th>Sr. No </th><th>Paper Category</th><th>Degree</th><th>Branch </th><th>Academic Year </th><th>Subject Name</th><th>Paper No</th><th>Paper Name</th><th>Paper Code</th><th>Paper Short Name</th><th>Available Action</th></tr></thead>";
 $this->load->model('Map_model',"mapmodel");
 $srno = 0;
-if( count($paperrecords) ) 
+
+if( count($paperrecords) ) {
 foreach($paperrecords as $row)
 {
     $subject_name = $this->mapmodel->get_subjectname($row->subp_sub_id);
@@ -101,7 +110,7 @@ foreach($paperrecords as $row)
     echo "<td>"; echo $row->subp_short; echo"</td>";
     echo "<td>"; echo anchor('map/editprogramsubject/' .$row->subp_id  , "Edit", array('title' => 'Edit Subject Program', 'class' => 'red-link')); echo "&nbsp;&nbsp;&nbsp;"; //echo anchor('map/deleteprogramsubject/' .$row->subp_id ,"Delete", array('title' => 'Delete Subject', 'class' => 'red-link')); echo"</td>";
     echo "</tr>";
-}
+} }
    else{ 
     echo "<tr>";
          echo "<td colspan= \"11\" align=\"center\"> No Records found...!</td>";
@@ -110,6 +119,7 @@ foreach($paperrecords as $row)
 
 
     echo "</table>";
+   echo "</div>";
 /* Form */
     echo"</body>";
     echo "<div align=\"center\">";  
