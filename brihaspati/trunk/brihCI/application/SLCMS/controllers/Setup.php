@@ -302,8 +302,7 @@ class Setup extends CI_Controller
 
     public function program() 
     {
-	$this->prgcat = $this->common_model->get_list('programcategory');
-	$this->scresult = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
+        $this->scresult = $this->common_model->get_listspfic2('study_center','sc_id', 'sc_name');
         $this->deptresult = $this->common_model->get_listspfic2('Department','dept_id', 'dept_name');
         $data['title'] = 'Add program';
         if(isset($_POST['program'])) 
@@ -2624,4 +2623,163 @@ class Setup extends CI_Controller
     	redirect('setup/editseatsetting/');
     }//function end
 
+
+/*   -------------*********** Contact Us STARTS****************--------------------   */
+
+/** This function display the contact                                                                                                                                                        
+  * @param type  
+  * @return type
+  */
+ 
+       public function displaycontact() {
+ 
+        $this->result = $this->common_model->get_list('admissionstudent_contactus');
+        $this->logger->write_logmessage("view"," View Contact Us", "Contact Us details...");
+        $this->load->view('setup/displaycontact',$this->result);
+    }
+
+
+ public function contact() {
+
+        if(isset($_POST['contact'])) {
+            $this->form_validation->set_rules('ascu_name','Name','trim|xss_clean|required');
+            $this->form_validation->set_rules('ascu_emailid','Email Id','trim|xss_clean|required|valid_email|callback_isEmailExist');
+	    $this->form_validation->set_rules('ascu_phoneno','Phone No','trim|numeric|max_length[12]|required');
+            //if form validation true
+
+            if($this->form_validation->run()==TRUE){
+                $data = array(
+                    'ascu_name'=>ucwords(strtolower($_POST['ascu_name'])),
+                    'ascu_emailid'=>$_POST['ascu_emailid'],
+                    'ascu_phoneno'=>$_POST['ascu_phoneno'],
+                );
+                $contactflag=$this->common_model->insertrec('admissionstudent_contactus', $data) ; 
+                if (!$contactflag)
+                {
+                   $this->logger->write_logmessage("insert"," Error in adding contact us ", " Contact Us data insert error . "  );
+                   $this->logger->write_dblogmessage("insert"," Error in adding contact us ", " Contact Us data insert error . " );
+                   $this->session->set_flashdata('err_message','Error in adding contact - ' . $_POST['name'] , 'error');
+                    redirect('setup/contact');
+
+                }
+                else{
+                  $this->logger->write_logmessage("insert"," add contact us ", "Contact us record added successfully..."  );
+                  $this->logger->write_dblogmessage("insert"," add contact us ", "Contact us record added successfully..." );
+                  $this->session->set_flashdata("success", "Contact us added successfully...");
+                    redirect("setup/displaycontact");
+                }
+
+            }
+        }
+        $this->load->view('setup/contact');
+    }
+/** This function check for duplicate Contact Us
+     * @return type
+    */
+
+    public function isEmailExist($ascu_emailid) {
+
+        $is_exist = $this->common_model->isduplicate('admissionstudent_contactus','ascu_emailid',$ascu_emailid);
+        if ($is_exist)
+        {
+            $this->form_validation->set_message('isEmailExist', 'Email Id is already exist.');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+ /**This function is used for update Contact Us records
+     * @param type $id Contact id
+     * @return type
+     */
+
+        public function  editcontact($ascu_id) {
+        $this->db->from('admissionstudent_contactus')->where('ascu_id', $ascu_id);
+        $con_data = $this->db->get();
+        $editeset_data = $con_data->row();
+
+        /* Form fields */
+
+        $data['ascu_name'] = array(
+                 'name' => 'ascu_name',
+                 'id' => 'ascu_name',
+                 'maxlength' => '50',
+                 'size' => '40',
+                 'value' => $editeset_data-> ascu_name,
+                 );
+
+        $data['ascu_emailid'] = array(
+                'name' => 'ascu_emailid',
+                'id' => 'ascu_emailid',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editeset_data->ascu_emailid,
+
+                );
+        $data['ascu_phoneno'] = array(
+                'name' => 'ascu_phoneno',
+                'id' => 'ascu_phoneno',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editeset_data->ascu_phoneno,
+
+                );
+        $data['ascu_id'] = $ascu_id;
+
+      /*Form Validation*/
+        $this->form_validation->set_rules('ascu_name','Name','trim|required');
+        $this->form_validation->set_rules('ascu_emailid','Email Id','trim|required|xss_clean');
+        $this->form_validation->set_rules('ascu_phoneno','Mobile No','trim|numeric|max_length[12]|required');
+
+        /* Re-populating form */
+        if ($_POST)
+        {
+            $data['ascu_name']['value'] = $this->input->post('ascu_name', TRUE);
+            $data['ascu_emailid']['value'] = $this->input->post('ascu_emailid', TRUE);
+            $data['ascu_phoneno']['value'] = $this->input->post('ascu_phoneno', TRUE);
+        }
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('setup/editcontact', $data);
+            return;
+        }
+        else{
+
+            $ascu_name = $this->input->post('ascu_name', TRUE);
+            $ascu_emailid = $this->input->post('ascu_emailid', TRUE);
+            $ascu_phoneno = $this->input->post('ascu_phoneno', TRUE);
+
+            $logmessage = "";
+            if($editeset_data-> ascu_name != $ascu_name)
+                    $logmessage = "Edit Contact Name " .$editeset_data->ascu_name. " changed by " .$ascu_name;
+            if($editeset_data-> ascu_emailid != $ascu_emailid)
+                     $logmessage = "Edit Email Id " .$editeset_data->ascu_emailid. " changed by " .$ascu_emailid;
+            if($editeset_data->ascu_phoneno != $ascu_phoneno)
+                $logmessage = "Edit Mobile No" .$editeset_data->ascu_phoneno. " changed by " .$ascu_phoneno;
+            $update_data = array(
+               'ascu_name' => $ascu_name,
+               'ascu_emailid' =>$ascu_emailid,
+               'ascu_phoneno' => $ascu_phoneno,
+               );
+
+        $contflag=$this->common_model->updaterec('admissionstudent_contactus', $update_data,'ascu_id', $ascu_id);
+        if(!$contflag)
+            {
+                $this->logger->write_logmessage("error","Edit contact us Setting error", "Edit contact us Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("error","Edit contact us Setting error", "Edit contact us Setting details. $logmessage ");
+                $this->session->set_flashdata('err_message','Error updating contact us - ' . $logmessage . '.', 'error');
+                $this->load->view('setup/editcontact', $data);
+            }
+            else{
+                $this->logger->write_logmessage("update","Edit contact us Setting by".$this->session->userdata('username') , "Edit contact us Setting details. $logmessage ");
+                $this->logger->write_dblogmessage("update","Edit contact us Setting by".$this->session->userdata('username') , "Edit contact us Setting details. $logmessage ");
+                $this->session->set_flashdata('success','Contact Us detail updated successfully..');
+                redirect('setup/displaycontact');
+               }
+        }//else
+        redirect('setup/editcontact');
+    }
 }
