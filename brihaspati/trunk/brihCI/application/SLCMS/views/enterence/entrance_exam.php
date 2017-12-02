@@ -1,4 +1,4 @@
-<table style="margin-top:50px;width:100%;border:2px solid black;">
+<table style="margin-top:10px;width:100%;border:2px solid black;">
 		<thead>
 			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Other Entrance exam details (Optional)</th>
 		</thead>

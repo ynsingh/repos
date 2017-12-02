@@ -1,7 +1,7 @@
-<!-------------------------------------------------------
+<!-- -----------------------------------------------------
     -- @name student_step5.php --	
     -- @author Sumit saxena(sumitsesaxena@gmail.com) --
---------------------------------------------------------->
+------------------------------------------------------- -->
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 //if (isset($this->session->userdata['sm_id'])) {
@@ -37,12 +37,10 @@ function myFunction() {
 echo "<center>";
 
 	if($this->session->flashdata('msg')){
-echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:40px;color:green;'>";
+	echo "<div style='font-size:20px;text-align:center;background-color:#DFF2BF;width:50%;height:40px;color:green;'>";
 	echo $this->session->flashdata('msg');
-echo "<div>";	
+	echo "<div>";	
 }
-
-
 	if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
 		//echo "<div style=\"margin-left:30px;width:1700px;align:left;font-size:18px;height:10px;\" class=\"isa_success\">";
 	echo "<table style=\"100%;font-size:18px;height:30px;border:1px solid white;\" class=\"isa_success\">";			
@@ -58,14 +56,14 @@ echo "<div>";
 		//echo "<div id='error'>";
 		//echo '<div style="margin-left:40px;">'.$_SESSION['error'].'</div>';
 		//echo "</div>";
-	echo "<table id='error'>";			
+		echo "<table id='error'>";			
 		echo "<tr>";
 			echo "<td style='font-size:18px;'>";
 				echo $_SESSION['error'];
 			echo "</td>";
 		echo "<tr>";
 		//echo "</div>";
-	echo "</table>";
+		echo "</table>";
 	}
 echo "</center>";
 ?>
@@ -84,16 +82,10 @@ echo "</center>";
         <?php
         };
 	?>  
-	
-
-
       </div>
 
 <page size="A4">
 	<div id="body">
-	
-</br></br>
-
 <center>
 	<div id="formbody">
 
@@ -103,37 +95,40 @@ echo "</center>";
 			<img src="<?php echo base_url(); ?>uploads/logo/logo2.jpg" alt="logo">
 		</div> 
 		</header>
-		<div class="textname">Admission Form Detail</div>
-		  <div id="photo">
-			<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$photo); ?>" >
-		  </div>
-
-		<table class="TFtable" id="personal" style="width:100%;">
-			<tr>
-				<td>Roll No. :</td>
-				<td><?php echo $rollno;?></td>
-				<td>Course Applied For :</td>
-			        <td><?php echo $prgname.'('.$prgbranch.')';?></td></tr>
-			<tr>
-			<tr>
-				<td>Study Center</td>
+		<div class="textname">Entrance Application Form Details</div>
+		<table width="100%" border=0>
+		<tr><td>
+			<table class="TFtable" id="personal" style="width:100%;border:0px;">
+                        <tr>
+                                <td>Course Applied For :</td>
+                                <td><?php echo $prgname.'('.$prgbranch.')';?></td>
+                        </tr>
+                        <tr>
+                                <td>Study Center :</td>
 				<td><?php echo $scname;?></td>
-				<td>Enterence Exam Center</td>
-				<td><?php echo $exname;?></td>
-			</tr>
-		</table>
+			</tr><tr>
+                                <td>Enterence Exam Center :</td>
+                                <td><?php echo $exname ." ( ".$excode ." )";?></td>
+                        </tr>
+                	</table>
+		</td><td>
+			<div id="photo">
+                        <img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$photo); ?>" >
+                  	</div>
+		</td></tr>
+		</table>	
 		<table class="TFtable" id="personal" style="width:100%;">
-			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Personal Detail</th></thead>
+			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Personal Details</th></thead>
 			
 			
 			<tr>	
 				<td>Name of the candidate :</td>
 				<td><?php echo $name;?></td>
-				<td>E-mail</td>
+				<td>E-mail :</td>
 				<td><?php echo $email;?></td>
 			</tr>
 			<tr>
-				<td>Mobile/Phone Number</td>
+				<td>Mobile/Phone Number :</td>
 				<td><?php echo $mobile;?></td>
 				<td >Gender :</td>
 				<td><?php echo $gender;?></td>
@@ -142,21 +137,21 @@ echo "</center>";
 			<tr>
 				<td>Date of birth :</td>
 				<td><?php echo $dob;?></td>
-				<td>Age</td>
+				<td>Age :</td>
 				<td><?php echo $age.'Years';?></td>
 				
 			</tr>
 			<tr>
-				<td>Maritial Status</td>
+				<td>Maritial Status :</td>
 				<td><?php echo $mastatus;?></td>
-				<td>Category</td>
+				<td>Category :</td>
 				<td><?php echo $category;?></td>
 
 			</tr>
 			<tr>
-				<td>Nationality</td>
+				<td>Nationality :</td>
 				<td><?php echo $nationality;?></td>
-				<td>Are You Physically Handicapped ?</td>
+				<td>Are You Physically Handicapped ? :</td>
 				<td><?php echo $phyhandi;?></td>
 			</tr>
 			<tr>
@@ -174,7 +169,7 @@ echo "</center>";
 		</table>
 	
 		<table class="TFtable" id="personal" style="width:100%;">
-			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Parents Info</th></thead>
+			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Parent Informations</th></thead>
 			<tr>
 				<td>Mother Name :</td>
 				<td><?php echo $mname;?></td>
@@ -197,7 +192,7 @@ echo "</center>";
 		</table>
 
 		<table class="TFtable" id="padd" style="width:100%;">
-			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Address Detail</th></thead>
+			<thead id="styleTable"><th colspan=7  style="text-align:justify;">Address Details</th></thead>
 			<thead>
 			<tr>
 				<th><span style="float:left;">Address</span></th>
@@ -208,28 +203,28 @@ echo "</center>";
 
 			<tbody>
 				<tr>
-					<td>H.No./Apartment</td><td><?php echo $paddress; ?></td>
+					<td>H.No./Apartment :</td><td><?php echo $paddress; ?></td>
 					<td colspan=2><?php echo $caddress;?></td>
 				</tr>
 				<tr>
-					<td>Street/Village/Taluka/city</td><td><?php echo $pcity;?></td>
+					<td>Street/Village/Taluka/city :</td><td><?php echo $pcity;?></td>
 					<td colspan=2><?php echo $ccity;?></td>
 				</tr>
 				<!---<tr>
-					<td>Post office</td><td><?php echo $this->ppost;?></td>
-					<td colspan=2><?php echo $this->cpost;?></td>
+					<td>Post office</td><td><?php //echo $this->ppost;?></td>
+					<td colspan=2><?php //echo $this->cpost;?></td>
 				</tr>--->
 				
 				<tr>
-					<td>State</td><td><?php echo $pstate;?></td>
+					<td>State :</td><td><?php echo $pstate;?></td>
 					<td colspan=2><?php echo $cstate;?></td>
 				</tr>
 				<tr>
-					<td>District</td><td><?php echo $pcountry;?></td>
+					<td>Country :</td><td><?php echo $pcountry;?></td>
 					<td colspan=2><?php echo $ccountry;?></td>
 				</tr>
 				<tr>
-					<td>Pincode</td><td><?php echo $ppincode;?></td>
+					<td>Pincode :</td><td><?php echo $ppincode;?></td>
 					<td colspan=2><?php echo $cpincode;?></td>
 				</tr>
 				
@@ -250,7 +245,7 @@ echo "</center>";
 </br>
 		<table class="TFtable" id="academic" style="width:100%;">	
 			<thead id="styleTable"><th colspan=7 style="text-align:justify;">
-			Academic Detail
+			Academic Details
 			</th></thead>
 			<thead id="acadhead2">
 			<tr>
@@ -281,7 +276,7 @@ echo "</center>";
 	<?php if(!empty($admission_entexm)){ ?>
 		<table class="TFtable" id="academic" style="width:100%;">	
 			<thead id="styleTable"><th colspan=7 style="text-align:justify;">
-			Enterance Exam Detail
+			Enterance Exam Details
 			</th></thead>
 			<thead id="acadhead2">
 			<tr>
@@ -315,7 +310,7 @@ echo "</center>";
 	<?php if(!empty($admission_employment)){ ?>
 		<table class="TFtable" id="academic" style="width:100%;">	
 			<thead id="styleTable"><th colspan=7 style="text-align:justify;">
-			Employement Detail
+			Employement Details
 			</th></thead>
 			<thead id="acadhead2">
 			<tr>
@@ -349,7 +344,7 @@ echo "</center>";
 		</br>
 		<table class="TFtable" id="feegap" style="width:100%;">
 			<thead id="styleTable"><th colspan=6  style="text-align:justify;">
-			<span>Fees Detail</span></th></thead>
+			<span>Fees Details</span></th></thead>
 			<thead id="acadhead2"><tr>
 			<th><span style="float:left;">Fees Type</span></th>
 			<th><span style="float:left;">Amount</span></th>
@@ -387,8 +382,8 @@ echo "</center>";
 		<table id="sign" style="width:98%;">
 			<tr>
 			<td style="float:right;">
-				<label class="signlabel">Student Signature</label></br>
-				<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$signature); ?>" ></td>
+				<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$signature); ?>" ></br>
+				<label class="signlabel">Student Signature</label></td>
 				
 			</tr>
 		</table>
@@ -414,7 +409,6 @@ echo "</center>";
 </center>
 </div>
 </page>
-</br></br></br></br></br>
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 <div id="foohide">
 <?php $this->load->view('template/footer'); ?>

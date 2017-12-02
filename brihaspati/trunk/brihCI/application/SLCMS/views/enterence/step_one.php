@@ -72,7 +72,7 @@ function filladd()
  	<div id="body">
 	<?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-	<nav> 	<h2><?php echo $email;?></h2></nav></br>
+	<nav> 	<h2><?php echo "Welcome ".$email;?></h2></nav></br>
 	<?php $this->load->view('enterence/admission_steps');?>
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
 
@@ -287,7 +287,7 @@ function filladd()
 
 		<td>	
 			<label>Aadhar no.</label></br>
-			<input type="text" name="entaadhar" placeholder="Enter Aadhar Number" MaxLength="13" value="<?php echo $mobile; ?>" >				
+			<input type="text" name="entaadhar" placeholder="Enter Aadhar Number" MaxLength="13" value="<?php echo isset($_POST["entaadhar"]) ? $_POST["entaadhar"] : ''; ?>" >				
 		<td/>
 
 	</tr>
@@ -325,18 +325,13 @@ function filladd()
 			<input type="text" name="entpstate" placeholder="Enter Your State" id="state" value="<?php echo isset($_POST["entpstate"]) ? $_POST["entpstate"] : ''; ?>"></td></tr><tr>
 			<td><label for="nnumber">Postal Code</label></br>
 			<input type="text" name="entpcode" placeholder="Enter Your Postal Code" id="pcode" value="<?php echo isset($_POST["entpcode"]) ? $_POST["entpcode"] : ''; ?>"></td></tr>
-			
-	
 			<tr>
 				<td><label for="nnumber">Country</label></br>
 			<input type="text" name="entpcountry" placeholder="Enter Your Country" id="country" value="<?php echo isset($_POST["entpcountry"]) ? $_POST["entpcountry"] : ''; ?>"></td>
-			
-			
-			
-</table>
+		</table>
 		</td>
 
-		<td>
+		<td colspan=2>
 
 		<table style="width:100%;">
 				<tr><td style="background-color:black;color:white;font-size:20px;text-align:center;" >Correspondence Address</td></tr>
@@ -353,16 +348,11 @@ function filladd()
 			<td><label for="nnumber">State</label></br>
 			<input type="text" name="entcostate" placeholder="Enter Your State" id="state1" value="<?php echo isset($_POST["entcostate"]) ? $_POST["entcostate"] : ''; ?>"></td></tr><tr>
 			<td><label for="nnumber">Postal Code</label></br>
-			<input type="text" name="entpcode" placeholder="Enter Your Postal Code" id="pcode1" value="<?php echo isset($_POST["entpcode"]) ? $_POST["entpcode"] : ''; ?>"></td></tr>
-			
-	
+			<input type="text" name="entcocode" placeholder="Enter Your Postal Code" id="pcode1" value="<?php echo isset($_POST["entcocode"]) ? $_POST["entcocode"] : ''; ?>"></td></tr>
 			<tr>
 				<td><label for="nnumber">Country</label></br>
 			<input type="text" name="entcocountry" placeholder="Enter Your Country" id="country1" value="<?php echo isset($_POST["entcocountry"]) ? $_POST["entcocountry"] : ''; ?>"></td>
-			
-			
-			
-</table>
+		</table>
 		</td>		
 	</tr>
 </table>
@@ -411,7 +401,7 @@ function filladd()
 		 
 	</table>
 
-</br></br>
+</br>
 <table style="width:10%;">
 	<tr>
 			<td><input type="submit" name="addstudent" value="Submit" style="width:100%;height:35px;font-size:18px;"></td>
@@ -419,12 +409,10 @@ function filladd()
 		</tr>
 </table>
 
-
-
 </form>
 
 </center>
-</br></br></br></br></br>
+
 
 <?php //$thisPage2="studentaddDetail";
 	$this->load->view('template/footer'); ?>

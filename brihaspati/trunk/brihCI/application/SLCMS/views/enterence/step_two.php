@@ -18,7 +18,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.min.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js" ></script>
 	
-	
 <style type="text/css">
 label{font-size:18px;}
 input[type='text']{font-size:17px;height:35px;background-color:white;width:99%;font-weight:bold;}
@@ -53,7 +52,7 @@ select{width:100%;font-size:17px;height:35px;font-weight:bold;width:99%;}
 	<div id="body">
 	<?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-	<nav> 	<h2><?php echo $email;?></h2></nav></br>
+	<nav> 	<h2><?php echo "Welcome ".$email;?></h2></nav></br>
 	<?php $this->load->view('enterence/admission_steps');?>
 <!--------------------------------------------------------ERROR DISPLAY-------------------------------------------------------------->
 
@@ -70,13 +69,11 @@ select{width:100%;font-size:17px;height:35px;font-weight:bold;width:99%;}
         <?php
         };
 	?>  
-	</br> 
 <center>
  <table  style="background-color:#f1f1f1;" align="">
 
-
 <form action="<?php echo site_url('enterence/step_two'); ?>"  method="POST">
-	<table style="margin-top:20px;width:100%;border:2px solid black;">
+	<table style="width:100%;border:2px solid black;">
 		<thead>
 			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Education Details</th>
 		</thead>
@@ -99,17 +96,17 @@ select{width:100%;font-size:17px;height:35px;font-weight:bold;width:99%;}
 
 			<td>
 			<input type="number" placeholder="Marks obtained" class="1" id="myfirstnumber"  name="Hmobtain" value="<?php echo isset($_POST["Hmobtain"]) ? $_POST["Hmobtain"] : '';?>"/>
-<!--<input type="text" placeholder="Marks obtained" name="Hmobtain" style="width:98%;" value="<?php echo isset($_POST["Hmobtain"]) ? $_POST["Hmobtain"] : ''; ?>">-->
+<!--<input type="text" placeholder="Marks obtained" name="Hmobtain" style="width:98%;" value="<?php //echo isset($_POST["Hmobtain"]) ? $_POST["Hmobtain"] : ''; ?>">-->
 
 			</td>
 			<td>
 			<input type="number" placeholder="Max Marks" class="1" id="mysecondnumber" name="Hmmarks" value="<?php echo isset($_POST["Hmmarks"]) ? $_POST["Hmmarks"] : ''; ?>"/>
-	<!--<input type="text" placeholder="Max Marks" name="Hmmarks" style=" width:98%;" value="<?php echo isset($_POST["Hmmarks"]) ? $_POST["Hmmarks"] : ''; ?>">-->
+	<!--<input type="text" placeholder="Max Marks" name="Hmmarks" style=" width:98%;" value="<?php // echo isset($_POST["Hmmarks"]) ? $_POST["Hmmarks"] : ''; ?>">-->
 
 			</td>
 			<td>
 			<input type="percentage" placeholder="%" class="2" id="mypercenttextbox" name="Hpercentage" value="<?php echo isset($_POST["Hpercentage"]) ? $_POST["Hpercentage"] : ''; ?>" readonly>
-<!--<input type="text" placeholder="%" name="Hpercentage" value="P" style="width:98%; " value="<?php echo isset($_POST["Hpercentage"]) ? $_POST["Hpercentage"] : ''; ?>">--->
+<!--<input type="text" placeholder="%" name="Hpercentage" value="P" style="width:98%; " value="<?php //echo isset($_POST["Hpercentage"]) ? $_POST["Hpercentage"] : ''; ?>">--->
 
 			</td>
 			<td><input type="text" placeholder="Passed/Appeared" name="Hpassed" style="" value="<?php echo isset($_POST["Hpassed"]) ? $_POST["Hpassed"] : ''; ?>"></td>
@@ -171,15 +168,15 @@ $( "#mysecondnumber" ).on('change',function(){
 			
 			<td>
 			<input type="number" placeholder="Marks obtained" class="1" id="myfirstnumber1" name="Imobtain" value="<?php echo isset($_POST["Imobtain"]) ? $_POST["Imobtain"] : ''; ?>"/>
-<!--<input type="text"  placeholder="Marks obtained" name="Imobtain" style="width:98%;" value="<?php echo isset($_POST["Imobtain"]) ? $_POST["Imobtain"] : ''; ?>">--->
+<!--<input type="text"  placeholder="Marks obtained" name="Imobtain" style="width:98%;" value="<?php //echo isset($_POST["Imobtain"]) ? $_POST["Imobtain"] : ''; ?>">--->
 
 </td>
 			<td>
 			<input type="number" placeholder="Max Marks" class="1" id="mysecondnumber1" name="Immarks" value="<?php echo isset($_POST["Immarks"]) ? $_POST["Immarks"] : ''; ?>"/>
-<!--<input type="text" placeholder="Max Marks" name="Immarks" style=" width:98%;" value="<?php echo isset($_POST["Immarks"]) ? $_POST["Immarks"] : ''; ?>">---></td>
+<!--<input type="text" placeholder="Max Marks" name="Immarks" style=" width:98%;" value="<?php //echo isset($_POST["Immarks"]) ? $_POST["Immarks"] : ''; ?>">---></td>
 			<td>
 			<input type="percentage" placeholder="%" class="1" id="mypercenttextbox1" name="Ipercentage" value="<?php echo isset($_POST["Ipercentage"]) ? $_POST["Ipercentage"] : ''; ?>" readonly>
-<!--<input type="text"  placeholder="%" name="Ipercentage" style="width:98%; " value="<?php echo isset($_POST["Ipercentage"]) ? $_POST["Ipercentage"] : ''; ?>">--></td>
+<!--<input type="text"  placeholder="%" name="Ipercentage" style="width:98%; " value="<?php //echo isset($_POST["Ipercentage"]) ? $_POST["Ipercentage"] : ''; ?>">--></td>
 			<td><input type="text" placeholder="Passed/Appeared" name="Ipassed" style=" " value="<?php echo isset($_POST["Ipassed"]) ? $_POST["Ipassed"] : ''; ?>"></td>
 <script>
 function ShowPercentage() {
@@ -219,13 +216,13 @@ $( "#mysecondnumber1" ).on('change',function(){
 
 			<td>
 			<input type="number" placeholder="Marks obtained" class="1" id="myfirstnumber2" name="Gmobtain" value="<?php echo isset($_POST["Gmobtain"]) ? $_POST["Gmobtain"] : ''; ?>"/>
-<!--<input type="text"  placeholder="Marks obtained" name="Gmobtain" style="width:98%;" value="<?php echo isset($_POST["Gmobtain"]) ? $_POST["Gmobtain"] : ''; ?>">--></td>
+<!--<input type="text"  placeholder="Marks obtained" name="Gmobtain" style="width:98%;" value="<?php //echo isset($_POST["Gmobtain"]) ? $_POST["Gmobtain"] : ''; ?>">--></td>
 			<td>
 			<input type="number" placeholder="Max Marks" class="1" id="mysecondnumber2" name="Gmmarks" value="<?php echo isset($_POST["Gmmarks"]) ? $_POST["Gmmarks"] : ''; ?>"/>
-<!--<input type="text"  placeholder="Max Marks" name="Gmmarks" style=" width:98%;" value="<?php echo isset($_POST["Gmmarks"]) ? $_POST["Gmmarks"] : ''; ?>">--></td>
+<!--<input type="text"  placeholder="Max Marks" name="Gmmarks" style=" width:98%;" value="<?php //echo isset($_POST["Gmmarks"]) ? $_POST["Gmmarks"] : ''; ?>">--></td>
 			<td>
 			<input type="percentage" placeholder="%" class="1" id="mypercenttextbox2" name="Gpercentage" value="<?php echo isset($_POST["Gpercentage"]) ? $_POST["Gpercentage"] : ''; ?>" readonly>
-<!--<input type="text"  placeholder="%" name="Gpercentage" style="width:98%; " value="<?php echo isset($_POST["Gpercentage"]) ? $_POST["Gpercentage"] : ''; ?>">---></td>
+<!--<input type="text"  placeholder="%" name="Gpercentage" style="width:98%; " value="<?php //echo isset($_POST["Gpercentage"]) ? $_POST["Gpercentage"] : ''; ?>">---></td>
 			<td><input type="text"  placeholder="Passed/Appeared" name="Gpassed" style=" " value="<?php echo isset($_POST["Gpassed"]) ? $_POST["Gpassed"] : ''; ?>"></td>
 <script>
 function ShowPercentage() {
@@ -267,13 +264,13 @@ $( "#mysecondnumber2" ).on('change',function(){
 
 			<td>
 			<input type="number" placeholder="Marks obtained" class="1" id="myfirstnumber3" name="Pmobtain" value="<?php echo isset($_POST["Pmobtain"]) ? $_POST["Pmobtain"] : ''; ?>"/>
-<!--<input type="text"  placeholder="Marks obtained" name="Pmobtain" style="width:98%;" value="<?php echo isset($_POST["Pmobtain"]) ? $_POST["Pmobtain"] : ''; ?>">--></td>
+<!--<input type="text"  placeholder="Marks obtained" name="Pmobtain" style="width:98%;" value="<?php //echo isset($_POST["Pmobtain"]) ? $_POST["Pmobtain"] : ''; ?>">--></td>
 			<td>
 			<input type="number" placeholder="Max Marks" class="1" id="mysecondnumber3" name="Pmmarks" value="<?php echo isset($_POST["Pmmarks"]) ? $_POST["Pmmarks"] : ''; ?>"/>
-<!--<input type="text"  placeholder="Max Marks" name="Pmmarks" style=" width:98%;" value="<?php echo isset($_POST["Pmmarks"]) ? $_POST["Pmmarks"] : ''; ?>">---></td>
+<!--<input type="text"  placeholder="Max Marks" name="Pmmarks" style=" width:98%;" value="<?php //echo isset($_POST["Pmmarks"]) ? $_POST["Pmmarks"] : ''; ?>">---></td>
 			<td>
 			<input type="percentage" placeholder="%" class="1" id="mypercenttextbox3" name="Ppercentage" value="<?php echo isset($_POST["Ppercentage"]) ? $_POST["Ppercentage"] : ''; ?>" readonly>
-<!--<input type="text"  placeholder="%" name="Ppercentage" style="width:98%; " value="<?php echo isset($_POST["Ppercentage"]) ? $_POST["Ppercentage"] : ''; ?>">--></td>
+<!--<input type="text"  placeholder="%" name="Ppercentage" style="width:98%; " value="<?php //echo isset($_POST["Ppercentage"]) ? $_POST["Ppercentage"] : ''; ?>">--></td>
 			<td><input type="text"  placeholder="Passed/Appeared" name="Ppassed" style=" " value="<?php echo isset($_POST["Ppassed"]) ? $_POST["Ppassed"] : ''; ?>"></td>
 <script>
 function ShowPercentage() {
@@ -313,13 +310,13 @@ $( "#mysecondnumber3" ).on('change',function(){
 
 			<td>
 			<input type="number" placeholder="Marks obtained" class="1" id="myfirstnumber4" name="Amobtain" value="<?php echo isset($_POST["Amobtain"]) ? $_POST["Amobtain"] : ''; ?>"/>
-<!--<input type="text"  placeholder="Marks obtained" name="Amobtain" style="width:98%;" value="<?php echo isset($_POST["Amobtain"]) ? $_POST["Amobtain"] : ''; ?>">--></td>
+<!--<input type="text"  placeholder="Marks obtained" name="Amobtain" style="width:98%;" value="<?php //echo isset($_POST["Amobtain"]) ? $_POST["Amobtain"] : ''; ?>">--></td>
 			<td>
 			<input type="number" placeholder="Max Marks" class="1" id="mysecondnumber4" name="Ammarks" value="<?php echo isset($_POST["Ammarks"]) ? $_POST["Ammarks"] : ''; ?>"/>
-<!--<input type="text"  placeholder="Max M." name="Ammarks" style=" width:98%;" value="<?php echo isset($_POST["Ammarks"]) ? $_POST["Ammarks"] : ''; ?>">--></td>
+<!--<input type="text"  placeholder="Max M." name="Ammarks" style=" width:98%;" value="<?php //echo isset($_POST["Ammarks"]) ? $_POST["Ammarks"] : ''; ?>">--></td>
 			<td>
 			<input type="percentage" placeholder="%" class="1" id="mypercenttextbox4" name="Apercentage" value="<?php echo isset($_POST["Apercentage"]) ? $_POST["Apercentage"] : ''; ?>" readonly>
-<!--<input type="text"  placeholder="%" name="Apercentage" style="width:98%; " value="<?php echo isset($_POST["Apercentage"]) ? $_POST["Apercentage"] : ''; ?>">--></td>
+<!--<input type="text"  placeholder="%" name="Apercentage" style="width:98%; " value="<?php //echo isset($_POST["Apercentage"]) ? $_POST["Apercentage"] : ''; ?>">--></td>
 			<td><input type="text"  placeholder="Passed/Appeared" name="Apassed" style=" " value="<?php echo isset($_POST["Apassed"]) ? $_POST["Apassed"] : ''; ?>"></td>
 <script>
 function ShowPercentage() {
@@ -351,10 +348,10 @@ $( "#mysecondnumber4" ).on('change',function(){
 		
 		</tbody>
 		</table>
-	<!---------------------------------Enterance exam file add--------------------------------------->
+	<!-- -------------------------------Enterance exam file add------------------------------------- -->
 		<?php $this->load->view('enterence/entrance_exam');?>	
 		
-	<table style="margin-top:50px;width:100%;border:2px solid black;">
+	<table style="margin-top:10px;width:100%;border:2px solid black;">
 		<thead>
 			<th colspan=11 style="margin-left:120px;background-color:#7e7e7e;color:white;font-size:22px;">Details if any employment (Optional)</th>
 		</thead>
@@ -435,7 +432,7 @@ $( "#mysecondnumber4" ).on('change',function(){
 	</tbody>
 </table>
 
-</br></br>
+</br>
 <table style="margin-left:0px;font-size:22px;width:20%;">
 		<tr style="border:0px;">
 			<td style="border:0px;"><input type="submit" name="addeducation" value="Submit" style="width:100%;height:35px;font-size:18px;"></td>
@@ -448,7 +445,6 @@ $( "#mysecondnumber4" ).on('change',function(){
 </form>
 
 </center>
-</br></br></br></br>
 
 <?php //$thisPage2="studentaddDetail";
 	$this->load->view('template/footer'); ?>

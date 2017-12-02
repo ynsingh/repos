@@ -42,7 +42,7 @@ updateList = function() {
 	<div id="body">
 	<?php  // $thisPage2="studentaddDetail"; 
 		$this->load->view('template/header'); ?>
-		<nav><h2><?php echo $email;?></h2></nav>
+		<nav><h2><?php echo "Welcome ". $email;?></h2></nav>
 </br>
 	<?php $this->load->view('enterence/admission_steps');?>
 	

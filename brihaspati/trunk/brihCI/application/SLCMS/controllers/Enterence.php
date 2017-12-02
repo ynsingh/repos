@@ -1701,6 +1701,7 @@ class Enterence extends CI_Controller {
 			$excode = $stud_admission->asm_enterenceexamcenter;
 			$exname =  $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	
 			$data['exname'] = $exname;
+			$data['excode'] = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_code','eec_id',$excode)->eec_code;
 			$age = $stud_admission->asm_age;
 			$data['age'] = $age;
 			$mastatus = $stud_admission->asm_mstatus;
@@ -1819,6 +1820,7 @@ class Enterence extends CI_Controller {
 			$excode = $stud_admission->asm_enterenceexamcenter;
 			$exname =  $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_name','eec_id',$excode)->eec_name;	
 			$data['exname'] = $exname;
+			$data['excode'] = $this->commodel->get_listspfic1('admissionstudent_enterenceexamcenter','eec_code','eec_id',$excode)->eec_code;
 			$age = $stud_admission->asm_age;
 			$data['age'] = $age;
 			$mastatus = $stud_admission->asm_mstatus;

@@ -2645,6 +2645,7 @@ class Setup extends CI_Controller
             $this->form_validation->set_rules('ascu_name','Name','trim|xss_clean|required');
             $this->form_validation->set_rules('ascu_emailid','Email Id','trim|xss_clean|required|valid_email|callback_isEmailExist');
 	    $this->form_validation->set_rules('ascu_phoneno','Phone No','trim|numeric|max_length[12]|required');
+	    $this->form_validation->set_rules('ascu_regards','Regarding','trim|xss_clean');
             //if form validation true
 
             if($this->form_validation->run()==TRUE){
@@ -2652,6 +2653,7 @@ class Setup extends CI_Controller
                     'ascu_name'=>ucwords(strtolower($_POST['ascu_name'])),
                     'ascu_emailid'=>$_POST['ascu_emailid'],
                     'ascu_phoneno'=>$_POST['ascu_phoneno'],
+                    'ascu_regards'=>$_POST['ascu_regards'],
                 );
                 $contactflag=$this->common_model->insertrec('admissionstudent_contactus', $data) ; 
                 if (!$contactflag)
@@ -2726,12 +2728,21 @@ class Setup extends CI_Controller
                 'value' => $editeset_data->ascu_phoneno,
 
                 );
+        $data['ascu_regards'] = array(
+                'name' => 'ascu_regards',
+                'id' => 'ascu_regards',
+                'maxlength' => '50',
+                'size' => '40',
+                'value' => $editeset_data->ascu_regards,
+
+                );
         $data['ascu_id'] = $ascu_id;
 
       /*Form Validation*/
         $this->form_validation->set_rules('ascu_name','Name','trim|required');
         $this->form_validation->set_rules('ascu_emailid','Email Id','trim|required|xss_clean');
         $this->form_validation->set_rules('ascu_phoneno','Mobile No','trim|numeric|max_length[12]|required');
+        $this->form_validation->set_rules('ascu_regards','Regarding','trim|xss_clean');
 
         /* Re-populating form */
         if ($_POST)
@@ -2739,6 +2750,7 @@ class Setup extends CI_Controller
             $data['ascu_name']['value'] = $this->input->post('ascu_name', TRUE);
             $data['ascu_emailid']['value'] = $this->input->post('ascu_emailid', TRUE);
             $data['ascu_phoneno']['value'] = $this->input->post('ascu_phoneno', TRUE);
+            $data['ascu_regards']['value'] = $this->input->post('ascu_regards', TRUE);
         }
 
         if ($this->form_validation->run() == FALSE)
@@ -2751,6 +2763,7 @@ class Setup extends CI_Controller
             $ascu_name = $this->input->post('ascu_name', TRUE);
             $ascu_emailid = $this->input->post('ascu_emailid', TRUE);
             $ascu_phoneno = $this->input->post('ascu_phoneno', TRUE);
+            $ascu_regards = $this->input->post('ascu_regrads', TRUE);
 
             $logmessage = "";
             if($editeset_data-> ascu_name != $ascu_name)
@@ -2759,10 +2772,13 @@ class Setup extends CI_Controller
                      $logmessage = "Edit Email Id " .$editeset_data->ascu_emailid. " changed by " .$ascu_emailid;
             if($editeset_data->ascu_phoneno != $ascu_phoneno)
                 $logmessage = "Edit Mobile No" .$editeset_data->ascu_phoneno. " changed by " .$ascu_phoneno;
+            if($editeset_data->ascu_regards != $ascu_regards)
+                $logmessage = "Edit Regards" .$editeset_data->ascu_regards. " changed by " .$ascu_regards;
             $update_data = array(
                'ascu_name' => $ascu_name,
                'ascu_emailid' =>$ascu_emailid,
                'ascu_phoneno' => $ascu_phoneno,
+               'ascu_regards' => $ascu_regards,
                );
 
         $contflag=$this->common_model->updaterec('admissionstudent_contactus', $update_data,'ascu_id', $ascu_id);

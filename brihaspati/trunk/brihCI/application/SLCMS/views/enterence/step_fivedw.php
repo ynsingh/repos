@@ -14,36 +14,37 @@
 		<img src="uploads/logo/logo2.jpg" alt="logo" style="width:100%;height:70px;">
 	<table style="width:100%;">
 <tr><th>
-	<center style="background-color:#38B0DE;color:white;font-size:20px;opacity:1.5;font-weight:bold;">Admission Form</center>
+	<center style="background-color:#38B0DE;color:white;font-size:20px;opacity:1.5;font-weight:bold;">Entrance Application Form Details</center>
 </th></tr></table>
-	<table style="width:100%;">
-		<tr><td>
-		<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$photo); ?>" style="width:90px;height:80px;margin-left:80%;">
-		</td></tr>
-	</table>
-
-	<table style="width:100%;border:1px solid black;">
-		<tr>
-			<td>Roll No. :</td>
-			<td><?php echo $rollno;?></td>
-			<td>Course Applied For :</td>
-			<td><?php echo $prgname.'('.$prgbranch.')';?></td>
-		</tr>
-		<tr>
-			<td>Study Center :</td>
-			<td><?php echo $scname;?></td>
-			<td>Enterence Exam Center :</td>
-			<td><?php echo $exname;?></td>
-		</tr>
-	</table>
+		<table width="100%" border=0>
+                <tr><td>
+                        <table class="TFtable" id="personal" style="width:100%;border:0px;">
+                        <tr>
+                                <td>Course Applied For :</td>
+                                <td><?php echo $prgname.'('.$prgbranch.')';?></td>
+                        </tr>
+                        <tr>
+                                <td>Study Center :</td>
+                                <td><?php echo $scname;?></td>
+                        </tr><tr>
+                                <td>Enterence Exam Center :</td>
+                                <td><?php echo $exname ." ( ".$excode ." )";?></td>
+                        </tr>
+                        </table>
+                </td><td>
+                        <div id="photo">
+                        <img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$photo); ?>" >
+                        </div>
+                </td></tr>
+                </table>
 
         <table style="width:100%;border:1px solid black;">
-			<thead style="background-color:#38B0DE;color:white;font-size:18px;width:100%;"><tr><th colspan=5 style="text-align:justify;">Personal Detail</th></tr></thead>
+			<thead style="background-color:#38B0DE;color:white;font-size:18px;width:100%;"><tr><th colspan=5 style="text-align:justify;">Personal Details</th></tr></thead>
 			
 			<tr>	
 				<td>Name of the candidate :</td>
 				<td><?php echo $name;?></td>
-				<td>E-mail</td>
+				<td>E-mail :</td>
 				<td><?php echo $email;?></td>
 			</tr>
 			<tr>
@@ -85,7 +86,7 @@
 			</tr>
 		</table>
 		<table style="width:100%;margin-top:30px;border:1px solid black;">
-			<thead style="background-color:#38B0DE;color:white;font-size:18px;width:100%;"><tr><th colspan=4 style="text-align:justify;">Parent Detail</th></tr></thead>
+			<thead style="background-color:#38B0DE;color:white;font-size:18px;width:100%;"><tr><th colspan=4 style="text-align:justify;">Parent Details</th></tr></thead>
 			<tr>
 				<td>Mother Name :</td>
 				<td><?php echo $mname;?></td>
@@ -126,8 +127,8 @@
 					<td colspan=2><?php echo $ccity;?></td>
 				</tr>
 				<!---<tr>
-					<td>Post office</td><td><?php echo $this->ppost;?></td>
-					<td colspan=2><?php echo $this->cpost;?></td>
+					<td>Post office</td><td><?php //echo $this->ppost;?></td>
+					<td colspan=2><?php //echo $this->cpost;?></td>
 				</tr>--->
 				
 				<tr>
@@ -135,7 +136,7 @@
 					<td colspan=2><?php echo $cstate;?></td>
 				</tr>
 				<tr>
-					<td>District :</td><td><?php echo $pcountry;?></td>
+					<td>Country :</td><td><?php echo $pcountry;?></td>
 					<td colspan=2><?php echo $ccountry;?></td>
 				</tr>
 				<tr>
@@ -148,7 +149,7 @@
 
 		<table style="width:100%;margin-top:30px;border:1px solid black;" class="TFtable">	
 			<thead style="background-color:#38B0DE;color:white;font-size:18px;"><tr><th  style="text-align:justify;" colspan=7>
-			Academic Detail
+			Academic Details
 			</th></tr></thead>
 			<thead>
 			<tr>
@@ -180,7 +181,7 @@
 <?php if(!empty($admission_entexm)){ ?>
 		<table style="width:100%;margin-top:30px;border:1px solid black;">	
 			<thead style="background-color:#38B0DE;color:white;font-size:18px;"><tr><th colspan=7  style="text-align:justify;">
-			Enterance Exam Detail
+			Enterance Exam Details
 			</th></tr></thead>
 			<thead id="acadhead2">
 			<tr>
@@ -215,7 +216,7 @@
 	<?php if(!empty($admission_employment)){ ?>
 		<table style="width:100%;margin-top:30px;border:1px solid black;">	
 			<thead style="background-color:#38B0DE;color:white;font-size:18px;"><tr><th colspan=7 style="text-align:justify;">
-			Employement Detail
+			Employement Details
 			</th></tr></thead>
 			<thead id="acadhead2">
 			<tr>
@@ -248,7 +249,7 @@
 	<?php }?>
 		<table style="width:100%;margin-top:30px;border:1px solid black;">
 			<thead style="background-color:#38B0DE;color:white;font-size:18px;"><tr><th colspan=6  style="text-align:justify;">
-			<span>Fees Detail</span></tr></th></thead>
+			<span>Fees Details</span></tr></th></thead>
 			<thead id="acadhead2"><tr>
 			<th style="text-align:justify;font-weight:bold;">Fees Name</th>
 			<th style="text-align:justify;font-weight:bold;">Amount</th>
@@ -273,8 +274,8 @@
 		<table id="" style="width:100%;">
 			<tr>
 			<td style="float:right;">
-				<label style="margin-left:75%;font-weight:bold;">Student Signature</label></br>
-				<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$signature); ?>" style="width:150px;height:50px;margin-left:75%;"></td>
+				<img src="<?php echo base_url('uploads/SLCMS/enterence/'.$id.'/'.$signature); ?>" style="width:150px;height:50px;margin-left:75%;"></br>
+				<label style="margin-left:75%;font-weight:bold;">Student Signature</label></td>
 				
 			</tr>
 		</table>

@@ -29,7 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div>
 	<div id="body">
 	<?php $this->load->view('template/header'); ?>
-	<nav><h2><?php echo $this->email;?></h2></nav></br>
+	<nav><h2><?php echo "Welcome ". $this->email;?></h2></nav></br>
 	<?php $this->load->view('enterence/admission_steps');?>
 
 	<?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -215,7 +215,6 @@ document.getElementById("myform").reset();
 </div>
 </form>
 </center>
-</br></br></br></br>
 <!--------------------------------------------------------------------------------------------------------------------------------------------------->
 
 <?php $this->load->view('template/footer'); ?>

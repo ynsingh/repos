@@ -69,8 +69,12 @@
                             <td><input type="text" name="ascu_emailid"size="50"  class="form-control"/> <br></td>
                         </tr>
                         <tr>
+                        <tr>
                             <td><label for="ascu_phoneno" class="control-label">Mobile No:</label></td>
                             <td><input type="text" name="ascu_phoneno"  size="50" /> <br></td>
+                        </tr>
+                            <td><label for="ascu_regards" class="control-label">Regarding:</label></td>
+                            <td><input type="text" name="ascu_regards"  size="50" /> <br></td>
                         </tr>
                         <tr>
                             <td></td>

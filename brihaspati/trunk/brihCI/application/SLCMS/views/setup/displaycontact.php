@@ -60,7 +60,7 @@
                     echo anchor('setup/contact/', "Add Contact Us" ,array('title' => ' Add Contact Us Detail ' , 'class' => 'top_parent'));
                     echo "</td>";
                     echo "<td align=\"center\" width=\"34%\">";
-                    echo "<b>Contact Us Details</b>";
+                    echo "<b>Entrance Contact Us Details</b>";
                     echo "</td>";
                     echo "<td align=\"right\" width=\"33%\">";
                     $help_uri = site_url()."/help/helpdoc#ViewContactUs";
@@ -96,6 +96,7 @@
                     <th>Name</th>
                     <th>Email Id</th>
                     <th>Mobile No</th>
+                    <th>Regarding</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -109,6 +110,7 @@
                             <td><?php echo $row->ascu_name; ?></td>
                             <td><?php echo $row->ascu_emailid; ?></td>
                             <td><?php echo $row->ascu_phoneno; ?></td>
+                            <td><?php echo $row->ascu_regards; ?></td>
 
                             <td> <?php // echo anchor("setup/delete_fees/{$row->fm_id}","Delete",array('title' => 'Delete' , 'class' => 'red-link' ,'onclick' => "return confirm('Are you sure you want to delete this record')")); ?>&nbsp;
                             &nbsp;<?php  echo anchor("setup/editcontact/{$row->ascu_id}","Edit",array('title' => 'Edit Details' , 'class' => 'red-link')); ?></td>

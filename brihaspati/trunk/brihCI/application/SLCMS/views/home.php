@@ -109,7 +109,7 @@ body{font-family: "Helvetica Neue","Lucida Grande","Helvetica Neue",Arial,sans-s
         echo "<tr>";
         echo "<td>";
         echo "<table width=\"100%\" border=\"0\" style=\"color: black; border-collapse:collapse;\">";
-        echo "<table style=\"padding: 8px 8px 8px 20px;font-size:16px;\">";
+        echo "<table style=\"padding: 8px 8px 8px 20px;\">";
         echo "<tbody align=\"left\">";
 	echo "<tr><td style=\"padding: 8px 8px 8px 0px;\"> <b>Program Name</b></td><td style=\"padding: 8px 8px 8px 0px;\"><b>Semester</b></td><td style=\"padding: 8px 8px 8px 0px;\"><b>Category</b></td> <td style=\"padding: 8px 8px 8px 0px;\"><b>Gender</b></td> <td style=\"padding: 8px 8px 8px 0px;\"><b> Fees</b></td></tr>";
 	if(!empty($frecord)){
