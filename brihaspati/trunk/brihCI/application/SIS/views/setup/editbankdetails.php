@@ -6,10 +6,11 @@
 <title>Edit bank detail</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
     </head>
     <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
  <script>
         function goBack() {
         window.history.back();
@@ -37,7 +38,7 @@
         ?>--!>
         <table width="100%">
             <tr><td>
-              <div align="left">
+              <div>
                     <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                         <?php echo form_error('<div class="isa_error">','</div>');?></div>
 
@@ -47,11 +48,11 @@
                     <?php
                     };
                     ?>
-                </div> </br>
+                </div>
         </td></tr>
         </table>
 
-        <table style="padding: 8px 8px 8px 30px;">
+        <table>
 
          <?php
 

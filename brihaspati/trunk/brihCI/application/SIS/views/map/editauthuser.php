@@ -5,11 +5,11 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?> 
 
 
- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
+ <!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css"-->
  	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
@@ -34,42 +34,37 @@ $("#StartDate").datepicker("option","maxDate", selected)
 }); 
 });
 </script>
-
-
-
-
-
-
     </head>
     <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
         <script>
         function goBack() {
         window.history.back();
         }
         </script>
 
-        <table width="100%">
+        <table>
             <tr><td>
-                <div style="margin-left:2%;">
-                    <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
+                <div>
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div  class="isa_error">','</div>');?>
                     <?php if(isset($_SESSION['success'])){?>
-                       <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                       <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                     <?php
                     };
                     ?>
                     <?php if(isset($_SESSION['err_message'])){?>
-                    div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
                     <?php
                     };
                     ?>
-         </div> </br>
+         </div> 
          </td></tr>
         </table>
     <!--<table style="margin-left:50px;">
     <tr><td align="left"> Edit Campus Program seat</td></tr> 
     </table><br/>-->
-     <table style="margin-left:2%;">
+     <table>
       <form action="<?php echo site_url('map/editauthuser/' .$id);?>" method="POST" class="form-inline">
            <tr>
            <td>Authority Name</td>

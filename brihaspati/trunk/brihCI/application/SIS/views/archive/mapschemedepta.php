@@ -23,6 +23,11 @@
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <table width="100%">
             <tr colspan="2"><td>
+	<?php
+            echo "<td align=\"center\" width=\"100%\">";
+            echo "<b>Map Scheme with Department Archive Details</b>";
+            echo "</td>";
+    	?>
                <div>
                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -37,7 +42,7 @@
                 ?>     
 </div>
             </td></tr>
-        </table></br>
+        </table>
         <div class="scroller_sub_page">
         <table  class="TFtable" >
             <thead>

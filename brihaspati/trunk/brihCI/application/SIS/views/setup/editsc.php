@@ -8,14 +8,13 @@
   <head>    
     <title>Edit Department</title>
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
-        <body>
-        <center>
-        <table width="70%">
-            <tr colspan="2"><td>
+</head>
+<body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 
-                                  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
+                                  <!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css"-->
                                   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
                                   <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
                                   <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
@@ -58,37 +57,22 @@ yearRange: 'c-47:c+50',
 });
 });
 </script>
-
-
-
-    </head>
-    <body>
 <script>
         function goBack() {
         window.history.back();
         }
     </script>
-  <table>
-   <font color=blue size=4pt>
-   <div style="margin-left:25%; width:100%;">
-      <br>
-<div align="left">
-<table style="margin-left:25%;">
+
+<table width:"100%;">
 <tr><td>
+
 <?php echo anchor('setup/viewsc/', "Study Center List" ,array('title' => 'Study Center List' , 'class' => 'top_parent'));?>
-</td></tr>
-</table>
-</div>
-
-
-     <style="margin-left:2%;">
-            <tr><td>
-                <div style="margin-left:2%;width:70%;">
+                <div>
                     <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
                     <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
@@ -96,7 +80,7 @@ yearRange: 'c-47:c+50',
                 </div>
             </td></tr>
         </table>
-        <table style="padding: 8px 8px 8px 50px;">
+        <table>
         <?php
 
            echo form_open('setup/editsc/' . $id);

@@ -32,8 +32,16 @@
             <?php $this->load->view('template/menu'); ?>
         </div> 
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-        <br/><br/><br/>
         <div>
+<table width="100%;">
+            <tr>
+<?php
+                    echo "<td align=\"center\" width=\"100%\" style=\"font-size:16px\">";
+                    echo "<b>Upload Transfer Orders</b>";
+                    echo "</td>";
+		    echo "</tr>";
+                    echo "</table>";
+?>
             <?php
                if((isset($_SESSION['success'])) && ($_SESSION['success'])!=''){
                 echo "<div  class=\"isa_success\">";

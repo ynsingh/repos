@@ -48,7 +48,7 @@
             .top_parent{
                 /*color:white;*/
                 text-decoration: none;
-                padding: 8px 8px 8px 20px;
+                padding:0;
             }
             .table_margin{
                 margin-left:30px;

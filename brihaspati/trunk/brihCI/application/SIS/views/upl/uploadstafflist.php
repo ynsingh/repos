@@ -12,18 +12,33 @@
     </head>
     <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-                   <?php
-                    echo "<table style=\"padding: 20px 8px 8px 20px;\">";
+                   <!--?php
+                    echo "<table align=\"right\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#UploadStaffList";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;font-size:17px;margin-left:54%;position:absolute;margin-top:-1%\">Click for Help</b></a>";
+                    echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b style=\"font-size:17px;margin-top:-1%\">Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
-                    ?>
+                    ?-->
 
            <div>
+<table width="100%;">
+            <tr>
+<?php
+                    echo "<td align=\"left\" width=\"33%\">";
+                    echo "</td>";
+                    echo "<td align=\"center\" width=\"34%\" style=\"font-size:16px\">";
+                    echo "<b>Upload Staff List</b>";
+                    echo "</td>";
+                    echo "<td align=\"right\" width=\"33%\" style=\"font-size:16px\">";
+                    $help_uri = site_url()."/help/helpdoc#UploadStaffList";
+                    echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                    echo "</td>";
+echo "</tr>";
+echo "</table>";
+?>
 <?php
 //      echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
 //        echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";

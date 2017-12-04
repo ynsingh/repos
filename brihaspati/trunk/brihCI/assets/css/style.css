@@ -16,7 +16,7 @@ body {
 .scroller{overflow:auto;height:700px;}
 .scroller_sub_page{overflow:auto;height:665px;}
 
-#uname{font-size:22px;width:100%;margin:0 auto;background-color: #0099CC;color:white;font-weight:bold;}
+#uname{font-size:16px;width:100%;margin:0 auto;background-color: #0099CC;color:white;font-weight:bold;}
 
 .welcome{width:100%;margin-top:-1%;border-radius:0.4em;
 	background:none repeat scroll 0 0 #0099CC;

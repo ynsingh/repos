@@ -34,7 +34,7 @@
             echo "</span>";
             echo "</table>";
 ?-->
- 		    <?php
+ 		    <!--?php
                     echo "<table style=\"padding: 20px 8px 8px 20px;\">";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
@@ -43,13 +43,25 @@
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
-                    ?>
+                    ?-->
 
 <table width="100%">
             <tr colspan="2">
                 <td>
-                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                   <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+<?php
+                    echo "<td align=\"left\" width=\"33%\">";
+                    echo "</td>";
+                    echo "<td align=\"center\" width=\"34%\" style=\"font-size:16px\">";
+                    echo "<b>Change Password</b>";
+                    echo "</td>";
+                    echo "<td align=\"right\" width=\"33%\" style=\"font-size:16px\">";
+                    $help_uri = site_url()."/help/helpdoc#ChangePassword";
+                    echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                    echo "</td>";
+		    ?>
+                   <div>
+		    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
                     <?php if(isset($_SESSION['success'])){?>
                     <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                     <?php
@@ -72,19 +84,19 @@
                             <tr>  
                                 <td><label for="oldpassword" class="control-label"><b>Old Password</b></label></td>
                                 <td><input type="password" name="oldpassword" class="form-control" size="30"><br></td>
-				<td><?php echo form_error('oldpassword')?></td>
+				<td><?php //echo form_error('oldpassword')?></td>
                             </tr>
 
 				<tr>
                                 <td><label for="newpassword" class="control-label"><b>New Password</b></label></td>
                                 <td><input type="password" name="newpassword"  class="form-control" size="30" /><br></td>
-                                <td><?php echo form_error('newpassword')?></td>
+                                <td><?php //echo form_error('newpassword')?></td>
                             </tr>
 
 			    <tr>
                                 <td><label for="confirmpassword" class="control-label"><b>New Password (Confirm)</b></label></td>
                                 <td><input type="password" name="confirmpassword"  class="form-control" size="30" /><br></td>
-                                <td><?php echo form_error('confirmpassword')?></td>
+                                <td><?php //echo form_error('confirmpassword')?></td>
                             </tr>
 			<tr>
                                 <td>

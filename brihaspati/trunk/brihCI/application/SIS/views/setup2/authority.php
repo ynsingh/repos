@@ -22,10 +22,18 @@
         ?>--!>
 
       <table width= "100%">
-	<tr colspan="2"><td>
-                <?php  echo anchor('setup2/addauthority/', "Add  Authority", array('title' => 'Add   Authority  Detail','class' =>'top_parent'));
-		 $help_uri = site_url()."/help/helpdoc#ViewAuthority";
-                 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+	<tr colspan="2">
+                <?php
+                echo "<td align=\"left\" width=\"33%\">";  
+		echo anchor('setup2/addauthority/', "Add  Authority", array('title' => 'Add   Authority  Detail','class' =>'top_parent'));
+		echo "</td>";
+                echo "<td align=\"center\" width=\"34%\">";
+                echo "<b>Authority Details</b>";
+                echo "</td>";
+                echo "<td align=\"right\" width=\"33%\">";
+		$help_uri = site_url()."/help/helpdoc#ViewAuthority";
+                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
                 ?>
                   </div>
                 <div>
@@ -41,7 +49,7 @@
                 };
                 ?>
               </div>
-             </td></tr>
+             </tr>
        </table>
         <div class="scroller_sub_page">
         <table class="TFtable" >

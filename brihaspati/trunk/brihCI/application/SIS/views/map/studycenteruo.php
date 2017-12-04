@@ -7,14 +7,13 @@
 <html>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
- <script>
-    </script>    
     </head>
     <body>
+    <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
     <script>
 	function getdepartment(val){
 		var val=val;
@@ -29,15 +28,12 @@
 	     });
 	   }
    </script>	
-   <table style="padding: 8px 8px 8px 20px;">
+   <table width="100%">
      <tr colspan="2"><td>
-      <div align=left">
-        <font color=blue size=4pt>
          <?php
             echo anchor('map/viewscuo', 'List of Study Center with UO', array('class' => 'top_parent'));
          ?>
-      </div>
-      <div style="margin-left:10px;width:1700px;">
+      <div>
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
@@ -55,7 +51,7 @@
    </table>
    <div> 
    <form id="myform" action="<?php echo site_url('map/studycenteruo');?>" method="POST" class="form-inline">
-   <table style="margin-left:30px;">
+   <table>
  	<tr>
             <td>Campus Name :</td>
             <td>
@@ -86,6 +82,7 @@
           </tr>
         </table>
       </form>
+     <p><br></p>
      </div>		
    </body>
   <div align="center">  <?php $this->load->view('template/footer');?></div>

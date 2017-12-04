@@ -38,11 +38,18 @@ echo "<body>";
 */
 ?>
  <table width="100%">
-            <tr colspan="2"><td>
-<?php echo anchor('setup/subject/', "Add Subject " ,array('title' => 'Add Subject' , 'class' => 'top_parent'));
-$help_uri = site_url()."/help/helpdoc#ViewSubjectDetail";
-echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
-?>
+ <tr colspan="2">
+<?php 
+	echo "<td align=\"left\" width=\"33%\">";
+	echo anchor('setup/subject/', "Add Subject " ,array('title' => 'Add Subject' , 'class' => 'top_parent'));
+        echo "</td>";
+        echo "<td align=\"center\" width=\"34%\">";
+        echo "<b>Subject Details</b>";
+        echo "</td>";
+        echo "<td align=\"right\" width=\"33%\">";
+	$help_uri = site_url()."/help/helpdoc#ViewSubjectDetail";
+	echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+	?>
   <div>
 
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
@@ -61,13 +68,13 @@ echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolu
                 ?>
 
             </div>
-            </td></tr>
+           </tr>
         </table>
         <div class="scroller_sub_page">
         <table class="TFtable" >
     <thead>
 	<tr>
- <thead><tr align=center><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th></tr></thead>
+ <thead><tr><th>Sr. No </th><th>Subject Name</th><th>Subject Code </th><th>Subject Short Name</th><th>Subject Description</th><th>Subject Credit</th><th>Subject Extention</th><th>Action</th></tr></thead>
             <tbody>
 <?php
 	$srno = 0;

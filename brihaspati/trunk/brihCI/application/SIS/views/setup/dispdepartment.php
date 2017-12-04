@@ -31,11 +31,20 @@
             echo "</table>";
         ?>-->
 	   <table width="100%">
-	   <tr colspan="2"><td>
-	   <?php echo anchor('setup/dept','Add Department',array( 'class' => 'top_parent' ,'title'=>'Add Detail')); 
+	   <tr colspan="2">
+	   <?php 
+           echo "<td align=\"left\" width=\"33%\">";
+           echo anchor('setup/dept','Add Department',array( 'class' => 'top_parent' ,'title'=>'Add Detail')); 
+           echo "</td>";
+           echo "<td align=\"center\" width=\"34%\">";
+           echo "<b>Department Details</b>";
+           echo "</td>";
+           echo "<td align=\"right\" width=\"33%\">";
 	   $help_uri = site_url()."/help/helpdoc#ViewDepartmentDetail";
-           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
+           echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+           echo "</td>";
            ?>
+ 
                 <div>
                 <?php echo validation_errors('<div  class="isa_warning>','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
@@ -43,8 +52,8 @@
                 <?php
                 };
                 ?>
-</div>
-            </td></tr>
+            </div>
+            </tr>
         </table>
         <div class="scroller_sub_page">
         <table class="TFtable" >

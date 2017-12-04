@@ -6,11 +6,12 @@
 
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
        
     </head>
     <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <script>
         function goBack() {
         window.history.back();
@@ -38,12 +39,12 @@
         <table width="100%"> 
             <tr><td>
                 <?php echo anchor('setup/dispemailsetting/', "View Email Configuration" ,array('title' => ' Email Configuration Detail ' , 'class' => 'top_parent'));?>    
-                <div style="margin-left:10%;width:80%;">
-                    <?php echo validation_errors('<div style="margin-left:30px;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
+                <div>
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:30px;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
@@ -54,16 +55,14 @@
                     <?php
                     };
                     ?>    
-                </div> </br> 
+                </div> 
             </td></tr>  
         </table>    
-        <table style="margin-left:1%;">  
+        <table>  
  
         <?php
 
-            echo form_open('setup/editemailsetting/' . $id);
-
-       
+            echo form_open('setup/editemailsetting/' . $id); 
             echo "<tr>";
                 echo "<td>";
                 echo form_label('Email Protocol', 'emailprotocol');
@@ -190,7 +189,7 @@
              echo"</td>";         
         ?>
  
-        </table>   
+        </table> 
  <!--   </div>
 </tr>
 </table>-->

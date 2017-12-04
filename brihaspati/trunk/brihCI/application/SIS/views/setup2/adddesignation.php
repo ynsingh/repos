@@ -7,7 +7,7 @@
 
  <head>
       <?php $this->load->view('template/header'); ?>
-      <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+      <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
       <?php $this->load->view('template/menu');?>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
@@ -46,6 +46,7 @@
 </script>
 </head>
 <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <!--<//?php
         echo "<table border=\"0\" align=\"left\" style=\"color: black;  border-collapse:collapse; border:1px;\">";
         echo "<tr style=\"text-align:left; \">";
@@ -58,10 +59,11 @@
 
      <table width="100%">
             <tr><td>
-                <div align="left" style="margin-left:2%;width:90%;">
                 <?php echo anchor('setup2/designation/', "View Designation list", array('title' => 'View Designation list' ,'class' =>'top_parent'));
+                echo "<td align=\"right\">";
 		$help_uri = site_url()."/help/helpdoc#Designation";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+                echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                echo "</td>";
  		?>
                 <div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -76,12 +78,10 @@
                 };
                ?>
               </div>
-        </div>
          </td></tr>
     </table>
-    <div style="margin-left:2%;">
     <form action="<?php echo site_url('setup2/adddesignation');?>" method="POST" class="form-inline">
-	<table style="margin-left:2%;">
+	<table>
         	<tr>
                 	<td><label for="desig_code" class="control-label">Designation Code:</label></td>
                 	<td><input type="text" name="desig_code" class="form-control" size="33" /><br></td>
@@ -106,7 +106,7 @@
 		</tr>
 
                  <td>Designation Payscale: <font color='Red'> *</font> </td>
-                <td><select name="desig_payscale" id="desigid" class="my_dropdown" style="width:300px;">
+                <td><select name="desig_payscale" id="desigid" class="my_dropdown" style="width:100%;">
                 <option selected="selected" disabled selected>--------Select-------------</option>
                 <?php foreach($this->payresult as $datas): ?>
                          <option value="<?php echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>"<?php echo set_select('desig_payscale', $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay);?>><?php echo $datas->sgm_name." ( ". $datas->sgm_min." - ".$datas->sgm_max." ) ".$datas->sgm_gradepay; ?>
@@ -164,7 +164,7 @@
             </tr>
             </table>
     </form>
-    </div>
+  <p><br></p>
     <div align="left"> <?php $this->load->view('template/footer');?></div>
     </html>
 

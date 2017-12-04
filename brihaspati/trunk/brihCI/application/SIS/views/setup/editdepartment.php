@@ -9,11 +9,12 @@
   <head>    
     <title>Edit Department</title>
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
 
     </head>
     <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <script>
         function goBack() {
         window.history.back();
@@ -40,17 +41,14 @@
             echo "</table>";
         ?>-->
         <table width="100%">
-    <div style="margin-left:4%; width:100%;">
       <!-- <?php echo anchor('','Update Department',array('title'=>'Edit Detail')); ?>-->
-
-     <style="margin-left:4%;">
             <tr><td>
-                <div style="margin-left:4%;width:100%;">
-                    <?php echo validation_errors('<div style="margin-left:4%;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:4%;" class="isa_error">','</div>');?>
+                <div>
+                    <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div  class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:4%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                        <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
@@ -58,7 +56,7 @@
                 </div>
             </td></tr>
         </table>
-        <table style="padding: 8px 8px 8px 50px;">
+        <table>
 
         <?php
 

@@ -9,21 +9,23 @@
 <title>Add Bank</title>
  <head>    
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
  </head>
    <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
      <table width="100%">
        <tr><td>
-        <div align="left">
+        <div>
         <?php
            echo anchor('setup/displaybankdetails', 'Bank Details', array('class' => 'top_parent'));
+            echo "<td align=\"right\">";
            $help_uri = site_url()."/help/helpdoc#Bank";
-           echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73%\">Click for Help</b></a>";
+           echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+           echo "</td>";
         ?>
-        </font>
         </div>
-        <div align="left" style="margin-left:2%;width:90%;">
+        <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -39,10 +41,9 @@
       </div>
     </td>
     </tr>
-    <tr>
-    <div align="left" style="margin-left:1%">
+    <div>
         <form action="<?php echo site_url('setup/addbank');?>" method="POST" class="form-inline">
-          <table style="margin-left:1%">
+          <table>
             <tr>
 
             <?php
@@ -119,7 +120,7 @@
                
             </tr>
             <tr>
-                <td><label for="account number" class="control-label">Account Number :</label></td>
+                <td><label for="account number" class="control-label">Account Number:</label></td>
                 <td>
                 <input type="text" MaxLength="11" name="account_number" class="form-control" size="40" value= "<?php echo isset($_POST["account_number"]) ? $_POST["account_number"] : ''; ?>" /><br>
 
@@ -130,9 +131,6 @@
                <td>
                     Example : 30281294639
                  </td>
-
-
-
             </tr>
             <tr>
                 <td><label for="account type" class="control-label">Account Type :</label></td>
@@ -214,7 +212,7 @@
 
             </tr>
             <tr>
-                <td><label for="aadhar number" class="control-label">Aadhar Number :</label></td>
+                <td><label for="aadhar number" class="control-label">Aadhar Number:</label></td>
                 <td>
                 <input type="text" MaxLength="12" name="aadhar_number" class="form-control"  size="40" /><br>
                 </td>
@@ -244,12 +242,12 @@
               <td></td>
               <td>
               <button name="addbank">Add Bank</button>
-              <button name="reset" >Clear</button>
-
+	      <input type="reset" name="Reset" value="Clear"/>
                 </td>
             </tr>
             </table>
     </form>
+   <p><br></p>
     </div>
     <div align=left> <?php $this->load->view('template/footer');?></div>
     </html>

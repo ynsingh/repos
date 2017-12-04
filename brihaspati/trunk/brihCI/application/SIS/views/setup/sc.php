@@ -7,7 +7,7 @@
 <html>
  <head>
                                                  
-                                  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css">
+                                  <!--link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylecal.css"-->
                                   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
       				  <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-1.12.4.js" ></script>
                                   <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
@@ -105,23 +105,19 @@ $('#stname').on('change',function(){
 </script>   
 </head> 
  <body>
- <div id="body">
         <?php $this->load->view('template/header'); ?>
         <?php $this->load->view('template/menu'); ?>
 <!--        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>-->
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 
-	</div>
-         <table >
-
+         <table width="100%">
                 <tr><td>
-                <div align="left" >
                 <?php echo anchor('setup/viewsc/', "View Study Center Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));
+                echo "<td align=\"right\">";
                 $help_uri = site_url()."/help/helpdoc#StudyCenter";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";?>
-                <div  style="width:90%;">
+                echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+		echo "</td>";
+		?>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -133,14 +129,10 @@ $('#stname').on('change',function(){
                 <?php
                 };
                ?>
-              </div>
              </td></tr>
         </table>
-
-            <tr>
-                <div>
                 <form action="<?php echo site_url('setup/sc');?>" method="POST" class="form-inline">
-                <table style="margin-left:0.2%;">
+                <table>
                           <tr><td><label class="control-label">Choose your University:</label></td><td>
                         <select name="orgprofile" style="width:100%">
                         <option value=""disabled selected>---------Select university---------</option>
@@ -151,8 +143,7 @@ $('#stname').on('change',function(){
 
 	         	</td></tr>
 
-			<tr><td>
-                 <tr>
+			<tr>
              <td><label for="institutecode" class="control-label">Campus Code:</label></td>
              <td><input type="text" name="institutecode"  class="form-control" size="26"  value="<?php echo isset($_POST["institutecode"]) ? $_POST["institutecode"] : ''; ?>" /><br></td>
            <td><?php echo form_error('institutecode')?></td>
@@ -282,18 +273,17 @@ $('#stname').on('change',function(){
                                 <td><label for="mobile" class="control-label">Mobile:</label></td>
                                 <td><input type="text" name="mobile"  class="form-control" size="26"  value="<?php echo isset($_POST["mobile"]) ? $_POST["mobile"] : ''; ?>"/><br></td>
                                 <td><?php echo form_error('mobile')?></td>
-                                </tr>
-                                
+                                </tr>                                
                                     <tr>
-                                    <td colspan="2" style="margin-left:30px;">
-					 <button name="sc" style="margin-left:200px;" name="submit" >Submit</button>
+				    <td></td>
+                                    <td colspan="2">
+					 <button name="sc"  name="submit" >Submit</button>
 					 <input type="reset" name="Reset" value="Clear"/>
 					 </td>
                                       </tr>
-				</body>
-			</html>
-		</table>
-	<p>&nbsp;</p>
-<div>
-<?php $this->load->view('template/footer'); ?>
-</div>
+				</table>
+                	</form>
+		 <p><br></p>
+                 </body>
+<div align="center"> <?php $this->load->view('template/footer');?></div>
+</html>

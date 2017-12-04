@@ -28,16 +28,20 @@
             echo "</tr>";
             echo "</table>";
         ?-->
-        <table width="100%">
-            <tr><td>  
+        <table width="100%;">
+            <tr>  
             <?php
-           
+		    echo "<td align=\"left\" width=\"33%\">";
                     echo anchor('setup/emailsetting/', "Add Email Setting" ,array('title' => ' Add Email Configuration Detail ' , 'class' => 'top_parent'));
+                    echo "</td>";
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Email Setting Details</b>";
+                    echo "</td>";
+		    echo "<td align=\"right\" width=\"33%\">";
                     $help_uri = site_url()."/help/helpdoc#ViewEmailSetting";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%;\">Click for Help</b></a>";
-          
+                    echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                    echo "</td>";
             ?>
-        
             <div>
   
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
@@ -56,7 +60,7 @@
                 ?>
   
             </div>
-            </td></tr> 
+</td></tr>
         </table>
 <div class="scroller_sub_page">
         <table class="TFtable" >

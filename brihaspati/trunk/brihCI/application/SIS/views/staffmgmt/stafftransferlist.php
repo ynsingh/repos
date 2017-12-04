@@ -6,16 +6,22 @@
         <title>Welcome to TANUVAS</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/tablestyle.css">   
     </head>
-    <body>
-        <div>
-           
+    <body> 
             <?php $this->load->view('template/header'); ?>
             <?php $this->load->view('template/menu');?>
     <!--        <h3>Welcome <?= $this->session->userdata('username') ?></h3>-->
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <table width="100%">
-            <tr colspan="2"><td> 
-        <?php echo anchor('staffmgmt/stafftransfer/', "Staff Tansfer and Posting" ,array('title' => 'staff transfer nad posting ' , 'class' => 'top_parent'));
+            <tr colspan="2"> 
+        <?php 
+	echo "<td align=\"left\" width=\"33%\">";
+	echo anchor('staffmgmt/stafftransfer/', "Staff Tansfer and Posting" ,array('title' => 'staff transfer nad posting ' , 'class' => 'top_parent'));
+	echo "</td>";
+        echo "<td align=\"center\" width=\"34%\">";
+        echo "<b>Staff Tansfer and Posting Details</b>";
+        echo "</td>";
+        echo "<td align=\"right\" width=\"33%\">";
+	echo "</td>";
 	;?>
          <div>
             

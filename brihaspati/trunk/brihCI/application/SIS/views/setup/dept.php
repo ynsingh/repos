@@ -8,11 +8,11 @@
 <head>
 <title>Add Department</title>
 </head>
-  <div id="body">
 	<?php $this->load->view('template/header'); ?> 
-	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+	<!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
     	<?php $this->load->view('template/menu'); ?>
-</div>
+<body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <!-- <//?php 
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -34,18 +34,15 @@
 
       	<table width="100%">
 		<tr><td>  
-  	        <div style="margin-left:2%">
   		<?php echo anchor('setup/dispdepartment','Department List',array('title'=>'View Detail','class' => 'top_parent'  )); 
-		$help_uri = site_url()."/help/helpdoc#Department";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
-		?>
-		</div>
- 		</tr></td>
-	   	<tr><td>    
-                <div align="left" style="margin-left:2%;width:90%;">
-       
+                 echo "<td align=\"right\">";
+	 	 $help_uri = site_url()."/help/helpdoc#Department";
+                 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                 echo "</td>";
+		 ?>
+                <div>
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:2%;class="isa_error">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
                         <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -54,15 +51,15 @@
                     ?>
                
                 </div>
-            	</td></tr>  
+            	</td></tr> 
+                </table> 
               	<tr>
          	<form action="<?php echo site_url('setup/dept');?>" method="POST" class="form-inline">
-      		<table style="margin-left:1.5%;"> 
-
+      		<table> 
 		<tr><td>
                           
         		Choose your University:</td><td>
-    			<select name="orgprofile" width="100%">
+    			<select name="orgprofile" style="width:100%;">
     			<option value=""disabled selected>--------------------Select university------------------</option>
 			<?php foreach($this->uresult as $datas): ?>	
    				<option value="<?php echo $datas->org_code; ?>"><?php echo $datas->org_name; ?></option> 
@@ -70,7 +67,7 @@
    			</select>          
    			</td></tr><tr><td>    
  			Choose your Campus: </td><td>         
- 			<select name="studycenter" width="100%">
+ 			<select name="studycenter" style="width:100%;">
  			<option value=""disabled selected>----------------------Select campus-------------------</option>
                       
  			<?php foreach($this->scresult as $datas): ?>	
@@ -81,7 +78,7 @@
                          
                          <tr><td>
                         Choose your Authorities Name: </td><td>
-                        <select name="authorities" width="80%">
+                        <select name="authorities" style="width:100%;">
                         <option value=""disabled selected>-------------------Select authorities-----------------</option>
 			<?php foreach($this->authresult as $datas): ?>
                                 <option value="<?php echo $datas->id; ?>"><?php echo $datas-> name; ?></option>
@@ -125,20 +122,17 @@
                             </tr>
 			                    
                             <tr>
-                          
-                          <td colspan="2" style="margin-left:40%;">     
-	         
-                         <button name="dept" style="margin-left:38%;">Add Department </button>
+                          <td></td>
+                          <td colspan="2">     
+                         <button name="dept" >Add Department </button>
                           <button name="reset" >Clear</button>
                              <?php echo form_close(); ?>
                                 </td>
                             </tr>
-                        </table>
                     </form>
-                  </div> 
             </tr>     
-        </table>     
-
+        </table> 
+ <p><br></p>    
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>
 </html>

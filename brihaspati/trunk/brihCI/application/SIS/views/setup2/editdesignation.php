@@ -7,7 +7,7 @@
 <title>Edit Designation</title>
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
             <script type="text/javascript" src="<?php echo base_url();?>assets/js/1.12.4jquery.min.js" ></script>
         <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.min.js" ></script>
@@ -47,6 +47,7 @@
 
     </head>
     <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
  <script>
         function goBack() {
         window.history.back();
@@ -74,16 +75,16 @@
         ?>--!>
         <table width="100%">
                 <tr><td>
-                        <div margin="2%">
+                        <div>
                         <?php echo validation_errors('<div  class="isa_warning">','</div>');?>
                         <?php echo form_error('<div class="isa_error">','</div>');?>
                         <?php if(isset($_SESSION['success'])){?>
                                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
                         <?php }; ?>
-                        </div> </br>
+                        </div>
                 </td></tr>
         </table>
-        <table style="padding: 8px 8px 8px 30px;">
+        <table>
         <?php
                 echo form_open('setup2/editdesignation/'. $desig_id);
                 

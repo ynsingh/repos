@@ -25,7 +25,11 @@
 	<table width="100%">
             <tr colspan="2"><td>
             <div>
-
+	 <?php
+            echo "<td align=\"center\" width=\"100%\">";
+            echo "<b>Announcement Archive Details</b>";
+            echo "</td>";
+         ?>
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
@@ -43,7 +47,6 @@
  </div>
  </td></tr>
         </table>
-	</br>
         <div class="scroller_sub_page">
         <table class="TFtable" >
             <thead>

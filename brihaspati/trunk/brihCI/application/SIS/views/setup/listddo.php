@@ -12,15 +12,22 @@
     <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
  <table width="100%">
-         <tr colspan="2"><td>
+         <tr colspan="2">
          <?php
+            echo "<td align=\"left\" width=\"33%\">";
             echo anchor('setup/newddo/', 'Add DDO', array('class' => 'top_parent'));
-         ?>
-      <div style="margin-left:2%;">
+            echo "</td>";
+            echo "<td align=\"center\" width=\"34%\">";
+            echo "<b>DDO Details</b>";
+            echo "</td>";
+            echo "<td align=\"right\" width=\"33%\">";
+            echo "</td>";
+            ?>
+      	  <div>
           <?php echo validation_errors('<div class="isa_warning">','</div>');?>
           <?php echo form_error('<div class="isa_error">','</div>');?>
           <?php if(isset($_SESSION['success'])){?>
-             <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+             <div class="isa_success"><?php echo $_SESSION['success'];?></div>
              <?php
              };
              ?>

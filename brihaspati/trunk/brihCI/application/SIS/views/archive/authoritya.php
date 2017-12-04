@@ -12,7 +12,7 @@
     </head>
     <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-    		    <?php
+    		    <!--?php
                     echo "<table>";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
@@ -21,10 +21,15 @@
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
-                    ?>
+                    ?-->
 
 <table width="100%">
             <tr colspan="2"><td>
+	    <?php
+            echo "<td align=\"center\" width=\"100%\">";
+            echo "<b>Authority Archive Details</b>";
+            echo "</td>";
+    	     ?>
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
@@ -42,7 +47,6 @@
 </div>
             </td></tr>
         </table>
-        <br>
         <div class="scroller_sub_page">
         <table class="TFtable" >
             <thead>

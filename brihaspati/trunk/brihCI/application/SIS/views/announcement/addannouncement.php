@@ -13,14 +13,11 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
 
      <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+     <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
      <?php $this->load->view('template/menu');?>
  </head>
  <body>
-<div style="margin-top:50px;"></div>
-<p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p>
 <script>
 $( function() {
            $( "#StartDate,#EndDate" ).datepicker({
@@ -31,14 +28,14 @@ $( function() {
 </script>
      <table width="100%">
 	<tr colspan="2"><td>
-	<div  style="margin-left:2%;">
+	<div>
                 <?php echo anchor('announcement/viewannouncement', "View Announcement", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
                 <!--?php
                  $help_uri = site_url()."/help/helpdoc#Role";
                  echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73%\">Click for Help</b></a>";
                  ?-->
                  </div>
-		<div  style="margin-left:2%;">
+		<div>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                 <?php if(isset($_SESSION['success'])){?>
                 <div class="isa_success"><?php echo $_SESSION['success'];?></div>
@@ -51,13 +48,12 @@ $( function() {
                 };
                ?>
               </div>
-              </div>
              </td></tr>
         </table>
 <tr>
     <div>
     <form action="<?php echo site_url ('announcement/addannouncement');?>" method="POST" enctype="multipart/form-data">
-<table style="margin-left:4%;">
+<table>
             <tr>
                 <td><label for="anou_cname" class="control-label">Announcement Component Name:</label></td>
                 <td>
@@ -122,9 +118,9 @@ $( function() {
            </table>
     </form>
     </div>
-     </div>
     </tr>
     </table>
+    <p><br></p>
     </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
     </html>

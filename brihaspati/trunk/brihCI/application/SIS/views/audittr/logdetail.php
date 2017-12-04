@@ -12,20 +12,31 @@
     </head>
     <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-		   <?php
+		   <!--?php
                     echo "<table>";
                     echo "<tr valign=\"top\">";
                     echo "<td>";
                     $help_uri = site_url()."/help/helpdoc#LogDetails";
-                    echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;margin-left:56%;position:absolute;\">Click for Help</b></a>";
+                    echo "<a target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
                     echo "</td>";
                     echo "</tr>";
                     echo "</table>";
-                    ?>
+                    ?-->
 
         <table width="100%">
-            <tr colspan="2"><td>
+            <tr colspan="2">
             <div>
+	<?php
+		    echo "<td align=\"left\" width=\"33%\">";
+                    echo "</td>";
+                    echo "<td align=\"center\" width=\"34%\">";
+                    echo "<b>Log Details</b>";
+                    echo "</td>";
+                    echo "<td align=\"right\" width=\"33%\">";
+		    $help_uri = site_url()."/help/helpdoc#LogDetails";
+                    echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                    echo "</td>";
+?>
                 <?php echo validation_errors('<div class="isa_warning>','</div>');?>
 
                 <?php if(isset($_SESSION['success'])){?>
@@ -43,7 +54,7 @@
 
             </div>
             </td></tr>
-	</table><br>
+	</table>
 	<div class="scroller_sub_page">
 	<table>
 	<div align="center" >

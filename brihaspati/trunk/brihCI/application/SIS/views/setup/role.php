@@ -7,10 +7,11 @@
 
  <head>
      <?php $this->load->view('template/header'); ?>
-     <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+     <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
      <?php $this->load->view('template/menu');?>
  </head>    
  <body> 
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <!--<//?php
         echo "<table border=\"0\" align=\"left\" style=\"color: black;  border-collapse:collapse; border:1px;\">";
         echo "<tr style=\"text-align:left; \">";
@@ -23,11 +24,12 @@
 
      <table width="100%">
             <tr><td>
-                <div align="left">
                 <?php echo anchor('setup/displayrole/', "View Role Detail ", array('title' => 'Add Detail' ,'class' =>'top_parent'));?>
                 <?php
+                 echo "<td align=\"right\">";
                  $help_uri = site_url()."/help/helpdoc#Role";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73%\">Click for Help</b></a>";
+		 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+		echo "</td>"
                  ?>
                 <div  style="width:100%;">
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
@@ -45,10 +47,8 @@
              </td></tr>
         </table>
  
-    <tr>
-    <div>
     <form action="<?php echo site_url('setup/role');?>" method="POST" class="form-inline">
-            <table style="margin-left:1%;">
+            <table>
             <tr>
                 <td><label for="role_name" class="control-label">Role Name:</label></td>
                 <td>
@@ -84,9 +84,8 @@
            </tr>
            </table>
     </form>
+ <p><br></p>
     </div>
-    </tr>
-    </table>
     </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
     </html>

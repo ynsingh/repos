@@ -321,9 +321,7 @@
             <?php $this->load->view('template/menu');?>
     <!--        <h3>Welcome <//?= $this->session->userdata('username') ?></h3>-->
 
-       <p>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-</p> 
         </div>
          <table ><tr><td>
         <?php echo anchor('staffmgmt/stafftransferlist/', "View Staff Transfer List" ,array('title' => 'Staff Transfer List ' , 'class' => 'top_parent'));?>

@@ -12,10 +12,11 @@
         <script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/jquery-ui.js" ></script>
 
         <?php $this->load->view('template/header'); ?>
-        <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+        <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu');?>
     </head>
     <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
  <script>
         function goBack() {
         window.history.back();
@@ -32,12 +33,12 @@ $( function() {
 <table width="100%">
             <tr><td>
 <?php echo anchor('announcement/viewannouncement/', "View Announcement" ,array('title' => 'View Announcement' , 'class' => 'top_parent'));?>
-                <div style="margin-left:2%;width:70%;">
-                    <?php echo validation_errors('<div style="margin-left:2%;" class="isa_warning">','</div>');?>
-                    <?php echo form_error('<div style="margin-left:2%;" class="isa_error">','</div>');?>
+                <div>
+                    <?php echo validation_errors('<div class="isa_warning">','</div>');?>
+                    <?php echo form_error('<div class="isa_error">','</div>');?>
 
                     <?php if(isset($_SESSION['success'])){?>
-                        <div style="margin-left:2%;" class="isa_success"><?php echo $_SESSION['success'];?></div>
+                    <div class="isa_success"><?php echo $_SESSION['success'];?></div>
 
                     <?php
                     };
@@ -51,7 +52,7 @@ $( function() {
                 </div>
             </td></tr>
         </table>
-<table style="margin-left:2%;">
+<table>
 <?php
            echo form_open ('announcement/editannouncement/' . $id);
  		echo "<tr>";

@@ -7,10 +7,11 @@
 
  <head>
       <?php $this->load->view('template/header'); ?>
-      <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+      <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
       <?php $this->load->view('template/menu');?>
 </head>
 <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <!--<//?php
         echo "<table border=\"0\" align=\"left\" style=\"color: black;  border-collapse:collapse; border:1px;\">";
         echo "<tr style=\"text-align:left; \">";
@@ -21,12 +22,14 @@
         echo "</table>";
         ?>-->
 
-     <table width="90%">
+     <table width="100%">
             <tr><td>
-                <div align="left" style="margin-left:2%;">
+                <div>
                 <?php echo anchor('setup2/authority/', "View Authority list", array('title' => 'View Designation list' ,'class' =>'top_parent'));
-		$help_uri = site_url()."/help/helpdoc#Authority";
-                echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
+                 echo "<td align=\"right\">";
+		 $help_uri = site_url()."/help/helpdoc#Authority";
+                 echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                 echo "</td>";
 		?>
                 <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                  <?php if(isset($_SESSION['success'])){?>
@@ -40,10 +43,8 @@
                 };
                ?>
               </div>
-        </div>
          </td></tr>
     </table>
-    <div style="margin-left:2%;">
     <form action="<?php echo site_url('setup2/addauthority');?>" method="POST" class="form-inline">
             <table>
             <tr>
@@ -89,7 +90,8 @@
             </tr>
             </table>
     </form>
-    </div>
+<p><br></p>
+</body>
     <div align="left"> <?php $this->load->view('template/footer');?></div>
     </html>
 

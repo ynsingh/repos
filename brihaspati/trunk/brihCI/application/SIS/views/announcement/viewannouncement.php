@@ -12,26 +12,35 @@
  <body>
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 <table width= "100%">
-<tr colspan="2"><td>
-                <?php  echo anchor('announcement/addannouncement/', "Add Announcement", array('title' => 'Add Announcement Detail','class' =>'top_parent'));
+<tr colspan="2">
+                <?php  
+		echo "<td align=\"left\" width=\"33%\">";
+                 echo anchor('announcement/addannouncement/', "Add Announcement", array('title' => 'Add Announcement Detail','class' =>'top_parent'));
+                 echo "</td>";
+                 echo "<td align=\"center\" width=\"34%\">";
+                 echo "<b>Announcement Details</b>";
+                 echo "</td>";
+                 echo "<td align=\"right\" width=\"33%\">";
+                 echo "</td>";
                  //$help_uri = site_url()."/help/helpdoc#ViewExamtype";
                  //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";
                 ?>
 		<div>
-                <?php echo validation_errors('<div class="isa_warning">','</div>');?>
-		<?php echo form_error('<div class="isa_error">','</div>');?>
-              <?php if(isset($_SESSION['success'])){?>
-                <div class="isa_success"><?php echo $_SESSION['success'];?></div>
+		<?php echo validation_errors('<div class="isa_warning>','</div>');?>
+		<?php if(isset($_SESSION['success'])){?>
+                <div  class="isa_success"><?php echo $_SESSION['success'];?></div>
+
                 <?php
                 };
                 ?>
                 <?php if(isset($_SESSION['err_message'])){?>
-                        <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+                    <div class="isa_error"><?php echo $_SESSION['err_message'];?></div>
+
                 <?php
                 };
                 ?>
               </div>
-             </td></tr>
+             </tr>
        </table>
 <div class="scroller_sub_page">
         <table class="TFtable" >

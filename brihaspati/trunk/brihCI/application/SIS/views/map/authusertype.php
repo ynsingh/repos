@@ -74,22 +74,17 @@ $("#StartDate").datepicker("option","maxDate", selected)
 
   <div id="body">
         <?php $this->load->view('template/header'); ?>
-                <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
-
+                <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
         <?php $this->load->view('template/menu'); ?>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
 </div>
-<table style="margin-left:10px;">
+<table width="100%">
                 <tr colspan="2"><td>
                 <?php echo anchor('map/viewauthuser',' Map Authority and User List',array('title'=>'View Detail','class' => 'top_parent'  ));
                 //$help_uri = site_url()."/help/helpdoc#ProgramFees";
                 //echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:72%\">Click for Help</b></a>";
                 ?>
-</tr></td>
-
                 <div>
-                <tr colspan="2"><td>
-                <div align="left" style="margin-left:30px;width:1700px;">
-
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div style="margin-left:30px;" class="isa_error">','</div>');?>
 
@@ -103,10 +98,7 @@ $("#StartDate").datepicker("option","maxDate", selected)
             </td></tr>
 </table>
      <form action="<?php echo site_url('map/authusertype');?>" method="POST" class="form-inline">
-
-
-                <table style="margin-left:30px;">
-
+                <table>
                         <td> Authority Name: </td><td>
                         <select name="authorities" class="my_dropdown" style="width:100%;">
                         <option value=""disabled selected>---------Select authority ---------</option>
@@ -159,15 +151,17 @@ $("#StartDate").datepicker("option","maxDate", selected)
 
 
                         <tr>
-                        <td colspan="2" style="margin-left:30px;">
-                        <button name="authusertype" style="margin-left:115px;">Add Authorities </button>
-                        <button name="clear">Clear</button>
+			<td></td>
+                        <td colspan="2">
+                        <button name="authusertype">Add Authorities </button>
+			<input type="reset" name="Reset" value="Clear"/>
                         </td>
                         </tr>
                     </form>
                   </div>
             </tr>
         </table>
+<p><br></p>
 </body>
 <div align="center">  <?php $this->load->view('template/footer');?></div>
 </head>

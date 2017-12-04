@@ -14,6 +14,11 @@
             <!--<h3>Welcome <?= $this->session->userdata('username') ?></h3>-->
 <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
         <table width="100%"><tr colspan="2"><td>
+	<?php
+            echo "<td align=\"center\" width=\"100%\">";
+            echo "<b>List of Staff Position Details</b>";
+            echo "</td>";
+         ?>
         <?php //echo anchor('staffmgmt/staffprofile/', "Add Profile" ,array('title' => 'Add staff profile ' , 'class' => 'top_parent'));
         //$help_uri = site_url()."/help/helpdoc#ViewEmployeeList";
        // echo "<a target=\"_blanik\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:54%\">Click for Help</b></a>";

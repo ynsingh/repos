@@ -32,12 +32,16 @@
         <?php $this->load->view('template/menu');?>
         <!--<//?= $this->session->userdata('username') ?>-->
         
-        <p>
         <table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
-        </p>
-        <br/>
-        <table>
+        <table width="100%;">
+          <tr>
+    <?php
+	    echo "<td align=\"center\" width=\"100%\">";
+	    echo "<b>Employee List Details</b>";
+	    echo "</td>";
+    ?>
             <!--help part -->
+        </tr>
         </table> 
         <div align="left" style="margin-left:2%;">
             

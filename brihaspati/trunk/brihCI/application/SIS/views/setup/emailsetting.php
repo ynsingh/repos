@@ -6,10 +6,11 @@
 
     <head>    
         <?php $this->load->view('template/header'); ?>
-            <h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+            <!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
 <?php $this->load->view('template/menu');?>
 </head>    
 <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
         <!--?php
             echo "<table width=\"100%\" border=\"1\" style=\"color: black;  border-collapse:collapse; border:1px solid #BBBBBB;\">";
             echo "<tr style=\"text-align:left; font-weight:bold; background-color:#66C1E6;\">";
@@ -29,14 +30,15 @@
         
         ?-->
         <table width="100%">
-            <div align="left" style="margin-left:2%;">
              <tr><td>
                 <?php echo anchor('setup/dispemailsetting/', "View Email Setting" ,array('title' => 'Email Configuration Detail ' , 'class' => 'top_parent'));?>
                  <?php
+             	  echo "<td align=\"right\">";
 		 $help_uri = site_url()."/help/helpdoc#EmailSetting";
-		 echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:70%\">Click for Help</b></a>";
-                 ?>
-                <div align="left" style=width:90%;">
+		 echo "<a style=\"text-decoration:none\"target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+                 echo "</td>";
+                 ?>                 
+                <div>
        
                     <?php echo validation_errors('<div class="isa_warning">','</div>');?>
                     <?php echo form_error('<div class="isa_error">','</div>');?>
@@ -52,15 +54,11 @@
                     <?php
                     };
                     ?>
-
-               
                 </div>
             </td></tr> 
-        </table><br/>
-        <tr>  
-            <div>
+        </table>
                 <form action="<?php echo site_url('setup/emailsetting');?>" method="POST" class="form-inline"></div>
-                    <table style="margin-left:2%;">
+                    <table>
                         <tr>  
                             <td><label for="emailprotocol" class="control-label">Email Protocol:</label></td>
                             <!--<td><input type="text" name="emailprotocol"  class="form-control" size="50" /><br></td>-->
@@ -74,7 +72,7 @@
 
                             </td>
                             <td><?php echo form_error('emailporotcol')?></td>
-                            <td>Example: smtpfmkgjdfgjgjdhjgdhdgfljhdlfkhjjh</td>
+                            <td>Example: smtp, imap, pop</td>
                 
                         </tr>
                         <tr> 
@@ -140,8 +138,7 @@
                         </tr>
                     </table>
                 </form>
-            </div> 
-        </tr>     
+	 <p><br></p>
     </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>

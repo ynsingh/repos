@@ -9,21 +9,21 @@
 <title>Add Category</title>
  <head>    
 	<?php $this->load->view('template/header'); ?>
-	<h1>Welcome <?= $this->session->userdata('username') ?>  </h1>
+	<!--h1>Welcome <?= $this->session->userdata('username') ?>  </h1-->
 	<?php $this->load->view('template/menu');?>
  </head>    
    <body>
+<table id="uname"><tr><td align=center>Welcome <?= $this->session->userdata('username') ?>  </td></tr></table>
      <table width="100%"> 
        <tr><td>
-   	<div align="left">
        	<?php
            echo anchor('setup/displaycategory', 'Category List', array('class' => 'top_parent'));
+            echo "<td align=\"right\">";
 	   $help_uri = site_url()."/help/helpdoc#Category";
-	   echo "<a target=\"_blank\" href=$help_uri><b style=\"float:right;position:absolute;margin-left:73%\">Click for Help</b></a>";
+	   echo "<a style=\"text-decoration:none\" target=\"_blank\" href=$help_uri><b>Click for Help</b></a>";
+            echo "</td>";
        	?>
-    	</font>
-   	</div>
-        <div align="left" style="margin-left:2%;width:90%;">
+        <div>
         <?php echo validation_errors('<div class="isa_warning">','</div>');?>
         <?php echo form_error('<div class="isa_error">','</div>');?>
         <?php if(isset($_SESSION['success'])){?>
@@ -39,10 +39,8 @@
       </div>
     </td>     
     </tr>     
-    <tr>  
-    <div align="left" style="margin-left:1%">
         <form action="<?php echo site_url('setup/category');?>" method="POST" class="form-inline">
-          <table style="margin-left:1%">
+          <table>
             <tr>  
                 <td><label for="cname" class="control-label"> Category Name :</label></td>
                 <td>
@@ -89,9 +87,7 @@
             </tr>
            </table>
         </form>
-      </div> 
-     </tr>     
-    </table>     
+   <p><br></p>
   </body>
     <div align="center"> <?php $this->load->view('template/footer');?></div>
 </html>
