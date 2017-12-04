@@ -2644,7 +2644,7 @@ class Setup extends CI_Controller
         if(isset($_POST['contact'])) {
             $this->form_validation->set_rules('ascu_name','Name','trim|xss_clean|required');
             $this->form_validation->set_rules('ascu_emailid','Email Id','trim|xss_clean|required|valid_email|callback_isEmailExist');
-	    $this->form_validation->set_rules('ascu_phoneno','Phone No','trim|numeric|max_length[12]|required');
+	    $this->form_validation->set_rules('ascu_phoneno','Phone No','trim|numeric|max_length[13]|required');
 	    $this->form_validation->set_rules('ascu_regards','Regarding','trim|xss_clean');
             //if form validation true
 
@@ -2738,10 +2738,11 @@ class Setup extends CI_Controller
                 );
         $data['ascu_id'] = $ascu_id;
 
+
       /*Form Validation*/
         $this->form_validation->set_rules('ascu_name','Name','trim|required');
-        $this->form_validation->set_rules('ascu_emailid','Email Id','trim|required|xss_clean');
-        $this->form_validation->set_rules('ascu_phoneno','Mobile No','trim|numeric|max_length[12]|required');
+        $this->form_validation->set_rules('ascu_emailid','Email Id','trim|required|xss_clean|valid_email');
+        $this->form_validation->set_rules('ascu_phoneno','Mobile No','trim|numeric|max_length[13]|required');
         $this->form_validation->set_rules('ascu_regards','Regarding','trim|xss_clean');
 
         /* Re-populating form */
@@ -2763,7 +2764,7 @@ class Setup extends CI_Controller
             $ascu_name = $this->input->post('ascu_name', TRUE);
             $ascu_emailid = $this->input->post('ascu_emailid', TRUE);
             $ascu_phoneno = $this->input->post('ascu_phoneno', TRUE);
-            $ascu_regards = $this->input->post('ascu_regrads', TRUE);
+            $ascu_regards = $this->input->post('ascu_regards', TRUE); 
 
             $logmessage = "";
             if($editeset_data-> ascu_name != $ascu_name)
@@ -2774,6 +2775,7 @@ class Setup extends CI_Controller
                 $logmessage = "Edit Mobile No" .$editeset_data->ascu_phoneno. " changed by " .$ascu_phoneno;
             if($editeset_data->ascu_regards != $ascu_regards)
                 $logmessage = "Edit Regards" .$editeset_data->ascu_regards. " changed by " .$ascu_regards;
+
             $update_data = array(
                'ascu_name' => $ascu_name,
                'ascu_emailid' =>$ascu_emailid,
