@@ -295,6 +295,7 @@ class Enterence extends CI_Controller {
 	}
 
 	public function contactus(){
+		$this->result = $this->commodel->get_list('admissionstudent_contactus');
 		$this->load->view('enterence/contact_us');
 	}
 
