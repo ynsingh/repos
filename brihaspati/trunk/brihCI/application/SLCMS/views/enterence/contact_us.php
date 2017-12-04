@@ -68,7 +68,17 @@ echo "</center>";
 		</th></tr>
 		</thead>-->
 		<thead class="BG" style="font-size:19px;"><tr><th>Sr. No.</th><th>Name of Person</th><th>Mobile No.</th></tr></thead>
-                <tr>
+		<?php
+        $count =0;
+        if( count($this->result) ):
+        foreach ($this->result as $row)
+        {
+         ?>
+             <tr align="center">
+            <td> <?php echo ++$count; ?> </td>
+            <td> <?php echo $row->ascu_name;?></td>
+            <td> <?php echo $row->ascu_phoneno ?></td>
+       <!--         <tr>
 			<td>1</td>
 			<td>Sanjeev Singh</td>	
 			<td>9425357989</td>
@@ -92,8 +102,18 @@ echo "</center>";
 			<td>5</td>
 			<td>Arvind Ji</td>
 			<td>9893874608</td>
+			-->
 		</tr>
-                </table>
+		<?php
+              }
+        
+        else :
+        echo "<tr>";
+            echo "<td colspan= \"8\" align=\"center\"> No Records found...!</td>";
+        echo "</tr>";
+        endif; 
+?>        
+         </table>
 
         <div>
 
